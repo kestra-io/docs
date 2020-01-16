@@ -1,0 +1,31 @@
+{
+  "name": "kestra.io",
+  "version": "1.0.0",
+  "description": "Kestra.io website",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vuepress dev",
+    "build": "vuepress build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kestra-io/kestra.io.git"
+  },
+  "keywords": [
+    "documentation",
+    "kestra",
+    "scalable",
+    "task",
+    "scheduler"
+  ],
+  "author": "ludovic.dehon@gmail.com,utopman@gmail.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kestra-io/kestra.io/issues"
+  },
+  "homepage": "https://github.com/kestra-io/kestra.io#readme",
+  "dependencies": {
+    "vuepress": "^1.2.0"
+  }
+}
