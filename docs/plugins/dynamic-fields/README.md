@@ -23,7 +23,7 @@ format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
 
 **Inter flow context**: A flow processing can generate some contextual data and can be shared to other flow. So flows can reach other flow data from context.
 
-**Input context**: A task can access flow input variable using the **input** value. Have a look at [inputs](/inputs) for more details about flows input system.
+**Input context**: A task can access flow input variable using the **input** value. Have a look at [inputs](/docs/inputs) for more details about flows input system.
 
 ```yaml
 id: context_input

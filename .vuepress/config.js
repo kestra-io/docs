@@ -1,63 +1,43 @@
 const path = require("path");
+const glob = require('glob');
+
+
+const getChildren = function (parent_path, dir) {
+    return glob
+        .sync(parent_path + '/' + dir + '/**/*.md')
+        .map(path => {
+            // remove "parent_path" and ".md"
+            path = path.slice(0, -3);
+            // remove README
+            if (path.endsWith('README')) {
+                path = path.slice(0, -6)
+            }
+            return path
+        })
+        .sort()
+};
+
 module.exports = {
+    title: 'Kestra',
+    description: "Kestra is a platform to build, test, schedule & monitor complex pipelines.",
+    plugins: [
+        '@vuepress/back-to-top',
+        '@vuepress/nprogress',
+        '@vuepress/last-updated',
+        '@vuepress/google-analytics',
+        {
+            'ga': 'UA-00000000-0'
+        },
+        'vuepress-plugin-medium-zoom',
+    ],
     themeConfig: {
         logo: '/logo.svg',
         repo: 'kestra-io/kestra',
         repoLabel: 'Contribute !',
         docsDir: 'docs',
+        editLinks: true,
         smoothScroll: true,
-        sidebar: [
-            {
-                title: 'Documentation',   // required
-                path: '/',      // optional, which should be a absolute path.
-                collapsable: false, // optional, defaults to true
-                sidebarDepth: 1,    // optional, defaults to 1
-                children: [
-                    {
-                        title: 'Terminology',
-                        path: '/terminology/',
-                        collapsable: false,
-                        sidebarDepth: 2,
-                    },
-                    {
-                        title: 'Webui',
-                        path: '/webui/',
-                        collapsable: false,
-                        sidebarDepth: 2,
-                    },
-                    {
-                        title: 'Task model',
-                        path: '/task/',
-                        collapsable: false,
-                        sidebarDepth: 2,
-                    },
-                    {
-                        title: 'Dynamic fields',
-                        path: '/dynamic-fields/',
-                        collapsable: false,
-                        sidebarDepth: 2,
-                    },
-                    {
-                        title: 'Plugins',
-                        path: '/plugins/',
-                        collapsable: false,
-                        sidebarDepth: 2,
-                    },
-                    {
-                        title: 'Technical architecture',
-                        path: '/technical-architecture/',
-                        collapsable: false,
-                        sidebarDepth: 2,
-                    },
-                    {
-                        title: 'Inputs',
-                        path: '/inputs/',
-                        collapsable: false,
-                        sidebarDepth: 2,
-                    },
-                ]
-            }
-        ]
+        sidebar: require("./sidebar"),
     },
     configureWebpack: {
         resolve: {
@@ -66,4 +46,4 @@ module.exports = {
             }
         }
     }
-}
+};

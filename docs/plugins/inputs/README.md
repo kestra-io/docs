@@ -63,6 +63,6 @@ tasks:
 
 With such flow, the web ui let you input some inputs by generating a form accordingly on the flow > trigger view. The input form for the task above looks like below :
 
-![Flow inputs](/inputs/inputs.jpg)
+![Flow inputs](./assets/inputs.jpg)
 
-Once inputs filled, you can trigger a flow execution that will run with [contextual inputs](/dynamic-fields) as task variables.
+Once inputs filled, you can trigger a flow execution that will run with [contextual inputs](/docs/dynamic-fields) as task variables.

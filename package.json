@@ -26,6 +26,12 @@
   },
   "homepage": "https://github.com/kestra-io/kestra.io#readme",
   "dependencies": {
-    "vuepress": "^1.2.0"
+    "@vuepress/plugin-back-to-top": "^1.2.0",
+    "@vuepress/plugin-google-analytics": "^1.2.0",
+    "@vuepress/plugin-nprogress": "^1.2.0",
+    "directory-tree": "^2.2.4",
+    "vuepress": "^1.2.0",
+    "vuepress-plugin-medium-zoom": "^1.1.8",
+    "glob": "latest"
   }
 }

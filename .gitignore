@@ -1,3 +1,15 @@
+## Common
+Thumbs.db
+.DS_Store
+.idea
+.vscode
+*.iml
+*.ipr
+*.iws
+.project
+.settings
+
+## Js
 .vuepress/dist/
 node_modules/
 yarn.lock

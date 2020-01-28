@@ -1,20 +1,23 @@
-# The Kestra's task model
+# Extending flows
 
-In this documentation you will learn what is a task and how to describe them working together to create a working flow.
+In this documentation you will learn what is a task and how to describe them **working together to create a working flow**.
+
+## Task groups
+
 There are in Kestra three main tasks groups that are the following :
 
 * **Core tasks** : they are included in the Kestra Comunity Edition and make it possible to handle common tasks.
 * **Structural tasks** : they are mostly included in the Kestra Comunity Edition let you compose tasks together. More details below.
 * **Plugin tasks** : these tasks are created and managed by community as external dependencies for Kestra. Their usage depends on both author and Kestra licence terms.
-* **Business tasks** : they are provided as part of the Kestra Enterprise Edition and add higher level tasks convinient operation for kestra.
+* **Business tasks** : they are provided as part of the Kestra Enterprise Edition and add higher level tasks convinient operation for Kestra.
 
 ## Task types
 
 First, there are many tasks types. Each of them is targeted to handle specific tasks. It is for exemple a Bash task that allows linux shell command to run. Another task type is Big query operation. You will have to use the appropriate task to acheive your computation goals accordingly. Find below the description of core tasks provided in the Kestra Comunity Edition
 
-## Task sample
+## Flow sample
 
-The task model is a yaml document descibing how kestra will schedule and compute your workload.
+The flow model is a yaml document descibing how Kestra will schedule and compute your workload.
 
 Here is a simple sample task demonstrating the task model. The following code is a minimal sample existing task in Kestra for testing purposes.
 
@@ -29,7 +32,7 @@ tasks: # A list of related sub tasks the current tasks manage.
 
 ```
 
-## Task field types
+## Flow field types
 
 Tasks fields in the yaml representation have key values pairs that can be one of the following types:
 
@@ -40,7 +43,7 @@ Tasks fields in the yaml representation have key values pairs that can be one of
 |String|A string value|
 |Object|A nested yaml object describing properties of the referenced object in current object key property|
 |List|A nested yaml section list where each item can be of any type in this list|
-|Dynamic|A special field where that can handle handlebars template interpolations. For more details about dynamic fields and their usage in Kestra, have a look at [dynamic templates section](/dynamic-fields)|
+|Dynamic|A special field where that can handle handlebars template interpolations. For more details about dynamic fields and their usage in Kestra, have a look at [dynamic templates section](/docs/dynamic-fields)|
 
 ## Core tasks
 
@@ -63,6 +66,8 @@ Kestra's core comes with many tasks that structure tasks organisation. It allows
 |Error|A nested task list to execute in case the associated task fails. It is a specific task field called errors expecting nested task desciption|
 
 ### Sequential sample
+
+This flow processes tasks ones after others sequentially
 
 ```yaml
 id: sequential
@@ -106,6 +111,8 @@ tasks:
 
 ### Parallel sample
 
+This flow processes tasks in parallel. It makes it convinient to process many tasks at once.
+
 ```yaml
 id: parallel
 namespace: org.kestra.tests
@@ -138,6 +145,8 @@ tasks:
 ```
 
 ### Switch sample
+
+This flow processes some tasks conditionnaly depending on a contextual value. In this case, an input value will trigger only some parts of the flow.
 
 ```yaml
 id: switch
@@ -180,6 +189,8 @@ tasks:
 
 ### Each sample
 
+This flow will generate many tasks at runtime depending on a value field. Here this field is satic, but it can be generated from a previous task output and trigger an arbitrary number of processes
+
 ```yaml
 id: each-sequential
 namespace: org.kestra.tests
@@ -201,6 +212,8 @@ tasks:
 ```
 
 ### Error sample
+
+This example processes a task which fails immediately. Then a tasks sequence is processed in the error branch of the flow.
 
 ```yaml
 id: errors
@@ -236,4 +249,4 @@ errors:
 
 ## Custom tasks
 
-Each specialized task can implement custom behaviors and use specific additional fields. Have a look at [plugins](/plugins) for more information about these kind of tasks.
+Each specialized task can implement custom behaviors and use specific additional fields. Have a look at [plugins](/docs/plugins) for more information about these kind of tasks.
