@@ -1,0 +1,69 @@
+name: Build docs
+
+on:
+  push:
+    branches:
+      - master
+      - feat/cicd
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # JDK & Node
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      # Caches
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+
+      # Plugins docs generation
+      - name: Download plugins documentation
+        run: .vuepress/plugins.sh
+
+      # Build
+      - name: Build
+        run: npm install && npm run build
+
+      # Deploy
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: .vuepress/dist/
+
+      # Slack
+      - name: Slack notification
+        uses: 8398a7/action-slack@v2
+        if: failure()
+        with:
+          status: ${{ job.status }}
+          username: Github Actions
+          icon_emoji: ':octocat:'
+          channel: '#kestra'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

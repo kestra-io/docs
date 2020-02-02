@@ -17,3 +17,4 @@ yarn.lock
 
 ## Plugins
 plugins/**/*
+.vuepress/build/
