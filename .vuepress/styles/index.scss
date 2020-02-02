@@ -1,0 +1,9 @@
+header {
+    &.navbar a span.site-name {
+        display: none;
+    }
+}
+
+.home .hero img {
+    max-height: 130px !important;
+}

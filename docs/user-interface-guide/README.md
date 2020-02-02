@@ -1,4 +1,7 @@
-# Web UI user guide
+---
+order: 6
+---
+# User Interface Guide
 
 Kestra comes with a web user interface. This section is the documentation related to the user interface usage.
 
@@ -6,13 +9,13 @@ Kestra comes with a web user interface. This section is the documentation relate
 
 When launching Kestra webui, the first page you reach is the flow page where flows are searchables.
 
-On the left, the menu let you reach all parts of the frontend. You can browse to [Flows](/terminology#flow) and [Executions](/terminology/#execution).
+On the left, the menu let you reach all parts of the frontend. You can browse to [Flows](/docs/concepts/flows) and [Executions](/docs/concepts/executions).
 
 The flows list shows all registered flows in the system. You can dig into the flow detail by clicking on the show column on the right (or double click on a row).
 
-Have a look at the [table how to](/webui/#table-how-to) section for more details about this page usage.
+Have a look at the [table how to](/docs/webui/#table-how-to) section for more details about this page usage.
 
-![Flow list](/webui/execution-list.jpg)
+![Flow list](./assets/execution-list.jpg)
 
 ## Flow details
 
@@ -22,14 +25,14 @@ The flow detail view shows the following tabs:
 |-|-|
 |Overview|A visual rendering for current flow.|
 |Executions|the same view as executions list, but scoped to the current flow. Displayed executions are related to current flow.|
-|Trigger|Display a form to trigger a flow. This will display some input fields depending on flow input requirements. ![Flow inputs](/webui/inputs.jpg). Go to [task model](/task) for more details about how to describe a working flow.|
-|Source|Display and let you edit current flow from a text editor. The flow is a yaml document describing how tasks are related and what they do. ![Flow source](/webui/source.jpg)|
+|Trigger|Display a form to trigger a flow. This will display some input fields depending on flow input requirements. ![Flow inputs](/docs/webui/inputs.jpg). Go to [task model](/task) for more details about how to describe a working flow.|
+|Source|Display and let you edit current flow from a text editor. The flow is a yaml document describing how tasks are related and what they do. ![Flow source](./assets/source.jpg)|
 
 ## Execution list
 
 On the execution list page executions are listed and filterable to search some specific execution. It works the same way than the flow list.
-
-![Execution list](/webui/execution-list.jpg)
+a
+![Execution list](./assets/execution-list.jpg)
 
 ## Execution details
 
@@ -37,9 +40,9 @@ The execution detail view shows the following tabs:
 
 |Tab|Description|
 |-|-|
-|Overview|A sumup for the execution information. ![Execution detail](/webui/execution-detail.jpg)|
-|Gantt|A Gantt diagram representation for the current flow execution processing. ![Execution detail](/webui/execution-gantt.jpg) **Note** : Gantt colored lines are clickable to display related log ouputs|
-|Logs|The execution logs. This is a filterable list for execution outputs ![Execution logs](/webui/execution-logs.jpg)|
+|Overview|A sumup for the execution information. ![Execution detail](./assets/execution-detail.jpg)|
+|Gantt|A Gantt diagram representation for the current flow execution processing. ![Execution detail](./assets/execution-gantt.jpg) **Note** : Gantt colored lines are clickable to display related log ouputs|
+|Logs|The execution logs. This is a filterable list for execution outputs ![Execution logs](./assets/execution-logs.jpg)|
 |Topology|A visual rendering for current flow.|
 
 ## Table how to
