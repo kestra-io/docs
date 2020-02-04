@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Extending flows | Kestra</title>
+    <meta name="description" content="Kestra is a platform to build, test, schedule &amp; monitor complex pipelines.">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.3a68a869.css" as="style"><link rel="preload" href="/assets/js/app.8c79e65d.js" as="script"><link rel="preload" href="/assets/js/2.a2f5abae.js" as="script"><link rel="preload" href="/assets/js/16.fa4b40a7.js" as="script"><link rel="prefetch" href="/assets/js/10.beeea792.js"><link rel="prefetch" href="/assets/js/11.df60361a.js"><link rel="prefetch" href="/assets/js/12.15eb7891.js"><link rel="prefetch" href="/assets/js/13.a84f99d8.js"><link rel="prefetch" href="/assets/js/14.b4e4e7e5.js"><link rel="prefetch" href="/assets/js/15.0ae588f0.js"><link rel="prefetch" href="/assets/js/17.a2d4c3f7.js"><link rel="prefetch" href="/assets/js/18.339f5244.js"><link rel="prefetch" href="/assets/js/19.56c46940.js"><link rel="prefetch" href="/assets/js/20.ce705f22.js"><link rel="prefetch" href="/assets/js/21.a57bed0a.js"><link rel="prefetch" href="/assets/js/22.93f85e1f.js"><link rel="prefetch" href="/assets/js/23.becc0bb6.js"><link rel="prefetch" href="/assets/js/24.a3bd45d8.js"><link rel="prefetch" href="/assets/js/25.ffc9924c.js"><link rel="prefetch" href="/assets/js/26.3996c24b.js"><link rel="prefetch" href="/assets/js/27.2bd8c495.js"><link rel="prefetch" href="/assets/js/28.c31398f3.js"><link rel="prefetch" href="/assets/js/29.e39f1ecf.js"><link rel="prefetch" href="/assets/js/3.45c6fbc2.js"><link rel="prefetch" href="/assets/js/30.7756efc5.js"><link rel="prefetch" href="/assets/js/31.526fe304.js"><link rel="prefetch" href="/assets/js/32.1399d5c1.js"><link rel="prefetch" href="/assets/js/33.021afd69.js"><link rel="prefetch" href="/assets/js/34.686b25e5.js"><link rel="prefetch" href="/assets/js/35.6d085fb9.js"><link rel="prefetch" href="/assets/js/36.df4eee9c.js"><link rel="prefetch" href="/assets/js/37.aa2a15db.js"><link rel="prefetch" href="/assets/js/38.f8f47241.js"><link rel="prefetch" href="/assets/js/39.aa1f487c.js"><link rel="prefetch" href="/assets/js/4.600a042d.js"><link rel="prefetch" href="/assets/js/40.d361f201.js"><link rel="prefetch" href="/assets/js/41.24e79ee0.js"><link rel="prefetch" href="/assets/js/42.0f094a2f.js"><link rel="prefetch" href="/assets/js/43.5a168cb1.js"><link rel="prefetch" href="/assets/js/44.5ac794df.js"><link rel="prefetch" href="/assets/js/45.cf87b494.js"><link rel="prefetch" href="/assets/js/46.b4bedd72.js"><link rel="prefetch" href="/assets/js/47.b0f4f38e.js"><link rel="prefetch" href="/assets/js/48.496fc3d7.js"><link rel="prefetch" href="/assets/js/49.0a740519.js"><link rel="prefetch" href="/assets/js/5.c3b09167.js"><link rel="prefetch" href="/assets/js/6.3e843967.js"><link rel="prefetch" href="/assets/js/7.263274af.js"><link rel="prefetch" href="/assets/js/8.325dc022.js"><link rel="prefetch" href="/assets/js/9.e2bf64bc.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.3a68a869.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.svg" alt="Kestra" class="logo"> <span class="site-name can-hide">Kestra</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/docs/" class="nav-link router-link-active">Documentation</a></div><div class="nav-item"><a href="/plugins/" class="nav-link">Plugins &amp; Tasks</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/docs/" class="nav-link router-link-active">Documentation</a></div><div class="nav-item"><a href="/plugins/" class="nav-link">Plugins &amp; Tasks</a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><a href="/docs" class="sidebar-heading clickable router-link-active open"><span>Documentation</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/docs/" class="sidebar-link">What’s Kestra?</a></li><li><a href="/docs/getting-started/" class="sidebar-link">Getting Started</a></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/docs/concepts/" class="sidebar-heading clickable"><span>Concepts</span> <span class="arrow right"></span></a> <!----></section></li><li><a href="/docs/architecture/" class="sidebar-link">Architecture</a></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><a href="/docs/developer-guide/" class="sidebar-heading clickable router-link-active open"><span>Developer Guide</span> <span class="arrow down"></span></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/docs/developer-guide/flow-model/" class="active sidebar-link">Extending flows</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/docs/developer-guide/flow-model/#task-kinds" class="sidebar-link">Task kinds</a></li><li class="sidebar-sub-header"><a href="/docs/developer-guide/flow-model/#task-types" class="sidebar-link">Task types</a></li><li class="sidebar-sub-header"><a href="/docs/developer-guide/flow-model/#flow-sample" class="sidebar-link">Flow sample</a></li><li class="sidebar-sub-header"><a href="/docs/developer-guide/flow-model/#flow-field-types" class="sidebar-link">Flow field types</a></li><li class="sidebar-sub-header"><a href="/docs/developer-guide/flow-model/#core-tasks" class="sidebar-link">Core tasks</a></li><li class="sidebar-sub-header"><a href="/docs/developer-guide/flow-model/#structural-tasks" class="sidebar-link">Structural tasks</a></li><li class="sidebar-sub-header"><a href="/docs/developer-guide/flow-model/#custom-tasks" class="sidebar-link">Custom tasks</a></li></ul></li><li><a href="/docs/developer-guide/inputs/" class="sidebar-link">Flow Inputs</a></li><li><a href="/docs/developer-guide/dynamic-fields/" class="sidebar-link">Dynamic fields</a></li><li><a href="/docs/developer-guide/plugins/" class="sidebar-link">Plugins</a></li></ul></section></li><li><a href="/docs/administrator-guide/" class="sidebar-link">Administrator Guide</a></li><li><a href="/docs/user-interface-guide/" class="sidebar-link">User Interface Guide</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="extending-flows"><a href="#extending-flows" class="header-anchor">#</a> Extending flows</h1> <p>In this documentation you will learn what is a task and how to describe them <strong>working together
+to create a working flow</strong>.</p> <h2 id="task-kinds"><a href="#task-kinds" class="header-anchor">#</a> Task kinds</h2> <p>There are in Kestra three main tasks kinds that are the following :</p> <ul><li><strong>Runnable tasks</strong>: these tasks will handle most of the workload, this can be api call,
+transformation, ..., anything that must be run, the kestra core don't included many tasks runnable, since
+they are available as plugins.</li> <li><strong>Flowable tasks</strong>: they are mostly included in Kestra Core let you compose tasks together
+(sequential, parallel, ...). More details below.</li> <li><strong>Plugin tasks</strong>: these tasks are created and managed by community as external dependencies for Kestra.
+Their usage depends on both author and Kestra licence terms.</li></ul> <h2 id="task-types"><a href="#task-types" class="header-anchor">#</a> Task types</h2> <p>First, there are many tasks types. Each of them is targeted to handle specific tasks. It is for exemple a Bash task that allows linux shell command to run. Another task type is Big query operation. You will have to use the appropriate task to acheive your computation goals accordingly. Find below the description of core tasks provided in the Kestra.</p> <h2 id="flow-sample"><a href="#flow-sample" class="header-anchor">#</a> Flow sample</h2> <p>The flow model is a yaml document descibing how Kestra will schedule and compute your workload.</p> <p>Here is a simple sample task demonstrating the task model. The following code is a minimal sample existing task in Kestra for testing purposes.</p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">id</span><span class="token punctuation">:</span> minimal <span class="token comment"># Task identifier, must be unique across namespaces.</span>
+<span class="token key atrule">namespace</span><span class="token punctuation">:</span> org.kestra.tests <span class="token comment"># Each task live in one arbitrary namespace, this is useful for task organisation. Namespace is required on root task node.</span>
+<span class="token key atrule">revision</span><span class="token punctuation">:</span> <span class="token number">8 </span><span class="token comment"># Task verion version, initially optional, becomes mandatory if a task with same id and namespace already exists.</span>
+<span class="token key atrule">tasks</span><span class="token punctuation">:</span> <span class="token comment"># A list of related sub tasks the current tasks manage.</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> date <span class="token comment"># Another task id describing this subtask.</span>
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return <span class="token comment"># The task type. There are many tasks types described below.</span>
+    <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;A log line content with a contextual date variable {{taskrun.startDate}}&quot;</span> <span class="token comment"># Here is a specific field for this task type (Retrun) that append a formatted line in log file stream.</span>
+
+</code></pre></div><h2 id="flow-field-types"><a href="#flow-field-types" class="header-anchor">#</a> Flow field types</h2> <p>Tasks fields in the yaml representation have key values pairs that can be one of the following types:</p> <table><thead><tr><th>Type</th> <th>Description</th></tr></thead> <tbody><tr><td>Integer</td> <td>An integer value</td></tr> <tr><td>Float</td> <td>A float value</td></tr> <tr><td>String</td> <td>A string value</td></tr> <tr><td>Object</td> <td>A nested yaml object describing properties of the referenced object in current object key property</td></tr> <tr><td>List</td> <td>A nested yaml section list where each item can be of any type in this list</td></tr> <tr><td>Dynamic</td> <td>A special field where that can handle handlebars template interpolations. For more details about dynamic fields and their usage in Kestra, have a look at <a href="/docs/dynamic-fields">dynamic templates section</a></td></tr></tbody></table> <h2 id="core-tasks"><a href="#core-tasks" class="header-anchor">#</a> Core tasks</h2> <p>In the following table you will find all base properties for the core task model.</p> <table><thead><tr><th>Name</th> <th>Description</th></tr></thead> <tbody><tr><td>Bash</td> <td>Run bash scripts using this task</td></tr></tbody></table> <h2 id="structural-tasks"><a href="#structural-tasks" class="header-anchor">#</a> Structural tasks</h2> <p>Kestra's core comes with many tasks that structure tasks organisation. It allows to group, distribute and schedule tasks groups.</p> <table><thead><tr><th>Name</th> <th>Description</th></tr></thead> <tbody><tr><td>Sequential</td> <td>A task container to execute many tasks sequentially</td></tr> <tr><td>Parallel</td> <td>A task container to execute many tasks in parallel, this helps acheive more efficient flows</td></tr> <tr><td>Switch</td> <td>A task executing a specific sub branch of tasks depending on it's input value</td></tr> <tr><td>Each</td> <td>A single task generating a parametrized task list depending on it's inputs</td></tr> <tr><td>Error</td> <td>A nested task list to execute in case the associated task fails. It is a specific task field called errors expecting nested task desciption</td></tr></tbody></table> <h3 id="sequential-sample"><a href="#sequential-sample" class="header-anchor">#</a> Sequential sample</h3> <p>This flow processes tasks ones after others sequentially</p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">id</span><span class="token punctuation">:</span> sequential
+<span class="token key atrule">namespace</span><span class="token punctuation">:</span> org.kestra.tests
+<span class="token key atrule">revision</span><span class="token punctuation">:</span> <span class="token number">8</span>
+<span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1<span class="token punctuation">-</span>seq
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Sequential
+    <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1<span class="token punctuation">-</span><span class="token number">1</span>
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+        <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.startDate}}&quot;</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1<span class="token punctuation">-</span><span class="token number">2</span>
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+        <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.id}}&quot;</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1<span class="token punctuation">-</span>3<span class="token punctuation">-</span>seq
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Sequential
+        <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1<span class="token punctuation">-</span>3<span class="token punctuation">-</span><span class="token number">1</span>
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+            <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.id}}&quot;</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1<span class="token punctuation">-</span>3<span class="token punctuation">-</span>2.seq
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Sequential
+            <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1<span class="token punctuation">-</span>3<span class="token punctuation">-</span><span class="token number">2.1</span>
+                <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+                <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.startDate}}&quot;</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1<span class="token punctuation">-</span>3<span class="token punctuation">-</span>2.2.end
+                <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+                <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.id}}&quot;</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1<span class="token punctuation">-</span>3<span class="token punctuation">-</span>3.end
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+            <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.id}}&quot;</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1<span class="token punctuation">-</span>4.end
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+        <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.startDate}}&quot;</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 2.end
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+    <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.startDate}}&quot;</span>
+</code></pre></div><h3 id="parallel-sample"><a href="#parallel-sample" class="header-anchor">#</a> Parallel sample</h3> <p>This flow processes tasks in parallel. It makes it convinient to process many tasks at once.</p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">id</span><span class="token punctuation">:</span> parallel
+<span class="token key atrule">namespace</span><span class="token punctuation">:</span> org.kestra.tests
+<span class="token key atrule">revision</span><span class="token punctuation">:</span> <span class="token number">8</span>
+<span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> parent<span class="token punctuation">-</span>par
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Parallel
+    <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1st
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+        <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.startDate}}&quot;</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 2nd
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+        <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.id}}&quot;</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 3th <span class="token punctuation">-</span> child par
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Parallel
+        <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 3th <span class="token punctuation">-</span> 1st
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+            <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.id}}&quot;</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 3th <span class="token punctuation">-</span> 2nd
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+            <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.id}}&quot;</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 3th <span class="token punctuation">-</span> 3rd
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+            <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.id}}&quot;</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> last
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+    <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.startDate}}&quot;</span>
+</code></pre></div><h3 id="switch-sample"><a href="#switch-sample" class="header-anchor">#</a> Switch sample</h3> <p>This flow processes some tasks conditionnaly depending on a contextual value. In this case, an input value will trigger only some parts of the flow.</p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">id</span><span class="token punctuation">:</span> switch
+<span class="token key atrule">namespace</span><span class="token punctuation">:</span> org.kestra.tests
+<span class="token key atrule">revision</span><span class="token punctuation">:</span> <span class="token number">8</span>
+<span class="token key atrule">inputs</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> string
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> STRING
+    <span class="token key atrule">required</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+<span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> parent<span class="token punctuation">-</span>seq
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Switch
+    <span class="token key atrule">value</span><span class="token punctuation">:</span> <span class="token string">&quot;{{inputs.string}}&quot;</span>
+    <span class="token key atrule">cases</span><span class="token punctuation">:</span>
+      <span class="token key atrule">FIRST</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1st
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+          <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.startDate}}&quot;</span>
+      <span class="token key atrule">SECOND</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 2nd
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+          <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.startDate}}&quot;</span>
+      <span class="token key atrule">THIRD</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 3th
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Sequential
+          <span class="token key atrule">errors</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> error<span class="token punctuation">-</span>1st
+              <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+              <span class="token key atrule">format</span><span class="token punctuation">:</span> Error Trigger ! <span class="token punctuation">{</span><span class="token punctuation">{</span>task.id<span class="token punctuation">}</span><span class="token punctuation">}</span>
+          <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> failed
+              <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.scripts.Bash
+              <span class="token key atrule">commands</span><span class="token punctuation">:</span>
+                <span class="token punctuation">-</span> exit 1
+    <span class="token key atrule">defaults</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> default
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+        <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.startDate}}&quot;</span>
+</code></pre></div><h3 id="each-sample"><a href="#each-sample" class="header-anchor">#</a> Each sample</h3> <p>This flow will generate many tasks at runtime depending on a value field. Here this field is satic, but it can be generated from a previous task output and trigger an arbitrary number of processes</p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">id</span><span class="token punctuation">:</span> each<span class="token punctuation">-</span>sequential
+<span class="token key atrule">namespace</span><span class="token punctuation">:</span> org.kestra.tests
+<span class="token key atrule">revision</span><span class="token punctuation">:</span> <span class="token number">8</span>
+<span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1.each
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.EachSequential
+    <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1.each.1
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+        <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.value}} &gt; {{taskrun.startDate}}&quot;</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 1.each.2
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+        <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.value}} &gt; {{taskrun.startDate}}&quot;</span>
+    <span class="token key atrule">value</span><span class="token punctuation">:</span> <span class="token string">'[&quot;value 1&quot;, &quot;value 2&quot;, &quot;value 3&quot;]'</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 2.end
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Return
+    <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">&quot;{{task.id}} &gt; {{taskrun.startDate}}&quot;</span>
+</code></pre></div><h3 id="error-sample"><a href="#error-sample" class="header-anchor">#</a> Error sample</h3> <p>This example processes a task which fails immediately. Then a tasks sequence is processed in the error branch of the flow.</p> <div class="language-yaml extra-class"><pre class="language-yaml"><code><span class="token key atrule">id</span><span class="token punctuation">:</span> errors
+<span class="token key atrule">namespace</span><span class="token punctuation">:</span> org.kestra.tests
+<span class="token key atrule">revision</span><span class="token punctuation">:</span> <span class="token number">8</span>
+<span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> failed
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.scripts.Bash
+    <span class="token key atrule">commands</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> exit 1
+<span class="token key atrule">errors</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 2nd
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.debugs.Echo
+    <span class="token key atrule">format</span><span class="token punctuation">:</span> second <span class="token punctuation">{</span><span class="token punctuation">{</span>task.id<span class="token punctuation">}</span><span class="token punctuation">}</span>
+    <span class="token key atrule">level</span><span class="token punctuation">:</span> INFO
+  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 3rd
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Parallel
+    <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 3rd <span class="token punctuation">-</span> 1st
+        <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Parallel
+        <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 3rd <span class="token punctuation">-</span> 1st <span class="token punctuation">-</span> 1st
+            <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Parallel
+            <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 3rd <span class="token punctuation">-</span> 1st <span class="token punctuation">-</span> 1st <span class="token punctuation">-</span> 1st
+                <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.flows.Parallel
+                <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+                  <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> 3rd <span class="token punctuation">-</span> 1st <span class="token punctuation">-</span> 1st <span class="token punctuation">-</span> 1st <span class="token punctuation">-</span> last
+                    <span class="token key atrule">type</span><span class="token punctuation">:</span> org.kestra.core.tasks.scripts.Bash
+                    <span class="token key atrule">commands</span><span class="token punctuation">:</span>
+                      <span class="token punctuation">-</span> <span class="token string">'echo &quot;3rd - 1st - 1st - 1st - last : {{task.id}}&quot;'</span>
+</code></pre></div><h2 id="custom-tasks"><a href="#custom-tasks" class="header-anchor">#</a> Custom tasks</h2> <p>Each specialized task can implement custom behaviors and use specific additional fields. Have a look at <a href="/docs/05-plugins">plugins</a> for more information about these kind of tasks.</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">2/2/2020, 8:57:01 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/docs/architecture/" class="prev">Architecture</a></span> <span class="next"><a href="/docs/developer-guide/inputs/">Flow Inputs</a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.8c79e65d.js" defer></script><script src="/assets/js/2.a2f5abae.js" defer></script><script src="/assets/js/16.fa4b40a7.js" defer></script>
+  </body>
+</html>
