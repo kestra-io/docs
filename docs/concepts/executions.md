@@ -29,3 +29,13 @@ They can be optionnal or required.
 ## Outputs 
 
 Each task can generate some output data that can be reused in other tasks of the current execution.
+
+## State 
+
+Define all the state that a Task Run or an Execution can have. 
+
+The Execution or Task Run can have these state :  
+* `CREATED`: is created, but not handle internally, waiting to be treated.
+* `RUNNING`: is running, the work is doing right now.
+* `SUCCESS`: is success, all the work is done without any failure.
+* `FAILED`: is failed, they is any unintended behaviour that cause the work to failed.

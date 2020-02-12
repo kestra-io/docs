@@ -10,16 +10,16 @@ A Task is single action in a flow.
 A task is can optionally takes inputs, performs an action, and produces an optional result.
 There is 2 kind of Task in Kestra : 
 
-### Flowable Task 
+### Orchestrate Task 
 This kind of tasks only handle workflow state and trigger new tasks. It will handle the logic 
 of the flow allowing to do complex workflow like branching, parallel tasks, ...  
 A simple example is a `Switch` task that can take any inputs and decide witch are 
 the nexts tasks to run (and allow branching). 
 
-A Flowable tasks is handled by `Executors` and can be called very often so it can't run 
+A Orchestrate tasks is handled by `Executors` and can be called very often so it can't run 
 intensive computation. 
 
-The most common Flowable Task will be keep in the core. 
+The most common Orchestrate Task will be keep in the core. 
 
 ### Runnable Task 
 Runnable Task are here to handle any computation work. This can be anything like file systems 

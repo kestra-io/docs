@@ -31,6 +31,9 @@ Using this template context variable interpolates the bracket reference with the
 The `.value` in the template bracket that reach another task's output content is a value that depends on what data is produced per value. In our case, for the **Return** task, the `value` content is filled with the output. It could be `bq_table` for another task implemented for big query management. Have a look at each task documentation for specific information about what context variable are filled with ouput contents.
 :::
 
+
+## Specific outputs for dynamic tasks
+
 Another more specific case for output management is the runtime generated tasks output variables. It is the case for the **EachSequential** task that produces dynamically other tasks depending on it's `value` property. In this case it is possible to reach each iteration output individually using the following syntax :
 
 ```yaml
