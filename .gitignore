@@ -13,7 +13,7 @@ Thumbs.db
 .vuepress/dist/
 node_modules/
 yarn.lock
-
+build/
 
 ## Plugins
 plugins/**/*

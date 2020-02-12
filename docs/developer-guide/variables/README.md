@@ -1,26 +1,48 @@
 ---
-order: 5
+order: 2
 ---
+
 # Variables
 
-The following table lists the configurable Variables of the Kestra.io and their default values.
+Variables are specific fields for task description. They use the power of [handlebars](https://handlebarsjs.com/guide/) with Kestra's special context system, allowing powerfull task description and composition.
 
-| Parameter                                                  | Description                                                                                                                  | Default                                           |
-| -----------------------------------------------------------| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-|  <code v-pre>{{ flow.id }}</code>                          | The name of your flow ID "example: barometre-1 ,each-sequential"                                                             |  Matches alphanumeric (same as [a-zA-Z0-9_])      |
-|  <code v-pre>{{ task.id }}</code>                          | The ID of your task ID "example: task-1-XXXXXX ,task-2-VVVVVVVV"                                                             |  Matches alphanumeric (same as [a-zA-Z0-9_])      |
-|  <code v-pre>{{ taskrun.id }}</code>                       | It's the ID of your execution Task                                                                                           |  Matches alphanumeric (same as [a-zA-Z0-9_])      |
-|  <code v-pre>{{ taskrun.value }}</code>                    | The result of your task "exemple: 0, 1"                                                                                      |  Matches numeric (same as [0-9])                  |
-|  <code v-pre>{{ taskrun.attemptsCount }}</code>            | The number of times that the task is launched for a given flow                                                               |                                                   |
-|  <code v-pre>{{ taskrun.startDate }}</code>                | Retrieves the launch date of the Task ID from the Flow ID                                                                    |                                                   |
-|  <code v-pre>{{ execution.id }}</code>                     | Return the execution ID of your flow                                                                                         |  Matches numeric (same as [Z0-9_])                |
-|  <code v-pre>{{ inputs.string }}</code>                    | Set Input data in String format for the flow                                                                                 |  Matches string (same as [a-zA-Z])                |
-|  <code v-pre>{{ inputs.int }}</code>                       | Set Input data in Int format for the flow                                                                                    |  Matches string (same as [0-9])                   |
-|  <code v-pre>{{ inputs.float }}</code>                     | Set Input data in Float format for the flow                                                                                  |                                                   |
-|  <code v-pre>{{ inputs.instant }}</code>                   | Enable instant input                                                                                                         |                                                   |
-|  <code v-pre>{{ inputs.file.content }}</code>              | Reading file contents on input for the flow ex  yaml,txt,....                                                                |                                                   |
-|  <code v-pre>{{ inputs.file }}</code>                      | Reading file path on input for the flow     ex  /tmp/file.txt                                                                |                                                   |
-|  <code v-pre>{{ inputs.file.uri }}</code>                  | Reading file from URI value for the flow    ex http://stock.io/myfile.txt                                                    |                                                   |
-::: warning
-TODO
-:::
+## Context concept
+
+Variables can use variable information registrered / existing in the execution context. This context are some data injected in Variables and are from different sources:
+
+**Core context**: These data come from Kestra's general context it make it possible to reach system wide information. See below what data are concretely provided in handlebars templates.
+
+
+**Task context**: This is some task related context data. You can reach data from task curently processed. Data are reachable from the **task** variable.
+
+```yaml
+format: second {{task.id}}
+```
+
+**Flow context**: The current flow processing let you generate data from one task and make it availalbe to other tasks of the same flow. So one task can use data produced else where in the current flow. Data are reachable from the **taskrun** variable.
+
+```yaml
+format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
+```
+
+**Inter flow context**: A flow processing can generate some contextual data and can be shared to other flow. So flows can reach other flow data from context.
+
+**Input context**: A task can access flow input variable using the **input** value. Have a look at [inputs](/docs/inputs) for more details about flows input system.
+
+```yaml
+id: context_input
+namespace: org.kestra.tests
+inputs:
+  - name: myinput
+    type: STRING
+tasks:
+  - id: mytask
+    type: org.kestra.core.tasks.debugs.Return
+    format: "{{inputs.myinput}}"
+```
+
+
+
+## Usage
+
+## Available context in Kestra
