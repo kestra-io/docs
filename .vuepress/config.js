@@ -10,7 +10,7 @@ module.exports = {
         '@vuepress/last-updated',
         '@vuepress/google-analytics',
         {
-            'ga': 'UA-00000000-0'
+            'ga': 'UA-56021-9'
         },
         'vuepress-plugin-medium-zoom',
     ],
