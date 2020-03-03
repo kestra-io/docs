@@ -71,7 +71,9 @@ Must be a valid valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) da
 
 ### `FILE`
 Must be a files send with `multipart/form-data`. All the file are automatically uploaded 
-to `Storage` and is available for further task. 
+to `Storage` and is available for further task. The return will be a full qualified url 
+with the form `kestra:///.../.../`, Kestra are able to handle this url and this inputs can
+be passed as is to tasks.
 
 ## Using input value in flow
 
@@ -88,9 +90,6 @@ inputs:
 ```
 
 You can use the value of the inputs with <code v-pre>{{ inputs.my-value }}</code>.
-
-The only exception is the input type `FILE`, you must use the variable 
-<code v-pre>{{ inputs.my-file.uri }}</code> in order to access to the url of the input.
 
 
 ## Send inputs programmatically 
