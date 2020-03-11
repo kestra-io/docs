@@ -48,7 +48,7 @@ You are now ready to run Kestra.
 
 Kestra is a java application. You will have to download a built version and then run commands in the terminal to test it works as expected.
 
-* Download Kestra [lastest version here](https://download.kestra.io)
+* Download Kestra [latest version here](https://kestra-download-latest-xfpg5jduea-ew.a.run.app)
 * Move the downloaded file in some cool place like `c:\kestra\kestra-xxx.jar` (on linux `/home/<username>/kestra` will be ok)
 * Add the following flow sample file to the following location *c:\kestra\sample.yaml* with the following content :
 
