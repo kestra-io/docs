@@ -3,7 +3,7 @@ set -e
 
 cd "$(dirname "$0")" || exit
 
-PLUGINS=('storage-gcs' 'storage-minio' 'task-gcp' 'task-kubernetes' 'task-notifications' 'task-serdes')
+PLUGINS=('storage-gcs' 'storage-minio' 'task-fs' 'task-gcp' 'task-kubernetes' 'task-notifications' 'task-serdes')
 
 mkdir build
 cd build || exit
