@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - master
-      - feat/cicd
 
   pull_request:
     branches:
       - master
+
+  repository_dispatch:
+    types: [rebuild]
 
 jobs:
   build:
