@@ -1,16 +1,12 @@
----
-order: 11
----
 # Boolean functions
 
 [[toc]]
 
-### Equality
+### `eq`: Equality
 
-Test if two elements are equals. Usage:
+Test if two elements are equals. 
 
-Render 'yes' or 'no':
-
+> Render `yes` or `no`:
 ```handlebars
   {{#eq a b}}
     yes
@@ -19,24 +15,21 @@ Render 'yes' or 'no':
   {{/eq}}
 ```
 
-Render 'true' or 'false':
-
+> Render `true` or `false`:
 ```handlebars
   {{eq a b}}
 ```
 
-Render 'y' or 'n':
-
+> Render `yes` or `no`:
 ```handlebars
-  {{eq a b yes='y' no='n'}}
+  {{eq a b yes='yes' no='no'}}
 ```
 
-### Not equality
+### `neq`: Not equality
 
-Test if two elements are NOT equals. Usage:
+Test if two elements are NOT equals. 
 
-Render 'yes' or 'no':
-
+> Render `yes` or `no`:
 ```handlebars
   {{#neq a b}}
     yes
@@ -45,24 +38,21 @@ Render 'yes' or 'no':
   {{/neq}}
 ```
 
-Render 'true' or 'false':
-
+> Render `true` or `false`:
 ```handlebars
   {{neq a b}}
 ```
 
-Render 'y' or 'n':
-
+> Render `yes` or `no`:
 ```handlebars
-  {{neq a b yes='y' no='n'}}
+  {{neq a b yes='yes' no='no'}}
 ```
 
-### Greater operator
+### `gt`: Greater operator
 
-Greater operator (arguments must be Comparable elements). Usage:
+Greater operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements). 
 
-Render 'yes' or 'no':
-
+> Render `yes` or `no`:
 ```handlebars
   {{#gt a b}}
     yes
@@ -71,24 +61,21 @@ Render 'yes' or 'no':
   {{/gt}}
 ```
 
-Render 'true' or 'false':
-
+> Render `true` or `false`:
 ```handlebars
   {{gt a b}}
 ```
 
-Render 'y' or 'n':
-
+> Render `yes` or `no`:
 ```handlebars
-  {{gte a b yes='y' no='n'}}
+  {{gte a b yes='yes' no='no'}}
 ```
 
-### Greater or equal operator
+### `gte`: Greater or equal operator
 
-Greater or equal operator (arguments must be Comparable elements). Usage:
+Greater or equal operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements). 
 
-Render 'yes' or 'no':
-
+> Render `yes` or `no`:
 ```handlebars
   {{#gte a b}}
     yes
@@ -97,24 +84,21 @@ Render 'yes' or 'no':
   {{/gte}}
 ```
 
-Render 'true' or 'false':
-
+> Render `true` or `false`:
 ```handlebars
   {{gte a b}}
 ```
 
-Render 'y' or 'n':
-
+> Render `yes` or `no`:
 ```handlebars
-  {{gte a b yes='y' no='n'}}
+  {{gte a b yes='yes' no='no'}}
 ```
 
-### Less operator
+### `lt`: Less operator
 
-Less than operator (arguments must be Comparable elements). Usage:
+Less than operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements). 
 
-Render 'yes' or 'no':
-
+> Render `yes` or `no`:
 ```handlebars
   {{#lt a b}}
     yes
@@ -123,24 +107,21 @@ Render 'yes' or 'no':
   {{/lt}}
 ```
 
-Render 'true' or 'false':
-
+> Render `true` or `false`:
 ```handlebars
   {{lt a b}}
 ```
 
-Render 'y' or 'n':
-
+> Render `yes` or `no`:
 ```handlebars
-  {{lt a b yes='y' no='n'}}
+  {{lt a b yes='yes' no='no'}}
 ```
 
-### Less or equal operator
+### `lte`: Less or equal operator
 
-Less than operator (arguments must be {@link Comparable} elements. Usage:
+Less than operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements. 
 
-Render 'yes' or 'no':
-
+> Render `yes` or `no`:
 ```handlebars
   {{#lte a b}}
     yes
@@ -149,36 +130,22 @@ Render 'yes' or 'no':
   {{/lte}}
 ```
 
-Render 'true' or 'false':
-
+> Render `true` or `false`:
 ```handlebars
   {{lte a b}}
 ```
 
-Render 'y' or 'n':
-
+> Render `yes` or `no`:
 ```handlebars
-  {{lte a b yes='y' no='n'}}
+  {{lte a b yes='yes' no='no'}}
 ```
 
-### And operator
+### `and`: And operator
 
 And operator. This is a boolean operation.
 
-Truthiness of arguments is determined by isEmpty, so this
+Truthiness of arguments is determined by [isEmpty](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html#isEmpty()), so this
 helper can be used with non-boolean values.
-
-Usage:
-
-Render 'yes' or 'no':
-
-```handlebars
-  {{#and a b}}
-    yes
-  {{else}}
-    no
-  {{/lt}}
-```
 
 Multiple arguments are supported too:
 
@@ -187,39 +154,36 @@ Multiple arguments are supported too:
     yes
   {{else}}
     no
-  {{/lt}}
+  {{/and}}
 ```
 
-Render 'true' or 'false':
+> Render `yes` or `no`:
+```handlebars
+  {{#and a b}}
+    yes
+  {{else}}
+    no
+  {{/and}}
+```
+
+
+> Render `true` or `false`:
 
 ```handlebars
   {{and a b}}
 ```
 
-Render 'y' or 'n':
-
+> Render `yes` or `no`:
 ```handlebars
-  {{and a b yes='y' no='n'}}
+  {{and a b yes='yes' no='no'}}
 ```
 
-### Or operator
+### `or`: Or operator
 
 Or operator. This is a boolean operation
 
-Truthiness of arguments is determined by isEmpty, so this
+Truthiness of arguments is determined by [isEmpty](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html#isEmpty()), so this
 helper can be used with non-boolean values.
-
-Usage:
-
-Render 'yes' or 'no':
-
-```handlebars
-  {{#or a b}}
-    yes
-  {{else}}
-    no
-  {{/lt}}
-```
 
 Multiple arguments are supported too:
 
@@ -228,56 +192,60 @@ Multiple arguments are supported too:
     yes
   {{else}}
     no
-  {{/lt}}
+  {{/or}}
 ```
 
-Render 'true' or 'false':
 
+> Render `yes` or `no`:
+```handlebars
+  {{#or a b}}
+    yes
+  {{else}}
+    no
+  {{/or}}
+```
+
+> Render `true` or `false`:
 ```handlebars
   {{or a b}}
 ```
 
-Render 'y' or 'n':
-
+> Render `yes` or `no`:
 ```handlebars
-  {{or a b yes='y' no='n'}}
+  {{or a b yes='yes' no='no'}}
 ```
 
-### Not operator
+### `not`: Not operator
 
-Truthiness of arguments is determined by isEmpty, so this
+Truthiness of arguments is determined by [isEmpty](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html#isEmpty()), so this
 helper can be used with non-boolean values.
 
-Usage:
 
-Render 'yes' or 'no':
-
+> Render `yes` or `no`:
 ```handlebars
   {{#not a}}
     yes
   {{else}}
     no
-  {{/lt}}
+  {{/not}}
 ```
 
-Render 'true' or 'false':
-
+> Render `true` or `false`:
 ```handlebars
   {{not a}}
 ```
 
-Render 'y' or 'n':
-
+> Render `y` or `n`:
 ```handlebars
-  {{not a yes='y' no='n'}}
+  {{not a yes='yes' no='no'}}
 ```
 
-### Compare operator
+### `cmp`: Compare operator
 
-Compare to object as comparables.
+Compare to object as [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html)s.
 
+
+> Renders 1 if a > b, 0 if a == b -1 if a < b
 ```handlebars
   {{cmp a b}}
 ```
-
-Renders 1 if a > b, 0 if a == b -1 if a < b

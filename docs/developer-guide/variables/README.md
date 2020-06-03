@@ -147,4 +147,7 @@ Some time, you need to change the format of variables. Foe this, you can use som
 
 - [String functions](./string.md)
 - [Boolean functions](./boolean.md)
+- [Number functions](./number.md)
+- [Date functions](./date.md)
+- [Json functions](./json.md)
 - [Iterations functions](./iterations.md)

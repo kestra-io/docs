@@ -1,6 +1,4 @@
----
-order: 13
----
+
 # Iterations functions
 
 [[toc]]
@@ -21,7 +19,7 @@ See handlebars documentation for more about this topic.
 
 will produce
 
-```csv
+```
 one 0
 two 1
 three 2
