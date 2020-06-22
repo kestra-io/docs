@@ -12,13 +12,29 @@
 
 #### Arguments: 
  - `format`: Format parameters is one of:
-    - `full`: full date format. For example: Tuesday, June 19, 2012
-    - `long`: long date format. For example: June 19, 2012
-    - `medium`: medium date format. For example: Jun 19, 2012
-    - `short`: short date format. For example: 6/19/12
-    - `pattern`: a date pattern.
-    - Otherwise, the default formatter will be used. The format option can be specified as a parameter or hash (a.k.a named parameter).
-
+    - `full`: Sunday, September 8, 2013 at 4:19:12 PM Central European Summer Time
+    - `long`: September 8, 2013 at 4:19:12 PM CEST
+    - `medium`: Sep 8, 2013, 4:19:12 PM
+    - `short`: 9/8/13, 4:19 PM
+    - `iso`: 2013-09-08T16:19:12.000000+02:00
+    - `iso_sec`: 2013-09-08T16:19:12+02:00
+    - `sql`: 2013-09-08 16:19:12.000000
+    - `sql_seq`: 2013-09-08 16:19:12
+    - `iso_date_time`: 2013-09-08T16:19:12+02:00[Europe/Paris]
+    - `iso_date`: 2013-09-08+02:00
+    - `iso_time`: 16:19:12+02:00
+    - `iso_local_date`: 2013-09-08
+    - `iso_instant`: 2013-09-08T14:19:12Z
+    - `iso_local_date_time`: 2013-09-08T16:19:12
+    - `iso_local_time`: 16:19:12
+    - `iso_offset_time`: 16:19:12+02:00
+    - `iso_ordinal_date`: 2013-251+02:00
+    - `iso_week_date`: 2013-W36-7+02:00
+    - `iso_zoned_date_time`: 2013-09-08T16:19:12+02:00[Europe/Paris]
+    - `rfc_1123_date_time`: Sun, 8 Sep 2013 16:19:12 +0200
+    - `pattern`: a date pattern.</li>
+    - Otherwise, the default formatter `iso` will be used. The format option can be specified as a parameter or hash (a.k.a named parameter).
+ - `timezeome`: with the format `Europe/Paris`
 
 ## `now`: Current date
 
@@ -27,10 +43,25 @@
 ```
 
 #### Arguments: 
-- `format`: Format parameters is one of:    
-    - `full`: full date format. For example: Tuesday, June 19, 2012
-    - `long`: long date format. For example: June 19, 2012
-    - `medium`: medium date format. For example: Jun 19, 2012
-    - `short`: short date format. For example: 6/19/12
-    - `pattern`: a date pattern.
-    - Otherwise, the default formatter will be used.
+- `format`: Same format as `dateFormat`
+ - `timezeome`: with the format `Europe/Paris`
+
+## `timestamp`: Current second timestamp 
+
+```handlebars
+   {{timestamp}}
+```
+
+
+## `namotimestamp`: Current nano timestamp 
+
+```handlebars
+   {{namotimestamp}}
+```
+
+
+## `microtimestamp`: Current micro timestamp 
+
+```handlebars
+   {{microtimestamp}}
+```
