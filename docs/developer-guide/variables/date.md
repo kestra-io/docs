@@ -11,7 +11,7 @@
 
 
 #### Arguments: 
- - `format`: Format parameters is one of:
+- `format`: Format parameters is one of
     - `full`: Sunday, September 8, 2013 at 4:19:12 PM Central European Summer Time
     - `long`: September 8, 2013 at 4:19:12 PM CEST
     - `medium`: Sep 8, 2013, 4:19:12 PM
@@ -32,8 +32,8 @@
     - `iso_week_date`: 2013-W36-7+02:00
     - `iso_zoned_date_time`: 2013-09-08T16:19:12+02:00[Europe/Paris]
     - `rfc_1123_date_time`: Sun, 8 Sep 2013 16:19:12 +0200
-    - `pattern`: a date pattern.</li>
-    - Otherwise, the default formatter `iso` will be used. The format option can be specified as a parameter or hash (a.k.a named parameter).
+    - `pattern`: a date pattern.
+- Otherwise, the default formatter `iso` will be used. The format option can be specified as a parameter or hash (a.k.a named parameter).
  - `timezeome`: with the format `Europe/Paris`
 
 ## `now`: Current date

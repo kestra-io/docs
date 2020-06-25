@@ -29,6 +29,14 @@ The following table lists all the default variables available on each execution.
 |  <code v-pre>{{ taskrun.value }}</code> | The value for current taskrun, only available with dynamic task like `EachSequential` |
 |  <code v-pre>{{ taskrun.attemptsCount }}</code> | The number of attempts for current task (when retry or restart is done) |
 
+If the flow is [schedule](../triggers), this vars are also available :  
+
+| Parameter | Description |
+| ---------- | ----------- |
+|  <code v-pre>{{ schedule.date }}</code> | the date of current schedule 
+|  <code v-pre>{{ schedule.next }}</code> | the date of next schedule 
+|  <code v-pre>{{ schedule.previous }}</code> | the date of previous schedule 
+
 Here some example usage : 
 
 ```yaml
