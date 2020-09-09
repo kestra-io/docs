@@ -143,7 +143,7 @@ tasks:
         format: "{{task.id}}"
       - id: second
         type: org.kestra.core.tasks.debugs.Return
-        format: "{{ eval 'outputs.first.[taskrun.value].value' }}"
+        format: "{{ eval 'outputs.first.[{{taskrun.value}}].value' }}"
   - id: end
     type: org.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
