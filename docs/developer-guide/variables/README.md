@@ -26,8 +26,10 @@ The following table lists all the default variables available on each execution.
 |  <code v-pre>{{ task.id }}</code> | The current task Id |
 |  <code v-pre>{{ task.type }}</code> | The current task Type (full class name) |
 |  <code v-pre>{{ taskrun.id }}</code> | The current task Id |
-|  <code v-pre>{{ taskrun.value }}</code> | The value for current taskrun, only available with dynamic task like `EachSequential` |
+|  <code v-pre>{{ taskrun.value }}</code> | The value for current taskrun, only available with ([Flowable Task](../flowable)) |
 |  <code v-pre>{{ taskrun.attemptsCount }}</code> | The number of attempts for current task (when retry or restart is done) |
+|  <code v-pre>{{ parents.[].taskrun.value }}</code> | The value of parents taskrun, the index if based on closest [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
+|  <code v-pre>{{ parents.[].outputs }}</code> | The outputs of parents taskrun, the index if based on closest [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
 
 If the flow is [schedule](../triggers), this vars are also available :  
 
