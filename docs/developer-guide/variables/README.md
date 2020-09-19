@@ -92,7 +92,7 @@ tasks:
 
 ### Dynamic variables
 Some tasks are dynamic like [EachSequential](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachSequential.md) or 
-[Switch](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Switch.md) and can hold a specia `value`.
+[Switch](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Switch.md) and can hold a special `taskrun.value`.
 
 
 #### Current value
@@ -153,7 +153,7 @@ tasks:
 
 ## Functions
 
-Some time, you need to change the format of variables. Foe this, you can use some functions: 
+Some time, you need to change the format of variables. For this, you can use some functions: 
 
 - [String functions](./string.md)
 - [Boolean functions](./boolean.md)

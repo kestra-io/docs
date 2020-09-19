@@ -3,7 +3,7 @@ order: 5
 ---
 # Triggers & Schedule
 
-Kestra is able to trigger flow, reacating to external events like Schedule.
+Kestra is able to trigger flow, that react to external events like Schedule.
 This allows complex logic like waiting for a file, or a time to trigger flow.
 
 
@@ -50,6 +50,5 @@ When the flow is schedule, some context variables are injected to allow some cus
 
 
 ::: warning
-Schedule cannot overlap, this mean that we can't have any concurrent schedule. If the previous schedule is not ended 
-when the next one must start, the scheduler will wait the end of the previous one. Same is applied for backfill.
+Schedule cannot overlap, this mean that we can't have any concurrent schedule. If the previous schedule is not ended when the next one must start, the scheduler will wait the end of the previous one. Same is applied for backfill.
 :::

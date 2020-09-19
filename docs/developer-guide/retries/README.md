@@ -20,13 +20,13 @@ Below a flow sample that retry execute a task on failure maximum 5 times each 15
     type: constant
     interval: PT15M
 ```
-## Retry options
+## Retry options for all type
 
 | name | type | description |
 | ---------- | ----------- | ----------- |
+|`type`|`string`|Retry behavior to apply. Can be one of `constant`, `exponential`, `random`.|
 |`maxAttempt`|`integer`|Number of retries performed before the system stops retry.|
 |`maxDuration`|`Duration`|Maxium delay the execution is retried. Once passed, the task is no more processed|
-|`type`|`string`|Retry behavior to apply. Can be one of `constant`, `exponential`, `random`.|
 
 
 ### Duration

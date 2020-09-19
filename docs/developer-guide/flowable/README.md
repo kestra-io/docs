@@ -127,6 +127,8 @@ tasks:
 This flow will trigger another one. 
 This allows to decouple the first one from the second one and to monitor each flows individually.
 
+You can pass [outputs](../outputs) to the trigger flow as [inputs](../inputs) (that you need to declare in the subflow).
+
 ```yaml
 id: each
 namespace: org.kestra.tests

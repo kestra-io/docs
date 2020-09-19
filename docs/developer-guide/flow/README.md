@@ -10,10 +10,8 @@ In this documentation you will learn what is a flow and how to define them.
 There are in Kestra two tasks kinds :
 
 * **Runnable tasks**: these tasks will handle most of the workload, this can be api call, 
-  transformation, ..., anything that must be run, the kestra core don't included many tasks runnable, since 
-  they are available as plugins.
-* **Orchestrate tasks**: they are mostly included in Kestra Core let you compose tasks together 
-  (sequential, parallel, ...). More details below.
+  transformation, ..., anything that must be run, the kestra core don't included many tasks runnable, since they are available as plugins.
+* **Flowable tasks**: they are mostly included in Kestra Core let you compose tasks together (sequential, parallel, ...). More details below.
 
 
 ## Flow sample
