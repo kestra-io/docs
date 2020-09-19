@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com/kestra-io/kestra.io#readme",
   "dependencies": {
-    "@vuepress/plugin-back-to-top": "^1.5.2",
-    "@vuepress/plugin-google-analytics": "^1.5.2",
-    "@vuepress/plugin-nprogress": "^1.5.2",
+    "@vuepress/plugin-back-to-top": "^1.5.4",
+    "@vuepress/plugin-google-analytics": "^1.5.4",
+    "@vuepress/plugin-nprogress": "^1.5.4",
     "glob": "latest",
     "inflection": "latest",
     "lodash.sortby": "latest",
@@ -37,8 +37,8 @@
     "markdown-it-meta": "latest",
     "markdown-it-title": "^3.0.0",
     "node-sass": "^4.14.1",
-    "sass-loader": "^8.0.2",
-    "vuepress": "^1.5.2",
-    "vuepress-plugin-medium-zoom": "^1.1.8"
+    "sass-loader": "^10.0.2",
+    "vuepress": "^1.5.4",
+    "vuepress-plugin-medium-zoom": "^1.1.9"
   }
 }
