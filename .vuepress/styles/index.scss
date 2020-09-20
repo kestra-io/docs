@@ -20,3 +20,21 @@ mark {
     padding: 2px 4px 5px 4px;
     border-radius: 2px;
 }
+
+
+a.btn {
+    display: inline-block;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #3eaf7c;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #389d70;
+    transition: background-color 0.1s ease;
+
+    &:hover {
+        text-decoration: none !important;
+        background: darken(#3eaf7c, 10%);
+    }
+}

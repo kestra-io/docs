@@ -2,7 +2,7 @@
 order: 2
 ---
 
-# Orchestrate your flow
+# Flowable Task
 
 In kestra, we orchestrate your workflow with `Flowable Tasks`. These tasks don't compute any things but allow you to build more complex workflow. 
 Like branching, doing tasks in parallel, ... 
@@ -10,7 +10,7 @@ Like branching, doing tasks in parallel, ...
 Flowable mostly use context with [variables](../variables) in order to define next tasks.
 For example, you can use the [outputs](../outputs) of a variables to do `Switch` to defined the next tasks.
 
-Here is the current list of `Flowable Tasks`
+Here is the current list of Flowable Tasks
 
 ## Sequential
 
@@ -36,6 +36,11 @@ tasks:
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
+<div style="text-align: right"> 
+    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Sequential">Sequential Task documentation</a> 
+</div>
+
+
 ## Parallel
 
 This flow processes tasks in parallel. It makes it convinient to process many tasks at once.
@@ -58,6 +63,11 @@ tasks:
     type: org.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
+
+<div style="text-align: right"> 
+    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Parallel">Parallel Task documentation</a> 
+</div>
+
 
 ## Switch
 
@@ -96,6 +106,11 @@ tasks:
         format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
+<div style="text-align: right"> 
+    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Switch">Switch Task documentation</a> 
+</div>
+
+
 ## EachSequential
 
 This flow will generate many tasks at runtime depending on a value field. 
@@ -122,6 +137,11 @@ tasks:
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
+<div style="text-align: right"> 
+    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a> 
+</div>
+
+
 ## Flow
 
 This flow will trigger another one. 
@@ -135,9 +155,14 @@ namespace: org.kestra.tests
 revision: 8
 tasks:
   - id: "subflow"  
+    type: org.kestra.core.tasks.flows.Flow
     namespace: org.kestra.tests
     flowId: my-sub-flows
     inputs:
       file: "{{ outputs.my-task.files.resolver' }}"
       store: 12
 ```
+
+<div style="text-align: right"> 
+    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Flow">Flow Task documentation</a> 
+</div>
