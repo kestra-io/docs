@@ -1,15 +1,27 @@
 const path = require("path");
 const sidebar = require("./sidebar");
 
+const descriptionAppend = "Kestra is a platform to build, test, schedule & monitor complex pipelines.";
+const description =  ($page) => {
+    return $page.frontmatter.description !== undefined ? $page.frontmatter.description + " | " + descriptionAppend : $page.title + " | " + descriptionAppend;
+}
+
 module.exports = {
     title: 'Kestra',
-    description: "Kestra is a platform to build, test, schedule & monitor complex pipelines.",
     plugins: {
         '@vuepress/back-to-top': {},
         '@vuepress/nprogress' : {},
         '@vuepress/last-updated': {},
         '@vuepress/google-analytics' : {'ga': 'UA-56021-9'},
-        'vuepress-plugin-medium-zoom': {}
+        'vuepress-plugin-medium-zoom': {},
+        'seo': {
+            description:description,
+            customMeta: (add, context) => {
+                const {$page,} = context
+
+                add('description', description($page))
+            },
+        }
     },
     themeConfig: {
         logo: '/logo.svg',

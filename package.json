@@ -40,5 +40,8 @@
     "sass-loader": "^10.0.2",
     "vuepress": "^1.5.4",
     "vuepress-plugin-medium-zoom": "^1.1.9"
+  },
+  "devDependencies": {
+    "vuepress-plugin-seo": "^0.1.4"
   }
 }
