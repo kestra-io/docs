@@ -4,16 +4,13 @@ const sidebar = require("./sidebar");
 module.exports = {
     title: 'Kestra',
     description: "Kestra is a platform to build, test, schedule & monitor complex pipelines.",
-    plugins: [
-        '@vuepress/back-to-top',
-        '@vuepress/nprogress',
-        '@vuepress/last-updated',
-        '@vuepress/google-analytics',
-        {
-            'ga': 'UA-56021-9'
-        },
-        'vuepress-plugin-medium-zoom',
-    ],
+    plugins: {
+        '@vuepress/back-to-top': {},
+        '@vuepress/nprogress' : {},
+        '@vuepress/last-updated': {},
+        '@vuepress/google-analytics' : {'ga': 'UA-56021-9'},
+        'vuepress-plugin-medium-zoom': {}
+    },
     themeConfig: {
         logo: '/logo.svg',
         // repo: 'kestra-io/kestra.io',
