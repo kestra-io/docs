@@ -31,13 +31,22 @@ The following table lists all the default variables available on each execution.
 |  <code v-pre>{{ parents.[].taskrun.value }}</code> | The value of parents taskrun, the index if based on closest [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
 |  <code v-pre>{{ parents.[].outputs }}</code> | The outputs of parents taskrun, the index if based on closest [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
 
-If the flow is [schedule](../triggers), this vars are also available :  
+If the flow is triggered by a [schedule](../triggers/schedule.md), this vars are also available :  
 
 | Parameter | Description |
 | ---------- | ----------- |
-|  <code v-pre>{{ schedule.date }}</code> | the date of current schedule 
-|  <code v-pre>{{ schedule.next }}</code> | the date of next schedule 
-|  <code v-pre>{{ schedule.previous }}</code> | the date of previous schedule 
+|  <code v-pre>{{ schedule.date }}</code> | the date of current schedule |
+|  <code v-pre>{{ schedule.next }}</code> | the date of next schedule |
+|  <code v-pre>{{ schedule.previous }}</code> | the date of previous schedule |
+
+If the flow is triggered by a [flow](../triggers/flow.md), this vars are also available :  
+
+| Parameter | Description |
+| ---------- | ----------- |
+|  <code v-pre>{{ trigger.executionId }}</code> | the execution id that trigger the current flow |
+|  <code v-pre>{{ trigger.namespace }}</code> | the namespace of the flow that trigger the current flow |
+|  <code v-pre>{{ trigger.flowId }}</code> | the flow id that trigger the current flow |
+|  <code v-pre>{{ trigger.flowRevision }}</code> | the flow revision that trigger the current flow |
 
 Here some example usage : 
 
