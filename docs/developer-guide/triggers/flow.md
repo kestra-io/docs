@@ -53,12 +53,12 @@ So you will need to go to server log to understand the error
 > List of  [Conditions](../conditions) in order to limit the flow trigger. 
 
 ::: warning
-If you don't provide any conditions, the flow will be triggered for every flow on your instance.
+If you don't provide any conditions, the flow will be triggered for **EVERY execution** of **EVERY flow** on your instance.
 :::
 
 
 ## Variables 
-When the flow is trigger by another one, some context variables are injected to allow some customization of the flow.
+When the flow is trigger by another one, some context variables will be injected to allow some customization of the flow.
 
 | Parameter | Description |
 | ---------- | ----------- |

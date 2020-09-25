@@ -166,3 +166,23 @@ tasks:
 <div style="text-align: right"> 
     <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Flow">Flow Task documentation</a> 
 </div>
+
+
+## Templates
+[Templates](../templates) are a special task that will include task from a template at *runtime*.  
+You defined the template and can use on every flow you want, allowing to share the common tasks between your flows.
+
+```yaml
+id: each
+namespace: org.kestra.tests
+revision: 8
+tasks:
+  - id: template
+    type: org.kestra.core.tasks.flows.Template
+    namespace: org.kestra.tests
+    templateId: template
+```
+
+<div style="text-align: right"> 
+    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Template">Template Task documentation</a> 
+</div>

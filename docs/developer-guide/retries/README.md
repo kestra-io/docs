@@ -6,7 +6,7 @@ order: 6
 Kestra provide some task retry feature. This sub system makes it convinient to add **failed executions** retry behavior depending on retry configuration in flow description.
 
 
-## Exemple
+## Example
 
 Below a flow sample that retry execute a task on failure maximum 5 times each 15 minutes :
 

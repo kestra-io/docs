@@ -7,7 +7,7 @@ Kestra comes with a web user interface. This section is the documentation relate
 
 ## Homepage / Flow list
 
-When launching Kestra webui, the first page you reach is the flow page where flows are searchables.
+When launching Kestra webui, the first page you reach is the flow page where flows are searchable.
 
 On the left, the menu let you reach all parts of the frontend. You can browse to [Flows](/docs/concepts/flows) and [Executions](/docs/concepts/executions).
 
@@ -47,7 +47,7 @@ The execution detail view shows the following tabs:
 
 ## Table how to
 
-Data tables are tables that display information in table format. There are for exemple some list of flows and executions displayed like this.
+Data tables are tables that display information in table format. There are for example some list of flows and executions displayed like this.
 
 This table display let you browse data in many ways. Here are the main concepts about browsing data:
 
