@@ -10,19 +10,34 @@ type: "org.kestra.core.models.triggers.types.Schedule"
   With that, you can break responsibility between different flow to different teams.
 
 ## Example
-
+> This flow will be triggered after each successfully execution of flow `org.kestra.tests.trigger-flow` and forward the `uri` of `my-task` taskId outputs.
 ```yaml
+id: trigger-flow-listener
+namespace: org.kestra.tests
+revision: 1
+
+inputs:
+  - name: from-parent
+    type: STRING
+
+tasks:
+  - id: only-no-input
+    type: org.kestra.core.tasks.debugs.Return
+    format: "v1: {{trigger.executionId}}"
+
 triggers:
   - id: listen-flow
     type: org.kestra.core.models.triggers.types.Flow
     inputs:
-      from-parent: '{{ outputs.invalid.value }}'
+      from-parent: '{{ outputs.my-task.uri }}'
     conditions:
       - type: org.kestra.core.models.conditions.types.FlowCondition
         namespace: org.kestra.tests
         flowId: trigger-flow
+      - type: org.kestra.core.models.conditions.types.ExecutionStatusCondition
+        in:
+          - SUCCESS
 ```
-
 
 ## Inputs
 
