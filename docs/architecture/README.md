@@ -3,6 +3,9 @@ order: 3
 ---
 # Architecture
 
+![Kestra Architecture](./architecture.svg "Kestra Architecture")
+
+
 ## Dependencies
 
 At the heart, Kestra have a pluggable system allowing to switch some dependencies, but for now there is only one production environments architecture available :
