@@ -17,6 +17,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v2
@@ -34,7 +35,7 @@ jobs:
 
       # Caches
       - name: Cache dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -62,7 +63,7 @@ jobs:
 
       # Slack
       - name: Slack notification
-        uses: 8398a7/action-slack@v2
+        uses: 8398a7/action-slack@v3
         if: failure()
         with:
           status: ${{ job.status }}
