@@ -100,7 +100,8 @@ tasks:
 ```
 
 ### Dynamic variables
-Some tasks are dynamic like [EachSequential](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachSequential.md) or 
+Some tasks are dynamic like [EachSequential](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachSequential.md),
+[EachParallel](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachParallel.md) or
 [Switch](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Switch.md) and can hold a special `taskrun.value`.
 
 

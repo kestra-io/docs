@@ -114,8 +114,8 @@ tasks:
 ## EachSequential
 
 This flow will generate many tasks at runtime depending on a value field. 
-Here this field is satic, but it can be generated from a previous task output and 
-trigger an arbitrary number of sub tasks. Each subtasks will run after others sequentially. 
+Here this field is static, but it can be generated from a previous task output and 
+trigger an arbitrary number of subtasks. Each subtask will run after others sequentially. 
 
 ```yaml
 id: each
@@ -139,6 +139,38 @@ tasks:
 
 <div style="text-align: right"> 
     <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a> 
+</div>
+
+## EachParallel
+
+This flow is the same as EachSequential but each subtask will run after in parallel.
+
+```yaml
+id: each-parallel
+namespace: org.kestra.tests
+
+tasks:
+  - id: 1_each
+    type: org.kestra.core.tasks.flows.EachParallel
+    value: '["value 1", "value 2", "value 3"]'
+    tasks:
+      - id: 1-1
+        type: org.kestra.core.tasks.scripts.Bash
+        commands:
+          - 'echo "{{task.id}} > $(date +"%T.%N")"'
+          - 'sleep 1'
+      - id: 1-2
+        type: org.kestra.core.tasks.scripts.Bash
+        commands:
+          - 'echo "{{task.id}} > $(date +"%T.%N")"'
+          - 'sleep 1'
+  - id: 2_end
+    type: org.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{taskrun.startDate}}"
+```
+
+<div style="text-align: right"> 
+    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachParallel">EachParallel Task documentation</a> 
 </div>
 
 

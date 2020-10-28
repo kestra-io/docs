@@ -34,7 +34,7 @@ The `.value` in the template bracket that reach another task's output content is
 
 ## Specific outputs for dynamic tasks
 
-Another more specific case for output management is the runtime generated tasks output variables. It is the case for the **EachSequential** task that produces dynamically other tasks depending on it's `value` property. In this case it is possible to reach each iteration output individually using the following syntax :
+Another more specific case for output management is the runtime generated tasks output variables. It is the case for the **EachSequential** or **EachParallel** task that produces dynamically other tasks depending on it's `value` property. In this case it is possible to reach each iteration output individually using the following syntax :
 
 ```yaml
 id: output-sample
