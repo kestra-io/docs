@@ -21,7 +21,8 @@ module.exports = {
 
                 add('description', description($page))
             },
-        }
+        },
+        'fulltext-search': {}
     },
     themeConfig: {
         logo: '/logo.svg',

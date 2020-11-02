@@ -42,6 +42,7 @@
     "vuepress-plugin-medium-zoom": "^1.1.9"
   },
   "devDependencies": {
+    "vuepress-plugin-fulltext-search": "^2.1.0",
     "vuepress-plugin-seo": "^0.1.4"
   }
 }
