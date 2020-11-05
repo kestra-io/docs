@@ -68,7 +68,7 @@ tasks:
 
 * Check your setup is ready to go by issuing the follwing command in the terminal `cd c:\kestra` then `java -jar kestra-xxx.jar test sample.yaml`
 
-![Kestra logo](./assets/kestra-sample-output.jpg)]
+![Kestra logo](./assets/kestra-sample-output.jpg)
 (Right click on the image, then display image to see the entire output)
 
 On the command output above, you can see the flow has been processed properly in a while.
