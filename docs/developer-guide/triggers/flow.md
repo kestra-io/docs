@@ -31,7 +31,7 @@ triggers:
     inputs:
       from-parent: '{{ outputs.my-task.uri }}'
     conditions:
-      - type: org.kestra.core.models.conditions.types.FlowCondition
+      - type: org.kestra.core.models.conditions.types.ExecutionFlowCondition
         namespace: org.kestra.tests
         flowId: trigger-flow
       - type: org.kestra.core.models.conditions.types.ExecutionStatusCondition
