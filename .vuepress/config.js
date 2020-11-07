@@ -22,14 +22,16 @@ module.exports = {
                 add('description', description($page))
             },
         },
-        'fulltext-search': {}
+        'fulltext-search': {
+            'topCategoryLevel': 1
+        }
     },
     themeConfig: {
         logo: '/logo.svg',
-        // repo: 'kestra-io/kestra.io',
-        // repoLabel: 'Contribute !',
-        // docsDir: 'docs',
-        // editLinks: true,
+        repo: 'kestra-io/kestra',
+        repoLabel: 'GitHub',
+        docsRepo: 'kestra-io/kestra.io',
+        editLinks: true,
         smoothScroll: true,
         nav: [
             {text: 'Documentation', link: '/docs/'},
