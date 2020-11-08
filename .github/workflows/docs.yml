@@ -21,6 +21,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       # JDK & Node
       - name: Set up JDK
