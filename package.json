@@ -26,23 +26,23 @@
   },
   "homepage": "https://github.com/kestra-io/kestra.io#readme",
   "dependencies": {
-    "@vuepress/plugin-back-to-top": "^1.5.4",
-    "@vuepress/plugin-google-analytics": "^1.5.4",
-    "@vuepress/plugin-nprogress": "^1.5.4",
-    "glob": "latest",
-    "inflection": "latest",
-    "lodash.sortby": "latest",
-    "markdown-it": "latest",
+    "@vuepress/plugin-back-to-top": "^1.7.1",
+    "@vuepress/plugin-google-analytics": "^1.7.1",
+    "@vuepress/plugin-nprogress": "^1.7.1",
+    "glob": "7.1.6",
+    "inflection": "1.12.0",
+    "lodash.sortby": "^4.7.0",
+    "markdown-it": "^12.0.2",
     "markdown-it-mark": "^3.0.0",
-    "markdown-it-meta": "latest",
+    "markdown-it-meta": "^0.0.1",
     "markdown-it-title": "^3.0.0",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^10.0.2",
-    "vuepress": "^1.5.4",
+    "node-sass": "^5.0.0",
+    "sass-loader": "^10.0.5",
+    "vuepress": "^1.7.1",
     "vuepress-plugin-medium-zoom": "^1.1.9"
   },
   "devDependencies": {
-    "vuepress-plugin-fulltext-search": "^2.1.0",
+    "vuepress-plugin-fulltext-search": "https://github.com/tchiotludo/vuepress-plugin-fulltext-search.git#feat/topCategoryLevel",
     "vuepress-plugin-seo": "^0.1.4"
   }
 }
