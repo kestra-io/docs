@@ -18,3 +18,4 @@ build/
 ## Plugins
 plugins/**/*
 .vuepress/build/
+.temp

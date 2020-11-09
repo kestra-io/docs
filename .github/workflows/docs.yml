@@ -70,6 +70,7 @@ jobs:
         with:
           status: ${{ job.status }}
           username: Github Actions
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
           icon_emoji: ':octocat:'
           channel: '#kestra'
         env:

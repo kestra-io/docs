@@ -24,7 +24,8 @@ module.exports = {
         },
         'fulltext-search': {
             'topCategoryLevel': 1
-        }
+        },
+        'vuepress-plugin-child-toc': {}
     },
     themeConfig: {
         logo: '/logo.svg',
