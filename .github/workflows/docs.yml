@@ -69,8 +69,9 @@ jobs:
         if: failure()
         with:
           status: ${{ job.status }}
-          username: Github Actions
+          job_name: Build
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          username: Github Actions
           icon_emoji: ':octocat:'
           channel: '#kestra'
         env:
