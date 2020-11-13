@@ -27,16 +27,17 @@ Example, if the current context is :
 }
 ```
 
-the output will be `{"value":2,"text":"awesome2"}`.
+the output of <code v-pre>{{ json outputs.task2}}</code>  will be `{"value":2,"text":"awesome2"}`.
 
 ## `jq` Transform vars with JQ 
 
 Apply the [JQ expression](https://stedolan.github.io/jq/) to a variables.
 
 ```handlebars
-{{jq vars expr [first=false]}}
+{{jq vars jqExpr [first=false]}}
 ```
 
+`first` mean to always fetch the first element, by default jq return an array of results
 
 ::: warning
 Internally, [Jackson JQ](https://github.com/eiiches/jackson-jq) is used and support only a large subset of official JQ.
