@@ -30,6 +30,8 @@ The following table lists all the default variables available on each execution.
 |  <code v-pre>{{ taskrun.attemptsCount }}</code> | The number of attempts for current task (when retry or restart is done) |
 |  <code v-pre>{{ parents.[].taskrun.value }}</code> | The value of parents taskrun, the index if based on closest [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
 |  <code v-pre>{{ parents.[].outputs }}</code> | The outputs of parents taskrun, the index if based on closest [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
+|  <code v-pre>{{ parent.taskrun.value }}</code> | The value of closest (first) parent taskrun [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
+|  <code v-pre>{{ parent.outputs }}</code> | The outputs of (first) parent taskrun [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
 
 If the flow is triggered by a [schedule](../triggers/schedule.md), this vars are also available :  
 
