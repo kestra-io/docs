@@ -1,7 +1,7 @@
 const path = require("path");
 const sidebar = require("./sidebar");
 
-const descriptionAppend = "Kestra is a platform to build, test, schedule & monitor complex pipelines.";
+const descriptionAppend = "The modern, scalable orchestrator & scheduler open source platform.";
 const description =  ($page) => {
     return $page.frontmatter.description !== undefined ? $page.frontmatter.description + " | " + descriptionAppend : $page.title + " | " + descriptionAppend;
 }
@@ -17,7 +17,7 @@ module.exports = {
         'seo': {
             description:description,
             customMeta: (add, context) => {
-                const {$page,} = context
+                const {$page} = context
 
                 add('description', description($page))
             },
@@ -36,12 +36,12 @@ module.exports = {
         smoothScroll: true,
         nav: [
             {text: 'Documentation', link: '/docs/'},
-            {text: 'Plugins & Tasks', link: '/plugins/'},
+            {text: 'Plugins', link: '/plugins/'},
         ],
         sidebar: {
             '/plugins/': [
                 {
-                    title: 'Plugins & Tasks',
+                    title: 'Plugins',
                     collapsable: true,
                     sidebarDepth: 1,
                     children: sidebar(`${__dirname}/../plugins/`, '/plugins/')

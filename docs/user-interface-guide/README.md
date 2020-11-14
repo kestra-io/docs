@@ -3,58 +3,44 @@ order: 6
 ---
 # User Interface Guide
 
-Kestra comes with a web user interface. This section is the documentation related to the user interface usage.
+Kestra comes with a web user interface. For now, here are some screenshots, Later a full user guide will here. 
 
-## Homepage / Flow list
+## Flows
 
-When launching Kestra webui, the first page you reach is the flow page where flows are searchable.
+![Flow list](./assets/1.png)
 
-On the left, the menu let you reach all parts of the frontend. You can browse to [Flows](/docs/concepts/flows) and [Executions](/docs/concepts/executions).
+![Flow list](./assets/2.png)
 
-The flows list shows all registered flows in the system. You can dig into the flow detail by clicking on the show column on the right (or double click on a row).
+![Flow list](./assets/3.png)
 
-Have a look at the [table how to](/docs/webui/#table-how-to) section for more details about this page usage.
+![Flow list](./assets/4.png)
 
-![Flow list](./assets/execution-list.jpg)
+![Flow list](./assets/5.png)
 
-## Flow details
+![Flow list](./assets/6.png)
 
-The flow detail view shows the following tabs:
+## Executions
+![Flow list](./assets/7.png)
 
-|Tab|Description|
-|-|-|
-|Overview|A visual rendering for current flow.|
-|Executions|the same view as executions list, but scoped to the current flow. Displayed executions are related to current flow.|
-|Trigger|Display a form to trigger a flow. This will display some input fields depending on flow input requirements. ![Flow inputs](/docs/webui/inputs.jpg). Go to [task model](/task) for more details about how to describe a working flow.|
-|Source|Display and let you edit current flow from a text editor. The flow is a yaml document describing how tasks are related and what they do. ![Flow source](./assets/source.jpg)|
+![Flow list](./assets/8.png)
 
-## Execution list
+![Flow list](./assets/9.png)
 
-On the execution list page executions are listed and filterable to search some specific execution. It works the same way than the flow list.
-a
-![Execution list](./assets/execution-list.jpg)
+![Flow list](./assets/10.png)
 
-## Execution details
+![Flow list](./assets/11.png)
 
-The execution detail view shows the following tabs:
 
-|Tab|Description|
-|-|-|
-|Overview|A sumup for the execution information. ![Execution detail](./assets/execution-detail.jpg)|
-|Gantt|A Gantt diagram representation for the current flow execution processing. ![Execution detail](./assets/execution-gantt.jpg) **Note** : Gantt colored lines are clickable to display related log ouputs|
-|Logs|The execution logs. This is a filterable list for execution outputs ![Execution logs](./assets/execution-logs.jpg)|
-|Topology|A visual rendering for current flow.|
+![Flow list](./assets/12.png)
 
-## Table how to
 
-Data tables are tables that display information in table format. There are for example some list of flows and executions displayed like this.
+## Task Runs
+![Flow list](./assets/13.png)
 
-This table display let you browse data in many ways. Here are the main concepts about browsing data:
+## Logs
+![Flow list](./assets/14.png)
 
-**Sorting** : Data tables let you sort data by clicking on the column header. This will order data depending on it's type (string, number, date...)
 
-**Filtering** : The *search* field on top of the table let you type anything that will filter table results depending on their content. By default, the search input will dig into the whole collection of searchable data.
+## Documentation
 
-**Pagination** : The pagination system let you browse all results pages one by one and display the amount of row displayed per page at once.
-
-Note: All filters are *combinable* and the more filter are enable the more accurate the result set will be.
+![Flow list](./assets/15.png)

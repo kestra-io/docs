@@ -1,3 +1,12 @@
+@import "landing/variables";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+body {
+    min-width: 320px;
+    font-family: $font-family-secondary !important;
+}
+
 header {
     &.navbar a span.site-name {
         display: none;
@@ -8,33 +17,95 @@ header {
     max-height: 130px !important;
 }
 
-
 table code {
     white-space: nowrap ;
 }
 
 mark {
-    background: #3eaf7c;
+    background: $green;
     font-size: 90%;
     color: white;
     padding: 2px 4px 5px 4px;
     border-radius: 2px;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: $font-family-base;
+}
+
+.page-edit {
+    span, a {
+        color: $gray-500 !important;
+    }
+}
 
 a.btn {
     display: inline-block;
     font-size: 1.2rem;
     color: #fff;
-    background-color: #3eaf7c;
+    background-color: $primary;
     padding: 0.4rem 0.8rem;
     border-radius: 4px;
     box-sizing: border-box;
-    border-bottom: 1px solid #389d70;
+    border-bottom: 1px solid darken($primary, 15%);
     transition: background-color 0.1s ease;
 
     &:hover {
         text-decoration: none !important;
         background: darken(#3eaf7c, 10%);
+    }
+}
+
+header.navbar {
+    background-color: $gray-900;
+    color: $gray-200 !important;
+    border-bottom: 1px solid darken($gray-900, 2%) !important;
+
+    .search-box input {
+        border-radius: 4px !important;
+        background-color: $gray-800 !important;
+        border: 1px solid darken($gray-900, 2%) !important;
+        color: $gray-400 !important;
+    }
+
+    .links {
+        background-color: transparent;
+
+        .nav-links {
+            & a:hover, & a.router-link-active {
+                color: $white !important;
+            }
+        }
+    }
+}
+
+.landing {
+    .home {
+        padding: 0;
+        max-width: none;
+
+        .footer {
+            border-top: 0;
+            text-align: left;
+            color: $gray-500;
+        }
+    }
+
+    main {
+        @import '~bootstrap/scss/bootstrap';
+        @import '~bootstrap-vue/src/index.scss';
+        @import 'landing/bootstrap-custom';
+        @import '~@mdi/font/css/materialdesignicons.min.css';
+
+        @import "landing/helper";
+        @import "landing/general";
+        @import "landing/components";
+        @import "landing/features";
+        @import "landing/footer";
+
+
+        header.hero {
+            display: none;
+        }
     }
 }
