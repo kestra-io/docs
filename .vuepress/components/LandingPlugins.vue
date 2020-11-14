@@ -32,17 +32,22 @@
                     <!--end col-->
 
                     <div class="col-12 mt-4 pt-2 text-center">
-                        <a href="/plugins/" class="btn btn-primary mr-4">
-                            <i class="mdi mdi-text-box-multiple"></i>
-                            Plugins documentation
-                            <i class="mdi mdi-arrow-right"></i>
-                        </a>
-
-                        <a href="/docs/plugin-developer-guide/" class="btn btn-primary">
-                            <i class="mdi mdi-language-java"></i>
-                            Create a plugin
-                            <i class="mdi mdi-arrow-right"></i>
-                        </a>
+                        <div class="row">
+                            <div class="col-12 col-md-6 text-md-right">
+                                <a href="/plugins/" class="btn btn-primary">
+                                    <i class="mdi mdi-text-box-multiple"></i>
+                                    Plugins documentation
+                                    <i class="mdi mdi-arrow-right"></i>
+                                </a>
+                            </div>
+                            <div class="col-12 col-md-6 text-md-left mt-4 mt-md-0">
+                                <a href="/docs/plugin-developer-guide/" class="btn btn-primary">
+                                    <i class="mdi mdi-language-java"></i>
+                                    Create a plugin
+                                    <i class="mdi mdi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <!--end col-->
                 </div>

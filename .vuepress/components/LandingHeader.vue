@@ -6,14 +6,20 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-12 text-center">
-                        <div class="title-heading">
-                            <h1 class="heading text-dark mb-4">The modern, scalable<br />orchestrator & scheduler <br />open source platform.</h1>
-                            <p class="para-desc mx-auto text-dark">
+                        <div class="title-heading text-white">
+                            <h1 class="heading mb-4">The modern, scalable<br />orchestrator & scheduler <br />open source platform.</h1>
+                            <p class="para-desc mx-auto">
                                 Kestra is an <strong>infinite scalable</strong> orchestrator platform, in order to create, run, schedule and monitor <strong>millions of complex</strong> pipelines.
                             </p>
                             <div class="mt-4 pt-2">
-                                <a href="/docs/getting-started/" class="btn btn-light"><i class="mdi mdi-play-circle"></i> Get Started <i class="mdi mdi-arrow-right"></i></a>
-                                <a href="/docs/" class="btn btn-light ml-4"><i class="mdi mdi-file-document"></i> Read the docs <i class="mdi mdi-arrow-right"></i></a>
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 text-sm-right">
+                                        <a href="/docs/getting-started/" class="btn btn-light"><i class="mdi mdi-play-circle"></i> Get Started <i class="mdi mdi-arrow-right"></i></a>
+                                    </div>
+                                    <div class="col-12 col-sm-6 text-sm-left mt-4 mt-sm-0">
+                                        <a href="/docs/" class="btn btn-light "><i class="mdi mdi-file-document"></i> Read the docs <i class="mdi mdi-arrow-right"></i></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -54,7 +60,7 @@
                         "fpsLimit": 30,
                         "particles": {
                             "color": {
-                                "value": "#ffffff",
+                                "value": "#FBD10B",
                                 "animation": {
                                     "enable": false,
                                     "speed": 1,
@@ -83,10 +89,10 @@
                             "links": {
                                 "blink": false,
                                 "color": {
-                                    "value": "#ffffff"
+                                    "value": "#FFFFFF"
                                 },
                                 "consent": false,
-                                "distance": 150,
+                                "distance": 100,
                                 "enable": true,
                                 "frequency": 1,
                                 "opacity": 0.7,
@@ -174,9 +180,9 @@
                             "shadow": {
                                 "blur": 5,
                                 "color": {
-                                    "value": "#000000"
+                                    "value": "#fbd10b"
                                 },
-                                "enable": false,
+                                "enable": true,
                                 "offset": {
                                     "x": 0,
                                     "y": 0
@@ -262,6 +268,15 @@
 
         .bg-half-260 {
             background: $primary;
+
+            h1 {
+                text-shadow: -2px -2px 0 rgba(0, 0, 0, 0.25), 2px -2px 0 rgba(0, 0, 0, 0.25), -2px 2px 0 rgba(0, 0, 0, 0.25), 2px 2px 0 rgba(0, 0, 0, 0.25);
+            }
+
+            p {
+                text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.45), 1px -1px 0 rgba(0, 0, 0, 0.45), -1px 1px 0 rgba(0, 0, 0, 0.45), 1px 1px 0 rgba(0, 0, 0, 0.45);
+            }
+
             .container {
                 position: relative;
                 z-index: 2;
@@ -278,12 +293,15 @@
                 left: 0;
                 bottom: 0;
                 right: 0;
-                opacity: 1;
+                opacity: 0.8;
                 content: "";
-                box-shadow: inset 0 0 150px 150px rgba(0, 0, 0, 0.75);
-                background: radial-gradient(ellipse at top, rgba(29, 186, 175, 1), transparent),
-                            radial-gradient(ellipse at center, rgba(0, 212, 255, 1), transparent),
-                            radial-gradient(ellipse at bottom, rgba(251, 209, 11, 1), transparent);
+                //box-shadow: inset 0 0 150px 150px rgba(0, 0, 0, 0.75);
+                //background: radial-gradient(ellipse at top, rgba(29, 186, 175, 1), transparent),
+                //            radial-gradient(ellipse at center, rgba(0, 212, 255, 1), transparent),
+                //            radial-gradient(ellipse at bottom, rgba(251, 209, 11, 1), transparent);
+                background: url('../styles/landing/assets/bg-header.jpg') center;
+
+                background-size: cover;
             }
         }
     }
