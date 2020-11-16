@@ -1,0 +1,57 @@
+---
+order: 5
+---
+# Develop your Condition
+
+Here is the instruction to develop a **Condition**.
+
+Here is a simple condition example that validate the current flow:
+
+```java
+@SuperBuilder
+@ToString
+@EqualsAndHashCode
+@Getter
+@NoArgsConstructor
+@Schema(
+    title = "Condition for a specific flow"
+)
+@Plugin(
+    examples = {
+        @Example(
+            full = true,
+            code = {
+                "- conditions:",
+                "    - type: org.kestra.core.models.conditions.types.FlowCondition",
+                "      namespace: org.kestra.tests",
+                "      flowId: my-current-flow"
+            }
+        )
+    }
+)
+public class FlowCondition extends Condition {
+    @NotNull
+    @Schema(title = "The namespace of the flow")
+    public String namespace;
+
+    @NotNull
+    @Schema(title = "The flow id")
+    public String flowId;
+
+    @Override
+    public boolean test(ConditionContext conditionContext) {
+        return conditionContext.getFlow().getNamespace().equals(this.namespace) && conditionContext.getFlow().getId().equals(this.flowId);
+    }
+}
+```
+
+You just need to extend `Condition` and implement the `boolean test(ConditionContext conditionContext)` method.
+
+You can have any properties you want like for any task (validatation, documentation, ...) is working the same way. 
+
+The `test` will receive a `ConditionContext` that will expose : 
+- `conditionContext.getFlow()`: the current flow 
+- `conditionContext.getExecution()`: the current execution that can be null for [Triggers](../triggers)
+- `conditionContext.getRunContext()`: a RunContext in order to render your properties.
+
+This method must simply return a boolean in order to validate or not the Conditions.
