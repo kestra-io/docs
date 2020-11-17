@@ -18,11 +18,18 @@ Below a flow sample that will include a template :
 id: with-template
 namespace: org.kestra.tests
 
+inputs:
+  - name: store
+    type: STRING
+    required: true
+
 tasks:
   - id: template
     type: org.kestra.core.tasks.flows.Template
     namespace: org.kestra.tests
     templateId: template
+    args:
+      renamed-store: "{{ inputs.store }}
 ```
 
 If the template is defined like that : 
@@ -34,7 +41,7 @@ namespace: org.kestra.tests
 tasks:
   - id: 1-return
     type: org.kestra.core.tasks.debugs.Return
-    format: "{{task.id}} > {{taskrun.startDate}}"
+    format: "{{ parent.outputs.args.renamed-store }}"
 ```
 
 It will produce a flow same that this one :
@@ -49,8 +56,14 @@ tasks:
     tasks:
       - id: 1-return
         type: org.kestra.core.tasks.debugs.Return
-        format: "{{task.id}} > {{taskrun.startDate}}"
+        format: "{{ inputs.store }}"
 ```
 
-All the tasks within the template will be *copied* at the runtime 
+All the tasks within the template will be *copied* at the runtime.
+
+:::warning
+From the template, you can access all the variables defined on the context executions. But it's highly discouraged, the better will be to use `args` to rename variables from global context to a local one. 
+:::
+
+By this way, your template will be usable on many flows. Just think `args` as argument for a function in code ! 
 
