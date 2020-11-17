@@ -58,7 +58,7 @@ Let look at these one deeply:
 @Getter
 @NoArgsConstructor
 ```
-These are required in order to make your plugin works with Kestra 
+These are required in order to make your plugin works with Kestra, these are [Lombok](https://projectlombok.org/) that allow kestra and internal serialization to work properly.
 
 
 ## Class declaration 

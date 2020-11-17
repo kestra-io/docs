@@ -173,3 +173,4 @@ Some time, you need to change the format of variables. For this, you can use som
 - [Date functions](./date.md)
 - [Json functions](./json.md)
 - [Iterations functions](./iterations.md)
+- [Vars functions](./vars.md)
