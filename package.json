@@ -43,6 +43,7 @@
     "sass-loader": "^10.1.0",
     "tsparticles": "^1.18.11",
     "vue-feather-icons": "^5.1.0",
+    "vue-typed-js": "^0.1.2",
     "vuepress": "^1.7.1",
     "vuepress-plugin-child-toc": "^0.1.2",
     "vuepress-plugin-medium-zoom": "^1.1.9"

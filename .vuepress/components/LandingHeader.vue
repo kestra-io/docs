@@ -7,10 +7,15 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-12 text-center">
                         <div class="title-heading text-white">
-                            <h1 class="heading mb-4">The modern, scalable<br />orchestrator & scheduler <br />open source platform.</h1>
+                            <vue-typed-js :loop="true" :strings="['open source', 'scalable', 'extensible', 'real-time']">
+                                <h1 class="heading mb-4">
+                                    The <span class="typing"></span> <br /><span>orchestrator</span> & <span>scheduler</span> platform.
+                                </h1>
+                            </vue-typed-js>
                             <p class="para-desc mx-auto">
                                 Kestra is an <strong>infinite scalable</strong> orchestrator platform, in order to create, run, schedule and monitor <strong>millions of complex</strong> pipelines.
                             </p>
+
                             <div class="mt-4 pt-2">
                                 <div class="row">
                                     <div class="col-12 col-sm-6 text-sm-right">
@@ -43,6 +48,7 @@
 
 <script>
     import { tsParticles } from "tsparticles";
+    import { VueTypedJs } from 'vue-typed-js'
 
     export default {
         data() {
@@ -239,7 +245,9 @@
                 });
 
         },
-        components: {}
+        components: {
+            VueTypedJs
+        }
     }
 </script>
 
@@ -271,6 +279,14 @@
 
             h1 {
                 text-shadow: -2px -2px 0 rgba(0, 0, 0, 0.25), 2px -2px 0 rgba(0, 0, 0, 0.25), -2px 2px 0 rgba(0, 0, 0, 0.25), 2px 2px 0 rgba(0, 0, 0, 0.25);
+
+                span {
+                    //background-image: linear-gradient(120deg, rgba(255,193,7,.6) 0%, rgba(255,193,7,.6) 100%);
+                }
+
+                .typing {
+                    color: #FBD10B;
+                }
             }
 
             p {
@@ -282,7 +298,14 @@
                 z-index: 2;
             }
 
-            padding: 260px 0;
+            .title-heading {
+                padding: 260px 0;
+                .heading {
+                    margin: 0 auto;
+                }
+            }
+
+
             @include home-common();
             position: relative;
 
