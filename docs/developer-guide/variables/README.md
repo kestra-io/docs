@@ -22,7 +22,7 @@ The following table lists all the default variables available on each execution.
 |  <code v-pre>{{ flow.id }}</code> | The name the current flow Id |
 |  <code v-pre>{{ flow.namespace }}</code> | The name current namespace |
 |  <code v-pre>{{ execution.id }}</code> | Return the execution Id, a unique id for each  |
-|  <code v-pre>{{ execution.startDate }}</code> | The start date of the current execution, you can format it with <code v-pre>{{ instantFormat execution.startDate  "yyyy-MM-dd HH:mm:ss.SSSSSS"}}</code> |
+|  <code v-pre>{{ execution.startDate }}</code> | The start date of the current execution, you can format it with <code v-pre>{{ dateFormat execution.startDate  "yyyy-MM-dd HH:mm:ss.SSSSSS"}}</code> |
 |  <code v-pre>{{ task.id }}</code> | The current task Id |
 |  <code v-pre>{{ task.type }}</code> | The current task Type (full class name) |
 |  <code v-pre>{{ taskrun.id }}</code> | The current task Id |
