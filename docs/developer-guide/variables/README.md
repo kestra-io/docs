@@ -145,7 +145,25 @@ Sometime, it can be useful to access to previous outputs on current task tree, f
 you iterate for a list of value, doing a first tasks (Download a file for example) and 
 loading previous files to a database.
 
-For this, you will need a special function `eval` : 
+For this, you can use function `get` : 
+```yaml
+tasks:
+  - id: each
+    type: org.kestra.core.tasks.flows.EachSequential
+    value: '["value 1", "value 2", "value 3"]'
+    tasks:
+      - id: first
+        type: org.kestra.core.tasks.debugs.Return
+        format: "{{task.id}}"
+      - id: second
+        type: org.kestra.core.tasks.debugs.Return
+        format: "{{ (get outputs.first taskrun.value).value }}"
+  - id: end
+    type: org.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
+```
+
+or the function `eval` :
 ```yaml
 tasks:
   - id: each

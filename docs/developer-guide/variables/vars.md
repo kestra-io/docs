@@ -33,3 +33,17 @@ Mostly useful for [Lookup in current childs tasks tree](/docs/developer-guide/va
 {{ firstDefined 'outputs.first.value' 'outputs.first.[{{taskrun.value}}].value' }}
 ```
 
+## `get` get an element for an array or map by key
+```handlebars
+   {{get object ["key"]}}
+```
+
+* get on `object` type map, the key at `key`
+* get on `object` type array, the index at `key`
+
+Mostly useful for [Lookup in current childs tasks tree](/docs/developer-guide/variables/#lookup-in-current-childs-tasks-tree) and dynamic tasks.
+
+```handlebars
+{{ get outputs 'first' }}
+```
+
