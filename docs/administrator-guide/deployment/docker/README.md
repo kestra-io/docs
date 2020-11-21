@@ -29,13 +29,25 @@ This is clearly not  for **production** workload but sufficient to test on a loc
 
 The Kestra docker image is available in [Docker hub](https://hub.docker.com/r/kestra/kestra).
 
-The docker image is based on `openjdk:11-jre-slim` docker image, so it don't contain a lot of binaries to work with your [Bash task](/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Bash.html). 
-Fell free to recreate a new image of need more tools. 
+We provide 2 images :
+* `kestra/kestra:latest`
+* `kestra/kestra:latest-full`
 
+The docker image is based on `openjdk:11-jre-slim` docker image.
 
-### Create a new image for Python tasks
+#### `kestra/kestra:latest`
+This image :
+- does't contain any kestra plugins. 
+- does't contain a lot of binaries to work with your [Bash task](/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Bash.html).
+- does't contain some binaries for [Python task](https://kestra.io/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Python.html) or [Node task](https://kestra.io/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Node.html).
 
-Also the base image don't contain binaries for [Python task](https://kestra.io/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Python.html).
+#### `kestra/kestra:latest-full`
+This image contains all the kestra plugins and all the binaries for [Python task](https://kestra.io/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Python.html) or [Node task](https://kestra.io/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Node.html).
+Take care that this image will always contain the last version of plugins that can have some breaking change.
+
+### Create a new image with more binaries
+
+If the base or full image don't contain binaries 
 You can easily create a new one with the `DockerFile` : 
 
 ```dockerfile
@@ -44,13 +56,12 @@ FROM kestra/kestra:$IMAGE_TAG
 
 RUN mkdir -p /app/plugins && \
   apt-get update -y && \
-  apt-get install -y --no-install-recommends python3-pip python3-wheel python3-setuptools python3-virtualenv && \
+  apt-get install -y --no-install-recommends golang && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /var/tmp/*
 ```
 
 ### Create a new image with plugins
-
-By default the kestra docker image don't contain any plugins, but you can create a new image with all the plugins you want : 
+By default, the kestra base docker image don't contain any plugins, but you can create a new image with all the plugins you want : 
 ```dockerfile
 ARG IMAGE_TAG=latest
 FROM kestra/kestra:$IMAGE_TAG
@@ -65,6 +76,6 @@ RUN /app/kestra plugins install \
 ### Docker image tag 
 
 We provide a 3 tags for docker image : 
-- `latest`: that will contain the default latest image. 
-- `release`: an image with preview of the next release  
-- `develop`: an image based on `develop` branch that will change everyday and contain all **unstable** feature we are working.
+- `latest`: that will contain the default latest image with its full variant `latest-full`.
+- `release`: an image with preview of the next release  with its full variant `release-full`.
+- `develop`: an image based on `develop` branch that will change every day and contain all **unstable** feature we are working and with its full variant `develop-full`.
