@@ -3,7 +3,10 @@ order: 0
 ---
 
 # What’s Kestra?
-Kestra is a orchestration & scheduler platform that helps you to build, run, schedule, and monitor complex pipelines of tasks.
+Kestra is an orchestration & scheduler platform that helps you to build, run, schedule, and monitor complex pipelines.
+
+
+![Flow Topology](/ui.gif)
 
 You just need to [develop some flow](developer-guide) in yaml and let Kestra all the others complex things for you : 
 - Deploying
