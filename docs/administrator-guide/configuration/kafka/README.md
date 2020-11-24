@@ -76,10 +76,26 @@ kestra:
           max.request.size: "10485760"
 ```
 
+
+
+
+
 ## `kestra.kafka.defaults.topics`
 All the topic used by Kestra are declared with default name & properties. You can change the default values:
 
 - `kestra.kafka.defaults.topics.{{topic}}.name`: Change the name of this topic.
-- `kestra.kafka.defaults.topics.{{topic}}.properties`: Change the default properties used durinf topic autocreation.
+- `kestra.kafka.defaults.topics.{{topic}}.properties`: Change the default properties used during topic automatic creation.
 
 You can see default configuration on this [file](https://github.com/kestra-io/kestra/blob/develop/cli/src/main/resources/application.yml)
+
+## `kestra.kafka.defaults.consumer-prefix`
+This configuration allow you to change the consumer-group prefix. By default, the prefix will be `kestra`.
+
+For example, if you want to share a common Kafka cluster for the multiple instance of Kestra, just add another prefix like this :
+
+```yaml
+kestra:
+  kafka:
+    defaults:
+      consumer-prefix: "uat_kestra"
+```
