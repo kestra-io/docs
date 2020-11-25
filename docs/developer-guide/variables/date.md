@@ -6,7 +6,7 @@
 ## `dateFormat`: Date format
 
 ```handlebars
-{{dateFormat date [`format`] [format=`format`][tz=timeZone|timeZoneId]}}
+{{dateFormat date ['format'] [format='format'][tz=timeZone|timeZoneId]}}
 ```
 
 
@@ -40,7 +40,7 @@
 ## `now`: Current date
 
 ```handlebars
-   {{now [`format`] [tz=timeZone|timeZoneId]}}
+   {{now ['format'] [tz=timeZone|timeZoneId]}}
 ```
 
 #### Arguments: 
