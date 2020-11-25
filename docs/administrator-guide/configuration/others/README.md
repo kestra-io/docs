@@ -70,3 +70,21 @@ kestra:
       filters:
         - ".*\\[Url: /api/.*"
 ```
+
+
+
+## JVM configuration
+
+All JVM options can be passed as environment vars name `JAVA_OPTS`. You can use it to change all JVM options available like memory, encoding, ... 
+
+example: 
+
+```shell 
+export JAVA_OPTS="-Duser.timezone=Europe/Paris"
+```
+
+### `user.timezone`: Timezone  
+By default, Kestra will handle all date with your system timezone. You can change the timezone with JVM options.
+Changing the timezone will affect mostly :
+* **scheduler**: by default, all schedule date is UTC, changing the java timezone will allow you to schedule flow in your timezone.  
+* **log**:  that will be displayed on your timezone.
