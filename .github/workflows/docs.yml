@@ -5,12 +5,9 @@ on:
     branches:
       - master
 
-  pull_request:
-    branches:
-      - master
-
   repository_dispatch:
     types: [rebuild]
+
   workflow_dispatch:
 
 jobs:
