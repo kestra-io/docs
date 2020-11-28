@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "vuepress-plugin-fulltext-search": "https://github.com/tchiotludo/vuepress-plugin-fulltext-search.git#feat/topCategoryLevel",
+    "vuepress-plugin-right-anchor": "^0.4.5",
     "vuepress-plugin-seo": "^0.1.4"
   }
 }
