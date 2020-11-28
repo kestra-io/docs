@@ -85,6 +85,13 @@ header.navbar {
     }
 }
 
+.code-copy {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: $primary;
+}
+
 .landing {
     .home {
         padding: 0;

@@ -26,7 +26,8 @@ module.exports = {
             'topCategoryLevel': 1
         },
         'vuepress-plugin-child-toc': {},
-        'vuepress-plugin-right-anchor': {}
+        'vuepress-plugin-right-anchor': {},
+        'vuepress-plugin-code-copy': {}
     },
     themeConfig: {
         logo: '/logo.svg',
