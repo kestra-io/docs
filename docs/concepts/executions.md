@@ -29,6 +29,7 @@ The Execution or Task Run can have these state :
 * `CREATED`: not handle internally, waiting to be treated. Mostly the execution is in a queue.
 * `RUNNING`: the tasks are running right now.
 * `SUCCESS`: all the task are done without any failure.
+* `WARNING`: execution have any unintended behaviour, but we continue the execution and flagged execution has WARNING also.
 * `FAILED`: execution have any unintended behaviour that cause the execution to failed.
 * `KILLING`: execution was asked to be killed and waiting tasks were killed.
 * `KILLED`: execution was killed, and no more task will be done.

@@ -20,7 +20,7 @@ Mostly use in order to group tasks.
 ```yaml
 id: sequential
 namespace: org.kestra.tests
-revision: 8
+
 tasks:
   - id: sequential
     type: org.kestra.core.tasks.flows.Sequential
@@ -48,7 +48,7 @@ This flow processes tasks in parallel. It makes it convinient to process many ta
 ```yaml
 id: parallel
 namespace: org.kestra.tests
-revision: 8
+
 tasks:
   - id: parallel
     type: org.kestra.core.tasks.flows.Parallel
@@ -120,7 +120,7 @@ trigger an arbitrary number of subtasks. Each subtask will run after others sequ
 ```yaml
 id: each
 namespace: org.kestra.tests
-revision: 8
+
 tasks:
   - id: each
     type: org.kestra.core.tasks.flows.EachSequential
@@ -171,6 +171,45 @@ tasks:
 
 <div style="text-align: right"> 
     <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachParallel">EachParallel Task documentation</a> 
+</div>
+
+
+
+## AllowFailure
+This task will allow a failed child task. If any child task failed: 
+- AllowFailure will be marked as `WARNING`
+- All children task inside the AllowFailure will be stopped immediately
+- The execution will continue for all others tasks.
+- at the end, the execution will be also marked as status `WARNING`
+
+In this example: 
+- `allow-failure` will `WARNING`
+- `ko` will be `FAILED`
+- `next` will not be run
+- `end` will be run and `SUCCESS`
+
+```yaml
+id: each
+namespace: org.kestra.tests
+
+tasks:
+  - id: allow-failure
+    type: org.kestra.core.tasks.flows.AllowFailure
+    tasks:
+      - id: ko
+        type: org.kestra.core.tasks.scripts.Bash
+        commands:
+          - 'exit 1'
+      - id: next
+        type: org.kestra.core.tasks.debugs.Return
+        format: "{{task.id}} > {{taskrun.startDate}}"
+  - id: end
+    type: org.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{taskrun.startDate}}"
+```
+
+<div style="text-align: right"> 
+    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.AllowFailure">AllowFailure Task documentation</a> 
 </div>
 
 
