@@ -37,6 +37,7 @@ module.exports = {
         editLinks: true,
         smoothScroll: true,
         nav: [
+            // {text: 'Blog', link: '/blogs/'},
             {text: 'Documentation', link: '/docs/'},
             {text: 'Plugins', link: '/plugins/'},
         ],

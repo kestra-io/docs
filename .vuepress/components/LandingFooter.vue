@@ -180,7 +180,7 @@
 
     .footer-top {
         color: $footer;
-
+        margin-top: 60px;
     }
 
     .footer {

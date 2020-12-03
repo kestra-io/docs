@@ -39,9 +39,15 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-@media (max-width: 1350px) {
+.ra-wrapper {
+    width: 320px;
+    max-width: 320px;
+}
+
+@media (max-width: 1750px) {
     .ra-wrapper {
         display: none !important;
+
     }
 }
 
@@ -93,7 +99,7 @@ header.navbar {
 }
 
 .landing {
-    .home {
+    main {
         padding: 0;
         max-width: none;
 
@@ -101,6 +107,23 @@ header.navbar {
             border-top: 0;
             text-align: left;
             color: $gray-500;
+            padding: 2.5rem;
+        }
+
+        blockquote {
+            p {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .custom-block {
+        .custom-block-title {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+        p {
+            line-height: 1.7;
         }
     }
 
@@ -115,10 +138,29 @@ header.navbar {
         @import "landing/components";
         @import "landing/features";
         @import "landing/footer";
-
+        @import "landing/blog";
 
         header.hero {
             display: none;
+        }
+
+        @mixin home-common {
+            background-size: cover;
+            align-self: center;
+            position: relative;
+            background-position: center center;
+        }
+
+        .bg-half {
+            padding: 184px 0 90px;
+            @include home-common();
+            margin-bottom: 100px;
+        }
+
+        .theme-default-content {
+            max-width: none;
+            margin: 0;
+            padding: 0;
         }
     }
 }

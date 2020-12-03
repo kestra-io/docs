@@ -1,0 +1,5 @@
+---
+title: Blogs
+layout: BlogsList
+---
+
