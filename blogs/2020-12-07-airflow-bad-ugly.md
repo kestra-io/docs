@@ -9,9 +9,9 @@ tags:
 ---
 Airflow is defined for now as a clear winner for open source orchestration tools. So like everyone, reading medium on the web, we are thinking this tool is mature and will resolved all the constraint we have to schedule, orchestrate & monitor our dags. 
 
-Mostly this blog post will be technical focus but let you overview the major issue we have with Airflow trying to make it the main orchestrator for our data pipeline and will describe our long road to hell to lead us to create & open source [Kestra](/) based on the frustration using Airflow.
+Mostly this blog post will be technical focus but let you overview the major issues we have with Airflow trying to make it the main orchestrator for our data pipeline and will describe our long road to hell to lead us to create & open source [Kestra](/) based on the frustration using Airflow.
 
-Without any order, here is the major point that we have discovered, and we want to share with you :
+Without any order, here is the major points that we have discovered, and we want to share them with you :
 
 ---
 
@@ -101,7 +101,7 @@ You can scale to thousands of flows, not matter how there are configured, there 
 :::
 
 ## Realtime baby ! 
-Airflow is not build with realtime in mind, the ui is a static, server side generated app. When using airflow UI you **will hit F5** or refresh all the time. 
+Airflow is not built with realtime in mind, the ui is a static, server side generated app. When using airflow UI you **will hit F5** or refresh all the time. 
 You want to know if the dag is running, hit F5 is the only solution ! Same for logs ! 
 
 ## Events based & API First
@@ -110,28 +110,28 @@ Airflow was born with a simple concept, schedule a dag at this time ! Every else
 
 ### API not so first 
 There is an [expirimental API](https://airflow.apache.org/docs/stable/rest-api-ref.html) but clearly insufficient for a real world.
-For example, the [trigger dag API](https://airflow.apache.org/docs/stable/rest-api-ref.html#post--api-experimental-dags--DAG_ID--dag_runs) can be used passing some args, but the server don't know these! So it will let passed some mandatory arguments and create a DagRun that will failed. 
+For example, the [trigger dag API](https://airflow.apache.org/docs/stable/rest-api-ref.html#post--api-experimental-dags--DAG_ID--dag_runs) can be used passing some args, but the server don't know them! So you can create some DagRun that will instatitely failed because you forgot some mandatory arguments.
 
 
-In other hand, Kestra was built with a strong API, everything can be done with API, create a flow, execute it, ... That let you integrate Kestra in company the way you want to use it. 
+In other hand, Kestra was built with a strong API, everything can be done with API, create a flow, execute it, ... That let you integrate Kestra the way you want to use it in your company. 
 
 ### What Events ?
 Airflow have a mandatory dag options `start_date` & `schedule_interval`! Meaning that all is thinking like a crontab with a start date. 
 But wait, in real life, we don't want to schedule a flow, we want to start when an external event occurs (like a new file on a storage for example). 
 
-Airflow is not the right tool for this use case! Kestra handle it with **optional** [trigger](../docs/concepts/flows.md#triggers) that allow you handle events (time or anything else) like a reason to start an execution and follow it. 
+Airflow is not the right tool for this use case! Kestra handle it with **optional** [trigger](../docs/concepts/flows.md#triggers) that allow you handle events (time or anything else) that will start an execution and tou will be able to follow it. 
 
 ## Stable ? ...
 Let me give some insight. So we start by testing a simple use case that will represent our real usage from our data pipeline: Doing lots of different dags that would simply call external API, you understand me ELT here.
 
-In order to prove the stability of Airflow, we simply simulate some kind of real workflow, 200 dags with each 15/20 tasks with external api, simulate here with a `sleep 1`. We launch the test at the same time, what we expect to have on daily basis at least. 
+In order to prove the stability of Airflow, we simply simulate some kind of real workflow, 200 dags with each 15/20 tasks with external api, simulate here with a `sleep 1`. We run the test at the same time, what we expect to have on daily basis at least. 
 We use [example_bash_operator](https://airflow.apache.org/docs/stable/_modules/airflow/example_dags/example_bash_operator.html) and just change the range from 5 to 15 and activate all the task at the same time. 
 
-We will keep you about commenting the execution time of this test that take really longer than we expect, worst are : 
+We will not comment on the execution times which took longer than expected, the worst are : 
 ![Airflow failed some tasks](./2020-12-07-airflow-bad-ugly/2.png)
-Yes this is **failed task** ! How can a scheduler can failed task with `sleep 1` !
+Yes this is **failed task** ! How can a scheduler can failed tasks with `sleep 1` !
 
-How can I monitor my daily flows if I need to have some failed tasks **only due to the scheduler**! 
+How can I monitor my daily flows if I can get failed tasks **only due to the scheduler**! 
 
 
 ## Scalability, hum hum ...
@@ -141,15 +141,15 @@ From airflow documentation :
 
 ### Save my CPU
 At first, we have believed the marketing baseline, but the road was not so happy. 
-When we start the [bench](#stable--) below, this one will use the whole 16 core of the servers I was using just doing sleep. 
+When we start the [bench](#stable--) below, this one used the whole 16 cores of the servers I was using just for doing sleep tasks. 
 
 In fact, Airflow is a python software that handle scalability with [Celery executor](https://airflow.apache.org/docs/stable/executor/celery.html). Celery will fork many airflow process, not sharing anything. 
-When I start a dag, the scheduler will scan every x seconds all the dags, worker for every task will scan all the dags on the cluster, this will use a lots of CPU for large cluster instance, and this will be worst & worst as long as you add new dag / tasks. 
+When I start a dag, the scheduler will scan every x seconds all the dags, worker for every task will scan all the dags on the cluster, this will use a lots of CPU for large cluster instance, and this will be worst & worst as long as you add new dags / tasks. 
 It's [by design](https://stackoverflow.com/a/49905571/1590168), Airflow must be used for long running tasks, not for lots of small / short tasks.
 
 
 ### Where is the SPOF ? 
-Airflow will not scale to infinity since a lot's of components in their architecture are scalable by desing: 
+Airflow will not scale to infinity since a lot's of components in their architecture are not scalable by design: 
 - Database (MySQL or Postgres): are not horizontal scalable, only vertical (raise CPU & mem) since mono server.
 - Queue (Redis): Aiflow use a queue that is not scalable and mono servers also
 - Airflow Scheduler: handle all the task in the cluster can only have **one** instance on the cluster, if not there will be multiple task run for the same execution.
@@ -176,7 +176,7 @@ Since all these allow you to define complex workflow, Airflow lack of some major
 ### First one are dynamic tasks.
 I mean create as many tasks depending on previous tasks like [Each](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachSequential). 
 In Airflow, this is impossible, some people try to [trigger others](https://github.com/mastak/airflow_multi_dagrun) dags to emulate this (like or [Flow](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Flow)), but this will complexify the monitoring of your flow. 
-We will need to follow 2 dags in order to understand what the issue, the main flow is success and the child are not, really complicated ! 
+We will need to follow 2 dags in order to understand what is the issue, the main flow is success and the child are not, really complicated ! 
 
 ### Second are sensors. 
 In airflow, you can in the middle of a dag wait for a resource, so If you need a file on a server, the dags will start, the sensors task will wait for the file (keeping the flow running), and restart.
@@ -188,14 +188,14 @@ Also in Airflow, Sensors are blocking a worker thread waiting. In Kestra, Schedu
 In Airflow, there is no real notion of output for task (mean value that can be used for next task). Xcom are the way for Airflow to respond to thIs problems.
 But in the fact, there is major drawback with XCom : 
 - **TODO Control this** XCom are not isolated for current execution, they can be overwritten by the concurrent execution of the same dag.
-- XCom are stored in the database (MySQL or Postgres) so you can store big data between tasks. 
-- No file here, you can exchange file between tasks (except with hack, see below) !
+- XCom are stored in the database (MySQL or Postgres) so you can't store big data between tasks. 
+- No file here, you can't exchange file between tasks (except with hack, see below) !
 
 
 ### Where is my files ? 
 Airflow have no notion of files at the heart ! Meaning that if you want to download a file on a task and upload it anywhere on the second tasks, we need to send a viable path to the second one. 
 
-In the practice, this can be done with a path on a local filesystem, this work, but what about isolation between flow & scalability (cluster of airflow worker), this does't work. There is still hack to make it work (like Google Composer that use a GSFuse filesystem backup with Google Cloud Storage for example), but in Kestra, we have put the file at the heart with an [Internal Storage](../docs/architecture#storage) that will allow any task to output files like any others outputs (string, int, ...)
+In the practice, this can be done with a path on a local filesystem, this work, but what about isolation between flow & scalability (cluster of airflow worker), this does't work. There is still hack to make it work (like Google Composer that use a Cloud Storage Fuse filesystem backup with Google Cloud Storage for example), but in Kestra, we have put the file at the heart with an [Internal Storage](../docs/architecture#storage) that will allow any task to output files like any others outputs (string, int, ...)
 
 
 ## Entreprise not so ready ! 
