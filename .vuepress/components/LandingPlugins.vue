@@ -20,7 +20,7 @@
 
                 <div class="row">
                     <div class="col-lg-4 col-md-6 mt-4 pt-2" v-for="plugin in plugins">
-                        <a :href="'plugins/' + plugin.href + '/'" class="media key-feature align-items-center p-3 rounded-md shadow">
+                        <a :href="'plugins/' + plugin.href + (plugin.section ? '#' + plugin.section : '')" class="media key-feature align-items-center p-3 rounded-md shadow">
                             <div class="icon text-center rounded-circle mr-3 text-primary">
                                 <i :class="plugin.icon"></i>
                             </div>
@@ -59,43 +59,81 @@
 </template>
 <script>
     export default {
-        data() {
-            return {
-                plugins: [
+        components: {
+        },
+        computed: {
+            plugins: () => {
+                return [
                     {
-                        name: "Core",
-                        icon: "mdi mdi-heart",
-                        href: "core"
+                        name: "Bash",
+                        icon: "mdi mdi-bash",
+                        href: "core/tasks/scripts/org.kestra.core.tasks.scripts.Bash",
                     },
                     {
-                        name: "Amazon AWS",
-                        icon: "mdi mdi-aws",
-                        href: "task-aws"
+                        name: "Python",
+                        icon: "mdi mdi-language-python",
+                        href: "core/tasks/scripts/org.kestra.core.tasks.scripts.Python",
                     },
                     {
-                        name: "File systems",
-                        icon: "mdi mdi-harddisk",
-                        href: "task-fs"
+                        name: "Node",
+                        icon: "mdi mdi-nodejs",
+                        href: "core/tasks/scripts/org.kestra.core.tasks.scripts.Node",
                     },
                     {
-                        name: "Google Cloud Platform",
-                        icon: "mdi mdi-google-cloud",
-                        href: "task-gcp"
+                        name: "Amazon S3",
+                        icon: "csicon csicon-s3",
+                        href: "task-aws",
+                        section: "#s3"
                     },
                     {
-                        name: "Cryptography",
+                        name: "Http",
+                        icon: "mdi mdi-api",
+                        href: "task-fs",
+                        section: "http"
+                    },
+                    {
+                        name: "SFTP",
+                        icon: "mdi mdi-network",
+                        href: "task-fs",
+                        section: "sftp"
+                    },
+                    {
+                        name: "Google Cloud Storage",
+                        icon: "csicon csicon-gcs",
+                        href: "task-gcp",
+                        section: "gcs"
+                    },
+                    {
+                        name: "Big Query",
+                        icon: "csicon csicon-bigquery",
+                        href: "task-gcp",
+                        section: "bigquery"
+                    },
+                    {
+                        name: "Open PGP",
                         icon: "mdi mdi-lock",
-                        href: "task-crypto"
+                        href: "task-crypto",
+                        section: "openpgp"
                     },
                     {
-                        name: "JDBC MySQL",
-                        icon: "mdi mdi-database-settings",
+                        name: "ClickHouse",
+                        icon: "csicon csicon-clickhouse",
+                        href: "task-jdbc-clickhouse"
+                    },
+                    {
+                        name: "MySQL",
+                        icon: "csicon csicon-mysql",
                         href: "task-jdbc-mysql"
                     },
                     {
-                        name: "JDBC Postgres",
-                        icon: "mdi mdi-database-settings-outline",
+                        name: "Postgres",
+                        icon: "csicon csicon-postgres",
                         href: "task-jdbc-postgres"
+                    },
+                    {
+                        name: "Vertica",
+                        icon: "csicon csicon-vertica",
+                        href: "task-jdbc-vertica"
                     },
                     {
                         name: "Kubernetes",
@@ -103,19 +141,88 @@
                         href: "task-kubernetes"
                     },
                     {
-                        name: "Notifications",
-                        icon: "mdi mdi-alarm",
-                        href: "task-notifications"
+                        name: "Slack",
+                        icon: "csicon csicon-slack",
+                        href: "task-notifications",
+                        section: "slack"
                     },
                     {
-                        name: "Serialization",
-                        icon: "mdi mdi-translate",
-                        href: "task-serdes"
+                        name: "Email",
+                        icon: "mdi mdi-email",
+                        href: "task-notifications",
+                        section: "mail"
                     },
-                ]
+                    {
+                        name: "Avro",
+                        icon: "csicon csicon-avro",
+                        href: "task-serdes",
+                        section: "avro"
+                    },
+                    {
+                        name: "JSON",
+                        icon: "mdi mdi-code-json",
+                        href: "task-serdes",
+                        section: "json"
+                    },
+                    {
+                        name: "CSV",
+                        icon: "mdi mdi-file-delimited",
+                        href: "task-serdes",
+                        section: "csv"
+                    },
+                ].sort((a, b) => (a.name > b.name) ? 1 : -1)
             }
-        },
-        components: {
         }
     }
 </script>
+
+<style lang="scss">
+@import "../styles/landing/variables";
+
+i.csicon {
+    height: 45px;
+    width: 45px;
+    display: block;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    //filter: grayscale(100%) brightness(30%) sepia(100%) hue-rotate(-180deg) saturate(300%) contrast(0.8);
+
+    &.csicon-avro {
+        background-image: url("./LandingPlugins/avro.png");
+    }
+
+    &.csicon-bigquery {
+        background-image: url("./LandingPlugins/bigquery.png");
+    }
+
+    &.csicon-clickhouse {
+        background-image: url("./LandingPlugins/clickhouse.png");
+    }
+
+    &.csicon-gcs {
+        background-image: url("./LandingPlugins/gcs.png");
+    }
+
+    &.csicon-mysql {
+        background-image: url("./LandingPlugins/mysql.png");
+    }
+
+    &.csicon-postgres {
+        background-image: url("./LandingPlugins/postgres.png");
+    }
+
+    &.csicon-s3 {
+        background-image: url("./LandingPlugins/s3.png");
+    }
+
+    &.csicon-slack {
+        background-image: url("./LandingPlugins/slack.png");
+    }
+
+    &.csicon-vertica {
+        background-image: url("./LandingPlugins/vertica.png");
+    }
+}
+
+</style>
