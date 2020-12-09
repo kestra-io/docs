@@ -55,3 +55,9 @@ The path can be :
 * `[[> lorem.txt]]`: a relative path from the flow (flow.yaml & lorem.txt are on the same directory)
 * `[[> /path/to/lorem.txt]]`: an absolute path
 * `[[> path/to/lorem.txt]]`: a relative path from the flow (flow.yaml with a subdirectory `path/to/`)
+
+
+::: warning
+Includes are resolved recursively, so you can include a file from another include. 
+Since this allow more complex things, you need to take care that included files don't contain `[[ .. ]]` . If you need to have the character in included files escape it with `\[[ ...]]` !
+:::
