@@ -3,6 +3,13 @@ order: 4
 ---
 # Others Kestra configuration
 
+## Url configuration
+Some notification service need to have an url configuration defined in order to add some link directly to the web ui. Use full uri here with a trailing `/` (without ui or api).
+```yaml
+kestra:
+  url: https://www.my-host.com/kestra/
+
+```
 
 ## Plugins configuration
 Configuration of maven repositories used for commande `plugins install`.
