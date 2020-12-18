@@ -63,6 +63,12 @@ When the flow is schedule, some context variables are injected to allow some cus
 |  <code v-pre>{{ schedule.previous }}</code> | the date of previous schedule 
 
 
+::: tip
+Most of the time, schedule execution will depend on `schedule.date` (looking at files for today, sql query with where schedule date). This works well, but it prevents you to execute your flow manually (since these variables are only available during schedule). 
+You can use this expression in order to make your **manual execution working**: <code v-pre>{{ dateFormat (firstDefined schedule.date execution.startDate) "yyyy-MM-dd"}}</code>, it will use the current date instead of the schedule one on manual execution, and your flow will not fail.
+:::
+
+
 ::: warning
-Schedule cannot overlap, this mean that we can't have any concurrent schedule. If the previous schedule is not ended when the next one must start, the scheduler will wait the end of the previous one. Same is applied for backfill.
+Schedule **cannot overlap**, this mean that we **can't have any concurrent schedule**. If the previous schedule is not ended when the next one must start, the scheduler will wait the end of the previous one. Same is applied during backfill.
 :::
