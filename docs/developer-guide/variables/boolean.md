@@ -1,3 +1,6 @@
+---
+order: 5
+---
 # Boolean functions
 
 [[toc]]
