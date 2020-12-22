@@ -69,12 +69,20 @@ Some additional information can be found on [Micronaut documentation](https://mi
 Since Elasticsearch is used to store all executions & metrics, you can easily make a dashboard with 
 [Grafana](https://grafana.com/) or [Kibana](https://www.elastic.co/kibana) in order to follow your Kestra instance.
 
-In a near future, we will provide a template dashboard as a quick start
+In a near future, we will provide a template dashboard as a quick start.
+
+
+## Kestra endpoint
+Kestra expose some internal endpoint on management port (8081 by default) depending on servers: 
+
+
+* `/worker`: will expose all current running task on this worker
+* `/scheduler`: will expose all current scheduled flows on this scheduler with next date 
 
 
 ## Others micronaut default endpoint 
 Since Kestra is based on [Micronaut](https://micronaut.io), the [default micronaut endpoint](https://docs.micronaut.io/latest/guide/index.html#providedEndpoints)
-is enabled by default : 
+is enabled by default on port 8081 : 
 
 * `/info` [Info Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#infoEndpoint) with git status informations.
 * `/health` [Health Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#healthEndpoint) usable for add an external heathcheck on application. 
