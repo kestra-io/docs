@@ -36,7 +36,7 @@
                 <div class="row">
                     <div class="col-lg-3 col-12 mb-0 mb-md-3 pb-0 pb-md-2">
                         <a href="/" class="logo-footer">
-                            <img src="/logo.svg" height="60" alt="">
+                            <img src="/logo-white.svg" height="60" alt="">
                         </a>
                         <p class="mt-2">The modern, scalable orchestrator & scheduler open source platform.</p>
                         <ul class="list-unstyled social-icon social mb-0 mt-4">
