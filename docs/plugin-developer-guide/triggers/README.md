@@ -9,13 +9,11 @@ Here is the instruction to develop a **Trigger**.
 Here is a simple Trigger example that will trigger an execution randomly:
 
 ```java
-
 @SuperBuilder
 @ToString
 @EqualsAndHashCode
 @Getter
 @NoArgsConstructor
-
 public class Trigger extends AbstractTrigger implements PollingTriggerInterface, TriggerOutput<Trigger.Random> {
     @Builder.Default
     private final Duration interval = Duration.ofSeconds(60);
@@ -62,8 +60,8 @@ The `test` will receive these arguments :
 - `RunContext runContext`: a RunContext in order to render your properties.
 - `TriggerContext context`: to have the context of this call (flow, execution, trigger, date, ...)
 
-In this method, you add any logic you want, connect to a database, connect to remove file systems. 
-You don't have to take care of ressource, Kestra will run this method in this own thread.
+In this method, you add any logic you want, connect to a database, connect to remote file systems. 
+You don't have to take care of resource, Kestra will run this method in this own thread.
 
 This method must simply return an `Optional<Execution>` with : 
 - `Optional.empty()`: if the condition is not validated 

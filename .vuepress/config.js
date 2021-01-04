@@ -30,7 +30,7 @@ module.exports = {
         'vuepress-plugin-code-copy': {}
     },
     themeConfig: {
-        logo: '/logo.svg',
+        logo: '/logo-white.svg',
         repo: 'kestra-io/kestra',
         repoLabel: 'GitHub',
         docsRepo: 'kestra-io/kestra.io',

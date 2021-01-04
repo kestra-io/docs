@@ -33,7 +33,7 @@ errors:
 ## Local Error
 
 In this case, the error branch will be used **only** if all childs of task `t2` have an errors. 
-In this specific example, if the task `t1` failed, no errors will be used. This is really usefull to do some cleanup of ressource for this tasks only. 
+In this specific example, if the task `t1` failed, no errors will be used. This is really usefull to do some cleanup of resource for this tasks only. 
 
 ```yaml
 id: errors

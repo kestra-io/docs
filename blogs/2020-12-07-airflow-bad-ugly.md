@@ -7,9 +7,9 @@ category: versus
 tags:
 - airflow
 ---
-Airflow is defined for now as a clear winner for open source orchestration tools. So like everyone, reading medium on the web, we are thinking this tool is mature and will resolved all the constraint we have to schedule, orchestrate & monitor our dags. 
+Airflow is defined for now as a clear winner for open source orchestration tools. So like everyone, reading medium on the web, we are thinking this tool is mature and will resolve all the constraint we have to schedule, orchestrate & monitor our dags. 
 
-Mostly this blog post will be technical focus but let you overview the major issues we have with Airflow trying to make it the main orchestrator for our data pipeline and will describe our long road to hell to lead us to create & open source [Kestra](/) based on the frustration using Airflow.
+We tried to use it as our main orchestrator for our data pipelines and this technical blog aims to describe all the issue we met using Airflow. Based on the frustration using this one, we really think that a better tool is needed are can be done, it leads us to create & open source Kestra !
 
 Without any order, here is the major points that we have discovered, and we want to share them with you :
 
@@ -21,7 +21,7 @@ Without any order, here is the major points that we have discovered, and we want
 
 
 ## Workflow as code, not so good idea ! 
-Airflow dag are defined as python code ! First look seems to be a good idea but in the fact it can be a very dangerous pattern. Lets me explain a real use case. 
+Airflow dag are defined as python code ! First look seems to be a good idea but in the fact it can be a very dangerous pattern. Lets me explain with a real use case. 
 
 ```python
 from airflow import DAG
@@ -58,12 +58,8 @@ with DAG(
 task_1 >> task_2
 ```
 
-Simple and working and let's change the function `get_bash_print` with a function that will do an heavy computing task (like fetching database, ...) . Still working, but in this case, the whole airflow instance is in danger. Airflow evaluate dag a **lot of time in all services** (webserver, worker, scheduler, ...).
-Imagine an Airflow as self-service for a large company, a simple dag could break **the whole platform**.
-
-How can you prevent this to happen ? You need to have a strong review of each dags to be sure that no heavy compute are done outside of an Operator. Still, it's possible, but it will be really hard on a large scale company cluster.   
-
-Now we are changing the function with a sleep (that would simulate any heavy work):  
+You have a really simple & working dag. 
+Now, let's replace the function `get_bash_print` with a heavy computing task (like fetching database, ...) :
 
 ```python
 def get_bash_print(arg):
@@ -71,7 +67,9 @@ def get_bash_print(arg):
     return f"Hello from a {arg}"
 ```
 
-And run `airflow list_dags -r`, this command will expose the parsing time for all the dag, that will be done **every x seconds** on webserver and scheduler and before **any task** on workers:
+Still working, but in this case, the whole airflow instance is in danger. Airflow evaluate dag a **lot of time in all services** (webserver, worker, scheduler, ...). The Airflow scheduler goal is to find new dags & tasks, any dags with heavy compute can blocked the whole scheduler and prevents any dags & tasks to be submitted.
+
+To understand, run `airflow list_dags -r`, this command will expose the parsing time for all the dag, that will be done **every x seconds** on webserver, scheduler and before **any task** on workers:
 
 ```
 -------------------------------------------------------------------
@@ -87,30 +85,35 @@ file                                                                            
 /bash.py                                                                                               | 0.002396           |       1 |        2 | ['bash']
 -------------------------------------------------------------------------------------------------------+--------------------+---------+----------+------------------------------------------------------------------------------
 ```
+As you can see, each evaluation of our 2 dags will take 10s. 
 
-Simple experiment, let's create the same dag and remove the `time.sleep` and trigger it from the ui dag. Look at this taskrun: 
+Let see the impact on our cluster : 
+
+Let's do a simple experience by creating the same dag and remove the `time.sleep` and trigger it from the ui dag. Then look at this taskrun : 
 ![Flow list](./2020-12-07-airflow-bad-ugly/1.png)
-As you can see, there is a huge gap between tasks! and it's only because the `sleep` dag exists on the current cluster, even if the `bash` dag is fast, it will be slow down by other dag. 
+As you can see, there is a huge gap between tasks! And it's only because the `sleep` dag exists on the current cluster, even if the `bash` dag is fast, it will be slow down by others dags. 
 
 You got it ? Yeah, you have successfully slow down your Airflow **whole cluster**. Worst, imagine that this task will fetch any external service, you could **overload & crash** this service, since Airflow scan **everytime all dags** even if the dag is not running. 
-You can mitigate this using a strong dag review process, but it will not scale well on a shared large cluster used by a lots of independent teams
+
+Imagine an Airflow as self-service for a large company, a simple dag could break **the whole platform**.
+You can mitigate this using a strong dag review process (to be sure that no heavy compute are done outside an Operator).Still, it's possible, it will not scale well on a shared large cluster used by a lots of independent teams.
+
 
 ::: tip Conclusion
-It's why Kestra have chosen a declarative language for its workflow engine, since all flow are isolated and serialized preventing any code injection.
-You can scale to thousands of flows, not matter how there are configured, there will be not impact on your cluster since flow are only evaluated at runtime.
+This is why Kestra have chosen a declarative language for its workflow engine, since all flows are isolated and serialized preventing any code injection.
+You can scale to thousands of flows, not matter how there are configured, there will be no impact on your cluster since flows are only evaluated at runtime.
 :::
 
 ## Realtime baby ! 
-Airflow is not built with realtime in mind, the ui is a static, server side generated app. When using airflow UI you **will hit F5** or refresh all the time. 
-You want to know if the dag is running, hit F5 is the only solution ! Same for logs ! 
+Airflow is not built with realtime in mind, the ui is a static, server side generated app. When using airflow, UI you have to hit **F5 often to refresh** screen data. If you want to know if the dag is running, hit F5 is the only solution. Even worst for logs, some logs backed by external storage will not be available before the end the task ! 
 
 ## Events based & API First
-Airflow was born with a simple concept, schedule a dag at this time ! Every else is not in the mindset of Airflow. 
+Airflow was born with a simple concept, schedule a dag from a cron expression. Everything else looks like a patch instead of being Airflow core design.
 
 
 ### API not so first 
 There is an [expirimental API](https://airflow.apache.org/docs/stable/rest-api-ref.html) but clearly insufficient for a real world.
-For example, the [trigger dag API](https://airflow.apache.org/docs/stable/rest-api-ref.html#post--api-experimental-dags--DAG_ID--dag_runs) can be used passing some args, but the server don't know them! So you can create some DagRun that will instatitely failed because you forgot some mandatory arguments.
+For example, the [Trigger dag API](https://airflow.apache.org/docs/stable/rest-api-ref.html#post--api-experimental-dags--DAG_ID--dag_runs) can be used passing some args, but theses args are not declared explicitly (the concept of [Inputs](../docs/developer-guide/inputs) in Kestra) ! The api lacks some parameters controls and let dagrun with missing parameters to be trigger and that will just fail. In Kestra, [inputs](../docs/developer-guide/inputs) are validated, and the execution will not be created if missing one.  
 
 
 In other hand, Kestra was built with a strong API, everything can be done with API, create a flow, execute it, ... That let you integrate Kestra the way you want to use it in your company. 
@@ -192,7 +195,7 @@ But in the fact, there is major drawback with XCom :
 - No file here, you can't exchange file between tasks (except with hack, see below) !
 
 
-### Where is my files ? 
+### Where are my files ? 
 Airflow have no notion of files at the heart ! Meaning that if you want to download a file on a task and upload it anywhere on the second tasks, we need to send a viable path to the second one. 
 
 In the practice, this can be done with a path on a local filesystem, this work, but what about isolation between flow & scalability (cluster of airflow worker), this does't work. There is still hack to make it work (like Google Composer that use a Cloud Storage Fuse filesystem backup with Google Cloud Storage for example), but in Kestra, we have put the file at the heart with an [Internal Storage](../docs/architecture#storage) that will allow any task to output files like any others outputs (string, int, ...)
@@ -204,7 +207,7 @@ In the practice, this can be done with a path on a local filesystem, this work, 
 In Airflow, there is no notion of dag version, when you changed your dag, the old execution are changed and if you remove a task, the complete task will disappear for **all previous** executions.
 No way to understand what is going with previous dags when you update it.
 
-Kestra have this in mind and keep all the revision for all flows, and let you watch previous at the state they are, let you watch the diff between revisions, ...
+Kestra have this in mind and keep all the revision for all flows, and let you watch previous at the state they are, and you watch the diff between revisions, ...
 
 
 ### Where is the RBAC ?
