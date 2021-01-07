@@ -56,7 +56,7 @@ function getChildren(rootDir, rootUrl, subDir, recursive = false) {
 
         return {
             path: rootUrl + currentPath,
-            title: extract.title,
+            title: md.meta.title || extract.title,
             readme: readme,
             order: md.meta.order
         };
