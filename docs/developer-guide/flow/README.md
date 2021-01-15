@@ -62,6 +62,10 @@ triggers:
     cron: 0 0 1 * *
     backfill:
       start: 2020-01-01T00:00:00+02:00
+
+taskDefaults:
+  - type: org.kestra.core.tasks.debugs.Echo
+    level: ERROR
 ```
 
 
@@ -93,3 +97,6 @@ triggers:
 |`triggers.[].type`|The trigger type that is a full java class name.|
 |`triggers.[].description`|Description for documentation, more details [here](../documentation/) |
 |`triggers.[].xxx`|Like task, each trigger have theirs properties|
+|`taskDefaults`|Default value for current tasks, in order to avoid repeat the same properties on each tasks|
+|`taskDefaults.[].type`|The task type that is a full java class name.|
+|`taskDefaults.[].values.xxx`|The properties (same than task) that you want to be default|
