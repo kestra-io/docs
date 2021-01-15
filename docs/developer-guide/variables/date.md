@@ -70,3 +70,29 @@ order: 4
 ```handlebars
    {{microtimestamp}}
 ```
+
+
+
+## `dateAdd`: Add some units to date
+
+```handlebars
+   {{ dateAdd yourDate quantity "unit" [format="format"] [tz=timeZone|timeZoneId] }}
+   {{ dateAdd yourDate -1 "DAY" }}
+```
+- `quantity`: an integer value positive or negative
+- `format`: Format parameters is one of :
+  - `NANOS`
+  - `MICROS`
+  - `MILLIS`
+  - `SECONDS`
+  - `MINUTES`
+  - `HOURS`
+  - `HALF_DAYS`
+  - `DAYS`
+  - `WEEKS`
+  - `MONTHS`
+  - `YEARS`
+  - `DECADES`
+  - `CENTURIES`
+  - `MILLENNIA`
+  - `ERAS`
