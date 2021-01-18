@@ -185,6 +185,12 @@
                         icon: "csicon csicon-jython",
                         href: "task-scripts-jython"
                     },
+                    {
+                        name: "XML",
+                        icon: "mdi mdi-file-code",
+                        href: "task-serdes",
+                        section: "xml"
+                    },
 
                 ].sort((a, b) => (a.name > b.name) ? 1 : -1)
             }
