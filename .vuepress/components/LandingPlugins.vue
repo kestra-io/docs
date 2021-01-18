@@ -170,6 +170,22 @@
                         href: "task-serdes",
                         section: "csv"
                     },
+                    {
+                        name: "Nashorn",
+                        icon: "csicon csicon-nashorn",
+                        href: "task-scripts-nashorn"
+                    },
+                    {
+                        name: "Groovy",
+                        icon: "csicon csicon-groovy",
+                        href: "task-scripts-groovy"
+                    },
+                    {
+                        name: "Jython",
+                        icon: "csicon csicon-jython",
+                        href: "task-scripts-jython"
+                    },
+
                 ].sort((a, b) => (a.name > b.name) ? 1 : -1)
             }
         }
@@ -222,6 +238,18 @@ i.csicon {
 
     &.csicon-vertica {
         background-image: url("./LandingPlugins/vertica.png");
+    }
+
+    &.csicon-jython {
+        background-image: url("./LandingPlugins/jython.png");
+    }
+
+    &.csicon-groovy {
+        background-image: url("./LandingPlugins/groovy.png");
+    }
+
+    &.csicon-nashorn {
+        background-image: url("./LandingPlugins/nashorn.png");
     }
 }
 
