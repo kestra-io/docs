@@ -8,7 +8,7 @@ Kestra is an orchestration & scheduler platform that helps you to build, run, sc
 
 ![Flow Topology](/ui.gif)
 
-You just need to [develop some flow](developer-guide) in yaml and let Kestra all the others complex things for you : 
+You just need to [develop some flow](developer-guide) in yaml and let Kestra do all the others complex things for you : 
 - Deploying
 - Scaling
 - Monitoring 
