@@ -58,10 +58,10 @@ order: 4
 ```
 
 
-## `namotimestamp`: Current nano timestamp 
+## `nanotimestamp`: Current nano timestamp 
 
 ```handlebars
-   {{namotimestamp}}
+   {{nanotimestamp}}
 ```
 
 
