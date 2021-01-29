@@ -17,7 +17,7 @@ Kestra plugins development requirements are :
 
 Here is the step:
 
-1. Go on the [plugin-template]() repository.
+1. Go on the [plugin-template](https://github.com/kestra-io/plugin-template) repository.
 2. Click on *Use this template*.
 3. Choose the github account your want to link & repository name for the new plugins.
 4. Clone the new repository: `git clone git@github.com:{{user}}/{{name}}.git`.
