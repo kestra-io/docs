@@ -3,7 +3,7 @@
 
 
 ```yaml
-type: "org.kestra.core.models.triggers.types.Schedule"
+type: "org.kestra.core.models.triggers.types.Flow"
 ```
 
 > Kestra is able to trigger flow after another one. This allows chaining flow without need to update the base flows. 
@@ -37,6 +37,36 @@ triggers:
       - type: org.kestra.core.models.conditions.types.ExecutionStatusCondition
         in:
           - SUCCESS
+```
+
+> This flow will be triggered after successfully execution of flow both `flow-a` & `flow-b` during the current day. When the conditions is meet, all is the counter is reset and can be re-triggered during the current day. See [MultipleCondition](/plugins/core/conditions/org.kestra.core.models.conditions.types.MultipleCondition.html) for more details
+```yaml
+id: trigger-multiplecondition-listener
+namespace: org.kestra.tests
+
+tasks:
+  - id: only-listener
+    type: org.kestra.core.tasks.debugs.Return
+    format: "let's go "
+
+triggers:
+  - id: multiple-listen-flow
+    type: org.kestra.core.models.triggers.types.Flow
+    conditions:
+      - id: multiple
+        type: org.kestra.core.models.conditions.types.MultipleCondition
+        window: P1D
+        windowAdvance: P0D
+        conditions:
+          flow-a:
+            type: org.kestra.core.models.conditions.types.ExecutionFlowCondition
+            namespace: org.kestra.tests
+            flowId: trigger-multiplecondition-flow-a
+          flow-b:
+            type: org.kestra.core.models.conditions.types.ExecutionFlowCondition
+            namespace: org.kestra.tests
+            flowId: trigger-multiplecondition-flow-b
+
 ```
 
 ## Inputs
