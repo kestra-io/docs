@@ -99,3 +99,16 @@ kestra:
     defaults:
       consumer-prefix: "uat_kestra"
 ```
+
+## `kestra.kafka.defaults.topic-prefix`
+This configuration allow you to change the topic prefix. By default, the prefix will be `kestra_`.
+
+For example, if you want to share a common Kafka cluster for the multiple instance of Kestra, just add another prefix like this :
+
+```yaml
+kestra:
+  kafka:
+    defaults:
+      topic-prefix: "uat_kestra"
+```
+

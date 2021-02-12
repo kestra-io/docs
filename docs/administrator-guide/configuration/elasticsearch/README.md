@@ -25,3 +25,15 @@ kestra:
         username: "<your-user>"
         password: "<your-password>"
 ```
+
+## `kestra.elasticsearch.defaults.indice-prefix`
+This configuration allow you to change the indices prefix. By default, the prefix will be `kestra_`.
+
+For example, if you want to share a common Kafka cluster for the multiple instance of Kestra, just add another prefix like this :
+
+```yaml
+kestra:
+  elasticsearch:
+    defaults:
+      topic-prefix: "uat_kestra"
+```
