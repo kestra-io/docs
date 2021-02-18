@@ -31,8 +31,23 @@ Using this template context variable interpolates the bracket reference with the
 The `.value` in the template bracket that reach another task's output content is a value that depends on what data is produced per value. In our case, for the **Return** task, the `value` content is filled with the output. It could be `bq_table` for another task implemented for big query management. Have a look at each task documentation for specific information about what context variable are filled with ouput contents.
 :::
 
+## Dynamic variables
 
-## Specific outputs for dynamic tasks
+#### Current value
+You can access the current value with <code v-pre>{{ taskrun.value }}</code> like that:
+
+```yaml
+tasks:
+  - id: each
+    type: org.kestra.core.tasks.flows.EachSequential
+    value: '["value 1", "value 2", "value 3"]'
+    tasks:
+      - id: inner
+        type: org.kestra.core.tasks.debugs.Return
+        format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
+```
+
+###  Specific outputs for dynamic tasks
 
 Another more specific case for output management is the runtime generated tasks output variables. It is the case for the **EachSequential** or **EachParallel** task that produces dynamically other tasks depending on it's `value` property. In this case it is possible to reach each iteration output individually using the following syntax :
 
@@ -54,3 +69,63 @@ tasks:
 ```
 
 Here the `outputs.1_1-produce_output.s1.a.value` reach the first `1-output` task element.
+
+#### Previous task lookup
+It's also possible to locate a special task by his `value`:
+```yaml
+tasks:
+  - id: each
+    type: org.kestra.core.tasks.flows.EachSequential
+    value: '["value 1", "value 2", "value 3"]'
+    tasks:
+      - id: inner
+        type: org.kestra.core.tasks.debugs.Return
+        format: "{{task.id}}"
+  - id: end
+    type: org.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
+```
+with the format `outputs.TASKID.[VALUE].PROPERTY`. The special bracket `[]` in  `.[VALUE].` enable special chars like space (and can be remove without any special characters)
+
+#### Lookup in current childs tasks tree
+
+Sometime, it can be useful to access to previous outputs on current task tree, for example on
+[EachSequential](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachSequential.md),
+you iterate for a list of value, doing a first tasks (Download a file for example) and
+loading previous files to a database.
+
+For this, you can use function `get` :
+```yaml
+tasks:
+  - id: each
+    type: org.kestra.core.tasks.flows.EachSequential
+    value: '["value 1", "value 2", "value 3"]'
+    tasks:
+      - id: first
+        type: org.kestra.core.tasks.debugs.Return
+        format: "{{task.id}}"
+      - id: second
+        type: org.kestra.core.tasks.debugs.Return
+        format: "{{ (get outputs.first taskrun.value).value }}"
+  - id: end
+    type: org.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
+```
+
+or the function `eval` :
+```yaml
+tasks:
+  - id: each
+    type: org.kestra.core.tasks.flows.EachSequential
+    value: '["value 1", "value 2", "value 3"]'
+    tasks:
+      - id: first
+        type: org.kestra.core.tasks.debugs.Return
+        format: "{{task.id}}"
+      - id: second
+        type: org.kestra.core.tasks.debugs.Return
+        format: "{{ eval 'outputs.first.[{{taskrun.value}}].value' }}"
+  - id: end
+    type: org.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
+```
