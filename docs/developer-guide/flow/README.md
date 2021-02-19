@@ -85,6 +85,7 @@ taskDefaults:
 |`tasks.[].type`|The task type that is a full java class name.|
 |`tasks.[].description`|Description for documentation, more details [here](../documentation/) |
 |`tasks.[].disabled`|Disabled this task, will be keep on flow source, but never executed.|
+|`tasks.[].timeout`|Max duration of the current task, in a Duration format like `PT15M`.|
 |`tasks.[].xxx`|Each task type come with specific specific field that is documented on [plugins page](../../../plugins/)|
 |`errors`|A list of errors tasks the current flow, all tasks will be run sequentially and will be run only if there is any error on the current execution.|
 |`errors.[].xxx`|The same property as `tasks`, error can be any normal tasks, more details [here](../errors-handling/)  |

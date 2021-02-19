@@ -3,18 +3,18 @@ order: 6
 ---
 # Retries
 
-Kestra provide some task retry feature. This sub system makes it convinient to add **failed executions** retry behavior depending on retry configuration in flow description.
+Kestra provide some tasks retry feature. This sub system makes it convenient to add **failed executions** retry behavior depending on retry configuration in flow description.
 
 
 ## Example
 
-Below a flow sample that retry execute a task on failure maximum 5 times each 15 minutes :
+Below a flow sample that retry executes a task on failure maximum 5 times each 15 minutes :
 
 ```yaml
 - id: retry-sample
   type: org.kestra.core.tasks.debugs.Echo
   format: my output for task {{task.id}}
-  timeout: 1000
+  timeout: PT10M
   retry:
     maxAttempt: 5
     type: constant
