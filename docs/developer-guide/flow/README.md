@@ -25,6 +25,7 @@ inputs:
   - name: my-value
     type: STRING
     required: false
+    description: This is a not required my-value
 
 variables:
   first: "1"
@@ -79,6 +80,7 @@ taskDefaults:
 |`inputs.[].name`|The name for this inputs, allowing to use it as vars on the current flow|
 |`inputs.[].type`|The type for this inputs, for example (STRING, FILE, ...)|
 |`inputs.[].required`|If the input is required (and prevent flow to be executed without this input|
+|`inputs.[].description`|Description for documentation, more details [here](../documentation/) |
 |`variables`|A list of variables (as key, value) for the current flow that can be reach with <code v-pre>{{ vars.name }}</code>|
 |`tasks`|A list of related tasks the current flow, all tasks will be run sequentially.|
 |`tasks.[].id`|The task id that must be **unique** for current flow.|
