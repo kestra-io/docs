@@ -77,7 +77,7 @@ order: 4
 
 ```handlebars
    {{ dateAdd yourDate quantity "unit" [format="format"] [tz=timeZone|timeZoneId] }}
-   {{ dateAdd yourDate -1 "DAY" }}
+   {{ dateAdd yourDate -1 "DAYS" }}
 ```
 - `quantity`: an integer value positive or negative
 - `format`: Format parameters is one of :
