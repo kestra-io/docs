@@ -3,17 +3,17 @@
 
 
 ```yaml
-type: "org.kestra.core.models.triggers.types.Flow"
+type: "io.kestra.core.models.triggers.types.Flow"
 ```
 
 > Kestra is able to trigger flow after another one. This allows chaining flow without need to update the base flows. 
   With that, you can break responsibility between different flow to different teams.
 
 ## Example
-> This flow will be triggered after each successfully execution of flow `org.kestra.tests.trigger-flow` and forward the `uri` of `my-task` taskId outputs.
+> This flow will be triggered after each successfully execution of flow `io.kestra.tests.trigger-flow` and forward the `uri` of `my-task` taskId outputs.
 ```yaml
 id: trigger-flow-listener
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 revision: 1
 
 inputs:
@@ -22,49 +22,49 @@ inputs:
 
 tasks:
   - id: only-no-input
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "v1: {{trigger.executionId}}"
 
 triggers:
   - id: listen-flow
-    type: org.kestra.core.models.triggers.types.Flow
+    type: io.kestra.core.models.triggers.types.Flow
     inputs:
       from-parent: '{{ outputs.my-task.uri }}'
     conditions:
-      - type: org.kestra.core.models.conditions.types.ExecutionFlowCondition
-        namespace: org.kestra.tests
+      - type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+        namespace: io.kestra.tests
         flowId: trigger-flow
-      - type: org.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
         in:
           - SUCCESS
 ```
 
-> This flow will be triggered after the successful execution of both flows `flow-a` & `flow-b` during the current day. When the conditions are met, the counter is reset and can be re-triggered during the same day. See [MultipleCondition](/plugins/core/conditions/org.kestra.core.models.conditions.types.MultipleCondition.html) for more details
+> This flow will be triggered after the successful execution of both flows `flow-a` & `flow-b` during the current day. When the conditions are met, the counter is reset and can be re-triggered during the same day. See [MultipleCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.MultipleCondition.html) for more details
 ```yaml
 id: trigger-multiplecondition-listener
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: only-listener
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "let's go "
 
 triggers:
   - id: multiple-listen-flow
-    type: org.kestra.core.models.triggers.types.Flow
+    type: io.kestra.core.models.triggers.types.Flow
     conditions:
       - id: multiple
-        type: org.kestra.core.models.conditions.types.MultipleCondition
+        type: io.kestra.core.models.conditions.types.MultipleCondition
         window: P1D
         windowAdvance: P0D
         conditions:
           flow-a:
-            type: org.kestra.core.models.conditions.types.ExecutionFlowCondition
-            namespace: org.kestra.tests
+            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            namespace: io.kestra.tests
             flowId: trigger-multiplecondition-flow-a
           flow-b:
-            type: org.kestra.core.models.conditions.types.ExecutionFlowCondition
-            namespace: org.kestra.tests
+            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            namespace: io.kestra.tests
             flowId: trigger-multiplecondition-flow-b
 
 ```

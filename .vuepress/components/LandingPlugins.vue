@@ -67,17 +67,17 @@
                     {
                         name: "Bash",
                         icon: "mdi mdi-bash",
-                        href: "core/tasks/scripts/org.kestra.core.tasks.scripts.Bash",
+                        href: "core/tasks/scripts/io.kestra.core.tasks.scripts.Bash",
                     },
                     {
                         name: "Python",
                         icon: "mdi mdi-language-python",
-                        href: "core/tasks/scripts/org.kestra.core.tasks.scripts.Python",
+                        href: "core/tasks/scripts/io.kestra.core.tasks.scripts.Python",
                     },
                     {
                         name: "Node",
                         icon: "mdi mdi-nodejs",
-                        href: "core/tasks/scripts/org.kestra.core.tasks.scripts.Node",
+                        href: "core/tasks/scripts/io.kestra.core.tasks.scripts.Node",
                     },
                     {
                         name: "Amazon S3",

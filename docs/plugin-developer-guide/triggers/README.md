@@ -46,7 +46,7 @@ public class Trigger extends AbstractTrigger implements PollingTriggerInterface,
 
     @Builder
     @Getter
-    public class Random implements org.kestra.core.models.tasks.Output {
+    public class Random implements io.kestra.core.models.tasks.Output {
         private Double random;
     }
 }

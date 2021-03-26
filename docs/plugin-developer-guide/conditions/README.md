@@ -22,8 +22,8 @@ Here is a simple condition example that validate the current flow:
             full = true,
             code = {
                 "- conditions:",
-                "    - type: org.kestra.core.models.conditions.types.FlowCondition",
-                "      namespace: org.kestra.tests",
+                "    - type: io.kestra.core.models.conditions.types.FlowCondition",
+                "      namespace: io.kestra.tests",
                 "      flowId: my-current-flow"
             }
         )

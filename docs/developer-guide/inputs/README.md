@@ -27,7 +27,7 @@ found on the executions list.
 Examples: 
 ```yaml
 id: my-flow
-namespace: org.kestra.docs
+namespace: io.kestra.docs
 
 inputs:
   - name: string
@@ -95,7 +95,7 @@ You can use the value of the inputs with <code v-pre>{{ inputs.my-value }}</code
 ## Send inputs programmatically 
 The flow `my-flow` above can be triggered programmaticaly, here is an example with `curl`:
 ```bash
-curl -v "http://kestra:8080/api/v1/executions/trigger/org.kestra.docs/my-flow" \
+curl -v "http://kestra:8080/api/v1/executions/trigger/io.kestra.docs/my-flow" \
     -H "Transfer-Encoding:chunked" \
     -H "Content-Type:multipart/form-data" \
     -F string="a string"  \

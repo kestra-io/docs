@@ -54,11 +54,11 @@ Here some example usage :
 
 ```yaml
 id: context-example
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: echo
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: |
       taskid: {{task.id}}
       date: {{ instantFormat execution.startDate "yyyy-MM-dd HH:mm:ss.SSSSSS" }}
@@ -69,7 +69,7 @@ You can use any [inputs](../inputs/README.md) using his `name`, example:
 
 ```yaml
 id: context-inputs
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 inputs:
   - name: myinput
@@ -77,7 +77,7 @@ inputs:
 
 tasks:
   - id: mytask
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{inputs.myinput}}"
 ```
 
@@ -90,7 +90,7 @@ documentation of one.
 
 ```yaml
 id: context-outpouts
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
     - id: task-id

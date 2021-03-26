@@ -11,7 +11,7 @@ but we will provide some tips, and most useful to help you to configure micronau
 ```yaml
 logger:
   levels:
-    org.kestra.runner: TRACE
+    io.kestra.runner: TRACE
     org.elasticsearch.client: TRACE
     org.elasticsearch.client.sniffer: TRACE
     org.apache.kafka: DEBUG

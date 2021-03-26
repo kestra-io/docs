@@ -28,11 +28,11 @@ specially when you have some big text inside the flow (example, sql statement, .
 Let's take an example : 
 ```yaml
 id: include
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
 - id: t1
-  type: org.kestra.core.tasks.debugs.Return
+  type: io.kestra.core.tasks.debugs.Return
   format: |
     Lorem Ipsum is simply dummy text of the printing 
     .....
@@ -42,11 +42,11 @@ tasks:
 You can replace the flow with this one : 
 ```yaml
 id: include
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
 - id: t1
-  type: org.kestra.core.tasks.debugs.Return
+  type: io.kestra.core.tasks.debugs.Return
   format: "[[> lorem.txt]]"
 ``` 
 and have a local file `lorem.txt` with the large content. 

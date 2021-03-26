@@ -33,19 +33,19 @@ We will create the first one :
 
 ```yaml
 id: logs
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
 - id: t1
-  type: org.kestra.core.tasks.debugs.Echo
+  type: io.kestra.core.tasks.debugs.Echo
   format: first {{task.id}}
   level: TRACE
 - id: t2
-  type: org.kestra.core.tasks.debugs.Echo
+  type: io.kestra.core.tasks.debugs.Echo
   format: second {{task.type}}
   level: WARN
 - id: t3
-  type: org.kestra.core.tasks.debugs.Echo
+  type: io.kestra.core.tasks.debugs.Echo
   format: third {{flow.id}}
   level: ERROR
 ```

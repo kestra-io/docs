@@ -12,7 +12,7 @@ Below a flow sample that retry executes a task on failure maximum 5 times each 1
 
 ```yaml
 - id: retry-sample
-  type: org.kestra.core.tasks.debugs.Echo
+  type: io.kestra.core.tasks.debugs.Echo
   format: my output for task {{task.id}}
   timeout: PT10M
   retry:

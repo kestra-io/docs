@@ -2,7 +2,7 @@
 # Webhook
 
 ```yaml
-type: "org.kestra.core.models.triggers.types.Webhook"
+type: "io.kestra.core.models.triggers.types.Webhook"
 ```
 
 > Webbook trigger allow you to trigger a flow from a webhook url.
@@ -15,14 +15,14 @@ type: "org.kestra.core.models.triggers.types.Webhook"
 ```yaml
 triggers:
   - id: webhook
-    type: org.kestra.core.models.triggers.types.Webhook
+    type: io.kestra.core.models.triggers.types.Webhook
 ```
 > After the trigger is created, a key will be created that will be use in the webhook url, now, you can launch the flow on the url `/api/v1/executions/webhook/{namespace}/[flowId]/4wjtkzwVGBM9yKnjm3yv8r`
 
 ```yaml
 triggers:
   - id: webhook
-    type: org.kestra.core.models.triggers.types.Webhook
+    type: io.kestra.core.models.triggers.types.Webhook
     key: 4wjtkzwVGBM9yKnjm3yv8r
 ```
 

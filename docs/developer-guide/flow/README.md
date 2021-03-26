@@ -16,7 +16,7 @@ The following code is a sample existing task in Kestra for testing purposes.
 
 ```yaml
 id: samples 
-namespace: org.kestra.tests 
+namespace: io.kestra.tests 
 revision: 8
 
 description: "Some flow **documentation** in *Markdown*"
@@ -34,38 +34,38 @@ variables:
 
 tasks: 
   - id: date 
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     description: "Some tasks **documentation** in *Markdown*"
     disabled: false
     format: "A log line content with a contextual date variable {{taskrun.startDate}}" 
 
 errors: 
   - id: failed-echo 
-    type: org.kestra.core.tasks.debugs.Echo  
+    type: io.kestra.core.tasks.debugs.Echo  
     format: I'm failing {{task.id}}
 
 listeners:
   - description: "some listener **documentation** in *Markdown*"
     conditions:
-      - type: org.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
         in:
           - SUCCESS
     tasks:
       - id: execution-failed-listener
-        type: org.kestra.core.tasks.scripts.Bash
+        type: io.kestra.core.tasks.scripts.Bash
         commands:
           - echo "I'm a listeners"
 
 triggers:
   - id: monthly
-    type: org.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.core.models.triggers.types.Schedule
     description: "some trigger **documentation** in *Markdown*"
     cron: 0 0 1 * *
     backfill:
       start: 2020-01-01T00:00:00+02:00
 
 taskDefaults:
-  - type: org.kestra.core.tasks.debugs.Echo
+  - type: io.kestra.core.tasks.debugs.Echo
     level: ERROR
 ```
 

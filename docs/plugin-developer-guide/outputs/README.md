@@ -3,9 +3,9 @@ order: 7
 ---
 # Outputs & Metrics from a script engine
 
-Kestra can catch outputs & metrics from any scripting language. In the core, [Python](../../../plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Python.md) & [Node](../../../plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Node.md) inject an package to help you!
+Kestra can catch outputs & metrics from any scripting language. In the core, [Python](../../../plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Python.md) & [Node](../../../plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Node.md) inject an package to help you!
 
-If you are using another language like [Bash](../../../plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Bash.md) or another one, we don't provide any package to help, but you can easily do it with simple echo on stdout.
+If you are using another language like [Bash](../../../plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.md) or another one, we don't provide any package to help, but you can easily do it with simple echo on stdout.
 
 ## Script command 
 

@@ -16,10 +16,10 @@ Here how to use output between tasks into a flow:
 ```yaml
 tasks:
 - id: produce-output
-  type: org.kestra.core.tasks.debugs.Return
+  type: io.kestra.core.tasks.debugs.Return
   format: my output {{ execution.id }}
 - id: use-output
-  type: org.kestra.core.tasks.debugs.Echo
+  type: io.kestra.core.tasks.debugs.Echo
   format: This task display previous task output {{ outputs.produce-output.value }}
 ```
 
@@ -39,11 +39,11 @@ You can access the current value with <code v-pre>{{ taskrun.value }}</code> lik
 ```yaml
 tasks:
   - id: each
-    type: org.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.core.tasks.flows.EachSequential
     value: '["value 1", "value 2", "value 3"]'
     tasks:
       - id: inner
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
 ```
 
@@ -53,18 +53,18 @@ Another more specific case for output management is the runtime generated tasks 
 
 ```yaml
 id: output-sample
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: 1-output
-    type: org.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.core.tasks.flows.EachSequential
     value: '["s1", "s2", "s3"]'
     tasks:
         - id: 1_1-produce_output
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
   - id: 2_use_output
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "Previous task produced output : {{outputs.1_1-produce_output.s1.a.value}}"
 ```
 
@@ -75,14 +75,14 @@ It's also possible to locate a special task by his `value`:
 ```yaml
 tasks:
   - id: each
-    type: org.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.core.tasks.flows.EachSequential
     value: '["value 1", "value 2", "value 3"]'
     tasks:
       - id: inner
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}}"
   - id: end
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
 ```
 with the format `outputs.TASKID.[VALUE].PROPERTY`. The special bracket `[]` in  `.[VALUE].` enable special chars like space (and can be remove without any special characters)
@@ -90,7 +90,7 @@ with the format `outputs.TASKID.[VALUE].PROPERTY`. The special bracket `[]` in  
 #### Lookup in current childs tasks tree
 
 Sometime, it can be useful to access to previous outputs on current task tree, for example on
-[EachSequential](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachSequential.md),
+[EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md),
 you iterate for a list of value, doing a first tasks (Download a file for example) and
 loading previous files to a database.
 
@@ -98,17 +98,17 @@ For this, you can use function `get` :
 ```yaml
 tasks:
   - id: each
-    type: org.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.core.tasks.flows.EachSequential
     value: '["value 1", "value 2", "value 3"]'
     tasks:
       - id: first
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}}"
       - id: second
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{ (get outputs.first taskrun.value).value }}"
   - id: end
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
 ```
 
@@ -116,16 +116,16 @@ or the function `eval` :
 ```yaml
 tasks:
   - id: each
-    type: org.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.core.tasks.flows.EachSequential
     value: '["value 1", "value 2", "value 3"]'
     tasks:
       - id: first
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}}"
       - id: second
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{ eval 'outputs.first.[{{taskrun.value}}].value' }}"
   - id: end
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
 ```

@@ -15,16 +15,16 @@ This example processes a task which fails immediately. Then a tasks sequence is 
 
 ```yaml
 id: errors
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: failed
-    type: org.kestra.core.tasks.scripts.Bash
+    type: io.kestra.core.tasks.scripts.Bash
     commands:
       - exit 1
 errors:
   - id: 2nd
-    type: org.kestra.core.tasks.debugs.Echo
+    type: io.kestra.core.tasks.debugs.Echo
     format: I'm failing {{task.id}}
     level: INFO
 ```
@@ -37,25 +37,25 @@ In this specific example, if the task `t1` failed, no errors will be used. This 
 
 ```yaml
 id: errors
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: parent-seq
-    type: org.kestra.core.tasks.flows.Sequential
+    type: io.kestra.core.tasks.flows.Sequential
     tasks:
       - id: t1
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.startDate}}"
       - id: t2
-        type: org.kestra.core.tasks.flows.Sequential
+        type: io.kestra.core.tasks.flows.Sequential
         tasks:
           - id: t2-t1
-            type: org.kestra.core.tasks.scripts.Bash
+            type: io.kestra.core.tasks.scripts.Bash
             commands:
               - 'exit 1'
         errors:
           - id: error-t1
-            type: org.kestra.core.tasks.debugs.Return
+            type: io.kestra.core.tasks.debugs.Return
             format: "Error Trigger ! {{task.id}}"
 ```
 

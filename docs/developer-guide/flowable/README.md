@@ -19,25 +19,25 @@ Mostly use in order to group tasks.
 
 ```yaml
 id: sequential
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: sequential
-    type: org.kestra.core.tasks.flows.Sequential
+    type: io.kestra.core.tasks.flows.Sequential
     tasks:
       - id: 1st
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.startDate}}"
       - id: 2nd
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.id}}"
   - id: last
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
 <div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Sequential">Sequential Task documentation</a> 
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential">Sequential Task documentation</a> 
 </div>
 
 
@@ -47,25 +47,25 @@ This flow processes tasks in parallel. It makes it convinient to process many ta
 
 ```yaml
 id: parallel
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: parallel
-    type: org.kestra.core.tasks.flows.Parallel
+    type: io.kestra.core.tasks.flows.Parallel
     tasks:
       - id: 1st
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.startDate}}"
       - id: 2nd
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.id}}"
   - id: last
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
 <div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Parallel">Parallel Task documentation</a> 
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel">Parallel Task documentation</a> 
 </div>
 
 
@@ -76,7 +76,7 @@ In this case, an input value will trigger only some parts of the flow.
 
 ```yaml
 id: switch
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 inputs:
   - name: string
@@ -85,29 +85,29 @@ inputs:
 
 tasks:
   - id: switch
-    type: org.kestra.core.tasks.flows.Switch
+    type: io.kestra.core.tasks.flows.Switch
     value: "{{inputs.string}}"
     cases:
       FIRST:
         - id: 1st
-          type: org.kestra.core.tasks.debugs.Return
+          type: io.kestra.core.tasks.debugs.Return
           format: "{{task.id}} > {{taskrun.startDate}}"
       SECOND:
         - id: 2nd
-          type: org.kestra.core.tasks.debugs.Return
+          type: io.kestra.core.tasks.debugs.Return
           format: "{{task.id}} > {{taskrun.startDate}}"
       THIRD:
         - id: 3th
-          type: org.kestra.core.tasks.debugs.Return
+          type: io.kestra.core.tasks.debugs.Return
           format: "{{task.id}} > {{taskrun.startDate}}"
     defaults:
       - id: default
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
 <div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Switch">Switch Task documentation</a> 
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch">Switch Task documentation</a> 
 </div>
 
 
@@ -119,26 +119,26 @@ trigger an arbitrary number of subtasks. Each subtask will run after others sequ
 
 ```yaml
 id: each
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: each
-    type: org.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.core.tasks.flows.EachSequential
     value: '["value 1", "value 2", "value 3"]'
     tasks:
       - id: 1st
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
       - id: 2nd
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
   - id: last
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
 <div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a> 
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a> 
 </div>
 
 ## EachParallel
@@ -147,30 +147,30 @@ This flow is the same as EachSequential but each subtask will run after in paral
 
 ```yaml
 id: each-parallel
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: 1_each
-    type: org.kestra.core.tasks.flows.EachParallel
+    type: io.kestra.core.tasks.flows.EachParallel
     value: '["value 1", "value 2", "value 3"]'
     tasks:
       - id: 1-1
-        type: org.kestra.core.tasks.scripts.Bash
+        type: io.kestra.core.tasks.scripts.Bash
         commands:
           - 'echo "{{task.id}} > $(date +"%T.%N")"'
           - 'sleep 1'
       - id: 1-2
-        type: org.kestra.core.tasks.scripts.Bash
+        type: io.kestra.core.tasks.scripts.Bash
         commands:
           - 'echo "{{task.id}} > $(date +"%T.%N")"'
           - 'sleep 1'
   - id: 2_end
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
 <div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachParallel">EachParallel Task documentation</a> 
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel">EachParallel Task documentation</a> 
 </div>
 
 
@@ -190,26 +190,26 @@ In this example:
 
 ```yaml
 id: each
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: allow-failure
-    type: org.kestra.core.tasks.flows.AllowFailure
+    type: io.kestra.core.tasks.flows.AllowFailure
     tasks:
       - id: ko
-        type: org.kestra.core.tasks.scripts.Bash
+        type: io.kestra.core.tasks.scripts.Bash
         commands:
           - 'exit 1'
       - id: next
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.startDate}}"
   - id: end
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
 <div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.AllowFailure">AllowFailure Task documentation</a> 
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.AllowFailure">AllowFailure Task documentation</a> 
 </div>
 
 
@@ -222,12 +222,12 @@ You can pass [outputs](../outputs) to the trigger flow as [inputs](../inputs) (t
 
 ```yaml
 id: each
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 revision: 8
 tasks:
   - id: "subflow"  
-    type: org.kestra.core.tasks.flows.Flow
-    namespace: org.kestra.tests
+    type: io.kestra.core.tasks.flows.Flow
+    namespace: io.kestra.tests
     flowId: my-sub-flows
     inputs:
       file: "{{ outputs.my-task.files.resolver' }}"
@@ -235,7 +235,7 @@ tasks:
 ```
 
 <div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Flow">Flow Task documentation</a> 
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Flow">Flow Task documentation</a> 
 </div>
 
 
@@ -245,15 +245,15 @@ You defined the template and can use on every flow you want, allowing to share t
 
 ```yaml
 id: each
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 revision: 8
 tasks:
   - id: template
-    type: org.kestra.core.tasks.flows.Template
-    namespace: org.kestra.tests
+    type: io.kestra.core.tasks.flows.Template
+    namespace: io.kestra.tests
     templateId: template
 ```
 
 <div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Template">Template Task documentation</a> 
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template">Template Task documentation</a> 
 </div>

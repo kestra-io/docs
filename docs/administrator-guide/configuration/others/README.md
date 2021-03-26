@@ -60,7 +60,7 @@ Mostly it will allow you to be sure a value was defined at a default value for t
 kestra:
   tasks:
     defaults:
-    - type: org.kestra.core.tasks.debugs.Echo
+    - type: io.kestra.core.tasks.debugs.Echo
       level: ERROR
 ```
 These variables will be accessible on flow with <code v-pre>{{ globals.env }}</code>
@@ -75,7 +75,7 @@ These variables will be accessible on flow with <code v-pre>{{ globals.env }}</c
 
 ### `kestra.server.access-log`: Access Log configuration
 - `kestra.server.access-log.enabled`: Enabled access log from webserver (default `true`)
-- `kestra.server.access-log.name`: Logger name (default `org.kestra.webserver.access`)
+- `kestra.server.access-log.name`: Logger name (default `io.kestra.webserver.access`)
 - `kestra.server.access-log.format`: Access log format (default `[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]`)
 - `kestra.server.access-log.filters`: list of regexp that will log, use `.*` to enable all  (default `- ".*\\[Url: /api/.*"`)
 
@@ -85,7 +85,7 @@ kestra:
   server:
     access-log:
       enabled: true
-      name: org.kestra.webserver.access
+      name: io.kestra.webserver.access
       format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
       filters:
         - ".*\\[Url: /api/.*"

@@ -16,7 +16,7 @@ globals:
 
 task:
   id: float
-  type: org.kestra.core.tasks.debugs.Return
+  type: io.kestra.core.tasks.debugs.Return
 
 taskrun:
   id: 5vPQJxRGCgJJ4mubuIJOUf
@@ -42,7 +42,7 @@ parents:
 
 flow:
   id: inputs
-  namespace: org.kestra.tests
+  namespace: io.kestra.tests
 
 execution:
   id: 42mXSJ1MRCdEhpbGNPqeES
@@ -79,7 +79,7 @@ Most important in Kestra is the ability to use all outputs from previous tasks i
 ### Without dynamic tasks (Each)
 This is the most common way and the simplest one. In order to get a variables, just use <code v-pre>{{ outputs.ID.NAME }}</code> where : 
 * `ID` is the task id
-* `NAME` is the name of the outputs, each task type can have any outputs that is documentated on the part outputs of their docs. For example, [Bash task](/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Bash.html#outputs) can have <code v-pre>{{ outputs.ID.exitCode }}</code>, <code v-pre>{{ outputs.ID.outputFiles }}</code>, <code v-pre>{{ outputs.ID.stdErrLineCount }}</code>, ...
+* `NAME` is the name of the outputs, each task type can have any outputs that is documentated on the part outputs of their docs. For example, [Bash task](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.html#outputs) can have <code v-pre>{{ outputs.ID.exitCode }}</code>, <code v-pre>{{ outputs.ID.outputFiles }}</code>, <code v-pre>{{ outputs.ID.stdErrLineCount }}</code>, ...
 
 ### With dynamic tasks (Each)
 This case are more complicated since Kestra will change the way the outputs are generated, since you multiple task with the same id, you will need to use <code v-pre>{{ outputs.ID.VALUE.NAME }}</code>.
@@ -90,21 +90,21 @@ But what about if I have a more complex flow, for example, an each containning 1
 
 ```yaml
 id: each-sequential-nested
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: each
-    type: org.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.core.tasks.flows.EachSequential
     value: '["s1", "s2", "s3"]'
     tasks:
       - id: t1
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.value}}"
       - id: t2
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{ (get outputs.t1 taskrun.value).value }} > {{taskrun.startDate}}"
   - id: end
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}}"
 ```
 
@@ -117,48 +117,48 @@ Look at this flow :
 
 ```yaml
 id: each-switch
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: t1
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
   - id: 2_each
-    type: org.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.core.tasks.flows.EachSequential
     value: '["a", "b"]'
     tasks:
       # Switch
       - id: 2-1_switch
-        type: org.kestra.core.tasks.flows.Switch
+        type: io.kestra.core.tasks.flows.Switch
         value: "{{taskrun.value}}"
         cases:
           a:
             - id: 2-1_switch-letter-a
-              type: org.kestra.core.tasks.debugs.Return
+              type: io.kestra.core.tasks.debugs.Return
               format: "{{task.id}}"
           b:
             - id: 2-1_switch-letter-b
-              type: org.kestra.core.tasks.debugs.Return
+              type: io.kestra.core.tasks.debugs.Return
               format: "{{task.id}}"
 
             - id: 2-1_each
-              type: org.kestra.core.tasks.flows.EachSequential
+              type: io.kestra.core.tasks.flows.EachSequential
               value: '["1", "2"]'
               tasks:
               - id: 2-1-1_switch
-                type: org.kestra.core.tasks.flows.Switch
+                type: io.kestra.core.tasks.flows.Switch
                 value: "{{taskrun.value}}"
                 cases:
                   1:
                     - id: 2-1-1_switch-number-1
-                      type: org.kestra.core.tasks.debugs.Return
+                      type: io.kestra.core.tasks.debugs.Return
                       format: "{{parents.[0].taskrun.value}}"
                   2:
                     - id: 2-1-1_switch-number-2
-                      type: org.kestra.core.tasks.debugs.Return
+                      type: io.kestra.core.tasks.debugs.Return
                       format: "{{parents.[0].taskrun.value}} {{parents.[1].taskrun.value}}"
   - id: 2_end
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 
 ```

@@ -7,28 +7,53 @@ order: 9
 The template include a [GitHub Actions](https://github.com/features/actions) workflow in order to test.
 Feel free to add any step to start containers for integration, deploy to artifactory, ...
 
-## Publish on Bintray
-The template also include a gradle task that will publish to [Bintray](https://bintray.com/) account. 
+## Publish on Maven Central
+The template also include a gradle task that will publish to [Maven Central](https://central.sonatype.org/pages/producers.html). We will need to register to be able to publish to maven central. 
 
-You only need export to env vars : 
-
-- `BINTRAY_USER`: your bintray username
-- `BINTRAY_KEY`: your bintray key.
-
-You can customize the `build.gradle` to fit with your bintray account, the default one is the `kestra` account that you will not have any right to publish.
-
-You can also add this step to publish to bintray on the `.github/workflows/main.yml` files: 
+You only need configure the `gradle.properties` to have all required properties  : 
 
 ```yaml
-      # Publish package
-      - name: Publish package
-        if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/master'
-        env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-        run: ./gradlew bintrayUpload --parallel --no-daemon
+sonatypeUsername=
+sonatypePassword=
+signing.keyId=
+signing.password=
+signing.secretKeyRingFile=
+
 ```
 
-## To others artifact manager
-Since Kestra plugins are a simple java app, you can customize the Github Actions and the gradle build to publish anywhere.
-Just look at for your artifact gradle plugins and add this to both.
+
+There is a preconfigured GitHub Actions in `.github/workflows/main.yml` files that you customized to your need:
+```yaml
+      # Publish
+      - name: Publish package to Sonatype
+        if: github.ref == 'refs/heads/master'
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USER }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
+          SONATYPE_GPG_KEYID: ${{ secrets.SONATYPE_GPG_KEYID }}
+          SONATYPE_GPG_PASSWORD: ${{ secrets.SONATYPE_GPG_PASSWORD }}
+          SONATYPE_GPG_FILE: ${{ secrets.SONATYPE_GPG_FILE }}
+        run: |
+          echo "signing.keyId=${SONATYPE_GPG_KEYID}" > ~/.gradle/gradle.properties
+          echo "signing.password=${SONATYPE_GPG_PASSWORD}" >> ~/.gradle/gradle.properties
+          echo "signing.secretKeyRingFile=${HOME}/.gradle/secring.gpg" >> ~/.gradle/gradle.properties
+          echo ${SONATYPE_GPG_FILE} | base64 -d > ~/.gradle/secring.gpg
+          ./gradlew publishToSonatype
+
+      # Release
+      - name: Release package to Maven Central
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USER }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
+          SONATYPE_GPG_KEYID: ${{ secrets.SONATYPE_GPG_KEYID }}
+          SONATYPE_GPG_PASSWORD: ${{ secrets.SONATYPE_GPG_PASSWORD }}
+          SONATYPE_GPG_FILE: ${{ secrets.SONATYPE_GPG_FILE }}
+        run: |
+          echo "signing.keyId=${SONATYPE_GPG_KEYID}" > ~/.gradle/gradle.properties
+          echo "signing.password=${SONATYPE_GPG_PASSWORD}" >> ~/.gradle/gradle.properties
+          echo "signing.secretKeyRingFile=${HOME}/.gradle/secring.gpg" >> ~/.gradle/gradle.properties
+          echo ${SONATYPE_GPG_FILE} | base64 -d > ~/.gradle/secring.gpg
+          ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+```
+

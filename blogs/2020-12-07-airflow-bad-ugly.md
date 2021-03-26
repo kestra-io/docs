@@ -177,8 +177,8 @@ You can use
 Since all these allow you to define complex workflow, Airflow lack of some major features in my opinion !
 
 ### First one are dynamic tasks.
-I mean create as many tasks depending on previous tasks like [Each](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.EachSequential). 
-In Airflow, this is impossible, some people try to [trigger others](https://github.com/mastak/airflow_multi_dagrun) dags to emulate this (like or [Flow](/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Flow)), but this will complexify the monitoring of your flow. 
+I mean create as many tasks depending on previous tasks like [Each](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential). 
+In Airflow, this is impossible, some people try to [trigger others](https://github.com/mastak/airflow_multi_dagrun) dags to emulate this (like or [Flow](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Flow)), but this will complexify the monitoring of your flow. 
 We will need to follow 2 dags in order to understand what is the issue, the main flow is success and the child are not, really complicated ! 
 
 ### Second are sensors. 

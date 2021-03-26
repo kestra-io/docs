@@ -2,7 +2,7 @@
 # Schedule
 
 ```yaml
-type: "org.kestra.core.models.triggers.types.Schedule"
+type: "io.kestra.core.models.triggers.types.Schedule"
 ```
 
 > Kestra is able to trigger flow based on Schedule (aka the time). If you need to wait another system to be ready and can't use any event mechanism, you can schedule 1 or more time for the current flow.
@@ -12,7 +12,7 @@ type: "org.kestra.core.models.triggers.types.Schedule"
 ```yaml
 triggers:
   - id: schedule
-    type: org.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.core.models.triggers.types.Schedule
     cron: "*/15 * * * *"
     backfill:
       start: 2020-06-25T14:00:00Z

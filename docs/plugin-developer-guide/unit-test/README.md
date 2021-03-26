@@ -62,7 +62,7 @@ class ExampleRunnerTest {
     @SuppressWarnings("unchecked")
     @Test
     void flow() throws TimeoutException {
-        Execution execution = runnerUtils.runOne("org.kestra.templates", "example");
+        Execution execution = runnerUtils.runOne("io.kestra.templates", "example");
 
         assertThat(execution.getTaskRunList(), hasSize(3));
         assertThat(((Map<String, Object>)execution.getTaskRunList().get(2).getOutputs().get("child")).get("value"), is("task-id"));
@@ -73,7 +73,7 @@ class ExampleRunnerTest {
 with this, you will : 
 - Inject all dependencies with `@MicronautTest`
 - on `init()`, load all the flow on the `src/resources/flow` directory.
-- run an full execution with `Execution execution = runnerUtils.runOne("org.kestra.templates", "example");` 
+- run an full execution with `Execution execution = runnerUtils.runOne("io.kestra.templates", "example");` 
 
 With this execution, you can look at all the properties you want to control (status, taskRunList number, outputs, ...)
 
@@ -94,10 +94,10 @@ kestra:
 
 And these dependencies on your `build.gradle` : 
 ```groovy
-    testImplementation group: "org.kestra", name: "core", version: kestraVersion
-    testImplementation group: "org.kestra", name: "repository-memory", version: kestraVersion
-    testImplementation group: "org.kestra", name: "runner-memory", version: kestraVersion
-    testImplementation group: "org.kestra", name: "storage-local", version: kestraVersion
+    testImplementation group: "io.kestra", name: "core", version: kestraVersion
+    testImplementation group: "io.kestra", name: "repository-memory", version: kestraVersion
+    testImplementation group: "io.kestra", name: "runner-memory", version: kestraVersion
+    testImplementation group: "io.kestra", name: "storage-local", version: kestraVersion
 ```
 
 this will enabled the in memory runner to work and to run your flow without any others dependencies (kafka, ...)

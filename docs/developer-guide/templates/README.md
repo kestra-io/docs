@@ -8,7 +8,7 @@ Templates are list of tasks that can be shared between flows. You can define a t
 All tasks in a template will be executed sequentially, you can provide the same tasks than in *standard* flow and you can also have an *errros* path. 
 
 <div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/org.kestra.core.tasks.flows.Template">Template Task documentation</a> 
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template">Template Task documentation</a> 
 </div>
 
 ## Example
@@ -16,7 +16,7 @@ All tasks in a template will be executed sequentially, you can provide the same 
 Below a flow sample that will include a template :
 ```yaml
 id: with-template
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 inputs:
   - name: store
@@ -25,8 +25,8 @@ inputs:
 
 tasks:
   - id: template
-    type: org.kestra.core.tasks.flows.Template
-    namespace: org.kestra.tests
+    type: io.kestra.core.tasks.flows.Template
+    namespace: io.kestra.tests
     templateId: template
     args:
       renamed-store: "{{ inputs.store }}
@@ -36,11 +36,11 @@ If the template is defined like that :
 
 ```yaml
 id: template
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: 1-return
-    type: org.kestra.core.tasks.debugs.Return
+    type: io.kestra.core.tasks.debugs.Return
     format: "{{ parent.outputs.args.renamed-store }}"
 ```
 
@@ -48,14 +48,14 @@ It will produce a flow same that this one :
 
 ```yaml
 id: with-template
-namespace: org.kestra.tests
+namespace: io.kestra.tests
 
 tasks:
   - id: template
-    type: org.kestra.core.tasks.flows.Sequential
+    type: io.kestra.core.tasks.flows.Sequential
     tasks:
       - id: 1-return
-        type: org.kestra.core.tasks.debugs.Return
+        type: io.kestra.core.tasks.debugs.Return
         format: "{{ inputs.store }}"
 ```
 

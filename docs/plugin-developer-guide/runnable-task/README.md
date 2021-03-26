@@ -39,7 +39,7 @@ public class ReverseString extends Task implements RunnableTask<ReverseString.Ou
 
     @Builder
     @Getter
-    public static class Output implements org.kestra.core.models.tasks.Output {
+    public static class Output implements io.kestra.core.models.tasks.Output {
         @Schema(
             title = "The reverse string "
         )
@@ -66,7 +66,7 @@ These are required in order to make your plugin works with Kestra, these are [Lo
 public class ReverseString extends Task implements RunnableTask<Example.Output>
 ```
 
-* `ReverseString` is the name of your task and can be use on Kestra with `type: org.kestra.task.templates.ReverseString` (aka: <code v-pre>{{package}}.{{className}}</code>)
+* `ReverseString` is the name of your task and can be use on Kestra with `type: io.kestra.plugin.templates.ReverseString` (aka: <code v-pre>{{package}}.{{className}}</code>)
 * Class must extends `Task` to be usable 
 * `implements RunnableTask<ReverseString.Output>`: must implements `RunnableTask` to be discovered and must declared the output of the tasks `ReverseString.Output` 
 
@@ -78,7 +78,7 @@ public class ReverseString extends Task implements RunnableTask<Example.Output>
 Declare all the properties that you can pass to current task on flow. For example, this will be a valid yaml for this task: 
 
 ```yaml
-type: org.kestra.task.templates.ReverseString
+type: io.kestra.plugin.templates.ReverseString
 format: "{{outputs.previous-task.name}}"
 ```
 
@@ -211,7 +211,7 @@ public class ReverseString extends Task implements RunnableTask<ReverseString.Ou
 
     @Builder
     @Getter
-    public static class Output implements org.kestra.core.models.tasks.Output {
+    public static class Output implements io.kestra.core.models.tasks.Output {
         @Schema(
             title = "The reverse string "
         )
@@ -221,7 +221,7 @@ public class ReverseString extends Task implements RunnableTask<ReverseString.Ou
 
 ```
 Each task must return a class instance with outputs values that can be used for next tasks. 
-You must return a class that implements `org.kestra.core.models.tasks.Output`. 
+You must return a class that implements `io.kestra.core.models.tasks.Output`. 
 You can add as many properties as you want, but keep in mind that all theses must be serializable.
 All output will be available for next task through [variables](../../developer-guide/variables).
 
@@ -297,7 +297,7 @@ For now only examples are available :
         code = {
             "triggers:",
             "  - id: schedule",
-            "    type: org.kestra.core.models.triggers.types.Schedule",
+            "    type: io.kestra.core.models.triggers.types.Schedule",
             "    cron: \"*/15 * * * *\"",
             "    backfill:",
             "      start: 2020-06-25T14:00:00Z"

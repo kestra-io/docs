@@ -38,11 +38,11 @@ The docker image is based on `openjdk:11-jre-slim` docker image.
 #### `kestra/kestra:latest`
 This image :
 - does't contain any kestra plugins. 
-- does't contain a lot of binaries to work with your [Bash task](/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Bash.html).
-- does't contain some binaries for [Python task](https://kestra.io/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Python.html) or [Node task](https://kestra.io/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Node.html).
+- does't contain a lot of binaries to work with your [Bash task](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.html).
+- does't contain some binaries for [Python task](https://kestra.io/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Python.html) or [Node task](https://kestra.io/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Node.html).
 
 #### `kestra/kestra:latest-full`
-This image contains all the kestra plugins and all the binaries for [Python task](https://kestra.io/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Python.html) or [Node task](https://kestra.io/plugins/core/tasks/scripts/org.kestra.core.tasks.scripts.Node.html).
+This image contains all the kestra plugins and all the binaries for [Python task](https://kestra.io/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Python.html) or [Node task](https://kestra.io/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Node.html).
 Take care that this image will always contain the last version of plugins that can have some breaking change.
 
 ### Create a new image with more binaries
@@ -67,9 +67,9 @@ ARG IMAGE_TAG=latest
 FROM kestra/kestra:$IMAGE_TAG
 
 RUN /app/kestra plugins install \
-  org.kestra.task.notifications:task-notifications:LATEST \
-  org.kestra.storage.gcs:storage-gcs:LATEST \
-  org.kestra.task.gcp:task-gcp:LATEST 
+  io.kestra.plugin.notifications:task-notifications:LATEST \
+  io.kestra.storage.gcs:storage-gcs:LATEST \
+  io.kestra.plugin.gcp:task-gcp:LATEST 
 ```
 
 
