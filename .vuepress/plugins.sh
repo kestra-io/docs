@@ -28,7 +28,12 @@ git clone https://github.com/kestra-io/terraform-provider-kestra
 cd terraform-provider-kestra/docs/
 rm index.md
 
-find . -type f -name "*.md" -exec sed -i 's/subcategory: ""/editLink: false/g' {} +
-find . -type f -name "*.md" -exec sed -Ei  's/page_title: "([^ ]+).*"/title: \1/g' {} +
+find  -type f -name "*.md" -exec sed -i 's/subcategory: ""/editLink: false/g' {} +
+
+find data-sources -type f -name "*.md" -exec sed -Ei  's/page_title: "([^ ]+).*"/title: \1/g' {} +
+find resources -type f -name "*.md" -exec sed -Ei  's/page_title: "([^ ]+).*"/title: \1/g' {} +
+
+find guides -type f -name "*.md" -exec sed -Ei  's/page_title: "([^"]+)"/title: \1/g' {} +
+
 find . -type f -name "*.md" -exec sed -i 's/```terraform/```hcl/g' {} +
 cp -R * ../../../../docs/terraform/
