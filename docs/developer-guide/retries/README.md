@@ -59,6 +59,7 @@ Retry behavior that waits longer between each retry e.g. 1s, 5s, 15s ...
 | name | type | description |
 | ---------- | ----------- | ----------- |
 |`interval`|`Duration`|Duration between each retry.|
+|`maxInterval`|`Duration`|Max Duration between each retry.|
 |`delayFactor`|`Double`|Multiplier for `interval` on each retry, default is 2. For example, with and interval=30s and delayFactor=2, retry will append at 30s, 1m30, 3m30, ... |
 
 #### `random`

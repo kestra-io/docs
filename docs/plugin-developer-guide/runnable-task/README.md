@@ -13,7 +13,6 @@ Here is a simple task example that reverse a string:
 @EqualsAndHashCode
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Schema(
     title = "Reverse a string",
     description = "Reverse all letters from a string"
