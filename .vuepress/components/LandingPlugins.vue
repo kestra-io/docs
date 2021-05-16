@@ -83,123 +83,123 @@
                     {
                         name: "Amazon S3",
                         icon: "csicon csicon-s3",
-                        href: "plugins-aws",
+                        href: "plugin-aws",
                         section: "#s3"
                     },
                     {
                         name: "Http",
                         icon: "mdi mdi-api",
-                        href: "plugins-fs",
+                        href: "plugin-fs",
                         section: "http"
                     },
                     {
                         name: "SFTP",
                         icon: "mdi mdi-network",
-                        href: "plugins-fs",
+                        href: "plugin-fs",
                         section: "sftp"
                     },
                     {
                         name: "Google Cloud Storage",
                         icon: "csicon csicon-gcs",
-                        href: "plugins-gcp",
+                        href: "plugin-gcp",
                         section: "gcs"
                     },
                     {
                         name: "Big Query",
                         icon: "csicon csicon-bigquery",
-                        href: "plugins-gcp",
+                        href: "plugin-gcp",
                         section: "bigquery"
                     },
                     {
                         name: "Open PGP",
                         icon: "mdi mdi-lock",
-                        href: "plugins-crypto",
+                        href: "plugin-crypto",
                         section: "openpgp"
                     },
                     {
                         name: "ClickHouse",
                         icon: "csicon csicon-clickhouse",
-                        href: "plugins-jdbc-clickhouse"
+                        href: "plugin-jdbc-clickhouse"
                     },
                     {
                         name: "MySQL",
                         icon: "csicon csicon-mysql",
-                        href: "plugins-jdbc-mysql"
+                        href: "plugin-jdbc-mysql"
                     },
                     {
                         name: "Oracle",
                         icon: "csicon csicon-oracle",
-                        href: "plugins-jdbc-oracle"
+                        href: "plugin-jdbc-oracle"
                     },
                     {
                         name: "Postgres",
                         icon: "csicon csicon-postgres",
-                        href: "plugins-jdbc-postgres"
+                        href: "plugin-jdbc-postgres"
                     },
                     {
                         name: "Vertica",
                         icon: "csicon csicon-vertica",
-                        href: "plugins-jdbc-vertica"
+                        href: "plugin-jdbc-vertica"
                     },
                     {
                         name: "Kubernetes",
                         icon: "mdi mdi-kubernetes",
-                        href: "plugins-kubernetes"
+                        href: "plugin-kubernetes"
                     },
                     {
                         name: "Slack",
                         icon: "csicon csicon-slack",
-                        href: "plugins-notifications",
+                        href: "plugin-notifications",
                         section: "slack"
                     },
                     {
                         name: "Singer",
                         icon: "csicon csicon-singer",
-                        href: "plugins-singer",
+                        href: "plugin-singer",
                     },
                     {
                         name: "Email",
                         icon: "mdi mdi-email",
-                        href: "plugins-notifications",
+                        href: "plugin-notifications",
                         section: "mail"
                     },
                     {
                         name: "Avro",
                         icon: "csicon csicon-avro",
-                        href: "plugins-serdes",
+                        href: "plugin-serdes",
                         section: "avro"
                     },
                     {
                         name: "JSON",
                         icon: "mdi mdi-code-json",
-                        href: "plugins-serdes",
+                        href: "plugin-serdes",
                         section: "json"
                     },
                     {
                         name: "CSV",
                         icon: "mdi mdi-file-delimited",
-                        href: "plugins-serdes",
+                        href: "plugin-serdes",
                         section: "csv"
                     },
                     {
                         name: "Nashorn",
                         icon: "csicon csicon-nashorn",
-                        href: "plugins-scripts-nashorn"
+                        href: "plugin-scripts-nashorn"
                     },
                     {
                         name: "Groovy",
                         icon: "csicon csicon-groovy",
-                        href: "plugins-scripts-groovy"
+                        href: "plugin-scripts-groovy"
                     },
                     {
                         name: "Jython",
                         icon: "csicon csicon-jython",
-                        href: "plugins-scripts-jython"
+                        href: "plugin-scripts-jython"
                     },
                     {
                         name: "XML",
                         icon: "mdi mdi-file-code",
-                        href: "plugins-serdes",
+                        href: "plugin-serdes",
                         section: "xml"
                     },
                 ];
