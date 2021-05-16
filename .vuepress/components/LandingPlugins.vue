@@ -126,6 +126,11 @@
                         href: "task-jdbc-mysql"
                     },
                     {
+                        name: "Oracle",
+                        icon: "csicon csicon-oracle",
+                        href: "task-jdbc-oracle"
+                    },
+                    {
                         name: "Postgres",
                         icon: "csicon csicon-postgres",
                         href: "task-jdbc-postgres"
@@ -145,6 +150,11 @@
                         icon: "csicon csicon-slack",
                         href: "task-notifications",
                         section: "slack"
+                    },
+                    {
+                        name: "Singer",
+                        icon: "csicon csicon-singer",
+                        href: "task-singer",
                     },
                     {
                         name: "Email",
@@ -256,6 +266,14 @@ i.csicon {
 
     &.csicon-nashorn {
         background-image: url("./LandingPlugins/nashorn.png");
+    }
+
+    &.csicon-oracle {
+        background-image: url("./LandingPlugins/oracle.svg");
+    }
+
+    &.csicon-singer {
+        background-image: url("./LandingPlugins/singer.svg");
     }
 }
 
