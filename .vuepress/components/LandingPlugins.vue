@@ -22,7 +22,8 @@
                     <div class="col-lg-4 col-md-6 mt-4 pt-2" v-for="plugin in plugins">
                         <a :href="'plugins/' + plugin.href + (plugin.section ? '#' + plugin.section : '')" class="media key-feature align-items-center p-3 rounded-md shadow">
                             <div class="icon text-center rounded-circle mr-3 text-primary">
-                                <i :class="plugin.icon"></i>
+                                <i v-if="plugin.icon" :class="plugin.icon"></i>
+                                <i v-if="plugin.image" class="csicon"><img :src="'data:image/svg+xml;base64,' + plugin.image" /></i>
                             </div>
                             <div class="media-body">
                                 <h4 class="title mb-0">{{ plugin.name }}</h4>
@@ -62,8 +63,8 @@
         components: {
         },
         computed: {
-            plugins: () => {
-                return [
+            plugins() {
+                 let plugins = [
                     {
                         name: "Bash",
                         icon: "mdi mdi-bash",
@@ -82,127 +83,146 @@
                     {
                         name: "Amazon S3",
                         icon: "csicon csicon-s3",
-                        href: "task-aws",
+                        href: "plugins-aws",
                         section: "#s3"
                     },
                     {
                         name: "Http",
                         icon: "mdi mdi-api",
-                        href: "task-fs",
+                        href: "plugins-fs",
                         section: "http"
                     },
                     {
                         name: "SFTP",
                         icon: "mdi mdi-network",
-                        href: "task-fs",
+                        href: "plugins-fs",
                         section: "sftp"
                     },
                     {
                         name: "Google Cloud Storage",
                         icon: "csicon csicon-gcs",
-                        href: "task-gcp",
+                        href: "plugins-gcp",
                         section: "gcs"
                     },
                     {
                         name: "Big Query",
                         icon: "csicon csicon-bigquery",
-                        href: "task-gcp",
+                        href: "plugins-gcp",
                         section: "bigquery"
                     },
                     {
                         name: "Open PGP",
                         icon: "mdi mdi-lock",
-                        href: "task-crypto",
+                        href: "plugins-crypto",
                         section: "openpgp"
                     },
                     {
                         name: "ClickHouse",
                         icon: "csicon csicon-clickhouse",
-                        href: "task-jdbc-clickhouse"
+                        href: "plugins-jdbc-clickhouse"
                     },
                     {
                         name: "MySQL",
                         icon: "csicon csicon-mysql",
-                        href: "task-jdbc-mysql"
+                        href: "plugins-jdbc-mysql"
                     },
                     {
                         name: "Oracle",
                         icon: "csicon csicon-oracle",
-                        href: "task-jdbc-oracle"
+                        href: "plugins-jdbc-oracle"
                     },
                     {
                         name: "Postgres",
                         icon: "csicon csicon-postgres",
-                        href: "task-jdbc-postgres"
+                        href: "plugins-jdbc-postgres"
                     },
                     {
                         name: "Vertica",
                         icon: "csicon csicon-vertica",
-                        href: "task-jdbc-vertica"
+                        href: "plugins-jdbc-vertica"
                     },
                     {
                         name: "Kubernetes",
                         icon: "mdi mdi-kubernetes",
-                        href: "task-kubernetes"
+                        href: "plugins-kubernetes"
                     },
                     {
                         name: "Slack",
                         icon: "csicon csicon-slack",
-                        href: "task-notifications",
+                        href: "plugins-notifications",
                         section: "slack"
                     },
                     {
                         name: "Singer",
                         icon: "csicon csicon-singer",
-                        href: "task-singer",
+                        href: "plugins-singer",
                     },
                     {
                         name: "Email",
                         icon: "mdi mdi-email",
-                        href: "task-notifications",
+                        href: "plugins-notifications",
                         section: "mail"
                     },
                     {
                         name: "Avro",
                         icon: "csicon csicon-avro",
-                        href: "task-serdes",
+                        href: "plugins-serdes",
                         section: "avro"
                     },
                     {
                         name: "JSON",
                         icon: "mdi mdi-code-json",
-                        href: "task-serdes",
+                        href: "plugins-serdes",
                         section: "json"
                     },
                     {
                         name: "CSV",
                         icon: "mdi mdi-file-delimited",
-                        href: "task-serdes",
+                        href: "plugins-serdes",
                         section: "csv"
                     },
                     {
                         name: "Nashorn",
                         icon: "csicon csicon-nashorn",
-                        href: "task-scripts-nashorn"
+                        href: "plugins-scripts-nashorn"
                     },
                     {
                         name: "Groovy",
                         icon: "csicon csicon-groovy",
-                        href: "task-scripts-groovy"
+                        href: "plugins-scripts-groovy"
                     },
                     {
                         name: "Jython",
                         icon: "csicon csicon-jython",
-                        href: "task-scripts-jython"
+                        href: "plugins-scripts-jython"
                     },
                     {
                         name: "XML",
                         icon: "mdi mdi-file-code",
-                        href: "task-serdes",
+                        href: "plugins-serdes",
                         section: "xml"
                     },
+                ];
 
-                ].sort((a, b) => (a.name > b.name) ? 1 : -1)
+                // Order by publish date, desc
+              plugins = plugins.concat(this.$site.pages
+                  .filter(item => item.path.startsWith("/plugins/plugin-singer/tasks/"))
+                  .filter(item => !item.path.includes("Postgres") &&
+                      !item.path.includes("Mysql") &&
+                      !item.path.includes("BigQuery") &&
+                      !item.path.includes("Csv") &&
+                      !item.path.includes("Json")
+                  )
+                  .map(r => {
+                    return {
+                      name: r.title.replace("Pipelinewise", "").replace("Meltano", ""),
+                      image: r.frontmatter && r.frontmatter.icon ? r.frontmatter.icon : null,
+                      href: r.path.replace("/plugins/", ""),
+                    }
+                  })
+              );
+
+                return plugins.sort((a, b) => (a.name > b.name) ? 1 : -1);
             }
         }
     }
@@ -219,6 +239,11 @@ i.csicon {
     background-size: contain;
     background-position: center center;
     //filter: grayscale(100%) brightness(30%) sepia(100%) hue-rotate(-180deg) saturate(300%) contrast(0.8);
+
+    img {
+      max-width: 35px;
+      max-height: 35px;
+    }
 
     &.csicon-avro {
         background-image: url("./LandingPlugins/avro.png");
