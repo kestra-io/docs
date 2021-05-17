@@ -1,5 +1,6 @@
 const path = require("path");
 const sidebar = require("./sidebar");
+const fs = require("fs");
 
 const descriptionAppend = "The modern, scalable orchestrator & scheduler open source platform.";
 const description =  ($page) => {
@@ -23,7 +24,8 @@ module.exports = {
             },
         },
         'fulltext-search': {
-            'topCategoryLevel': 1
+            'topCategoryLevel': 1,
+            // hooks: fs.readFileSync(path.resolve(__dirname, './searchHooks.js')),
         },
         'vuepress-plugin-child-toc': {},
         'vuepress-plugin-right-anchor': {},
