@@ -22,8 +22,9 @@
                     <div class="col-lg-4 col-md-6 mt-4 pt-2" v-for="plugin in plugins">
                         <a :href="'plugins/' + plugin.href + (plugin.section ? '#' + plugin.section : '')" class="media key-feature align-items-center p-3 rounded-md shadow">
                             <div class="icon text-center rounded-circle mr-3 text-primary">
-                                <i v-if="plugin.icon" :class="plugin.icon"></i>
-                                <i v-if="plugin.image" class="csicon"><img :src="'data:image/svg+xml;base64,' + plugin.image" /></i>
+                                <i v-if="plugin.icon" :class="plugin.icon">
+                                    <img v-if="plugin.image" :src="'data:image/svg+xml;base64,' + plugin.image"  :alt="plugin.name"/>
+                                </i>
                             </div>
                             <div class="media-body">
                                 <h4 class="title mb-0">{{ plugin.name }}</h4>
@@ -216,6 +217,7 @@
                   .map(r => {
                     return {
                       name: r.title.replace("Pipelinewise", "").replace("Meltano", ""),
+                      icon: "csicon",
                       image: r.frontmatter && r.frontmatter.icon ? r.frontmatter.icon : null,
                       href: r.path.replace("/plugins/", ""),
                     }
