@@ -25,8 +25,12 @@ mark {
     background: $green;
     font-size: 90%;
     color: white;
-    padding: 2px 4px 5px 4px;
+    padding: 2px 8px 2px 8px;
     border-radius: 2px;
+
+    * {
+        color: white !important;
+    }
 }
 
 h1, h2, h3, h4, h5, h6 {
