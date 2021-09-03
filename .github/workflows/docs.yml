@@ -68,9 +68,9 @@ jobs:
           status: ${{ job.status }}
           job_name: Build
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          username: Github Actions
-          icon_emoji: ':octocat:'
-          channel: '#kestra'
+          username: GitHub Actions
+          icon_emoji: ':github-actions:'
+          channel: '#git'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
