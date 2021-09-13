@@ -46,14 +46,14 @@ Mostly it will be use for example to declare environnement on your instance, som
 ```yaml
 kestra:
   variables:
-    globals: 
+    globals:
       env: dev
 
 ```
 These variables will be accessible on flow with <code v-pre>{{ globals.env }}</code>
 
 ### `kestra.tasks.defaults`
-You can also provide from configuration files tasks defaults that will be applied on each tasks on your cluster **if not defined** on flow or tasks. 
+You can also provide from configuration files tasks defaults that will be applied on each tasks on your cluster **if not defined** on flow or tasks.
 Mostly it will allow you to be sure a value was defined at a default value for these tasks type.
 
 ```yaml
@@ -95,16 +95,38 @@ kestra:
 
 ## JVM configuration
 
-All JVM options can be passed as environment vars name `JAVA_OPTS`. You can use it to change all JVM options available like memory, encoding, ... 
+All JVM options can be passed as environment vars name `JAVA_OPTS`. You can use it to change all JVM options available like memory, encoding, ...
 
-example: 
+example:
 
-```shell 
+```shell
 export JAVA_OPTS="-Duser.timezone=Europe/Paris"
 ```
 
-### `user.timezone`: Timezone  
+### `user.timezone`: Timezone
 By default, Kestra will handle all date with your system timezone. You can change the timezone with JVM options.
 Changing the timezone will affect mostly :
-* **scheduler**: by default, all schedule date is UTC, changing the java timezone will allow you to schedule flow in your timezone.  
+* **scheduler**: by default, all schedule date is UTC, changing the java timezone will allow you to schedule flow in your timezone.
 * **log**:  that will be displayed on your timezone.
+
+
+
+
+## Anonymous usage report
+
+Understanding how you use Kestra is very important to us: it helps us improve the solution in many different ways.
+For this very reason, the `kestra.anonymous-usage-report.enabled` option is mandatory: we want you to take time to consider whether or not you wish to share anonymous data with us so we can benefit from your experience and use cases.
+
+- `kestra.anonymous-usage-report.enabled`: (default true)
+- `kestra.anonymous-usage-report.initial-delay`: (default 5m)
+- `kestra.anonymous-usage-report.fixed-delay`: (default 1h)
+
+### Collected Data
+
+The collected data can be found [here](https://github.com/kestra-io/kestra/tree/develop/core/src/main/java/io/kestra/core/models/collectors), We collect only **anonymous data** that allow to understand how you used Kestra. Mostly the data collected are :
+
+- **host data:** cpu, ram, os, jvm and a fingerprint of the machine
+- **plugins data:** the list of plugins installed and the current version
+- **flow data:** the namespace count, flow count, the task type and the trigger type used.
+- **execution data:** the execution & taskruns count for last 2 days with count and duration grouped by status
+- **common data:** the server type, version, timezone, env, start time and url
