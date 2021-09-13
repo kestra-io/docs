@@ -7,7 +7,7 @@ order: 5
 
 ### `eq`: Equality
 
-Test if two elements are equals. 
+Test if two elements are equals.
 
 > Render `yes` or `no`:
 ```handlebars
@@ -30,7 +30,7 @@ Test if two elements are equals.
 
 ### `neq`: Not equality
 
-Test if two elements are NOT equals. 
+Test if two elements are NOT equals.
 
 > Render `yes` or `no`:
 ```handlebars
@@ -53,7 +53,7 @@ Test if two elements are NOT equals.
 
 ### `gt`: Greater operator
 
-Greater operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements). 
+Greater operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements).
 
 > Render `yes` or `no`:
 ```handlebars
@@ -76,7 +76,7 @@ Greater operator (arguments must be [Comparable](https://docs.oracle.com/javase/
 
 ### `gte`: Greater or equal operator
 
-Greater or equal operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements). 
+Greater or equal operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements).
 
 > Render `yes` or `no`:
 ```handlebars
@@ -99,7 +99,7 @@ Greater or equal operator (arguments must be [Comparable](https://docs.oracle.co
 
 ### `lt`: Less operator
 
-Less than operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements). 
+Less than operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements).
 
 > Render `yes` or `no`:
 ```handlebars
@@ -122,7 +122,7 @@ Less than operator (arguments must be [Comparable](https://docs.oracle.com/javas
 
 ### `lte`: Less or equal operator
 
-Less than operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements. 
+Less than operator (arguments must be [Comparable](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) elements.
 
 > Render `yes` or `no`:
 ```handlebars
@@ -251,4 +251,20 @@ Compare to object as [Comparable](https://docs.oracle.com/javase/8/docs/api/java
 > Renders 1 if a > b, 0 if a == b -1 if a < b
 ```handlebars
   {{cmp a b}}
+```
+
+### `isNull`: Compare operator
+
+Test if one element is null.
+
+```handlebars
+  {{isNull a}}
+```
+
+### `isNotNull`: Compare operator
+
+Test if one element is not null.
+
+```handlebars
+  {{isNotNull a}}
 ```
