@@ -28,7 +28,12 @@ module.exports = {
             // hooks: fs.readFileSync(path.resolve(__dirname, './searchHooks.js')),
         },
         'vuepress-plugin-child-toc': {},
-        'vuepress-plugin-right-anchor': {},
+        'vuepress-plugin-right-anchor': {
+            expand: {
+                trigger: 'click',
+                clickModeDefaultOpen: true
+            }
+        },
         'vuepress-plugin-code-copy': {}
     },
     themeConfig: {
