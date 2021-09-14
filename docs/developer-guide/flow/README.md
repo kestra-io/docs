@@ -9,14 +9,14 @@ order: 1
 
 The flow model is a yaml document describing how Kestra will schedule and compute your workload.
 
-Here is a full sample flow demonstrating the flow definition. 
+Here is a full sample flow demonstrating the flow definition.
 The following code is a sample existing task in Kestra for testing purposes.
 
 ## Flow Properties
 
 ```yaml
-id: samples 
-namespace: io.kestra.tests 
+id: samples
+namespace: io.kestra.tests
 revision: 8
 
 description: "Some flow **documentation** in *Markdown*"
@@ -25,6 +25,7 @@ inputs:
   - name: my-value
     type: STRING
     required: false
+    defaults: "default value"
     description: This is a not required my-value
 
 variables:
@@ -32,16 +33,16 @@ variables:
   second: "{{vars.first}} > 2"
   third: "{{vars.second}} > 3"
 
-tasks: 
-  - id: date 
+tasks:
+  - id: date
     type: io.kestra.core.tasks.debugs.Return
     description: "Some tasks **documentation** in *Markdown*"
     disabled: false
-    format: "A log line content with a contextual date variable {{taskrun.startDate}}" 
+    format: "A log line content with a contextual date variable {{taskrun.startDate}}"
 
-errors: 
-  - id: failed-echo 
-    type: io.kestra.core.tasks.debugs.Echo  
+errors:
+  - id: failed-echo
+    type: io.kestra.core.tasks.debugs.Echo
     format: I'm failing {{task.id}}
 
 listeners:
@@ -80,6 +81,7 @@ taskDefaults:
 |`inputs.[].name`|The name for this inputs, allowing to use it as vars on the current flow|
 |`inputs.[].type`|The type for this inputs, for example (STRING, FILE, ...)|
 |`inputs.[].required`|If the input is required (and prevent flow to be executed without this input|
+|`inputs.[].defaults`|The default value of the input if no value is provided|
 |`inputs.[].description`|Description for documentation, more details [here](../documentation/) |
 |`variables`|A list of variables (as key, value) for the current flow that can be reach with <code v-pre>{{ vars.name }}</code>|
 |`tasks`|A list of related tasks the current flow, all tasks will be run sequentially.|
