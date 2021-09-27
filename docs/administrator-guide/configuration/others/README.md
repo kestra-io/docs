@@ -52,9 +52,24 @@ kestra:
 ```
 These variables will be accessible on flow with <code v-pre>{{ globals.env }}</code>
 
+
+### `kestra.variables.disable-handlebars`
+By default, [deprecated handlebars](../../../developer-guide/variables/deprecated-handlebars) is disabled, you can enable it with `true` value.
+
+
 ### `kestra.tasks.defaults`
 You can also provide from configuration files tasks defaults that will be applied on each tasks on your cluster **if not defined** on flow or tasks.
 Mostly it will allow you to be sure a value was defined at a default value for these tasks type.
+
+```yaml
+kestra:
+  tasks:
+    defaults:
+    - type: io.kestra.core.tasks.debugs.Echo
+      level: ERROR
+```
+These variables will be accessible on flow with <code v-pre>{{ globals.env }}</code>
+
 
 ```yaml
 kestra:
