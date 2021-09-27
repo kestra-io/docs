@@ -104,4 +104,5 @@ taskDefaults:
 |`triggers.[].xxx`|Like task, each trigger have theirs properties|
 |`taskDefaults`|Default value for current tasks, in order to avoid repeat the same properties on each tasks|
 |`taskDefaults.[].type`|The task type that is a full java class name.|
+|`taskDefaults.[].forced`|Is the default value are forced or not, meaning the taskDefault will always overwrite the user properties on task (default `false`).|
 |`taskDefaults.[].values.xxx`|The properties (same than task) that you want to be default|
