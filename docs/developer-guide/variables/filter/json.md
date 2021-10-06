@@ -1,5 +1,5 @@
 # `json`
-The `json` filter will convert any variable to json
+The `json` filter will convert any variable to json string.
 
 ```twig
 {{ [1, 2, 3] | json  }}
