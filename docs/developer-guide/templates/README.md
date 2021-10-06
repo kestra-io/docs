@@ -5,10 +5,10 @@ order: 9
 
 Templates are list of tasks that can be shared between flows. You can define a template and call it from other flows allowing to share a list of tasks and keep these task updated without changing your flow.
 
-All tasks in a template will be executed sequentially, you can provide the same tasks than in *standard* flow and you can also have an *errros* path. 
+All tasks in a template will be executed sequentially, you can provide the same tasks than in *standard* flow and you can also have an *errros* path.
 
-<div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template">Template Task documentation</a> 
+<div style="text-align: right">
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template">Template Task documentation</a>
 </div>
 
 ## Example
@@ -29,10 +29,10 @@ tasks:
     namespace: io.kestra.tests
     templateId: template
     args:
-      renamed-store: "{{ inputs.store }}
+      renamedStore: "{{ inputs.store }}
 ```
 
-If the template is defined like that : 
+If the template is defined like that :
 
 ```yaml
 id: template
@@ -41,7 +41,7 @@ namespace: io.kestra.tests
 tasks:
   - id: 1-return
     type: io.kestra.core.tasks.debugs.Return
-    format: "{{ parent.outputs.args.renamed-store }}"
+    format: "{{ parent.outputs.args.renamedStore }}"
 ```
 
 It will produce a flow same that this one :
@@ -62,8 +62,8 @@ tasks:
 All the tasks within the template will be *copied* at the runtime.
 
 :::warning
-From the template, you can access all the variables defined on the context executions. But it's highly discouraged, the better will be to use `args` to rename variables from global context to a local one. 
+From the template, you can access all the variables defined on the context executions. But it's highly discouraged, the better will be to use `args` to rename variables from global context to a local one.
 :::
 
-By this way, your template will be usable on many flows. Just think `args` as argument for a function in code ! 
+By this way, your template will be usable on many flows. Just think `args` as argument for a function in code !
 

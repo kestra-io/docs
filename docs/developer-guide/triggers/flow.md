@@ -6,7 +6,7 @@
 type: "io.kestra.core.models.triggers.types.Flow"
 ```
 
-> Kestra is able to trigger flow after another one. This allows chaining flow without need to update the base flows. 
+> Kestra is able to trigger flow after another one. This allows chaining flow without need to update the base flows.
   With that, you can break responsibility between different flow to different teams.
 
 ## Example
@@ -17,19 +17,19 @@ namespace: io.kestra.tests
 revision: 1
 
 inputs:
-  - name: from-parent
+  - name: fromParent
     type: STRING
 
 tasks:
-  - id: only-no-input
+  - id: onlyNoInput
     type: io.kestra.core.tasks.debugs.Return
     format: "v1: {{trigger.executionId}}"
 
 triggers:
-  - id: listen-flow
+  - id: listenFlow
     type: io.kestra.core.models.triggers.types.Flow
     inputs:
-      from-parent: '{{ outputs.my-task.uri }}'
+      fromParent: '{{ outputs.myTask.uri }}'
     conditions:
       - type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
         namespace: io.kestra.tests
@@ -45,12 +45,12 @@ id: trigger-multiplecondition-listener
 namespace: io.kestra.tests
 
 tasks:
-  - id: only-listener
+  - id: onlyListener
     type: io.kestra.core.tasks.debugs.Return
     format: "let's go "
 
 triggers:
-  - id: multiple-listen-flow
+  - id: multipleListenFlow
     type: io.kestra.core.models.triggers.types.Flow
     conditions:
       - id: multiple
@@ -75,7 +75,7 @@ triggers:
 * **Type:** <Badge vertical="middle" text="String" />
 * **Required:** ✔
 
-> unique for a flow 
+> unique for a flow
 
 
 ### `inputs`
@@ -95,14 +95,14 @@ So you will need to go to server log to understand the error
 * **Type:** <Badge vertical="middle" text="List<Condition>" />
 * **Required:** ❌
 
-> List of  [Conditions](../conditions) in order to limit the flow trigger. 
+> List of  [Conditions](../conditions) in order to limit the flow trigger.
 
 ::: warning
 If you don't provide any conditions, the flow will be triggered for **EVERY execution** of **EVERY flow** on your instance.
 :::
 
 
-## Variables 
+## Variables
 When the flow is trigger by another one, some context variables will be injected to allow some customization of the flow.
 
 | Parameter | Description |

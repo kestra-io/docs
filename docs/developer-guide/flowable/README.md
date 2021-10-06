@@ -4,8 +4,8 @@ order: 2
 
 # Flowable Task
 
-In kestra, we orchestrate your workflow with `Flowable Tasks`. These tasks don't compute any things but allow you to build more complex workflow. 
-Like branching, doing tasks in parallel, ... 
+In kestra, we orchestrate your workflow with `Flowable Tasks`. These tasks don't compute any things but allow you to build more complex workflow.
+Like branching, doing tasks in parallel, ...
 
 Flowable mostly use context with [variables](../variables) in order to define next tasks.
 For example, you can use the [outputs](../outputs) of a variables to do `Switch` to defined the next tasks.
@@ -14,7 +14,7 @@ Here is the current list of Flowable Tasks
 
 ## Sequential
 
-This flow processes tasks ones after others sequentially. 
+This flow processes tasks ones after others sequentially.
 Mostly use in order to group tasks.
 
 ```yaml
@@ -36,8 +36,8 @@ tasks:
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
-<div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential">Sequential Task documentation</a> 
+<div style="text-align: right">
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential">Sequential Task documentation</a>
 </div>
 
 
@@ -64,14 +64,14 @@ tasks:
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
-<div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel">Parallel Task documentation</a> 
+<div style="text-align: right">
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel">Parallel Task documentation</a>
 </div>
 
 
 ## Switch
 
-This flow processes some tasks conditionnaly depending on a contextual value. 
+This flow processes some tasks conditionnaly depending on a contextual value.
 In this case, an input value will trigger only some parts of the flow.
 
 ```yaml
@@ -106,16 +106,16 @@ tasks:
         format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
-<div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch">Switch Task documentation</a> 
+<div style="text-align: right">
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch">Switch Task documentation</a>
 </div>
 
 
 ## EachSequential
 
-This flow will generate many tasks at runtime depending on a value field. 
-Here this field is static, but it can be generated from a previous task output and 
-trigger an arbitrary number of subtasks. Each subtask will run after others sequentially. 
+This flow will generate many tasks at runtime depending on a value field.
+Here this field is static, but it can be generated from a previous task output and
+trigger an arbitrary number of subtasks. Each subtask will run after others sequentially.
 
 ```yaml
 id: each
@@ -137,8 +137,8 @@ tasks:
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
-<div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a> 
+<div style="text-align: right">
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a>
 </div>
 
 ## EachParallel
@@ -169,20 +169,20 @@ tasks:
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
-<div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel">EachParallel Task documentation</a> 
+<div style="text-align: right">
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel">EachParallel Task documentation</a>
 </div>
 
 
 
 ## AllowFailure
-This task will allow a failed child task. If any child task failed: 
+This task will allow a failed child task. If any child task failed:
 - AllowFailure will be marked as `WARNING`
 - All children task inside the AllowFailure will be stopped immediately
 - The execution will continue for all others tasks.
 - at the end, the execution will be also marked as status `WARNING`
 
-In this example: 
+In this example:
 - `allow-failure` will `WARNING`
 - `ko` will be `FAILED`
 - `next` will not be run
@@ -208,45 +208,49 @@ tasks:
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
-<div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.AllowFailure">AllowFailure Task documentation</a> 
+<div style="text-align: right">
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.AllowFailure">AllowFailure Task documentation</a>
 </div>
 
 
 ## Flow
 
-This flow will trigger another one. 
+This flow will trigger another one.
 This allows to decouple the first one from the second one and to monitor each flows individually.
 
 You can pass [outputs](../outputs) to the trigger flow as [inputs](../inputs) (that you need to declare in the subflow).
 
 ```yaml
-id: each
+id: subflow
 namespace: io.kestra.tests
-revision: 8
+
+inputs:
+  - name: myFile
+    type: FILE
+
 tasks:
-  - id: "subflow"  
+  - id: "subflow"
     type: io.kestra.core.tasks.flows.Flow
     namespace: io.kestra.tests
     flowId: my-sub-flows
     inputs:
-      file: "{{ outputs.my-task.files.resolver' }}"
+      file: "{{ inputs.myFile' }}"
       store: 12
 ```
 
-<div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Flow">Flow Task documentation</a> 
+<div style="text-align: right">
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Flow">Flow Task documentation</a>
 </div>
 
 
 ## Templates
-[Templates](../templates) are a special task that will include task from a template at *runtime*.  
+[Templates](../templates) are a special task that will include task from a template at *runtime*.
 You defined the template and can use on every flow you want, allowing to share the common tasks between your flows.
 
 ```yaml
-id: each
+id: template
 namespace: io.kestra.tests
-revision: 8
+
 tasks:
   - id: template
     type: io.kestra.core.tasks.flows.Template
@@ -254,6 +258,6 @@ tasks:
     templateId: template
 ```
 
-<div style="text-align: right"> 
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template">Template Task documentation</a> 
+<div style="text-align: right">
+    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template">Template Task documentation</a>
 </div>

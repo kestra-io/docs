@@ -15,12 +15,12 @@ Here how to use output between tasks into a flow:
 
 ```yaml
 tasks:
-- id: produce-output
+- id: produceOutput
   type: io.kestra.core.tasks.debugs.Return
   format: my output {{ execution.id }}
 - id: use-output
   type: io.kestra.core.tasks.debugs.Echo
-  format: This task display previous task output {{ outputs.produce-output.value }}
+  format: This task display previous task output {{ outputs.produceOutput.value }}
 ```
 
 In the example above the first task produces an output with the format yaml property. the ouput content is then used in the second task output formating. Indeed, the `use-output` task uses the templating system <code v-pre>{{ outputs.produce-output.value }}</code> to reference the previous task output.
@@ -56,16 +56,16 @@ id: output-sample
 namespace: io.kestra.tests
 
 tasks:
-  - id: 1-output
+  - id: each
     type: io.kestra.core.tasks.flows.EachSequential
     value: '["s1", "s2", "s3"]'
     tasks:
         - id: 1_1-produce_output
         type: io.kestra.core.tasks.debugs.Return
-        format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
-  - id: 2_use_output
+        format: "{{ task.id }} > {{ taskrun.value }} > {{ taskrun.startDate }}"
+  - id: use
     type: io.kestra.core.tasks.debugs.Return
-    format: "Previous task produced output : {{outputs.1_1-produce_output.s1.a.value}}"
+    format: "Previous task produced output : {{ outputs.each.s1.a.value }}"
 ```
 
 Here the `outputs.1_1-produce_output.s1.a.value` reach the first `1-output` task element.
@@ -80,10 +80,10 @@ tasks:
     tasks:
       - id: inner
         type: io.kestra.core.tasks.debugs.Return
-        format: "{{task.id}}"
+        format: "{{ task.id }}"
   - id: end
     type: io.kestra.core.tasks.debugs.Return
-    format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
+    format: "{{ task.id }} > {{ outputs.inner[value 1].value }}"
 ```
 with the format `outputs.TASKID.[VALUE].PROPERTY`. The special bracket `[]` in  `.[VALUE].` enable special chars like space (and can be remove without any special characters)
 
@@ -94,7 +94,7 @@ Sometime, it can be useful to access to previous outputs on current task tree, f
 you iterate for a list of value, doing a first tasks (Download a file for example) and
 loading previous files to a database.
 
-For this, you can use function `get` :
+For this, you can pass the `taskrun.value` to outputs object :
 ```yaml
 tasks:
   - id: each
@@ -106,26 +106,8 @@ tasks:
         format: "{{task.id}}"
       - id: second
         type: io.kestra.core.tasks.debugs.Return
-        format: "{{ (get outputs.first taskrun.value).value }}"
+        format: "{{ outputs.first[taskrun.value].value }}"
   - id: end
     type: io.kestra.core.tasks.debugs.Return
-    format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
-```
-
-or the function `eval` :
-```yaml
-tasks:
-  - id: each
-    type: io.kestra.core.tasks.flows.EachSequential
-    value: '["value 1", "value 2", "value 3"]'
-    tasks:
-      - id: first
-        type: io.kestra.core.tasks.debugs.Return
-        format: "{{task.id}}"
-      - id: second
-        type: io.kestra.core.tasks.debugs.Return
-        format: "{{ eval 'outputs.first.[{{taskrun.value}}].value' }}"
-  - id: end
-    type: io.kestra.core.tasks.debugs.Return
-    format: "{{task.id}} > {{outputs.inner.[value 1].value}}"
+    format: "{{task.id}} > {{outputs.inner[value 1].value}}"
 ```

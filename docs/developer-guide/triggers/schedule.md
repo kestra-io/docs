@@ -41,7 +41,7 @@ Schedule **cannot overlap**, this mean that we **can't have any concurrent sched
 
 ::: tip
 Most of the time, schedule execution will depend on `trigger.date` (looking at files for today, sql query with where schedule date). This works well, but it prevents you to execute your flow manually (since these variables are only available during schedule).
-You can use this expression in order to make your **manual execution working**: <code v-pre>{{ dateFormat (firstDefined schedule.date execution.startDate) "yyyy-MM-dd"}}</code>, it will use the current date instead of the schedule one on manual execution, and your flow will not fail.
+You can use this expression in order to make your **manual execution working**: <code v-pre>{{ schedule.date ?? execution.startDate | date("yyyy-MM-dd") }}</code>, it will use the current date instead of the schedule one on manual execution, and your flow will not fail.
 :::
 
 
