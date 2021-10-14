@@ -106,7 +106,8 @@ kestra:
         - ".*\\[Url: /api/.*"
 ```
 
-
+### `kestra.configurations.delete-files-on-start`: Delete configurations files
+This setting allow you to delete all configurations just after the server startup. It prevents to be able to read configurations files (that may contain your secrets) from a Bash task for example. The server will keep this value on memory and won't be accessible from tasks. `true` or `false` (default `false`)
 
 ## JVM configuration
 
