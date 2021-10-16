@@ -109,6 +109,18 @@ kestra:
 ### `kestra.configurations.delete-files-on-start`: Delete configurations files
 This setting allow you to delete all configurations just after the server startup. It prevents to be able to read configurations files (that may contain your secrets) from a Bash task for example. The server will keep this value on memory and won't be accessible from tasks. `true` or `false` (default `false`)
 
+## Endpoint configuration
+Endpoint configuration can be done with micronaut configuration from [micronaut](https://docs.micronaut.io/latest/guide/index.html#endpointConfiguration).
+You can also secure all endpoint with an basic auth authentification with this additional configuration :
+
+```yaml
+endpoints:
+  all:
+    basic-auth:
+      username: your-user
+      password: your-password
+```
+
 ## JVM configuration
 
 All JVM options can be passed as environment vars name `JAVA_OPTS`. You can use it to change all JVM options available like memory, encoding, ...
