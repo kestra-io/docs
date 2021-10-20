@@ -121,6 +121,16 @@ endpoints:
       password: your-password
 ```
 
+## Temporary storage configuration
+Kestra write some temporary files during task processing, but default file will be created on `/tmp` but you can change the location and the mask of the created directory with these configurations :
+```yaml
+kestra:
+  tasks:
+    tmp-dir:
+      path: /home/kestra/tmp
+      mask: rwxrwx---
+```
+
 ## JVM configuration
 
 All JVM options can be passed as environment vars name `JAVA_OPTS`. You can use it to change all JVM options available like memory, encoding, ...
