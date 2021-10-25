@@ -122,13 +122,12 @@ endpoints:
 ```
 
 ## Temporary storage configuration
-Kestra write some temporary files during task processing, but default file will be created on `/tmp` but you can change the location and the mask of the created directory with these configurations :
+Kestra write some temporary files during task processing, but default file will be created on `/tmp` but you can change the location with this configuration :
 ```yaml
 kestra:
   tasks:
     tmp-dir:
       path: /home/kestra/tmp
-      mask: rwxrwx---
 ```
 
 ## JVM configuration
