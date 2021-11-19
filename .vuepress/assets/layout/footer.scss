@@ -1,0 +1,13 @@
+footer.footer {
+    border-top: 0;
+    text-align: left;
+    color: $gray-500;
+    padding: 2.5rem;
+
+    a {
+        color: $gray-500;
+        &:hover {
+            color: $blue;
+        }
+    }
+}

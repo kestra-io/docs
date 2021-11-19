@@ -20,7 +20,7 @@ Here is the step:
 1. Go on the [plugin-template](https://github.com/kestra-io/plugin-template) repository.
 2. Click on *Use this template*.
 3. Choose the github account your want to link & repository name for the new plugins.
-4. Clone the new repository: `git clone git@github.com:{{user}}/{{name}}.git`.
+4. Clone the new repository: <code v-pre>git clone git@github.com:{{user}}/{{name}}.git</code>.
 5. Open the cloned directory in IntelliJ IDEA.
 6. Enable [annotations processors](https://www.jetbrains.com/help/idea/annotation-processors-support.html).
 7. If you are using an IntelliJ IDEA < 2020.03, install the [lombok plugins](https://plugins.jetbrains.com/plugin/6317-lombok) (if not it's included by default).

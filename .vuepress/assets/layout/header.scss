@@ -1,0 +1,35 @@
+
+header.navbar {
+    background-color: $black;
+    color: $gray-200 !important;
+    border-bottom: 1px solid darken($black, 2%) !important;
+
+    .search-box input {
+        border-radius: 4px !important;
+        background-color: $gray-800 !important;
+        border: 1px solid darken($black, 2%) !important;
+        color: $gray-400 !important;
+    }
+
+    .links {
+        background-color: transparent;
+
+        .nav-links {
+            & a:hover, & a.router-link-active {
+                color: $white !important;
+            }
+        }
+    }
+
+    .site-name {
+        display: none;
+    }
+
+    .search-box .suggestion a .parent-page-title {
+        background-color: $secondary;
+    }
+
+    .search-box .suggestion a .suggestion-row .page-title {
+        background-color: $gray-100;
+    }
+}

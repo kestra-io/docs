@@ -176,7 +176,7 @@
 </template>
 
 <style lang="scss">
-    @import "../styles/landing/variables";
+    @import ".vuepress/styles/variables";
 
     .footer-top {
         color: $footer;

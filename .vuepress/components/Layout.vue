@@ -14,7 +14,7 @@
 
             <slot name="bottom" />
 
-            <LandingFooter />
+            <Footer />
         </main>
 
     </div>
@@ -52,3 +52,7 @@
         }
     }
 </script>
+
+<style lang="scss">
+@import '../styles/index.scss';
+</style>

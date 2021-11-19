@@ -1,174 +1,18 @@
-@import "landing/variables";
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
+@import "./variables";
 
-body {
-    min-width: 320px;
-    font-family: $font-family-secondary !important;
-}
+@import '~@mdi/font/css/materialdesignicons.min.css';
 
-header {
-    &.navbar a span.site-name {
-        display: none;
-    }
-}
+@import "../assets/layout/common";
 
-.home .hero img {
-    max-height: 130px !important;
-}
-
-table code {
-    white-space: nowrap ;
-}
-
-mark {
-    background: $green;
-    font-size: 90%;
-    color: white;
-    padding: 2px 8px 2px 8px;
-    border-radius: 2px;
-
-    * {
-        color: white !important;
-    }
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: $font-family-base;
-}
-
-.page-edit {
-    span, a {
-        color: $gray-500 !important;
-    }
-}
-
-.ra-wrapper {
-    width: 320px;
-    max-width: 320px;
-}
-
-@media (max-width: 1750px) {
-    .ra-wrapper {
-        display: none !important;
-
-    }
-}
-
-a.btn {
-    display: inline-block;
-    font-size: 1.2rem;
-    color: #fff;
-    background-color: $primary;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    box-sizing: border-box;
-    border-bottom: 1px solid darken($primary, 15%);
-    transition: background-color 0.1s ease;
-
-    &:hover {
-        text-decoration: none !important;
-        background: darken($primary, 10%);
-    }
-}
-
-header.navbar {
-    background-color: $gray-900;
-    color: $gray-200 !important;
-    border-bottom: 1px solid darken($gray-900, 2%) !important;
-
-    .search-box input {
-        border-radius: 4px !important;
-        background-color: $gray-800 !important;
-        border: 1px solid darken($gray-900, 2%) !important;
-        color: $gray-400 !important;
-    }
-
-    .links {
-        background-color: transparent;
-
-        .nav-links {
-            & a:hover, & a.router-link-active {
-                color: $white !important;
-            }
-        }
-    }
-}
-
-.code-copy {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    color: $primary;
-}
-
-.landing {
-    main {
-        padding: 0;
-        max-width: none;
-
-        .footer {
-            border-top: 0;
-            text-align: left;
-            color: $gray-500;
-            padding: 2.5rem;
-        }
-
-        blockquote {
-            p {
-                margin-bottom: 0;
-            }
-        }
-    }
-
-    .custom-block {
-        .custom-block-title {
-            margin-top: 10px;
-            margin-bottom: 0;
-        }
-        p {
-            line-height: 1.7;
-        }
-    }
-
-    main {
-        @import '~bootstrap/scss/bootstrap';
-        @import '~bootstrap-vue/src/index.scss';
-        @import 'landing/bootstrap-custom';
-        @import '~@mdi/font/css/materialdesignicons.min.css';
-
-        @import "landing/helper";
-        @import "landing/general";
-        @import "landing/components";
-        @import "landing/features";
-        @import "landing/footer";
-        @import "landing/blog";
-
-        header.hero {
-            display: none;
-        }
-
-        @mixin home-common {
-            background-size: cover;
-            align-self: center;
-            position: relative;
-            background-position: center center;
-        }
-
-        .bg-half {
-            padding: 184px 0 90px;
-            @include home-common();
-            margin-bottom: 100px;
-        }
-
-        .theme-default-content {
-            max-width: none;
-            margin: 0;
-            padding: 0;
-        }
-    }
-}
-
-h1 img {
-    vertical-align: middle;
+#app {
+    @import '~bootstrap/scss/bootstrap';
+    @import '~bootstrap-vue/src/index.scss';
+    @import '../assets/layout/bootstrap-custom.scss';
+    @import '../assets/layout/reset-stylus.scss';
+    @import '../assets/layout/docs.scss';
+    @import "../assets/layout/helper.scss";
+    @import "../assets/layout/footer.scss";
+    @import "../assets/layout/components.scss";
+    @import "../assets/layout/features.scss";
+    @import "../assets/layout/header.scss";
 }

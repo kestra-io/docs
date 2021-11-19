@@ -2,6 +2,7 @@
 // features.scss
 //
 .features {
+    margin-top: 2.5rem;
     .icon,
     .icons {
         background: rgba($primary, 0.1);
@@ -65,7 +66,7 @@
             box-shadow: $shadow-lg;
             background-color: $primary !important;
             color: $white !important;
-            .icon2, 
+            .icon2,
             .para {
                 color: rgba($white, 0.5) !important;
             }
@@ -117,7 +118,7 @@
         font-size: 15px;
     }
     &.process-arrow {
-        &:after {    
+        &:after {
             content: '';
             position: absolute;
             width: 60%;
@@ -168,20 +169,20 @@
 }
 
 //index-crypto.html and index-course.html
-.crypto-table, 
+.crypto-table,
 .course-feature,
 .features-absolute {
     position: relative;
     z-index: 4;
     transition: all 0.5s ease;
 }
-.crypto-table, 
+.crypto-table,
 .course-feature {
     margin: -260px 0 0px;
 }
 
 .features-absolute {
-    margin: -200px 0 0px;
+    margin: -100px 0 0px;
     &.blog-search {
         margin: -120px 0 0px;
     }
@@ -321,7 +322,7 @@
             left: 0;
         }
     }
-    
+
     .app-feature-shape-left {
         &:after {
             right: 0;
@@ -358,7 +359,7 @@
         top: 0;
     }
 
-    .saas-feature-shape-left, 
+    .saas-feature-shape-left,
     .saas-feature-shape-right {
         &:after{
             bottom: -1rem;

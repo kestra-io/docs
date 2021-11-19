@@ -14,7 +14,7 @@
                                         </div>
                                         <div class="content ml-4">
                                             <h5 class="mb-1"><a href="javascript:void(0)" class="text-dark">{{ feature.title }}</a></h5>
-                                            <p class="text-muted mb-0">{{ feature.description }}.</p>
+                                            <p class="text-muted mb-0">{{ feature.description }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -46,7 +46,7 @@
                 features: [
                     {
                         title: "Any kind of workflow",
-                        description: "Workflow can start simple to more complex with branching, parallel, dynamic tasks, ...",
+                        description: "Workflow can start simple to more complex with branching, parallel, dynamic tasks, depending flows, ...",
                         icon: "mdi mdi-dots-hexagon"
                     },
                     {
@@ -61,7 +61,7 @@
                     },
                     {
                         title: "Any triggers",
-                        description: "Kestra is event based at heart, you can trigger an execution from api, schedule, detection, events, ....",
+                        description: "Kestra is event based at heart, you can trigger an execution from api, schedule, detection, events, ...",
                         icon: "mdi mdi-clock-start"
                     },
                     {
@@ -70,7 +70,7 @@
                         icon: "mdi mdi-web"
                     },
                     {
-                        title: "Enjoy infinite scalability",
+                        title: "Enjoy infinitely scalability",
                         description: "Kestra is built around top cloud native technologies, scale to million of executions without the pain.",
                         icon: "mdi mdi-open-in-new"
                     }
@@ -81,7 +81,7 @@
 </script>
 
 <style lang="scss">
-    @import "../styles/landing/variables";
+    @import ".vuepress/styles/variables";
 
     section.main-features {
         margin-top: -75px;

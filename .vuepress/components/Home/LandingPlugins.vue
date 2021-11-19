@@ -39,14 +39,14 @@
                     <div class="col-12 mt-4 pt-2 text-center">
                         <div class="row">
                             <div class="col-12 col-md-6 text-md-right">
-                                <a href="/plugins/" class="btn btn-primary">
+                                <a href="/plugins" class="btn btn-primary">
                                     <i class="mdi mdi-text-box-multiple"></i>
                                     Plugins documentation
                                     <i class="mdi mdi-arrow-right"></i>
                                 </a>
                             </div>
                             <div class="col-12 col-md-6 text-md-left mt-4 mt-md-0">
-                                <a href="/docs/plugin-developer-guide/" class="btn btn-primary">
+                                <a href="/docs/plugin-developer-guide" class="btn btn-primary">
                                     <i class="mdi mdi-language-java"></i>
                                     Create a plugin
                                     <i class="mdi mdi-arrow-right"></i>
@@ -245,7 +245,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../styles/landing/variables";
+@import ".vuepress/styles/variables";
 
 i.csicon {
     height: 45px;
@@ -262,71 +262,71 @@ i.csicon {
     }
 
     &.csicon-avro {
-        background-image: url("./LandingPlugins/avro.png");
+        background-image: url("../../assets/home/avro.png");
     }
 
     &.csicon-bigquery {
-        background-image: url("./LandingPlugins/bigquery.png");
+        background-image: url("../../assets/home/bigquery.png");
     }
 
     &.csicon-clickhouse {
-        background-image: url("./LandingPlugins/clickhouse.png");
+        background-image: url("../../assets/home/clickhouse.png");
     }
 
     &.csicon-gcs {
-        background-image: url("./LandingPlugins/gcs.png");
+        background-image: url("../../assets/home/gcs.png");
     }
 
     &.csicon-drive {
-        background-image: url("./LandingPlugins/gcs.png");
+        background-image: url("../../assets/home/gcs.png");
     }
 
     &.csicon-sheets {
-        background-image: url("./LandingPlugins/sheets.svg");
+        background-image: url("../../assets/home/sheets.svg");
     }
 
     &.csicon-drive {
-        background-image: url("./LandingPlugins/drive.svg");
+        background-image: url("../../assets/home/drive.svg");
     }
 
     &.csicon-mysql {
-        background-image: url("./LandingPlugins/mysql.png");
+        background-image: url("../../assets/home/mysql.png");
     }
 
     &.csicon-postgres {
-        background-image: url("./LandingPlugins/postgres.png");
+        background-image: url("../../assets/home/postgres.png");
     }
 
     &.csicon-s3 {
-        background-image: url("./LandingPlugins/s3.png");
+        background-image: url("../../assets/home/s3.png");
     }
 
     &.csicon-slack {
-        background-image: url("./LandingPlugins/slack.png");
+        background-image: url("../../assets/home/slack.png");
     }
 
     &.csicon-vertica {
-        background-image: url("./LandingPlugins/vertica.png");
+        background-image: url("../../assets/home/vertica.png");
     }
 
     &.csicon-jython {
-        background-image: url("./LandingPlugins/jython.png");
+        background-image: url("../../assets/home/jython.png");
     }
 
     &.csicon-groovy {
-        background-image: url("./LandingPlugins/groovy.png");
+        background-image: url("../../assets/home/groovy.png");
     }
 
     &.csicon-nashorn {
-        background-image: url("./LandingPlugins/nashorn.png");
+        background-image: url("../../assets/home/nashorn.png");
     }
 
     &.csicon-oracle {
-        background-image: url("./LandingPlugins/oracle.svg");
+        background-image: url("../../assets/home/oracle.svg");
     }
 
     &.csicon-singer {
-        background-image: url("./LandingPlugins/singer.svg");
+        background-image: url("../../assets/home/singer.svg");
     }
 }
 
