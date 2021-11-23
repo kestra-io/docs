@@ -14,7 +14,7 @@ module.exports = {
         '@vuepress/nprogress' : {},
         '@vuepress/last-updated': {},
         '@vuepress/google-analytics' : {'ga': 'UA-56021-9'},
-        'vuepress-plugin-medium-zoom': {},
+        'vuepress-plugin-medium-zoom': {'selector' : '.content__default img'},
         'seo': {
             description:description,
             customMeta: (add, context) => {
@@ -28,12 +28,6 @@ module.exports = {
             // hooks: fs.readFileSync(path.resolve(__dirname, './searchHooks.js')),
         },
         'vuepress-plugin-child-toc': {},
-        'vuepress-plugin-right-anchor': {
-            expand: {
-                trigger: 'click',
-                clickModeDefaultOpen: true
-            }
-        },
         'vuepress-plugin-code-copy': {}
     },
     themeConfig: {
@@ -43,11 +37,7 @@ module.exports = {
         docsRepo: 'kestra-io/kestra.io',
         editLinks: true,
         smoothScroll: true,
-        nav: [
-            // {text: 'Blog', link: '/blogs/'},
-            {text: 'Documentation', link: '/docs/'},
-            {text: 'Plugins', link: '/plugins/'},
-        ],
+        searchMaxSuggestions: 10,
         sidebar: {
             '/plugins/': [
                 {
@@ -70,15 +60,8 @@ module.exports = {
     },
     markdown: {
         extendMarkdown: md => {
-            md.set({ breaks: true })
+            md.set({breaks: true})
             md.use(require('markdown-it-mark'))
-        }
-    },
-    configureWebpack: {
-        resolve: {
-            alias: {
-                '@kestraui': path.resolve(__dirname, '../ui')
-            }
         }
     }
 };

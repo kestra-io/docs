@@ -1,0 +1,62 @@
+.custom-block {
+    .custom-block-title {
+        margin-bottom: 0.4rem;
+    }
+
+    &.tip {
+        background-color: lighten($success, 30%);
+        border-color: $success;
+        color: darken($success, 15%);
+    }
+
+
+    &.warning {
+        background-color: lighten($warning, 30%);
+        border-color: $warning;
+        color: darken($warning, 15%);
+    }
+
+
+    &.danger {
+        background-color: lighten($danger, 30%);
+        border-color: $danger;
+        color: darken($danger, 15%);
+    }
+
+    &.details {
+        display: block;
+        position: relative;
+        border-radius: 2px;
+        margin: 1.6em 0;
+        padding: 1.6em;
+        background-color: #eee;
+        h4 {
+            margin-top: 0;
+        }
+        summary {
+            outline: none;
+            cursor: pointer;
+        }
+    }
+}
+.custom-block.tip,
+.custom-block.warning,
+.custom-block.danger {
+    padding: $alert-padding-x $alert-padding-y;
+    border-left-width: 0.5rem;
+    border-left-style: solid;
+    margin: $spacer 0;
+
+    .custom-block-title {
+        font-weight: bold;
+    }
+
+    p {
+        margin-bottom: 0;
+    }
+}
+.custom-block.details figure:last-child,
+.custom-block.details p:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}

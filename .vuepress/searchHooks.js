@@ -1,5 +1,6 @@
 export default {
     async processSuggestions(suggestions, queryString, queryTerms) {
+        console.log(suggestions);
         return suggestions.map(r => {
             if (r.frontmatter && r.frontmatter.icon) {
                 r.title = "<img width=\"25\" src=\"data:image/svg+xml;base64," + r.frontmatter.icon + ">" + r.title;

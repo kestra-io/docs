@@ -37,7 +37,7 @@ tasks:
 ```
 
 <div style="text-align: right">
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential">Sequential Task documentation</a>
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential">Sequential Task documentation</a>
 </div>
 
 
@@ -65,7 +65,7 @@ tasks:
 ```
 
 <div style="text-align: right">
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel">Parallel Task documentation</a>
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel">Parallel Task documentation</a>
 </div>
 
 
@@ -107,7 +107,7 @@ tasks:
 ```
 
 <div style="text-align: right">
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch">Switch Task documentation</a>
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch">Switch Task documentation</a>
 </div>
 
 
@@ -138,7 +138,7 @@ tasks:
 ```
 
 <div style="text-align: right">
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a>
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a>
 </div>
 
 ## EachParallel
@@ -170,7 +170,7 @@ tasks:
 ```
 
 <div style="text-align: right">
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel">EachParallel Task documentation</a>
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel">EachParallel Task documentation</a>
 </div>
 
 
@@ -209,7 +209,7 @@ tasks:
 ```
 
 <div style="text-align: right">
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.AllowFailure">AllowFailure Task documentation</a>
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.AllowFailure">AllowFailure Task documentation</a>
 </div>
 
 
@@ -239,7 +239,7 @@ tasks:
 ```
 
 <div style="text-align: right">
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Flow">Flow Task documentation</a>
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Flow">Flow Task documentation</a>
 </div>
 
 
@@ -259,5 +259,5 @@ tasks:
 ```
 
 <div style="text-align: right">
-    <a class="btn" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template">Template Task documentation</a>
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template">Template Task documentation</a>
 </div>

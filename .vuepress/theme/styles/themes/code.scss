@@ -1,0 +1,218 @@
+blockquote {
+    font-size: 1rem;
+    color: $gray-600;
+    border-left: 0.2rem solid $gray-200;
+    margin: 1rem 0;
+    padding: 0.25rem 0 0.25rem 1rem;
+    & > p {
+        margin: 0;
+    }
+}
+
+a {
+    &.header-anchor {
+        font-size: 0.85em;
+        float: left;
+        margin-left: -0.87em;
+        padding-right: 0.23em;
+        margin-top: 0.125em;
+        opacity: 0;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    &:focus, &:hover {
+        .header-anchor {
+            opacity: 1;
+            text-decoration: none;
+        }
+    }
+}
+
+$lineNumbersWrapperWidth: 3.5rem !default;
+
+main {
+    &.docs {
+        code {
+            padding: 0.25rem 0.5rem;
+            margin: 0;
+            font-size: 0.85em;
+            background-color: rgba(27,31,35,0.05);
+            border-radius: 3px;
+            .token {
+                &.deleted {
+                    color: #ec5975;
+                }
+                &.inserted {
+                    color: $primary;
+                }
+            }
+        }
+    }
+}
+
+
+main.docs pre,
+main.docs pre[class*="language-"] {
+    line-height: 1.4;
+    padding: 1.25rem 1.5rem;
+    margin: 0.85rem 0;
+    background-color: $dark;
+    border-radius: 6px;
+    overflow: auto;
+}
+main.docs pre code,
+main.docs pre[class*="language-"] code {
+    color: #fff;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+div[class*="language-"] {
+    position: relative;
+    background-color: $dark;
+    border-radius: 6px;
+    .highlight-lines {
+        user-select: none;
+        padding-top: 1.3rem;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        line-height: 1.4;
+        .highlighted {
+            background-color: rgba(0,0,0,0.66);
+        }
+    }
+}
+div[class*="language-"] pre,
+div[class*="language-"] pre[class*="language-"] {
+    background: transparent;
+    position: relative;
+    z-index: 1;
+}
+
+div[class*="language-"]::before {
+    position: absolute;
+    z-index: 3;
+    top: 0.8em;
+    right: 1em;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+}
+
+div[class*="language-"]:not(.line-numbers-mode) {
+    .line-numbers-wrapper {
+        display: none;
+    }
+}
+
+div[class*="language-"].line-numbers-mode {
+    .highlight-lines {
+        .highlighted {
+            position: relative;
+            &:before {
+                content: ' ';
+                position: absolute;
+                z-index: 3;
+                left: 0;
+                top: 0;
+                display: block;
+                width: $lineNumbersWrapperWidth;
+                height: 100%;
+                background-color: rgba(0,0,0,0.66);
+            }
+        }
+    }
+    pre {
+        padding-left: $lineNumbersWrapperWidth 1rem;
+        vertical-align: middle;
+    }
+    .line-numbers-wrapper {
+        position: absolute;
+        top: 0;
+        width: $lineNumbersWrapperWidth;
+        text-align: center;
+        color: rgba(255,255,255,0.3);
+        padding: 1.25rem 0;
+        line-height: 1.4;
+        br {
+            user-select: none;
+        }
+        .line-number {
+            position: relative;
+            z-index: 4;
+            user-select: none;
+            font-size: 0.85em;
+        }
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        width: $lineNumbersWrapperWidth;
+        height: 100%;
+        border-radius: 6px 0 0 6px;
+        border-right: 1px solid rgba(0,0,0,0.66);
+        background-color: $dark;
+    }
+}
+
+div[class~="language-sh"]:before {
+    content: "bash"
+}
+
+div[class~="language-bash"]:before {
+    content: "bash"
+}
+
+div[class~="language-yml"]:before {
+    content: "yaml"
+}
+
+div[class~="language-yaml"]:before {
+    content: "yaml"
+}
+
+div[class~="language-hcl"]:before {
+    content: "hcl"
+}
+
+div[class~="language-twig"]:before {
+    content: "peeble"
+}
+
+div[class~="language-python"]:before {
+    content: "python"
+}
+
+div[class~="language-javascript"]:before {
+    content: "js"
+}
+
+div[class~="language-java"]:before {
+    content: "java"
+}
+
+div[class~="language-groovy"]:before {
+    content: "groovy"
+}
+
+div[class~="language-sql"]:before {
+    content: "sql"
+}
+
+div[class~="language-dockerfile"]:before {
+    content: "Dockerfile"
+}
+
+
+@import '~prismjs/themes/prism-tomorrow.css';
