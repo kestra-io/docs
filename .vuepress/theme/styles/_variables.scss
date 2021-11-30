@@ -88,5 +88,15 @@ $colors: (
     "footer": $footer
 );
 
+$spacer: 1rem;
+
+$spacers: (
+    6: ($spacer * 6),
+    7: ($spacer * 12),
+    8: ($spacer * 24),
+    9: ($spacer * 48),
+    10: ($spacer * 96),
+);
+
 @import 'node_modules/bootstrap/scss/functions';
 @import 'node_modules/bootstrap/scss/variables';

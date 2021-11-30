@@ -43,22 +43,7 @@
         <!--end section-->
         <!-- Hero End -->
 
-        <!-- Shape Start -->
-        <div class="position-relative">
-            <div class="shape overflow-hidden">
-                <svg
-                    viewBox="0 0 2880 48"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z"
-                        fill="currentColor"
-                    ></path>
-                </svg>
-            </div>
-        </div>
-        <!--Shape End-->
+        <Shape class="text-bg" />
     </div>
 </template>
 
@@ -67,9 +52,11 @@ import {VueTypedJs} from 'vue-typed-js'
 import ArrowRight from "vue-material-design-icons/ArrowRight";
 import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline";
 import PlayCircle from "vue-material-design-icons/PlayCircle";
+import Shape from "../layout/Shape";
 
 export default {
         components: {
+            Shape,
             VueTypedJs,
             ArrowRight,
             FileDocumentOutline,
@@ -89,9 +76,8 @@ export default {
             background-position: center center;
         }
 
-        .shape {
+        /deep/ .shape {
             z-index: 3;
-            color: $body-bg
         }
 
         .bg-half-260 {

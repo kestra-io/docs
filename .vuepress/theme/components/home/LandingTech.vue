@@ -1,6 +1,8 @@
 <template>
-    <section class="section bg-white mt-0 mt-md-5 mb-6">
-        <div class="container">
+    <section class="section bg-white mt-6 pt-5 pb-5">
+        <Shape class="text-white" />
+
+        <div class="container mb-7">
             <div class="row justify-content-center">
                 <div class="col-12 text-center">
                     <div class="section-title mb-4 pb-2">
@@ -62,22 +64,29 @@
             </div>
             <!--end row-->
         </div>
-        <!--end container-->
     </section>
 </template>
 
 <script>
+    import Shape from "../layout/Shape";
     export default {
         data() {
             return {}
         },
-        components: {}
+        components: {Shape}
     }
 </script>
 
-
-<style lang="scss">
+<style lang="scss" scoped>
     @import ".vuepress/theme/styles/variables";
+
+    /deep/ .shape-wrapper.text-white .shape {
+        top: -8rem;
+
+        @media (max-width: map-get($grid-breakpoints, "md")) {
+            top: -60px;
+        }
+    }
 
     .tech-avatar {
         height: 50px;
@@ -103,5 +112,4 @@
             }
         }
     }
-
 </style>
