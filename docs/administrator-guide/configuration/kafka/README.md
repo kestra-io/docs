@@ -112,3 +112,21 @@ kestra:
       topic-prefix: "uat_kestra"
 ```
 
+## `kestra.kafka.defaults.consumer-prefix`
+This configuration allow you to enable log for all messages from or to Kafka. Use this one to debug all the messages consume, produce or both from Kafka.
+
+::: warning
+This configuration have a huge performance impact, using regexp & serialization for most of the message
+:::
+
+```yaml
+kestra:
+  kafka:
+    client:
+      loggers:
+        - level: INFO # mandatory: ERROR, WARN, INFO, DEBUG, TRACE, the logger must be configured at least at this level for class io.kestra.runner.kafka.AbstractInterceptor
+          type: PRODUCER # optional: CONSUMER or PRODUCER
+          topic-regexp: "kestra_(executions|workertaskresult)" # optional: a regexp validating the topic
+          key-regexp: .*parallel.* # optional: a regexp validating the key
+          value-regexp: .*parallel.* # optional: a regexp validating the json full body
+```
