@@ -14,7 +14,7 @@ kestra:
     type: elasticsearch
 ```
 
-Here is another example with a secure ElasticSearch cluster with basic auth 
+Here is another example with a secure ElasticSearch cluster with basic auth
 
 ```yaml
 kestra:
@@ -24,6 +24,17 @@ kestra:
       basic-auth:
         username: "<your-user>"
         password: "<your-password>"
+```
+
+## `kestra.elasticsearch.client.trust-all-ssl`
+Default `false`, if you enable this options, we trust all certificate during connection. Useful mostly for development server with self signed certificate.
+
+```yaml
+kestra:
+  elasticsearch:
+    client:
+      http-hosts: "https://localhost:9200"
+      trust-all-ssl: true
 ```
 
 ## `kestra.elasticsearch.defaults.indice-prefix`
