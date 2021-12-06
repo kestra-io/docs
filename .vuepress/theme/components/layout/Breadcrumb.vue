@@ -16,7 +16,8 @@
                                             <router-link to="/">Kestra</router-link>
                                         </li>
                                         <li v-for="(url, name) in links" class="breadcrumb-item">
-                                            <router-link :to="url">{{ name }}</router-link>
+                                            <router-link v-if="url" :to="url">{{ name }}</router-link>
+                                            <template v-else>{{ name }}</template>
                                         </li>
                                         <li class="breadcrumb-item active" aria-current="page">{{ $page.title }}</li>
                                     </ul>
