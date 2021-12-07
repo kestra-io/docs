@@ -72,6 +72,19 @@ img {
             z-index: 989;
             overflow: auto;
             padding-right: 0;
+
+            &::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: $gray-200;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: $gray-400;
+                border: 3px solid $gray-200;
+            }
         }
 
         > *:first-child {
@@ -107,12 +120,38 @@ nav.right {
     position: sticky;
     overflow-y: auto;
     order: 2;
-    height: 100%;
+    height: calc(100vh - 68px);
     font-size: $font-size-sm;
     color: $text-muted;
     border-left: 1px solid $border-color;
     padding: 0 $spacer;
     top: 68px + 16px;
     margin-top: $spacer;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $gray-200;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-400;
+        border: 3px solid $gray-200;
+    }
 }
 
+
+body::-webkit-scrollbar {
+    width: $spacer;
+}
+
+body::-webkit-scrollbar-track {
+    background: $gray-200;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: $gray-400;
+    border: 3px solid $gray-200;
+}

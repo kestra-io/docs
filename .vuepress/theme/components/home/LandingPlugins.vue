@@ -174,6 +174,11 @@ export default {
                     href: "plugin-jdbc-mysql"
                 },
                 {
+                    name: "Redshift",
+                    icon: "csicon csicon-redshift",
+                    href: "plugin-jdbc-redshift"
+                },
+                {
                     name: "Oracle",
                     icon: "csicon csicon-oracle",
                     href: "plugin-jdbc-oracle"
@@ -256,6 +261,7 @@ export default {
                 .filter(item => item.path.startsWith("/plugins/plugin-singer/tasks/"))
                 .filter(item => !item.path.includes("Postgres") &&
                     !item.path.includes("Mysql") &&
+                    !item.path.includes("Redshift") &&
                     !item.path.includes("BigQuery") &&
                     !item.path.includes("Csv") &&
                     !item.path.includes("Json") &&
@@ -332,6 +338,10 @@ i.csicon {
 
     &.csicon-s3 {
         background-image: url("../../assets/home/s3.png");
+    }
+
+    &.csicon-redshift {
+        background-image: url("../../assets/home/redshift.svg");
     }
 
     &.csicon-slack {

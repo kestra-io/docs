@@ -91,6 +91,7 @@ export default {
 
 ul {
     padding-left: 0;
+    margin-bottom: 50px;
 
     li {
         list-style: none;
