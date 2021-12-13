@@ -81,6 +81,9 @@ import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline";
 import Terraform from "vue-material-design-icons/Terraform";
 import Server from "vue-material-design-icons/Server";
 import Email from "vue-material-design-icons/Email";
+import ApplicationOutline from "vue-material-design-icons/ApplicationOutline"
+import FeatureSearch from "vue-material-design-icons/FeatureSearch"
+import AccountNetworkOutline from "vue-material-design-icons/AccountNetworkOutline"
 import {GithubIcon} from 'vue-feather-icons';
 
 export default {
@@ -94,12 +97,35 @@ export default {
         Server,
         FileDocumentOutline,
         Email,
+        ApplicationOutline,
+        FeatureSearch,
+        AccountNetworkOutline,
         GithubIcon,
     },
 
     data() {
         return {
             menu: [
+                {
+                    title: 'Product',
+                    icon: ApplicationOutline,
+                    element: 'a',
+                    dropdown: 'product',
+                    items: [
+                        {
+                            title: 'Features',
+                            link: '/features/features',
+                            icon: FeatureSearch,
+                            desc: 'Discover all the features of Kestra'
+                        },
+                        {
+                            title: 'Usage',
+                            link: '/features/usage',
+                            icon: AccountNetworkOutline,
+                            desc: 'How Kestra can help on your daily workflow'
+                        }
+                    ]
+                },
                 {
                     title: 'Docs',
                     icon: BookOutline,
@@ -131,8 +157,7 @@ export default {
                             desc: 'Learn how to deploy Kestra'
                         }
                     ]
-                },
-                /*
+                },/*
                 {
                     title: 'Company',
                     icon: Domain,
@@ -152,8 +177,7 @@ export default {
                             desc: 'Extends Kestra with many plugins'
                         }
                     ]
-                },
-                */
+                },*/
                 {
                     title: 'GitHub',
                     icon: GithubIcon,

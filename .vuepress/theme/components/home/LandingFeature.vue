@@ -13,8 +13,7 @@
                                             <span :is="feature.icon" />
                                         </div>
                                         <div class="content ml-4">
-                                            <h5 class="mb-1"><a href="javascript:void(0)"
-                                                                class="text-dark">{{ feature.title }}</a></h5>
+                                            <h5 class="mb-1"><a href="javascript:void(0)" class="text-dark">{{ feature.title }}</a></h5>
                                             <p class="text-muted mb-0">{{ feature.description }}</p>
                                         </div>
                                     </div>

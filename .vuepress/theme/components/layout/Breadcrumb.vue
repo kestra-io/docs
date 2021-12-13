@@ -1,10 +1,8 @@
 <template>
     <div>
-        <section class="bg-half text-white d-table w-100"
-                 :style="backgroundStyles"
-        >
+        <section class="bg-half text-white d-table w-100" >
             <div class="container">
-                <div class="bg-overlay"></div>
+                <div class="bg-overlay" :style="backgroundStyles" />
                 <div class="row justify-content-center">
                     <div class="col-lg-12 text-center">
                         <div class="page-next-level">
@@ -48,16 +46,24 @@ export default {
 
     computed: {
         backgroundStyles() {
-            return {backgroundImage: 'url(' + (this.$page.frontmatter.image || require('../../assets/home/bg-header.jpg')) + ')'}
+            return {backgroundImage: 'url(' + (this.$page.frontmatter.image || require('../../assets/home/dot.jpg')) + ')'}
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+@import ".vuepress/theme/styles/variables";
 
 .bg-half {
     padding: 90px 0;
+    background-color: $primary;
 }
 
+.bg-overlay {
+    background-size: cover;
+    background-blend-mode: overlay;
+    background-position: 100%;
+    opacity: 0.6;
+}
 </style>
