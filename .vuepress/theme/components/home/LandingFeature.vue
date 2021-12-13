@@ -1,13 +1,13 @@
 <template>
     <div>
         <!-- FEATURES START -->
-        <section class="section main-features">
+        <section class="section main-features overflow-hidden">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-10">
                         <div class="features-absolute">
                             <div class="row">
-                                <div class="col-md-6 mt-4 mt-sm-0 pt-2 pt-sm-0" v-for="feature in features">
+                                <div class="col-md-6 mt-4 mt-sm-0 pt-2 pt-sm-0" data-aos="fade-up" :data-aos-delay="index * 150" v-for="(feature, index) in features">
                                     <div class="media features p-4 bg-white shadow-lg rounded">
                                         <div class="icons m-0 rounded h2 text-primary text-center px-3">
                                             <span :is="feature.icon" />

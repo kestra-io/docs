@@ -1,12 +1,12 @@
 <template>
-    <section class="section">
+    <section class="section overflow-hidden">
         <Shape class="text-bg top" />
 
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">
                     <div class=" position-relative" style="z-index: 1;">
-                        <div class="position-relative">
+                        <div class="position-relative" data-aos="zoom-in" data-aos-anchor-placement="top-bottom">
                             <img src="/ui.gif" class="img-fluid" alt="">
                         </div>
                         <div class="content mt-md-4 pt-md-2">
@@ -15,7 +15,7 @@
                                     <div class="row  mt-5 mt-md-0">
                                         <div class="col-md-6">
                                             <div class="section-title text-md-left">
-                                                <h4 class="title text-white mb-4 mb-0-md title-dark">
+                                                <h4 class="title text-white mb-4 mb-0-md title-dark" data-aos="fade-right">
                                                     Edit, run & monitor in real-time directly on the <strong>all in
                                                     one</strong> web
                                                     interface.
@@ -25,7 +25,7 @@
 
                                         <div class="col-md-6 col-12 ">
                                             <div class="section-title text-md-left">
-                                                <p class="text-white-50 para-desc">
+                                                <p class="text-white-50 para-desc" data-aos="fade-left">
                                                     <span class="text-light title-dark">Kestra</span> provide a
                                                     built-in
                                                     rich user interface that allow you to edit your flows, run &
@@ -33,8 +33,11 @@
                                                     No need to setup complex architecture, all features is provide
                                                     by default !
                                                 </p>
-                                                <router-link to="/docs/user-interface-guide"
-                                                             class="text-light btn btn-light title-dark">
+                                                <router-link
+                                                    to="/docs/user-interface-guide"
+                                                    class="text-light btn btn-light title-dark"
+                                                    data-aos="zoom-in"
+                                                >
                                                     <FileDocumentOutline title="" /> Read More
                                                     <ArrowRight title="" />
                                                 </router-link>

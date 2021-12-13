@@ -1,13 +1,13 @@
 <template>
-    <section class="section bg-white mt-6 pt-5 pb-5">
+    <section class="section bg-white mt-6 pt-5 pb-5 overflow-hidden">
         <Shape class="text-white" />
 
         <div class="container mb-7">
             <div class="row justify-content-center">
                 <div class="col-12 text-center">
                     <div class="section-title mb-4 pb-2">
-                        <h4 class="title mb-4">Build with cloud native technologies</h4>
-                        <p class="text-muted para-desc mx-auto mb-0">Enjoy <span class="text-primary font-weight-bold">infinitely scalability</span>
+                        <h4 class="title mb-4" data-aos="fade-left">Build with cloud native technologies</h4>
+                        <p data-aos="fade-right" class="text-muted para-desc mx-auto mb-0">Enjoy <span class="text-primary font-weight-bold">infinitely scalability</span>
                             since <strong>Kestra</strong> was built from inception with cloud native concept and rely on
                             top technologies with no Single Point of Failure.<br />
                             Grow from few executions to millions without the pain.
@@ -20,42 +20,42 @@
 
             <div class="row justify-content-center">
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
-                    <a href="https://kafka.apache.org/">
+                    <a href="https://kafka.apache.org/" data-aos="fade-right">
                         <img src="landing/tech/kafka.png" class="avatar" alt="">
                     </a>
                 </div>
                 <!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
-                    <a href="https://kafka.apache.org/26/documentation/streams/">
+                    <a href="https://kafka.apache.org/26/documentation/streams/" data-aos="fade-right">
                         <img src="landing/tech/kafka-stream.png" class="avatar" alt="">
                     </a>
                 </div>
                 <!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
-                    <a href="https://elastic.co/">
+                    <a href="https://elastic.co/" data-aos="fade-right">
                         <img src="landing/tech/elasticsearch.png" class="avatar" alt="">
                     </a>
                 </div>
                 <!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
-                    <a href="https://www.java.com/">
+                    <a href="https://www.java.com/" data-aos="fade-left">
                         <img src="landing/tech/java.png" class="avatar" alt="">
                     </a>
                 </div>
                 <!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
-                    <a href="https://micronaut.io/">
+                    <a href="https://micronaut.io/" data-aos="fade-left">
                         <img src="landing/tech/micronaut.svg" class="avatar" alt="">
                     </a>
                 </div>
                 <!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
-                    <a href="http://kubernetes.io/">
+                    <a href="http://kubernetes.io/" data-aos="fade-left">
                         <img src="landing/tech/kubernetes.png" class="avatar" alt="">
                     </a>
                 </div>

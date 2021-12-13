@@ -1,12 +1,12 @@
 <template>
     <div>
-        <section class="section">
+        <section class="section overflow-hidden">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
                         <div class="section-title text-center pb-2">
-                            <h4 class="title mb-4">Discover plugins or build yours !</h4>
-                            <p class="text-muted para-desc mb-0 mx-auto">
+                            <h4 class="title mb-4" data-aos="fade-right">Discover plugins or build yours !</h4>
+                            <p class="text-muted para-desc mb-0 mx-auto" data-aos="fade-left">
                                 <span class="text-primary mb-0 font-weight-bold">Kestra</span> is build upon a plugins
                                 systems.
                                 Find your plugin to interact with your provider or develop easily yours.
@@ -22,7 +22,9 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 mt-4 pt-2" v-for="plugin in plugins">
                         <router-link :to="'plugins/' + plugin.href + (plugin.section ? '#' + plugin.section + '/' : '')"
-                           class="media key-feature align-items-center p-3 rounded-md shadow">
+                           class="media key-feature align-items-center p-3 rounded-md shadow"
+                            data-aos="flip-up"
+                        >
                             <div class="icon text-center rounded-circle mr-3 text-primary">
                                 <i v-if="plugin.icon && typeof plugin.icon === 'string'" :class="plugin.icon">
                                     <img v-if="plugin.image" :src="'data:image/svg+xml;base64,' + plugin.image"
@@ -39,14 +41,14 @@
 
                     <div class="col-12 mt-4 pt-2 text-center">
                         <div class="row">
-                            <div class="col-12 col-md-6 text-md-right">
+                            <div class="col-12 col-md-6 text-md-right" data-aos="zoom-in">
                                 <router-link to="/plugins" class="btn btn-primary">
                                     <TextBoxMultiple title="" />
                                     Plugins documentation
                                     <ArrowRight title="" />
                                 </router-link>
                             </div>
-                            <div class="col-12 col-md-6 text-md-left mt-4 mt-md-0">
+                            <div class="col-12 col-md-6 text-md-left mt-4 mt-md-0" data-aos="zoom-in">
                                 <router-link to="/docs/plugin-developer-guide" class="btn btn-primary">
                                     <LanguageJava title="" />
                                     Create a plugin

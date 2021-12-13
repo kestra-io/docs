@@ -27,6 +27,7 @@
   "homepage": "https://github.com/kestra-io/kestra.io#readme",
   "dependencies": {
     "@mdi/font": "^6.1.95",
+    "aos": "^2.3.4",
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.21.2",
     "glob": "7.2.0",

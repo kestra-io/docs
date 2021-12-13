@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import AOS from "aos"
 import LandingHeader from "../components/home/LandingHeader"
 import LandingFeature from "../components/home/LandingFeature"
 import LandingTech from "../components/home/LandingTech"
@@ -33,6 +34,10 @@ export default {
         LandingVideo,
         LandingPlugins,
     },
+
+    mounted() {
+        AOS.init();
+    }
 }
 </script>
 

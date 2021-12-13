@@ -1,12 +1,10 @@
 <template>
-
-    <div class="home-header">
-        <!-- Hero Start -->
+    <div class="home-header overflow-hidden">
         <section class="bg-half-260 d-table w-100" id="home">
             <div class="container">
                 <div class="row mt-5">
                     <div class="col-lg-6 ">
-                        <div class="title-heading text-white">
+                        <div class="title-heading text-white" data-aos="fade-right">
                             <vue-typed-js :loop="true" :strings="['open source', 'scalable', 'extensible', 'real-time']">
                                 <h1 class="heading mb-4">
                                     The <span class="typing"></span> <br /><span>orchestrator</span> & <span>scheduler</span> platform.
@@ -18,7 +16,7 @@
 
                             <div class="mt-4 pt-2">
                                 <div class="row">
-                                    <div class="col-12 col-sm-6 text-sm-right">
+                                    <div class="col-12 col-sm-6 text-sm-right" >
                                         <router-link to="/docs/getting-started" class="btn btn-light"><PlayCircle title="" /> Get Started <ArrowRight title="" /></router-link>
                                     </div>
                                     <div class="col-12 col-sm-6 text-sm-left mt-4 mt-sm-0">
@@ -28,21 +26,15 @@
                             </div>
                         </div>
                     </div>
-                    <!--end col-->
 
                     <div class="col-lg-6 ui-img">
                         <div>
-                            <img src="../../assets/home/ui.png" class="img-fluid" alt="" />
+                            <img src="../../assets/home/ui.png" class="img-fluid" alt="" data-aos="fade-left" data-aos-anchor-placement="top-bottom" />
                         </div>
                     </div>
                 </div>
-                <!--end row-->
             </div>
-            <!--end container-->
         </section>
-        <!--end section-->
-        <!-- Hero End -->
-
         <Shape class="text-bg" />
     </div>
 </template>

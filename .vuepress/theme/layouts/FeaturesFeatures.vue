@@ -5,19 +5,19 @@
             <main class="features-usage">
                 <Breadcrumb :links="{'Features': undefined}" />
 
-                <section class="section">
+                <section class="section overflow-hidden">
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-12 text-center">
                                 <div class="section-title mb-4 pb-2">
-                                    <h4 class="title mb-4">Ship faster</h4>
-                                    <p>Save time, complexity, and development costs.</p>
+                                    <h4 class="title mb-4" data-aos="fade-left">Ship faster</h4>
+                                    <p data-aos="fade-right">Save time, complexity, and development costs.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 col-12 mt-5 mt-md-0">
-                                <div class="features">
+                                <div class="features" data-aos="fade-right">
                                     <div class="image position-relative d-inline-block">
                                         <MonitorMultiple class="text-primary h1" title="" />
                                     </div>
@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="col-md-4 col-12 mt-5 mt-md-0">
-                                <div class="features">
+                                <div class="features" data-aos="fade-top">
                                     <div class="image position-relative d-inline-block">
                                         <Web class="text-primary h1" title="" />
                                     </div>
@@ -43,7 +43,7 @@
                             </div>
 
                             <div class="col-md-4 col-12 mt-5 mt-md-0">
-                                <div class="features">
+                                <div class="features" data-aos="fade-left">
                                     <div class="image position-relative d-inline-block">
                                         <Terraform class="text-primary h1" title="" />
                                     </div>
@@ -59,19 +59,19 @@
                     <Shape class="text-dark" />
                 </section>
 
-                <section class="section overflow-hidden bg-dark text-white">
+                <section class="section bg-dark text-white overflow-hidden">
                     <div class="container mt-100 mt-60">
                         <div class="row align-items-center">
                             <div class="col-lg-5 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
                                 <div class="section-title mr-lg-4">
-                                    <h1 class="title mb-3">An orchestrator platform</h1>
-                                    <p class="para-desc text-muted">
+                                    <h1 class="title mb-3" data-aos="fade-right">An orchestrator platform</h1>
+                                    <p class="para-desc text-muted" data-aos="fade-left">
                                         Build complex pipeline in couple of minutes.
                                     </p>
 
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="d-flex pt-4">
+                                            <div class="d-flex pt-4" data-aos="fade-right">
                                                 <h2>
                                                     <DotsHexagon title="" />
                                                 </h2>
@@ -88,7 +88,7 @@
 
 
                                         <div class="col-12">
-                                            <div class="d-flex pt-4">
+                                            <div class="d-flex pt-4" data-aos="fade-right">
                                                 <h2>
                                                     <GoogleCirclesExtended title="" />
                                                 </h2>
@@ -104,7 +104,7 @@
 
 
                                         <div class="col-12">
-                                            <div class="d-flex pt-4">
+                                            <div class="d-flex pt-4" data-aos="fade-right">
                                                 <h2>
                                                     <OpenInNew title="" />
                                                 </h2>
@@ -125,6 +125,8 @@
                                         src="../assets/features/world.jpg"
                                         class="img-fluid mx-auto d-block rounded shadow"
                                         alt=""
+                                        data-aos="fade-left"
+                                        data-aos-anchor-placement="top-bottom"
                                     />
                                 </div>
                             </div>
@@ -133,7 +135,7 @@
                     <Shape class="text-bg" />
                 </section>
 
-                <section class="section">
+                <section class="section overflow-hidden">
                     <div class="container mt-100 mt-60">
                         <div class="row align-items-center">
                             <div class="col-lg-7">
@@ -142,6 +144,8 @@
                                         src="../assets/features/clock.jpg"
                                         class="img-fluid mx-auto d-block rounded shadow"
                                         alt=""
+                                        data-aos="fade-right"
+                                        data-aos-anchor-placement="top-bottom"
                                     />
                                 </div>
                             </div>
@@ -154,7 +158,7 @@
 
                                 <div class="row">
                                     <div class="col-12">
-                                        <div class="d-flex pt-4">
+                                        <div class="d-flex pt-4" data-aos="fade-left">
                                             <h2>
                                                 <Abacus title="" />
                                             </h2>
@@ -175,7 +179,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <div class="d-flex pt-4">
+                                        <div class="d-flex pt-4" data-aos="fade-left">
                                             <h2>
                                                 <CalendarClockOutline title="" />
                                             </h2>
@@ -190,7 +194,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <div class="d-flex pt-4">
+                                        <div class="d-flex pt-4" data-aos="fade-left">
                                             <h2>
                                                 <Api title="" />
                                             </h2>
@@ -209,7 +213,7 @@
                     <Shape class="text-dark" />
                 </section>
 
-                <section class="section overflow-hidden bg-dark text-white">
+                <section class="section overflow-hidden bg-dark text-white overflow-hidden">
                     <div class="container mt-100 mt-60">
                         <div class="row align-items-center">
                             <div class="col-lg-7 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
@@ -221,7 +225,7 @@
 
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="d-flex pt-4">
+                                            <div class="d-flex pt-4" data-aos="fade-right">
                                                 <h2>
                                                     <DotsHexagon title="" />
                                                 </h2>
@@ -240,7 +244,7 @@
 
 
                                         <div class="col-12">
-                                            <div class="d-flex pt-4">
+                                            <div class="d-flex pt-4" data-aos="fade-right">
                                                 <h2>
                                                     <GoogleCirclesExtended title="" />
                                                 </h2>
@@ -255,7 +259,7 @@
 
 
                                         <div class="col-12">
-                                            <div class="d-flex pt-4">
+                                            <div class="d-flex pt-4" data-aos="fade-right">
                                                 <h2>
                                                     <OpenInNew title="" />
                                                 </h2>
@@ -276,6 +280,8 @@
                                         src="../assets/features/world-connected.jpg"
                                         class="img-fluid mx-auto d-block rounded shadow"
                                         alt=""
+                                        data-aos="fade-left"
+                                        data-aos-anchor-placement="top-bottom"
                                     />
                                 </div>
                             </div>
@@ -284,24 +290,24 @@
                     <Shape class="text-bg" />
                 </section>
 
-                <section class="section pt-1">
+                <section class="section pt-1 overflow-hidden">
                     <div class="container pb-lg-4 mb-md-5 mb-4 mt-5">
                         <div class="row justify-content-center">
                             <div class="col-12 text-center">
                                 <div class="section-title">
-                                    <h4 class="title mb-4">
+                                    <h4 class="title mb-4" data-aos="fade-left">
                                         And many more use developing plugins !
                                     </h4>
-                                    <h5 class="text-muted para-desc mx-auto mb-0">
+                                    <h5 class="text-muted para-desc mx-auto mb-0" data-aos="fade-right" >
                                         Start building with <span class="text-primary font-weight-bold">Kestra</span> and
                                         enjoy yours pipelines, the only limit is your imagination.
                                     </h5>
 
                                     <div class="mt-4">
-                                        <router-link to="/docs/getting-started" class="btn btn-primary mt-2 mr-2">
+                                        <router-link to="/docs/getting-started" class="btn btn-primary mt-2 mr-2" data-aos="zoom-in">
                                             <PlayCircle title="" /> Get Started <ArrowRight title="" />
                                         </router-link>
-                                        <router-link to="/docs" class="btn btn-outline-primary mt-2">
+                                        <router-link to="/docs" class="btn btn-outline-primary mt-2" data-aos="zoom-in">
                                             <FileDocumentOutline title="" /> Read the docs <ArrowRight title="" />
                                         </router-link>
                                     </div>
@@ -338,6 +344,7 @@ import OpenInNew from "vue-material-design-icons/OpenInNew";
 import ArrowRight from "vue-material-design-icons/ArrowRight";
 import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline";
 import PlayCircle from "vue-material-design-icons/PlayCircle";
+import AOS from "aos";
 
 export default {
     components: {
@@ -362,6 +369,9 @@ export default {
         FileDocumentOutline,
         PlayCircle,
     },
+    mounted() {
+        AOS.init()
+    }
 }
 </script>
 
