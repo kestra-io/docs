@@ -250,14 +250,6 @@ export default {
         background-color: transparent;
     }
 
-    .shape {
-        bottom: -100px;
-
-        @media (max-width: map-get($grid-breakpoints, "md")) {
-            bottom: -60px;
-        }
-    }
-
     a.content {
         display: inline-block;
 

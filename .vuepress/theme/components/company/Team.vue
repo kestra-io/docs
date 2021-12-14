@@ -1,8 +1,7 @@
 <script>
 import {
-    FacebookIcon,
-    InstagramIcon,
     TwitterIcon,
+    GithubIcon,
     LinkedinIcon,
 } from "vue-feather-icons";
 
@@ -14,8 +13,7 @@ export default {
         },
     },
     components: {
-        FacebookIcon,
-        InstagramIcon,
+        GithubIcon,
         TwitterIcon,
         LinkedinIcon,
     },
@@ -32,7 +30,7 @@ export default {
             v-for="(item, index) in teamData"
             :key="index"
         >
-            <div class="card team text-center border-0">
+            <div class="card team text-center border-0 pt-4 pb-4" data-aos="fade-right">
                 <div class="position-relative">
                     <img
                         :src="`${item.image}`"
@@ -40,28 +38,12 @@ export default {
                         alt=""
                     />
                     <ul class="list-unstyled social-icon team-icon mb-0 mt-4">
-                        <li class="list-inline-item">
-                            <a href="javascript:void(0)" class="rounded">
-                                <facebook-icon class="fea icon-sm fea-social"></facebook-icon>
-                            </a>
-                        </li>
-                        <li class="list-inline-item ml-1">
-                            <a href="javascript:void(0)" class="rounded">
-                                <instagram-icon class="fea icon-sm fea-social"></instagram-icon>
-                            </a>
-                        </li>
-                        <li class="list-inline-item ml-1">
-                            <a href="javascript:void(0)" class="rounded">
-                                <twitter-icon class="fea icon-sm fea-social"></twitter-icon>
-                            </a>
-                        </li>
-                        <li class="list-inline-item ml-1">
-                            <a href="javascript:void(0)" class="rounded">
-                                <linkedin-icon class="fea icon-sm fea-social"></linkedin-icon>
+                        <li class="list-inline-item mr-1" v-for="(url, social) in item.socials">
+                            <a :href="url" class="rounded">
+                                <templace :is="social + '-icon'" class="fea icon-sm fea-social"></templace>
                             </a>
                         </li>
                     </ul>
-                    <!--end icon-->
                 </div>
                 <div class="card-body py-3 px-0 content">
                     <h5 class="mb-0">

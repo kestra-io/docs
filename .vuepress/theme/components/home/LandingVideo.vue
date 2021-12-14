@@ -30,7 +30,7 @@
                                                     built-in
                                                     rich user interface that allow you to edit your flows, run &
                                                     monitor them in real-time.
-                                                    No need to setup complex architecture, all features is provide
+                                                    No need to setup complex architecture, all features are provided
                                                     by default !
                                                 </p>
                                                 <router-link
@@ -72,29 +72,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-@import ".vuepress/theme/styles/variables";
-
-
-/deep/ .shape-wrapper.top {
-    .shape {
-        bottom: 100px;
-
-        @media (max-width: map-get($grid-breakpoints, "md")) {
-            bottom: 60px;
-        }
-    }
-}
-
-/deep/ .shape-wrapper.bottom {
-    .shape {
-        bottom: -100px;
-
-        @media (max-width: map-get($grid-breakpoints, "md")) {
-            bottom: -60px;
-        }
-    }
-}
-
-</style>

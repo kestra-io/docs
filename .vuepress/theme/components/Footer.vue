@@ -178,6 +178,10 @@ export default {
 <style lang="scss" scoped>
     @import ".vuepress/theme/styles/variables";
 
+    /deep/ .shape {
+        bottom: 0;
+    }
+
     footer.footer {
         border-top: 0;
         text-align: left;

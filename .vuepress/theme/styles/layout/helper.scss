@@ -161,3 +161,16 @@
     padding: 184px 0 90px;
     @include home-common();
 }
+
+
+
+
+
+
+.shape {
+    bottom: -100px;
+
+    @media (max-width: map-get($grid-breakpoints, "md")) {
+        bottom: -60px;
+    }
+}

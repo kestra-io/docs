@@ -157,7 +157,7 @@ export default {
                             desc: 'Learn how to deploy Kestra'
                         }
                     ]
-                },/*
+                },
                 {
                     title: 'Company',
                     icon: Domain,
@@ -168,16 +168,16 @@ export default {
                             title: 'About us',
                             link: '/company/about-us',
                             icon: Domain,
-                            desc: 'Get started with Kestra'
+                            desc: 'Discover our story & our team'
                         },
                         {
                             title: 'Contact us',
                             link: '/company/contact',
                             icon: Email,
-                            desc: 'Extends Kestra with many plugins'
+                            desc: 'How can we help?'
                         }
                     ]
-                },*/
+                },
                 {
                     title: 'GitHub',
                     icon: GithubIcon,
