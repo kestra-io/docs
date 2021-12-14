@@ -62,6 +62,14 @@ module.exports = {
         extendMarkdown: md => {
             md.set({breaks: true})
             md.use(require('markdown-it-mark'))
+
+            md.renderer.rules.table_open = function(tokens, idx) {
+                return '<div class="table-responsive"><table class="table table-bordered table-hover table-striped">';
+            };
+
+            md.renderer.rules.table_close = function(tokens, idx) {
+                return '</table></div>';
+            };
         }
     }
 };

@@ -26,13 +26,13 @@ Below a flow sample that retry executes a task on failure maximum 5 times each 1
 | ---------- | ----------- | ----------- |
 |`type`|`string`|Retry behavior to apply. Can be one of `constant`, `exponential`, `random`.|
 |`maxAttempt`|`integer`|Number of retries performed before the system stops retry.|
-|`maxDuration`|`Duration`|Maxium delay the execution is retried. Once passed, the task is no more processed|
-
+|`maxDuration`|`Duration`|Maximum delay the execution is retried. Once passed, the task is no more processed|
+|`warningOnRetry`|`Boolean`|Flag the execution has warning if any retry was done on this tasks.|
 
 ### Duration
 
-Some of the option above have to be filled with duration notation. 
-Durations are expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations) 
+Some option above have to be filled with duration notation.
+Durations are expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)
 and here is some examples :
 
 | name | description |
