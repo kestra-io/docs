@@ -1,7 +1,5 @@
 <template>
-    <section class="section bg-white mt-6 pt-5 pb-5 overflow-hidden">
-        <Shape class="text-white" />
-
+    <section class="section bg-white overflow-hidden">
         <div class="container mb-7">
             <div class="row justify-content-center">
                 <div class="col-12 text-center">
@@ -14,9 +12,7 @@
                         </p>
                     </div>
                 </div>
-                <!--end col-->
             </div>
-            <!--end row-->
 
             <div class="row justify-content-center">
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
@@ -24,46 +20,39 @@
                         <img src="../../assets/home/tech/kafka.png" class="avatar" alt="">
                     </a>
                 </div>
-                <!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
                     <a href="https://kafka.apache.org/26/documentation/streams/" data-aos="fade-right">
                         <img src="../../assets/home/tech/kafka-stream.png" class="avatar" alt="">
                     </a>
                 </div>
-                <!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
                     <a href="https://elastic.co/" data-aos="fade-right">
                         <img src="../../assets/home/tech/elasticsearch.png" class="avatar" alt="">
                     </a>
                 </div>
-                <!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
                     <a href="https://www.java.com/" data-aos="fade-left">
                         <img src="../../assets/home/tech/java.png" class="avatar" alt="">
                     </a>
                 </div>
-                <!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
                     <a href="https://micronaut.io/" data-aos="fade-left">
                         <img src="../../assets/home/tech/micronaut.svg" class="avatar" alt="">
                     </a>
                 </div>
-                <!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center mt-4 pt-2 tech-avatar">
                     <a href="http://kubernetes.io/" data-aos="fade-left">
                         <img src="../../assets/home/tech/kubernetes.png" class="avatar" alt="">
                     </a>
                 </div>
-                <!--end col-->
-
             </div>
-            <!--end row-->
         </div>
+        <Shape class="text-bg" />
     </section>
 </template>
 
@@ -79,14 +68,6 @@
 
 <style lang="scss" scoped>
     @import ".vuepress/theme/styles/variables";
-
-    /deep/ .shape-wrapper.text-white .shape {
-        top: -8rem;
-
-        @media (max-width: map-get($grid-breakpoints, "md")) {
-            top: -60px;
-        }
-    }
 
     .tech-avatar {
         height: 50px;

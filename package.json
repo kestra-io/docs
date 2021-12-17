@@ -41,6 +41,7 @@
     "markdown-it-title": "^4.0.0",
     "node-sass": "^5.0.0",
     "vue-feather-icons": "^5.1.0",
+    "vue-lottie": "^0.2.1",
     "vue-material-design-icons": "^4.13.0",
     "vue-stripe-menu": "^1.5.0",
     "vue-typed-js": "^0.1.2",

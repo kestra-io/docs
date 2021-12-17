@@ -2,7 +2,7 @@
 // helper.scss
 //
 .section {
-    padding: 100px 0;
+    padding: 100px 0 150px 0;
     position: relative;
 }
 .section-two {
@@ -47,7 +47,7 @@
     position: relative;
     .title {
         letter-spacing: 0.5px;
-        font-size: 30px;
+        font-size: $font-size-base * 2.5;
     }
 }
 .text-shadow-title {
@@ -168,7 +168,7 @@
 
 
 .shape {
-    bottom: -100px;
+    bottom: -150px;
 
     @media (max-width: map-get($grid-breakpoints, "md")) {
         bottom: -60px;

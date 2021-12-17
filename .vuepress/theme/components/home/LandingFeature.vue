@@ -1,42 +1,38 @@
 <template>
-    <div>
-        <!-- FEATURES START -->
-        <section class="section main-features overflow-hidden">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <div class="features-absolute">
-                            <div class="row">
-                                <div class="col-md-6 mt-4 mt-sm-0 pt-2 pt-sm-0" data-aos="fade-up" :data-aos-delay="index * 150" v-for="(feature, index) in features">
-                                    <div class="media features p-4 bg-white shadow-lg rounded">
-                                        <div class="icons m-0 rounded h2 text-primary text-center px-3">
-                                            <span :is="feature.icon" />
-                                        </div>
-                                        <div class="content ml-4">
-                                            <h5 class="mb-1"><a href="javascript:void(0)" class="text-dark">{{ feature.title }}</a></h5>
-                                            <p class="text-muted mb-0">{{ feature.description }}</p>
-                                        </div>
+    <section class="section main-features overflow-hidden">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="features-absolute">
+                        <div class="row">
+                            <div class="col-md-6 mt-4 mt-sm-0 pt-2 pt-sm-0" data-aos="fade-up" :data-aos-delay="index * 150" v-for="(feature, index) in features">
+                                <div class="media features p-4 bg-white shadow-lg rounded">
+                                    <div class="icons m-0 rounded h2 text-primary text-center px-3">
+                                        <span :is="feature.icon" />
+                                    </div>
+                                    <div class="content ml-4">
+                                        <h5 class="mb-1"><a href="javascript:void(0)" class="text-dark">{{ feature.title }}</a></h5>
+                                        <p class="text-muted mb-0">{{ feature.description }}</p>
                                     </div>
                                 </div>
-                                <!--end col-->
-
-                                <!--
-                                <div class="col-12 mt-4 pt-4 text-center">
-                                    <a href="javascript:void(0)" class="btn btn-primary">
-                                        Explore features
-                                        <i class="mdi mdi-arrow-right"></i>
-                                    </a>
-                                </div>
-                                -->
                             </div>
+                            <!--end col-->
+
+                            <!--
+                            <div class="col-12 mt-4 pt-4 text-center">
+                                <a href="javascript:void(0)" class="btn btn-primary">
+                                    Explore features
+                                    <i class="mdi mdi-arrow-right"></i>
+                                </a>
+                            </div>
+                            -->
                         </div>
                     </div>
                 </div>
-                <!--end row-->
             </div>
-            <!--end container-->
-        </section>
-    </div>
+        </div>
+        <Shape class="text-white" />
+    </section>
 </template>
 
 <script>
@@ -46,8 +42,10 @@ import GoogleCirclesExtended from "vue-material-design-icons/GoogleCirclesExtend
 import ClockStart from "vue-material-design-icons/ClockStart";
 import Web from "vue-material-design-icons/Web";
 import OpenInNew from "vue-material-design-icons/OpenInNew";
+import Shape from "../layout/Shape";
 
 export default {
+    components: {Shape},
     data() {
         return {
             features: [
@@ -91,7 +89,7 @@ export default {
 @import ".vuepress/theme/styles/variables";
 
 section.main-features {
-    margin-top: -75px;
+    margin-top: -120px;
 
     .features {
         flex-wrap: nowrap;

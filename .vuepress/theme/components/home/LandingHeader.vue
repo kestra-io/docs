@@ -70,6 +70,7 @@ export default {
 
         /deep/ .shape {
             z-index: 3;
+            bottom: 0;
         }
 
         .bg-half-260 {

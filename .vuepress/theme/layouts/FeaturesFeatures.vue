@@ -5,7 +5,7 @@
             <main class="features-usage">
                 <Breadcrumb :links="{'Features': undefined}" />
 
-                <section class="section overflow-hidden">
+                <section class="section overflow-hidden bg-white">
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-12 text-center">
@@ -64,7 +64,7 @@
                         <div class="row align-items-center">
                             <div class="col-lg-5 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
                                 <div class="section-title mr-lg-4">
-                                    <h1 class="title mb-3" data-aos="fade-right">An orchestrator platform</h1>
+                                    <h2 class="title mb-3" data-aos="fade-right">An orchestrator platform</h2>
                                     <p class="para-desc text-muted" data-aos="fade-left">
                                         Build complex pipeline in couple of minutes.
                                     </p>
@@ -151,7 +151,7 @@
                             </div>
 
                             <div class="col-lg-5 mt-4 pt-2 mt-lg-0 pt-lg-0">
-                                <h1 class="title mb-3">An scheduler platform</h1>
+                                <h2 class="title mb-3">An scheduler platform</h2>
                                 <p class="para-desc text-muted">
                                     Launch your flows whatever is your need!
                                 </p>
@@ -218,7 +218,7 @@
                         <div class="row align-items-center">
                             <div class="col-lg-7 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
                                 <div class="section-title mr-lg-4">
-                                    <h1 class="title mb-3">A extensible data orchestrator</h1>
+                                    <h2 class="title mb-3">A extensible data orchestrator</h2>
                                     <p class="para-desc text-muted">
                                         Kestra is build with <strong>data at heart</strong> and integrate <strong>directly</strong> with your source & destination, no need to choose <strong>between ETL or ELT</strong>, both are possible.
                                     </p>
@@ -290,6 +290,165 @@
                     <Shape class="text-bg" />
                 </section>
 
+                <section class="section overflow-hidden">
+                    <div class="container mt-100 mt-60">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <div class="saas-feature-shape-left position-relative">
+                                    <img
+                                        src="../assets/features/computer.jpg"
+                                        class="img-fluid mx-auto d-block rounded shadow"
+                                        alt=""
+                                        data-aos="fade-right"
+                                        data-aos-anchor-placement="top-bottom"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-5 mt-4 pt-2 mt-lg-0 pt-lg-0">
+                                <h2 class="title mb-3">An all in one platform</h2>
+                                <p class="para-desc text-muted">
+                                    kestra is composed of a <strong>rich UI</strong> allowing to <strong>create, run & monitors</strong> all your flows, a <strong>full scalable & cloud native</strong> architecture and <strong>based on plugins</strong> allowing you to used or create yours easily.
+                                </p>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex pt-4" data-aos="fade-left">
+                                            <h2>
+                                                <Web title="" />
+                                            </h2>
+                                            <div class="ml-3">
+                                                <h5>Rich & realtime UI</h5>
+                                                <p class="text-muted mb-0">
+                                                    Create & Edit your flows <router-link to="/docs/user-interface-guide/">directly on your browser</router-link>, execute and monitor all your executions in realtime!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="d-flex pt-4" data-aos="fade-left">
+                                            <h2>
+                                                <SchoolOutline title="" />
+                                            </h2>
+                                            <div class="ml-3">
+                                                <h5>Low code!</h5>
+                                                <p class="text-muted mb-0">
+                                                    Kestra flow are <router-link to="/docs/developer-guide/flow/">simple descriptive YAML</router-link> files. No need to learn another language to create a flow!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="d-flex pt-4" data-aos="fade-left">
+                                            <h2>
+                                                <OpenInNew title="" />
+                                            </h2>
+                                            <div class="ml-3">
+                                                <h5>Cloud native & Infinitely scalable</h5>
+                                                <p class="text-muted mb-0">
+                                                    Scale to millions of executions without the pain since Kestra is built on <router-link to="/docs/architecture/">cloud native & Scalable</router-link> solutions.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="d-flex pt-4" data-aos="fade-left">
+                                            <h2>
+                                                <GoogleCirclesExtended title="" />
+                                            </h2>
+                                            <div class="ml-3">
+                                                <h5>Easy to extend</h5>
+                                                <p class="text-muted mb-0">
+                                                    Plugins are class first in Kestra, many are available from <router-link to="/plugins/">Kestra core team</router-link> but you can create one easily.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <Shape class="text-dark" />
+                </section>
+
+
+                <section class="section overflow-hidden bg-dark text-white overflow-hidden">
+                    <div class="container mt-100 mt-60">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
+                                <div class="section-title mr-lg-4">
+                                    <h2 class="title mb-3">An Enterprise Edition</h2>
+                                    <p class="para-desc text-muted">
+                                        The enterprise edition fit all the company needs : Security & Productivity
+
+                                    </p>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex pt-4" data-aos="fade-right">
+                                                <h2>
+                                                    <ShieldLockOutline title="" />
+                                                </h2>
+                                                <div class="ml-3">
+                                                    <h5>SSO/OIDC & RBAC!</h5>
+                                                    <p class="text-muted mb-0">
+                                                        Secure your kestra with Single Sign on with your Open Id provider and control fine grained ACL for users & groups.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12">
+                                            <div class="d-flex pt-4" data-aos="fade-right">
+                                                <h2>
+                                                    <FileLockOutline title="" />
+                                                </h2>
+                                                <div class="ml-3">
+                                                    <h5>Audit Log & Secrets!</h5>
+                                                    <p class="text-muted mb-0">
+                                                        Integrate your secret manager to never disclose your password & key and audit all the resources created on your instance.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12">
+                                            <div class="d-flex pt-4" data-aos="fade-right">
+                                                <h2>
+                                                    <ViewDashboardOutline title="" />
+                                                </h2>
+                                                <div class="ml-3">
+                                                    <h5>Improuve your productivity!</h5>
+                                                    <p class="text-muted mb-0">
+                                                        Configure a namespace with task defaults, variables, secrets to automatically configure all flows and follow them with one eye dashboard!
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 order-1 order-lg-2">
+                                <div class="saas-feature-shape-right position-relative">
+                                    <img
+                                        src="../assets/features/security.jpg"
+                                        class="img-fluid mx-auto d-block rounded shadow"
+                                        alt=""
+                                        data-aos="fade-left"
+                                        data-aos-anchor-placement="top-bottom"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <Shape class="text-bg" />
+                </section>
+
                 <section class="section pt-1 overflow-hidden">
                     <div class="container pb-lg-4 mb-md-5 mb-4 mt-5">
                         <div class="row justify-content-center">
@@ -325,26 +484,28 @@
 </template>
 
 <script>
-
+import AOS from "aos";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Shape from "../components/layout/Shape";
 import Breadcrumb from "../components/layout/Breadcrumb"
 import { ArrowUpIcon, ShieldIcon, CpuIcon, VideoIcon } from "vue-feather-icons";
 import MonitorMultiple from "vue-material-design-icons/MonitorMultiple";
-import Web from "vue-material-design-icons/Web";
-import Terraform from "vue-material-design-icons/Terraform";
-
+import Terraform from "vue-material-design-icons/Terraform"
 import CalendarClockOutline from "vue-material-design-icons/CalendarClockOutline"
 import Api from "vue-material-design-icons/Api"
 import Abacus from "vue-material-design-icons/Abacus"
 import DotsHexagon from "vue-material-design-icons/DotsHexagon";
 import GoogleCirclesExtended from "vue-material-design-icons/GoogleCirclesExtended";
-import OpenInNew from "vue-material-design-icons/OpenInNew";
 import ArrowRight from "vue-material-design-icons/ArrowRight";
 import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline";
 import PlayCircle from "vue-material-design-icons/PlayCircle";
-import AOS from "aos";
+import OpenInNew from "vue-material-design-icons/OpenInNew";
+import Web from "vue-material-design-icons/Web";
+import SchoolOutline from "vue-material-design-icons/SchoolOutline";
+import ShieldLockOutline from "vue-material-design-icons/ShieldLockOutline";
+import FileLockOutline from "vue-material-design-icons/FileLockOutline"
+import ViewDashboardOutline from "vue-material-design-icons/ViewDashboardOutline"
 
 export default {
     components: {
@@ -364,10 +525,14 @@ export default {
         Abacus,
         DotsHexagon,
         GoogleCirclesExtended,
-        OpenInNew,
         ArrowRight,
         FileDocumentOutline,
         PlayCircle,
+        SchoolOutline,
+        OpenInNew,
+        ShieldLockOutline,
+        FileLockOutline,
+        ViewDashboardOutline
     },
     mounted() {
         AOS.init()

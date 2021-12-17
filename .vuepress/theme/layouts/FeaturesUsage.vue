@@ -6,7 +6,7 @@
                 <Breadcrumb :links="{'Features': undefined}" />
 
                 <!-- Feature Start -->
-                <section class="section overflow-hidden">
+                <section class="section bg-white overflow-hidden">
                     <div class="container">
                         <p class="text-center mb-5" data-aos="fade-left">
                             Kestra can be used for <strong>many use cases</strong> thanks to the <strong>plugin architecture</strong>.
