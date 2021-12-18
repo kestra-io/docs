@@ -4,18 +4,22 @@
     }
 
     &.tip {
+        background-color: lighten($info, 30%);
+        border-color: $info;
+        color: darken($info, 15%);
+    }
+
+    &.success {
         background-color: lighten($success, 30%);
         border-color: $success;
         color: darken($success, 15%);
     }
-
 
     &.warning {
         background-color: lighten($warning, 30%);
         border-color: $warning;
         color: darken($warning, 15%);
     }
-
 
     &.danger {
         background-color: lighten($danger, 30%);
@@ -40,6 +44,7 @@
     }
 }
 .custom-block.tip,
+.custom-block.success,
 .custom-block.warning,
 .custom-block.danger {
     padding: $alert-padding-x $alert-padding-y;

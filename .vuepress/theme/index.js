@@ -5,9 +5,15 @@ module.exports = (options, ctx) => {
     return {
         plugins: [
             ['container', {
-                type: 'success',
+                type: 'tip',
                 defaultTitle: {
                     '/': 'TIP',
+                }
+            }],
+            ['container', {
+                type: 'success',
+                defaultTitle: {
+                    '/': 'SUCCESS',
                 }
             }],
             ['container', {
@@ -19,7 +25,7 @@ module.exports = (options, ctx) => {
             ['container', {
                 type: 'danger',
                 defaultTitle: {
-                    '/': 'WARNING',
+                    '/': 'DANGER',
                 }
             }],
             ['container', {
