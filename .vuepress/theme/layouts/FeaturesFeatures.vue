@@ -5,61 +5,8 @@
             <main class="features-usage">
                 <Breadcrumb :links="{'Features': undefined}" />
 
-                <section class="section overflow-hidden bg-white">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-12 text-center">
-                                <div class="section-title mb-4 pb-2">
-                                    <h4 class="title mb-4" data-aos="fade-left">Ship faster</h4>
-                                    <p data-aos="fade-right">Save time, complexity, and development costs.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 col-12 mt-5 mt-md-0">
-                                <div class="features" data-aos="fade-right">
-                                    <div class="image position-relative d-inline-block">
-                                        <MonitorMultiple class="text-primary h1" title="" />
-                                    </div>
 
-                                    <div class="content mt-4">
-                                        <h5>Full platform for end to end workflows</h5>
-                                        <p class="text-secondary mb-0">Use all the tools to be able to delivered entreprise grade workflow in autonomy.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-5 mt-md-0">
-                                <div class="features" data-aos="fade-top">
-                                    <div class="image position-relative d-inline-block">
-                                        <Web class="text-primary h1" title="" />
-                                    </div>
-
-                                    <div class="content mt-4">
-                                        <h5>Live edit in the browser</h5>
-                                        <p class="text-secondary mb-0">No desktop application installation needed, a <router-link to="/docs/user-interface-guide/">simple browser to edit & monitor</router-link> all your flows.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-12 mt-5 mt-md-0">
-                                <div class="features" data-aos="fade-left">
-                                    <div class="image position-relative d-inline-block">
-                                        <Terraform class="text-primary h1" title="" />
-                                    </div>
-
-                                    <div class="content mt-4">
-                                        <h5>Create your flow with Terraform</h5>
-                                        <p class="text-secondary mb-0"><router-link to="/docs/terraform/">Deploy Kestra</router-link> flows as your cloud dependencies for atomic release process.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <Shape class="text-dark" />
-                </section>
-
-                <section class="section bg-dark text-white overflow-hidden">
+                <section class="section overflow-hidden">
                     <div class="container mt-100 mt-60">
                         <div class="row align-items-center">
                             <div class="col-lg-5 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
@@ -132,10 +79,10 @@
                             </div>
                         </div>
                     </div>
-                    <Shape class="text-bg" />
+                    <Shape class="text-dark" />
                 </section>
 
-                <section class="section overflow-hidden">
+                <section class="section bg-dark text-white overflow-hidden">
                     <div class="container mt-100 mt-60">
                         <div class="row align-items-center">
                             <div class="col-lg-7">
@@ -210,10 +157,10 @@
                             </div>
                         </div>
                     </div>
-                    <Shape class="text-dark" />
+                    <Shape class="text-bg" />
                 </section>
 
-                <section class="section overflow-hidden bg-dark text-white overflow-hidden">
+                <section class="section overflow-hidden overflow-hidden">
                     <div class="container mt-100 mt-60">
                         <div class="row align-items-center">
                             <div class="col-lg-7 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
@@ -287,10 +234,10 @@
                             </div>
                         </div>
                     </div>
-                    <Shape class="text-bg" />
+                    <Shape class="text-dark" />
                 </section>
 
-                <section class="section overflow-hidden">
+                <section class="section bg-dark text-white overflow-hidden">
                     <div class="container mt-100 mt-60">
                         <div class="row align-items-center">
                             <div class="col-lg-7">
@@ -371,9 +318,62 @@
                             </div>
                         </div>
                     </div>
-                    <Shape class="text-dark" />
+                    <Shape class="text-white" />
                 </section>
 
+                <section class="section overflow-hidden bg-white">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center">
+                                <div class="section-title mb-4 pb-2">
+                                    <h4 class="title mb-4" data-aos="fade-left">Ship faster</h4>
+                                    <p data-aos="fade-right">Save time, complexity, and development costs.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-5 mt-md-0">
+                                <div class="features" data-aos="fade-right">
+                                    <div class="image position-relative d-inline-block">
+                                        <MonitorMultiple class="text-primary h1" title="" />
+                                    </div>
+
+                                    <div class="content mt-4">
+                                        <h5>Full platform for end to end workflows</h5>
+                                        <p class="text-secondary mb-0">Use all the tools to be able to delivered entreprise grade workflow in autonomy.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-12 mt-5 mt-md-0">
+                                <div class="features" data-aos="fade-top">
+                                    <div class="image position-relative d-inline-block">
+                                        <Web class="text-primary h1" title="" />
+                                    </div>
+
+                                    <div class="content mt-4">
+                                        <h5>Live edit in the browser</h5>
+                                        <p class="text-secondary mb-0">No desktop application installation needed, a <router-link to="/docs/user-interface-guide/">simple browser to edit & monitor</router-link> all your flows.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-12 mt-5 mt-md-0">
+                                <div class="features" data-aos="fade-left">
+                                    <div class="image position-relative d-inline-block">
+                                        <Terraform class="text-primary h1" title="" />
+                                    </div>
+
+                                    <div class="content mt-4">
+                                        <h5>Create your flow with Terraform</h5>
+                                        <p class="text-secondary mb-0"><router-link to="/docs/terraform/">Deploy Kestra</router-link> flows as your cloud dependencies for atomic release process.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <Shape class="text-dark" />
+                </section>
 
                 <section class="section overflow-hidden bg-dark text-white overflow-hidden">
                     <div class="container mt-100 mt-60">
@@ -546,18 +546,6 @@ export default {
 .features-usage {
     .features {
         background-color: transparent;
-    }
-
-    img {
-        position: relative;
-        z-index: 1;
-    }
-
-    .saas-feature-shape-left {
-        &::after {
-            z-index: 0;
-            background: rgba($secondary, 0.1);
-        }
     }
 
     a.content {

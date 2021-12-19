@@ -254,6 +254,11 @@
         border-radius: 15rem;
         transform: rotate(145deg);
     }
+
+    img {
+        position: relative;
+        z-index: 1;
+    }
 }
 .saas-feature-shape-left {
     &:after {
@@ -274,8 +279,8 @@
 .social-feature-left,
 .social-feature-right {
     &:after {
-        background: rgba($primary, 0.1);
-        box-shadow: 0 0 40px rgba($primary, 0.1);
+        background: rgba($secondary, 0.1);
+        box-shadow: 0 0 40px rgba($secondary, 0.1);
     }
 }
 
@@ -288,7 +293,7 @@
     &:after {
         content: "";
         position: absolute;
-        z-index: -1;
+        z-index: 0;
     }
 }
 
