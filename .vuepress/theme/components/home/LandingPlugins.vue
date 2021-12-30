@@ -256,6 +256,17 @@ export default {
                     href: "plugin-serdes",
                     section: "xml"
                 },
+                {
+                    name: "ElasticSearch",
+                    icon: "csicon csicon-elasticsearch",
+                    href: "plugin-elasticsearch"
+                },
+                {
+                    name: "MongoDb",
+                    icon: "csicon csicon-mongodb",
+                    href: "plugin-mongodb"
+                },
+
             ];
 
             // Order by publish date, desc
@@ -267,7 +278,8 @@ export default {
                     !item.path.includes("BigQuery") &&
                     !item.path.includes("Csv") &&
                     !item.path.includes("Json") &&
-                    !item.path.includes("Slack")
+                    !item.path.includes("Slack") &&
+                    !item.path.includes("MongoDb")
                 )
                 .map(r => {
                     return {
@@ -372,6 +384,14 @@ i.csicon {
 
     &.csicon-singer {
         background-image: url("../../assets/home/singer.svg");
+    }
+
+    &.csicon-elasticsearch {
+        background-image: url("../../assets/home/elasticsearch.svg");
+    }
+
+    &.csicon-mongodb {
+        background-image: url("../../assets/home/mongodb.svg");
     }
 }
 
