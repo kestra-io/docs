@@ -5,9 +5,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">
-                    <div class=" position-relative" style="z-index: 1;">
-                        <div class="position-relative" data-aos="zoom-in" data-aos-anchor-placement="top-bottom">
-                            <img src="/ui.gif" class="img-fluid" alt="">
+                    <div class="position-relative" style="z-index: 1;">
+                        <div class="position-relative">
+                            <video autoplay controls muted="" poster="/ui.gif" class="img-fluid">
+                                <source src="/video.m4v" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
                         <div class="content mt-md-4 pt-md-2">
                             <div class="row justify-content-center">
