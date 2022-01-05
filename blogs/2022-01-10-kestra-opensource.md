@@ -25,7 +25,7 @@ Kestra started in 2019 with this [initial commit](https://github.com/kestra-io/k
 <img src="./2022-01-10-kestra-opensource/initial-commit.jpg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 450px">
 
 
-In order to have a little background, I worked for Leroy Merlin as consultant. We needed to find to build a new dataplatform from scratch and cloud based (destination: Google Cloud Platform mostly). We tried a [lot of things](#TODO) and failed with some. The **biggest failed was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed only due to airflow scheduler), performance issue (unable to handle a light workload), and a lot of lack of features (scaling, data processing, ...). After many tests (Google Composer, Open source Airflow on Kubernetes, ...), the decision was acted : **Airflow was rejected by Leroy Merlin**.
+In order to have a little background, I worked for Leroy Merlin as consultant. We needed to find to build a new dataplatform from scratch and cloud based (destination: Google Cloud Platform mostly). We tried a [lot of things](/blogs/2022-01-10-leroy-merlin-usage-kestra) and failed with some. The **biggest failed was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed only due to airflow scheduler), performance issue (unable to handle a light workload), and a lot of lack of features (scaling, data processing, ...). After many tests (Google Composer, Open source Airflow on Kubernetes, ...), the decision was acted : **Airflow was rejected by Leroy Merlin**.
 
 <div class="clearfix" />
 
@@ -86,13 +86,13 @@ Kestra avoid all the burden (installing the software on the system, handle depen
 We already have [lots of plugins](/plugins/) and you can [easily develop yours](/docs/plugin-developer-guide/). We also hope that a community will help us to maintain new plugins / connectors. [contact us](/company/contact) if you need some help;.
 
 ## First public release but Production Ready!
-First public release don't mean that Kestra is not production ready. In fact, it was **used in production since August 2020 at Leroy Merlin**, take a deeper look at the [case study](#TODO) if you want, but if you prefer few numbers :
-- 4 clusters for every environment
-- 200+ users / developers using it
-- 2000+ flows in production
-- 350,000 executions every month
-- 3,000,000 tasks every month
-- 1,500 days of executions every month (yeah, 50 days of executions every single day)
+First public release don't mean that Kestra is not production ready. In fact, it was **used in production since August 2020 at Leroy Merlin**, take a deeper look at the [case study](/blogs/2022-01-10-leroy-merlin-usage-kestra) if you want, but if you prefer few numbers :
+- **4 clusters** for every environment
+- **200+ users / developers** using it
+- **2000+ flows** in production
+- **350,000 executions** every month
+- **3,000,000 tasks** every month
+- **1,500 days of executions** every month (yeah, 50 days of executions every single day)
 
 So your next question is : **why are you waiting so long for the first public release ?**
 
