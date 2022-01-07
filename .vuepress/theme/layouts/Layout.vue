@@ -29,6 +29,7 @@
 
                         <PageEdit />
                         <PageNav v-bind="{ sidebarItems }" />
+                        <Share />
                     </main>
                 </div>
             </div>
@@ -46,6 +47,7 @@ import PageEdit from '@vuepress/theme-default/components/PageEdit.vue'
 import PageNav from '@vuepress/theme-default/components/PageNav.vue'
 import SidebarLinks from '../components/SidebarLinks.vue'
 import {resolveSidebarItems} from '@vuepress/theme-default/util'
+import Share from "../components/layout/Share";
 
 export default {
     name: 'GlobalLayout',
@@ -57,7 +59,8 @@ export default {
 
         SidebarLinks,
         PageEdit,
-        PageNav
+        PageNav,
+        Share
     },
 
     data() {

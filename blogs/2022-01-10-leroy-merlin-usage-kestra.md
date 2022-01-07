@@ -2,6 +2,9 @@
 title: "How Leroy Merlin handle all this cloud data pipeline with Kestra"
 date: 2022-01-10
 layout: BlogsPost
+author:
+  name: Ludovic Dehon
+  image: "ldehon"
 ---
 
 Today, our team is proud to announce a first public release of Kestra, an open-source platform to orchestrate & schedule any kinds of workflow at scale.
