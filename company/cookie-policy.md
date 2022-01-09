@@ -9,13 +9,13 @@ Cookies do not typically contain any information that personally identifies a us
 
 We do not store sensitive personal information, such as mailing addresses, account passwords, etc. in the Cookies We use.
 
-## Interpretation and Definitions
+### Interpretation and Definitions
 
-### Interpretation
+#### Interpretation
 
 The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.
 
-### Definitions
+#### Definitions
 For the purposes of this Cookies Policy:
 
 - **Company** (referred to as either "the Company", "We", "Us" or "Our" in this Cookies Policy) refers to Kestra Technologies, 81 RUE DU PRE CATELAN, 59110 LA MADELEINE.
@@ -23,8 +23,8 @@ For the purposes of this Cookies Policy:
 - **Website** refers to Kestra, accessible from [https://kestra.io/](https://kestra.io)
 - **You** means the individual accessing or using the Website, or a company, or any legal entity on behalf of which such individual is accessing or using the Website, as applicable.
 
-## The use of the Cookies
-### Type of Cookies We Use
+### The use of the Cookies
+#### Type of Cookies We Use
 
 Cookies can be "Persistent" or "Session" Cookies. Persistent Cookies remain on your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close your web browser.
 
@@ -53,7 +53,7 @@ In order to collect data on the usage of our website and visits to the website, 
 
 We use Google Analytics [IP Anonymization](https://support.google.com/analytics/answer/2763052?hl=en), so we don't store any personal information.
 
-## Your Choices Regarding Cookies
+### Your Choices Regarding Cookies
 
 If You prefer to avoid the use of Cookies on the Website, first You must disable the use of Cookies in your browser and then delete the Cookies saved in your browser associated with this website. You may use this option for preventing the use of Cookies at any time.
 
@@ -69,6 +69,6 @@ If You'd like to delete Cookies or instruct your web browser to delete or refuse
 - For any other web browser, please visit your web browser's official web pages.
 
 
-## Contact Us
+### Contact Us
 If you have any questions about this Cookies Policy, You can contact us:
 - By email: [hello@kestra.io](mailto:hello@kestra.io)

@@ -119,15 +119,15 @@ export default {
                             desc: 'Discover all the features of Kestra'
                         },
                         {
-                            title: 'Usage',
-                            link: '/features/usage',
+                            title: 'Usages',
+                            link: '/features/usages',
                             icon: AccountNetworkOutline,
                             desc: 'How Kestra can help on your daily workflow'
                         }
                     ]
                 },
                 {
-                    title: 'Docs',
+                    title: 'Learn',
                     icon: BookOutline,
                     element: 'a',
                     dropdown: 'docs',

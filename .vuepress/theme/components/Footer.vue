@@ -3,7 +3,6 @@
     <div>
         <Shape class="text-footer" />
 
-        <!-- Footer Start -->
         <footer class="footer">
             <div class="container">
                 <div class="row">
@@ -34,21 +33,19 @@
                                 </a>
                             </li>
                         </ul>
-                        <!--end icon-->
                     </div>
-                    <!--end col-->
 
                     <div class="col-lg-3 col-12 mb-0 mb-md-3 pb-0 pb-md-2">
-                        <h4 class="text-light footer-head">Discover</h4>
+                        <h4 class="text-light footer-head">Product</h4>
                         <ul class="list-unstyled footer-list">
                             <li>
-                                <router-link to="/docs/getting-started/" class="text-foot">
-                                    <ChevronRight title="" /> Getting Started
+                                <router-link to="/features/features" class="text-foot">
+                                    <ChevronRight title="" /> Features
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/docs/concepts/" class="text-foot">
-                                    <ChevronRight title="" /> Concepts
+                                <router-link to="/features/usages" class="text-foot">
+                                    <ChevronRight title="" /> Usage
                                 </router-link>
                             </li>
                             <li>
@@ -56,54 +53,46 @@
                                     <ChevronRight title="" /> Architecture
                                 </router-link>
                             </li>
-
                         </ul>
                     </div>
-                    <!--end col-->
 
                     <div class="col-lg-3 col-12 mb-0 mb-md-3 pb-0 pb-md-2">
                         <h4 class="text-light footer-head">Learn</h4>
                         <ul class="list-unstyled footer-list">
                             <li>
-                                <router-link to="/docs/developer-guide/" class="text-foot">
-                                    <ChevronRight title="" /> Developer Guide
+                                <router-link to="/docs/" class="text-foot">
+                                    <ChevronRight title="" /> Documentation
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/plugins/" class="text-foot">
+                                    <ChevronRight title="" />  Plugins documentation
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/docs/terraform/" class="text-foot">
+                                    <ChevronRight title="" />  Terraform provider
                                 </router-link>
                             </li>
                             <li>
                                 <router-link to="/docs/administrator-guide/" class="text-foot">
-                                    <ChevronRight title="" />  Administrator Guide
-                                </router-link>
-                            </li>
-                            <li>
-                                <router-link to="/docs/plugin-developer-guide/" class="text-foot">
-                                    <ChevronRight title="" />  Plugin Developer Guide
+                                    <ChevronRight title="" />  Administrator guide
                                 </router-link>
                             </li>
                         </ul>
                     </div>
-                    <!--end col-->
 
                     <div class="col-lg-3 col-12 mb-0 mb-md-3 pb-0 pb-md-2">
-                        <h4 class="text-light footer-head">Follow</h4>
+                        <h4 class="text-light footer-head">Company</h4>
                         <ul class="list-unstyled footer-list">
                             <li>
-                                <a href="https://github.com/kestra-io" class="text-foot">
-                                    <ChevronRight title="" /> GitHub
+                                <a href="/company/about-us" class="text-foot">
+                                    <ChevronRight title="" /> About us
                                 </a>
                             </li>
                             <li>
-                                <a href="https://www.linkedin.com/company/kestra" class="text-foot">
-                                    <ChevronRight title="" />  LinkedIn
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/kestra_io" class="text-foot">
-                                    <ChevronRight title="" />  Twitter
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://discord.gg/NMG39WKGth" class="text-foot">
-                                    <ChevronRight title="" />  Discord
+                                <a href="/company/contact" class="text-foot">
+                                    <ChevronRight title="" />  Contact us
                                 </a>
                             </li>
                         </ul>
@@ -129,13 +118,10 @@
                         </form>
                         -->
                     </div>
-                    <!--end col-->
                 </div>
-                <!--end row-->
             </div>
-            <!--end container-->
         </footer>
-        <!--end footer-->
+
         <footer class="footer footer-bar">
             <div class="container text-center">
                 <div class="row align-items-center">
@@ -144,17 +130,22 @@
                           <p class="mb-0">
                               © {{  new Date().getFullYear() }} <a href="https://kestra.io">Kestra Technologies</a>.
                               Developed with <Heart class="text-danger" /> in 🇫🇷 .
+
                             </p>
                         </div>
                     </div>
-                    <!--end col-->
-
+                    <div class="col-sm-6">
+                        <div class="text-sm-right">
+                            <p class="mb-0">
+                                <router-link to="/company/privacy-policy.html">Privacy Policy</router-link>
+                                /
+                                <router-link to="/company/cookie-policy.html">Cookie Policy</router-link>
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <!--end row-->
             </div>
-            <!--end container-->
         </footer>
-        <!--end footer-->
     </div>
 </template>
 
@@ -162,12 +153,7 @@
 import ChevronRight from 'vue-material-design-icons/ChevronRight'
 import Discord from 'vue-material-design-icons/Discord'
 import Heart from 'vue-material-design-icons/Heart'
-import {
-    GithubIcon,
-    TwitterIcon,
-    LinkedinIcon,
-    MailIcon,
-} from 'vue-feather-icons';
+import {GithubIcon, LinkedinIcon, MailIcon, TwitterIcon,} from 'vue-feather-icons';
 import Shape from "./layout/Shape";
 
 export default {
