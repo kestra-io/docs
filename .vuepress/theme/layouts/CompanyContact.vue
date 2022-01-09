@@ -61,6 +61,11 @@
                                                 <linkedin-icon class="fea icon-sm fea-social"></linkedin-icon>
                                             </a>
                                         </li>
+                                        <li class="list-inline-item ml-1">
+                                            <a href="https://discord.gg/NMG39WKGth" class="rounded">
+                                                <discord title="" />
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -78,6 +83,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/layout/Breadcrumb"
 import {BModal, VBModal} from 'bootstrap-vue'
+import Discord from 'vue-material-design-icons/Discord'
 import {ArrowUpIcon, GithubIcon, LinkedinIcon, MailIcon, MapPinIcon, PhoneIcon, TwitterIcon,} from 'vue-feather-icons';
 
 export default {
@@ -93,6 +99,7 @@ export default {
         TwitterIcon,
         LinkedinIcon,
         GithubIcon,
+        Discord,
     },
     directives: { 'b-modal': VBModal }
 }

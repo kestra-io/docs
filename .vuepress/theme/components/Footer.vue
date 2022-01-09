@@ -28,6 +28,11 @@
                                     <linkedin-icon class="fea icon-sm fea-social"></linkedin-icon>
                                 </a>
                             </li>
+                            <li class="list-inline-item ml-1">
+                                <a href="https://discord.gg/NMG39WKGth" class="rounded">
+                                    <discord title="" />
+                                </a>
+                            </li>
                         </ul>
                         <!--end icon-->
                     </div>
@@ -96,6 +101,11 @@
                                     <ChevronRight title="" />  Twitter
                                 </a>
                             </li>
+                            <li>
+                                <a href="https://discord.gg/NMG39WKGth" class="text-foot">
+                                    <ChevronRight title="" />  Discord
+                                </a>
+                            </li>
                         </ul>
 
                         <!--
@@ -132,7 +142,7 @@
                     <div class="col-sm-6">
                         <div class="text-sm-left">
                           <p class="mb-0">
-                              © {{  new Date().getFullYear() }} <a href="https://nigh.tech">NighTech</a>.
+                              © {{  new Date().getFullYear() }} <a href="https://kestra.io">Kestra Technologies</a>.
                               Developed with <Heart class="text-danger" /> in 🇫🇷 .
                             </p>
                         </div>
@@ -150,6 +160,7 @@
 
 <script>
 import ChevronRight from 'vue-material-design-icons/ChevronRight'
+import Discord from 'vue-material-design-icons/Discord'
 import Heart from 'vue-material-design-icons/Heart'
 import {
     GithubIcon,
@@ -168,6 +179,7 @@ export default {
         GithubIcon,
         TwitterIcon,
         LinkedinIcon,
+        Discord,
         MailIcon,
         ChevronRight,
         Heart
