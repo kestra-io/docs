@@ -8,14 +8,20 @@
 
                 <section class="section overflow-hidden">
                     <div class="container mt-100 mt-60">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center">
+                                <div class="section-title mb-4 pb-2">
+                                    <h4 class="title mb-4" data-aos="fade-left">An orchestrator platform</h4>
+                                    <p data-aos="fade-right">
+                                        Build complex pipeline in couple of minutes.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row align-items-center">
                             <div class="col-lg-5 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
                                 <div class="section-title mr-lg-4">
-                                    <h2 class="title mb-3" data-aos="fade-right">An orchestrator platform</h2>
-                                    <p class="para-desc text-muted" data-aos="fade-left">
-                                        Build complex pipeline in couple of minutes.
-                                    </p>
-
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="d-flex pt-4" data-aos="fade-right">
@@ -69,8 +75,8 @@
                             <div class="col-lg-7 order-1 order-lg-2">
                                 <div class="saas-feature-shape-right position-relative">
                                     <img
-                                        src="../assets/features/world.jpg"
-                                        class="img-fluid mx-auto d-block rounded shadow"
+                                        src="../assets/features/topology.png"
+                                        class="img-fluid mx-auto d-block"
                                         alt=""
                                         data-aos="fade-left"
                                         data-aos-anchor-placement="top-bottom"
@@ -84,11 +90,22 @@
 
                 <section class="section bg-dark text-white overflow-hidden">
                     <div class="container mt-100 mt-60">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center">
+                                <div class="section-title mb-4 pb-2">
+                                    <h4 class="title mb-4" data-aos="fade-left">An scheduler platform</h4>
+                                    <p data-aos="fade-right">
+                                        Launch your flows whatever is your need!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row align-items-center">
                             <div class="col-lg-7">
                                 <div class="saas-feature-shape-left position-relative">
                                     <img
-                                        src="../assets/features/clock.jpg"
+                                        src="../assets/features/flows.png"
                                         class="img-fluid mx-auto d-block rounded shadow"
                                         alt=""
                                         data-aos="fade-right"
@@ -98,11 +115,6 @@
                             </div>
 
                             <div class="col-lg-5 mt-4 pt-2 mt-lg-0 pt-lg-0">
-                                <h2 class="title mb-3">An scheduler platform</h2>
-                                <p class="para-desc text-muted">
-                                    Launch your flows whatever is your need!
-                                </p>
-
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="d-flex pt-4" data-aos="fade-left">
@@ -162,14 +174,20 @@
 
                 <section class="section overflow-hidden overflow-hidden">
                     <div class="container mt-100 mt-60">
-                        <div class="row align-items-center">
-                            <div class="col-lg-7 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
-                                <div class="section-title mr-lg-4">
-                                    <h2 class="title mb-3">A extensible data orchestrator</h2>
-                                    <p class="para-desc text-muted">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center">
+                                <div class="section-title mb-4 pb-2">
+                                    <h4 class="title mb-4" data-aos="fade-left">A extensible data orchestrator</h4>
+                                    <p data-aos="fade-right">
                                         Kestra is build with <strong>data at heart</strong> and integrate <strong>directly</strong> with your source & destination, no need to choose <strong>between ETL or ELT</strong>, both are possible.
                                     </p>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
+                                <div class="section-title mr-lg-4">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="d-flex pt-4" data-aos="fade-right">
@@ -221,10 +239,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-5 order-1 order-lg-2">
+                            <div class="col-lg-6 order-1 order-lg-2">
                                 <div class="saas-feature-shape-right position-relative">
                                     <img
-                                        src="../assets/features/world-connected.jpg"
+                                        src="../assets/features/gantt.png"
                                         class="img-fluid mx-auto d-block rounded shadow"
                                         alt=""
                                         data-aos="fade-left"
@@ -239,25 +257,28 @@
 
                 <section class="section bg-dark text-white overflow-hidden">
                     <div class="container mt-100 mt-60">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center">
+                                <div class="section-title mb-4 pb-2">
+                                    <h4 class="title mb-4" data-aos="fade-left">An all in one platform</h4>
+                                    <p data-aos="fade-right">
+                                        kestra is composed of a <strong>rich UI</strong> allowing to <strong>create, run & monitors</strong> all your flows, a <strong>full scalable & cloud native</strong> architecture and <strong>based on plugins</strong> allowing you to used or create yours easily.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row align-items-center">
                             <div class="col-lg-7">
                                 <div class="saas-feature-shape-left position-relative">
-                                    <img
-                                        src="../assets/features/computer.jpg"
-                                        class="img-fluid mx-auto d-block rounded shadow"
-                                        alt=""
-                                        data-aos="fade-right"
-                                        data-aos-anchor-placement="top-bottom"
-                                    />
+                                    <video autoplay loop muted="" poster="/ui.gif" class="img-fluid">
+                                        <source src="/video.m4v" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
                                 </div>
                             </div>
 
                             <div class="col-lg-5 mt-4 pt-2 mt-lg-0 pt-lg-0">
-                                <h2 class="title mb-3">An all in one platform</h2>
-                                <p class="para-desc text-muted">
-                                    kestra is composed of a <strong>rich UI</strong> allowing to <strong>create, run & monitors</strong> all your flows, a <strong>full scalable & cloud native</strong> architecture and <strong>based on plugins</strong> allowing you to used or create yours easily.
-                                </p>
-
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="d-flex pt-4" data-aos="fade-left">
@@ -377,15 +398,17 @@
 
                 <section class="section overflow-hidden bg-dark text-white overflow-hidden">
                     <div class="container mt-100 mt-60">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center">
+                                <div class="section-title mb-4 pb-2">
+                                    <h4 class="title mb-4" data-aos="fade-left">An Enterprise Edition</h4>
+                                    <p data-aos="fade-right">The enterprise edition fit all the company needs : Security & Productivity</p>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row align-items-center">
                             <div class="col-lg-7 order-2 order-lg-1 mt-4 pt-2 mt-lg-0 pt-lg-0">
-                                <div class="section-title mr-lg-4">
-                                    <h2 class="title mb-3">An Enterprise Edition</h2>
-                                    <p class="para-desc text-muted">
-                                        The enterprise edition fit all the company needs : Security & Productivity
-
-                                    </p>
-
+                                <div class="mr-lg-4">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="d-flex pt-4" data-aos="fade-right">
@@ -436,7 +459,7 @@
                             <div class="col-lg-5 order-1 order-lg-2">
                                 <div class="saas-feature-shape-right position-relative">
                                     <img
-                                        src="../assets/features/security.jpg"
+                                        src="../assets/features/security-app.png"
                                         class="img-fluid mx-auto d-block rounded shadow"
                                         alt=""
                                         data-aos="fade-left"

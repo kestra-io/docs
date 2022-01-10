@@ -63,7 +63,7 @@
                     <div class="container mt-5">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <img src="../assets/features/cloud.jpg" class="img-fluid shadow-lg rounded" alt="" data-aos="fade-right" data-aos-anchor-placement="top-bottom" />
+                                <img src="../assets/features/dashboard.png" class="img-fluid shadow-lg rounded" alt="" data-aos="fade-right" data-aos-anchor-placement="top-bottom" />
                             </div>
 
                             <div class="col-md-6 mt-4 mt-sm-0 pt-2 pt-sm-0">
@@ -130,7 +130,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 order-1 order-md-2">
-                                <img src="../assets/features/data.jpg" class="img-fluid shadow-lg rounded" alt="" data-aos="fade-left" data-aos-anchor-placement="top-bottom" />
+                                <img src="../assets/features/executions-logs.png" class="img-fluid shadow-lg rounded" alt="" data-aos="fade-left" data-aos-anchor-placement="top-bottom" />
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                     <div class="container mt-5">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <img src="../assets/features/heavy.jpg" class="img-fluid shadow-lg rounded" alt="" data-aos="fade-right" data-aos-anchor-placement="top-bottom" />
+                                <img src="../assets/features/logs.png" class="img-fluid shadow-lg rounded" alt="" data-aos="fade-right" data-aos-anchor-placement="top-bottom" />
                             </div>
                             <div class="col-md-6 mt-4 mt-sm-0 pt-2 pt-sm-0">
                                 <div class="section-title ml-lg-5">
