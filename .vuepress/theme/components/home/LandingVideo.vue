@@ -1,7 +1,5 @@
 <template>
-    <section class="section overflow-hidden">
-        <Shape class="text-bg top" />
-
+    <section class="section overflow-hidden bg-white">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">

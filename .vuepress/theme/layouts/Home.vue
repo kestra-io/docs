@@ -6,6 +6,7 @@
                 <LandingHeader />
                 <LandingFeature />
                 <LandingTech />
+                <LandingCustomer />
                 <LandingVideo />
                 <LandingPlugins />
             </main>
@@ -20,6 +21,7 @@ import LandingHeader from "../components/home/LandingHeader"
 import LandingFeature from "../components/home/LandingFeature"
 import LandingTech from "../components/home/LandingTech"
 import LandingVideo from "../components/home/LandingVideo"
+import LandingCustomer from "../components/home/LandingCustomer"
 import LandingPlugins from "../components/home/LandingPlugins"
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -30,6 +32,7 @@ export default {
         Footer,
         LandingHeader,
         LandingFeature,
+        LandingCustomer,
         LandingTech,
         LandingVideo,
         LandingPlugins,

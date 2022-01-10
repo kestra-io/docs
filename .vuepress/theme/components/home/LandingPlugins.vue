@@ -20,7 +20,7 @@
                 <!--end row-->
 
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 mt-4 pt-2" v-for="plugin in plugins">
+                    <div class="col-lg-4 col-6 mt-4 pt-2" v-for="plugin in plugins">
                         <router-link :to="'plugins/' + plugin.href + (plugin.section ? '#' + plugin.section + '/' : '')"
                            class="media key-feature align-items-center p-3 rounded-md shadow"
                             data-aos="flip-up"
