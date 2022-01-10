@@ -5,22 +5,22 @@
                 <div class="row mt-5">
                     <div class="col-lg-6 ">
                         <div class="title-heading text-white" data-aos="fade-right">
-                            <vue-typed-js :loop="true" :strings="['open source', 'scalable', 'extensible', 'real-time']">
+                            <vue-typed-js :loop="true" :back-delay="1000" :strings="['open source', 'scalable', 'extensible', 'real-time']">
                                 <h1 class="heading mb-4">
                                     The <span class="typing"></span> <br /><span>orchestrator</span> & <span>scheduler</span> platform.
                                 </h1>
                             </vue-typed-js>
                             <p class="para-desc mx-auto">
-                                Kestra is an <strong>infinitely scalable</strong> orchestrator platform, in order to create, run, schedule and monitor <strong>millions of complex</strong> pipelines.
+                                Kestra is an <strong>infinitely scalable</strong> orchestrator & scheduler platform, in order to create, run, schedule and monitor <strong>millions of complex</strong> pipelines.
                             </p>
 
                             <div class="mt-4 pt-2">
                                 <div class="row">
-                                    <div class="col-12 col-sm-6 text-sm-right" >
+                                    <div class="col-12 col-sm-6 text-sm-right">
                                         <router-link to="/docs/getting-started" class="btn btn-light"><PlayCircle title="" /> Get Started <ArrowRight title="" /></router-link>
                                     </div>
                                     <div class="col-12 col-sm-6 text-sm-left mt-4 mt-sm-0">
-                                        <router-link to="/docs" class="btn btn-light "><FileDocumentOutline title="" /> Read the docs <ArrowRight title="" /></router-link>
+                                        <router-link to="/features/features" class="btn btn-light "><FeatureSearch title="" /> Discover <ArrowRight title="" /></router-link>
                                     </div>
                                 </div>
                             </div>
@@ -28,9 +28,17 @@
                     </div>
 
                     <div class="col-lg-6 ui-img">
-                        <div>
-                            <img src="../../assets/home/ui.png" class="img-fluid" alt="" data-aos="fade-left" data-aos-anchor-placement="top-bottom" />
-                        </div>
+                        <lottie
+                            ref="lottie"
+                            v-if="animationData"
+                            :animation-data="animationData"
+                            :assets-path="assetsPath"
+                            :loop="false"
+                            :auto-play="false"
+                            :speed="1.2"
+                            @complete="complete"
+                            @domLoaded="play"
+                        />
                     </div>
                 </div>
             </div>
@@ -44,17 +52,75 @@ import {VueTypedJs} from 'vue-typed-js'
 import ArrowRight from "vue-material-design-icons/ArrowRight";
 import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline";
 import PlayCircle from "vue-material-design-icons/PlayCircle";
+import FeatureSearch from "vue-material-design-icons/FeatureSearch"
 import Shape from "../layout/Shape";
+import Lottie from '../layout/VueLottie';
+import * as animationData from './animation.json';
+
+const logo = [
+    require('../../assets/home/' + 'bigquery.svg'),
+    require('../../assets/home/' + 'clickhouse.png'),
+    require('../../assets/home/' + 'drive.svg'),
+    require('../../assets/home/' + 'elasticsearch.svg'),
+    require('../../assets/home/' + 'gcs.svg'),
+    require('../../assets/home/' + 'mongodb.svg'),
+    require('../../assets/home/' + 'mysql.png'),
+    require('../../assets/home/' + 'oracle.svg'),
+    require('../../assets/home/' + 'postgres.png'),
+    require('../../assets/home/' + 'redshift.svg'),
+    require('../../assets/home/' + 's3.png'),
+    require('../../assets/home/' + 'sheets.svg'),
+    require('../../assets/home/' + 'slack.png'),
+    require('../../assets/home/' + 'vertica.png'),
+]
 
 export default {
-        components: {
-            Shape,
-            VueTypedJs,
-            ArrowRight,
-            FileDocumentOutline,
-            PlayCircle,
+    components: {
+        Shape,
+        VueTypedJs,
+        ArrowRight,
+        FileDocumentOutline,
+        PlayCircle,
+        FeatureSearch,
+        Lottie
+    },
+    data() {
+        return {
+            animationData: undefined,
+            assetsPath: undefined,
+        }
+    },
+    mounted() {
+        this.transform();
+    },
+    methods: {
+        complete() {
+            this.transform();
+            this.$refs.lottie.init();
+
+        },
+        play() {
+            this.$refs.lottie.play();
+        },
+        transform() {
+            let logoCopy = [...logo];
+            const random = Math.floor(Math.random()*logoCopy.length)
+
+            let logo1 = logoCopy[random];
+            logoCopy = logoCopy.filter((valur, key) => key !== random);
+
+            let logo2 = logoCopy[Math.floor(Math.random()*logoCopy.length)];
+
+            const data = {... animationData.default};
+
+            this.assetsPath = logo1.substring(0, logo1.lastIndexOf("/") + 1);
+            data.assets[0].p = logo1.replace(/^.*[\\\/]/, '');
+            data.assets[1].p = logo2.replace(/^.*[\\\/]/, '');
+
+            this.animationData = data;
         }
     }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -104,8 +170,6 @@ export default {
                 > div {
                     transform: perspective(340px) rotateY(-5deg);
                     transform-style: preserve-3d;
-                    margin-top: 30px;
-                    margin-right: 10px;
                     img {
                         box-shadow: 0 10px 25px rgba($secondary, 0.4) !important;
                     }

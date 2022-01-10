@@ -319,7 +319,7 @@ i.csicon {
     }
 
     &.csicon-bigquery {
-        background-image: url("../../assets/home/bigquery.png");
+        background-image: url("../../assets/home/bigquery.svg");
     }
 
     &.csicon-clickhouse {
@@ -327,11 +327,11 @@ i.csicon {
     }
 
     &.csicon-gcs {
-        background-image: url("../../assets/home/gcs.png");
+        background-image: url("../../assets/home/gcs.svg");
     }
 
     &.csicon-drive {
-        background-image: url("../../assets/home/gcs.png");
+        background-image: url("../../assets/home/gcs.svg");
     }
 
     &.csicon-sheets {
