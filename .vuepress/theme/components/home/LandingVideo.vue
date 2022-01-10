@@ -5,7 +5,7 @@
                 <div class="col-12 text-center">
                     <div class="position-relative" style="z-index: 1;">
                         <div class="position-relative">
-                            <video autoplay controls loop muted="" poster="/ui.gif" class="img-fluid">
+                            <video autoplay loop muted="" poster="/ui.gif" class="img-fluid">
                                 <source src="/video.m4v" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>

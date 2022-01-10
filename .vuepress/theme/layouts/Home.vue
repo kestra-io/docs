@@ -39,7 +39,8 @@ export default {
     },
 
     mounted() {
-        AOS.init();
+        AOS.init({startEvent: "load"});
+        AOS.refresh();
     }
 }
 </script>

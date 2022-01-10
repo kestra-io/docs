@@ -8,7 +8,7 @@
                     <div class="section-title text-center pb-2">
                         <h4 class="title mb-4" data-aos="fade-right">What customers are saying!</h4>
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-3">
                                 <img class="mb-3" src="../../assets/home/customers/lm.svg" alt="" title=""  data-aos="fade-right" />
                             </div>
                             <div class="col-12 col-md-9" >

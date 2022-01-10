@@ -237,7 +237,8 @@ export default {
         ServerNetwork
     },
     mounted() {
-        AOS.init()
+        AOS.init({startEvent: "load"});
+        AOS.refresh();
     }
 }
 </script>
