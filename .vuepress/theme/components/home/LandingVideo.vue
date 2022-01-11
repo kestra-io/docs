@@ -34,14 +34,16 @@
                                                     No need to setup complex architecture, all features are provided
                                                     by default !
                                                 </p>
-                                                <router-link
-                                                    to="/docs/user-interface-guide"
-                                                    class="text-light btn btn-light title-dark"
-                                                    data-aos="zoom-in"
-                                                >
-                                                    <FileDocumentOutline title="" /> Read More
-                                                    <ArrowRight title="" />
-                                                </router-link>
+                                                <p class="text-right">
+                                                    <router-link
+                                                        to="/docs/user-interface-guide"
+                                                        class="text-light btn btn-light title-dark"
+                                                        data-aos="zoom-in"
+                                                    >
+                                                        <FileDocumentOutline title="" /> Read More
+                                                        <ArrowRight title="" />
+                                                    </router-link>
+                                                </p>
                                             </div>
                                         </div>
                                     </div>

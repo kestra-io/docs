@@ -18,14 +18,16 @@
                             </div>
                             <!--end col-->
 
-                            <!--
                             <div class="col-12 mt-4 pt-4 text-center">
-                                <a href="javascript:void(0)" class="btn btn-primary">
-                                    Explore features
-                                    <i class="mdi mdi-arrow-right"></i>
-                                </a>
+                                <router-link
+                                    to="/features/features"
+                                    class="btn btn-primary"
+                                    data-aos="zoom-in"
+                                >
+                                    <FeatureSearch title="" /> Explore features
+                                    <ArrowRight title="" />
+                                </router-link>
                             </div>
-                            -->
                         </div>
                     </div>
                 </div>
@@ -43,9 +45,11 @@ import ClockStart from "vue-material-design-icons/ClockStart";
 import Web from "vue-material-design-icons/Web";
 import OpenInNew from "vue-material-design-icons/OpenInNew";
 import Shape from "../layout/Shape";
+import ArrowRight from 'vue-material-design-icons/ArrowRight'
+import FeatureSearch from "vue-material-design-icons/FeatureSearch"
 
 export default {
-    components: {Shape},
+    components: {Shape, ArrowRight, FeatureSearch},
     data() {
         return {
             features: [

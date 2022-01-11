@@ -5,20 +5,31 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="section-title text-center pb-2">
-                        <h4 class="title mb-4" data-aos="fade-right">What customers are saying!</h4>
+                    <div class="section-title pb-2">
+                        <h4 class="title mb-4 text-center" data-aos="fade-right">What customers are saying!</h4>
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <img class="mb-3" src="../../assets/home/customers/lm.svg" alt="" title=""  data-aos="fade-right" />
                             </div>
                             <div class="col-12 col-md-9" >
-                                <p class="text-muted  mb-0 mx-auto" data-aos="fade-left">
+                                <p class="text-muted mx-auto" data-aos="fade-left">
                                     <span class="text-primary mb-0 font-weight-bold">Kestra</span> allow us to develop without installation, directly on browser and start build a true business use case <strong>in few hours</strong>.
                                     Since the <strong>learning curve is easy</strong>, you can easily onboard new teammate due to its descriptive language.
                                     And moreover, it handles <strong>all the part of the data pipeline</strong>, the transport, load, transform, data modelization, data quality and monitoring of all our data pipeline.
                                     Since the tool offer <strong>strong role based access & security</strong> on the Entreprise Edition, we are safe to share ir in Software as Service to all applications allowing
                                     also to embrace the Data Mesh pattern.
                                 </p>
+                                <p class="text-right">
+                                    <router-link
+                                        to="/blogs/2022-01-10-leroy-merlin-usage-kestra"
+                                        class="btn btn-primary"
+                                        data-aos="zoom-in"
+                                    >
+                                        <FileDocumentOutline title="" /> Read the case study
+                                        <ArrowRight title="" />
+                                    </router-link>
+                                </p>
+
                             </div>
                         </div>
 
