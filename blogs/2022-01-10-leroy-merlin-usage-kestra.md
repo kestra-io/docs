@@ -7,7 +7,10 @@ author:
   image: "ldehon"
 ---
 
-Today, our team is proud to announce a first public release of Kestra, an open-source platform to orchestrate & schedule any kinds of workflow at scale.
+[Adeo](https://www.adeo.com) is the leading French player in the international DIY market and No. 3 worldwide, Adeo is going from strength to strength.
+[Leroy Merlin](https://www.leroymerlin.fr/) is the leading biggest brand of Adeo Group, that  help inhabitants around the world with all their home improvement projects, from renovations and extensions to decoration and repairs. With more than 450 stores in the world and 140 in France, Leroy Merlin France have a strong data values and need to deliver KPI to their 80 000+ employees to drive their expansion.
+
+In this article, we will browse the past, present and futur of their dataplatform with thousands of datasource, KPIS, dashboard, ...
 
 
 ## Before the cloud, the on premise choice
