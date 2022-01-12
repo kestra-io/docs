@@ -79,8 +79,7 @@ export default {
                 {
                     id: 2,
                     profile: require("../../assets/home/customers/fares.jpeg"),
-                    message: "Rarely has it been so simple, so ergonomic and so complete.\n" +
-                        "The tool meets all of our ETL needs and saved us precious time. Bye bye compose.\n",
+                    message: "It's been great. Easy to use and very powerful, It does everything I need and orchestrating flows has never been easier. It also become such an integral part of our work. Thanks to a good documentation to help quickly gain technical knowledge.",
                     name: "Fares Daoud",
                     link: "https://www.linkedin.com/in/faresdaoudofficiel/",
                     designation: "Logic@l Conseils",
