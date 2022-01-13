@@ -21,16 +21,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      # JDK & Node
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: '10.x'
+          node-version: '14.x'
 
       # Caches
       - name: Cache dependencies
@@ -54,11 +48,10 @@ jobs:
 
       # Deploy
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: .vuepress/dist/
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .vuepress/dist/
 
       # Slack
       - name: Slack notification

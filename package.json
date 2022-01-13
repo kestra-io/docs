@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/kestra-io/kestra.io#readme",
   "dependencies": {
-    "@mdi/font": "^6.1.95",
+    "@mdi/font": "^6.5.95",
     "aos": "^2.3.4",
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.21.2",
@@ -36,7 +36,7 @@
     "lodash.sortby": "^4.7.0",
     "lodash.throttle": "^4.1.1",
     "lottie-web": "^5.8.1",
-    "markdown-it": "^12.2.0",
+    "markdown-it": "^12.3.2",
     "markdown-it-emoji": "^2.0.0",
     "markdown-it-mark": "^3.0.1",
     "markdown-it-meta": "^0.0.1",
@@ -44,24 +44,25 @@
     "node-sass": "^5.0.0",
     "vue-carousel": "^0.18.0",
     "vue-feather-icons": "^5.1.0",
-    "vue-material-design-icons": "^4.13.0",
+    "vue-material-design-icons": "^5.0.0",
     "vue-stripe-menu": "^1.5.0",
     "vue-typed-js": "^0.1.2",
-    "vuepress": "^1.8.2"
+    "vue": "^2.6.14",
+    "vuepress": "^1.9.5"
   },
   "devDependencies": {
-    "@vuepress/theme-default": "^1.8.2",
-    "@vuepress/plugin-back-to-top": "^1.8.2",
-    "@vuepress/plugin-google-analytics": "^1.8.2",
-    "@vuepress/plugin-nprogress": "^1.8.2",
+    "@vuepress/plugin-back-to-top": "^1.9.5",
+    "@vuepress/plugin-google-analytics": "^1.9.5",
+    "@vuepress/plugin-nprogress": "^1.9.5",
+    "@vuepress/theme-default": "^1.9.5",
     "sass-loader": "^10.1.1",
     "timeago.js": "^4.0.2",
     "vuepress-plugin-child-toc": "^0.1.2",
-    "vuepress-plugin-container": "^2.0.2",
-    "vuepress-plugin-medium-zoom": "^1.1.9",
     "vuepress-plugin-code-copy": "^1.0.6",
+    "vuepress-plugin-container": "^2.0.2",
     "vuepress-plugin-fulltext-search": "https://github.com/tchiotludo/vuepress-plugin-fulltext-search.git#feat/topCategoryLevel",
-    "vuepress-plugin-seo": "^0.1.4",
-    "vuepress-plugin-smooth-scroll": "^0.0.3"
+    "vuepress-plugin-medium-zoom": "^1.1.9",
+    "vuepress-plugin-seo": "^0.2.0",
+    "vuepress-plugin-smooth-scroll": "^0.0.10"
   }
 }
