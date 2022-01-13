@@ -10,7 +10,7 @@
                         <router-link to="/" class="logo-footer">
                             <img src="../../public/logo-white.svg" height="60" alt="">
                         </router-link>
-                        <p class="mt-2">The modern, scalable orchestrator & scheduler open source platform.</p>
+                        <p class="mt-2">Infinitely scalable open source orchestration platform.</p>
                         <ul class="list-unstyled social-icon social mb-0 mt-4">
                             <li class="list-inline-item">
                                 <a href="https://github.com/kestra-io" class="rounded">

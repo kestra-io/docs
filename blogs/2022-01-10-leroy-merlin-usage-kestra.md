@@ -1,10 +1,12 @@
 ---
 title: "How Leroy Merlin handle all this cloud data pipeline with Kestra"
+description: Discover how Leroy Merlin move all their data pipeline to the Google Cloud with Kestra
 date: 2022-01-10
 layout: BlogsPost
 author:
   name: Ludovic Dehon
   image: "ldehon"
+  twitter: "@tchiotludo"
 ---
 
 [Adeo](https://www.adeo.com) is the leading French player in the international DIY market and No. 3 worldwide, Adeo is going from strength to strength.

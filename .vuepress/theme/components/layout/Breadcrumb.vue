@@ -6,7 +6,7 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-12 text-center">
                         <div class="page-next-level">
-                            <h4 class="title"> {{ $page.title }} </h4>
+                            <h1> {{ $page.title }} </h1>
                             <div class="page-next">
                                 <nav aria-label="breadcrumb" class="d-inline-block">
                                     <ul class="breadcrumb bg-white rounded shadow mb-0">
@@ -46,7 +46,7 @@ export default {
 
     computed: {
         backgroundStyles() {
-            return {backgroundImage: 'url(' + (this.$page.frontmatter.image || require('../../assets/home/dot.jpg')) + ')'}
+            return {backgroundImage: 'url(' + (this.$page.frontmatter.image || require('../../assets/layout/bg.jpg')) + ')'}
         }
     }
 }
@@ -62,8 +62,6 @@ export default {
 
 .bg-overlay {
     background-size: cover;
-    background-blend-mode: overlay;
     background-position: 100%;
-    opacity: 0.6;
 }
 </style>

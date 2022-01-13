@@ -1,5 +1,5 @@
 ---
-title: Kestra, The modern, scalable orchestrator & scheduler open source platform
-description: The modern, scalable orchestrator & scheduler open source platform
+title: Kestra, infinitely scalable open source orchestration & scheduling platform.
+description: Kestra is an infinitely scalable orchestrator & scheduler platform, in order to create, run, schedule and monitor millions of complex pipelines.
 layout: Home
 ---

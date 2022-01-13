@@ -2,13 +2,14 @@ const path = require("path");
 const sidebar = require("./sidebar");
 const fs = require("fs");
 
-const descriptionAppend = "The modern, scalable orchestrator & scheduler open source platform.";
-const description =  ($page) => {
+const descriptionAppend = "Kestra, infinitely scalable open source orchestration & scheduling platform.";
+const description = ($page) => {
     return $page.frontmatter.description !== undefined ? $page.frontmatter.description + " | " + descriptionAppend : $page.title + " | " + descriptionAppend;
 }
 
 module.exports = {
     title: 'Kestra',
+
     plugins: {
         '@vuepress/back-to-top': {},
         '@vuepress/nprogress' : {},
@@ -16,12 +17,11 @@ module.exports = {
         '@vuepress/google-analytics' : {'ga': 'UA-56021-9'},
         'vuepress-plugin-medium-zoom': {'selector' : '.content__default img'},
         'seo': {
-            description:description,
-            customMeta: (add, context) => {
-                const {$page} = context
-
-                add('description', description($page))
-            },
+            description: description,
+            author: ($page, $site) => $page.frontmatter.author || $site.themeConfig.author,
+            image: ($page, $site) => {
+                return $site.themeConfig.domain + ($page.frontmatter.image ? $page.frontmatter.image : "/og-image.png");
+            }
         },
         'fulltext-search': {
             'topCategoryLevel': 1,
@@ -30,7 +30,17 @@ module.exports = {
         'vuepress-plugin-child-toc': {},
         'vuepress-plugin-code-copy': {}
     },
+    head: [
+        ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' }],
+        ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' }],
+        ['link', { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' }],
+        ['link', { rel: 'manifest',  href: '/site.webmanifest' }],
+        ['link', { rel: 'mask-icon',  href: '/safari-pinned-tab.svg', color: '#192a4e' }],
+        ['meta', { name: 'msapplication-TileColor',  content: '#192a4e' }],
+        ['meta', { name: 'theme-color',  content: '#192a4e' }],
+    ],
     themeConfig: {
+        domain: 'https://kestra.io',
         logo: '/logo-white.svg',
         repo: 'kestra-io/kestra',
         repoLabel: 'GitHub',
@@ -38,6 +48,10 @@ module.exports = {
         editLinks: true,
         smoothScroll: true,
         searchMaxSuggestions: 10,
+        author: {
+            'name': 'Kestra',
+            'twitter': '@kestra_io'
+        },
         sidebar: {
             '/plugins/': [
                 {
