@@ -14,15 +14,28 @@
                                 Kestra is an <strong>infinitely scalable</strong> orchestrator & scheduler platform, in order to create, run, schedule and monitor <strong>millions of complex</strong> pipelines.
                             </p>
 
-                            <div class="mt-4 pt-2">
-                                <div class="row">
-                                    <div class="col-12 col-sm-6 text-sm-right">
-                                        <router-link to="/docs/getting-started" class="btn btn-light"><PlayCircle title="" /> Get Started <ArrowRight title="" /></router-link>
-                                    </div>
-                                    <div class="col-12 col-sm-6 text-sm-left mt-4 mt-sm-0">
-                                        <router-link to="/features/features" class="btn btn-light "><FeatureSearch title="" /> Discover <ArrowRight title="" /></router-link>
-                                    </div>
-                                </div>
+                            <div class="mt-4 text-center">
+                                <router-link
+                                    to="/docs/getting-started"
+                                    class="btn btn-light mr-3 mt-4"
+                                    data-aos="zoom-in">
+                                        <PlayCircle title="" /> Get Started <ArrowRight title="" />
+                                </router-link>
+                                <router-link
+                                    to="/features/features"
+                                    class="btn btn-light mr-3 mt-4"
+                                    data-aos="zoom-in">
+                                        <FeatureSearch title="" /> Discover <ArrowRight title="" />
+                                </router-link>
+                                <a
+                                    href="https://demo.kestra.io"
+                                    target="_blank"
+                                    class="text-light btn btn-light title-dark mr-3 mt-4"
+                                    data-aos="zoom-in"
+                                >
+                                    <Web title="" /> Demo
+                                    <ArrowRight title="" />
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -53,6 +66,7 @@ import ArrowRight from "vue-material-design-icons/ArrowRight";
 import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline";
 import PlayCircle from "vue-material-design-icons/PlayCircle";
 import FeatureSearch from "vue-material-design-icons/FeatureSearch"
+import Web from "vue-material-design-icons/Web"
 import Shape from "../layout/Shape";
 import Lottie from '../layout/VueLottie';
 import * as animationData from './animation.json';
@@ -82,6 +96,7 @@ export default {
         FileDocumentOutline,
         PlayCircle,
         FeatureSearch,
+        Web,
         Lottie
     },
     data() {

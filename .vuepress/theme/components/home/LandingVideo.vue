@@ -34,15 +34,25 @@
                                                     No need to setup complex architecture, all features are provided
                                                     by default !
                                                 </p>
-                                                <p class="text-right">
+                                                <p class="text-center">
                                                     <router-link
                                                         to="/docs/user-interface-guide"
-                                                        class="text-light btn btn-light title-dark"
+                                                        class="text-light btn btn-light title-dark mt-3 "
                                                         data-aos="zoom-in"
                                                     >
                                                         <FileDocumentOutline title="" /> Read More
                                                         <ArrowRight title="" />
                                                     </router-link>
+
+                                                    <a
+                                                        href="https://demo.kestra.io"
+                                                        target="_blank"
+                                                        class="text-light btn btn-light title-dark mt-3"
+                                                        data-aos="zoom-in"
+                                                    >
+                                                        <Web title="" /> Explore our demo
+                                                        <ArrowRight title="" />
+                                                    </a>
                                                 </p>
                                             </div>
                                         </div>
@@ -64,6 +74,7 @@
 
 <script>
 import ArrowRight from 'vue-material-design-icons/ArrowRight'
+import Web from 'vue-material-design-icons/Web'
 import FileDocumentOutline from 'vue-material-design-icons/FileDocumentOutline'
 import Shape from "../layout/Shape";
 
@@ -71,7 +82,8 @@ export default {
     components: {
         Shape,
         ArrowRight,
-        FileDocumentOutline
+        FileDocumentOutline,
+        Web
     }
 }
 </script>
