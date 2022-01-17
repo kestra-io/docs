@@ -4,7 +4,7 @@ order: 5
 # Others Kestra configuration
 
 ## Url configuration
-Some notification service need to have an url configuration defined in order to add some link directly to the web ui. Use full uri here with a trailing `/` (without ui or api).
+Some notification service need to have an url configuration defined in order to add some link directly to the web ui. Use a full uri here with a trailing `/` (without ui or api).
 ```yaml
 kestra:
   url: https://www.my-host.com/kestra/
@@ -151,8 +151,8 @@ Changing the timezone will affect mostly :
 
 ## Anonymous usage report
 
-Understanding how you use Kestra is very important to us: it helps us improve the solution in many different ways.
-For this very reason, the `kestra.anonymous-usage-report.enabled` option is mandatory: we want you to take time to consider whether or not you wish to share anonymous data with us so we can benefit from your experience and use cases.
+Understanding how you use Kestra is very important to us: it helps us improve the solution in many ways.
+For this very reason, the `kestra.anonymous-usage-report.enabled` option is mandatory: we want you to take time to consider whether you wish to share anonymous data with us, so we can benefit from your experience and use cases.
 
 - `kestra.anonymous-usage-report.enabled`: (default true)
 - `kestra.anonymous-usage-report.initial-delay`: (default 5m)
@@ -167,3 +167,32 @@ The collected data can be found [here](https://github.com/kestra-io/kestra/tree/
 - **flow data:** the namespace count, flow count, the task type and the trigger type used.
 - **execution data:** the execution & taskruns count for last 2 days with count and duration grouped by status
 - **common data:** the server type, version, timezone, env, start time and url
+
+
+## Webserver configuration
+
+### `kestra.webserver.google-analytics`: Google Analytics ID
+Add Google Analytics tracking ID (ex: `UA-12345678-1`) and report all page tracking.
+
+
+### `kestra.webserver.html-head`: Append some head tags on the webserver application
+Mostly useful in order to inject some css or javascript to customize the web application.
+
+Examples, add a red banner on production environment :
+```yaml
+kestra:
+  webserver:
+    html-head: |
+      <style type="text/css">
+        .v-sidebar-menu .logo:after {
+          background: var(--danger);
+          display: block;
+          content: "Local";
+          position: relative;
+          text-transform: uppercase;
+          bottom: -65px;
+          text-align: center;
+          color: var(--white-always);
+        }
+      </style>
+```
