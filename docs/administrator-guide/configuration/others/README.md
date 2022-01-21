@@ -57,6 +57,12 @@ These variables will be accessible on flow with <code v-pre>{{ globals.env }}</c
 By default, [deprecated handlebars](../../../developer-guide/variables/deprecated-handlebars) is disabled, you can enable it with `true` value.
 
 
+### `kestra.variables.cache-enabled`
+The rendering of template variables can be cpu intensive, and by default we **enable** a cache of "template". You can disable it, but it's really recommended keeping it enable.
+
+### `kestra.variables.cache-size`
+The rendering of template variables cache is an LRU cache (keep most used) and will be in memory (default `1000`). You can change the size of template cache (in number of template), take care that more this number will be high, the more memory server will use, maybe for not so many use template.
+
 ### `kestra.tasks.defaults`
 You can also provide from configuration files tasks defaults that will be applied on each tasks on your cluster **if not defined** on flow or tasks.
 Mostly it will allow you to be sure a value was defined at a default value for these tasks type.
