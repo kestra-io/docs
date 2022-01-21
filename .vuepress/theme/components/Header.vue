@@ -84,6 +84,7 @@ import Email from "vue-material-design-icons/Email";
 import ApplicationOutline from "vue-material-design-icons/ApplicationOutline"
 import FeatureSearch from "vue-material-design-icons/FeatureSearch"
 import AccountNetworkOutline from "vue-material-design-icons/AccountNetworkOutline"
+import Security from "vue-material-design-icons/Security"
 import {GithubIcon} from 'vue-feather-icons';
 
 export default {
@@ -123,6 +124,12 @@ export default {
                             link: '/features/usages',
                             icon: AccountNetworkOutline,
                             desc: 'How Kestra can help on your daily workflow'
+                        },
+                        {
+                            title: 'Entreprise Edition  ',
+                            link: '/features/enterprise',
+                            icon: Security,
+                            desc: 'Security & Productivity for entreprise'
                         }
                     ]
                 },

@@ -49,8 +49,8 @@
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/docs/architecture/" class="text-foot">
-                                    <ChevronRight title="" /> Architecture
+                                <router-link to="/features/enterprise" class="text-foot">
+                                    <ChevronRight title="" /> Enterprise Edition
                                 </router-link>
                             </li>
                         </ul>
