@@ -17,9 +17,7 @@
                                         <div class="col-md-6">
                                             <div class="section-title text-md-left">
                                                 <h4 class="title text-white mb-4 mb-0-md title-dark" data-aos="fade-right">
-                                                    Edit, run & monitor in real-time directly on the <strong>all in
-                                                    one</strong> web
-                                                    interface.
+                                                    Edit, run, and monitor in real time directly on the <strong>all-in-one web</strong> interface.
                                                 </h4>
                                             </div>
                                         </div>
@@ -27,12 +25,9 @@
                                         <div class="col-md-6 col-12 ">
                                             <div class="section-title text-md-left">
                                                 <p class="text-white-50 para-desc" data-aos="fade-left">
-                                                    <span class="text-light title-dark">Kestra</span> provide a
-                                                    built-in
-                                                    rich user interface that allow you to edit your flows, run &
-                                                    monitor them in real-time.
-                                                    No need to setup complex architecture, all features are provided
-                                                    by default !
+                                                    <span class="text-light title-dark">Kestra</span> provides an inbuilt rich user interface that
+                                                    allows you to edit your flows, run, and monitor them in real time. No need to set up complex
+                                                    development workflow to start quickly!
                                                 </p>
                                                 <p class="text-center">
                                                     <router-link

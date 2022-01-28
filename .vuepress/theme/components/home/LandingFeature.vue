@@ -55,32 +55,32 @@ export default {
             features: [
                 {
                     title: "Any kind of workflow",
-                    description: "Workflow can start simple to more complex with branching, parallel, dynamic tasks, depending flows, ...",
+                    description: "Workflows can start simple and progress to more complex systems with branching, parallel, dynamic tasks, flow dependencies",
                     icon: DotsHexagon
                 },
                 {
                     title: "Easy to learn",
-                    description: "Flow are simple descriptive language defined in YAML, we don't need to be a developer to create a new flow.",
+                    description: "Flows are in simple, descriptive language defined in YAML;u don't need to be a developer to create a new flow.",
                     icon: SchoolOutline
                 },
                 {
                     title: "Easy to extend",
-                    description: "Plugins are class first in Kestra, many are available from Kestra core team but you can create one easily.",
+                    description: "Plugins are everywhere in Kestra, many are available from the Kestra core team, but you can create one easily.",
                     icon: GoogleCirclesExtended
                 },
                 {
                     title: "Any triggers",
-                    description: "Kestra is event based at heart, you can trigger an execution from api, schedule, detection, events, ...",
+                    description: "Kestra is event-based at heart—you can trigger an execution from API, schedule, detection, events",
                     icon: ClockStart
                 },
                 {
                     title: "A rich user interface",
-                    description: "The built-in web interface allow you to create, run & monitor all your flows, no need to deploy your flow, just edit them.",
+                    description: "The built-in web interface allows you to create, run, and monitor all your flows—no need to deploy your flows, just edit them.",
                     icon: Web
                 },
                 {
-                    title: "Enjoy infinitely scalability",
-                    description: "Kestra is built around top cloud native technologies, scale to million of executions without the pain.",
+                    title: "Enjoy infinite scalability",
+                    description: "Kestra is built around top cloud native technologies—scale to millions of executions stress free.",
                     icon: OpenInNew
                 }
             ]

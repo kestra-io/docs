@@ -129,7 +129,7 @@ export default {
                             title: 'Entreprise Edition  ',
                             link: '/features/enterprise',
                             icon: Security,
-                            desc: 'Security & Productivity for entreprise'
+                            desc: 'Security and Productivity for enterprise'
                         }
                     ]
                 },
@@ -175,7 +175,7 @@ export default {
                             title: 'About us',
                             link: '/company/about-us',
                             icon: Domain,
-                            desc: 'Discover our story & our team'
+                            desc: 'Discover our story and our team'
                         },
                         {
                             title: 'Contact us',

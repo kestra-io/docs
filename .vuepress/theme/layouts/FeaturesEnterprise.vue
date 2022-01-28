@@ -47,11 +47,11 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                <router-link to="/plugins/">Plugins</router-link> ecosystem
+                                                <router-link to="/plugins/">Plugin</router-link> ecosystem
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Extended Api
+                                                Extended API
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
@@ -59,7 +59,7 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                No limitations on usage
+                                                No limitation on usage
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
@@ -87,15 +87,15 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Authentification with <router-link to="/docs/administrator-guide/configuration/entreprise-edition/authentifications/auths/oidc">OIDC / SSO</router-link>
+                                                Authentification with <router-link to="/docs/administrator-guide/configuration/entreprise-edition/authentifications/auths/oidc">OIDC/SSO</router-link>
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Fined grained Role Based Access control
+                                                Fine-grained, Role-based access control
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Namespace configuration &amp; security
+                                                Namespace configuration and security
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
@@ -111,11 +111,11 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Execution dashboard
+                                                Executions dashboard
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                <router-link to="/docs/administrator-guide/configuration/entreprise-edition/workers/">Worker security </router-link>isolation
+                                                <router-link to="/docs/administrator-guide/configuration/entreprise-edition/workers/">Worker security</router-link> isolation
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
@@ -154,7 +154,7 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Available on multiple cloud provider &amp; region
+                                                Available on multiple cloud providers and regions
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
@@ -190,8 +190,7 @@
                                         Want more information?
                                     </h4>
                                     <h5 class="text-muted para-desc mx-auto mb-0" data-aos="fade-right">
-                                        Get in touch with our team and we will assist you with building your business’s
-                                        needs.
+                                        Get in touch with our team and we will assist you in meeting your business’s needs.
                                     </h5>
 
                                     <div class="mt-4">

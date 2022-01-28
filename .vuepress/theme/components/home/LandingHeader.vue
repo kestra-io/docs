@@ -7,11 +7,11 @@
                         <div class="title-heading text-white" data-aos="fade-right">
                             <vue-typed-js :loop="true" :back-delay="1000" :strings="['open source', 'scalable', 'extensible', 'real-time']">
                                 <h1 class="heading mb-4">
-                                    The <span class="typing"></span> <br /><span>orchestrator</span> & <span>scheduler</span> platform.
+                                    The <span class="typing"></span> <br /><span>orchestration</span> and <span>scheduling </span> platform.
                                 </h1>
                             </vue-typed-js>
                             <p class="para-desc mx-auto">
-                                Kestra is an <strong>infinitely scalable</strong> orchestrator & scheduler platform, in order to create, run, schedule and monitor <strong>millions of complex</strong> pipelines.
+                                Kestra is an <strong>infinitely scalable</strong> orchestration and scheduling platform, creating, running, scheduling, and monitoring <strong>millions of complex</strong> pipelines.
                             </p>
 
                             <div class="mt-4 text-center">

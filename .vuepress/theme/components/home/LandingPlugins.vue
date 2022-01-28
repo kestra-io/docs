@@ -5,13 +5,11 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="section-title text-center pb-2">
-                            <h4 class="title mb-4" data-aos="fade-right">Discover plugins or build yours !</h4>
+                            <h4 class="title mb-4" data-aos="fade-right">Discover plugins or build your own!</h4>
                             <p class="text-muted para-desc mb-0 mx-auto" data-aos="fade-left">
-                                <span class="text-primary mb-0 font-weight-bold">Kestra</span> is build upon a plugins
-                                systems.
-                                Find your plugin to interact with your provider or develop easily yours.
-
-                                Here is the official plugins available :
+                                <span class="text-primary mb-0 font-weight-bold">Kestra</span> is built on plug-in systems.
+                                You can find your plugin to interact with your provider; alternatively, you can follow simple steps to develop your own plugin.
+                                Here are the official plugins that are available:
                             </p>
                         </div>
                     </div>

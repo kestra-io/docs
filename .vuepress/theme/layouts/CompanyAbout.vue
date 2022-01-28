@@ -26,13 +26,12 @@
 
                             <div class="col-lg-7 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
                                 <div class="section-title ml-lg-4" data-aos="fade-left">
-
                                     <p>
                                         <strong>Why did you create a data orchestration platform?</strong><br />
-                                        For many years in the automation and workflow planning landscape, we were frustrated that we <strong>did not see a working, professional open-source solution</strong> that was suitable for either simple or complex needs.
+                                        For many years in the automation and workflow planning landscape, we were frustrated that we <strong>did not see a working, professional open-source solution</strong> that was suitable for either simple or complex projects.
                                     </p>
                                     <p>
-                                        During our consulting missions, all our research for reliable, professional, quickly testable orchestrators ended <strong>tirelessly in failures</strong>! Not scalable, too complex to use, not production ready, poor user interface, ...
+                                        During our consulting missions, our tireless research for reliable, professional, testable orchestrators ended <strong>in failure</strong> — none were scalable, they were too complex to use, not production ready, and had poor user interface.
                                     </p>
 
                                 </div>
@@ -42,21 +41,21 @@
                                 <div class="row align-items-center">
                                     <div class="mt-4 pt-2">
                                         <p>
-                                            A challenge presented itself to us: <strong>Develop our own tool! One Platform to rule them all ^^</strong>
+                                            A challenge presented itself to us: <strong>Develop your own tool! One Platform to rule them all ^^</strong>
                                         </p>
                                         <p>
-                                            Before all, we are seeking to challenge the ecosystem.
-                                            Give you a tool to allow you to <router-link to="/features/features">orchestrate and automate your data</router-link>, your workflows, your batches, all with simplicity, autonomy and performance.
-                                            This has been our ambition since day since day one and will challenge us after the <router-link to="/blogs/2022-01-10-kestra-opensource">public launch of the Kestra project</router-link>.
+                                            Above all, we are seeking to challenge the ecosystem;
+                                            to give you a tool to allow you to <router-link to="/features/features">orchestrate and automate your data</router-link>, workflows, and batches all with simplicity, autonomy, and high performance.
+                                            his has been our ambition since day one and will continue to challenge us after the <router-link to="/blogs/2022-01-10-kestra-opensource">public launch of the Kestra project.</router-link>.
                                         </p>
                                         <p>
-                                            We have developed our opensource platform with calm, precision and self-sacrifice, as part of a mission for one of the leaders of retail in Europe, <router-link to="/blogs/2022-01-10-leroy-merlin-usage-kestra">Leroy Merlin, with strict needs for enormous data management</router-link>.
+                                            We developed our Open Source platform with careful precision and dedication as part of a mission for one of the leaders of retail in Europe, <router-link to="/blogs/2022-01-10-leroy-merlin-usage-kestra">Leroy Merlin, who were in need of high-capacity data management.</router-link>.
                                         </p>
                                         <p>
-                                            The platform is <strong>operational, in production and performing</strong> for the pleasure of several hundred internal users who have seen their productivity gain skyrocketed using Kestra. What a reward for us. To build something new and that gives <strong>complete satisfaction</strong> to our users.
+                                            The platform is <strong>operational, in production, and performing</strong> to the satisfaction of several hundred internal users who have seen their productivity gain skyrocket since using Kestra. What a reward it is for us to build something new that brings <strong>complete satisfaction</strong> to its users.
                                         </p>
                                         <p>
-                                            Now is the <router-link to="/blogs/2022-01-10-kestra-opensource">public launch</router-link> stage to bring Kestra to everyone who will need it. We have structured a company and our teams are now <strong>ready to help</strong> you with your future tests and integrations.
+                                            Now we are at the <router-link to="/blogs/2022-01-10-kestra-opensource">stage of our public launch</router-link> with the aim of bringing Kestra to everyone who needs it. We have structured a company and our teams are <strong>ready to help</strong> you with your future tests and integrations.
                                         </p>
                                     </div>
                                 </div>
@@ -88,10 +87,10 @@
                             <div class="col-12 text-center">
                                 <div class="section-title">
                                     <h4 class="title mb-4" data-aos="fade-left">
-                                        Want more informations ?
+                                        Want more information?
                                     </h4>
                                     <h5 class="text-muted para-desc mx-auto mb-0" data-aos="fade-right">
-                                        Any questions about Kestra or the company, reach us please!
+                                        Any questions about Kestra or the company, please get in touch!
                                     </h5>
 
                                     <div class="mt-4">

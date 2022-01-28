@@ -9,9 +9,9 @@
                 <section class="section bg-white overflow-hidden">
                     <div class="container">
                         <p class="text-center mb-5" data-aos="fade-left">
-                            Kestra can be used for <strong>many use cases</strong> thanks to the <strong>plugin architecture</strong>.
-                            <router-link to="/plugins/">Find a plugin</router-link> to handle your need and <router-link to="/docs/plugin-developer-guide/">build one easily</router-link>.<br />
-                            Here is some examples that let you understand some of them, but fell free to imagine others one.
+                            Thanks to its robust and flexible <strong>plugin architecture</strong>, Kestra can be used for a <strong>variety of use cases</strong>;
+                            <router-link to="/plugins/">find a plugin</router-link> that suits your needs or <router-link to="/docs/plugin-developer-guide/">build one easily</router-link>.<br />
+                            Here are examples to give you some ideas but feel free to use your imagination and create your own.
                         </p>
                         <div class="row">
                             <div class="col-md-4 col-12 mt-5 mt-md-0">
@@ -21,7 +21,7 @@
                                     </div>
 
                                     <div class="content mt-4">
-                                        <a class="h5" href="#seamless-data-pipeline">Seamless Data pipeline</a>
+                                        <a class="h5" href="#seamless-data-pipeline">Seamless data pipeline</a>
                                         <p class="text-secondary mb-0"></p>
                                     </div>
                                 </div>
@@ -34,7 +34,7 @@
                                     </div>
 
                                     <div class="content mt-4">
-                                        <a class="h5" href="#distributed-automation-schedule">Distributed automation & schedule</a>
+                                        <a class="h5" href="#distributed-automation-schedule">Distributed automation and scheduling</a>
                                         <p class="text-secondary mb-0"></p>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@
                                     </div>
 
                                     <div class="content mt-4">
-                                        <a class="h5" href="#heavy-workload">Delegate heavy workload</a>
+                                        <a class="h5" href="#heavy-workload">Delegate heavy workloads</a>
                                         <p class="text-secondary mb-0"></p>
                                     </div>
                                 </div>
@@ -72,22 +72,22 @@
                                         Seamless Data pipeline
                                     </h4>
                                     <p class="text-white" data-aos="fade-right">
-                                        Due to its wide range of plugins and the architecture that support any size of
-                                        data, Kestra allow to create complex data pipeline with ease, some examples are :
+                                        Due to its wide range of plug-ins and the architecture that supports any size of data, Kestra allows you to create complex data pipelines with ease.
+                                        Some examples of what you can expect from Kestra are:
                                     </p>
                                     <p class="text-secondary mb-0" data-aos="fade-left">Examples:</p>
                                     <ul class="list-unstyled text-secondary">
                                         <li class="mb-0" data-aos="fade-left" data-aos-delay="100">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Import data into your Data wharehouse from many built-in sources & connectors (database, sftp, bucket, ...)
+                                            Importing data into your data warehouse from many built-in sources and connectors (database, sftp, bucket, ...)
                                         </li>
                                         <li class="mb-0" data-aos="fade-left" data-aos-delay="200">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Prepare, validate & aggregate your raw data to create a consolidated datamart.
+                                            Preparing, validating, and aggregating your raw data to create a consolidated data mart.
                                         </li>
                                         <li class="mb-0" data-aos="fade-left" data-aos-delay="300">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Export from your Data wharehouse to yours applications, saas providers or partners.
+                                            Exporting from your data warehouse to your applications, SaaS providers or partners.
                                         </li>
                                     </ul>
                                 </div>
@@ -105,26 +105,24 @@
                                 class="col-md-6 order-2 order-md-1 mt-4 mt-sm-0 pt-2 pt-sm-0">
                                 <div class="section-title mr-lg-5">
                                     <h4 class="title mb-4 mt-4 mt-md-0" data-aos="fade-right">
-                                        Distributed automation & schedule
+                                        Distributed automation and scheduling
                                     </h4>
                                     <p data-aos="fade-left">
-                                        Kestra can be used as remplacement of crontab easily and remove your single
-                                        point of failure to distributed crontab. With a plus, a central ui to have a
-                                        full insight of all the jobs, logs and failures.
+                                        Kestra can be used as a crontab alternative and removes your single point of failure to a distributed crontab in addition to a central UI to give a full insight of all jobs, logs, and failed attempts.
                                     </p>
                                     <p class="text-secondary mb-0" data-aos="fade-right">Examples:</p>
                                     <ul class="list-unstyled text-secondary">
                                         <li class="mb-0" data-aos="fade-right" data-aos-delay="100">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Admin task like backup, daily export, archive, ...
+                                            Admin tasks such as backup, daily export, archive, and more
                                         </li>
                                         <li class="mb-0" data-aos="fade-right" data-aos-delay="200">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Maintenance without the pain to handle it manually
+                                            Maintenance without the stress of having to do it manually
                                         </li>
                                         <li class="mb-0" data-aos="fade-right" data-aos-delay="300">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Business process that is triggered manually, create a flow and just launch execution
+                                            Business processes that are triggered manually, create a flow, and just launch an execution
                                         </li>
                                     </ul>
                                 </div>
@@ -150,19 +148,19 @@
                                         Delegate heavy workload
                                     </h4>
                                     <p class="text-white" data-aos="fade-right">
-                                        Thanks to rich Api, you can trigger any execution directly from your backend and follow the execution. <br />
-                                        Imagine some really slow & compute intensive process on your application server, trigger a Kestra execution, follow it directly from your server in real time and give real time feedback to your end users.
-                                        Don't scale your application server and let Kestra scale it for you.
+                                        Thanks to the rich API, you can trigger any execution directly from your backend and follow the execution.<br />
+                                        Imagine a really slow and compute-intensive process on your application server. Trigger a Kestra execution, follow it directly from your server in real time, and give real-time feedback to your end users.
+                                        Don't scale your application server; let Kestra scale it for you.
                                     </p>
                                     <p class="text-secondary mb-0" data-aos="fade-left">Examples:</p>
                                     <ul class="list-unstyled text-secondary">
                                         <li class="mb-0" data-aos="fade-left" data-aos-delay="100">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Synchronization between lots of microservice needed to wait for others responses.
+                                            Synchronization of multiple microservices that function together through a single tool.
                                         </li>
                                         <li class="mb-0" data-aos="fade-left" data-aos-delay="200">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Large compute intensive work like generation of many documents or archive creation.
+                                            Large compute-intensive work such as the generation of many documents or archive creation.
                                         </li>
 
                                     </ul>
@@ -179,11 +177,10 @@
                             <div class="col-12 text-center">
                                 <div class="section-title">
                                     <h4 class="title mb-4" data-aos="fade-left">
-                                        And many more use case
+                                        And many more use cases
                                     </h4>
                                     <h5 class="text-muted para-desc mx-auto mb-0" data-aos="fade-right">
-                                        Start building with <span class="text-primary font-weight-bold">Kestra</span> and
-                                        enjoy yours pipelines, the only limit is your imagination.
+                                        Start building with <span class="text-primary font-weight-bold">Kestra</span> and enjoy your pipelines — the only limit is your imagination.
                                     </h5>
 
                                     <div class="mt-4">

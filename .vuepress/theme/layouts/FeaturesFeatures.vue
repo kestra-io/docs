@@ -11,9 +11,9 @@
                         <div class="row justify-content-center">
                             <div class="col-12 text-center">
                                 <div class="section-title mb-4 pb-2">
-                                    <h4 class="title mb-4" data-aos="fade-left">An orchestrator platform</h4>
+                                    <h4 class="title mb-4" data-aos="fade-left">An orchestration platform</h4>
                                     <p data-aos="fade-right">
-                                        Build complex pipeline in couple of minutes.
+                                        Build a complex pipeline within a couple of minutes.
                                     </p>
                                 </div>
                             </div>
@@ -29,11 +29,10 @@
                                                     <DotsHexagon title="" />
                                                 </h2>
                                                 <div class="ml-3">
-                                                    <h5>Any kind of flows !</h5>
+                                                    <h5>All kinds of flows!</h5>
                                                     <p class="text-muted mb-0">
-                                                        Kestra understand the logic of your flow and handle <router-link to="/docs/developer-guide/flowable/">any workflow</router-link> with parallel, loop, depending flows, ...
-                                                        System have failures, and let Kestra handle the <router-link to="/docs/developer-guide/retries/">retry</router-link>, timeout, ... that could happen.
-
+                                                        Kestra understands the construction of your flow and handles <router-link to="/docs/developer-guide/flowable/">any workflow</router-link> with parallel, loop dependent flows.
+                                                        Systems can fail; let Kestra handle <router-link to="/docs/developer-guide/retries/">the retry process.</router-link>
                                                     </p>
                                                 </div>
                                             </div>
@@ -46,10 +45,10 @@
                                                     <GoogleCirclesExtended title="" />
                                                 </h2>
                                                 <div class="ml-3">
-                                                    <h5>Any plugins !</h5>
+                                                    <h5>All plugins!</h5>
                                                     <p class="text-muted mb-0">
-                                                        Plugins offers deep integration with systems allowing to make complex workflows without relying command line.
-                                                        <router-link to="/plugins/">Use official one</router-link> or <router-link to="/docs/plugin-developer-guide/">build your own</router-link> easily!
+                                                        Plug-ins offer deep integration with systems enabling users to make complex workflows without relying on the command line.
+                                                        <router-link to="/plugins/">Use an official one</router-link> or <router-link to="/docs/plugin-developer-guide/">simply build your own!</router-link>
                                                     </p>
                                                 </div>
                                             </div>
@@ -62,9 +61,9 @@
                                                     <OpenInNew title="" />
                                                 </h2>
                                                 <div class="ml-3">
-                                                    <h5>Cloud native & scalable !</h5>
+                                                    <h5>Cloud native and scalable!</h5>
                                                     <p class="text-muted mb-0">
-                                                        Kestra is build with around top cloud native technologies and a <router-link to="/docs/architecture/">strong architecture</router-link>! Scale to million of executions without the pain.
+                                                        Kestra has been built with leading cloud-native technologies and a <router-link to="/docs/architecture/">strong architecture</router-link>! Scale to millions of executions without hassle.
                                                     </p>
                                                 </div>
                                             </div>
@@ -93,9 +92,9 @@
                         <div class="row justify-content-center">
                             <div class="col-12 text-center">
                                 <div class="section-title mb-4 pb-2">
-                                    <h4 class="title mb-4" data-aos="fade-left">An scheduler platform</h4>
+                                    <h4 class="title mb-4" data-aos="fade-left">A scheduling platform</h4>
                                     <p data-aos="fade-right">
-                                        Launch your flows whatever is your need!
+                                        Launch your flows whatever the need
                                     </p>
                                 </div>
                             </div>
@@ -122,15 +121,15 @@
                                                 <Abacus title="" />
                                             </h2>
                                             <div class="ml-3">
-                                                <h5>Event based!</h5>
+                                                <h5>Event based</h5>
                                                 <p class="text-muted mb-0">
-                                                    Kestra can execute flows based on events coming from core or plugins like :
+                                                    Kestra can execute flows based on events coming from core or plug-ins such as:
 
                                                 </p>
                                                 <ul class="text-muted mb-0">
                                                     <li><router-link to="/docs/developer-guide/triggers/flow.html">result of others flows</router-link> in real time</li>
-                                                    <li>detection of file <router-link to="/plugins/plugin-fs/triggers/sftp/io.kestra.plugin.fs.sftp.Trigger.html">from an SFTP</router-link> or <router-link to="/plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.Trigger.html">Google Cloud Storage</router-link></li>
-                                                    <li>result of a <router-link to="/plugins/plugin-gcp/triggers/bigquery/io.kestra.plugin.gcp.bigquery.Trigger.html">sql query</router-link></li>
+                                                    <li>detection of files <router-link to="/plugins/plugin-fs/triggers/sftp/io.kestra.plugin.fs.sftp.Trigger.html">from an SFTP</router-link> or <router-link to="/plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.Trigger.html">Google Cloud Storage</router-link></li>
+                                                    <li>results of a <router-link to="/plugins/plugin-gcp/triggers/bigquery/io.kestra.plugin.gcp.bigquery.Trigger.html">SQL query</router-link></li>
                                                     <li>...</li>
                                                 </ul>
                                             </div>
@@ -143,10 +142,10 @@
                                                 <CalendarClockOutline title="" />
                                             </h2>
                                             <div class="ml-3">
-                                                <h5>Time based scheduling!</h5>
+                                                <h5>Time-based scheduling!</h5>
                                                 <p class="text-muted mb-0">
-                                                    Or execute <router-link to="/docs/developer-guide/triggers/schedule.html">at regular interval</router-link> your flows based on cron expression.
-                                                    You have more complex need, rely on <router-link to="/docs/developer-guide/triggers/schedule.html#schedule-conditions">conditions</router-link> to limit the scheduling of your flows like <router-link to="/plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekInMonthCondition.html">first month of the month</router-link>, <router-link to="/plugins/core/conditions/io.kestra.core.models.conditions.types.WeekendCondition.html">weekend only</router-link>, ...
+                                                    Or execute your flows <router-link to="/docs/developer-guide/triggers/schedule.html">at regular intervals</router-link> based on a cron expression, if you
+                                                    have more complex needs and rely on <router-link to="/docs/developer-guide/triggers/schedule.html#schedule-conditions">conditions</router-link> to limit the scheduling of your flows <router-link to="/plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekInMonthCondition.html">(e.g., first day of the month, weekend only, etc.).</router-link>, <router-link to="/plugins/core/conditions/io.kestra.core.models.conditions.types.WeekendCondition.html">weekend only</router-link>, ...
                                                 </p>
                                             </div>
                                         </div>
@@ -158,9 +157,9 @@
                                                 <Api title="" />
                                             </h2>
                                             <div class="ml-3">
-                                                <h5>Api or UI based !</h5>
+                                                <h5>API or UI based!</h5>
                                                 <p class="text-muted mb-0">
-                                                    Don't find your needs, you can still rely on <router-link to="/docs/developer-guide/inputs/#send-inputs-programmatically">Kestra API</router-link> (a simple curl can do the job), <router-link to="/docs/developer-guide/triggers/webhook.html">webhook</router-link> to trigger a flow from any application or simply start it directly from the Web UI !
+                                                    f you haven’t found a suitable option, you can still rely on <router-link to="/docs/developer-guide/inputs/#send-inputs-programmatically">Kestra API</router-link> (a simple cURL can do the job), <router-link to="/docs/developer-guide/triggers/webhook.html">webhook</router-link> to trigger a flow from any application or simply start it directly from the Web UI.
                                                 </p>
                                             </div>
                                         </div>
@@ -177,9 +176,9 @@
                         <div class="row justify-content-center">
                             <div class="col-12 text-center">
                                 <div class="section-title mb-4 pb-2">
-                                    <h4 class="title mb-4" data-aos="fade-left">A extensible data orchestrator</h4>
+                                    <h4 class="title mb-4" data-aos="fade-left">An extensible data orchestrator</h4>
                                     <p data-aos="fade-right">
-                                        Kestra is build with <strong>data at heart</strong> and integrate <strong>directly</strong> with your source & destination, no need to choose <strong>between ETL or ELT</strong>, both are possible.
+                                        Kestra is built with <strong>data at its heart</strong> and integrates <strong>directly</strong> with your source and destination; no need to choose <strong>between ETL or ELT</strong> — both are possible.
                                     </p>
                                 </div>
                             </div>
@@ -197,10 +196,9 @@
                                                 <div class="ml-3">
                                                     <h5>ETL or ELT!</h5>
                                                     <p class="text-muted mb-0">
-                                                        Never choose again between ELT or ETL! Kestra handle both at scale.
-                                                        Choose the method you need : convert from
+                                                        Don’t be left choosing between ETL or ELT—Kestra handles both at scale. Choose the method you need: convert from
                                                         <router-link to="/plugins/plugin-serdes/tasks/csv/io.kestra.plugin.serdes.csv.CsvReader.html">standard</router-link> <router-link to="/plugins/plugin-serdes/tasks/avro/io.kestra.plugin.serdes.avro.AvroWriter.html">format</router-link>,
-                                                        use task to <router-link to="/plugins/plugin-script-nashorn/tasks/io.kestra.plugin.scripts.nashorn.FileTransform.html">transform data directly</router-link> or
+                                                        , use task to <router-link to="/plugins/plugin-script-nashorn/tasks/io.kestra.plugin.scripts.nashorn.FileTransform.html">transform data directly</router-link>, or
                                                         load <router-link to="/plugins/plugin-jdbc-postgres/tasks/l/io.kestra.plugin.jdbc.postgresql.CopyIn.html">raw data</router-link> and let the database do the hard work.
                                                     </p>
                                                 </div>
@@ -216,7 +214,7 @@
                                                 <div class="ml-3">
                                                     <h5>Directly connected to systems!</h5>
                                                     <p class="text-muted mb-0">
-                                                        Plugins offers rich integrations with all the underlying systems, get rich outputs, gather metrics for all tasks executed
+                                                        Plug-ins offer rich integrations with all the underlying systems. Get rich outputs, gather metrics for all tasks executed.
                                                     </p>
                                                 </div>
                                             </div>
@@ -231,7 +229,7 @@
                                                 <div class="ml-3">
                                                     <h5>Cloud native & scalable !</h5>
                                                     <p class="text-muted mb-0">
-                                                        Kestra is build with around top cloud native technologies and a <router-link to="/docs/architecture/">strong architecture</router-link>! Scale to million of executions without the pain.
+                                                        Kestra is robust and built with the top <router-link to="/docs/architecture/">cloud-native technologies</router-link>! Scale to millions of executions hassle free.
                                                     </p>
                                                 </div>
                                             </div>
@@ -260,9 +258,9 @@
                         <div class="row justify-content-center">
                             <div class="col-12 text-center">
                                 <div class="section-title mb-4 pb-2">
-                                    <h4 class="title mb-4" data-aos="fade-left">An all in one platform</h4>
+                                    <h4 class="title mb-4" data-aos="fade-left">An all-in-one platform</h4>
                                     <p data-aos="fade-right">
-                                        kestra is composed of a <strong>rich UI</strong> allowing to <strong>create, run & monitors</strong> all your flows, a <strong>full scalable & cloud native</strong> architecture and <strong>based on plugins</strong> allowing you to used or create yours easily.
+                                        Kestra is composed of a <strong>rich UI</strong> allowing you to <strong>create, run, and monitor</strong> all your flows. It has a <strong>full, scalable and cloud-native</strong> architecture, and <strong>based on plugins</strong> allowing you to use or create your own plug-ins with little fuss.
                                     </p>
                                 </div>
                             </div>
@@ -286,9 +284,9 @@
                                                 <Web title="" />
                                             </h2>
                                             <div class="ml-3">
-                                                <h5>Rich & realtime UI</h5>
+                                                <h5>Rich and real-time UI</h5>
                                                 <p class="text-muted mb-0">
-                                                    Create & Edit your flows <router-link to="/docs/user-interface-guide/">directly on your browser</router-link>, execute and monitor all your executions in realtime!
+                                                    Create and edit your flows <router-link to="/docs/user-interface-guide/">directly on your browser.</router-link> Execute and monitor all your executions in real time!
                                                 </p>
                                             </div>
                                         </div>
@@ -300,9 +298,9 @@
                                                 <SchoolOutline title="" />
                                             </h2>
                                             <div class="ml-3">
-                                                <h5>Low code!</h5>
+                                                <h5>Low code</h5>
                                                 <p class="text-muted mb-0">
-                                                    Kestra flow are <router-link to="/docs/developer-guide/flow/">simple descriptive YAML</router-link> files. No need to learn another language to create a flow!
+                                                    Kestra flows are <router-link to="/docs/developer-guide/flow/">simple, descriptive YAML</router-link> files — No need to learn another language to create a flow!
                                                 </p>
                                             </div>
                                         </div>
@@ -314,9 +312,9 @@
                                                 <OpenInNew title="" />
                                             </h2>
                                             <div class="ml-3">
-                                                <h5>Cloud native & Infinitely scalable</h5>
+                                                <h5>Cloud native and infinitely scalable</h5>
                                                 <p class="text-muted mb-0">
-                                                    Scale to millions of executions without the pain since Kestra is built on <router-link to="/docs/architecture/">cloud native & Scalable</router-link> solutions.
+                                                    Scale to millions of executions without the pain as Kestra is built on <router-link to="/docs/architecture/">cloud native and scalable</router-link> solutions.
                                                 </p>
                                             </div>
                                         </div>
@@ -330,7 +328,7 @@
                                             <div class="ml-3">
                                                 <h5>Easy to extend</h5>
                                                 <p class="text-muted mb-0">
-                                                    Plugins are class first in Kestra, many are available from <router-link to="/plugins/">Kestra core team</router-link> but you can create one easily.
+                                                    Plugins are everywhere in Kestra — many are available from <router-link to="/plugins/">Kestra core team</router-link>; creating your own is simple and also an option.
                                                 </p>
                                             </div>
                                         </div>
@@ -347,8 +345,8 @@
                         <div class="row justify-content-center">
                             <div class="col-12 text-center">
                                 <div class="section-title mb-4 pb-2">
-                                    <h4 class="title mb-4" data-aos="fade-left">Ship faster</h4>
-                                    <p data-aos="fade-right">Save time, complexity, and development costs.</p>
+                                    <h4 class="title mb-4" data-aos="fade-left">Prompt shipping</h4>
+                                    <p data-aos="fade-right">Save on time, stress, and development costs.</p>
                                 </div>
                             </div>
                         </div>
@@ -360,8 +358,8 @@
                                     </div>
 
                                     <div class="content mt-4">
-                                        <h5>Full platform for end to end workflows</h5>
-                                        <p class="text-secondary mb-0">Use all the tools to be able to delivered entreprise grade workflow in autonomy.</p>
+                                        <h5>Full platform for end-to-end workflows</h5>
+                                        <p class="text-secondary mb-0">All the necessary tools and autonomy to deliver enterprise-grade workflows.</p>
                                     </div>
                                 </div>
                             </div>
@@ -373,8 +371,8 @@
                                     </div>
 
                                     <div class="content mt-4">
-                                        <h5>Live edit in the browser</h5>
-                                        <p class="text-secondary mb-0">No desktop application installation needed, a <router-link to="/docs/user-interface-guide/">simple browser to edit & monitor</router-link> all your flows.</p>
+                                        <h5>Live edit in browser</h5>
+                                        <p class="text-secondary mb-0">No desktop application installation needed — a <router-link to="/docs/user-interface-guide/">simple browser to edit and monitor</router-link> all your flows.</p>
                                     </div>
                                 </div>
                             </div>
@@ -387,7 +385,7 @@
 
                                     <div class="content mt-4">
                                         <h5>Create your flow with Terraform</h5>
-                                        <p class="text-secondary mb-0"><router-link to="/docs/terraform/">Deploy Kestra</router-link> flows as your cloud dependencies for atomic release process.</p>
+                                        <p class="text-secondary mb-0"><router-link to="/docs/terraform/">Deploy Kestra flows</router-link> and your cloud dependencies for atomic release processing.</p>
                                     </div>
                                 </div>
                             </div>
@@ -402,7 +400,7 @@
                             <div class="col-12 text-center">
                                 <div class="section-title mb-4 pb-2">
                                     <h4 class="title mb-4" data-aos="fade-left">An Enterprise Edition</h4>
-                                    <p data-aos="fade-right">The enterprise edition fit all the company needs : Security & Productivity</p>
+                                    <p data-aos="fade-right">The enterprise edition fits all company needs regarding security and productivity.y</p>
                                 </div>
                             </div>
                         </div>
@@ -416,9 +414,9 @@
                                                     <ShieldLockOutline title="" />
                                                 </h2>
                                                 <div class="ml-3">
-                                                    <h5>SSO/OIDC & RBAC!</h5>
+                                                    <h5>SSO/OIDC and RBAC</h5>
                                                     <p class="text-muted mb-0">
-                                                        Secure your kestra with Single Sign on with your Open Id provider and control fine grained ACL for users & groups.
+                                                        Secure your Kestra with a single sign-on with your Open ID provider and control fine-grained ACL for users and groups.
                                                     </p>
                                                 </div>
                                             </div>
@@ -431,9 +429,9 @@
                                                     <FileLockOutline title="" />
                                                 </h2>
                                                 <div class="ml-3">
-                                                    <h5>Audit Log & Secrets!</h5>
+                                                    <h5>Audit Log and Secrets</h5>
                                                     <p class="text-muted mb-0">
-                                                        Integrate your secret manager to never disclose your password & key and audit all the resources created on your instance.
+                                                        Integrate your secret manager to ensure the security of your password and key, and audit all the resources created in one instance.
                                                     </p>
                                                 </div>
                                             </div>
@@ -446,9 +444,9 @@
                                                     <ViewDashboardOutline title="" />
                                                 </h2>
                                                 <div class="ml-3">
-                                                    <h5>Improuve your productivity!</h5>
+                                                    <h5>Improve your productivity</h5>
                                                     <p class="text-muted mb-0">
-                                                        Configure a namespace with task defaults, variables, secrets to automatically configure all flows and follow them with one eye dashboard!
+                                                        Configure a namespace with task defaults, variables, secrets to automatically configure all flows — follow them with the one eye dashboard!
                                                     </p>
                                                 </div>
                                             </div>
@@ -478,11 +476,10 @@
                             <div class="col-12 text-center">
                                 <div class="section-title">
                                     <h4 class="title mb-4" data-aos="fade-left">
-                                        And many more use developing plugins !
+                                        Endless options to choose from to develop your own plugins!
                                     </h4>
                                     <h5 class="text-muted para-desc mx-auto mb-0" data-aos="fade-right" >
-                                        Start building with <span class="text-primary font-weight-bold">Kestra</span> and
-                                        enjoy yours pipelines, the only limit is your imagination.
+                                        Start building with <span class="text-primary font-weight-bold">Kestra</span> and enjoy your pipelines — the only limit is your imagination!
                                     </h5>
 
                                     <div class="mt-4">

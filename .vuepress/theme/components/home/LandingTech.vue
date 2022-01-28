@@ -5,10 +5,9 @@
                 <div class="col-12 text-center">
                     <div class="section-title mb-4 pb-2">
                         <h4 class="title mb-4" data-aos="fade-left">Build with cloud native technologies</h4>
-                        <p data-aos="fade-right" class="text-muted para-desc mx-auto mb-0">Enjoy <span class="text-primary font-weight-bold">infinitely scalability</span>
-                            since <strong>Kestra</strong> was built from inception with cloud native concept and rely on
-                            top technologies with no Single Point of Failure.<br />
-                            Grow from few executions to millions without the pain.
+                        <p data-aos="fade-right" class="text-muted para-desc mx-auto mb-0">Enjoy <span class="text-primary font-weight-bold">infinite scalability</span>
+                            as <strong>Kestra</strong> was developed with a cloud native concept and relies on state-of-the-art technology with no single point of failure.<br />
+                            Grow from only a few executions to millions, without hassle.
                         </p>
                     </div>
                 </div>
