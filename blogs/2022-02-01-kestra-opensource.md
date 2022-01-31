@@ -1,12 +1,13 @@
 ---
 title: "Introducing Kestra first public release :tada:"
-description: Today, our team is proud to announce a first public release of Kestra—an open-source platform to orchestrate and schedule any kind of workflow at scale.
-date: 2022-01-10
+description: Today, our team is proud to announce a first public release of Kestra — an open-source platform to orchestrate and schedule any kind of workflow at scale.
+date: 2022-02-01T10:00:00
 layout: BlogsPost
 author:
   name: Ludovic Dehon
   image: "ldehon"
   twitter: "@tchiotludo"
+image: /blogs/2022-02-01-kestra-opensource.jpg
 ---
 
 Today, our team is proud to announce a first public release of Kestra, an open-source platform to orchestrate & schedule any kinds of workflow at scale.
@@ -17,7 +18,7 @@ Kestra is :
 - **an orchestrator**: Build a complex pipeline in couple of minutes.
 - **a scheduler**: Launch your flows whatever your need!
 - **a rich ui**: Create, run, and monitor all your flows with a real-time user interface.
-- **a data orchestrator**: With its many plug-ins, build your data orchestration directly.
+- **a data orchestrator**: With its many plugins, build your data orchestration directly.
 - **cloud native & scalable**: Scale to millions of executions without stress or hassle.
 - **an all-in-one platform**: No need to use multiple tools to deliver a complete pipeline.
 - **a pluggable platform** with the option to choose from several plugins or to build your own.
@@ -34,7 +35,7 @@ To provide a bit of a background: I was working for Leroy Merlin as a consultant
 
 <div class="clearfix" />
 
-I did some research on the orchestrator ecosystem; most are **proprietary and license based** (far from my mindset), some are open source (at this time, only Apache Airflow seemed to be active—and it was rejected). I was really surprised by this discovery and faced this challenge from a co-worker:
+I did some research on the orchestrator ecosystem; most are **proprietary and license based** (far from my mindset), some are open source (at this time, only Apache Airflow seemed to be active — and it was rejected). I was really surprised by this discovery and faced this challenge from a co-worker:
 > If you think Airflow is bad, do better!
 
 It was decided: I set myself the task of producing a proof of concept for our own open-source workflow management system. It took a lot of time to build this software, and the task seemed to be never ending; but I continued to work on it for several months by:
@@ -47,12 +48,12 @@ It was decided: I set myself the task of producing a proof of concept for our ow
 
 And so on !
 
-During a thirty-month period I built a variety of features, numerous plug-ins, and countless bug fixes—mostly during the night as I was still working as a full-time consultant for Leroy Merlin. It took a lot of effort, investment, and time that I could have spent with my family.
+During a thirty-month period I built a variety of features, numerous plugins, and countless bug fixes — mostly during the night as I was still working as a full-time consultant for Leroy Merlin. It took a lot of effort, investment, and time that I could have spent with my family.
 
 But now we are really proud of what we’ve achieved!
 
 ## Kestra is Open Source!
-I'm a real open-source enthusiast. As an architect, I’ve been interested in open source solutions in IT for twenty years. I started as an open source consumer (using it without adding contributions, as is the case with most users). I then decided that the time was right to start out with the permissive[Apache License](https://github.com/kestra-io/kestra/blob/develop/LICENSE).
+I'm a real open-source enthusiast. As an architect, I’ve been interested in open source solutions in IT for twenty years. I started as an open source consumer (using it without adding contributions, as is the case with most users). I then decided that the time was right to start out with the permissive [Apache License](https://github.com/kestra-io/kestra/blob/develop/LICENSE).
 
 Three years ago, I started another open source project, [AKHQ](https://github.com/tchiotludo/akhq), with the same license. Working with a successful project was an invaluable experience for me as I was able to learn how to build a community around a project. I've also learnt that an open source system won't pay the bills on its own. AKHQ required a lot of personal investment; Kestra has required a lot more and will continue to do so in the future! This means you will have to ensure that you have the financial resources in place to enable your project to be viable and sustainable — we decided to create a company alongside Kestra in order to raise the required funds to support the development of the open source software.
 
@@ -60,7 +61,7 @@ The open source license is not limited and allows you to install and run it as y
 
 
 ## Kestra Plugins are also Open Source!
-When implementing the deep integration of the tools and databases you are using, the connectors (what we call “plug-ins”) can present the biggest challenge. Most orchestrators (even proprietary and licensed based) only talk bash or cmd. You have to manage all of your needs with simple commands, often requiring you to use another tool in order to have access to the underlying resource (such as Talend). With Kestra, we want to have a deep integration with your tools and let [bash](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash) deal solely with edge cases a plug-in can't cover.
+When implementing the deep integration of the tools and databases you are using, the connectors (what we call “plugins”) can present the biggest challenge. Most orchestrators (even proprietary and licensed based) only talk bash or cmd. You have to manage all of your needs with simple commands, often requiring you to use another tool in order to have access to the underlying resource (such as Talend). With Kestra, we want to have a deep integration with your tools and let [bash](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash) deal solely with edge cases a plugin can't cover.
 
 An example for a query to Google BigQuery:
 
@@ -86,9 +87,9 @@ jq -r '.name' /tmp/query.json
   format: "{{ outputs.query.row.name }}"
 ```
 
-Kestra avoids the rigmarole of installing the software on the system, handling dependencies and conflicts, dealing with Python, etc.—just install a plug-in (a simple jar) and speak directly with your database.
+Kestra avoids the rigmarole of installing the software on the system, handling dependencies and conflicts, dealing with Python, etc. — just install a plugin (a simple jar) and speak directly with your database.
 
-We have a [number of plugins](/plugins/) and the process of [developing your own](/docs/plugin-developer-guide/) is very simple. We also hope that a community will help us to maintain new plug-ins/connectors ([contact us](/company/contact) if you require help or support).
+We have a [number of plugins](/plugins/) and the process of [developing your own](/docs/plugin-developer-guide/) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/company/contact) if you require help or support).
 
 ## First Public Release *and* Production Ready!
 First public release doesn't mean that Kestra is not production ready. In fact, it has been **used in production since August 2020 at Leroy Merlin** — take a deeper look at the [case study](/blogs/2022-01-10-leroy-merlin-usage-kestra) if you want more detail. Here are some figures to give a picture of Kestra’s credentials:

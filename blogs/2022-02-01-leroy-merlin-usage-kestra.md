@@ -1,16 +1,17 @@
 ---
 title: "How Leroy Merlin managed their cloud data pipelines with Kestra"
 description: Discover how Leroy Merlin moved all their data pipelines to Google Cloud with Kestra
-date: 2022-01-10
+date: 2022-02-01T10:00:00
 layout: BlogsPost
 author:
   name: Ludovic Dehon
   image: "ldehon"
   twitter: "@tchiotludo"
+image: /blogs/2022-02-01-leroy-merlin-usage-kestra.jpg
 ---
 
 [Adeo](https://www.adeo.com) is the leading French company in the international DIY and home improvement market; it’s also one of the world’s top three companies in the industry, and is going from strength to strength.
-[Leroy Merlin](https://www.leroymerlin.fr/) is the leading brand of the Adeo Group and helps residents around the world with all their home improvement projects—from renovations and extensions to decoration and repairs. With more than 450 stores across the globe and 140 in France, Leroy Merlin France has strong data values and a need to deliver on their KPI to their 80,000+ employees to drive their expansion.
+[Leroy Merlin](https://www.leroymerlin.fr/) is the leading brand of the Adeo Group and helps residents around the world with all their home improvement projects — from renovations and extensions to decoration and repairs. With more than 450 stores across the globe and 140 in France, Leroy Merlin France has strong data values and a need to deliver on their KPI to their 80,000+ employees to drive their expansion.
 
 In this article, we will explore the past, present, and future of their data platform with DataSource, KPIs, dashboard, and more.
 
@@ -26,7 +27,7 @@ Leroy Merlin, has historically used the following stacks in order to manage thei
 These methods were at one time commonplace, but today seem outdated. They have seen this gap during the last year that seems to be larger with the cloud adoption:
 - Vectorwise and Teradata are not serverless and need to be scaled manually
 - Stambia doesn't have a lot of native connectors for the cloud. It therefore wasn’t able to schedule tasks and required additional tools to enable us to get the job done.
-- Dollar U and AWA is led by Adeo (the group). You need to go to the internal ticket service in order to have an orchestration job and then wait for other people to handle it— this can take up to a few days if not more. Moreover, the monitoring of the pipeline is conducted by a variety of tools that don't talk to each other, which further complicates matters.
+- Dollar U and AWA is led by Adeo (the group). You need to go to the internal ticket service in order to have an orchestration job and then wait for other people to handle it — this can take up to a few days if not more. Moreover, the monitoring of the pipeline is conducted by a variety of tools that don't talk to each other, which further complicates matters.
 
 Some issues are due to organization separation between the business unit and the group (Adeo); but most of them are due to cloud and the fact that the tools just aren’t ready for it.
 
@@ -36,19 +37,19 @@ In 2019, Leroy Merlin and Adeo decided to move from an on-premise server to a cl
 
 They decided to create a new team with that goal in mind and took an empty page and built a full solution for the migration process. They needed to define each component of the future data platform (from storage, pipeline, source code, etc.), build the platform, and demonstrate how to use it for all data engineers (approximately fifty people).
 
-Adeo and Leroy Merlin have a strong partnership, so the storage choice was to be Google BigQuery. In the near future, Leroy Merlin will go to the DataOps lifecycle—going live doesn’t have to be a painful, manual process. Second decision: everything needed to be hosted on GitHub and have a strong CI/CD in order to go to production. Terraform was the obvious choice here due to the large ecosystem and native integration with BigQuery and other GCP resources.
+Adeo and Leroy Merlin have a strong partnership, so the storage choice was to be Google BigQuery. In the near future, Leroy Merlin will go to the DataOps lifecycle — going live doesn’t have to be a painful, manual process. Second decision: everything needed to be hosted on GitHub and have a strong CI/CD in order to go to production. Terraform was the obvious choice here due to the large ecosystem and native integration with BigQuery and other GCP resources.
 
 Next, they needed to decide on how to transfer the data, load it in BigQuery, and transform and aggregate the data. For the transport layer and load, no obvious choice had presented itself. So, they decided to build a custom solution (based on the GCP (Google Cloud Platform) service), and for the orchestration: a lot of people were using Airflow, so why not use such a popular system? What’s more, GCP even has a fully managed orchestration service: Cloud composer.
 
 ## On the Cloud After Few Months
-Leroy Merlin decided to start every new project on the cloud directly before starting the migration on existing projects. The first projects are coming, the build is done, and more projects are in production—now they can start the process of concluding past projects.
+Leroy Merlin decided to start every new project on the cloud directly before starting the migration on existing projects. The first projects are coming, the build is done, and more projects are in production — now they can start the process of concluding past projects.
 
 ### Transfer of Data
 Whilst not entirely successful, the process revealed some points that helped them find their direction; the following findings were particularly helpful:
 - The transfer layer must be over https: every system can send a https request in order to send the data — even the legacy one with old systems.
 - The data must be validated: we can't accept irrelevant data on the data warehouse. The format is an Avro schema which will validate before loading in order to parse primitive data — you also have the option to carry out an additional check.
 
-**One major flaw:** The custom tools were made in Python and needed to be installed on the system that will send the data. Since Python has a complicated lifecycle, there are systems that just can't install Python 3, leaving only one option: develop multiple versions of the tools to target all systems—which would be unmaintainable.
+**One major flaw:** The custom tools were made in Python and needed to be installed on the system that will send the data. Since Python has a complicated lifecycle, there are systems that just can't install Python 3, leaving only one option: develop multiple versions of the tools to target all systems — which would be unmaintainable.
 
 
 ### Orchestration
@@ -57,8 +58,8 @@ The choice of Airflow seems to be a good one as it gives us the ability to handl
 But **it failed at Leroy Merlin**. First, the implementation by Google: Google Cloud Composer had various limitations and was quickly rejected. So Leroy Merlin decide to install their own Airflow on Kubernetes Clusters. This appears to have been a better option; more control, more stability. However, we still have a lot of issues:
 
 - After a simple benchmark of a thousand tasks with only sleep 1, we’ve seen failed tasks. Sleep 1 tasks should never have failed and forced us to question the product. How were we to monitor our DAGs if we had failed tasks simply due to the orchestrator?
-- The workflow as a Python code was clearly not a good choice—one DAG produced by a team member introduced some code out code evaluated by Airflow worker. This led to codes being executed every five seconds by every Airflow component and slowed down the cluster (we see with this example that we can't let users build DAGs by themselves without a strong code review as 1 DAG can crash the whole cluster).
-- The CPU usage of an airflow cluster was really high, even when the tasks were only called API (BigQuery API in our case)—If the waiting tasks are causing high CPU usage, how will it cope with more CPU-intensive tasks?
+- The workflow as a Python code was clearly not a good choice — one DAG produced by a team member introduced some code out code evaluated by Airflow worker. This led to codes being executed every five seconds by every Airflow component and slowed down the cluster (we see with this example that we can't let users build DAGs by themselves without a strong code review as 1 DAG can crash the whole cluster).
+- The CPU usage of an airflow cluster was really high, even when the tasks were only called API (BigQuery API in our case) — If the waiting tasks are causing high CPU usage, how will it cope with more CPU-intensive tasks?
 - The airflow API at this time was experimental, and we needed to trigger the flow externally. This API had no control on the passed parameter.
 - Sensors are a mechanism on Airflow that simply wait for something to happen (a file, DAG, etc.). Every sensor will eat one worker slot, and we planned to have several so we needed to add even more workers to handle the load.
 Airflow didn't allow us to pass large data between tasks (XCOM are here, but only for small amount of data). This is a poor design, that resulted in the need to have to multiply the destinations for one source (ex: `BigQueryToGCSOperator`, `BigQueryToMySqlOperator`, `BigQueryToBigQueryOperator`, ...). - It will not scale to develop many operators.
@@ -73,18 +74,18 @@ By this time, Terraform and BigQuery had demonstrated their strengths and, Airfl
 :::
 
 ## Kestra to the Rescue
-In a meantime, Ludovic has started working on Kestra and decided to show his work to Leroy Merlin, who showed a lot of interest and decided to test the solution for a few months. Since some features were missing at this point, they also decided to contribute on the open source project and some plug-ins.
+In a meantime, Ludovic has started working on Kestra and decided to show his work to Leroy Merlin, who showed a lot of interest and decided to test the solution for a few months. Since some features were missing at this point, they also decided to contribute on the open source project and some plugins.
 
-### Simplifying the Adoption Process with Custom Plug-ins
+### Simplifying the Adoption Process with Custom Plugins
 
-They also moved with great speed to develop a Kestra plug-in to help simplify the ingestion process called `DataPlatformIngest`. Removing the burden of loading data, the plugins:
+They also moved with great speed to develop a Kestra plugin to help simplify the ingestion process called `DataPlatformIngest`. Removing the burden of loading data, the plugins:
 - cold archive the incoming data to Google Cloud Storage Bucket
 - validate the data technically with an Avro schema; they don't want bad incoming data and want to be sure that the dat is at least typed (integer, date, etc.)
 - versioning the data (if the schema is breaking change)
 - append technical column (loaded data, execution ID) in order to have a full lineage on the data warehouse
 - load the data in a temporary table
 - apply some quality with rejection on records based on business rules (upper/lower bound, validate key with referential, deduplication, etc.)
-- load the data in ODS (Operational Data Store)—that is the image of the data from incoming system
+- load the data in ODS (Operational Data Store) — that is the image of the data from incoming system
 
 The transfer of the data is in https directly to Kestra API in order to free any dependencies. The operational system used most frequently is a simple `curl` [command](https://kestra.io/docs/developer-guide/inputs/#send-inputs-programmatically) in order to trigger ingestion or develop a simple http client reaching Kestra API.
 
@@ -167,7 +168,7 @@ Leroy Merlin has supported the development of Kestra. As with any software, its 
 
 > Kestra is very easy to learn, with a large number of functionalities covering a large number of use cases (scheduled workflows, API calls, triggers, flow synchronization, data and file transfers, etc.). The Web interface facilitates the monitoring of flows and the consultation of logs. New features are added very regularly, often in response to needs. Kestra is evolving rapidly.
 
-> After suffering with Airflow to schedule different treatments, Kestra's arrival was more than saving. The ecosystem of plug-ins is evolving rapidly and greatly facilitates integration with different bricks, especially on GCP (BQ, GCS, Cloud SQL, etc.) A tool that deserves to be known more.
+> After suffering with Airflow to schedule different treatments, Kestra's arrival was more than saving. The ecosystem of plugins is evolving rapidly and greatly facilitates integration with different bricks, especially on GCP (BQ, GCS, Cloud SQL, etc.) A tool that deserves to be known more.
 
 ## Conclusion
 

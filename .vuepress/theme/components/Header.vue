@@ -85,6 +85,7 @@ import ApplicationOutline from "vue-material-design-icons/ApplicationOutline"
 import FeatureSearch from "vue-material-design-icons/FeatureSearch"
 import AccountNetworkOutline from "vue-material-design-icons/AccountNetworkOutline"
 import Security from "vue-material-design-icons/Security"
+import PostOutline from "vue-material-design-icons/PostOutline"
 import {GithubIcon} from 'vue-feather-icons';
 
 export default {
@@ -101,6 +102,7 @@ export default {
         ApplicationOutline,
         FeatureSearch,
         AccountNetworkOutline,
+        PostOutline,
         GithubIcon,
     },
 
@@ -140,6 +142,12 @@ export default {
                     dropdown: 'docs',
                     items: [
                         {
+                            title: 'Blogs',
+                            link: '/blogs/',
+                            icon: PostOutline,
+                            desc: 'Product updates, user stories, and more'
+                        },
+                        {
                             title: 'Documentation',
                             link: '/docs/',
                             icon: FileDocumentOutline,
@@ -162,7 +170,7 @@ export default {
                             link: '/docs/administrator-guide/',
                             icon: FileDocumentOutline,
                             desc: 'Learn how to deploy Kestra'
-                        }
+                        },
                     ]
                 },
                 {

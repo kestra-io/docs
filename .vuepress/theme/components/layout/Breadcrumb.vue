@@ -2,7 +2,8 @@
     <div>
         <section class="bg-half text-white d-table w-100" >
             <div class="container">
-                <div class="bg-overlay" :style="backgroundStyles" />
+                <div class="bg-overlay bg-overlay-image" :style="backgroundStyles" />
+                <div class="bg-overlay" v-if="this.$page.frontmatter.image"/>
                 <div class="row justify-content-center">
                     <div class="col-lg-12 text-center">
                         <div class="page-next-level">
@@ -54,6 +55,10 @@ export default {
 
 <style lang="scss" scoped>
 @import ".vuepress/theme/styles/variables";
+
+h1 {
+    text-shadow: -2px -2px 0 $primary, 2px -2px 0 $primary, -2px 2px 0 $primary, 2px 2px 0 $primary;
+}
 
 .bg-half {
     padding: 90px 0;

@@ -60,6 +60,11 @@
                         <h4 class="text-light footer-head">Learn</h4>
                         <ul class="list-unstyled footer-list">
                             <li>
+                                <router-link to="/blogs/" class="text-foot">
+                                    <ChevronRight title="" /> Blogs
+                                </router-link>
+                            </li>
+                            <li>
                                 <router-link to="/docs/" class="text-foot">
                                     <ChevronRight title="" /> Documentation
                                 </router-link>

@@ -39,17 +39,19 @@
                                                 Read More <ChevronRight title="" />
                                             </router-link>
                                         </div>
+
+                                        <div class="author">
+                                            <!-- <small class="text-light user d-block"><i class="mdi mdi-account"></i> Calvin Carlo</small> -->
+                                            <small class="text-muted date">
+                                                <CalendarCheck title="" />
+                                                <time-ago
+                                                    :last-updated="page.frontmatter.date || page.lastUpdated"
+                                                    class="item-date"
+                                                />
+                                            </small>
+                                        </div>
                                     </div>
-                                    <div class="author">
-                                        <!-- <small class="text-light user d-block"><i class="mdi mdi-account"></i> Calvin Carlo</small> -->
-                                        <small class="text-light date">
-                                            <CalendarCheck title="" />
-                                            <time-ago
-                                                :last-updated="page.frontmatter.date || page.lastUpdated"
-                                                class="item-date"
-                                            />
-                                        </small>
-                                    </div>
+
                                 </div>
                             </div>
                             <!--end col-->
@@ -111,4 +113,5 @@ export default {
 
 <style lang="scss">
 @import '../styles/index';
+
 </style>

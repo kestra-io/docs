@@ -20,7 +20,7 @@ module.exports = {
             description: description,
             author: ($page, $site) => $page.frontmatter.author || $site.themeConfig.author,
             image: ($page, $site) => {
-                return $site.themeConfig.domain + ($page.frontmatter.image ? $page.frontmatter.image : "/og-image.png");
+                return $site.themeConfig.domain + ($page.frontmatter.image ? $page.frontmatter.image : "/og-image.jpg");
             }
         },
         'fulltext-search': {

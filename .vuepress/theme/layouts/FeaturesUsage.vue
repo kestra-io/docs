@@ -72,7 +72,7 @@
                                         Seamless Data pipeline
                                     </h4>
                                     <p class="text-white" data-aos="fade-right">
-                                        Due to its wide range of plug-ins and the architecture that supports any size of data, Kestra allows you to create complex data pipelines with ease.
+                                        Due to its wide range of plugins and the architecture that supports any size of data, Kestra allows you to create complex data pipelines with ease.
                                         Some examples of what you can expect from Kestra are:
                                     </p>
                                     <p class="text-secondary mb-0" data-aos="fade-left">Examples:</p>

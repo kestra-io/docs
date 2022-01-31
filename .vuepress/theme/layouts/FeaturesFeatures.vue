@@ -47,7 +47,7 @@
                                                 <div class="ml-3">
                                                     <h5>All plugins!</h5>
                                                     <p class="text-muted mb-0">
-                                                        Plug-ins offer deep integration with systems enabling users to make complex workflows without relying on the command line.
+                                                        Plugins offer deep integration with systems enabling users to make complex workflows without relying on the command line.
                                                         <router-link to="/plugins/">Use an official one</router-link> or <router-link to="/docs/plugin-developer-guide/">simply build your own!</router-link>
                                                     </p>
                                                 </div>
@@ -123,7 +123,7 @@
                                             <div class="ml-3">
                                                 <h5>Event based</h5>
                                                 <p class="text-muted mb-0">
-                                                    Kestra can execute flows based on events coming from core or plug-ins such as:
+                                                    Kestra can execute flows based on events coming from core or plugins such as:
 
                                                 </p>
                                                 <ul class="text-muted mb-0">
@@ -196,7 +196,7 @@
                                                 <div class="ml-3">
                                                     <h5>ETL or ELT!</h5>
                                                     <p class="text-muted mb-0">
-                                                        Don’t be left choosing between ETL or ELT—Kestra handles both at scale. Choose the method you need: convert from
+                                                        Don’t be left choosing between ETL or ELT — Kestra handles both at scale. Choose the method you need: convert from
                                                         <router-link to="/plugins/plugin-serdes/tasks/csv/io.kestra.plugin.serdes.csv.CsvReader.html">standard</router-link> <router-link to="/plugins/plugin-serdes/tasks/avro/io.kestra.plugin.serdes.avro.AvroWriter.html">format</router-link>,
                                                         , use task to <router-link to="/plugins/plugin-script-nashorn/tasks/io.kestra.plugin.scripts.nashorn.FileTransform.html">transform data directly</router-link>, or
                                                         load <router-link to="/plugins/plugin-jdbc-postgres/tasks/l/io.kestra.plugin.jdbc.postgresql.CopyIn.html">raw data</router-link> and let the database do the hard work.
@@ -214,7 +214,7 @@
                                                 <div class="ml-3">
                                                     <h5>Directly connected to systems!</h5>
                                                     <p class="text-muted mb-0">
-                                                        Plug-ins offer rich integrations with all the underlying systems. Get rich outputs, gather metrics for all tasks executed.
+                                                        Plugins offer rich integrations with all the underlying systems. Get rich outputs, gather metrics for all tasks executed.
                                                     </p>
                                                 </div>
                                             </div>
@@ -260,7 +260,7 @@
                                 <div class="section-title mb-4 pb-2">
                                     <h4 class="title mb-4" data-aos="fade-left">An all-in-one platform</h4>
                                     <p data-aos="fade-right">
-                                        Kestra is composed of a <strong>rich UI</strong> allowing you to <strong>create, run, and monitor</strong> all your flows. It has a <strong>full, scalable and cloud-native</strong> architecture, and <strong>based on plugins</strong> allowing you to use or create your own plug-ins with little fuss.
+                                        Kestra is composed of a <strong>rich UI</strong> allowing you to <strong>create, run, and monitor</strong> all your flows. It has a <strong>full, scalable and cloud-native</strong> architecture, and <strong>based on plugins</strong> allowing you to use or create your own plugins with little fuss.
                                     </p>
                                 </div>
                             </div>
