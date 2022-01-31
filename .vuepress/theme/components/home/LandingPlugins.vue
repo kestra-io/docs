@@ -74,6 +74,7 @@ import Api from 'vue-material-design-icons/Api'
 import Network from 'vue-material-design-icons/Network'
 import Lock from 'vue-material-design-icons/Lock'
 import Kubernetes from 'vue-material-design-icons/Kubernetes'
+import ApacheKafka from 'vue-material-design-icons/ApacheKafka'
 import Email from 'vue-material-design-icons/Email'
 import CodeJson from 'vue-material-design-icons/CodeJson'
 import FileDelimited from 'vue-material-design-icons/FileDelimited'
@@ -197,6 +198,11 @@ export default {
                     name: "Kubernetes",
                     icon: Kubernetes,
                     href: "plugin-kubernetes"
+                },
+                {
+                    name: "Kafka",
+                    icon: ApacheKafka,
+                    href: "plugin-kafka"
                 },
                 {
                     name: "Slack",
