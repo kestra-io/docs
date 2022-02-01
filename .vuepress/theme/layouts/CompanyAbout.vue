@@ -46,16 +46,16 @@
                                         <p>
                                             Above all, we are seeking to challenge the ecosystem;
                                             to give you a tool to allow you to <router-link to="/features/features">orchestrate and automate your data</router-link>, workflows, and batches all with simplicity, autonomy, and high performance.
-                                            his has been our ambition since day one and will continue to challenge us after the <router-link to="/blogs/2022-01-10-kestra-opensource">public launch of the Kestra project.</router-link>.
+                                            his has been our ambition since day one and will continue to challenge us after the <router-link to="/blogs/2022-02-01-kestra-opensource">public launch of the Kestra project.</router-link>.
                                         </p>
                                         <p>
-                                            We developed our Open Source platform with careful precision and dedication as part of a mission for one of the leaders of retail in Europe, <router-link to="/blogs/2022-01-10-leroy-merlin-usage-kestra">Leroy Merlin, who were in need of high-capacity data management.</router-link>.
+                                            We developed our Open Source platform with careful precision and dedication as part of a mission for one of the leaders of retail in Europe, <router-link to="/blogs/2022-02-01-leroy-merlin-usage-kestra">Leroy Merlin, who were in need of high-capacity data management.</router-link>.
                                         </p>
                                         <p>
                                             The platform is <strong>operational, in production, and performing</strong> to the satisfaction of several hundred internal users who have seen their productivity gain skyrocket since using Kestra. What a reward it is for us to build something new that brings <strong>complete satisfaction</strong> to its users.
                                         </p>
                                         <p>
-                                            Now we are at the <router-link to="/blogs/2022-01-10-kestra-opensource">stage of our public launch</router-link> with the aim of bringing Kestra to everyone who needs it. We have structured a company and our teams are <strong>ready to help</strong> you with your future tests and integrations.
+                                            Now we are at the <router-link to="/blogs/2022-02-01-kestra-opensource">stage of our public launch</router-link> with the aim of bringing Kestra to everyone who needs it. We have structured a company and our teams are <strong>ready to help</strong> you with your future tests and integrations.
                                         </p>
                                     </div>
                                 </div>

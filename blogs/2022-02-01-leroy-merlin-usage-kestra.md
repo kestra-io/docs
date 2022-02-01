@@ -153,9 +153,9 @@ Here are some numbers that show the current usage for January 2022 ( for product
 - **3,000,000 tasks** every month
 - **Equivalent of 1,500 days of task processing time** every month (yeah, that’s the equivalent of fifty days of task processing every single day)
 
-<img src="./2022-01-10-leroy-merlin-usage-kestra/executions.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
-<img src="./2022-01-10-leroy-merlin-usage-kestra/taskruns.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
-<img src="./2022-01-10-leroy-merlin-usage-kestra/execution-duration.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
+<img src="./2022-02-01-leroy-merlin-usage-kestra/executions.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
+<img src="./2022-02-01-leroy-merlin-usage-kestra/taskruns.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
+<img src="./2022-02-01-leroy-merlin-usage-kestra/execution-duration.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
 
 <div class="clearfix" />
 

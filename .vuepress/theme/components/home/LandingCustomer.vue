@@ -20,7 +20,7 @@
                                 </p>
                                 <p class="text-right">
                                     <router-link
-                                        to="/blogs/2022-01-10-leroy-merlin-usage-kestra"
+                                        to="/blogs/2022-02-01-leroy-merlin-usage-kestra"
                                         class="btn btn-primary"
                                         data-aos="zoom-in"
                                     >
