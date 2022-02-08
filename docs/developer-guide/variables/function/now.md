@@ -3,7 +3,7 @@ The `now` function will return the actual datetime. The arguments are the same t
 
 
 ```twig
-{{ now(timeZone="Europe/Paris" }}
+{{ now(timeZone="Europe/Paris") }}
 ```
 
 ## Arguments

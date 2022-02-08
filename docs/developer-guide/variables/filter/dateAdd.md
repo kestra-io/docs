@@ -3,7 +3,7 @@ The `dateAdd` filter add some unit and formats a date with the same behaviour th
 
 
 ```twig
-{{ user.birthday | date(-1, 'DAYS') }}
+{{ user.birthday | dateAdd(-1, 'DAYS') }}
 ```
 
 
