@@ -149,9 +149,9 @@ Here are some numbers that show the current usage for January 2022 ( for product
 - **4 clusters** one for every environment
 - **200+ users / developers**
 - **2000+ flows** in production
-- **350,000 executions** every month
-- **3,000,000 tasks** every month
-- **Equivalent of 1,500 days of task processing time** every month (yeah, that’s the equivalent of fifty days of task processing every single day)
+- **400,000+ executions** every month
+- **3,000,000+ tasks** every month
+- **Equivalent of 2,300 days of task processing time** every month (yeah, that’s the equivalent of seventy-five days of task processing every single day)
 
 <img src="./2022-02-01-leroy-merlin-usage-kestra/executions.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
 <img src="./2022-02-01-leroy-merlin-usage-kestra/taskruns.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
