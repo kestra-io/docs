@@ -32,8 +32,28 @@ time zone then you can pass in a `timeZone` parameter any string that's understo
 {{ someInstant | date("yyyy-MM-dd'T'HH:mm:ssX", timeZone="Pacific/Funafuti") }}
 ```
 
+## format & existingFormat
+Format can be:
+- [DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html) format
+- `iso` = `yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX`
+- `iso_sec` = `yyyy-MM-dd'T'HH:mm:ssXXX`
+- `sql` = `yyyy-MM-dd HH:mm:ss.SSSSSS`
+- `sql_seq` = `yyyy-MM-dd HH:mm:ss`
+- `iso_date_time`
+- `iso_date`
+- `iso_time`
+- `iso_local_date`
+- `iso_instant`
+- `iso_local_date_time`
+- `iso_local_time`
+- `iso_offset_time`
+- `iso_ordinal_date`
+- `iso_week_date`
+- `iso_zoned_date_time`
+- `rfc_1123_date_time`
+
 ## Arguments
-- format
-- existingFormat
-- timeZone
-- locale
+- `format`: the output format
+- `existingFormat`: the input format if the based variable is a string
+- `timeZone`:  the timezone to use
+- `locale`: the locale to use
