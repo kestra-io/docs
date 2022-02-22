@@ -49,7 +49,7 @@
                                             his has been our ambition since day one and will continue to challenge us after the <router-link to="/blogs/2022-02-01-kestra-opensource">public launch of the Kestra project.</router-link>.
                                         </p>
                                         <p>
-                                            We developed our Open Source platform with careful precision and dedication as part of a mission for one of the leaders of retail in Europe, <router-link to="/blogs/2022-02-01-leroy-merlin-usage-kestra">Leroy Merlin, who were in need of high-capacity data management.</router-link>.
+                                            We developed our Open Source platform with careful precision and dedication as part of a mission for one of the leaders of retail in Europe, <router-link to="/blogs/2022-02-22-leroy-merlin-usage-kestra">Leroy Merlin, who were in need of high-capacity data management.</router-link>.
                                         </p>
                                         <p>
                                             The platform is <strong>operational, in production, and performing</strong> to the satisfaction of several hundred internal users who have seen their productivity gain skyrocket since using Kestra. What a reward it is for us to build something new that brings <strong>complete satisfaction</strong> to its users.

@@ -1,19 +1,19 @@
 ---
 title: "How Leroy Merlin managed their cloud data pipelines with Kestra"
 description: Discover how Leroy Merlin moved all their data pipelines to Google Cloud with Kestra
-date: 2022-02-01T10:00:00
+date: 2022-02-22T18:00:00
 layout: BlogsPost
 author:
   name: Ludovic Dehon
   image: "ldehon"
   twitter: "@tchiotludo"
-image: /blogs/2022-02-01-leroy-merlin-usage-kestra.jpg
+image: /blogs/2022-02-22-leroy-merlin-usage-kestra.jpg
 ---
 
 [Adeo](https://www.adeo.com) is the leading French company in the international DIY and home improvement market; it’s also one of the world’s top three companies in the industry, and is going from strength to strength.
 [Leroy Merlin](https://www.leroymerlin.fr/) is the leading brand of the Adeo Group and helps residents around the world with all their home improvement projects — from renovations and extensions to decoration and repairs. With more than 450 stores across the globe and 140 in France, Leroy Merlin France has strong data values and a need to deliver on their KPI to their 80,000+ employees to drive their expansion.
 
-In this article, we will explore the past, present, and future of their data platform with DataSource, KPIs, dashboard, and more.
+In this article, we will explore Leroy Merlin's data architecture, his development project in the cloud and the contribution of our Kestra orchestration platform to perfectly meet the constraints and ambitions of the partner.
 
 
 ## Before the Cloud: The On-premise Choice
@@ -29,7 +29,7 @@ These methods were at one time commonplace, but today seem outdated. They have s
 - Stambia doesn't have a lot of native connectors for the cloud. It therefore wasn’t able to schedule tasks and required additional tools to enable us to get the job done.
 - Dollar U and AWA is led by Adeo (the group). You need to go to the internal ticket service in order to have an orchestration job and then wait for other people to handle it — this can take up to a few days if not more. Moreover, the monitoring of the pipeline is conducted by a variety of tools that don't talk to each other, which further complicates matters.
 
-Some issues are due to organization separation between the business unit and the group (Adeo); but most of them are due to cloud and the fact that the tools just aren’t ready for it.
+Some issues are due to cloud and the fact that the tools just aren’t ready for it.
 
 
 ## Going to the Cloud
@@ -37,7 +37,7 @@ In 2019, Leroy Merlin and Adeo decided to move from an on-premise server to a cl
 
 They decided to create a new team with that goal in mind and took an empty page and built a full solution for the migration process. They needed to define each component of the future data platform (from storage, pipeline, source code, etc.), build the platform, and demonstrate how to use it for all data engineers (approximately fifty people).
 
-Adeo and Leroy Merlin have a strong partnership, so the storage choice was to be Google BigQuery. In the near future, Leroy Merlin will go to the DataOps lifecycle — going live doesn’t have to be a painful, manual process. Second decision: everything needed to be hosted on GitHub and have a strong CI/CD in order to go to production. Terraform was the obvious choice here due to the large ecosystem and native integration with BigQuery and other GCP resources.
+Adeo and Leroy Merlin have a strong partnership, so the storage choice was to be Google BigQuery. In the near future, Leroy Merlin will go to the DataOps lifecycle — going live doesn’t have to be a painful, manual process. Second decision: everything needed to be hosted- on GitHub and have a strong CI/CD in order to go to production. Terraform was the obvious choice here due to the large ecosystem and native integration with BigQuery and other GCP resources.
 
 Next, they needed to decide on how to transfer the data, load it in BigQuery, and transform and aggregate the data. For the transport layer and load, no obvious choice had presented itself. So, they decided to build a custom solution (based on the GCP (Google Cloud Platform) service), and for the orchestration: a lot of people were using Airflow, so why not use such a popular system? What’s more, GCP even has a fully managed orchestration service: Cloud composer.
 
@@ -62,7 +62,7 @@ But **it failed at Leroy Merlin**. First, the implementation by Google: Google C
 - The CPU usage of an airflow cluster was really high, even when the tasks were only called API (BigQuery API in our case) — If the waiting tasks are causing high CPU usage, how will it cope with more CPU-intensive tasks?
 - The airflow API at this time was experimental, and we needed to trigger the flow externally. This API had no control on the passed parameter.
 - Sensors are a mechanism on Airflow that simply wait for something to happen (a file, DAG, etc.). Every sensor will eat one worker slot, and we planned to have several so we needed to add even more workers to handle the load.
-Airflow didn't allow us to pass large data between tasks (XCOM are here, but only for small amount of data). This is a poor design, that resulted in the need to have to multiply the destinations for one source (ex: `BigQueryToGCSOperator`, `BigQueryToMySqlOperator`, `BigQueryToBigQueryOperator`, ...). - It will not scale to develop many operators.
+- Airflow didn't allow us to pass large data between tasks (XCOM are here, but only for small amount of data). This is a poor design, that resulted in the need to have to multiply the destinations for one source (ex: `BigQueryToGCSOperator`, `BigQueryToMySqlOperator`, `BigQueryToBigQueryOperator`, ...). - It will not scale to develop many operators.
 - RBAC on Airflow is very limited and only available to users that own a DAG and presented challenges for group working. In a team, we need to have multiple people on the same resources.
 - ...
 
@@ -74,7 +74,10 @@ By this time, Terraform and BigQuery had demonstrated their strengths and, Airfl
 :::
 
 ## Kestra to the Rescue
-In a meantime, Ludovic has started working on Kestra and decided to show his work to Leroy Merlin, who showed a lot of interest and decided to test the solution for a few months. Since some features were missing at this point, they also decided to contribute on the open source project and some plugins.
+![Kestra user interface](./2022-02-22-leroy-merlin-usage-kestra/ui.png)
+<div class="clearfix" />
+
+In a meantime, the Kestra team has started working on Kestra platform and presented the first version to them. The LM team leaders were interesting and decided to test the solution for a few months. Since some features were missing at this point, they also decided to contribute on the open source project and some plugins.
 
 ### Simplifying the Adoption Process with Custom Plugins
 
@@ -93,12 +96,12 @@ This single task handles all the complexities of loading data — it will create
 ```yaml
 id: lock
 namespace: fr.leroymerlin.services.product.orchestrator
-
+-
 inputs:
   - type: FILE
-    name: shedlock
+    name: stock
 tasks:
-  - id: 01_ingest_ods_shedlock
+  - id: 01_ingest_ods_stock
     type: com.leroymerlin.dataplatform.dcp.tasks.DataPlatformIngest
     avroOptions:
       dateFormat: yyyy-MM-dd
@@ -109,7 +112,7 @@ tasks:
       schema: |-
         {
             "type": "record",
-            "name": "shedlock",
+            "name": "stock",
             "namespace": "org.kestra",
             "fields": [
                 { "name": "name", "type": "string" },
@@ -120,10 +123,10 @@ tasks:
         }
     csvOptions:
       fieldSeparator: "|"
-    dataset: instala
+    dataset: supply
     fileType: CSV
-    from: "{{ inputs.shedlock }}"
-    table: shedlock
+    from: "{{ inputs.stock }}"
+    table: stock
     version: 1
 ```
 
@@ -141,6 +144,9 @@ Thanks to Kestra, they moved **a full autonomy** and **reduced the time to marke
 :::
 
 ### Go Production
+<img src="./2022-02-22-leroy-merlin-usage-kestra/architecture.jpg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Kestra user interface">
+<div class="clearfix" />
+
 After few months, **Kestra was confirmed** and was deployed to a production environment in May 2020. They also decided to move to the Enterprise Edition of Kestra in August 2020 as they need to have fine-grained security, role-based access control and single sign-on.
 
 The usage grew exponentially over the coming months, and the kind of usage is becoming increasingly varied: (start flow based on [file detection from buckets](/plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.Trigger), sync data warehouse directly from operation [postgres database](/plugins/plugin-jdbc-postgres/tasks/l/io.kestra.plugin.jdbc.postgresql.CopyOut), develop simple python program to [fetch API from a partner](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Python), start long-running data science process [over Kubernetes](/plugins/plugin-kubernetes/tasks/io.kestra.plugin.kubernetes.PodCreate), [fetch data from Google Drive](/plugins/plugin-googleworkspace/tasks/sheets/io.kestra.plugin.googleworkspace.sheets.Read) and write result back to [Google Sheets](/plugins/plugin-googleworkspace/tasks/drive/io.kestra.plugin.googleworkspace.drive.Create.html), and so on.).
@@ -153,16 +159,16 @@ Here are some numbers that show the current usage for January 2022 ( for product
 - **3,000,000+ tasks** every month
 - **Equivalent of 2,300 days of task processing time** every month (yeah, that’s the equivalent of seventy-five days of task processing every single day)
 
-<img src="./2022-02-01-leroy-merlin-usage-kestra/executions.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
-<img src="./2022-02-01-leroy-merlin-usage-kestra/taskruns.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
-<img src="./2022-02-01-leroy-merlin-usage-kestra/execution-duration.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
+<img src="./2022-02-22-leroy-merlin-usage-kestra/executions.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
+<img src="./2022-02-22-leroy-merlin-usage-kestra/taskruns.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
+<img src="./2022-02-22-leroy-merlin-usage-kestra/execution-duration.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
 
 <div class="clearfix" />
 
 ### Some Testimonials
 Leroy Merlin has supported the development of Kestra. As with any software, its young age could be a source of frustration for users. They needed to handle some missing features, report some bugs, suffer some time from instability. But what was astounding was the realization that the **pain is less than the gain**, and we have a lot of good reports on software internal notation tools, it's a solution that users really love and uphold. Here are some testimonials:
 
-> Tool responds perfectly to the need. Very easy to use; it manages all the complexity behind to offer a saving of time and enormous cost.
+> Tool responds perfectly to the need. Very easy to use; it manages all the complexity behind to offer a saving of time and huge savings.
 
 >  Kestra is a tool that is very easy to use with constant improvement in functionality. It covers almost all data pipeline setup needs.
 
@@ -176,4 +182,4 @@ Leroy Merlin was a great help to Kestra by supporting it in its infancy; but we 
 
 From the Leroy Merlin manager, the true revolution is:
 
-> Kestra is the first tool that allowed us to develop without installation, use your browser and start to build a true business use case within few hours. Since the learning curve is easy, you can easily onboard new teammates due to its descriptive language. And, moreover, it handles all parts of the data pipeline: the transport, load, transform, data modeling, data quality and monitoring of all our data pipeline. Since the tool offers strong role-based access and security on the Enterprise Edition, we are safe to share IR in Software as a Service to all applications allowing us to also embrace the Data Mesh pattern.
+> Kestra is the first tool that allowed us to develop without installation, use your browser and start to build a true business use case within few hours. Since the learning curve is easy, you can easily onboard new teammates due to its descriptive language. And, moreover, it handles all parts of the data pipeline: the transport, load, transform, data modeling, data quality and monitoring of all our data pipeline. Since the tool offers strong role-based access and security on the Enterprise Edition, we are safe to share it in Software as a Service to all applications allowing us to also embrace the Data Mesh pattern.
