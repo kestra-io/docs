@@ -195,6 +195,16 @@ export default {
                     href: "plugin-jdbc-vertica"
                 },
                 {
+                    name: "Vectorwise",
+                    icon: "csicon csicon-vectorwise",
+                    href: "plugin-jdbc-vectorwise"
+                },
+                {
+                    name: "Microsoft SQL Server",
+                    icon: "csicon csicon-sqlserver",
+                    href: "plugin-jdbc-sqlserver"
+                },
+                {
                     name: "Kubernetes",
                     icon: Kubernetes,
                     href: "plugin-kubernetes"
@@ -274,26 +284,26 @@ export default {
             ];
 
             // Order by publish date, desc
-            plugins = plugins.concat(this.$site.pages
-                .filter(item => item.path.startsWith("/plugins/plugin-singer/tasks/"))
-                .filter(item => !item.path.includes("Postgres") &&
-                    !item.path.includes("Mysql") &&
-                    !item.path.includes("Redshift") &&
-                    !item.path.includes("BigQuery") &&
-                    !item.path.includes("Csv") &&
-                    !item.path.includes("Json") &&
-                    !item.path.includes("Slack") &&
-                    !item.path.includes("MongoDb")
-                )
-                .map(r => {
-                    return {
-                        name: r.title.replace("Pipelinewise", "").replace("Meltano", ""),
-                        icon: "csicon",
-                        image: r.frontmatter && r.frontmatter.icon ? r.frontmatter.icon : null,
-                        href: r.path.replace("/plugins/", ""),
-                    }
-                })
-            );
+            // plugins = plugins.concat(this.$site.pages
+            //     .filter(item => item.path.startsWith("/plugins/plugin-singer/tasks/"))
+            //     .filter(item => !item.path.includes("Postgres") &&
+            //         !item.path.includes("Mysql") &&
+            //         !item.path.includes("Redshift") &&
+            //         !item.path.includes("BigQuery") &&
+            //         !item.path.includes("Csv") &&
+            //         !item.path.includes("Json") &&
+            //         !item.path.includes("Slack") &&
+            //         !item.path.includes("MongoDb")
+            //     )
+            //     .map(r => {
+            //         return {
+            //             name: r.title.replace("Pipelinewise", "").replace("Meltano", ""),
+            //             icon: "csicon",
+            //             image: r.frontmatter && r.frontmatter.icon ? r.frontmatter.icon : null,
+            //             href: r.path.replace("/plugins/", ""),
+            //         }
+            //     })
+            // );
 
             return plugins.sort((a, b) => (a.name > b.name) ? 1 : -1);
         }
@@ -396,6 +406,14 @@ i.csicon {
 
     &.csicon-mongodb {
         background-image: url("../../assets/home/mongodb.svg");
+    }
+
+    &.csicon-vectorwise {
+        background-image: url("../../assets/home/vectorwise.png");
+    }
+
+    &.csicon-sqlserver {
+        background-image: url("../../assets/home/sqlserver.svg");
     }
 }
 
