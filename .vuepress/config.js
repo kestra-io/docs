@@ -25,7 +25,7 @@ module.exports = {
         },
         'fulltext-search': {
             'topCategoryLevel': 1,
-            // hooks: fs.readFileSync(path.resolve(__dirname, './searchHooks.js')),
+            hooks: fs.readFileSync(path.resolve(__dirname, './searchHooks.js')),
         },
         'vuepress-plugin-child-toc': {},
         'vuepress-plugin-code-copy': {}

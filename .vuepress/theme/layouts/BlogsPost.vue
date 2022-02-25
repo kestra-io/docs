@@ -14,7 +14,7 @@
                             <RightAnchor />
                         </nav>
 
-                        <main class="col-md-9 col-xl-8 py-md-3 pl-md-5 docs" role="main">
+                        <main class="col-md-9 col-xl-8 py-md-3 pl-md-5 docs" style="max-width: 1000px" role="main">
                             <div class="d-flex justify-content-between mt-5 mb-3" v-if="author">
                                 <div class="media align-items-center">
                                     <img :src="image" alt="img" class="img-fluid avatar avatar-md-sm rounded-circle shadow mr-4">
