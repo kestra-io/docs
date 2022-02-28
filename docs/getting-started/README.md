@@ -12,24 +12,25 @@ Make sure you have already installed:
 
 ## Launch Kestra
 
-- Download the compose file [here](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml)
+- Download the compose file [here](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) and save it with the name `docker-compose.yml`, for linux and macos, you can run `wget https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml`
+- Run `docker-compose pull`
 - Run `docker-compose up -d`
 - Open `http://localhost:8080` on your browser
 
 
 ## Create your first flow
-The default installation is empty and don't contain any flows. 
+The default installation is empty and don't contain any flows.
 
 ![Flow list](./assets/flow-1.png)
 
 
-We will create the first one : 
+We will create the first one :
 
 ![Flow Create](./assets/flow-2.png)
 
 * Click on the `Create` button at the button
-* Paste the flow below 
-* Click on save 
+* Paste the flow below
+* Click on save
 
 ```yaml
 id: logs
@@ -50,15 +51,15 @@ tasks:
   level: ERROR
 ```
 
-You will see the Topology of your flow as graph on `Overview` tabs. 
+You will see the Topology of your flow as graph on `Overview` tabs.
 
 ![Flow Topology](./assets/flow-3.png)
 
 
-## Execute your first flow 
-Now let's run our first flow and see it running : 
+## Execute your first flow
+Now let's run our first flow and see it running :
 
-* Now hit the button `Execute` on top Tabs. 
+* Now hit the button `Execute` on top Tabs.
 * You will see in Real time the execution of the current flow
 ![Execution Gantt](./assets/execution-1.png)
 * Look at the log of the current tasks on `Logs`
@@ -68,11 +69,11 @@ Now let's run our first flow and see it running :
 
 
 ## Next Steps
-Now, you are ready to use Kestra ! 
+Now, you are ready to use Kestra !
 
 Now I suggest you to read some documentations in order:
 - to understand Kestra [concepts](../concepts).
 - read the [Developer Guide](../developer-guide) to understand how to code your own flow.
 - Look at [Plugins](../../plugins) to have some real task .
-- [Deploy](../administrator-guide) your kestra instance to real environments.  
+- [Deploy](../administrator-guide) your kestra instance to real environments.
 
