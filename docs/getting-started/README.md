@@ -18,6 +18,16 @@ Make sure you have already installed:
 - Open `http://localhost:8080` on your browser
 
 
+::: warning
+Default amount of memory available for Docker on MacOS is often not enough to get Kestra up and running with all dependencies. If enough memory is not allocated, it might lead to kestra instance continuously restarting. You should at least allocate 4GB memory for the Docker Engine (ideally 8GB). You can check and change the amount of memory in [Resources](https://docs.docker.com/docker-for-mac/#resources).
+
+You can also check if you have enough memory by running this command:
+```bash
+docker run --rm "debian:buster-slim" bash -c 'numfmt --to iec $(echo $(($(getconf _PHYS_PAGES) * $(getconf PAGE_SIZE))))'
+```
+:::
+
+
 ## Create your first flow
 The default installation is empty and don't contain any flows.
 
