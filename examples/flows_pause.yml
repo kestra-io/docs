@@ -1,0 +1,18 @@
+id: pause
+namespace: io.kestra.demo.flows
+
+description:
+  This flow show how you can pause an execution in order to add a manual validation steps
+
+tasks:
+  - id: pause
+    type: io.kestra.core.tasks.flows.Pause
+    tasks:
+      - id: wait-manual
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - echo "trigger {{task.id}} after manual restart"
+
+  - id: last
+    type: io.kestra.core.tasks.debugs.Return
+    format: "Manually pause cancel, the flow continue"

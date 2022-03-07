@@ -1,0 +1,27 @@
+id: allow-failure
+namespace: io.kestra.demo.flows
+
+description: |
+  This flows will allow a failure of a task and will continue, passing the execution as `WARNING`
+
+tasks:
+  - id: allow-failure
+    type: io.kestra.core.tasks.flows.AllowFailure
+    tasks:
+      - id: seq
+        type: io.kestra.core.tasks.flows.Sequential
+        tasks:
+          - id: log1
+            type: io.kestra.core.tasks.debugs.Return
+            format: "{{task.id}} > {{taskrun.startDate}}"
+          - id: ko
+            type: io.kestra.core.tasks.scripts.Bash
+            commands:
+              - 'exit 1'
+          - id: log2
+            type: io.kestra.core.tasks.debugs.Return
+            format: "{{task.id}} > {{taskrun.startDate}}"
+
+  - id: last
+    type: io.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{taskrun.startDate}}"

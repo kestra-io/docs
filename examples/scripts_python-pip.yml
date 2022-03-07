@@ -1,0 +1,26 @@
+id: python-pip
+namespace: io.kestra.demo.scripts
+
+description:
+  This flow will install pip package, and use utils from kestra in order to generate outputs and metrics
+
+tasks:
+  - id: "python"
+    type: "io.kestra.core.tasks.scripts.Python"
+    inputFiles:
+      main.py: |
+        from kestra import Kestra
+        import requests
+        import time
+
+        start = time.perf_counter()
+        response = requests.get('https://google.com')
+        end = time.perf_counter()
+
+        Kestra.outputs({'status': response.status_code, 'text': response.text})
+        Kestra.timer('duration', end - start)
+    requirements:
+      - requests
+    dockerOptions:
+      image: python
+    runner: DOCKER

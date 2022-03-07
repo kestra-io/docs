@@ -1,0 +1,29 @@
+id: bash-docker-with-files
+namespace: io.kestra.demo.scripts
+
+description:
+  This flow will use a docker image `alpine`, install a package and `gunzip` a file passed as input and will be decompress.
+  It will also export the file size as metrics and the `mineType` of the file as outputs.
+
+inputs:
+  - name: gzip
+    description: A valid Gzip to be decompressed.
+    type: FILE
+
+tasks:
+  - id: unzip_file
+    type: io.kestra.core.tasks.scripts.Bash
+    outputFiles:
+      - uncompress
+    inputFiles:
+      downloaded.zip: "{{ inputs.gzip }}"
+    commands:
+      - apk add file
+      - gunzip -c downloaded.zip > {{ outputFiles.uncompress }}
+      - |
+        echo '::{"metrics": [{"name": "size", "type": "counter", "value": '$(wc -c < {{ outputFiles.uncompress }})'}]}::'
+      - |
+        echo '::{"outputs": {"mineType":"'$(file -b --mime-type {{ outputFiles.uncompress }})'"}}::'
+    dockerOptions:
+      image: alpine
+    runner: DOCKER

@@ -40,6 +40,10 @@ jobs:
       - name: Download plugins documentation
         run: .vuepress/plugins.sh
 
+      # Zip with examples
+      - name: Zip examples
+        run:  zip -r .vuepress/public/examples.zip -j  examples/
+
       # Build
       - name: Build
         run: |

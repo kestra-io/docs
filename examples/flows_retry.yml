@@ -1,0 +1,21 @@
+id: retry
+namespace: io.kestra.demo.flows
+description:
+  This flow will be retry 4 times and will success at the 5th attempts
+
+tasks:
+- id: failed
+  type: io.kestra.core.tasks.scripts.Bash
+  commands:
+  - 'if [ "{{taskrun.attemptsCount}}" -eq 4 ]; then exit 0; else exit 1; fi'
+  retry:
+    type: constant
+    interval: PT0.25S
+    maxAttempt: 5
+    maxDuration: PT1M
+    warningOnRetry: true
+
+errors:
+  - id: never-happen
+    type: io.kestra.core.tasks.debugs.Echo
+    format: Never happened {{task.id}}

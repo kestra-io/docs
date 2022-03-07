@@ -1,0 +1,20 @@
+id: disable-simple
+namespace: io.kestra.demo.flows
+
+description: |
+  This flows will never launch `t2` since the task is disabled.
+
+tasks:
+- id: t1
+  type: io.kestra.core.tasks.debugs.Echo
+  format: first {{task.id}}
+  level: TRACE
+- id: t2
+  type: io.kestra.core.tasks.debugs.Echo
+  format: second {{task.type}}
+  level: WARN
+  disabled: true
+- id: t3
+  type: io.kestra.core.tasks.debugs.Echo
+  format: third {{flow.id}}
+  level: ERROR

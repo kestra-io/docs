@@ -1,0 +1,24 @@
+id: errors
+namespace: io.kestra.demo.flows
+
+description: |
+  This flow will always failed, this will be handled by `errors` branch in order to handle the failure (cleaning a resource for example).
+  All kind of tasks can be used on the `errors` branch.
+
+tasks:
+- id: failed
+  type: io.kestra.core.tasks.scripts.Bash
+  commands:
+  - "exit 1"
+
+errors:
+  - id: parallel
+    type: io.kestra.core.tasks.flows.Parallel
+    tasks:
+      - id: error1
+        type: io.kestra.core.tasks.debugs.Echo
+        format: "running error {{task.id}}"
+
+      - id: error2
+        type: io.kestra.core.tasks.debugs.Echo
+        format: "running error {{task.id}}"

@@ -1,0 +1,32 @@
+id: multiplecondition-listener
+namespace: io.kestra.demo.flows
+
+description: |
+  This flow will start only if `multiplecondition-flow-a` & `multiplecondition-flow-b` is success during the last 24h
+
+tasks:
+  - id: only-listener
+    type: io.kestra.core.tasks.debugs.Return
+    format: "childs"
+
+triggers:
+  - id: multiple-listen-flow
+    type: io.kestra.core.models.triggers.types.Flow
+    conditions:
+      - id: multiple
+        type: io.kestra.core.models.conditions.types.MultipleCondition
+        window: P1D
+        windowAdvance: P0D
+        conditions:
+          success:
+            type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+            in:
+              - SUCCESS
+          flow-a:
+            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            namespace: io.kestra.demo.flows
+            flowId: multiplecondition-flow-a
+          flow-b:
+            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            namespace: io.kestra.demo.flows
+            flowId: multiplecondition-flow-b

@@ -1,0 +1,16 @@
+id: timeout
+namespace: io.kestra.demo.flows
+description:
+  This flow will always failed because of timeout
+
+tasks:
+- id: failed
+  type: io.kestra.core.tasks.scripts.Bash
+  commands:
+  - 'sleep 10'
+  timeout: PT5S
+
+errors:
+  - id: happen
+    type: io.kestra.core.tasks.debugs.Echo
+    format: This flow has failed

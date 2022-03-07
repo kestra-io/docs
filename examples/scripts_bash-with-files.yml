@@ -1,0 +1,38 @@
+id: bash-with-files
+namespace: io.kestra.demo.scripts
+
+description:
+  This flow show how to pass files between tasks.
+
+inputs:
+  - name: file
+    description: A valid file to be decompressed.
+    type: FILE
+
+tasks:
+  - id: t1
+    type: io.kestra.core.tasks.scripts.Bash
+    outputFiles:
+      - outFile
+    inputFiles:
+      file.tmp: "{{ inputs.file }}"
+    commands:
+      - cat file.tmp > {{ outputFiles.outFile }}
+
+  - id: t2
+    type: io.kestra.core.tasks.scripts.Bash
+    outputFiles:
+      - outFile
+    inputFiles:
+      file.tmp: "{{ outputs.t1.files.outFile }}"
+    commands:
+      - cat file.tmp > {{ outputFiles.outFile }}
+
+  - id: t3
+    type: io.kestra.core.tasks.scripts.Bash
+    outputFiles:
+      - outFile
+    inputFiles:
+      file.tmp: "{{ outputs.t2.files.outFile }}"
+    commands:
+      - head file.tmp

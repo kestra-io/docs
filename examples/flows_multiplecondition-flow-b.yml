@@ -1,0 +1,10 @@
+id: multiplecondition-flow-b
+namespace: io.kestra.demo.flows
+
+description: |
+  This flow will start `multiplecondition-listener` if `MultipleCondition` is validated
+
+tasks:
+  - id: only
+    type: io.kestra.core.tasks.debugs.Return
+    format: "from parents: {{execution.id}}"

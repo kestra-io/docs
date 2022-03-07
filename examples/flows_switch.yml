@@ -1,0 +1,43 @@
+id: switch
+namespace: io.kestra.demo.flows
+
+description: |
+  Depending on values passed as inputs (`FIRST`, `SECOND`, `THIRD`, any others values), the will branch to different tasks.
+  If no matching value, the `defaults` is used.
+
+inputs:
+  - name: string
+    type: STRING
+
+tasks:
+  - id: parent-seq
+    type: io.kestra.core.tasks.flows.Switch
+    value: "{{inputs.string}}"
+    cases:
+      FIRST:
+        - id: first
+          type: io.kestra.core.tasks.debugs.Return
+          format: "{{task.id}} > {{taskrun.startDate}}"
+      SECOND:
+        - id: second1
+          type: io.kestra.core.tasks.debugs.Return
+          format: "{{task.id}} > {{taskrun.startDate}}"
+        - id: second2
+          type: io.kestra.core.tasks.debugs.Return
+          format: "{{task.id}} > {{taskrun.startDate}}"
+      THIRD:
+        - id: third1
+          type: io.kestra.core.tasks.flows.Sequential
+          tasks:
+            - id: failed
+              type: io.kestra.core.tasks.scripts.Bash
+              commands:
+                - 'exit 1'
+          errors:
+            - id: error1
+              type: io.kestra.core.tasks.debugs.Return
+              format: "Error Trigger ! {{task.id}}"
+    defaults:
+      - id: default
+        type: io.kestra.core.tasks.debugs.Return
+        format: "{{task.id}} > {{taskrun.startDate}}"

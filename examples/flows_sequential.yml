@@ -1,0 +1,49 @@
+id: sequential
+namespace: io.kestra.demo.flows
+
+description: |
+  This flow will start the 2 sequential tasks in parallel and this one will launch tasks one after each others.
+
+tasks:
+  - id: parent
+    type: io.kestra.core.tasks.flows.Parallel
+    tasks:
+      - id: seq1
+        type: io.kestra.core.tasks.flows.Sequential
+        tasks:
+          - id: t1
+            type: io.kestra.core.tasks.scripts.Bash
+            commands:
+              - 'echo "running {{task.id}}"'
+              - 'sleep 1'
+          - id: t2
+            type: io.kestra.core.tasks.scripts.Bash
+            commands:
+              - 'echo "running {{task.id}}"'
+              - 'sleep 1'
+          - id: t3
+            type: io.kestra.core.tasks.scripts.Bash
+            commands:
+              - 'echo "running {{task.id}}"'
+              - 'sleep 1'
+      - id: seq2
+        type: io.kestra.core.tasks.flows.Sequential
+        tasks:
+          - id: t4
+            type: io.kestra.core.tasks.scripts.Bash
+            commands:
+              - 'echo "running {{task.id}}"'
+              - 'sleep 1'
+          - id: t5
+            type: io.kestra.core.tasks.scripts.Bash
+            commands:
+              - 'echo "running {{task.id}}"'
+              - 'sleep 1'
+          - id: t6
+            type: io.kestra.core.tasks.scripts.Bash
+            commands:
+              - 'echo "running {{task.id}}"'
+              - 'sleep 1'
+  - id: last
+    type: io.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{taskrun.startDate}}"
