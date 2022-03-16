@@ -10,7 +10,7 @@
                     <div class="container">
                         <p class="mb-5" data-aos="fade-left">
                             Kestra can be used <strong>for free with no limitations</strong> on our Open Source Edition.
-                            Entreprise need not more security & productivity so we create <strong>Enterprise
+                            Companies need not more security & productivity so we create <strong>Enterprise
                             Edition</strong>.
                             This one is available on your own cloud or on premise like the Open Source Edition, as
                             simple to deploy,
@@ -76,7 +76,7 @@
                                 <div
                                     class="card pricing-rates business-rate shadow bg-light border-0 rounded">
                                     <div class="card-body">
-                                        <h6 class="title font-weight-bold text-uppercase text-primary mb-4">Entreprise Edition</h6>
+                                        <h6 class="title font-weight-bold text-uppercase text-primary mb-4">Enterprise Edition</h6>
                                         <div class="price h1 text-muted">
                                             Custom pricing
                                         </div>
@@ -87,7 +87,7 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Authentification with <router-link to="/docs/administrator-guide/configuration/entreprise-edition/authentifications/auths/oidc">OIDC/SSO</router-link>
+                                                Authentification with <router-link to="/docs/administrator-guide/configuration/enterprise-edition/authentifications/auths/oidc">OIDC/SSO</router-link>
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
@@ -99,7 +99,7 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Integration with <router-link to="/docs/administrator-guide/configuration/entreprise-edition/secrets/">secret manager</router-link>
+                                                Integration with <router-link to="/docs/administrator-guide/configuration/enterprise-edition/secrets/">secret manager</router-link>
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
@@ -115,7 +115,7 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                <router-link to="/docs/administrator-guide/configuration/entreprise-edition/workers/">Worker security</router-link> isolation
+                                                <router-link to="/docs/administrator-guide/configuration/enterprise-edition/workers/">Worker security</router-link> isolation
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />

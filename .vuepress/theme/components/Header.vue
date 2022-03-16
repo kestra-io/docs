@@ -128,7 +128,7 @@ export default {
                             desc: 'How Kestra can help on your daily workflow'
                         },
                         {
-                            title: 'Entreprise Edition  ',
+                            title: 'Enterprise Edition  ',
                             link: '/features/enterprise',
                             icon: Security,
                             desc: 'Security and Productivity for enterprise'

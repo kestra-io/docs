@@ -68,7 +68,7 @@ export default {
                     button: "Getting started",
                 },
                 {
-                    title: "Entreprise Edition",
+                    title: "Enterprise Edition",
                     price: "Custom pricing",
                     feature: [
                         "Open Source Edition",
