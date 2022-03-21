@@ -5,11 +5,9 @@
                 <div class="row mt-5">
                     <div class="col-lg-6 ">
                         <div class="title-heading text-white" data-aos="fade-right">
-                            <vue-typed-js :loop="true" :back-delay="1000" :strings="['open source', 'scalable', 'extensible', 'real-time']">
-                                <h1 class="heading mb-4">
-                                    The <span class="typing"></span> <br /><span>orchestration</span> and <span>scheduling </span> platform.
-                                </h1>
-                            </vue-typed-js>
+                            <h1 class="heading mb-4">
+                                The <span class="typing">open source data</span> <span>orchestration</span> and <span>scheduling </span> platform.
+                            </h1>
                             <p class="para-desc mx-auto">
                                 Kestra is an <strong>infinitely scalable</strong> orchestration and scheduling platform, creating, running, scheduling, and monitoring <strong>millions of complex</strong> pipelines.
                             </p>
@@ -37,6 +35,9 @@
                                     <ArrowRight title="" />
                                 </a>
                             </div>
+                            <div class="mt-4 text-center">
+                                ⭐ <a href="https://github.com/kestra-io/kestra" class="text-white star">Star us on GitHub</a> ⭐
+                            </div>
                         </div>
                     </div>
 
@@ -61,7 +62,6 @@
 </template>
 
 <script>
-import {VueTypedJs} from 'vue-typed-js'
 import ArrowRight from "vue-material-design-icons/ArrowRight";
 import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline";
 import PlayCircle from "vue-material-design-icons/PlayCircle";
@@ -91,7 +91,6 @@ const logo = [
 export default {
     components: {
         Shape,
-        VueTypedJs,
         ArrowRight,
         FileDocumentOutline,
         PlayCircle,
@@ -154,6 +153,9 @@ export default {
             bottom: 0;
         }
 
+        a.star {
+            border-bottom: 2px solid $tertiary;
+        }
         .bg-half-260 {
             background: $primary;
 
