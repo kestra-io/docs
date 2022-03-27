@@ -60,7 +60,7 @@ export default {
                 },
                 {
                     title: "Easy to learn",
-                    description: "Flows are in simple, descriptive language defined in YAML;u don't need to be a developer to create a new flow.",
+                    description: "Flows are in simple, descriptive language defined in YAML; you don't need to be a developer to create a new flow.",
                     icon: SchoolOutline
                 },
                 {
