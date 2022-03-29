@@ -170,6 +170,11 @@ export default {
                     href: "plugin-jdbc-clickhouse"
                 },
                 {
+                    name: "Debezium MySQL",
+                    icon: "csicon csicon-debezium-mysql",
+                    href: "plugin-debezium-mysql"
+                },
+                {
                     name: "MySQL",
                     icon: "csicon csicon-mysql",
                     href: "plugin-jdbc-mysql"
@@ -188,6 +193,11 @@ export default {
                     name: "Postgres",
                     icon: "csicon csicon-postgres",
                     href: "plugin-jdbc-postgres"
+                },
+                {
+                    name: "Debezium Postgres",
+                    icon: "csicon csicon-debezium-postgres",
+                    href: "plugin-debezium-postgres"
                 },
                 {
                     name: "Vertica",
@@ -414,6 +424,14 @@ i.csicon {
 
     &.csicon-sqlserver {
         background-image: url("../../assets/home/sqlserver.svg");
+    }
+
+    &.csicon-debezium-mysql {
+        background-image: url("../../assets/home/debezium-mysql.svg");
+    }
+
+    &.csicon-debezium-postgres {
+        background-image: url("../../assets/home/debezium-postgres.svg");
     }
 }
 
