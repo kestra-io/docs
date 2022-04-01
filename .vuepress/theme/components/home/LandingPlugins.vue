@@ -195,6 +195,11 @@ export default {
                     href: "plugin-jdbc-postgres"
                 },
                 {
+                    name: "Snowflake",
+                    icon: "csicon csicon-snowflake",
+                    href: "plugin-jdbc-snowflake"
+                },
+                {
                     name: "Debezium Postgres",
                     icon: "csicon csicon-debezium-postgres",
                     href: "plugin-debezium-postgres"
@@ -432,6 +437,10 @@ i.csicon {
 
     &.csicon-debezium-postgres {
         background-image: url("../../assets/home/debezium-postgres.svg");
+    }
+
+    &.csicon-snowflake {
+        background-image: url("../../assets/home/snowflake.svg");
     }
 }
 
