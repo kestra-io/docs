@@ -27,17 +27,17 @@ A namespace is a like a folder for file system. It aims to group flows in a limi
 Namespace is compose by word and letters separated by `.`. The hierarchy depth is not limited and is free for Kestra users to fit their organization.
 
 ## Inputs 
-[Inputs](../developer-guide/inputs) are mandatory or optional parameters sent to a flow in order to be successfully run. It can be anythings (string, int, file, ...) to will be send when the execution is created. Flow must defined possible inputs and mandatory one will be validated before the creation of the execution. 
+[Inputs](../developer-guide/inputs) are mandatory or optional parameters sent to a flow in order for it to be successfully run. It can be anything (string, int, file, ...) that will be sent when the execution is created. The Flow must define possible inputs, and mandatory ones will be validated before the creation of the execution. 
 
 ## Revision
-Each flow modification will produce a new revision, revision is a simple increments number that will update after each change of the flow. Internally Kestra will track and keep all revisions of the flow.
+Each flow modification will produce a new revision. A revision is a simple incremental number that will update after each change made to the flow. Internally, Kestra will track and manage all revisions of the flow.
 
 ## Listeners
-[Listeners](../developer-guide/listeners) are special task that can listen to the current flow and launch task *outside of the flow*.
-The result of the tasks will not change the execution status. Mostly Listeners are here to send notification or handle special end task behaviour that you don't want to be considered as main workflow.
+[Listeners](../developer-guide/listeners) are special tasks that can listen to the current flow and launch tasks *outside of the flow*.
+The result of these tasks will not change the execution status. For the most part, Listeners are applied to send notifications or handle special end-task behaviour that you do not want to be considered as part of the main workflow.
  
 ## Triggers
-[Triggers](../developer-guide/triggers) are way to start a flow with external events. For example, on a schedule date or waiting for some external events (like file creation)
+[Triggers](../developer-guide/triggers) are a way to start a flow from external events. For example, a trigger might initiate a flow on a scheduled date or at a particular time of day, or it can be dependent on external events (such as file creation).
 
 ## Templates
-[Templates](../developer-guide/templates) are list of tasks that can be shared between flows. You can define a template and call it from other flows allowing to share a list of tasks and keep these task updated without changing your flow.
+[Templates](../developer-guide/templates) are lists of tasks that can be shared between flows. You can define a template and call upon it from other flows, allowing you to share a list of tasks and keep these task updated without changing your flow.
