@@ -28,6 +28,7 @@
   "dependencies": {
     "@mdi/font": "^6.5.95",
     "aos": "^2.3.4",
+    "axios": "^0.26.1",
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.21.2",
     "cookie-though": "^1.3.1",
@@ -42,11 +43,11 @@
     "markdown-it-meta": "^0.0.1",
     "markdown-it-title": "^4.0.0",
     "node-sass": "^5.0.0",
+    "vue": "^2.6.14",
     "vue-carousel": "^0.18.0",
     "vue-feather-icons": "^5.1.0",
     "vue-material-design-icons": "^5.0.0",
     "vue-stripe-menu": "^1.5.0",
-    "vue": "^2.6.14",
     "vuepress": "^1.9.7"
   },
   "devDependencies": {
