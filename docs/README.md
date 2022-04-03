@@ -23,7 +23,7 @@ Kestra makes it simple to [create a flow](https://kestra.io/docs/developer-guide
 - **Extensible**: The entire foundation of Kestra is built upon plugins, find an existing [one](../plugins) or build your [own](plugin-developer-guide) to fit your business needs.
 - **Real time**: Kestra is built by thinking in real time. Simply create a flow, run it and see all the logs in realtime.
 - **Scalable**: Kestra users enjoy its almost infinite scalability. It is built with top technologies like Kafka & Elasticsearch, and can scale to millions of executions without any difficulty.
-- **Cloud Native**: Built with the cloud in mind, Kestra uses top cloud native technology and allows you to [deploy everywhere](administrator-guide/deployment),whether in cloud or on-premise.
+- **Cloud Native**: Built with the cloud in mind, Kestra uses top cloud native technology and allows you to [deploy everywhere](administrator-guide/deployment), whether in cloud or on-premise.
 - **Open source**: Kestra is built with the Apache 2 license, [contribute](https://github.com/kestra-io/kestra) on our core or plugins as you can.
 
 
