@@ -33,4 +33,4 @@ The possible States are defined below:
 * `FAILED`: The Task Run or Execution exhibited unintended behaviour that caused the execution to fail.
 * `KILLING`: A command was run asking the the Task Run or Execution to be killed, and the system is in the process of killing the associated tasks.
 * `KILLED`: A Task Run or Execution was killed (upon request), and no more tasks will be run for that process.
-* `RESTARTED`: This status is a transitive status that essentially means `CREATED`, but for a process that has already been executed and killed, and has been restarted.
+* `RESTARTED`: This status is a transitive status that essentially means `CREATED`, but for a process that has already been executed and failed, and has been restarted.
