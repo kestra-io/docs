@@ -5,16 +5,16 @@ order: 10
 # Deprecated Handlebars
 
 ::: warning
-Handlebars variable is deprecated and superseded by Pebble. These function will be removed soon and is disabled by default
+Handlebars variable is deprecated and superseded by Pebble. These functions will be removed soon and are disabled by default.
 :::
 
-Variables are specific fields for task. They use the power of [handlebars](https://handlebarsjs.com/guide/) with Kestra's special context system, allowing powerfull task composition.
+Variables are specific fields for task. They use the power of [handlebars](https://handlebarsjs.com/guide/) with Kestra's special context system, allowing powerful task composition.
 
-Variables can use variable information registrered / existing in the execution context. This context are some data injected in Variables and are from different sources:
+Variables can use variable information registered/existing in the execution context. The context is data injected in Variables and from different sources:
 
 ## Functions
 
-Some time, you need to change the format of variables. For this, you can use some functions:
+Sometimes, you need to change the format of variables. To do this, you can use some of the following functions:
 
 - [String functions](./string.md)
 - [Boolean functions](./boolean.md)
