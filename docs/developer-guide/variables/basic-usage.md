@@ -22,7 +22,7 @@ You can use the dot (.) notation to access attributes of variables. If the attri
 
 Additionally, if `foo` is a List, then `foo[0]` can be used.
 
-If the value of variable (or attribute) is undefined, it will throw an error and failed the task.
+If the value of variable (or attribute) is undefined, it will throw an error and fail the task.
 
 ## Filters
 
@@ -66,7 +66,7 @@ Pebble provides several tags to control the flow of your template, two of the ma
 ```
 
 ## Macros
-Macros are lightweight and reusable template fragments. A macro is defined via the [macro](tag/macro) tag:
+Macros are lightweight and re-usable template fragments. A macro is defined via the [macro](tag/macro) tag:
 ```twig
 
 {% macro input(type, name) %}
