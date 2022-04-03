@@ -8,7 +8,7 @@ An execution is a flow that is currently processing or have already finished doi
 A task run is a task that was executed and associated to its operationnal data like execution_id, state, start_date, end_date, ...
 
 ## Attempts 
-Each task run will be produce 1 or more attempt. Most common task run will have only 1 attempt, but you can add some [Retries](../developer-guide/retries) that will generate new attempts for every failed taskrun.
+Each task run will produce 1 or more attempt. Most common task run will have only 1 attempt, but you can add some [Retries](../developer-guide/retries) that will generate new attempts for every failed taskrun.
 
 ## Outputs 
 Each task can generate some output data that can be reused in other tasks of the current execution.
