@@ -29,12 +29,9 @@ docker run --rm "debian:buster-slim" bash -c 'numfmt --to iec $(echo $(($(getcon
 
 
 ## Create your first flow
-The default installation is empty and does not contain any flows.
+The default installation contains some examples on the namespace `io.kestra.demo`.
 
-![Flow list](./assets/flow-1.png)
-
-
-We will create the first one :
+We will create a new one :
 
 ![Flow Create](./assets/flow-2.png)
 
