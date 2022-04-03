@@ -29,7 +29,7 @@ Kestra makes it simple to [create a flow](https://kestra.io/docs/developer-guide
 
 ## Usages
 Kestra can be used as:
-- **Data orchestrator**: Handle complex workflows, and move large datasets, extracting, transforming and loading them in the manner of your choice(ETL or ELT).
+- **Data orchestrator**: Handle complex workflows, and move large datasets, extracting, transforming and loading them in the manner of your choice (ETL or ELT).
 - **Distributed crontab**: Schedule work on multiple workloads and monitor each and every process.
 - **Events Driven workflow**: React to external events such as api calls to get things done instantly.
 - ...
