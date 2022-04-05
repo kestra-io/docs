@@ -295,7 +295,11 @@ export default {
                     icon: "csicon csicon-mongodb",
                     href: "plugin-mongodb"
                 },
-
+                {
+                    name: "Spark",
+                    icon: "csicon csicon-spark",
+                    href: "plugin-spark"
+                },
             ];
 
             // Order by publish date, desc
@@ -441,6 +445,10 @@ i.csicon {
 
     &.csicon-snowflake {
         background-image: url("../../assets/home/snowflake.svg");
+    }
+
+    &.csicon-spark {
+        background-image: url("../../assets/home/spark.svg");
     }
 }
 
