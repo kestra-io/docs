@@ -3,12 +3,12 @@ order: 6
 ---
 # Retries
 
-Kestra provide some tasks retry feature. This sub system makes it convenient to add **failed executions** retry behavior depending on retry configuration in flow description.
+Kestra provides a tasks retry feature. This sub-system makes it convenient to add retry behavior on **failed executions**, based on the retry configuration in the flow description.
 
 
 ## Example
 
-Below a flow sample that retry executes a task on failure maximum 5 times each 15 minutes :
+Below is a flow sample that executes a retry on a task failurefor a maximum of 5 times every 15 minutes:
 
 ```yaml
 - id: retry-sample
@@ -31,9 +31,9 @@ Below a flow sample that retry executes a task on failure maximum 5 times each 1
 
 ### Duration
 
-Some option above have to be filled with duration notation.
+Some options above have to be filled with a duration notation.
 Durations are expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)
-and here is some examples :
+and here are some examples :
 
 | name | description |
 | ---------- | ----------- |
@@ -47,14 +47,14 @@ and here is some examples :
 
 
 #### `constant`
-Constant retry times, when time is set to 10 minutes it retries each 10 minutes
+This establishes constant retry times, where if the time is set to 10 minutes, it retries every 10 minutes.
 
 | name | type | description |
 | ---------- | ----------- | ----------- |
 |`interval`|`Duration`|Duration between each retry.|
 
 #### `exponential`
-Retry behavior that waits longer between each retry e.g. 1s, 5s, 15s ...
+This establishes retry behavior that waits longer between each retry e.g. 1s, 5s, 15s ...
 
 | name | type | description |
 | ---------- | ----------- | ----------- |
@@ -63,7 +63,7 @@ Retry behavior that waits longer between each retry e.g. 1s, 5s, 15s ...
 |`delayFactor`|`Double`|Multiplier for `interval` on each retry, default is 2. For example, with and interval=30s and delayFactor=2, retry will append at 30s, 1m30, 3m30, ... |
 
 #### `random`
-Retry with random delay with min and max limits
+This establishes retries with a random delay with min and max limits.
 
 | name | type | description |
 | ---------- | ----------- | ----------- |
