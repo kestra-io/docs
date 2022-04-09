@@ -40,7 +40,7 @@ contextualListVariable = [
 ]
 ```
 
-If the contextual this is not convinient to use data as you wish it is possible to alias it like below:
+If the contextual 'this' is not convenient to use the data as you wish, it is possible to alias it as shown below:
 
 ```handlebars
 {{#each iterableVariable as | myItem | }}
