@@ -8,7 +8,7 @@ order: 8
 
 ## `firstDefined` First defined variables 
 
-Return the first defined variables or throw exception if no variables are defined.
+Return the first defined variables or throw an exception if no variables are defined.
 
 ```handlebars
 {{ firstDefined outputs.task1.uri outputs.task2.uri }}
@@ -16,7 +16,7 @@ Return the first defined variables or throw exception if no variables are define
 
 ## `eval` Evaluate a handlebars expression 
 
-Evaluate at runtime a handlebars expression based on the whole context.
+Evaluate a handlebars expression at runtime based on the whole context.
 
 Mostly useful for [Lookup in current childs tasks tree](/docs/developer-guide/variables/#lookup-in-current-childs-tasks-tree) and dynamic tasks.
 
@@ -27,7 +27,7 @@ Mostly useful for [Lookup in current childs tasks tree](/docs/developer-guide/va
 
 ## `firstDefinedEval` First defined evaluation
 
-First defined evaluate at runtime a handlebars expression based on the whole context or throw exception if no variables are defined.
+First defined evaluates a handlebars expression at runtime based on the whole context or throws an exception if no variables are defined.
 
 Mostly useful for [Lookup in current childs tasks tree](/docs/developer-guide/variables/#lookup-in-current-childs-tasks-tree) and dynamic tasks.
 
