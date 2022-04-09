@@ -8,7 +8,7 @@ order: 2
 
 ## `capitalizeFirst`: Capitalizes the first character of the value.
 
-If value is "kestra is cool !", the output will be "Kestra is cool !".
+If the value is "kestra is cool !", the output will be "Kestra is cool !".
 
 ```handlebars
 {{capitalizeFirst value}}
@@ -16,7 +16,7 @@ If value is "kestra is cool !", the output will be "Kestra is cool !".
 
 ## `center`: Centers the value in a field of a given width.
 
-If value is "Handlebars.java", the output will be "  Handlebars.java  ".
+If the value is "Handlebars.java", the output will be "  Handlebars.java  ".
 
 ```handlebars
 {{ center value size=19 [pad="char"] }}
@@ -29,7 +29,7 @@ If value is "Handlebars.java", the output will be "  Handlebars.java  ".
 
 ## `cut`: Removes all values of arg from the given string.
 
-If value is "String with spaces", the output will be "Stringwithspaces".
+If the value is "String with spaces", the output will be "Stringwithspaces".
 
 ```handlebars
 {{cut value [" "]}}
@@ -40,8 +40,8 @@ If value is "String with spaces", the output will be "Stringwithspaces".
 
 ## `defaultIfEmpty`: Default if empty
 
-If value evaluates to False, uses the given default. Otherwise, uses the
-value. If value is "" (the empty string), the output will be nothing.
+If the value evaluates to False, it will use the given default. Otherwise, it uses the
+value. If value is "" (an empty string), the output will be nothing.
 
 
 ```handlebars
@@ -76,7 +76,7 @@ Joins an array, iterator or an iterable with a string.
 
 ## `ljust`: Left-aligns the value in a field of a given width.
 
-If value is Handlebars.java, the output will be "Handlebars.java     ".
+If the value is Handlebars.java, the output will be "Handlebars.java     ".
 
 
 ```handlebars
@@ -89,7 +89,7 @@ If value is Handlebars.java, the output will be "Handlebars.java     ".
 
 ## `rjust`: Right-aligns the value in a field of a given width.
 
-If value is Handlebars.java, the output will be "     Handlebars.java".
+If the value is Handlebars.java, the output will be "     Handlebars.java".
 
 ```handlebars
 {{rjust value 20 [pad=" "] }}
@@ -117,19 +117,19 @@ ends with the `char` value at nd - 1*
 
 For example:
 
-> If value is Handlebars.java, the output will be "java".
+> If the value is Handlebars.java, the output will be "java".
 ```handlebars
 {{substring value 11 }}
 ```
 
-> If value is Handlebars.java, the output will be "Handlebars".
+> If the value is Handlebars.java, the output will be "Handlebars".
 ```handlebars
 {{substring value 0 10 }}
 ```
 
 ## `lower`: Converts a string into all lowercase.
 
-If value is 'Still MAD At Yoko', the output will be 'still mad at yoko'.
+If the value is 'Still MAD At Yoko', the output will be 'still mad at yoko'.
 
 ```handlebars
 {{lower value}}
@@ -138,7 +138,7 @@ If value is 'Still MAD At Yoko', the output will be 'still mad at yoko'.
 
 ## `upper` Converts a string into all uppercase.
 
-If value is 'Hello', the output will be 'HELLO'.
+If the value is 'Hello', the output will be 'HELLO'.
 
 ```handlebars
 {{upper value}}
@@ -147,8 +147,8 @@ If value is 'Hello', the output will be 'HELLO'.
 
 # `slugify` Converts to lowercase
 
-removes non-word characters (alphanumerics and underscores) and converts spaces to hyphens. Also strips leading and trailing whitespace.
-If value is "Joel is a slug", the output will be "joel-is-a-slug".
+This removes non-word characters (alphanumerics and underscores) and converts spaces to hyphens. It also strips leading and trailing whitespace.
+If the value is "Joel is a slug", the output will be "joel-is-a-slug".
 
 ```handlebars
 {{slugify value}}
@@ -159,7 +159,7 @@ If value is "Joel is a slug", the output will be "joel-is-a-slug".
 ## `stringFormat`: Formats the variable
 
 According to the argument, a string formatting specifier.
-If value is "Hello %s" "handlebars.java", the output will be "Hello handlebars.java".
+If the value is "Hello %s" "handlebars.java", the output will be "Hello handlebars.java".
 
 ```handlebars
 {{stringFormat string param0 param1 ... paramN}}
@@ -180,7 +180,7 @@ If value is "Hello %s" "handlebars.java", the output will be "Hello handlebars.j
 
 ## `capitalize`: Capitalizes all the whitespace separated words in a String.
 
-If value is "my first post", the output will be "My First Post".
+If the value is "my first post", the output will be "My First Post".
 
 ```handlebars
 {{ capitalize value [fully=false]}}
@@ -193,7 +193,7 @@ Arguments:
 
 ## `abbreviate`: Truncates a string
 
-If it is longer than the specified number of characters.
+The string will be truncated if it is longer than the specified number of characters.
 Truncated strings will end with a translatable ellipsis sequence ("...").
 If value is "Handlebars rocks", the output will be "Handlebars...".
 
@@ -209,7 +209,7 @@ If value is "Handlebars rocks", the output will be "Handlebars...".
 
 ## `wordWrap`: Wraps words
 
-Wrap sentence at specified line length. If value is Joel is a slug, the output would be: `Joel\nis a\nslug`
+This wraps the sentence at a specified line length. If value is Joel is a slug, the output would be: `Joel\nis a\nslug`
 
 
 ```handlebars
@@ -217,7 +217,7 @@ Wrap sentence at specified line length. If value is Joel is a slug, the output w
 ```
 
 #### Arguments: 
-- number of characters at which to wrap the text
+- the number of characters at which to wrap the text
 
 
 
