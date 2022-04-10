@@ -6,11 +6,11 @@
 type: "io.kestra.core.models.triggers.types.Flow"
 ```
 
-> Kestra is able to trigger flow after another one. This allows chaining flow without need to update the base flows.
-  With that, you can break responsibility between different flow to different teams.
+> Kestra is able to trigger one flow after another one. This allows the chaining of flows without the need to update the base flows.
+  With this capacity, you can break responsibility between different flows to different teams.
 
 ## Example
-> This flow will be triggered after each successfully execution of flow `io.kestra.tests.trigger-flow` and forward the `uri` of `my-task` taskId outputs.
+> This flow will be triggered after each successful execution of the flow `io.kestra.tests.trigger-flow` and forward the `uri` of `my-task` taskId outputs.
 ```yaml
 id: trigger-flow-listener
 namespace: io.kestra.tests
@@ -87,8 +87,8 @@ triggers:
 
 
 ::: warning
-If you provide invalid input, the flow will be created and already state as FAILED! Since there is no task started, you can't log any reason visible on the ui.
-So you will need to go to server log to understand the error
+If you provide an invalid input, the flow will be created and already state as FAILED! Since no task is started, you cannot log any reason visible on the ui.
+So you will need to go to the server logs to understand the error.
 :::
 
 ### `conditions`
@@ -98,12 +98,12 @@ So you will need to go to server log to understand the error
 > List of  [Conditions](../conditions) in order to limit the flow trigger.
 
 ::: warning
-If you don't provide any conditions, the flow will be triggered for **EVERY execution** of **EVERY flow** on your instance.
+If you do not provide any conditions, the flow will be triggered for **EVERY execution** of **EVERY flow** on your instance.
 :::
 
 
 ## Variables
-When the flow is trigger by another one, some context variables will be injected to allow some customization of the flow.
+When the flow is triggered by another one, some context variables will be injected to allow some customization of the flow.
 
 | Parameter | Description |
 | ---------- | ----------- |
