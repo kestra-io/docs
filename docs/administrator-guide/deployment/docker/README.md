@@ -3,7 +3,7 @@ order: 1
 ---
 # Deployment with Docker
 
-The quickest way to install Kestra is to use *Docker Compose*. It will start a **non production** Kestra with all the dependency.
+The quickest way to install Kestra is to use *Docker Compose*. This will start a **non-production** Kestra with all the dependencies.
 
 
 ## Before you begin
@@ -17,10 +17,10 @@ Make sure you have already installed :
 - Run `docker-compose up` 
 - Open `http://localhost:8080` on your browser
 
-It will start all the dependencies with a preconfigured Kestra that is connected to all! 
+This will start all the dependencies with a preconfigured Kestra that is connected to everything! 
 
-Kestra will start with *Standalone* server (all the different [servers](../../architecture) in one JVM). 
-This is clearly not  for **production** workload but sufficient to test on a local computer.
+Kestra will start a *Standalone* server (all the different [servers](../../architecture) in one JVM). 
+This is clearly not meant for **production** workloads, but is certainly sufficient to test on a local computer.
 
 
 ## Docker Image 
@@ -47,8 +47,7 @@ Take care that this image will always contain the last version of plugins that c
 
 ### Create a new image with more binaries
 
-If the base or full image don't contain binaries 
-You can easily create a new one with the `DockerFile` : 
+If the base or full image does not contain binaries, you can easily create a new one with the below `DockerFile`: 
 
 ```dockerfile
 ARG IMAGE_TAG=latest
@@ -61,7 +60,7 @@ RUN mkdir -p /app/plugins && \
 ```
 
 ### Create a new image with plugins
-By default, the kestra base docker image don't contain any plugins, but you can create a new image with all the plugins you want : 
+By default, the Kestra base docker image does not contain any plugins, but you can create a new image with all the plugins you want: 
 ```dockerfile
 ARG IMAGE_TAG=latest
 FROM kestra/kestra:$IMAGE_TAG
@@ -75,7 +74,7 @@ RUN /app/kestra plugins install \
 
 ### Docker image tag 
 
-We provide a 3 tags for docker image : 
-- `latest`: that will contain the default latest image with its full variant `latest-full`.
-- `release`: an image with preview of the next release  with its full variant `release-full`.
-- `develop`: an image based on `develop` branch that will change every day and contain all **unstable** feature we are working and with its full variant `develop-full`.
+We provide 3 tags for a docker image : 
+- `latest`: this will contain the latest default image along with its full variant `latest-full`.
+- `release`: an image with a preview of the next release along with its full variant `release-full`.
+- `develop`: an image based on the `develop` branch that will change every day and contain all **unstable** features we are working on, along with its full variant `develop-full`.
