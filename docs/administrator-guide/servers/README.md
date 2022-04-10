@@ -2,7 +2,7 @@
 order: 2
 ---
 # Kestra servers 
-Kestra have 5 different servers in order to have a fully working Kestra 
+Kestra leverages five different servers in order to provide a fully working Kestra implementation.
 
 ## Production environment servers
 
@@ -37,7 +37,7 @@ No special options for this server.
 
 **Options:**
 
-* `-thread`: the number of thread that can handle task at the same time
+* `-thread`: the number of threads that can handle tasks at the same time
 
 ### [Kestra Webserver](../../architecture#webserver)
 
@@ -45,19 +45,19 @@ No special options for this server.
 
 **Options:**
 
-No special options for this servers
+No special options for this server
 
 ## Kestra standalone, Development environment servers
 
 `./kestra server standalone`
 
-This server is a special server only intended for Development environment, since it will contains all the server in one jvm. 
-But this work well on development environment.
+This server is a special server only intended for a Development environment, since it will contain all the servers in one jvm. 
+But this works well for development environments.
 By default, the worker embedded will start 1 thread per cpu core available. 
 
 **Options:**
 
-* `-f` or `--flow-path`: the path to a directory will flow file as yaml, these files will loaded on the repository at the startup. 
+* `-f` or `--flow-path`: the path to a directory will flow file as yaml, these files will be loaded on the repository at the startup. 
 
 ## Options for all server command 
 
@@ -67,14 +67,14 @@ Log level can be changed with 2 options :
 - `--log-level`: possible value: `[TRACE, DEBUG, INFO, WARN, ERROR]`, default: `INFO`
 -  `--verbose` or `-v` for `DEBUG`, `-vv` for `TRACE` 
 
-This option affects global log level for all flow only 
+This option affects global log levels for all flows only 
 
 ### Internal Log
-`--internal-log`: Kestra hide internal log by default, use this option to enable it (High verbosity !)
+`--internal-log`: Kestra hides internal logs by default, use this option to enable these logs (High verbosity !)
 
 ### Configuration Files
 
-`-c` or `--config`: change the location of kestra [configuration](../configuration) files, default is `~/.kestra/config.yml` 
+`-c` or `--config`: you can change the location of kestra [configuration](../configuration) files, the default is `~/.kestra/config.yml` 
 
 ### Plugins directory
 
