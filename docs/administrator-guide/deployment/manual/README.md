@@ -3,9 +3,9 @@ order: 3
 ---
 # Manual deployment
 
-If you want to deploy by yourself, we provide a Standalone jar that allow to deploy on any environnement you want.
+If you want to deploy Kestra for your self (within your own environment) , we provide a Standalone jar that allows deployment on any environment you want.
 
-The latest jar can be download [here](https://api.kestra.io/v1/versions/download).
+The latest jar can be downloaded [here](https://api.kestra.io/v1/versions/download).
 
 This is an executable jar:
 - For Linux & MacOs, we run it `./kestra-VERSION`
