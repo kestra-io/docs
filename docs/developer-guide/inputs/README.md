@@ -3,15 +3,15 @@ order: 3
 ---
 # Inputs
 
-Kestra's flow can be parametrized using inputs. Inputs will be available in variable context and can be used during the whole flow, in order to customize it depending on inputs.
+Kestra's flow can be parameterized using inputs. Inputs will be available in variable context and can be used during the whole flow, in order to customize it depending on inputs.
 
-A good example is you need to have an identifier (ex: storeId, paymentId) in order to change save path for the uploaded files.
+A good example is when an identifier is needed (ex: storeId, paymentId) in order to change the save path for the uploaded files.
 
 ## Declaring inputs
 
-You can declare as many inputs for any flow. Input can be **required** or **not**.
-If the input are required, the flow couldn't start if the input are not provide during the creation of the execution.
-Also, every input will be parsed during the creation of the execution and any invalid inputs will refuse to create the execution.
+You can declare as many inputs as necessary for any flow. Input can be **required** or **not**.
+If the input is required, the flow cannot start if the input is not provided during the creation of the execution.
+Also, every input will be parsed during the creation of the execution and any invalid inputs will cause a refusal to create the execution.
 
 ::: warning
 If the execution is **not created** due to invalid or missing inputs, no execution will be found on the executions list.
@@ -47,7 +47,7 @@ inputs:
 ```
 
 ## Input types
-Here are the following input fields available :
+The available input fields available are as follows:
 
 ### `STRING`
 No control is done on this input type (no parsing), can be any string.
@@ -59,17 +59,17 @@ Must be a valid integer (without any decimals).
 Must be a valid float (with any decimals).
 
 ### `DATETIME`
-Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime with timezone in UTC from a text string such as
+Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime with the timezone expressed in UTC from a text string such as
 `2007-12-03T10:15:30.00Z`.
 
 ### `FILE`
-Must be a files send with `multipart/form-data`. All the file are automatically uploaded to `Storage` and is available for further task. The return will be a full qualified url with the form `kestra:///.../.../`, Kestra are able to handle this url and this inputs can be passed as is to task.
+Must be a file sent with `multipart/form-data`. All the files are automatically uploaded to `Storage` and are available for further tasks. The return will be a fully qualified url with the form `kestra:///.../.../`. Kestra is able to handle this url and this input can be passed as is to task.
 
 ## Input properties
-Here are the properties available for all input types :
+These are the properties available for all input types :
 
 ### `name`
-If the input name in order to be used with vars <code v-pre>{{ inputs.my-name }}</code>
+The input name to be used with vars <code v-pre>{{ inputs.my-name }}</code>
 
 
 ### `required`
@@ -84,9 +84,9 @@ A markdown description in order to document the inputs.
 
 ## Using input value in flow
 
-Every input is available with dynamic variable like : <code v-pre>{{ inputs.NAME }}</code>.
+Every input is available with dynamic variables such as: <code v-pre>{{ inputs.NAME }}</code>.
 
-For example, considering that you declare your input :
+For example, if you declare your input :
 ```yaml
 inputs:
   - name: my-file
@@ -100,7 +100,7 @@ You can use the value of the inputs with <code v-pre>{{ inputs.my-value }}</code
 
 
 ## Send inputs programmatically
-The flow `my-flow` above can be triggered programmaticaly, here is an example with `curl`:
+The flow `my-flow` above can be triggered programmatically. Here is an example with `curl`:
 ```bash
 curl -v "http://kestra:8080/api/v1/executions/trigger/io.kestra.docs/my-flow" \
     -H "Transfer-Encoding:chunked" \
@@ -113,7 +113,7 @@ curl -v "http://kestra:8080/api/v1/executions/trigger/io.kestra.docs/my-flow" \
     -F "files=@/tmp/128M.txt;filename=my-file"
 ```
 
-All files must be sent in a form data `files` with a header `filename=my-file` that will be the name of the input.
+All files must be sent in the form  of data `files` with a header `filename=my-file`, which will be the name of the input.
 
 Here is an example with `python`:
 ```python
@@ -139,8 +139,8 @@ with open("/tmp/128M.txt", 'rb') as fh:
 ```
 
 ## Send inputs via WebUI
-With such flow, the web ui let you input some inputs by generating a form accordingly on the flow > trigger view. The input form for the task above looks like below :
+With such a flow, the web ui lets you enter some inputs by generating a form accordingly on the flow > trigger view. The input form for the task above looks like below:
 
 ![Flow inputs](./assets/inputs.jpg)
 
-Once inputs filled, you can trigger a flow execution that will run with [contextual inputs](/docs/dynamic-fields) as task variables.
+Once the inputs are provided, you can trigger an execution flow that will run with [contextual inputs](/docs/dynamic-fields) as task variables.
