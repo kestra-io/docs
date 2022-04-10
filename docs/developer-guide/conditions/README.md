@@ -3,15 +3,15 @@ order: 7
 ---
 # Conditions
 
-Conditions are use in [Triggers](../triggers) & [Listeners](../listeners) in order to limit the case this one could happen.
+Conditions are used in [Triggers](../triggers) & [Listeners](../listeners) in order to limit the cases in which a task/execution is triggered.
 For example: 
-* you can limit the listeners to only specified status
+* you can limit the listeners to only a specified status
 * you can limit triggers to specified namespace prefix 
 * .... 
 
 You can pass a list of conditions and all the conditions must match to enable the current action.
 
-Available condition are : 
+Available conditions include: 
 
 - [ExecutionFlowCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.ExecutionFlowCondition.html)
 - [ExecutionNamespaceCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.ExecutionNamespaceCondition.html)
