@@ -3,11 +3,11 @@ order: 2
 ---
 # Deployment on Kubernetes
 
-The recommended deployment environment for **production** workload is [Kubernetes](http://kubernetes.io/).
-We provide a [Helm Charts](https://helm.sh/) in order to deploy your cluster.
+The recommended deployment environment for **production** workloads is [Kubernetes](http://kubernetes.io/).
+We provide a [Helm Chart](https://helm.sh/) in order to deploy your cluster.
 
 - The chart repository is available [here](https://helm.kestra.io/).
-- The source code of the charts is [here](https://github.com/kestra-io/helm-charts).
+- The source code of the charts is found [here](https://github.com/kestra-io/helm-charts).
 
 ## Quick Start
 
@@ -21,7 +21,7 @@ You can change the default behaviour and configuring your cluster changing the [
 
 By default, charts will only deploy kestra service with only 1 replica for each [servers](../../../architecture).
 
-You can also deploy the standalone server (not for production), that will host all kestra servers in only one pod, using this values:
+You can also deploy the standalone servers (not for production) which will host all kestra servers in only one pod, using these values:
 ```yaml
 kestra:
   deployments:
@@ -46,11 +46,11 @@ The charts could also deploy all needed services:
 - Minio standalone using `minio.enabled: true`
 
 ::: warning
-All service (kafka, elasticsearch, zookeeper, minio) are deployed using unsecured configurations (no authentification, no tls, ...). When installing for a production environnement, you **need** to secure all these services and adapt all service configuration to be production ready.
+All services (kafka, elasticsearch, zookeeper, minio) are deployed using unsecured configurations (no authentification, no tls, ...). When installing for a production environnement, you **need** to secure all these services and adapt all service configurations to be production ready.
 :::
 
-Most important values to adapt are [configuration files](../../configuration), with these values:
-- `configuration`: in order to set the whole configuration files from kestra
-- `secrets`: that will be merged with `configuration` but kept as secret on your k8s cluster.
+The most important values to adapt are the [configuration files](../../configuration), including the following values:
+- `configuration`: used to apply the entire configuration files from Kestra
+- `secrets`: this will be merged with `configuration` but kept as secret on your k8s cluster.
 
 
