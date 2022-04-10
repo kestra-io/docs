@@ -3,9 +3,8 @@ order: 4
 ---
 # Micronaut configuration
 
-Since Kestra is a Java app base on micronaut, you can configure to fit your need.
-We will not explain all the configuration values possible, there are available [here](https://docs.micronaut.io/1.3.7/guide/index.html) 
-but we will provide some tips, and most useful to help you to configure micronaut to fit your need : 
+Since Kestra is a Java app based on micronaut, you can configure micronaut to fit your needs.
+We will not explain all the configuration values possible, these are available [here](https://docs.micronaut.io/1.3.7/guide/index.html). However, we will provide some tips on the most useful options:
 
 ## Configure log Level 
 ```yaml
@@ -32,7 +31,7 @@ micronaut:
 ```
 
 ## Configure the timeout or max uploaded file size
-A lot of configuration affect these, here is the default configuration: 
+A lot of configurations affect these, here is the default configuration: 
 ```yaml
 micronaut:
   server:
