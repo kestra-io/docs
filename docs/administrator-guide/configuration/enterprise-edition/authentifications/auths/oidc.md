@@ -1,6 +1,6 @@
 # Open Id Connect (OIDC)
 
-To enable OIDC in the application, you'll first have to enable OIDC in micronaut:
+To enable OIDC in the application, you will first have to enable OIDC in micronaut:
 
 ```yaml
 micronaut:
