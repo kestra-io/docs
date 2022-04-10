@@ -3,9 +3,9 @@ order: 5
 ---
 # Triggers & schedule
 
-Triggers are way to start a flow with external events. For example, on a schedule date or waiting for some external events (like file creation or another flow end)
+Triggers are a way to start a flow with external events. For example, a trigger can be set for a scheduled date or waiting for an external event (such as file creation or another flows end).
 
-Here is the current available triggers :
+Here are the currently available triggers:
 
 * [Flow trigger](./flow.md)
 * [Schedule](./schedule.md)
