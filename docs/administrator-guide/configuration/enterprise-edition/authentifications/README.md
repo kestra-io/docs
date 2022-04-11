@@ -5,12 +5,12 @@ order: 2
 # Authentications
 
 
-Kestra provide 2 authentification methods for now :
+Kestra provides 2 authentification methods for the moment:
 - Basic Auth: enabled by default
 - [OIDC](./auths/oidc.md)
 
-First thing, you **must** configure is the JWT token security:
-Please generate a secret that is at least 256 bits and change the config like this:
+First, you **must** configure the JWT token security:
+Please generate a secret that is at least 256 bits and change the configuration like this:
 
 ```yaml
 micronaut:
