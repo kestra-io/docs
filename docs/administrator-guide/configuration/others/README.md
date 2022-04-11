@@ -4,7 +4,8 @@ order: 5
 # Others Kestra configuration
 
 ## Url configuration
-Some notification service need to have an url configuration defined in order to add some link directly to the web ui. Use a full uri here with a trailing `/` (without ui or api).
+Some notification services require a URL configuration defined in order to add some links directly to the Web UI. Use a full uri here with a trailing `/` (without ui or api).
+
 ```yaml
 kestra:
   url: https://www.my-host.com/kestra/
@@ -12,8 +13,8 @@ kestra:
 ```
 
 ## Plugins configuration
-Configuration of maven repositories used for commande `plugins install`.
-Default are necessary for kestra and plugins, but you can add your custom maven registries in order to download your own plugins with this command.
+Configuration of maven repositories used for the command `plugins install`.
+Defaults are necessary for Kestra and plugins, but you can add your own custom maven registries in order to download your own plugins with this command.
 
 ```yaml
 kestra:
@@ -31,17 +32,17 @@ kestra:
 ## Variables configuration
 
 ### `kestra.variables.env-vars-prefix`
-Kestra provide a way to use environment variables in your flow.
+Kestra provides a way to use environment variables in your flow.
 By default, we only get environment variables that start with `KESTRA_`.
 
 These variables will be accessible on flow with <code v-pre>{{ env.your_env }}</code>
 
-For example env vars with name `KESTRA_MY_ENV` will be usable with  <code v-pre>{{ env.my_env }}</code>
+For example, env vars with the name `KESTRA_MY_ENV` will be usable with  <code v-pre>{{ env.my_env }}</code>
 
 
 ### `kestra.variables.globals`
-You can also provide from configuration files globals variables that will be accessible in all your flow.
-Mostly it will be use for example to declare environnement on your instance, some global dataset, ...
+You can also provide globals variables from the configuration files that will be accessible in all your flows.
+Mostly these will be used to declare the environment on your instance,  such as global datasets, for example
 
 ```yaml
 kestra:
@@ -50,22 +51,22 @@ kestra:
       env: dev
 
 ```
-These variables will be accessible on flow with <code v-pre>{{ globals.env }}</code>
+These variables will be accessible on flows with <code v-pre>{{ globals.env }}</code>
 
 
 ### `kestra.variables.disable-handlebars`
-By default, [deprecated handlebars](../../../developer-guide/variables/deprecated-handlebars) is disabled, you can enable it with `true` value.
+By default, [deprecated handlebars](../../../developer-guide/variables/deprecated-handlebars) is disabled, it can be enabled with `true` value.
 
 
 ### `kestra.variables.cache-enabled`
-The rendering of template variables can be cpu intensive, and by default we **enable** a cache of "template". You can disable it, but it's really recommended keeping it enable.
+The rendering of template variables can be cpu intensive, and by default we **enable** a cache of "templates". You can disable it, but it's really recommended keeping it enabled.
 
 ### `kestra.variables.cache-size`
-The rendering of template variables cache is an LRU cache (keep most used) and will be in memory (default `1000`). You can change the size of template cache (in number of template), take care that more this number will be high, the more memory server will use, maybe for not so many use template.
+The rendering of template variables cache is an LRU cache (keep most used) and will be in memory (default `1000`). You can change the size of the template cache (in number of template), take care that more this number will be high, the more memory server will use, maybe for not so many use templates.
 
 ### `kestra.tasks.defaults`
 You can also provide from configuration files tasks defaults that will be applied on each tasks on your cluster **if not defined** on flow or tasks.
-Mostly it will allow you to be sure a value was defined at a default value for these tasks type.
+Mostly it will allow you to be sure a value was defined at a default value for these task types.
 
 ```yaml
 kestra:
@@ -113,11 +114,11 @@ kestra:
 ```
 
 ### `kestra.configurations.delete-files-on-start`: Delete configurations files
-This setting allow you to delete all configurations just after the server startup. It prevents to be able to read configurations files (that may contain your secrets) from a Bash task for example. The server will keep this value on memory and won't be accessible from tasks. `true` or `false` (default `false`)
+This setting allows you to delete all configurations just after the server startup. It prevents the ability to read configurations files (that may contain your secrets) from a Bash task for example. The server will keep this value on memory and won't be accessible from tasks. Values are either `true` or `false` (default `false`)
 
 ## Endpoint configuration
 Endpoint configuration can be done with micronaut configuration from [micronaut](https://docs.micronaut.io/latest/guide/index.html#endpointConfiguration).
-You can also secure all endpoint with an basic auth authentification with this additional configuration :
+You can also secure all endpoints with a basic auth authentification using this additional configuration:
 
 ```yaml
 endpoints:
@@ -128,7 +129,8 @@ endpoints:
 ```
 
 ## Temporary storage configuration
-Kestra write some temporary files during task processing, but default file will be created on `/tmp` but you can change the location with this configuration :
+Kestra writes temporary files during task processing. By default files will be created on `/tmp`, but you can change the location with this configuration:
+
 ```yaml
 kestra:
   tasks:
@@ -138,18 +140,19 @@ kestra:
 
 ## JVM configuration
 
-All JVM options can be passed as environment vars name `JAVA_OPTS`. You can use it to change all JVM options available like memory, encoding, ...
+All JVM options can be passed as environmental vars named `JAVA_OPTS`. You can use it to change all JVM options available, such as memory, encoding, etc...
 
-example:
+Example:
 
 ```shell
 export JAVA_OPTS="-Duser.timezone=Europe/Paris"
 ```
 
 ### `user.timezone`: Timezone
-By default, Kestra will handle all date with your system timezone. You can change the timezone with JVM options.
-Changing the timezone will affect mostly :
-* **scheduler**: by default, all schedule date is UTC, changing the java timezone will allow you to schedule flow in your timezone.
+By default, Kestra will handle all dates using your system's timezone. You can change the timezone with JVM options.
+
+Changing the timezone will mostly affect:
+* **scheduler**: by default, all schedule dates are UTC, changing the java timezone will allow you to schedule the flow in your timezone.
 * **log**:  that will be displayed on your timezone.
 
 
@@ -166,7 +169,7 @@ For this very reason, the `kestra.anonymous-usage-report.enabled` option is mand
 
 ### Collected Data
 
-The collected data can be found [here](https://github.com/kestra-io/kestra/tree/develop/core/src/main/java/io/kestra/core/models/collectors), We collect only **anonymous data** that allow to understand how you used Kestra. Mostly the data collected are :
+The collected data can be found [here](https://github.com/kestra-io/kestra/tree/develop/core/src/main/java/io/kestra/core/models/collectors). We collect only **anonymous data** that allows us to understand how you used Kestra. The data collected includes:
 
 - **host data:** cpu, ram, os, jvm and a fingerprint of the machine
 - **plugins data:** the list of plugins installed and the current version
@@ -182,9 +185,9 @@ Add Google Analytics tracking ID (ex: `UA-12345678-1`) and report all page track
 
 
 ### `kestra.webserver.html-head`: Append some head tags on the webserver application
-Mostly useful in order to inject some css or javascript to customize the web application.
+Mostly useful for injecting css or javascript to customize a web application.
 
-Examples, add a red banner on production environment :
+For example, you can add a red banner on production environments:
 ```yaml
 kestra:
   webserver:
