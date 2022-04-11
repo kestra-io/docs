@@ -1,12 +1,13 @@
 # Vault configuration
 
-The integration will store secret in vault [KV Secrets Engine - Version 2](https://www.vaultproject.io/docs/secrets/kv/kv-v2). Kestra authentications must have a full [read & write policies](https://www.vaultproject.io/docs/concepts/policies) on this secrets store. You can optionally change `root-engine` or `namespace` (if you are using Vault Enterprise).
+The integration will store secrets in the vault [KV Secrets Engine - Version 2](https://www.vaultproject.io/docs/secrets/kv/kv-v2). Kestra authentications must have  full [read & write policies](https://www.vaultproject.io/docs/concepts/policies) on this secrets store. You can optionally change `root-engine` or `namespace` (if you are using Vault Enterprise).
 
 
 ## Authentication
 ### Password authentification
 
-We can use an [Userpass Auth Method](https://www.vaultproject.io/docs/auth/userpass) using following configuration:
+We can use a [Userpass Auth Method](https://www.vaultproject.io/docs/auth/userpass) using the following configuration:
+
 ```yaml
 kestra:
   secret:
@@ -19,7 +20,7 @@ kestra:
 ```
 
 ### Token authentification
-We can use an [Token Auth Method](https://www.vaultproject.io/docs/auth/token) using following configuration:
+We can use a [Token Auth Method](https://www.vaultproject.io/docs/auth/token) using the following configuration:
 
 ```yaml
 kestra:
@@ -32,7 +33,7 @@ kestra:
 ```
 
 ### AppRole authentification
-We can use an [AppRole Auth Method](https://www.vaultproject.io/docs/auth/approle) using following configuration:
+We can use an [AppRole Auth Method](https://www.vaultproject.io/docs/auth/approle) using the following configuration:
 
 ```yaml
 kestra:
