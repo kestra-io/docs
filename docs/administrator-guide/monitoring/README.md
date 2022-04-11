@@ -3,13 +3,13 @@ order: 4
 ---
 # Monitoring & Alerting
 
-Kestra will start a monitoring endpoint on port 8081 by default. (You can change this port with 
+Kestra will deploy a monitoring endpoint on port 8081 by default. (You can change this port with 
 [configuration options](../configuration) `endpoints:.all.port`)
 
-This monitoring endpoint will expose some helpful route in order to monitor Kestra: 
+This monitoring endpoint will expose some helpful routes in order to monitor Kestra: 
 
 ## Prometheus 
-If you have any [Prometheus](https://prometheus.io/) monitoring systems, Kestra expose this endpoint `/prometheus` 
+If you have any [Prometheus](https://prometheus.io/) monitoring systems, Kestra exposes this endpoint `/prometheus` 
 
 
 
@@ -17,7 +17,7 @@ If you have any [Prometheus](https://prometheus.io/) monitoring systems, Kestra 
 Kestra expose some internal metrics allowing to add some alert. Each one declare many timeseries with tags allowing 
 to track at least namespace & flow. But also some others tags depending on available tasks.
 
-Also each task type can expose [custom metrics](../../concepts/executions.md#metrics) that will be exposed on prometheus.
+Also each task type can expose [custom metrics](../../concepts/executions.md#metrics) that will be exposed on Prometheus.
 
 
 #### Worker
@@ -73,7 +73,7 @@ In a near future, we will provide a template dashboard as a quick start.
 
 
 ## Kestra endpoint
-Kestra expose some internal endpoint on management port (8081 by default) depending on servers: 
+Kestra expose some internal endpoint on the management port (8081 by default), depending on servers: 
 
 
 * `/worker`: will expose all current running task on this worker
