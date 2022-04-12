@@ -305,6 +305,11 @@ export default {
                     icon: "csicon csicon-spark",
                     href: "plugin-spark"
                 },
+                {
+                    name: "Dbt",
+                    icon: "csicon csicon-dbt",
+                    href: "plugin-dbt"
+                },
             ];
 
             // Order by publish date, desc
@@ -458,6 +463,10 @@ i.csicon {
 
     &.csicon-spark {
         background-image: url("../../assets/home/spark.svg");
+    }
+
+    &.csicon-dbt {
+        background-image: url("../../assets/home/dbt.svg");
     }
 }
 
