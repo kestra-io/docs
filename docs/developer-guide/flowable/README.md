@@ -223,10 +223,6 @@ You can pass [outputs](../outputs) to the trigger flow as [inputs](../inputs) (t
 id: subflow
 namespace: io.kestra.tests
 
-inputs:
-  - name: myFile
-    type: FILE
-
 tasks:
   - id: "subflow"
     type: io.kestra.core.tasks.flows.Flow
@@ -241,6 +237,67 @@ tasks:
     <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Flow">Flow Task documentation</a>
 </div>
 
+## Worker
+
+By default, Kestra will launch each task on a fresh filesystem and on a new worker instance.
+
+This task will run sequentially keeping the same filesystem allowing reuse previous task file on next tasks and keep tracking of execution time for each task. This task is mostly useful when working with large filesystem operation.
+
+```yaml
+id: worker
+namespace: io.kestra.tests
+
+tasks:
+  - id: worker
+    type: io.kestra.core.tasks.flows.Worker
+    tasks:
+      - id: first
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - 'echo "{{ taskrun.id }}" > {{ workingDir }}/stay.txt'
+      - id: second
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - |
+            echo '::{"outputs": {"stay":"'$(cat {{ workingDir }}/stay.txt)'"}}::'
+```
+
+<div style="text-align: right">
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Worker">Worker Task documentation</a>
+</div>
+
+
+## Pause
+
+Kestra flow run task till the end of all task, but sometime, you need :
+- add a manual validation before continue the execution
+- wait some duration before continue the execution
+
+```yaml
+id: pause
+namespace: io.kestra.tests
+
+tasks:
+  - id: validation
+    type: io.kestra.core.tasks.flows.Pause
+    tasks:
+      - id: ok
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - 'echo "started after manual validation"'
+  - id: wait
+    type: io.kestra.core.tasks.flows.Pause
+    delay: PT5M
+    tasks:
+      - id: waited
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - 'echo "start after 5 minutes"'
+```
+
+<div style="text-align: right">
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Pause">Pause Task documentation</a>
+</div>
 
 ## Templates
 [Templates](../templates) are special tasks that will include tasks from a template at *runtime*.
