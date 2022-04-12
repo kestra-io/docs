@@ -205,6 +205,11 @@ export default {
                     href: "plugin-debezium-postgres"
                 },
                 {
+                    name: "Debezium SQL Server",
+                    icon: "csicon csicon-debezium-sqlserver",
+                    href: "plugin-debezium-sqlserver"
+                },
+                {
                     name: "Vertica",
                     icon: "csicon csicon-vertica",
                     href: "plugin-jdbc-vertica"
@@ -441,6 +446,10 @@ i.csicon {
 
     &.csicon-debezium-postgres {
         background-image: url("../../assets/home/debezium-postgres.svg");
+    }
+
+    &.csicon-debezium-sqlserver {
+        background-image: url("../../assets/home/debezium-sqlserver.svg");
     }
 
     &.csicon-snowflake {
