@@ -310,6 +310,11 @@ export default {
                     icon: "csicon csicon-dbt",
                     href: "plugin-dbt"
                 },
+                {
+                    name: "Cassandra",
+                    icon: "csicon csicon-cassandra",
+                    href: "plugin-cassandra"
+                },
             ];
 
             // Order by publish date, desc
@@ -467,6 +472,10 @@ i.csicon {
 
     &.csicon-dbt {
         background-image: url("../../assets/home/dbt.svg");
+    }
+
+    &.csicon-cassandra {
+        background-image: url("../../assets/home/cassandra.svg");
     }
 }
 
