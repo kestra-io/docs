@@ -37,7 +37,7 @@ In 2019, Leroy Merlin and Adeo decided to move from an on-premise server to a cl
 
 They decided to create an entirely new team with that goal in mind, and took an empty page and filled it with a brand new solution for the migration process. They needed to define each component of the future data platform (from storage, pipeline, source code, etc.), build the platform, and demonstrate how to use it for all data engineers (approximately fifty people).
 
-Adeo and Leroy Merlin have a strong partnership, so the storage choice was to be Google BigQuery. In the near future, Leroy Merlin will go to the DataOps lifecycle — going live doesn’t have to be a painful, manual process. Second decision: everything needed to be hosted- on GitHub and have a strong CI/CD in order to go to production. Terraform was the obvious choice here due to the large ecosystem and native integration with BigQuery and other GCP resources.
+Adeo has a strong partnership with Google, and since Leroy Merlin is a subsidiary, the storage choice was Google BigQuery. Second decision: everything needed to be hosted on GitHub and to have a strong CI/CD process in order to go to production. Terraform was the obvious choice here due to the large ecosystem and native integration with BigQuery and other GCP resources.
 
 Next, they needed to decide on how to transfer the data, load it in BigQuery, and transform and aggregate the data. For the transport layer and load, no obvious choice had presented itself. So, they decided to build a custom solution (based on the GCP (Google Cloud Platform) service). For the orchestration, a lot of people were using Airflow, so why not use such a popular system? What’s more, GCP even had a fully managed orchestration service: Cloud composer.
 
