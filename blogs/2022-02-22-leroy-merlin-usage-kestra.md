@@ -68,7 +68,7 @@ But **it failed at Leroy Merlin**. First, the implementation by Google: Google C
 Even when we persevered with it, the performance level was not there; Airflow failed on the first project; the **duration of the flow was twenty times longer** than the same flow with Stambia, and the analysis showed that this duration would increase over time and would not scale to the number of DAGs and executions wanted.
 
 
-::: Warning Decision
+::: warning Decision
 By this time, Terraform and BigQuery had demonstrated their strengths and, Airflow, custom transfer and load tools had been rejected. Leroy Merlin needed to find another option, and no solution had presented itself.
 :::
 
@@ -165,7 +165,7 @@ Here are some numbers that show the current usage for January 2022 ( for product
 <div class="clearfix" />
 
 ### Some Testimonials
-Leroy Merlin has strongly supported the development of Kestra. As with any software, its young age could be a source of frustration for users. They needed to handle  missing features, report some bugs, suffer some time loss from instability. But what was astounding was the realization that the **pain was far less than the gain**, and we obtained many good reports on software internal notation tools. It proved to be a solution that users really love and uphold. 
+Leroy Merlin has strongly supported the development of Kestra. As with any software, its young age could be a source of frustration for users. They needed to handle  missing features, report some bugs, suffer some time loss from instability. But what was astounding was the realization that the **pain was far less than the gain**, and we obtained many good reports on software internal notation tools. It proved to be a solution that users really love and uphold.
 
 Here's what people shared with us:
 
