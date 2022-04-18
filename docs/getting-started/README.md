@@ -15,7 +15,7 @@ Make sure the following are already installed:
 - Download the compose file [here](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) and save it with the name `docker-compose.yml`. For linux and MacOS, you can run `wget https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml`.
 - Run `docker-compose pull`
 - Run `docker-compose up -d`
-- Open `http://localhost:8080` in your browser
+- Open [http://localhost:8080](http://localhost:8080) in your browser
 
 
 ::: warning
