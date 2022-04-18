@@ -14,8 +14,8 @@ Make sure you have already installed :
 ## Launch Kestra 
 
 - Download the compose file [here](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml)
-- Run `docker-compose up` 
-- Open `http://localhost:8080` on your browser
+- Run `docker-compose up`
+- Open [http://localhost:8080](http://localhost:8080) in your browser
 
 This will start all the dependencies with a preconfigured Kestra that is connected to everything! 
 
