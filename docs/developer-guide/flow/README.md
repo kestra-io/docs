@@ -68,6 +68,8 @@ triggers:
 taskDefaults:
   - type: io.kestra.core.tasks.debugs.Echo
     level: ERROR
+
+disabled: false
 ```
 
 
@@ -101,8 +103,10 @@ taskDefaults:
 |`triggers.[].id`|A **unique** trigger id which can't be updated.|
 |`triggers.[].type`|The trigger type is a full java class name.|
 |`triggers.[].description`|Description for documentation, more details [here](../documentation/) |
+|`triggers.[].disabled`| Disabled the triggers |
 |`triggers.[].xxx`|Like tasks, each trigger has its own properties|
 |`taskDefaults`|Default value for current tasks, in order to avoid repeat the same properties on each tasks|
 |`taskDefaults.[].type`|The task type is a full java class name.|
 |`taskDefaults.[].forced`|If the default value is set to Forced, the taskDefault will always overwrite the user properties for the task (default `false`).|
 |`taskDefaults.[].values.xxx`|The properties (just like Tasks) that you want to be set as default.|
+|`disabled`|The flow can be disabled to prevent any executions.|
