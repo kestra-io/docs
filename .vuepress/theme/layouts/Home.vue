@@ -1,5 +1,6 @@
 <template>
     <div id="wrapper">
+        <Chat />
         <Header />
         <div id="container">
             <main>
@@ -27,6 +28,7 @@ import LandingCustomer from "../components/home/LandingCustomer"
 import LandingPlugins from "../components/home/LandingPlugins"
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Chat from "../components/layout/Chat";
 
 export default {
     components: {
@@ -39,6 +41,7 @@ export default {
         LandingTech,
         LandingVideo,
         LandingPlugins,
+        Chat,
     },
 
     mounted() {

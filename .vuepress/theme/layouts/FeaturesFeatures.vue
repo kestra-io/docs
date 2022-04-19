@@ -1,5 +1,6 @@
 <template>
     <div id="wrapper">
+        <Chat />
         <Header />
         <div id="container">
             <main class="features-usage">
@@ -526,6 +527,7 @@ import SchoolOutline from "vue-material-design-icons/SchoolOutline";
 import ShieldLockOutline from "vue-material-design-icons/ShieldLockOutline";
 import FileLockOutline from "vue-material-design-icons/FileLockOutline"
 import ViewDashboardOutline from "vue-material-design-icons/ViewDashboardOutline"
+import Chat from "../components/layout/Chat";
 
 export default {
     components: {
@@ -552,7 +554,8 @@ export default {
         OpenInNew,
         ShieldLockOutline,
         FileLockOutline,
-        ViewDashboardOutline
+        ViewDashboardOutline,
+        Chat
     },
     mounted() {
         AOS.init({startEvent: "load"});

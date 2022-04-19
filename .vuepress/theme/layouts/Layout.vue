@@ -2,6 +2,7 @@
     <div id="wrapper"
          :class="pageClasses"
     >
+        <Chat />
         <Header />
         <div id="container">
             <div class="container-fluid">
@@ -48,6 +49,7 @@ import PageNav from '@vuepress/theme-default/components/PageNav.vue'
 import SidebarLinks from '../components/SidebarLinks.vue'
 import {resolveSidebarItems} from '@vuepress/theme-default/util'
 import Share from "../components/layout/Share";
+import Chat from "../components/layout/Chat";
 
 export default {
     name: 'GlobalLayout',
@@ -60,7 +62,8 @@ export default {
         SidebarLinks,
         PageEdit,
         PageNav,
-        Share
+        Share,
+        Chat,
     },
 
     data() {

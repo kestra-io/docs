@@ -1,5 +1,6 @@
 <template>
     <div id="wrapper">
+        <Chat />
         <Header />
         <div id="container">
             <main>
@@ -88,6 +89,7 @@ import TimeAgo from '../components/TimeAgo';
 import Breadcrumb from "../components/layout/Breadcrumb"
 import ChevronRight from 'vue-material-design-icons/ChevronRight'
 import CalendarCheck from 'vue-material-design-icons/CalendarCheck'
+import Chat from "../components/layout/Chat";
 
 export default {
     components: {
@@ -96,7 +98,8 @@ export default {
         TimeAgo,
         Breadcrumb,
         ChevronRight,
-        CalendarCheck
+        CalendarCheck,
+        Chat,
     },
     computed: {
         filteredList() {

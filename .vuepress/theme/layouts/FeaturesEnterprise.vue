@@ -1,5 +1,6 @@
 <template>
     <div id="wrapper">
+        <Chat />
         <Header />
         <div id="container">
             <main class="features-usage">
@@ -221,8 +222,8 @@ import ChevronRight from 'vue-material-design-icons/ChevronRight'
 import CheckCircleOutline from 'vue-material-design-icons/CheckCircleOutline'
 import ArrowRight from "vue-material-design-icons/ArrowRight";
 import Mail from "vue-material-design-icons/Mail";
-
 import AOS from "aos";
+import Chat from "../components/layout/Chat";
 
 export default {
     components: {
@@ -234,6 +235,7 @@ export default {
         CheckCircleOutline,
         ArrowRight,
         Mail,
+        Chat,
     },
     mounted() {
         AOS.init({startEvent: "load"});

@@ -1,5 +1,6 @@
 <template>
     <div id="wrapper">
+        <Chat />
         <Header />
         <div id="container">
             <main class="docs">
@@ -22,15 +23,14 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/layout/Breadcrumb"
-import RightAnchor from "../components/layout/RightAnchor";
-import Share from "../components/layout/Share";
-import TimeAgo from '../components/TimeAgo';
+import Chat from "../components/layout/Chat";
 
 export default {
     components: {
         Header,
         Footer,
         Breadcrumb,
+        Chat,
     },
     computed: {
 

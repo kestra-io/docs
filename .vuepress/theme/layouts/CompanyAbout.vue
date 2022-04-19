@@ -1,5 +1,6 @@
 <template>
     <div id="wrapper">
+        <Chat />
         <Header />
         <div id="container">
             <main>
@@ -120,6 +121,7 @@ import ChevronRight from 'vue-material-design-icons/ChevronRight'
 import Play from 'vue-material-design-icons/Play'
 import AOS from "aos";
 import Email from "vue-material-design-icons/Email";
+import Chat from "../components/layout/Chat";
 
 export default {
     components: {
@@ -131,6 +133,7 @@ export default {
         ChevronRight,
         Play,
         Email,
+        Chat,
     },
     mounted() {
         AOS.init({startEvent: "load"});

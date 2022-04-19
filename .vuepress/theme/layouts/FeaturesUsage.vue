@@ -1,5 +1,6 @@
 <template>
     <div id="wrapper">
+        <Chat />
         <Header />
         <div id="container">
             <main class="features-usage">
@@ -217,6 +218,7 @@ import SiteMap from "vue-material-design-icons/Sitemap";
 import CalendarClockOutline from "vue-material-design-icons/CalendarClockOutline";
 import ServerNetwork from "vue-material-design-icons/ServerNetwork";
 import AOS from "aos";
+import Chat from "../components/layout/Chat";
 
 export default {
     components: {
@@ -231,7 +233,8 @@ export default {
         PlayCircle,
         SiteMap,
         CalendarClockOutline,
-        ServerNetwork
+        ServerNetwork,
+        Chat
     },
     mounted() {
         AOS.init({startEvent: "load"});

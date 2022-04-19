@@ -1,5 +1,6 @@
 <template>
     <div id="wrapper">
+        <Chat />
         <Header />
         <div id="container">
             <main class="docs">
@@ -49,6 +50,7 @@ import Breadcrumb from "../components/layout/Breadcrumb"
 import RightAnchor from "../components/layout/RightAnchor";
 import Share from "../components/layout/Share";
 import TimeAgo from '../components/TimeAgo';
+import Chat from "../components/layout/Chat";
 
 export default {
     components: {
@@ -57,7 +59,8 @@ export default {
         Breadcrumb,
         RightAnchor,
         Share,
-        TimeAgo
+        TimeAgo,
+        Chat,
     },
     computed: {
         author() {

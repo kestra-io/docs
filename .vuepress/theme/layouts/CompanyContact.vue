@@ -1,5 +1,6 @@
 <template>
     <div id="wrapper">
+        <Chat />
         <Header />
         <div id="container">
             <main>
@@ -85,6 +86,7 @@ import Breadcrumb from "../components/layout/Breadcrumb"
 import {BModal, VBModal} from 'bootstrap-vue'
 import Discord from 'vue-material-design-icons/Discord'
 import {ArrowUpIcon, GithubIcon, LinkedinIcon, MailIcon, MapPinIcon, PhoneIcon, TwitterIcon,} from 'vue-feather-icons';
+import Chat from "../components/layout/Chat";
 
 export default {
     components: {
@@ -100,6 +102,7 @@ export default {
         LinkedinIcon,
         GithubIcon,
         Discord,
+        Chat,
     },
     directives: { 'b-modal': VBModal }
 }

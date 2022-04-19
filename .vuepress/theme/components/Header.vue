@@ -25,7 +25,7 @@
 
         <template #title="data">
             <span :is="data.item.icon" />
-            <a v-if="data.item.title === 'GitHub'" :href="data.item.href">{{ data.item.title }} <span v-if="stargazers" data-aos="zoom-out" class="badge badge-dark">{{ stargazersText }} ⭐</span></a>
+            <a v-if="data.item.title === 'GitHub'" :href="data.item.href">{{ data.item.title }} <span v-if="stargazers" class="badge badge-dark">{{ stargazersText }} ⭐</span></a>
             <a v-else-if="data.item.href" :href="data.item.href">{{ data.item.title }}</a>
             <span v-else>{{ data.item.title }}</span>
         </template>
@@ -208,15 +208,13 @@ export default {
     },
     mounted() {
         if (!window.sessionStorage.getItem("github_stargazers_count")) {
-            const response = axios.get("https://api.github.com/repos/kestra-io/kestra")
+            axios.get("https://api.github.com/repos/kestra-io/kestra")
                 .then(response => {
                     window.sessionStorage.setItem("github_stargazers_count", response.data.stargazers_count)
                     this.stargazers = response.data.stargazers_count;
                 })
         } else {
-            setTimeout(() => {
-                this.stargazers = window.sessionStorage.getItem("github_stargazers_count");
-            }, 1000)
+            this.stargazers = window.sessionStorage.getItem("github_stargazers_count");
         }
     },
 
