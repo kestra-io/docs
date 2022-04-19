@@ -315,6 +315,11 @@ export default {
                     icon: "csicon csicon-cassandra",
                     href: "plugin-cassandra"
                 },
+                {
+                    name: "MQTT",
+                    icon: "csicon csicon-mqtt",
+                    href: "plugin-mqtt"
+                },
             ];
 
             // Order by publish date, desc
@@ -476,6 +481,10 @@ i.csicon {
 
     &.csicon-cassandra {
         background-image: url("../../assets/home/cassandra.svg");
+    }
+
+    &.csicon-mqtt {
+        background-image: url("../../assets/home/mqtt.svg");
     }
 }
 
