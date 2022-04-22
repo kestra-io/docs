@@ -8,7 +8,7 @@ cd build || exit
 
 # plugins
 echo -e "\e[42m Doc :\e[0m Core"
-docker run --rm --name kestra-docs -i \
+docker run --rm --user=0 --name kestra-docs -i \
     -v "$(pwd)"/cores/docs:/app/docs \
     kestra/kestra:develop-full \
     plugins doc \

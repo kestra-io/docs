@@ -58,14 +58,14 @@ namespace: io.kestra.tests
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
-    value: '["s1", "s2", "s3"]'
     tasks:
-        - id: 1_1-produce_output
+      - id: sub
         type: io.kestra.core.tasks.debugs.Return
         format: "{{ task.id }} > {{ taskrun.value }} > {{ taskrun.startDate }}"
+    value: "[\"s1\", \"s2\", \"s3\"]"
   - id: use
     type: io.kestra.core.tasks.debugs.Return
-    format: "Previous task produced output : {{ outputs.each.s1.a.value }}"
+    format: "Previous task produced output : {{ outputs.sub.s1.value }}"
 ```
 
 Here the `outputs.1_1-produce_output.s1.a.value` reach the first `1-output` task element.
@@ -76,14 +76,14 @@ It is also possible to locate a special task by its `value`:
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
-    value: '["value 1", "value 2", "value 3"]'
     tasks:
       - id: inner
         type: io.kestra.core.tasks.debugs.Return
         format: "{{ task.id }}"
+    value: "[\"value 1\", \"value 2\", \"value 3\"]"
   - id: end
     type: io.kestra.core.tasks.debugs.Return
-    format: "{{ task.id }} > {{ outputs.inner[value 1].value }}"
+    format: "{{ task.id }} > {{ outputs.inner['value 1'].value }}"
 ```
 with the format `outputs.TASKID.[VALUE].PROPERTY`. The special bracket `[]` in  `.[VALUE].` enable special chars like space (and can be remove without any special characters)
 
@@ -99,7 +99,6 @@ For this, you can pass the `taskrun.value` to outputs object:
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
-    value: '["value 1", "value 2", "value 3"]'
     tasks:
       - id: first
         type: io.kestra.core.tasks.debugs.Return
@@ -107,7 +106,8 @@ tasks:
       - id: second
         type: io.kestra.core.tasks.debugs.Return
         format: "{{ outputs.first[taskrun.value].value }}"
+    value: "[\"value 1\", \"value 2\", \"value 3\"]"
   - id: end
     type: io.kestra.core.tasks.debugs.Return
-    format: "{{task.id}} > {{outputs.inner[value 1].value}}"
+    format: "{{task.id}} > {{outputs.second['value 1'].value}}"
 ```
