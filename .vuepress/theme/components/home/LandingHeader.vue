@@ -86,6 +86,11 @@ const logo = [
     require('../../assets/home/' + 'sheets.svg'),
     require('../../assets/home/' + 'slack.png'),
     require('../../assets/home/' + 'vertica.png'),
+    require('../../assets/home/' + 'snowflake.svg'),
+    require('../../assets/home/' + 'abs.svg'),
+    require('../../assets/home/' + 'cassandra.svg'),
+    require('../../assets/home/' + 'kafka.svg'),
+    require('../../assets/home/' + 'mqtt.svg'),
 ]
 
 export default {

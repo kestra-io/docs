@@ -135,6 +135,18 @@ export default {
                     section: "sftp"
                 },
                 {
+                    name: "FTP",
+                    icon: Network,
+                    href: "plugin-fs",
+                    section: "ftp"
+                },
+                {
+                    name: "FTPS",
+                    icon: Network,
+                    href: "plugin-fs",
+                    section: "ftps"
+                },
+                {
                     name: "Google Cloud Storage",
                     icon: "csicon csicon-gcs",
                     href: "plugin-gcp",
@@ -145,6 +157,12 @@ export default {
                     icon: "csicon csicon-bigquery",
                     href: "plugin-gcp",
                     section: "bigquery"
+                },
+                {
+                    name: "Vertex AI",
+                    icon: "csicon csicon-vertexai",
+                    href: "plugin-gcp",
+                    section: "vertexai"
                 },
                 {
                     name: "Google Sheets",
@@ -495,6 +513,10 @@ i.csicon {
 
     &.csicon-abs {
         background-image: url("../../assets/home/abs.svg");
+    }
+
+    &.csicon-vertexai {
+        background-image: url("../../assets/home/vertexai.svg");
     }
 }
 
