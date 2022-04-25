@@ -320,6 +320,12 @@ export default {
                     icon: "csicon csicon-mqtt",
                     href: "plugin-mqtt"
                 },
+                {
+                    name: "Azure Blob Storage",
+                    icon: "csicon csicon-abs",
+                    href: "plugin-azure",
+                    section: "storage-blob"
+                },
             ];
 
             // Order by publish date, desc
@@ -485,6 +491,10 @@ i.csicon {
 
     &.csicon-mqtt {
         background-image: url("../../assets/home/mqtt.svg");
+    }
+
+    &.csicon-abs {
+        background-image: url("../../assets/home/abs.svg");
     }
 }
 
