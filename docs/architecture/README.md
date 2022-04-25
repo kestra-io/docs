@@ -26,6 +26,7 @@ Any storage designated can be used by any Kestra servers except the [Executor](#
 Available storages are :
 - [Storage Minio](https://github.com/kestra-io/storage-minio) for [Minio](https://min.io/), which is compatible with [AWS S3](https://aws.amazon.com/s3/) and all other *S3 Like* storage
 - [Storage GCS](https://github.com/kestra-io/storage-gcs) for [Google Cloud Storage](https://cloud.google.com/storage)
+- [Storage Azure](https://github.com/kestra-io/storage-azure) for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
 
 ## Servers
 
@@ -39,7 +40,7 @@ The executor also handles special execution cases:
 - [Flow Trigger](../../developer-guide/triggers/flow.md)
 - [Template](../../developer-guide/templates)
 
-Internally, the executor is a heavy [Kafka Stream](https://kafka.apache.org/documentation/streams/). The executor processes all events coming from Kafka in the right order, and keeps an internal state of the execution and merges taskrun results coming from the worker. 
+Internally, the executor is a heavy [Kafka Stream](https://kafka.apache.org/documentation/streams/). The executor processes all events coming from Kafka in the right order, and keeps an internal state of the execution and merges taskrun results coming from the worker.
 It also detects dead Workers and resubmits the tasks run by a dead worker.
 
 Since the application is a Kafka Stream, the application can be scaled infinitely (within the limits of partition count on Kafka) but since no heavy computations are done on the executor, this server does not require alot of resources (unless you have a very high rate of executions).
