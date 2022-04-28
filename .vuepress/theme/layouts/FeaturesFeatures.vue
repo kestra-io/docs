@@ -401,7 +401,7 @@
                             <div class="col-12 text-center">
                                 <div class="section-title mb-4 pb-2">
                                     <h4 class="title mb-4" data-aos="fade-left">An Enterprise Edition</h4>
-                                    <p data-aos="fade-right">The enterprise edition fits all company needs regarding security and productivity.y</p>
+                                    <p data-aos="fade-right">The enterprise edition fits all company needs regarding security and productivity.</p>
                                 </div>
                             </div>
                         </div>
