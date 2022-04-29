@@ -110,7 +110,11 @@ Backfill will do all schedules between the defined date & the current date and w
 * **Required:** ❌
 > List of schedule Conditions in order to limit schedule date.
 
-
+### `inputs`
+* **Type:** ==object==
+* **Dynamic:** ✔️
+* **Required:** ❌
+> The input to pass to the triggered flow
 
 ## Outputs
 ### `date`
