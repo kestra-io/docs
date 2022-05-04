@@ -29,7 +29,20 @@ kestra:
 
 ```
 
-## Variables configuration
+## Docker configurations
+
+
+### `kestra.tasks.scripts.docker.volume-enabled`
+Volumes mount are disabled by default for security reasons, you can enabled it with this configurations:
+```yaml
+kestra:
+  tasks:
+    scripts:
+      docker:
+        volume-enabled: true
+```
+
+## Variables configurations
 
 ### `kestra.variables.env-vars-prefix`
 Kestra provides a way to use environment variables in your flow.
