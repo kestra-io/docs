@@ -38,6 +38,8 @@ module.exports = {
         ['link', { rel: 'mask-icon',  href: '/safari-pinned-tab.svg', color: '#192a4e' }],
         ['meta', { name: 'msapplication-TileColor',  content: '#192a4e' }],
         ['meta', { name: 'theme-color',  content: '#192a4e' }],
+        ['script', { src: 'https://unpkg.com/rapidoc/dist/rapidoc-min.js' }],
+
     ],
     themeConfig: {
         domain: 'https://kestra.io',

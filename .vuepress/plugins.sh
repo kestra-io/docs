@@ -19,6 +19,15 @@ for DOC in $(find . -type d -name md); do
     cp -r "${DOC}"/* ../../plugins
 done
 
+# api
+
+docker pull ghcr.io/kestra-io/kestra-ee:develop
+docker create --rm --name kestra-ee --entrypoint=bash ghcr.io/kestra-io/kestra-ee:develop -c 'sleep 60'
+docker cp kestra-ee:/app/kestra-ee /tmp/kestra-ee.zip
+set +e
+unzip -p /tmp/kestra-ee.zip META-INF/swagger/kestra-ee.yml > ../public/kestra-ee.yml
+set -e
+
 # terraform
 cd ..
 mkdir -p terraform

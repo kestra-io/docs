@@ -15,11 +15,11 @@
                         />
                     </div>
 
-                    <nav class="d-none d-xl-block col-xl-2 right">
+                    <nav v-if="rightBar()" class="d-none d-xl-block col-xl-2 right">
                         <RightAnchor />
                     </nav>
 
-                    <main class="col-md-9 col-xl-8 py-md-3 pl-md-5 docs" role="main">
+                    <main :class="mainClass()" class=" docs" role="main">
                         <div class="d-block d-md-none sidebar-mobile-btn">
                             <button class="navbar-toggler shadow-lg" type="button" @click="toggleSidebar">
                                 <span class="navbar-toggler-icon"></span>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-
+import isNil from 'lodash/isNil'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import RightAnchor from '../components/layout/RightAnchor.vue'
@@ -104,6 +104,19 @@ export default {
             this.isSidebarOpen = typeof to === 'boolean' ? to : !this.isSidebarOpen
             this.$emit('toggle-sidebar', this.isSidebarOpen)
         },
+        rightBar() {
+            return isNil(this.$page.frontmatter.rightBar)
+                ? (this.$site.themeConfig.rightBar ? this.$site.themeConfig.rightBar : true)
+                : this.$page.frontmatter.rightBar
+        },
+        mainClass() {
+            return this.rightBar() ? {
+                "col-md-9": true,
+                "col-xl-8": true,
+                "py-md-3": true,
+                "pl-md-5": true,
+            } : {};
+        }
     }
 }
 </script>

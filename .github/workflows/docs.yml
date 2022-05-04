@@ -35,6 +35,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      # Docker Login
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
 
       # Plugins docs generation
       - name: Download plugins documentation

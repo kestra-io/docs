@@ -21,6 +21,7 @@ plugins/**/*
 .vuepress/terraform-provider-kestra/*
 .temp
 .vuepress/public/examples.zip
+.vuepress/public/kestra-ee.yml
 
 ## Terraform
 docs/terraform/**/*
