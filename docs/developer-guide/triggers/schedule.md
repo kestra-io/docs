@@ -116,6 +116,14 @@ Backfill will do all schedules between the defined date & the current date and w
 * **Required:** ❌
 > The input to pass to the triggered flow
 
+### `lateMaximumDelay`
+* **Type:** ==Duration==
+* **Dynamic:** ❌
+* **Required:** ❌
+> The maximum late delay accepted
+
+If the schedule didn't start after this delay, the execution will be skip.
+
 ## Outputs
 ### `date`
 
