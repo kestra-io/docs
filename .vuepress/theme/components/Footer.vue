@@ -28,8 +28,8 @@
                                 </a>
                             </li>
                             <li class="list-inline-item ml-1">
-                                <a href="https://discord.gg/NMG39WKGth" class="rounded">
-                                    <discord title="" />
+                                <a href="https://join.slack.com/t/kestra-io/shared_invite/zt-193shv281-rK9QOEfZC2_vEbDO7Uxtbw" class="rounded">
+                                    <slack title="" />
                                 </a>
                             </li>
                         </ul>
@@ -156,7 +156,7 @@
 
 <script>
 import ChevronRight from 'vue-material-design-icons/ChevronRight'
-import Discord from 'vue-material-design-icons/Discord'
+import Slack from 'vue-material-design-icons/Slack'
 import Heart from 'vue-material-design-icons/Heart'
 import {GithubIcon, LinkedinIcon, MailIcon, TwitterIcon,} from 'vue-feather-icons';
 import Shape from "./layout/Shape";
@@ -170,7 +170,7 @@ export default {
         GithubIcon,
         TwitterIcon,
         LinkedinIcon,
-        Discord,
+        Slack,
         MailIcon,
         ChevronRight,
         Heart

@@ -63,8 +63,8 @@
                                             </a>
                                         </li>
                                         <li class="list-inline-item ml-1">
-                                            <a href="https://discord.gg/NMG39WKGth" class="rounded">
-                                                <discord title="" />
+                                            <a href="https://join.slack.com/t/kestra-io/shared_invite/zt-193shv281-rK9QOEfZC2_vEbDO7Uxtbw" class="rounded">
+                                                <slack title="" />
                                             </a>
                                         </li>
                                     </ul>
@@ -84,7 +84,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/layout/Breadcrumb"
 import {BModal, VBModal} from 'bootstrap-vue'
-import Discord from 'vue-material-design-icons/Discord'
+import Slack from 'vue-material-design-icons/Slack'
 import {ArrowUpIcon, GithubIcon, LinkedinIcon, MailIcon, MapPinIcon, PhoneIcon, TwitterIcon,} from 'vue-feather-icons';
 import Chat from "../components/layout/Chat";
 
@@ -101,7 +101,7 @@ export default {
         TwitterIcon,
         LinkedinIcon,
         GithubIcon,
-        Discord,
+        Slack,
         Chat,
     },
     directives: { 'b-modal': VBModal }

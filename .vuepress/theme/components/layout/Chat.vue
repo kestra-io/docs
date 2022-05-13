@@ -1,18 +1,18 @@
 <template>
     <div class="widget-chat">
-        <a href="https://discord.gg/NMG39WKGth" class="btn btn-primary rounded">
-            <discord title="" /> Chat <span v-if="online" class="online">{{ onlineText }} members</span>
+        <a href="https://join.slack.com/t/kestra-io/shared_invite/zt-193shv281-rK9QOEfZC2_vEbDO7Uxtbw" class="btn btn-primary rounded">
+            <slack title="" /> Chat <span v-if="online" class="online">{{ onlineText }} members</span>
         </a>
     </div>
 </template>
 
 <script>
-import Discord from 'vue-material-design-icons/Discord'
+import Slack from 'vue-material-design-icons/Slack'
 import axios from "axios";
 
 export default {
     components: {
-        Discord
+        Slack
     },
     data() {
         return {
@@ -20,15 +20,14 @@ export default {
         }
     },
     mounted() {
-        if (!window.sessionStorage.getItem("discord_member_count")) {
-            axios.get("https://discord.com/api/v9/invites/NMG39WKGth?with_counts=true&with_expiration=true")
+        if (!window.sessionStorage.getItem("slack_member_count")) {
+            axios.get("https://api.kestra.io/v1/communities/slack")
                 .then(response => {
-                    window.sessionStorage.setItem("discord_member_count", response.data.approximate_member_count)
-                    window.sessionStorage.setItem("discord_online_count", response.data.approximate_presence_count)
-                    this.online = response.data.approximate_member_count;
+                    window.sessionStorage.setItem("slack_member_count", response.data.total)
+                    this.online = response.data.total;
                 })
         } else {
-            this.online = window.sessionStorage.getItem("discord_member_count");
+            this.online = window.sessionStorage.getItem("slack_member_count");
         }
     },
 

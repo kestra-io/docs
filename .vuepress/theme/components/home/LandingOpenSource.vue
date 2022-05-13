@@ -23,12 +23,12 @@
                             </a>
 
                             <a
-                                href="https://discord.gg/NMG39WKGth"
+                                href="https://join.slack.com/t/kestra-io/shared_invite/zt-193shv281-rK9QOEfZC2_vEbDO7Uxtbw"
                                 target="_blank"
                                 class="text-light btn btn-light title-dark mt-3 mr-1"
                                 data-aos="zoom-in"
                             >
-                                <discord title="" /> Chat with us on Discord
+                                <slack title="" /> Chat with us on Slack
                                 <ArrowRight title="" />
                             </a>
 
@@ -53,14 +53,14 @@
 <script>
     import Shape from "../layout/Shape";
     import ArrowRight from 'vue-material-design-icons/ArrowRight'
-    import Discord from 'vue-material-design-icons/Discord'
+    import Slack from 'vue-material-design-icons/Slack'
     import {GithubIcon, TwitterIcon,} from 'vue-feather-icons';
 
     export default {
         data() {
             return {}
         },
-        components: {Shape, ArrowRight, GithubIcon, TwitterIcon, Discord}
+        components: {Shape, ArrowRight, GithubIcon, TwitterIcon, Slack}
     }
 </script>
 
