@@ -13,22 +13,22 @@
                         <p class="mt-2">Infinitely scalable open source orchestration platform.</p>
                         <ul class="list-unstyled social-icon social mb-0 mt-4">
                             <li class="list-inline-item">
-                                <a href="https://github.com/kestra-io" class="rounded">
+                                <a href="https://github.com/kestra-io" target="_blank" rel=”noopener” class="rounded">
                                     <github-icon class="fea icon-sm fea-social"></github-icon>
                                 </a>
                             </li>
                             <li class="list-inline-item ml-1">
-                                <a href="https://twitter.com/kestra_io" class="rounded">
+                                <a href="https://twitter.com/kestra_io" target="_blank" rel=”noopener” class="rounded">
                                     <twitter-icon class="fea icon-sm fea-social"></twitter-icon>
                                 </a>
                             </li>
                             <li class="list-inline-item ml-1">
-                                <a href="https://www.linkedin.com/company/kestra" class="rounded">
+                                <a href="https://www.linkedin.com/company/kestra" target="_blank" rel=”noopener” class="rounded">
                                     <linkedin-icon class="fea icon-sm fea-social"></linkedin-icon>
                                 </a>
                             </li>
                             <li class="list-inline-item ml-1">
-                                <a href="https://join.slack.com/t/kestra-io/shared_invite/zt-193shv281-rK9QOEfZC2_vEbDO7Uxtbw" class="rounded">
+                                <a href="https://join.slack.com/t/kestra-io/shared_invite/zt-193shv281-rK9QOEfZC2_vEbDO7Uxtbw" target="_blank" rel=”noopener” class="rounded">
                                     <slack title="" />
                                 </a>
                             </li>

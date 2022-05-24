@@ -201,7 +201,8 @@ export default {
                     title: 'GitHub',
                     icon: GithubIcon,
                     element: 'span',
-                    href: 'https://github.com/kestra-io/kestra'
+                    href: 'https://github.com/kestra-io/kestra',
+                    target: '_blank'
                 },
             ]
         }
