@@ -102,7 +102,7 @@ Internally:
     - deserialize the object, find the next task or tasks and serialize the execution object
     - to send the serialized object over the network
 - The bigger the execution object, the longer it will take to handle this serialization phase.
-- Since we rely on Kafka for storing the object, Kafka has a size limit on messages it can accept (default: 1MB). Larger messages will not be accepted and will lead to a FAILED execution.
+- Since we rely on Kafka or a database for storing the object, large message will lead to slow the execution (due to network transmission or deserialization). Moreover, Kafka has a size limit on messages it can accept (default: 1MB). Larger messages will not be accepted and will lead to a FAILED execution.
 
 ## Task on the same execution
 Based on previous observation, here are some recommendations to avoid such cases:

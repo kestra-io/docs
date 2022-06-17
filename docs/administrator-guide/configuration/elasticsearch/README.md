@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 4
 ---
 # ElasticSearch configuration
 Another important configuration is to configure the way Kestra connects to the ElasticSearch cluster.
@@ -40,7 +40,7 @@ kestra:
 ## `kestra.elasticsearch.defaults.indice-prefix`
 This configuration allows you to change the indices prefix. By default, the prefix will be `kestra_`.
 
-For example, if you want to share a common Kafka cluster for the multiple instance of Kestra, just add another prefix like this :
+For example, if you want to share a common Elasticsearch cluster for the multiple instance of Kestra, just add another prefix like this :
 
 ```yaml
 kestra:

@@ -21,7 +21,7 @@ You can change the default behaviour and configuring your cluster changing the [
 
 By default, charts will only deploy kestra service with only 1 replica for each [servers](../../../architecture).
 
-You can also deploy the standalone servers (not for production) which will host all kestra servers in only one pod, using these values:
+You can also deploy the standalone servers which will host all kestra servers in only one pod, using these values:
 ```yaml
 kestra:
   deployments:

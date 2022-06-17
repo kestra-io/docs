@@ -1,12 +1,12 @@
 ---
-order: 4
+order: 6
 ---
 # Micronaut configuration
 
 Since Kestra is a Java app based on micronaut, you can configure micronaut to fit your needs.
 We will not explain all the configuration values possible, these are available [here](https://docs.micronaut.io/1.3.7/guide/index.html). However, we will provide some tips on the most useful options:
 
-## Configure log Level 
+## Configure log Level
 ```yaml
 logger:
   levels:
@@ -17,7 +17,7 @@ logger:
     io.netty.handler.logging: TRACE
 ```
 
-## Configure port and scheme 
+## Configure port and scheme
 ```yaml
 micronaut:
   server:
@@ -31,7 +31,7 @@ micronaut:
 ```
 
 ## Configure the timeout or max uploaded file size
-A lot of configurations affect these, here is the default configuration: 
+A lot of configurations affect these, here is the default configuration:
 ```yaml
 micronaut:
   server:
@@ -48,7 +48,7 @@ micronaut:
 
 
 ## Changing base path
-If behind a reverse proxy, change base path:  
+If behind a reverse proxy, change base path:
 ```yaml
 micronaut:
   server:
