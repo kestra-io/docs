@@ -24,7 +24,7 @@ More detail on configurations are available [here](../administrator-guide/config
 
 ### High Availability and No Single Point of Failure
 
-![Kestra Architecture](./architecture-sql.svg "Kestra Architecture")
+![Kestra Architecture](./architecture.svg "Kestra Architecture")
 
 In order to support higher throughput, and full horizontal and vertical scaling of the clusters, we can replace the database with Kafka and Elasticsearch. In that case, all the process can be scaled without any single point of failure.
 
