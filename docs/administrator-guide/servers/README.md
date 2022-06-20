@@ -60,7 +60,7 @@ But this works well for development or medium-sized environments.
 * `-f` or `--flow-path`: the path to a directory will flow file as yaml, these files will be loaded on the repository at the startup.
 * `--worker-thread`: the number of worker thread, by default, the worker embedded will start 1 thread per cpu core available.
 
-## Kestra standalone, all servers in one process
+## Kestra local, development servers and no dependencies
 
 `./kestra server local`
 

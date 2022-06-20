@@ -171,7 +171,7 @@
                                             </li>
                                         </ul>
                                         <div class="text-center">
-                                            <router-link to="/company/contact" class="btn btn-primary mt-4">Request early access</router-link>
+                                            <a href="https://form.typeform.com/to/iAnFetZr" target="_blank" class="btn btn-primary mt-4">Request early access</a>
                                         </div>
                                     </div>
                                 </div>
