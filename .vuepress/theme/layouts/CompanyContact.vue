@@ -63,7 +63,7 @@
                                             </a>
                                         </li>
                                         <li class="list-inline-item ml-1">
-                                            <a href="https://join.slack.com/t/kestra-io/shared_invite/zt-193shv281-rK9QOEfZC2_vEbDO7Uxtbw" target="_blank" rel=”noopener” class="rounded">
+                                            <a href="https://api.kestra.io/v1/communities/slack/redirect" target="_blank" rel=”noopener” class="rounded">
                                                 <slack title="" />
                                             </a>
                                         </li>

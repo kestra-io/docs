@@ -23,7 +23,7 @@
                             </a>
 
                             <a
-                                href="https://join.slack.com/t/kestra-io/shared_invite/zt-193shv281-rK9QOEfZC2_vEbDO7Uxtbw"
+                                href="https://api.kestra.io/v1/communities/slack/redirect"
                                 target="_blank"
                                 class="text-light btn btn-light title-dark mt-3 mr-1"
                                 data-aos="zoom-in"

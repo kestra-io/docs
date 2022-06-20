@@ -1,6 +1,6 @@
 <template>
     <div class="widget-chat">
-        <a href="https://join.slack.com/t/kestra-io/shared_invite/zt-193shv281-rK9QOEfZC2_vEbDO7Uxtbw" target="_blank" rel=”noopener” class="btn btn-primary rounded">
+        <a href="https://api.kestra.io/v1/communities/slack/redirect" target="_blank" rel=”noopener” class="btn btn-primary rounded">
             <slack title="" /> Chat <span v-if="online" class="online">{{ onlineText }} members</span>
         </a>
     </div>
