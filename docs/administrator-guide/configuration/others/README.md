@@ -50,7 +50,7 @@ By default, we only get environment variables that start with `KESTRA_`.
 
 These variables will be accessible on flow with <code v-pre>{{ env.your_env }}</code>
 
-For example, env vars with the name `KESTRA_MY_ENV` will be usable with  <code v-pre>{{ env.my_env }}</code>
+For example, env vars with the name `KESTRA_MY_ENV` will be usable with  <code v-pre>{{ envs.my_env }}</code>
 
 
 ### `kestra.variables.globals`
