@@ -259,6 +259,11 @@ export default {
                     section: "slack"
                 },
                 {
+                    name: "Soda",
+                    icon: "csicon csicon-soda",
+                    href: "plugin-soda",
+                },
+                {
                     name: "Singer",
                     icon: "csicon csicon-singer",
                     href: "plugin-singer",
@@ -461,6 +466,10 @@ i.csicon {
 
     &.csicon-singer {
         background-image: url("../../assets/home/singer.svg");
+    }
+
+    &.csicon-soda {
+        background-image: url("../../assets/home/soda.svg");
     }
 
     &.csicon-elasticsearch {
