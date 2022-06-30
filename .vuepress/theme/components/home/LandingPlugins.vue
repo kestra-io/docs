@@ -349,6 +349,11 @@ export default {
                     href: "plugin-azure",
                     section: "storage-blob"
                 },
+                {
+                    name: "Tika",
+                    icon: "csicon csicon-tika",
+                    href: "plugin-tika"
+                },
             ];
 
             // Order by publish date, desc
@@ -526,6 +531,10 @@ i.csicon {
 
     &.csicon-vertexai {
         background-image: url("../../assets/home/vertexai.svg");
+    }
+
+    &.csicon-tika {
+        background-image: url("../../assets/home/tika.svg");
     }
 }
 
