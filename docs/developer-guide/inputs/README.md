@@ -25,25 +25,33 @@ namespace: io.kestra.docs
 inputs:
   - name: string
     type: STRING
-    required: true
   - name: optional
     type: STRING
     required: false
   - name: int
     type: INT
-    required: true
+  - name: bool
+    type: BOOLEAN
   - name: float
     type: FLOAT
-    required: true
   - name: instant
     type: DATETIME
-    required: true
-  - name: my-file
+  - name: date
+    type: DATE
+  - name: time
+    type: TIME
+  - name: duration
+    type: DURATION
+  - name: file
     type: FILE
-    required: true
   - name: optionalFile
     type: FILE
     required: false
+  - name: instantDefaults
+    type: DATETIME
+    defaults: "2013-08-09T14:19:00Z"
+  - name: json
+    type: JSON
 ```
 
 ## Input types
@@ -58,12 +66,27 @@ Must be a valid integer (without any decimals).
 ### `FLOAT`
 Must be a valid float (with any decimals).
 
+### `BOOLEAN`
+Must be a valid `true` or `false` as string.
+
 ### `DATETIME`
 Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime with the timezone expressed in UTC from a text string such as
 `2007-12-03T10:15:30.00Z`.
 
+### `DATE`
+Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date without the timezone from a text string such as `2007-12-03`.
+
+### `TIME`
+Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time without the timezone from a text string such as `10:15:30`.
+
+### `DURATION`
+Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration from a text string such as `PT5M6S`.
+
 ### `FILE`
 Must be a file sent with `multipart/form-data`. All the files are automatically uploaded to `Storage` and are available for further tasks. The return will be a fully qualified url with the form `kestra:///.../.../`. Kestra is able to handle this url and this input can be passed as is to task.
+
+### `BOOLEAN`
+Must be a valid json as string and will be converted to typed type.
 
 ## Input properties
 These are the properties available for all input types :
