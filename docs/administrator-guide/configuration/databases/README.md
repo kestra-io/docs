@@ -65,3 +65,36 @@ Since Kestra is built upon [micronaut](https://micronaut.io) and [HikariCP](http
 | `maximum-pool-size`           | Int    | The property controls the maximum size that the pool is allowed to reach, including both idle and in-use connections.                                 |
 | `max-lifetime`                | Long   | This property controls the maximum lifetime of a connection in the pool.                                                                              |
 | `validation-timeout`          | Long   | Sets the maximum number of milliseconds that the pool will wait for a connection to be validated as alive.                                            |
+
+## Queues configuration
+
+### `kestra.jdbc.queues`
+
+Kestra queues based on database simulate queues doing long polling. It queries a `queues` table to detect new message. Change these parameters to reduce the latency (but increase load on the database).
+
+- `kestra.jdbc.queues.min-poll-interval`: is the minimum duration between 2 polls
+- `kestra.jdbc.queues.max-poll-interval`: is the maximum duration between 2 polls
+- `kestra.jdbc.queues.poll-switch-interval`: is the duration when no message are received switching from min polling to max polling (ex: one message received, the `min-poll-interval` is used, if no new message arrived with `poll-switch-interval`, we switch to `max-poll-interval`).
+
+```yaml
+kestra:
+  jdbc:
+    queues:
+      min-poll-interval: 100ms
+      max-poll-interval: 1000ms
+      poll-switch-interval: 5s
+
+```
+
+### `kestra.jdbc.cleaner`
+
+We clean the queues table to avoid infinite grow of this table. You can control how often you want this cleaning to happen, and how many times we will keep message in the queue with `retention`.
+
+```yaml
+kestra:
+  jdbc:
+    cleaner:
+      initial-delay: 1h
+      fixed-delay: 1h
+      retention: 7d
+```
