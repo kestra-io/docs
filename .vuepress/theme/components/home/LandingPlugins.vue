@@ -354,6 +354,11 @@ export default {
                     icon: "csicon csicon-tika",
                     href: "plugin-tika"
                 },
+                {
+                    name: "Power BI",
+                    icon: "csicon csicon-powerbi",
+                    href: "plugin-powerbi"
+                },
             ];
 
             // Order by publish date, desc
@@ -535,6 +540,10 @@ i.csicon {
 
     &.csicon-tika {
         background-image: url("../../assets/home/tika.svg");
+    }
+
+    &.csicon-powerbi {
+        background-image: url("../../assets/home/powerbi.svg");
     }
 }
 
