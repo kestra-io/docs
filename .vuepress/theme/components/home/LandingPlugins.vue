@@ -359,6 +359,11 @@ export default {
                     icon: "csicon csicon-powerbi",
                     href: "plugin-powerbi"
                 },
+                {
+                    name: "ServiceNow",
+                    icon: "csicon csicon-servicenow",
+                    href: "plugin-servicenow"
+                },
             ];
 
             // Order by publish date, desc
@@ -544,6 +549,10 @@ i.csicon {
 
     &.csicon-powerbi {
         background-image: url("../../assets/home/powerbi.svg");
+    }
+
+    &.csicon-servicenow {
+        background-image: url("../../assets/home/servicenow.svg");
     }
 }
 
