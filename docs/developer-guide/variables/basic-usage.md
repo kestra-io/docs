@@ -201,3 +201,65 @@ In order from highest to lowest precedence:
 - `is`, `is not`
 - `and`
 - `or`
+
+
+### Parents with [Flowable Task](docs/developer-guide/flowable).
+If you have many [Flowable Tasks](docs/developer-guide/flowable), it can be complex to get `taskrun.value` because this one is only available during the direct task from each. If you have any Flowable Tasks after, the `taskrun.value` of the first iteration will be lost (or overwritten). In order to deal with this, we have included the `parent` & `parents` vars.
+
+This is illustrated in the flow below:
+
+```yaml
+id: each-switch
+namespace: io.kestra.tests
+
+tasks:
+  - id: t1
+    type: io.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{taskrun.startDate}}"
+  - id: 2_each
+    type: io.kestra.core.tasks.flows.EachSequential
+    value: '["a", "b"]'
+    tasks:
+      # Switch
+      - id: 2-1_switch
+        type: io.kestra.core.tasks.flows.Switch
+        value: "{{taskrun.value}}"
+        cases:
+          a:
+            - id: 2-1_switch-letter-a
+              type: io.kestra.core.tasks.debugs.Return
+              format: "{{task.id}}"
+          b:
+            - id: 2-1_switch-letter-b
+              type: io.kestra.core.tasks.debugs.Return
+              format: "{{task.id}}"
+
+            - id: 2-1_each
+              type: io.kestra.core.tasks.flows.EachSequential
+              value: '["1", "2"]'
+              tasks:
+              - id: 2-1-1_switch
+                type: io.kestra.core.tasks.flows.Switch
+                value: "{{taskrun.value}}"
+                cases:
+                  1:
+                    - id: 2-1-1_switch-number-1
+                      type: io.kestra.core.tasks.debugs.Return
+                      format: "{{parents.[0].taskrun.value}}"
+                  2:
+                    - id: 2-1-1_switch-number-2
+                      type: io.kestra.core.tasks.debugs.Return
+                      format: "{{parents.[0].taskrun.value}} {{parents.[1].taskrun.value}}"
+  - id: 2_end
+    type: io.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{taskrun.startDate}}"
+
+```
+
+As you can see, the `parent` will give direct access to the first parent output and the value of the current one, while the `parents.INDEX` lets go you deeper down the tree.
+
+In the task `2-1-1_switch-number-2`:
+- <code v-pre>{{taskrun.value}}</code>: mean the value of the task `2-1-1_switch`
+- <code v-pre>{{parents.[0].taskrun.value}}</code> or <code v-pre>{{parent.taskrun.value}}</code>: mean the value of the task `2-1_each`
+- <code v-pre>{{parents.[1].taskrun.value}}</code>: mean the value of the task `2-1_switch`
+- <code v-pre>{{parents.[2].taskrun.value}}</code>: mean the value of the task `2_each`
