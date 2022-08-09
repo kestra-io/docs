@@ -1,6 +1,6 @@
 <template>
     <div class="text-center">
-        <div class="btn-group mt-5 mb-5">
+        <div class="btn-group mt-5 mb-3">
             <a class="btn btn-twitter" :href="`https://twitter.com/intent/tweet?text=${title}&url=${url}`" target="_blank">
                 <twitter-icon class="fea icon-sm fea-social"></twitter-icon>
                 &nbsp;Tweet
@@ -16,6 +16,22 @@
                 &nbsp;Share
             </a>
         </div>
+        <script src="https://giscus.app/client.js"
+                data-repo="kestra-io/kestra"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkyMDQxNjQzNTM="
+                data-category="General"
+                data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMyMDEyMTEw"
+                data-mapping="pathname"
+                data-strict="1"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <div class="mb-5" />
     </div>
 </template>
 
