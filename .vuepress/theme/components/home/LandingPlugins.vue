@@ -213,6 +213,11 @@ export default {
                     href: "plugin-jdbc-postgres"
                 },
                 {
+                    name: "Trino",
+                    icon: "csicon csicon-trino",
+                    href: "plugin-jdbc-trino"
+                },
+                {
                     name: "Snowflake",
                     icon: "csicon csicon-snowflake",
                     href: "plugin-jdbc-snowflake"
@@ -553,6 +558,10 @@ i.csicon {
 
     &.csicon-servicenow {
         background-image: url("../../assets/home/servicenow.svg");
+    }
+
+    &.csicon-trino {
+        background-image: url("../../assets/home/trino.svg");
     }
 }
 
