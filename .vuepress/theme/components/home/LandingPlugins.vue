@@ -298,6 +298,12 @@ export default {
                     section: "csv"
                 },
                 {
+                    name: "Parquet",
+                    icon: "csicon csicon-parquet",
+                    href: "plugin-serdes",
+                    section: "parquet"
+                },
+                {
                     name: "Nashorn",
                     icon: "csicon csicon-nashorn",
                     href: "plugin-scripts-nashorn"
@@ -418,6 +424,10 @@ i.csicon {
 
     &.csicon-avro {
         background-image: url("../../assets/home/avro.png");
+    }
+
+    &.csicon-parquet {
+        background-image: url("../../assets/home/parquet.svg");
     }
 
     &.csicon-bigquery {
