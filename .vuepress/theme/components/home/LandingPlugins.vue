@@ -223,6 +223,11 @@ export default {
                     href: "plugin-jdbc-rockset"
                 },
                 {
+                    name: "Pinot",
+                    icon: "csicon csicon-pinot",
+                    href: "plugin-jdbc-pinot"
+                },
+                {
                     name: "Snowflake",
                     icon: "csicon csicon-snowflake",
                     href: "plugin-jdbc-snowflake"
@@ -581,6 +586,10 @@ i.csicon {
 
     &.csicon-rockset {
         background-image: url("../../assets/home/rockset.svg");
+    }
+
+    &.csicon-pinot {
+        background-image: url("../../assets/home/pinot.svg");
     }
 }
 
