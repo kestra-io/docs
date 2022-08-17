@@ -218,6 +218,11 @@ export default {
                     href: "plugin-jdbc-trino"
                 },
                 {
+                    name: "Rockset",
+                    icon: "csicon csicon-rockset",
+                    href: "plugin-jdbc-rockset"
+                },
+                {
                     name: "Snowflake",
                     icon: "csicon csicon-snowflake",
                     href: "plugin-jdbc-snowflake"
@@ -572,6 +577,10 @@ i.csicon {
 
     &.csicon-trino {
         background-image: url("../../assets/home/trino.svg");
+    }
+
+    &.csicon-rockset {
+        background-image: url("../../assets/home/rockset.svg");
     }
 }
 
