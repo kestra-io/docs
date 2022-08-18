@@ -385,6 +385,12 @@ export default {
                     icon: "csicon csicon-servicenow",
                     href: "plugin-servicenow"
                 },
+                {
+                    name: "Pulsar",
+                    icon: "csicon csicon-pulsar",
+                    href: "plugin-pulsar"
+                },
+
             ];
 
             // Order by publish date, desc
@@ -590,6 +596,10 @@ i.csicon {
 
     &.csicon-pinot {
         background-image: url("../../assets/home/pinot.svg");
+    }
+
+    &.csicon-pulsar {
+        background-image: url("../../assets/home/pulsar.svg");
     }
 }
 
