@@ -46,11 +46,21 @@ micronaut:
       max-chunk-size: 10MB
 ```
 
-
 ## Changing base path
-If behind a reverse proxy, change base path:
+If behind a reverse proxy, you can change the base path:
 ```yaml
 micronaut:
   server:
     context-path: "kestra-prd"
+```
+
+
+## Changing host resolution
+If behind a reverse proxy,  you can change host resolution (http / https / domain name) providing the header sent by your reverse proxy:
+```yaml
+micronaut:
+  server:
+    host-resolution:
+      host-header: Host
+      protocol-header: X-Forwarded-Proto
 ```
