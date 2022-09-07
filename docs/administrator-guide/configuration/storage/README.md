@@ -60,10 +60,10 @@ kestra:
       bucket: "<your-bucket>"
 ```
 
-## Minio
+## Azure
 
 Because you need to be sure to have the Azure storage plugins installed, you can install it with the following Kestra command :
-`./kestra plugins install io.kestra.storage.minio:storage-azure:LATEST`, it will download the plugins jar on kestra plugins directory.
+`./kestra plugins install io.kestra.storage.azure:storage-azure:LATEST`, it will download the plugins jar on kestra plugins directory.
 
 After, you need to enable the storage with this configuration (adapt depending on authentication method):
 
