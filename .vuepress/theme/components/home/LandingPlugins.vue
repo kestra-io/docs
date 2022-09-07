@@ -228,6 +228,11 @@ export default {
                     href: "plugin-jdbc-pinot"
                 },
                 {
+                    name: "DuckDb",
+                    icon: "csicon csicon-duckdb",
+                    href: "plugin-jdbc-duckdb"
+                },
+                {
                     name: "Snowflake",
                     icon: "csicon csicon-snowflake",
                     href: "plugin-jdbc-snowflake"
@@ -600,6 +605,10 @@ i.csicon {
 
     &.csicon-pulsar {
         background-image: url("../../assets/home/pulsar.svg");
+    }
+
+    &.csicon-duckdb {
+        background-image: url("../../assets/home/duckdb.svg");
     }
 }
 
