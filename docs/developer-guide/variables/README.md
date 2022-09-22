@@ -28,8 +28,8 @@ The following table lists all the default variables available on each execution.
 |  <code v-pre>{{ taskrun.id }}</code> | The current task ID |
 |  <code v-pre>{{ taskrun.value }}</code> | The value for the current task run, only available with ([Flowable Task](../flowable)) |
 |  <code v-pre>{{ taskrun.attemptsCount }}</code> | The number of attempts for current task (when retry or restart is done) |
-|  <code v-pre>{{ parents.[].taskrun.value }}</code> | The value of parents task run, the index if based on closest [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
-|  <code v-pre>{{ parents.[].outputs }}</code> | The outputs of the parent task run, the index if based on closest [Flowable Task](../flowable), only available with tasks previously run in a ([Flowable Task](../flowable)) |
+|  <code v-pre>{{ parents[].taskrun.value }}</code> | The value of parents task run, the index if based on closest [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
+|  <code v-pre>{{ parents[].outputs }}</code> | The outputs of the parent task run, the index if based on closest [Flowable Task](../flowable), only available with tasks previously run in a ([Flowable Task](../flowable)) |
 |  <code v-pre>{{ parent.taskrun.value }}</code> | The value of closest (first) parent task run [Flowable Task](../flowable), only available with tasks run previously in a ([Flowable Task](../flowable)) |
 |  <code v-pre>{{ parent.outputs }}</code> | The outputs of (first) parent task run [Flowable Task](../flowable), only available with tasks previously run in a ([Flowable Task](../flowable)) |
 
