@@ -48,7 +48,8 @@
     "vue-feather-icons": "^5.1.0",
     "vue-material-design-icons": "^5.0.0",
     "vue-stripe-menu": "^1.5.0",
-    "vuepress": "^1.9.7"
+    "vuepress": "^1.9.7",
+    "vuepress-plugin-sitemap": "^2.3.1"
   },
   "devDependencies": {
     "@vuepress/plugin-back-to-top": "^1.9.7",

@@ -12,10 +12,10 @@ module.exports = {
 
     plugins: {
         '@vuepress/back-to-top': {},
-        '@vuepress/nprogress' : {},
+        '@vuepress/nprogress': {},
         '@vuepress/last-updated': {},
-        '@vuepress/google-analytics' : {'ga': 'UA-56021-9'},
-        'vuepress-plugin-medium-zoom': {'selector' : '.content__default img'},
+        '@vuepress/google-analytics': {'ga': 'UA-56021-9'},
+        'vuepress-plugin-medium-zoom': {'selector': '.content__default img'},
         'seo': {
             description: description,
             author: ($page, $site) => $page.frontmatter.author || $site.themeConfig.author,
@@ -28,18 +28,22 @@ module.exports = {
             hooks: fs.readFileSync(path.resolve(__dirname, './searchHooks.js')),
         },
         'vuepress-plugin-child-toc': {},
-        'vuepress-plugin-code-copy': {}
+        'vuepress-plugin-code-copy': {},
+        'sitemap': {
+            hostname: 'https://kestra.io',
+            default: ['/404.html']
+        },
     },
     head: [
-        ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' }],
-        ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' }],
-        ['link', { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' }],
-        ['link', { rel: 'manifest',  href: '/site.webmanifest' }],
-        ['link', { rel: 'mask-icon',  href: '/safari-pinned-tab.svg', color: '#192a4e' }],
-        ['meta', { name: 'msapplication-TileColor',  content: '#192a4e' }],
-        ['meta', { name: 'theme-color',  content: '#192a4e' }],
-        ['script', { src: 'https://unpkg.com/rapidoc/dist/rapidoc-min.js' }],
-
+        ['link', {rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png'}],
+        ['link', {rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png'}],
+        ['link', {rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png'}],
+        ['link', {rel: 'manifest', href: '/site.webmanifest'}],
+        ['link', {rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#192a4e'}],
+        ['meta', {name: 'msapplication-TileColor', content: '#192a4e'}],
+        ['meta', {name: 'theme-color', content: '#192a4e'}],
+        ['script', {src: 'https://unpkg.com/rapidoc/dist/rapidoc-min.js'}],
+        ['link', {rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml', title: 'Sitemap'}],
     ],
     themeConfig: {
         domain: 'https://kestra.io',
@@ -79,11 +83,11 @@ module.exports = {
             md.set({breaks: true})
             md.use(require('markdown-it-mark'))
 
-            md.renderer.rules.table_open = function(tokens, idx) {
+            md.renderer.rules.table_open = function (tokens, idx) {
                 return '<div class="table-responsive"><table class="table table-bordered table-hover table-striped">';
             };
 
-            md.renderer.rules.table_close = function(tokens, idx) {
+            md.renderer.rules.table_close = function (tokens, idx) {
                 return '</table></div>';
             };
         }
