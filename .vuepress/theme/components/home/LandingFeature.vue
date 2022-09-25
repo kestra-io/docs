@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <Shape class="text-dark" />
+        <Shape class="text-white" />
     </section>
 </template>
 

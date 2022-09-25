@@ -6,6 +6,7 @@
             <main>
                 <LandingHeader />
                 <LandingFeature />
+                <LandingCompany />
                 <LandingOpenSource />
                 <LandingTech />
                 <LandingCustomer />
@@ -21,6 +22,7 @@
 import AOS from "aos"
 import LandingHeader from "../components/home/LandingHeader"
 import LandingFeature from "../components/home/LandingFeature"
+import LandingCompany from "../components/home/LandingCompany"
 import LandingOpenSource from "../components/home/LandingOpenSource"
 import LandingTech from "../components/home/LandingTech"
 import LandingVideo from "../components/home/LandingVideo"
@@ -35,6 +37,7 @@ export default {
         Header,
         Footer,
         LandingHeader,
+        LandingCompany,
         LandingFeature,
         LandingOpenSource,
         LandingCustomer,

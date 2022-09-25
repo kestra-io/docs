@@ -41,6 +41,15 @@
                                 <TwitterIcon title="" /> Follow us on Twitter
                                 <ArrowRight title="" />
                             </a>
+                            <a
+                                href="https://www.linkedin.com/company/kestra"
+                                target="_blank"
+                                class="text-light btn btn-light title-dark mt-3 mr-1"
+                                data-aos="zoom-in"
+                            >
+                                <LinkedinIcon title="" /> Follow us on LinkedIn
+                                <ArrowRight title="" />
+                            </a>
                         </p>
                     </div>
                 </div>
@@ -54,13 +63,13 @@
     import Shape from "../layout/Shape";
     import ArrowRight from 'vue-material-design-icons/ArrowRight'
     import Slack from 'vue-material-design-icons/Slack'
-    import {GithubIcon, TwitterIcon,} from 'vue-feather-icons';
+    import {GithubIcon, TwitterIcon, LinkedinIcon} from 'vue-feather-icons';
 
     export default {
         data() {
             return {}
         },
-        components: {Shape, ArrowRight, GithubIcon, TwitterIcon, Slack}
+        components: {Shape, ArrowRight, GithubIcon, TwitterIcon, LinkedinIcon, Slack}
     }
 </script>
 
