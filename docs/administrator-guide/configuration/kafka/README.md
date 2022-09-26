@@ -112,7 +112,7 @@ kestra:
       topic-prefix: "uat_kestra"
 ```
 
-## `kestra.kafka.defaults.consumer-prefix`
+## `kestra.kafka.client.loggers`
 This configuration allow you to enable log for all messages from or to Kafka. Use this one to debug all the messages consume, produce or both from Kafka.
 
 ::: warning
