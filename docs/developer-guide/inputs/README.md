@@ -85,8 +85,8 @@ Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration
 ### `FILE`
 Must be a file sent with `multipart/form-data`. All the files are automatically uploaded to `Storage` and are available for further tasks. The return will be a fully qualified url with the form `kestra:///.../.../`. Kestra is able to handle this url and this input can be passed as is to task.
 
-### `BOOLEAN`
-Must be a valid json as string and will be converted to typed type.
+### `JSON`
+Must be a valid json as string and will be converted to typed form.
 
 ## Input properties
 These are the properties available for all input types :
