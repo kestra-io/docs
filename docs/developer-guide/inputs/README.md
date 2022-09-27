@@ -166,4 +166,4 @@ With such a flow, the web ui lets you enter some inputs by generating a form acc
 
 ![Flow inputs](./assets/inputs.jpg)
 
-Once the inputs are provided, you can trigger an execution flow that will run with [contextual inputs](/docs/dynamic-fields) as task variables.
+Once the inputs are provided, you can trigger an execution flow that will run with [contextual inputs](../flow) as variables.
