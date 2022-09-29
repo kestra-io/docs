@@ -13,28 +13,28 @@ We provide a [Helm Chart](https://helm.sh/) in order to deploy your cluster.
 
 ```bash
 helm repo add kestra https://helm.kestra.io/
-helm install kestra --set kafka.enabled=true --set elasticsearch.enabled=true --set minio.enabled=true kestra/kestra
+helm install kestra
 ```
 
 ## Details
 You can change the default behaviour and configuring your cluster changing the [defaults values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml).
 
-By default, charts will only deploy kestra service with only 1 replica for each [servers](../../../architecture).
+By default, charts will only deploy one kestra standalone [service](../../../architecture) (all kestra servers in only one pod) with only 1 replica.
 
-You can also deploy the standalone servers which will host all kestra servers in only one pod, using these values:
+You can also deploy each server independently , using these values:
 ```yaml
 kestra:
   deployments:
     webserver:
-      enabled: false
+      enabled: true
     executor:
-      enabled: false
+      enabled: true
     indexer:
-      enabled: false
+      enabled: true
     scheduler:
-      enabled: false
+      enabled: true
     worker:
-      enabled: false
+      enabled: true
     standalone:
       enabled: true
 ```
@@ -44,9 +44,12 @@ The charts could also deploy all needed services:
 - Kafka cluster using `kafka.enabled: true`
 - Elasticsearch cluster using `elasticsearch.enabled: true`
 - Minio standalone using `minio.enabled: true`
+- Postgres using `postgresql.enabled: true`
+
+By default, we enable minio & postgres to have a working version.
 
 ::: warning
-All services (kafka, elasticsearch, zookeeper, minio) are deployed using unsecured configurations (no authentification, no tls, ...). When installing for a production environnement, you **need** to secure all these services and adapt all service configurations to be production ready.
+All services (kafka, elasticsearch, zookeeper, minio, postgresql) are deployed using unsecured configurations (no authentification, no tls, ...). When installing for a production environnement, you **need** to secure all these services and adapt all service configurations to be production ready.
 :::
 
 The most important values to adapt are the [configuration files](../../configuration), including the following values:
