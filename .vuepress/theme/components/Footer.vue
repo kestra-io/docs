@@ -39,17 +39,17 @@
                         <h4 class="text-light footer-head">Product</h4>
                         <ul class="list-unstyled footer-list">
                             <li>
-                                <router-link to="/features/features" class="text-foot">
+                                <router-link to="/features/features.html" class="text-foot">
                                     <ChevronRight title="" /> Features
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/features/usages" class="text-foot">
+                                <router-link to="/features/usages.html" class="text-foot">
                                     <ChevronRight title="" /> Usage
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/features/enterprise" class="text-foot">
+                                <router-link to="/features/enterprise.html" class="text-foot">
                                     <ChevronRight title="" /> Enterprise Edition
                                 </router-link>
                             </li>
@@ -91,12 +91,12 @@
                         <h4 class="text-light footer-head">Company</h4>
                         <ul class="list-unstyled footer-list">
                             <li>
-                                <a href="/company/about-us" class="text-foot">
+                                <a href="/company/about-us.html" class="text-foot">
                                     <ChevronRight title="" /> About us
                                 </a>
                             </li>
                             <li>
-                                <a href="/company/contact" class="text-foot">
+                                <a href="/company/contact.html" class="text-foot">
                                     <ChevronRight title="" />  Contact us
                                 </a>
                             </li>

@@ -7,7 +7,7 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-12 text-center">
                         <div class="page-next-level">
-                            <h1> {{ $page.title }} </h1>
+                            <h1> {{ title || $page.title }} </h1>
                             <div class="page-next">
                                 <nav aria-label="breadcrumb" class="d-inline-block">
                                     <ul class="breadcrumb bg-white rounded shadow mb-0">
@@ -18,7 +18,7 @@
                                             <router-link v-if="url" :to="url">{{ name }}</router-link>
                                             <template v-else>{{ name }}</template>
                                         </li>
-                                        <li class="breadcrumb-item active" aria-current="page">{{ $page.title }}</li>
+                                        <li class="breadcrumb-item active" aria-current="page">{{  title || $page.title }}</li>
                                     </ul>
                                 </nav>
                             </div>
@@ -42,6 +42,10 @@ export default {
         links: {
             type: Object,
             default: () => {}
+        },
+        title: {
+            type: String,
+            default: undefined
         }
     },
 

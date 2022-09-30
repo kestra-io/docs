@@ -78,6 +78,7 @@ import VsmMenu from 'vue-stripe-menu/src/components/Menu'
 import VsmMob from 'vue-stripe-menu/src/components/Mob'
 import SearchBox from 'vuepress-plugin-fulltext-search/components/SearchBox'
 import Domain from 'vue-material-design-icons/Domain'
+import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline'
 import BookOutline from 'vue-material-design-icons/BookOutline'
 import GoogleCirclesExtended from "vue-material-design-icons/GoogleCirclesExtended";
 import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline";
@@ -121,19 +122,19 @@ export default {
                     items: [
                         {
                             title: 'Features',
-                            link: '/features/features',
+                            link: '/features/features.html',
                             icon: FeatureSearch,
                             desc: 'Discover all the features of Kestra'
                         },
                         {
                             title: 'Usages',
-                            link: '/features/usages',
+                            link: '/features/usages.html',
                             icon: AccountNetworkOutline,
                             desc: 'How Kestra can help on your daily workflow'
                         },
                         {
-                            title: 'Enterprise Edition  ',
-                            link: '/features/enterprise',
+                            title: 'Enterprise Edition',
+                            link: '/features/enterprise.html',
                             icon: Security,
                             desc: 'Security and Productivity for enterprise'
                         }
@@ -176,6 +177,11 @@ export default {
                             desc: 'Learn how to deploy Kestra'
                         },
                     ]
+                },
+                {
+                    title: 'Community',
+                    attributes: {href: '/community.html'},
+                    icon: AccountGroupOutline,
                 },
                 {
                     title: 'Company',
