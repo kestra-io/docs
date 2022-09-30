@@ -52,6 +52,9 @@ inputs:
     defaults: "2013-08-09T14:19:00Z"
   - name: json
     type: JSON
+  - name: uri
+    type: URI
+    required: false
 ```
 
 ## Input types
@@ -87,6 +90,9 @@ Must be a file sent with `multipart/form-data`. All the files are automatically 
 
 ### `JSON`
 Must be a valid json as string and will be converted to typed form.
+
+### `URI`
+Must be a valid uri and will be kept as a string.
 
 ## Input properties
 These are the properties available for all input types :
