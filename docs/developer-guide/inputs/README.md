@@ -55,6 +55,15 @@ inputs:
   - name: uri
     type: URI
     required: false
+  - name: nested.string
+    type: STRING
+    required: false
+  - name: nested.more.int
+    type: INT
+    required: false
+  - name: nested.bool
+    type: BOOLEAN
+    required: false
 ```
 
 ## Input types
@@ -109,6 +118,17 @@ The default value if no input is provided. Must be a string.
 
 ### `description`
 A markdown description in order to document the inputs.
+
+
+## Nested Inputs
+
+If you use a `.` inside the name of the inputs, the input will be nested. For example, when you declated the input with:
+```yaml
+  - name: nested.string
+    type: STRING
+    required: false
+```
+You can reach this input with: <code v-pre>{{ inputs.nested.string }}</code>. This is a convenient way to handle strong typing on input (with validation) without using raw JSON that will not be validated.
 
 
 ## Using input value in flow
