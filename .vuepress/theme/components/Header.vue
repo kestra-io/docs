@@ -52,7 +52,15 @@
                         </h6>
                         <template v-else>
                             <h6 class="dropdown-header">
-                                <a v-if="item.title === 'GitHub'" :href="item.href">{{ item.title }} <span v-if="stargazers" data-aos="zoom-out" class="badge badge-dark">{{ stargazersText }} ⭐</span></a>
+                                <a v-if="item.title === 'GitHub'" :href="item.href">{{ item.title }}
+                                    <span v-if="stargazers" data-aos="zoom-out" class="badge badge-dark">
+                                        {{ stargazersText }} ⭐
+                                    </span>
+                                </a>
+                                <router-link v-else-if="item.attributes.href" :to="item.attributes.href">
+                                    <span :is="item.icon" title="" />
+                                    <span>{{ item.title }}</span>
+                                </router-link>
                                 <a v-else :href="item.href">
                                     <span :is="item.icon" title="" />
                                     <span>{{ item.title }}</span>
