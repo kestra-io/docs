@@ -35,9 +35,6 @@
                                     <ArrowRight title="" />
                                 </a>
                             </div>
-                            <div class="mt-4 text-center">
-                                ⭐ <a href="https://github.com/kestra-io/kestra" class="text-white star">Star us on GitHub</a> ⭐
-                            </div>
                         </div>
                     </div>
 

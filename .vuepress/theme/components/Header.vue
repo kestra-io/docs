@@ -1,83 +1,89 @@
 <template>
-    <vsm-menu
-        :menu="menu"
-        :base-width="380"
-        :base-height="400"
-        :screen-offset="10"
-        element="header"
-        handler="hover"
-    >
-        <template #default="{ item }">
-            <div class="wrap-content">
-                <div class="dropdown-menu show">
-                    <template v-for="(current, index) of item.items">
-                        <router-link class="dropdown-item" :to="current.link">
-                            <span :is="current.icon" title="" />
-                            <span>{{ current.title }}</span>
-                            <span class="desc">{{ current.desc }}</span>
-                        </router-link>
-
-                        <div v-if="index !== item.items.length - 1" class="dropdown-divider"></div>
-                    </template>
-                </div>
-            </div>
-        </template>
-
-        <template #title="data">
-            <span :is="data.item.icon" />
-            <a v-if="data.item.title === 'GitHub'" :href="data.item.href">{{ data.item.title }} <span v-if="stargazers" class="badge badge-dark">{{ stargazersText }} ⭐</span></a>
-            <a v-else-if="data.item.href" :href="data.item.href">{{ data.item.title }}</a>
-            <span v-else>{{ data.item.title }}</span>
-        </template>
-
-        <template #before-nav>
-            <!--Image or svg of website logo-->
-            <li class="vsm-section logo-section">
-                <router-link to="/">
-                    <img src="../../public/logo-white.svg" alt="Kestra" />
-                </router-link>
-            </li>
-        </template>
-
-        <template #after-nav>
-            <li class="vsm-section search-section">
-                <SearchBox />
-            </li>
-            <vsm-mob>
-                <div class="dropdown-menu show">
-                    <template v-for="(item) of menu">
-                        <h6 v-if="item.element === 'a'" class="dropdown-header">
-                            <span :is="item.icon" title="" />
-                            <span>{{ item.title }}</span>
-                        </h6>
-                        <template v-else>
-                            <h6 class="dropdown-header">
-                                <a v-if="item.title === 'GitHub'" :href="item.href">{{ item.title }}
-                                    <span v-if="stargazers" data-aos="zoom-out" class="badge badge-dark">
-                                        {{ stargazersText }} ⭐
-                                    </span>
-                                </a>
-                                <router-link v-else-if="item.attributes.href" :to="item.attributes.href">
-                                    <span :is="item.icon" title="" />
-                                    <span>{{ item.title }}</span>
-                                </router-link>
-                                <a v-else :href="item.href">
-                                    <span :is="item.icon" title="" />
-                                    <span>{{ item.title }}</span>
-                                </a>
-                            </h6>
-                        </template>
-                        <template v-for="(current) of item.items">
+    <div v-if="isBannerOpen !== undefined">
+        <b-alert :show="isBannerOpen" dismissible class="mb-0 top-banner" @dismissed="onBannerClose()">
+            If you like Kestra, <a href="https://github.com/kestra-io/kestra" target="_blank">give us a star on GitHub !</a>
+        </b-alert>
+        <vsm-menu
+            :menu="menu"
+            :base-width="380"
+            :base-height="400"
+            :screen-offset="10"
+            element="header"
+            handler="hover"
+            :class="{'banner-open':isBannerOpen}"
+        >
+            <template #default="{ item }">
+                <div class="wrap-content">
+                    <div class="dropdown-menu show">
+                        <template v-for="(current, index) of item.items">
                             <router-link class="dropdown-item" :to="current.link">
                                 <span :is="current.icon" title="" />
                                 <span>{{ current.title }}</span>
+                                <span class="desc">{{ current.desc }}</span>
                             </router-link>
+
+                            <div v-if="index !== item.items.length - 1" class="dropdown-divider"></div>
                         </template>
-                    </template>
+                    </div>
                 </div>
-            </vsm-mob>
-        </template>
-    </vsm-menu>
+            </template>
+
+            <template #title="data">
+                <span :is="data.item.icon" />
+                <a v-if="data.item.title === 'GitHub'" :href="data.item.href">{{ data.item.title }} <span v-if="stargazers" class="badge badge-dark">{{ stargazersText }} ⭐</span></a>
+                <a v-else-if="data.item.href" :href="data.item.href">{{ data.item.title }}</a>
+                <span v-else>{{ data.item.title }}</span>
+            </template>
+
+            <template #before-nav>
+                <!--Image or svg of website logo-->
+                <li class="vsm-section logo-section">
+                    <router-link to="/">
+                        <img src="../../public/logo-white.svg" alt="Kestra" />
+                    </router-link>
+                </li>
+            </template>
+
+            <template #after-nav>
+                <li class="vsm-section search-section">
+                    <SearchBox />
+                </li>
+                <vsm-mob>
+                    <div class="dropdown-menu show">
+                        <template v-for="(item) of menu">
+                            <h6 v-if="item.element === 'a'" class="dropdown-header">
+                                <span :is="item.icon" title="" />
+                                <span>{{ item.title }}</span>
+                            </h6>
+                            <template v-else>
+                                <h6 class="dropdown-header">
+                                    <a v-if="item.title === 'GitHub'" :href="item.href">{{ item.title }}
+                                        <span v-if="stargazers" data-aos="zoom-out" class="badge badge-dark">
+                                        {{ stargazersText }} ⭐
+                                    </span>
+                                    </a>
+                                    <router-link v-else-if="item.attributes.href" :to="item.attributes.href">
+                                        <span :is="item.icon" title="" />
+                                        <span>{{ item.title }}</span>
+                                    </router-link>
+                                    <a v-else :href="item.href">
+                                        <span :is="item.icon" title="" />
+                                        <span>{{ item.title }}</span>
+                                    </a>
+                                </h6>
+                            </template>
+                            <template v-for="(current) of item.items">
+                                <router-link class="dropdown-item" :to="current.link">
+                                    <span :is="current.icon" title="" />
+                                    <span>{{ current.title }}</span>
+                                </router-link>
+                            </template>
+                        </template>
+                    </div>
+                </vsm-mob>
+            </template>
+        </vsm-menu>
+    </div>
 </template>
 
 <script>
@@ -85,6 +91,7 @@ import axios from 'axios';
 import VsmMenu from 'vue-stripe-menu/src/components/Menu'
 import VsmMob from 'vue-stripe-menu/src/components/Mob'
 import SearchBox from 'vuepress-plugin-fulltext-search/components/SearchBox'
+import {BAlert, VBAlert} from 'bootstrap-vue'
 import Domain from 'vue-material-design-icons/Domain'
 import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline'
 import BookOutline from 'vue-material-design-icons/BookOutline'
@@ -105,6 +112,7 @@ export default {
         VsmMenu,
         VsmMob,
         SearchBox,
+        BAlert,
         Domain,
         GoogleCirclesExtended,
         Terraform,
@@ -117,10 +125,10 @@ export default {
         PostOutline,
         GithubIcon,
     },
-
     data() {
         return {
             stargazers: undefined,
+            isBannerOpen: undefined,
             menu: [
                 {
                     title: 'Product',
@@ -231,12 +239,23 @@ export default {
         } else {
             this.stargazers = window.sessionStorage.getItem("github_stargazers_count");
         }
+
+        this.isBannerOpen = this.bannerIsOpen()
     },
 
+    methods: {
+        onBannerClose() {
+            window.localStorage.setItem("header", "false");
+            this.isBannerOpen = false;
+        },
+        bannerIsOpen() {
+            return window.localStorage.getItem("header") !== "false"
+        }
+    },
     computed: {
         stargazersText() {
             return this.stargazers === undefined ? "" : Intl.NumberFormat('en-US').format(this.stargazers);
-        }
+        },
     }
 }
 </script>
@@ -251,6 +270,10 @@ export default {
     z-index: 999;
     width: 100%;
     border-bottom: 1px solid $theme-dark-border;
+
+    &.banner-open {
+        margin-top: 35px;
+    }
 
     span.vsm-link, a.vsm-link, .vsm-dropdown-section a, .vsm-section_mob a {
         color: $tertiary;
@@ -405,6 +428,28 @@ export default {
 
             span.desc {
                 display: none;
+            }
+        }
+    }
+}
+
+.top-banner.alert {
+    z-index: 999;
+    width: 100%;
+    position: fixed;
+    text-align: center;
+    background: $secondary;
+    border-radius: 0;
+    color: $white;
+    border: 0;
+    a {
+        color: $dark;
+        &:after {
+            content: ' ⭐️';
+        }
+        &:hover {
+            &:after {
+                content: ' 💗';
             }
         }
     }
