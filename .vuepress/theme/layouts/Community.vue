@@ -25,7 +25,7 @@
                                             <div class="card work-process border-0 rounded shadow">
                                                 <div class="card-body">
 
-                                                    <a href="https://api.kestra.io/v1/communities/slack/redirect">
+                                                    <a target="_blank" href="https://api.kestra.io/v1/communities/slack/redirect">
                                                         <h4 class="title">Ask a question</h4>
                                                         <p class="text-muted para">
                                                             Get stuck with the documentation, We´re here to help!
@@ -42,7 +42,7 @@
                                         <div class="col-md-4 mt-4 pt-2">
                                             <div class="card work-process border-0 rounded shadow">
                                                 <div class="card-body">
-                                                    <a href="https://api.kestra.io/v1/communities/slack/redirect">
+                                                    <a target="_blank" href="https://api.kestra.io/v1/communities/slack/redirect">
                                                         <h4 class="title">Introduce yourself</h4>
                                                         <p class="text-muted para">
                                                             Welcome to the Kestra community! Let's introduce ourselves!
@@ -60,7 +60,7 @@
                                         <div class="col-md-4 mt-4 pt-2">
                                             <div class="card work-process border-0 rounded shadow">
                                                 <div class="card-body">
-                                                    <a href="https://api.kestra.io/v1/communities/slack/redirect">
+                                                    <a target="_blank" href="https://api.kestra.io/v1/communities/slack/redirect">
 
                                                         <h4 class="title">Share Feedback</h4>
                                                         <p class="text-muted para">
@@ -75,6 +75,7 @@
                                         </div>
                                         <div class="col-12 mt-4 pt-4 text-center">
                                             <a
+                                                target="_blank"
                                                 href="https://api.kestra.io/v1/communities/slack/redirect"
                                                 class="btn btn-primary"
                                                 data-aos="zoom-in"
@@ -194,11 +195,11 @@
                                     <div class="row">
                                         <div v-for="contributor in contributors" class="contributors p-2" data-aos="fade-zoom">
                                             <div class="position-relative">
-                                                <a :href="'https://github.com/' + contributor.name" class="name text-dark">
+                                                <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
                                                     <img :src="contributor.avatar" class="img-fluid avatar avatar-small rounded-circle shadow" alt="">
                                                 </a>
                                             </div>
-                                            <a :href="'https://github.com/' + contributor.name" class="name">{{ contributor.name }}</a>
+                                            <a :href="'https://github.com/' + contributor.name" class="name" target="_blank" >{{ contributor.name }}</a>
                                         </div>
                                     </div>
                                 </div>
