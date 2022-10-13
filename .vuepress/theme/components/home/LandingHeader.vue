@@ -26,7 +26,7 @@
                                         <FeatureSearch title="" /> Discover <ArrowRight title="" />
                                 </router-link>
                                 <a
-                                    href="https://demo.kestra.io"
+                                    href="https://demo.kestra.io/ui/login?auto"
                                     target="_blank"
                                     class="text-light btn btn-light title-dark mr-3 mt-4"
                                     data-aos="zoom-in"

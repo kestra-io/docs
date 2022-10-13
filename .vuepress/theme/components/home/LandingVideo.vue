@@ -40,7 +40,7 @@
                                                     </router-link>
 
                                                     <a
-                                                        href="https://demo.kestra.io"
+                                                        href="https://demo.kestra.io/ui/login?auto"
                                                         target="_blank"
                                                         class="text-light btn btn-light title-dark mt-3"
                                                         data-aos="zoom-in"
