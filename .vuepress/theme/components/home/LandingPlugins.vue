@@ -395,7 +395,11 @@ export default {
                     icon: "csicon csicon-pulsar",
                     href: "plugin-pulsar"
                 },
-
+                {
+                    name: "Airbyte",
+                    icon: "csicon csicon-airbyte",
+                    href: "plugin-airbyte"
+                },
             ];
 
             // Order by publish date, desc
@@ -609,6 +613,10 @@ i.csicon {
 
     &.csicon-duckdb {
         background-image: url("../../assets/home/duckdb.svg");
+    }
+
+    &.csicon-airbyte {
+        background-image: url("../../assets/home/airbyte.svg");
     }
 }
 
