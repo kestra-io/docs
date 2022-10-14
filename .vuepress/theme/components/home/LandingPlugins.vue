@@ -400,6 +400,11 @@ export default {
                     icon: "csicon csicon-airbyte",
                     href: "plugin-airbyte"
                 },
+                {
+                    name: "Fivetran",
+                    icon: "csicon csicon-fivetran",
+                    href: "plugin-fivetran"
+                },
             ];
 
             // Order by publish date, desc
@@ -617,6 +622,10 @@ i.csicon {
 
     &.csicon-airbyte {
         background-image: url("../../assets/home/airbyte.svg");
+    }
+
+    &.csicon-fivetran {
+        background-image: url("../../assets/home/fivetran.svg");
     }
 }
 
