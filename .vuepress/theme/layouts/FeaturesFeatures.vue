@@ -160,7 +160,7 @@
                                             <div class="ml-3">
                                                 <h5>API or UI based!</h5>
                                                 <p class="text-muted mb-0">
-                                                    f you haven’t found a suitable option, you can still rely on <router-link to="/docs/developer-guide/inputs/#send-inputs-programmatically">Kestra API</router-link> (a simple cURL can do the job), <router-link to="/docs/developer-guide/triggers/webhook.html">webhook</router-link> to trigger a flow from any application or simply start it directly from the Web UI.
+                                                    If you haven’t found a suitable option, you can still rely on <router-link to="/docs/developer-guide/inputs/#send-inputs-programmatically">Kestra API</router-link> (a simple cURL can do the job), <router-link to="/docs/developer-guide/triggers/webhook.html">webhook</router-link> to trigger a flow from any application or simply start it directly from the Web UI.
                                                 </p>
                                             </div>
                                         </div>
