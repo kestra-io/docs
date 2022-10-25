@@ -16,11 +16,11 @@ Variables can use variable information registered/existing in the execution cont
 Flow & Execution variables allow using current context for this execution in order to customize the tasks (example: name file with current date or current execution id, ...)
 
 The following table lists all the default variables available on each execution.
-
 | Parameter | Description |
 | ---------- | ----------- |
 |  <code v-pre>{{ flow.id }}</code> | The name of the current flow ID |
 |  <code v-pre>{{ flow.namespace }}</code> | The name of the current namespace |
+|  <code v-pre>{{ flow.revision }}</code> | The revision of the current flow |
 |  <code v-pre>{{ execution.id }}</code> | Return the execution Id, a unique id for each  |
 |  <code v-pre>{{ execution.startDate }}</code> | The start date of the current execution, it can be formatted with <code v-pre>{{ dateFormat execution.startDate  "yyyy-MM-dd HH:mm:ss.SSSSSS"}}</code> |
 |  <code v-pre>{{ task.id }}</code> | The current task ID |
