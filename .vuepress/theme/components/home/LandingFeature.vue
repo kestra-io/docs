@@ -97,7 +97,7 @@ section.main-features {
 
     .features {
         flex-wrap: nowrap;
-        margin-top: 3.5rem;
+        margin-top: 2.5rem;
 
         .content {
             flex-grow: 1;
