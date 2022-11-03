@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isBannerOpen !== undefined">
+    <div>
         <b-alert :show="isBannerOpen" dismissible class="mb-0 top-banner" @dismissed="onBannerClose()">
             If you like Kestra, <a href="https://github.com/kestra-io/kestra" target="_blank">give us a star on GitHub !</a>
         </b-alert>
@@ -256,11 +256,15 @@ export default {
         }
 
         this.isBannerOpen = this.bannerIsOpen()
+        if (this.isBannerOpen) {
+            document.body.className = "banner-open";
+        }
     },
 
     methods: {
         onBannerClose() {
             window.localStorage.setItem("header", "false");
+            document.body.className = "";
             this.isBannerOpen = false;
         },
         bannerIsOpen() {
@@ -285,10 +289,6 @@ export default {
     z-index: 999;
     width: 100%;
     border-bottom: 1px solid $theme-dark-border;
-
-    &.banner-open {
-        margin-top: 35px;
-    }
 
     span.vsm-link, a.vsm-link, .vsm-dropdown-section a, .vsm-section_mob a {
         color: $tertiary;
@@ -457,6 +457,7 @@ export default {
     border-radius: 0;
     color: $white;
     border: 0;
+    top: 0;
     a {
         color: $dark;
         &:after {
