@@ -351,14 +351,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mt-5">
                             <div class="col-md-4 col-12 mt-5 mt-md-0">
                                 <div class="features" data-aos="fade-right">
                                     <div class="image position-relative d-inline-block">
                                         <MonitorMultiple class="text-primary h1" title="" />
                                     </div>
 
-                                    <div class="content mt-4">
+                                    <div class="content">
                                         <h5>Full platform for end-to-end workflows</h5>
                                         <p class="text-secondary mb-0">All the necessary tools and autonomy to deliver enterprise-grade workflows.</p>
                                     </div>
@@ -371,7 +371,7 @@
                                         <Web class="text-primary h1" title="" />
                                     </div>
 
-                                    <div class="content mt-4">
+                                    <div class="content">
                                         <h5>Live edit in browser</h5>
                                         <p class="text-secondary mb-0">No desktop application installation needed — a <router-link to="/docs/user-interface-guide/">simple browser to edit and monitor</router-link> all your flows.</p>
                                     </div>
@@ -384,7 +384,7 @@
                                         <Terraform class="text-primary h1" title="" />
                                     </div>
 
-                                    <div class="content mt-4">
+                                    <div class="content">
                                         <h5>Create your flow with Terraform</h5>
                                         <p class="text-secondary mb-0"><router-link to="/docs/terraform/">Deploy Kestra flows</router-link> and your cloud dependencies for atomic release processing.</p>
                                     </div>

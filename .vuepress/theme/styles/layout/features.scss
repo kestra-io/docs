@@ -2,7 +2,6 @@
 // features.scss
 //
 .features {
-    margin-top: 2.5rem;
     transition: all 0.5s ease;
 
     &:hover {
@@ -25,6 +24,7 @@
         }
     }
     .image {
+        position: absolute !important;
         &:before {
             content: "";
             position: absolute;
@@ -37,6 +37,10 @@
             background: linear-gradient(45deg, transparent, rgba($primary, 0.09));
             z-index: -1;
         }
+    }
+
+    .content {
+        margin-left: 80px;
     }
     .ride-image {
         transform: rotate(-45deg);

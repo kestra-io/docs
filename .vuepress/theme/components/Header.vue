@@ -33,6 +33,7 @@
                 <a v-if="data.item.title === 'GitHub'" :href="data.item.href">{{ data.item.title }} <span v-if="stargazers" class="badge badge-dark">{{ stargazersText }} ⭐</span></a>
                 <a v-else-if="data.item.href" :href="data.item.href">{{ data.item.title }}</a>
                 <span v-else>{{ data.item.title }}</span>
+                <span v-if="data.item.badge" class="badge badge-danger">{{ data.item.badge }}</span>
             </template>
 
             <template #before-nav>
@@ -59,8 +60,8 @@
                                 <h6 class="dropdown-header">
                                     <a v-if="item.title === 'GitHub'" :href="item.href">{{ item.title }}
                                         <span v-if="stargazers" data-aos="zoom-out" class="badge badge-dark">
-                                        {{ stargazersText }} ⭐
-                                    </span>
+                                            {{ stargazersText }} ⭐
+                                        </span>
                                     </a>
                                     <router-link v-else-if="item.attributes.href" :to="item.attributes.href">
                                         <span :is="item.icon" title="" />
@@ -75,7 +76,11 @@
                             <template v-for="(current) of item.items">
                                 <router-link class="dropdown-item" :to="current.link">
                                     <span :is="current.icon" title="" />
-                                    <span>{{ current.title }}</span>
+                                    <span>
+                                        {{ current.title }}
+                                        <span v-if="current.badge" class="badge badge-danger">{{ current.badge }}</span>
+                                    </span>
+
                                 </router-link>
                             </template>
                         </template>
@@ -91,7 +96,7 @@ import axios from 'axios';
 import VsmMenu from 'vue-stripe-menu/src/components/Menu'
 import VsmMob from 'vue-stripe-menu/src/components/Mob'
 import SearchBox from 'vuepress-plugin-fulltext-search/components/SearchBox'
-import {BAlert, VBAlert} from 'bootstrap-vue'
+import {BAlert} from 'bootstrap-vue'
 import Domain from 'vue-material-design-icons/Domain'
 import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline'
 import BookOutline from 'vue-material-design-icons/BookOutline'
@@ -105,7 +110,8 @@ import FeatureSearch from "vue-material-design-icons/FeatureSearch"
 import AccountNetworkOutline from "vue-material-design-icons/AccountNetworkOutline"
 import Security from "vue-material-design-icons/Security"
 import PostOutline from "vue-material-design-icons/PostOutline"
-import {GithubIcon} from 'vue-feather-icons';
+import AccountStarOutline from "vue-material-design-icons/AccountStarOutline"
+import {GithubIcon, UsersIcon} from 'vue-feather-icons';
 
 export default {
     components: {
@@ -123,6 +129,7 @@ export default {
         FeatureSearch,
         AccountNetworkOutline,
         PostOutline,
+        AccountStarOutline,
         GithubIcon,
     },
     data() {
@@ -202,18 +209,26 @@ export default {
                 {
                     title: 'Company',
                     icon: Domain,
+                    badge: "Hiring ‼",
                     element: 'a',
                     dropdown: 'company',
                     items: [
                         {
                             title: 'About us',
-                            link: '/company/about-us',
-                            icon: Domain,
+                            link: '/company/about-us.html',
+                            icon: UsersIcon,
                             desc: 'Discover our story and our team'
                         },
                         {
+                            title: 'Careers',
+                            link: '/company/careers.html',
+                            badge: "Hiring ‼",
+                            icon: AccountStarOutline,
+                            desc: 'Join an open company'
+                        },
+                        {
                             title: 'Contact us',
-                            link: '/company/contact',
+                            link: '/company/contact.html',
                             icon: Email,
                             desc: 'How can we help?'
                         }

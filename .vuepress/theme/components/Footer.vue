@@ -96,6 +96,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="/company/careers.html" class="text-foot">
+                                    <ChevronRight title="" />  Careers <span class="badge badge-danger">Hiring ‼</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="/company/contact.html" class="text-foot">
                                     <ChevronRight title="" />  Contact us
                                 </a>
