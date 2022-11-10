@@ -9,13 +9,19 @@
                 <section class="section overflow-hidden bg-white">
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-12 text-center">
-                                <div class="section-title mb-4 pb-2">
-                                    <h4 class="title mb-4" data-aos="fade-left">Join an open company</h4>
+                            <div class="col-12">
+                                <div class="section-title mb-0 pb-2">
+                                    <h4 class="title mb-4 text-center" data-aos="fade-left">Join an open company</h4>
                                     <p data-aos="fade-right">
                                         Free and open isn’t just how we build our products, it’s how we build our culture. <br/>
                                         Our users and customers are at the center of everything we do. Customer focus is present across every functional area of the company and in every interaction, product feature, and engagement.<br />
                                         Our aim as an employer is to enrich our colleague's lives by providing exciting work, brilliant and thoughtful colleagues, opportunities to learn and do new things – as well as a competitive compensation and benefits package.
+                                    </p>
+                                    <p class="text-center mt-5 mb-0">
+                                        <a href="#open" class="btn btn-primary " data-aos="zoom-in">
+                                            <Email title="" />
+                                            Open positions
+                                        </a>
                                     </p>
                                 </div>
                             </div>
@@ -121,7 +127,7 @@
                     <Shape class="text-dark" />
                 </section>
 
-                <section class="section bg-dark text-white">
+                <section id="open" class="section bg-dark text-white">
                     <div class="container">
                         <div class="row">
                             <div class="col-12 text-center">

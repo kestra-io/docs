@@ -8,16 +8,17 @@ export default {
     <div>
         <h2>🗨 About Kestra</h2>
         <p>
-            Kestra is an open source data orchestration and scheduling platform. The project has started in 2019 and
-            has a successful production usage with a major French retailer company. The company has just started
-            communication 6 month ago and has reached more than 2700 stars on github in a few weeks. Being only the
-            2 french founders for now, we are focused on building a strong team around this ambitious product
-            that will become the defacto cloud native orchestration & scheduling tools.
+            Kestra is a new open-source data orchestration and scheduling platform with the ambition to bring the most powerful and easy-to-use tool to the modern data stack!
         </p>
         <p>
-            If you are interested in working with a fast-moving, fast-growing startup, and love being part of a
-            company with an amazing culture (family and mental health first) that all enjoy working together,
-            this will be a great place for you!
+            The project has started in 2020 with a successful and huge production usage with a worldwide major retailer company.
+            The official launch took place recently this year and very quickly generated <a href="https://github.com/kestra-io/kestra" target="_blank">incredible traction on GitHub</a> and thousands of uses in many start-ups and large organizations like Huawei, Tencent, DNB, BMW, Leroy Merlin, …
+        </p>
+        <p>
+            We are focusing on accelerating our development by building the best team to create the most ambitious tools together.
+        </p>
+        <p>
+            If you want to work in a fast-moving, listening, open-minded startup with an amazing culture (family and mental health first) and where everyone loves to work together, this will be an amazing company for you!
         </p>
     </div>
 </template>
