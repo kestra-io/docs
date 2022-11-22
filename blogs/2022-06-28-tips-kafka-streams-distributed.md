@@ -78,14 +78,14 @@ With all the tasks above, we are sure that the execution state will always be th
 In [Kestra](https://github.com/kestra-io/kestra), we have a scheduler that will look up all flows to schedule (timed-based) execution or use a long-pooling mechanism (detect the file on file systems like S3 or SFTP). Since we don't want to have a single point of failure in this service, we need to split the entire flow between all instances of schedulers.
 
 To handle that case, we rely on Kafka's consumer groups, which will handle the whole complexity of a distributed system for us. The logic is:
-- Create a [Kafka stream](https://github.com/kestra-io/kestra/blob/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/KafkaFlowListeners.java) that will read in a `KTable` and transmit all the result to a `Consumer`
-- Listen to state change, meaning mostly `REBALANCED` Streams, and empty all the flows for the `Consumer`
+- Create a [Kafka stream](https://github.com/kestra-io/kestra/blob/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/KafkaFlowListeners.java) that will read in a `KTable` and transmit all the results to a `Consumer.`
+- Listen to state change, meaning mostly `REBALANCED` Streams, and empty all the flows for the `Consumer.`
 - On the `READY` state, read all the `KTable` again.
 
 With these, all flows will be dispatched to all listeners. This means that if you have 1,000 flows, every consumer will have ~ 500 flows (depending on the repartition of keys). Kafka will handle all the heavy parts of the distributed systems:
 - Heartbeat to detect failure for a consumer.
 - Notifications relating to rebalancing.
-- Ensure exactly onc pattern for a topic, ensuring that only one consumer will handle the data.
+- Ensure exactly one pattern for a topic, ensuring that only one consumer will handle the data.
 
 This way, you will have a fully distributed system, thanks to Kafka, without the pain of going through a Jespen analysis.
 
@@ -109,7 +109,7 @@ Et voila 🎉 We can detect dead consumers for free with Kafka API.
 
 We need to use a [GlobalKTable](https://kafka.apache.org/31/documentation/streams/developer-guide/dsl-api.html#streams_concepts_globalktable) to detect [flow trigger](/docs/developer-guide/triggers/flow.html). To find matching flows, we test all the flows on the cluster [conditions](/docs/developer-guide/conditions/). For this purpose, we are using an API to fetch all flows from a `GlobalKTable` using `store.all()` that returned all the flows, fetching RockDb.
 
-The first assumption is that `all()` returned is an object (Flow in our case), as the API return Object. However, we discovered that the `all()` will:
+The first assumption is that `all()` returned is an object (Flow in our case), as the API return object. However, we discovered that the `all()` will:
 - Fetch all the data from RockDB (But for what?).
 - Deserialize the data from RockDB that is stored as byte and map it to concrete Java POJO.
 
@@ -134,7 +134,7 @@ builder.addGlobalStore(
     )
 );
 ```
-We accomplish this with [GlobalInMemoryStateProcessor](https://github.com/kestra-io/kestra/blob/master/runner-kafka/src/main/java/io/kestra/runner/kafka/streams/GlobalInMemoryStateProcessor.java), a simple wrapper that saves to state store and sends a complete list on every change (even though this doesnt happen frequently) and gathers all flow in memory. This works well in our use case because we know that an instance of Kestra will not have millions of flows.
+We accomplish this with [GlobalInMemoryStateProcessor](https://github.com/kestra-io/kestra/blob/master/runner-kafka/src/main/java/io/kestra/runner/kafka/streams/GlobalInMemoryStateProcessor.java), a simple wrapper that saves to state store and sends a complete list on every change (even though this doesn't happen frequently) and gathers all flow in memory. This works well in our use case because we know that an instance of Kestra will not have millions of flows.
 
 But, it's important to remember that all store operations will lead to deserialization that costs you some CPU.
 
@@ -145,12 +145,12 @@ First, we designed [Kestra](https://github.com/kestra-io/kestra) to have only on
 
 Here is the last version of our main and only Kafka Stream with many topics 🙉:
 ![Kestra Topology](./2022-06-28-tips-kafka-streams-distributed/topology.jpg)
-Yes, this is a massive Kafka Stream. Despite its complexity, it worked well. However, there is a major drawback:
+Yes, this is a massive Kafka stream. Despite its complexity, it worked well. However, there is a major drawback:
 - **Monitoring**: all the metrics are under the same consumer groups.
 - **Debugging**: during a crash, each topic is consumed independently; when a message fails, the whole process crushes.
-- **lag** (the most important): since Kafka Stream optimizes the consumption of messages by itself, a topic with large outputs could lead to lag on other unrelated topics. In that case, it is impossible to properly understand the lag on our consumer.
+- **Lag** (the most important): since Kafka stream optimizes the consumption of messages by itself, a topic with large outputs could lead to lag on other unrelated topics. In that case, it is impossible to properly understand the lag on our consumer.
 
-Now, we have decided to split into multiple [streams](https://github.com/kestra-io/kestra/tree/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/executors) to be able to monitor and properly understand the lag on our Kafka Streams. 
+Now, we have decided to split into multiple [streams](https://github.com/kestra-io/kestra/tree/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/executors) to be able to monitor and properly understand the lag on our Kafka streams. 
 
 To split our bad streams, we simply choose to deal with only one topic at a time -- to avoid large network transit -- so we grouped all streams by source topics.
 
