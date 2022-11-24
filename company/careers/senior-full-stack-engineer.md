@@ -4,7 +4,7 @@ layout: CareerDetail
 type: Engineering
 ---
 
-## **👀** What you will do:
+## What you will do:
 
 This role involves working closely alongside the CTO and to be able to quickly learn the whole project, and quickly become its counterpart.
 
@@ -15,7 +15,7 @@ As a full stack engineer at Kestra, you'll work on developing:
 - The enterprise editions (Java, vue.js)
 - Private enterprise products (Java, vue.js, …)
 
-## 🌕 Our stack
+## Our stack
 
 - **Backend:** Java, Micronaut
 - **Frontend:** Vue.js, Bootstrap
@@ -25,7 +25,7 @@ As a full stack engineer at Kestra, you'll work on developing:
 - **Project:** Github (repository, actions, issues)
 - You will work on many technologies, look at [our plugins list](https://kestra.io/plugins/)
 
-## **🚀** What we’re looking for:
+## What we’re looking for:
 
 - 7+ years of software engineering experience in both Backend (Java) and Frontend (Vue.js, react, …)
 - Speaking/writing in English and preferably French as well
@@ -37,7 +37,7 @@ As a full stack engineer at Kestra, you'll work on developing:
 - Ability to work both autonomously and collaboratively, as needed.
 - Strong written and verbal communications skills.
 
-## **🤩** Bonus points:
+## Bonus points:
 
 - Experience with contributing to or the maintenance of an open-source project.
 - Experience with Kafka & Kafka Streams.

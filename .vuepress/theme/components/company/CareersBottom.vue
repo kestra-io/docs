@@ -9,7 +9,7 @@ export default {
 
 <template>
     <div>
-        <h2>⭐ What you get:</h2>
+        <h2>What you get:</h2>
         <ul class="advantage">
             <li><span>👶</span> Join an early startup and become a prominent member of the company</li>
             <li><span>💲</span> Market-competitive salary</li>

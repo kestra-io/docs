@@ -4,7 +4,7 @@ layout: CareerDetail
 type: Engineering
 ---
 
-## **👀** What you will do:
+## What you will do:
 
 - Design, Architect & Implement our SAAS offering for Kestra.
 - Automate the provisioning of customer Kestra environnement.
@@ -14,7 +14,7 @@ type: Engineering
 - Design and implement novel technical solutions that raises engineering productivity throughout your team
 - Relentlessly improve your team’s DORA metrics including cycle time, deployment frequency, change failure rate, and mean time to recovery.
 
-## **🚀** What we’re looking for:
+## What we’re looking for:
 
 - 7+ years experience operating in a SRE/DevOps/Infra role.
 - Speaking/writing in English and preferably French as well
@@ -28,7 +28,7 @@ type: Engineering
 - Ability to work both autonomously and collaboratively, as needed.
 - Strong written and verbal communications skills.
 
-## **🤩** Bonus points:
+## Bonus points:
 
 - Work previously on the SAAS offering that needs deployment for each customer
 - Excellent analytical, decision-making, and problem-solving skills

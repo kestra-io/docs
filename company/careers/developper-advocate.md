@@ -4,7 +4,7 @@ layout: CareerDetail
 type: Engineering
 ---
 
-## **👀** What you will do:
+## What you will do:
 
 Kestra is looking for a Developer Advocate who loves to educate and engage with developers, and has a passion for open source communities.
 
@@ -14,7 +14,7 @@ Kestra is looking for a Developer Advocate who loves to educate and engage with 
 - **Fun:** Create fun and engaging content for various social media platforms. Whether it’s writing, video creation and technical or soft skills to educate developers
 - **Community:** Actively engaging with developers on various social media platforms (ie: Twitter, Slack, LinkedIn, GitHub Discussions, Reddit, StackOverflow, etc)
 
-## **🚀** What we’re looking for:
+## What we’re looking for:
 
 - 2+ years experience as a Developer Advocate, or similar activities
 - Some experience in at least two programming languages or frameworks (JS, TS, Java, Python, …)
@@ -24,7 +24,7 @@ Kestra is looking for a Developer Advocate who loves to educate and engage with 
 - Ability to work with a diverse company (and team) located globally, working across different time zones
 - Ability to take the initiative and work independently
 
-## **🤩** Bonus points:
+## Bonus points:
 
 - Professional prior experience as a Data Engineer with extensive knowledge of the big data ecosystem, key technologies (especially Python, Kafka, Flink, Spark, data lakes and warehouses)
 - Experience building demo apps and producing developer-centric content
