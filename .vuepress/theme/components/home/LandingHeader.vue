@@ -39,17 +39,19 @@
                     </div>
 
                     <div class="col-lg-6 ui-img">
-                        <lottie
-                            ref="lottie"
-                            v-if="animationData"
-                            :animation-data="animationData"
-                            :assets-path="assetsPath"
-                            :loop="false"
-                            :auto-play="false"
-                            :speed="1.2"
-                            @complete="complete"
-                            @domLoaded="play"
-                        />
+                        <a href="https://github.com/kestra-io/kestra" target="_blank">
+                            <lottie
+                                ref="lottie"
+                                v-if="animationData"
+                                :animation-data="animationData"
+                                :assets-path="assetsPath"
+                                :loop="false"
+                                :auto-play="false"
+                                :speed="1.2"
+                                @complete="complete"
+                                @domLoaded="play"
+                            />
+                        </a>
                     </div>
                 </div>
             </div>
@@ -186,7 +188,7 @@ export default {
 
             .ui-img {
                 padding-bottom: 180px;
-                > div {
+                > a > div {
                     transform: perspective(340px) rotateY(-5deg);
                     transform-style: preserve-3d;
                     img {
