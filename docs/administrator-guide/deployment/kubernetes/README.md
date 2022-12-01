@@ -13,7 +13,7 @@ We provide a [Helm Chart](https://helm.sh/) in order to deploy your cluster.
 
 ```bash
 helm repo add kestra https://helm.kestra.io/
-helm install kestra
+helm install my-release kestra/kestra
 ```
 
 ## Details
