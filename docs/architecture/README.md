@@ -93,7 +93,7 @@ The Indexer will watch for many Kafka topics and will simply copy the content to
 ### Webserver
 The Webserver offers 2 main modules in the same server :
 - **Api**: All the [apis](../api-guide/) allowed to trigger executions for any system, and to interact with Kestra.
-- **UI**: The [User Interface](../user-interface-guide]) (UI) is also served by the same webserver.
+- **UI**: The [User Interface](../user-interface-guide) (UI) is also served by the same webserver.
 
 The webserver interacts mostly with Elasticsearch to deliver a rich API/UI. It also interacts with Kafka in order to trigger new executions, follow executions in real-time, etc...
 
