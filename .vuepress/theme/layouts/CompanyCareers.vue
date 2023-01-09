@@ -49,7 +49,7 @@
 
                                     <div class="content">
                                         <h5>Work from anywhere</h5>
-                                        <p class="text-secondary mb-0">We're a remote-first and completely distributed team, so we can work wherever home is.</p>
+                                        <p class="text-secondary mb-0">We're a remote-first and completely distributed team, so you can work wherever home is.</p>
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
 
                                     <div class="content">
                                         <h5>Flexible working hours</h5>
-                                        <p class="text-secondary mb-0">Flexibility in schedule to be there for life’s important moments</p>
+                                        <p class="text-secondary mb-0">Flexibility in schedule to be there for life’s important moments.</p>
                                     </div>
                                 </div>
                             </div>
