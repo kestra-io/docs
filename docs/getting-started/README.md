@@ -6,16 +6,15 @@ order: 1
 
 
 ## Before you begin
-Make sure the following are already installed:
+Make sure the followings are already installed:
 - [Docker](https://docs.docker.com/engine/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Launch Kestra
 
-- Download the compose file [here](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) and save it with the name `docker-compose.yml`. For linux and MacOS, you can run `wget https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml`.
-- Run `docker-compose pull`
-- Run `docker-compose up -d`
-- Open [http://localhost:8080](http://localhost:8080) in your browser
+- Download the Docker Compose file [here](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) and save it with the name `docker-compose.yml`. For linux and MacOS, you can run `wget https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml`.
+- Run `docker-compose up -d`.
+- Open [http://localhost:8080](http://localhost:8080) in your browser.
 
 
 ::: warning
@@ -29,15 +28,15 @@ docker run --rm "debian:buster-slim" bash -c 'numfmt --to iec $(echo $(($(getcon
 
 
 ## Create your first flow
-The default installation contains some examples on the namespace `io.kestra.demo`.
+The default installation contains some examples you can access on the `Flows` menu item.
 
-We will create a new one :
+We will create a new one:
 
 ![Flow Create](./assets/flow-2.png)
 
-* Click on the `Create` button at the bottom
-* Paste the flow below
-* Click on save
+* Click on the `Create` button at the bottom.
+* Paste the flow below.
+* Click on save.
 
 ```yaml
 id: logs
@@ -58,18 +57,19 @@ tasks:
   level: ERROR
 ```
 
-You will see the Topology of your flow as a graph in the `Topology` tab.
+You will see the topology of your flow as a graph in the `Topology` tab.
 
 ![Flow Topology](./assets/flow-3.png)
 
 
 ## Execute your first flow
-Now let's execute our first flow and see it running :
+Now let's execute our first flow and see it running:
 
-* Now hit the button `Execute` on top Tabs.
+* Go to the `Execute` tab.
+* Hit the `Execute` button on top.
 * You will see in real-time the execution of the current flow.
 ![Execution Gantt](./assets/execution-1.png)
-* Look at the log of the current tasks on `Logs`
+* Look at the log of the current task in the `Logs` tab.
 ![Execution Log](./assets/execution-2.png)
 * And watch the topology of the current execution.
 ![Execution Topology](./assets/execution-3.png)
@@ -78,9 +78,9 @@ Now let's execute our first flow and see it running :
 ## Next Steps
 Now, you are ready to use Kestra!
 
-Now we suggest reading the following documentation in the order presented:
+As next steps, we suggest reading the following documentations in this order:
 - Learn Kestra [concepts](../concepts).
-- Read the [Developer Guide](../developer-guide) to understand how to code your own flow.
+- Read the [Developer Guide](../developer-guide) to understand how to build your own flow.
 - Look at [Plugins](../../plugins) to perform some real tasks.
-- [Deploy](../administrator-guide) your kestra instance to real environments.
+- [Deploy](../administrator-guide) your Kestra instance to real environments.
 
