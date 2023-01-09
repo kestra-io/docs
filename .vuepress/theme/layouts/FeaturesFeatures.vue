@@ -32,7 +32,7 @@
                                                 <div class="ml-3">
                                                     <h5>All kinds of flows!</h5>
                                                     <p class="text-muted mb-0">
-                                                        Kestra understands the construction of your flow and handles <router-link to="/docs/developer-guide/flowable/">any workflow</router-link> with parallel, loop dependent flows.
+                                                        Kestra understands the construction of your flow and handles <router-link to="/docs/developer-guide/flowable/">any workflow</router-link> including parallel and loop dependent flows.
                                                         Systems can fail; let Kestra handle <router-link to="/docs/developer-guide/retries/">the retry process.</router-link>
                                                     </p>
                                                 </div>
@@ -46,7 +46,7 @@
                                                     <GoogleCirclesExtended title="" />
                                                 </h2>
                                                 <div class="ml-3">
-                                                    <h5>All plugins!</h5>
+                                                    <h5>Lots of plugins!</h5>
                                                     <p class="text-muted mb-0">
                                                         Plugins offer deep integration with systems enabling users to make complex workflows without relying on the command line.
                                                         <router-link to="/plugins/">Use an official one</router-link> or <router-link to="/docs/plugin-developer-guide/">simply build your own!</router-link>
@@ -122,7 +122,7 @@
                                                 <Abacus title="" />
                                             </h2>
                                             <div class="ml-3">
-                                                <h5>Event based</h5>
+                                                <h5>Event based!</h5>
                                                 <p class="text-muted mb-0">
                                                     Kestra can execute flows based on events coming from core or plugins such as:
 
@@ -145,8 +145,8 @@
                                             <div class="ml-3">
                                                 <h5>Time-based scheduling!</h5>
                                                 <p class="text-muted mb-0">
-                                                    Or execute your flows <router-link to="/docs/developer-guide/triggers/schedule.html">at regular intervals</router-link> based on a cron expression, if you
-                                                    have more complex needs and rely on <router-link to="/docs/developer-guide/triggers/schedule.html#schedule-conditions">conditions</router-link> to limit the scheduling of your flows <router-link to="/plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekInMonthCondition.html">(e.g., first day of the month, weekend only, etc.).</router-link>, <router-link to="/plugins/core/conditions/io.kestra.core.models.conditions.types.WeekendCondition.html">weekend only</router-link>, ...
+                                                    Kestra can execute your flows <router-link to="/docs/developer-guide/triggers/schedule.html">at regular intervals</router-link> based on a cron expression, if you
+                                                    have more complex needs you can rely on <router-link to="/docs/developer-guide/triggers/schedule.html#schedule-conditions">conditions</router-link> to limit the scheduling of your flows <router-link to="/plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekInMonthCondition.html">(e.g., first day of the month, weekend only, etc.).</router-link>, <router-link to="/plugins/core/conditions/io.kestra.core.models.conditions.types.WeekendCondition.html">weekend only</router-link>, ...
                                                 </p>
                                             </div>
                                         </div>
@@ -160,7 +160,8 @@
                                             <div class="ml-3">
                                                 <h5>API or UI based!</h5>
                                                 <p class="text-muted mb-0">
-                                                    If you haven’t found a suitable option, you can still rely on <router-link to="/docs/developer-guide/inputs/#send-inputs-programmatically">Kestra API</router-link> (a simple cURL can do the job), <router-link to="/docs/developer-guide/triggers/webhook.html">webhook</router-link> to trigger a flow from any application or simply start it directly from the Web UI.
+                                                    If you haven’t found a suitable option, you can still rely on the <router-link to="/docs/developer-guide/inputs/#send-inputs-programmatically">Kestra API</router-link> (a simple cURL can do the job), 
+                                                    or a <router-link to="/docs/developer-guide/triggers/webhook.html">webhook</router-link> to trigger a flow from any application or simply start a flow directly from the Web UI.
                                                 </p>
                                             </div>
                                         </div>
@@ -199,7 +200,7 @@
                                                     <p class="text-muted mb-0">
                                                         Don’t be left choosing between ETL or ELT — Kestra handles both at scale. Choose the method you need: convert from
                                                         <router-link to="/plugins/plugin-serdes/tasks/csv/io.kestra.plugin.serdes.csv.CsvReader.html">standard</router-link> <router-link to="/plugins/plugin-serdes/tasks/avro/io.kestra.plugin.serdes.avro.AvroWriter.html">format</router-link>,
-                                                        , use task to <router-link to="/plugins/plugin-script-nashorn/tasks/io.kestra.plugin.scripts.nashorn.FileTransform.html">transform data directly</router-link>, or
+                                                        use task to <router-link to="/plugins/plugin-script-nashorn/tasks/io.kestra.plugin.scripts.nashorn.FileTransform.html">transform data directly</router-link>, or
                                                         load <router-link to="/plugins/plugin-jdbc-postgres/tasks/l/io.kestra.plugin.jdbc.postgresql.CopyIn.html">raw data</router-link> and let the database do the hard work.
                                                     </p>
                                                 </div>
@@ -215,7 +216,7 @@
                                                 <div class="ml-3">
                                                     <h5>Directly connected to systems!</h5>
                                                     <p class="text-muted mb-0">
-                                                        Plugins offer rich integrations with all the underlying systems. Get rich outputs, gather metrics for all tasks executed.
+                                                        Plugins offer rich integrations with all the underlying systems. Get rich outputs and gather metrics for all executed tasks.
                                                     </p>
                                                 </div>
                                             </div>
@@ -228,7 +229,7 @@
                                                     <OpenInNew title="" />
                                                 </h2>
                                                 <div class="ml-3">
-                                                    <h5>Cloud native & scalable !</h5>
+                                                    <h5>Cloud native & scalable!</h5>
                                                     <p class="text-muted mb-0">
                                                         Kestra is robust and built with the top <router-link to="/docs/architecture/">cloud-native technologies</router-link>! Scale to millions of executions hassle free.
                                                     </p>
@@ -261,7 +262,7 @@
                                 <div class="section-title mb-4 pb-2">
                                     <h4 class="title mb-4" data-aos="fade-left">An all-in-one platform</h4>
                                     <p data-aos="fade-right">
-                                        Kestra is composed of a <strong>rich UI</strong> allowing you to <strong>create, run, and monitor</strong> all your flows. It has a <strong>full, scalable and cloud-native</strong> architecture, and <strong>based on plugins</strong> allowing you to use or create your own plugins with little fuss.
+                                        Kestra is composed of a <strong>rich UI</strong> allowing you to <strong>create, run, and monitor</strong> all your flows. It has a <strong>full, scalable and cloud-native</strong> architecture, and is <strong>based on plugins</strong> allowing you to use existing ones or create your own plugins with little fuss.
                                     </p>
                                 </div>
                             </div>
@@ -315,7 +316,7 @@
                                             <div class="ml-3">
                                                 <h5>Cloud native and infinitely scalable</h5>
                                                 <p class="text-muted mb-0">
-                                                    Scale to millions of executions without the pain as Kestra is built on <router-link to="/docs/architecture/">cloud native and scalable</router-link> solutions.
+                                                    Scale to millions of executions without pain as Kestra is built on <router-link to="/docs/architecture/">cloud native and scalable</router-link> solutions.
                                                 </p>
                                             </div>
                                         </div>
@@ -329,7 +330,7 @@
                                             <div class="ml-3">
                                                 <h5>Easy to extend</h5>
                                                 <p class="text-muted mb-0">
-                                                    Plugins are everywhere in Kestra — many are available from <router-link to="/plugins/">Kestra core team</router-link>; creating your own is simple and also an option.
+                                                    Plugins are everywhere in Kestra — many are available from <router-link to="/plugins/">Kestra core team</router-link>; creating your own is simple if needed.
                                                 </p>
                                             </div>
                                         </div>
@@ -432,7 +433,7 @@
                                                 <div class="ml-3">
                                                     <h5>Audit Log and Secrets</h5>
                                                     <p class="text-muted mb-0">
-                                                        Integrate your secret manager to ensure the security of your password and key, and audit all the resources created in one instance.
+                                                        Integrate your secret manager to ensure the security of your passwords and keys, and audit all the resources created in one instance.
                                                     </p>
                                                 </div>
                                             </div>
@@ -447,7 +448,7 @@
                                                 <div class="ml-3">
                                                     <h5>Improve your productivity</h5>
                                                     <p class="text-muted mb-0">
-                                                        Configure a namespace with task defaults, variables, secrets to automatically configure all flows — follow them with the one eye dashboard!
+                                                        Configure a namespace with task defaults, variables, and secrets to automatically configure all flows — follow them with the one eye dashboard!
                                                     </p>
                                                 </div>
                                             </div>

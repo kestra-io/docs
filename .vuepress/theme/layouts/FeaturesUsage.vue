@@ -74,13 +74,12 @@
                                     </h4>
                                     <p class="text-white" data-aos="fade-right">
                                         Due to its wide range of plugins and the architecture that supports any size of data, Kestra allows you to create complex data pipelines with ease.
-                                        Some examples of what you can expect from Kestra are:
                                     </p>
                                     <p class="text-secondary mb-0" data-aos="fade-left">Examples:</p>
                                     <ul class="list-unstyled text-secondary">
                                         <li class="mb-0" data-aos="fade-left" data-aos-delay="100">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Importing data into your data warehouse from many built-in sources and connectors (database, sftp, bucket, ...)
+                                            Importing data into your data warehouse from many built-in sources and connectors (database, sftp, bucket, ...).
                                         </li>
                                         <li class="mb-0" data-aos="fade-left" data-aos-delay="200">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
@@ -88,7 +87,7 @@
                                         </li>
                                         <li class="mb-0" data-aos="fade-left" data-aos-delay="300">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Exporting from your data warehouse to your applications, SaaS providers or partners.
+                                            Exporting from your data warehouse to your applications, SaaS providers, or partners.
                                         </li>
                                     </ul>
                                 </div>
@@ -109,21 +108,22 @@
                                         Distributed automation and scheduling
                                     </h4>
                                     <p data-aos="fade-left">
-                                        Kestra can be used as a crontab alternative and removes your single point of failure to a distributed crontab in addition to a central UI to give a full insight of all jobs, logs, and failed attempts.
+                                        Kestra can be used as a distributed crontab and removes the single point of failure to schedule a task.
+                                        Kestra offers a central UI to give a full insight of all jobs, logs, and failed attempts.
                                     </p>
                                     <p class="text-secondary mb-0" data-aos="fade-right">Examples:</p>
                                     <ul class="list-unstyled text-secondary">
                                         <li class="mb-0" data-aos="fade-right" data-aos-delay="100">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Admin tasks such as backup, daily export, archive, and more
+                                            Admin tasks such as backups, daily exports, archives, and more.
                                         </li>
                                         <li class="mb-0" data-aos="fade-right" data-aos-delay="200">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Maintenance without the stress of having to do it manually
+                                            Maintenance without the stress of having to do it manually.
                                         </li>
                                         <li class="mb-0" data-aos="fade-right" data-aos-delay="300">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Business processes that are triggered manually, create a flow, and just launch an execution
+                                            Business processes that are triggered manually: create a flow and just launch an execution.
                                         </li>
                                     </ul>
                                 </div>
@@ -157,11 +157,11 @@
                                     <ul class="list-unstyled text-secondary">
                                         <li class="mb-0" data-aos="fade-left" data-aos-delay="100">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Synchronization of multiple microservices that function together through a single tool.
+                                            Synchronization of multiple microservices that work together through a single tool.
                                         </li>
                                         <li class="mb-0" data-aos="fade-left" data-aos-delay="200">
                                             <CheckCircleOutline class="text-success mr-2" title="" />
-                                            Large compute-intensive work such as the generation of many documents or archive creation.
+                                            Large compute-intensive work such as generation of many documents, or archive creation.
                                         </li>
 
                                     </ul>

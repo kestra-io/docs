@@ -11,15 +11,12 @@
                     <div class="container">
                         <p class="mb-5" data-aos="fade-left">
                             Kestra can be used <strong>for free with no limitations</strong> on our Open Source Edition.
-                            Companies need not more security & productivity so we create <strong>Enterprise
-                            Edition</strong>.
-                            This one is available on your own cloud or on premise like the Open Source Edition, as
-                            simple to deploy,
-                            <router-link to="/company/contact">contact us</router-link>
-                            if you want more information. <br />
-                            We are working hard to provide also you as software as service cloud. If you interested
-                            <router-link to="">contact us</router-link>
-                            to join our early access program.
+                            For companies that need more security & productivity, we created the <strong>Enterprise Edition</strong>.
+                            The Enterprise Edition is available on your own cloud or on premise like the Open Source Edition, as
+                            simple to deploy as the Open Source Edition.
+                            <router-link to="/company/contact">Contact us</router-link> if you want more information. <br />
+                            We are working hard to provide also Kestra as a software as a service in the cloud. 
+                            If you are interested, <router-link to="">contact us</router-link> to join our early access program.
                         </p>
 
                         <div class="row">
@@ -100,7 +97,7 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Integration with <router-link to="/docs/administrator-guide/configuration/enterprise-edition/secrets/">secret manager</router-link>
+                                                Integration with <router-link to="/docs/administrator-guide/configuration/enterprise-edition/secrets/">secret managers</router-link>
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
@@ -147,11 +144,11 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Fully managed by Kestra Expert
+                                                Fully managed by Kestra experts
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Transparent upgrade
+                                                Transparent upgrades
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
