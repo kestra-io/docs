@@ -21,7 +21,7 @@ Here is an example of a taskRun :
 {
   "id": "5cBZ1JF8kim8fbFg13bumX",
   "executionId": "6s1egIkxu3gpzzILDnyxTn",
-  "namespace": "org.kestra.tests",
+  "namespace": "io.kestra.tests",
   "flowId": "each-sequential-nested",
   "taskId": "1-1_return",
   "parentTaskRunId": "5ABxhOwhpd2X8DtwUPKERJ",
