@@ -15,10 +15,10 @@ The result of the tasks will not change the execution status. In most cases,  Li
 listeners:
   - tasks:
       - id: mail
-        type: org.kestra.task.notifications.slack.SlackExecution
+        type: io.kestra.plugin.notifications.slack.SlackExecution
         url: https://hooks.slack.com/services/XXX/YYY/ZZZ
     conditions:
-      - type: org.kestra.core.models.listeners.types.ExecutionStatusCondition
+      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
         in:
           - FAILED
 ```

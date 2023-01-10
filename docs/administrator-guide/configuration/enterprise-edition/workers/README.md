@@ -40,7 +40,7 @@ For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.h
 kestra:
   tasks:
     defaults:
-      - type: org.kestra.core.tasks.scripts.Bash
+      - type: io.kestra.core.tasks.scripts.Bash
         forced: true
         values:
           dockerOptions:
