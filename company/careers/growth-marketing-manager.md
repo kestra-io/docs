@@ -2,6 +2,7 @@
 title: "Growth Marketing Manager"
 layout: CareerDetail
 type: Marketing
+draft: true
 ---
 
 The intersection of marketing, product, and data!
