@@ -5,7 +5,7 @@ order: 10
 # Deprecated Handlebars
 
 ::: warning
-Handlebars variable is deprecated and superseded by Pebble. These functions will be removed soon and are disabled by default.
+Handlebars variables are deprecated and superseded by Pebble. These functions will be removed soon and are disabled by default.
 :::
 
 Variables are specific fields for task. They use the power of [handlebars](https://handlebarsjs.com/guide/) with Kestra's special context system, allowing powerful task composition.

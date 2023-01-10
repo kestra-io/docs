@@ -3,14 +3,14 @@ order: 2
 ---
 # Filter
 
-Variables can be modified by filters. Filters are separated from the variable by a pipe symbol `|`. Multiple filters can be chained. The output of one filter is applied to the next.
+Variables can be modified by filters. Filters are separated from the variable name by a pipe symbol `|`. Multiple filters can be chained. The output of one filter is applied to the next.
 
 The following example removes all HTML tags from the name and title-cases it:
 ```twig
 {{ name  |title }}
 ```
 
-Filters that accept arguments have parentheses around the arguments. This example joins the elements of a list by commas:
+Filters that accept arguments have parentheses around the arguments. This example joins the elements of a list with commas:
 ```twig
 {{ list | join(', ') }}
 ```

@@ -4,7 +4,7 @@ order: 2
 
 # Flowable Task
 
-In Kestra, we orchestrate your workflows using `Flowable Tasks`. These tasks do not compute anything, but allow you to build more complex workflows.
+In Kestra, we orchestrate your workflows using `Flowable Tasks`. These tasks do not compute anything, but allow to build more complex workflows.
 Flowable Tasks are used for things like branching, doing tasks in parallel, etc...
 
 Flowable Tasks mostly use context with [variables](../variables) in order to define the next tasks.
@@ -14,7 +14,7 @@ Here is the current list of Flowable Tasks:
 
 ## Sequential
 
-This flow processes tasks one after another sequentially. It is mostly used in order to group tasks.
+This task processes tasks one after another sequentially. It is mostly used in order to group tasks.
 
 ```yaml
 id: sequential
@@ -42,7 +42,7 @@ tasks:
 
 ## Parallel
 
-This flow processes tasks in parallel. It makes it convenient to process many tasks at once.
+This task processes tasks in parallel. It makes it convenient to process many tasks at once.
 
 ```yaml
 id: parallel
@@ -70,7 +70,7 @@ tasks:
 
 ## Switch
 
-This flow processes some tasks conditionally depending on a contextual value.
+This task processes some tasks conditionally depending on a contextual value.
 In this case, an input value will trigger only some parts of the flow.
 
 ```yaml
@@ -112,8 +112,8 @@ tasks:
 
 ## EachSequential
 
-This flow will generate many tasks at runtime depending on a value field.
-Here this field is static, but the field can be generated from a previous task output and
+This task will generate many tasks at runtime depending on the value of a field.
+Here, this field is static, but the field can be generated from a previous task output and
 trigger an arbitrary number of subtasks. Each subtask will run after the others sequentially.
 
 ```yaml
@@ -142,7 +142,7 @@ tasks:
 
 ## EachParallel
 
-This flow is the same as EachSequential but each subtask will instead run in parallel.
+This task is the same as EachSequential but each subtask will run in parallel.
 
 ```yaml
 id: each-parallel
@@ -176,16 +176,16 @@ tasks:
 
 ## AllowFailure
 This task will allow a failed child task. If any child task fails:
-- The AllowFailure failed task will be marked as a `WARNING`
+- The AllowFailure failed task will be marked as status `WARNING`.
 - All children tasks inside the AllowFailure will be stopped immediately.
 - The Execution will continue for all others tasks.
-- At the end, the execution as a whole will be also marked as status `WARNING`
+- At the end, the execution as a whole will be also marked as status `WARNING`.
 
 In this example:
-- `allow-failure` will be labelled `WARNING`
-- `ko` will be labelled as `FAILED`
-- `next` will not be run
-- `end` will be run and labelled `SUCCESS`
+- `allow-failure` will be labelled as `WARNING`.
+- `ko` will be labelled as `FAILED`.
+- `next` will not be run.
+- `end` will be run and labelled `SUCCESS`.
 
 ```yaml
 id: each
@@ -214,8 +214,8 @@ tasks:
 
 ## Flow
 
-This flow will trigger another one.
-This allows you to decouple the first flow from the second and to monitor each flow individually.
+This task will trigger another flow.
+This allows to decouple the first flow from the second and to monitor each flow individually.
 
 You can pass [outputs](../outputs) to the trigger flow as [inputs](../inputs) (that must be declared in the subflow).
 
@@ -229,7 +229,7 @@ tasks:
     namespace: io.kestra.tests
     flowId: my-sub-flows
     inputs:
-      file: "{{ inputs.myFile' }}"
+      file: "{{ inputs.myFile }}"
       store: 12
 ```
 
@@ -241,7 +241,7 @@ tasks:
 
 By default, Kestra will launch each task on a fresh filesystem and on a new worker instance.
 
-This task will run sequentially keeping the same filesystem allowing reuse previous task file on next tasks and keep tracking of execution time for each task. This task is mostly useful when working with large filesystem operation.
+This task will run sequentially all tasks keeping the same filesystem allowing reuse of the previous task file on the next tasks and keeping track of execution time for each task. This task is mostly useful when working with large filesystem operations.
 
 ```yaml
 id: worker
@@ -269,9 +269,9 @@ tasks:
 
 ## Pause
 
-Kestra flow run task till the end of all task, but sometime, you need :
-- add a manual validation before continue the execution
-- wait some duration before continue the execution
+Kestra flows run tasks untill the end of all task, but sometime, you need to:
+- add a manual validation before continuing the execution.
+- wait some duration before continuing the execution.
 
 ```yaml
 id: pause
@@ -301,7 +301,7 @@ tasks:
 
 ## Templates
 [Templates](../templates) are special tasks that will include tasks from a template at *runtime*.
-You defined the template and can now use it on every flow you want, allowing it to share the common tasks between your flows.
+First, you create the template, then you can use it on every flow you want, allowing to share common tasks between your flows.
 
 ```yaml
 id: template

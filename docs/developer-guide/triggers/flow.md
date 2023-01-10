@@ -10,7 +10,7 @@ type: "io.kestra.core.models.triggers.types.Flow"
   With this capacity, you can break responsibility between different flows to different teams.
 
 ## Example
-> This flow will be triggered after each successful execution of the flow `io.kestra.tests.trigger-flow` and forward the `uri` of `my-task` taskId outputs.
+> This flow will be triggered after each successful execution of the flow `io.kestra.tests.trigger-flow` and forward the `uri` output of the `my-task` task.
 ```yaml
 id: trigger-flow-listener
 namespace: io.kestra.tests
@@ -75,7 +75,7 @@ triggers:
 * **Type:** <Badge vertical="middle" text="String" />
 * **Required:** ✔
 
-> unique for a flow
+> Unique for a flow.
 
 
 ### `inputs`
@@ -83,12 +83,11 @@ triggers:
 * **Required:** ❌
 * **Dynamic:** ✔
 
-> fill input of this flow based on output of current flow, allowing to pass data or file on the triggered flow
+> Fills input of this flow based on the output of the current flow, allowing to pass data or file on the triggered flow.
 
 
 ::: warning
-If you provide an invalid input, the flow will be created and already state as FAILED! Since no task is started, you cannot log any reason visible on the ui.
-So you will need to go to the server logs to understand the error.
+If you provide an invalid input, the flow will be created and already in FAILED state! Since no task is started, you cannot log any reason visible on the ui, so you will need to go to the server logs to understand the error.
 :::
 
 ### `conditions`
@@ -107,7 +106,7 @@ When the flow is triggered by another one, some context variables will be inject
 
 | Parameter | Description |
 | ---------- | ----------- |
-|  <code v-pre>{{ trigger.executionId }}</code> | the execution id that trigger the current flow |
-|  <code v-pre>{{ trigger.namespace }}</code> | the namespace of the flow that trigger the current flow |
-|  <code v-pre>{{ trigger.flowId }}</code> | the flow id that trigger the current flow |
-|  <code v-pre>{{ trigger.flowRevision }}</code> | the flow revision that trigger the current flow |
+|  <code v-pre>{{ trigger.executionId }}</code> | the ID of the execution that triggers the current flow. |
+|  <code v-pre>{{ trigger.namespace }}</code> | the namespace of the flow that triggers the current flow. |
+|  <code v-pre>{{ trigger.flowId }}</code> | the ID of the flow that triggers the current flow. |
+|  <code v-pre>{{ trigger.flowRevision }}</code> | the revision of the flow that triggers the current flow. |
