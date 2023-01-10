@@ -3,20 +3,20 @@ order: 12
 ---
 
 # Flow best practice
-While Kestra allows you to create almost every kind of flow, there are some cases that will not function well, or worse, can break the Kestra application.
+While Kestra allows you to create almost every kind of flow, there are some cases that will not work very well, or worse, can break the Kestra application.
 In this section, we will describe the best way to create efficient flows as well as patterns to avoid.
 
 
-## Understand what is an execution internally for Kestra
-The execution of a flow is an object that will contain :
-- all the TaskRuns for this flow, with each having :
-    - theirs attempts, with each having :
+## Understanding what is an execution internally for Kestra
+The execution of a flow is an object that will contain:
+- all the TaskRuns for this flow, with each having:
+    - theirs attempts, with each having:
         - theirs metrics
         - theirs state histories
     - theirs outputs
     - theirs state histories
 
-Here is an example of a taskRun :
+Here is an example of a TaskRun :
 ```json
 {
   "id": "5cBZ1JF8kim8fbFg13bumX",
@@ -95,12 +95,12 @@ Here is an example of a taskRun :
 ```
 
 Internally:
-- Each taskRun on a flow will be added on the same object that contains all tasks executed on this flow.
-- Each TaskRun status changed is read by the Kestra Executor (at most 3 for a task = CREATED, RUNNING, SUCCESS)
-- For each state on the Executor, we need
-    - to fetch the serialized object over the network
-    - deserialize the object, find the next task or tasks and serialize the execution object
-    - to send the serialized object over the network
+- Each TaskRun on a flow will be added on the same object that contains all tasks executed on this flow.
+- Each TaskRun status change is read by the Kestra Executor (at most 3 for a task: CREATED, RUNNING then SUCCESS).
+- For each state on the Executor, we need:
+    - to fetch the serialized object over the network,
+    - to deserialize the object, find the next task or tasks and serialize the execution object,
+    - to send the serialized object over the network.
 - The bigger the execution object, the longer it will take to handle this serialization phase.
 - Since we rely on Kafka or a database for storing the object, large message will lead to slow the execution (due to network transmission or deserialization). Moreover, Kafka has a size limit on messages it can accept (default: 1MB). Larger messages will not be accepted and will lead to a FAILED execution.
 
@@ -109,7 +109,7 @@ Based on previous observation, here are some recommendations to avoid such cases
 
 While it is possible to code a flow with many tasks, it is not recommended to have a lot of tasks on the same flow.
 
-A flow can be comprised of manually generated tasks or dynamic ones. While [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential) & [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel) are really powerful tasks to loop over the result of a previous task, there are some drawbacks. If the task you are looping over is too large, you can easily end up with hundreds of tasks created. If, for example, you were using a pattern with Each inside Each (nested looping), it would take only a 20 taskRuns X 20 taskRuns flow to reach 400 taskRuns.
+A flow can be comprised of manually generated tasks or dynamic ones. While [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential) & [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel) are really powerful tasks to loop over the result of a previous task, there are some drawbacks. If the task you are looping over is too large, you can easily end up with hundreds of tasks created. If, for example, you were using a pattern with Each inside Each (nested looping), it would take only a 20 TaskRuns X 20 TaskRuns flow to reach 400 TaskRuns.
 
 ::: warning
 Based on our observations, we have seen that in cases where there are **more than 100** tasks on a flow, we see a decrease in performance and longer executions.
@@ -122,10 +122,10 @@ Some tasks allow you to fetch results on outputs in order to be reused on the ne
 While this is powerful, this **is not intended to be used to transport a lot of data!**
 For example with [Query](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query) from BigQuery, there is a parameter `fetch` that allow us to fetch a resultset as output.
 
-Imagine a big table with many mo / go of data. If you use `fetch`, the outputs will be on the execution object and will be need to be serialized on each task state change. This is not the idea behind `fetch`, this serves mostly to query a fews rows in order use it on a [Switch](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch) or a [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel) to loop over.
+Imagine a big table with many mo / go of data. If you use `fetch`, the outputs will be on the execution object and will need to be serialized on each task state change. This is not the idea behind `fetch`, this serves mostly to query a fews rows in order to use it on a [Switch](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch) or an [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel) to loop over.
 
 ::: tip
-In most cases, there are counter properties called `stores` that can handle a large volume of data. These serve as storage within Kestra, and only the url of this file is available as output.
+In most cases, there are counter properties called `stores` that can handle a large volume of data. These serve as storage within Kestra, and only the URL of the stored file is available as output.
 :::
 
 
@@ -135,4 +135,4 @@ Keep this in mind, because you cannot allow parallel tasks to reach the limits o
 
 
 ## Duration of Tasks
-By default, Kestra **never limits the duration** (unless specified explicitly on the tasks documentation) of the tasks. If you have a long running process or an infinite loop, the tasks will never end. We can control the timeout on RunnableTask with the properties `timeout: PT15M`
+By default, Kestra **never limits the duration** (unless specified explicitly on the tasks documentation) of the tasks. If you have a long running process or an infinite loop, the tasks will never end. We can control the timeout on RunnableTask with the properties `timeout: PT15M`.

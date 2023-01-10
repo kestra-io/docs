@@ -2,9 +2,9 @@
 order: 5
 ---
 # Errors handling
-Errors are a special branch of your flow, where you can define how to handle them if any tasks failed.
+Errors are a special branch of your flow where you can define how to handle any tasks failures.
 
-2 kinds of errors can be defined : 
+2 kinds of errors can be defined: 
 * **Global**: for the flow and must be at root of the flow.
 * **Local**: these are available for all [Flowable Task](../flowable), and are only allowed for these tasks and their children.
 

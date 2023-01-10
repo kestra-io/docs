@@ -5,11 +5,11 @@ order: 7
 
 Conditions are used in [Triggers](../triggers) & [Listeners](../listeners) in order to limit the cases in which a task/execution is triggered.
 For example: 
-* you can limit the listeners to only a specified status
-* you can limit triggers to specified namespace prefix 
+* you can limit the listeners to only a specified status,
+* you can limit triggers to specified namespace prefix. 
 * .... 
 
-You can pass a list of conditions and all the conditions must match to enable the current action.
+You can pass a list of conditions, in this case all the conditions must match to enable the current action.
 
 Available conditions include: 
 

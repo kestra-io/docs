@@ -3,14 +3,14 @@ order: 3
 ---
 # Inputs
 
-Kestra's flow can be parameterized using inputs. Inputs will be available in variable context and can be used during the whole flow, in order to customize it depending on inputs.
+Kestra's flow can be parameterized using inputs. Inputs will be available in variable context and can be used during the whole flow in order to customize it depending on the inputs values.
 
-A good example is when an identifier is needed (ex: storeId, paymentId) in order to change the save path for the uploaded files.
+A good example is when an identifier is needed (ex: storeId, paymentId) in order to change the save path for an uploaded file.
 
 ## Declaring inputs
 
-You can declare as many inputs as necessary for any flow. Input can be **required** or **not**.
-If the input is required, the flow cannot start if the input is not provided during the creation of the execution.
+You can declare as many inputs as necessary for any flow. Inputs can be **required** or **not**.
+If an input is required, the flow cannot start if the input is not provided during the creation of the execution.
 Also, every input will be parsed during the creation of the execution and any invalid inputs will cause a refusal to create the execution.
 
 ::: warning
@@ -67,7 +67,7 @@ inputs:
 ```
 
 ## Input types
-The available input fields available are as follows:
+The available input types are as follows:
 
 ### `STRING`
 No control is done on this input type (no parsing), can be any string.
@@ -95,34 +95,34 @@ Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time wit
 Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration from a text string such as `PT5M6S`.
 
 ### `FILE`
-Must be a file sent with `multipart/form-data`. All the files are automatically uploaded to `Storage` and are available for further tasks. The return will be a fully qualified url with the form `kestra:///.../.../`. Kestra is able to handle this url and this input can be passed as is to task.
+Must be a file sent with `multipart/form-data`. All the files are automatically uploaded to `Storage` and are available for further tasks. The return will be a fully qualified url with the form `kestra:///.../.../`. Kestra is able to handle this url and this input can be passed as is to tasks.
 
 ### `JSON`
-Must be a valid json as string and will be converted to typed form.
+Must be a valid JSON as string and will be converted to typed form.
 
 ### `URI`
-Must be a valid uri and will be kept as a string.
+Must be a valid URI and will be kept as a string.
 
 ## Input properties
 These are the properties available for all input types :
 
 ### `name`
-The input name to be used with vars <code v-pre>{{ inputs.my-name }}</code>
+The input name to be used with vars <code v-pre>{{ inputs.my-name }}</code>.
 
 
 ### `required`
-If the input is required. If required, no defaults value and no input provide, the execution will not be created.
+If the input is required. If required and no defaults value or no input provided, the execution will not be created.
 
 ### `defaults`
 The default value if no input is provided. Must be a string.
 
 ### `description`
-A markdown description in order to document the inputs.
+A markdown description in order to document the input.
 
 
 ## Nested Inputs
 
-If you use a `.` inside the name of the inputs, the input will be nested. For example, when you declated the input with:
+If you use a `.` inside the name of an input, the input will be nested. For example, when you declated the input with:
 ```yaml
   - name: nested.string
     type: STRING
@@ -187,8 +187,8 @@ with open("/tmp/128M.txt", 'rb') as fh:
   )
 ```
 
-## Send inputs via WebUI
-With such a flow, the web ui lets you enter some inputs by generating a form accordingly on the flow > trigger view. The input form for the task above looks like below:
+## Send inputs via the Web UI
+With such a flow, the web UI lets you enter some inputs by generating a form accordingly in the flow > trigger view. The input form for the task above looks like below:
 
 ![Flow inputs](./assets/inputs.jpg)
 
