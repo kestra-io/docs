@@ -3,7 +3,9 @@ order: 8
 ---
 # User Interface Guide
 
-Kestra comes with a web user interface. For now, here are some screenshots, Later a full user guide will here.
+Kestra comes with a web user interface. 
+
+For now, we don't provide a full user guide but only some screenshots.
 
 ![Flow list](./assets/01.png)
 
