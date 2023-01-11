@@ -33,9 +33,9 @@ The `.value` in the template bracket that uses another task's output content is 
 
 ## Storage variables
 
-Each task that will store data in Kestra storage will have an output variable named `uri` that points to the storage location of the data.
+Each task can store data into Kestra storage. This one output an url that points to the storage location of the data.
 
-This `uri` variable can be used by other tasks to access the stored data. 
+This output variable can be used by other tasks to access the stored data.
 
 For example, to access stored query results from a task that will transform them to a CSV file:
 
@@ -44,7 +44,7 @@ tasks:
 - id: output-from-query
   type: io.kestra.plugin.gcp.bigquery.Query
   sql: |
-    SELECT * FROM `bigquery-public-data.wikipedia.pageviews_2023` 
+    SELECT * FROM `bigquery-public-data.wikipedia.pageviews_2023`
     WHERE DATE(datehour) = current_date()
     ORDER BY datehour desc, views desc
     LIMIT 10

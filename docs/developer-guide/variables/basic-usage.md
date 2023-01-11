@@ -22,7 +22,7 @@ You can use the dot (.) notation to access attributes of variables. If the attri
 {{ foo['foo-bar']['foo-baz'] }} # Attribute 'foo-baz' of attribute 'foo-bar' of 'foo'
 ```
 
-::: info
+::: warning
 You will see a lot of tasks with hyphenated names in the documentation, when using hyphenated names you must use the subscript notation ([]) to access any task variables as `-` is a Pebble special character.
 :::
 
