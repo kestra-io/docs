@@ -45,29 +45,29 @@ No special options for this server.
 
 **Options:**
 
-No special options for this server
+No special options for this server.
 
 ## Kestra standalone, all servers in one process
 
 `./kestra server standalone`
 
-This server is a special server, since it will contain all the servers in one jvm.
+This server is a special server, since it will contain all the servers in one JVM.
 But this works well for development or medium-sized environments.
 
 **Options:**
 
-* `-f` or `--flow-path`: the path to a directory will flow file as YAML, these files will be loaded on the repository at the startup.
+* `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
 * `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
 
 ## Kestra local, development servers and no dependencies
 
 `./kestra server local`
 
-This server is a local development server, it will contain all the servers in one jvm, and use a local database (h2), and local storage, perfect to start a development server. All the data will be saved in a `data` directory on the current working directory.
+This server is a local development server. It will contain all the servers in one JVM, and use a local database (H2), and local storage - perfect to start a development server. All the data will be saved in a `data` directory on the current working directory.
 
 **Options:**
 
-* `-f` or `--flow-path`: the path to a directory will flow file as YAML, these files will be loaded on the repository at the startup.
+* `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
 * `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
 
 ## Options for all server command
@@ -77,22 +77,26 @@ This server is a local development server, it will contain all the servers in on
 Log level can be changed with two options:
 
 * `-l` or `--log-level`: possible value: `[TRACE, DEBUG, INFO, WARN, ERROR]`, default: `INFO`
-* `-v` or `--verbose` for `DEBUG`, `-vv` for `TRACE`
+* `-v` or `--verbose`: for `DEBUG`, `-vv` for `TRACE`
 
-This option affects global log levels for all flows only
+This option affects global log levels for all flows only.
 
 ### Internal Log
 
-`--internal-log`: Kestra hides internal logs by default, use this option to enable these logs (high verbosity!)
+`--internal-log`: Kestra hides internal logs by default. Use this option to enable these logs.
+
+::: warning
+This option enables logs of very high verbosity.
+:::
 
 ### Configuration Files
 
-`-c` or `--config`: you can change the location of kestra [configuration](../configuration) files, the default is `~/.kestra/config.yml`
+`-c` or `--config`: You can change the location of Kestra [configuration](../configuration) files, the default is `~/.kestra/config.yml`.
 
 ### Plugins directory
 
-`-p` or `--plugins`: Path to plugins directory, default is `plugins` directory near your kestra executable.
+`-p` or `--plugins`: Path to the plugins directory. The default is the `plugins` directory near your Kestra executable.
 
 ### Server port
 
-`--port`: The server port, default is `8080`.
+`--port`: The server port, the default is `8080`.
