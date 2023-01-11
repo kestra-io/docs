@@ -41,7 +41,7 @@ The storage is a simple plugin that you need to include and configure, by defaul
 
 Any storage implementations can be used by any Kestra server components except the [Executor](#executor) & the [Indexer](#indexer) which don't use the storage.
 
-Available storage implementations are:
+You can replace the local storage by one of the following storage implementations:
 - [Storage Minio](https://github.com/kestra-io/storage-minio) for [Minio](https://min.io/), which is compatible with [AWS S3](https://aws.amazon.com/s3/) and all other *S3 Like* storage.
 - [Storage GCS](https://github.com/kestra-io/storage-gcs) for [Google Cloud Storage](https://cloud.google.com/storage).
 - [Storage Azure](https://github.com/kestra-io/storage-azure) for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
