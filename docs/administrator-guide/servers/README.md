@@ -2,10 +2,10 @@
 order: 2
 ---
 # Kestra servers
+
 Kestra leverages five different servers in order to provide a fully working Kestra implementation.
 
 ## Separate servers
-
 
 ### [Kestra Executor](../../architecture#executor)
 
@@ -54,7 +54,6 @@ No special options for this server
 This server is a special server, since it will contain all the servers in one jvm.
 But this works well for development or medium-sized environments.
 
-
 **Options:**
 
 * `-f` or `--flow-path`: the path to a directory will flow file as yaml, these files will be loaded on the repository at the startup.
@@ -71,18 +70,19 @@ This server is a local development server, it will contain all the servers in on
 * `-f` or `--flow-path`: the path to a directory will flow file as yaml, these files will be loaded on the repository at the startup.
 * `--worker-thread`: the number of worker thread, by default, the worker embedded will start 1 thread per cpu core available.
 
-
 ## Options for all server command
 
 ### Log Level
+
 Log level can be changed with 2 options :
 
-- `--log-level`: possible value: `[TRACE, DEBUG, INFO, WARN, ERROR]`, default: `INFO`
--  `--verbose` or `-v` for `DEBUG`, `-vv` for `TRACE`
+* `--log-level`: possible value: `[TRACE, DEBUG, INFO, WARN, ERROR]`, default: `INFO`
+* `--verbose` or `-v` for `DEBUG`, `-vv` for `TRACE`
 
 This option affects global log levels for all flows only
 
 ### Internal Log
+
 `--internal-log`: Kestra hides internal logs by default, use this option to enable these logs (High verbosity !)
 
 ### Configuration Files
