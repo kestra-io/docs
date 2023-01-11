@@ -49,7 +49,7 @@ tasks:
 
 ###  Specific outputs for dynamic tasks
 
-Another more specific case for output management is the runtime generated tasks output variable. This is the case for the **EachSequential** or **EachParallel** task, which produces other tasks dynamically, depending on it's `value` property. In this case it is possible to reach each iteration output individually using the following syntax:
+Another more specific case for output management is the runtime generated tasks output variable. This is the case for the **EachSequential** or **EachParallel** task, which produces other tasks dynamically, depending on it's `value` property. In this case, it is possible to reach each iteration output individually using the following syntax:
 
 ```yaml
 id: output-sample
@@ -87,9 +87,9 @@ tasks:
 ```
 It uses the format `outputs.TASKID.[VALUE].PROPERTY`. The special bracket `[]` in  `.[VALUE].` enable special chars like space (and can be remove without any special characters)
 
-#### Lookup in current childs tasks tree
+#### Lookup in sibling tasks
 
-Sometimes, it can be useful to access previous outputs on the current task tree. For example, on [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md), you iterate for a list of value, perform the first tasks (Download a file for example), and
+Sometimes, it can be useful to access previous outputs on the current task tree, what is called sibling tasks. For example, on [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md), you iterate for a list of value, perform the first task (Download a file for example), and
 load the previous file to a database.
 
 For this, you can pass the `taskrun.value` to outputs object:
@@ -109,3 +109,7 @@ tasks:
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{outputs.second['value 1'].value}}"
 ```
+
+:::warning
+Accessing sibling task outputs is not possible on [Parallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.md) or [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel.md) as it runs tasks in parallel.
+:::
