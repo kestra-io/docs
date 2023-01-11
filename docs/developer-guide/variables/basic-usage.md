@@ -9,16 +9,23 @@ There are two primary delimiters used within a Pebble template: <code v-pre>{{ .
 The second set of delimiters is used to change the control flow of the template; it can contain an if-statement, define a parent template, define a new block, etc.
 
 ## Variables
-You can print variables directly to the output; for example, if the context contains a variable called `foo` which is a
-String with the value "bar" you can do the following which will output "bar".
+You can print variables directly to the output; for example, if the context contains a variable called `foo` which is a String with the value "bar", you can do the following which will output "bar".
 ```twig
 {{ foo }}
 ```
-You can use the dot (.) notation to access attributes of variables. If the attribute contains any atypical characters, you can use the subscript notation ([]) instead.
+
+You can use the dot (.) notation to access attributes of variables. If the attribute contains any special characters, you can use the subscript notation ([]) instead.
 ```twig
-{{ foo.bar }}
-{{ foo["bar"] }}
+{{ foo.bar }} # Attribute 'bar' of 'foo'
+{{ foo.bar.baz }} # Attribute 'baz' of attribute 'bar' of 'foo'
+{{ foo['foo-bar'] }} # Attribute 'foo-bar' of 'foo'
+{{ foo['foo-bar']['foo-baz'] }} # Attribute 'foo-baz' of attribute 'foo-bar' of 'foo'
 ```
+
+::: info
+You will see a lot of tasks with hyphenated names in the documentation, when using hyphenated names you must use the subscript notation ([]) to access any task variables as `-` is a Pebble special character.
+:::
+
 
 Additionally, if `foo` is a List, then `foo[0]` can be used.
 
