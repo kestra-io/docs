@@ -37,11 +37,11 @@ No special options for this server.
 
 **Options:**
 
-* `-thread`: the number of threads that can handle tasks at the same time
+* `-t` or `--thread`: the number of threads that can handle tasks at the same time. By default, the worker will start 2 threads per CPU core available.
 
 ### [Kestra Webserver](../../architecture#webserver)
 
-`./kestra server Webserver`
+`./kestra server webserver`
 
 **Options:**
 
@@ -56,8 +56,8 @@ But this works well for development or medium-sized environments.
 
 **Options:**
 
-* `-f` or `--flow-path`: the path to a directory will flow file as yaml, these files will be loaded on the repository at the startup.
-* `--worker-thread`: the number of worker thread, by default, the worker embedded will start 1 thread per cpu core available.
+* `-f` or `--flow-path`: the path to a directory will flow file as YAML, these files will be loaded on the repository at the startup.
+* `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
 
 ## Kestra local, development servers and no dependencies
 
@@ -67,23 +67,23 @@ This server is a local development server, it will contain all the servers in on
 
 **Options:**
 
-* `-f` or `--flow-path`: the path to a directory will flow file as yaml, these files will be loaded on the repository at the startup.
-* `--worker-thread`: the number of worker thread, by default, the worker embedded will start 1 thread per cpu core available.
+* `-f` or `--flow-path`: the path to a directory will flow file as YAML, these files will be loaded on the repository at the startup.
+* `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
 
 ## Options for all server command
 
 ### Log Level
 
-Log level can be changed with 2 options :
+Log level can be changed with two options:
 
-* `--log-level`: possible value: `[TRACE, DEBUG, INFO, WARN, ERROR]`, default: `INFO`
-* `--verbose` or `-v` for `DEBUG`, `-vv` for `TRACE`
+* `-l` or `--log-level`: possible value: `[TRACE, DEBUG, INFO, WARN, ERROR]`, default: `INFO`
+* `-v` or `--verbose` for `DEBUG`, `-vv` for `TRACE`
 
 This option affects global log levels for all flows only
 
 ### Internal Log
 
-`--internal-log`: Kestra hides internal logs by default, use this option to enable these logs (High verbosity !)
+`--internal-log`: Kestra hides internal logs by default, use this option to enable these logs (high verbosity!)
 
 ### Configuration Files
 
@@ -95,4 +95,4 @@ This option affects global log levels for all flows only
 
 ### Server port
 
-`--server-port`: The server port, default is `8080`.
+`--port`: The server port, default is `8080`.
