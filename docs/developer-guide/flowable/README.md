@@ -35,6 +35,10 @@ tasks:
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
+:::tip
+You can access the output of a sibling task with <code v-pre>{{outputs.sibling[taskrun.value].value}}</code>, see [Lookup in sibling tasks](/docs/developer-guide/outputs/README.md#lookup-in-sibling-tasks)
+:::
+
 <div style="text-align: right">
     <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential">Sequential Task documentation</a>
 </div>
@@ -62,6 +66,10 @@ tasks:
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
+
+:::warning
+You cannot access the output of a sibling task as tasks will be run in parallel.
+:::
 
 <div style="text-align: right">
     <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel">Parallel Task documentation</a>
@@ -113,8 +121,8 @@ tasks:
 ## EachSequential
 
 This task will generate many tasks at runtime depending on the value of a field.
-Here, this field is static, but the field can be generated from a previous task output and
-trigger an arbitrary number of subtasks. Each subtask will run after the others sequentially.
+Here, the field is static, but it can be generated from a previous task output and trigger an arbitrary number of subtasks.
+Each subtask will run after the others sequentially.
 
 ```yaml
 id: each
@@ -135,6 +143,10 @@ tasks:
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
+
+:::tip
+You can access the output of a sibling task with <code v-pre>{{outputs.sibling[taskrun.value].value}}</code>, see [Lookup in sibling tasks](/docs/developer-guide/outputs/README.md#lookup-in-sibling-tasks)
+:::
 
 <div style="text-align: right">
     <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a>
@@ -167,6 +179,9 @@ tasks:
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
+:::warning
+You cannot access the output of a sibling task as tasks will be run in parallel.
+:::
 
 <div style="text-align: right">
     <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel">EachParallel Task documentation</a>
