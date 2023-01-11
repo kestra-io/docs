@@ -77,7 +77,7 @@ The Scheduler will handle most of the [Triggers](../developer-guide/triggers) (e
 Internally, a Scheduler has two Thread Pools:
 
 - **ScheduledExecutorService**: This Thread Pool will tick every second and try to find an available job.
-- **CachedThreadPool**: This Thread Pool will compute in a separate Thread for all the triggers.
+- **CachedThreadPool**: This Thread Pool will deal with all other scheduler computational needs: detecting files, executing queries, fetching queues, ...
 
 ::: warning
 By default, Kestra will handle all dates based on your system timezone. You can change the timezone with [JVM options](../administrator-guide/configuration/others#jvm-configuration).
