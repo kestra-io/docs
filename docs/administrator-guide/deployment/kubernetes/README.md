@@ -7,21 +7,21 @@ The recommended deployment environment for **production** workloads is [Kubernet
 We provide a [Helm Chart](https://helm.sh/) in order to deploy your cluster.
 
 - The chart repository is available [here](https://helm.kestra.io/).
-- The source code of the charts is found [here](https://github.com/kestra-io/helm-charts).
+- The source code of the charts can be found [here](https://github.com/kestra-io/helm-charts).
 
 ## Quick Start
 
 ```bash
 helm repo add kestra https://helm.kestra.io/
-helm install my-release kestra/kestra
+helm install kestra kestra/kestra
 ```
 
 ## Details
-You can change the default behaviour and configuring your cluster changing the [defaults values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml).
+You can change the default behavior and configure your cluster changing the [defaults values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml).
 
-By default, charts will only deploy one kestra standalone [service](../../../architecture) (all kestra servers in only one pod) with only 1 replica.
+By default, the chart will only deploy one kestra standalone [service](../../../architecture) (all kestra servers in only one pod) with only 1 replica.
 
-You can also deploy each server independently , using these values:
+You can also deploy each server independently, using these values:
 ```yaml
 kestra:
   deployments:
@@ -36,24 +36,42 @@ kestra:
     worker:
       enabled: true
     standalone:
-      enabled: true
+      enabled: false
 ```
 
-The charts could also deploy all needed services:
-- Zookeeper using `kafka.enabled: true`
-- Kafka cluster using `kafka.enabled: true`
-- Elasticsearch cluster using `elasticsearch.enabled: true`
-- Minio standalone using `minio.enabled: true`
-- Postgres using `postgresql.enabled: true`
+The chart could also deploy all needed services:
+- A Kafka cluster and Zookeeper using `kafka.enabled: true`
+- An Elasticsearch cluster using `elasticsearch.enabled: true`
+- A Minio standalone using `minio.enabled: true`
+- A PostgreSQL using `postgresql.enabled: true`
 
-By default, we enable minio & postgres to have a working version.
+By default, we enable Minio & PostgreSQL to have a working version.
 
 ::: warning
-All services (kafka, elasticsearch, zookeeper, minio, postgresql) are deployed using unsecured configurations (no authentification, no tls, ...). When installing for a production environnement, you **need** to secure all these services and adapt all service configurations to be production ready.
+All services (Kafka, Elasticsearch, Zookeeper, Minio, PostgreSQL) are deployed using unsecured configurations (no authentication, no TLS, ...). When installing for a production environnement, you **need** to secure all these services and adapt all services configurations to be production ready.
 :::
 
-The most important values to adapt are the [configuration files](../../configuration), including the following values:
-- `configuration`: used to apply the entire configuration files from Kestra
-- `secrets`: this will be merged with `configuration` but kept as secret on your k8s cluster.
+
+## Configuration
+
+[Configuration](../../configuration) of Kestra could be made:
+- In a Kubernetes `ConfigMap` via the `configuration` Helm value.
+- In a Kubernetes `Secret` via the `secrets` Helm value. 
+Both must be valid YAML that will be merged as the Kestra configuration file.
+
+For example, to enable Kafka as the queue implementation and configure its `bootstrap.servers` property inside a secret:
+
+```yaml
+configuration: |
+  kestra:
+    queue:
+      type: kafka
 
 
+secrets: |
+  kestra:
+    kafka:
+      client:
+        properties:
+          bootstrap.servers: "localhost:9092"
+```

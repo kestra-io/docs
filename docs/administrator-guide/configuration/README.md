@@ -3,7 +3,9 @@ order: 3
 ---
 # Configuration
 
-Kestra offers a lot of configuration options in order to customize the way you use it. 
+Kestra offers a lot of configuration options in order to customize the way you use it.
+
+How to pass those configuration options depends on how you deploy Kestra. Check the [deployment](/docs/administrator-guide/deployment/README.md) section related to you deployment mode for more information.
 
 ## Kestra configuration 
 First things first, you will need to configure the queue type and the repository type.
