@@ -9,23 +9,22 @@ Kestra will deploy a monitoring endpoint on port 8081 by default. (You can chang
 This monitoring endpoint will expose some helpful routes in order to monitor Kestra:
 
 ## Prometheus
-If you have any [Prometheus](https://prometheus.io/) monitoring systems, Kestra exposes this endpoint `/prometheus`
-
+If you have any [Prometheus](https://prometheus.io/) compatible monitoring system, Kestra exposes Prometheus metrics on the endpoint `/prometheus`.
 
 
 ### Kestra metrics
-Kestra expose some internal metrics allowing to add some alert. Each one declare many timeseries with tags allowing
-to track at least namespace & flow. But also some others tags depending on available tasks.
+Kestra expose some internal metrics allowing to add some alerts. Each metric declare many timeseries with tags allowing
+to track at least namespace & flow. But also some other tags depending on available tasks.
 
-Also each task type can expose [custom metrics](../../concepts/executions.md#metrics) that will be exposed on Prometheus.
+Each task type can expose [custom metrics](../../concepts/executions.md#metrics) that will be exposed on Prometheus.
 
 
 #### Worker
 |Metrics|Type|Description|
 |-|-|-|
-|worker.running.count|`GAUGE`|Task actually running|
+|worker.running.count|`GAUGE`|Count of tasks actually running|
 |worker.started.count|`COUNTER`|Count of tasks started|
-|worker.retryed.count|`COUNTER`|Count of tasks retried|
+|worker.retried.count|`COUNTER`|Count of tasks retried|
 |worker.ended.count|`COUNTER`|Count of tasks ended|
 |worker.ended.duration|`TIMER`|Duration of tasks ended|
 
@@ -34,7 +33,7 @@ Also each task type can expose [custom metrics](../../concepts/executions.md#met
 |-|-|-|
 |executor.taskrun.next.count|`COUNTER`|Count of tasks found|
 |executor.taskrun.ended.count|`COUNTER`|Count of tasks ended|
-|executor.taskrun.ended.duration|`TOMER`|Duration of tasks ended|
+|executor.taskrun.ended.duration|`TIMER`|Duration of tasks ended|
 |executor.workertaskresult.count|`COUNTER`|Count of task result send by worker|
 |executor.execution.started.count|`COUNTER`|Count of executions started|
 |executor.execution.end.count|`COUNTER`|Count of executions ended|
@@ -50,7 +49,7 @@ Also each task type can expose [custom metrics](../../concepts/executions.md#met
 |Metrics|Type|Description|
 |-|-|-|
 |scheduler.trigger.count|`COUNTER`|Count of trigger found|
-|scheduler.evaluate.running.count|`COUNTER`|Evaluation of trigger actually running (aka: number of thread used by scheduler)|
+|scheduler.evaluate.running.count|`COUNTER`|Evaluation of trigger actually running (aka: number of threads used by the scheduler)|
 |scheduler.evaluate.duration|`TIMER`|Duration of evaluation of trigger|
 
 
@@ -59,7 +58,7 @@ Also each task type can expose [custom metrics](../../concepts/executions.md#met
 It will also expose all internal metrics from :
 - [Micronaut](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/)
 - [Kafka](https://kafka.apache.org/documentation/#remote_jmx)
-- Thread pool on the application
+- Thread pools of the application
 - ...
 
 Some additional information can be found on [Micronaut documentation](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/)
@@ -73,7 +72,7 @@ In a near future, we will provide a template dashboard as a quick start.
 
 
 ## Kestra endpoint
-Kestra expose some internal endpoint on the management port (8081 by default), depending on servers:
+Kestra expose some internal endpoints on the management port (8081 by default), depending on servers:
 
 
 * `/worker`: will expose all current running task on this worker
@@ -83,13 +82,12 @@ Kestra expose some internal endpoint on the management port (8081 by default), d
 * `/kafkastreams/{clientId}/metrics`: will expose details metrics for a clientId
 
 ## Others micronaut default endpoint
-Since Kestra is based on [Micronaut](https://micronaut.io), the [default micronaut endpoint](https://docs.micronaut.io/latest/guide/index.html#providedEndpoints)
-is enabled by default on port 8081 :
+Since Kestra is based on [Micronaut](https://micronaut.io), the [default micronaut endpoints](https://docs.micronaut.io/latest/guide/index.html#providedEndpoints) are enabled by default on port 8081 :
 
-* `/info` [Info Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#infoEndpoint) with git status informations.
-* `/health` [Health Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#healthEndpoint) usable for add an external heathcheck on application.
-* `/loggers` [Loggers Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#loggersEndpoint) allowing changing logger level during runtime.
+* `/info` [Info Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#infoEndpoint) with git status information.
+* `/health` [Health Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#healthEndpoint) usable as external heathcheck for the application.
+* `/loggers` [Loggers Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#loggersEndpoint) allowing changing logger level at runtime.
 * `/metrics` [Metrics Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#metricsEndpoint) metrics in json format.
 * `/env` [Env Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#environmentEndpoint) to debug configuration files.
 
-You can disabled some endpoint following micronaut configuration above.
+You can disabled some endpoints following micronaut configuration above.

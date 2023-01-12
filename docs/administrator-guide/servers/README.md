@@ -70,16 +70,16 @@ This server is a local development server. It will contain all the servers in on
 * `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
 * `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
 
-## Options for all server command
+## Options for all server commands
 
 ### Log Level
 
 Log level can be changed with two options:
 
-* `-l` or `--log-level`: possible value: `[TRACE, DEBUG, INFO, WARN, ERROR]`, default: `INFO`
+* `-l` or `--log-level`: possible values: `[TRACE, DEBUG, INFO, WARN, ERROR]`, default: `INFO`
 * `-v` or `--verbose`: for `DEBUG`, `-vv` for `TRACE`
 
-This option affects global log levels for all flows only.
+These options affect global log levels for all flows only.
 
 ### Internal Log
 
