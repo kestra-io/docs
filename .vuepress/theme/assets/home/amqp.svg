@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:cc="http://creativecommons.org/ns#"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:svg="http://www.w3.org/2000/svg"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        width="45"
+        height="45"
+        viewBox="0 0 188.29454 26.193336"
+        version="1.1"
+        id="svg42"
+        sodipodi:docname="rabbitmqlogo.svg"
+        inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+    <metadata
+            id="metadata46">
+        <rdf:RDF>
+            <cc:Work
+                    rdf:about="">
+                <dc:format>image/svg+xml</dc:format>
+                <dc:type
+                        rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+                <dc:title>Artboard Copy</dc:title>
+            </cc:Work>
+        </rdf:RDF>
+    </metadata>
+    <sodipodi:namedview
+            pagecolor="#ffffff"
+            bordercolor="#666666"
+            borderopacity="1"
+            objecttolerance="10"
+            gridtolerance="10"
+            guidetolerance="10"
+            inkscape:pageopacity="0"
+            inkscape:pageshadow="2"
+            inkscape:window-width="3838"
+            inkscape:window-height="2128"
+            id="namedview44"
+            showgrid="false"
+            fit-margin-top="0"
+            fit-margin-left="0"
+            fit-margin-right="0"
+            fit-margin-bottom="0"
+            inkscape:zoom="5.6806225"
+            inkscape:cx="56.451823"
+            inkscape:cy="49.532666"
+            inkscape:window-x="0"
+            inkscape:window-y="30"
+            inkscape:window-maximized="0"
+            inkscape:current-layer="svg42"/>
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title
+            id="title2">Artboard Copy
+    </title>
+    <desc
+            id="desc4">Created with Sketch.
+    </desc>
+    <defs
+            id="defs6"/>
+    <g
+            id="g996">
+        <path
+                style="fill:#ff6600;fill-rule:nonzero;stroke:none;stroke-width:1"
+                inkscape:connector-curvature="0"
+                id="Shape"
+                d="M 22.870867,10.622731 H 15.346611 C 14.744892,10.550951 14.286702,10.020888 14.286702,9.3969602 V 1.5012317 c 0,-0.67362166 -0.546517,-1.21472753 -1.214481,-1.21472753 h -2.633213 c -0.6734844,0 -1.2144801,0.54662736 -1.2144801,1.21472753 V 9.4797825 C 9.1914058,10.081625 8.694573,10.567516 8.0983737,10.622731 H 6.1276038 C 5.5479656,10.550951 5.1008162,10.06506 5.0621736,9.4797825 V 1.5012317 c 0,-0.67362166 -0.546516,-1.21472753 -1.21448,-1.21472753 H 1.21448 C 0.54099565,0.28650417 0,0.83313153 0,1.5012317 V 11.837458 24.542403 c 0,0.673622 0.54651602,1.214727 1.21448,1.214727 h 2.6332136 6.5913144 2.633213 9.804166 c 0.673485,0 1.214481,-0.546627 1.214481,-1.214727 V 11.837458 c -0.0055,-0.673621 -0.546516,-1.214727 -1.220001,-1.214727 z m -3.466788,8.712908 c 0,0.673622 -0.546516,1.214728 -1.21448,1.214728 h -2.633214 c -0.673484,0 -1.21448,-0.546628 -1.21448,-1.214728 V 16.85097 c 0,-0.673622 0.546516,-1.214728 1.21448,-1.214728 h 2.633214 c 0.673484,0 1.21448,0.546627 1.21448,1.214728 z"/>
+        <g
+                id="g984">
+        </g>
+    </g>
+    <g
+            aria-label="TM"
+            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:Raleway-v4020;-inkscape-font-specification:'Raleway-v4020, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#b8b8b8;fill-opacity:1;stroke:none"
+            id="text956">
+    </g>
+</svg>

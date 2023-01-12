@@ -410,6 +410,11 @@ export default {
                     icon: "csicon csicon-redis",
                     href: "plugin-redis"
                 },
+                {
+                    name: "Amqp",
+                    icon: "csicon csicon-amqp",
+                    href: "plugin-amqp"
+                },
             ];
 
             // Order by publish date, desc
@@ -635,6 +640,10 @@ i.csicon {
 
     &.csicon-redis {
         background-image: url("../../assets/home/redis.svg");
+    }
+
+    &.csicon-amqp {
+        background-image: url("../../assets/home/amqp.svg");
     }
 }
 
