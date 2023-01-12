@@ -415,6 +415,11 @@ export default {
                     icon: "csicon csicon-amqp",
                     href: "plugin-amqp"
                 },
+                {
+                    name: "Neo4j",
+                    icon: "csicon csicon-neo4j",
+                    href: "plugin-neo4j"
+                },
             ];
 
             // Order by publish date, desc
@@ -644,6 +649,10 @@ i.csicon {
 
     &.csicon-amqp {
         background-image: url("../../assets/home/amqp.svg");
+    }
+
+    &.csicon-neo4j {
+        background-image: url("../../assets/home/neo4j.svg");
     }
 }
 
