@@ -405,6 +405,11 @@ export default {
                     icon: "csicon csicon-fivetran",
                     href: "plugin-fivetran"
                 },
+                {
+                    name: "Redis",
+                    icon: "csicon csicon-redis",
+                    href: "plugin-redis"
+                },
             ];
 
             // Order by publish date, desc
@@ -626,6 +631,10 @@ i.csicon {
 
     &.csicon-fivetran {
         background-image: url("../../assets/home/fivetran.svg");
+    }
+
+    &.csicon-redis {
+        background-image: url("../../assets/home/redis.svg");
     }
 }
 
