@@ -1,8 +1,8 @@
 ---
 order: 4
 ---
-# ElasticSearch configuration
-Another important configuration is to configure the way Kestra connects to the ElasticSearch cluster.
+# Elasticsearch configuration
+Another important configuration is to configure the way Kestra connects to the Elasticsearch cluster.
 
 Here is a minimal configuration example :
 ```yaml
@@ -14,7 +14,7 @@ kestra:
     type: elasticsearch
 ```
 
-Here is another example with a secure ElasticSearch cluster with basic authentication.
+Here is another example with a secure Elasticsearch cluster with basic authentication.
 
 ```yaml
 kestra:
@@ -40,7 +40,7 @@ kestra:
 ## `kestra.elasticsearch.defaults.indice-prefix`
 This configuration allows you to change the indices prefix. By default, the prefix will be `kestra_`.
 
-For example, if you want to share a common Elasticsearch cluster for the multiple instance of Kestra, just add another prefix like this :
+For example, if you want to share a common Elasticsearch cluster for the multiple instances of Kestra, add a different prefix for each instance like this:
 
 ```yaml
 kestra:
