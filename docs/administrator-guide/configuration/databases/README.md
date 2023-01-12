@@ -3,11 +3,21 @@ order: 1
 ---
 # Databases configuration
 
+First, you need to configure Kestra to use a database for its Queue and Repository:
+
+```yaml
+kestra:
+  queue:
+    type: mysql
+  repository:
+    type: mysql
+```
+
 ## Minimal examples
-Most important configuration is to configure the way Kestra connect to a database. For now, Kestra support Postgres and Mysql.
+The most important thing is to configure the way Kestra connect to a database. For now, Kestra support PostgreSQL and MySQL.
 
 
-Here is a minimal mysql configuration example :
+Here is a minimal MySQL configuration example :
 ```yaml
 datasources:
   mysql:
@@ -16,16 +26,10 @@ datasources:
     username: kestra
     password: k3str4
     dialect: MYSQL
-
-kestra:
-  queue:
-    type: mysql
-  repository:
-    type: mysql
 ```
 
 
-Here is minimal Postgres configuration:
+Here is minimal PostgreSQL configuration:
 ```yaml
 datasources:
   postgres:
@@ -33,17 +37,11 @@ datasources:
     driverClassName: org.postgresql.Driver
     username: kestra
     password: k3str4
-
-kestra:
-  queue:
-    type: postgres
-  repository:
-    type: postgres
 ```
 
 
 ## `datasources.*` properties
-Since Kestra is built upon [micronaut](https://micronaut.io) and [HikariCP](https://github.com/brettwooldridge/HikariCP), many configurations are available in order to configure the database pool:
+Since Kestra is built upon [Micronaut](https://micronaut.io) and [HikariCP](https://github.com/brettwooldridge/HikariCP), many configurations are available in order to configure the database pool:
 
 
 | Properties                    | Type   | Description                                                                                                                                           |
@@ -70,7 +68,7 @@ Since Kestra is built upon [micronaut](https://micronaut.io) and [HikariCP](http
 
 ### `kestra.jdbc.queues`
 
-Kestra queues based on database simulate queues doing long polling. It queries a `queues` table to detect new message. Change these parameters to reduce the latency (but increase load on the database).
+Kestra queues based on database simulate queues doing long polling. It queries a `queues` table to detect new messages. Change these parameters to reduce the latency (but increase load on the database).
 
 - `kestra.jdbc.queues.min-poll-interval`: is the minimum duration between 2 polls
 - `kestra.jdbc.queues.max-poll-interval`: is the maximum duration between 2 polls
@@ -88,7 +86,7 @@ kestra:
 
 ### `kestra.jdbc.cleaner`
 
-We clean the queues table to avoid infinite grow of this table. You can control how often you want this cleaning to happen, and how many times we will keep message in the queue with `retention`.
+Kestra cleans the `queues` table to avoid infinite grow of this table. You can control how often you want this cleaning to happen, and how long we will keep messages in the queue with `retention`.
 
 ```yaml
 kestra:

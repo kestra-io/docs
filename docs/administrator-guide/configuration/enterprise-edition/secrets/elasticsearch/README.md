@@ -1,6 +1,6 @@
 # Elasticsearch configuration
 
-The integration will store secrets in ElasticSearch. Since ElasticSearch is not a secured secret store, kestra will store the password using [AES encryption,](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard), and you will need to provide a secret key in order to encrypt and decrypt secret stored inside elasticsearch. The secret key must be at least a 32 characters password.
+This integration will store secrets in Elasticsearch. Since Elasticsearch is not a secured secret store, Kestra will store the secrets using [AES encryption,](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard), and you will need to provide a cryptographic key in order to encrypt and decrypt secrets stored inside Elasticsearch. The cryptographic key must be at least a 32 characters.
 
 ```yaml
 kestra:

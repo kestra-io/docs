@@ -11,7 +11,7 @@ How to pass those configuration options depends on how you deploy Kestra. Check 
 First things first, you will need to configure the queue type and the repository type.
 
 ### Kafka configuration  
-To enable Kafka Queue, we need add the following to your configuration files:
+To enable Kafka Queue, you need to add the following to your configuration files:
 ```yaml
 kestra:
   queue:
@@ -21,30 +21,30 @@ kestra:
 Details about your Kafka configuration can be found [here](./kafka)
 
 ### ElasticSearch configuration
-To enable ElasticSearch Repository, we need add the following to your configuration files:
+To enable ElasticSearch Repository, you need to add the following to your configuration files:
 ```yaml
 kestra:
   repository:
     type: elasticsearch
 ```
 
-Details about ElasticSearch configuration is [here](./elasticsearch)
+Details about ElasticSearch configuration can be found [here](./elasticsearch)
 
 ### Storage configuration
-Kestra supports multiple storage options, the default being local storage (**only for local testing**)
-To choose new storage types, you will need to add the below to your configuration files, and be sure to download the corresponding plugins.
+Kestra supports multiple storage options, the default being local storage (**only for local testing**).
+To choose another storage type, you will need to configure the `kestra.storage.type` option, be sure to download the corresponding plugins first. The following example configure the [Google Cloud Storage](./storage/README.md#gcs) storage.
 ```yaml
 kestra:
   storage:
     type: gcs
 ```
 
-Details about Storage configuration can be found [here](./storage)
+Details about Storage configuration can be found [here](./storage).
 
 ### Others Kestra configuration
 
-Others Kestra configurations can be found [here](./others)
+Others Kestra configurations can be found [here](./others).
 
 ### Micronaut configuration
 
-Since Kestra is a Java based app on micronaut, you can configure it to fit your needs, more details [here](./micronaut)
+Since Kestra is a Java based application built with Micronaut, you can configure it to fit your needs, more details [here](./micronaut).
