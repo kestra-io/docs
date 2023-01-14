@@ -95,7 +95,10 @@ Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time wit
 Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration from a text string such as `PT5M6S`.
 
 ### `FILE`
-Must be a file sent with `multipart/form-data`. All the files are automatically uploaded to `Storage` and are available for further tasks. The return will be a fully qualified url with the form `kestra:///.../.../`. Kestra is able to handle this url and this input can be passed as is to tasks.
+
+Must be a file sent as `Content-Type: multipart/form-data` with `Content-Disposition: form-data; name="files"; filename="my-file"`, where `my-file` is the name of the input.
+
+All the files are automatically uploaded to [internal storage](../../architecture#storage) and are available for further tasks. The response will contain a fully qualified URL with the form `kestra:///.../.../`. Kestra is able to handle this URL and this input can be passed as is to tasks.
 
 ### `JSON`
 Must be a valid JSON as string and will be converted to typed form.
