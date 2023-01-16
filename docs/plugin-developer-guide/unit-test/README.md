@@ -3,12 +3,12 @@ order: 6
 ---
 # Add unit tests
 
-Kestra is build from the inception with unit test in mind. A task must be unit testable to avoid regression and bug. So we provide 2 ways to unit test your tasks : 
+Kestra is build from the inception with unit tests in mind. A task must be unit testable to avoid regression and bugs. So we provide 2 ways to unit test your tasks. Both will be regular Micronaut tests so must be annotated with `@MicronautTest`.
 
 
 ## Unit test a RunnableTask 
 
-This is the most common way to test a RunnableTask. You simply create your RunnableTask, and test output or Exception. This will cover most of the case.
+This is the most common way to test a RunnableTask. You create your RunnableTask, and test output or Exception. This will cover most of the case.
 Here is an example :
 
 ```java
@@ -33,7 +33,7 @@ class ExampleTest {
 }
 ```
 
-As simple as any java unit test, fell free to used any dependencies, test method, started docker containers, ... 
+The same as any java unit tests, fell free to use any dependencies, test methods, started docker containers, ... 
 
 
 ## Unit test with a full flow
@@ -70,15 +70,15 @@ class ExampleRunnerTest {
 }
 ```
 
-with this, you will : 
-- Inject all dependencies with `@MicronautTest`
-- on `init()`, load all the flow on the `src/resources/flow` directory.
-- run an full execution with `Execution execution = runnerUtils.runOne("io.kestra.templates", "example");` 
+With this, you will: 
+- Inject all dependencies with `@Inject`.
+- On `init()`, load all the flow on the `src/resources/flow` directory.
+- Run a full execution with `Execution execution = runnerUtils.runOne("io.kestra.templates", "example");` .
 
 With this execution, you can look at all the properties you want to control (status, taskRunList number, outputs, ...)
 
 
-To make it work, you need to have an `application.yml` files with this minimum configuration : 
+To make it work, you need to have an `application.yml` files with this minimum configuration: 
 
 ```yaml
 kestra:
@@ -92,7 +92,7 @@ kestra:
       base-path: /tmp/unittest
 ```
 
-And these dependencies on your `build.gradle` : 
+And these dependencies on your `build.gradle`: 
 ```groovy
     testImplementation group: "io.kestra", name: "core", version: kestraVersion
     testImplementation group: "io.kestra", name: "repository-memory", version: kestraVersion
@@ -100,4 +100,4 @@ And these dependencies on your `build.gradle` :
     testImplementation group: "io.kestra", name: "storage-local", version: kestraVersion
 ```
 
-this will enabled the in memory runner to work and to run your flow without any others dependencies (kafka, ...)
+This will enabled the in memory runner and will run your flow without any others dependencies (kafka, ...).

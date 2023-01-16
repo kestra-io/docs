@@ -4,7 +4,7 @@ order: 4
 # Develop your Trigger
 
 
-Here is the instruction to develop a **Trigger**.
+Here are the instructions to develop a **Trigger**.
 
 Here is a simple Trigger example that will trigger an execution randomly:
 
@@ -54,23 +54,23 @@ public class Trigger extends AbstractTrigger implements PollingTriggerInterface,
 
 You just need to extend `PollingTriggerInterface` and implement the `Optional<Execution> evaluate(RunContext runContext, TriggerContext context)` method.
 
-You can have any properties you want like for any task (validation, documentation, ...) is working the same way.
+You can have any properties you want like for any task (validation, documentation, ...), everything is working the same way.
 
-The `test` will receive these arguments :
+The `test` will receive these arguments:
 - `RunContext runContext`: a RunContext in order to render your properties.
-- `TriggerContext context`: to have the context of this call (flow, execution, trigger, date, ...)
+- `TriggerContext context`: to have the context of this call (flow, execution, trigger, date, ...).
 
-In this method, you add any logic you want, connect to a database, connect to remote file systems. 
-You don't have to take care of resource, Kestra will run this method in this own thread.
+In this method, you add any logic you want: connect to a database, connect to remote file systems, ... 
+You don't have to take care of resources, Kestra will run this method in its own thread.
 
-This method must simply return an `Optional<Execution>` with : 
-- `Optional.empty()`: if the condition is not validated 
-- `Optional.of(execution)`: with the execution created if the condition is validated.  
+This method must simply return an `Optional<Execution>` with: 
+- `Optional.empty()`: if the condition is not validated.
+- `Optional.of(execution)`: with the execution created if the condition is validated.
 
 You have to provide a `TriggerOutput<T>` for any output needed (result of query, result of file system listing, ...) that will be available for the flow tasks withing the <code v-pre>{{ trigger.* }}</code> variables. 
 
 ::: warning
-Take care that the trigger must free the resource for the next evaluation, for each interval, this method will be called, and if the condition are meet, an execution will be created.
+Take care that the trigger must free the resource for the next evaluation. For each interval, this method will be called and if the condition are met, an execution will be created.
 
-To avoid this, move the file, remove the record from the database, but take an action to avoid an infinite triggering.
+To avoid this, move the file or remove the record from the database ; take an action to avoid an infinite triggering.
 :::
