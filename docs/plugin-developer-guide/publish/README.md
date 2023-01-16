@@ -8,9 +8,9 @@ The template include a [GitHub Actions](https://github.com/features/actions) wor
 Feel free to add any step to start containers for integration, deploy to artifactory, ...
 
 ## Publish on Maven Central
-The template also include a gradle task that will publish to [Maven Central](https://central.sonatype.org/pages/producers.html). We will need to register to be able to publish to maven central. 
+The template also include a Gradle task that will publish to [Maven Central](https://central.sonatype.org/pages/producers.html). You will need to register to Maven Central to be able to publish to it. 
 
-You only need configure the `gradle.properties` to have all required properties  : 
+You only need to configure the `gradle.properties` to have all required properties : 
 
 ```yaml
 sonatypeUsername=
@@ -22,7 +22,7 @@ signing.secretKeyRingFile=
 ```
 
 
-There is a preconfigured GitHub Actions in `.github/workflows/main.yml` files that you customized to your need:
+There is a pre-configured GitHub Actions workflow in the `.github/workflows/main.yml` file that you can customize to your need:
 ```yaml
       # Publish
       - name: Publish package to Sonatype
