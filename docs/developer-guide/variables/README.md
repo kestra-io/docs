@@ -6,7 +6,7 @@ order: 2
 
 Variables are specific fields for tasks. They use the power of [Pebble Templates](https://pebbletemplates.io/) with Kestra's special context system, allowing powerful task composition.
 
-Variables can use variable information registered/existing in the execution context. The context is data injected in Variables and can be from different sources:
+Variables can use variable information registered/existing in the execution context. The context is data injected in variables and can be from different sources:
 
 
 ## Default variables
@@ -64,7 +64,17 @@ tasks:
       date: {{  execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}
 ```
 
-### Inputs variables
+### Environment variables
+
+By default Kestra allow to access environment variable that starts by `KESTRA_` unless configured otherwise, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration).
+
+To access an environnement variable `KESTRA_FOO` from one of your task you can use `{{env.foo}}`, the name of the variable is the part after the `KESTRA_` prefix in lower case.
+
+### Global variables
+
+You can also define global variable inside Kestra configuration files and access them using `{{ globals.foo }}`, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration) for more information.
+
+## Inputs variables
 You can use any [inputs](../inputs/README.md) using its `name`, example:
 
 ```yaml
@@ -81,7 +91,7 @@ tasks:
     format: "{{inputs.myinput}}"
 ```
 
-### Outputs variables
+## Outputs variables
 [Outputs variables](../outputs/README.md) can also be referencing by their `names` with the form
 `outputs.NAME.PROPERTY`:
 - `NAME` is the taskId you want to locate.

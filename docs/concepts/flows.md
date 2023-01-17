@@ -5,7 +5,7 @@ order: 1
 A [flow](../developer-guide/flow) is a simple list of tasks that describe the behavior of your flow. Flows are grouped by namespaces.
 
 ## Task
-A Task is single action in a flow. 
+A Task is a single action in a flow. 
 A task can optionally take inputs, perform an action, or produce an output.
 
 There are 2 kinds of task in Kestra: 
