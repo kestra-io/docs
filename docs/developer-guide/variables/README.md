@@ -68,11 +68,11 @@ tasks:
 
 By default Kestra allow to access environment variable that starts by `KESTRA_` unless configured otherwise, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration).
 
-To access an environnement variable `KESTRA_FOO` from one of your task you can use `{{env.foo}}`, the name of the variable is the part after the `KESTRA_` prefix in lower case.
+To access an environnement variable `KESTRA_FOO` from one of your task you can use <code v-pre>{{env.foo}}</code>, the name of the variable is the part after the `KESTRA_` prefix in lower case.
 
 ### Global variables
 
-You can also define global variable inside Kestra configuration files and access them using `{{ globals.foo }}`, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration) for more information.
+You can also define global variable inside Kestra configuration files and access them using <code v-pre>{{ globals.foo }}</code>, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration) for more information.
 
 ## Inputs variables
 You can use any [inputs](../inputs/README.md) using its `name`, example:
