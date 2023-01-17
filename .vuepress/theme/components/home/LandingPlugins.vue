@@ -159,6 +159,12 @@ export default {
                     section: "bigquery"
                 },
                 {
+                    name: "Firestore",
+                    icon: "csicon csicon-firestore",
+                    href: "plugin-gcp",
+                    section: "firestore"
+                },
+                {
                     name: "Vertex AI",
                     icon: "csicon csicon-vertexai",
                     href: "plugin-gcp",
@@ -477,6 +483,10 @@ i.csicon {
 
     &.csicon-bigquery {
         background-image: url("../../assets/home/bigquery.svg");
+    }
+
+    &.csicon-firestore {
+        background-image: url("../../assets/home/firestore.svg");
     }
 
     &.csicon-clickhouse {
