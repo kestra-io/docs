@@ -72,7 +72,7 @@ export default {
                     price: "Custom pricing",
                     feature: [
                         "Open Source Edition",
-                        "Authentification with OIDC / SSO",
+                        "Authentication with OIDC / SSO",
                         "Fined grained Role Based Access control",
                         "Namespace configuration & security",
                         "Integration with secret manager",
