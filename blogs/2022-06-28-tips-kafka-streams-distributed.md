@@ -11,7 +11,7 @@ image: /blogs/2022-06-28-tips-kafka-streams-distributed.jpg
 draft: true
 ---
 
-The distributed event store and streamlining platform [Apache Kafka](https://kafka.apache.org/) have many advantages. Think of high throughput, low latency, durability, high concurrency, scalability, and fault tolerance. So, it's not surprising that when we built [Kestra](https://github.com/kestra-io/kestra), an open-source data orchestration and scheduling platform, we decided to use Kafka as the central database to build a scalable architecture. Since Kafka supports high throughput, which allows it to handle high-volume data at equally high velocity, we are confident of a fully scalable solution. However, we need to adapt to Kafka.
+The distributed event store and streamlining platform [Apache Kafka](https://kafka.apache.org/) have many advantages. Think of high throughput, low latency, durability, high concurrency, scalability, and fault tolerance. So, it's not surprising that when we built [Kestra](https://github.com/kestra-io/kestra), an open-source data orchestration and scheduling platform, we decided to use Kafka as the central database to build a scalable architecture. Since Kafka supports high throughput, which allows it to handle high-volume data at equally high velocity, we are confident of a fully scalable solution. However, Kafka has some restrictions since it is not a database, so we need to deal with the constraints and adapt the code to make it work with Kafka.
 
 Since we rely heavily on [Kafka Streams](https://kafka.apache.org/documentation/streams/) for most of our services (executor and scheduler), we have made some assumptions on how it handles the workload. This blog post shows some advanced techniques we used to make a Kafka Stream reliable. We want to share the tips we have discovered over the last two years.
 
@@ -20,7 +20,8 @@ In Kestra, we have a Kafka topic with the current execution, that is the source 
 
 TL;DR: Yes, it's possible.
 
-Yes, it's possible if you are confident that for the same key (the execution in this case), you have only one process that can write. Suppose you see this warning in the console `Detected out-of-order KTable update for execution at offset 10, partition 7.`. In that case, you have more than one process for the same key, which can lead to unexpected behavior (like overwriting previous values).
+Yes, it's possible if you are confident that for the same key (the execution in this 
+), you have only one process that can write. If you see this warning in the console `Detected out-of-order KTable update for execution at offset 10, partition 7.`, you likely have more than one process for the same key, which can lead to unexpected behavior (like overwriting previous values).
 
 Imagine a topology with the topic as the source, some branching logic, and two different processes writing to the same destinations:
 ```java
@@ -64,7 +65,7 @@ All joins provided by Kafka Streams were designed with aggregation in mind, like
 - (A+C, null) <== we will never have (A+B+C)
 ```
 
-In our case, we are building a state machine and want to keep the last state of execution, meaning we want to see only some intermediate states. In this case, we have no choice but to build a custom joiner since Kafka Streams doesn't have one built-in.
+In our case, we are building a state machine and want to keep the last state of execution, meaning we do not want to see the intermediate states. In this case, we have no choice but to build a custom joiner since Kafka Streams doesn't have one built-in.
 
 Our custom joiner needs to:
 - [Manually create a store](https://github.com/kestra-io/kestra/blob/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/streams/ExecutorFromExecutionTransformer.java) that will save the last state of an execution.
@@ -152,7 +153,7 @@ Yes, this is a huge Kafka Stream. It was working almost despite the complexity o
 
 Now, we have decided to split into multiple [streams](https://github.com/kestra-io/kestra/tree/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/executors) to be able to monitor and properly understand the lag on our Kafka Streams.
 
-How to split your evil streams? We chose to consume only one time a topic (to avoid large network transit), so we grouped all streams by source topics.
+How to split your giant stream with lots of topics (evil streams)? We consumed only one topic at a time (to avoid large network transit), so we grouped all streams by source topics.
 
 
 ## Conclusion
