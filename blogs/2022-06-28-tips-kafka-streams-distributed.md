@@ -17,16 +17,15 @@ Since we rely heavily on [Kafka Streams](https://kafka.apache.org/documentation/
 
 ## Same Kafka Topic for Source and Destination
 
-In Kestra, we have a [Kafka topic](https://kafka.apache.org/intro#intro_concepts_and_terms) for the current execution. That topic is both the source and the destination. We update the current execution to add some information and send it back to Kafka for further processing. 
+In Kestra, we have a [Kafka topic](https://kafka.apache.org/intro#intro_concepts_and_terms) for the current [execution](https://kestra.io/docs/concepts/executions.html#execution). That topic is both the source and the destination. We update the current execution to add some information and send it back to Kafka for further processing. 
 
 Initially, we were unsure if this design was possible with Kafka. We [asked](https://twitter.com/tchiotludo/status/1252197729406783488) Matthias J. Sax, one of the primary maintainers of Kafka Streams, who responded on [Stack Overflow](https://stackoverflow.com/questions/61316312/does-kafka-stream-with-same-sink-source-topics-with-join-is-supported).
 
 TL;DR: Yes, it's possible.
 
-Yes, it's possible if you are confident that for the same key (the execution in this 
-), you have only one process that can write. If you see this warning in the console `Detected out-of-order KTable update for execution at offset 10, partition 7.`, you likely have more than one process for the same key, which can lead to unexpected behavior (like overwriting previous values).
+Yes, it's possible if you are certain that for the same key (the execution, in this case), you have only one process that can write. If you see this warning in the console `Detected out-of-order KTable update for execution at offset 10, partition 7.`, you likely have more than one process for the same key, which can lead to unexpected behavior (like overwriting previous values).
 
-Imagine a topology with the topic as the source, some branching logic, and two different processes writing to the same destination:
+Struggling to understand what this means? Imagine a topology with the topic as the source, some branching logic, and two different processes writing to the same destination:
 
 ```java
 KStream<String, Execution> executions = builder
@@ -44,18 +43,17 @@ executions
     .to("executions", Produced.with(Serdes.String(), JsonSerde.of(Execution.class)));
 ```
 
-In this case, a concurrent process can write on the same topic, overwriting the previous value and destroying the previously computed methods.
-For this kind of usage, you must define a single writer for a Key at a given time. This leads us to our next part, a custom joiner.
+In this case, a concurrent process can write on the same topic, overwriting the previous value and destroying the previously computed methods. In this context, you must define a single writer for a Key at a given time. This leads us to our next part, a custom joiner.
 
 ## Custom Joiner for Kafka Streams
 
 We wrote a microservice to process the executions and split the microservice into multiple topics:
-- a topic with the executions (with multiple tasks)
-- a topic with task results
+- A topic with the executions (with multiple tasks)
+- A topic with task results
 
-To allow the next task to start, we need to create a state with all task results merged into the current execution. Our first thought was to use `join()` from Kafka Streams. What a terrible choice! ;)
+To allow the next task to start, we need to create a state with all task results merged into the current execution. Our first thought was to use `join()` from Kafka Streams. In hindsight, this was not a very clever decision. 😉
 
-All joins provided by Kafka Streams were designed with aggregation in mind, like sum, avg, etc. It processes all the incoming data from both topics 1:1. We will see all the changes on the streams on both sides, as seen below:
+All joins provided by Kafka Streams were designed with aggregation in mind, like sum, avg, etc. It processes all the incoming data from both topics 1:1. We will see all the changes on the streams on both sides, as illustrated below:
 
 ```
 # timeline
@@ -65,17 +63,17 @@ All joins provided by Kafka Streams were designed with aggregation in mind, like
 # join result timeline
 - (A,null)
 - (A, B) => emit (A+B)
-- (A, C) => emit (A+C) <=== you have overwrite the result of A+B
+- (A, C) => emit (A+C) <=== you have overwriten the result of A+B
 - (A+B, null)
 - (A+C, null) <== we will never have (A+B+C)
 ```
 
-However, we are building a state machine and want to keep the last state of execution, meaning we do not want to see the intermediate states. In this case, we have no choice but to build a custom joiner since Kafka Streams doesn't have one built-in.
+However, we are building a [state machine](https://developer.mozilla.org/en-US/docs/Glossary/State_machine) and want to keep the last state of execution, meaning we do not want to see the intermediate states. In this case, we have no choice but to build a custom joiner since Kafka Streams doesn't have one built-in.
 
 Our custom joiner needs to:
 - [Manually create a store](https://github.com/kestra-io/kestra/blob/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/streams/ExecutorFromExecutionTransformer.java) that will save the last state of an execution.
 - Create a custom [merge function](https://github.com/kestra-io/kestra/blob/8a17519b5b41e8ba0ab8e0044c9c6b1e887ccd94/runner-kafka/src/main/java/io/kestra/runner/kafka/executors/ExecutorMain.java#L216-L246) that will merge the execution stream with the task results stream.
-- [Get the last value](https://github.com/kestra-io/kestra/blob/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/streams/ExecutorJoinerTransformer.java) from the state, add the task result and emit the new state that will finally be saved on the store and the final topics.
+- [Get the last value](https://github.com/kestra-io/kestra/blob/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/streams/ExecutorJoinerTransformer.java) from the state, add the task result and emit the new state that will finally be saved on the store and the final topic.
 
 With all this, we make sure that the execution state will always be the last version, whatever the number of tasks results coming in parallel might be.
 
@@ -85,21 +83,21 @@ In Kestra, a scheduler will look up all flows either with scheduled execution or
 
 We rely on Kafka's consumer groups that will handle the complexity of a distributed system for us. Here's how we do it:
 - Create a [Kafka stream](https://github.com/kestra-io/kestra/blob/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/KafkaFlowListeners.java) that will read in a `KTable` and transmit all the results to a `Consumer`.
-- Listen to state change, meaning mostly `REBALANCED` streams, and empty all the flows for the `Consumer`.
+- Listen to state change (mostly `REBALANCED` streams) and empty all the flows for the `Consumer`.
 - On the `READY` state, read all the `KTable` again.
 
 With these, all flows will be dispatched to all listeners. That means if you have a thousand flows, every consumer will have ~500 flows (depending on the repartition of keys). Kafka will handle all the heavy parts of the distributed systems, such as:
 - Heartbeat to detect failure for a consumer
-- Notifying of rebalancing
+- Notifications for rebalancing
 - Ensure exactly-once pattern for a topic, ensuring that only one consumer will handle the data
 
-This way, you will have a fully distributed system thanks to Kafka without the pain of passing a [Jespen](https://jepsen.io/) analysis.
+This way, you will have a fully distributed system thanks to Kafka without the pain of going through a [Jespen](https://jepsen.io/) analysis.
 
 ## Partitions to Detect Dead Kafka Consumers
 
-For Kestra, we need to detect when a worker was processing a task and died. The reasons for this could range from an outage to a simple restart during processing.
+For Kestra, we need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
 
-Thanks to the Kafka consumer, we can know the partition affected by this consumer. We use these excellent features to detect dead workers:
+Thanks to the Kafka consumer, we can know the specific partition affected by this consumer. We use these features to detect dead workers:
 - We create a `UUID` on startup for the worker.
 - When a consumer connects to Kafka, we [listen to the partitions](https://github.com/kestra-io/kestra/blob/4a61af45d668feab19313b9033826fa7075bf02b/runner-kafka/src/main/java/io/kestra/runner/kafka/KafkaWorkerTaskQueue.java#L157-L187) affected using a `ConsumerRebalanceListener`. We publish to Kafka a WorkerInstance with `UUID` and assigned partition.
 - For each task run, we publish a message with [TaskRunning](https://github.com/kestra-io/kestra/blob/4a61af45d668feab19313b9033826fa7075bf02b/runner-kafka/src/main/java/io/kestra/runner/kafka/KafkaWorkerTaskQueue.java#L112-L123) with the worker UUID.
@@ -114,14 +112,13 @@ Et voilà! We have detection of dead consumers using just the Kafka API. 🎉
 
 ## Beware of State Store `all()`
 
-We use a [GlobalKTable](https://kafka.apache.org/31/documentation/streams/developer-guide/dsl-api.html#streams_concepts_globalktable) to detect [flow trigger](/docs/developer-guide/triggers/flow.html). For all the flows on the cluster, we test all the flow's [conditions](/docs/developer-guide/conditions/) to find matching flows. For this, we are using an API to fetch all flows from a `GlobalKTable` using `store.all()` that returns all the flows, fetching RocksDB.
+We use a [GlobalKTable](https://kafka.apache.org/31/documentation/streams/developer-guide/dsl-api.html#streams_concepts_globalktable) to detect [flow trigger](/docs/developer-guide/triggers/flow.html). For all the flows on the cluster, we test all the flow's [conditions](/docs/developer-guide/conditions/) to find matching flows. For this, we are using an API to fetch all flows from a `GlobalKTable` using `store.all()` that returns all the flows from RocksDB (internal database from Kafka Stream).
 
 Our first assumption was `all()` returns an object (Flow in our case), as the API return Object, but we discovered that the `all()` will:
-- Fetch all the data from RocksDB (ok for that)
+- Fetch all the data from RocksDB
 - Deserialize the data from RocksDB that is stored as byte and map it to concrete Java POJO
 
-
-So each time we call `all()` on the method, all values are deserialized, which can lead to high CPU usage and latency on your stream. We are talking about all flow revisions on our cluster. 2.5K flows (last revision), but we don't see people creating a lot of revisions (100K). Imagine 100K `byte[]` to deserialize to POJO for every call (mostly all the execution end).
+So each time we call `all()` on the method, all values are deserialized, which can lead to high CPU usage and latency on your stream. We are talking about all [flow revisions](https://kestra.io/docs/concepts/flows.html#revision) on our cluster. The last revision had 2.5K flows, but we don't see people creating a lot of revisions. Imagine 100K `byte[]` to deserialize to POJO for every call. 🤯
 
 Since we only need the last revision in our use case, we create an in-memory Map with all the flows using the following:
 
@@ -160,7 +157,7 @@ Yes, this is a huge Kafka Stream. It was working almost despite the complexity o
 
 Now, we have decided to split into multiple [streams](https://github.com/kestra-io/kestra/tree/develop/runner-kafka/src/main/java/io/kestra/runner/kafka/executors) to be able to monitor and properly understand the lag on our Kafka Streams.
 
-How to split your giant stream with lots of topics (evil streams)? We consumed only one topic at a time (to avoid large network transit), so we grouped all streams by source topics.
+To split our giant stream, we dealt with only one topic at a time. We consumed only one topic at a time (to avoid large network transit), so we grouped all streams by source topics.
 
 
 ## Do More With Kafka Streams
