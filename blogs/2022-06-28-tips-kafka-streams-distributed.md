@@ -162,6 +162,8 @@ To split our giant stream, we dealt with only one topic at a time. We consumed o
 
 ## Do More With Kafka Streams
 
-We have covered some tips that took us a lot of time to find how to deal with the issues. Even though there were some challenges, we could adapt our code so that Kafka worked well for our use case. Kestra is the only infinitely scalable data orchestration and scheduling platform that uses Kafka as the backend and allows millions of executions.
+We have covered some tips that took us a lot of time to find how to deal with the issues. Even though there were some challenges, we could adapt our code so that Kafka worked well for our use case.
 
-We hope you have enjoyed this one. Stay connected and follow Kestra on [GitHub](https://github.com/kestra-io/kestra), [Twitter](https://twitter.com/kestra_io), or [Slack](https://api.kestra.io/v1/communities/slack/redirect).
+We learned how to use the same Kafka topic for source and destination, write a custom joiner for Kafka Streams, distribute workloads between multiple backends, use partitions to detect dead Kafka Consumers, tradeoffs for using state store `all()`, and using many source topics within a Kafka Stream. 
+
+We hope you enjoyed our story. Stay connected and follow Kestra on [GitHub](https://github.com/kestra-io/kestra), [Twitter](https://twitter.com/kestra_io), or [Slack](https://api.kestra.io/v1/communities/slack/redirect).
