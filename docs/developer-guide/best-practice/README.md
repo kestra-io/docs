@@ -122,7 +122,7 @@ Some tasks allow you to fetch results on outputs in order to be reused on the ne
 While this is powerful, this **is not intended to be used to transport a lot of data!**
 For example with [Query](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query) from BigQuery, there is a parameter `fetch` that allow us to fetch a resultset as output.
 
-Imagine a big table with many mo / go of data. If you use `fetch`, the outputs will be on the execution object and will need to be serialized on each task state change. This is not the idea behind `fetch`, this serves mostly to query a fews rows in order to use it on a [Switch](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch) or an [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel) to loop over.
+Imagine a big table with many mo / go of data. If you use `fetch`, the outputs will be on the execution object and will need to be serialized on each task state change. This is not the idea behind `fetch`, this serves mostly to query a few rows in order to use it on a [Switch](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch) or an [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel) to loop over.
 
 ::: tip
 In most cases, there are counter properties called `stores` that can handle a large volume of data. These serve as storage within Kestra, and only the URL of the stored file is available as output.

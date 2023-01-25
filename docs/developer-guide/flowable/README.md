@@ -36,7 +36,7 @@ tasks:
 ```
 
 :::tip
-You can access the output of a sibling task with <code v-pre>{{outputs.sibling[taskrun.value].value}}</code>, see [Lookup in sibling tasks](/docs/developer-guide/outputs/README.md#lookup-in-sibling-tasks)
+You can access the output of a sibling task with <code v-pre>{{outputs.sibling.value}}</code>, see [Lookup in sibling tasks](/docs/developer-guide/outputs/README.md#lookup-in-sibling-tasks)
 :::
 
 <div style="text-align: right">
