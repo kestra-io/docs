@@ -165,6 +165,12 @@ export default {
                     section: "firestore"
                 },
                 {
+                    name: "Pub/Sub",
+                    icon: "csicon csicon-pubsub",
+                    href: "plugin-gcp",
+                    section: "pubsub"
+                },
+                {
                     name: "Vertex AI",
                     icon: "csicon csicon-vertexai",
                     href: "plugin-gcp",
@@ -487,6 +493,10 @@ i.csicon {
 
     &.csicon-firestore {
         background-image: url("../../assets/home/firestore.svg");
+    }
+
+    &.csicon-pubsub {
+        background-image: url("../../assets/home/pubsub.svg");
     }
 
     &.csicon-clickhouse {
