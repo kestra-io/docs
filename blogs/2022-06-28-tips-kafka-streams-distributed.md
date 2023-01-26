@@ -23,7 +23,7 @@ Initially, we were unsure if this design was possible with Kafka. We [asked](htt
 
 TL;DR: Yes, it's possible.
 
-Yes, it's possible, if you are certain that for the same key (the execution ID, in this case), you have only one process that can write it. If you see this warning in the console `Detected out-of-order KTable update for execution at offset 10, partition 7.`, you likely have more than one process for the same key, which can lead to unexpected behavior (like overwriting previous values).
+Yes, it's possible if you are certain that for the same key (the execution ID, in this case), you have only one process that can write it. If you see this warning in the console `Detected out-of-order KTable update for execution at offset 10, partition 7.`, you likely have more than one process for the same key, which can lead to unexpected behavior (like overwriting previous values).
 
 Struggling to understand what this means? Imagine a topology with the topic as the source, some branching logic, and two different processes writing to the same destination:
 
