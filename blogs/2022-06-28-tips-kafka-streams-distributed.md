@@ -11,9 +11,16 @@ image: /blogs/2022-06-28-tips-kafka-streams-distributed.jpg
 draft: true
 ---
 
-The distributed event store and streaming platform [Apache Kafka](https://kafka.apache.org/) has many advantages. Think of high throughput, low latency, durability, high concurrency, scalability, and fault tolerance. So, it's not surprising that when we built [Kestra](https://github.com/kestra-io/kestra), an open-source data orchestration and scheduling platform, we decided to use Kafka as the central datastore to build a scalable architecture. Since Kafka supports high throughput, which allows it to handle high-volume data at equally high velocity, we were confident of a fully scalable solution. However, Kafka has some restrictions since it is not a database, so we need to deal with the constraints and adapt the code to make it work with Kafka.
 
-Since we rely heavily on [Kafka Streams](https://kafka.apache.org/documentation/streams/) for most of our services (the executor and the scheduler), we have made some assumptions on how it handles the workload. This blog post shows some advanced tips and techniques we discovered over the last two years to use Kafka Streams in a reliable way.
+[Apache Kafka](https://kafka.apache.org/) is a distributed event store and streamlining platform that allows for the handling of high volumes of data at high velocity.
+The Kafka ecosystem also brings a powerful streaming framework called [Kafka Streams](https://kafka.apache.org/documentation/streams/) designed to simplify the creation of streaming data pipelines and perform high-level operations like joining and aggregation. One of its key benefits is the ability to embed the streaming application directly within your Java application, eliminating the need to manage a separate platform.
+
+So, it's not surprising that when we built [Kestra](https://github.com/kestra-io/kestra), an open-source data orchestration, and scheduling platform, we decided to use Kafka as the central database to build a scalable architecture.
+We rely heavily on Kafka Streams for most of our services (executor and scheduler) and have made some assumptions on how it handles the workload.
+
+However, since Kafka is not a database, there are constraints that need to be dealt with and adapted to when using it.
+This blog post shows some advanced tips and techniques we discovered over the last two years to make a Kafka Stream reliable.
+We will cover topics such as using the same Kafka topic for source and destination, and creating a custom joiner for Kafka Streams, to ensure high throughput and low latency while adapting to the constraints of Kafka and making it work with Kestra.
 
 ## Same Kafka Topic for Source and Destination
 
@@ -25,7 +32,7 @@ TL;DR: Yes, it's possible.
 
 Yes, it's possible if you are certain that for the same key (the execution ID, in this case), you have only one process that can write it. If you see this warning in the console `Detected out-of-order KTable update for execution at offset 10, partition 7.`, you likely have more than one process for the same key, which can lead to unexpected behavior (like overwriting previous values).
 
-Struggling to understand what this means? Imagine a topology with the topic as the source, some branching logic, and two different processes writing to the same destination:
+Struggling to understand what this means? Imagine a topology with the topic a[]()s the source, some branching logic, and two different processes writing to the same destination:
 
 ```java
 KStream<String, Execution> executions = builder
