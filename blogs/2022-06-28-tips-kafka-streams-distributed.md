@@ -98,7 +98,7 @@ This way, you will have a fully distributed system thanks to Kafka without the p
 For Kestra, we need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
 
 Thanks to the Kafka consumer mechanism, we can know the specific partitions affected by a died consumer. We use these features to detect dead workers:
-- We create an `UUID` on startup for the worker.
+- We create a `UUID` on startup for the worker.
 - When a consumer connects to Kafka, we [listen to the partitions](https://github.com/kestra-io/kestra/blob/92a856fa5b3fa3a29d251ec9873f631caa2678a0/runner-kafka/src/main/java/io/kestra/runner/kafka/KafkaWorkerTaskQueue.java#L157-L187) affected using a `ConsumerRebalanceListener`. We publish to Kafka a WorkerInstance with the `UUID` and assigned partitions.
 - For each task run, we publish a [TaskRunning](https://github.com/kestra-io/kestra/blob/92a856fa5b3fa3a29d251ec9873f631caa2678a0/runner-kafka/src/main/java/io/kestra/runner/kafka/KafkaWorkerTaskQueue.java#L112-L123) message with the worker UUID.
 
