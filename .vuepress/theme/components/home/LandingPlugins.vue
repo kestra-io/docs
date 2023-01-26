@@ -123,6 +123,24 @@ export default {
                     section: "#s3"
                 },
                 {
+                    name: "Amazon DynamoDB",
+                    icon: "csicon csicon-dynamodb",
+                    href: "plugin-aws",
+                    section: "#dynamodb"
+                },
+                {
+                    name: "Amazon SNS",
+                    icon: "csicon csicon-sns",
+                    href: "plugin-aws",
+                    section: "#sns"
+                },
+                {
+                    name: "Amazon SQS",
+                    icon: "csicon csicon-sqs",
+                    href: "plugin-aws",
+                    section: "#sqs"
+                },
+                {
                     name: "Http",
                     icon: Api,
                     href: "plugin-fs",
@@ -529,6 +547,18 @@ i.csicon {
 
     &.csicon-s3 {
         background-image: url("../../assets/home/s3.png");
+    }
+
+    &.csicon-dynamodb {
+        background-image: url("../../assets/home/dynamodb.png");
+    }
+
+    &.csicon-sns {
+        background-image: url("../../assets/home/sns.png");
+    }
+
+    &.csicon-sqs {
+        background-image: url("../../assets/home/sqs.png");
     }
 
     &.csicon-redshift {
