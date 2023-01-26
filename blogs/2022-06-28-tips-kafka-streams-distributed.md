@@ -116,7 +116,7 @@ We use a [GlobalKTable](https://kafka.apache.org/31/documentation/streams/develo
 
 Our first assumption was that `all()` returns an object (Flow in our case), as the API return Object, but we discovered that the `all()` method will:
 - Fetch all the data from RocksDB
-- Deserialize the data from RocksDB, that is stored as byte, and map it to concrete Java POJO
+- Deserialize the data from RocksDB that is stored as byte, and map it to concrete Java POJO
 
 So each time we call the `all()` method, all values are deserialized, which can lead to high CPU usage and latency on your stream. We are talking about all [flow revisions](https://kestra.io/docs/concepts/flows.html#revision) on our cluster. The last revision had 2.5K flows, but we don't see people creating a lot of revisions. Imagine 100K `byte[]` to deserialize to POJO for every call. 🤯
 
