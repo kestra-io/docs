@@ -116,7 +116,7 @@ Sometimes, it can be useful to access previous outputs on the current task tree,
 
 If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.md) task, you can use the <code v-pre>{{outputs.sibling.value}}</code> notation where `sibling`is the ID of the sibling task. 
 
-If the task tree is static, for example when using the [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task, you need to use `sibling[taskrun.value]` to access the current tree task. `taskrun.value` is a special variable that hold the current value of the EachSequential task.
+If the task tree is dynamic, for example when using the [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task, you need to use `sibling[taskrun.value]` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the EachSequential task.
 
 For example:
 ```yaml
@@ -137,6 +137,8 @@ tasks:
 ```
 
 When there is multiple levels of [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) tasks, you can use the `parents` variable to access the `taskrun.value` of the parent of the current EachSequential. For example, for two levels of EachSequential you can use `outputs.sibling[parents[0].taskrun.value][taskrun.value].value`.
+
+The later can becomes very complex when there is multiple parents (multiple imbricated EachSequential). For this, you can use the special [currentEachOutput](/docs/developer-guide/variables/function/currentEachOutput.md) function. No matter the number of parents, the following example will retrieve the right output: `currentEachOutput(outputs.sibling).value` thanks to this function.
 
 :::warning
 Accessing sibling task outputs is not possible on [Parallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.md) or [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel.md) as it runs tasks in parallel.
