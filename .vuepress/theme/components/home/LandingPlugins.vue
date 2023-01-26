@@ -550,15 +550,15 @@ i.csicon {
     }
 
     &.csicon-dynamodb {
-        background-image: url("../../assets/home/dynamodb.png");
+        background-image: url("../../assets/home/dynamodb.svg");
     }
 
     &.csicon-sns {
-        background-image: url("../../assets/home/sns.png");
+        background-image: url("../../assets/home/sns.svg");
     }
 
     &.csicon-sqs {
-        background-image: url("../../assets/home/sqs.png");
+        background-image: url("../../assets/home/sqs.svg");
     }
 
     &.csicon-redshift {
