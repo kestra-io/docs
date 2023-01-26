@@ -43,7 +43,7 @@ executions
     .to("executions", Produced.with(Serdes.String(), JsonSerde.of(Execution.class)));
 ```
 
-In this case, a concurrent process can write this topic on the same key, **overwriting the previous value effectively loosing its data**. In this context, you must define a single writer for a key at a given time. This leads us to our next section, a custom joiner.
+In this case, a concurrent process can write this topic on the same key, **overwriting the previous value, effectively losing its data**. In this context, you must define a single writer for a key at a given time. This leads us to our next section, a custom joiner.
 
 ## Custom Joiner for Kafka Streams
 
