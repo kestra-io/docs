@@ -112,10 +112,13 @@ It uses the format `outputs.TASKID.[VALUE].PROPERTY`. The special bracket `[]` i
 
 #### Lookup in sibling tasks
 
-Sometimes, it can be useful to access previous outputs on the current task tree, what is called sibling tasks. For example, on [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md), you iterate for a list of value, perform the first task (Download a file for example), and
-load the previous file to a database.
+Sometimes, it can be useful to access previous outputs on the current task tree, what is called sibling tasks.
 
-For this, you can pass the `taskrun.value` to outputs object:
+If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.md) task, you can use the <code v-pre>{{outputs.sibling.value}}</code> notation where `sibling`is the ID of the sibling task. 
+
+If the task tree is static, for example when using the [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task, you need to use `sibling[taskrun.value]` to access the current tree task. `taskrun.value` is a special variable that hold the current value of the EachSequential task.
+
+For example:
 ```yaml
 tasks:
   - id: each
@@ -132,6 +135,8 @@ tasks:
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{outputs.second['value 1'].value}}"
 ```
+
+When there is multiple levels of [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) tasks, you can use the `parents` variable to access the `taskrun.value` of the parent of the current EachSequential. For example, for two levels of EachSequential you can use `outputs.sibling[parents[0].taskrun.value][taskrun.value].value`.
 
 :::warning
 Accessing sibling task outputs is not possible on [Parallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.md) or [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel.md) as it runs tasks in parallel.
