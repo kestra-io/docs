@@ -162,7 +162,7 @@ To split our giant stream, we dealt with only one topic at a time. We consumed o
 
 ## Do More With Kafka Streams
 
-We have covered some tips that took us a lot of time to find in order to deal with our issues. Even though there were some challenges, we could adapt our code so that Kafka worked well for our use case.
+We have covered some tips that took us a lot of time to find to deal with our issues. Even though there were some challenges, we could adapt our code so that Kafka worked well for our use case.
 
 We learned how to use the same Kafka topic for source and destination, write a custom joiner for Kafka Streams, distribute workloads between multiple backends, use partitions to detect dead Kafka Consumers, tradeoffs for using state store `all()`, and using many source topics within a Kafka Stream.
 
