@@ -177,7 +177,7 @@ In order to use [variables](../../developer-guide/variables), you need to render
 Just don't forget to render variables if you need to pass some output from previous variables.
 
 You also need to add the annotation `@PluginProperty(dynamic = true)` in order to explain in the documentation that you can pass some dynamic variables.
-Provide a `@PluginProperty(dynamic = false)` to explain clearly that you don't transform the value.
+Provide a `@PluginProperty` annotation even if you didn't set any of its attributes for all variables or the generated documentation will not be accurate.
 
 ### Kestra storage
 You can read any files from Kestra storage using the method `runContext.uriToInputStream()`
