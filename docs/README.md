@@ -1,37 +1,27 @@
 ---
-order: 0
+order: 1
 ---
 
-# What’s Kestra?
-Kestra is an orchestration & scheduler platform that helps you to build, run, schedule, and monitor complex pipelines.
+# Overview
 
+Kestra is an orchestration and scheduler platform that helps you build, run, schedule, and monitor complex pipelines. It also makes it easy to [create a flow](https://kestra.io/docs/developer-guide/), requiring only a few lines of YAML. It handles all other complexities like deploying, scaling, monitoring, and error handling.
 
-![Flow Topology](/ui.gif)
-
-Kestra makes it simple to [create a flow](https://kestra.io/docs/developer-guide/), requiring only a few lines of yaml. All other complexities are handled by Kestra, including:
-- Deploying
-- Scaling
-- Monitoring
-- Handling errors
-- ...
-
-> Simply define the flow with a simple succession of tasks, decide when and how the flow should be launched, and monitor execution in real time.
+<CaptionedImage src="/ui.gif" width="700" caption="Kestra UI"></CaptionedImage>
 
 
 ## Principles
-- **Simple**: Kestra workflows are defined as yaml, no code here, just a simple declarative syntax allowing even [complex](developer-guide/flowable) workflows.
-- **Extensible**: The entire foundation of Kestra is built upon plugins. Find an existing [plugin](../plugins) or build your [own](plugin-developer-guide) to fit your business needs.
-- **Real time**: Kestra is built by thinking in real time. Simply create a flow, run it and see all the logs in realtime.
-- **Scalable**: Kestra users enjoy its almost infinite scalability. It is built with top technologies like Kafka & Elasticsearch, and can scale to millions of executions without any difficulty.
-- **Cloud Native**: Built with the cloud in mind, Kestra uses top cloud native technologies and allows to [deploy everywhere](administrator-guide/deployment), whether in the cloud or on-premise.
-- **Open source**: Kestra is built with the Apache 2 license, [contribute](https://github.com/kestra-io/kestra) to our core or plugins as you can.
+
+- **Simple**: Kestra workflows are written in YAML. It is a declarative syntax that allows you to write even [complex](developer-guide/flowable) workflows.
+- **Extensible**: The entire foundation of Kestra is built upon plugins. You can use an existing plugin from our [plugin library](../plugins) or build your very [own](plugin-developer-guide).
+- **Real-time**: Kestra is built with real-time use-cases in mind. You can create flows, run them, and see all the logs in real-time.
+- **Scalable**: Kestra is built with technologies like Kafka and Elasticsearch and can scale to millions of executions without breaking a sweat.
+- **Cloud-native**: Built with the cloud in mind, Kestra uses cloud-native technologies and allows you to [deploy everywhere](administrator-guide/deployment).
 
 
-## Usages
-Kestra can be used as:
-- **Data orchestrator**: Handle complex workflows and move large datasets. Extract, transform and load datasets in the manner of your choice (ETL or ELT).
-- **Distributed crontab**: Schedule work on multiple workflows and monitor each and every process.
-- **Events Driven workflow**: React to external events such as api calls to get things done instantly.
-- ...
+## Usage
 
-Now [get started](getting-started) and keep it flowing!
+- **Data orchestrator**: Handle complex workflows and move large datasets. Extract, transform, and load datasets in the manner of your choice (ETL or ELT).
+- **Distributed crontab**: Schedule work on multiple workflows and monitor every process.
+- **Event-driven workflow**: React to external events such as API calls to get things done instantly.
+
+[Get started now](getting-started) and keep it flowing!
