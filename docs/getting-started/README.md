@@ -28,7 +28,7 @@ If you don't have curl installed, you can download the [Docker Compose file](htt
 Make sure the Docker Desktop app is running. Then, run the following command:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 Open [http://localhost:8080](http://localhost:8080) in your browser.
