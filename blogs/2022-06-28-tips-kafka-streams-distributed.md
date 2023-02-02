@@ -1,5 +1,5 @@
 ---
-title: "Advanced Tips and Techniques for Kafka Streams"
+title: "Six Techniques You Should Know as a Kafka Streams Developer"
 description: Discover tips and clever techniques that will help you build resilient and distributed applications
 date: 2022-06-27T10:00:00
 layout: BlogsPost
@@ -12,11 +12,11 @@ draft: true
 ---
 
 
-[Apache Kafka](https://kafka.apache.org/) is a distributed event store and stream-processing platform that allows for handling high volumes of data at high velocity. The Kafka ecosystem also brings a powerful streaming framework called [Kafka Streams](https://kafka.apache.org/documentation/streams/) designed to simplify the creation of streaming data pipelines and perform high-level operations like joining and aggregation. One of its key benefits is the ability to embed the streaming application directly within your Java application, eliminating the need to manage a separate platform.
+[Apache Kafka](https://kafka.apache.org/) is an open-source distributed event store and stream-processing platform that allows for handling high volumes of data at high velocity. The Kafka ecosystem also brings a powerful streaming framework called [Kafka Streams](https://kafka.apache.org/documentation/streams/) designed to simplify the creation of streaming data pipelines and perform high-level operations like joining and aggregation. One of its key benefits is the ability to embed the streaming application directly within your Java application, eliminating the need to manage a separate platform.
 
 So, it's not surprising that when we built [Kestra](https://github.com/kestra-io/kestra), an open-source data orchestration and scheduling platform, we decided to use Kafka as the central datastore to build a scalable architecture. We rely heavily on Kafka Streams for most of our services (the executor and the scheduler) and have made some assumptions on how it handles the workload.
 
-However, Kafka has some restrictions since it is not a database, so we need to deal with the constraints and adapt the code to make it work with Kafka. This blog post shows some advanced tips and techniques we discovered over the last two years to use Kafka Streams reliably. We will cover topics such as using the same Kafka topic for source and destination, and creating a custom joiner for Kafka Streams, to ensure high throughput and low latency while adapting to the constraints of Kafka and making it work with Kestra.
+However, Kafka has some restrictions since it is not a database, so we need to deal with the constraints and adapt the code to make it work with Kafka. This blog post shows some advanced tips and techniques we discovered over the last two years to use Kafka Streams reliably. In this post for Kafka Stream developers, we will cover topics such as using the same Kafka topic for source and destination, and creating a custom joiner for Kafka Streams, to ensure high throughput and low latency while adapting to the constraints of Kafka and making it work with Kestra.
 
 ## Same Kafka Topic for Source and Destination
 
@@ -24,11 +24,9 @@ In Kestra, we have a [Kafka topic](https://kafka.apache.org/intro#intro_concepts
 
 Initially, we were unsure if this design was possible with Kafka. We [asked](https://twitter.com/tchiotludo/status/1252197729406783488) Matthias J. Sax, one of the primary maintainers of Kafka Streams, who responded on [Stack Overflow](https://stackoverflow.com/questions/61316312/does-kafka-stream-with-same-sink-source-topics-with-join-is-supported).
 
-TL;DR: Yes, it's possible.
-
 Yes, it's possible if you are certain that for the same key (the execution ID, in this case), you have only one process that can write it. If you see this warning in the console `Detected out-of-order KTable update for execution at offset 10, partition 7.`, you likely have more than one process for the same key, which can lead to unexpected behavior (like overwriting previous values).
 
-Struggling to understand what this means? Imagine a topology with the topic a[]()s the source, some branching logic, and two different processes writing to the same destination:
+Struggling to understand what this means? Imagine a topology with the topic as the source, some branching logic, and two different processes writing to the same destination:
 
 ```java
 KStream<String, Execution> executions = builder
@@ -98,7 +96,7 @@ This way, you will have a fully distributed system thanks to Kafka without the p
 
 ## Partitions to Detect Dead Kafka Consumers
 
-For Kestra, we need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
+In Kestra, [workers](https://kestra.io/docs/architecture/#worker) are Kafka Consumers that process tasks submitted to it and will handle all the computing (connect and query a database, fetch data from external services, etc.) and are long-running processes. We need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
 
 Thanks to the Kafka consumer mechanism, we can know the specific partitions affected by a died consumer. We use these features to detect dead workers:
 - We create a `UUID` on startup for the worker.
