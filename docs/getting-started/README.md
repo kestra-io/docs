@@ -33,7 +33,6 @@ docker-compose up -d
 
 Open [http://localhost:8080](http://localhost:8080) in your browser.
 
-**Note:** If you run into memory issues, check out the [Troubleshooting page](../troubleshooting/).
 
 ## Create your first Flow
 
