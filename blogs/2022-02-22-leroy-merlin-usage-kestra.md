@@ -112,7 +112,7 @@ tasks:
         {
             "type": "record",
             "name": "stock",
-            "namespace": "org.kestra",
+            "namespace": "io.kestra",
             "fields": [
                 { "name": "name", "type": "string" },
                 { "name": "lock_until", "type": [ "null", { "type": "long", "logicalType": "timestamp-millis"} ] },

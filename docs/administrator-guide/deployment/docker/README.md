@@ -11,22 +11,22 @@ Make sure you have already installed :
 - [Docker](https://docs.docker.com/engine/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Launch Kestra 
+## Launch Kestra
 
 - Download the compose file [here](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml)
 - Run `docker-compose up`
 - Open [http://localhost:8080](http://localhost:8080) in your browser
 
-This will start all the dependencies with a pre-configured Kestra that is connected to everything! 
+This will start all the dependencies with a pre-configured Kestra that is connected to everything!
 
-Kestra will start a *Standalone* server (all the different [servers](../../architecture) in one JVM). 
+Kestra will start a *Standalone* server (all the different [servers](../../architecture) in one JVM).
 This is clearly not meant for **production** workloads, but is certainly sufficient to test on a local computer.
 
 The [configuration](/docs/administrator-guide/configuration/README.md) will be done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker compose file, or pass it via the docker command line argument.
 If you pass it via the docker command line argument, don't forget to add existing configuration or nothing will work anymore.
 
 
-## Docker Image 
+## Docker Image
 
 ### Use official images
 
@@ -40,7 +40,7 @@ These docker images are based on the `eclipse-temurin:11-jre` docker image.
 
 #### `kestra/kestra:latest`
 This image :
-- doesn't contains any kestra plugins. 
+- doesn't contains any kestra plugins.
 - doesn't contains a lot of binaries to work with your [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.html).
 - doesn't contains some binaries for [Python tasks](https://kestra.io/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Python.html) or [Node tasks](https://kestra.io/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Node.html).
 
@@ -52,7 +52,7 @@ Take care that this image will always contains the latest version of all plugins
 
 If the base or full image does not contains binaries you need, you can create a new image from the Kestra base image and add needed binaries.
 
-The following `DockerFile` creates an image from the Kestra base image and adds the `golang` binary: 
+The following `DockerFile` creates an image from the Kestra base image and adds the `golang` binary:
 
 ```dockerfile
 ARG IMAGE_TAG=latest
@@ -67,22 +67,22 @@ RUN mkdir -p /app/plugins && \
 ### Create a new image with more plugins
 By default, the Kestra base docker image does not contains any plugins, you can create a new image from the Kestra base image and add the needed plugins.
 
-The following `DockerFile` creates an image from the Kestra base image and adds the `task-notifications`, `storage-gcs` and `task-gcp` plugins using the command `kestra plugins install`:  
+The following `DockerFile` creates an image from the Kestra base image and adds the `plugin-notifications`, `storage-gcs` and `plugin-gcp` plugins using the command `kestra plugins install`:
 
 ```dockerfile
 ARG IMAGE_TAG=latest
 FROM kestra/kestra:$IMAGE_TAG
 
 RUN /app/kestra plugins install \
-  io.kestra.plugin.notifications:task-notifications:LATEST \
-  io.kestra.storage.gcs:storage-gcs:LATEST \
-  io.kestra.plugin.gcp:task-gcp:LATEST 
+  io.kestra.plugin:plugin-notifications:LATEST \
+  io.kestra.storage:storage-gcs:LATEST \
+  io.kestra.plugin:plugin-gcp:LATEST
 ```
 
 
 ### Docker image tags
 
-We provide 3 tags for each docker images: 
+We provide 3 tags for each docker images:
 - `latest`: the latest default image along with its full variant `latest-full`.
 - `release`: the preview of the next release along with its full variant `release-full`.
 - `develop`: an experimental image based on the `develop` branch that will change every day and contains all **unstable** features we are working on, along with its full variant `develop-full`.
