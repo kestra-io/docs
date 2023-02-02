@@ -4,9 +4,9 @@ order: 1
 
 # GitHub
 
-GitHub integrate a solution call [GitHub Actions](https://github.com/features/actions) that allow you
+GitHub integrates a solution call [GitHub Actions](https://github.com/features/actions) that allow you
 to create pipelines easily. Those pipelines are called `Workflows` and are build from `Actions` who
-performs complex task with small amount of codes.
+performs complex tasks with small amount of codes.
 
 ## Kestra Actions
 

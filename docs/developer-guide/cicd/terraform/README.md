@@ -7,7 +7,7 @@ order: 3
 ## Kestra Provider
 
 You can use the [Official Kestra Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest) to manage
-every available resources in Kestra.
+every available resource in Kestra.
 
 ## Examples
 
