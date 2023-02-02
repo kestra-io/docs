@@ -6,6 +6,19 @@ a {
     }
 }
 
+figure {
+    text-align: center;
+    img {
+
+    }
+
+    figcaption {
+        text-align: center;
+        margin-top: calc(#{$spacer} / 4);
+        color: $gray-500;
+    }
+}
+
 
 body.banner-open {
     padding-top: 35px;
