@@ -40,7 +40,9 @@ A namespace is like a folder for flows. A namespace is composed of words and let
 
 ## Inputs 
 
-[Inputs](../developer-guide/inputs) are parameters sent to a flow at execution time. It can be anything, for example, a string, integer, file, etc. The flow must define any possible inputs before its execution. 
+[Inputs](../developer-guide/inputs) are parameters sent to a flow at execution time. It's important to note that inputs in Kestra are [strongly typed](../developer-guide/inputs/#input-types).
+
+The inputs can be declared as either optional or mandatory. If the flow has mandatory inputs, you'll have to provide them before the execution of the flow. 
 
 
 ## Revision
