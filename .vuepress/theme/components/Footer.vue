@@ -182,7 +182,11 @@ export default {
     },
     computed: {
         show() {
-            return this.$page.regularPath.includes('/docs') ? false : true
+            if (this.$page.regularPath === undefined) {
+                return true
+            } else {
+                return this.$page.regularPath.includes('/docs') ? false : true
+            }
         }
     }
 }
