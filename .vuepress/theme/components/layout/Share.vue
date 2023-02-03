@@ -1,5 +1,5 @@
 <template>
-    <div class="text-center">
+    <div class="text-center" v-if="show">
         <div class="btn-group mt-5 mb-3">
             <a class="btn btn-twitter" :href="`https://twitter.com/intent/tweet?text=${title}&url=${url}`" target="_blank">
                 <twitter-icon class="fea icon-sm fea-social"></twitter-icon>
@@ -54,6 +54,9 @@ export default {
         },
         title() {
             return encodeURIComponent(this.$page.title);
+        },
+        show() {
+            return window.location.pathname.includes('/docs') ? false : true
         }
     }
 }
