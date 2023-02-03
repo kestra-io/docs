@@ -12,8 +12,8 @@ A [flow](../developer-guide/flow) is a list of tasks. You create flows in Kestra
 A task is a single action in a flow. A task can take properties as inputs, perform an action, and produce an output.
 
 There are two kinds of tasks in Kestra:
-- Runnable Task 
-- Flowable Task
+- Runnable Tasks 
+- Flowable Tasks
 
 
 ### Runnable Task 
