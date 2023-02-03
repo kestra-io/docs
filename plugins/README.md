@@ -1,6 +1,6 @@
 # Plugins
 
-This section list all the **official** Kestra plugins that are maintained by core Kestra developpers.  
+This section lists all the **official** plugins maintained by core Kestra developers.   
 
 Available plugins are : 
 
