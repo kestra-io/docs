@@ -9,7 +9,7 @@ A [flow](../developer-guide/flow) is a list of tasks. You create flows in Kestra
 
 ## Task
 
-A task is a single action in a flow. A task can take inputs, perform an action, and produce an output.
+A task is a single action in a flow. A task can take properties as inputs, perform an action, and produce an output.
 
 There are two kinds of tasks in Kestra:
 - Runnable Task 
@@ -40,14 +40,14 @@ A namespace is like a folder for flows. A namespace is composed of words and let
 
 ## Inputs 
 
-[Inputs](../developer-guide/inputs) are parameters sent to a flow at execution time. It can be anything (string, int, file, ...) that will be sent when the execution is created. The flow must define possible inputs, and mandatory ones are enforced before the creation of the execution. 
+[Inputs](../developer-guide/inputs) are parameters sent to a flow at execution time. It can be anything, for example, a string, integer, file, etc. The flow must define any possible inputs before its execution. 
 
 
 ## Revision
 
 Changing the source of a flow will produce a new revision for the flow. The revision is a simple incremental number that will be updated after you save any changes to the flow. 
 
-Internally, Kestra will track and manage all the revisions of the flow. Think of it as version control for your Ffows. 
+Internally, Kestra will track and manage all the revisions of the flow. Think of it as version control for your flows. 
 
 
 ## Listeners
