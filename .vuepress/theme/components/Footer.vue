@@ -1,6 +1,6 @@
 
 <template>
-    <div>
+    <div v-if="show">
         <Shape class="text-footer" />
 
         <footer class="footer">
@@ -179,6 +179,11 @@ export default {
         MailIcon,
         ChevronRight,
         Heart
+    },
+    computed: {
+        show() {
+            return window.location.pathname.includes('/docs') ? false : true
+        }
     }
 }
 </script>
