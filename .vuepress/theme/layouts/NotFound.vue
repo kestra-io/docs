@@ -12,7 +12,7 @@
                             <div class="col-12 text-center">
                                 <div class="section-title">
                                     <h4 class="title mb-4" data-aos="fade-left">
-                                        Oh ! no ! Page not found
+                                        Oh, no! Page not found
                                     </h4>
                                     <h5 class="text-muted para-desc mx-auto mb-0" data-aos="fade-right">
                                         {{ getMsg() }}
