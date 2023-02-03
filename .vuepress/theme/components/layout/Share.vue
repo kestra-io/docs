@@ -56,7 +56,7 @@ export default {
             return encodeURIComponent(this.$page.title);
         },
         show() {
-            return window.location.pathname.includes('/docs') ? false : true
+            return this.$page.regularPath.includes('/docs') ? false : true
         }
     }
 }

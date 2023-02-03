@@ -182,7 +182,7 @@ export default {
     },
     computed: {
         show() {
-            return window.location.pathname.includes('/docs') ? false : true
+            return this.$page.regularPath.includes('/docs') ? false : true
         }
     }
 }
