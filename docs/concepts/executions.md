@@ -33,9 +33,12 @@ There are two kinds of metrics. Those can measure duration or a counter.
 
 An Execution or a Task Run can be in a particular state. 
 
-There are eight possible states:    
+There are nine possible states:    
 * `CREATED`: The Execution or Task Run is waiting to be processed. This state usually means that the Execution is in a queue and has not been handled internally.
 * `RUNNING`: The Execution or Task Run is currently running.
+* `PAUSED`: The Execution or Task Run has been paused. This status is used for two reasons:
+    * Manual validation
+    * Delay (before continuing the execution)
 * `SUCCESS`: The Execution or Task Run has been completed successfully.
 * `WARNING`: The Execution or Task Run exhibited unintended behavior, but the execution continued and was flagged with a warning.
 * `FAILED`: The Execution or Task Run exhibited unintended behavior that caused the execution to fail.
