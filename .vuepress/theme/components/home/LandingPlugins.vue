@@ -171,25 +171,25 @@ export default {
                     section: "gcs"
                 },
                 {
-                    name: "Big Query",
+                    name: "Google Cloud Big Query",
                     icon: "csicon csicon-bigquery",
                     href: "plugin-gcp",
                     section: "bigquery"
                 },
                 {
-                    name: "Firestore",
+                    name: "Google Cloud Firestore",
                     icon: "csicon csicon-firestore",
                     href: "plugin-gcp",
                     section: "firestore"
                 },
                 {
-                    name: "Pub/Sub",
+                    name: "Google Cloud Pub/Sub",
                     icon: "csicon csicon-pubsub",
                     href: "plugin-gcp",
                     section: "pubsub"
                 },
                 {
-                    name: "Vertex AI",
+                    name: "Google Cloud Vertex AI",
                     icon: "csicon csicon-vertexai",
                     href: "plugin-gcp",
                     section: "vertexai"
@@ -403,7 +403,19 @@ export default {
                     name: "Azure Blob Storage",
                     icon: "csicon csicon-abs",
                     href: "plugin-azure",
+                    section: "blob"
+                },
+                {
+                    name: "Azure Batch",
+                    icon: "csicon csicon-azurebatch",
+                    href: "plugin-azure",
                     section: "storage-blob"
+                },
+                {
+                    name: "Azure Storage Table",
+                    icon: "csicon csicon-azuretable",
+                    href: "plugin-azure",
+                    section: "table"
                 },
                 {
                     name: "Tika",
@@ -647,6 +659,14 @@ i.csicon {
 
     &.csicon-abs {
         background-image: url("../../assets/home/abs.svg");
+    }
+
+    &.csicon-azurebatch {
+        background-image: url("../../assets/home/azurebatch.svg");
+    }
+
+    &.csicon-azuretable {
+        background-image: url("../../assets/home/azuretable.svg");
     }
 
     &.csicon-vertexai {
