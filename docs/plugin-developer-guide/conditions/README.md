@@ -55,3 +55,6 @@ The `test` will receive a `ConditionContext` that will expose:
 - `conditionContext.getRunContext()`: a RunContext in order to render your properties.
 
 This method must simply return a boolean in order to validate or not the condition.
+
+## Documentation
+Don't forget to document your conditions, for this we provide a set of annotations that are explained in the [Document each plugin](../documentation/README.md#document-each-plugin) section.

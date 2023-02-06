@@ -74,3 +74,6 @@ Take care that the trigger must free the resource for the next evaluation. For e
 
 To avoid this, move the file or remove the record from the database ; take an action to avoid an infinite triggering.
 :::
+
+## Documentation
+Don't forget to document your triggers, for this we provide a set of annotations that are explained in the [Document each plugin](../documentation/README.md#document-each-plugin) section.
