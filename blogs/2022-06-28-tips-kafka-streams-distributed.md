@@ -12,7 +12,7 @@ draft: true
 ---
 
 
-Are you planning to use [Kafka Streams](https://kafka.apache.org/documentation/streams/) to build a distributed application? This blog post shows some advanced tips and techniques for Kafka Streams developers. Over the last two years, we discovered these techniques to use Kafka Streams reliably.
+Are you planning to use [Kafka Streams](https://kafka.apache.org/documentation/streams/) to build a distributed application? This blog post shows some advanced tips and techniques for Kafka Streams developers. Over the last two years, we discovered these techniques to handle advanced Kafka Streams capabilities.
 
 We built [Kestra](https://github.com/kestra-io/kestra), an open-source data orchestration and scheduling platform, and we decided to use [Kafka](https://kafka.apache.org/) as the central datastore to build a scalable architecture. We rely heavily on Kafka Streams for most of our services (the executor and the scheduler) and have made some assumptions on how it handles the workload.
 
@@ -20,7 +20,9 @@ However, Kafka has some restrictions since it is not a database, so we need to d
 
 ## Why Use Apache Kafka?
 
-Apache Kafka is an open-source distributed event store and stream-processing platform that handles high volumes of data at high velocity. The Kafka ecosystem also brings a robust streaming framework called Kafka Streams designed to simplify the creation of streaming data pipelines and perform high-level operations like joining and aggregation. One of its key benefits is the ability to embed the streaming application directly within your Java application, eliminating the need to manage a separate platform. Also, we wanted to rely only on the queue as a database for our application (persistence queue) without additional dependencies.
+Apache Kafka is an open-source distributed event store and stream-processing platform that handles high volumes of data at high velocity. The Kafka ecosystem also brings a robust streaming framework called Kafka Streams designed to simplify the creation of streaming data pipelines and perform high-level operations like joining and aggregation. One of its key benefits is the ability to embed the streaming application directly within your Java application, eliminating the need to manage a separate platform.
+
+While building Kestra, we wanted to rely only on the queue as a database for our application (persistent queue) without additional dependencies. We analyzed many candidates (RabbitMQ, Apache Pulsar, Redis, etc.) and found that Apache Kafka was the only one that covered everything for our use case.
 
 ## Same Kafka Topic for Source and Destination
 
