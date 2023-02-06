@@ -28,7 +28,7 @@ The following manifest attributes are used to document the group of plugins:
 
 If you follow the plugin structure of the GitHub template you should have something like that:
 
-```ruby
+```groovy
 group "io.kestra.plugin"
 description 'Google Cloud Platform (GCP) plugins for Kestra.'
 
