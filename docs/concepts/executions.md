@@ -38,7 +38,7 @@ There are nine possible states:
 * `RUNNING`: The Execution or Task Run is currently running.
 * `PAUSED`: The Execution or Task Run has been paused. This status is used for two reasons:
     * Manual validation
-    * Delay (before continuing the execution)
+    * Delay (for a specified duration before continuing the execution)
 * `SUCCESS`: The Execution or Task Run has been completed successfully.
 * `WARNING`: The Execution or Task Run exhibited unintended behavior, but the execution continued and was flagged with a warning.
 * `FAILED`: The Execution or Task Run exhibited unintended behavior that caused the execution to fail.
