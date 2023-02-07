@@ -76,4 +76,4 @@ To avoid this, move the file or remove the record from the database ; take an ac
 :::
 
 ## Documentation
-Don't forget to document your triggers, for this we provide a set of annotations that are explained in the [Document each plugin](../documentation/README.md#document-each-plugin) section.
+Remember to document your triggers. For this, we provide a set of annotations explained in the [Document each plugin](../documentation/README.md#document-each-plugin) section.

@@ -267,4 +267,4 @@ Counter.of("your.counter", count, "zone", "EU", "location", "france");
 ```
 
 ## Documentation
-Don't forget to document your tasks, for this we provide a set of annotations that are explained in the [Document each plugin](../documentation/README.md#document-each-plugin) section.
+Remember to document your tasks. For this, we provide a set of annotations explained in the [Document each plugin](../documentation/README.md#document-each-plugin) section.

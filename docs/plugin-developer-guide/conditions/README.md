@@ -57,4 +57,4 @@ The `test` will receive a `ConditionContext` that will expose:
 This method must simply return a boolean in order to validate or not the condition.
 
 ## Documentation
-Don't forget to document your conditions, for this we provide a set of annotations that are explained in the [Document each plugin](../documentation/README.md#document-each-plugin) section.
+Remember to document your conditions. For this, we provide a set of annotations explained in the [Document each plugin](../documentation/README.md#document-each-plugin) section.
