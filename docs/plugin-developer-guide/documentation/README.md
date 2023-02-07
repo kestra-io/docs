@@ -5,9 +5,9 @@ order: 8
 
 First, let us remember the organization of a plugin project:
 
-- The Gradle project is called a group of plugins as it contains multiple plugins.
- - The package in which a plugin is is called a sub-group of plugins. Sometimes there is only one sub-group, so the group and the sub-group are the same.	 
-- Each class is a plugin that provides one of: task, trigger, condition, ...
+- The Gradle project can contain several plugins, we call it a group of plugins.
+- The package in which a plugin is is called a sub-group of plugins. Sometimes there is only one sub-group, so the group and the sub-group are the same.	 
+- Each class is a plugin that provides one task, trigger, condition, etc.
 
 The plugin documentation will be used on the Kestra website and the Kestra UI.
 
@@ -21,10 +21,10 @@ Kestra uses custom manifest attributes to provide top-level group documentation.
 
 The following manifest attributes are used to document the group of plugins:
 
-- `X-Kestra-Title`: we usually use the Gradle `project.name` property.
-- `X-Kestra-Group`: we usually use the Gradle `group.id` property with an additional group name.
-- `X-Kestra-Description`: we usually use the Gradle `project.description` property.
-- `X-Kestra-Version`: we usually use the Gradle `project.version` property.
+- `X-Kestra-Title`: by default, the Gradle `project.name` property is used.
+- `X-Kestra-Group`: by default, the Gradle `group.id` property with an additional group name is used.
+- `X-Kestra-Description`: by default, the Gradle `project.description` property is used.
+- `X-Kestra-Version`: by default, the Gradle `project.version` property is used.
 
 If you follow the plugin structure of the GitHub template, you should have something like this:
 
@@ -135,7 +135,7 @@ The Swagger `@Schema` annotation contains a lot of attributes that can be used t
 
 - `title`: a short description of a property.
 - `description`: long description of a property.
-- `anyOf`: allows to specify which types are allowed when the type of the property can be extended (interface, abstract classes, ...). This should be set when the type of the property is `Object`.
+- `anyOf`: a list of allowed sub-types of a property. Use it when the property type is an interface, an abstract classes, or a class inside a hierarchy of class to denote possible sub-types. This should be set when the property type is `Object`.
 
 The `@Schema` and `@PluginProperty` annotations can be used on fields, methods, or classes.
 
@@ -152,7 +152,9 @@ Many tasks can take input from multiple sources on the same property. They usual
 private Object from;
 ```
 
-**Note:** Due to limitations on how JSON schema works, you cannot add `@Schema` on a Java enum type and the plugin property that uses this type. We advise avoiding using `@Schema` on enumerations.
+::: tip NOTE
+Due to limitations on how JSON schema works, you cannot add `@Schema` on a Java enum type and the plugin property that uses this type. We advise avoiding using `@Schema` on enumerations.
+:::
 
 ### Document the plugin outputs
 
