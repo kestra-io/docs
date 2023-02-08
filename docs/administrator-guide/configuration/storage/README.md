@@ -15,7 +15,7 @@ Available storage options include:
 
 ## GCS
 First, you need to be sure to have the GCS storage plugin installed. You can install it with the following Kestra command:
-`./kestra plugins install io.kestra.storage.gcs:storage-gcs:LATEST`, it will download the plugin jar in Kestra plugins directory.
+`./kestra plugins install io.kestra.storage:storage-gcs:LATEST`, it will download the plugin jar in Kestra plugins directory.
 
 Then, you need to enable the storage with this configuration:
 
@@ -41,7 +41,7 @@ More details can be found [here](https://cloud.google.com/docs/authentication/pr
 ## Minio
 
 First, you need to be sure to have the Minio storage plugin installed. You can install it with the following Kestra command:
-`./kestra plugins install io.kestra.storage.minio:storage-minio:LATEST`, it will download the plugin jar in Kestra plugins directory.
+`./kestra plugins install io.kestra.storage:storage-minio:LATEST`, it will download the plugin jar in Kestra plugins directory.
 
 Then, you need to enable the storage with this configuration:
 
@@ -63,7 +63,7 @@ kestra:
 ## Azure
 
 First, you need to be sure to have the Azure storage plugin installed. You can install it with the following Kestra command:
-`./kestra plugins install io.kestra.storage.azure:storage-azure:LATEST`, it will download the plugin jar in Kestra plugins directory.
+`./kestra plugins install io.kestra.storage:storage-azure:LATEST`, it will download the plugin jar in Kestra plugins directory.
 
 Then, you need to enable the storage with this configuration (adapt depending on authentication method):
 

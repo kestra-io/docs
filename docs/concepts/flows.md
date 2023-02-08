@@ -1,44 +1,69 @@
 ---
 order: 1
 ---
+
 # Flow
-A [flow](../developer-guide/flow) is a simple list of tasks that describe the behavior of your flow. Flows are grouped by namespaces.
+
+A [flow](../developer-guide/flow) is a list of tasks. You create flows in Kestra to automate your processes.
+
 
 ## Task
-A Task is single action in a flow. 
-A task can optionally take inputs, perform an action, or produce an output.
 
-There are 2 kinds of task in Kestra: 
+A task is a single action in a flow. A task can take properties as inputs, perform an action, and produce an output.
 
-### Flowable Task
-[Flowable Tasks](../developer-guide/flowable) are tasks that only handle workflow states and trigger new tasks. They will handle the logic of the flow enabling complex workflow like branching, parallel tasks, etc...  
-An example is a `Switch` task that can take any inputs and decide what are the next tasks to run (and to allow branching). 
+There are two kinds of tasks in Kestra:
+- Runnable Tasks 
+- Flowable Tasks
 
-A Flowable Task is handled by `Executors` and can be called very often, so these tasks cannot include intensive computations.
-
-The most common Flowable Tasks will be available in the core. 
 
 ### Runnable Task 
-Runnable Tasks are used to handle any computational work. This can be anything, including file system operations, api calls, database queries, and more. These tasks can be compute intensive so they will be handled by `Workers`. 
 
-By default, Kestra does not include a lot of Runnable Tasks, most will be available as Plugins.
+Runnable Tasks handle computational work in the flow. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by [workers](../architecture/#worker). 
+
+By default, Kestra only includes a few Runnable Tasks. However, many of them are available as [plugins](../../plugins/).
+
+
+### Flowable Task
+
+[Flowable Tasks](../developer-guide/flowable) only handle flow logic (branching, grouping, parallel processing, etc.) and trigger new tasks. For example, the Switch task takes inputs and decides the next tasks to run. 
+
+A Flowable Task is handled by executors and can be called very often. Because of that, these tasks cannot include intensive computations, unlike Runnable Tasks. Most of the common Flowable Tasks are available in the default Kestra installation. 
+
 
 ## Namespace
-A Namespace is like a file systems folder, it aims to group flows in a limitless hierarchy.
-A Namespace is composed of word and letters separated by `.`. The hierarchy depth is not limited and is free for Kestra users to modify to fit their organization.
+
+A namespace is like a folder for flows. A namespace is composed of words and letters separated by `.`. The hierarchy depth for Namespaces is unlimited. Here are some examples of namespaces:
+- `projectOne`
+- `com.projectTwo`
+- `test.projectThree.folder`
+
 
 ## Inputs 
-[Inputs](../developer-guide/inputs) are parameters sent to a flow at execution time. It can be anything (string, int, file, ...) that will be sent when the execution is created. The Flow must define possible inputs, and mandatory ones are enforced before the creation of the execution. 
+
+[Inputs](../developer-guide/inputs) are parameters sent to a flow at execution time. It's important to note that inputs in Kestra are [strongly typed](../developer-guide/inputs/#input-types).
+
+The inputs can be declared as either optional or mandatory. If the flow has mandatory inputs, you'll have to provide them before the execution of the flow. 
+
 
 ## Revision
-Each flow modification will produce a new revision. A revision is a simple incremental number that will be updated after each change made to the flow. Internally, Kestra will track and manage all revisions of the flow.
+
+Changing the source of a flow will produce a new revision for the flow. The revision is a simple incremental number that will be updated after you save any changes to the flow. 
+
+Internally, Kestra will track and manage all the revisions of the flow. Think of it as version control for your flows. 
+
 
 ## Listeners
-[Listeners](../developer-guide/listeners) are special tasks that can listen to the current flow and launch tasks *outside of the flow*.
-The result of these tasks will not change the execution status. Listeners are mainly used to send notifications or handle special end-task behaviour that you do not want to be considered as part of the main workflow.
- 
+
+[Listeners](../developer-guide/listeners) are special tasks that can listen to the current flow and launch tasks *outside the flow*.
+
+The output of listeners will not change the execution status of the flow. Listeners are mainly used to send notifications or handle special behavior outside the primary flow.
+
+
 ## Triggers
-[Triggers](../developer-guide/triggers) are a way to start a flow from external events. For example, a trigger might initiate a flow on a scheduled date or at a particular time of day, or it can be dependent on external events (such as file creation).
+
+[Triggers](../developer-guide/triggers) is a way to start a flow from external events. For example, a trigger might initiate a flow at a scheduled time or based on external events (webhooks, file creation, etc.).
+
 
 ## Templates
-[Templates](../developer-guide/templates) are lists of tasks that can be shared between flows. You can define a template and call it from other flows, allowing you to share a list of tasks and keep these tasks updated without changing all flows that use them.
+
+[Templates](../developer-guide/templates) are lists of tasks that can be shared between flows. You can define a template and call it from other flows. Templates allow you to share a list of tasks and keep them updated without changing all flows that use them.

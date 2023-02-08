@@ -123,6 +123,24 @@ export default {
                     section: "#s3"
                 },
                 {
+                    name: "Amazon DynamoDB",
+                    icon: "csicon csicon-dynamodb",
+                    href: "plugin-aws",
+                    section: "#dynamodb"
+                },
+                {
+                    name: "Amazon SNS",
+                    icon: "csicon csicon-sns",
+                    href: "plugin-aws",
+                    section: "#sns"
+                },
+                {
+                    name: "Amazon SQS",
+                    icon: "csicon csicon-sqs",
+                    href: "plugin-aws",
+                    section: "#sqs"
+                },
+                {
                     name: "Http",
                     icon: Api,
                     href: "plugin-fs",
@@ -153,13 +171,25 @@ export default {
                     section: "gcs"
                 },
                 {
-                    name: "Big Query",
+                    name: "Google Cloud Big Query",
                     icon: "csicon csicon-bigquery",
                     href: "plugin-gcp",
                     section: "bigquery"
                 },
                 {
-                    name: "Vertex AI",
+                    name: "Google Cloud Firestore",
+                    icon: "csicon csicon-firestore",
+                    href: "plugin-gcp",
+                    section: "firestore"
+                },
+                {
+                    name: "Google Cloud Pub/Sub",
+                    icon: "csicon csicon-pubsub",
+                    href: "plugin-gcp",
+                    section: "pubsub"
+                },
+                {
+                    name: "Google Cloud Vertex AI",
                     icon: "csicon csicon-vertexai",
                     href: "plugin-gcp",
                     section: "vertexai"
@@ -373,7 +403,19 @@ export default {
                     name: "Azure Blob Storage",
                     icon: "csicon csicon-abs",
                     href: "plugin-azure",
+                    section: "blob"
+                },
+                {
+                    name: "Azure Batch",
+                    icon: "csicon csicon-azurebatch",
+                    href: "plugin-azure",
                     section: "storage-blob"
+                },
+                {
+                    name: "Azure Storage Table",
+                    icon: "csicon csicon-azuretable",
+                    href: "plugin-azure",
+                    section: "table"
                 },
                 {
                     name: "Tika",
@@ -414,6 +456,11 @@ export default {
                     name: "Amqp",
                     icon: "csicon csicon-amqp",
                     href: "plugin-amqp"
+                },
+                {
+                    name: "Neo4j",
+                    icon: "csicon csicon-neo4j",
+                    href: "plugin-neo4j"
                 },
             ];
 
@@ -474,6 +521,14 @@ i.csicon {
         background-image: url("../../assets/home/bigquery.svg");
     }
 
+    &.csicon-firestore {
+        background-image: url("../../assets/home/firestore.svg");
+    }
+
+    &.csicon-pubsub {
+        background-image: url("../../assets/home/pubsub.svg");
+    }
+
     &.csicon-clickhouse {
         background-image: url("../../assets/home/clickhouse.png");
     }
@@ -504,6 +559,18 @@ i.csicon {
 
     &.csicon-s3 {
         background-image: url("../../assets/home/s3.png");
+    }
+
+    &.csicon-dynamodb {
+        background-image: url("../../assets/home/dynamodb.svg");
+    }
+
+    &.csicon-sns {
+        background-image: url("../../assets/home/sns.svg");
+    }
+
+    &.csicon-sqs {
+        background-image: url("../../assets/home/sqs.svg");
     }
 
     &.csicon-redshift {
@@ -594,6 +661,14 @@ i.csicon {
         background-image: url("../../assets/home/abs.svg");
     }
 
+    &.csicon-azurebatch {
+        background-image: url("../../assets/home/azurebatch.svg");
+    }
+
+    &.csicon-azuretable {
+        background-image: url("../../assets/home/azuretable.svg");
+    }
+
     &.csicon-vertexai {
         background-image: url("../../assets/home/vertexai.svg");
     }
@@ -644,6 +719,10 @@ i.csicon {
 
     &.csicon-amqp {
         background-image: url("../../assets/home/amqp.svg");
+    }
+
+    &.csicon-neo4j {
+        background-image: url("../../assets/home/neo4j.svg");
     }
 }
 

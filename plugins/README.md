@@ -1,7 +1,7 @@
 # Plugins
 
-This section all the **official** plugins for Kestra that is maintained by core Kestra developpers.  
+This section lists all the **official** plugins maintained by core Kestra developers.   
 
-Plugins available are : 
+Available plugins are : 
 
 <ChildTableOfContents />

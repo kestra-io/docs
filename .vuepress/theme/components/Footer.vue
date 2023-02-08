@@ -1,6 +1,6 @@
 
 <template>
-    <div>
+    <div v-if="show">
         <Shape class="text-footer" />
 
         <footer class="footer">
@@ -179,6 +179,15 @@ export default {
         MailIcon,
         ChevronRight,
         Heart
+    },
+    computed: {
+        show() {
+            if (this.$page.regularPath === undefined) {
+                return true
+            } else {
+                return this.$page.regularPath.includes('/docs') ? false : true
+            }
+        }
     }
 }
 </script>

@@ -56,19 +56,19 @@ All services (Kafka, Elasticsearch, Zookeeper, Minio, PostgreSQL) are deployed u
 
 [Configuration](../../configuration) of Kestra could be made:
 - In a Kubernetes `ConfigMap` via the `configuration` Helm value.
-- In a Kubernetes `Secret` via the `secrets` Helm value. 
+- In a Kubernetes `Secret` via the `secrets` Helm value.
 Both must be valid YAML that will be merged as the Kestra configuration file.
 
 For example, to enable Kafka as the queue implementation and configure its `bootstrap.servers` property inside a secret:
 
 ```yaml
-configuration: |
+configuration:
   kestra:
     queue:
       type: kafka
 
 
-secrets: |
+secrets:
   kestra:
     kafka:
       client:
