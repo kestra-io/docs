@@ -6,7 +6,7 @@ order: 13
 
 ## Introduction
 
-In Kestra, the number of flows you developed can grow quickly, and maintaining them can be a challenge.
+In Kestra, the number of flows you develop can grow quickly, and maintaining them can get challenging.	
 CI/CD pipelines are a great way to automate the validation and the deployment of your flows.
 This section will guide you through the steps to create a CI/CD pipeline.
 
