@@ -6,9 +6,7 @@ order: 2
 
 ## GitLab CI
 
-GitLab integrates a solution called [GitLAb CI/CD](https://docs.gitlab.com/ee/ci/) that allows you to
-define pipelines in YAML files to automate tests, compilation, or even deploy for your
-Applications.
+GitLab integrates a solution called [GitLAb CI/CD](https://docs.gitlab.com/ee/ci/) that allows you to define pipelines in YAML files to automate tests, compilation, or even deploy for your Applications.
 
 ## Example
 
