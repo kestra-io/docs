@@ -5,8 +5,7 @@ order: 1
 # GitHub
 
 GitHub integrates a solution called [GitHub Actions](https://github.com/features/actions), allowing you to create CI/CD pipelines easily.
-These pipelines are called Workflows and are built with Actions, which
-perform complex tasks with a small amount of codes.
+These pipelines are called Workflows and are built with Actions, which perform complex tasks with a small amount of codes.
 
 ## Kestra Actions
 
