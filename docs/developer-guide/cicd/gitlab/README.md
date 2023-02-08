@@ -6,15 +6,18 @@ order: 2
 
 ## GitLab CI
 
-GitLab integrates a solution call [GitLAb CI/CD](https://docs.gitlab.com/ee/ci/) that allow you to
-define pipelines in `YAML` files to automate tests, compilation, or even deployment for your
+GitLab integrates a solution called [GitLAb CI/CD](https://docs.gitlab.com/ee/ci/) that allow you to
+define pipelines in `YAML` files to automate tests, compilation, or even deploy for your
 Applications.
 
 ## Example
 
-Here is an example of a GitLab CI pipeline. We define 3 stages, `test` where we validate our flow,
-`deploy-template` where we deploy our `templates` before our `flows`, to avoid running before their
-`templates` are created. And finally the stage `deploy-flow` where we deploy our flows.
+Here is an example of a GitLab CI pipeline. We define 3 stages, `test` where we validate our flows,
+`deploy-template` where we deploy our `templates` and finally the stage `deploy-flow` where we deploy our flows.
+
+::: warning
+`Flows` should always be deployed before `Templates`, to avoid flows running before their templates are created.
+:::
 
 ```yaml
 stages:
@@ -39,7 +42,7 @@ kestra-validate-flows-job:
 
 kestra-validate-template-job:
   stage: test
-  # Validate our template within the client
+  # Validate our template with the client
   script:
     - /app/kestra template validate ./kestra/templates --local
 

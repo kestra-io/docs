@@ -7,9 +7,15 @@ order: 3
 ## Kestra Provider
 
 You can use the [Official Kestra Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest) to manage
-every available resource in Kestra.
+eevery available resource in Kestra.
 
 ## Examples
+
+::: warning
+`Flows` should always be deployed before `Templates`, to avoid flows running before their templates are created.
+:::
+
+First, you need to create a `provider.tf` or `main.tf` file with the following content, to configure the provider:
 
 #### **`provider.tf`**
 ```hcl
@@ -28,6 +34,8 @@ provider "kestra" {
 }
 ```
 
+Then, you define the source and the version of the provider:
+
 #### **`version.tf`**
 ```hcl
 kestra = {
@@ -36,13 +44,25 @@ kestra = {
 }
 ```
 
+Finally, you can create your resources:
+
 #### **`flows.tf`**
 ```hcl
-resource "kestra_flow" "example" {
+resource "kestra_flow" "flow-example" {
   namespace = "io.kestra"
   flow_id = "my-flow"
-  content = file("my-flow.yml")
+  content = file("kestra/flows/my-flow.yml")
 }
 ```
 
-More details can be [here](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs).
+#### **`templates.tf`**
+```hcl
+resource "kestra_template" "template-example" {
+  namespace = "io.kestra"
+  template_id = "my-template"
+  content = file("kestra/templates/my-template.yml")
+  depends_on = [kestra_flow.flow-example] # Here we ensure that the flow is deployed before the template
+}
+```
+
+More details can be found [here](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs).

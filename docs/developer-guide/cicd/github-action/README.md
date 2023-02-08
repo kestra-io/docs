@@ -4,21 +4,26 @@ order: 1
 
 # GitHub
 
-GitHub integrates a solution call [GitHub Actions](https://github.com/features/actions) that allow you
-to create pipelines easily. Those pipelines are called `Workflows` and are build from `Actions` who
+GitHub integrates a solution called [GitHub Actions](https://github.com/features/actions) that allow you
+to create CI/CD pipelines easily.
+Those pipelines are called `Workflows` and are build from `Actions` which
 performs complex tasks with small amount of codes.
 
 ## Kestra Actions
 
-Kestra offer 2 `Actions` to create a CI/CD inside GitHub.
+Kestra offer 2 `Actions` to create a CI/CD pipeline within a GitHub repository.
 
-[Kestra Validate Action]() - Validate your flows and your templates before deploying anything.
+[Kestra Validate Action](https://github.com/kestra-io/validate-action/releases) - Validate your flows and your templates before deploying anything.
 
-[Kestra Deploy Action]() - Deploy your flows and your templates to your Kestra server.
+[Kestra Deploy Action](https://github.com/kestra-io/deploy-action/releases) - Deploy your flows and your templates to your Kestra server.
 
 ## Examples
 
 Here is an example of a `Workflow` using `Kestra Actions` that validate all `Flows` and `Templates` before deploying them.
+
+::: warning
+`Flows` should always be deployed before `Templates`, to avoid flows running before their templates are created.
+:::
 
 ```yaml
 name: Kestra CI/CD
