@@ -7,20 +7,20 @@ order: 3
 ## Kestra Provider
 
 You can use the [Official Kestra Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest) to manage
-eevery available resource in Kestra.
+every available resource in Kestra.
 
 ## Examples
 
 ::: warning
-`Flows` should always be deployed before `Templates`, to avoid flows running before their templates are created.
+Flows should always be deployed before Templates, to avoid flows running before their templates are created.
 :::
 
-First, you need to create a `provider.tf` or `main.tf` file with the following content, to configure the provider:
+First, you need to create a `provider.tf` or `main.tf` file with the following content to configure the provider:
 
 #### **`provider.tf`**
 ```hcl
 provider "kestra" {
-  # mandatory, the url to kestra
+  # mandatory, the URL for kestra
   url = "http://localhost:8080"
 
   # optional basic auth username

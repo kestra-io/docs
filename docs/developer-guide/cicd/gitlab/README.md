@@ -6,17 +6,19 @@ order: 2
 
 ## GitLab CI
 
-GitLab integrates a solution called [GitLAb CI/CD](https://docs.gitlab.com/ee/ci/) that allow you to
-define pipelines in `YAML` files to automate tests, compilation, or even deploy for your
+GitLab integrates a solution called [GitLAb CI/CD](https://docs.gitlab.com/ee/ci/) that allows you to
+define pipelines in YAML files to automate tests, compilation, or even deploy for your
 Applications.
 
 ## Example
 
-Here is an example of a GitLab CI pipeline. We define 3 stages, `test` where we validate our flows,
-`deploy-template` where we deploy our `templates` and finally the stage `deploy-flow` where we deploy our flows.
+Here is an example of a GitLab CI pipeline. We define three stages:
+* `test`, where we validate our flows
+* `deploy-template`, where we deploy our templates
+* `deploy-flow`, where we deploy our flows.
 
 ::: warning
-`Flows` should always be deployed before `Templates`, to avoid flows running before their templates are created.
+Flows should always be deployed before Templates, to avoid flows running before their templates are created.
 :::
 
 ```yaml
