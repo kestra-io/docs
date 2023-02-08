@@ -13,7 +13,7 @@ This section will guide you through the steps to create a CI/CD pipeline.
 ## Why a CI/CD pipeline?
 
 CI/CD pipelines provide an easy and reliable way to ensure that your flows are always deployed as soon they're done.
-It integrates well in VCS (Version Control System) like Git, and can be easily integrated in your development workflow.
+It integrates nicely with VCS (Version Control System) like Git and can easily integrate into your development workflow.
 
 ## How to create a CI/CD pipeline?
 
