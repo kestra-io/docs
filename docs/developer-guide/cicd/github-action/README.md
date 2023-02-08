@@ -12,9 +12,9 @@ perform complex tasks with a small amount of codes.
 
 Kestra offer two Actions to create a CI/CD pipeline within a GitHub repository.
 
-* [Kestra Validate Action](https://github.com/kestra-io/validate-action/releases) - Validate your flows and templates before deploying anything.
+* [Kestra Validate Action](https://github.com/marketplace/actions/kestra-validate-action) - Validate your flows and templates before deploying anything.
 
-* [Kestra Deploy Action](https://github.com/kestra-io/deploy-action/releases) - Deploy your flows and templates to your Kestra server.
+* [Kestra Deploy Action](https://github.com/marketplace/actions/kestra-deploy-action) - Deploy your flows and templates to your Kestra server.
 
 ## Examples
 
