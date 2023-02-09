@@ -1,3 +1,6 @@
+---
+order: 1
+---
 
 # Schedule
 
@@ -40,14 +43,14 @@ Schedules **cannot overlap**. This means that we **cannot have any concurrent sc
 ::: tip
 Most of the time, schedule execution will depend on the `trigger.date` (looking at files for today, sql query with where schedule date). This works well, but it prevents you to execute your flow manually (since these variables are only available during schedule).
 
-You can use this expression in order to make your **manual execution work**: <code v-pre>{{ schedule.date ?? execution.startDate | date("yyyy-MM-dd") }}</code>. It will use the current date instead of the scheduled one on manual execution, and your flow will not fail.
+You can use this expression in order to make your **manual execution work**: <code v-pre>{{ schedule.date ?? execution.startDate | date("yyyy-MM-dd") }}</code>. It will use the current date if there is no schedule date making it possible to start the flow manually.
 :::
 
 
 ## Backfill
-Kestra will optionally handle a backfill. The concept of a backfill is the replay of a missed schedule because we create the flow later.
+Kestra will optionally handle schedule backfills. The concept of a backfill is the replay of a missed schedule because a flow was created after it should have been scheduled.
 
-Backfills will perform all the schedules between the defined date & the current date and will start after the normal schedule.
+Backfills will perform all the schedules between the defined date and the current date, and will start after the normal schedule.
 
 > A schedule with a backfill.
 
@@ -62,7 +65,7 @@ triggers:
 
 
 ## Variables
-When the flow is scheduled, some context variables are injected to allow some customization of the flow (such as filename, where in sql query).
+When the flow is scheduled, some context variables are injected to allow some customization of the flow (such as filename, where in sql query, ...).
 
 | Parameter | Description |
 | ---------- | ----------- |
@@ -97,13 +100,13 @@ The list of core conditions that can be used are:
 
 ### `cron`
 * **Type:** ==string==
-* **Dynamic:** ❓
-* **Required:** ❌
+* **Dynamic:** ❌
+* **Required:** ✔️
 > The cron expression, need to be a standard [unix cron expression](https://en.wikipedia.org/wiki/Cron) without seconds.
 
 ### `backfill`
 * **Type:** ==[ScheduleBackfill](#schedulebackfill)==
-* **Dynamic:** ❓
+* **Dynamic:** ❌
 * **Required:** ❌
 > Backfill options in order to fill missing previous past dates.
 Kestra will optionally handle a backfill. The concept of a backfill is to replay the missing schedule because we create the flow later.
@@ -114,7 +117,7 @@ Backfill will do all schedules between the defined date & the current date and w
 ### `scheduleConditions`
 * **Type:** ==array==
 * **SubType:** ==ScheduleCondition==
-* **Dynamic:** ❓
+* **Dynamic:** ❌
 * **Required:** ❌
 > List of schedule Conditions in order to limit schedule executions.
 
