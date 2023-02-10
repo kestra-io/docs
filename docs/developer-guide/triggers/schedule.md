@@ -43,14 +43,14 @@ Schedules **cannot overlap**. This means that we **cannot have any concurrent sc
 ::: tip
 Most of the time, schedule execution will depend on the `trigger.date` (looking at files for today, sql query with where schedule date). This works well, but it prevents you to execute your flow manually (since these variables are only available during schedule).
 
-You can use this expression in order to make your **manual execution work**: <code v-pre>{{ schedule.date ?? execution.startDate | date("yyyy-MM-dd") }}</code>. It will use the current date if there is no schedule date making it possible to start the flow manually.
+You can use this expression to make your **manual execution work**: <code v-pre>{{ schedule.date ?? execution.startDate | date("yyyy-MM-dd") }}</code>. It will use the current date if there is no scheduled date making it possible to start the flow manually.
 :::
 
 
 ## Backfill
 Kestra will optionally handle schedule backfills. The concept of a backfill is the replay of a missed schedule because a flow was created after it should have been scheduled.
 
-Backfills will perform all the schedules between the defined date and the current date, and will start after the normal schedule.
+Backfills will perform all the schedules between the defined and current dates and will start after the normal schedule.
 
 > A schedule with a backfill.
 
@@ -65,7 +65,7 @@ triggers:
 
 
 ## Variables
-When the flow is scheduled, some context variables are injected to allow some customization of the flow (such as filename, where in sql query, ...).
+When the flow is scheduled, some context variables are injected to allow some flow customization (such as filename, where in SQL query, etc.).
 
 | Parameter | Description |
 | ---------- | ----------- |

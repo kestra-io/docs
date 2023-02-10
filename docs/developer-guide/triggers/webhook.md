@@ -8,7 +8,7 @@ order: 2
 type: "io.kestra.core.models.triggers.types.Webhook"
 ```
 
-> A Webhook trigger allows to trigger a flow from a webhook URL.
+> A Webhook trigger allows triggering a flow from a webhook URL.
 > At trigger creation time, Kestra will generate a key that must be used on the URL that triggers the flow: `/api/v1/executions/webhook/{namespace}/[flowId]/{key}`.
 > Kestra accepts `GET`, `POST` and `PUT` requests on this URL.
 > The whole request body and headers will be available as a variables.
