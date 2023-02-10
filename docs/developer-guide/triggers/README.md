@@ -3,10 +3,10 @@ order: 5
 ---
 # Triggers & schedule
 
-Triggers are a way to start a flow with external events. For example, a trigger can be set for a scheduled date or waiting for an external event (such as file creation or another flows end).
+Triggers are a way to start a flow from an external event. For example, a trigger can be set for a scheduled date or waiting for an external event (such as file creation or another flow's end).
 
-Here are the currently available triggers:
+Here are the triggers available on Kestra core (a lot of plugins provide additional triggers as well):
 
-* [Flow trigger](./flow.md)
 * [Schedule](./schedule.md)
 * [Webhook](./webhook.md)
+* [Flow trigger](./flow.md)

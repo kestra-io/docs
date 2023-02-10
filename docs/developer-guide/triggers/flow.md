@@ -1,3 +1,6 @@
+---
+order: 3
+---
 
 # Flow trigger
 
@@ -69,36 +72,9 @@ triggers:
 
 ```
 
-## Inputs
+## Properties and Outputs
 
-### `id`
-* **Type:** <Badge vertical="middle" text="String" />
-* **Required:** ✔
-
-> Unique for a flow.
-
-
-### `inputs`
-* **Type:** <Badge vertical="middle" text="Map<String, Object>" />
-* **Required:** ❌
-* **Dynamic:** ✔
-
-> Fills input of this flow based on the output of the current flow, allowing to pass data or file on the triggered flow.
-
-
-::: warning
-If you provide an invalid input, the flow will be created and already in FAILED state! Since no task is started, you cannot log any reason visible on the ui, so you will need to go to the server logs to understand the error.
-:::
-
-### `conditions`
-* **Type:** <Badge vertical="middle" text="List<Condition>" />
-* **Required:** ❌
-
-> List of  [Conditions](../conditions) in order to limit the flow trigger.
-
-::: warning
-If you do not provide any conditions, the flow will be triggered for **EVERY execution** of **EVERY flow** on your instance.
-:::
+Check the [Flow task](/plugins/core/triggers/io.kestra.core.models.triggers.types.Flow.md) documentation for the complete list of the task properties and outputs.
 
 
 ## Variables
