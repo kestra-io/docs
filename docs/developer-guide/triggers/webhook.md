@@ -30,40 +30,6 @@ triggers:
 ```
 
 
+## Properties and Outputs
 
-
-## Inputs
-
-### `id`
-* **Type:** <Badge vertical="middle" text="String" />
-* **Required:** ✔
-
-> Unique for a flow.
-
-### `key`
-* **Type:** <Badge vertical="middle" text="String" />
-* **Required:** ❌
-
-> The unique key that will be part of the URL.
-
-If you don’t provide a key, a random one will be generated. This is used as the key for generating the URL of the webhook.
-
-::: warning
-Take care when using a manual key, the key is the only security to protect your webhook and must be protected as a secret!
-:::
-
-
-## Outputs
-
-### `body`
-* **Type:** <Badge vertical="middle" text="Object" />
-
-> The full body of the webhook request.
-
-We try to deserialize the incoming request as json (array or object).
-If we can’t the full body as string will be available
-
-### `headers`
-* **Type:** <Badge vertical="middle" text="Map<String, List<String>>" />
-
-> The headers of the webhook request.
+Check the [Webhook task](/plugins/core/triggers/io.kestra.core.models.triggers.types.Webhook.md) documentation for the complete list of the task properties and outputs.
