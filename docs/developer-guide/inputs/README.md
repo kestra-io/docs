@@ -154,7 +154,7 @@ You can use the value of the inputs with <code v-pre>{{ inputs.my-value }}</code
 ## Send inputs programmatically
 The flow `my-flow` above can be triggered programmatically. Here is an example with `curl`:
 ```bash
-curl -v "http://kestra:8080/api/v1/executions/trigger/io.kestra.docs/my-flow" \
+curl -v "http://localhost:8080/api/v1/executions/trigger/io.kestra.docs/my-flow" \
     -H "Transfer-Encoding:chunked" \
     -H "Content-Type:multipart/form-data" \
     -F string="a string"  \
@@ -174,7 +174,7 @@ import requests
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 with open("/tmp/128M.txt", 'rb') as fh:
-  url = f"http://kestra:8080/api/v1/executions/trigger/io.kestra.docs/my-flow"
+  url = f"http://localhost:8080/api/v1/executions/trigger/io.kestra.docs/my-flow"
   mp_encoder = MultipartEncoder(fields={
     "string": "a string",
     "optional": "an optionnal string",

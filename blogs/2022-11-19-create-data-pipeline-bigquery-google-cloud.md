@@ -164,7 +164,7 @@ inputs:
 The CURL command (complete [API](https://kestra.io/docs/api-guide/)) can also be used to trigger the flow if you need to automatize the execution from another application. Here is a sample CURL for such a use case.
 
 ```bash
-curl -v "<http://kestra:8080/api/v1/executions/trigger/io.kestra.gcp/extract-to-gcs>"
+curl -v "<http://localhost:8080/api/v1/executions/trigger/io.kestra.gcp/extract-to-gcs>"
     -H "Transfer-Encoding:chunked"
     -H "Content-Type:multipart/form-data"
     -F destinationFile="analysis_data_18"
