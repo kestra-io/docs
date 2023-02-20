@@ -21,7 +21,7 @@ Here is a minimal MySQL configuration example :
 ```yaml
 datasources:
   mysql:
-    url: jdbc:mysql://local:3306/kestra
+    url: jdbc:mysql://localhost:3306/kestra
     driverClassName: com.mysql.cj.jdbc.Driver
     username: kestra
     password: k3str4
@@ -33,7 +33,7 @@ Here is minimal PostgreSQL configuration:
 ```yaml
 datasources:
   postgres:
-    url: jdbc:postgresql://local:5432/kestra
+    url: jdbc:postgresql://localhost:5432/kestra
     driverClassName: org.postgresql.Driver
     username: kestra
     password: k3str4
