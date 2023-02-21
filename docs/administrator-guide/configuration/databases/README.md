@@ -1,9 +1,9 @@
 ---
 order: 1
 ---
-# Databases configuration
+# Database configuration
 
-First, you need to configure Kestra to use a database for its Queue and Repository:
+First, you need to configure Kestra to use a database for its Queue and Repository, for example for MySQL:
 
 ```yaml
 kestra:
@@ -13,12 +13,20 @@ kestra:
     type: mysql
 ```
 
-## Minimal examples
-The most important thing is to configure the way Kestra connect to a database. For now, Kestra support PostgreSQL and MySQL.
+Currently, Kestra supports three databases: H2, MySQL and PostgreSQL. H2 can be convenient to use for local development but MySQL or PostgreSQL must be used in production.
+
+## Minimal configuration
+The most important thing is to configure the way Kestra connects to a database, what is called a datasource.
 
 
-Here is a minimal MySQL configuration example :
+Here is a minimal configuration for MySQL:
 ```yaml
+kestra:
+  queue:
+    type: mysql
+  repository:
+    type: mysql
+
 datasources:
   mysql:
     url: jdbc:mysql://localhost:3306/kestra
@@ -29,8 +37,14 @@ datasources:
 ```
 
 
-Here is minimal PostgreSQL configuration:
+Here is a minimal configuration for PostgreSQL:
 ```yaml
+kestra:
+  queue:
+    type: postgres
+  repository:
+    type: postgres
+
 datasources:
   postgres:
     url: jdbc:postgresql://localhost:5432/kestra
@@ -40,40 +54,63 @@ datasources:
 ```
 
 
-## `datasources.*` properties
-Since Kestra is built upon [Micronaut](https://micronaut.io) and [HikariCP](https://github.com/brettwooldridge/HikariCP), many configurations are available in order to configure the database pool:
+Here is a minimal configuration for H2:
+```yaml
+kestra:
+  queue:
+    type: h2
+  repository:
+    type: h2
+
+datasources:
+  h2:
+    url: jdbc:h2:mem:public;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: ""
+    driverClassName: org.h2.Driver
+```
+
+
+## Datasource properties
+
+Since Kestra is built with [Micronaut](https://micronaut.io) and [HikariCP](https://github.com/brettwooldridge/HikariCP), many configuration options are available to configure the datasource and the connection pool:
 
 
 | Properties                    | Type   | Description                                                                                                                                           |
 |-------------------------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `url`                         | String | Set the jdbc connection string.                                                                                                                       |
-| `catalog`                     | String | Set the default schema name to be set on connections.                                                                                                 |
-| `schema`                      | String | Set the default catalog name to be set on connections.                                                                                                |
-| `username`                    | String | Set the default username used.                                                                                                                        |
-| `password`                    | String | Set the default password to use.                                                                                                                      |
-| `transaction-isolation`       | String | Set the default transaction isolation level.                                                                                                          |
-| `pool-name`                   | String | Set the name of the connection pool.                                                                                                                  |
-| `connection-init-sql`         | String | Set the SQL string that will be executed on all new connections when they are created, before they are added to the pool.                             |
-| `connection-test-query`       | String | Set the SQL query to be executed to test the validity of connections.                                                                                 |
-| `connection-timeout`          | Long   | Set the maximum number of milliseconds that a client will wait for a connection from the pool.                                                        |
-| `idle-timeout`                | Long   | This property controls the maximum amount of time (in milliseconds) that a connection is allowed to sit idle in the pool.                             |
-| `minimum-idle`                | Long   | The property controls the minimum number of idle connections that HikariCP tries to maintain in the pool, including both idle and in-use connections. |
-| `initialization-fail-timeout` | Long   | Set the pool initialization failure timeout.                                                                                                          |
-| `leak-detection-threshold`    | Long   | This property controls the amount of time that a connection can be out of the pool before a message is logged indicating a possible connection leak.  |
-| `maximum-pool-size`           | Int    | The property controls the maximum size that the pool is allowed to reach, including both idle and in-use connections.                                 |
-| `max-lifetime`                | Long   | This property controls the maximum lifetime of a connection in the pool.                                                                              |
-| `validation-timeout`          | Long   | Sets the maximum number of milliseconds that the pool will wait for a connection to be validated as alive.                                            |
+| `url`                         | String | The jdbc connection string.                                                                                                                       |
+| `catalog`                     | String | The default schema name to be set on connections.                                                                                                 |
+| `schema`                      | String | The default catalog name to be set on connections.                                                                                                |
+| `username`                    | String | The default username used.                                                                                                                        |
+| `password`                    | String | The default password to use.                                                                                                                      |
+| `transaction-isolation`       | String | The default transaction isolation level.                                                                                                          |
+| `pool-name`                   | String | The name of the connection pool.                                                                                                                  |
+| `connection-init-sql`         | String | The SQL string that will be executed on all new connections when they are created, before they are added to the pool.                             |
+| `connection-test-query`       | String | The SQL query to be executed to test the validity of connections.                                                                                 |
+| `connection-timeout`          | Long   | The maximum number of milliseconds that a client will wait for a connection from the pool.                                                        |
+| `idle-timeout`                | Long   | The maximum amount of time (in milliseconds) that a connection is allowed to sit idle in the pool.                             |
+| `minimum-idle`                | Long   | The minimum number of idle connections that HikariCP tries to maintain in the pool, including both idle and in-use connections. |
+| `initialization-fail-timeout` | Long   | The pool initialization failure timeout.                                                                                                          |
+| `leak-detection-threshold`    | Long   | The amount of time that a connection can be out of the pool before a message is logged indicating a possible connection leak.  |
+| `maximum-pool-size`           | Int    | The maximum size that the pool is allowed to reach, including both idle and in-use connections.                                 |
+| `max-lifetime`                | Long   | The maximum lifetime of a connection in the pool.                                                                              |
+| `validation-timeout`          | Long   | The maximum number of milliseconds that the pool will wait for a connection to be validated as alive.                                            |
 
 ## Queues configuration
 
 ### `kestra.jdbc.queues`
 
-Kestra queues based on database simulate queues doing long polling. It queries a `queues` table to detect new messages. Change these parameters to reduce the latency (but increase load on the database).
+Kestra database queues simulate queuing doing long polling. They queries a `queues` table to detect new messages.
 
-- `kestra.jdbc.queues.poll-size`: is the maximum number of queues items fetch for each poll
-- `kestra.jdbc.queues.min-poll-interval`: is the minimum duration between 2 polls
-- `kestra.jdbc.queues.max-poll-interval`: is the maximum duration between 2 polls
-- `kestra.jdbc.queues.poll-switch-interval`: is the duration when no message are received switching from min polling to max polling (ex: one message received, the `min-poll-interval` is used, if no new message arrived with `poll-switch-interval`, we switch to `max-poll-interval`).
+You can change these parameters to reduce the polling latency, but be aware it will increase the load on the database:
+
+- `kestra.jdbc.queues.poll-size`: the maximum number of queues items fetched by each poll.
+- `kestra.jdbc.queues.min-poll-interval`: the minimum duration between 2 polls.
+- `kestra.jdbc.queues.max-poll-interval`: the maximum duration between 2 polls.
+- `kestra.jdbc.queues.poll-switch-interval`: the delay for switching from min-poll-interval to max-poll-interval when no message is received. (ex: when one message is received, the `min-poll-interval` is used, if no new message arrived within `poll-switch-interval`, we switch to `max-poll-interval`).
+
+
+Here is the default configuration:
 
 ```yaml
 kestra:
@@ -88,7 +125,10 @@ kestra:
 
 ### `kestra.jdbc.cleaner`
 
-Kestra cleans the `queues` table to avoid infinite grow of this table. You can control how often you want this cleaning to happen, and how long we will keep messages in the queue with `retention`.
+Kestra cleans the `queues` table periodically to avoid infinite grow. 
+You can control how often you want this cleaning to happen, and how long messages should be kept in the `queues` table .
+
+Here is the default configuration:
 
 ```yaml
 kestra:

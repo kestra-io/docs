@@ -13,8 +13,9 @@ kestra:
 ```
 
 ## Plugins configuration
-Configuration of Maven repositories used for the command `plugins install`.
-Defaults are necessary for Kestra and plugins, but you can add your own custom maven registries in order to download your own plugins with this command.
+Configuration of Maven repositories used by the command `kestra plugins install`.
+
+Maven Central is mandatory for Kestra and its plugins, but you can add your own Maven repository in order to download your own plugins with this command.
 
 ```yaml
 kestra:
@@ -46,7 +47,7 @@ kestra:
 
 ### `kestra.variables.env-vars-prefix`
 Kestra provides a way to use environment variables in your flow.
-By default, we only get environment variables that start with `KESTRA_`, use this configuration option to change the prefix.
+By default, we only get environment variables that start with `KESTRA_`, use this configuration option to change this prefix.
 
 These variables will be accessible inside a flow with <code v-pre>{{ env.your_env }}</code>.
 
@@ -54,9 +55,11 @@ For example, an environment variable with the name `KESTRA_MY_ENV` will be usabl
 
 
 ### `kestra.variables.globals`
-You can also provide globals variables inside the configuration files that will be accessible in all your flows.
-Mostly these will be used to declare the environment on your instance,  such as global datasets, for example
+You can also provide globals variables that will be accessible in all your flows.
+These can be used to declare the environment on your instance, such as global datasets for example.
 
+
+For example, this variable will be accessible inside a flow with <code v-pre>{{ globals.env }}</code>:
 ```yaml
 kestra:
   variables:
@@ -64,7 +67,6 @@ kestra:
       env: dev
 
 ```
-These variables will be accessible inside a flow with <code v-pre>{{ globals.env }}</code>
 
 
 ### `kestra.variables.disable-handlebars`
@@ -78,8 +80,8 @@ The rendering of template variables can be CPU intensive, and by default we **en
 The rendering of template variables cache is an LRU cache (keep most used) and will be in memory (default `1000`). You can change the size of the template cache (in number of templates), take care that the higher this number will be, the more memory the server will use, maybe for not so many used templates.
 
 ### `kestra.tasks.defaults`
-You can also provide from configuration files tasks defaults that will be applied on each tasks on your cluster **if not defined** on flow or tasks.
-Mostly it will allow you to be sure a value was defined at a default value for these task types.
+You can also provide tasks defaults that will be applied on each tasks on your cluster **if not defined** on flows or tasks.
+It will allow to be sure a value was defined at a default value for these tasks.
 
 ```yaml
 kestra:
@@ -97,10 +99,10 @@ kestra:
 ## Servers configuration
 
 ### `kestra.server.access-log`: Access Log configuration
-- `kestra.server.access-log.enabled`: Enabled access log from webserver (default `true`)
-- `kestra.server.access-log.name`: Logger name (default `io.kestra.webserver.access`)
-- `kestra.server.access-log.format`: Access log format (default `[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]`)
-- `kestra.server.access-log.filters`: list of regexp that will log, use `.*` to enable all  (default `- ".*\\[Url: /api/.*"`)
+- `kestra.server.access-log.enabled`: enable access log from webserver (default `true`).
+- `kestra.server.access-log.name`: logger name (default `io.kestra.webserver.access`).
+- `kestra.server.access-log.format`: access log format (default `[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]`).
+- `kestra.server.access-log.filters`: list of regexp to define which log to include, use `.*` to enable all logs (default `- ".*\\[Url: /api/.*"`).
 
 Here is the default values:
 ```yaml
@@ -114,12 +116,12 @@ kestra:
         - ".*\\[Url: /api/.*"
 ```
 
-### `kestra.configurations.delete-files-on-start`: Delete configurations files
-This setting allows you to delete all configurations just after the server startup. It prevents the ability to read configurations files (that may contain your secrets) from a Bash task for example. The server will keep these values in memory and they won't be accessible from tasks. Values are either `true` or `false` (default `false`).
+### `kestra.configurations.delete-files-on-start`: Delete configuration files
+This setting allows to delete all configuration files just after the server startup. It prevents the ability to read configuration files (that may contain your secrets) from a Bash task for example. The server will keep these values in memory and they won't be accessible from tasks. Values are either `true` or `false` (default `false`).
 
 ## Management endpoints configuration
 Management endpoints configuration can be done with Micronaut configuration from [Micronaut endpoint configuration](https://docs.micronaut.io/latest/guide/index.html#endpointConfiguration).
-You can also secure all endpoints with a basic auth authentication using this additional configuration:
+You can also secure all endpoints with a basic authentication using this additional configuration:
 
 ```yaml
 endpoints:
@@ -141,7 +143,7 @@ kestra:
 
 ## JVM configuration
 
-All JVM options can be passed as an environment variable named `JAVA_OPTS`. You can use it to change all JVM options available, such as memory, encoding, etc...
+All JVM options can be passed in an environment variable named `JAVA_OPTS`. You can use it to change all JVM options available, such as memory, encoding, etc...
 
 Example:
 
@@ -153,7 +155,7 @@ export JAVA_OPTS="-Duser.timezone=Europe/Paris"
 By default, Kestra will handle all dates using your system's timezone. You can change the timezone with JVM options.
 
 Changing the timezone will mostly affect:
-* **scheduler**: by default, all schedule dates are UTC, changing the Java timezone will allow you to schedule the flow in your timezone.
+* **scheduler**: by default, all schedule dates are UTC, changing the Java timezone will allow to schedule the flow in your timezone.
 * **log**:  that will be displayed on your timezone.
 
 
@@ -162,7 +164,7 @@ Changing the timezone will mostly affect:
 ## Anonymous usage report
 
 Understanding how you use Kestra is very important to us: it helps us improve the solution in many ways.
-For this very reason, the `kestra.anonymous-usage-report.enabled` option is mandatory: we want you to take time to consider whether you wish to share anonymous data with us, so we can benefit from your experience and use cases.
+For this reason, the `kestra.anonymous-usage-report.enabled` option is mandatory: we want you to take time to consider whether you wish to share anonymous data with us, so we can benefit from your experience and use cases.
 
 - `kestra.anonymous-usage-report.enabled`: (default true)
 - `kestra.anonymous-usage-report.initial-delay`: (default 5m)
@@ -170,13 +172,13 @@ For this very reason, the `kestra.anonymous-usage-report.enabled` option is mand
 
 ### Collected Data
 
-The collected data can be found [here](https://github.com/kestra-io/kestra/tree/develop/core/src/main/java/io/kestra/core/models/collectors). We collect only **anonymous data** that allows us to understand how you used Kestra. The data collected includes:
+The collected data can be found [here](https://github.com/kestra-io/kestra/tree/develop/core/src/main/java/io/kestra/core/models/collectors). We collect only **anonymous data** that allows us to understand how you use Kestra. The data collected includes:
 
-- **host data:** cpu, ram, os, jvm and a fingerprint of the machine
-- **plugins data:** the list of plugins installed and the current version
+- **host data:** cpu, ram, os, jvm and a fingerprint of the machine.
+- **plugins data:** the list of plugins installed and their current versions.
 - **flow data:** the namespace count, flow count, the task type and the trigger type used.
-- **execution data:** the execution & taskruns count for last 2 days with count and duration grouped by status
-- **common data:** the server type, version, timezone, env, start time and url
+- **execution data:** the execution and taskruns count for last 2 days with count and duration grouped by status.
+- **common data:** the server type, version, timezone, env, start time and url.
 
 
 ## Webserver configuration
@@ -186,7 +188,7 @@ Add Google Analytics tracking ID (ex: `UA-12345678-1`) and report all page track
 
 
 ### `kestra.webserver.html-head`: Append some head tags on the webserver application
-Mostly useful for injecting css or javascript to customize a web application.
+Useful for injecting css or javascript to customize a web application.
 
 For example, you can add a red banner on production environments:
 ```yaml
