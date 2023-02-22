@@ -13,7 +13,7 @@ kestra:
     type: mysql
 ```
 
-Currently, Kestra supports three databases: H2, MySQL and PostgreSQL. H2 can be convenient to use for local development but MySQL or PostgreSQL must be used in production.
+Currently, Kestra supports three databases: H2, MySQL, and PostgreSQL. H2 can be convenient for local development, but MySQL or PostgreSQL must be used in production.
 
 ## Minimal configuration
 The most important thing is to configure the way Kestra connects to a database, what is called a datasource.
@@ -100,7 +100,7 @@ Since Kestra is built with [Micronaut](https://micronaut.io) and [HikariCP](http
 
 ### `kestra.jdbc.queues`
 
-Kestra database queues simulate queuing doing long polling. They queries a `queues` table to detect new messages.
+Kestra database queues simulate queuing doing long polling. They query a `queues` table to detect new messages.
 
 You can change these parameters to reduce the polling latency, but be aware it will increase the load on the database:
 
@@ -125,7 +125,7 @@ kestra:
 
 ### `kestra.jdbc.cleaner`
 
-Kestra cleans the `queues` table periodically to avoid infinite grow. 
+Kestra cleans the `queues` table periodically to avoid infinite growth. 
 You can control how often you want this cleaning to happen, and how long messages should be kept in the `queues` table .
 
 Here is the default configuration:

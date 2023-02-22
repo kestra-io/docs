@@ -1,6 +1,6 @@
 # Vault configuration
 
-This integration will store secrets in the Vault [KV Secrets Engine - Version 2](https://www.vaultproject.io/docs/secrets/kv/kv-v2). Kestra authentications must have  full [read and write policies](https://www.vaultproject.io/docs/concepts/policies) on this secrets store. You can optionally change `root-engine` or `namespace` (if you are using Vault Enterprise).
+This integration will store secrets in the Vault [KV Secrets Engine - Version 2](https://www.vaultproject.io/docs/secrets/kv/kv-v2). Kestra authentications must have full [read and write policies](https://www.vaultproject.io/docs/concepts/policies) on this secrets store. You can optionally change `root-engine` or `namespace` (if you use Vault Enterprise).
 
 
 ## Authentication

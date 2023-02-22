@@ -6,7 +6,7 @@ order: 3
 **Kafka is an Enterprise Edition functionality.**
 
 ## `kestra.kafka.client.properties`
-The most important thing is to configure the way Kestra connects to the Kafka cluster.
+The most important thing is configuring how Kestra connects to the Kafka cluster.
 
 
 Here is a minimal configuration example:
@@ -42,10 +42,10 @@ kestra:
 ```
 
 
-`kestra.kafka.client.properties` allows to pass any standard Kafka properties, more details can be found [on the Kafka Documentation](https://kafka.apache.org/documentation/).
+`kestra.kafka.client.properties` allows passing any standard Kafka properties. More details can be found [on the Kafka Documentation](https://kafka.apache.org/documentation/).
 
 ## `kestra.kafka.defaults.topic`
-By default, Kestra automatically creates all the needed topics, you can change partition count and replication factor of these topics:
+By default, Kestra automatically creates all the needed topics. You can change the partition count and replication factor of these topics:
 - `kestra.kafka.defaults.topic.partitions`: (default 16)
 - `kestra.kafka.defaults.topic.replication-factor`: (default 1)
 
@@ -80,7 +80,7 @@ kestra:
 
 
 ## `kestra.kafka.defaults.topics`
-All the topics used by Kestra are declared with default name and properties. 
+All the topics used by Kestra are declared with the default name and properties. 
 You can change the default values:
 
 - `kestra.kafka.defaults.topics.{{topic}}.name`: Change the name of the topic.
@@ -89,7 +89,7 @@ You can change the default values:
 You can see default configuration on this [file](https://github.com/kestra-io/kestra/blob/develop/cli/src/main/resources/application.yml).
 
 ## `kestra.kafka.defaults.consumer-prefix`
-This configuration allows to change the consumer-group prefix. By default, the prefix will be `kestra`.
+This configuration allows changing the consumer-group prefix. By default, the prefix will be `kestra`.
 
 For example, if you want to share a common Kafka cluster for multiple instances of Kestra, you must configure a different prefix for each instance like this:
 
@@ -101,7 +101,7 @@ kestra:
 ```
 
 ## `kestra.kafka.defaults.topic-prefix`
-This configuration allows to change the topic name prefix. By default, the prefix will be `kestra_`.
+This configuration allows changing the topic name prefix. By default, the prefix will be `kestra_`.
 
 For example, if you want to share a common Kafka cluster for multiple instances of Kestra, add a different prefix for each instance like this:
 
@@ -113,10 +113,10 @@ kestra:
 ```
 
 ## `kestra.kafka.client.loggers`
-This configuration allows to enable logging for all messages processed by the Kafka cluster. Use it to debug all the messages consumed or produced on the Kafka cluster.
+This configuration allows enabling logging for all messages processed by the Kafka cluster. Use it to debug all the messages consumed or produced on the Kafka cluster.
 
 ::: warning
-This configuration have a huge performance impact, using regexp and serialization for most of the messages.
+This configuration has a huge performance impact, using regexp and serialization for most of the messages.
 :::
 
 ```yaml

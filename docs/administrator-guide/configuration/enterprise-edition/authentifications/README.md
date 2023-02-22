@@ -5,7 +5,7 @@ order: 2
 # Authentications
 
 
-Kestra provides 2 authentication methods:
+Kestra provides two authentication methods:
 - Basic Auth: enabled by default
 - [OIDC](./auths/oidc.md)
 

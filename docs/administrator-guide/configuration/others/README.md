@@ -55,7 +55,7 @@ For example, an environment variable with the name `KESTRA_MY_ENV` will be usabl
 
 
 ### `kestra.variables.globals`
-You can also provide globals variables that will be accessible in all your flows.
+You can also provide global variables that will be accessible in all your flows.
 These can be used to declare the environment on your instance, such as global datasets for example.
 
 
@@ -80,8 +80,8 @@ The rendering of template variables can be CPU intensive, and by default we **en
 The rendering of template variables cache is an LRU cache (keep most used) and will be in memory (default `1000`). You can change the size of the template cache (in number of templates), take care that the higher this number will be, the more memory the server will use, maybe for not so many used templates.
 
 ### `kestra.tasks.defaults`
-You can also provide tasks defaults that will be applied on each tasks on your cluster **if not defined** on flows or tasks.
-It will allow to be sure a value was defined at a default value for these tasks.
+You can also provide task defaults that will be applied on each task on your cluster **if not defined** on flows or tasks.
+It will allow being sure a value was defined at a default value for these tasks.
 
 ```yaml
 kestra:
@@ -117,11 +117,11 @@ kestra:
 ```
 
 ### `kestra.configurations.delete-files-on-start`: Delete configuration files
-This setting allows to delete all configuration files just after the server startup. It prevents the ability to read configuration files (that may contain your secrets) from a Bash task for example. The server will keep these values in memory and they won't be accessible from tasks. Values are either `true` or `false` (default `false`).
+This setting allows to deletion of all configuration files just after the server startup. It prevents the ability to read configuration files (that may contain your secrets) from a Bash task for example. The server will keep these values in memory and they won't be accessible from tasks. Values are either `true` or `false` (default `false`).
 
 ## Management endpoints configuration
 Management endpoints configuration can be done with Micronaut configuration from [Micronaut endpoint configuration](https://docs.micronaut.io/latest/guide/index.html#endpointConfiguration).
-You can also secure all endpoints with a basic authentication using this additional configuration:
+You can also secure all endpoints with basic authentication using this additional configuration:
 
 ```yaml
 endpoints:
@@ -143,7 +143,7 @@ kestra:
 
 ## JVM configuration
 
-All JVM options can be passed in an environment variable named `JAVA_OPTS`. You can use it to change all JVM options available, such as memory, encoding, etc...
+All JVM options can be passed in an environment variable named `JAVA_OPTS`. You can use it to change all JVM options available, such as memory, encoding, etc.
 
 Example:
 
@@ -155,7 +155,7 @@ export JAVA_OPTS="-Duser.timezone=Europe/Paris"
 By default, Kestra will handle all dates using your system's timezone. You can change the timezone with JVM options.
 
 Changing the timezone will mostly affect:
-* **scheduler**: by default, all schedule dates are UTC, changing the Java timezone will allow to schedule the flow in your timezone.
+* **scheduler**: by default, all schedule dates are UTC, changing the Java timezone will allow scheduling the flow in your timezone.
 * **log**:  that will be displayed on your timezone.
 
 
@@ -164,7 +164,7 @@ Changing the timezone will mostly affect:
 ## Anonymous usage report
 
 Understanding how you use Kestra is very important to us: it helps us improve the solution in many ways.
-For this reason, the `kestra.anonymous-usage-report.enabled` option is mandatory: we want you to take time to consider whether you wish to share anonymous data with us, so we can benefit from your experience and use cases.
+For this reason, the `kestra.anonymous-usage-report.enabled` option is mandatory: we want you to consider whether you wish to share anonymous data with us so that we can benefit from your experience and use cases.
 
 - `kestra.anonymous-usage-report.enabled`: (default true)
 - `kestra.anonymous-usage-report.initial-delay`: (default 5m)
@@ -188,7 +188,7 @@ Add Google Analytics tracking ID (ex: `UA-12345678-1`) and report all page track
 
 
 ### `kestra.webserver.html-head`: Append some head tags on the webserver application
-Useful for injecting css or javascript to customize a web application.
+Useful for injecting CSS or JavaScript to customize a web application.
 
 For example, you can add a red banner on production environments:
 ```yaml
