@@ -3,7 +3,7 @@ order: 4
 ---
 # Elasticsearch configuration
 
-**Elasticsearch is an Enterprise Edition functionality.**
+**Elasticsearch is an [Enterprise Edition](https://kestra.io/features/enterprise.html) functionality.**
 
 The most important thing is to configure the way Kestra connects to the Elasticsearch cluster.
 

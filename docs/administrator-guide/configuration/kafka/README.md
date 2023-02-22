@@ -3,7 +3,7 @@ order: 3
 ---
 # Kafka configuration
 
-**Kafka is an Enterprise Edition functionality.**
+**Kafka is an [Enterprise Edition](https://kestra.io/features/enterprise.html) functionality.**
 
 ## `kestra.kafka.client.properties`
 The most important thing is configuring how Kestra connects to the Kafka cluster.

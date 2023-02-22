@@ -32,7 +32,7 @@ The Queue or more precisely queues are used internally for communication between
 There are three types of queues:
 - **In-Memory** that must be used with the In-Memory Repository.
 - **Database** that must be used with the Database Repository.
-- **Kafka** that must be used with the Elasticsearch Repository. **Only available in the Enterprise Edition**.
+- **Kafka** that must be used with the Elasticsearch Repository. **Only available in the [Enterprise Edition](https://kestra.io/features/enterprise.html)**.
 
 ## The Repository
 
@@ -41,7 +41,7 @@ The Repository or more precisely repositories are the internal way to store data
 There exists three types of repositories:
 - **In-Memory** that must be used with the In-Memory Queue.
 - **Database** that must be used with the Database Queue.
-- **Elasticsearch** that must be used with the Kafka Queue. **Only available in the Enterprise Edition**.
+- **Elasticsearch** that must be used with the Kafka Queue. **Only available in the [Enterprise Edition](https://kestra.io/features/enterprise.html)**.
 
 ## The Kestra server components
 
@@ -155,7 +155,7 @@ In this deployment mode, unless all components run on the same host, you must us
 
 To support higher throughput, and full horizontal and vertical scaling of the Kestra cluster, we can replace the database with Kafka and Elasticsearch. In this case, all the server components can be scaled without any single point of failure.
 
-Kafka and Elasticsearch are available only in the **Enterprise Edition**.
+Kafka and Elasticsearch are available only in the **[Enterprise Edition](https://kestra.io/features/enterprise.html)**.
 
 In this deployment mode, unless all components run on the same host, you must use a distributed storage implementation like Google Cloud Storage, AWS S3, or Azure Blobs.
 
