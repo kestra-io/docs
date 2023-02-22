@@ -70,6 +70,7 @@ Since Kestra is built upon [Micronaut](https://micronaut.io) and [HikariCP](http
 
 Kestra queues based on database simulate queues doing long polling. It queries a `queues` table to detect new messages. Change these parameters to reduce the latency (but increase load on the database).
 
+- `kestra.jdbc.queues.poll-size`: is the maximum number of queues items fetch for each poll
 - `kestra.jdbc.queues.min-poll-interval`: is the minimum duration between 2 polls
 - `kestra.jdbc.queues.max-poll-interval`: is the maximum duration between 2 polls
 - `kestra.jdbc.queues.poll-switch-interval`: is the duration when no message are received switching from min polling to max polling (ex: one message received, the `min-poll-interval` is used, if no new message arrived with `poll-switch-interval`, we switch to `max-poll-interval`).
@@ -78,6 +79,7 @@ Kestra queues based on database simulate queues doing long polling. It queries a
 kestra:
   jdbc:
     queues:
+      poll-size: 100
       min-poll-interval: 100ms
       max-poll-interval: 1000ms
       poll-switch-interval: 5s
