@@ -80,7 +80,7 @@ The rendering of template variables can be CPU intensive, and by default we **en
 The rendering of template variables cache is an LRU cache (keep most used) and will be in memory (default `1000`). You can change the size of the template cache (in number of templates), take care that the higher this number will be, the more memory the server will use, maybe for not so many used templates.
 
 ### `kestra.tasks.defaults`
-You can also provide task defaults that will be applied on each task on your cluster **if not defined** on flows or tasks.
+You can also provide task defaults that will be applied on each task on your cluster **if not defined** on flows or tasks unless the task default is forced.
 It will allow being sure a value was defined at a default value for these tasks.
 
 ```yaml
@@ -89,6 +89,18 @@ kestra:
     defaults:
     - type: io.kestra.core.tasks.debugs.Echo
       level: ERROR
+```
+
+Forced task default allow to make sure a value is set cluster-wise for a task attribute and no task can override it. 
+This can be handy to enforce security concerns, for example by enforcing Bash tasks to run as Docker containers.
+
+```yaml
+kestra:
+  tasks:
+    defaults:
+      - type: io.kestra.core.tasks.scripts.Bash
+        forced: true
+          runner: DOCKER
 ```
 
 ## Metrics configuration

@@ -29,12 +29,12 @@ Details about storage configuration can be found [here](./storage).
 
 ### Queue configuration 
 
-Kestra supports multiple queue types, the default being an in-memory queue that is **only suitable for local testing** as it doesn't provide any resiliency or scalability. The in-memory queue must be used with the in-memory repository.
+Kestra supports multiple queue types, the default depends on your [installation](../deployment/) mode.
 
 The queue type must be compatible with the repository type. Not all combinations are possible.
 
 The following queue types are available:
-- In-memory that must be used with the in-memory repository.
+- In-memory that must be used with the in-memory repository. It is **only suitable for local testing** as it doesn't provide any resiliency or scalability and didn't implement all functionalities.
 - Database that must be used with the database repository. It currently supports H2, MySQL, and PostgreSQL as a database.
 - Kafka that must be used with the Elasticsearch repository. Those are **only available inside the Enterprise Edition**.
 
@@ -49,12 +49,12 @@ Details about the database configuration can be found [here](./databases/) and a
 
 ### Repository configuration
 
-Kestra supports multiple repository types, the default being an in-memory repository that is **only suitable for local testing** as it doesn't provide any resiliency or scalability and didn't implement all functionalities. The in-memory repository must be used with the in-memory queue.
+Kestra supports multiple repository types, the default depends on your [installation](../deployment/) mode.
 
 The repository type must be compatible with the queue type. Not all combinations are possible.
 
 The following repository types are available:
-- In-memory that must be used with the in-memory queue.
+- In-memory that must be used with the in-memory queue.  It is **only suitable for local testing** as it doesn't provide any resiliency or scalability and didn't implement all functionalities.
 - Database that must be used with the database queue. It currently supports H2, MySQL or PostgreSQL as a database.
 - Elasticsearch that must be used with the Kafka queue. Those are **only available inside the Enterprise Edition**.
 
