@@ -6,4 +6,4 @@ order: 5
 Here, you will find the necessary information for deploying and configuring your Kestra cluster.
 
 
-<ChildTableOfContents />
+<ChildTableOfContents :header="true"/>

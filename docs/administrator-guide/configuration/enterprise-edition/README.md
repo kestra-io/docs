@@ -3,7 +3,8 @@ order: 5
 ---
 # Kestra Enterprise Edition
 
-Kestra Enterprise edition offers many enhancements over the Open Source edition, adding authentication, security & productivity.
+Kestra Enterprise Edition offers many enhancements over the Open Source Edition, adding authentication, security and productivity.
+
 Here is how to configure them:
 
 

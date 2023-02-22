@@ -5,7 +5,7 @@ order: 2
 # Authentications
 
 
-Kestra provides 2 authentication methods for the moment:
+Kestra provides two authentication methods:
 - Basic Auth: enabled by default
 - [OIDC](./auths/oidc.md)
 
@@ -24,3 +24,5 @@ micronaut:
 ```
 
 This secret must be the same on all your webserver instances and will be used to encode the JWT cookie of Kestra.
+
+<ChildTableOfContents />

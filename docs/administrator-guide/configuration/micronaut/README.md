@@ -3,8 +3,8 @@ order: 6
 ---
 # Micronaut configuration
 
-Since Kestra is a Java app based on Micronaut, you can configure Micronaut to fit your needs.
-We will not explain all the configuration values possible, these are available [here](https://docs.micronaut.io/1.3.7/guide/index.html). However, we will provide some tips on the most useful options:
+As Kestra is a Java-based application built with Micronaut, you can configure any Micronaut configuration options.
+We will not explain all the possible configuration options, these are available [here](https://docs.micronaut.io/1.3.7/guide/index.html). However, we will provide some tips on the most useful options:
 
 ## Configure log Level
 ```yaml

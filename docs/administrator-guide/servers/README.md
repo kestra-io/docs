@@ -1,11 +1,11 @@
 ---
 order: 2
 ---
-# Kestra servers
+# Kestra server command
 
-Kestra leverages five different servers in order to provide a fully working Kestra implementation.
+Kestra leverages five different servers components. The `kestra server` command allows to start them one by one od run an all-inclusive standalone server.
 
-## Separate servers
+## Separate server componentns
 
 ### [Kestra Executor](../../architecture#executor)
 
@@ -47,19 +47,19 @@ No special options for this server.
 
 No special options for this server.
 
-## Kestra standalone, all servers in one process
+## Kestra standalone, all server components in one process
 
 `./kestra server standalone`
 
-This server is a special server, since it will contain all the servers in one JVM.
-But this works well for development or medium-sized environments.
+This server is a special server, since it will contain all the server components in one JVM.
+This works well for development or small-sized environments.
 
 **Options:**
 
 * `-f` or `--flow-path`: the path to a directory with YAML flow files. These files will be loaded to the repository at startup.
 * `--worker-thread`: the number of worker threads. By default, the embedded worker will start 3 threads or a single thread per CPU core when more than 3 CPU cores are available.
 
-## Kestra local, development servers and no dependencies
+## Kestra local, development server with no dependencies
 
 `./kestra server local`
 

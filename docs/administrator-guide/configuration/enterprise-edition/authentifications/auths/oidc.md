@@ -14,7 +14,9 @@ micronaut:
           openid:
             issuer: "{{ issueUrl }}"
 ```
-More information can be found on [Micronaut OIDC configuration](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration)
+More information can be found on [Micronaut OIDC configuration](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration).
+
+The following example allow to use Google as OIDC provider:
 
 > Google Auth
 ```yaml
@@ -29,6 +31,8 @@ micronaut:
           openid:
             issuer: 'https://accounts.google.com'
 ```
+
+The following example allow to use Microsoft as OIDC provider:
 
 > Microsoft Auth
 ```yaml
