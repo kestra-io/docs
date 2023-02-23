@@ -29,8 +29,7 @@ triggers:
     type: io.kestra.core.models.triggers.types.Schedule
     cron: "0 11 * * 1"
     scheduleConditions:
-      - id: monday
-        type: io.kestra.core.models.conditions.types.DayInMonthCondition
+      - type: io.kestra.core.models.conditions.types.DayWeekInMonthCondition
         date: "{{ trigger.date }}"
         dayOfWeek: "MONDAY"
         dayInMonth: "FIRST"
