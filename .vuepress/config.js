@@ -44,6 +44,8 @@ module.exports = {
         ['meta', {name: 'theme-color', content: '#192a4e'}],
         ['script', {src: 'https://unpkg.com/rapidoc/dist/rapidoc-min.js'}],
         ['link', {rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml', title: 'Sitemap'}],
+        ['script',{async: true,src: 'https://www.googletagmanager.com/gtag/js?id=G-EYVNS03HHR'}],
+        ['script', {},["window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-EYVNS03HHR');"]],
     ],
     themeConfig: {
         domain: 'https://kestra.io',
