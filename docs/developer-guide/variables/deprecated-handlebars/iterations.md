@@ -10,7 +10,7 @@ order: 6
 
 You can iterate over a list using the built-in each helper. Inside the block, you can use `this` to reference the element being iterated over. `contextualListVariable` is an iterable item on which the mydata property is displayed for all entries.
 
-The `@index` is a special variable available in the each loop context which value is the current index of the element beeing iterated. There are agic* variables like @index in a each context. The following ones are also available: `@key` `@index` `@first` `@last` `@odd` `@even`
+The `@index` is a special variable available in the each loop context which value is the current index of the element being iterated. There are agic* variables like @index in a each context. The following ones are also available: `@key` `@index` `@first` `@last` `@odd` `@even`
 
 See handlebars documentation for more about this topic.
 

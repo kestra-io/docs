@@ -13,7 +13,7 @@ All tasks in a template will be executed sequentially, you can provide the same 
 
 ## Example
 
-Below a flow sample that will include a template :
+Below is a flow sample that will include a template:
 ```yaml
 id: with-template
 namespace: io.kestra.tests
@@ -32,7 +32,7 @@ tasks:
       renamedStore: "{{ inputs.store }}
 ```
 
-If the template is defined like this :
+If the template is defined like this:
 
 ```yaml
 id: template
@@ -65,5 +65,5 @@ All the tasks within the template will be *copied* at runtime.
 From the template, you can access all the variables defined on the context executions. However, this is highly discouraged, the best will be to use `args` to rename variables from global context to a local one.
 :::
 
-This way, your template will be usable on many flows. Just think `args` as argument for a function in code !
+This way, your template will be usable on many flows. Just think `args` as arguments for a function in code!
 

@@ -2,16 +2,16 @@
 order: 5
 ---
 # Errors handling
-Errors are a special branch of your flow where you can define how to handle any tasks failures.
+Errors are a special branch of your flow where you can define how to handle any task failures.
 
-2 kinds of errors can be defined: 
-* **Global**: for the flow and must be at root of the flow.
+2 kinds of errors can be defined:
+* **Global**: for the flow and must be at the root of the flow.
 * **Local**: these are available for all [Flowable Task](../flowable), and are only allowed for these tasks and their children.
 
 
 ## Global Error
 
-This example processes a task which fails immediately. Then a task sequence is processed in the error branch of the flow.
+This example processes a task that fails immediately. Then a task sequence is processed in the error branch of the flow.
 
 ```yaml
 id: errors

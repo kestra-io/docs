@@ -40,7 +40,7 @@ Schedules **cannot overlap**. This means that we **cannot have any concurrent sc
 :::
 
 ::: tip
-Most of the time, schedule execution will depend on the `trigger.date` (looking at files for today, sql query with where schedule date). This works well, but it prevents you to execute your flow manually (since these variables are only available during schedule).
+Most of the time, schedule execution will depend on the `trigger.date` (looking at files for today, SQL query with where schedule date). This works well, but it prevents you to execute your flow manually (since these variables are only available during the schedule).
 
 You can use this expression to make your **manual execution work**: <code v-pre>{{ schedule.date ?? execution.startDate | date("yyyy-MM-dd") }}</code>. It will use the current date if there is no scheduled date making it possible to start the flow manually.
 :::
@@ -75,7 +75,7 @@ When the flow is scheduled, some context variables are injected to allow some fl
 
 ## Schedule Conditions
 When the `cron` is not sufficient to determine the date you want to schedule your flow, you can use `scheduleConditions` in order to add some extra conditions, (for example, only the first day of the month, only the weekend, ...).
-You **must** use the <code v-pre>{{ trigger.date }}</code> expression  on the property `date` of the current schedule.
+You **must** use the <code v-pre>{{ trigger.date }}</code> expression on the property `date` of the current schedule.
 This condition will be evaluated and <code v-pre>{{ trigger.previous }}</code> and <code v-pre>{{ trigger.next }}</code> will reflect the date **with** the conditions applied.
 
 The list of core conditions that can be used are:

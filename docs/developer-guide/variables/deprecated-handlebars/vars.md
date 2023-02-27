@@ -18,7 +18,7 @@ Return the first defined variables or throw an exception if no variables are def
 
 Evaluate a handlebars expression at runtime based on the whole context.
 
-Mostly useful for [Lookup in current childs tasks tree](/docs/developer-guide/variables/#lookup-in-current-childs-tasks-tree) and dynamic tasks.
+Mostly useful for [Lookup in current child's tasks tree](/docs/developer-guide/variables/#lookup-in-current-childs-tasks-tree) and dynamic tasks.
 
 
 ```handlebars
@@ -29,7 +29,7 @@ Mostly useful for [Lookup in current childs tasks tree](/docs/developer-guide/va
 
 First defined evaluates a handlebars expression at runtime based on the whole context or throws an exception if no variables are defined.
 
-Mostly useful for [Lookup in current childs tasks tree](/docs/developer-guide/variables/#lookup-in-current-childs-tasks-tree) and dynamic tasks.
+Mostly useful for [Lookup in current child's tasks tree](/docs/developer-guide/variables/#lookup-in-current-childs-tasks-tree) and dynamic tasks.
 
 
 ```handlebars
@@ -44,7 +44,7 @@ Mostly useful for [Lookup in current childs tasks tree](/docs/developer-guide/va
 * get on `object` type map, the key at `key`
 * get on `object` type array, the index at `key`
 
-Mostly useful for [Lookup in current childs tasks tree](/docs/developer-guide/variables/#lookup-in-current-childs-tasks-tree) and dynamic tasks.
+Mostly useful for [Lookup in current child's tasks tree](/docs/developer-guide/variables/#lookup-in-current-childs-tasks-tree) and dynamic tasks.
 
 ```handlebars
 {{ get outputs 'first' }}

@@ -9,7 +9,7 @@ You can contribute to Kestra in many ways, depending on your skills and interest
 [[toc]]
 
 
-## Support us on socials
+## Support us on social medias
 
 - Star Kestra on [GitHub](https://github.com/kestra-io/kestra).
 - Follow us on [Twitter](https://twitter.com/kestra_io) and [LinkedIn](https://www.linkedin.com/company/kestra).

@@ -8,7 +8,7 @@ order: 10
 Handlebars variables are deprecated and superseded by Pebble. These functions will be removed soon and are disabled by default.
 :::
 
-Variables are specific fields for task. They use the power of [handlebars](https://handlebarsjs.com/guide/) with Kestra's special context system, allowing powerful task composition.
+Variables are specific fields for tasks. They use the power of [handlebars](https://handlebarsjs.com/guide/) with Kestra's special context system, allowing powerful task composition.
 
 Variables can use variable information registered/existing in the execution context. The context is data injected in Variables and from different sources:
 
@@ -20,6 +20,6 @@ Sometimes, you need to change the format of variables. To do this, you can use s
 - [Boolean functions](./boolean.md)
 - [Number functions](./number.md)
 - [Date functions](./date.md)
-- [Json functions](./json.md)
+- [JSON functions](./json.md)
 - [Iterations functions](./iterations.md)
 - [Vars functions](./vars.md)

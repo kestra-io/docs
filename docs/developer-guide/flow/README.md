@@ -7,10 +7,10 @@ order: 1
 
 ## Flow sample
 
-The flow model is a yaml document describing how Kestra will schedule and compute your workload.
+The flow model is a YAML document describing how Kestra will schedule and compute your workload.
 
 Here is a full sample flow demonstrating the flow definition.
-The following code is a sample that use tasks available in Kestra for testing purposes.
+The following code is a sample that uses tasks available in Kestra for testing purposes.
 
 ## Flow Properties
 
@@ -94,7 +94,7 @@ disabled: false
 |`tasks.[].id`|The **unique** task id for the current flow.|
 |`tasks.[].type`|The task type is a fully qualified Java class name.|
 |`tasks.[].description`|Description for documentation, more details [here](../documentation/).|
-|`tasks.[].disabled`|Wheter the task is disabled, and will be kept on the flow source, but never executed.|
+|`tasks.[].disabled`|Whether the task is disabled, and will be kept on the flow source, but never executed.|
 |`tasks.[].timeout`|This is the max duration of the current task, in a Duration format like `PT15M`.|
 |`tasks.[].xxx`|Each task type comes with specific fields that are documented on the [plugins page](../../../plugins/).|
 |`errors`|A list of error tasks for the current flow, all listed tasks will be run sequentially only if there is an error on the current execution.|

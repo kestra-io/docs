@@ -13,7 +13,7 @@ Variables can use variable information registered/existing in the execution cont
 
 ### Flow & Execution
 
-Flow & Execution variables allow using current context for an execution in order to customize the tasks (example: name file with current date or current execution id, ...).
+Flow & Execution variables allow using current context for an execution to customize the tasks (example: name file with current date or current execution id, ...).
 
 The following table lists all the default variables available on each execution.
 | Parameter | Description |
@@ -22,15 +22,15 @@ The following table lists all the default variables available on each execution.
 |  <code v-pre>{{ flow.namespace }}</code> | The name of the current namespace |
 |  <code v-pre>{{ flow.revision }}</code> | The revision of the current flow |
 |  <code v-pre>{{ execution.id }}</code> | Return the execution ID, a generated unique id for each execution |
-|  <code v-pre>{{ execution.startDate }}</code> | The start date of the current execution, it can be formatted with <code v-pre>{{ dateFormat execution.startDate  "yyyy-MM-dd HH:mm:ss.SSSSSS"}}</code> |
+|  <code v-pre>{{ execution.startDate }}</code> | The start date of the current execution, can be formatted with <code v-pre>{{ dateFormat execution.startDate  "yyyy-MM-dd HH:mm:ss.SSSSSS"}}</code> |
 |  <code v-pre>{{ task.id }}</code> | The current task ID |
 |  <code v-pre>{{ task.type }}</code> | The current task Type (fully qualified class name) |
 |  <code v-pre>{{ taskrun.id }}</code> | The current task run ID |
 |  <code v-pre>{{ taskrun.value }}</code> | The value for the current task run, only available within a ([Flowable Task](../flowable)) |
 |  <code v-pre>{{ taskrun.attemptsCount }}</code> | The number of attempts for the current task (when retry or restart is done) |
-|  <code v-pre>{{ parents[].taskrun.value }}</code> | The value of parents task run, the index is based on closest [Flowable Task](../flowable), only available with tasks previsouly in a ([Flowable Task](../flowable)) |
+|  <code v-pre>{{ parents[].taskrun.value }}</code> | The value of parents task run, the index is based on closest [Flowable Task](../flowable), only available with tasks previously in a ([Flowable Task](../flowable)) |
 |  <code v-pre>{{ parents[].outputs }}</code> | The outputs of parents task run, the index is based on closest [Flowable Task](../flowable), only available with tasks previously run in a ([Flowable Task](../flowable)) |
-|  <code v-pre>{{ parent.taskrun.value }}</code> | The value of closest (first) parent task run [Flowable Task](../flowable), only available with tasks run previously in a ([Flowable Task](../flowable)) |
+|  <code v-pre>{{ parent.taskrun.value }}</code> | The value of the closest (first) parent task run [Flowable Task](../flowable), only available with tasks run previously in a ([Flowable Task](../flowable)) |
 |  <code v-pre>{{ parent.outputs }}</code> | The outputs of (first) parent task run [Flowable Task](../flowable), only available with tasks previously run in a ([Flowable Task](../flowable)) |
 
 If the flow is triggered by a [schedule](../triggers/schedule.md) event, these variables (vars) are also available :
@@ -66,13 +66,13 @@ tasks:
 
 ### Environment variables
 
-By default Kestra allow to access environment variable that starts by `KESTRA_` unless configured otherwise, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration).
+By default, Kestra allows to access environment variable that starts by `KESTRA_` unless configured otherwise, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration).
 
-To access an environnement variable `KESTRA_FOO` from one of your task you can use <code v-pre>{{env.foo}}</code>, the name of the variable is the part after the `KESTRA_` prefix in lower case.
+To access an environment variable `KESTRA_FOO` from one of your tasks you can use <code v-pre>{{env.foo}}</code>, the name of the variable is the part after the `KESTRA_` prefix in lowercase.
 
 ### Global variables
 
-You can also define global variable inside Kestra configuration files and access them using <code v-pre>{{ globals.foo }}</code>, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration) for more information.
+You can also define global variables inside Kestra configuration files and access them using <code v-pre>{{ globals.foo }}</code>, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration) for more information.
 
 ## Inputs variables
 You can use any [inputs](../inputs/README.md) using its `name`, example:
@@ -92,7 +92,7 @@ tasks:
 ```
 
 ## Outputs variables
-[Outputs variables](../outputs/README.md) can also be referencing by their `names` with the form
+[Outputs variables](../outputs/README.md) can also be referenced by their `names` with the form
 `outputs.NAME.PROPERTY`:
 - `NAME` is the taskId you want to locate.
 - `PROPERTY` is the property you want to use, each task type can emit different properties, so look at the
@@ -112,7 +112,6 @@ tasks:
 ```
 
 ## More
-
-In order to customize the variable see:
+To customize the variable see:
 
 <ChildTableOfContents :max="1" />
