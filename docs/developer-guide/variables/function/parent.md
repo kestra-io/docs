@@ -1,7 +1,7 @@
 # `parent`
 
 The `parent` function is used inside of a block to render the content that the parent template would
-have rendered inside of the block had the current template not overriden it. It is similar to Java's `super` keyword.
+have rendered inside of the block had the current template not overridden it. It is similar to Java's `super` keyword.
 
 Let's assume you have a template, "parent.peb" that looks something like this:
 ```twig

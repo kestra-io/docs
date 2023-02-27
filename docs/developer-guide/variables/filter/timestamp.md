@@ -3,7 +3,7 @@ The `timestamp` filter will convert a date to an unix timestamps in second. You 
 
 
 ```twig
-{{ date | timstamp(timeZone="Europe/Paris" }}
+{{ date | timestamp(timeZone="Europe/Paris" }}
 ```
 
 ## Arguments

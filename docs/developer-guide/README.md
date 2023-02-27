@@ -3,7 +3,7 @@ order: 4
 ---
 # Developer Guide
 
-Here, you will find the necessary information in order to develop flows for Kestra.
+Here, you will find the necessary information to develop flows for Kestra.
 
 More information:
 

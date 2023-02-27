@@ -8,7 +8,7 @@ Kestra provides a task retry feature. This sub-system makes it convenient to add
 
 ## Example
 
-Below is a flow sample that executes a retry on a task failure for a maximum of 5 attemps every 15 minutes:
+Below is a flow sample that executes a retry on a task failure for a maximum of 5 attempts every 15 minutes:
 
 ```yaml
 - id: retry-sample

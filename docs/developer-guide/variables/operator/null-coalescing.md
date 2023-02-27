@@ -1,6 +1,6 @@
 # Null-Coalescing operator
 
-Pebble supports the use of the null-coalescing operator that allow to test if variables is defined.
+Pebble supports the use of the null-coalescing operator that allows testing if variables are defined.
 ```twig
 {% set baz = "baz" %}
 {{ foo ?? bar ?? baz }}

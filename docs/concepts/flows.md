@@ -61,7 +61,7 @@ The output of listeners will not change the execution status of the flow. Listen
 
 ## Triggers
 
-[Triggers](../developer-guide/triggers) is a way to start a flow from external events. For example, a trigger might initiate a flow at a scheduled time or based on external events (webhooks, file creation, etc.).
+[Triggers](../developer-guide/triggers) are a way to start a flow from external events. For example, a trigger might initiate a flow at a scheduled time or based on external events (webhooks, file creation, etc.).
 
 
 ## Templates

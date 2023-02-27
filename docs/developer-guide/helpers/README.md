@@ -13,7 +13,7 @@ You must expand the flow definition before sending it to your server.
  
 ## Expand the flow to be uploaded to the server
 
-There is a convient command on the Kestra executable that allows validation of the current flow and 
+There is a convenient command on the Kestra executable that allows validation of the current flow and 
 will output the expanded version of your flow without any helper:
 
 ```bash

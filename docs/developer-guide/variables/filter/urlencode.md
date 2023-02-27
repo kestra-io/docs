@@ -1,6 +1,6 @@
 # `urlencode`
 
-The `urlencod` translates a string into `application/x-www-form-urlencoded` format using the "UTF-8" encoding scheme.
+The `urlencode` translates a string into `application/x-www-form-urlencoded` format using the "UTF-8" encoding scheme.
 
 ```twig
 {{ "The string ü@foo-bar" | urlencode }}

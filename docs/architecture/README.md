@@ -92,7 +92,7 @@ The **Webserver** offers two main modules in the same component:
 - **API**: All the [APIs](../api-guide/) that allow triggering executions for any systems and interacting with Kestra.
 - **UI**: The [User Interface](../user-interface-guide) (UI) is also served by the webserver.
 
-The Webserver interacts mostly with the Repository to deliver a rich API/UI. It also interacts with the Queue to trigger new executions, follow executions in real time, etc.
+The Webserver interacts mostly with the Repository to deliver a rich API/UI. It also interacts with the Queue to trigger new executions, follow executions in real-time, etc.
 
 
 ::: tip

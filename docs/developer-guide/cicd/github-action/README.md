@@ -9,7 +9,7 @@ These pipelines are called Workflows and are built with Actions, which perform c
 
 ## Kestra Actions
 
-Kestra offer two Actions to create a CI/CD pipeline within a GitHub repository.
+Kestra offers two Actions to create a CI/CD pipeline within a GitHub repository.
 
 * [Kestra Validate Action](https://github.com/marketplace/actions/kestra-validate-action) - Validate your flows and templates before deploying anything.
 

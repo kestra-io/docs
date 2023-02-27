@@ -1,5 +1,5 @@
 # `dateAdd`
-The `dateAdd` filter add some unit and formats a date with the same behaviour than [date](./date) filters.
+The `dateAdd` filter add some unit and formats a date with the same behavior than [date](./date) filters.
 
 
 ```twig

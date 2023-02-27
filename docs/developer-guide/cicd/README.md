@@ -12,7 +12,7 @@ This section will guide you through creating a CI/CD pipeline for your Kestra fl
 
 ## Why a CI/CD pipeline?
 
-CI/CD pipelines provide an easy and reliable way to ensure that your flows are always deployed as soon they're done.
+CI/CD pipelines provide an easy and reliable way to ensure that your flows are always deployed as soon as they're done.
 It integrates nicely with VCS (Version Control System) like Git and can easily integrate into your development workflow.
 
 ## How to create a CI/CD pipeline?
