@@ -6,9 +6,9 @@ order: 3
 ## The Kestra internal components
 
 Kestra has three internal components:
-- The **Internal Storage**stores flow data like tasks outputs and flow inputs.
-- The **Queue** used for internal communication between Kestra server components.
-- The **Repository** used to store flows, templates, executions, logs, etc. The repository stores every internal object.
+- The **Internal Storage** stores flow data like task outputs and flow inputs.
+- The **Queue** is used for internal communication between Kestra server components.
+- The **Repository** is used to store flows, templates, executions, logs, etc. The repository stores every internal object.
 
 These internal components are provided on multiple implementations depending on your needs and deployment architecture. You may need to install additional plugins to use some implementations.
 
@@ -38,7 +38,7 @@ There are three types of queues:
 
 The Repository or more precisely repositories are the internal way to store data. Kestra provides multiple repository types that must be used with their queue counterparts.
 
-There exists three types of repositories:
+There exist three types of repositories:
 - **In-Memory** that must be used with the In-Memory Queue.
 - **Database** that must be used with the Database Queue.
 - **Elasticsearch** that must be used with the Kafka Queue. **Only available in the [Enterprise Edition](https://kestra.io/features/enterprise.html)**.
@@ -101,7 +101,7 @@ Each server component (other than the Scheduler) can continue to work as long as
 
 ## Plugins
 
-Kestra's core is not by itself able to handle many task types. We have therefore included a [Plugins](../../plugins) system that allows to develop as many task types as you need.
+Kestra's core is not by itself able to handle many task types. We have therefore included a [Plugins](../../plugins) system that allows developing as many task types as you need.
 A wide range of plugins is already available, and many more will be delivered by the Kestra team!
 
 Plugins are also used to provide different implementations for Kestra internal components like its Internal Storage.
@@ -149,7 +149,7 @@ Database configuration options are available [here](../administrator-guide/confi
 
 In this deployment mode, unless all components run on the same host, you must use a distributed storage implementation like Google Cloud Storage, AWS S3, or Azure Blobs.
 
-### High availability with no single point of failure architecture
+### High availability with no single point of failure deployment
 
 ![Kestra High Availability Architecture](./architecture.svg "Kestra High Availability Architecture")
 
