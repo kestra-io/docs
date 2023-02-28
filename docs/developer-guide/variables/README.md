@@ -68,7 +68,7 @@ tasks:
 
 By default, Kestra allows to access environment variable that starts by `KESTRA_` unless configured otherwise, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration).
 
-To access an environment variable `KESTRA_FOO` from one of your tasks you can use <code v-pre>{{env.foo}}</code>, the name of the variable is the part after the `KESTRA_` prefix in lowercase.
+To access an environment variable `KESTRA_FOO` from one of your tasks you can use <code v-pre>{{ envs.foo }}</code>, the name of the variable is the part after the `KESTRA_` prefix in **lower case**.
 
 ### Global variables
 

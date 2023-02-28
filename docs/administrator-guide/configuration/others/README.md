@@ -49,9 +49,9 @@ kestra:
 Kestra provides a way to use environment variables in your flow.
 By default, we only get environment variables that start with `KESTRA_`, use this configuration option to change this prefix.
 
-These variables will be accessible inside a flow with <code v-pre>{{ env.your_env }}</code>.
+These variables will be accessible inside a flow with <code v-pre>{{ envs.your_env }}</code> in **lower case**.
 
-For example, an environment variable with the name `KESTRA_MY_ENV` will be usable with  <code v-pre>{{ env.my_env }}</code>.
+For example, an environment variable with the name `KESTRA_MY_ENV` will be usable with  <code v-pre>{{ envs.my_env }}</code>.
 
 
 ### `kestra.variables.globals`
@@ -91,7 +91,7 @@ kestra:
       level: ERROR
 ```
 
-Forced task default allow to make sure a value is set cluster-wise for a task attribute and no task can override it. 
+Forced task default allow to make sure a value is set cluster-wise for a task attribute and no task can override it.
 This can be handy to enforce security concerns, for example by enforcing Bash tasks to run as Docker containers.
 
 ```yaml
