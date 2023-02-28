@@ -110,7 +110,7 @@ Must be a valid URI and will be kept as a string.
 These are the properties available for all input types :
 
 ### `name`
-The input name to be used with vars <code v-pre>{{ inputs.my-name }}</code>.
+The input name to be used with vars <code v-pre>{{ inputs['my-name'] }}</code>.
 
 
 ### `required`
@@ -148,7 +148,7 @@ inputs:
     required: true
 ```
 
-You can use the value of the inputs with <code v-pre>{{ inputs.my-value }}</code>.
+You can use the value of the inputs with <code v-pre>{{ inputs['my-value'] }}</code>.
 
 
 ## Send inputs programmatically

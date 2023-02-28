@@ -152,21 +152,21 @@ tasks:
                   1:
                     - id: 2-1-1_switch-number-1
                       type: io.kestra.core.tasks.debugs.Return
-                      format: "{{parents.[0].taskrun.value}}"
+                      format: "{{parents[0].taskrun.value}}"
                   2:
                     - id: 2-1-1_switch-number-2
                       type: io.kestra.core.tasks.debugs.Return
-                      format: "{{parents.[0].taskrun.value}} {{parents.[1].taskrun.value}}"
+                      format: "{{parents[0].taskrun.value}} {{parents[1].taskrun.value}}"
   - id: 2_end
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 
 ```
 
-As you can see, the `parent` will give direct access to the first parent output and the value of the current one, while the `parents.INDEX` lets go you deeper down the tree.
+As you can see, the `parent` will give direct access to the first parent output and the value of the current one, while the `parents[INDEX]` lets go you deeper down the tree.
 
 In the task `2-1-1_switch-number-2`:
 - <code v-pre>{{taskrun.value}}</code>: mean the value of the task `2-1-1_switch`
-- <code v-pre>{{parents.[0].taskrun.value}}</code> or <code v-pre>{{parent.taskrun.value}}</code>: mean the value of the task `2-1_each`
-- <code v-pre>{{parents.[1].taskrun.value}}</code>: mean the value of the task `2-1_switch`
-- <code v-pre>{{parents.[2].taskrun.value}}</code>: mean the value of the task `2_each`
+- <code v-pre>{{parents[0].taskrun.value}}</code> or <code v-pre>{{parent.taskrun.value}}</code>: mean the value of the task `2-1_each`
+- <code v-pre>{{parents[1].taskrun.value}}</code>: mean the value of the task `2-1_switch`
+- <code v-pre>{{parents[2].taskrun.value}}</code>: mean the value of the task `2_each`

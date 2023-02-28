@@ -263,7 +263,7 @@ tasks:
 
 ```
 
-As you can see, the `parent` will give direct access to the first parent output and the value of the current one, while the `parents.INDEX` lets go you deeper down the tree.
+As you can see, the `parent` will give direct access to the first parent output and the value of the current one, while the `parents[INDEX]` lets go you deeper down the tree.
 
 In the task `2-1-1_switch-number-2`:
 - <code v-pre>{{taskrun.value}}</code>: mean the value of the task `2-1-1_switch`

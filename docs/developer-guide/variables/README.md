@@ -108,7 +108,7 @@ tasks:
       format: "{{task.id}}"
     - id: flow-id
       type: io.kestra.task.templates.Example
-      format: "{{outputs.task-id.child.value}}"
+      format: "{{outputs['task-id'].child.value}}"
 ```
 
 ## More

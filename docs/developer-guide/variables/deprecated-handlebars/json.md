@@ -6,15 +6,15 @@ order: 7
 
 [[toc]]
 
-## `json` Convert an object to json 
+## `json` Convert an object to json
 
 Convert an object to is JSON representation
 
 ```handlebars
-{{json output.task-id}}
+{{json output['task-id']}}
 ```
 
-Example, if the current context is :  
+Example, if the current context is :
 ```json
 {
   "outputs": {
@@ -32,7 +32,7 @@ Example, if the current context is :
 
 the output of <code v-pre>{{ json outputs.task2}}</code>  will be `{"value":2,"text":"awesome2"}`.
 
-## `jq` Transform vars with JQ 
+## `jq` Transform vars with JQ
 
 Apply the [JQ expression](https://stedolan.github.io/jq/) to a variables.
 
@@ -46,7 +46,7 @@ Apply the [JQ expression](https://stedolan.github.io/jq/) to a variables.
 Internally, [Jackson JQ](https://github.com/eiiches/jackson-jq) is used and support only a large subset of official JQ.
 :::
 
- 
+
 Example, if the current context is :
 ```json
 {
