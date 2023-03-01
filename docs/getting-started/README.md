@@ -4,12 +4,12 @@ order: 1
 
 # Getting Started
 
-This document will guide you through setting up Kestra in a few minutes.
+This document will guide you through setting up Kestra and creating your first flow in a few minutes.
 
 ## Prerequisites
 
 Make sure the following is installed:
-- [Docker Desktop](https://docs.docker.com/get-docker/)
+- Docker, [Docker Desktop](https://docs.docker.com/get-docker/) is the easiest way to use it.
 
 ## Run Kestra
 
@@ -25,24 +25,26 @@ If you don't have curl installed, you can download the [Docker Compose file](htt
 
 ### Start your server
 
-Make sure the Docker Desktop app is running. Then, run the following command:
+Make sure the Docker is up and running. Then, run the following command:
 
 ```bash
 docker compose up -d
 ```
 
-Open [http://localhost:8080](http://localhost:8080) in your browser.
+Open [http://localhost:8080](http://localhost:8080) in your browser; this is the Kestra interface.
 
 
 ## Create your first Flow
 
-Kestra comes with some examples you can access in the **Flows** menu. Let's create a new Flow:
+Kestra comes with some examples you can access in the **Flows** menu. 
+
+Let's create a new Flow:
 
 * Click on the **+ Create** button at the bottom right.
 
 ![Create a flow](./assets/flow-2.png)
 
-* Paste the following Flow.
+* Paste the following Flow definition.
 
 ```yaml
 id: logs
@@ -65,7 +67,14 @@ tasks:
 
 * Click on the **Save** button.
 
-You will see the topology of your flow as a graph in the **Topology** tab.
+A flow is a list of tasks executed one after the other and has an identifier (id) and a namespace.
+A task is a piece of work that the flow will run. 
+
+Here, the flow has three tasks of type `Echo`, each with a unique identifier (id). 
+The `Echo` task displays something in the log, like the bash `echo` command.
+Each task can have multiple properties, the `Echo` task has two properties which are the `format` property that represents the message that will be displayed on the log, and the `level` property.
+
+Now, click on the **Topology** tab. You will see here a graph that is the topology of your flow.
 
 ![Flow Topology](./assets/flow-3.png)
 

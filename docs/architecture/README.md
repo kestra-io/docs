@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 4
 ---
 # Architecture
 
@@ -27,7 +27,7 @@ You can replace the local storage with one of the following storage implementati
 
 ### The Queue
 
-The Queue or more precisely queues are used internally for communication between the different Kestra server components. Kestra provides multiple queue types that must be used with their repository counterparts.
+The Queue or, more precisely, queues are used internally for communication between the different Kestra server components. Kestra provides multiple queue types that must be used with their repository counterparts.
 
 There are three types of queues:
 - **In-Memory** that must be used with the In-Memory Repository.
@@ -36,7 +36,7 @@ There are three types of queues:
 
 ## The Repository
 
-The Repository or more precisely repositories are the internal way to store data. Kestra provides multiple repository types that must be used with their queue counterparts.
+The Repository, or more precisely repositories, are the internal way to store data. Kestra provides multiple repository types that must be used with their queue counterparts.
 
 There exist three types of repositories:
 - **In-Memory** that must be used with the In-Memory Queue.
@@ -104,7 +104,7 @@ Each server component (other than the Scheduler) can continue to work as long as
 Kestra's core is not by itself able to handle many task types. We have therefore included a [Plugins](../../plugins) system that allows developing as many task types as you need.
 A wide range of plugins is already available, and many more will be delivered by the Kestra team!
 
-Plugins are also used to provide different implementations for Kestra internal components like its Internal Storage.
+Plugins are also used to provide different implementations for Kestra's internal components like its Internal Storage.
 
 ## Deployment architecture
 
@@ -123,7 +123,7 @@ You can find three example deployment architectures below.
 
 For a small-sized deployment, you can use Kestra standalone server, an all-in-one server component that allows running all Kestra server components in a single process. This deployment architecture has no scaling capability.
 
-It can be used with a database as the only dependency. This allows running Kestra with a minimal stack to maintain. We have for now three databases available:
+In this case, a database is the only dependency. This allows running Kestra with a minimal stack to maintain. We have for now three databases available:
 - PostgreSQL
 - MySQL
 - H2
