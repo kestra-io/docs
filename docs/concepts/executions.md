@@ -4,7 +4,7 @@ order: 2
 
 # Execution
 
-An execution is a single run of a flow. An execution has a [state](#state)](#state).
+An execution is a single run of a flow. An execution has a [state](#state).
 
 
 ## Task Run
