@@ -1,6 +1,6 @@
 id: each-nested
-namespace: io.kestra.demo.flows
-description: Simple example of a each expression to iterate over a list of values
+namespace: io.kestra.demo
+description: Example of an each expression to iterate over a list of values.
 
 tasks:
   - id: 1_each

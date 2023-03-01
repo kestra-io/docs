@@ -1,5 +1,5 @@
 id: bash-with-files
-namespace: io.kestra.demo.scripts
+namespace: io.kestra.demo
 
 description:
   This flow show how to pass files between tasks.

@@ -1,0 +1,53 @@
+# Flow declaration with a mandatory unique identifier, a namespace, and an optional description.
+# Flow identifier are unique inside a namespace.
+id: kestra-tour
+namespace: io.kestra.demo
+description: Kestra guided tour
+
+
+# Flow inputs: each input has a name, a type, and an optional default value.
+inputs:
+  # We define one input of name 'csvUrl' with as default value the URL of the test data file.
+  # This test data is from the France Open Data portal and contains french electricity consumptions in CSV.
+  - name: csvUrl
+    type: STRING
+    defaults: https://www.data.gouv.fr/fr/datasets/r/d33eabc9-e2fd-4787-83e5-a5fcfb5af66d
+
+
+# List of tasks that will be executed one after the other.
+# Each task must have an identifier unique for the flow and a type.
+# Depending on the type of the task, you may have to pass additional attributes.
+tasks:
+  # This is one of the simplest task: it echos a message in the log, like the 'echo' command.
+  # The message is passed thanks to the 'format' attribute.
+  - id: log
+    type: io.kestra.core.tasks.debugs.Echo
+    format: The flow starts
+
+  # This task will download the CSV, it will be sent to Kestra's internal storage and available from the task output.
+  - id: downloadData
+    type: io.kestra.plugin.fs.http.Download
+    # Here we use a variable from an input: '{{' and '}}' are separator of a Pebble expression in which we can access variables.
+    # All inputs are available from the 'inputs' variable using there name.
+    uri: "{{inputs.csvUrl}}"
+
+  # This task will analyze the CSV data using a Python script with the Pandas library.
+  - id: analyzeData
+    type: io.kestra.core.tasks.scripts.Python
+    inputFiles:
+      # Here we define a file named 'data.csv' that will be available in the Python task working directory.
+      # This file is fetched from the internal storage by using the 'uri' output of the 'downloadData' task.
+      data.csv: "{{outputs.downloadData.uri}}"
+      # 'main.py' is the Python script that will be executed.
+      # It uses Pandas to read the CSV file, compute the sum of the 'conso' column, 
+      # and set it as task output thanks to the Kestra Python library.
+      main.py: |
+        import pandas as pd
+        from kestra import Kestra
+        data = pd.read_csv("data.csv", sep=";")
+        data.info()
+        sumOfConsumption = data['conso'].sum()
+        Kestra.outputs({'sumOfConsumption': int(sumOfConsumption)})
+    # As the script require the Pandas library, we must list it in the requirements.
+    requirements:
+      - pandas

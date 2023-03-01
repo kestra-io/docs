@@ -1,8 +1,8 @@
 id: python-pip
-namespace: io.kestra.demo.scripts
+namespace: io.kestra.demo
 
 description:
-  This flow will install pip package, and use utils from kestra in order to generate outputs and metrics
+  This flow will install the pip package, and use the Python Kestra library to generate outputs and metrics.
 
 tasks:
   - id: "python"

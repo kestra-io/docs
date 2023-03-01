@@ -1,9 +1,9 @@
 id: switch
-namespace: io.kestra.demo.flows
+namespace: io.kestra.demo
 
 description: |
-  Depending on values passed as inputs (`FIRST`, `SECOND`, `THIRD`, any others values), the will branch to different tasks.
-  If no matching value, the `defaults` is used.
+  Depending on the value passed as the input, the will flow branch to different tasks.
+  If no matching value, the `defaults` task is used.
 
 inputs:
   - name: string

@@ -1,8 +1,8 @@
 id: pause
-namespace: io.kestra.demo.flows
+namespace: io.kestra.demo
 
 description:
-  This flow show how you can pause an execution in order to add a manual validation steps
+  This flow show how you can pause an execution in order to add a manual validation step.
 
 tasks:
   - id: pause
