@@ -27,7 +27,7 @@ By default, Kestra only includes a few Runnable Tasks. However, many of them are
 
 ### Flowable Task
 
-[Flowable Tasks](../developer-guide/flowable) only handle flow logic (branching, grouping, parallel processing, etc.) and new task triggers. For example, the Switch task decides the next task to run based on some inputs. 
+[Flowable Tasks](../developer-guide/flowable) only handle flow logic (branching, grouping, parallel processing, etc.) and start new tasks. For example, the Switch task decides the next task to run based on some inputs. 
 
 A Flowable Task is handled by [executors](../architecture/#executor) and can be called very often. Because of that, these tasks cannot include intensive computations, unlike Runnable Tasks. Most of the common Flowable Tasks are available in the default Kestra installation. 
 
