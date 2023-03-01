@@ -1,8 +1,8 @@
 id: bash-docker-with-files
-namespace: io.kestra.demo.scripts
+namespace: io.kestra.demo
 
 description:
-  This flow will use a docker image `alpine`, install a package and `gunzip` a file passed as input and will be decompress.
+  This flow will use the `alpine` Docker image, install a package and decompress a file passed as input.
   It will also export the file size as metrics and the `mineType` of the file as outputs.
 
 inputs:

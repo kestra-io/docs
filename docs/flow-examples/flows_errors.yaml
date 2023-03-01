@@ -1,9 +1,9 @@
 id: errors
-namespace: io.kestra.demo.flows
+namespace: io.kestra.demo
 
 description: |
-  This flow will always failed, this will be handled by `errors` branch in order to handle the failure (cleaning a resource for example).
-  All kind of tasks can be used on the `errors` branch.
+  This flow will always fail, this will be handled by the `errors` branch tasks (cleaning a resource for example).
+  All kinds of tasks can be used on the `errors` branch.
 
 tasks:
 - id: failed

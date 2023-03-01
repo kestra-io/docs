@@ -1,7 +1,7 @@
 id: timeout
-namespace: io.kestra.demo.flows
+namespace: io.kestra.demo
 description:
-  This flow will always failed because of timeout
+  This flow will always fail because of a timeout.
 
 tasks:
 - id: failed

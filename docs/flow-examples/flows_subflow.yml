@@ -1,8 +1,8 @@
 id: subflow
-namespace: io.kestra.demo.flows
+namespace: io.kestra.demo
 
 description: |
-  This flow will launch a subflow passing parameters as `inputs`, wait till the end of the flow and gather the output of a tasks.
+  This flow will launch a subflow passing parameters as `inputs`, wait until the end of the flow and gather the output of a task.
 
 inputs:
   - name: string
@@ -11,7 +11,7 @@ inputs:
 tasks:
   - id: launch
     type: io.kestra.core.tasks.flows.Flow
-    namespace: io.kestra.demo.flows
+    namespace: io.kestra.demo
     flowId: switch
     inputs:
       string: "{{ inputs.string }}"

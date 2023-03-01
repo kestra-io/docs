@@ -1,8 +1,8 @@
 id: parallel
-namespace: io.kestra.demo.flows
+namespace: io.kestra.demo
 
 description: |
-  This flow will run 3 parallel tasks based on `concurrent` properties and will start `launch` at the end.
+  This flow will run 3 parallel tasks based on the `concurrent` property and will start the `last` task at the end.
 
 
 tasks:
