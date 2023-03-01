@@ -49,7 +49,7 @@ jobs:
 
       # Zip with examples
       - name: Zip examples
-        run:  zip -r .vuepress/public/examples.zip -j  examples/
+        run:  zip -r .vuepress/public/examples.zip -j  docs/flow-examples/
 
       # Build
       - name: Build
