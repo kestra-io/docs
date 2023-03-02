@@ -72,7 +72,7 @@ tasks:
 
 ###  Specific outputs for dynamic tasks
 
-Another more specific case for output management is the runtime-generated tasks output variable. This is the case for the **EachSequential** or **EachParallel** task, which produces other tasks dynamically, depending on its `value` property. In this case, it is possible to reach each iteration output individually using the following syntax:
+Another more specific case for output management is the runtime-generated tasks output variable. This is the case for the **EachSequential** or **EachParallel** task, which produces other tasks dynamically, depending on its `value` attribute. In this case, it is possible to reach each iteration output individually using the following syntax:
 
 ```yaml
 id: output-sample
@@ -108,7 +108,7 @@ tasks:
     type: io.kestra.core.tasks.debugs.Return
     format: "{{ task.id }} > {{ outputs.inner['value 1'].value }}"
 ```
-It uses the format `outputs.TASKID.[VALUE].PROPERTY`. The special bracket `[]` in  `.[VALUE].` enable special chars like space (and can be removed without any special characters)
+It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` in  `.[VALUE].` enable special chars like space (and can be removed without any special characters)
 
 #### Lookup in sibling tasks
 

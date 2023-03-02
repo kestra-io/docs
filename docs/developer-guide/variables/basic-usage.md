@@ -5,16 +5,21 @@ order: 1
 # Basic Usage
 
 ## Syntax Reference
-There are two primary delimiters used within a Pebble template: <code v-pre>{{ ... }}</code> and `{% ... %}`. The first set of delimiters will output the result of an expression. Expressions can be very simple (ex. a variable name) or much more complex.
-The second set of delimiters is used to change the control flow of the template; it can contain an if-statement, define a parent template, define a new block, etc.
+
+There are two primary delimiters used within a Pebble template: <code v-pre>{{ ... }}</code> and `{% ... %}`. 
+
+<code v-pre>{{ ... }}</code> is used to output the result of an expression. Expressions can be very simple (ex. a variable name) or much more complex.
+
+`{% ... %}` is used to change the control flow of the template; it can contain an if-statement, define a parent template, define a new block, etc.
 
 ## Variables
-You can print variables directly to the output; for example, if the context contains a variable called `foo` which is a String with the value "bar", you can do the following which will output "bar".
+
+You can output variables directly inside an expression. For example, if the context contains a variable named `foo` which is a string with the value "bar", the following will output "bar":
 ```twig
 {{ foo }}
 ```
 
-You can use the dot (.) notation to access attributes of variables. If the attribute contains any special characters, you can use the subscript notation ([]) instead.
+You can use the dot (.) notation to access the attributes of variables. If the attribute contains a special character, you can use the subscript notation ([]) instead.
 ```twig
 {{ foo.bar }} # Attribute 'bar' of 'foo'
 {{ foo.bar.baz }} # Attribute 'baz' of attribute 'bar' of 'foo'
@@ -23,17 +28,17 @@ You can use the dot (.) notation to access attributes of variables. If the attri
 ```
 
 ::: warning
-You will see a lot of tasks with hyphenated names in the documentation, when using hyphenated names you must use the subscript notation ([]) to access any task variables as `-` is a Pebble special character.
+You will see a lot of tasks with hyphenated names in the documentation. When using hyphenated names, you must use the subscript notation ([]) to access any task variables as `-` is a Pebble special character.
 :::
 
 
-Additionally, if `foo` is a List, then `foo[0]` can be used.
+Additionally, if `foo` is a List, then `foo[idx]` can be used to access the element of index `idx` of the foo variable.
 
-If the value of variable (or attribute) is undefined, it will throw an error and fail the task.
+If the value of a variable (or of an attribute) is undefined, it will throw an error and fail the task.
 
 ## Filters
 
-Output can be further modified with the use of filters. Filters are separated from the variable using a pipe symbol (`|`) and may have optional arguments in parentheses. Multiple filters can be chained and the output of one filter is applied to the next.
+Expression output can be further modified with the use of filters. Filters are separated from the variable using a pipe symbol (`|`) and may have optional arguments in parentheses. Multiple filters can be chained, and the output of one filter is applied to the next.
 ```twig
 {{ "If life gives you lemons, eat lemons." | upper | abbreviate(13) }}
 ```
@@ -43,25 +48,27 @@ IF LIFE GI...
 ```
 
 ## Functions
+
 Whereas filters are intended to modify existing content/variables, functions are intended to generate new content. Similar to other programming languages, functions are invoked via their name followed by parentheses (`()`).
 ```twig
 {{ max(user.score, highscore) }}
 ```
+The above example will output the maximum of the two variables `user.score` and `highscore`.
 
 ## Control Structure
-Pebble provides several tags to control the flow of your template, two of the main ones being the [for](tag/for) loop, and [for](tag/if) statements.
-```twig
 
+Pebble provides several tags to control the flow of your template, two of the main ones being the [for](tag/for) loop, and the [if](tag/if) statement.
+
+```twig
 {% for article in articles %}
     <h3>{{ article.title }}</h3>
     <p>{{ article.content }}</p>
 {% else %}
     <p> There are no articles. </p>
 {% endfor %}
-
 ```
-```twig
 
+```twig
 {% if category == "news" %}
     {{ news }}
 {% elseif category == "sports" %}
@@ -69,31 +76,35 @@ Pebble provides several tags to control the flow of your template, two of the ma
 {% else %}
     <p>Please select a category</p>
 {% endif %}
-
 ```
 
 ## Macros
-Macros are lightweight and re-usable template fragments. A macro is defined via the [macro](tag/macro) tag:
-```twig
 
+Macros are lightweight and re-usable template fragments. A macro is defined via the [macro](tag/macro) tag:
+
+```twig
 {% macro input(type, name) %}
 	<input type="{{ type }}" name="{{ name }}" />
 {% endmacro %}
-
 ```
+
 And the macro will be invoked just like a function:
+
 ```twig
 {{ input("text", "name", "Mitchell") }}
 ```
+
 A macro does not have access to the main context; the only variables it can access are its local arguments.
 
 ## Named Arguments
-Using named arguments allows you to be more explicit with the values you are passing to a filter, function, test or macro. They also allow you to avoid specifying arguments for which you don't want to change the default value.
+
+In filters, functions, or macros, you can use named arguments. Named arguments allow us to be more explicit on which arguments are passed and avoid mandating to pass default values.
+
 ```twig
 {{ stringDate | date(existingFormat="yyyy-MMMM-d", format="yyyy/MMMM/d") }}
 ```
 
-Positional arguments can be used in conjunction with named arguments but all positional arguments must come before any named arguments:
+Positional arguments can be used in conjunction with named arguments, but all positional arguments must come before any named arguments:
 ```twig
 {{ stringDate | date("yyyy/MMMM/d", existingFormat="yyyy-MMMM-d") }}
 ```
@@ -111,29 +122,30 @@ Macros are a great use case for named arguments because they also allow you to d
 ```
 
 ## Comments
-You can comment out any part of the template using the `{# ... #}` delimiters. These comments will not appear in the rendered output.
-```twig
 
+You add comments using the `{# ... #}` delimiters. These comments will not appear in the rendered output.
+
+```twig
 {# THIS IS A COMMENT #}
 {% for article in articles %}
 	<h3>{{ article.title }}</h3>
 	<p>{{ article.content }}</p>
 {% endfor %}
-
 ```
 
 ## Expressions
+
 Expressions in a Pebble template are very similar to expressions found in Java.
 
 ### Literals
 The simplest form of expressions are literals. Literals are representations for Java types such as strings and numbers.
 - `"Hello World"`: Everything between two double or single quotes is a string. You can use a backslash to escape
 quotation marks within the string.
-- `"Hello #{who}"`: String interpolation is also possible using `#{}` inside quotes. In this example,
+- `"Hello #{who}"`: String interpolation is also possible using `#{}`. In this example,
 if the value of the variable `who` is `"world"`, then the expression will be evaluated to `"Hello world"`.
 - `100 + 10l * 2.5`: Integers, longs and floating point numbers are similar to their Java counterparts.
 - `true` / `false`: Boolean values equivalent to their Java counterparts.
-- `null`: Represents no specific value, similar to it's Java counterpart. `none` is an alias for null.
+- `null`: Represents no specific value, similar to its Java counterpart. `none` is an alias for null.
 
 ### Collections
 Both lists and maps can be created directly within the template.
@@ -187,7 +199,7 @@ The conditional operator is similar to its Java counterpart:
 ```
 
 ### Null-Coalescing Operator
-The null-coalescing operator allow to quickly test if a variables is defined (exists) and to use alternative value. :
+The null-coalescing operator allows to quickly test if a variable is defined (exists) and to use an alternative value if not:
 ```twig
 {% set baz = "baz" %}
 {{ foo ?? bar ?? baz }}
@@ -211,9 +223,13 @@ In order from highest to lowest precedence:
 
 
 ### Parents with [Flowable Task](docs/developer-guide/flowable).
-If you have many [Flowable Tasks](docs/developer-guide/flowable), it can be complex to get `taskrun.value` because this one is only available during the direct task from each. If you have any Flowable Tasks after, the `taskrun.value` of the first iteration will be lost (or overwritten). In order to deal with this, we have included the `parent` & `parents` vars.
 
-This is illustrated in the flow below:
+When a task is in a hierarchy of [Flowable Tasks](docs/developer-guide/flowable), it can be complex to access the
+`value` of any of its parents because only the `value` of the direct parent task is accessible via `taskrun.value`.
+
+To deal with this, we have included the `parent` and the `parents` variables.
+
+This is illustrated in the following flow:
 
 ```yaml
 id: each-switch
@@ -263,7 +279,7 @@ tasks:
 
 ```
 
-As you can see, the `parent` will give direct access to the first parent output and the value of the current one, while the `parents[INDEX]` lets go you deeper down the tree.
+As you can see, the `parent` variable gives direct access to the first parent, while the `parents[INDEX]` lets you access the parent deeper down the tree.
 
 In the task `2-1-1_switch-number-2`:
 - <code v-pre>{{taskrun.value}}</code>: mean the value of the task `2-1-1_switch`
