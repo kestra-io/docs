@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 7
 ---
 # Errors handling
 Errors are a special branch of your flow where you can define how to handle any task failures.
