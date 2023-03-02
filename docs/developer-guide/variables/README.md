@@ -21,6 +21,7 @@ The following table lists all the default variables available on each execution.
 |  <code v-pre>{{ flow.revision }}</code> | The revision of the flow. |
 |  <code v-pre>{{ execution.id }}</code> | The execution ID, a generated unique id for each execution. |
 |  <code v-pre>{{ execution.startDate }}</code> | The start date of the current execution, can be formatted with <code v-pre>{{ execution.startDate \| date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}</code>. |
+|  <code v-pre>{{ execution.originalId }}</code> | The original execution ID, this id will never change even in case of replay and keep the first execution ID. |
 |  <code v-pre>{{ task.id }}</code> | The current task ID |
 |  <code v-pre>{{ task.type }}</code> | The current task Type (Java fully qualified class name). |
 |  <code v-pre>{{ taskrun.id }}</code> | The current task run ID. |
