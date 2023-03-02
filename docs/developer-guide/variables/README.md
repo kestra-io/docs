@@ -4,53 +4,52 @@ order: 2
 
 # Variables
 
-Variables are specific fields for tasks. They use the power of [Pebble Templates](https://pebbletemplates.io/) with Kestra's special context system, allowing powerful task composition.
+You can use variables to set any task property. They use the power of [Pebble Templates](https://pebbletemplates.io/) with Kestra's special context system, allowing powerful task composition inside a flow.
 
-Variables can use variable information registered/existing in the execution context. The context is data injected in variables and can be from different sources:
+Variables can use flow execution contextual information registered inside the execution context. The execution context is a set of data from different sources: flow and execution, environment variables, global variables, task defaults, flow inputs, and task outputs.
 
+## Flow and Execution variables
 
-## Default variables
-
-### Flow & Execution
-
-Flow & Execution variables allow using current context for an execution to customize the tasks (example: name file with current date or current execution id, ...).
+Flow and Execution variables allow using the current execution context to set task properties. For example: name a file with the current date or the current execution id.
 
 The following table lists all the default variables available on each execution.
+
 | Parameter | Description |
 | ---------- | ----------- |
-|  <code v-pre>{{ flow.id }}</code> | The name of the current flow ID |
-|  <code v-pre>{{ flow.namespace }}</code> | The name of the current namespace |
-|  <code v-pre>{{ flow.revision }}</code> | The revision of the current flow |
-|  <code v-pre>{{ execution.id }}</code> | Return the execution ID, a generated unique id for each execution |
-|  <code v-pre>{{ execution.startDate }}</code> | The start date of the current execution, can be formatted with <code v-pre>{{ dateFormat execution.startDate  "yyyy-MM-dd HH:mm:ss.SSSSSS"}}</code> |
+|  <code v-pre>{{ flow.id }}</code> | The identifier of the flow. |
+|  <code v-pre>{{ flow.namespace }}</code> | The name of the flow namespace. |
+|  <code v-pre>{{ flow.revision }}</code> | The revision of the flow. |
+|  <code v-pre>{{ execution.id }}</code> | The execution ID, a generated unique id for each execution. |
+|  <code v-pre>{{ execution.startDate }}</code> | The start date of the current execution, can be formatted with <code v-pre>{{ dateFormat execution.startDate  "yyyy-MM-dd HH:mm:ss.SSSSSS"}}</code>. |
 |  <code v-pre>{{ task.id }}</code> | The current task ID |
-|  <code v-pre>{{ task.type }}</code> | The current task Type (fully qualified class name) |
-|  <code v-pre>{{ taskrun.id }}</code> | The current task run ID |
-|  <code v-pre>{{ taskrun.value }}</code> | The value for the current task run, only available within a ([Flowable Task](../flowable)) |
-|  <code v-pre>{{ taskrun.attemptsCount }}</code> | The number of attempts for the current task (when retry or restart is done) |
-|  <code v-pre>{{ parents[].taskrun.value }}</code> | The value of parents task run, the index is based on closest [Flowable Task](../flowable), only available with tasks previously in a ([Flowable Task](../flowable)) |
-|  <code v-pre>{{ parents[].outputs }}</code> | The outputs of parents task run, the index is based on closest [Flowable Task](../flowable), only available with tasks previously run in a ([Flowable Task](../flowable)) |
-|  <code v-pre>{{ parent.taskrun.value }}</code> | The value of the closest (first) parent task run [Flowable Task](../flowable), only available with tasks run previously in a ([Flowable Task](../flowable)) |
-|  <code v-pre>{{ parent.outputs }}</code> | The outputs of (first) parent task run [Flowable Task](../flowable), only available with tasks previously run in a ([Flowable Task](../flowable)) |
+|  <code v-pre>{{ task.type }}</code> | The current task Type (Java fully qualified class name). |
+|  <code v-pre>{{ taskrun.id }}</code> | The current task run ID. |
+|  <code v-pre>{{ taskrun.startDate }}</code> | The current task run start date. |
+|  <code v-pre>{{ taskrun.parentId }}</code> | The current task run parent identifier. Only available with tasks inside a  ([Flowable Task](../flowable)).|
+|  <code v-pre>{{ taskrun.value }}</code> | The value of the current task run, only available with tasks inside a ([Flowable Task](../flowable)). |
+|  <code v-pre>{{ taskrun.attemptsCount }}</code> | The number of attempts for the current task (when retry or restart is performed). |
+|  <code v-pre>{{ parent.taskrun.value }}</code> | The value of the closest (first) parent task run [Flowable Task](../flowable), only available with tasks inside a ([Flowable Task](../flowable)). |
+|  <code v-pre>{{ parent.outputs }}</code> | The outputs of the closest (first) parent task run [Flowable Task](../flowable), only available with tasks inside in a ([Flowable Task](../flowable)). |
+|  <code v-pre>{{ parents }}</code> | The list of parent tasks, only available with tasks inside a ([Flowable Task](../flowable)). See [Parents variables](../variables/basic-usage.md#parents-with-flowable-task) for its usage. |
 
-If the flow is triggered by a [schedule](../triggers/schedule.md) event, these variables (vars) are also available :
-
-| Parameter | Description |
-| ---------- | ----------- |
-|  <code v-pre>{{ schedule.date }}</code> | the date of the current schedule |
-|  <code v-pre>{{ schedule.next }}</code> | the date of the next schedule |
-|  <code v-pre>{{ schedule.previous }}</code> | the date of the previous schedule |
-
-If the flow is triggered by a [flow](../triggers/flow.md) event, these variables (vars) are also available:
+If a [schedule](../triggers/schedule.md) event triggers the flow, these variables are also available:
 
 | Parameter | Description |
 | ---------- | ----------- |
-|  <code v-pre>{{ trigger.executionId }}</code> | the ID of the execution that triggers the current flow |
-|  <code v-pre>{{ trigger.namespace }}</code> | the namespace of the flow that triggers the current flow |
-|  <code v-pre>{{ trigger.flowId }}</code> | the ID of the flow that triggers the current flow |
-|  <code v-pre>{{ trigger.flowRevision }}</code> | the revision of the flow that triggers the current flow |
+|  <code v-pre>{{ schedule.date }}</code> | The date of the current schedule. |
+|  <code v-pre>{{ schedule.next }}</code> | The date of the next schedule. |
+|  <code v-pre>{{ schedule.previous }}</code> | The date of the previous schedule. |
 
-Below is an example of a typical usage:
+If a [flow](../triggers/flow.md) event triggers the flow, these variables are also available:
+
+| Parameter | Description |
+| ---------- | ----------- |
+|  <code v-pre>{{ trigger.executionId }}</code> | The ID of the execution that triggers the current flow. |
+|  <code v-pre>{{ trigger.namespace }}</code> | The namespace of the flow that triggers the current flow. |
+|  <code v-pre>{{ trigger.flowId }}</code> | The ID of the flow that triggers the current flow. |
+|  <code v-pre>{{ trigger.flowRevision }}</code> | The revision of the flow that triggers the current flow. |
+
+All these variables can be used thanks to the Pebble template syntax <code v-pre>{{varName}}</code>:
 
 ```yaml
 id: context-example
@@ -64,54 +63,68 @@ tasks:
       date: {{  execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}
 ```
 
-### Environment variables
+::: tip
+<code v-pre>{{ execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}</code> uses the `date` filter to format the `execution.startDate` variable with the date pattern `yyyy-MM-dd HH:mm:ss.SSSSSS`. More information on filters [here](./filter/).
+:::
 
-By default, Kestra allows to access environment variable that starts by `KESTRA_` unless configured otherwise, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration).
+## Environment variables
 
-To access an environment variable `KESTRA_FOO` from one of your tasks you can use <code v-pre>{{ envs.foo }}</code>, the name of the variable is the part after the `KESTRA_` prefix in **lower case**.
+By default, Kestra allows access to environment variables that start with `KESTRA_` unless configured otherwise, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration).
 
-### Global variables
+To access an environment variable `KESTRA_FOO` from one of your tasks, you can use <code v-pre>{{ envs.foo }}</code>, the variable's name is the part after the `KESTRA_` prefix in **lowercase**.
 
-You can also define global variables inside Kestra configuration files and access them using <code v-pre>{{ globals.foo }}</code>, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration) for more information.
+## Global variables
+
+You can define global variables inside Kestra's configuration files and access them using <code v-pre>{{ globals.foo }}</code>, see [Variables configuration](../../administrator-guide/configuration/others/README.md#variables-configuration) for more information.
 
 ## Inputs variables
-You can use any [inputs](../inputs/README.md) using its `name`, example:
+
+You can use any flow [inputs](../inputs/README.md) using `inputs.inputName`, for example:
 
 ```yaml
 id: context-inputs
 namespace: io.kestra.tests
 
 inputs:
-  - name: myinput
+  - name: myInput
     type: STRING
 
 tasks:
-  - id: mytask
+  - id: myTask
     type: io.kestra.core.tasks.debugs.Return
-    format: "{{inputs.myinput}}"
+    format: "{{inputs.myInput}}"
 ```
 
 ## Outputs variables
-[Outputs variables](../outputs/README.md) can also be referenced by their `names` with the form
-`outputs.NAME.PROPERTY`:
-- `NAME` is the taskId you want to locate.
-- `PROPERTY` is the property you want to use, each task type can emit different properties, so look at the
-documentation of those.
+
+You can use any task [output](../outputs/README.md) attributes using `outputs.taskId.outputAttribute` where:
+- `taskId` is the ID of the task.
+- `outputAttribute` is the attribute of the task output you want to use. Each task output can emit different attributes; refer to the task documentation for the list of output attributes.
+
+Example:
 
 ```yaml
-id: context-outpouts
+id: context-outputs
 namespace: io.kestra.tests
 
 tasks:
-    - id: task-id
-      type: io.kestra.task.templates.Example
-      format: "{{task.id}}"
-    - id: flow-id
-      type: io.kestra.task.templates.Example
-      format: "{{outputs['task-id'].child.value}}"
+    - id: firstExample
+      type: io.kestra.core.tasks.debugs.Return
+      format: "First return"
+    - id: second-example
+      type: io.kestra.core.tasks.debugs.Return
+      format: "Second return"
+    - id: log-both-variables
+      type: io.kestra.core.tasks.debugs.Echo
+      format: "First: {{outputs.firstExample.value}}, Second: {{outputs['second-example'].value}}"
 ```
 
-## More
-To customize the variable see:
+::: tip
+The `Return` task has an output attribute `value` which is used by the `log-both-variables` task.
+In the `log-both-variables` task, you can see two ways to access task outputs: the dot notation (`outputs.firstExample`) and the subscript notation (`outputs['second-example']`). The subscript notation must be used when a variable contains a special character, such as `-` that is a Pebble reserved character.
+:::
+
+## Pebble templating
+Pebble templating offers various ways to process variables, see:
 
 <ChildTableOfContents :max="1" />
