@@ -3,21 +3,25 @@ order: 4
 ---
 # Inputs
 
-Kestra's flow can be parameterized using inputs. Inputs will be available in variable context and can be used during the whole flow in order to customize it depending on the inputs values.
+A flow can be parameterized using inputs. Flow inputs will be available in variables inside the execution context and can be used during the flow execution to customize its tasks properties.
 
-A good example is when an identifier is needed (ex: storeId, paymentId) in order to change the save path for an uploaded file.
+A good example of the usage of an input is when an identifier is needed (ex: storeId, paymentId) to define the path of an uploaded file.
+
+Flow inputs can be seen in the **Overview** tab of the **Execution** page.
 
 ## Declaring inputs
 
 You can declare as many inputs as necessary for any flow. Inputs can be **required** or **not**.
 If an input is required, the flow cannot start if the input is not provided during the creation of the execution.
-Also, every input will be parsed during the creation of the execution and any invalid inputs will cause a refusal to create the execution.
+
+Every input will be parsed during the creation of the execution, and any invalid inputs will deny the creation of the execution.
 
 ::: warning
-If the execution is **not created** due to invalid or missing inputs, no execution will be found on the executions list.
+If the execution is **not created** due to invalid or missing inputs, no execution will be found on the list fo executions.
 :::
 
 Examples:
+
 ```yaml
 id: my-flow
 namespace: io.kestra.docs
@@ -46,7 +50,6 @@ inputs:
     type: FILE
   - name: optionalFile
     type: FILE
-    required: false
   - name: instantDefaults
     type: DATETIME
     defaults: "2013-08-09T14:19:00Z"
@@ -54,91 +57,56 @@ inputs:
     type: JSON
   - name: uri
     type: URI
-    required: false
   - name: nested.string
     type: STRING
-    required: false
-  - name: nested.more.int
-    type: INT
-    required: false
-  - name: nested.bool
-    type: BOOLEAN
-    required: false
 ```
 
 ## Input types
-The available input types are as follows:
+Inputs can be of multiple types:
 
-### `STRING`
-No control is done on this input type (no parsing), can be any string.
+- `STRING`: No control is done (no parsing); it can be any string.
+- `INT`: Must be a valid integer (without any decimals).
+- `FLOAT`: Must be a valid float (with any decimals).
+- `BOOLEAN`: Must be `true` or `false` as strings.
+- `DATETIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time with the timezone expressed in UTC from a text string such as `2007-12-03T10:15:30.00Z`.
+- `DATE`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date without the timezone from a text string such as `2007-12-03`.
+- `TIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time without the timezone from a text string such as `10:15:30`.
+- `DURATION`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration from a text string such as `PT5M6S`.
+- `FILE`: Must be a file sent as `Content-Type: multipart/form-data` with `Content-Disposition: form-data; name="files"; filename="my-file"`, where `my-file` is the name of the input.
+- `JSON`: Must be a valid JSON string and will be converted to typed form.
+- `URI`: Must be a valid URI and will be kept as a string.
 
-### `INT`
-Must be a valid integer (without any decimals).
+All the inputs of type `FILE` will be automatically uploaded to Kestra's [internal storage](../../architecture#storage) and available for all tasks. After upload, the input variable will contain a fully qualified URL of the form `kestra:///.../.../` that will be automatically handled by Kestra and can be used as is by tasks.
 
-### `FLOAT`
-Must be a valid float (with any decimals).
+## Input Properties
+These are the properties available for all input types:
 
-### `BOOLEAN`
-Must be a valid `true` or `false` as string.
-
-### `DATETIME`
-Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime with the timezone expressed in UTC from a text string such as
-`2007-12-03T10:15:30.00Z`.
-
-### `DATE`
-Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date without the timezone from a text string such as `2007-12-03`.
-
-### `TIME`
-Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time without the timezone from a text string such as `10:15:30`.
-
-### `DURATION`
-Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration from a text string such as `PT5M6S`.
-
-### `FILE`
-
-Must be a file sent as `Content-Type: multipart/form-data` with `Content-Disposition: form-data; name="files"; filename="my-file"`, where `my-file` is the name of the input.
-
-All the files are automatically uploaded to [internal storage](../../architecture#storage) and are available for further tasks. The response will contain a fully qualified URL with the form `kestra:///.../.../`. Kestra is able to handle this URL and this input can be passed as is to tasks.
-
-### `JSON`
-Must be a valid JSON as string and will be converted to typed form.
-
-### `URI`
-Must be a valid URI and will be kept as a string.
-
-## Input properties
-These are the properties available for all input types :
-
-### `name`
-The input name to be used with vars <code v-pre>{{ inputs['my-name'] }}</code>.
-
-
-### `required`
-If the input is required. If required and no defaults value or no input provided, the execution will not be created.
-
-### `defaults`
-The default value if no input is provided. Must be a string.
-
-### `description`
-A markdown description in order to document the input.
+- `name`: The input name to be used with variables.
+- `required`: If the input is required. If required and no default value or no input is provided, the execution will not be created.
+- `defaults`: The default value if no input is provided. Must be a string.
+- `description`: A markdown description to document the input.
 
 
 ## Nested Inputs
 
-If you use a `.` inside the name of an input, the input will be nested. For example, when you declated the input with:
+If you use a `.` inside the name of an input, the input will be nested. 
+
+For example, when you declare the input with the following:
+
 ```yaml
   - name: nested.string
     type: STRING
     required: false
 ```
-You can reach this input with: <code v-pre>{{ inputs.nested.string }}</code>. This is a convenient way to handle strong typing on input (with validation) without using raw JSON that will not be validated.
+
+You can reach it with: <code v-pre>{{ inputs.nested.string }}</code>. This is a convenient way to handle strong typing on input (with validation) without using raw JSON that will not be validated.
 
 
-## Using input value in flow
+## Using input value in a flow
 
-Every input is available with dynamic variables such as: <code v-pre>{{ inputs.NAME }}</code>.
+Every input is available with dynamic variables such as: <code v-pre>{{ inputs.NAME }}</code> or <code v-pre>{{ inputs[NAME] }}</code>.
 
-For example, if you declare your input :
+For example, if you declare these inputs:
 ```yaml
 inputs:
   - name: my-file
@@ -148,36 +116,77 @@ inputs:
     required: true
 ```
 
-You can use the value of the inputs with <code v-pre>{{ inputs['my-value'] }}</code>.
+You can use the value of the input `my-value` inside dynamic task properties with <code v-pre>{{ inputs['my-value'] }}</code>. See [variables basic usage](../variables/basic-usage.md).
+
+## Set inputs at flow execution
+
+When you execute a flow with some inputs, you must set all inputs (unless optional or with a default value) to be able to create the execution.
+
+Let's take this example that defines multiple inputs:
+
+```yaml
+id: kestra-inputs
+namespace: io.kestra.test
+
+inputs:
+  - name: string
+    type: STRING
+  - name: optional
+    type: STRING
+    required: false
+  - name: int
+    type: INT
+  - name: float
+    type: FLOAT
+  - name: instant
+    type: DATETIME
+  - name: file
+    type: FILE
+```
+
+### Set inputs from the web UI
+
+When creating an execution from the web UI, you must set the inputs in the generated form. Kestra's UI will generate a dedicated form based on your flow definition. 
+
+The input form for the inputs above looks like this:
+
+![Flow inputs](./assets/inputs.jpg)
+
+Once the inputs are set, you can trigger an execution of the flow. The inputs will be available as variables for the flow's tasks.
 
 
-## Send inputs programmatically
-The flow `my-flow` above can be triggered programmatically. Here is an example with `curl`:
+### Set inputs with curl
+
+To create an execution with these inputs using `curl`, you can use the following command:
+
 ```bash
-curl -v "http://localhost:8080/api/v1/executions/trigger/io.kestra.docs/my-flow" \
+curl -v "http://localhost:8080/api/v1/executions/trigger/io.kestra.test/kestra-inputs" \
     -H "Transfer-Encoding:chunked" \
     -H "Content-Type:multipart/form-data" \
     -F string="a string"  \
-    -F optional="an optionnal string"  \
+    -F optional="an optional string"  \
     -F int=1  \
     -F float=1.255  \
-    -F instant=2020-01-14T23:00:00.000Z \
-    -F "files=@/tmp/128M.txt;filename=my-file"
+    -F instant="2020-01-14T23:00:00.000Z" \
+    -F "files=@/tmp/128M.txt;filename=file"
 ```
 
-All files must be sent in the form  of data `files` with a header `filename=my-file`, which will be the name of the input.
+All files must be sent as multipart form data named `files` with a header `filename=my-file` which will be the name of the input.
 
-Here is an example with `python`:
+### Set inputs programmatically in Python
+
+To create an execution with these inputs in Python, you can use the following script:
+
 ```python
 import io
 import requests
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
-with open("/tmp/128M.txt", 'rb') as fh:
-  url = f"http://localhost:8080/api/v1/executions/trigger/io.kestra.docs/my-flow"
+with open("/tmp/example.txt", 'rb') as fh:
+  url = f"http://localhost:8080/api/v1/executions/trigger/io.kestra.test/kestra-inputs"
   mp_encoder = MultipartEncoder(fields={
     "string": "a string",
-    "optional": "an optionnal string",
+    "optional": "an optional string",
     "int": 1,
     "float": 1.255,
     "instant": "2020-01-14T23:00:00.000Z",
@@ -189,10 +198,3 @@ with open("/tmp/128M.txt", 'rb') as fh:
       headers={"Content-Type": mp_encoder.content_type},
   )
 ```
-
-## Send inputs via the Web UI
-With such a flow, the web UI lets you enter some inputs by generating a form accordingly in the flow > trigger view. The input form for the task above looks like below:
-
-![Flow inputs](./assets/inputs.jpg)
-
-Once the inputs are provided, you can trigger an execution flow that will run with [contextual inputs](../flow) as variables.
