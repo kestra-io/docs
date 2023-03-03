@@ -17,7 +17,7 @@ You can contribute to Kestra in many ways, depending on your skills and interest
 
 ## Build a plugin
 
-The Kestra community loves plugins! Check out our [plugin developer guide](plugin-developer-guide) for instructions on how to build a plugin for Kestra.
+The Kestra community loves plugins! Check out our [plugin developer guide](../plugin-developer-guide) for instructions on how to build a plugin for Kestra.
 
 
 ## Contribute to code and docs
@@ -27,4 +27,4 @@ Check out our [contributing guide](https://github.com/kestra-io/kestra/blob/deve
 
 ## Write a blog post
 
-You can write a tutorial or article about Kestra for our [blog](../../blogs). Send an email to [hello@kestra.io](hello@kestra.io) to share your idea for the post, and we'll take it from there.
+You can write a tutorial or article about Kestra for our [blog](../../blogs). Send an email to [hello@kestra.io](mailto:hello@kestra.io) to share your idea for the post, and we'll take it from there.

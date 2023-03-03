@@ -110,8 +110,8 @@ tasks:
 
 In this case, you would need to use <code v-pre>{{ (get outputs.t1 taskrun.value).value }}</code>, which means give me from `outputs.t1` the index results from `taskrun.value`.
 
-### With [Flowable Task](docs/developer-guide/flowable) nested.
-If you have many [Flowable Tasks](docs/developer-guide/flowable), it can be complex to use the `get` function, and moreover, the `taskrun.value` is only available during the direct task from each. If you have any Flowable Tasks after, the `taskrun.value` of the first iteration will be lost (or overwritten). To deal with this, we have included the `parent` & `parents` vars.
+### With [Flowable Task](../../flowable) nested.
+If you have many [Flowable Tasks](../../flowable), it can be complex to use the `get` function, and moreover, the `taskrun.value` is only available during the direct task from each. If you have any Flowable Tasks after, the `taskrun.value` of the first iteration will be lost (or overwritten). To deal with this, we have included the `parent` & `parents` vars.
 
 This is illustrated in the flow below:
 

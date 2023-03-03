@@ -105,7 +105,7 @@ kestra:
 
 ## Metrics configuration
 
-- `kestra.metrics.prefix`: Change the prefix for [all metrics](../monitoring) for Kestra (default: kestra).
+- `kestra.metrics.prefix`: Change the prefix for [all metrics](../../monitoring) for Kestra (default: kestra).
 
 
 ## Servers configuration
