@@ -4,7 +4,7 @@ order: 2
 
 # Storage configuration
 
-Kestra needs an [internal storage](../../../architecture#storage) to store data processed by flow tasks (files from flow inputs and data stored as task outputs).
+Kestra needs an [internal storage](../../../architecture#the-internal-storage) to store data processed by flow tasks (files from flow inputs and data stored as task outputs).
 
 The default internal storage is the local storage which is **not suitable for production** as it will store data inside a local folder on the host filesystem.
 

@@ -14,7 +14,7 @@ The first thing you need to configure is the plugin name and the class package.
 3. Change the package name on `build.gradle`: replace `group "io.kestra.plugin.templates"` to the package name.
 
 
-Now you can start [developing your task](docs/plugin-developer-guide/runnable-task) or look at other optional gradle configuration.
+Now you can start [developing your task](../runnable-task) or look at other optional gradle configuration.
 
 ## Others configurations 
 

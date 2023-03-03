@@ -50,7 +50,7 @@ Each server component interacts with the Kestra internal components (internal st
 
 ### Executor
 
-The **Executor** handles all executions and [flowable tasks](../../developer-guide/flowable). The only goal of the Executor is to receive created executions and look for the next tasks to run. There is no heavy computation required (and no capacity for it) for this server component.
+The **Executor** handles all executions and [flowable tasks](../developer-guide/flowable). The only goal of the Executor is to receive created executions and look for the next tasks to run. There is no heavy computation required (and no capacity for it) for this server component.
 
 The Executor also handles special execution cases:
 - [Listeners](../developer-guide/listeners).
@@ -84,7 +84,7 @@ Some triggers may require access to external services (triggers based on databas
 
 ### Indexer
 
-The **Indexer** is an optional component only needed when using Kafka and Elasticsearch. It will watch for many Kafka topics (like flows and executions) and will index their content to Elasticsearch [Repositories](#repositories).
+The **Indexer** is an optional component only needed when using Kafka and Elasticsearch. It will watch for many Kafka topics (like flows and executions) and will index their content to Elasticsearch [Repositories](#the-repository).
 
 ### Webserver
 

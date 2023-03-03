@@ -19,7 +19,7 @@ Make sure you have already installed :
 
 This will start all the dependencies with a pre-configured Kestra that is connected to everything!
 
-Kestra will start a *Standalone* server (all the different [servers](../../architecture) in one JVM).
+Kestra will start a *Standalone* server (all the different [servers](../../../architecture) in one JVM).
 This is clearly not meant for **production** workloads, but is certainly sufficient to test on a local computer.
 
 The [configuration](/docs/administrator-guide/configuration/README.md) will be done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker compose file, or pass it via the docker command line argument.
@@ -41,7 +41,7 @@ These docker images are based on the `eclipse-temurin:11-jre` docker image.
 #### `kestra/kestra:latest`
 This image :
 - doesn't contains any kestra plugins.
-- doesn't contains a lot of binaries to work with your [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.html).
+- doesn't contains a lot of binaries to work with your [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.md).
 - doesn't contains some binaries for [Python tasks](https://kestra.io/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Python.html) or [Node tasks](https://kestra.io/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Node.html).
 
 #### `kestra/kestra:latest-full`

@@ -79,13 +79,13 @@ You **must** use the <code v-pre>{{ trigger.date }}</code> expression on the pro
 This condition will be evaluated and <code v-pre>{{ trigger.previous }}</code> and <code v-pre>{{ trigger.next }}</code> will reflect the date **with** the conditions applied.
 
 The list of core conditions that can be used are:
- - [DateTimeBetweenCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.DateTimeBetweenCondition.html)
- - [DayWeekCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekCondition.html)
- - [DayWeekInMonthCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekInMonthCondition.html)
- - [NotCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.NotCondition.html)
- - [OrCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.OrCondition.html)
- - [WeekendCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.WeekendCondition.html)
- - [DayInMonthCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.DayInMonthCondition.html)
+ - [DateTimeBetweenCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.DateTimeBetweenCondition.md)
+ - [DayWeekCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekCondition.md)
+ - [DayWeekInMonthCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekInMonthCondition.md)
+ - [NotCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.NotCondition.md)
+ - [OrCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.OrCondition.md)
+ - [WeekendCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.WeekendCondition.md)
+ - [DayInMonthCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.DayInMonthCondition.md)
 
 
 ## Properties and Outputs

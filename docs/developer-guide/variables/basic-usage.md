@@ -222,9 +222,9 @@ In order from highest to lowest precedence:
 - `or`
 
 
-### Parents with [Flowable Task](docs/developer-guide/flowable).
+### Parents with [Flowable Task](../flowable).
 
-When a task is in a hierarchy of [Flowable Tasks](docs/developer-guide/flowable), it can be complex to access the
+When a task is in a hierarchy of [Flowable Tasks](../flowable), it can be complex to access the
 `value` of any of its parents because only the `value` of the direct parent task is accessible via `taskrun.value`.
 
 To deal with this, we have included the `parent` and the `parents` variables.
