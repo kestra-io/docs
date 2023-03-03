@@ -35,7 +35,7 @@ Currently, all the Kestra official plugins are safe to be whitelisted **except**
 :::
 
 ## Scripting isolation
-For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.html) and other script tasks in the core, we advise you to force `DOCKER` isolation and to configure global cluster [taskDefaults](/docs/administrator-guide/configuration/others/#kestra-tasks-defaults):
+For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.md) and other script tasks in the core, we advise you to force `DOCKER` isolation and to configure global cluster [taskDefaults](/docs/administrator-guide/configuration/others/#kestra-tasks-defaults):
 
 ```yaml
 kestra:

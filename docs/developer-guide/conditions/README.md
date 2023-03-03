@@ -13,9 +13,9 @@ You can pass a list of conditions, in this case, all the conditions must match t
 
 Available conditions include: 
 
-- [ExecutionFlowCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.ExecutionFlowCondition.html)
-- [ExecutionNamespaceCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.ExecutionNamespaceCondition.html)
-- [ExecutionStatusCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.ExecutionStatusCondition.html)
-- [FlowCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.FlowCondition.html)
-- [FlowNamespaceCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.FlowNamespaceCondition.html)
-- [VariableCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.VariableCondition.html)
+- [ExecutionFlowCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.ExecutionFlowCondition.md)
+- [ExecutionNamespaceCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.ExecutionNamespaceCondition.md)
+- [ExecutionStatusCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.ExecutionStatusCondition.md)
+- [FlowCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.FlowCondition.md)
+- [FlowNamespaceCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.FlowNamespaceCondition.md)
+- [VariableCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.VariableCondition.md)
