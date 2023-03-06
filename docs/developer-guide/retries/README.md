@@ -3,12 +3,14 @@ order: 8
 ---
 # Retries
 
-Kestra provides a task retry feature. This sub-system makes it convenient to add retry behavior on **failed executions**, based on the retry configuration in the flow description.
+Kestra provides a task retry feature. This makes it possible to add retry behavior for any task **failed run** based on configurations in the flow description.
+
+A retry on a task run will create a new task attempt.
 
 
 ## Example
 
-Below is a flow sample that executes a retry on a task failure for a maximum of 5 attempts every 15 minutes:
+The following example defines a retry for the `retry-sample` task with a maximum of 5 attempts every 15 minutes:
 
 ```yaml
 - id: retry-sample
@@ -20,14 +22,14 @@ Below is a flow sample that executes a retry on a task failure for a maximum of 
     type: constant
     interval: PT15M
 ```
-## Retry options for all type
+## Retry options for all retry types
 
 | name | type | description |
 | ---------- | ----------- | ----------- |
 |`type`|`string`|Retry behavior to apply. Can be one of `constant`, `exponential`, `random`.|
 |`maxAttempt`|`integer`|Number of retries performed before the system stops retrying.|
 |`maxDuration`|`Duration`|Maximum delay the execution is retried. Once passed, the task is no more processed.|
-|`warningOnRetry`|`Boolean`|Flag the execution as warning if any retry was done on this task.|
+|`warningOnRetry`|`Boolean`|Flag the execution as warning if any retry was done on this task. Default `false`.|
 
 ### Duration
 
@@ -46,23 +48,23 @@ Durations are expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/IS
 
 
 #### `constant`
-This establishes constant retry times, where if the time is set to 10 minutes, it retries every 10 minutes.
+This establishes constant retry times: if the `interval` property is set to 10 minutes, it retries every 10 minutes.
 
 | name | type | description |
 | ---------- | ----------- | ----------- |
 |`interval`|`Duration`|Duration between each retry.|
 
 #### `exponential`
-This establishes retry behavior that waits longer between each retry e.g. 1s, 5s, 15s ...
+This establishes retry behavior that waits longer between each retry e.g. 1s, 5s, 15s, ...
 
 | name | type | description |
 | ---------- | ----------- | ----------- |
 |`interval`|`Duration`|Duration between each retry.|
 |`maxInterval`|`Duration`|Max Duration between each retry.|
-|`delayFactor`|`Double`|Multiplier for `interval` on each retry, default is 2. For example, with an interval of 30s and a delay factor of 2, retry will append at 30s, 1m30, 3m30, ... |
+|`delayFactor`|`Double`|Multiplier for the `interval` on between retry, default is 2. For example, with an interval of 30s and a delay factor of 2, retry will append at 30s, 1m30, 3m30, ... |
 
 #### `random`
-This establishes retries with a random delay within min and max limits.
+This establishes retries with a random delay within minimum and maximum limits.
 
 | name | type | description |
 | ---------- | ----------- | ----------- |

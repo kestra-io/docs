@@ -3,8 +3,11 @@ order: 10
 ---
 # Listeners
 
-Listeners are special tasks that can listen to the current flow and launch tasks *outside the flow*.
-The result of the tasks will not change the execution status. In most cases,  Listeners are used to send notifications or handle special end-task behavior that should not be considered as part of the main flow.
+Listeners are special branches of a flow that can listen to the current flow and launch tasks *outside the flow*.
+The result of a listener's tasks will not change the execution status of a flow.
+The listener's tasks are run at the end of the flow.
+
+Listeners are usually used to send notifications or handle special end-task behavior that should not be considered part of the main flow.
 
 
 ## Example
