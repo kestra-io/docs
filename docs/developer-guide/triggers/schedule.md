@@ -8,7 +8,7 @@ order: 1
 type: "io.kestra.core.models.triggers.types.Schedule"
 ```
 
-> Kestra is able to trigger flows based on a Schedule (aka the time). If you need to wait for another system to be ready and cannot use any event mechanism, you can schedule 1 or more time the current flow.
+> Kestra is able to trigger flows based on a Schedule (aka the time). If you need to wait for another system to be ready and cannot use any event mechanism, you can schedule one or more time the current flow.
 
 ## Example
 
@@ -40,9 +40,9 @@ Schedules **cannot overlap**. This means that we **cannot have any concurrent sc
 :::
 
 ::: tip
-Most of the time, schedule execution will depend on the `trigger.date` (looking at files for today, SQL query with where schedule date). This works well, but it prevents you to execute your flow manually (since these variables are only available during the schedule).
+Most of the time, schedule execution will depend on the `trigger.date` (looking at files for today, SQL query with the schedule date in the where clause, ...). This works well but prevents you from executing your flow manually (since these variables are only available during the schedule).
 
-You can use this expression to make your **manual execution work**: <code v-pre>{{ schedule.date ?? execution.startDate | date("yyyy-MM-dd") }}</code>. It will use the current date if there is no scheduled date making it possible to start the flow manually.
+You can use this expression to make your **manual execution work**: <code v-pre>{{ schedule.date ?? execution.startDate | date("yyyy-MM-dd") }}</code>. It will use the current date if there is no schedule date making it possible to start the flow manually.
 :::
 
 
@@ -64,17 +64,17 @@ triggers:
 
 
 ## Variables
-When the flow is scheduled, some context variables are injected to allow some flow customization (such as filename, where in SQL query, etc.).
+When the flow is scheduled, some context variables are injected to allow flow customization (such as filename, where clause in SQL query, etc.).
 
 | Parameter | Description |
 | ---------- | ----------- |
-|  <code v-pre>{{ trigger.date }}</code> | the date of current schedule.
-|  <code v-pre>{{ trigger.next }}</code> | the date of next schedule.
-|  <code v-pre>{{ trigger.previous }}</code> | the date of previous schedule.
+|  <code v-pre>{{ trigger.date }}</code> | the date of the current schedule.
+|  <code v-pre>{{ trigger.next }}</code> | the date of the next schedule.
+|  <code v-pre>{{ trigger.previous }}</code> | the date of the previous schedule.
 
 
 ## Schedule Conditions
-When the `cron` is not sufficient to determine the date you want to schedule your flow, you can use `scheduleConditions` in order to add some extra conditions, (for example, only the first day of the month, only the weekend, ...).
+When the `cron` is not sufficient to determine the date you want to schedule your flow, you can use `scheduleConditions` to add some additional conditions, (for example, only the first day of the month, only the weekend, ...).
 You **must** use the <code v-pre>{{ trigger.date }}</code> expression on the property `date` of the current schedule.
 This condition will be evaluated and <code v-pre>{{ trigger.previous }}</code> and <code v-pre>{{ trigger.next }}</code> will reflect the date **with** the conditions applied.
 

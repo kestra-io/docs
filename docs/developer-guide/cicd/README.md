@@ -2,7 +2,7 @@
 order: 15
 ---
 
-# Create a CI/CD pipeline for Kestra
+# Create a CI/CD pipeline
 
 ## Introduction
 
@@ -48,7 +48,7 @@ Deploys given YAML flow files as flows of the given namespace.
 
 **Options:**
 
-* `--no-delete`: preserve existing flows which are missing from the update. Default is to remove the flows.
+* `--no-delete`: preserve existing flows that are missing from the update. Default is to remove the flows.
 * `--server`: specify the remote Kestra server URL. Default is [http://localhost:8080](http://localhost:8080).
 
 ### Template validation

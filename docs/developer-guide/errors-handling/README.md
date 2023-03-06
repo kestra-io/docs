@@ -2,16 +2,17 @@
 order: 7
 ---
 # Errors handling
-Errors are a special branch of your flow where you can define how to handle any task failures.
+Errors are special branches of your flow where you can define how to handle task failures.
 
-2 kinds of errors can be defined:
-* **Global**: for the flow and must be at the root of the flow.
-* **Local**: these are available for all [Flowable Task](../flowable), and are only allowed for these tasks and their children.
+Two kinds of error handlers can be defined:
+* **Global**: error handling global to a flow that must be at the root of the flow.
+* **Local**: error handling local to a [Flowable Task](../flowable), will handle errors for the flowable task and its children.
 
 
-## Global Error
+## Global Error Handler
 
-This example processes a task that fails immediately. Then a task sequence is processed in the error branch of the flow.
+This flow example has a single Bash task that fails immediately.
+The global error handler will then be called so the `2nd` task will run.
 
 ```yaml
 id: errors
@@ -30,10 +31,11 @@ errors:
 ```
 
 
-## Local Error
+## Local Error Handler
 
-In this case, the error branch will be used **only** if all children of task `t2` have errors. 
-In this specific example, if the task `t1` failed, no error will be used. This is really useful to perform cleanup of resources for this task only. 
+In this flow example, the error branch will be used **only** if a child of the task `t2` has an error. If the task `t1` failed, the error branch would not be used. 
+
+This can be useful to restrict error handling for a specific part of the flow and perform specific tasks like resource cleanup. 
 
 ```yaml
 id: errors

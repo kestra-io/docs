@@ -3,13 +3,14 @@ order: 9
 ---
 # Conditions
 
-Conditions are used in [Triggers](../triggers) and [Listeners](../listeners) to limit the cases in which a task/execution is triggered.
-For example: 
-* you can limit a listener to only a specified status,
-* you can limit a trigger to a specific namespace prefix. 
-* .... 
+Conditions are used in [Triggers](../triggers) and [Listeners](../listeners) to limit the cases for which a task run or a flow execution is triggered.
 
-You can pass a list of conditions, in this case, all the conditions must match to enable the current action.
+For example: 
+* you can restrict a listener to only a specified status,
+* you can restrict a trigger to a specific namespace prefix. 
+* ...
+
+You can pass a list of conditions; in this case, all the conditions must match to enable the current action.
 
 Available conditions include: 
 
