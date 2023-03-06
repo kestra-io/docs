@@ -26,12 +26,12 @@ The following table lists all the default variables available on each execution.
 |  <code v-pre>{{ task.type }}</code> | The current task Type (Java fully qualified class name). |
 |  <code v-pre>{{ taskrun.id }}</code> | The current task run ID. |
 |  <code v-pre>{{ taskrun.startDate }}</code> | The current task run start date. |
-|  <code v-pre>{{ taskrun.parentId }}</code> | The current task run parent identifier. Only available with tasks inside a  ([Flowable Task](../flowable)).|
-|  <code v-pre>{{ taskrun.value }}</code> | The value of the current task run, only available with tasks inside a ([Flowable Task](../flowable)). |
+|  <code v-pre>{{ taskrun.parentId }}</code> | The current task run parent identifier. Only available with tasks inside a  ([Flowable Task](../tasks/README.md#flowable-tasks)).|
+|  <code v-pre>{{ taskrun.value }}</code> | The value of the current task run, only available with tasks inside a ([Flowable Task](../tasks/README.md#flowable-tasks)). |
 |  <code v-pre>{{ taskrun.attemptsCount }}</code> | The number of attempts for the current task (when retry or restart is performed). |
-|  <code v-pre>{{ parent.taskrun.value }}</code> | The value of the closest (first) parent task run [Flowable Task](../flowable), only available with tasks inside a ([Flowable Task](../flowable)). |
-|  <code v-pre>{{ parent.outputs }}</code> | The outputs of the closest (first) parent task run [Flowable Task](../flowable), only available with tasks inside in a ([Flowable Task](../flowable)). |
-|  <code v-pre>{{ parents }}</code> | The list of parent tasks, only available with tasks inside a ([Flowable Task](../flowable)). See [Parents variables](../variables/basic-usage.md#parents-with-flowable-task) for its usage. |
+|  <code v-pre>{{ parent.taskrun.value }}</code> | The value of the closest (first) parent task run [Flowable Task](../tasks/README.md#flowable-tasks), only available with tasks inside a ([Flowable Task](../tasks/README.md#flowable-tasks)). |
+|  <code v-pre>{{ parent.outputs }}</code> | The outputs of the closest (first) parent task run [Flowable Task](../tasks/README.md#flowable-tasks), only available with tasks inside in a ([Flowable Task](../tasks/README.md#flowable-tasks)). |
+|  <code v-pre>{{ parents }}</code> | The list of parent tasks, only available with tasks inside a ([Flowable Task](../tasks/README.md#flowable-tasks)). See [Parents variables](../variables/basic-usage.md#parents-with-flowable-task) for its usage. |
 
 If a [schedule](../triggers/schedule.md) event triggers the flow, these variables are also available:
 

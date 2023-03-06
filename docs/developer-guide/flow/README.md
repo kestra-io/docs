@@ -7,7 +7,7 @@ order: 1
 
 You define a flow thanks to a declarative model in YAML.
 
-A flow must have an identifier (id), a namespace, and a list of tasks.
+A flow must have an identifier (id), a namespace, and a list of [tasks](../tasks/).
 
 A flow can also have [inputs](../inputs/), [listeners](../listeners/), [error handlers](../errors-handling/), and [triggers](../triggers/).
 

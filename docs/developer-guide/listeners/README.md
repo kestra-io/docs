@@ -43,7 +43,7 @@ listeners:
 
 > A list of tasks that will be executed at the end of the flow. The status of these tasks will not impact the main execution and will not change the execution status even if they fail.
 >
-> You can use every tasks you need here, even [Flowable](../flowable).
+> You can use every tasks you need here, even [Flowable](../tasks/README.md#flowable-tasks).
 > All task `id` must be unique for the whole flow even for main `tasks` and `errors`.
 
 

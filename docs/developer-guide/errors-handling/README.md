@@ -6,7 +6,7 @@ Errors are special branches of your flow where you can define how to handle task
 
 Two kinds of error handlers can be defined:
 * **Global**: error handling global to a flow that must be at the root of the flow.
-* **Local**: error handling local to a [Flowable Task](../flowable), will handle errors for the flowable task and its children.
+* **Local**: error handling local to a [Flowable Task](../tasks/README.md#flowable-tasks), will handle errors for the flowable task and its children.
 
 
 ## Global Error Handler
