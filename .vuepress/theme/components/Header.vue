@@ -159,7 +159,7 @@ export default {
                             title: 'Enterprise Edition',
                             link: '/features/enterprise.html',
                             icon: Security,
-                            desc: 'Security and Productivity for enterprise'
+                            desc: 'Security and High Availability for enterprise'
                         }
                     ]
                 },

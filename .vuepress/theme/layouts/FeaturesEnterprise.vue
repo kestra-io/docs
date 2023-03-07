@@ -11,12 +11,12 @@
                     <div class="container">
                         <p class="mb-5" data-aos="fade-left">
                             Kestra can be used <strong>for free with no limitations</strong> on our Open Source Edition.
-                            For companies that need more security & productivity, we created the <strong>Enterprise Edition</strong>.
+                            For companies that need more security & high availability, we created the <strong>Enterprise Edition</strong>.
                             The Enterprise Edition is available on your own cloud or on premise like the Open Source Edition, as
                             simple to deploy as the Open Source Edition.
                             <router-link to="/company/contact">Contact us</router-link> if you want more information. <br />
-                            We are working hard to provide also Kestra as a software as a service in the cloud. 
-                            If you are interested, <router-link to="">contact us</router-link> to join our early access program.
+                            We are working hard to provide also Kestra as a software as a service in the cloud.
+                            If you are interested, <router-link to="https://form.typeform.com/to/iAnFetZr">contact us</router-link> to join our early access program.
                         </p>
 
                         <div class="row">
@@ -33,11 +33,7 @@
                                         <ul class="list-unstyled mb-0 pl-0">
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Scalable orchestrator
-                                            </li>
-                                            <li class="h6 text-muted mb-0">
-                                                <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Scalable scheduler
+                                                Open Source orchestrator & scheduler
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
@@ -49,11 +45,11 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Extended API
+                                                Extended <router-link to="/docs/api-guide/">API</router-link>
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
-                                                <router-link to="/docs/terraform/">Terraform</router-link> integration
+                                                <router-link to="/docs/terraform/">Terraform</router-link> or <router-link to="/docs/developer-guide/cicd/">CI/CD</router-link> integration
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
@@ -101,15 +97,11 @@
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />
+                                                <router-link to="/docs/architecture/#high-availability-with-no-single-point-of-failure-deployment">High availability</router-link> with no single point of failure deployment
+                                            </li>
+                                            <li class="h6 text-muted mb-0">
+                                                <CheckCircleOutline class="text-success mr-2" title="" />
                                                 Audits logs
-                                            </li>
-                                            <li class="h6 text-muted mb-0">
-                                                <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Editor autocompletion
-                                            </li>
-                                            <li class="h6 text-muted mb-0">
-                                                <CheckCircleOutline class="text-success mr-2" title="" />
-                                                Executions dashboard
                                             </li>
                                             <li class="h6 text-muted mb-0">
                                                 <CheckCircleOutline class="text-success mr-2" title="" />

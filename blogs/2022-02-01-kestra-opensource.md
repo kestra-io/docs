@@ -57,7 +57,7 @@ I'm a real open-source enthusiast. As an architect, I’ve been interested in op
 
 Three years ago, I started another open source project, [AKHQ](https://github.com/tchiotludo/akhq), with the same license. Working with a successful project was an invaluable experience for me as I was able to learn how to build a community around a project. I've also learnt that an open source system won't pay the bills on its own. AKHQ required a lot of personal investment; Kestra has required a lot more and will continue to do so in the future! This means you will have to ensure that you have the financial resources in place to enable your project to be viable and sustainable — we decided to create a company alongside Kestra in order to raise the required funds to support the development of the open source software.
 
-The open source license is not limited and allows you to install and run it as you want on your server on premise or your cloud. We have also built our **Enterprise Edition** , bringing added security and productivity to your Kestra clusters. In addition, we plan to deliver Kestra in the form of software as a service in the near future (don't hesitate to [contact us](/company/contact) for more information).
+The open source license is not limited and allows you to install and run it as you want on your server on premise or your cloud. We have also built our **Enterprise Edition**, bringing added security and high availability to your Kestra clusters. In addition, we plan to deliver Kestra in the form of software as a service in the near future (don't hesitate to [contact us](/company/contact) for more information).
 
 
 ## Kestra Plugins are also Open Source!

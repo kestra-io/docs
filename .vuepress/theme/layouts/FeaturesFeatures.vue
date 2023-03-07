@@ -160,7 +160,7 @@
                                             <div class="ml-3">
                                                 <h5>API or UI based!</h5>
                                                 <p class="text-muted mb-0">
-                                                    If you haven’t found a suitable option, you can still rely on the <router-link to="/docs/developer-guide/inputs/#send-inputs-programmatically">Kestra API</router-link> (a simple cURL can do the job), 
+                                                    If you haven’t found a suitable option, you can still rely on the <router-link to="/docs/developer-guide/inputs/#send-inputs-programmatically">Kestra API</router-link> (a simple cURL can do the job),
                                                     or a <router-link to="/docs/developer-guide/triggers/webhook.html">webhook</router-link> to trigger a flow from any application or simply start a flow directly from the Web UI.
                                                 </p>
                                             </div>
@@ -402,7 +402,7 @@
                             <div class="col-12 text-center">
                                 <div class="section-title mb-4 pb-2">
                                     <h4 class="title mb-4" data-aos="fade-left">An Enterprise Edition</h4>
-                                    <p data-aos="fade-right">The enterprise edition fits all company needs regarding security and productivity.</p>
+                                    <p data-aos="fade-right">The enterprise edition fits all company needs regarding security and high availability.</p>
                                 </div>
                             </div>
                         </div>
