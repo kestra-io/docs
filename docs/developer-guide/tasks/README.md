@@ -2,7 +2,37 @@
 order: 2
 ---
 
-# Flowable Task
+# Tasks
+
+## Runnable Tasks
+
+In Kestra, workloads are done using **Runnable Tasks**.
+
+Runnable Tasks handle computational work in the flow. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by [workers](../../architecture/#worker).
+
+Each task must have an identifier (id) and a type. The type is a Java Fully Qualified Class Name (FQCN) of the task.
+
+Tasks have properties specific to the type of the task; check each task's documentation for the list of available properties.
+
+Most available tasks are Runnable Tasks except special ones that are [Flowable Tasks](#flowable-tasks); those are explained later on this page.
+
+### Task common properties
+
+The following task properties can be set.
+
+| Field | Description |
+| ---------- | ----------- |
+|`id`|The flow identifier, must be unique inside a flow.|
+|`type`|The Java FQCN of the task.|
+|`description`|The description of the task, more details [here](../documentation/).|
+|`retry`|Task retry behavior, more details [here](../retries/).|
+|`timeout`|Task timeout expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations).|
+|`disabled`|Set it to `true` to disable execution of the task.|
+
+Task properties can be static or dynamic. Dynamic task properties can be set using [variables](../variables/README.md). To know if a task property is dynamic, read the task's documentation.
+
+
+## Flowable Tasks
 
 In Kestra, we orchestrate your workflows using **Flowable Tasks**. These tasks do not compute anything but allow us to build more complex workflows.
 

@@ -50,7 +50,7 @@ Each server component interacts with the Kestra internal components (internal st
 
 ### Executor
 
-The **Executor** handles all executions and [flowable tasks](../developer-guide/flowable). The only goal of the Executor is to receive created executions and look for the next tasks to run. There is no heavy computation required (and no capacity for it) for this server component.
+The **Executor** handles all executions and [flowable tasks](../developer-guide/tasks/README.md#flowable-tasks). The only goal of the Executor is to receive created executions and look for the next tasks to run. There is no heavy computation required (and no capacity for it) for this server component.
 
 The Executor also handles special execution cases:
 - [Listeners](../developer-guide/listeners).
