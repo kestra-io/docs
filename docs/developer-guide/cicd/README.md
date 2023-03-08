@@ -1,5 +1,5 @@
 ---
-order: 15
+order: 13
 ---
 
 # Create a CI/CD pipeline
@@ -20,6 +20,10 @@ It integrates nicely with VCS (Version Control System) like Git and can easily i
 There are several ways to create a CI/CD pipeline. At Kestra, we propose three different methods:
 
 <ChildTableOfContents :max="1" />
+
+## Helpers
+
+Kestra has some _helpers_ function that can help during flow development; they allow separating a flow description on multiple files thanks to an include function, see [Helpers](helpers/).
 
 ## Useful CLI commands
 

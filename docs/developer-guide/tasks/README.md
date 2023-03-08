@@ -16,6 +16,8 @@ Tasks have properties specific to the type of the task; check each task's docume
 
 Most available tasks are Runnable Tasks except special ones that are [Flowable Tasks](#flowable-tasks); those are explained later on this page.
 
+By default, Kestra only includes a few Runnable Tasks. However, many of them are available as [plugins](../../../plugins/), and if you use our default Docker image, plenty of them will already be included.
+
 ### Task common properties
 
 The following task properties can be set.
@@ -24,8 +26,8 @@ The following task properties can be set.
 | ---------- | ----------- |
 |`id`|The flow identifier, must be unique inside a flow.|
 |`type`|The Java FQCN of the task.|
-|`description`|The description of the task, more details [here](../documentation/).|
-|`retry`|Task retry behavior, more details [here](../retries/).|
+|`description`|The description of the task, more details [here](../flow/README.md#document-your-flow).|
+|`retry`|Task retry behavior, more details [here](../errors-handling/README.md#retries).|
 |`timeout`|Task timeout expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations).|
 |`disabled`|Set it to `true` to disable execution of the task.|
 

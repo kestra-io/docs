@@ -63,7 +63,7 @@ The following flow properties can be set.
 |`id`|The flow identifier, must be unique inside a namespace.|
 |`namespace`|Each flow lives in one namespace, this is useful for flow organization and is mandatory.|
 |`revision`|The flow version, handled internally by Kestra, and incremented for each modification. You should not manually set it.|
-|`description`|The description of the flow, more details [here](../documentation/).|
+|`description`|The description of the flow, more details [here](#document-your-flow).|
 |`labels`|The list of labels which are string key/value pairs.|
 |`inputs`|The list of inputs, more details [here](../inputs/).|
 |`variables`|The list of variables (such as api key, table name, URL, etc) that can be reached inside tasks with <code v-pre>{{ vars.name }}</code>.|
@@ -76,3 +76,24 @@ The following flow properties can be set.
 |`taskDefaults.[].forced`|If set to `forced: true`, the taskDefault will take precedence over properties defined in the task (default `false`).|
 |`taskDefaults.[].values.xxx`|The task property that you want to be set as default.|
 |`disabled`|Set it to `true` to disable execution of the flow.|
+
+## Document your flow
+
+You can add documentation to flows, tasks, etc... to explain the goal of the current element.
+
+For this, Kestra allows adding a `description` property where you can write documentation of the current element.
+The description must be written using the [Markdown](https://en.wikipedia.org/wiki/Markdown) syntax.
+
+You can add a `description` property on: 
+- [Flows](../flow)
+- [Tasks](../flow)
+- [Listeners](../listeners)
+- [Triggers](../triggers)
+
+All descriptions will be visible on the UI: 
+
+![Flow list](./docs-ui-1.png)
+
+![Topology](./docs-ui-2.png)
+
+![Trigger details](./docs-ui-3.png)

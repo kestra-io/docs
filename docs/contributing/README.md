@@ -1,10 +1,10 @@
 ---
-order: 10
+order: 12
 ---
 
 # Contributing
 
-You can contribute to Kestra in many ways, depending on your skills and interests.
+You can contribute to Kestra in many ways depending on your skills and interests.
 
 [[toc]]
 
@@ -13,6 +13,7 @@ You can contribute to Kestra in many ways, depending on your skills and interest
 
 - Star Kestra on [GitHub](https://github.com/kestra-io/kestra).
 - Follow us on [Twitter](https://twitter.com/kestra_io) and [LinkedIn](https://www.linkedin.com/company/kestra).
+- Get in touch with us on [Slack](https://api.kestra.io/v1/communities/slack/redirect).
 
 
 ## Build a plugin
