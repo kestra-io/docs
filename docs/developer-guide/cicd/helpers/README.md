@@ -1,5 +1,5 @@
 ---
-order: 12
+order: 4
 ---
 
 # Helpers
@@ -9,6 +9,7 @@ Kestra has some _helpers_ function that can help during flow development.
 ::: warning
 These helpers are only available during flow development to test on your local installation.
 You must expand the flow definition before sending it to your server.
+These helpers cannot be used from Kestra's UI.
 :::
  
 ## Expand the flow to be uploaded to the server

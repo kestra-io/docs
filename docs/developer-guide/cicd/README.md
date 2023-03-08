@@ -21,6 +21,10 @@ There are several ways to create a CI/CD pipeline. At Kestra, we propose three d
 
 <ChildTableOfContents :max="1" />
 
+## Helpers
+
+Kestra has some _helpers_ function that can help during flow development; they allow separating a flow description on multiple files thanks to an include function, see [Helpers](helpers/).
+
 ## Useful CLI commands
 
 Kestra provides several commands intended for use in CI/CD pipelines.

@@ -9,7 +9,9 @@ export default (
 
     router.addRoutes([
         { path: '/blogs/2022-02-01-leroy-merlin-usage-kestra(.*)', redirect: '/blogs/2022-02-22-leroy-merlin-usage-kestra.html' },
-        // 2023-03-06: redirect to old Flowable page
+        // 2023-03-06: redirect for the old Flowable page
         { path: '/docs/developer-guide/flowable/', redirect: '/docs/developer-guide/tasks/'},
+        // 2023-03-08: redirect for the old Helpers page
+        { path: '/docs/developer-guide/helpers/', redirect: '/docs/developer-guide/cicd/helpers/'},
     ])
 }
