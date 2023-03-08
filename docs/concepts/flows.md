@@ -22,7 +22,7 @@ There are two kinds of tasks in Kestra:
 
 [Runnable Tasks](../developer-guide/tasks/README.md#runnable-tasks) handle computational work in the flow. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by [workers](../architecture/#worker). 
 
-By default, Kestra only includes a few Runnable Tasks. However, many of them are available as [plugins](../../plugins/) and if you use our default Docker image plenty of them will be already included.
+By default, Kestra only includes a few Runnable Tasks. However, many of them are available as [plugins](../../plugins/), and if you use our default Docker image, plenty of them will already be included.
 
 
 ### Flowable Task
