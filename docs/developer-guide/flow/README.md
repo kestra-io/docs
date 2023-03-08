@@ -63,7 +63,7 @@ The following flow properties can be set.
 |`id`|The flow identifier, must be unique inside a namespace.|
 |`namespace`|Each flow lives in one namespace, this is useful for flow organization and is mandatory.|
 |`revision`|The flow version, handled internally by Kestra, and incremented for each modification. You should not manually set it.|
-|`description`|The description of the flow, more details [here](../documentation/).|
+|`description`|The description of the flow, more details [here](#document-your-flow).|
 |`labels`|The list of labels which are string key/value pairs.|
 |`inputs`|The list of inputs, more details [here](../inputs/).|
 |`variables`|The list of variables (such as api key, table name, URL, etc) that can be reached inside tasks with <code v-pre>{{ vars.name }}</code>.|

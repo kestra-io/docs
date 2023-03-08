@@ -51,4 +51,4 @@ listeners:
 * **Type:** ==string==
 * **Required:** ❌
 
-> Description for documentation, more details [here](../documentation/).
+> Description for documentation, more details [here](../flow/README.md#document-your-flow).
