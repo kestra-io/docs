@@ -76,3 +76,24 @@ The following flow properties can be set.
 |`taskDefaults.[].forced`|If set to `forced: true`, the taskDefault will take precedence over properties defined in the task (default `false`).|
 |`taskDefaults.[].values.xxx`|The task property that you want to be set as default.|
 |`disabled`|Set it to `true` to disable execution of the flow.|
+
+## Document your flow
+
+You can add documentation to flows, tasks, etc... to explain the goal of the current element.
+
+For this, Kestra allows adding a `description` property where you can write documentation of the current element.
+The description must be written using the [Markdown](https://en.wikipedia.org/wiki/Markdown) syntax.
+
+You can add a `description` property on: 
+- [Flows](../flow)
+- [Tasks](../flow)
+- [Listeners](../listeners)
+- [Triggers](../triggers)
+
+All descriptions will be visible on the UI: 
+
+![Flow list](./docs-ui-1.png)
+
+![Topology](./docs-ui-2.png)
+
+![Trigger details](./docs-ui-3.png)

@@ -15,5 +15,7 @@ export default (
         { path: '/docs/developer-guide/helpers/', redirect: '/docs/developer-guide/cicd/helpers/'},
         // 2023-03-08: redirect Retries to the Error Handling page
         { path: '/docs/developer-guide/retries/', redirect: '/docs/developer-guide/errors-handling/'},
+        // 2023-03-08: redirect Documentation to the Flowpage
+        { path: '/docs/developer-guide/documentation/', redirect: '/docs/developer-guide/flow/'},
     ])
 }
