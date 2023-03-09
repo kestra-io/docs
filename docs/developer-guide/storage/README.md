@@ -37,7 +37,7 @@ Data can be stored as variables inside the flow execution context. This can be c
 
 To do so, tasks store data as output attributes that are then available inside the flow via Pebble expressions like <code v-pre>{{outputs.taskName.attributeName}}</code>. More information about outputs can be found [here](../outputs/).
 
-Be careful that when the size of the data is significant, this will increase the size of the flow execution context, which can lead to slow execution and increase the size of the execution storage inside Kestra's repository. 
+Be careful that when the size of the data is significant, this will increase the size of the flow execution context, which can lead to slow execution and increase the size of the execution storage inside Kestra's repository.
 
 ::: warning
 Depending on the Kestra internal queue and repository implementation, there can be a hard limit on the size of the flow execution context as it is stored as a single row/message. Usually, this limit is around 1MB, so this is important to avoid storing large amounts of data inside the flow execution context.
@@ -103,7 +103,7 @@ tasks:
 
 ## Processing data
 
-You can make basic data processing thanks to variables processing offered by the Pebble templating engine, see [variables basic usage](../variables/basic-usage.md). 
+You can make basic data processing thanks to variables processing offered by the Pebble templating engine, see [variables basic usage](../variables/basic-usage.md).
 
 But these are limited, and you may need more powerful data processing tools; for this, Kestra offers various data processing tasks like file transformations or scripts.
 
@@ -153,7 +153,7 @@ tasks:
   - id: query-top-ten
     type: io.kestra.plugin.gcp.bigquery.Query
     sql: |
-      SELECT DATETIME(datehour) as date, title, views FROM `bigquery-public-data.wikipedia.pageviews_2023` 
+      SELECT DATETIME(datehour) as date, title, views FROM `bigquery-public-data.wikipedia.pageviews_2023`
       WHERE DATE(datehour) = current_date() and wiki = 'en'
       ORDER BY datehour desc, views desc
       LIMIT 10
@@ -196,7 +196,7 @@ tasks:
   - id: query-top-ten
     type: io.kestra.plugin.gcp.bigquery.Query
     sql: |
-      SELECT DATETIME(datehour) as date, title, views FROM `bigquery-public-data.wikipedia.pageviews_2023` 
+      SELECT DATETIME(datehour) as date, title, views FROM `bigquery-public-data.wikipedia.pageviews_2023`
       WHERE DATE(datehour) = current_date() and wiki = 'en'
       ORDER BY datehour desc, views desc
       LIMIT 10
@@ -227,7 +227,7 @@ The script can access a logger to log messages. Each row is available in a `row`
 
 ## Purging data
 
-The [PurgeExecution](https://kestra.io/plugins/core/tasks/storages/io.kestra.core.tasks.storages.PurgeExecution.html) task can purge all the files stored inside the internal context by a flow execution.
+The [PurgeExecution](/plugins/core/tasks/storages/io.kestra.core.tasks.storages.PurgeExecution.html) task can purge all the files stored inside the internal context by a flow execution.
 
 It can be used at the end of a flow to purge all its generated files.
 
@@ -238,3 +238,20 @@ tasks:
 ```
 
 The execution context itself will not be available after the end of the execution and will be automatically deleted from Kestra's repository after a retention period (by default, seven days) that can be changed; see [configurations](../../administrator-guide/configuration/).
+
+
+Also, the [Purge](/plugins/core/tasks/storages/io.kestra.core.tasks.storages.Purge.html) task can be used to purge storages, logs, executions of previous execution. For example, this flow will purge all of these every day:
+```yaml
+id: purge
+namespace: io.kestra.tests
+
+tasks:
+  - id: "purge"
+    type: "io.kestra.core.tasks.storages.Purge"
+    endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
+
+triggers:
+  - id: schedule
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "0 0 * * *"
+```
