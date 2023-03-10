@@ -54,7 +54,7 @@ tasks:
   from: "{{outputs['output-from-query'].uri}}"
 ```
 
-## Dynamic variables
+## Dynamic variables (Each loop)
 
 #### Current taskrun value
 
@@ -71,11 +71,31 @@ tasks:
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
 ```
 
+#### Loop over object
+
+On loop, the `value` is always a JSON string, so the <code v-pre>{{ taskrun.value }}</code> is the current element as JSON string. If you want to access properties, you need to use the [json function](/docs/developer-guide/variables/function/json.html) to have a proper object and to access each property easily.
+
+```yaml
+tasks:
+  - id: each
+    type: io.kestra.core.tasks.flows.EachSequential
+    value: |
+      [
+        {"key": "my-key", "value": "my-value"},
+        {"key": "my-complex", "value": {"sub": 1, "bool": true}}
+      ]
+    tasks:
+      - id: inner
+        type: io.kestra.core.tasks.debugs.Return
+        format: "{{ json({taskrun.value).key }} > {{ json({taskrun.value).value }}"
+```
+
+
 ###  Specific outputs for dynamic tasks
 
 Dynamic tasks are tasks that will run other tasks a certain number of times. A dynamic task will run multiple iterations of a set of sub-tasks.
 
-For example, **EachSequential** and **EachParallel** produce other tasks dynamically depending on their `value` property. 
+For example, **EachSequential** and **EachParallel** produce other tasks dynamically depending on their `value` property.
 
 It is possible to reach each iteration output of dynamic tasks by using the following syntax:
 
@@ -122,7 +142,7 @@ It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` i
 
 Sometimes, it can be useful to access previous outputs on the current task tree, what is called sibling tasks.
 
-If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.md) task, you can use the <code v-pre>{{outputs.sibling.value}}</code> notation where `sibling`is the identifier of the sibling task. 
+If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.md) task, you can use the <code v-pre>{{outputs.sibling.value}}</code> notation where `sibling`is the identifier of the sibling task.
 
 If the task tree is dynamic, for example when using the [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task, you need to use `sibling[taskrun.value]` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the EachSequential task.
 
