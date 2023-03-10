@@ -7,13 +7,13 @@ order: 7
 Kestra can run some Task like [Python](https://kestra.io/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Python.html), [Node](https://kestra.io/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Node.html) or [Singer](https://kestra.io/plugins/plugin-singer/) in Docker containers. It is useful when you need to run a task in a specific environment or when you need to run a task that requires specific dependencies.
 
 ::: warning
-To have your Task running in a Docker image requires a Docker daemon running on the host.
+Having tasks running in a Docker container requires a Docker daemon running on the host.
 If you follow the [Getting Started](../../getting-started) guide, you're all set!
 :::
 
 ## Defining a Docker runner
 
-To use Docker in a task, you must define the runner as Docker.
+To run a task inside a Docker container, you must define the runner as Docker.
 
 ```yaml
 runner: DOCKER

@@ -12,9 +12,9 @@ We assume you followed the [Getting Started](../getting-started/README.md) guide
 
 ## Flows
 
-In Kestra, we define flows using the declarative language YAML.
+In Kestra, we define flows using the declarative YAML language.
 
-We identify them by an `id` and a `namespace`. The `id` is a unique identifier inside the [namespace](https://kestra.io/docs/concepts/flows.html#namespace), which is used to group flows. It can also have a [description](https://kestra.io/docs/developer-guide/documentation/) and labels.
+We identify them by an `id` and a `namespace`. The `id` is a unique identifier inside the [namespace](https://kestra.io/docs/concepts/flows.html#namespace), which is used to group flows. Flows can also have a [description](https://kestra.io/docs/developer-guide/documentation/) and labels.
 
 ```yaml
 id: kestra-tutorial
@@ -30,7 +30,7 @@ Discover more about flows in the [Flows](../flows/README.md) section.
 
 ## Tasks
 
-We use Tasks to write flows. We define a Task by an `id`, a `type`, and some properties related to its type. And each one is a step in your Flow that will execute a specific action. For example, you can use a Task to run a Python script.
+We use Tasks to write flows. We define a Task by an `id`, a `type`, and some properties related to its type. Each Task is a step in your Flow that will execute a specific action. For example, you can use a Task to run a Python script.
 
 ```yaml
 tasks:
@@ -49,13 +49,13 @@ At the moment of writing this guide, [Kestra has 290+ tasks](https://kestra.io/p
 
 ## Create your first Flow
 
-Now, let's create our first Flow. On the left side of the screen, click on the **Flows** tab.
+Now, let's create our first Flow. On the left side of the screen, click on the **Flows** menu.
 Then, click on the **Create** button.
 
 ![Access flow creation](./assets/create-button.png)
 
 Use the following Flow in the Editor, then click the **Save** button.
-This Flow will download a CSV file from the French Data Portal.
+This Flow will download a CSV file from the French Open Data Portal.
 
 ```yaml
 id: kestra-tutorial
