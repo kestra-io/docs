@@ -47,7 +47,7 @@
     "vue-count-to": "^1.0.13",
     "vue-feather-icons": "^5.1.0",
     "vue-material-design-icons": "^5.1.2",
-    "vue-stripe-menu": "^1.5.0",
+    "vue-stripe-menu": "^2.1.1",
     "vuepress": "^1.9.7",
     "vuepress-plugin-sitemap": "^2.3.1"
   },
