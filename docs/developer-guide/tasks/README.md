@@ -42,7 +42,7 @@ Flowable Tasks are used for branching, grouping, doing tasks in parallel, etc...
 
 Flowable Tasks use context [variables](../variables) to define the next tasks to run. For example, you can use the [outputs](../outputs) of a previous task in `Switch` task to decide which task to run next.
 
-## Sequential
+### Sequential
 
 This task processes tasks one after another sequentially. It is used to group tasks.
 
@@ -74,7 +74,7 @@ You can access the output of a sibling task with <code v-pre>{{outputs.sibling.v
 </div>
 
 
-## Parallel
+### Parallel
 
 This task processes tasks in parallel. It makes it convenient to process many tasks at once.
 
@@ -106,7 +106,7 @@ You cannot access the output of a sibling task as tasks will be run in parallel.
 </div>
 
 
-## Switch
+### Switch
 
 This task processes a task conditionally depending on a contextual variable's value.
 
@@ -149,7 +149,7 @@ tasks:
 </div>
 
 
-## EachSequential
+### EachSequential
 
 This task will generate many tasks at runtime depending on the value of a variable.
 Each subtask will run after the others sequentially.
@@ -184,7 +184,7 @@ You can access the output of a sibling task with <code v-pre>{{outputs.sibling[t
     <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a>
 </div>
 
-## EachParallel
+### EachParallel
 
 This task is the same as EachSequential but each subtask will run in parallel.
 
@@ -221,7 +221,7 @@ You cannot access the output of a sibling task as tasks will be run in parallel.
 
 
 
-## AllowFailure
+### AllowFailure
 
 This task will allow children tasks to fail.
 If any child task fails:
@@ -261,7 +261,7 @@ tasks:
 </div>
 
 
-## Flow
+### Flow
 
 This task will trigger another flow.
 This allows us to decouple the first flow from the second and monitor each flow individually.
@@ -286,7 +286,7 @@ tasks:
     <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Flow">Flow Task documentation</a>
 </div>
 
-## Worker
+### Worker
 
 By default, Kestra will launch each task on a fresh filesystem and on a new worker instance.
 
@@ -316,7 +316,7 @@ tasks:
 </div>
 
 
-## Pause
+### Pause
 
 Kestra flows a ran until the end of all tasks, but sometimes, you need to:
 - Add a manual validation before continuing the execution.
@@ -357,7 +357,7 @@ For this: go to the **Gantt** tab of the **Execution** page, click on the task, 
     <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Pause">Pause Task documentation</a>
 </div>
 
-## Template
+### Template
 
 [Templates](../templates) are lists of tasks that can be shared between flows. You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
 
