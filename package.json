@@ -32,7 +32,7 @@
     "bootstrap": "^4.6.2",
     "bootstrap-vue": "^2.23.1",
     "cookie-though": "^1.5.0",
-    "glob": "8.0.3",
+    "glob": "9.2.1",
     "inflection": "1.13.4",
     "lodash.sortby": "^4.7.0",
     "lodash.throttle": "^4.1.1",
