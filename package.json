@@ -56,7 +56,7 @@
     "@vuepress/plugin-google-analytics": "^1.9.7",
     "@vuepress/plugin-nprogress": "^1.9.7",
     "@vuepress/theme-default": "^1.9.7",
-    "node-sass": "^5.0.0",
+    "node-sass": "^6.0.0",
     "buffer": "^6.0.3",
     "sass-loader": "^10.1.1",
     "timeago.js": "^4.0.2",
