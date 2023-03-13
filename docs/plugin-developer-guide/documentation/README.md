@@ -128,14 +128,14 @@ Please check the [Properties validation](../runnable-task/#properties-validation
 
 The `@PluginProperty` annotation contains two attributes:
 
-- `dynamic`: set it to true if the property will be rendered dynamically. See [Render Variable](..//runnable-task/#render-variables).
+- `dynamic`: set it to true if the property will be rendered dynamically. See [Render Variable](../runnable-task/README.md#render-variables).
 - `additionalProperties`: you can use it to denote the sub-type of the property. For example, when using a `Map<String, Message>`, you can set it to `Message.class`.
 
 The Swagger `@Schema` annotation contains a lot of attributes that can be used to document the plugin properties. The most useful are:
 
 - `title`: a short description of a property.
 - `description`: long description of a property.
-- `anyOf`: a list of allowed sub-types of a property. Use it when the property type is an interface, an abstract classes, or a class inside a hierarchy of class to denote possible sub-types. This should be set when the property type is `Object`.
+- `anyOf`: a list of allowed sub-types of a property. Use it when the property type is an interface, an abstract class, or a class inside a hierarchy of classes to denote possible sub-types. This should be set when the property type is `Object`.
 
 The `@Schema` and `@PluginProperty` annotations can be used on fields, methods, or classes.
 
@@ -158,6 +158,6 @@ Due to limitations on how JSON schema works, you cannot add `@Schema` on a Java 
 
 ### Document the plugin outputs
 
-Outputs should be documented with the `io.swagger.v3.oas.annotations.media.Schema` annotation the same way as plugin properties. Please read the section above for more information.
+Outputs should be documented with the `io.swagger.v3.oas.annotations.media.Schema` annotation in the same way as plugin properties. Please read the section above for more information.
  
 Only use the annotation mentioned above. Never use `@PluginProperty` on an output.
