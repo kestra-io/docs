@@ -40,7 +40,7 @@ In Kestra, we orchestrate your workflows using **Flowable Tasks**. These tasks d
 
 Flowable Tasks are used for branching, grouping, doing tasks in parallel, etc...
 
-Flowable Tasks use context [variables](../variables) to define the next tasks to run. For example, you can use the [outputs](../outputs) of a previous task in `Switch` task to decide which task to run next.
+Flowable Tasks use context [variables](../variables) to define the next tasks to run. For example, you can use the [outputs](../outputs) of a previous task in a `Switch` task to decide which task to run next.
 
 ### Sequential
 
@@ -163,7 +163,7 @@ namespace: io.kestra.tests
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
-    value: '["value 1", "value 2", "value 3"]'
+    value: ["value 1", "value 2", "value 3"]
     tasks:
       - id: 1st
         type: io.kestra.core.tasks.debugs.Return
@@ -186,7 +186,7 @@ You can access the output of a sibling task with <code v-pre>{{outputs.sibling[t
 
 ### EachParallel
 
-This task is the same as EachSequential but each subtask will run in parallel.
+This task is the same as EachSequential, but each subtask will run in parallel.
 
 ```yaml
 id: each-parallel
@@ -195,7 +195,7 @@ namespace: io.kestra.tests
 tasks:
   - id: 1_each
     type: io.kestra.core.tasks.flows.EachParallel
-    value: '["value 1", "value 2", "value 3"]'
+    value: ["value 1", "value 2", "value 3"]
     tasks:
       - id: 1-1
         type: io.kestra.core.tasks.scripts.Bash
@@ -223,7 +223,7 @@ You cannot access the output of a sibling task as tasks will be run in parallel.
 
 ### AllowFailure
 
-This task will allow children tasks to fail.
+This task will allow child tasks to fail.
 If any child task fails:
 - The AllowFailure failed task will be marked as status `WARNING`.
 - All children's tasks inside the AllowFailure will be stopped immediately.
@@ -290,7 +290,7 @@ tasks:
 
 By default, Kestra will launch each task on a fresh filesystem and on a new worker instance.
 
-This task will run all tasks sequentially, keeping the same filesystem, allowing the reuse of the previous task files on the next tasks, and keeping track of the execution time for each tasks. This task is useful when working with large filesystem operations.
+This task will run all tasks sequentially, keeping the same filesystem, allowing the reuse of the previous task files on the next tasks, and keeping track of the execution time for each task. This task is useful when working with large filesystem operations.
 
 ```yaml
 id: worker
@@ -320,7 +320,7 @@ tasks:
 
 Kestra flows a ran until the end of all tasks, but sometimes, you need to:
 - Add a manual validation before continuing the execution.
-- Wait some duration before continuing the execution.
+- Wait for some duration before continuing the execution.
 
 For this, you can use the Pause task.
 
