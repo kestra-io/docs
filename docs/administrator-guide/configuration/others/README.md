@@ -87,7 +87,7 @@ It will allow being sure a value was defined at a default value for these tasks.
 kestra:
   tasks:
     defaults:
-    - type: io.kestra.core.tasks.debugs.Echo
+    - type: io.kestra.core.tasks.log.Log
       level: ERROR
 ```
 

@@ -19,8 +19,8 @@ tasks:
   type: io.kestra.core.tasks.debugs.Return
   format: my output {{ execution.id }}
 - id: use-output
-  type: io.kestra.core.tasks.debugs.Echo
-  format: This task display previous task output {{ outputs['produce-output'].value }}
+  type: io.kestra.core.tasks.log.Log
+  message: This task display previous task output {{ outputs['produce-output'].value }}
 ```
 
 In the example above, the first task produces an output based on the task property `format`. This output attribute is then used in the second task `format` property.

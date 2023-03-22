@@ -116,8 +116,8 @@ tasks:
       type: io.kestra.core.tasks.debugs.Return
       format: "Second return"
     - id: log-both-variables
-      type: io.kestra.core.tasks.debugs.Echo
-      format: "First: {{outputs.firstExample.value}}, Second: {{outputs['second-example'].value}}"
+      type: io.kestra.core.tasks.log.Log
+      message: "First: {{outputs.firstExample.value}}, Second: {{outputs['second-example'].value}}"
 ```
 
 ::: tip

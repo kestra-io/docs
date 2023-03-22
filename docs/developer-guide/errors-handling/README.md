@@ -27,8 +27,8 @@ tasks:
       - exit 1
 errors:
   - id: 2nd
-    type: io.kestra.core.tasks.debugs.Echo
-    format: I'm failing {{task.id}}
+    type: io.kestra.core.tasks.log.Log
+    message: I'm failing {{task.id}}
     level: INFO
 ```
 
@@ -75,8 +75,8 @@ The following example defines a retry for the `retry-sample` task with a maximum
 
 ```yaml
 - id: retry-sample
-  type: io.kestra.core.tasks.debugs.Echo
-  format: my output for task {{task.id}}
+  type: io.kestra.core.tasks.log.Log
+  message: my output for task {{task.id}}
   timeout: PT10M
   retry:
     maxAttempt: 5

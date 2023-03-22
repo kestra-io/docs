@@ -28,13 +28,13 @@ Discover more on the [error handling](../../developer-guide/errors-handling) doc
 
 ### Adding global error handling to your flow
 
-For simplicity, we will use the `Echo` Task to replace our mail sending when errors occur. Below `tasks`, we add the `errors` property containing our `Echo` Task.
+For simplicity, we will use the `Log` Task to replace our mail sending when errors occur. Below `tasks`, we add the `errors` property containing our `Log` Task.
 
 ```yaml
 errors:
   - id: error-handling
-    type: io.kestra.core.tasks.debugs.Echo
-    format: "An error occurred."
+    type: io.kestra.core.tasks.log.Log
+    message: "An error occurred."
 ```
 ## Retries
 
@@ -121,8 +121,8 @@ tasks:
           - pandas
 errors:
   - id: error-handling
-    type: io.kestra.core.tasks.debugs.Echo
-    format: "An error occurred."
+    type: io.kestra.core.tasks.log.Log
+    message: "An error occurred."
 ```
 :::
 

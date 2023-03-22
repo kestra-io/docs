@@ -283,12 +283,12 @@ tasks:
     cases:
       case1:
         - id: case1
-          type: io.kestra.core.tasks.debugs.Echo
-          format: Case 1
+          type: io.kestra.core.tasks.log.Log
+          message: Case 1
       case2:
         - id: case2
-          type: io.kestra.core.tasks.debugs.Echo
-          format: Case 2
+          type: io.kestra.core.tasks.log.Log
+          message: Case 2
       notexist:
         - id: fail
           type: io.kestra.core.tasks.executions.Fail
@@ -307,14 +307,14 @@ inputs:
 
 tasks:
   - id: before
-    type: io.kestra.core.tasks.debugs.Echo
-    format: "I'm before the fail on condition"
+    type: io.kestra.core.tasks.log.Log
+    message: "I'm before the fail on condition"
   - id: fail
     type: io.kestra.core.tasks.executions.Fail
     condition: "{{inputs.param == 'fail'}}"
   - id: after
-    type: io.kestra.core.tasks.debugs.Echo
-    format: "I'm after the fail on condition"
+    type: io.kestra.core.tasks.log.Log
+    message: "I'm after the fail on condition"
 ```
 
 <div style="text-align: right">
