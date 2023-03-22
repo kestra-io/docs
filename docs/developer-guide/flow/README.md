@@ -43,7 +43,8 @@ tasks:
 
 taskDefaults:
   - type: io.kestra.core.tasks.debugs.Echo
-    level: ERROR
+    values:
+      level: ERROR
 ```
 
 You can add arbitrary `labels` to your flow. Labels can be handy when you have a lot of flows to sort them on multiple dimensions.
@@ -84,13 +85,13 @@ You can add documentation to flows, tasks, etc... to explain the goal of the cur
 For this, Kestra allows adding a `description` property where you can write documentation of the current element.
 The description must be written using the [Markdown](https://en.wikipedia.org/wiki/Markdown) syntax.
 
-You can add a `description` property on: 
+You can add a `description` property on:
 - [Flows](../flow)
 - [Tasks](../flow)
 - [Listeners](../listeners)
 - [Triggers](../triggers)
 
-All descriptions will be visible on the UI: 
+All descriptions will be visible on the UI:
 
 ![Flow list](./docs-ui-1.png)
 
