@@ -261,6 +261,66 @@ tasks:
 </div>
 
 
+### Fail
+
+This task will fail the flow; it can be used with or without conditions.
+
+Without conditions, it can be used, for example, to fail on some switch value.
+
+```yaml
+id: fail-on-switch
+namespace: io.kestra.tests
+
+inputs:
+  - name: param
+    type: STRING
+    required: true
+
+tasks:
+  - id: switch
+    type: io.kestra.core.tasks.flows.Switch
+    value: "{{inputs.param}}"
+    cases:
+      case1:
+        - id: case1
+          type: io.kestra.core.tasks.debugs.Echo
+          format: Case 1
+      case2:
+        - id: case2
+          type: io.kestra.core.tasks.debugs.Echo
+          format: Case 2
+      notexist:
+        - id: fail
+          type: io.kestra.core.tasks.executions.Fail
+```
+
+With conditions, it can be used, for example, to validate inputs.
+
+```yaml
+id: fail-on-condition
+namespace: io.kestra.tests
+
+inputs:
+  - name: param
+    type: STRING
+    required: true
+
+tasks:
+  - id: before
+    type: io.kestra.core.tasks.debugs.Echo
+    format: "I'm before the fail on condition"
+  - id: fail
+    type: io.kestra.core.tasks.executions.Fail
+    condition: "{{inputs.param == 'fail'}}"
+  - id: after
+    type: io.kestra.core.tasks.debugs.Echo
+    format: "I'm after the fail on condition"
+```
+
+<div style="text-align: right">
+    <a class="btn btn-primary" href="/plugins/core/tasks/executions/io.kestra.core.tasks.executions.Fail">Fail Task documentation</a>
+</div>
+
 ### Flow
 
 This task will trigger another flow.
