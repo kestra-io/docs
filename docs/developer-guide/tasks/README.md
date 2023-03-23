@@ -108,7 +108,7 @@ You cannot access the output of a sibling task as tasks will be run in parallel.
 
 ### Switch
 
-This task processes a task conditionally depending on a contextual variable's value.
+This task processes a set of tasks conditionally depending on a contextual variable's value.
 
 In the following example, an input will be used to decide which task to run next.
 
@@ -148,6 +148,39 @@ tasks:
     <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch">Switch Task documentation</a>
 </div>
 
+### If
+
+This task processes a set of tasks conditionally depending on a condition. 
+The condition must coerce to a boolean. Boolean coercion allows 0, -0, null and '' to coerce to false,  all other values to coerce to true.
+The `else` branch is optional.
+
+In the following example, an input will be used to decide which task to run next.
+
+```yaml
+id: if-condition
+namespace: io.kestra.tests
+
+inputs:
+  - name: param
+    type: STRING
+
+tasks:
+  - id: if
+    type: io.kestra.core.tasks.flows.If
+    condition: "{{inputs.param}}"
+    then:
+      - id: when-true
+        type: io.kestra.core.tasks.log.Log
+        message: 'Condition was true'
+    else:
+      - id: when-false
+        type: io.kestra.core.tasks.log.Log
+        message: 'Condition was false'
+```
+
+<div style="text-align: right">
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.If">If Task documentation</a>
+</div>
 
 ### EachSequential
 
