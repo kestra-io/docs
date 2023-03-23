@@ -1,9 +1,9 @@
 # `timestamp`
-The `timestamp` filter will convert a date to an unix timestamps in second. You can convert a string with `existingFormat` and change `timeZone` with same arguments from [date](../filter/date) filter.
+The `timestamp` filter will convert a date to a unix timestamps in second. You can convert a string with `existingFormat` and change `timeZone` with same arguments from [date](../filter/date) filter.
 
 
 ```twig
-{{ date | timestamp(timeZone="Europe/Paris" }}
+{{ now() | timestamp(timeZone="Europe/Paris") }}
 ```
 
 ## Arguments
