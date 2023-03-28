@@ -167,5 +167,5 @@ When there are multiple levels of [EachSequential](/plugins/core/tasks/flows/io.
 The latter can become very complex when parents exist (multiple imbricated EachSequential). For this, you can use the special [currentEachOutput](/docs/developer-guide/variables/function/currentEachOutput.md) function. No matter the number of parents, the following example will retrieve the correct output attribute: `currentEachOutput(outputs.sibling).value` thanks to this function.
 
 ::: warning
-Accessing sibling task outputs is impossible on Parallel or [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel.md) as they run tasks in parallel.
+Accessing sibling task outputs is impossible on [Parallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.md) or [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel.md) as they run tasks in parallel.
 :::
