@@ -325,6 +325,10 @@ tasks:
       notexist:
         - id: fail
           type: io.kestra.core.tasks.executions.Fail
+      default:
+        - id: default
+          type: io.kestra.core.tasks.log.Log
+          message: default
 ```
 
 With conditions, it can be used, for example, to validate inputs.

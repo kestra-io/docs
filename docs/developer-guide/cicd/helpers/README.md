@@ -65,7 +65,7 @@ There is a convenient command on the Kestra executable that allows validation of
 ./kestra flow validate --local path-to-your-flow.yaml 
 ```
 ::: tip
-If your flow uses a helper function, flow validation must be done locally as the flow cannot be expanded on the webserver.
+If your flow uses a helper function, flow validation must be done locally as the flow cannot be expanded on the webserver. Be careful that the local installation must have the same plugins as the remote installation.
 :::
 
 
