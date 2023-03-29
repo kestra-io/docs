@@ -117,7 +117,7 @@ kestra:
   jdbc:
     queues:
       poll-size: 100
-      min-poll-interval: 100ms
+      min-poll-interval: 25ms
       max-poll-interval: 1000ms
       poll-switch-interval: 5s
 
