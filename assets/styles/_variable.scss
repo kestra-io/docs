@@ -1,0 +1,83 @@
+$primary: #8200FF;
+$secondary: #15023F;
+
+$white: #fff;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black: #000;
+
+
+$blue: #0d6efd;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #F62E76;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #198754;
+$teal: #20c997;
+$cyan: #0dcaf0;
+
+
+$font-family-sans-serif: "Public Sans", sans-serif;
+$font-family-monospace: "Source Code Pro", monospace;
+
+$body-color: #000000;
+$body-tertiary-color: #FFFFFF;
+$body-tertiary-bg: #785EEA;
+
+$link-decoration: none;
+
+
+// border
+$border-radius: .1875rem;
+$border-radius-sm: .125rem;
+$border-radius-lg: .25rem;
+
+// shadow
+$box-shadow-lg: 0px 12.972px 39.7269px rgba(90, 0, 176, 0.1);
+
+
+// nav
+$nav-pills-border-radius: 50rem;
+
+
+// accordiion
+$accordion-icon-color: $white;
+$accordion-icon-active-color: $white;
+
+// purples
+$purple-1: #382369;
+$purple-2: #FBC7F4;
+$purple-3: #9580EE;
+$purple-4: linear-gradient(160.34deg, rgba(130, 0, 255, 0.12) 5.3%, rgba(130, 0, 255, 0) 75.43%), #201838;
+$purple-5: #362762;
+$purple-6: #6113BC;
+$purple-7: #1A1223;
+$purple-8: #EEEDFF;
+$purple-9: 0px 12.972px 39.7269px rgba(90, 0, 176, 0.1);
+$purple-10: #150E1C;
+$purple-11: #332C3B;
+$purple-12: #432A71;
+$purple-13: #9124FA;
+$purple-14: #AA50FF;
+$purple-15: #9022FA;
+$purple-16: #281A35;
+
+$enable-reduced-motion: false;
+
+// bootstrap
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+

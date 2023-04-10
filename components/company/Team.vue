@@ -1,0 +1,139 @@
+<template>
+    <div class="container">
+        <Section
+            title="Meet the team"
+            subtitle="The Backbone of Kestra"
+        >
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="landing/company/emmanuel.png" />
+                    <div>
+                        <div class="team-name">Emmanuel Darras</div>
+                        <div class="team-title font-small">CEO</div>
+                    </div>
+                    <div>
+                        <a href=""><img src="landing/company/linkedin.png" /></a>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <img src="landing/company/ludovic.png" />
+                    <div>
+                        <div class="team-name">Ludovic Dehon</div>
+                        <div class="team-title font-small">CTO</div>
+                    </div>
+                    <div>
+                        <a href=""><img src="landing/company/linkedin.png" /></a>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <img src="landing/company/quentin.png" />
+                    <div>
+                        <div class="team-name">Quentin Sinig</div>
+                        <div class="team-title font-small">VP Go-to-Market</div>
+                    </div>
+                    <div>
+                        <a href=""><img src="landing/company/linkedin.png" /></a>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <img src="landing/company/martin-pierre.png" />
+                    <div>
+                        <div class="team-name">Martin-Pierre Roset</div>
+                        <div class="team-title font-small">Lead Growth & Marketing</div>
+                    </div>
+                    <div>
+                        <a href=""><img src="landing/company/linkedin.png" /></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="landing/company/loic.png" />
+                    <div>
+                        <div class="team-name">Loïc Mathieu</div>
+                        <div class="team-title font-small">Lead Software Engineer</div>
+                    </div>
+                    <div>
+                        <a href=""><img src="landing/company/linkedin.png" /></a>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <img src="landing/company/nicolas.png" />
+                    <div>
+                        <div class="team-name">Nicolas Callens</div>
+                        <div class="team-title font-small">Lead product designer</div>
+                    </div>
+                    <div>
+                        <a href=""><img src="landing/company/linkedin.png" /></a>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <img src="landing/company/yann.png" />
+                    <div>
+                        <div class="team-name">Yann Coornaert</div>
+                        <div class="team-title font-small">Software Engineer</div>
+                    </div>
+                    <div>
+                        <a href=""><img src="landing/company/linkedin.png" /></a>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <img src="landing/company/benoit.png" />
+                    <div>
+                        <div class="team-name">Benoît Pimpaud</div>
+                        <div class="team-title font-small">Product Owner & Data Engineer</div>
+                    </div>
+                    <div>
+                        <a href=""><img src="landing/company/linkedin.png" /></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="landing/company/brian.png" />
+                    <div>
+                        <div class="team-name">Brian Mullier</div>
+                        <div class="team-title font-small">Software Engineer</div>
+                    </div>
+                    <div>
+                        <a href=""><img src="landing/company/linkedin.png" /></a>
+                    </div>
+                </div>
+            </div>
+        </Section>
+    </div>
+</template>
+
+<script>
+    import Section from '../../components/layout/Section.vue';
+
+    export default {
+        components: {Section}
+    }
+</script>
+
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+
+    .container {
+        .row {
+            padding-bottom: calc($spacer * 2);
+        }
+    }
+
+    .team-name {
+        font-weight: bold;
+        margin-bottom: -5px;
+    }
+
+    .team-title {
+        font-size: 0.8rem;
+        color:#49506D;
+    }
+</style>

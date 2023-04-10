@@ -1,0 +1,108 @@
+---
+order: 5
+---
+
+# Flowable
+
+We used Flowable Tasks to make a Flow more complex but also more optimized. You can use them to create loops, conditions, and more.
+
+Discover more on the [flowable documentation](../../developer-guide/flowable).
+
+## Add flowable to your flow
+
+Let's say we want to add another Python task to do more analytics. Both Tasks would only need the file downloaded by the previous Task. To avoid wasting time, we will execute them in parallel.
+
+We will use the [Parallel](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.html) flowable. It will execute all the tasks in parallel and wait for them to finish before continuing the flow. The usage is simple; you must declare a Task with the parallel type <code v-pre>io.kestra.core.tasks.flows.Parallel</code> and add the Tasks you want to execute in parallel in the `tasks` property.
+
+```yaml
+  - id: parallel
+    type: io.kestra.core.tasks.flows.Parallel
+    tasks:
+      - id: analyze-data-sum
+        type: io.kestra.core.tasks.scripts.Python
+        runner: DOCKER
+        dockerOptions:
+          dockerHost: unix:///dind/docker.sock
+          image: python
+        inputFiles:
+          data.csv: "{{outputs.download.uri}}"
+          main.py: |
+            import pandas as pd
+            from kestra import Kestra
+            data = pd.read_csv("data.csv", sep=";")
+            sumOfConsumption = data['conso'].sum()
+            Kestra.outputs({'sumOfConsumption': int(sumOfConsumption)})
+        requirements:
+          - pandas
+      - id: analyze-data-mean
+        type: io.kestra.core.tasks.scripts.Python
+        runner: DOCKER
+        dockerOptions:
+          dockerHost: unix:///dind/docker.sock
+          image: python
+        inputFiles:
+          data.csv: "{{outputs.download.uri}}"
+          main.py: |
+            import pandas as pd
+            from kestra import Kestra
+            data = pd.read_csv("data.csv", sep=";")
+            meanOfConsumption = data['conso'].mean()
+            Kestra.outputs({'meanOfConsumption': int(meanOfConsumption)})
+        requirements:
+          - pandas
+```
+
+
+:: details Click here to see the full flow
+```yaml
+id: kestra-tutorial
+namespace: io.kestra.tutorial
+labels:
+  env: PRD
+description: |
+  # Kestra Tutorial
+  As you notice, we can use markdown here.
+tasks:
+  - id: download
+    type: io.kestra.plugin.fs.http.Download
+    uri: "https://www.data.gouv.fr/fr/datasets/r/d33eabc9-e2fd-4787-83e5-a5fcfb5af66d"
+  - id: parallel
+    type: io.kestra.core.tasks.flows.Parallel
+    tasks:
+      - id: analyze-data-sum
+        type: io.kestra.core.tasks.scripts.Python
+        runner: DOCKER
+        dockerOptions:
+          dockerHost: unix:///dind/docker.sock
+          image: python
+        inputFiles:
+          data.csv: "{{outputs.download.uri}}"
+          main.py: |
+            import pandas as pd
+            from kestra import Kestra
+            data = pd.read_csv("data.csv", sep=";")
+            sumOfConsumption = data['conso'].sum()
+            Kestra.outputs({'sumOfConsumption': int(sumOfConsumption)})
+        requirements:
+          - pandas
+      - id: analyze-data-mean
+        type: io.kestra.core.tasks.scripts.Python
+        runner: DOCKER
+        dockerOptions:
+          dockerHost: unix:///dind/docker.sock
+          image: python
+        inputFiles:
+          data.csv: "{{outputs.download.uri}}"
+          main.py: |
+            import pandas as pd
+            from kestra import Kestra
+            data = pd.read_csv("data.csv", sep=";")
+            meanOfConsumption = data['conso'].mean()
+            Kestra.outputs({'meanOfConsumption': int(meanOfConsumption)})
+        requirements:
+          - pandas
+```
+::
+
+
+<NextStep message="While flowable tasks can improve your workflows, it's important to understand how to handle errors that may arise" link="../errors/"/>

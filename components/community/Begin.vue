@@ -1,0 +1,43 @@
+<template>
+    <div class="container">
+        <Section
+            title="Begin Your Kestra Adventure"
+        >
+        <p class="text-center">
+            Start building with Kestra and enjoy your pipelines — the only limit is your imagination!
+        </p>
+        <div class="text-center cta">
+                <a href="/docs" target="_blank" class="btn btn-lg btn-primary me-2">
+                    Read the docs
+                </a>
+                <a href="/docs/getting-started" class="btn btn-lg btn-secondary">
+                    Get started
+                </a>
+            </div>
+        </Section>
+    </div>
+</template>
+
+<script>
+    import Section from '../../components/layout/Section.vue';
+
+    export default {
+        components: {Section}
+    }
+</script>
+
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+
+    .container {
+        background: $purple-8 url("/landing/enterprise/Group_2.png") no-repeat bottom right;
+        color: var(--bs-black);
+        padding-left: calc($spacer * 4);
+        padding-right: calc($spacer * 4);
+        margin-bottom: calc($spacer * 2);
+
+        :deep(p.baseline) {
+            color: var(--bs-black);
+        }
+    }
+</style>

@@ -1,0 +1,21 @@
+---
+order: 4
+---
+# Manual deployment
+
+If you want to deploy Kestra on yourself (within your own environment), we provide a standalone JAR that allows deployment on any environment you have (with an installed JVM).
+
+The latest JAR can be downloaded [here](https://api.kestra.io/v1/versions/download).
+
+This is an executable JAR:
+- For Linux & MacOs, run it with `./kestra-VERSION <command>`.
+- For Windows, rename the file `./kestra-VERSION` to `./kestra-VERSION.bat`, and run it from `CMD`.
+
+For example, to launch Kestra in standalone mode you will run `./kestra-VERSION server standalone`.
+
+More information on Kestra commands can be found in [Kestra servers](/docs/administrator-guide/servers) documentation.
+
+## Configuration
+
+You must [configure](/docs/administrator-guide/configuration) Kestra inside the default `~/.kestra/config.yml` YAML file or use the `-c` or `--config` option to point to another file.
+

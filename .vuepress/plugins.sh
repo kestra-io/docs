@@ -43,12 +43,12 @@ find data-sources -type f -name "*.md" -exec sed -Ei  's/page_title: "([^ ]+).*"
 find resources -type f -name "*.md" -exec sed -Ei  's/page_title: "([^ ]+).*"/title: \1/g' {} +
 find guides -type f -name "*.md" -exec sed -Ei  's/page_title: "([^"]+)"/title: \1/g' {} +
 
-find . -type f -name "*.md" -exec sed -Ei  's/-> (.*)/::: tip\n\1\n:::/g' {} +
-find . -type f -name "*.md" -exec sed -Ei  's/~> (.*)/::: warning\n\1\n:::/g' {} +
-find . -type f -name "*.md" -exec sed -Ei  's/!> (.*)/::: danger\n\1\n:::/g' {} +
+find . -type f -name "*.md" -exec sed -Ei  's/-> (.*)/::alert{type="info"}\n\1\n::/g' {} +
+find . -type f -name "*.md" -exec sed -Ei  's/~> (.*)/::alert{type="warning"}\n\1\n::/g' {} +
+find . -type f -name "*.md" -exec sed -Ei  's/!> (.*)/::alert{type="danger"}\n\1\n::/g' {} +
 
 sed -Ei  's/page_title: "([^ ]+).*"/title: Provider configurations/g' index.md
 sed -Ei  's/^# kestra Provider/# Provider configurations/g' index.md
 mv index.md guides/configurations.md
 
-cp -R * ../../../../docs/terraform/
+cp -R * ../../../content/docs/terraform/

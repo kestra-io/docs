@@ -1,0 +1,104 @@
+@import "variable";
+
+:root {
+    --#{$prefix}font-size-lg: #{$font-size-lg};
+    --#{$prefix}font-size-sm: #{$font-size-sm};
+}
+
+@each $breakpoint, $container-max-width in $container-max-widths {
+    @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
+        .container-min {
+            min-width: $container-max-width;
+        }
+    }
+}
+
+.hero {
+    padding-top: calc($spacer * 8);
+    padding-bottom: calc($spacer * 6);
+
+    h1, h2 {
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
+    h1 {
+        font-size: 3.25rem;
+        font-weight: 800;
+        padding-bottom: calc($spacer * 2);
+    }
+
+    h2 {
+        font-size: 1.10rem;
+        font-weight: 300;
+        padding-bottom: calc($spacer * 2);
+    }
+
+    .btn-secondary {
+        background: #7977F7;
+    }
+
+    .dot {
+        color: $pink;
+        font-family: var(--bs-font-monospace);
+        font-size: 52px;
+    }
+
+    .cta {
+        padding-bottom: calc($spacer * 4);
+    }
+}
+
+.card-group {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+
+    .card {
+        height: 100%;
+    }
+
+    &.card-centered {
+        text-align: center;
+        background: url("/landing/shadow.svg") no-repeat center center;
+        justify-content: center;
+
+        .card-icon {
+            display: block;
+            float: none;
+            margin: 0 auto $spacer;
+        }
+    }
+}
+
+.card {
+    border-color: transparent;
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        background-color: $primary;
+        border-radius: $border-radius-lg;
+        color: var(--bs-white);
+        text-align: center;
+        display: flex;
+        font-size: 2.5rem;
+        float: left;
+        margin-right: $spacer;
+        align-items: center;
+        justify-content: center;
+
+        .material-design-icon {
+            margin-top: -10px;
+        }
+    }
+
+    h5.card-title {
+        color: $purple-1;
+        font-size: $h4-font-size;
+    }
+
+    p.card-text {
+        clear: left;
+    }
+}

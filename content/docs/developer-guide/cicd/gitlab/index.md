@@ -1,0 +1,70 @@
+---
+order: 2
+---
+
+# GitLab
+
+## GitLab CI
+
+GitLab integrates a solution called [GitLab CI/CD](https://docs.gitlab.com/ee/ci/) that allows you to define pipelines in YAML files to automate tests, compilation, or even deploy your Applications.
+
+## Example
+
+Here is an example of a GitLab CI pipeline. We define three stages:
+* `test`, where we validate our flows
+* `deploy-template`, where we deploy our templates
+* `deploy-flow`, where we deploy our flows.
+
+::alert{type="warning"}
+Flows should always be deployed before Templates, to avoid flows running before their templates are created.
+::
+
+```yaml
+stages:
+  - test
+  - deploy-template
+  - deploy-flow
+
+default:
+  image: kestra/kestra:latest
+
+variables:
+  KESTRA_HOST: https://kestra.io/
+
+# --------------------------------------
+# Validating Kestra Resources
+# --------------------------------------
+kestra-validate-flows-job:
+  stage: test
+  # Validate our flows on server-side
+  script:
+    - /app/kestra flow validate --server https://${KESTRA_HOST}/
+
+kestra-validate-template-job:
+  stage: test
+  # Validate our template with the client
+  script:
+    - /app/kestra template validate ./kestra/templates --local
+
+# --------------------------------------
+# Deploying Kestra Templates
+# --------------------------------------
+kestra-deploy-templates-job:
+  stage: deploy-template
+  script:
+    - /app/kestra template namespace update io.kestra ./kestra/templates --server ${KESTRA_HOST}
+
+# --------------------------------------
+# Deploying Kestra Flows
+# --------------------------------------
+kestra-deploy-flows-io.kestra-job:
+  stage: deploy-flow
+  script:
+    - /app/kestra flow namespace update io.kestra ./kestra/flows/prod --server ${KESTRA_HOST}
+
+kestra-deploy-flows-io.kestra.dev-job:
+  stage: deploy-flow
+  script:
+    - /app/kestra flow namespace update io.kestra ./kestra/flows/dev --server ${KESTRA_HOST}
+
+```

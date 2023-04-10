@@ -11,18 +11,27 @@ Thumbs.db
 
 ## Js
 .vuepress/dist/
-node_modules/
 yarn.lock
 /build/
 
 ## Plugins
-plugins/**/*
+content/plugins/**/*
 .vuepress/build/*
 .vuepress/terraform-provider-kestra/*
 .temp
-.vuepress/public/examples.zip
-.vuepress/public/kestra-ee.yml
+public/examples.zip
+public/kestra-ee.yml
 
 ## Terraform
-docs/terraform/**/*
+content/docs/terraform/**/*
+!content/docs/terraform/index.md
 
+## Nuxt
+node_modules
+*.log*
+.nuxt
+.nitro
+.cache
+.output
+.env
+dist

@@ -1,0 +1,51 @@
+<template>
+    <div class="main">
+        <div class="hero container">
+            <h2>ABOUT KESTRA</h2>
+            <h1>Pioneering the Future of Data Orchestration and Automation</h1>
+            <h2>Join our amazing team and drive innovation in a collaborative workspace</h2>
+        </div>
+    </div>
+    <div class="container">
+        <Section
+            title="The Genesis of Kestra"
+            subtitle="Our story"
+        >
+            <div class="container text-center kestra-story">
+                <p>
+                    Our journey began with an inspiring vision: to design a data orchestration platform that would transcend the limitations of existing market solutions while offering an exceptional user experience.
+                </p>
+                <p>
+                    As a team of professionals with a solid background in automation and workflow planning, we have constantly been driven by the ambition to push the boundaries of what is possible. We aspired to develop an open-source solution that would seamlessly adapt to projects of all sizes.
+                </p>
+                <p>
+                    Guided by our passion for innovation and our determination to create an outstanding product, we have crafted our own tool – a platform that redefines data orchestration and automation, paving the way for a new era of possibilities and efficiency.
+                </p>
+            </div>
+        </Section>
+    </div>
+</template>
+
+<script>
+    import Section from '../../components/layout/Section.vue';
+    export default {
+        components: {Section}
+    }
+</script>
+
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+
+    .main {
+        background: $purple-7;
+        color: var(--bs-white);
+        padding-top: 80px;
+        margin-top: -80px;
+    }
+
+    .container {
+        .kestra-story {
+            width: 70%;
+        }
+    }
+</style>
