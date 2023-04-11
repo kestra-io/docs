@@ -2,7 +2,7 @@
     <CareersHeader />
     <CareersPerks />
     <CareersPositions />
-    <CareersCommunity />
+    <LayoutCommunity />
 </template>
 
 <script setup>

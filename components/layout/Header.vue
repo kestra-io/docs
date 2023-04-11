@@ -89,7 +89,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Company</a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a class="dropdown-item" href="/company">
+                                <a class="dropdown-item" href="/company/about-us">
                                     <AccountStarOutline />
                                     <p>
                                         <span>About us</span>

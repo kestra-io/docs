@@ -3,7 +3,7 @@
     <SolutionsPossibilities />
     <SolutionsUseCases />
     <SolutionsEnterprise />
-    <SolutionsCommunity />
+    <LayoutCommunity />
 </template>
 
 <script setup>

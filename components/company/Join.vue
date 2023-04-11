@@ -33,6 +33,7 @@
         padding-right: calc($spacer * 4);
         margin-bottom: calc($spacer * 2);
         margin-top: calc($spacer * -2);
+        border-radius: 10px;
 
         :deep(p.baseline) {
             color: var(--bs-black);
