@@ -2,9 +2,10 @@
     <FeaturesHeader />
     <FeaturesMain />
     <FeaturesShips />
-    <FeaturesIntegrations />
+    <LayoutIntegrations />
     <FeaturesCreate />
     <FeaturesBuild />
+    <FeaturesData />
     <FeaturesEnterpriseEdition />
 </template>
 

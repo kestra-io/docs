@@ -6,7 +6,7 @@
     <EnterpriseEditions />
     <EnterpriseSecurity />
     <EnterpriseContact />
-    <EnterpriseIntegrations />
+    <LayoutIntegrations />
 </template>
 
 <script setup>

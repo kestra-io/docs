@@ -81,7 +81,7 @@
 
                 <div class="text-center">
                     <a class="btn btn-lg btn-primary me-2" href="/enterprise-edition">Learn more</a>
-                    <a class="btn btn-lg btn-dark " href="/company/contact-us">Contact us</a>
+                    <a class="btn btn-lg btn-dark " href="/company/contact">Contact us</a>
                 </div>
             </Section>
         </div>

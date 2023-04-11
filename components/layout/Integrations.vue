@@ -11,8 +11,8 @@
                         <b>Customize and extend</b> the capabilities and functionalities of Kestra with the plugins feature. integrate and connect all kind of data sources, cloud services, databases, transformation, quality, notification tools and even more! It is also possible to create Custom Plugins that add specific custom features to meet your specifics needs.
                     </p>
 
-                    <a href="#TODO" class="btn btn-lg btn-dark me-2">See all plugins</a>
-                    <a href="#TODO" class="btn btn-lg btn-primary">Create your plugin</a>
+                    <a href="/plugins" class="btn btn-lg btn-dark me-2">See all plugins</a>
+                    <a href="/docs/plugin-developer-guide" class="btn btn-lg btn-primary">Create your plugin</a>
                 </div>
             </div>
         </div>

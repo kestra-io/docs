@@ -2,7 +2,7 @@
     <div class="container">
         <Section
             title="Prompt shipping"
-            subtitle="TODO"
+            subtitle="FEATURES"
             baseline="Save on time, stress, and development costs."
         >
 
