@@ -1,6 +1,6 @@
 <template>
     <div class="container bd-gutter mt-3 my-md-4 bd-layout">
-        <NavAside />
+        <NavSideBar :depth-level="0"/>
 
         <nav v-if="false">
 
@@ -34,7 +34,7 @@
 <script setup>
     import PrevNext from "~/components/docs/PrevNext.vue";
     import NavToc from "~/components/docs/NavToc.vue";
-    import NavAside from "~/components/docs/NavAside.vue";
+    import NavSideBar from "~/components/docs/NavSideBar.vue";
 
     const route = useRoute()
     const slug = "/docs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
