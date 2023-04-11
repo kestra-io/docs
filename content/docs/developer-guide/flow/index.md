@@ -42,7 +42,7 @@ tasks:
     format: "A log line content with a contextual date variable {{taskrun.startDate}}"
 
 taskDefaults:
-  - type: io.kestra.core.tasks.debugs.Echo
+  - type: io.kestra.core.tasks.log.Log
     values:
       level: ERROR
 ```

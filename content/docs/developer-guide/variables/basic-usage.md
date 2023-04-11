@@ -241,7 +241,7 @@ tasks:
     format: "{{task.id}} > {{taskrun.startDate}}"
   - id: 2_each
     type: io.kestra.core.tasks.flows.EachSequential
-    value: '["a", "b"]'
+    value: ["a", "b"]
     tasks:
       # Switch
       - id: 2-1_switch
@@ -259,7 +259,7 @@ tasks:
 
             - id: 2-1_each
               type: io.kestra.core.tasks.flows.EachSequential
-              value: '["1", "2"]'
+              value: ["1", "2"]
               tasks:
               - id: 2-1-1_switch
                 type: io.kestra.core.tasks.flows.Switch

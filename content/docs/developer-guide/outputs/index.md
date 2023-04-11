@@ -19,8 +19,8 @@ tasks:
   type: io.kestra.core.tasks.debugs.Return
   format: my output {{ execution.id }}
 - id: use-output
-  type: io.kestra.core.tasks.debugs.Echo
-  format: This task display previous task output {{ outputs['produce-output'].value }}
+  type: io.kestra.core.tasks.log.Log
+  message: This task display previous task output {{ outputs['produce-output'].value }}
 ```
 
 In the example above, the first task produces an output based on the task property `format`. This output attribute is then used in the second task `format` property.
@@ -64,7 +64,7 @@ You can access the current taskrun value with <code v-pre>{{ taskrun.value }}</c
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
-    value: '["value 1", "value 2", "value 3"]'
+    value: ["value 1", "value 2", "value 3"]
     tasks:
       - id: inner
         type: io.kestra.core.tasks.debugs.Return
@@ -79,11 +79,9 @@ On loop, the `value` is always a JSON string, so the <code v-pre>{{ taskrun.valu
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
-    value: |
-      [
-        {"key": "my-key", "value": "my-value"},
-        {"key": "my-complex", "value": {"sub": 1, "bool": true}}
-      ]
+    value:
+      - {"key": "my-key", "value": "my-value"}
+      - {"key": "my-complex", "value": {"sub": 1, "bool": true}}
     tasks:
       - id: inner
         type: io.kestra.core.tasks.debugs.Return
@@ -91,7 +89,7 @@ tasks:
 ```
 
 
-###  Specific outputs for dynamic tasks
+### Specific outputs for dynamic tasks
 
 Dynamic tasks are tasks that will run other tasks a certain number of times. A dynamic task will run multiple iterations of a set of sub-tasks.
 
@@ -110,7 +108,7 @@ tasks:
       - id: sub
         type: io.kestra.core.tasks.debugs.Return
         format: "{{ task.id }} > {{ taskrun.value }} > {{ taskrun.startDate }}"
-    value: "[\"s1\", \"s2\", \"s3\"]"
+    value: ["s1", "s2", "s3"]
   - id: use
     type: io.kestra.core.tasks.debugs.Return
     format: "Previous task produced output : {{ outputs.sub.s1.value }}"
@@ -130,7 +128,7 @@ tasks:
       - id: inner
         type: io.kestra.core.tasks.debugs.Return
         format: "{{ task.id }}"
-    value: "[\"value 1\", \"value 2\", \"value 3\"]"
+    value: ["value 1", "value 2", "value 3"]
   - id: end
     type: io.kestra.core.tasks.debugs.Return
     format: "{{ task.id }} > {{ outputs.inner['value 1'].value }}"
@@ -158,7 +156,7 @@ tasks:
       - id: second
         type: io.kestra.core.tasks.debugs.Return
         format: "{{ outputs.first[taskrun.value].value }}"
-    value: "[\"value 1\", \"value 2\", \"value 3\"]"
+    value: ["value 1", "value 2", "value 3"]
   - id: end
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{outputs.second['value 1'].value}}"
@@ -169,5 +167,5 @@ When there are multiple levels of [EachSequential](/plugins/core/tasks/flows/io.
 The latter can become very complex when parents exist (multiple imbricated EachSequential). For this, you can use the special [currentEachOutput](/docs/developer-guide/variables/function/currentEachOutput.md) function. No matter the number of parents, the following example will retrieve the correct output attribute: `currentEachOutput(outputs.sibling).value` thanks to this function.
 
 ::alert{type="warning"}
-Accessing sibling task outputs is not possible on [Parallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.md) or [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel.md) as they run tasks in parallel.
+Accessing sibling task outputs is impossible on [Parallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.md) or [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel.md) as they run tasks in parallel.
 ::

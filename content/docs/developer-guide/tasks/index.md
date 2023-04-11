@@ -40,7 +40,7 @@ In Kestra, we orchestrate your workflows using **Flowable Tasks**. These tasks d
 
 Flowable Tasks are used for branching, grouping, doing tasks in parallel, etc...
 
-Flowable Tasks use context [variables](../variables) to define the next tasks to run. For example, you can use the [outputs](../outputs) of a previous task in `Switch` task to decide which task to run next.
+Flowable Tasks use context [variables](../variables) to define the next tasks to run. For example, you can use the [outputs](../outputs) of a previous task in a `Switch` task to decide which task to run next.
 
 ### Sequential
 
@@ -108,7 +108,7 @@ You cannot access the output of a sibling task as tasks will be run in parallel.
 
 ### Switch
 
-This task processes a task conditionally depending on a contextual variable's value.
+This task processes a set of tasks conditionally depending on a contextual variable's value.
 
 In the following example, an input will be used to decide which task to run next.
 
@@ -148,6 +148,39 @@ tasks:
     <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch">Switch Task documentation</a>
 </div>
 
+### If
+
+This task processes a set of tasks conditionally depending on a condition. 
+The condition must coerce to a boolean. Boolean coercion allows 0, -0, null and '' to coerce to false,  all other values to coerce to true.
+The `else` branch is optional.
+
+In the following example, an input will be used to decide which task to run next.
+
+```yaml
+id: if-condition
+namespace: io.kestra.tests
+
+inputs:
+  - name: param
+    type: STRING
+
+tasks:
+  - id: if
+    type: io.kestra.core.tasks.flows.If
+    condition: "{{inputs.param}}"
+    then:
+      - id: when-true
+        type: io.kestra.core.tasks.log.Log
+        message: 'Condition was true'
+    else:
+      - id: when-false
+        type: io.kestra.core.tasks.log.Log
+        message: 'Condition was false'
+```
+
+<div style="text-align: right">
+    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.If">If Task documentation</a>
+</div>
 
 ### EachSequential
 
@@ -163,7 +196,7 @@ namespace: io.kestra.tests
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
-    value: '["value 1", "value 2", "value 3"]'
+    value: ["value 1", "value 2", "value 3"]
     tasks:
       - id: 1st
         type: io.kestra.core.tasks.debugs.Return
@@ -186,7 +219,7 @@ You can access the output of a sibling task with <code v-pre>{{outputs.sibling[t
 
 ### EachParallel
 
-This task is the same as EachSequential but each subtask will run in parallel.
+This task is the same as EachSequential, but each subtask will run in parallel.
 
 ```yaml
 id: each-parallel
@@ -195,7 +228,7 @@ namespace: io.kestra.tests
 tasks:
   - id: 1_each
     type: io.kestra.core.tasks.flows.EachParallel
-    value: '["value 1", "value 2", "value 3"]'
+    value: ["value 1", "value 2", "value 3"]
     tasks:
       - id: 1-1
         type: io.kestra.core.tasks.scripts.Bash
@@ -223,7 +256,7 @@ You cannot access the output of a sibling task as tasks will be run in parallel.
 
 ### AllowFailure
 
-This task will allow children tasks to fail.
+This task will allow child tasks to fail.
 If any child task fails:
 - The AllowFailure failed task will be marked as status `WARNING`.
 - All children's tasks inside the AllowFailure will be stopped immediately.
@@ -261,6 +294,70 @@ tasks:
 </div>
 
 
+### Fail
+
+This task will fail the flow; it can be used with or without conditions.
+
+Without conditions, it can be used, for example, to fail on some switch value.
+
+```yaml
+id: fail-on-switch
+namespace: io.kestra.tests
+
+inputs:
+  - name: param
+    type: STRING
+    required: true
+
+tasks:
+  - id: switch
+    type: io.kestra.core.tasks.flows.Switch
+    value: "{{inputs.param}}"
+    cases:
+      case1:
+        - id: case1
+          type: io.kestra.core.tasks.log.Log
+          message: Case 1
+      case2:
+        - id: case2
+          type: io.kestra.core.tasks.log.Log
+          message: Case 2
+      notexist:
+        - id: fail
+          type: io.kestra.core.tasks.executions.Fail
+      default:
+        - id: default
+          type: io.kestra.core.tasks.log.Log
+          message: default
+```
+
+With conditions, it can be used, for example, to validate inputs.
+
+```yaml
+id: fail-on-condition
+namespace: io.kestra.tests
+
+inputs:
+  - name: param
+    type: STRING
+    required: true
+
+tasks:
+  - id: before
+    type: io.kestra.core.tasks.log.Log
+    message: "I'm before the fail on condition"
+  - id: fail
+    type: io.kestra.core.tasks.executions.Fail
+    condition: "{{inputs.param == 'fail'}}"
+  - id: after
+    type: io.kestra.core.tasks.log.Log
+    message: "I'm after the fail on condition"
+```
+
+<div style="text-align: right">
+    <a class="btn btn-primary" href="/plugins/core/tasks/executions/io.kestra.core.tasks.executions.Fail">Fail Task documentation</a>
+</div>
+
 ### Flow
 
 This task will trigger another flow.
@@ -290,7 +387,7 @@ tasks:
 
 By default, Kestra will launch each task on a fresh filesystem and on a new worker instance.
 
-This task will run all tasks sequentially, keeping the same filesystem, allowing the reuse of the previous task files on the next tasks, and keeping track of the execution time for each tasks. This task is useful when working with large filesystem operations.
+This task will run all tasks sequentially, keeping the same filesystem, allowing the reuse of the previous task files on the next tasks, and keeping track of the execution time for each task. This task is useful when working with large filesystem operations.
 
 ```yaml
 id: worker
@@ -320,7 +417,7 @@ tasks:
 
 Kestra flows a ran until the end of all tasks, but sometimes, you need to:
 - Add a manual validation before continuing the execution.
-- Wait some duration before continuing the execution.
+- Wait for some duration before continuing the execution.
 
 For this, you can use the Pause task.
 

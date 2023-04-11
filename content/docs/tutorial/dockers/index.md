@@ -121,8 +121,8 @@ tasks:
           - "cat new.csv > {{ outputFiles.data_update }}"
 errors:
   - id: error-handling
-    type: io.kestra.core.tasks.debugs.Echo
-    format: "An error occurred."
+    type: io.kestra.core.tasks.log.Log
+    message: "An error occurred."
 ```
 ::
 
