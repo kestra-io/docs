@@ -24,7 +24,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/usages">
+                                <a class="dropdown-item" href="/solutions">
                                     <AccountNetworkOutline />
                                     <p>
                                         <span>Usages</span>
@@ -42,6 +42,10 @@
                                 </a>
                             </li>
                         </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/solutions" role="button" >Solutions</a>
                     </li>
 
                     <li class="nav-item dropdown">
