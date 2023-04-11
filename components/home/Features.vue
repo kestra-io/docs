@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <Section subtitle="Features" title="The data orchestrator of choice: Kestra">
+        <Section subtitle="Stand Out with Kestra's Exclusive Features" title="Enhanced Workflow Efficiency">
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-lg" data-aos="fade-zoom-in">

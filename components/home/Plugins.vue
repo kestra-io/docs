@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <Section
             title="Over 300 plugins"
-            subtitle="Plugins"
+            subtitle="Expand Your Workflow Capabilities"
             baseline="Plugins are at the core of Kestra's extensibility. Many plugins are available from the Kestra core team, and creating your own is easy. With plugins, you can add new functionality to Kestra."
         >
             <ul class="nav nav-pills">
@@ -48,7 +48,7 @@
             </div>
 
             <div class="text-center mt-5">
-                <a class="btn btn-lg btn-primary " href="#">See all plugins</a>
+                <a class="btn btn-lg btn-primary " href="/plugins">See all plugins</a>
             </div>
         </Section>
     </div>

@@ -2,8 +2,8 @@
     <div class="container-fluid bg-body-tertiary">
         <div class="container">
             <Section
-                title="Power your data workflows with Kestra"
-                subtitle="Solutions"
+                title="Uncover a Wide Range of Use Cases to Leverage Kestra's Potential"
+                subtitle="Maximize Data Workflow Capabilities"
             >
                 <ul class="nav nav-pills">
                     <li class="nav-item">
@@ -36,8 +36,8 @@
                             </li>
                         </ol>
                     </div>
-                    <div class="col-md-6">
-                        <h1>TODO</h1>
+                    <div class="col-md-6 use-case-img">
+                        <img src="/landing/home/dashboard.png" width="600"/>
                     </div>
                 </div>
 
@@ -90,7 +90,7 @@
                 </div>
 
                 <div class="text-center mt-5">
-                    <a class="btn btn-lg btn-primary " href="#">See more</a>
+                    <a class="btn btn-lg btn-primary " href="/solutions">See more</a>
                 </div>
             </Section>
         </div>
@@ -175,6 +175,11 @@
                 right: -2rem;
                 bottom: -3rem;
             }
+        }
+
+        .use-case-img {
+            padding-top: calc($spacer * 6);
+            vertical-align: middle;
         }
     }
 </style>

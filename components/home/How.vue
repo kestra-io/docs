@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <Section
-            title="Powerful Event Based Workflow Automation"
-            subtitle="How?"
+            title="High-Performance Automation and Integration for Optimized Data Operations"
+            subtitle="Master Data Workflows"
         >
             <div class="row mb-5">
                 <div class="col-md-6 p-5">
@@ -58,9 +58,21 @@
                     <h5>Monitor and optimize your workflows</h5>
                     <p>Track the performance of your workflows, identify bottlenecks, and optimize them for speed and efficiency.</p>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 row mb-5">
                     <img class="img-fluid" src="/landing/home/how-5.svg" alt="" />
                 </div>
+            </div>
+
+            <div class="text-center">
+                <p class="last-words">
+                    By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
+                </p>
+                <a href="/docs/getting-started" class="btn btn-lg btn-primary me-2">
+                    Get started
+                </a>
+                <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-secondary">
+                    Live demo
+                </a>
             </div>
         </Section>
     </div>
@@ -73,3 +85,15 @@
         components: {Section}
     }
 </script>
+
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+
+    .last-words {
+        color: #343434;
+        padding-left: calc($spacer * 8);
+        padding-right: calc($spacer * 8);
+        font-size: large;
+    }
+
+</style>

@@ -49,7 +49,7 @@
             }
         },
         created() {
-             stargazers().then(value => this.stargazersText = value);
+             stargazers().then(value => this.stargazersText = value); 
         },
         computed: {
             companies() {
