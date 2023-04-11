@@ -41,9 +41,9 @@ In the **Flow** menu, click the "Create" button and paste the following flow:
 id: getting-started
 namespace: io.kestra.tutorial
 tasks:
-- type: io.kestra.core.tasks.debugs.Echo
-  id: echo-task
-  format: Hello World !
+- type: io.kestra.core.tasks.log.Log
+  id: log-task
+  message: Hello World !
 ```
 
 When you're done, click on the **Save** button to save it and start your first execution via the **Create Execution* button.

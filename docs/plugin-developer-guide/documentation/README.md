@@ -66,6 +66,7 @@ The `@PluginSubGroup` annotation allows setting:
 
 - The sub-group `title`. If not set, the name of the sub-group will be used.
 - The sub-group `description`, which is a short sentence introducing the sub-group.
+- The sub-group `categories`, which is a list of `PluginCategory`. If not set, the category `MISC` will be used.
 
 For example, for the GCP BigQuery sub-group:
 
@@ -73,7 +74,8 @@ For example, for the GCP BigQuery sub-group:
 @PluginSubGroup(
     title = "BigQuery",
     description = "This sub-group of plugins contains tasks for accessing Google Cloud BigQuery.\n" +
-        "BigQuery is a completely serverless and cost-effective enterprise data warehouse. "
+        "BigQuery is a completely serverless and cost-effective enterprise data warehouse.",
+    categories = { PluginSubGroup.PluginCategory.DATABASE, PluginSubGroup.PluginCategory.CLOUD }
 )
 package io.kestra.plugin.gcp.bigquery;
 
@@ -161,3 +163,18 @@ Due to limitations on how JSON schema works, you cannot add `@Schema` on a Java 
 Outputs should be documented with the `io.swagger.v3.oas.annotations.media.Schema` annotation in the same way as plugin properties. Please read the section above for more information.
  
 Only use the annotation mentioned above. Never use `@PluginProperty` on an output.
+
+### Document the plugin metrics
+
+Tasks can produce metrics; to document those you must add a `@Metric` annotation instance for each metric in the `@Plugin` annotation instance of the task.
+
+For example, to document two metrics: a **length** metric of type `counter` and a **duration** metric of `type` timer, you can use the following:
+
+```java
+@Plugin(
+    metrics = {
+        @Metric(name = "length", type = Counter.TYPE),
+        @Metric(name = "duration", type = Timer.TYPE)
+    }
+)
+```
