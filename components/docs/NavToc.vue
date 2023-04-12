@@ -1,5 +1,6 @@
 <template>
     <div class="bd-toc mb-4 text-body-secondary">
+        <slot name="header"></slot>
         <button
             class="btn d-lg-none"
             type="button"
@@ -100,7 +101,7 @@
 
             a {
                 display: block;
-                padding: .125rem .75rem ;
+                padding: .125rem .75rem;
                 color: inherit;
                 text-decoration: none;
 

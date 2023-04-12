@@ -2,7 +2,7 @@
 title: "Integrating Kestra and Debezium to capture database changes without Kafka Connect"
 description: Discover how Leroy Merlin moved all their data pipelines to Google Cloud with Kestra
 date: 2022-04-05T12:00:00
-layout: BlogsPost
+category: Solutions
 author:
   name: Ludovic Dehon
   image: "ldehon"
@@ -12,7 +12,7 @@ image: /blogs/2022-04-05-debezium-without-kafka-connect.jpg
 
 There are several products on the market to help you with your data pipeline management and data orchestration. Each handles data differently, and it can be difficult to determine the differences because many perform the same tasks, but with different methods. In this article, we will be discussing the differences between Debezium with Kafka Connect and our own product, [Kestra](https://github.com/kestra-io/kestra) (an **open-source orchestration and scheduling platform** with a robust set of plugins) and how they can integrate to provide a **more efficient and cost-effective** hybrid solution.
 
-![Debezium architecture](2022-04-05-debezium-without-kafka-connect/debezium-architecture.png)
+![Debezium architecture](/blogs/2022-04-05-debezium-without-kafka-connect/debezium-architecture.png)
 
 
 First, let’s discuss Debezium. [Debezium](https://debezium.io/) is an open-source change data capture platform from Red Hat, offering a set of distributed services that captures row-level changes in your databases so that connected applications can see and respond to those changes in real-time. All changes (row-level) are recorded in a transaction log, and each application simply reads the transaction logs that are pertinent to them.
@@ -39,7 +39,7 @@ For example, from [Amazon MSK connect](https://docs.aws.amazon.com/msk/latest/de
 
 
 <p align="center">
-  <img src="./2022-04-05-debezium-without-kafka-connect/msk.png" alt="MSK connect pricing on aws">
+  <img src="/blogs/2022-04-05-debezium-without-kafka-connect/msk.png" alt="MSK connect pricing on aws">
 </p>
 
 This lead to $160 for 1 source and 1 destination per month.
@@ -57,7 +57,7 @@ In short, the same features that make Debezium’s performance in streaming / hi
 Real-time change data capture is an **amazing accomplishment, and a valuable tool** to have in your toolbox, to be sure. But a racecar is not very useful on a highway, or in a school zone, and in the same way, real-time delivery of data changes is not required for every use case. A dashboard or KPI might only need to be **refreshed once a day**, or every few hours, for example. Whether it is cloud services or on-premises, resources cost money, and the challenge is to make the **most efficient use of resources** based on your requirements. Bandwidth, compute resources, or services based on throughput (such as BigQuery) are all expensive commodities, especially if they are always running.  If real-time performance is not necessary, then why waste money on resources you do not need?
 
 <p align="center">
-  <img src="./2022-04-05-debezium-without-kafka-connect/money.gif" alt="waste money">
+  <img src="/blogs/2022-04-05-debezium-without-kafka-connect/money.gif" alt="waste money">
 </p>
 
 Kestra is perfect for such situations and can scale performance up or down as needed from periodic updates to **near-real-time scenarios**. This functionality is possible due to the use of batch or micro-batch processing. Batch processing sends data at intervals, rather than in real-time. It is typically used when data freshness **is not a mission-critical issue**, and when you are working with large datasets and running complex algorithms that require a full dataset (sorting for example). **Micro-batch processing** is a similar process but on much smaller data sets, typically about a minute or so’s worth of data. This allows for near-real-time processing of datasets and is perfect for low-flow situations where a few minutes of delay is acceptable. In many cases, micro-batch processing and stream processing are used interchangeably in data architecture descriptions, because, depending on configuration, they can offer nearly the same performance.
@@ -68,7 +68,7 @@ Debezium leverages Kafka and Kafka Connect to deliver streaming performance, and
 
 By leveraging Kestra for **near-real-time or batch workloads**, and Debezium for streaming, some of the advantages are obvious. This allows for a solution that leverages **only the resources required** for the use case in question, rather than applying resource-intensive streaming resources to every process. For workflows that are not real-time, CPU and memory resources are limited or shut down when not in use. Services that charge based on the throughput, such as BigQuery, are **only charged when in use**. All of this combines to create an efficient solution that wastes no resources and **saves money**. All row-level changes are still captured, and with Debezium, a built-in feature snapshots the database on the first start.
 
-![Kestra Topology](2022-04-05-debezium-without-kafka-connect/topology.png)
+![Kestra Topology](/blogs/2022-04-05-debezium-without-kafka-connect/topology.png)
 
 But there are less obvious advantages to adding Kestra to the mix. Pipelines **are visibly presented**, ensuring that dependencies are **continuously monitored**, and you can see exactly where in a data pipeline the problem lies. This monitoring capacity provides a great deal of peace of mind when managing different data flow requirements, and mitigates the complexity of clustered Kafka deployments (such as those that make part of more complex Debezium deployments).
 

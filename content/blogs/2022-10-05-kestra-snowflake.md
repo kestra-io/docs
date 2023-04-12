@@ -2,7 +2,7 @@
 title: "Snowflake data pipeline with Kestra"
 description: Kestra’s Snowflake plugin makes data warehousing simple. Even non-developers can write relevant flows and data pipeline
 date: 2022-10-05T10:00:00
-layout: BlogsPost
+category: Solutions
 author:
   name: Ludovic Dehon
   image: "ldehon"
@@ -40,13 +40,13 @@ Now, companies can build **scalable data workloads** that can perform strong dat
 ### Where does kestra fit in?
 
 <p style="text-align:center">
-<img src="2022-10-05-kestra-snowflake/mario.jpg" class="rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
+<img src="/blogs/2022-10-05-kestra-snowflake/mario.jpg" class="rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
 </p>
 
 
 Typically, data warehouse workloads are part of a bigger technology stack within an organization or across organizations. To streamlines various operations, data pipelines should be orchestrated and scheduled. Data orchestration unifies data from disparate sources and transforms it to enable analytics. This is where [Kestra](/) jumps in.
 
-Kestra is a state-of-the-art, open-source, cloud-native platform built to orchestrate & schedule scalable data workflows, aiming to improve the productivity of DataOps teams. Kestra's orchestration platform can build, run, manage, and monitor all [kinds of complex workflows](/docs/developer-guide/flowable/) sequentially and in parallel. It offers numerous [plugin integrations](/plugins/) to build advanced data workflows, including our [Snowflake plugin](/plugins/plugin-jdbc-snowflake/), discussed below.
+Kestra is a state-of-the-art, open-source, cloud-native platform built to orchestrate & schedule scalable data workflows, aiming to improve the productivity of DataOps teams. Kestra's orchestration platform can build, run, manage, and monitor all [kinds of complex workflows](/docs/tutorial/flowable/) sequentially and in parallel. It offers numerous [plugin integrations](/plugins/) to build advanced data workflows, including our [Snowflake plugin](/plugins/plugin-jdbc-snowflake/), discussed below.
 
 Moreover, Kestra can execute workflows based on event-based, time-based, and API-based scheduling, giving complete control to the data teams. With a unified end-to-end platform, companies save time and money on storage, compute, and development costs.
 
@@ -114,6 +114,6 @@ fileName: destFile.csv
 
 [Kestra](/) has quickly become an essential piece of the modern data stack. Kestra provides unprecedented flexibility and control to data teams. It can orchestrate any kind of workflow with ease using a rich UI that monitors all flows.
 
-Kestra's Snowflake plugin makes data warehousing simple. Even non-developers can write relevant flows using descriptive YAML. Your Snowflake storage pipeline accommodates raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the [ELT pipeline](/content/blogs/2022-04-27-etl-vs-elt.html). Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
+Kestra's Snowflake plugin makes data warehousing simple. Even non-developers can write relevant flows using descriptive YAML. Your Snowflake storage pipeline accommodates raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the [ELT pipeline](/blogs/2022-04-27-etl-vs-elt.html). Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
 
 If you need any guidance with your Snowflake deployment, our experts at Kestra would love to hear from you. [Let us know](https://api.kestra.io/v1/communities/slack/redirect) if you would like us to add more plugins to the [list](/plugins). Or start building your [custom Kestra plugin](/docs/plugin-developer-guide/) today and send it our way. We always welcome [contributions](https://github.com/kestra-io/kestra)!

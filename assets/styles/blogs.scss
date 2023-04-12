@@ -1,0 +1,43 @@
+
+@import "variable";
+
+img {
+    border-radius: calc(var(--bs-border-radius) * 3);
+}
+
+.small-img {
+    width: 22.8rem;
+    height: 12rem;
+}
+
+.small-text {
+    font-size: 0.75rem;
+}
+
+.category {
+    color: var(--bs-primary);
+}
+
+.details {
+    color: var(--bs-gray-700);
+}
+
+h6 {
+    font-weight: bold;
+}
+
+.rounded-button {
+    border-radius: 2rem;
+    padding: calc($spacer / 2) calc($spacer / 1);
+    margin-right: calc($spacer / 2);
+    background-color: var(--bs-white);
+    color: $purple;
+    border: 0.05rem solid $purple;
+    font-weight: lighter;
+
+    &.active {
+        background-color: var(--bs-primary);
+        color: var(--bs-white);
+        font-weight: bold;
+    }
+}

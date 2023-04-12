@@ -2,7 +2,7 @@
 title: "Introducing Kestra first public release :tada:"
 description: Today, our team is proud to announce a first public release of Kestra — an open-source platform to orchestrate and schedule any kind of workflow at scale.
 date: 2022-02-01T10:00:00
-layout: BlogsPost
+category: News & Products Updates
 author:
   name: Ludovic Dehon
   image: "ldehon"
@@ -28,10 +28,10 @@ As you can see, Kestra will handle **all your pipelines** !
 ## The History of Kestra!
 Kestra started in 2019 with this [initial commit](https://github.com/kestra-io/kestra/commit/d57e30c0c0d450590a1eaac5df0e82e1ea94e562). At this time, Kestra was at the proof-of-concept stage.
 
-<img src="2022-02-01-kestra-opensource/initial-commit.jpg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 450px">
+<img src="/blogs/2022-02-01-kestra-opensource/initial-commit.jpg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 450px">
 
 
-To provide a bit of a background: I was working for Leroy Merlin as a consultant. We needed to build a new cloud-based data platform from scratch (destination: mostly Google Cloud Platform). We tried a [lot of things](/content/blogsnt/blogs/2022-02-22-leroy-merlin-usage-kestra) and failed with some of our attempts. The **biggest setback was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed simply due to the Airflow scheduler), performance issues (unable to handle a light workload), and a lack of features (scaling, data processing). After many tests (Google Composer, Open source Airflow on Kubernetes), the decision was final: **Airflow was rejected by Leroy Merlin**.
+To provide a bit of a background: I was working for Leroy Merlin as a consultant. We needed to build a new cloud-based data platform from scratch (destination: mostly Google Cloud Platform). We tried a [lot of things](/blogs/2022-02-22-leroy-merlin-usage-kestra) and failed with some of our attempts. The **biggest setback was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed simply due to the Airflow scheduler), performance issues (unable to handle a light workload), and a lack of features (scaling, data processing). After many tests (Google Composer, Open source Airflow on Kubernetes), the decision was final: **Airflow was rejected by Leroy Merlin**.
 
 <div class="clearfix" />
 
@@ -89,10 +89,10 @@ jq -r '.name' /tmp/query.json
 
 Kestra avoids the rigmarole of installing the software on the system, handling dependencies and conflicts, dealing with Python, etc. — just install a plugin (a simple jar) and speak directly with your database.
 
-We have a [number of plugins](/plugins/) and the process of [developing your own](/docs/plugin-developer-guide/) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/company/contact) if you require help or support).
+We have a [number of plugins](/plugins/) and the process of [developing your own](/docs/plugin-developer-guide) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/company/contact) if you require help or support).
 
 ## First Public Release *and* Production Ready!
-First public release doesn't mean that Kestra is not production ready. In fact, it has been **used in production since August 2020 at Leroy Merlin** — take a deeper look at the [case study](/content/blogsnt/blogs/2022-02-22-leroy-merlin-usage-kestra) if you want more detail. Here are some figures to give a picture of Kestra’s credentials:
+First public release doesn't mean that Kestra is not production ready. In fact, it has been **used in production since August 2020 at Leroy Merlin** — take a deeper look at the [case study](/blogs/2022-02-22-leroy-merlin-usage-kestra) if you want more detail. Here are some figures to give a picture of Kestra’s credentials:
 - **4 clusters** one for every environment
 - **200+ users/developers**
 - **2000+ flows** in production

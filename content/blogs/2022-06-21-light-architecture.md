@@ -2,7 +2,7 @@
 title: "Introducing new Kestra light architecture for open source data orchestration."
 description: "A new very light architecture for Kestra, open-source orchestration and scheduling platform."
 date: 2022-06-21T07:00:00
-layout: BlogsPost
+category: News & Products Updates
 author:
   name: Ludovic Dehon
   image: "ldehon"
@@ -10,7 +10,7 @@ author:
 image: /blogs/2022-06-21-kestra-light.jpg
 ---
 
-When we have launch [Kestra](https://github.com/kestra-io/kestra) [officially](2022-02-01-kestra-opensource) few month ago, we wanted to have the most **complete, reliable, scalable** product to show you. We are really proud to have the **first cloud native orchestration & scheduling platform** running only with technologies like Kafka and ElasticSearch. Theses bring an architecture with no single point of failure and high throughput in order to scale to millions of executions without the pain.
+When we have launch [Kestra](https://github.com/kestra-io/kestra) [officially](/blogs/2022-02-01-kestra-opensource) few month ago, we wanted to have the most **complete, reliable, scalable** product to show you. We are really proud to have the **first cloud native orchestration & scheduling platform** running only with technologies like Kafka and ElasticSearch. Theses bring an architecture with no single point of failure and high throughput in order to scale to millions of executions without the pain.
 
 Since this is pretty cool, not everyone is Uber, LinkedIn, (add any another big tech startup) that need to have these hard requirements of scalability, and we [see some comments](https://news.ycombinator.com/item?id=30790047) about the product that ElasticSearch or Kafka can be a pain to manage. In fact, we already know that, but we don't even think that this one can a stopper.
 
@@ -21,7 +21,7 @@ We have interview many people on our slack community, twitter, ... also that **c
 For now, we continue to think a high-availability solution is a **must-have**, a solution that can ensure you that if your needs increase, you will have a solution to scale without having to do without the features. So we decide to create a new version of Kestra (in Beta for now) that will work for a Medium-sized environment.
 
 <p style="text-align:center">
-  <img src="../docs/architecture/architecture-sql.svg" class="rounded img-thumbnail mt-4 mb-4" alt="Kestra Architecture">
+  <img src="/docs/architecture/architecture-sql.svg" class="rounded img-thumbnail mt-4 mb-4" alt="Kestra Architecture">
 </p>
 
 The solution is to **remove the dependencies of Kafka & ElasticSearch** and to allow to replace them with a **simple MySQL of Postgres** database for the both of them.
@@ -33,7 +33,7 @@ The new version is possible since Kestra thought since its inception as **plugga
 ## Tradeoff using a Database
 
 <p style="text-align:center">
-<img src="./2022-06-21-light-architecture/warning.jpg" class="rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
+<img src="/blogs/2022-06-21-light-architecture/warning.jpg" class="rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
 </p>
 
 We have worked harder to be able to have the **more fluent change** using a database, but we have made some tradeoffs for now (maybe you can go deeper depending on your feedback for a certain point).
