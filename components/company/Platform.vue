@@ -3,7 +3,7 @@
         <div class="hero container">
             <div class="row">
                 <div class="col-md-6">
-                    <h1>Building a Platform for Success</h1>
+                    <h2>Building a Platform for Success</h2>
                     <p>
                         Today, our platform is operational, in production, and performing beyond expectations. Hundreds of internal users have experienced significant productivity gains since adopting Kestra, validating our efforts to create a truly revolutionary solution.
                     </p>
@@ -23,7 +23,7 @@
     @import "../../assets/styles/variable";
 
     .hero {
-        h1 {
+        h2 {
             font-size: 2.5rem;
         }
     }

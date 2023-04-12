@@ -1,10 +1,13 @@
 <template>
     <div class="main">
-        <div class="hero container">
+        <div class="hero container text-center">
+            <img src="/landing/monograme_kestra.png" class="kestra-logo"/>
             <h2>ABOUT KESTRA</h2>
             <h1>Pioneering the Future of Data Orchestration and Automation</h1>
-            <h2>Join our amazing team and drive innovation in a collaborative workspace</h2>
         </div>
+    </div>
+    <div class="team-image text-center">
+        <img src="/landing/company/team-image.png" />
     </div>
     <div class="container">
         <Section
@@ -37,10 +40,19 @@
     @import "../../assets/styles/variable";
 
     .main {
-        background: $purple-7;
+        background: $purple-6;
         color: var(--bs-white);
         padding-top: 80px;
         margin-top: -80px;
+        padding-bottom: calc($spacer * 5);
+
+        .kestra-logo {
+            padding-bottom: $spacer;
+        }
+    }
+
+    .team-image {
+        margin-top: -224px;
     }
 
     .container {

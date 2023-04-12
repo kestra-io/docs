@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="hero container text-center">
-            <h1>The Public Launch and Beyond</h1>
+            <h2>The Public Launch and Beyond</h2>
             <p>
                 Our commitment to excellence remains unwavering, and we are excited to see how Kestra will transform the way organizations approach data orchestration and automation.
             </p>
@@ -82,7 +82,7 @@
     }
 
     .hero {
-        h1 {
+        h2 {
             font-size: 2.5rem;
         }
     }
