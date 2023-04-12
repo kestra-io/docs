@@ -15,7 +15,7 @@
                         <div class="col-6 col-lg-2 offset-lg-1 mb-3">
                             <h5>Product</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="/features/features">Features</a></li>
+                                <li class="mb-2"><a href="/features">Features</a></li>
                                 <li class="mb-2"><a href="#">Connectors</a></li>
                                 <li class="mb-2"><a href="/enterprise">Enterprise Edition</a></li>
                             </ul>
@@ -23,8 +23,8 @@
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Solutions</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="/features/usages">Usages</a></li>
-                                <li class="mb-2"><a href="#">For Companies</a></li>
+                                <li class="mb-2"><a href="/solutions">Usages</a></li>
+                                <li class="mb-2"><a href="/enterprise">For Companies</a></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
