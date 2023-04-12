@@ -10,7 +10,7 @@ author:
 image: /blogs/2022-06-21-kestra-light.jpg
 ---
 
-When we have launch [Kestra](https://github.com/kestra-io/kestra) [officially](./2022-02-01-kestra-opensource) few month ago, we wanted to have the most **complete, reliable, scalable** product to show you. We are really proud to have the **first cloud native orchestration & scheduling platform** running only with technologies like Kafka and ElasticSearch. Theses bring an architecture with no single point of failure and high throughput in order to scale to millions of executions without the pain.
+When we have launch [Kestra](https://github.com/kestra-io/kestra) [officially](2022-02-01-kestra-opensource) few month ago, we wanted to have the most **complete, reliable, scalable** product to show you. We are really proud to have the **first cloud native orchestration & scheduling platform** running only with technologies like Kafka and ElasticSearch. Theses bring an architecture with no single point of failure and high throughput in order to scale to millions of executions without the pain.
 
 Since this is pretty cool, not everyone is Uber, LinkedIn, (add any another big tech startup) that need to have these hard requirements of scalability, and we [see some comments](https://news.ycombinator.com/item?id=30790047) about the product that ElasticSearch or Kafka can be a pain to manage. In fact, we already know that, but we don't even think that this one can a stopper.
 

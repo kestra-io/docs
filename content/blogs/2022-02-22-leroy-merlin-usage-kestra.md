@@ -73,7 +73,7 @@ By this time, Terraform and BigQuery had demonstrated their strengths and, Airfl
 :::
 
 ## Kestra to the Rescue
-![Kestra user interface](./2022-02-22-leroy-merlin-usage-kestra/ui.png)
+![Kestra user interface](2022-02-22-leroy-merlin-usage-kestra/ui.png)
 <div class="clearfix" />
 
 In the meantime, the Kestra team had started working on the Kestra platform and presented the first version to Leroy Merlin. The LM team leaders were very interested and decided to test the solution for a few months. Since some features were missing at this point, they also decided to contribute to the open-source project and some new plugins.

@@ -155,7 +155,7 @@ Remember that all store operations (like get) will lead to deserialization that 
 At first, we designed Kestra to have only one **huge** stream for all the processing of the executor. At first, it seemed cool, but this led to some drawbacks.
 
 Here is the last version of our main and only Kafka Stream with many topics 🙉:
-![Kestra Topology](./2023-02-23-techniques-kafka-streams-developer/topology.jpg)
+![Kestra Topology](2023-02-23-techniques-kafka-streams-developer/topology.jpg)
 Yes, this is a huge Kafka Stream. It was working well despite its complexity. But the major drawbacks were :
 - **Monitoring**: All the metrics are under the same consumer group.
 - **Debugging**: Each topic is consumed independently during a crash. When a message fails, the whole process crashes.

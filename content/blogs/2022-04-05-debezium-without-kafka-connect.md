@@ -12,7 +12,7 @@ image: /blogs/2022-04-05-debezium-without-kafka-connect.jpg
 
 There are several products on the market to help you with your data pipeline management and data orchestration. Each handles data differently, and it can be difficult to determine the differences because many perform the same tasks, but with different methods. In this article, we will be discussing the differences between Debezium with Kafka Connect and our own product, [Kestra](https://github.com/kestra-io/kestra) (an **open-source orchestration and scheduling platform** with a robust set of plugins) and how they can integrate to provide a **more efficient and cost-effective** hybrid solution.
 
-![Debezium architecture](./2022-04-05-debezium-without-kafka-connect/debezium-architecture.png)
+![Debezium architecture](2022-04-05-debezium-without-kafka-connect/debezium-architecture.png)
 
 
 First, let’s discuss Debezium. [Debezium](https://debezium.io/) is an open-source change data capture platform from Red Hat, offering a set of distributed services that captures row-level changes in your databases so that connected applications can see and respond to those changes in real-time. All changes (row-level) are recorded in a transaction log, and each application simply reads the transaction logs that are pertinent to them.
@@ -68,7 +68,7 @@ Debezium leverages Kafka and Kafka Connect to deliver streaming performance, and
 
 By leveraging Kestra for **near-real-time or batch workloads**, and Debezium for streaming, some of the advantages are obvious. This allows for a solution that leverages **only the resources required** for the use case in question, rather than applying resource-intensive streaming resources to every process. For workflows that are not real-time, CPU and memory resources are limited or shut down when not in use. Services that charge based on the throughput, such as BigQuery, are **only charged when in use**. All of this combines to create an efficient solution that wastes no resources and **saves money**. All row-level changes are still captured, and with Debezium, a built-in feature snapshots the database on the first start.
 
-![Kestra Topology](./2022-04-05-debezium-without-kafka-connect/topology.png)
+![Kestra Topology](2022-04-05-debezium-without-kafka-connect/topology.png)
 
 But there are less obvious advantages to adding Kestra to the mix. Pipelines **are visibly presented**, ensuring that dependencies are **continuously monitored**, and you can see exactly where in a data pipeline the problem lies. This monitoring capacity provides a great deal of peace of mind when managing different data flow requirements, and mitigates the complexity of clustered Kafka deployments (such as those that make part of more complex Debezium deployments).
 

@@ -40,7 +40,7 @@ Now, companies can build **scalable data workloads** that can perform strong dat
 ### Where does kestra fit in?
 
 <p style="text-align:center">
-<img src="./2022-10-05-kestra-snowflake/mario.jpg" class="rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
+<img src="2022-10-05-kestra-snowflake/mario.jpg" class="rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
 </p>
 
 
@@ -114,6 +114,6 @@ fileName: destFile.csv
 
 [Kestra](/) has quickly become an essential piece of the modern data stack. Kestra provides unprecedented flexibility and control to data teams. It can orchestrate any kind of workflow with ease using a rich UI that monitors all flows.
 
-Kestra's Snowflake plugin makes data warehousing simple. Even non-developers can write relevant flows using descriptive YAML. Your Snowflake storage pipeline accommodates raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the [ELT pipeline](/blogs/2022-04-27-etl-vs-elt.html). Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
+Kestra's Snowflake plugin makes data warehousing simple. Even non-developers can write relevant flows using descriptive YAML. Your Snowflake storage pipeline accommodates raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the [ELT pipeline](/content/blogs/2022-04-27-etl-vs-elt.html). Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
 
 If you need any guidance with your Snowflake deployment, our experts at Kestra would love to hear from you. [Let us know](https://api.kestra.io/v1/communities/slack/redirect) if you would like us to add more plugins to the [list](/plugins). Or start building your [custom Kestra plugin](/docs/plugin-developer-guide/) today and send it our way. We always welcome [contributions](https://github.com/kestra-io/kestra)!
