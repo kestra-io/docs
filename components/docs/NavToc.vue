@@ -13,11 +13,11 @@
         <strong class="d-none d-lg-block h6 my-2 ms-3">On this page</strong>
         <hr class="d-none d-lg-block my-2 ms-3">
         <div class="collapse bd-toc-collapse" id="tocContents">
-            <nav id="TableOfContents">
+            <nav id="nav-toc">
                 <ul>
                     <template v-for="item in generated" >
-                        <li v-if="item.depth > 1 && item.depth < 6" :class="'depth-' + item.depth">
-                            <a :href="'#' + item.id" class="active">{{ item.text }}</a>
+                        <li v-if="item.depth > 1 && item.depth < 6">
+                            <a :href="'#' + item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
                         </li>
                     </template>
                 </ul>
@@ -77,23 +77,23 @@
                 margin-bottom: 0;
                 list-style: none;
 
-                @for $i from 2 through 6 {
-                    li.depth-#{$i} {
-                        padding-left: calc(.75rem * ($i - 2));
-                    }
-                }
-
                 li {
-                    border-left: .125rem solid transparent;
+                    a {
+                        border-left: .125rem solid var(--bs-gray-200);
+                        padding-left: 0.75rem;
 
-                    &:hover,
-                    &.active {
-                        a {
-                            color: var(--bd-toc-color);
-                            font-weight: 500;
+                        @for $i from 2 through 6 {
+                            &.depth-#{$i} {
+                                padding-left: calc(.75rem * ($i - 2) +  0.75rem);
+                            }
                         }
 
-                        border-left-color: var(--bd-toc-color);
+                        &:hover,
+                        &.active {
+                            color: var(--bs-primary);
+                            font-weight: 500;
+                            border-left-color: var(--bs-primary);
+                        }
                     }
                 }
             }
@@ -127,22 +127,6 @@
             color: var(--bs-gray-500);
         }
     }
-
-    //.bd-toc-toggle {
-    //    display: flex;
-    //    align-items: center;
-    //
-    //    @include media-breakpoint-down(sm) {
-    //        justify-content: space-between;
-    //        width: 100%;
-    //    }
-    //
-    //    @include media-breakpoint-down(md) {
-    //        color: var(--bs-body-color);
-    //        border: 1px solid var(--bs-border-color);
-    //        @include border-radius(var(--bs-border-radius));
-    //    }
-    //}
 
     .bd-toc-collapse {
         @include media-breakpoint-down(lg) {
