@@ -12,7 +12,7 @@ Discover more on the [flowable documentation](../../developer-guide/flowable).
 
 Let's say we want to add another Python task to do more analytics. Both Tasks would only need the file downloaded by the previous Task. To avoid wasting time, we will execute them in parallel.
 
-We will use the [Parallel](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.html) flowable. It will execute all the tasks in parallel and wait for them to finish before continuing the flow. The usage is simple; you must declare a Task with the parallel type <code v-pre>io.kestra.core.tasks.flows.Parallel</code> and add the Tasks you want to execute in parallel in the `tasks` property.
+We will use the [Parallel](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.html) flowable. It will execute all the tasks in parallel and wait for them to finish before continuing the flow. The usage is simple; you must declare a Task with the parallel type `io.kestra.core.tasks.flows.Parallel` and add the Tasks you want to execute in parallel in the `tasks` property.
 
 ```yaml
   - id: parallel

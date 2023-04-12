@@ -119,7 +119,7 @@ You can find three example deployment architectures below.
 
 ### Small-sized deployment
 
-![Kestra Standalone Architecture](./architecture-standalone.svg "Kestra Standalone Architecture")
+![Kestra Standalone Architecture](/docs/architecture/architecture-standalone.svg "Kestra Standalone Architecture")
 
 For a small-sized deployment, you can use Kestra standalone server, an all-in-one server component that allows running all Kestra server components in a single process. This deployment architecture has no scaling capability.
 
@@ -133,7 +133,7 @@ Database configuration options are available [here](../administrator-guide/confi
 
 ### Medium-sized deployment
 
-![Kestra Architecture](./architecture-sql.svg "Kestra Architecture")
+![Kestra Architecture](/docs/architecture/architecture-sql.svg "Kestra Architecture")
 
 For a medium-sized deployment, where high availability is not a strict requirement, you can use a database (Postgres or MySQL) as the only dependency. This allows running Kestra with a minimal stack to maintain. We have, for now, two databases available for this kind of architecture, as H2 is not a good fit when running distributed components:
 - PostgreSQL
@@ -151,7 +151,7 @@ In this deployment mode, unless all components run on the same host, you must us
 
 ### High availability with no single point of failure deployment
 
-![Kestra High Availability Architecture](./architecture.svg "Kestra High Availability Architecture")
+![Kestra High Availability Architecture](/docs/architecture/architecture.svg "Kestra High Availability Architecture")
 
 To support higher throughput, and full horizontal and vertical scaling of the Kestra cluster, we can replace the database with Kafka and Elasticsearch. In this case, all the server components can be scaled without any single point of failure.
 

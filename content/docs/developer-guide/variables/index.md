@@ -16,41 +16,41 @@ The following table lists all the default variables available on each execution.
 
 | Parameter | Description |
 | ---------- | ----------- |
-|  <code v-pre>{{ flow.id }}</code> | The identifier of the flow. |
-|  <code v-pre>{{ flow.namespace }}</code> | The name of the flow namespace. |
-|  <code v-pre>{{ flow.revision }}</code> | The revision of the flow. |
-|  <code v-pre>{{ execution.id }}</code> | The execution ID, a generated unique id for each execution. |
-|  <code v-pre>{{ execution.startDate }}</code> | The start date of the current execution, can be formatted with <code v-pre>{{ execution.startDate \| date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}</code>. |
-|  <code v-pre>{{ execution.originalId }}</code> | The original execution ID, this id will never change even in case of replay and keep the first execution ID. |
-|  <code v-pre>{{ task.id }}</code> | The current task ID |
-|  <code v-pre>{{ task.type }}</code> | The current task Type (Java fully qualified class name). |
-|  <code v-pre>{{ taskrun.id }}</code> | The current task run ID. |
-|  <code v-pre>{{ taskrun.startDate }}</code> | The current task run start date. |
-|  <code v-pre>{{ taskrun.parentId }}</code> | The current task run parent identifier. Only available with tasks inside a  ([Flowable Task](../tasks#flowable-tasks)).|
-|  <code v-pre>{{ taskrun.value }}</code> | The value of the current task run, only available with tasks inside a ([Flowable Task](../tasks#flowable-tasks)). |
-|  <code v-pre>{{ taskrun.attemptsCount }}</code> | The number of attempts for the current task (when retry or restart is performed). |
-|  <code v-pre>{{ parent.taskrun.value }}</code> | The value of the closest (first) parent task run [Flowable Task](../tasks#flowable-tasks), only available with tasks inside a ([Flowable Task](../tasks#flowable-tasks)). |
-|  <code v-pre>{{ parent.outputs }}</code> | The outputs of the closest (first) parent task run [Flowable Task](../tasks#flowable-tasks), only available with tasks inside in a ([Flowable Task](../tasks#flowable-tasks)). |
-|  <code v-pre>{{ parents }}</code> | The list of parent tasks, only available with tasks inside a ([Flowable Task](../tasks#flowable-tasks)). See [Parents variables](../variables/basic-usage.md#parents-with-flowable-task) for its usage. |
+|  `{{ flow.id }}` | The identifier of the flow. |
+|  `{{ flow.namespace }}` | The name of the flow namespace. |
+|  `{{ flow.revision }}` | The revision of the flow. |
+|  `{{ execution.id }}` | The execution ID, a generated unique id for each execution. |
+|  `{{ execution.startDate }}` | The start date of the current execution, can be formatted with `{{ execution.startDate \| date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}`. |
+|  `{{ execution.originalId }}` | The original execution ID, this id will never change even in case of replay and keep the first execution ID. |
+|  `{{ task.id }}` | The current task ID |
+|  `{{ task.type }}` | The current task Type (Java fully qualified class name). |
+|  `{{ taskrun.id }}` | The current task run ID. |
+|  `{{ taskrun.startDate }}` | The current task run start date. |
+|  `{{ taskrun.parentId }}` | The current task run parent identifier. Only available with tasks inside a  ([Flowable Task](../tasks#flowable-tasks)).|
+|  `{{ taskrun.value }}` | The value of the current task run, only available with tasks inside a ([Flowable Task](../tasks#flowable-tasks)). |
+|  `{{ taskrun.attemptsCount }}` | The number of attempts for the current task (when retry or restart is performed). |
+|  `{{ parent.taskrun.value }}` | The value of the closest (first) parent task run [Flowable Task](../tasks#flowable-tasks), only available with tasks inside a ([Flowable Task](../tasks#flowable-tasks)). |
+|  `{{ parent.outputs }}` | The outputs of the closest (first) parent task run [Flowable Task](../tasks#flowable-tasks), only available with tasks inside in a ([Flowable Task](../tasks#flowable-tasks)). |
+|  `{{ parents }}` | The list of parent tasks, only available with tasks inside a ([Flowable Task](../tasks#flowable-tasks)). See [Parents variables](../variables/basic-usage.md#parents-with-flowable-task) for its usage. |
 
 If a [schedule](../triggers/schedule.md) event triggers the flow, these variables are also available:
 
 | Parameter | Description |
 | ---------- | ----------- |
-|  <code v-pre>{{ schedule.date }}</code> | The date of the current schedule. |
-|  <code v-pre>{{ schedule.next }}</code> | The date of the next schedule. |
-|  <code v-pre>{{ schedule.previous }}</code> | The date of the previous schedule. |
+|  `{{ schedule.date }}` | The date of the current schedule. |
+|  `{{ schedule.next }}` | The date of the next schedule. |
+|  `{{ schedule.previous }}` | The date of the previous schedule. |
 
 If a [flow](../triggers/flow.md) event triggers the flow, these variables are also available:
 
 | Parameter | Description |
 | ---------- | ----------- |
-|  <code v-pre>{{ trigger.executionId }}</code> | The ID of the execution that triggers the current flow. |
-|  <code v-pre>{{ trigger.namespace }}</code> | The namespace of the flow that triggers the current flow. |
-|  <code v-pre>{{ trigger.flowId }}</code> | The ID of the flow that triggers the current flow. |
-|  <code v-pre>{{ trigger.flowRevision }}</code> | The revision of the flow that triggers the current flow. |
+|  `{{ trigger.executionId }}` | The ID of the execution that triggers the current flow. |
+|  `{{ trigger.namespace }}` | The namespace of the flow that triggers the current flow. |
+|  `{{ trigger.flowId }}` | The ID of the flow that triggers the current flow. |
+|  `{{ trigger.flowRevision }}` | The revision of the flow that triggers the current flow. |
 
-All these variables can be used thanks to the Pebble template syntax <code v-pre>{{varName}}</code>:
+All these variables can be used thanks to the Pebble template syntax `{{varName}}`:
 
 ```yaml
 id: context-example
@@ -65,18 +65,18 @@ tasks:
 ```
 
 ::alert{type="info"}
-<code v-pre>{{ execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}</code> uses the `date` filter to format the `execution.startDate` variable with the date pattern `yyyy-MM-dd HH:mm:ss.SSSSSS`. More information on filters [here](./filter/).
+`{{ execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}` uses the `date` filter to format the `execution.startDate` variable with the date pattern `yyyy-MM-dd HH:mm:ss.SSSSSS`. More information on filters [here](./filter/).
 ::
 
 ## Environment variables
 
 By default, Kestra allows access to environment variables that start with `KESTRA_` unless configured otherwise, see [Variables configuration](../../administrator-guide/configuration/others#variables-configuration).
 
-To access an environment variable `KESTRA_FOO` from one of your tasks, you can use <code v-pre>{{ envs.foo }}</code>, the variable's name is the part after the `KESTRA_` prefix in **lowercase**.
+To access an environment variable `KESTRA_FOO` from one of your tasks, you can use `{{ envs.foo }}`, the variable's name is the part after the `KESTRA_` prefix in **lowercase**.
 
 ## Global variables
 
-You can define global variables inside Kestra's configuration files and access them using <code v-pre>{{ globals.foo }}</code>, see [Variables configuration](../../administrator-guide/configuration/others#variables-configuration) for more information.
+You can define global variables inside Kestra's configuration files and access them using `{{ globals.foo }}`, see [Variables configuration](../../administrator-guide/configuration/others#variables-configuration) for more information.
 
 ## Inputs variables
 

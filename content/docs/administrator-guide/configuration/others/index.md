@@ -49,9 +49,9 @@ kestra:
 Kestra provides a way to use environment variables in your flow.
 By default, we only get environment variables that start with `KESTRA_`, use this configuration option to change this prefix.
 
-These variables will be accessible inside a flow with <code v-pre>{{ envs.your_env }}</code> in **lower case**.
+These variables will be accessible inside a flow with `{{ envs.your_env }}` in **lower case**.
 
-For example, an environment variable with the name `KESTRA_MY_ENV` will be usable with  <code v-pre>{{ envs.my_env }}</code>.
+For example, an environment variable with the name `KESTRA_MY_ENV` will be usable with  `{{ envs.my_env }}`.
 
 
 ### `kestra.variables.globals`
@@ -59,7 +59,7 @@ You can also provide global variables that will be accessible in all your flows.
 These can be used to declare the environment on your instance, such as global datasets for example.
 
 
-For example, this variable will be accessible inside a flow with <code v-pre>{{ globals.env }}</code>:
+For example, this variable will be accessible inside a flow with `{{ globals.env }}`:
 ```yaml
 kestra:
   variables:

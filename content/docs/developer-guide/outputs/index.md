@@ -25,7 +25,7 @@ tasks:
 
 In the example above, the first task produces an output based on the task property `format`. This output attribute is then used in the second task `format` property.
 
-The `use-output` task uses the templating system <code v-pre>{{ outputs['produce-output'].value }}</code> to reference the previous task output attribute. If you're not familiar with the syntax used here, please read [variables basic usage](/docs/developer-guide/variables/basic-usage.md).
+The `use-output` task uses the templating system `{{ outputs['produce-output'].value }}` to reference the previous task output attribute. If you're not familiar with the syntax used here, please read [variables basic usage](/docs/developer-guide/variables/basic-usage.md).
 
 ::alert{type="info"} note
 The `.value` in the template uses another task's output attribute using a variable name corresponding to the produced output attributes. In this case, the **Return** task produces the `value` output attribute that is accessible using the `value` variable. Every task produces different output attributes. Look at each task ouputs documentation or use the **Outputs** tab of the **Executions** page.
@@ -58,7 +58,7 @@ tasks:
 
 #### Current taskrun value
 
-You can access the current taskrun value with <code v-pre>{{ taskrun.value }}</code> like this:
+You can access the current taskrun value with `{{ taskrun.value }}` like this:
 
 ```yaml
 tasks:
@@ -73,7 +73,7 @@ tasks:
 
 #### Loop over object
 
-On loop, the `value` is always a JSON string, so the <code v-pre>{{ taskrun.value }}</code> is the current element as JSON string. If you want to access properties, you need to use the [json function](/docs/developer-guide/variables/function/json.html) to have a proper object and to access each property easily.
+On loop, the `value` is always a JSON string, so the `{{ taskrun.value }}` is the current element as JSON string. If you want to access properties, you need to use the [json function](/docs/developer-guide/variables/function/json.html) to have a proper object and to access each property easily.
 
 ```yaml
 tasks:
@@ -140,7 +140,7 @@ It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` i
 
 Sometimes, it can be useful to access previous outputs on the current task tree, what is called sibling tasks.
 
-If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.md) task, you can use the <code v-pre>{{outputs.sibling.value}}</code> notation where `sibling`is the identifier of the sibling task.
+If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.md) task, you can use the `{{outputs.sibling.value}}` notation where `sibling`is the identifier of the sibling task.
 
 If the task tree is dynamic, for example when using the [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task, you need to use `sibling[taskrun.value]` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the EachSequential task.
 

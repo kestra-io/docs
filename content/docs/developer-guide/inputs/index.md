@@ -99,12 +99,12 @@ For example, when you declare the input with the following:
     required: false
 ```
 
-You can reach it with: <code v-pre>{{ inputs.nested.string }}</code>. This is a convenient way to handle strong typing on input (with validation) without using raw JSON that will not be validated.
+You can reach it with: `{{ inputs.nested.string }}`. This is a convenient way to handle strong typing on input (with validation) without using raw JSON that will not be validated.
 
 
 ## Using input value in a flow
 
-Every input is available with dynamic variables such as: <code v-pre>{{ inputs.NAME }}</code> or <code v-pre>{{ inputs[NAME] }}</code>.
+Every input is available with dynamic variables such as: `{{ inputs.NAME }}` or `{{ inputs[NAME] }}`.
 
 For example, if you declare these inputs:
 ```yaml
@@ -116,7 +116,7 @@ inputs:
     required: true
 ```
 
-You can use the value of the input `my-value` inside dynamic task properties with <code v-pre>{{ inputs['my-value'] }}</code>. See [variables basic usage](../variables/basic-usage.md).
+You can use the value of the input `my-value` inside dynamic task properties with `{{ inputs['my-value'] }}`. See [variables basic usage](../variables/basic-usage.md).
 
 ## Set inputs at flow execution
 
@@ -150,7 +150,7 @@ When creating an execution from the web UI, you must set the inputs in the gener
 
 The input form for the inputs above looks like this:
 
-![Flow inputs](./assets/inputs.jpg)
+![Flow inputs](/docs/developer-guide/inputs/inputs.jpg)
 
 Once the inputs are set, you can trigger an execution of the flow. The inputs will be available as variables for the flow's tasks.
 

@@ -30,7 +30,7 @@ Example, if the current context is :
 }
 ```
 
-the output of <code v-pre>{{ json outputs.task2}}</code>  will be `{"value":2,"text":"awesome2"}`.
+the output of `{{ json outputs.task2}}`  will be `{"value":2,"text":"awesome2"}`.
 
 ## `jq` Transform vars with JQ
 

@@ -67,7 +67,7 @@ This method must simply return an `Optional<Execution>` with:
 - `Optional.empty()`: if the condition is not validated.
 - `Optional.of(execution)`: with the execution created if the condition is validated.
 
-You have to provide a `TriggerOutput<T>` for any output needed (result of query, result of file system listing, ...) that will be available for the flow tasks withing the <code v-pre>{{ trigger.* }}</code> variables.
+You have to provide a `TriggerOutput<T>` for any output needed (result of query, result of file system listing, ...) that will be available for the flow tasks withing the `{{ trigger.* }}` variables.
 
 ::alert{type="warning"}
 Take care that the trigger must free the resource for the next evaluation. For each interval, this method will be called and if the condition are met, an execution will be created.

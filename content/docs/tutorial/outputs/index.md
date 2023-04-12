@@ -8,11 +8,11 @@ Each task can generate output data. And those data are passed to the following T
 
 ## Accessing outputs
 
-Task output can be accessed during the flow using the <code v-pre>{{ outputs['task-id'] }}</code> syntax. If your task's id contains no `-`, you can directly use <code v-pre>{{ outputs.taskId }}</code>.
+Task output can be accessed during the flow using the `{{ outputs['task-id'] }}` syntax. If your task's id contains no `-`, you can directly use `{{ outputs.taskId }}`.
 
 You can also check the outputs of your tasks in the Output tab of an execution. Very useful for debugging your flow.
 
-![Output of our previous download](./assets/output.png)
+![Output of our previous download](/docs/tutorial/outputs/output.png)
 ## Use output in your flow
 
 In our example, we will use the output of the `download` task to do some Python analytics. In the `inputFiles` of the Python task, we define a main.py, the Python script executed. We also add a data.csv file, the output of the `download` task.

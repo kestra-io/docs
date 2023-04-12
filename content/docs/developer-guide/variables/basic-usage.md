@@ -6,9 +6,9 @@ order: 1
 
 ## Syntax Reference
 
-There are two primary delimiters used within a Pebble template: <code v-pre>{{ ... }}</code> and `{% ... %}`.
+There are two primary delimiters used within a Pebble template: `{{ ... }}` and `{% ... %}`.
 
-<code v-pre>{{ ... }}</code> is used to output the result of an expression. Expressions can be very simple (ex. a variable name) or much more complex.
+`{{ ... }}` is used to output the result of an expression. Expressions can be very simple (ex. a variable name) or much more complex.
 
 `{% ... %}` is used to change the control flow of the template; it can contain an if-statement, define a parent template, define a new block, etc.
 
@@ -282,7 +282,7 @@ tasks:
 As you can see, the `parent` variable gives direct access to the first parent, while the `parents[INDEX]` lets you access the parent deeper down the tree.
 
 In the task `2-1-1_switch-number-2`:
-- <code v-pre>{{taskrun.value}}</code>: mean the value of the task `2-1-1_switch`
-- <code v-pre>{{parents[0].taskrun.value}}</code> or <code v-pre>{{parent.taskrun.value}}</code>: mean the value of the task `2-1_each`
-- <code v-pre>{{parents[1].taskrun.value}}</code>: mean the value of the task `2-1_switch`
-- <code v-pre>{{parents[2].taskrun.value}}</code>: mean the value of the task `2_each`
+- `{{taskrun.value}}`: mean the value of the task `2-1-1_switch`
+- `{{parents[0].taskrun.value}}` or `{{parent.taskrun.value}}`: mean the value of the task `2-1_each`
+- `{{parents[1].taskrun.value}}`: mean the value of the task `2-1_switch`
+- `{{parents[2].taskrun.value}}`: mean the value of the task `2_each`

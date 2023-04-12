@@ -35,7 +35,7 @@ The three `fetch`/`fetchOne`/`store` properties will do the same but using three
 
 Data can be stored as variables inside the flow execution context. This can be convenient for sharing data between tasks.
 
-To do so, tasks store data as output attributes that are then available inside the flow via Pebble expressions like <code v-pre>{{outputs.taskName.attributeName}}</code>. More information about outputs can be found [here](../outputs/).
+To do so, tasks store data as output attributes that are then available inside the flow via Pebble expressions like `{{outputs.taskName.attributeName}}`. More information about outputs can be found [here](../outputs/).
 
 Be careful that when the size of the data is significant, this will increase the size of the flow execution context, which can lead to slow execution and increase the size of the execution storage inside Kestra's repository.
 

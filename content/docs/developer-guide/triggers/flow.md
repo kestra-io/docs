@@ -82,7 +82,7 @@ When another flow triggers the flow, some context variables will be injected to 
 
 | Parameter | Description |
 | ---------- | ----------- |
-|  <code v-pre>{{ trigger.executionId }}</code> | the ID of the execution that triggers the current flow. |
-|  <code v-pre>{{ trigger.namespace }}</code> | the namespace of the flow that triggers the current flow. |
-|  <code v-pre>{{ trigger.flowId }}</code> | the ID of the flow that triggers the current flow. |
-|  <code v-pre>{{ trigger.flowRevision }}</code> | the revision of the flow that triggers the current flow. |
+|  `{{ trigger.executionId }}` | the ID of the execution that triggers the current flow. |
+|  `{{ trigger.namespace }}` | the namespace of the flow that triggers the current flow. |
+|  `{{ trigger.flowId }}` | the ID of the flow that triggers the current flow. |
+|  `{{ trigger.flowRevision }}` | the revision of the flow that triggers the current flow. |

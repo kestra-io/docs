@@ -65,7 +65,7 @@ These are required in order to make your plugin works with Kestra, these are [Lo
 public class ReverseString extends Task implements RunnableTask<Example.Output>
 ```
 
-* `ReverseString` is the name of your task and can be use on Kestra with `type: io.kestra.plugin.templates.ReverseString` (aka: <code v-pre>{{package}}.{{className}}</code>).
+* `ReverseString` is the name of your task and can be use on Kestra with `type: io.kestra.plugin.templates.ReverseString` (aka: `{{package}}.{{className}}`).
 * Class must extends `Task` to be usable.
 * `implements RunnableTask<ReverseString.Output>`: must implements `RunnableTask` to be discovered and must declared the output of the task `ReverseString.Output`.
 

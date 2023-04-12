@@ -48,7 +48,7 @@ tasks:
 
 When you're done, click on the **Save** button to save it and start your first execution via the **Create Execution** button.
 
-![Your first flow saved](./assets/saved.png)
+![Your first flow saved](/docs/getting-started/saved.png)
 
 <NextStep message="For a better introduction to Kestra, follow our Tutorial" link="../tutorial"/>
 

@@ -45,14 +45,14 @@ tasks:
 At the moment of writing this guide, [Kestra has 290+ tasks](https://kestra.io/plugins/), which can be challenging to remember. That's why we provide an auto-completion feature to help you find the Task you need. Use the shortcut `CTRL or ⌘ + SPACE` to activate it.
 ::
 
-![Autocompletion](./assets/autocomplete.gif)
+![Autocompletion](/docs/tutorial/fundamentals/autocomplete.gif)
 
 ## Create your first Flow
 
 Now, let's create our first Flow. On the left side of the screen, click on the **Flows** menu.
 Then, click on the **Create** button.
 
-![Access flow creation](./assets/create-button.png)
+![Access flow creation](/docs/tutorial/fundamentals/create-button.png)
 
 Use the following Flow in the Editor, then click the **Save** button.
 This Flow will download a CSV file from the French Open Data Portal.
@@ -73,7 +73,7 @@ tasks:
 
 After saving it, you will see a **New Execution** button. Click on it and watch your first Flow running.
 
-![New execution](./assets/new-execution.png)
+![New execution](/docs/tutorial/fundamentals/new-execution.png)
 
 
 <NextStep message="The next step is to add Inputs to your flow" link="../inputs/"/>

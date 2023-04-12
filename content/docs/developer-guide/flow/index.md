@@ -51,7 +51,7 @@ You can add arbitrary `labels` to your flow. Labels can be handy when you have a
 
 You can also define `taskDefaults` inside your flow; this is a list of default task properties that will be applied to each task of a certain type inside your flow. Task defaults can be handy to avoid repeating the same value for a task property in case the same task type is used multiple times in the same flow.
 
-You can set flow variables that will be accessible by each task using <code v-pre>{{ vars.key }}</code>. Flow `variables` is a map of key/value pairs.
+You can set flow variables that will be accessible by each task using `{{ vars.key }}`. Flow `variables` is a map of key/value pairs.
 
 The most important part of a flow is the list of tasks that will be run sequentially when the flow is executed.
 
@@ -67,7 +67,7 @@ The following flow properties can be set.
 |`description`|The description of the flow, more details [here](#document-your-flow).|
 |`labels`|The list of labels which are string key/value pairs.|
 |`inputs`|The list of inputs, more details [here](../inputs/).|
-|`variables`|The list of variables (such as api key, table name, URL, etc) that can be reached inside tasks with <code v-pre>{{ vars.name }}</code>.|
+|`variables`|The list of variables (such as api key, table name, URL, etc) that can be reached inside tasks with `{{ vars.name }}`.|
 |`tasks`|The list of tasks, all tasks will be run sequentially.|
 |`errors`|The list of error tasks, all listed tasks will be run sequentially only if there is an error on the current execution. More details [here](../errors-handling/).|
 |`listeners`|The list of listeners, more details [here](../listeners/).|
@@ -93,8 +93,8 @@ You can add a `description` property on:
 
 All descriptions will be visible on the UI:
 
-![Flow list](./docs-ui-1.png)
+![Flow list](/docs/developer-guide/flow/docs-ui-1.png)
 
-![Topology](./docs-ui-2.png)
+![Topology](/docs/developer-guide/flow/docs-ui-2.png)
 
-![Trigger details](./docs-ui-3.png)
+![Trigger details](/docs/developer-guide/flow/docs-ui-3.png)

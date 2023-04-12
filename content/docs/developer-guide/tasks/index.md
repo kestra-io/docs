@@ -66,7 +66,7 @@ tasks:
 ```
 
 ::alert{type="info"}
-You can access the output of a sibling task with <code v-pre>{{outputs.sibling.value}}</code>, see [Lookup in sibling tasks](/docs/developer-guide/outputs#lookup-in-sibling-tasks)
+You can access the output of a sibling task with `{{outputs.sibling.value}}`, see [Lookup in sibling tasks](/docs/developer-guide/outputs#lookup-in-sibling-tasks)
 ::
 
 <div style="text-align: right">
@@ -150,7 +150,7 @@ tasks:
 
 ### If
 
-This task processes a set of tasks conditionally depending on a condition. 
+This task processes a set of tasks conditionally depending on a condition.
 The condition must coerce to a boolean. Boolean coercion allows 0, -0, null and '' to coerce to false,  all other values to coerce to true.
 The `else` branch is optional.
 
@@ -210,7 +210,7 @@ tasks:
 ```
 
 ::alert{type="info"}
-You can access the output of a sibling task with <code v-pre>{{outputs.sibling[taskrun.value].value}}</code>, see [Lookup in sibling tasks](/docs/developer-guide/outputs#lookup-in-sibling-tasks)
+You can access the output of a sibling task with `{{outputs.sibling[taskrun.value].value}}`, see [Lookup in sibling tasks](/docs/developer-guide/outputs#lookup-in-sibling-tasks)
 ::
 
 <div style="text-align: right">

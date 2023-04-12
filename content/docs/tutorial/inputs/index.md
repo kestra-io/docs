@@ -28,10 +28,10 @@ Discover more types on the [input documentation](https://kestra.io/docs/develope
 
 ## Accessing inputs
 
-Kestra includes a templating engine to access variables in your flow. Use the <code v-pre>{{ variable }}</code> syntax to access them.
+Kestra includes a templating engine to access variables in your flow. Use the `{{ variable }}` syntax to access them.
 Find more on the [variable documentation.](../../developer-guide/variables)
 
-Inputs can be accessed in the flow using the <code v-pre>{{ inputs.name }}</code> syntax.
+Inputs can be accessed in the flow using the `{{ inputs.name }}` syntax.
 
 
 ## Add inputs to your flow
