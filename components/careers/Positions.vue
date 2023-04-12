@@ -12,7 +12,7 @@
                     <div class="card-body content">
                         <p class="mb-0 jobs-offers">
                             <span>
-                                Senior Full-Stack Engineer
+                                <a href="/company/careers/senior-full-stack-engineer">Senior Full-Stack Engineer</a>
                             </span>
                             <span class="badge badge-info">Engineering</span>
                         </p>
@@ -36,5 +36,10 @@
 
     .jobs-offers {
         font-weight: bold;
+
+        .badge {
+            background-color: $purple-18;
+            margin-left: $spacer;
+        }
     }
 </style>

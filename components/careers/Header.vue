@@ -1,33 +1,28 @@
 <template>
-    <div class="main">
+    <div class="container-fluid">
         <div class="hero container">
-            <h2>CAREERS</h2>
-            <h1>Become a Kestra Member</h1>
-            <h2>Join our amazing team and drive innovation in a collaborative workspace</h2>
-            <div class="text-center cta">
-                <a href="#positions" class="btn btn-lg btn-primary">
-                    Open positions
-                </a>
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>CAREERS</h2>
+                    <h1>Become a Kestra Member</h1>
+                    <h2>Join our amazing team and drive innovation in a collaborative workspace</h2>
+                    <a href="#positions" class="btn btn-lg btn-primary">
+                        Open positions
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <img src="/landing/careers/frame_638.png" width="600"/>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
-<script>
-    import Console from "vue-material-design-icons/Console.vue"
-    import Email from "vue-material-design-icons/Email.vue"
-
-    export default {
-        components: {Console, Email}
-    }
-</script>
-
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .main {
-        background: $purple-7;
-        color: var(--bs-white);
+    .container-fluid {
+        background: #E6F6F6;
         padding-top: 80px;
         margin-top: -80px;
     }
