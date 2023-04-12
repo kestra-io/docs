@@ -111,6 +111,10 @@
                         <div class="team-name">Brian Mullier</div>
                         <div class="team-title font-small">Software Engineer</div>
                     </div>
+                    <div>
+                        <a href="https://www.linkedin.com/in/brian-mulier-326869150/" class="me-2"><img src="/landing/company/linkedin.png" /></a>
+                        <a href="https://github.com/brian-mulier-p" class="me-2"><img src="/landing/company/github.png" /></a>
+                    </div>
                 </div>
             </div>
         </Section>
