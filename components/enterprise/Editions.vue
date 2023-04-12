@@ -10,7 +10,7 @@
                             </h5>
                             <h5 class="pricing">Free</h5>
                             <div class="text-center ">
-                                <a href="/docs/getting-started" class="btn btn-primary me-2">
+                                <a href="/docs/getting-started" class="btn btn-secondary me-2">
                                     Get started
                                 </a>
                             </div>
@@ -37,7 +37,7 @@
                             </h5>
                             <h5 class="pricing custom">Custom</h5>
                             <div class="text-center ">
-                                <a href="/company/contact" class="btn btn-secondary">
+                                <a href="/company/contact" class="btn btn-primary">
                                     Contact us
                                 </a>
                             </div>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="text-center">
                     <button class="btn btn-lg btn-primary me-2 button-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Compare all features
+                        Compare all features <span class="caret"></span>
                     </button>
                     <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body feature-comparison">
