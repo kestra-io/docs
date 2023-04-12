@@ -90,7 +90,7 @@
                 </div>
 
                 <div class="text-center mt-5">
-                    <a class="btn btn-lg btn-primary " href="/solutions">See more</a>
+                    <NuxtLink class="btn btn-lg btn-primary " href="/solutions">See more</NuxtLink>
                 </div>
             </Section>
         </div>

@@ -5,9 +5,9 @@
                 <div class="col-md-6">
                     <h1>Harness Change Data Capture for Efficient Data Processing and Analysis</h1>
                     <h2>Boost Data Synchronization and Streamlined Processing with Kestra's CDC Capabilities</h2>
-                    <a href="/docs/getting-started" class="btn btn-lg btn-primary">
+                    <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary">
                         Get started
-                    </a>
+                    </NuxtLink>
                 </div>
                 <div class="col-md-6">
                     <img src="/landing/usecases/cdc-intro.png" />

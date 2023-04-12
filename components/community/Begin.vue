@@ -7,12 +7,12 @@
             Start building with Kestra and enjoy your pipelines — the only limit is your imagination!
         </p>
         <div class="text-center cta">
-                <a href="/docs" target="_blank" class="btn btn-lg btn-primary me-2">
+                <NuxtLink href="/docs" target="_blank" class="btn btn-lg btn-primary me-2">
                     Read the docs
-                </a>
-                <a href="/docs/getting-started" class="btn btn-lg btn-secondary">
+                </NuxtLink>
+                <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-secondary">
                     Get started
-                </a>
+                </NuxtLink>
             </div>
         </Section>
     </div>

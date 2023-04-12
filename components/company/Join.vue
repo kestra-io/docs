@@ -7,9 +7,9 @@
             We are always on the lookout for passionate and talented individuals who share our vision for a more efficient and seamless data orchestration experience. If you are excited about the prospect of working on cutting-edge technology and shaping the future of data orchestration, we would love to hear from you ❤️
         </p>
         <div class="text-center cta">
-                <a href="/company/careers" target="_blank" class="btn btn-lg btn-primary me-2">
+                <NuxtLink href="/company/careers" target="_blank" class="btn btn-lg btn-primary me-2">
                     Join us
-                </a>
+                </NuxtLink>
             </div>
         </Section>
     </div>

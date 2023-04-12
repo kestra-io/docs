@@ -7,11 +7,11 @@
                     <h1>Kestra Enterprise Edition for Scaling companies<span class="dot">.</span></h1>
                     <h2>Get full access of all the Open source features and unlock the full potential with Enterprise only features</h2>
                     <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary me-2">
-                        Book a demo <VideoPlus /> 
+                        Book a demo <VideoPlus />
                     </a>
-                    <a href="/company/contact" class="btn btn-lg btn-dark">
+                    <NuxtLink href="/company/contact" class="btn btn-lg btn-dark">
                         Contact us
-                    </a>
+                    </NuxtLink>
                 </div>
                 <div class="col-md-6">
                     <img src="/landing/ee/background.svg" width="600"/>

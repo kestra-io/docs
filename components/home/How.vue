@@ -67,9 +67,9 @@
                 <p class="last-words">
                     By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
                 </p>
-                <a href="/docs/getting-started" class="btn btn-lg btn-primary me-2">
+                <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary me-2">
                     Get started
-                </a>
+                </NuxtLink>
                 <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-secondary">
                     Live demo
                 </a>

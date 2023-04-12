@@ -12,8 +12,8 @@
                         <li>And More...</li>
                     </ul>
 
-                    <a href="/enterprise" class="btn btn-lg btn-primary">Learn more</a> &nbsp;&nbsp;
-                    <a href="/company/contact" class="btn btn-lg btn-dark me-2">Contact us</a>
+                    <NuxtLink href="/enterprise-edition" class="btn btn-lg btn-primary">Learn more</NuxtLink> &nbsp;&nbsp;
+                    <NuxtLink href="/company/contact" class="btn btn-lg btn-dark me-2">Contact us</NuxtLink>
                 </div>
                 <div class="col-md-6">
                     <img src="/landing/usages/rectangle.png" alt="" />

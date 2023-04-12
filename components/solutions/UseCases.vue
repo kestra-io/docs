@@ -6,13 +6,13 @@
         >
             <div class="row">
                 <div class="col-md-4">
-                    <a href="/usecases/change-data-capture">
+                    <NuxtLink href="/solutions/change-data-capture">
                         <img src="/landing/usages/image_11.png" />
                         <div class="title">Change data capture</div>
                         <div>
                             Streamline Complex Data Pipelines and Automate Repetitive Tasks for Enhanced Efficiency
                         </div>
-                    </a>
+                    </NuxtLink>
                 </div>
 
                 <div class="col-md-4">

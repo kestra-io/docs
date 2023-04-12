@@ -12,7 +12,7 @@
                     <div class="card-body content">
                         <p class="mb-0 jobs-offers">
                             <span>
-                                <a href="/company/careers/senior-full-stack-engineer">Senior Full-Stack Engineer</a>
+                                <NuxtLink href="/company/careers/senior-full-stack-engineer">Senior Full-Stack Engineer</NuxtLink>
                             </span>
                             <span class="badge badge-info">Engineering</span>
                         </p>

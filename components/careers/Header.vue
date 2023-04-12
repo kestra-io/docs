@@ -11,7 +11,7 @@
                     </a>
                 </div>
                 <div class="col-md-6">
-                    <img src="/landing/careers/frame_638.png" width="600"/>
+                    <img src="/landing/careers/frame_638.png" width="600" />
                 </div>
             </div>
         </div>

@@ -10,7 +10,7 @@
                         <p>
                             For Media Inquiries and Exclusive Insights, Reach Out to Our Press Team at <a href="mailto:press@kestra.io">press@kestra.io</a>
                         </p>
-                        <a href="#TODO" target="" class="btn btn-lg btn-primary me-2">
+                        <a href="https://drive.google.com/drive/folders/1nwf1BeIZqAGC9uPiq33W-nvDwXDK5tPR?usp=sharing" target="_blank" class="btn btn-lg btn-primary me-2">
                             Download assets
                         </a>
 

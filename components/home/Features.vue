@@ -64,7 +64,7 @@
             </div>
 
             <div class="text-center">
-                <a class="btn btn-lg btn-primary " href="/features">See all features</a>
+                <NuxtLink class="btn btn-lg btn-primary " href="/features">See all features</NuxtLink>
             </div>
         </Section>
     </div>

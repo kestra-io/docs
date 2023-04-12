@@ -1,9 +1,9 @@
 <template>
     <nav class="navbar navbar-expand-lg bg-white sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="/">
+            <NuxtLink class="navbar-brand" href="/">
                 <img src="/logo.svg" alt="Kestra" width="30" height="24">
-            </a>
+            </NuxtLink>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-header" aria-controls="main-header" aria-expanded="false" aria-label="Toggle navigation">
                 Menu <Segment />
@@ -15,105 +15,96 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Product</a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a class="dropdown-item" href="/features">
+                                <NuxtLink class="dropdown-item" href="/features">
                                     <FeatureSearch />
                                     <p>
                                         <span>Features</span>
                                         Discover all the features of Kestra
                                     </p>
-                                </a>
+                                </NuxtLink>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/solutions">
-                                    <AccountNetworkOutline />
-                                    <p>
-                                        <span>Usages</span>
-                                        How Kestra can help on your daily workflow
-                                    </p>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="/enterprise">
+                                <NuxtLink class="dropdown-item" href="/enterprise-edition">
                                     <Security />
                                     <p>
                                         <span>Enterprise Edition</span>
                                         Security and High Availability for enterprise
                                     </p>
-                                </a>
+                                </NuxtLink>
                             </li>
                         </ul>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/solutions" role="button" >Solutions</a>
+                        <NuxtLink class="nav-link" href="/solutions" role="button" >Solutions</NuxtLink>
                     </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a class="dropdown-item" href="/blogs">
+                                <NuxtLink class="dropdown-item" href="/blogs">
                                     <PostOutline />
                                     <p>
                                         <span>Blogs</span>
                                         Product updates, user stories, and more
                                     </p>
-                                </a>
+                                </NuxtLink>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/docs">
+                                <NuxtLink class="dropdown-item" href="/docs">
                                     <FileDocumentOutline />
                                     <p>
                                         <span>Documentation</span>
                                         Get started with Kestra
                                     </p>
-                                </a>
+                                </NuxtLink>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/plugins">
+                                <NuxtLink class="dropdown-item" href="/plugins">
                                     <Security />
                                     <p>
                                         <span>Plugins documentation</span>
                                         Extends Kestra with many plugins
                                     </p>
-                                </a>
+                                </NuxtLink>
                             </li>
                         </ul>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/community" role="button" >Community</a>
+                        <NuxtLink class="nav-link" href="/community" role="button" >Community</NuxtLink>
                     </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Company</a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a class="dropdown-item" href="/company/about-us">
-                                    <AccountStarOutline />
+                                <NuxtLink class="dropdown-item" href="/company">
+                                    <Domain />
                                     <p>
                                         <span>About us</span>
                                         Discover our story and our team
                                     </p>
-                                </a>
+                                </NuxtLink>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/company/careers">
+                                <NuxtLink class="dropdown-item" href="/company/careers">
                                     <AccountStarOutline />
                                     <p>
                                         <span>Careers</span>
                                         Join an open company
                                     </p>
-                                </a>
+                                </NuxtLink>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/company/contact">
+                                <NuxtLink class="dropdown-item" href="/company/contact">
                                     <Email />
                                     <p>
                                         <span>Contact us</span>
                                         Extends Kestra with many plugins
                                     </p>
-                                </a>
+                                </NuxtLink>
                             </li>
                         </ul>
                     </li>
@@ -126,10 +117,10 @@
                             {{ stargazersText }} ⭐️
                         </a>
 
-                        <a class="btn btn-primary me-2" href="/docs/getting-started" role="button" >
+                        <NuxtLink class="btn btn-primary me-2" href="/docs/getting-started" role="button" >
                             <Flash />
                             Getting Started
-                        </a>
+                        </NuxtLink>
 
                         <a class="btn search" data-bs-toggle="modal" data-bs-target="#search-modal"><Magnify /></a>
                     </li>
@@ -164,7 +155,6 @@
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue";
     import Email from "vue-material-design-icons/Email.vue";
     import FeatureSearch from "vue-material-design-icons/FeatureSearch.vue"
-    import AccountNetworkOutline from "vue-material-design-icons/AccountNetworkOutline.vue"
     import Security from "vue-material-design-icons/Security.vue"
     import PostOutline from "vue-material-design-icons/PostOutline.vue"
     import AccountStarOutline from "vue-material-design-icons/AccountStarOutline.vue"
@@ -172,6 +162,7 @@
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Github from "vue-material-design-icons/Github.vue"
     import Flash from "vue-material-design-icons/Flash.vue"
+    import Domain from "vue-material-design-icons/Domain.vue"
 </script>
 
 <script>

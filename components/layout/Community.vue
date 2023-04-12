@@ -10,9 +10,9 @@
                 <a href="https://api.kestra.io/v1/communities/slack/redirect" target="_blank" class="btn btn-lg btn-primary me-2">
                     Join our slack
                 </a>
-                <a href="/community" class="btn btn-lg btn-secondary">
+                <NuxtLink href="/community" class="btn btn-lg btn-secondary">
                     Contribute
-                </a>
+                </NuxtLink>
             </div>
         </Section>
     </div>

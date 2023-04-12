@@ -4,9 +4,9 @@
             title="Ready to take your data department to the next level ?"
         >
         <div class="text-center cta">
-                <a href="/contact-us" target="_blank" class="btn btn-lg btn-primary me-2">
+                <NuxtLink href="/company/contact" target="_blank" class="btn btn-lg btn-primary me-2">
                     Contact us
-                </a>
+                </NuxtLink>
                 <a href="https://demo.kestra.io" class="btn btn-lg btn-secondary">
                     Live demo
                 </a>

@@ -24,7 +24,7 @@
                 </template>
             </div>
             <div class="text-center">
-                <a class="btn btn-lg btn-primary " href="/blogs">See all news</a>
+                <NuxtLink class="btn btn-lg btn-primary " href="/blogs">See all news</NuxtLink>
             </div>
         </Section>
     </div>

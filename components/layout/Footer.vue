@@ -15,22 +15,22 @@
                         <div class="col-6 col-lg-2 offset-lg-1 mb-3">
                             <h5>Product</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="/features">Features</a></li>
-                                <li class="mb-2"><a href="#">Connectors</a></li>
-                                <li class="mb-2"><a href="/enterprise">Enterprise Edition</a></li>
+                                <li class="mb-2"><NuxtLink href="/features">Features</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/plugins">Connectors</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/enterprise-edition">Enterprise Edition</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Solutions</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="/solutions">Usages</a></li>
-                                <li class="mb-2"><a href="/enterprise">For Companies</a></li>
+                                <li class="mb-2"><NuxtLink href="/solutions">Usages</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/enterprise-edition">For Companies</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Community</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="/blogs">Blogs</a></li>
+                                <li class="mb-2"><NuxtLink href="/blogs">Blogs</NuxtLink></li>
                                 <li class="mb-2"><a href="https://api.kestra.io/v1/communities/slack/redirect" target="_blank">Slack</a></li>
                                 <li class="mb-2"><a href="https://github.com/kestra-io" target="_blank">Github</a></li>
                             </ul>
@@ -38,18 +38,18 @@
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Docs</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="/docs">Documentation</a></li>
-                                <li class="mb-2"><a href="/plugins/">Plugins documentation</a></li>
-                                <li class="mb-2"><a href="/docs/terraform">Terraform provider</a></li>
-                                <li class="mb-2"><a href="/docs/administrator-guide">Administrator guide</a></li>
+                                <li class="mb-2"><NuxtLink href="/docs">Documentation</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/plugins/">Plugins documentation</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/docs/terraform">Terraform provider</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/docs/administrator-guide">Administrator guide</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Company</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="/company/about-us">About us</a></li>
-                                <li class="mb-2"><a href="/company/careers">Careers</a></li>
-                                <li class="mb-2"><a href="/company/contact">Contact us</a></li>
+                                <li class="mb-2"><NuxtLink href="/company">About us</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/company/careers">Careers</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/company/contact">Contact us</NuxtLink></li>
                             </ul>
                         </div>
                     </div>
@@ -70,9 +70,9 @@
                 <div class="col-sm-6">
                     <div class="text-end">
                         <p class="mb-0">
-                            <a href="/company/privacy-policy">Privacy Policy</a>
+                            <NuxtLink href="/company/privacy-policy">Privacy Policy</NuxtLink>
                             /
-                            <a href="/company/cookie-policy">Cookie Policy</a>
+                            <NuxtLink href="/company/cookie-policy">Cookie Policy</NuxtLink>
                         </p>
                     </div>
                 </div>

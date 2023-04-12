@@ -48,7 +48,7 @@
             </div>
 
             <div class="text-center mt-5">
-                <a class="btn btn-lg btn-primary " href="/plugins">See all plugins</a>
+                <NuxtLink class="btn btn-lg btn-primary " href="/plugins">See all plugins</NuxtLink>
             </div>
         </Section>
     </div>

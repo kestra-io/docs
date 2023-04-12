@@ -10,9 +10,9 @@
                             </h5>
                             <h5 class="pricing">Free</h5>
                             <div class="text-center ">
-                                <a href="/docs/getting-started" class="btn btn-secondary me-2">
+                                <NuxtLink href="/docs/getting-started" class="btn btn-secondary me-2">
                                     Get started
-                                </a>
+                                </NuxtLink>
                             </div>
                             <ul>
                                 <li>Free, forever</li>
@@ -37,9 +37,9 @@
                             </h5>
                             <h5 class="pricing custom">Custom</h5>
                             <div class="text-center ">
-                                <a href="/company/contact" class="btn btn-primary">
+                                <NuxtLink href="/company/contact" class="btn btn-primary">
                                     Contact us
-                                </a>
+                                </NuxtLink>
                             </div>
                             <ul>
                                 <li><b>All features included in the Open Source Edition</b></li>
