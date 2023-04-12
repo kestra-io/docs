@@ -45,23 +45,23 @@
                     <div class="col-md-6">
                         <ol>
                             <li>
-                                <strong>TODO2</strong><br />
-                                TODO2
+                                <strong>Simplify Your Workflows with Automation:</strong><br />
+                                Easily create scheduling and trigger-based workflows to automate repetitive tasks and free up your team's.
                             </li>
 
                             <li>
-                                <strong>TODO2</strong><br />
-                                TODO2
+                                <strong>Trigger Workflows Based on Events:</strong><br />
+                                Kestra's trigger-based approach allows you to initiate workflows based on specific events, like data arriving in a database or a file being uploaded. This enables real-time processing and reduces delays in your pipeline.
                             </li>
 
                             <li>
-                                <strong>TODO2</strong><br />
-                                TODO2
+                                <strong>Microservice Orchestration Made Easy:</strong><br />
+                                With microservice orchestration capabilities, complex workflows are broken down into smaller pieces for easier scaling and maintenance. Kestra supports a wide range of microservice technologies for seamless integration with existing architecture.
                             </li>
                         </ol>
                     </div>
-                    <div class="col-md-6">
-                        <h1>TODO</h1>
+                    <div class="col-md-6 use-case-img">
+                        <img src="/landing/home/dashboard.png" width="600"/>
                     </div>
                 </div>
 
@@ -69,23 +69,23 @@
                     <div class="col-md-6">
                         <ol>
                             <li>
-                                <strong>TODO3</strong><br />
-                                TODO3
+                                <strong>Decentralize your data:</strong><br />
+                                Kestra's YAML-based workflows and intuitive UI make it easy to decentralize data and build domain-specific data products, while minimizing dependencies between teams and reducing bottlenecks.
                             </li>
 
                             <li>
-                                <strong>TODO3</strong><br />
-                                TODO3
+                                <strong>Data Ownership and Governance:</strong><br />
+                                Create and maintain your own data products, while ensuring data quality, governance, and security. Improves collaboration and accountability, and reduces the risk of silos and conflicts.
                             </li>
 
                             <li>
-                                <strong>TODO3</strong><br />
-                                TODO3
+                                <strong>Simplify Complex Data Workflows:</strong><br />
+                                Our architecture allows for the break down of complex workflows, making them easier to create, maintain, and reuse.  Improve performance and reliability, allowing your team to focus on delivering valuable insights from your data.
                             </li>
                         </ol>
                     </div>
-                    <div class="col-md-6">
-                        <h1>TODO</h1>
+                    <div class="col-md-6 use-case-img">
+                        <img src="/landing/home/dashboard.png" width="600"/>
                     </div>
                 </div>
 

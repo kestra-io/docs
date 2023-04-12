@@ -25,7 +25,7 @@
                                 </h2>
                                 <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        TODO
+                                        Secure your Kestra cluster with a single sign-on using your Open ID provider and control user and group access with fine-grained ACL.
                                     </div>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                 </h2>
                                 <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        TODO
+                                        Configure a namespace with task defaults, variables, and secrets to automatically configure all flows.
                                     </div>
                                 </div>
                             </div>
