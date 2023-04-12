@@ -6,11 +6,13 @@
         >
             <div class="row">
                 <div class="col-md-4">
-                    <img src="/landing/usages/image_11.png" />
-                    <div class="title">Change data capture</div>
-                    <div>
-                        Streamline Complex Data Pipelines and Automate Repetitive Tasks for Enhanced Efficiency
-                    </div>
+                    <a href="/usecases/change-data-capture">
+                        <img src="/landing/usages/image_11.png" />
+                        <div class="title">Change data capture</div>
+                        <div>
+                            Streamline Complex Data Pipelines and Automate Repetitive Tasks for Enhanced Efficiency
+                        </div>
+                    </a>
                 </div>
 
                 <div class="col-md-4">
