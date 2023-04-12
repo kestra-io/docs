@@ -1,5 +1,5 @@
 <template>
-    <div :class="'alert alert-' + type" role="alert">
+    <div :class="'doc-alert alert alert-' + type" role="alert">
         <slot />
     </div>
 </template>

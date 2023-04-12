@@ -1,11 +1,12 @@
 export default defineNuxtConfig({
     modules: [
         '@nuxt/devtools',
-        '@nuxt/content'
+        '@nuxt/content',
+        'nuxt-gtag'
     ],
     app: {
         baseURL: "/",
-        // pageTransition: {name: 'page', mode: 'out-in'},
+        // pageTransition: {name: 'page', mode: 'out-in'}
         head: {
             charset: 'utf-8',
             viewport: 'width=device-width, initial-scale=1',
@@ -21,14 +22,19 @@ export default defineNuxtConfig({
             injectPage: false
         },
         highlight: {
-            theme: {
-                // Default theme (same as single string)
-                default: 'github-light',
-                // Theme used if `html.dark`
-                dark: 'github-dark',
-                // Theme used if `html.sepia`
-                sepia: 'monokai'
-            }
+            // preload: [
+            //     'bash',
+            //     'yaml',
+            //     'sql',
+            //     'java',
+            //     'dockerfile',
+            //     'hcl',
+            //     'python',
+            //     'twig',
+            //     'groovy',
+            //     'json5',
+            // ],
+            theme: 'github-dark'
         }
     },
     router: {
@@ -38,6 +44,10 @@ export default defineNuxtConfig({
     },
     devServer: {
         port: 3001
+    },
+    gtag: {
+        id: 'G-EYVNS03HHR',
+        initialConsent: false
     },
     // routeRules: {
     //     '/**': {swr: true},

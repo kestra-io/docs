@@ -1,13 +1,17 @@
 <template>
-    <div class="bd-toc mt-3 mb-5 my-lg-0 mb-lg-5 px-sm-1 text-body-secondary">
-        <button class="btn btn-link p-md-0 mb-2 mb-md-0 text-decoration-none bd-toc-toggle d-md-none" type="button"
-                data-bs-toggle="collapse" data-bs-target="#tocContents" aria-expanded="false"
-                aria-controls="tocContents">
+    <div class="bd-toc mb-4 text-body-secondary">
+        <button
+            class="btn d-lg-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#tocContents"
+            aria-expanded="false"
+            aria-controls="tocContents"
+        >
             On this page
-
         </button>
-        <strong class="d-none d-md-block h6 my-2 ms-3">On this page</strong>
-        <hr class="d-none d-md-block my-2 ms-3">
+        <strong class="d-none d-lg-block h6 my-2 ms-3">On this page</strong>
+        <hr class="d-none d-lg-block my-2 ms-3">
         <div class="collapse bd-toc-collapse" id="tocContents">
             <nav id="TableOfContents">
                 <ul>
@@ -52,7 +56,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
     .bd-toc {
@@ -107,48 +111,52 @@
         }
     }
 
-    .bd-toc-toggle {
-        display: flex;
-        align-items: center;
+    .btn {
+        border: 1px solid var(--bs-border-color);
+        text-align: center;
+        width: 100%;
+        display: inline-block;
+        background: var(--bs-gray-100);
+        color: var(--bs-gray-500);
 
-        @include media-breakpoint-down(sm) {
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        @include media-breakpoint-down(md) {
-            color: var(--bs-body-color);
-            border: 1px solid var(--bs-border-color);
-            @include border-radius(var(--bs-border-radius));
-
-            &:hover,
-            &:focus,
-            &:active,
-            &[aria-expanded="true"] {
-                color: var(--bd-violet);
-                background-color: var(--bs-body-bg);
-                border-color: var(--bd-violet);
-            }
-
-            &:focus,
-            &[aria-expanded="true"] {
-                box-shadow: 0 0 0 3px rgba(var(--bd-violet-rgb), .25);
-            }
+        &:hover,
+        &:focus,
+        &:active,
+        &[aria-expanded="true"] {
+            background: var(--bs-gray-100);
+            color: var(--bs-gray-500);
         }
     }
 
+    //.bd-toc-toggle {
+    //    display: flex;
+    //    align-items: center;
+    //
+    //    @include media-breakpoint-down(sm) {
+    //        justify-content: space-between;
+    //        width: 100%;
+    //    }
+    //
+    //    @include media-breakpoint-down(md) {
+    //        color: var(--bs-body-color);
+    //        border: 1px solid var(--bs-border-color);
+    //        @include border-radius(var(--bs-border-radius));
+    //    }
+    //}
+
     .bd-toc-collapse {
-        @include media-breakpoint-down(md) {
+        @include media-breakpoint-down(lg) {
             nav {
-                padding: 1.25rem 1.25rem 1.25rem 1rem;
-                background-color: var(--bs-tertiary-bg);
+                padding: $spacer 0;
                 border: 1px solid var(--bs-border-color);
+                box-shadow: $box-shadow-sm;
                 @include border-radius(var(--bs-border-radius));
             }
         }
 
-        @include media-breakpoint-up(md) {
+        @include media-breakpoint-up(lg) {
             display: block !important; // stylelint-disable-line declaration-no-important
+
         }
     }
 </style>

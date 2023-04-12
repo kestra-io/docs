@@ -1,29 +1,29 @@
-$primary: #8200FF;
-$secondary: #15023F;
+$primary: #8405FF;
+$secondary: #C182FF;
 
 $white: #fff;
-$gray-100: #f8f9fa;
-$gray-200: #e9ecef;
-$gray-300: #dee2e6;
-$gray-400: #ced4da;
-$gray-500: #adb5bd;
-$gray-600: #6c757d;
-$gray-700: #495057;
-$gray-800: #343a40;
-$gray-900: #212529;
-$black: #000;
+$gray-100: #f8f8fc;
+$gray-200: #f1f5fa;
+$gray-300: #eaf0f9;
+$gray-400: #b6c2e4;
+$gray-500: #8997bd;
+$gray-600: #7081b9;
+$gray-700: #303e67;
+$gray-800: #2c3652;
+$gray-900: #1d2c48;
+$black: #26282D;
 
 
-$blue: #0d6efd;
-$indigo: #6610f2;
-$purple: #6f42c1;
-$pink: #F62E76;
-$red: #dc3545;
-$orange: #fd7e14;
-$yellow: #ffc107;
-$green: #198754;
-$teal: #20c997;
-$cyan: #0dcaf0;
+$blue: #1761FD;
+$indigo: #8405FF;
+$purple: #9F9DFF;
+$pink: #FD3C97;
+$red: #E36065;
+$orange: #FCB37C;
+$yellow: #FCE07C;
+$green: #03DABA;
+$teal: #03D87F;
+$cyan: #60C5FE;
 
 
 $font-family-sans-serif: "Public Sans", sans-serif;
@@ -73,9 +73,13 @@ $purple-16: #281A35;
 $purple-17: #9327FB;
 $purple-18: #AA50FF;
 $purple-19: conic-gradient(from 90deg at 50% 50%, #BE79FF 0deg, #7136F6 360deg);
-
+$purple-20: #291E39;
+$purple-21: #A42DCD;
+$purple-22: #FCF7FE;
+$purple-23: #EDE8F3;
 
 $enable-reduced-motion: false;
+$min-contrast-ratio: 2.5;
 
 // bootstrap
 @import "bootstrap/scss/functions";
