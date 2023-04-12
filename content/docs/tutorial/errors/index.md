@@ -67,7 +67,7 @@ However, we have no control over the availability of the file, so it may be nece
       interval: PT10M
 ```
 
-:: details Click here to see the full flow
+::collapse{title="Click here to see the full flow"}
 ```yaml
 id: kestra-tutorial
 namespace: io.kestra.tutorial
@@ -126,4 +126,7 @@ errors:
 ```
 ::
 
-<NextStep message="To provide a more robust and flexible execution environment, Kestra can run task within custom docker." link="../dockers/"></NextStep>
+
+::next-link{href="../dockers/"}
+To provide a more robust and flexible execution environment, Kestra can run task within custom docker.
+::

@@ -46,7 +46,7 @@ triggers:
     cron: 0 10 * * 1
 ```
 
-:: details Click here to see the full flow
+::collapse{title="Click here to see the full flow"}
 ```yaml
 id: kestra-tutorial
 namespace: io.kestra.tutorial
@@ -84,4 +84,6 @@ triggers:
 ::
 
 
-<NextStep message="Now, let's dive into how to create complex workflows through flowable." link="../flowable/"/>
+::next-link{href="../flowable/"}
+Now, let's dive into how to create complex workflows through flowable.
+::

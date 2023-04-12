@@ -33,7 +33,7 @@ In our example, we will use the output of the `download` task to do some Python 
       - pandas
 ```
 
-:: details Click here to see the full flow
+::collapse{title="Click here to see the full flow"}
 ```yaml
 id: kestra-tutorial
 namespace: io.kestra.tutorial
@@ -62,4 +62,7 @@ Tasks:
 ```
 ::
 
-<NextStep message="Now that we've covered outputs, let's move on to the next topic: triggers." link="../triggers/"/>
+::next-link{href="../triggers/"}
+Now that we've covered outputs, let's move on to the next topic: triggers.
+::
+

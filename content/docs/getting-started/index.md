@@ -50,7 +50,9 @@ When you're done, click on the **Save** button to save it and start your first e
 
 ![Your first flow saved](/docs/getting-started/saved.png)
 
-<NextStep message="For a better introduction to Kestra, follow our Tutorial" link="../tutorial"/>
+::next-link{href="../tutorial"}
+For a better introduction to Kestra, follow our Tutorial
+::
 
 ## Next Steps
 

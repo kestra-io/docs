@@ -76,4 +76,8 @@ After saving it, you will see a **New Execution** button. Click on it and watch 
 ![New execution](/docs/tutorial/fundamentals/new-execution.png)
 
 
-<NextStep message="The next step is to add Inputs to your flow" link="../inputs/"/>
+::next-link{href="../inputs/"}
+The next step is to add Inputs to your flow
+::
+
+

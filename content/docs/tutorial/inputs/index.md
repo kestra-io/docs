@@ -45,7 +45,7 @@ inputs:
     default: "https://www.data.gouv.fr/fr/datasets/r/d33eabc9-e2fd-4787-83e5-a5fcfb5af66d"
 ```
 
-:: details Click here to see the full flow
+::collapse{title="Click here to see the full flow"}
 ```yaml
 id: kestra-tutorial
 namespace: io.kestra.tutorial
@@ -65,4 +65,7 @@ tasks:
 ```
 ::
 
-<NextStep message="Follow the next step to see what's your task outputs" link="../outputs/"/>
+
+::next-link{href="../outputs/"}
+Follow the next step to see what's your task outputs
+::

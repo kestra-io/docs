@@ -53,7 +53,7 @@ We will use the [Parallel](https://kestra.io/plugins/core/tasks/flows/io.kestra.
 ```
 
 
-:: details Click here to see the full flow
+::collapse{title="Click here to see the full flow"}
 ```yaml
 id: kestra-tutorial
 namespace: io.kestra.tutorial
@@ -104,5 +104,7 @@ tasks:
 ```
 ::
 
+::next-link{href="../errors/"}
+While flowable tasks can improve your workflows, it's important to understand how to handle errors that may arise
+::
 
-<NextStep message="While flowable tasks can improve your workflows, it's important to understand how to handle errors that may arise" link="../errors/"/>

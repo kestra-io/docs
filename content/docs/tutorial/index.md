@@ -11,4 +11,6 @@ In this tutorial, we will guide you through the basics of Kestra and show you ho
 This tutorial is designed for anyone who wants to learn how to use Kestra, regardless of their experience level. Whether you are a developer, data scientist, or IT professional, this tutorial will provide you with the knowledge you need to start with Kestra and automate your workflows. So let's get started!
 
 
-<NextStep message="Let's start with the fundamental" link="fundamentals"/>
+::next-link{href="fundamentals"}
+Let's start with the fundamental
+::

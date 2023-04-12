@@ -54,7 +54,7 @@ Note that when you want to output files from a Script Task, you must first defin
       - "cat new.csv > {{ outputFiles.data_update }}"
 ```
 
-:: details Click here to see the full flow
+::collapse{title="Click here to see the full flow"}
 ```yaml
 id: kestra-tutorial
 namespace: io.kestra.tutorial

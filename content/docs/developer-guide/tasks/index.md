@@ -69,9 +69,9 @@ tasks:
 You can access the output of a sibling task with `{{outputs.sibling.value}}`, see [Lookup in sibling tasks](/docs/developer-guide/outputs#lookup-in-sibling-tasks)
 ::
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential">Sequential Task documentation</a>
-</div>
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential"}
+Sequential Task documentation
+::
 
 
 ### Parallel
@@ -101,10 +101,9 @@ tasks:
 You cannot access the output of a sibling task as tasks will be run in parallel.
 ::
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel">Parallel Task documentation</a>
-</div>
-
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel"}
+Parallel Task documentation
+::
 
 ### Switch
 
@@ -144,9 +143,10 @@ tasks:
         format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch">Switch Task documentation</a>
-</div>
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch"}
+Switch Task documentation
+::
+
 
 ### If
 
@@ -178,9 +178,10 @@ tasks:
         message: 'Condition was false'
 ```
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.If">If Task documentation</a>
-</div>
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.If"}
+If Task documentation
+::
+
 
 ### EachSequential
 
@@ -213,9 +214,10 @@ tasks:
 You can access the output of a sibling task with `{{outputs.sibling[taskrun.value].value}}`, see [Lookup in sibling tasks](/docs/developer-guide/outputs#lookup-in-sibling-tasks)
 ::
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential">EachSequential Task documentation</a>
-</div>
+
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential"}
+EachSequential Task documentation
+::
 
 ### EachParallel
 
@@ -248,10 +250,9 @@ tasks:
 You cannot access the output of a sibling task as tasks will be run in parallel.
 ::
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel">EachParallel Task documentation</a>
-</div>
-
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel"}
+EachParallel Task documentation
+::
 
 
 ### AllowFailure
@@ -289,10 +290,9 @@ tasks:
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.AllowFailure">AllowFailure Task documentation</a>
-</div>
-
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.AllowFailure"}
+AllowFailure Task documentation
+::
 
 ### Fail
 
@@ -354,9 +354,11 @@ tasks:
     message: "I'm after the fail on condition"
 ```
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/executions/io.kestra.core.tasks.executions.Fail">Fail Task documentation</a>
-</div>
+
+::next-link{href="/plugins/core/tasks/executions/io.kestra.core.tasks.executions.Fail"}
+Fail Task documentation
+::
+
 
 ### Flow
 
@@ -379,9 +381,10 @@ tasks:
       store: 12
 ```
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Flow">Flow Task documentation</a>
-</div>
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Flow"}
+Flow Task documentation
+::
+
 
 ### Worker
 
@@ -408,9 +411,9 @@ tasks:
             echo '::{"outputs": {"stay":"'$(cat {{ workingDir }}/stay.txt)'"}}::'
 ```
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Worker">Worker Task documentation</a>
-</div>
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Worker"}
+Worker Task documentation
+::
 
 
 ### Pause
@@ -450,9 +453,11 @@ A Pause task without delay will wait indefinitely until the task state is change
 For this: go to the **Gantt** tab of the **Execution** page, click on the task, select **Change status** on the contextual menu and select **Mark as RUNNING** on the form. This will make the task run until its end.
 ::
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Pause">Pause Task documentation</a>
-</div>
+
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Pause"}
+Pause Task documentation
+::
+
 
 ### Template
 
@@ -471,6 +476,9 @@ tasks:
     templateId: template
 ```
 
-<div style="text-align: right">
-    <a class="btn btn-primary" href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template">Template Task documentation</a>
-</div>
+
+::next-link{href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template"}
+Template Task documentation
+::
+
+
