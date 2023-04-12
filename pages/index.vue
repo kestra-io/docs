@@ -1,6 +1,7 @@
 <template>
     <HomeHeader />
     <HomeFeatures />
+    <HomeUI />
     <HomeHow />
     <HomeUseCase />
     <HomePlugins />
