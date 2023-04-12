@@ -1,6 +1,5 @@
 ---
 title: "Developer Advocate"
-layout: CareerDetail
 type: Engineering
 draft: true
 ---

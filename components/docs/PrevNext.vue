@@ -20,7 +20,7 @@
 </script>
 
 <template>
-    <div v-if="prev || next" class="docs-prev-next mb-4 mt-4">
+    <div v-if="prev || next" class="docs-prev-next mb-4 mt-5">
         <NuxtLink
             v-if="prev"
             :to="prev._path"

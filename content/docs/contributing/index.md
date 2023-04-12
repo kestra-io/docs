@@ -6,8 +6,6 @@ order: 12
 
 You can contribute to Kestra in many ways depending on your skills and interests.
 
-[[toc]]
-
 
 ## Support us on social medias
 

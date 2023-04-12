@@ -4,8 +4,6 @@ order: 2
 
 # String functions
 
-[[toc]]
-
 ## `capitalizeFirst`: Capitalizes the first character of the value.
 
 If the value is "kestra is cool !", the output will be "Kestra is cool !".
@@ -22,7 +20,7 @@ If the value is "Handlebars.java", the output will be "  Handlebars.java  ".
 {{ center value size=19 [pad="char"] }}
 ```
 
-#### Arguments: 
+#### Arguments:
 - `size`
 - `pad`
 
@@ -57,7 +55,7 @@ Joins an array, iterator or an iterable with a string.
 {{join value join [prefix=""] [suffix=""]}}
 ```
 
-#### Arguments: 
+#### Arguments:
 - `join`
 - `prefix`
 - `suffix`
@@ -83,7 +81,7 @@ If the value is Handlebars.java, the output will be "Handlebars.java     ".
 {{ljust value 20 [pad=" "] }}
 ```
 
-#### Arguments: 
+#### Arguments:
 - `field size`
 
 
@@ -95,7 +93,7 @@ If the value is Handlebars.java, the output will be "     Handlebars.java".
 {{rjust value 20 [pad=" "] }}
 ```
 
-#### Arguments: 
+#### Arguments:
 - `field size`
 - `pad`
 
@@ -111,7 +109,7 @@ ends with the `char` value at nd - 1*
 {{substring value start end }}
 ```
 
-#### Arguments: 
+#### Arguments:
 - `start offset`
 - `end offset`
 
@@ -165,7 +163,7 @@ If the value is "Hello %s" "handlebars.java", the output will be "Hello handleba
 {{stringFormat string param0 param1 ... paramN}}
 ```
 
-#### Arguments: 
+#### Arguments:
 - `format`
 - `paramN`
 
@@ -202,7 +200,7 @@ If value is "Handlebars rocks", the output will be "Handlebars...".
 {{abbreviate value 13 }}
 ```
 
-#### Arguments: 
+#### Arguments:
 - Number of characters to truncate to
 
 
@@ -216,7 +214,7 @@ This wraps the sentence at a specified line length. If value is Joel is a slug, 
 {{ wordWrap value 5 }}
 ```
 
-#### Arguments: 
+#### Arguments:
 - the number of characters at which to wrap the text
 
 
@@ -235,11 +233,11 @@ If value is "Handlebars ...", the output will be "Handlebars rocks".
 
 For true, false and (optionally) null, to the strings "yes", "no", "maybe".
 
-#### Arguments: 
+#### Arguments:
   - `yes`
   - `no`
   - `maybe`
-  
+
 ```handlebars
 {{yesno value [yes="yes"] [no="no"] maybe=["maybe"] }}
 ```

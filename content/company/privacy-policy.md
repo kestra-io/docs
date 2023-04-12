@@ -1,6 +1,5 @@
 ---
 title: Privacy Policy
-layout: CompanyLegals
 ---
 
 At Kestra, accessible from [https://kestra.io](https://kestra.io), one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Kestra and how we use it.

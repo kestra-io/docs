@@ -4,14 +4,12 @@ order: 3
 
 # Number functions
 
-[[toc]]
-
 ## `numberFormat`: Format a number
 ```handlebars
    {{numberFormat number ["format"] [locale=default]}}
 ```
 
-Arguments: 
+Arguments:
  - `format`: Format parameters is one of:
     - "integer": the integer number format
     - "percent": the percent number format

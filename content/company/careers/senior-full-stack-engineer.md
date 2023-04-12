@@ -1,6 +1,5 @@
 ---
 title: "Senior Full-Stack Engineer"
-layout: CareerDetail
 type: Engineering
 ---
 

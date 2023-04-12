@@ -1,5 +1,5 @@
 <template>
-    <details>
+    <details class="mb-4">
         <summary v-if="title">{{ title }}</summary>
         <slot />
     </details>

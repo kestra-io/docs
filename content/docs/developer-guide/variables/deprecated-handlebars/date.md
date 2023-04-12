@@ -4,8 +4,6 @@ order: 4
 
 # Date functions
 
-[[toc]]
-
 
 ## `dateFormat`: Date format
 
@@ -14,7 +12,7 @@ order: 4
 ```
 
 
-#### Arguments: 
+#### Arguments:
 - `format`: Format parameters is one of :
   - `full`: Sunday, September 8, 2013 at 4:19:12 PM Central European Summer Time
   - `long`: September 8, 2013 at 4:19:12 PM CEST
@@ -47,25 +45,25 @@ order: 4
    {{now ['format'] [tz=timeZone|timeZoneId]}}
 ```
 
-#### Arguments: 
+#### Arguments:
 - `format`: Same format as `dateFormat`
  - `timezone`: with the format `Europe/Paris`
 
-## `timestamp`: Current second timestamp 
+## `timestamp`: Current second timestamp
 
 ```handlebars
    {{timestamp}}
 ```
 
 
-## `nanotimestamp`: Current nano timestamp 
+## `nanotimestamp`: Current nano timestamp
 
 ```handlebars
    {{nanotimestamp}}
 ```
 
 
-## `microtimestamp`: Current micro timestamp 
+## `microtimestamp`: Current micro timestamp
 
 ```handlebars
    {{microtimestamp}}

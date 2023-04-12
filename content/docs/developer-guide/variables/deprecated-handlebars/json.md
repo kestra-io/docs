@@ -4,8 +4,6 @@ order: 7
 
 # JSON functions
 
-[[toc]]
-
 ## `json` Convert an object to json
 
 Convert an object to is JSON representation

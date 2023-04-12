@@ -13,7 +13,7 @@
                         <li>And More...</li>
                     </ul>
 
-                    <NuxtLinka href="/enterprise-edition" class="btn btn-lg btn-primary me-2">Learn more</NuxtLinka>
+                    <NuxtLink href="/enterprise-edition" class="btn btn-lg btn-primary me-2">Learn more</NuxtLink>
                     <NuxtLink href="/company/contact" class="btn btn-lg btn-dark">Contact us</NuxtLink>
                 </div>
                 <div class="col-md-6">

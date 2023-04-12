@@ -91,9 +91,11 @@
 </script>
 
 <style lang="scss">
+    @import "../../assets/styles/variable";
+
     footer {
         position: relative;
-        background-color: var(--bs-secondary);
+        background-color: $purple-24;
         font-size: var(--bs-font-size-sm);
 
         h5, a, p{

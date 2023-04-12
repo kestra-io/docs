@@ -4,8 +4,6 @@ order: 6
 
 # Iterations functions
 
-[[toc]]
-
 ## For each
 
 You can iterate over a list using the built-in each helper. Inside the block, you can use `this` to reference the element being iterated over. `contextualListVariable` is an iterable item on which the mydata property is displayed for all entries.

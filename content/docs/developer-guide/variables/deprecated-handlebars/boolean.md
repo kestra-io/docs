@@ -3,8 +3,6 @@ order: 5
 ---
 # Boolean functions
 
-[[toc]]
-
 ### `eq`: Equality
 
 Test if two elements are equals.

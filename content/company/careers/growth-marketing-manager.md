@@ -1,6 +1,5 @@
 ---
 title: "Growth Marketing Manager"
-layout: CareerDetail
 type: Marketing
 draft: true
 ---

@@ -4,9 +4,7 @@ order: 8
 
 # Vars functions
 
-[[toc]]
-
-## `firstDefined` First defined variables 
+## `firstDefined` First defined variables
 
 Return the first defined variables or throw an exception if no variables are defined.
 
@@ -14,7 +12,7 @@ Return the first defined variables or throw an exception if no variables are def
 {{ firstDefined outputs.task1.uri outputs.task2.uri }}
 ```
 
-## `eval` Evaluate a handlebars expression 
+## `eval` Evaluate a handlebars expression
 
 Evaluate a handlebars expression at runtime based on the whole context.
 
