@@ -59,7 +59,7 @@
                 </div>
                 <div class="text-center">
                     <button class="btn btn-lg btn-primary me-2 button-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Compare all features <span class="caret"></span>
+                        Compare all features <ChevronUp/>
                     </button>
                     <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body feature-comparison">
@@ -260,8 +260,9 @@
 
 <script>
     import Section from '../layout/Section.vue';
+    import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     export default {
-        components: {Section}
+        components: {Section, ChevronUp},
     }
 </script>
 
