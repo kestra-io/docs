@@ -39,7 +39,8 @@
                 () => fetchContentNavigation(queryBuilder)
             );
 
-            const dir = navDirFromPath(route.path, navigation.value)
+            const routePath = route.path.endsWith("/") ? route.path.slice(0, -1) : route.path;
+            const dir = (navDirFromPath(routePath, navigation.value) || [])
                 .filter(value => value._path !== currentPage)
 
             return {dir, max, header};
