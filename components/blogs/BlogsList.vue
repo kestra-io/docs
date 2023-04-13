@@ -17,16 +17,18 @@
                 <BlogCard :blog="blog"/>
             </div>
         </div>
+        <Newsletter/>
     </div>
 </template>
 
 <script>
     import HighlightBlogCard from "./HighlightBlogCard.vue";
     import BlogCard from "./BlogCard.vue";
+    import Newsletter from "~/components/layout/Newsletter.vue";
 
     export default {
         name: "BlogsList",
-        components: {BlogCard, HighlightBlogCard},
+        components: {BlogCard, HighlightBlogCard, Newsletter},
         props: {
             blogs: {
                 type: Array,
@@ -74,6 +76,7 @@
     h1 {
         font-weight: 900;
     }
+
     h5 {
         font-weight: 300;
         color: var(--bs-gray-700)
