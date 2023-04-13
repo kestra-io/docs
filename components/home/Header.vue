@@ -49,7 +49,7 @@
             }
         },
         created() {
-             stargazers().then(value => this.stargazersText = value); 
+             stargazers().then(value => this.stargazersText = value);
         },
         computed: {
             companies() {
@@ -78,7 +78,8 @@
     @import "../../assets/styles/variable";
 
     .main {
-        background: #040114 url("/landing/home/header.jpg") center bottom no-repeat;
+        background: #040114 url("/landing/home/Intro.svg") center no-repeat;
+        background-size: cover;
         color: var(--bs-white);
         padding-top: 80px;
         margin-top: -80px;

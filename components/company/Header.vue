@@ -2,7 +2,7 @@
     <div class="main">
         <div class="hero container text-center">
             <img src="/landing/monograme_kestra.png" class="kestra-logo"/>
-            <h2>ABOUT KESTRA</h2>
+            <h2 class="fw-bold">ABOUT KESTRA</h2>
             <h1>Pioneering the Future of Data Orchestration and Automation</h1>
         </div>
     </div>
@@ -13,6 +13,7 @@
         <Section
             title="The Genesis of Kestra"
             subtitle="Our story"
+            class="pt-3"
         >
             <div class="container text-center kestra-story">
                 <p>
@@ -40,7 +41,8 @@
     @import "../../assets/styles/variable";
 
     .main {
-        background: $purple-6;
+        background: url("/landing/company/header.svg") no-repeat center center;
+        background-size: cover;
         color: var(--bs-white);
         padding-top: 80px;
         margin-top: -80px;
@@ -52,7 +54,7 @@
     }
 
     .team-image {
-        margin-top: -224px;
+        margin-top: -10rem;
     }
 
     .container {
