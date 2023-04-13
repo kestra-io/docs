@@ -19,6 +19,12 @@ for DOC in $(find . -type d -name md); do
     cp -r "${DOC}"/* ../../plugins
 done
 
+for file in $(find ../../plugins -name 'README.md')
+do
+    sed -i 's/.html)/.md)/' $file
+    mv $file $(echo "$file" | sed -r 's|README.md|index.md|g')
+done
+
 # api
 
 docker pull ghcr.io/kestra-io/kestra-ee:develop

@@ -31,7 +31,7 @@ Kestra started in 2019 with this [initial commit](https://github.com/kestra-io/k
 <img src="/blogs/2022-02-01-kestra-opensource/initial-commit.jpg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 450px">
 
 
-To provide a bit of a background: I was working for Leroy Merlin as a consultant. We needed to build a new cloud-based data platform from scratch (destination: mostly Google Cloud Platform). We tried a [lot of things](/blogs/2022-02-22-leroy-merlin-usage-kestra) and failed with some of our attempts. The **biggest setback was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed simply due to the Airflow scheduler), performance issues (unable to handle a light workload), and a lack of features (scaling, data processing). After many tests (Google Composer, Open source Airflow on Kubernetes), the decision was final: **Airflow was rejected by Leroy Merlin**.
+To provide a bit of a background: I was working for Leroy Merlin as a consultant. We needed to build a new cloud-based data platform from scratch (destination: mostly Google Cloud Platform). We tried a [lot of things](../blogs/2022-02-22-leroy-merlin-usage-kestra) and failed with some of our attempts. The **biggest setback was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed simply due to the Airflow scheduler), performance issues (unable to handle a light workload), and a lack of features (scaling, data processing). After many tests (Google Composer, Open source Airflow on Kubernetes), the decision was final: **Airflow was rejected by Leroy Merlin**.
 
 <div class="clearfix" />
 
@@ -61,7 +61,7 @@ The open source license is not limited and allows you to install and run it as y
 
 
 ## Kestra Plugins are also Open Source!
-When implementing the deep integration of the tools and databases you are using, the connectors (what we call “plugins”) can present the biggest challenge. Most orchestrators (even proprietary and licensed based) only talk bash or cmd. You have to manage all of your needs with simple commands, often requiring you to use another tool in order to have access to the underlying resource (such as Talend). With Kestra, we want to have a deep integration with your tools and let [bash](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash) deal solely with edge cases a plugin can't cover.
+When implementing the deep integration of the tools and databases you are using, the connectors (what we call “plugins”) can present the biggest challenge. Most orchestrators (even proprietary and licensed based) only talk bash or cmd. You have to manage all of your needs with simple commands, often requiring you to use another tool in order to have access to the underlying resource (such as Talend). With Kestra, we want to have a deep integration with your tools and let [bash](../plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.md) deal solely with edge cases a plugin can't cover.
 
 An example for a query to Google BigQuery:
 
@@ -89,10 +89,10 @@ jq -r '.name' /tmp/query.json
 
 Kestra avoids the rigmarole of installing the software on the system, handling dependencies and conflicts, dealing with Python, etc. — just install a plugin (a simple jar) and speak directly with your database.
 
-We have a [number of plugins](/plugins/) and the process of [developing your own](/docs/plugin-developer-guide) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/company/contact) if you require help or support).
+We have a [number of plugins](../plugins/index.md) and the process of [developing your own](../docs/09.plugin-developer-guide/index.md) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/company/contact) if you require help or support).
 
 ## First Public Release *and* Production Ready!
-First public release doesn't mean that Kestra is not production ready. In fact, it has been **used in production since August 2020 at Leroy Merlin** — take a deeper look at the [case study](/blogs/2022-02-22-leroy-merlin-usage-kestra) if you want more detail. Here are some figures to give a picture of Kestra’s credentials:
+First public release doesn't mean that Kestra is not production ready. In fact, it has been **used in production since August 2020 at Leroy Merlin** — take a deeper look at the [case study](../blogs/2022-02-22-leroy-merlin-usage-kestra.md) if you want more detail. Here are some figures to give a picture of Kestra’s credentials:
 - **4 clusters** one for every environment
 - **200+ users/developers**
 - **2000+ flows** in production

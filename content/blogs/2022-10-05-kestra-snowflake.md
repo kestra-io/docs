@@ -46,17 +46,17 @@ Now, companies can build **scalable data workloads** that can perform strong dat
 
 Typically, data warehouse workloads are part of a bigger technology stack within an organization or across organizations. To streamlines various operations, data pipelines should be orchestrated and scheduled. Data orchestration unifies data from disparate sources and transforms it to enable analytics. This is where [Kestra](/) jumps in.
 
-Kestra is a state-of-the-art, open-source, cloud-native platform built to orchestrate & schedule scalable data workflows, aiming to improve the productivity of DataOps teams. Kestra's orchestration platform can build, run, manage, and monitor all [kinds of complex workflows](/docs/tutorial/flowable/) sequentially and in parallel. It offers numerous [plugin integrations](/plugins/) to build advanced data workflows, including our [Snowflake plugin](/plugins/plugin-jdbc-snowflake/), discussed below.
+Kestra is a state-of-the-art, open-source, cloud-native platform built to orchestrate & schedule scalable data workflows, aiming to improve the productivity of DataOps teams. Kestra's orchestration platform can build, run, manage, and monitor all [kinds of complex workflows](../docs/02.tutorial/05.flowable.md) sequentially and in parallel. It offers numerous [plugin integrations](../plugins/index.md) to build advanced data workflows, including our [Snowflake plugin](../plugins/plugin-jdbc-snowflake/index.md), discussed below.
 
 Moreover, Kestra can execute workflows based on event-based, time-based, and API-based scheduling, giving complete control to the data teams. With a unified end-to-end platform, companies save time and money on storage, compute, and development costs.
 
-Snowflake already offers many cost optimization processes like data compression and auto-scaling. However, Kestra makes it simpler to [download](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Download.html), [upload](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Upload.html), and [query](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Query.html) data by integrating with Snowflake's storage and compute resources. Let's discuss Kestra's Snowflake plugin in detail.
+Snowflake already offers many cost optimization processes like data compression and auto-scaling. However, Kestra makes it simpler to [download](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Download.md), [upload](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Upload.md), and [query](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Query.md) data by integrating with Snowflake's storage and compute resources. Let's discuss Kestra's Snowflake plugin in detail.
 
 ### Dissecting Kestra's Snowflake Plugin.
 
 Kestra's Snowflake plugin can create complex data pipelines, whether Snowflake is a target or simply storing data as a part of a larger workflow for downstream applications.
 
-Besides the Snowflake plugin, Kestra offers numerous JDBC plugin integrations, including [ClickHouse](/plugins/plugin-jdbc-clickhouse/), [DuckDb](/plugins/plugin-jdbc-duckdb/), [MySQL](/plugins/plugin-jdbc-mysql/), [Oracle](/plugins/plugin-jdbc-oracle/), [Apache Pinot](/plugins/plugin-jdbc-pinot/), [PostgreSQL](/plugins/plugin-jdbc-postgres/), [Redshift](/plugins/plugin-jdbc-redshift/), [Rockset](/plugins/plugin-jdbc-rockset/), [SQL Server](/plugins/plugin-jdbc-sqlserver/), [Trino](/plugins/plugin-jdbc-trino/), [Vectorwise](/plugins/plugin-jdbc-vectorwise/), and [Vertica](/plugins/plugin-jdbc-vertica/). These plugins can effectively process and transform tabular data within relational databases, reducing the processing cost of platforms like Snowflake.
+Besides the Snowflake plugin, Kestra offers numerous JDBC plugin integrations, including [ClickHouse](../plugins/plugin-jdbc-clickhouse/index.md), [DuckDb](../plugins/plugin-jdbc-duckdb/index.md), [MySQL](../plugins/plugin-jdbc-mysql/index.md), [Oracle](../plugins/plugin-jdbc-oracle/index.md), [Apache Pinot](../plugins/plugin-jdbc-pinot/index.md), [PostgreSQL](/plugins/plugin-jdbc-postgres/), [Redshift](../plugins/plugin-jdbc-redshift/index.md), [Rockset](/plugins/plugin-jdbc-rockset/), [SQL Server](../plugins/plugin-jdbc-sqlserver/index.md), [Trino](../plugins/plugin-jdbc-trino/index.md), [Vectorwise](/plugins/plugin-jdbc-vectorwise/), and [Vertica](../plugins/plugin-jdbc-vertica/index.md). These plugins can effectively process and transform tabular data within relational databases, reducing the processing cost of platforms like Snowflake.
 
 Using Kestra, the data teams are at liberty to decide where certain data, plugins, and connectors would fit. As mentioned above, the Snowflake plugin can perform the download, upload, and query tasks. Let's discuss each of them below.
 
@@ -64,7 +64,7 @@ Using Kestra, the data teams are at liberty to decide where certain data, plugin
 
 Kestra can query the Snowflake server using this task to insert, update, and delete data. The *Query* task offers numerous properties, including auto-committing SQL statements, different fetching operations, specifying access-control roles, and storing fetch results. When the `store`value is `true`, Kestra allows storage of large results as an output of the *Query* task.
 
-The plugin allows the usage of multi-SQL statements in the same transaction as a full SQL script with isolation support. It allows simple queries and fetches results with `fetch` or `fetchOne` properties, enabling teams to reuse the output on the next tasks from tools like [Kafka Consume](/plugins/plugin-kafka/tasks/io.kestra.plugin.kafka.Consume.html), [Elastic Search](/plugins/plugin-elasticsearch/tasks/io.kestra.plugin.elasticsearch.Search.html), [Mongo Find](/plugins/plugin-mongodb/tasks/io.kestra.plugin.mongodb.Find.html), and more. Some *Query* task instances are:
+The plugin allows the usage of multi-SQL statements in the same transaction as a full SQL script with isolation support. It allows simple queries and fetches results with `fetch` or `fetchOne` properties, enabling teams to reuse the output on the next tasks from tools like [Kafka Consume](../plugins/plugin-kafka/tasks/io.kestra.plugin.kafka.Consume.md), [Elastic Search](../plugins/plugin-elasticsearch/tasks/io.kestra.plugin.elasticsearch.Search.md), [Mongo Find](../plugins/plugin-mongodb/tasks/io.kestra.plugin.mongodb.Find.md), and more. Some *Query* task instances are:
 
 -   Fetch a row from the database, and define multiple flows depending on the output
 -   Fetch the count of a store and iterate through the list. If an item doesn't exist, perform a particular task.
@@ -83,7 +83,7 @@ fetch: true
 
 ### Download from Snowflake stage
 
-As the name suggests, this task downloads data from the Snowflake server to an internal Kestra stage, which is based on [Amazon ION](https://amzn.github.io/ion-docs/). The [Download](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Download.html) task offers properties such as data compression and access control role to streamline the download process of the connected database. The [Download](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Download.html) task outputs the URL of the downloaded file available on the Kestra storage server.
+As the name suggests, this task downloads data from the Snowflake server to an internal Kestra stage, which is based on [Amazon ION](https://amzn.github.io/ion-docs/). The [Download](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Download.md) task offers properties such as data compression and access control role to streamline the download process of the connected database. The [Download](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Download.md) task outputs the URL of the downloaded file available on the Kestra storage server.
 
 The following code snippet downloads default database to specified `fileName` location on internal Kestra server.
 
@@ -96,7 +96,7 @@ fileName: prefix/destFile.csv
 
 ### Upload to Snowflake stage
 
-This task uploads data to an internal [Snowflake stage](https://docs.snowflake.com/en/user-guide/data-load-considerations-stage.html). Similar to *Download* task, [Upload](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Upload.html) can perform data compression and set access control role. Snowflake also support [data transformation](https://docs.snowflake.com/en/user-guide/data-load-transform.html) while loading data, which simplifies the ETL process.
+This task uploads data to an internal [Snowflake stage](https://docs.snowflake.com/en/user-guide/data-load-considerations-stage.html). Similar to *Download* task, [Upload](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Upload.md) can perform data compression and set access control role. Snowflake also support [data transformation](https://docs.snowflake.com/en/user-guide/data-load-transform.html) while loading data, which simplifies the ETL process.
 
 The following code snippet uploads data to the specified `fileName` location.
 
@@ -116,4 +116,4 @@ fileName: destFile.csv
 
 Kestra's Snowflake plugin makes data warehousing simple. Even non-developers can write relevant flows using descriptive YAML. Your Snowflake storage pipeline accommodates raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the [ELT pipeline](/blogs/2022-04-27-etl-vs-elt.html). Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
 
-If you need any guidance with your Snowflake deployment, our experts at Kestra would love to hear from you. [Let us know](https://api.kestra.io/v1/communities/slack/redirect) if you would like us to add more plugins to the [list](/plugins). Or start building your [custom Kestra plugin](/docs/plugin-developer-guide/) today and send it our way. We always welcome [contributions](https://github.com/kestra-io/kestra)!
+If you need any guidance with your Snowflake deployment, our experts at Kestra would love to hear from you. [Let us know](https://api.kestra.io/v1/communities/slack/redirect) if you would like us to add more plugins to the [list](/plugins). Or start building your [custom Kestra plugin](../docs/09.plugin-developer-guide/index.md) today and send it our way. We always welcome [contributions](https://github.com/kestra-io/kestra)!
