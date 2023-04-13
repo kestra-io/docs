@@ -23,7 +23,7 @@ Though GCP provides tools like the gcloud CLI and Scheduled Query for simple dat
 
 ### What is Kestra?
 
-[**Kestra**](https://github.com/kestra-io/kestra) is an **open-source** and **cloud-native** tool that can **scale infinitely** and serves as a **low code** data orchestrator and dependency generator to create and schedule the data flow from multiple sources and destinations. It provides an elegant visualization of the entire DAG including all the tasks and plugins used in it. There are multiple [plugins](https://kestra.io/plugins/) available for many cloud platforms like GCP, AWS, and Azure to implement complex pipelines.
+[**Kestra**](https://github.com/kestra-io/kestra) is an **open-source** and **cloud-native** tool that can **scale infinitely** and serves as a **low code** data orchestrator and dependency generator to create and schedule the data flow from multiple sources and destinations. It provides an elegant visualization of the entire DAG including all the tasks and plugins used in it. There are multiple [plugins](/plugins/) available for many cloud platforms like GCP, AWS, and Azure to implement complex pipelines.
 
 For Google Cloud, Kestra has an entire range of plugins for various services like GCS, BigQuery, VertexAI, etc. More specifically there are plugins for BigQuery used to create the ETL/ELT pipeline to any other services that are readily available in Kestra.
 
@@ -37,7 +37,7 @@ Kestra cover all the standard operations in BigQuery like creating and deleting 
 
 The Data Modelization refers to creating a visual representation of data flow between data points and structures. This can be achieved by applying a sequence of transformation or aggregation queries to the raw dataset and using the final data used for visualization, analysis or machine learning. For example, To apply complex aggregation on daily sales report data and use those data points in subsequent phases of transformations for gathering the daily sales trends.
 
-The [**Query**](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.html) plugin for BigQuery in Kestra is commonly used to achieve Data modelization by running the query on the table stored in BigQuery and applying any further transformation or aggregation using the SQL query. To implement data modelization in a data pipeline, the query result needed to be stored in the BigQuery table. Using the [**Query**](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.html) plugin and by providing the `destinationTable` in schema input, the result will be stored and can be used in the next phases.
+The [**Query**](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.html) plugin for BigQuery in Kestra is commonly used to achieve Data modelization by running the query on the table stored in BigQuery and applying any further transformation or aggregation using the SQL query. To implement data modelization in a data pipeline, the query result needed to be stored in the BigQuery table. Using the [**Query**](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.html) plugin and by providing the `destinationTable` in schema input, the result will be stored and can be used in the next phases.
 
 ```yaml
 id: query
@@ -62,7 +62,7 @@ triggers:
    cron: "0 0 * * *"
 ```
 
-The [Query](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.html) plugin also allows the fetch parameters in order to use the output of a SQL query to be used on the next tasks. A common usage can be to fetch the max date currently on a table and to use it on a later query.
+The [Query](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.html) plugin also allows the fetch parameters in order to use the output of a SQL query to be used on the next tasks. A common usage can be to fetch the max date currently on a table and to use it on a later query.
 
 ```yaml
 tasks:
@@ -111,7 +111,7 @@ ORDER BY 3 DESC
 
 ### Interact with Google Cloud Storage
 
-The [**LoadFromGcs**](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.LoadFromGcs.html) plugin is used to import the data from GCS and store it in the BigQuery table directly. This can be especially helpful to analyse and generate insights from the static data files stored in GCS. This plugin can take the input data files for **various file formats** like Avro, JSON, PARQUET, ORC, and CSV.
+The [**LoadFromGcs**](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.LoadFromGcs.html) plugin is used to import the data from GCS and store it in the BigQuery table directly. This can be especially helpful to analyse and generate insights from the static data files stored in GCS. This plugin can take the input data files for **various file formats** like Avro, JSON, PARQUET, ORC, and CSV.
 
 A sample flow to load the data from GCS and store it in a BigQuery table with specified inputs.
 
@@ -137,7 +137,7 @@ A sample flow to load the data from GCS and store it in a BigQuery table with sp
   - gs://sandbox-kestra-dev/sandbox/titanic.csv
 ```
 
-On the other side, [**ExportToGCS**](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.ExtractToGcs.html) plugin is used to extract the table from BigQuery and store the table as per the specified path to the GCS bucket. This would be useful in the use-cases where a BigQuery table needs to be utilized in other services/platforms as part of the entire solution. Example: We may need to have a backup of the table in GCS to save the storage cost in BigQuery or even create a dataset file to train ML models.
+On the other side, [**ExportToGCS**](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.ExtractToGcs.html) plugin is used to extract the table from BigQuery and store the table as per the specified path to the GCS bucket. This would be useful in the use-cases where a BigQuery table needs to be utilized in other services/platforms as part of the entire solution. Example: We may need to have a backup of the table in GCS to save the storage cost in BigQuery or even create a dataset file to train ML models.
 
 Below is an example of a simple flow to upload the data back to GCS as a specific destination path.
 
@@ -172,7 +172,7 @@ curl -v "<http://localhost:8080/api/v1/executions/trigger/io.kestra.gcp/extract-
 
 ### Storage Write
 
-All these operations can be done if the data is stored in GCP platform services. But what if the data is stored in external servers like Database, NoSQL, Queue or any other plugins providing Kestra’s internal server files. Kestra offers a service to import data from other servers into BigQuery using the [StorageWrite](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.StorageWrite.html) plugin that will use the [Storage Write API](https://cloud.google.com/bigquery/docs/write-api) from BigQuery. Another advantage of using this plugin is to avoid quotas limitation to ingest the data while data streaming in real-time or in batch job writing.
+All these operations can be done if the data is stored in GCP platform services. But what if the data is stored in external servers like Database, NoSQL, Queue or any other plugins providing Kestra’s internal server files. Kestra offers a service to import data from other servers into BigQuery using the [StorageWrite](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.StorageWrite.html) plugin that will use the [Storage Write API](https://cloud.google.com/bigquery/docs/write-api) from BigQuery. Another advantage of using this plugin is to avoid quotas limitation to ingest the data while data streaming in real-time or in batch job writing.
 
 Refer below for an example flow that will stream from a Kafka topic to a BigQuery table using StorageWrite api, really useful to achieve near real time without hitting BigQuery limits.
 
@@ -208,7 +208,7 @@ Kestra has two trigger plugins for both BigQuery and GCS:
 *   BigQuery Trigger
 *   GCS Trigger
 
-The BigQuery [**Trigger**](https://kestra.io/plugins/plugin-gcp/triggers/bigquery/io.kestra.plugin.gcp.bigquery.Trigger.html) will check for the data arriving in the BigQuery table based on a Query and will invoke a flow with loop ([EachSequential](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.html) task) for each row. The below YAML can be used to create such a Flow in Kestra.
+The BigQuery [**Trigger**](/plugins/plugin-gcp/triggers/bigquery/io.kestra.plugin.gcp.bigquery.Trigger.html) will check for the data arriving in the BigQuery table based on a Query and will invoke a flow with loop ([EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.html) task) for each row. The below YAML can be used to create such a Flow in Kestra.
 
 ```yaml
 id: Trigger_flow
@@ -259,19 +259,19 @@ For the use cases where multiple tasks need to be run in parallel and we would n
 
 For instance, we want to build a pipeline where we want to find out daily available stock based on the previous day’s sales and stock data. We can create the pipeline using the above basic Kestra operations and plugin features and this pipeline could consist of the following tasks:
 
-1.  [Setup a trigger](https://kestra.io/plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.Trigger.html) which will invoke the pipeline when daily sales and stock data are dumped in the GCS bucket.
-2.  [Creating a dataset](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.CreateDataset.html) in BigQuery specifically to store all the intermediate tables.
-3.  [Loading the data from the Google Cloud Storage](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.LoadFromGcs.html) and storing it in the destination tables.
-4.  Run [parallel](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.html) tasks to aggregate the product level stock and sales data and store both tables in BigQuery.
-5.  Run a [query](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.html) to calculate the remaining stock at the product level by subtracting from stock to sales only after storing the above tables.
-6.  [Export in Google Cloud Storage](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.ExtractToGcs.html) the updated stock data.
-7.  [Clean up all the intermediate tables](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.DeleteTable.html) and [datasets in BigQuery](https://kestra.io/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.DeleteDataset.html).
+1.  [Setup a trigger](/plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.Trigger.html) which will invoke the pipeline when daily sales and stock data are dumped in the GCS bucket.
+2.  [Creating a dataset](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.CreateDataset.html) in BigQuery specifically to store all the intermediate tables.
+3.  [Loading the data from the Google Cloud Storage](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.LoadFromGcs.html) and storing it in the destination tables.
+4.  Run [parallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.html) tasks to aggregate the product level stock and sales data and store both tables in BigQuery.
+5.  Run a [query](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.html) to calculate the remaining stock at the product level by subtracting from stock to sales only after storing the above tables.
+6.  [Export in Google Cloud Storage](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.ExtractToGcs.html) the updated stock data.
+7.  [Clean up all the intermediate tables](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.DeleteTable.html) and [datasets in BigQuery](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.DeleteDataset.html).
 
-To trigger the flow, we can set the [**GCS**](https://kestra.io/plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.Trigger.html) **Trigger** plugin where we can provide the condition to trigger the flow only if the file should be present in the listening folder of the GCS bucket.
+To trigger the flow, we can set the [**GCS**](/plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.Trigger.html) **Trigger** plugin where we can provide the condition to trigger the flow only if the file should be present in the listening folder of the GCS bucket.
 
-For creating a sequential execution of tasks that has the dependency on the previous task, we need to provide all the sub-tasks in the parent task of the [**Sequential**](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.html) type. This sequential flow will be used to calculate the remaining stock at the product level using a Query plugin.
+For creating a sequential execution of tasks that has the dependency on the previous task, we need to provide all the sub-tasks in the parent task of the [**Sequential**](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.html) type. This sequential flow will be used to calculate the remaining stock at the product level using a Query plugin.
 
-While to run the tasks in parallel where the output of the task is not dependent, we need to specify all these tasks in type as [**Parallel**](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.html). In the above example, aggregating sales and stock data at the product level are two independent tasks which can be run in parallel using this plugin type.
+While to run the tasks in parallel where the output of the task is not dependent, we need to specify all these tasks in type as [**Parallel**](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.html). In the above example, aggregating sales and stock data at the product level are two independent tasks which can be run in parallel using this plugin type.
 
 Here we can also provide the output of one task to the input to another task using the <code v-pre>{{outputs.task_id.output_parameter}}</code>`.
 

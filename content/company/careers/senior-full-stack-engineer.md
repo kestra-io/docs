@@ -22,7 +22,7 @@ As a full stack engineer at Kestra, you'll work on developing:
 - **Infrastructure:** Docker, Kubernetes, Terraform (go for our own providers)
 - **Cloud:** GCP, AWS, Azure
 - **Project:** Github (repository, actions, issues)
-- You will work on many technologies, look at [our plugins list](https://kestra.io/plugins/)
+- You will work on many technologies, look at [our plugins list](/plugins/)
 
 ## What we’re looking for:
 

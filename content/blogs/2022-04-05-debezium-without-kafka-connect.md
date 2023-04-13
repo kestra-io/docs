@@ -107,6 +107,6 @@ tasks:
 
 Kestra’s flexibility is key to this potential solution and many others. With [numerous plugins](/plugins/), Kestra offers deep integrations with **multiple systems** to create complex workflows. Systems without existing plugins can be integrated with simple-to-create containers such as Docker and Kubernetes. The only limit is your imagination. We hope to highlight many such possibilities in the coming weeks.
 
-Our newly created Debezium plugins include connectors for [Postgres](https://kestra.io/plugins/plugin-debezium-postgres/) and [MySQL](https://kestra.io/plugins/plugin-debezium-mysql/), and we are steadily working to include additional connectors to improve our product. Our current roadmap includes connectors for MongoDB, PostgresSQL, Oracle, SQL Server, Cassandra, and more. What connectors do you think we should work on first? We’d love to hear from you!
+Our newly created Debezium plugins include connectors for [Postgres](/plugins/plugin-debezium-postgres/) and [MySQL](/plugins/plugin-debezium-mysql/), and we are steadily working to include additional connectors to improve our product. Our current roadmap includes connectors for MongoDB, PostgresSQL, Oracle, SQL Server, Cassandra, and more. What connectors do you think we should work on first? We’d love to hear from you!
 
 Give us your opinion on this [Twitter poll](https://twitter.com/kestra_io/status/1511296199025991680).

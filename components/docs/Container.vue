@@ -7,6 +7,7 @@
                 <NavToc :toc="page.body.toc" />
 
                 <div class="bd-content ps-lg-2">
+                    <h1>{{ page.title }}</h1>
                     <ContentRendererMarkdown :value="page" data-bs-spy="scroll" data-bs-target="#nav-toc" />
                     <PrevNext />
                 </div>
