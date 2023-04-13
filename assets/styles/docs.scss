@@ -19,8 +19,19 @@ $bd-gutter-x: 3rem;
     grid-area: sidebar;
 }
 
+.bd-content, .bd-main h1 {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
 .bd-main {
     grid-area: main;
+
+    h1 {
+        padding-bottom: 1.5rem;
+        word-break: break-all;
+    }
+
 
     @include media-breakpoint-down(lg) {
         max-width: 760px;
@@ -47,9 +58,13 @@ $bd-gutter-x: 3rem;
 
     &.full {
         grid-template-columns: auto;
-
+        max-width: none;
         .bd-toc {
             display: none;
+        }
+
+        .bd-content {
+            max-width: none;
         }
     }
 }
@@ -62,9 +77,22 @@ $bd-gutter-x: 3rem;
     grid-area: toc;
 }
 
+
+@media (min-width: 700px) {
+    .bd-main h1 {
+        width: 700px;
+    }
+}
+
 .bd-content {
     grid-area: content;
     min-width: 1px; // Fix width when bd-content contains a `<pre>` https://github.com/twbs/bootstrap/issues/25410
+
+    .bd-markdown {
+        h1 {
+            display: none;
+        }
+    }
 
     h1, h2, h3, h4, h5, h6 {
         margin-bottom: 0.5rem;
@@ -74,9 +102,6 @@ $bd-gutter-x: 3rem;
         }
     }
 
-    h1 {
-        padding-bottom: 1.5rem
-    }
 
     h2 {
         padding-top: 1.5rem

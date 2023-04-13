@@ -1,14 +1,15 @@
 <template>
-    <div class="container bd-gutter mt-3 my-md-4 bd-layout">
+    <div class="container-fluid bd-gutter mt-3 my-md-4 bd-layout">
         <NavSideBar :type="type" />
 
         <main class="bd-main order-1" :class="{'full': page.rightBar === false}">
             <ContentRenderer :value="page">
-                <NavToc :toc="page.body.toc" />
+                <h1>{{ page.title }}</h1>
+
+                <NavToc :page="page" />
 
                 <div class="bd-content ps-lg-2">
-                    <h1>{{ page.title }}</h1>
-                    <ContentRendererMarkdown :value="page" data-bs-spy="scroll" data-bs-target="#nav-toc" />
+                    <ContentRendererMarkdown class="bd-markdown" :value="page" data-bs-spy="scroll" data-bs-target="#nav-toc" />
                     <PrevNext />
                 </div>
             </ContentRenderer>
