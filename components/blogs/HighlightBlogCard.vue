@@ -1,11 +1,11 @@
 <template>
     <div class="d-md-flex flex-row justify-content-between container" role="button">
         <a class="text-dark" :href="blog._path">
-            <div class="row">
-                <div class="col">
-                    <img class="col-md-12 blog-img" :alt="blog.image" :src="blog.image">
+            <div class="row g-0">
+                <div class="col-md-6">
+                    <img class="col-md-12 blog-img img-fluid" :alt="blog.image" :src="blog.image">
                 </div>
-                <div class="col description">
+                <div class="col-md-6 description">
                     <span class="small-text category">News & Product Updates</span>
                     <h3>
                         {{ blog.title }}
@@ -34,10 +34,6 @@
 </script>
 
 <style scoped>
-
-    .col {
-        padding: 0;
-    }
 
     .description {
         margin: 0 8rem 0 4rem;

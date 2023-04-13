@@ -22,7 +22,7 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: #E6F6F6;
+        background: $light-cyan;
         padding-top: 80px;
         margin-top: -80px;
     }

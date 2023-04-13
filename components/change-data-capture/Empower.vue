@@ -27,7 +27,7 @@
     @import "../../assets/styles/variable";
 
     .container {
-        background: #E6F6F6;
+        background: $light-cyan;
         color: var(--bs-black);
         padding-left: calc($spacer * 4);
         padding-right: calc($spacer * 4);
