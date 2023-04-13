@@ -2,21 +2,21 @@
     <div class="container">
         <Section subtitle="blog" title="What’s new at Kestra ?">
             <div class="row">
-                <template v-for="i in [...Array(3).keys()]">
+                <template v-for="blog in lasts">
 
                     <div class="col-md-4 mb-4">
                         <div class="card">
-                            <img src="/og-image.jpg" class="card-img-top rounded" alt="">
+                            <img :src="blog.image" class="card-img-top rounded" alt="">
                             <div class="card-body">
-                                <p class="type mt-3 mb-2">News & Product Updates</p>
+                                <p class="type mt-3 mb-2">{{ blog.category }}</p>
                                 <h5 class="card-title">
-                                    Powerful Data Processing
+                                    {{ blog.title }}
                                 </h5>
                                 <p class="card-text">
-                                    Execute complex data processing without the need for extensive coding skills
+                                    {{ blog.description }}
                                 </p>
                                 <p class="author">
-                                    Ludovic Dehon  1 week ago - 5 min reading
+                                    {{ blog.author.name }}  {{ timesAgo(blog.date) }}
                                 </p>
                             </div>
                         </div>
@@ -29,12 +29,18 @@
         </Section>
     </div>
 </template>
+<script setup>
+const blogs = await queryContent("/blogs/").find();
 
+const lasts = blogs.reverse().slice(0,3);
+
+</script>
 <script>
     import Section from '../layout/Section.vue';
+    import {timesAgo} from "~/utils/times.js";
 
     export default {
-        components: {Section}
+        components: {Section},
     }
 </script>
 
