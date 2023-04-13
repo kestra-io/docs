@@ -6,9 +6,6 @@
 
 <script>
     export default {
-        props: ['error'],
-        created() {
-            console.log(this.error)
-        }
+        props: ['error']
     }
 </script>

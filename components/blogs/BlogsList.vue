@@ -2,11 +2,11 @@
     <div class="mt-5">
         <h1>All things Kestra</h1>
         <h5>Company news, product updates, and engineering deep dives.</h5>
-        <div class="0">
+        <div class="grid gap-3">
             <button
                 :class="filter === cat.name ? 'active': ''"
                 @click="setFilterBlogs(cat.name)"
-                class="rounded-button"
+                class="rounded-button m-1"
                 v-for="cat in categories">
                 {{ cat.name }}
             </button>

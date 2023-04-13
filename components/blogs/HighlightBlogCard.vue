@@ -33,10 +33,19 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss">
+    @import '../../assets/styles/_variable.scss';
 
-    .description {
-        margin: 0 8rem 0 4rem;
+    .row {
+        .description {
+            @include media-breakpoint-up(md) {
+                padding: 0 0rem 0 4rem;
+            }
+
+            @include media-breakpoint-up(lg) {
+                padding: 0 6rem 0 4rem;
+            }
+        }
     }
 
 
