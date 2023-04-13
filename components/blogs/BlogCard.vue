@@ -1,7 +1,7 @@
 <template>
     <div class="mb-5 mt-1" role="button">
         <a class="text-dark" :href="blog._path">
-            <img :alt="blog.image" :src="blog.image" class="small-img">
+            <img :alt="blog.image" :src="blog.image" class="small-img blog-img">
             <div class="mt-3">
                 <span class="small-text category">News & Product Updates</span>
                 <h6>{{ blog.title }}</h6>

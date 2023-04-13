@@ -3,7 +3,7 @@
         <a class="text-dark" :href="blog._path">
             <div class="row">
                 <div class="col">
-                    <img class="col-md-12" :alt="blog.image" :src="blog.image">
+                    <img class="col-md-12 blog-img" :alt="blog.image" :src="blog.image">
                 </div>
                 <div class="col description">
                     <span class="small-text category">News & Product Updates</span>
