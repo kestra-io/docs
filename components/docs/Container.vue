@@ -2,7 +2,7 @@
     <div class="container bd-gutter mt-3 my-md-4 bd-layout">
         <NavSideBar :type="type" />
 
-        <main class="bd-main order-1">
+        <main class="bd-main order-1" :class="{'full': page.rightBar === false}">
             <ContentRenderer :value="page">
                 <NavToc :toc="page.body.toc" />
 
@@ -33,6 +33,7 @@
     })
 
     const page = await queryContent(props.slug).findOne();
+    console.log()
     useContentHead(page)
 </script>
 

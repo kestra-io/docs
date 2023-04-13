@@ -44,6 +44,14 @@ $bd-gutter-x: 3rem;
         grid-template-rows: auto 1fr;
         grid-template-columns: 4fr 1fr;
     }
+
+    &.full {
+        grid-template-columns: auto;
+
+        .bd-toc {
+            display: none;
+        }
+    }
 }
 
 .bd-intro {

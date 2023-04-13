@@ -45,6 +45,13 @@ export default defineNuxtConfig({
     devServer: {
         port: 3001
     },
+    vue: {
+        compilerOptions: {
+            isCustomElement: (tag) => {
+                return tag === "rapi-doc";
+            }
+        }
+    },
     gtag: {
         id: 'G-EYVNS03HHR',
         initialConsent: false
