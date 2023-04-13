@@ -16,9 +16,9 @@
 
                     </Section>
                 </div>
-                <div class="col-md-6 text-center monograme">
-                    <img src="/landing/company/monograme_kestra.png" />
-                </div>
+<!--                <div class="col-md-6 text-center monograme">-->
+<!--                    <img src="/landing/company/presskit-logo.png" />-->
+<!--                </div>-->
             </div>
         </div>
     </div>
@@ -35,7 +35,8 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: #F1F5FF;
+        background: url("/landing/company/presskit-logo.png") no-repeat center center, #F1F5FF;
+        background-size: cover;
     }
 
     .container {
