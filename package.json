@@ -17,6 +17,7 @@
     "dayjs": "^1.11.7",
     "nuxt-simple-sitemap": "^2.4.11",
     "rapidoc": "^9.3.4",
+    "rss": "^1.2.2",
     "sass": "^1.62.0",
     "vue-material-design-icons": "^5.2.0",
     "vue3-count-to": "^1.1.2"
