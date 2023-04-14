@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - master
-
-  repository_dispatch:
-    types: [rebuild]
+      - feat/nuxt
 
   workflow_dispatch:
 
@@ -17,64 +15,12 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Deploy site
+        uses: benc-uk/workflow-dispatch@v1
         with:
-          fetch-depth: 0
+          workflow: site.yml
+          repo: kestra-io/origin.kestra.io
+          ref: main
+          inputs: '{"ref": "${{ github.ref }}"}'
+          token: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14.x'
-
-      # Caches
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      # Docker Login
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
-
-      # Plugins docs generation
-      - name: Download plugins documentation
-        run: .vuepress/plugins.sh
-
-      # Zip with examples
-      - name: Zip examples
-        run:  zip -r .vuepress/public/examples.zip -j  .vuepress/public/examples
-
-      # Build
-      - name: Build
-        run: |
-          npm install && npm run build
-          echo "kestra.io" > .vuepress/dist/CNAME
-
-      # Deploy
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .vuepress/dist/
-
-      # Slack
-      - name: Slack notification
-        uses: 8398a7/action-slack@v3
-        if: failure()
-        with:
-          status: ${{ job.status }}
-          job_name: Build
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          username: GitHub Actions
-          icon_emoji: ':github-actions:'
-          channel: 'C02DQ1A7JLR'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

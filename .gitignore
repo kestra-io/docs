@@ -16,9 +16,7 @@ yarn.lock
 
 ## Plugins
 content/plugins/**/*
-.vuepress/build/*
-.vuepress/terraform-provider-kestra/*
-.temp
+!content/plugins/index.md
 public/examples.zip
 public/kestra-ee.yml
 
