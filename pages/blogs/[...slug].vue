@@ -6,7 +6,7 @@
 
         <main v-else class="bd-main order-1 mt-5">
             <ContentRenderer :value="page">
-                <NavToc :toc="page.body.toc">
+                <NavToc :page="page">
                     <template #header>
                         <BlogDetails :blog="page"/>
                     </template>
