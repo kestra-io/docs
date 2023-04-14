@@ -118,7 +118,7 @@
         .title {
             font-weight: bold;
             font-size: large;
-            color: #382369;
+            color: $purple-1;
         }
     }
 </style>

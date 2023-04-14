@@ -85,7 +85,7 @@
                         </ol>
                     </div>
                     <div class="col-md-6 use-case-img">
-                        <img src="/landing/home/dashboard.png" width="600"/>
+                        <img src="/landing/home/dashboard.png" />
                     </div>
                 </div>
 
@@ -132,11 +132,11 @@
                 &::before {
                     content: "0" counter(custom-counter) ;
                     color: $purple-2;
-                    font-size: $h1-font-size;
+                    font-size: $font-size-xl;
                     font-family: var(--bs-font-monospace);
                     position: absolute;
                     margin-left: -5rem;
-                    margin-top: -1rem;
+                    margin-top: -0.25rem;
                     font-weight: bolder;
                 }
             }
@@ -178,8 +178,9 @@
         }
 
         .use-case-img {
-            padding-top: calc($spacer * 6);
-            vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 </style>

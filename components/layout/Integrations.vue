@@ -6,7 +6,7 @@
                     <img src="/landing/features/integration.svg"/>
                 </div>
                 <div class="col-md-6">
-                    <h3>Limitless Integration</h3>
+                    <h2>Limitless Integration</h2>
                     <p>
                         <b>Customize and extend</b> the capabilities and functionalities of Kestra with the plugins feature. integrate and connect all kind of data sources, cloud services, databases, transformation, quality, notification tools and even more! It is also possible to create Custom Plugins that add specific custom features to meet your specifics needs.
                     </p>
@@ -39,10 +39,8 @@
             div:nth-child(2) {
                 padding: calc($spacer * 4);
 
-                h3 {
-                    font-size: $h2-font-size;
+                h2 {
                     margin-bottom: calc($spacer * 2);
-                    font-weight: 800;
                 }
             }
         }

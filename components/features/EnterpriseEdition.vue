@@ -49,30 +49,30 @@
                 </div>
                 <div class="row card-group mb-2">
                     <div class="col-md-4 mb-4">
-                        <div class="card shadow-lg">
+                        <div class="card">
                             <div class="card-body">
                                 <span class="card-icon"><KeyOutline /></span>
-                                <h5 class="card-title">Service account</h5>
+                                <h4 class="card-title">Service account</h4>
                                 <p class="card-text">Create service account allowing to triggers workflows for external systems</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-4">
-                        <div class="card shadow-lg">
+                        <div class="card">
                             <div class="card-body">
                                 <span class="card-icon"><MathLog /></span>
-                                <h5 class="card-title">Secrets</h5>
+                                <h4 class="card-title">Secrets</h4>
                                 <p class="card-text">Integrate your secret manager to ensure the security of your passwords and keys</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4 mb-4">
-                        <div class="card shadow-lg">
+                        <div class="card">
                             <div class="card-body">
                                 <span class="card-icon"><FormTextboxPassword /></span>
-                                <h5 class="card-title">Audit Log</h5>
+                                <h4 class="card-title">Audit Log</h4>
                                 <p class="card-text">Audit all the resources created in one instance.</p>
                             </div>
                         </div>

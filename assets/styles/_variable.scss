@@ -30,7 +30,20 @@ $light-cyan: #E6F6F6;
 $font-family-sans-serif: "Public Sans", sans-serif;
 $font-family-monospace: "Source Code Pro", monospace;
 
-$body-color: #000000;
+$font-size-base: 1rem;
+$font-size-sm: $font-size-base * .875;
+$font-size-lg: $font-size-base * 1.25;
+$font-size-xl: $font-size-base * 1.375;
+
+
+$h1-font-size: $font-size-base * 3.375;
+$h2-font-size: $font-size-base * 2.5;
+$h3-font-size: $font-size-base * 2;
+$h4-font-size: $font-size-base * 1.375;
+$h5-font-size: $font-size-base * 1.25;
+$h6-font-size: $font-size-base * 1.125;
+
+$body-color: $black;
 $body-tertiary-color: #FFFFFF;
 $body-tertiary-bg: #785EEA;
 
@@ -38,12 +51,14 @@ $link-decoration: none;
 
 
 // border
-$border-radius: .1875rem;
+$border-radius: .25rem;
 $border-radius-sm: .125rem;
-$border-radius-lg: .25rem;
+$border-radius-lg: .5rem;
 
 // shadow
-$box-shadow-lg: 0px 12.972px 39.7269px rgba(90, 0, 176, 0.1);
+$box-shadow: 0 .75rem .75rem rgba(#DCE0F9, .5);
+$box-shadow-sm: 0 0.375rem 0.375rem rgba(#DCE0F9, .5);
+$box-shadow-lg: 0 1.5rem 1.5rem rgba(#DCE0F9, .5);
 
 
 // nav
@@ -79,6 +94,10 @@ $purple-21: #A42DCD;
 $purple-22: #FCF7FE;
 $purple-23: #EDE8F3;
 $purple-24: #15023F;
+$purple-25: #F5F5FD;
+
+
+
 
 $enable-reduced-motion: false;
 $min-contrast-ratio: 2.5;

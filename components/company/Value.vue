@@ -13,50 +13,48 @@
 
             <div class="row card-group card-centered mb-2">
                 <div class="col-md-3 mb-3">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <QualityHigh />
                                 </span>
-                            <h5 class="card-title">
-                                Quality
-                            </h5>
+                            <h4 class="card-title">Quality</h4>
                             <p class="card-text">We are committed to delivering a platform that meets the highest standards of performance, reliability, and usability</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3 mb-3">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <AccountGroupOutline />
                                 </span>
-                            <h5 class="card-title">Collaboration</h5>
+                            <h4 class="card-title">Collaboration</h4>
                             <p class="card-text">We believe in the power of collaboration and the importance of fostering strong relationships with our users, partners, and team members</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3 mb-3">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <EmoticonOutline />
                                 </span>
-                            <h5 class="card-title">User-Centric</h5>
+                            <h4 class="card-title">User-Centric</h4>
                             <p class="card-text">We are committed to incorporating user feedback and addressing their challenges as we continue to evolve Kestra</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3 mb-3">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <Opacity />
                                 </span>
-                            <h5 class="card-title">Transparency</h5>
+                            <h4 class="card-title">Transparency</h4>
                             <p class="card-text">We value openness and honesty in all aspects of our work, from our development processes to our communications with users and partners</p>
                         </div>
                     </div>

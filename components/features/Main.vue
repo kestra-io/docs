@@ -9,7 +9,7 @@
                     <img class="img-fluid" src="/landing/features/declarative.svg" alt="" />
                 </div>
                 <div class="col-md-6 p-5">
-                    <h5>Declarative code for creating flows</h5>
+                    <h3>Declarative code for creating flows</h3>
                     <ul>
                         <li>
                             <strong>Easy Workflow Creation:</strong> Build custom workflows quickly and with minimal coding using YAML
@@ -23,7 +23,7 @@
 
             <div class="row mb-5">
                 <div class="col-md-6 p-5">
-                    <h5>Quick and Easy Workflow Building</h5>
+                    <h3>Quick and Easy Workflow Building</h3>
                     <ul>
                         <li>
                             <strong>Optimized Task Management:</strong> Seamless task execution in a variety of ways including sequential, parallel, and conditional execution.
@@ -46,7 +46,7 @@
                     <img class="img-fluid" src="/landing/features/flowable.svg" alt="" />
                 </div>
                 <div class="col-md-6 p-5">
-                    <h5>Flexible Workflow Scheduling</h5>
+                    <h3>Flexible Workflow Scheduling</h3>
                     <ul>
                         <li>
                             <strong>Time-based scheduling:</strong> Worflows run automatically at specific times, such as daily, weekly, or monthly for a regular execution without the need for manual intervention.
@@ -60,7 +60,7 @@
 
             <div class="row mb-5">
                 <div class="col-md-6 p-5">
-                    <h5>Execute and Monitor in Real Time</h5>
+                    <h3>Execute and Monitor in Real Time</h3>
                     <ul>
                         <li>
                             <strong>Real-time Workflow Monitoring:</strong> Progress tracking of workflows and individual tasks in real-time.

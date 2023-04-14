@@ -1,9 +1,9 @@
 <template>
     <section>
         <div class="subtitle" v-if="subtitle">
-            <h4>{{ subtitle }}</h4>
+            <p>{{ subtitle }}</p>
         </div>
-        <h3>{{ title }}</h3>
+        <h2>{{ title }}</h2>
         <p v-if="baseline" class="baseline">
             {{ baseline }}
         </p>
@@ -39,11 +39,16 @@
     section {
         padding: calc($spacer * 4) 0;
 
+        &.with-shadow {
+            text-align: center;
+            background: url("/landing/shadow2.svg") no-repeat bottom center;
+        }
+
         div.subtitle {
             text-align: center;
             margin: 0 auto calc($spacer / 2);
 
-            h4 {
+            p {
                 font-size: $font-size-sm;
                 color: var(--bs-pink);
                 font-weight: 800;
@@ -54,8 +59,7 @@
             }
         }
 
-        h3 {
-            font-size: $h1-font-size;
+        h2 {
             text-align: center;
             font-weight: 800;
             margin-bottom: 0;
@@ -67,17 +71,12 @@
 
         p.baseline {
             text-align: center;
-            color: var(--bs-gray-600);
+            font-size: $font-size-xl;
             max-width: 730px;
-            margin: 0 auto;
+            margin: $spacer auto 0;
         }
 
-        :deep(h5) {
-            font-size: $h3-font-size;
-            font-weight: 800;
-        }
-
-        :deep(h6) {
+        :deep(p.overline) {
             font-size: $font-size-sm;
             text-transform: uppercase;
             color: var(--bs-primary);
@@ -87,10 +86,10 @@
             &:after {
                 content: '';
                 position: absolute;
-                margin-top: calc($font-size-sm / 2);
+                margin-top: calc($font-size-sm / 1.5);
                 margin-left: $spacer;
                 display: inline-block;
-                height: 1px;
+                height: 2px;
                 width: 51px;
                 background: var(--bs-pink);
             }

@@ -3,9 +3,9 @@
         <div class="hero container">
             <div class="row">
                 <div class="col-md-6">
-                    <h2>REDUCE COSTS INCREASE PRODUCTIVITY</h2>
+                    <p class="overline">Reduce costs increase productivity</p>
                     <h1>Kestra Enterprise Edition for Scaling companies<span class="dot">.</span></h1>
-                    <h2>Get full access of all the Open source features and unlock the full potential with Enterprise only features</h2>
+                    <p class="baseline">Get full access of all the Open source features and unlock the full potential with Enterprise only features</p>
                     <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary me-2">
                         Book a demo <VideoPlus />
                     </a>
@@ -14,7 +14,7 @@
                     </NuxtLink>
                 </div>
                 <div class="col-md-6">
-                    <img src="/landing/ee/background.svg" width="600"/>
+                    <img class="img-fluid" src="/landing/ee/background.svg" />
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
     <SolutionsHeader />
     <SolutionsPossibilities />
     <SolutionsUseCases />
-    <SolutionsEnterprise />
+    <HomeEnterpriseEdition />
     <LayoutCommunity />
 </template>
 

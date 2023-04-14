@@ -3,9 +3,9 @@
         <div class="hero container">
             <div class="row">
                 <div class="col-md-6">
-                    <h2>CAREERS</h2>
+                    <p class="overline">Careers</p>
                     <h1>Become a Kestra Member</h1>
-                    <h2>Join our amazing team and drive innovation in a collaborative workspace</h2>
+                    <p class="baseline">Join our amazing team and drive innovation in a collaborative workspace</p>
                     <a href="#positions" class="btn btn-lg btn-primary">
                         Open positions
                     </a>

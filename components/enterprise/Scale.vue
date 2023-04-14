@@ -1,16 +1,14 @@
 <template>
-    <div class="container">
+    <div class="container rounded-3">
         <div class="scale-img">
-            <img src="/landing/enterprise/Frame_465.png" /><img src="/landing/enterprise/Line_43.png" /><img src="/landing/enterprise/Frame_466.png" /><img src="/landing/enterprise/Line_44.png" /><img src="/landing/enterprise/Frame_467.png" />
+            <img src="/landing/enterprise/ee-logo.svg" alt="" />
         </div>
         <Section
             title="Scale With no Point of Failure"
         >
-            <div class="container center">
-                <p>
-                    Ensure scalability and high availability with <b>Kafka</b> and <b>Elasticsearch</b> Features available on the Enterprise Edition to eliminate all points of failure.
-                </p>
-            </div>
+            <p>
+                Ensure scalability and high availability with <b>Kafka</b> and <b>Elasticsearch</b> Features available on the Enterprise Edition to eliminate all points of failure.
+            </p>
         </Section>
     </div>
 </template>
@@ -32,19 +30,28 @@
     @import "../../assets/styles/variable";
 
     .container {
-        background: $purple-4 url("/landing/enterprise/Group_2.png") no-repeat bottom right;
+        background: $purple-7 url("/landing/dot3.svg") no-repeat bottom right;
         color: var(--bs-white);
         padding: 0;
 
         .scale-img {
             text-align: center;
-            padding-top: calc($spacer * 2);
+            position: relative;
+            margin-left: 6rem;
         }
 
         p {
             padding-left: calc($spacer * 8);
             padding-right: calc($spacer * 8);
             text-align: center;
+            font-size: $font-size-xl;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        :deep(h2) {
+            position: relative;
+            margin-top: -7rem;
         }
 
         :deep(p.baseline) {

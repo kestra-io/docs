@@ -3,9 +3,9 @@
         <div class="hero container">
             <div class="row">
                 <div class="col-md-6">
-                    <h2>Usages & Use Cases</h2>
+                    <p class="overline">Usages & Use Cases</p>
                     <h1>Unlock the Full Potential of Kestra</h1>
-                    <h2>Harness your data, unlock valuable insights, and drive informed decision-making</h2>
+                    <p class="baseline">Harness your data, unlock valuable insights, and drive informed decision-making</p>
                 </div>
                 <div class="col-md-6">
                     <img src="/landing/company/ui.png" width="600"/>

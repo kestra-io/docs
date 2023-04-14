@@ -25,4 +25,5 @@
         background: transparent;
         width: 100%;
     }
+    
 </style>

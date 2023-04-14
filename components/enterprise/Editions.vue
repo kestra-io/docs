@@ -2,15 +2,13 @@
     <div class="container">
         <Section>
             <div class="row card-group mb-4">
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Open Source Edition
-                            </h5>
-                            <h5 class="pricing">Free</h5>
-                            <div class="text-center ">
-                                <NuxtLink href="/docs/getting-started" class="btn btn-secondary me-2">
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-5">
+                                <h4 class="card-title">Open Source Edition</h4>
+                                <p class="pricing">Free</p>
+                                <NuxtLink href="/docs/getting-started" class="btn btn-secondary btn-lg">
                                     Get started
                                 </NuxtLink>
                             </div>
@@ -29,15 +27,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Enterprise Edition
-                            </h5>
-                            <h5 class="pricing custom">Custom</h5>
-                            <div class="text-center ">
-                                <NuxtLink href="/company/contact" class="btn btn-primary">
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-5">
+                                <h3 class="card-title">Enterprise Edition</h3>
+                                <p class="pricing custom">Custom</p>
+                                <NuxtLink href="/company/contact" class="btn btn-primary btn-lg">
                                     Contact us
                                 </NuxtLink>
                             </div>
@@ -57,11 +53,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-center">
-                    <button class="btn btn-lg btn-primary me-2 button-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Compare all features <ChevronUp/>
+                <div class="text-center mt-5">
+                    <button class="btn btn-lg btn-primary button-collapse mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#compare" aria-expanded="true" aria-controls="compare">
+                        Compare all features <ChevronUp />
                     </button>
-                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div id="compare" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body feature-comparison">
                             <table>
                                 <tr>
@@ -76,33 +72,33 @@
                                 </tr>
                                 <tr>
                                     <td>Low Code (YAML-based)</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Extensibility (Custom Plugins)</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Connectivity to Popular Data Sources</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Versioning</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Data Validation</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Debugging</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
                                     <td>Workflow Orchestration and Scheduling</td>
@@ -111,33 +107,33 @@
                                 </tr>
                                 <tr>
                                     <td>Orchestration Engine (Sequential, Parallel)</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Flexible Scheduling System (Time-based, Event-based)</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Large Data Processing</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Error Handling and Retry Mechanisms</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Notifications</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Performance Monitoring and Optimization</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
                                     <td>Connectivity and Integration</td>
@@ -146,23 +142,23 @@
                                 </tr>
                                 <tr>
                                     <td>API and Webhook Support</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Integration with Terraform and CI/CD Pipelines</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Kafka Integration</td>
                                     <td></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Elasticsearch Integration</td>
                                     <td></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
                                     <td>Security and Authentication</td>
@@ -172,32 +168,32 @@
                                 <tr>
                                     <td>Audit Logs</td>
                                     <td></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>OIDC/SSO Authentication</td>
                                     <td></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Role-Based Access Control</td>
                                     <td></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Secure Namespace Configuration</td>
                                     <td></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Secret Managers Integration</td>
                                     <td></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Worker Security Isolation</td>
                                     <td></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
                                     <td>Deployment and Scaling</td>
@@ -206,13 +202,13 @@
                                 </tr>
                                 <tr>
                                     <td>Self Hosted Deployment</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>High Availability with No Single Point of Failure</td>
                                     <td></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
                                     <td>User Interface and Experience</td>
@@ -221,18 +217,18 @@
                                 </tr>
                                 <tr>
                                     <td>Rich User Interface</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Built-in Plugin Ecosystem</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Extended API</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
                                     <td>Support & Services</td>
@@ -241,13 +237,13 @@
                                 </tr>
                                 <tr>
                                     <td>Community Support</td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Enterprise Support with SLAs</td>
                                     <td></td>
-                                    <td><img src="/landing/enterprise/tick.svg"></td>
+                                    <td><Check /></td>
                                 </tr>
                             </table>
                         </div>
@@ -261,8 +257,10 @@
 <script>
     import Section from '../layout/Section.vue';
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
+    import Check from "vue-material-design-icons/Check.vue"
+
     export default {
-        components: {Section, ChevronUp},
+        components: {Section, ChevronUp, Check},
     }
 </script>
 
@@ -270,20 +268,24 @@
     @import "../../assets/styles/variable";
 
     .container {
-        h5 {
-            text-align: center;
+        .card-title {
+            font-size: $font-size-xl;
+            font-weight: normal;
+            margin-bottom: 0;
         }
+
         .pricing {
-            font-size: $h4-font-size;
+            font-size: $h3-font-size;
+            font-weight: bold;
         }
+
         .custom {
             color: $purple-13;
         }
+
         .card-body {
             ul {
                 padding-top: $spacer;
-                list-style: none;
-                list-style-image: url("/landing/enterprise/tick.svg");
             }
         }
 
@@ -301,12 +303,20 @@
             th {
                 background-color: #EEEDFF;
                 padding: 10px 20px;
+
+                &:first-child {
+                    text-align: left;
+                }
             }
 
             td {
-                text-align: left;
                 background-color: #F9F9FF;
                 padding: 10px 20px;
+                text-align: center;
+
+                &:first-child {
+                    text-align: left;
+                }
             }
 
             tr.table-section {
@@ -314,6 +324,12 @@
                 td {
                     background-color: #E8E7FD;
                 }
+            }
+
+            .material-design-icon {
+                color: $secondary;
+                font-weight: bold;
+                font-size: $font-size-xl;
             }
         }
     }

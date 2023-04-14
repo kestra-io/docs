@@ -7,10 +7,10 @@
         >
             <div class="row mb-5">
                 <div class="col-md-6">
-                    <img src="/landing/enterprise/Enterprise_security_01.png">
+                    <img src="/landing/enterprise/security-1.svg">
                 </div>
                 <div class="col-md-6">
-                    <h2>Advanced Workflow Organization</h2>
+                    <h3>Advanced Workflow Organization</h3>
                     <p>
                         Take workflow organization and collaboration to the next level with configurable namespaces.
                     </p>
@@ -23,7 +23,7 @@
             </div>
             <div class="row mb-5">
                 <div class="col-md-6">
-                    <h2>Advanced Security and Access Control</h2>
+                    <h3>Advanced Security and Access Control</h3>
                     <p>
                         Ensure that your data workflows and resources remain protected and compliant with industry standards.
                     </p>
@@ -33,15 +33,15 @@
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <img src="/landing/enterprise/Enterprise_security_02.png">
+                    <img src="/landing/enterprise/security-2.svg">
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col-md-6">
-                    <img src="/landing/enterprise/Enterprise_security_03.png">
+                    <img src="/landing/enterprise/security-3.svg">
                 </div>
                 <div class="col-md-6">
-                    <h2>Advanced Workflow Organization</h2>
+                    <h3>Advanced Workflow Organization</h3>
                     <p>
                         Take workflow organization and collaboration to the next level with configurable namespaces.
                     </p>

@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <Section
+            class="with-shadow"
             title="Slack community"
             subtitle="Orchestrate Success Together"
         >
@@ -8,16 +9,14 @@
                 Join the slack to share ideas and best practices, get help with technical questions, and discuss Kestra with other developers (and even the founders).
             </p>
 
-            <div class="row card-group card-centered mb-2">
+            <div class="row card-group card-centered no-shadow mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <TooltipQuestion />
                                 </span>
-                            <h5 class="card-title">
-                                Ask a question
-                            </h5>
+                            <h4 class="card-title">Ask a question</h4>
                             <p class="card-text">Get stuck with the documentation, We're here to help!</p>
                             <p class="channel">#help</p>
                         </div>
@@ -25,12 +24,12 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <HandWave />
                                 </span>
-                            <h5 class="card-title">Introduce yourself</h5>
+                            <h4 class="card-title">Introduce yourself</h4>
                             <p class="card-text">Welcome to the Kestra community! Let's introduce ourselves!</p>
                             <p class="channel">#introductions</p>
                         </div>
@@ -38,12 +37,12 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <MessageAlert />
                                 </span>
-                            <h5 class="card-title">Share Feedback</h5>
+                            <h4 class="card-title">Share Feedback</h4>
                             <p class="card-text">Discussions about the product, including your feedback, ideas, and dreams.</p>
                             <p class="channel">#feedback-and-requests</p>
                         </div>

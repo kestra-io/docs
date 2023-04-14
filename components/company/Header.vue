@@ -2,7 +2,7 @@
     <div class="main">
         <div class="hero container text-center">
             <img src="/landing/monograme_kestra.png" class="kestra-logo"/>
-            <h2 class="fw-bold">ABOUT KESTRA</h2>
+            <p class="overline">About kestra</p>
             <h1>Pioneering the Future of Data Orchestration and Automation</h1>
         </div>
     </div>

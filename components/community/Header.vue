@@ -3,9 +3,9 @@
         <div class="hero container">
             <div class="row">
                 <div class="col-md-6">
-                    <h2>COMMUNITY</h2>
+                    <p class="overline">Community</p>
                     <h1>Connect, Collaborate, and Empower Your Data Journey</h1>
-                    <h2>Connect with peers, exchange ideas and drive innovation in data orchestration</h2>
+                    <p class="baseline">Connect with peers, exchange ideas and drive innovation in data orchestration</p>
                 </div>
                 <div class="col-md-6">
                     <img src="/landing/community/frame_518.png" />

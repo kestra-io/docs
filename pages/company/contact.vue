@@ -1,6 +1,6 @@
 <template>
     <ContactHeader />
-    <ContactSlack />
+    <CommunitySlack />
 </template>
 
 <script setup>

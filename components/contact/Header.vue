@@ -3,9 +3,9 @@
         <div class="hero container">
             <div class="row">
                 <div class="col-md-6 get-in-touch">
-                    <h2>GET IN TOUCH</h2>
+                    <p class="overline">Get in touch</p>
                     <h1>Contact Us</h1>
-                    <h2>If you have questions, inquiries, or feedback about Kestra, we're looking to hear from you.</h2>
+                    <p class="baseline">If you have questions, inquiries, or feedback about Kestra, we're looking to hear from you.</p>
                 </div>
                 <div class="col-md-6">
                     <h3>Reach Out to Us</h3>

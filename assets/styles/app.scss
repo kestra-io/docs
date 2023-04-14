@@ -13,6 +13,18 @@
     }
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+h1 {
+    font-weight: 900
+}
+
+
+h2 {
+    font-weight: 800
+}
 
 // bootstrap
 table.table {
@@ -27,7 +39,6 @@ table.table {
     }
 }
 
-
 blockquote.blockquote {
     border-left: 4px solid var(--bs-gray-500);
     padding-left: $spacer;
@@ -40,21 +51,34 @@ blockquote.blockquote {
     padding-top: calc($spacer * 8);
     padding-bottom: calc($spacer * 6);
 
-    h1, h2 {
-        max-width: 850px;
-        margin: 0 auto;
+    h1, p {
+        max-width: 600px;
+    }
+
+    &.text-center {
+        max-width: none;
+
+        h1, p {
+            margin: 0 auto;
+        }
     }
 
     h1 {
         font-size: 3.25rem;
-        font-weight: 800;
-        padding-bottom: calc($spacer * 2);
+        padding-bottom: 1.5rem;
     }
 
-    h2 {
-        font-size: 1.10rem;
-        font-weight: 300;
-        padding-bottom: calc($spacer * 2);
+    p.baseline {
+        font-size: $font-size-xl;
+        padding-bottom: 1.5rem;
+    }
+
+    p.overline {
+        font-family: var(--bs-font-monospace);
+        font-size: $font-size-xl;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-bottom: 1rem;
     }
 
     .btn-secondary {
@@ -72,6 +96,11 @@ blockquote.blockquote {
     }
 }
 
+.card {
+    border-radius: $border-radius-lg;
+    box-shadow: $box-shadow;
+}
+
 .card-group {
     display: flex;
     align-items: stretch;
@@ -79,6 +108,8 @@ blockquote.blockquote {
 
     .card {
         height: 100%;
+        border-radius: $border-radius-lg;
+        box-shadow: $box-shadow;
     }
 
     &.card-centered {
@@ -91,6 +122,10 @@ blockquote.blockquote {
             float: none;
             margin: 0 auto $spacer;
         }
+    }
+
+    &.no-shadow {
+        background: none;
     }
 }
 
@@ -110,6 +145,7 @@ blockquote.blockquote {
         margin-right: $spacer;
         align-items: center;
         justify-content: center;
+        margin-bottom: $spacer;
 
         .material-design-icon {
             margin-top: -10px;

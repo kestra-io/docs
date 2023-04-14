@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h3>Take Kestra to the next level with the Enterprise Edition</h3>
+                    <h2>Take Kestra to the next level with the Enterprise Edition</h2>
                     <ul class="mb-5">
                         <li>SSO/OIDC Authentification</li>
                         <li>Role Based Access</li>
@@ -46,10 +46,8 @@
             div:first-child {
                 padding: calc($spacer * 9);
 
-                h3 {
-                    font-size: $h1-font-size;
+                h2 {
                     margin-bottom: calc($spacer * 2);
-                    font-weight: 800;
                 }
             }
         }

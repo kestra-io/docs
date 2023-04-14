@@ -3,15 +3,12 @@
         <Section subtitle="blog" title="What’s new at Kestra ?">
             <div class="row">
                 <template v-for="blog in lasts">
-
                     <div class="col-md-4 mb-4">
                         <div class="card">
-                            <img :src="blog.image" class="card-img-top rounded" alt="">
+                            <img :src="blog.image" class="card-img-top rounded-3" alt="">
                             <div class="card-body">
                                 <p class="type mt-3 mb-2">{{ blog.category }}</p>
-                                <h5 class="card-title">
-                                    {{ blog.title }}
-                                </h5>
+                                <h4 class="card-title">{{ blog.title }}</h4>
                                 <p class="card-text">
                                     {{ blog.description }}
                                 </p>
@@ -47,9 +44,11 @@ const lasts = blogs.reverse().slice(0,3);
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .card-body {
-        padding: 0;
+    .card {
+        height: 100%;
+    }
 
+    .card-body {
         .type {
             font-size: $font-size-sm;
             color: $primary;
@@ -58,6 +57,7 @@ const lasts = blogs.reverse().slice(0,3);
         .author {
             font-size: $font-size-sm;
             color: $gray-500;
+            margin-bottom: 0;
         }
     }
 </style>

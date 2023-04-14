@@ -72,13 +72,12 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     h1 {
         font-weight: 900;
     }
 
     h5 {
         font-weight: 300;
-        color: var(--bs-gray-700)
     }
 </style>

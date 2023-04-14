@@ -8,34 +8,34 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="card shadow-lg">
+                        <div class="card">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon"><WrenchOutline /></span>
+                                    <span class="card-icon rounded-5"><WrenchOutline /></span>
                                     Built in Low code editor for your flows
                                 </p>
                             </div>
                         </div>
-                        <div class="card shadow-lg">
+                        <div class="card">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon"><ChartTimelineVariant /></span>
+                                    <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
                                     Execute and monitor directly from the interface
                                 </p>
                             </div>
                         </div>
-                        <div class="card shadow-lg">
+                        <div class="card">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon"><ApplicationBracketsOutline /></span>
+                                    <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
                                     Simple declarative language editor
                                 </p>
                             </div>
                         </div>
-                        <div class="card shadow-lg">
+                        <div class="card">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon"><ViewDashboardVariantOutline /></span>
+                                    <span class="card-icon rounded-5"><ViewDashboardVariantOutline /></span>
                                     Complete and comprehensive dashboard
                                 </p>
                             </div>
@@ -77,6 +77,15 @@
             color: var(--bs-white);
             border: 1px solid $purple-11;
             margin-bottom: $spacer;
+
+            p {
+                font-size: $font-size-lg;
+            }
+
+            .card-icon {
+                margin-bottom: 0;
+                font-size: 2.25rem;
+            }
         }
     }
 </style>

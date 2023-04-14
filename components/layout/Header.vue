@@ -12,13 +12,13 @@
             <div class="collapse navbar-collapse" id="main-header">
                 <ul class="navbar-nav ms-auto me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Product</a>
+                        <a class="nav-link dropdown-toggle" href="#" @mouseover="mouseOver" @mouseout="mouseOut" role="button" data-bs-toggle="dropdown" aria-expanded="false">Product</a>
                         <ul class="dropdown-menu">
                             <li>
                                 <NuxtLink class="dropdown-item" href="/features">
                                     <FeatureSearch />
                                     <p>
-                                        <span>Features</span>
+                                        <span>Features</span><br />
                                         Discover all the features of Kestra
                                     </p>
                                 </NuxtLink>
@@ -27,7 +27,7 @@
                                 <NuxtLink class="dropdown-item" href="/enterprise-edition">
                                     <Security />
                                     <p>
-                                        <span>Enterprise Edition</span>
+                                        <span>Enterprise Edition</span><br />
                                         Security and High Availability for enterprise
                                     </p>
                                 </NuxtLink>
@@ -46,7 +46,7 @@
                                 <NuxtLink class="dropdown-item" href="/blogs">
                                     <PostOutline />
                                     <p>
-                                        <span>Blogs</span>
+                                        <span>Blogs</span><br />
                                         Product updates, user stories, and more
                                     </p>
                                 </NuxtLink>
@@ -55,7 +55,7 @@
                                 <NuxtLink class="dropdown-item" href="/docs">
                                     <FileDocumentOutline />
                                     <p>
-                                        <span>Documentation</span>
+                                        <span>Documentation</span><br />
                                         Get started with Kestra
                                     </p>
                                 </NuxtLink>
@@ -64,7 +64,7 @@
                                 <NuxtLink class="dropdown-item" href="/plugins">
                                     <Security />
                                     <p>
-                                        <span>Plugins documentation</span>
+                                        <span>Plugins documentation</span><br />
                                         Extends Kestra with many plugins
                                     </p>
                                 </NuxtLink>
@@ -83,7 +83,7 @@
                                 <NuxtLink class="dropdown-item" href="/company">
                                     <Domain />
                                     <p>
-                                        <span>About us</span>
+                                        <span>About us</span><br />
                                         Discover our story and our team
                                     </p>
                                 </NuxtLink>
@@ -92,7 +92,7 @@
                                 <NuxtLink class="dropdown-item" href="/company/careers">
                                     <AccountStarOutline />
                                     <p>
-                                        <span>Careers</span>
+                                        <span>Careers</span><br />
                                         Join an open company
                                     </p>
                                 </NuxtLink>
@@ -101,7 +101,7 @@
                                 <NuxtLink class="dropdown-item" href="/company/contact">
                                     <Email />
                                     <p>
-                                        <span>Contact us</span>
+                                        <span>Contact us</span><br />
                                         Extends Kestra with many plugins
                                     </p>
                                 </NuxtLink>
@@ -180,6 +180,12 @@
             stargazers().then(value => this.stargazersText = value);
         },
         methods: {
+            mouseOver(event) {
+                console.log(event);
+            },
+            mouseOut(event) {
+                console.log(event);
+            },
             search(query) {
                 return axios.get("/api/search", {
                     params: {
@@ -197,8 +203,6 @@
 
 <style lang="scss">
     @import "../../assets/styles/variable";
-
-
 
     nav {
         .navbar-brand {
@@ -233,17 +237,26 @@
                     }
 
                     .dropdown-menu {
-                        --bs-dropdown-link-hover-bg: #F5F5FD;
-                        padding: var(--bs-dropdown-padding-y);
+                        --bs-dropdown-link-hover-bg: #{$purple-25};
+                        --bs-dropdown-link-active-bg: #{$purple-25};
+                        padding: 1rem;
+                        margin-top: 25px;
+                        box-shadow: $box-shadow;
+                        border: 0;
+                        border-radius: $border-radius-lg;
 
                         .dropdown-item {
-                            padding-left: calc($spacer / 4);
-                            padding-right: calc($spacer / 4);
+                            padding-left: 1rem;
+                            padding-right: 1rem;
                             margin-bottom: calc($spacer / 2);
                             align-items: flex-start;
                             border-radius: $border-radius;
                             &:not(:last-child) {
                                 margin-bottom: calc($spacer/4);
+                            }
+
+                            &:last-child {
+                                margin-bottom: 0;
                             }
 
                             .material-design-icon, span {
@@ -254,12 +267,25 @@
                                 .material-design-icon, span {
                                     color: $primary;
                                 }
+
+                                p span {
+                                    &:after {
+                                        content: '→';
+                                        font-weight: bold;
+                                        font-family: var(--bs-font-monospace);
+                                        position: absolute;
+                                        font-size: 26px;
+                                        top: -8px;
+                                        right: -25px;
+                                    }
+                                }
                             }
 
                             span {
                                 font-weight: 800;
                                 line-height: 1;
                                 display: block;
+                                position: relative;
                             }
 
                             display: flex;
@@ -277,6 +303,10 @@
                                 color: var(--bs-black);
                                 font-size: var(--bs-font-size-sm);
                                 margin-bottom: 0;
+
+                                span {
+                                    display: inline-block;
+                                }
                             }
                         }
                     }

@@ -1,6 +1,6 @@
 <template>
     <div class="container text-center mb-5">
-        <div class="rounded">
+        <div class="rounded-3">
             <div>
                 <h3><span>Get Kestra updates</span> to your inbox</h3>
                 <form class="row row-cols-lg-auto g-3 mt-4 mb-4 justify-content-center">

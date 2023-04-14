@@ -1,5 +1,5 @@
 <template>
-    <div class="card shadow-lg mb-3">
+    <div class="card mb-3">
         <div class="card-body">
             <p>
                 {{ item.message }}

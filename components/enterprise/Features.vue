@@ -7,38 +7,36 @@
 
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <Key />
                                 </span>
-                            <h5 class="card-title">
-                                SSO/OIDC and RBAC
-                            </h5>
+                            <h4 class="card-title">SSO/OIDC and RBAC</h4>
                             <p class="card-text">Control users and group access with fine-grained ACL</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <ShieldAccount />
                                 </span>
-                            <h5 class="card-title">Service account</h5>
+                            <h4 class="card-title">Service account</h4>
                             <p class="card-text">Create service account allowing to triggers workflows for external systems</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <FormTextboxPassword />
                                 </span>
-                            <h5 class="card-title">Secrets manager</h5>
+                            <h4 class="card-title">Secrets manager</h4>
                             <p class="card-text">Integrate your secret manager to ensure the security of your passwords and keys</p>
                         </div>
                     </div>
@@ -47,38 +45,36 @@
 
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <ViewDashboardVariantOutline />
                                 </span>
-                            <h5 class="card-title">
-                                Audit Log
-                            </h5>
+                            <h4 class="card-title">Audit Log</h4>
                             <p class="card-text">Audit all the resources created in one instance</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <Cog />
                                 </span>
-                            <h5 class="card-title">Configuration management</h5>
+                            <h4 class="card-title">Configuration management</h4>
                             <p class="card-text">Automatically configure all flows from a namespace with task defaults variables & secrets</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card shadow-lg">
+                    <div class="card">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <Security />
                                 </span>
-                            <h5 class="card-title">Best in class support</h5>
+                            <h4 class="card-title">Best in class support</h4>
                             <p class="card-text">Custom SLA to ensure that you have the help you need, whenever you need it</p>
                         </div>
                     </div>

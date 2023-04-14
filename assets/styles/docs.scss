@@ -79,7 +79,7 @@ $bd-gutter-x: 3rem;
 
 
 @media (min-width: 700px) {
-    .bd-main h1 {
+    .bd-content, .bd-main h1 {
         width: 700px;
     }
 }
@@ -96,7 +96,6 @@ $bd-gutter-x: 3rem;
 
     h1, h2, h3, h4, h5, h6 {
         margin-bottom: 0.5rem;
-        font-weight: bold;
         a {
             color: var(--bs-body-color);
         }
