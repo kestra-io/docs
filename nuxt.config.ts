@@ -2,7 +2,8 @@ export default defineNuxtConfig({
     modules: [
         '@nuxt/devtools',
         '@nuxt/content',
-        'nuxt-gtag'
+        'nuxt-gtag',
+        'nuxt-simple-sitemap',
     ],
     app: {
         baseURL: "/",
@@ -56,6 +57,11 @@ export default defineNuxtConfig({
         id: 'G-EYVNS03HHR',
         initialConsent: false
     },
+    runtimeConfig: {
+        public: {
+            siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
+        }
+    }
     // routeRules: {
     //     '/**': {swr: true},
     // }
