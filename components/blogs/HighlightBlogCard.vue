@@ -1,6 +1,6 @@
 <template>
     <div class="d-md-flex flex-row justify-content-between container" role="button">
-        <a class="text-dark" :href="blog._path">
+        <NuxtLink class="text-dark" :href="blog._path">
             <div class="row g-0">
                 <div class="col-md-6">
                     <img class="col-md-12 blog-img img-fluid" :alt="blog.image" :src="blog.image">
@@ -14,7 +14,7 @@
                     <BlogCardDetails :name="blog.author.name" :date="blog.date"/>
                 </div>
             </div>
-        </a>
+        </NuxtLink>
     </div>
 </template>
 
