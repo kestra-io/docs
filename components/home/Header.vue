@@ -7,9 +7,7 @@
                 <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary me-2">
                     <Console /> Live demo
                 </a>
-                <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-lg btn-secondary">
-                    <Github /> Github {{ stargazersText }} ⭐️
-                </a>
+                <GithubButton class="btn-secondary btn-lg" />
             </div>
 
             <img src="/landing/home/animation.svg" alt="" />
@@ -38,19 +36,10 @@
 <script>
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import Console from "vue-material-design-icons/Console.vue"
-    import Github from "vue-material-design-icons/Github.vue";
-    import {stargazers} from "../../utils/github.js";
+    import GithubButton from "../layout/GithubButton.vue";
 
     export default {
-        components: {Github, Console, Magnify},
-        data() {
-            return {
-                stargazersText: undefined
-            }
-        },
-        created() {
-             stargazers().then(value => this.stargazersText = value);
-        },
+        components: {Console, Magnify, GithubButton},
         computed: {
             companies() {
                 return [

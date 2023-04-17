@@ -1,9 +1,11 @@
-export async function stargazers() {
+export default defineEventHandler(async() => {
     return await fetch("https://api.kestra.io/v1/communities/github/metrics")
         .then((response) => {
             return response.json();
         })
-        .then(metrics => {
-            return Intl.NumberFormat('en-US').format(metrics.stars);
+        .then(value => {
+            return {
+                'stargazers': value.stars
+            };
         })
-}
+})

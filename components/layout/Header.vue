@@ -112,10 +112,7 @@
 
                 <ul class="navbar-nav mb-2 mb-lg-0 nav-button">
                     <li class="nav-item">
-                        <a class="btn btn-secondary me-2" href="https://github.com/kestra-io/kestra" target="_blank" role="button" >
-                            <Github />
-                            {{ stargazersText }} ⭐️
-                        </a>
+                        <GithubButton class="btn-secondary me-2" />
 
                         <NuxtLink class="btn btn-primary me-2" href="/docs/getting-started" role="button" >
                             <Flash />
@@ -168,17 +165,16 @@
 
 <script>
     import axios from "axios";
-    import {stargazers} from "../../utils/github.js";
+    import GithubButton from "../layout/GithubButton.vue";
 
     export default {
+        components: {
+            GithubButton,
+        },
         data() {
             return {
-                stargazersText: undefined,
                 searchResults: undefined
             }
-        },
-        created() {
-            stargazers().then(value => this.stargazersText = value);
         },
         methods: {
             mouseOver(event) {
@@ -194,6 +190,7 @@
                     }
                 }).then(response => {
                     this.searchResults = response.data;
+
                     return response.data;
                 })
             },
