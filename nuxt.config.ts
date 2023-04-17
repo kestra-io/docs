@@ -1,3 +1,4 @@
+import codeImport from 'remark-code-import';
 export default defineNuxtConfig({
     modules: [
         '@nuxt/devtools',
@@ -37,6 +38,9 @@ export default defineNuxtConfig({
             remarkPlugins: {
                 'remark-flexible-markers': {
                     markerClassName: 'bg-success rounded'
+                },
+                'remark-code-import': {
+                    instance: codeImport
                 },
             }
         }
