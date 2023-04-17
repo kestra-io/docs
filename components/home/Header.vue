@@ -22,10 +22,12 @@
 
         <div class="container-fluid pt-4 pb-4">
             <div class="companies">
-                <template v-for="img in companies">
+                <template v-for="(img, index) in companies">
                     <img
+                        data-aos="fade-up"
+                        :data-aos-delay="index*50"
                         :src="'/landing/home/companies/' + img  + '.svg'"
-                        alt=""
+                        :alt="img"
                     />
                 </template>
             </div>

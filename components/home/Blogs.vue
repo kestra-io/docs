@@ -4,7 +4,7 @@
             <div class="row">
                 <template v-for="blog in lasts">
                     <div class="col-md-4 mb-4">
-                        <div class="card">
+                        <div class="card" data-aos="fade-right">
                             <img :src="blog.image" class="card-img-top rounded-3" alt="">
                             <div class="card-body">
                                 <p class="type mt-3 mb-2">{{ blog.category }}</p>

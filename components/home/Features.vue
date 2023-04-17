@@ -3,7 +3,7 @@
         <Section subtitle="Stand Out with Kestra's Exclusive Features" title="Enhanced Workflow Efficiency">
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="fade-zoom-in">
+                    <div class="card">
                         <div class="card-body">
                             <span class="card-icon"><CalculatorVariantOutline /></span>
                             <h4 class="card-title">Powerful Data Processing</h4>

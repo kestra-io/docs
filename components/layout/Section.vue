@@ -1,10 +1,10 @@
 <template>
     <section>
-        <div class="subtitle" v-if="subtitle">
+        <div class="subtitle" data-aos="fade-up" v-if="subtitle">
             <p>{{ subtitle }}</p>
         </div>
-        <h2>{{ title }}</h2>
-        <p v-if="baseline" class="baseline">
+        <h2 data-aos="fade-left">{{ title }}</h2>
+        <p v-if="baseline" class="baseline" data-aos="fade-right">
             {{ baseline }}
         </p>
         <div class="main">
