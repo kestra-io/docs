@@ -27,7 +27,7 @@
                         <div class="card-body">
                             <span class="card-icon"><PhonePlus /></span>
                             <h4 class="card-title">Metadata Storage</h4>
-                            <p class="card-text">Metadata from the flow is stored on a database and kestra Internal Storage for transparent file systems.</p>
+                            <p class="card-text">Metadata from the flow is stored on a database and Kestra's Internal Storage for transparent file systems.</p>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <span class="card-icon"><CodeTags /></span>
                             <h4 class="card-title">Strongly Typed</h4>
-                            <p class="card-text">Ensure each piece of data is the right type and well defined, a date must be a date, an int must be an int, and so on…</p>
+                            <p class="card-text">Ensure each piece of data is the right type and well-defined, a date must be a date, an int must be an int, and so on…</p>
                         </div>
                     </div>
                 </div>
@@ -77,17 +77,7 @@
 </template>
 
 <script setup>
-    import CloudArrowUpOutline from "vue-material-design-icons/CloudArrowUpOutline.vue"
-    import ViewDashboardVariantOutline from "vue-material-design-icons/ViewDashboardVariantOutline.vue"
-    import CalendarStartOutline from "vue-material-design-icons/CalendarStartOutline.vue"
-    import ClockStart from "vue-material-design-icons/ClockStart.vue"
-    import MonitorDashboard from "vue-material-design-icons/MonitorDashboard.vue"
-    import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
     import BellOutline from "vue-material-design-icons/BellOutline.vue"
-    import CalculatorVariantOutline from "vue-material-design-icons/CalculatorVariantOutline.vue"
-    import ViewStreamOutline from "vue-material-design-icons/ViewStreamOutline.vue"
-    import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
-    import OneUp from "vue-material-design-icons/OneUp.vue"
     import LightbulbOutline from "vue-material-design-icons/LightbulbOutline.vue"
     import Lifebuoy from "vue-material-design-icons/Lifebuoy.vue"
     import PhonePlus from "vue-material-design-icons/PhonePlus.vue"

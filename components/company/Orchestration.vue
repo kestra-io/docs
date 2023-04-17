@@ -8,10 +8,10 @@
                 </div>
                 <div class="col-md-6">
                     <p>
-                        Our ambition is to provide a tool that enables all kind of users to orchestrate and automate their data, workflows, and batches with unparalleled simplicity, autonomy, and high performance. From the first day of our journey, we have been driven by this goal, and we continue to challenge ourselves.
+                        Our ambition is to provide a tool that enables all kinds of users to orchestrate and automate their data, workflows, and batches with unparalleled simplicity, autonomy, and high performance. From the first day of our journey, we have been driven by this goal, and we continue to challenge ourselves.
                     </p>
                     <p>
-                        We have dedicated ourselves to the meticulous development of our open-source platform, ensuring that it meets the highest standards of performance and reliability  but also empowers users to unlock new possibilities in data management and processing.
+                        We have dedicated ourselves to the meticulous development of our open-source platform, ensuring that it meets the highest standards of performance and reliability but also empowers users to unlock new possibilities in data management and processing.
                     </p>
                 </div>
             </div>

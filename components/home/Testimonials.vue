@@ -32,7 +32,7 @@
                 testimonialData: [
                     {
                         profile: "/landing/home/testimonials/alex.jpg",
-                        message: "Kestra is a product designed to facilitate the work of Ops & Data Engineers! The possibilities offered by the application are exponential thanks to the many plugins that come out regularly.\n" +
+                        message: "Kestra is a product designed to facilitate the work of Ops & Data Engineers! The possibilities offered by the application are exponential, thanks to the many plugins that come out regularly.\n" +
                             "Whatever the size of the organization that implements this solution, it has all the latitude to decide to keep control of its production plan or to leave sufficient autonomy to its employees to carry out their processing operations.\n" +
                             "This application is really capable of supporting the growth of the company thanks to a complete and controlled scalability!",
                         name: "Alexandre Millet-Bassez",
@@ -57,7 +57,7 @@
                     },
                     {
                         profile: "/landing/home/testimonials/ousama.jpg",
-                        message: "The product allows you to build almost anything you want. You can also integrate different types of data (csv, json, txt, Avro) from SFTP server, google bucket, google drive, JDBC database (PostgreSQL, Oracle). The system of task is easy to manipulate/use and offers maximum of flexibility in the development.\n" +
+                        message: "The product allows you to build almost anything you want. You can also integrate different types of data (csv, json, txt, Avro) from SFTP server, google bucket, google drive, JDBC database (PostgreSQL, Oracle). The system of tasks is easy to manipulate/use and offers maximum flexibility in development.\n" +
                             "The tool meets the needs perfectly; it’s very simple to use and manages all the complexities behind it to offer a huge saving in time and cost.",
                         name: "Oussama Bakkali",
                         link: "https://www.linkedin.com/in/oussama-bakkali-949708b6/",

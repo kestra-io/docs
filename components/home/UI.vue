@@ -12,7 +12,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><WrenchOutline /></span>
-                                    Built in Low code editor for your flows
+                                    Built-in Low code editor for your flows
                                 </p>
                             </div>
                         </div>

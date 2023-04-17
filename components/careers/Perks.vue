@@ -41,7 +41,7 @@
                                     <ScaleBalance />
                                 </span>
                             <h4 class="card-title">Work/life balance</h4>
-                            <p class="card-text">Prioritize work-life balance in the way that works best for you and generous vacation policy.</p>
+                            <p class="card-text">Prioritize work-life balance in the way that works best for you and a generous vacation policy.</p>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                                     <ChairRolling />
                                 </span>
                             <h4 class="card-title">Office costs covered</h4>
-                            <p class="card-text">Work from home, or from any other coworking space - we’ll cover the costs.</p>
+                            <p class="card-text">Work from home or any other coworking space - we’ll cover the costs.</p>
                         </div>
                     </div>
                 </div>

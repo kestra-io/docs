@@ -32,7 +32,7 @@
                             <strong>Intuitive Orchestration:</strong> Easily manage task dependencies and ensure proper execution order.
                         </li>
                         <li>
-                            <strong>Flexible Workflow Control:</strong> Full control of workflows orchestration, ensuring tasks are running efficiently.
+                            <strong>Flexible Workflow Control:</strong> Full control of workflow orchestration, ensuring tasks are running efficiently.
                         </li>
                     </ul>
                 </div>
@@ -49,10 +49,10 @@
                     <h3>Flexible Workflow Scheduling</h3>
                     <ul>
                         <li>
-                            <strong>Time-based scheduling:</strong> Worflows run automatically at specific times, such as daily, weekly, or monthly for a regular execution without the need for manual intervention.
+                            <strong>Time-based scheduling:</strong> Workflows run automatically at specific times, such as daily, weekly, or monthly for a regular execution without the need for manual intervention.
                         </li>
                         <li>
-                            <strong>Event-based scheduling:</strong> Trigger workflows to run automatically in response to events, such as the arrival of new data or the completion of other workflows. Automate workflows executions based on real-time events.
+                            <strong>Event-based scheduling:</strong> Trigger workflows to run automatically in response to events, such as the arrival of new data or the completion of other workflows. Automate workflow executions based on real-time events.
                         </li>
                     </ul>
                 </div>

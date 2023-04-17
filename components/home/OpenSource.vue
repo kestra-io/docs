@@ -17,7 +17,7 @@
             <Section
                 title="Join our Open Source Community"
                 subtitle="Community"
-                baseline="Kestra empowers you to customize and extend your data orchestration with plugins and features that can be deployed anywhere. join our Open Source community and help us shape the best orchestration and scheduling platform on the market."
+                baseline="Kestra empowers you to customize and extend your data orchestration with plugins and features that can be deployed anywhere. Join our Open Source community and help us shape the best orchestration and scheduling platform on the market."
             >
                 <div class="row metrics">
                     <div class="col-md-2 col-4 mt-4 pt-2" data-aos="fade-left">

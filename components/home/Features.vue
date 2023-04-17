@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <span class="card-icon"><OpenInApp /></span>
                             <h4 class="card-title">Increase Productivity and Efficiency</h4>
-                            <p class="card-text">Create and manage your workflows using in low code or write them in YAML</p>
+                            <p class="card-text">Create and manage your workflows using the low code editor or write them in YAML</p>
                         </div>
                     </div>
                 </div>

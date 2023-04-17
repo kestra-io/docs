@@ -14,7 +14,7 @@
                                     <CloudUploadOutline />
                                 </span>
                             <h4 class="card-title">Deploy and Run Anywhere</h4>
-                            <p class="card-text">From on-premise installlations to cloud-based services, containers to clusters, Kestra can be deployed anywhere.</p>
+                            <p class="card-text">From on-premise installations to cloud-based services, containers to clusters, Kestra can be deployed anywhere.</p>
                         </div>
                     </div>
                 </div>

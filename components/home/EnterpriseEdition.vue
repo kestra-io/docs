@@ -5,7 +5,7 @@
                 <div class="col-md-6">
                     <h2>Take Kestra to the next level with the Enterprise Edition</h2>
                     <ul class="mb-5">
-                        <li>SSO/OIDC Authentification</li>
+                        <li>SSO/OIDC Authentication</li>
                         <li>Role Based Access</li>
                         <li>Secret Manager Integration</li>
                         <li>High Availability</li>

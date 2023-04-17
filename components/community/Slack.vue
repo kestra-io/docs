@@ -17,7 +17,7 @@
                                     <TooltipQuestion />
                                 </span>
                             <h4 class="card-title">Ask a question</h4>
-                            <p class="card-text">Get stuck with the documentation, We're here to help!</p>
+                            <p class="card-text">Get stuck with the documentation? We're here to help!</p>
                             <p class="channel">#help</p>
                         </div>
                     </div>

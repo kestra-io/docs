@@ -53,7 +53,7 @@
                 <div class="col-md-6 p-5">
                     <h5>Integration with Existing Infrastructure</h5>
                     <p>
-                        With Kestra's extensive integration capabilities, the financial institution can seamlessly connect their existing infrastructure and third-party tools, allowing for effortless data synchronization across various systems.
+                        With Kestra's extensive integration capabilities, the financial institution can seamlessly connect its existing infrastructure and third-party tools, allowing for effortless data synchronization across various systems.
                     </p>
                 </div>
                 <div class="col-md-6">

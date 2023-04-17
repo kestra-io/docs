@@ -46,7 +46,7 @@
                         <ol>
                             <li>
                                 <strong>Simplify Your Workflows with Automation:</strong><br />
-                                Easily create scheduling and trigger-based workflows to automate repetitive tasks and free up your team's.
+                                Easily create scheduling and trigger-based workflows to automate repetitive tasks and free up your team.
                             </li>
 
                             <li>
@@ -56,7 +56,7 @@
 
                             <li>
                                 <strong>Microservice Orchestration Made Easy:</strong><br />
-                                With microservice orchestration capabilities, complex workflows are broken down into smaller pieces for easier scaling and maintenance. Kestra supports a wide range of microservice technologies for seamless integration with existing architecture.
+                                With microservice orchestration capabilities, complex workflows are broken down into smaller pieces for easier scaling and maintenance. Kestra supports a wide range of microservice technologies for seamless integration with existing architectures.
                             </li>
                         </ol>
                     </div>
@@ -80,7 +80,7 @@
 
                             <li>
                                 <strong>Simplify Complex Data Workflows:</strong><br />
-                                Our architecture allows for the break down of complex workflows, making them easier to create, maintain, and reuse.  Improve performance and reliability, allowing your team to focus on delivering valuable insights from your data.
+                                Our architecture allows for the breakdown of complex workflows, making them easier to create, maintain, and reuse.  Improve performance and reliability, allowing your team to focus on delivering valuable insights from your data.
                             </li>
                         </ol>
                     </div>

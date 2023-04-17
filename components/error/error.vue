@@ -14,7 +14,7 @@
                     {{
                         error.statusCode === 404 ?
                             "Sorry, the page you are looking for doesn’t exist or has been moved." :
-                            "Sorry, an error occured."
+                            "Sorry, an error occurred."
                     }}
                 </p>
                 <p class="text-error">

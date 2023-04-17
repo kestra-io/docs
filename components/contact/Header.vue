@@ -5,7 +5,7 @@
                 <div class="col-md-6 get-in-touch">
                     <p class="overline">Get in touch</p>
                     <h1>Contact Us</h1>
-                    <p class="baseline">If you have questions, inquiries, or feedback about Kestra, we're looking to hear from you.</p>
+                    <p class="baseline">If you have questions, inquiries, or feedback about Kestra, we're looking to hearing from you.</p>
                 </div>
                 <div class="col-md-6">
                     <h3>Reach Out to Us</h3>

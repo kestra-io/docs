@@ -13,7 +13,7 @@
                                 </h2>
                                 <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        Ensure scalability and high availability with Kafka and ElasticSearch Features availables on the Enterprise Edition to eliminate all points of failure. Kestra's architecture is designed to handle high volumes of data and to ensure that workflows are processed reliably by default.
+                                        Ensure scalability and high availability with Kafka and ElasticSearch Features available on the Enterprise Edition to eliminate all points of failure. Kestra's architecture is designed to handle high volumes of data and to ensure that workflows are processed reliably by default.
                                     </div>
                                 </div>
                             </div>

@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <span class="card-icon"><ClockStart /></span>
                             <h4 class="card-title">Infinity of triggers</h4>
-                            <p class="card-text">Endless possibilities to start a flow through API, using a webhook, waiting for a trigger,or simply starting directly from the Web UI</p>
+                            <p class="card-text">Endless possibilities to start a flow through API, using a webhook, waiting for a trigger, or simply starting directly from the Web UI</p>
                         </div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                         <div class="card-body">
                             <span class="card-icon"><CalculatorVariantOutline /></span>
                             <h4 class="card-title">Large Data Processing</h4>
-                            <p class="card-text">Massive data volumes handling with high performance using partitioning and batch processing techniques</p>
+                            <p class="card-text">Massive data volume handling with high performance using partitioning and batch processing techniques</p>
                         </div>
                     </div>
                 </div>
