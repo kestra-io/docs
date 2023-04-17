@@ -32,6 +32,13 @@ export default defineNuxtConfig({
         },
         navigation: {
             fields: ["_file"]
+        },
+        markdown: {
+            remarkPlugins: {
+                'remark-flexible-markers': {
+                    markerClassName: 'bg-success rounded'
+                },
+            }
         }
     },
     router: {
