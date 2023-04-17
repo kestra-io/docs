@@ -9,39 +9,39 @@
                 </div>
                 <div class="col-md-6">
                     <h3>Reach Out to Us</h3>
-                    <form>
+                    <form id="contactUs" ref="contactUs" @submit="checkForm" class="needs-validation" novalidate>
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 has-error">
                                 <label for="firstName">First Name *</label>
-                                <input type="text" class="form-control" id="firstName">
+                                <input type="text" class="form-control" id="firstName" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="lastName">Last Name *</label>
-                                <input type="text" class="form-control" id="lastName">
+                                <input type="text" class="form-control" id="lastName" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="company">Company</label>
-                                <input type="text" class="form-control" id="company">
+                                <input type="text" class="form-control" id="company" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="email">Email *</label>
-                                <input type="email" class="form-control" id="email">
+                                <input type="email" class="form-control" id="email" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="message">Message *</label>
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea class="form-control" rows="3" required></textarea>
                         </div>
                         <div class="checkbox consent">
                             <label for="newsletterConsent">
-                                <input type="checkbox" id="newsletterConsent">&nbsp;&nbsp;I agree to receive Kestra's newsletter with updates, news, and insights. I can unsubscribe at any time.
+                                <input type="checkbox" id="newsletterConsent" class="form-check-input">&nbsp;&nbsp;I agree to receive Kestra's newsletter with updates, news, and insights. I can unsubscribe at any time.
                             </label>
                         </div>
                         <div class="checkbox consent">
                             <label for="personalDataConsent">
-                                <input type="checkbox" id="personalDataConsent">&nbsp;&nbsp;I consent to the processing of my personal data in accordance with Kestra's Privacy Policy and GDPR requirements. *
+                                <input type="checkbox" id="personalDataConsent" class="form-check-input" required>&nbsp;&nbsp;I consent to the processing of my personal data in accordance with Kestra's Privacy Policy and GDPR requirements. *
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary me-2">Submit</button>
@@ -58,7 +58,32 @@
     import Email from "vue-material-design-icons/Email.vue"
 
     export default {
-        components: {Console, Email}
+        components: {Console, Email},
+        mounted() {
+            const script = document.createElement("script");
+            script.src="https://js-eu1.hsforms.net/forms/embed/v2.js";
+            document.body.appendChild(script);
+            script.addEventListener("load", () => {
+                if (window.hbspt) {
+                    window.hbspt.forms.create({
+                        region: "eu1",
+                        portalId: "27220195",
+                        formId: "280598ab-5b42-4c63-9acf-57a591beeb8e"
+                    })
+                }
+            })
+        },
+        methods:{
+            checkForm: function (e) {
+                var form = this.$refs.contactUs;
+                if (!form.checkValidity()) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }
+        }
     }
 </script>
 
