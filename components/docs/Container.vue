@@ -34,7 +34,6 @@
     })
 
     const page = await queryContent(props.slug).findOne();
-    console.log()
     useContentHead(page)
 </script>
 

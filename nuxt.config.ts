@@ -14,14 +14,7 @@ export default defineNuxtConfig({
         }
     },
     content: {
-        // https://content.nuxtjs.org/api/configuration
-        // TODO: remove document driven
-        documentDriven: {
-            navigation: false,
-            page: true,
-            surround: true,
-            injectPage: false
-        },
+        documentDriven: false,
         highlight: {
             // preload: [
             //     'bash',
@@ -36,6 +29,9 @@ export default defineNuxtConfig({
             //     'json5',
             // ],
             theme: 'github-dark'
+        },
+        navigation: {
+            fields: ["_file"]
         }
     },
     router: {

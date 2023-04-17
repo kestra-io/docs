@@ -1,24 +1,3 @@
-<script setup lang="ts">
-    import {upperFirst} from 'scule'
-    import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
-    import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-
-    const {prev, next, navigation} = useContent()
-    const {navDirFromPath} = useContentHelpers()
-
-    const directory = (link: any) => {
-        const nav = navDirFromPath(link._path, navigation.value || [])
-
-        if (nav && nav[0]) {
-            return nav[0]._path
-        } else {
-            const dirs = link.split('/')
-            const directory = dirs.length > 1 ? dirs[dirs.length - 2] : ''
-            return directory.split('-').map(upperFirst).join(' ')
-        }
-    }
-</script>
-
 <template>
     <div v-if="prev || next" class="docs-prev-next mb-4 mt-5">
         <NuxtLink
@@ -53,9 +32,52 @@
     </div>
 </template>
 
+<script>
+    import {upperFirst} from 'scule'
+    import {hash} from "ohash";
+    import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
+    import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+    import {prevNext} from "~/utils/navigation.js";
+    const {navDirFromPath} = useContentHelpers()
+
+    export default defineComponent({
+        components: {ArrowLeft, ArrowRight},
+        async setup() {
+            const route = useRoute();
+            let basePath = route.path.substring(0, route.path.substring(1).indexOf("/") + 2);
+            const queryBuilder = queryContent(basePath);
+
+            const {data: navigation} = await useAsyncData(
+                `PrevNext-${hash(basePath)}`,
+                () => fetchContentNavigation(queryBuilder)
+            );
+
+            const {prev, next} = prevNext(navigation, route.path);
+
+            return {navigation, prev, next};
+        },
+        computed: {
+
+        },
+        methods: {
+            directory(link) {
+                const nav = navDirFromPath(link._path, this.navigation.value || [])
+
+                if (nav && nav[0]) {
+                    return nav[0]._path
+                } else {
+                    const dirs = link.split('/')
+                    const directory = dirs.length > 1 ? dirs[dirs.length - 2] : ''
+                    return directory.split('-').map(upperFirst).join(' ')
+                }
+            },
+        }
+    });
+</script>
+
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
+    @import "../../assets/styles/variable";
 
     .docs-prev-next {
         display: flex;

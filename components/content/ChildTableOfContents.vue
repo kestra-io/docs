@@ -28,8 +28,8 @@
             if (pageUrl.value) {
                 currentPage = pageUrl.value;
             } else {
-                const {page} = useContent();
-                currentPage = page.value._path;
+                const route = useRoute()
+                currentPage = route.path;
             }
 
             const queryBuilder = queryContent(currentPage);
