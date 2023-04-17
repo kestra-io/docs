@@ -4,6 +4,8 @@ type: Marketing
 draft: true
 ---
 
+# Growth Marketing Manager
+
 The intersection of marketing, product, and data!
 
 ## What you will do:

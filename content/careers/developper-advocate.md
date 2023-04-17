@@ -4,6 +4,8 @@ type: Engineering
 draft: true
 ---
 
+# Developer Advocate
+
 ## What you will do:
 
 Kestra is looking for a Developer Advocate who loves to educate and engage with developers, and has a passion for open source communities.

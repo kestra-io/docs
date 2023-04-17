@@ -3,6 +3,8 @@ title: "Senior Full-Stack Engineer"
 type: Engineering
 ---
 
+# Senior Full-Stack Engineer
+
 ## What you will do:
 
 This role involves working closely alongside the CTO and to be able to quickly learn the whole project, and quickly become its counterpart.
