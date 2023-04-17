@@ -12,46 +12,57 @@ function renderToText(node) {
     return `${node.children?.map(renderToText).join("") || ""}\n`;
 }
 
+let collection = undefined;
+let index = undefined;
 
 export default defineEventHandler(async(event) => {
     const requestUrl = new url.URL("http://localhost" + event.node.req.url);
     const search = requestUrl.searchParams.get("query");
     const limit = requestUrl.searchParams.get("limit") || 20;
 
-        let collection = Object.fromEntries((await serverQueryContent(event, '/').find())
-        .map(value => {
-            const key = value._path;
+    if (!collection) {
+        collection = Object
+            .fromEntries((await serverQueryContent(event, '/').find())
+                .map(value => {
+                    const key = value._path;
 
-            try {
-                return [
-                    key,
-                    {
-                        slug: key,
-                        title: value.title,
-                        content: renderToText(value.body)
+                    try {
+                        return [
+                            key,
+                            {
+                                slug: key,
+                                title: value.title,
+                                content: renderToText(value.body)
+                            }
+                        ]
+                    } catch (e) {
+                        return null;
                     }
-                ]
-            } catch (e) {
-                return null;
+                })
+            );
+    }
+
+    if (!index) {
+        index = new Document({
+            language: "en",
+            charset: "latin:simple",
+            tokenize: 'forward',
+            document: {
+                id: "slug",
+                index: ["title", "content"]
             }
-        })
-    );
+        });
 
-    const index = new Document({
-        language: "en",
-        charset: "latin:simple",
-        tokenize: 'forward',
-        document: {
-            id: "slug",
-            index: ["title", "content"]
-        }
-    });
+        Object
+            .values(collection)
+            .forEach((value) => index.add(value));
 
-    Object
-        .values(collection)
-        .forEach((value) => index.add(value));
+        console.log("buildind")
+    }
+
     const around = 50;
-    const searchResult1 = [...new Set(index
+
+    return [...new Set(index
         .search([
             {
                 field: 'title',
@@ -72,7 +83,7 @@ export default defineEventHandler(async(event) => {
         .map(value => {
             const content = value.content;
 
-            value.content = findAll({
+            const summary = findAll({
                 searchWords: search.split(" "),
                 textToHighlight: content
             })
@@ -87,7 +98,11 @@ export default defineEventHandler(async(event) => {
                     }
                 })
                 .filter(value => value)
-            return value;
+
+            return {
+                slug: value.slug,
+                title: value.title,
+                content: summary,
+            };
         })
-    return searchResult1;
 })

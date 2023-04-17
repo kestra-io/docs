@@ -126,20 +126,29 @@
         </div>
     </nav>
 
-    <div class="modal fade" id="search-modal" tabindex="-1" aria-labelledby="search-modal" aria-hidden="true">
+    <div class="modal modal-lg fade" id="search-modal" tabindex="-1" aria-labelledby="search-modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="col-12">
-                        <label class="visually-hidden" for="search-input">Email</label>
-                        <input type="text" class="form-control" id="search-input" @input="event => search(event.target.value)" placeholder="Search">
+                        <label class="visually-hidden" for="search-input">Search</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><Magnify /></span>
+                            <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search" />
+                        </div>
+
+
                     </div>
                     <div class="search-result mt-3" v-if="searchResults">
-                        <div v-for="results in searchResults">
-                            <a :href="results.slug">
-                                <h5>{{ results.title }}</h5>
-                                <h6>{{ results.slug }}</h6>
-                                <p v-if="results.content.length > 0" v-html="results.content[0]" class="search-result-extract"/>
+                        <div v-for="result in searchResults">
+                            <a :href="result.slug">
+                                <div class="slug">
+                                    <span :class="{first: index === 0}"  v-for="(item, index) in breadcrumb(result.slug)" :key="item" >{{ item }}</span>
+                                </div>
+                                <div class="result rounded-3">
+                                    <h5>{{ result.title }}</h5>
+                                    <p v-if="result.content.length > 0" v-html="result.content[0]" class="search-result-extract"/>
+                                </div>
                             </a>
                         </div>
                     </div>
@@ -158,7 +167,6 @@
     import AccountStarOutline from "vue-material-design-icons/AccountStarOutline.vue"
     import Segment from "vue-material-design-icons/Segment.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
-    import Github from "vue-material-design-icons/Github.vue"
     import Flash from "vue-material-design-icons/Flash.vue"
     import Domain from "vue-material-design-icons/Domain.vue"
 </script>
@@ -194,6 +202,11 @@
                     return response.data;
                 })
             },
+            breadcrumb(slug) {
+                return [...new Set(slug.split("/")
+                    .filter(r => r !== ""))
+                ]
+            }
         },
     }
 </script>
@@ -304,6 +317,11 @@
                                 span {
                                     display: inline-block;
                                 }
+
+                                mark {
+                                    padding-left: 0;
+                                    padding-right: 0;
+                                }
                             }
                         }
                     }
@@ -330,21 +348,70 @@
     }
 
     #search-modal {
+        .input-group-text {
+            background: transparent;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+        }
+
         .search-result {
             overflow: auto;
-            h5 {
-                font-size: $h6-font-size;
-                margin-bottom: 0;
-                color: $primary;
-            }
 
-            h6 {
+            .slug {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: 100%;
                 font-size: $font-size-sm;
-                color: $success;
+                color: $pink;
+                font-family: var(--bs-font-monospace);
+                margin-bottom: calc($spacer / 3);
+
+                span {
+                    margin-left: 0.25rem;
+
+                    &:before {
+                        content: '/';
+                        margin-right: 0.25rem;
+
+                    }
+
+                    &:first-child {
+                        &:before {
+                            display: none;
+                        }
+                    }
+
+                    &.first {
+                        font-weight: bold;
+                    }
+                }
+
+                .breadcrumb-item + .breadcrumb-item::before {
+                    color: $pink;
+                }
             }
 
-            .search-result-extract {
-                font-size: 0.9rem;
+            .result {
+                background: var(--bs-gray-100);
+                padding: 0.5rem 1.5rem;
+                margin-bottom: calc($spacer * 1.5);
+
+                h5 {
+                    font-size: $font-size-lg;
+                    font-weight: bold;
+                    margin-bottom: 0;
+                    color: var(--bs-dark);
+                }
+
+                p {
+                    color: var(--bs-gray-800);
+                    font-size: $font-size-sm;
+                    margin-bottom: 0;
+                }
+
             }
         }
     }

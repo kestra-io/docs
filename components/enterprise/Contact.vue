@@ -15,6 +15,11 @@
     </div>
 </template>
 
+<script setup>
+    import Console from "vue-material-design-icons/Console.vue"
+    import Email from "vue-material-design-icons/Email.vue"
+</script>
+
 <script>
     import Section from '../layout/Section.vue';
 
