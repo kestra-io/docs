@@ -3,61 +3,57 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-right">
-                    <img src="/landing/community/frame_580.png"/>
+                    <img src="/landing/community/contributors.png" class="mb-5 img-fluid" />
                     <h3>Kestra is built by the open-source community</h3>
                     <p>
                         Inspire and get inspired. Join our community of maintainers and contributors and help us make Kestra better!
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <table class="community">
-                        <tr>
-                            <td>
-                                <img src="/landing/community/purple_star.png"/>
-                                <p>
-                                    Stars <br>
-                                    <span class="number"><CountTo :endVal="metrics ? metrics.stars : 0" :duration="4000"></CountTo></span>
-                                </p>
-                            </td>
-                            <td>
-                                <img src="/landing/community/purple_star.png"/>
-                                <p>
-                                    Forks <br>
-                                    <span class="number"><CountTo :endVal="metrics ? metrics.forks : 0" :duration="4000"></CountTo></span>
-                                </p>
-                            </td>
-                            <td>
-                                <img src="/landing/community/purple_star.png"/>
-                                <p>
-                                    Issues <br>
-                                    <span class="number"><CountTo :endVal="metrics ? metrics.issues : 0" :duration="4000"></CountTo></span>
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src="/landing/community/purple_star.png"/>
-                                <p>
-                                    Pull requests <br>
-                                    <span class="number"><CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo></span>
-                                </p>
-                            </td>
-                            <td>
-                                <img src="/landing/community/purple_star.png"/>
-                                <p>
-                                    Commits <br>
-                                    <span class="number"><CountTo :endVal="metrics ? metrics.commits : 0" :duration="4000"></CountTo></span>
-                                </p>
-                            </td>
-                            <td>
-                                <img src="/landing/community/purple_star.png"/>
-                                <p>
-                                    Contributors <br>
-                                    <span class="number"><CountTo :endVal="contributors ? contributors.length : 0" :duration="4000"></CountTo></span>
-                                </p>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="row community">
+                        <div class="col-6 col-md-4">
+                            <Star title="" />
+                            <p>
+                                Stars <br>
+                                <span class="number"><CountTo :endVal="metrics ? metrics.stars : 0" :duration="4000"></CountTo></span>
+                            </p>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <DirectionsFork title="" />
+                            <p>
+                                Forks <br>
+                                <span class="number"><CountTo :endVal="metrics ? metrics.forks : 0" :duration="4000"></CountTo></span>
+                            </p>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <BugOutline title="" />
+                            <p>
+                                Issues <br>
+                                <span class="number"><CountTo :endVal="metrics ? metrics.issues : 0" :duration="4000"></CountTo></span>
+                            </p>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <BugOutline title="" />
+                            <p>
+                                Pull requests <br>
+                                <span class="number"><CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo></span>
+                            </p>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <SourceCommitLocal title="" />
+                            <p>
+                                Commits <br>
+                                <span class="number"><CountTo :endVal="metrics ? metrics.commits : 0" :duration="4000"></CountTo></span>
+                            </p>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <AccountGroupOutline title="" />
+                            <p>
+                                Contributors <br>
+                                <span class="number"><CountTo :endVal="contributors ? contributors.length : 0" :duration="4000"></CountTo></span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="container text-center community-links">
@@ -72,9 +68,24 @@
     import Section from '../../components/layout/Section.vue';
     import {CountTo} from 'vue3-count-to';
     import axios from "axios";
+    import SourceCommitLocal from "vue-material-design-icons/SourceCommitLocal.vue";
+    import Star from "vue-material-design-icons/Star.vue";
+    import DirectionsFork from "vue-material-design-icons/DirectionsFork.vue";
+    import SourcePull from "vue-material-design-icons/SourcePull.vue";
+    import BugOutline from "vue-material-design-icons/BugOutline.vue";
+    import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue";
 
     export default {
-        components: {Section, CountTo},
+        components: {
+            Section,
+            CountTo,
+            SourceCommitLocal,
+            Star,
+            DirectionsFork,
+            SourcePull,
+            BugOutline,
+            AccountGroupOutline,
+        },
         data() {
             return {
                 metrics: undefined,
@@ -103,13 +114,23 @@
         background: $purple-7;
         color: var(--bs-white);
 
-        .row {
+
+        .container > .row {
+            padding: calc($spacer * 2);
+            padding-top: calc($spacer * 4);
             .text-right {
                 text-align: right;
-            }
-            div {
-                padding: calc($spacer * 2);
-                padding-top: calc($spacer * 4);
+
+                @include media-breakpoint-up(md) {
+                    border-right: 1px solid var(--bs-white);
+                    padding-right: calc($spacer * 3);
+                }
+
+                @include media-breakpoint-down(md) {
+                    border-bottom: 1px solid var(--bs-white);
+                    padding-bottom: calc($spacer * 3);
+                    margin-bottom: calc($spacer * 3);
+                }
             }
        }
     }
@@ -120,16 +141,33 @@
         }
     }
 
-    table.community {
-        width: 100%;
+    .community {
+        text-align: center;
 
-        td {
-            text-align: center;
+        :deep(.material-design-icon) {
+            border-radius: $border-radius-lg;
+            background: var(--bs-white);
+            font-size: 2rem;
+            color: $primary;
+            padding: 1.5rem;
+            align-items: center;
+            justify-content: center;
+
+            > .material-design-icon__svg {
+                bottom: 0;
+                top: 15%;
+            }
         }
 
-        .number {
-            font-size: $h4-font-size;
-            margin-top: 0px;
+        p {
+            color: $purple-26;
+            font-weight: bold;
+            font-size: $font-size-sm;
+            .number {
+                font-size: $h3-font-size;
+                margin-top: 0;
+                color: var(--bs-white);
+            }
         }
     }
 </style>

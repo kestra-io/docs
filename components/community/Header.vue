@@ -8,7 +8,7 @@
                     <p class="baseline">Connect with peers, exchange ideas and drive innovation in data orchestration</p>
                 </div>
                 <div class="col-md-6">
-                    <img src="/landing/community/frame_518.png" />
+                    <img src="/landing/community/header.svg" class="img-fluid" />
                 </div>
             </div>
         </div>
@@ -29,5 +29,9 @@
 
     .container-fluid {
         background: $purple-8;
+        .hero {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
     }
 </style>

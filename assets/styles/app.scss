@@ -1,5 +1,9 @@
 @import "variable";
 
+body {
+    min-width: 320px;
+}
+
 :root {
     --#{$prefix}font-size-lg: #{$font-size-lg};
     --#{$prefix}font-size-sm: #{$font-size-sm};

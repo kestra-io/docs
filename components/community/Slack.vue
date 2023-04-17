@@ -4,11 +4,8 @@
             class="with-shadow"
             title="Slack community"
             subtitle="Orchestrate Success Together"
+            baseline="Join the slack to share ideas and best practices, get help with technical questions, and discuss Kestra with other developers (and even the founders)."
         >
-            <p>
-                Join the slack to share ideas and best practices, get help with technical questions, and discuss Kestra with other developers (and even the founders).
-            </p>
-
             <div class="row card-group card-centered no-shadow mb-2">
                 <div class="col-md-4 mb-4">
                     <div class="card">

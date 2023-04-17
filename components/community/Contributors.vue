@@ -10,7 +10,6 @@
                         <img
                             :src="contributor.avatar"
                             class="rounded-circle"
-                            :width="contributor.size"
                             alt=""
                         />
                     </a>
@@ -37,11 +36,7 @@
                 .then(response => {
                     this.contributors = response.data;
                     this.contributorsRand = this.contributors
-                        .sort(() => 0.5 - Math.random())
-                        .map(r => {
-                            r.size = 40 + Math.random() * 100;
-                            return r;
-                        })
+                        .sort(() => 0.5 - Math.random());
                 })
         },
     }
@@ -60,6 +55,7 @@
         img {
             margin-right: $spacer;
             margin-bottom: $spacer;
+            width: 90px;
         }
     }
 </style>
