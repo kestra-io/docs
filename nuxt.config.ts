@@ -37,7 +37,7 @@ export default defineNuxtConfig({
         markdown: {
             remarkPlugins: {
                 'remark-flexible-markers': {
-                    markerClassName: 'bg-success rounded'
+                    markerClassName: 'type-mark'
                 },
                 'remark-code-import': {
                     instance: codeImport
