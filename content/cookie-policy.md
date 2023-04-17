@@ -1,5 +1,6 @@
 ---
 title: Cookie Policy
+description: Learn about our cookie policy, detailing how we use cookies to enhance your experience, and improve our website's functionality and performance
 ---
 
 This Cookies Policy explains what Cookies are and how We use them. You should read this policy so You can understand what type of cookies We use, or the information We collect using Cookies and how that information is used.

@@ -17,14 +17,14 @@
                             <ul class="list-unstyled">
                                 <li class="mb-2"><NuxtLink href="/features">Features</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/plugins">Connectors</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/enterprise-edition">Enterprise Edition</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/enterprise">Enterprise Edition</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Solutions</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><NuxtLink href="/solutions">Usages</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/enterprise-edition">For Companies</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/use-cases">Usages</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/enterprise">For Companies</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
@@ -47,9 +47,9 @@
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Company</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><NuxtLink href="/company">About us</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/company/careers">Careers</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/company/contact">Contact us</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/about-us">About us</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/careers">Careers</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/contact-us">Contact us</NuxtLink></li>
                             </ul>
                         </div>
                     </div>
@@ -70,9 +70,9 @@
                 <div class="col-sm-6">
                     <div class="text-end">
                         <p class="mb-0">
-                            <NuxtLink href="/company/privacy-policy">Privacy Policy</NuxtLink>
+                            <NuxtLink href="/privacy-policy">Privacy Policy</NuxtLink>
                             /
-                            <NuxtLink href="/company/cookie-policy">Cookie Policy</NuxtLink>
+                            <NuxtLink href="/cookie-policy">Cookie Policy</NuxtLink>
                         </p>
                     </div>
                 </div>

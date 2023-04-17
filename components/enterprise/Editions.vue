@@ -33,7 +33,7 @@
                             <div class="text-center mb-5">
                                 <h3 class="card-title">Enterprise Edition</h3>
                                 <p class="pricing custom">Custom</p>
-                                <NuxtLink href="/company/contact" class="btn btn-primary btn-lg">
+                                <NuxtLink href="/contact-us" class="btn btn-primary btn-lg">
                                     Contact us
                                 </NuxtLink>
                             </div>

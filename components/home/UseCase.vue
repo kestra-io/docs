@@ -85,12 +85,12 @@
                         </ol>
                     </div>
                     <div class="col-md-6 use-case-img">
-                        <img src="/landing/home/dashboard.png" />
+                        <img src="/landing/home/dashboard.png" width="600" />
                     </div>
                 </div>
 
                 <div class="text-center mt-5">
-                    <NuxtLink class="btn btn-lg btn-primary " href="/solutions">See more</NuxtLink>
+                    <NuxtLink class="btn btn-lg btn-primary " href="/use-cases">See more</NuxtLink>
                 </div>
             </Section>
         </div>

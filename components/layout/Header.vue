@@ -24,7 +24,7 @@
                                 </NuxtLink>
                             </li>
                             <li>
-                                <NuxtLink class="dropdown-item" href="/enterprise-edition">
+                                <NuxtLink class="dropdown-item" href="/enterprise">
                                     <Security />
                                     <p>
                                         <span>Enterprise Edition</span><br />
@@ -36,7 +36,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <NuxtLink class="nav-link" href="/solutions" role="button" >Solutions</NuxtLink>
+                        <NuxtLink class="nav-link" href="/use-cases" role="button" >Solutions</NuxtLink>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -80,7 +80,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Company</a>
                         <ul class="dropdown-menu">
                             <li>
-                                <NuxtLink class="dropdown-item" href="/company">
+                                <NuxtLink class="dropdown-item" href="/about-us">
                                     <Domain />
                                     <p>
                                         <span>About us</span><br />
@@ -89,7 +89,7 @@
                                 </NuxtLink>
                             </li>
                             <li>
-                                <NuxtLink class="dropdown-item" href="/company/careers">
+                                <NuxtLink class="dropdown-item" href="/careers">
                                     <AccountStarOutline />
                                     <p>
                                         <span>Careers</span><br />
@@ -98,7 +98,7 @@
                                 </NuxtLink>
                             </li>
                             <li>
-                                <NuxtLink class="dropdown-item" href="/company/contact">
+                                <NuxtLink class="dropdown-item" href="/contact-us">
                                     <Email />
                                     <p>
                                         <span>Contact us</span><br />

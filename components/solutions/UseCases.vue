@@ -6,7 +6,7 @@
         >
             <div class="row">
                 <div class="col-md-4">
-                    <NuxtLink href="/usecases/change-data-capture">
+                    <NuxtLink href="/use-cases/change-data-capture">
                         <img src="/landing/usages/image_11.png" />
                         <div class="title">Change data capture</div>
                         <div>

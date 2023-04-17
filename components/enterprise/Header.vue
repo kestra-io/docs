@@ -9,7 +9,7 @@
                     <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary me-2">
                         Book a demo <VideoPlus />
                     </a>
-                    <NuxtLink href="/company/contact" class="btn btn-lg btn-dark">
+                    <NuxtLink href="/contact-us" class="btn btn-lg btn-dark">
                         Contact us
                     </NuxtLink>
                 </div>

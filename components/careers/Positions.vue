@@ -10,7 +10,7 @@
 
             <ul class="list-unstyled">
                 <li>
-                    <NuxtLink class="rounded-3 shadow-sm" href="/company/careers/senior-full-stack-engineer">
+                    <NuxtLink class="rounded-3 shadow-sm" href="/careers/senior-full-stack-engineer">
                         <span>
                          Senior Full-Stack Engineer
                         </span>

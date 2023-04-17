@@ -1,4 +1,9 @@
 <template>
+    <Head>
+      <Title>Open Source Declarative Data Orchestration</Title>
+      <Meta name="description" content="Use declarative language to build simpler, faster, scalable and flexible data pipelines" />
+    </Head>
+
     <HomeHeader />
     <HomeFeatures />
     <HomeUI />
