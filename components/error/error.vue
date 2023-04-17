@@ -31,6 +31,7 @@
                             <a :href="results.slug">
                                 <h5>{{ results.title }}</h5>
                                 <h6>{{ results.slug }}</h6>
+                                <p v-if="results.content.length > 0" v-html="results.content[0]" class="search-result-extract"/>
                             </a>
                         </div>
                     </div>
@@ -109,7 +110,7 @@
     }
 
     .search-result {
-
+        overflow: auto;
         h5 {
             font-size: $h6-font-size;
             margin-bottom: 0;
@@ -119,6 +120,10 @@
         h6 {
             font-size: $font-size-sm;
             color: $success;
+        }
+
+        .search-result-extract {
+            font-size: 0.9rem;
         }
     }
 </style>

@@ -50,7 +50,7 @@ export default defineEventHandler(async(event) => {
     Object
         .values(collection)
         .forEach((value) => index.add(value));
-
+    const around = 50;
     const searchResult1 = [...new Set(index
         .search([
             {
@@ -78,18 +78,16 @@ export default defineEventHandler(async(event) => {
             })
                 .map(chunk => {
                     const {end, highlight, start} = chunk;
-                    const text = content.substring(start, end - start);
+                    const startText = start > around ? "..." : "";
+                    const endText = content.length - end > around ? "..." : "";
+                    const text = content.substring(start - around, end + around);
+                    const highlighted = content.substring(start, end);
                     if (highlight) {
-                        return `<mark>${text}</mark>`;
-                    } else {
-                        return text;
+                        return startText + text.replaceAll(highlighted,`<mark>${highlighted}</mark>`) + endText;
                     }
                 })
-                .join("")
-
-
+                .filter(value => value)
             return value;
         })
-
     return searchResult1;
 })
