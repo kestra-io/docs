@@ -5,7 +5,7 @@
             subtitle="Expand Your Workflow Capabilities"
             baseline="Plugins are at the core of Kestra's extensibility. Many plugins are available from the Kestra core team, and creating your own is easy. With plugins, you can add new functionality to Kestra."
         >
-            <ul class="nav nav-pills">
+            <ul class="nav nav-pills" v-if="false">
                 <li class="nav-item">
                     <a class="nav-link" :class="{'active': active === 1}" @click="active = 1">All connectors</a>
                 </li>
@@ -26,7 +26,7 @@
                 </li>
             </ul>
 
-            <div class="plugins mt-5" v-if="active === 1">
+            <div class="plugins mt-5" v-if="false">
                 <div class="p1">
                     <template v-for="i in [...Array(30).keys()]">
                         <a class="me-2 mb-2" href="#">
