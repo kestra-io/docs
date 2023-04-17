@@ -4,22 +4,15 @@
             title="Our contributors"
             subtitle="Orchestrate Success Together"
         >
-        <div v-if="contributors" class="contributors left" id="bla">
-            <template v-for="contributor in contributorsPartition(0)">
-                <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
-                    <img
-                        :src="contributor.avatar"
-                        class="rounded-circle"
-                        :width="contributor.size"
-                        alt=""
-                    />
-                </a>
-            </template>
-        </div>
-            <div v-if="contributors" class="contributors right">
-                <template v-for="contributor in contributorsPartition(10)">
+            <div v-if="contributors" class="contributors">
+                <template v-for="contributor in contributorsRand">
                     <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
-                        <img :src="contributor.avatar" class="img-fluid avatar avatar-small rounded-circle" :width="contributor.size" alt="">
+                        <img
+                            :src="contributor.avatar"
+                            class="rounded-circle"
+                            :width="contributor.size"
+                            alt=""
+                        />
                     </a>
                 </template>
             </div>
@@ -43,20 +36,13 @@
             axios.get("https://api.kestra.io/v1/communities/github/contributors")
                 .then(response => {
                     this.contributors = response.data;
-                    this.contributorsRand = this.contributors.sort(() => 0.5 - Math.random()).slice(0, 20)
+                    this.contributorsRand = this.contributors
+                        .sort(() => 0.5 - Math.random())
+                        .map(r => {
+                            r.size = 40 + Math.random() * 100;
+                            return r;
+                        })
                 })
-        },
-        methods: {
-            contributorsPartition(i) {
-                return this.contributorsRand
-                    .slice(i, i + 10)
-                    .map(r => {
-                        r.size = 40 + Math.random() * 100;
-
-                        return r;
-                    })
-            },
-
         },
     }
 </script>
