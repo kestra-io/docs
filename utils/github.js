@@ -1,9 +1,9 @@
 export async function stargazers() {
-    return await fetch("https://api.github.com/repos/kestra-io/kestra")
+    return await fetch("https://api.kestra.io/v1/communities/github/metrics")
         .then((response) => {
             return response.json();
         })
-        .then(value => {
-            return Intl.NumberFormat('en-US').format(value.stargazers_count);
+        .then(metrics => {
+            return Intl.NumberFormat('en-US').format(metrics.stars);
         })
 }
