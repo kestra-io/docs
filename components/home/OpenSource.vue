@@ -169,7 +169,6 @@
             overflow: hidden;
             text-align: center;
             padding: $spacer;
-            display: none;
 
             img {
                 margin-right: $spacer;
