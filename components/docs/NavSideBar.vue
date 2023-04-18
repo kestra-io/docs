@@ -18,7 +18,8 @@
                         :items="navigation[0].children"
                         :depth-level="1"
                         :active-slug="activeSlug"
-                        :open="true" />
+                        :open="true"
+                        :page-list="pageList"/>
                 </nav>
             </div>
         </div>
@@ -45,6 +46,10 @@
         props: {
             type: {
                 type: String,
+                required: true
+            },
+            pageList: {
+                type: Array,
                 required: true
             },
         },

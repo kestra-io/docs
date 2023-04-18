@@ -9,20 +9,30 @@
             <ul class="bd-links-nav list-unstyled mb-0">
                 <li :class="{['depth-' + depthLevel]: true}" class="bd-links-group">
                     <NuxtLink
+                        v-if="isPage(item)"
                         :class="activeSlug.startsWith(item._path) ? 'active' : ''"
                         class="bd-links-link d-inline-block"
                         :href="item._path">
-                            {{ item.title }}
+                        {{ item.title }}
+                    </NuxtLink>
+                    <NuxtLink
+                        v-else
+                        :class="activeSlug.startsWith(item._path) ? 'active disabled' : ''"
+                        class="bd-links-link d-inline-block disabled"
+                        @click="toggle(item._path, isPage(item))" data-bs-toggle="collapse"
+                        :data-bs-target="'#'+item._path"
+                    >
+                        {{ item.title }}
                     </NuxtLink>
                     <template v-if="filterChildren(item).length > 0">
-                        <chevron-down
-                            v-if="showMenu.includes(item._path)"
+                        <chevron-up
+                            v-if="isShow(item._path)"
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
                             :data-bs-target="'#'+item._path"
                             role="button"
                         />
-                        <chevron-up
+                        <chevron-down
                             v-else
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
@@ -36,8 +46,9 @@
                     :items="filterChildren(item)"
                     :depth-level="depthLevel+1"
                     :active-slug="activeSlug"
-                    :open="showMenu.includes(item._path)"
+                    :open="isShow(item._path)"
                     :parent-slug="item._path"
+                    :page-list="pageList.filter(e => e.startsWith(item._path))"
                 />
             </ul>
         </div>
@@ -74,6 +85,10 @@
             parentSlug: {
                 type: String,
                 required: true
+            },
+            pageList: {
+                type: Array,
+                required: true
             }
         },
         created() {
@@ -87,12 +102,18 @@
                 return (item.children || []).filter(r => item._path !== r._path);
             },
             toggle(item) {
-                if (this.showMenu.includes(item)) {
-                    this.showMenu = this.showMenu.filter(i => i !== item)
+                if (this.showMenu.some(path => path.startsWith(item))) {
+                    this.showMenu = this.showMenu.filter(i => !i.startsWith(item))
                 } else {
                     this.showMenu.push(item)
                 }
             },
+            isShow(item) {
+                return this.showMenu.some(path => path.startsWith(item))
+            },
+            isPage(item) {
+                return this.pageList.includes(item._path)
+            }
         }
     }
 </script>
@@ -125,7 +146,7 @@
                 color: var(--bs-body-color);
                 font-size: .8rem;
                 border-left: 2px solid var(--bs-gray-200);
-                padding: calc($spacer/2);
+                padding: calc($spacer / 2);
                 display: flex;
                 width: 100%;
 
@@ -141,6 +162,11 @@
                 &.active {
                     color: var(--bs-primary);
                     border-left: 2px solid var(--bs-primary);
+                }
+
+                &.disabled {
+                    cursor: pointer;
+                    color: var(--bs-gray-500);
                 }
             }
 

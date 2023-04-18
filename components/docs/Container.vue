@@ -1,6 +1,6 @@
 <template>
-    <div class="container-fluid bd-gutter mt-3 my-md-4 bd-layout">
-        <NavSideBar :type="type" />
+    <div class="container bd-gutter mt-3 my-md-4 bd-layout">
+        <NavSideBar :type="type" :page-list="pageList" />
 
         <main class="bd-main order-1" :class="{'full': page.rightBar === false}">
             <ContentRenderer :value="page">
@@ -32,8 +32,8 @@
             required: true
         }
     })
-
     const page = await queryContent(props.slug).findOne();
+    const pageList = (await queryContent(props.type).find()).map(e => e._path);
     useContentHead(page)
 </script>
 
