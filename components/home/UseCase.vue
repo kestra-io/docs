@@ -6,19 +6,19 @@
                 subtitle="Maximize Data Workflow Capabilities"
             >
                 <ul class="nav nav-pills">
-                    <li class="nav-item">
+                    <li class="nav-item mt-2">
                         <a class="nav-link" :class="{'active': active === 1}" @click="active = 1">Data Platform Orchestration</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mt-2">
                         <a class="nav-link" :class="{'active': active === 2}" @click="active = 2">Efficient Workflow Automation</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mt-2">
                         <a class="nav-link" :class="{'active': active === 3}" @click="active = 3">Decentralized Workflow Automation</a>
                     </li>
                 </ul>
 
                 <div class="row mt-5" v-if="active === 1">
-                    <div class="col-md-6">
+                    <div class="col-lg-6 col-sm-12">
                         <ol>
                             <li>
                                 <strong>For Data Engineers:</strong><br />
@@ -36,13 +36,13 @@
                             </li>
                         </ol>
                     </div>
-                    <div class="col-md-6 use-case-img">
-                        <img src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
+                    <div class="col-lg-6 col-sm-12 use-case-img">
+                        <img class="img-fluid" src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
                     </div>
                 </div>
 
                 <div class="row mt-5" v-if="active === 2">
-                    <div class="col-md-6">
+                    <div class="col-lg-6 col-sm-12">
                         <ol>
                             <li>
                                 <strong>Simplify Your Workflows with Automation:</strong><br />
@@ -60,13 +60,13 @@
                             </li>
                         </ol>
                     </div>
-                    <div class="col-md-6 use-case-img">
-                        <img src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
+                    <div class="col-lg-6 col-sm-12 use-case-img">
+                        <img class="img-fluid" src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
                     </div>
                 </div>
 
                 <div class="row mt-5" v-if="active === 3">
-                    <div class="col-md-6">
+                    <div class="col-lg-6 col-sm-12">
                         <ol>
                             <li>
                                 <strong>Decentralize your data:</strong><br />
@@ -84,8 +84,8 @@
                             </li>
                         </ol>
                     </div>
-                    <div class="col-md-6 use-case-img">
-                        <img src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
+                    <div class="col-lg-6 col-sm-12 use-case-img">
+                        <img class="img-fluid" src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
                     </div>
                 </div>
 
@@ -175,12 +175,15 @@
                 right: -2rem;
                 bottom: -3rem;
             }
+
+            @include media-breakpoint-down(sm) {
+                padding: $spacer;
+            }
         }
 
         .use-case-img {
             display: flex;
             align-items: center;
-            justify-content: center;
         }
     }
 </style>

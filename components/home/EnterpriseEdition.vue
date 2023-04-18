@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 p-5">
                     <h2>Take Kestra to the next level with the Enterprise Edition</h2>
                     <ul class="mb-5">
                         <li>SSO/OIDC Authentication</li>
@@ -43,11 +43,21 @@
         .row {
             background: url("/landing/ee/background.svg") no-repeat right center;
 
+            @include media-breakpoint-down(md) {
+                background: url("/landing/ee/background.svg") no-repeat left center;
+            }
+
             div:first-child {
                 padding: calc($spacer * 9);
 
                 h2 {
                     margin-bottom: calc($spacer * 2);
+                }
+            }
+
+            .col-md-6 {
+                @include media-breakpoint-down(md) {
+                    padding: 0;
                 }
             }
         }

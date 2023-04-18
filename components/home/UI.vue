@@ -7,7 +7,7 @@
                         <img src="/landing/home/ui-1.png" alt="Picture of Kestra's user interface" class="img-fluid" />
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-3">
                         <div class="card">
                             <div class="card-body">
                                 <p class="mb-0">
