@@ -60,18 +60,21 @@
     export default {
         components: {Console, Email},
         mounted() {
-            const script = document.createElement("script");
-            script.src="https://js-eu1.hsforms.net/forms/embed/v2.js";
-            document.body.appendChild(script);
-            script.addEventListener("load", () => {
-                if (window.hbspt) {
-                    window.hbspt.forms.create({
-                        region: "eu1",
-                        portalId: "27220195",
-                        formId: "280598ab-5b42-4c63-9acf-57a591beeb8e"
-                    })
-                }
-            })
+            if (document.getElementById("hubSpotContactScript") === undefined) {
+                const script = document.createElement("script");
+                script.src = "https://js-eu1.hsforms.net/forms/embed/v2.js";
+                script.id = "hubSpotContactScript";
+                document.body.appendChild(script);
+                script.addEventListener("load", () => {
+                    if (window.hbspt) {
+                        window.hbspt.forms.create({
+                            region: "eu1",
+                            portalId: "27220195",
+                            formId: "280598ab-5b42-4c63-9acf-57a591beeb8e"
+                        })
+                    }
+                })
+            }
         },
         methods:{
             checkForm: function (e) {

@@ -27,18 +27,22 @@
     export default {
         components: {Socials},
         mounted() {
-            const script = document.createElement("script");
-            script.src="https://js-eu1.hsforms.net/forms/embed/v2.js";
-            document.body.appendChild(script);
-            script.addEventListener("load", () => {
-                if (window.hbspt) {
-                    window.hbspt.forms.create({
-                        region: "eu1",
-                        portalId: "27220195",
-                        formId: "433b234f-f3c6-431c-898a-ef699e5525fa"
-                    })
-                }
-            })
+            if (document.getElementById("hubSpotNewsletterScript") === undefined) {
+                const script = document.createElement("script");
+                script.id = "hubSpotNewsletterScript";
+                script.src = "https://js-eu1.hsforms.net/forms/embed/v2.js";
+                document.body.appendChild(script);
+
+                script.addEventListener("load", () => {
+                    if (window.hbspt) {
+                        window.hbspt.forms.create({
+                            region: "eu1",
+                            portalId: "27220195",
+                            formId: "433b234f-f3c6-431c-898a-ef699e5525fa"
+                        })
+                    }
+                })
+            }
         },
         methods:{
             checkForm: function (e) {
