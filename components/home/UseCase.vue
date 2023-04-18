@@ -174,6 +174,10 @@
                 position: absolute;
                 right: -2rem;
                 bottom: -3rem;
+
+                @include media-breakpoint-down(md) {
+                    display: none;
+                }
             }
 
             @include media-breakpoint-down(sm) {
