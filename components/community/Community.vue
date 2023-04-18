@@ -3,54 +3,61 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-right">
-                    <img src="/landing/community/contributors.png" class="mb-5 img-fluid" />
+                    <img src="/landing/community/contributors.png" class="mb-5 img-fluid"/>
                     <h3>Kestra is built by the open-source community</h3>
                     <p>
-                        Inspire and get inspired. Join our community of maintainers and contributors and help us make Kestra better!
+                        Inspire and get inspired. Join our community of maintainers and contributors and help us make
+                        Kestra better!
                     </p>
                 </div>
                 <div class="col-md-6">
                     <div class="row community">
                         <div class="col-6 col-md-4">
-                            <Star title="" />
+                            <Star title=""/>
                             <p>
                                 Stars <br>
-                                <span class="number"><CountTo :endVal="metrics ? metrics.stars : 0" :duration="4000"></CountTo></span>
+                                <span class="number"><CountTo :endVal="metrics ? metrics.stars : 0"
+                                                              :duration="4000"></CountTo></span>
                             </p>
                         </div>
                         <div class="col-6 col-md-4">
-                            <DirectionsFork title="" />
+                            <DirectionsFork title=""/>
                             <p>
                                 Forks <br>
-                                <span class="number"><CountTo :endVal="metrics ? metrics.forks : 0" :duration="4000"></CountTo></span>
+                                <span class="number"><CountTo :endVal="metrics ? metrics.forks : 0"
+                                                              :duration="4000"></CountTo></span>
                             </p>
                         </div>
                         <div class="col-6 col-md-4">
-                            <BugOutline title="" />
+                            <BugOutline title=""/>
                             <p>
                                 Issues <br>
-                                <span class="number"><CountTo :endVal="metrics ? metrics.issues : 0" :duration="4000"></CountTo></span>
+                                <span class="number"><CountTo :endVal="metrics ? metrics.issues : 0"
+                                                              :duration="4000"></CountTo></span>
                             </p>
                         </div>
                         <div class="col-6 col-md-4">
-                            <BugOutline title="" />
+                            <BugOutline title=""/>
                             <p>
                                 Pull requests <br>
-                                <span class="number"><CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo></span>
+                                <span class="number"><CountTo :endVal="metrics ? metrics.pullRequests : 0"
+                                                              :duration="4000"></CountTo></span>
                             </p>
                         </div>
                         <div class="col-6 col-md-4">
-                            <SourceCommitLocal title="" />
+                            <SourceCommitLocal title=""/>
                             <p>
                                 Commits <br>
-                                <span class="number"><CountTo :endVal="metrics ? metrics.commits : 0" :duration="4000"></CountTo></span>
+                                <span class="number"><CountTo :endVal="metrics ? metrics.commits : 0"
+                                                              :duration="4000"></CountTo></span>
                             </p>
                         </div>
                         <div class="col-6 col-md-4">
-                            <AccountGroupOutline title="" />
+                            <AccountGroupOutline title=""/>
                             <p>
                                 Contributors <br>
-                                <span class="number"><CountTo :endVal="contributors ? contributors.length : 0" :duration="4000"></CountTo></span>
+                                <span class="number"><CountTo :endVal="contributors ? contributors.length : 0"
+                                                              :duration="4000"></CountTo></span>
                             </p>
                         </div>
                     </div>
@@ -66,7 +73,8 @@
 
 <script>
     import Section from '../../components/layout/Section.vue';
-    import {CountTo} from 'vue3-count-to';
+    import vue3countto from 'vue3-count-to';
+    const {CountTo} = vue3countto;
     import axios from "axios";
     import SourceCommitLocal from "vue-material-design-icons/SourceCommitLocal.vue";
     import Star from "vue-material-design-icons/Star.vue";
@@ -118,6 +126,7 @@
         .container > .row {
             padding: calc($spacer * 2);
             padding-top: calc($spacer * 4);
+
             .text-right {
                 text-align: right;
 
@@ -132,7 +141,7 @@
                     margin-bottom: calc($spacer * 3);
                 }
             }
-       }
+        }
     }
 
     .container {
@@ -163,6 +172,7 @@
             color: $purple-26;
             font-weight: bold;
             font-size: $font-size-sm;
+
             .number {
                 font-size: $h3-font-size;
                 margin-top: 0;
