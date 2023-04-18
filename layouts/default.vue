@@ -6,6 +6,7 @@
             <slot />
         </main>
         <LayoutFooter />
+        <LayoutFixed />
     </div>
 </template>
 
