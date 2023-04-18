@@ -2,7 +2,7 @@
     <div class="container-fluid bg-body-tertiary">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="zoom-in">
                     <img src="/landing/features/integration.svg"/>
                 </div>
                 <div class="col-md-6">

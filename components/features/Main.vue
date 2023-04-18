@@ -22,7 +22,7 @@
             </div>
 
             <div class="row mb-5">
-                <div class="col-md-6 p-5">
+                <div class="col-md-6 p-5" data-aos="fade-right">
                     <h3>Quick and Easy Workflow Building</h3>
                     <ul>
                         <li>
@@ -36,16 +36,16 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="fade-right">
                     <img class="img-fluid" src="/landing/features/execute.svg" alt="" />
                 </div>
             </div>
 
             <div class="row mb-5">
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="fade-left">
                     <img class="img-fluid" src="/landing/features/flowable.svg" alt="" />
                 </div>
-                <div class="col-md-6 p-5">
+                <div class="col-md-6 p-5" data-aos="fade-left">
                     <h3>Flexible Workflow Scheduling</h3>
                     <ul>
                         <li>
@@ -59,7 +59,7 @@
             </div>
 
             <div class="row mb-5">
-                <div class="col-md-6 p-5">
+                <div class="col-md-6 p-5" data-aos="fade-right">
                     <h3>Execute and Monitor in Real Time</h3>
                     <ul>
                         <li>
@@ -73,7 +73,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="fade-right">
                     <img class="img-fluid" src="/landing/features/monitor.svg" alt="" />
                 </div>
             </div>

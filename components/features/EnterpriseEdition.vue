@@ -81,7 +81,7 @@
 
                 <div class="text-center">
                     <NuxtLink class="btn btn-lg btn-primary me-2" href="/enterprise">Learn more</NuxtLink>
-                    <NuxtLink class="btn btn-lg btn-dark " href="/contact-us">Contact us</NuxtLink>
+                    <NuxtLink class="btn btn-lg btn-dark " href="/contact-us" data-aos="zoom-in">Contact us</NuxtLink>
                 </div>
             </Section>
         </div>
