@@ -4,44 +4,19 @@
             <p class="companies-title">
                 Loved & trusted by leading enterprises worldwide
             </p>
-
         </div>
 
         <div class="container-fluid pt-4 pb-4">
-            <div class="companies">
-                <template v-for="img in companies">
-                    <img
-                        :src="'/landing/enterprise/companies/' + img  + '.svg'"
-                        :alt="'Logo ' + img"
-                    />
-                </template>
-            </div>
+            <Companies :inverted="true" />
         </div>
     </div>
 </template>
 
 <script>
+    import Companies from "../layout/Companies.vue";
+
     export default {
-        computed: {
-            companies() {
-                return [
-                    "aimtec",
-                    "cleverconnect",
-                    "decathlon",
-                    "dnb",
-                    "fortinet",
-                    "hcl",
-                    "huawei",
-                    "iqtig",
-                    "leroymerlin",
-                    //"ntico",
-                    "tencent",
-                    "twosix",
-                    "facily",
-                ]
-                    .sort(() => .5 - Math.random())
-            },
-        }
+        components: {Companies},
     }
 </script>
 
@@ -64,17 +39,6 @@
                 height: 2px;
                 width: 51px;
                 background: var(--bs-pink);
-            }
-        }
-
-        .companies {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            justify-content: center;
-
-            img {
-                margin-right: calc($spacer * 2);
             }
         }
     }

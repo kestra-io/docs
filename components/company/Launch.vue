@@ -9,6 +9,8 @@
                 We believe that Kestra's potential is limitless, and we are eager to explore new opportunities and partnerships as we move forward.
             </p>
         </div>
+        <div class="container-fluid pb-5">
+            <Companies :inverted="true" />
     </div>
     <div class="container-fluid">
         <div class="companies">
@@ -23,27 +25,10 @@
 </template>
 
 <script>
+    import Companies from "../layout/Companies.vue";
+
     export default {
-        computed: {
-            companies() {
-                return [
-                    "aimtec",
-                    "cleverconnect",
-                    "decathlon",
-                    "dnb",
-                    "fortinet",
-                    "hcl",
-                    "huawei",
-                    "iqtig",
-                    "leroymerlin",
-                    //"ntico",
-                    "tencent",
-                    "twosix",
-                    "facily",
-                ]
-                    .sort(() => .5 - Math.random())
-            },
-        }
+        components: {Companies}
     }
 </script>
 
@@ -65,18 +50,6 @@
                 height: 2px;
                 width: 51px;
                 background: var(--bs-pink);
-            }
-        }
-
-        .companies {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            justify-content: center;
-            padding-bottom: calc($spacer * 2);
-
-            img {
-                margin-right: calc($spacer * 2);
             }
         }
     }

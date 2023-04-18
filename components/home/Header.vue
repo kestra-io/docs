@@ -21,16 +21,7 @@
         </div>
 
         <div class="container-fluid pt-4 pb-4">
-            <div class="companies">
-                <template v-for="(img, index) in companies">
-                    <img
-                        data-aos="fade-up"
-                        :data-aos-delay="index*50"
-                        :src="'/landing/home/companies/' + img  + '.svg'"
-                        :alt="'Logo ' + img"
-                    />
-                </template>
-            </div>
+            <Companies />
         </div>
     </div>
 </template>
@@ -39,29 +30,10 @@
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import Console from "vue-material-design-icons/Console.vue"
     import GithubButton from "../layout/GithubButton.vue";
+    import Companies from "../layout/Companies.vue";
 
     export default {
-        components: {Console, Magnify, GithubButton},
-        computed: {
-            companies() {
-                return [
-                    "aimtec",
-                    "cleverconnect",
-                    "decathlon",
-                    "dnb",
-                    "fortinet",
-                    "hcl",
-                    "huawei",
-                    "iqtig",
-                    "leroymerlin",
-                    "ntico",
-                    "tencent",
-                    "twosix",
-                    "facily",
-                ]
-                    .sort(() => .5 - Math.random())
-            },
-        }
+        components: {Console, Magnify, GithubButton, Companies},
     }
 </script>
 
@@ -102,17 +74,6 @@
 
         .overline {
             color: #BAE6FE;
-        }
-
-        .companies {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            justify-content: center;
-
-            img {
-                margin-right: calc($spacer * 2);
-            }
         }
     }
 </style>
