@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg bg-white sticky-top">
         <div class="container">
             <NuxtLink class="navbar-brand" href="/">
-                <img src="/logo.svg" alt="Kestra" width="30" height="24">
+                <img src="/logo.svg" alt="Kestra's logo black font" width="30" height="24">
             </NuxtLink>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-header" aria-controls="main-header" aria-expanded="false" aria-label="Toggle navigation">

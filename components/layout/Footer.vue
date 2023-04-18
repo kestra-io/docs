@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-lg-3 mb-3">
                     <NuxtLink href="/">
-                        <img src="/logo-white.svg" height="60" alt="">
+                        <img src="/logo-white.svg" height="60" alt="Kestra's logo white font">
                     </NuxtLink>
                     <p class="mt-2">Data Orchestration and Scheduling Platform</p>
                     <Socials class="mt-4" />

@@ -15,7 +15,7 @@
             <template v-for="img in companies">
                 <img
                     :src="'/landing/enterprise/companies/' + img  + '.svg'"
-                    alt=""
+                    :alt="'Logo ' + img"
                 />
             </template>
         </div>

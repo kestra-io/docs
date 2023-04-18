@@ -38,6 +38,7 @@
                         name: "Alexandre Millet-Bassez",
                         link: "https://www.linkedin.com/in/alexandre-m-618399103/",
                         designation: "Ntico",
+                        alt: "Picture of Alex testimony",
                     },
                     {
                         profile: "/landing/home/testimonials/fares.jpeg",
@@ -45,6 +46,7 @@
                         name: "Fares Daoud",
                         link: "https://www.linkedin.com/in/faresdaoudofficiel/",
                         designation: "Logic@l Conseils",
+                        alt: "Picture of Fares testimony",
                     },
                     {
                         profile: "/landing/home/testimonials/mourad.jpg",
@@ -54,6 +56,7 @@
                         name: "Mourad Bouloussa",
                         link: "https://www.linkedin.com/in/mourad-bouloussa-541146191/",
                         designation: "Sopra Steria",
+                        alt: "Picture of Mourad testimony",
                     },
                     {
                         profile: "/landing/home/testimonials/ousama.jpg",
@@ -62,6 +65,7 @@
                         name: "Oussama Bakkali",
                         link: "https://www.linkedin.com/in/oussama-bakkali-949708b6/",
                         designation: "Umanis",
+                        alt: "Picture of Ousama testimony",
                     }
                 ],
             };

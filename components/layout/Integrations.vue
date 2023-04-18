@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6" data-aos="zoom-in">
-                    <img src="/landing/features/integration.svg"/>
+                    <img src="/landing/features/integration.svg" alt="Logos of tools that integrate with Kestra such as Snowflake, Airbyte, DBT or Fivetran and Kestra at the center of It"/>
                 </div>
                 <div class="col-md-6">
                     <h2>Limitless Integration</h2>

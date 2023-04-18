@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <img src="/landing/features/ee.svg" alt="" class="img-fluid" />
+                        <img src="/landing/features/ee.svg" alt="A design of the features of Kestra's enterprise edition with SSO connection, Role Based Access Control, Kafka and Elasticsearch integration" class="img-fluid" />
                     </div>
                 </div>
                 <div class="row card-group mb-2">

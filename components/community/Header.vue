@@ -8,7 +8,7 @@
                     <p class="baseline">Connect with peers, exchange ideas and drive innovation in data orchestration</p>
                 </div>
                 <div class="col-md-5">
-                    <img src="/landing/community/header.svg" class="img-fluid" />
+                    <img src="/landing/community/header.svg" class="img-fluid" alt="Illustration of diverse people around Kestra's logo, symbolizing Kestra's thriving community"/>
                 </div>
             </div>
         </div>

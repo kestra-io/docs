@@ -37,7 +37,7 @@
                         </ol>
                     </div>
                     <div class="col-md-6 use-case-img">
-                        <img src="/landing/home/dashboard.png" width="600"/>
+                        <img src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
                     </div>
                 </div>
 
@@ -61,7 +61,7 @@
                         </ol>
                     </div>
                     <div class="col-md-6 use-case-img">
-                        <img src="/landing/home/dashboard.png" width="600"/>
+                        <img src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
                     </div>
                 </div>
 
@@ -85,7 +85,7 @@
                         </ol>
                     </div>
                     <div class="col-md-6 use-case-img">
-                        <img src="/landing/home/dashboard.png" width="600" />
+                        <img src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
                     </div>
                 </div>
 

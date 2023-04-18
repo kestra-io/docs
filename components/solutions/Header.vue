@@ -8,7 +8,7 @@
                     <p class="baseline">Harness your data, unlock valuable insights, and drive informed decision-making</p>
                 </div>
                 <div class="col-md-6">
-                    <img src="/landing/company/ui.png" width="600"/>
+                    <img src="/landing/company/ui.png" width="600" alt="Picture of the user interface of Kestra on light mode"/>
                 </div>
             </div>
         </div>

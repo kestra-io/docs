@@ -14,7 +14,7 @@
                     </NuxtLink>
                 </div>
                 <div class="col-md-6">
-                    <img class="img-fluid" src="/landing/ee/background.svg" />
+                    <img class="img-fluid" src="/landing/ee/background.svg" alt="Illustration of Kestra's logo with a dark background"/>
                 </div>
             </div>
         </div>

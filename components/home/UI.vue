@@ -4,7 +4,7 @@
             <Section subtitle="All-Inclusive Dashboard" title="Empower Developers with a Comprehensive, User-Friendly Interface ">
                 <div class="row mb-5">
                     <div class="col-md-8">
-                        <img src="/landing/home/ui-1.png" alt="" class="img-fluid" />
+                        <img src="/landing/home/ui-1.png" alt="Picture of Kestra's user interface" class="img-fluid" />
                     </div>
 
                     <div class="col-md-4">

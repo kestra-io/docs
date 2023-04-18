@@ -13,13 +13,13 @@
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <img class="img-fluid" src="/landing/home/how-1.svg" alt="" />
+                    <img class="img-fluid" src="/landing/home/how-1.svg" alt="How to define a flow example" />
                 </div>
             </div>
 
             <div class="row mb-5">
                 <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
-                    <img class="img-fluid" src="/landing/home/how-2.svg" alt="" />
+                    <img class="img-fluid" src="/landing/home/how-2.svg" alt="Integration with all data stacks" />
                 </div>
                 <div class="col-md-6 p-5" data-aos="fade-left" data-aos-duration="1000">
                     <p class="overline">Step 2</p>
@@ -37,13 +37,13 @@
                     </p>
                 </div>
                 <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
-                    <img class="img-fluid" src="/landing/home/how-3.svg" alt="" />
+                    <img class="img-fluid" src="/landing/home/how-3.svg" alt="How to schedule example" />
                 </div>
             </div>
 
             <div class="row mb-5">
                 <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
-                    <img class="img-fluid" src="/landing/home/how-4.svg" alt="" />
+                    <img class="img-fluid" src="/landing/home/how-4.svg" alt="How to execute a flow example" />
                 </div>
                 <div class="col-md-6 p-5" data-aos="fade-left" data-aos-duration="1000">
                     <p class="overline">Step 4</p>
@@ -59,7 +59,7 @@
                     <p>Track the performance of your workflows, identify bottlenecks, and optimize them for speed and efficiency.</p>
                 </div>
                 <div class="col-md-6 row mb-5" data-aos="fade-right" data-aos-duration="1000">
-                    <img class="img-fluid" src="/landing/home/how-5.svg" alt="" />
+                    <img class="img-fluid" src="/landing/home/how-5.svg" alt="Visualization of Kestra monitoring" />
                 </div>
             </div>
 

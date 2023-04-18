@@ -10,7 +10,7 @@
                 <GithubButton class="btn-secondary btn-lg" />
             </div>
 
-            <img src="/landing/home/animation.svg" alt="" />
+            <img src="/landing/home/animation.svg" alt="Kestra's flow animation from source to visualization" />
         </div>
 
         <div class=" container text-center">
@@ -27,7 +27,7 @@
                         data-aos="fade-up"
                         :data-aos-delay="index*50"
                         :src="'/landing/home/companies/' + img  + '.svg'"
-                        :alt="img"
+                        :alt="'Logo ' + img"
                     />
                 </template>
             </div>

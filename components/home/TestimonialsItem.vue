@@ -5,7 +5,7 @@
                 {{ item.message }}
             </p>
             <div class="footer">
-                <img :src="item.profile"  width="50" alt="" />
+                <img :src="item.profile"  width="50" :alt="item.alt" />
                 <span>
                     <a :href="item.link" target="_blank">{{ item.name }}</a><br />
                     {{ item.designation }}
