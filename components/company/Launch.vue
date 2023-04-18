@@ -11,15 +11,6 @@
         </div>
         <div class="container-fluid pb-5">
             <Companies :inverted="true" />
-    </div>
-    <div class="container-fluid">
-        <div class="companies">
-            <template v-for="img in companies">
-                <img
-                    :src="'/landing/enterprise/companies/' + img  + '.svg'"
-                    :alt="'Logo ' + img"
-                />
-            </template>
         </div>
     </div>
 </template>
