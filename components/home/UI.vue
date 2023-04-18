@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="text-center">
-                    <a class="btn btn-lg btn-primary" href="https://demo.kestra.io" target="_blank">Book a demo</a>
+                    <a class="btn btn-lg btn-primary" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank">Book a demo</a>
                 </div>
             </Section>
         </div>

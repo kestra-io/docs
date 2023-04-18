@@ -68,10 +68,10 @@
                     By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
                 </p>
                 <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">
-                    Get started
+                    <Flash /> Get started 
                 </NuxtLink>
                 <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-secondary" data-aos="zoom-in">
-                    Live demo
+                    <Console /> Live demo
                 </a>
             </div>
         </Section>
@@ -80,9 +80,11 @@
 
 <script>
     import Section from '../layout/Section.vue';
+    import Flash from "vue-material-design-icons/Flash.vue";
+    import Console from "vue-material-design-icons/Console.vue"
 
     export default {
-        components: {Section}
+        components: {Section, Flash, Console}
     }
 </script>
 
