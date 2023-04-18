@@ -1,5 +1,11 @@
 <template>
-    <div class="container">
+    <div v-if="widget" class="widget-chat">
+        <NuxtLink href="https://api.kestra.io/v1/communities/slack/redirect" class="btn btn-primary rounded">
+            <slack title=""/>
+            Chat <span v-if="online" class="online">{{ onlineText }} members</span>
+        </NuxtLink>
+    </div>
+    <div v-else class="container">
         <Section
             class="with-shadow"
             title="Slack community"
@@ -56,21 +62,57 @@
 </template>
 
 <script>
-    import Section from '../../components/layout/Section.vue';
-    import TooltipQuestion from "vue-material-design-icons/TooltipQuestion.vue";
-    import HandWave from "vue-material-design-icons/HandWave.vue";
-    import MessageAlert from "vue-material-design-icons/MessageAlert.vue";
-    export default {
-        components: {Section, TooltipQuestion, HandWave, MessageAlert}
+import Section from '../../components/layout/Section.vue';
+import TooltipQuestion from "vue-material-design-icons/TooltipQuestion.vue";
+import HandWave from "vue-material-design-icons/HandWave.vue";
+import MessageAlert from "vue-material-design-icons/MessageAlert.vue";
+import Slack from "vue-material-design-icons/Slack.vue";
+import axios from "axios";
+
+export default {
+    components: {Slack, Section, TooltipQuestion, HandWave, MessageAlert},
+    props: {
+        widget: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data() {
+        return {
+            online: undefined,
+        }
+    },
+    mounted() {
+        if (!window.sessionStorage.getItem("slack_member_count")) {
+            axios.get("https://api.kestra.io/v1/communities/slack")
+                .then(response => {
+                    window.sessionStorage.setItem("slack_member_count", response.data.total)
+                    this.online = response.data.total;
+                })
+        } else {
+            this.online = window.sessionStorage.getItem("slack_member_count");
+        }
+    },
+
+    computed: {
+        onlineText() {
+            return this.online === undefined ? "" : Intl.NumberFormat('en-US').format(this.online);
+        }
     }
+}
 </script>
 
 <style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+@import "../../assets/styles/variable";
 
-    .card-body {
-        .channel {
-            color: $purple-14;
-        }
+.card-body {
+    .channel {
+        color: $purple-14;
     }
+}
+
+span.online {
+    font-weight: normal;
+    font-size: $font-size-sm;
+}
 </style>
