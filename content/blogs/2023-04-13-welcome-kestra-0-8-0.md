@@ -10,8 +10,6 @@ author:
 image: /blogs/2023-04-13-welcome-kestra-0-8-0.png
 ---
 
-# Welcome Kestra 0.8.0 ✨
-
 Kestra is back with version 0.8.0, and this time, we're putting the spotlight on enhancing the flow creation experience. We've introduced powerful new features and developer tools that make Kestra the go-to data orchestration platform for data engineers like you.
 
 ## Improved developer experience
