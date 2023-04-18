@@ -5,12 +5,14 @@
             title="Our Values and Commitments"
             subtitle="Staying True to Our Mission"
         >
-            <p class="baseline-max-width">
-                At Kestra, our values are at the core of everything we do. We believe that by adhering to these principles, we can create a platform that not only meets the needs of our users but also exceeds their expectations.
-            </p>
-            <p class="baseline-max-width mb-5">
-                <strong>Innovation:</strong> We are driven by a passion for continuous improvement and a desire to challenge the status quo. We strive to develop new ideas and solutions that redefine the data orchestration landscape.
-            </p>
+            <div class="row card-group card-centered no-shadow mb-2">
+                <p class="baseline-max-width">
+                    At Kestra, our values are at the core of everything we do. We believe that by adhering to these principles, we can create a platform that not only meets the needs of our users but also exceeds their expectations.
+                </p>
+                <p class="baseline-max-width mb-5">
+                    <strong>Innovation:</strong> We are driven by a passion for continuous improvement and a desire to challenge the status quo. We strive to develop new ideas and solutions that redefine the data orchestration landscape.
+                </p>
+            </div>
 
             <div class="row card-group card-centered no-shadow mb-2">
                 <div class="col-md-3 mb-3">

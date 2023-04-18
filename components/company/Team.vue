@@ -108,7 +108,7 @@
                 <div class="col-md-3">
                     <img src="/landing/company/brian.png" width="248" alt="Brian Mullier Picture"/>
                     <div>
-                        <div class="team-name">Brian Mullier</div>
+                        <div class="team-name">Brian Mulier</div>
                         <div class="team-title font-small">Software Engineer</div>
                     </div>
                     <div>
