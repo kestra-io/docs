@@ -3,10 +3,10 @@
         <div class="rounded-3">
             <div>
                 <h3><span>Get Kestra updates</span> to your inbox</h3>
-                <form class="row row-cols-lg-auto g-3 mt-4 mb-4 justify-content-center">
+                <form class="row row-cols-lg-auto g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate>
                     <div class="col-12">
                         <label class="visually-hidden" for="newsletter-email">Email</label>
-                        <input type="text" class="form-control form-control-lg" id="newsletter-email" placeholder="Email">
+                        <input type="email" class="form-control form-control-lg" id="newsletter-email" placeholder="Email" required>
                     </div>
 
                     <div class="col-12">
@@ -25,7 +25,32 @@
     import Socials from "./Socials.vue";
 
     export default {
-        components: {Socials}
+        components: {Socials},
+        mounted() {
+            const script = document.createElement("script");
+            script.src="https://js-eu1.hsforms.net/forms/embed/v2.js";
+            document.body.appendChild(script);
+            script.addEventListener("load", () => {
+                if (window.hbspt) {
+                    window.hbspt.forms.create({
+                        region: "eu1",
+                        portalId: "27220195",
+                        formId: "433b234f-f3c6-431c-898a-ef699e5525fa"
+                    })
+                }
+            })
+        },
+        methods:{
+            checkForm: function (e) {
+                var form = this.$refs.newsletter;
+                if (!form.checkValidity()) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }
+        }
     }
 </script>
 

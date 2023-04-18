@@ -1,4 +1,12 @@
 <template>
+    <Head>
+      <Title>Insights & News on Data Orchestration</Title>
+      <Meta name="description" content="Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives." />
+      <!-- Start of HubSpot Embed Code -->
+      <Script async  src="//js-eu1.hs-scripts.com/27220195.js"></Script>
+      <!-- End of HubSpot Embed Code -->
+    </Head>
+
     <div class="container">
         <nav v-if="false">
         </nav>
