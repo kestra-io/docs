@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-5 text-right elevating">
-                    <img src="/landing/company/group_48095708.png" alt="Square build of arrows creating a loop"/>
+                    <img class="img-fluid" src="/landing/company/group_48095708.png" alt="Square build of arrows creating a loop"/>
                     <h3>Elevating Data Orchestration and Automation</h3>
                 </div>
                 <div class="col-md-2 vr"></div>

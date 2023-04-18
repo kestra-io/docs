@@ -12,7 +12,7 @@
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <img src="/landing/company/ui.png" width="600" alt="Picture of the user interface of Kestra on light mode"/>
+                    <img class="img-fluid" src="/landing/company/ui.png" alt="Picture of the user interface of Kestra on light mode"/>
                 </div>
             </div>
         </div>
@@ -32,3 +32,5 @@
         background: $purple-8;
     }
 </style>
+<script setup lang="ts">
+</script>

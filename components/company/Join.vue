@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <Section
-            class="with-shadow"
             title="Join Our Team and Contribute to the Future of Data Orchestration"
         >
         <p class="text-center mb-5">
@@ -28,12 +27,15 @@
     @import "../../assets/styles/variable";
 
     .container {
+        text-align: center;
+        background: url("/landing/shadow2.svg") no-repeat bottom center;
         color: var(--bs-black);
         padding-left: calc($spacer * 4);
         padding-right: calc($spacer * 4);
         margin-bottom: calc($spacer * 2);
         margin-top: calc($spacer * -2);
         border-radius: 10px;
+
 
         :deep(p.baseline) {
             color: var(--bs-black);

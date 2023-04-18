@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="team-image text-center">
-        <img src="/landing/company/team-image.png" width="670" alt="A picture of all Kestra's team members"/>
+        <img class="img-fluid" src="/landing/company/team-image.png" alt="A picture of all Kestra's team members"/>
     </div>
     <div class="container">
         <Section
