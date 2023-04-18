@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+    <nav class="navbar navbar-expand-lg bg-white sticky-top shadow">
         <div class="container">
             <NuxtLink class="navbar-brand" href="/">
                 <img src="/logo.svg" alt="Kestra's logo black font" width="30" height="24">
@@ -209,7 +209,10 @@
     @import "../../assets/styles/variable";
 
     nav {
-        box-shadow: 0 1rem 3rem 0 rgba($primary, 0.05);
+
+        &.shadow {
+            box-shadow: 0 1rem 3rem 0 rgba($primary, 0.05);
+        }
 
         .navbar-brand {
             img {
