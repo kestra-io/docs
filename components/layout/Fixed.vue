@@ -59,8 +59,12 @@ export default {
     }
 
     .top-arrow {
-        :hover{
+        &:hover{
             cursor: pointer;
+
+            .material-design-icon {
+                color: shade-color($primary, $btn-hover-bg-shade-amount);
+            }
         }
 
         .material-design-icon {
