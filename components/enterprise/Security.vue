@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="row mb-5">
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
                     <h3>Advanced Security and Access Control</h3>
                     <p>
                         Ensure that your data workflows and resources remain protected and compliant with industry standards.
@@ -32,15 +32,15 @@
                         <li><b>Role-Based Access Control:</b> Define custom roles and permissions for granular control over user access to workflows, tasks, and resources. Ensure that users only have access to the appropriate data and features</li>
                     </ul>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
                     <img src="/landing/enterprise/security-2.svg">
                 </div>
             </div>
             <div class="row mb-5">
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
                     <img src="/landing/enterprise/security-3.svg">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
                     <h3>Advanced Workflow Organization</h3>
                     <p>
                         Take workflow organization and collaboration to the next level with configurable namespaces.
