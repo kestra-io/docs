@@ -86,5 +86,8 @@ export default defineNuxtConfig({
         '/company/careers.html': { redirect: '/careers'},
         '/company/company/about-us.html': { redirect: '/about-us'},
         '/community.html': { redirect: '/community'},
-    }
+    },
+    build: {
+        transpile: ['vue3-count-to']
+    },
 })

@@ -73,8 +73,7 @@
 
 <script>
     import Section from '../../components/layout/Section.vue';
-    import vue3countto from 'vue3-count-to';
-    const {CountTo} = vue3countto;
+    import {CountTo} from 'vue3-count-to';
     import axios from "axios";
     import SourceCommitLocal from "vue-material-design-icons/SourceCommitLocal.vue";
     import Star from "vue-material-design-icons/Star.vue";
