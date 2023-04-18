@@ -51,6 +51,7 @@
         flex-wrap: nowrap;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
 
         img {
             margin-right: calc($spacer * 2);

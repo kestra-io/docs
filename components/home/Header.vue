@@ -10,7 +10,7 @@
                 <GithubButton class="btn-secondary btn-lg" />
             </div>
 
-            <img src="/landing/home/animation.svg" alt="Kestra's flow animation from source to visualization" />
+            <img class="img-fluid" src="/landing/home/animation.svg" alt="Kestra's flow animation from source to visualization" />
         </div>
 
         <div class=" container text-center">
