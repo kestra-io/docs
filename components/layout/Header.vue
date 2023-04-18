@@ -185,12 +185,6 @@
             }
         },
         methods: {
-            mouseOver(event) {
-                console.log(event);
-            },
-            mouseOut(event) {
-                console.log(event);
-            },
             search(query) {
                 return axios.get("/api/search", {
                     params: {
@@ -215,6 +209,8 @@
     @import "../../assets/styles/variable";
 
     nav {
+        box-shadow: 0 1rem 3rem 0 rgba($primary, 0.05);
+
         .navbar-brand {
             img {
                 height: 100%;

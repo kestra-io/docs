@@ -13,7 +13,10 @@
                         :class="activeSlug.startsWith(item._path) ? 'active' : ''"
                         class="bd-links-link d-inline-block"
                         :href="item._path">
-                        {{ item.title }}
+                        <span :class="depthLevel === 1 ? 'bold' : ''">
+                            <span>{{ item.emoji }}</span>
+                            {{ item.title }}
+                        </span>
                     </NuxtLink>
                     <NuxtLink
                         v-else
@@ -22,7 +25,10 @@
                         @click="toggle(item._path, isPage(item))" data-bs-toggle="collapse"
                         :data-bs-target="'#'+item._path"
                     >
-                        {{ item.title }}
+                        <span :class="depthLevel === 1 ? 'bold' : ''">
+                            <span>{{ item.emoji }}</span>
+                            {{ item.title }}
+                        </span>
                     </NuxtLink>
                     <template v-if="filterChildren(item).length > 0">
                         <chevron-up
@@ -178,5 +184,9 @@
             }
 
         }
+    }
+
+    .bold {
+        font-weight: bold;
     }
 </style>

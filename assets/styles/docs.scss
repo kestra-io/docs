@@ -7,12 +7,21 @@ $bd-gutter-x: 3rem;
 }
 
 .bd-layout {
+
+    &.margin {
+        margin-top: 2rem;
+    }
+
     @include media-breakpoint-up(lg) {
         display: grid;
         grid-template-areas: "sidebar main";
         grid-template-columns: 1fr 5fr;
         gap: $grid-gutter-width;
+        &.margin {
+            margin-top: 4.5rem;
+        }
     }
+
 }
 
 .bd-sidebar {
