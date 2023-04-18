@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="hero container text-center">
-            <img src="/landing/monograme_kestra.png" class="kestra-logo"/>
+            <img src="/icon.svg" class="kestra-logo" />
             <p class="overline">About kestra</p>
             <h1>Pioneering the Future of Data Orchestration and Automation</h1>
         </div>
@@ -15,7 +15,7 @@
             subtitle="Our story"
             class="pt-3"
         >
-            <div class="container text-center kestra-story">
+            <div class="container text-center baseline-max-width">
                 <p>
                     Our journey began with an inspiring vision: to design a data orchestration platform that would transcend the limitations of existing market solutions while offering an exceptional user experience.
                 </p>
@@ -41,7 +41,7 @@
     @import "../../assets/styles/variable";
 
     .main {
-        background: url("/landing/company/header.svg") no-repeat center center;
+        background: url("/landing/company/header.svg") no-repeat 52% 70px;
         background-size: cover;
         color: var(--bs-white);
         padding-top: 80px;
@@ -50,16 +50,11 @@
 
         .kestra-logo {
             padding-bottom: $spacer;
+            width: 100px;
         }
     }
 
     .team-image {
         margin-top: -10rem;
-    }
-
-    .container {
-        .kestra-story {
-            width: 70%;
-        }
     }
 </style>

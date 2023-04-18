@@ -6,7 +6,7 @@
         <Section
             title="Scale With no Point of Failure"
         >
-            <p>
+            <p class="baseline-max-width">
                 Ensure scalability and high availability with <b>Kafka</b> and <b>Elasticsearch</b> Features available on the Enterprise Edition to eliminate all points of failure.
             </p>
         </Section>
@@ -45,7 +45,6 @@
             padding-right: calc($spacer * 8);
             text-align: center;
             font-size: $font-size-xl;
-            max-width: 900px;
             margin: 0 auto;
         }
 

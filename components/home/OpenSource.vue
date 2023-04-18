@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="text-center mt-5">
-                    <a href="https://api.kestra.io/v1/communities/slack/redirect" class="btn btn-lg btn-primary me-2">Join our slack</a>
+                    <a href="https://api.kestra.io/v1/communities/slack/redirect" target="_blank" class="btn btn-lg btn-primary me-2">Join our slack</a>
                     <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-lg btn-dark">Give us a ⭐</a>
                 </div>
             </Section>

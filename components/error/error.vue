@@ -28,11 +28,11 @@
                     </div>
                     <div class="search-result mt-3" v-if="searchResults">
                         <div v-for="results in searchResults">
-                            <a :href="results.slug">
+                            <NuxtLink :href="results.slug">
                                 <h5>{{ results.title }}</h5>
                                 <h6>{{ results.slug }}</h6>
                                 <p v-if="results.content.length > 0" v-html="results.content[0]" class="search-result-extract"/>
-                            </a>
+                            </NuxtLink>
                         </div>
                     </div>
                     <div class="mt-5">

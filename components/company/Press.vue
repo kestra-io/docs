@@ -7,7 +7,7 @@
                         title="Press Kit"
                         subtitle="Brand Assets"
                     >
-                        <p>
+                        <p class="mb-5">
                             For Media Inquiries and Exclusive Insights, Reach Out to Our Press Team at <a href="mailto:press@kestra.io">press@kestra.io</a>
                         </p>
                         <a href="https://drive.google.com/drive/folders/1nwf1BeIZqAGC9uPiq33W-nvDwXDK5tPR?usp=sharing" target="_blank" class="btn btn-lg btn-primary me-2">
@@ -16,9 +16,6 @@
 
                     </Section>
                 </div>
-<!--                <div class="col-md-6 text-center monograme">-->
-<!--                    <img src="/landing/company/presskit-logo.png" />-->
-<!--                </div>-->
             </div>
         </div>
     </div>
@@ -40,17 +37,18 @@
     }
 
     .container {
-        padding-top: 0px;
-        padding-bottom: 0px;
+        padding-top: 0;
+        padding-bottom: 0;
         margin-bottom: calc($spacer * -3);
 
         .col-md-6 {
             vertical-align: middle;
         }
 
-        .monograme {
-            padding-top: calc($spacer * 5);
-            margin-top: calc($spacer * 5);
+        :deep(section) {
+            .subtitle, h2 {
+                text-align: left;
+            }
         }
     }
 </style>

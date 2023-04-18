@@ -3,16 +3,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-right">
-                    <img src="/landing/community/contributors.png" class="mb-5 img-fluid"/>
-                    <h3>Kestra is built by the open-source community</h3>
-                    <p>
+                    <img data-aos="fade-left" src="/landing/community/contributors.png" class="mb-5 img-fluid"/>
+                    <h3 data-aos="fade-left">Kestra is built by the open-source community</h3>
+                    <p data-aos="fade-right">
                         Inspire and get inspired. Join our community of maintainers and contributors and help us make
                         Kestra better!
                     </p>
                 </div>
                 <div class="col-md-6">
                     <div class="row community">
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-4" data-aos="fade-right">
                             <Star title=""/>
                             <p>
                                 Stars <br>
@@ -20,7 +20,7 @@
                                                               :duration="4000"></CountTo></span>
                             </p>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-4" data-aos="fade-right">
                             <DirectionsFork title=""/>
                             <p>
                                 Forks <br>
@@ -28,7 +28,7 @@
                                                               :duration="4000"></CountTo></span>
                             </p>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-4" data-aos="fade-right">
                             <BugOutline title=""/>
                             <p>
                                 Issues <br>
@@ -36,7 +36,7 @@
                                                               :duration="4000"></CountTo></span>
                             </p>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-4" data-aos="fade-right">
                             <BugOutline title=""/>
                             <p>
                                 Pull requests <br>
@@ -44,7 +44,7 @@
                                                               :duration="4000"></CountTo></span>
                             </p>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-4" data-aos="fade-right">
                             <SourceCommitLocal title=""/>
                             <p>
                                 Commits <br>
@@ -52,7 +52,7 @@
                                                               :duration="4000"></CountTo></span>
                             </p>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-6 col-md-4" data-aos="fade-right">
                             <AccountGroupOutline title=""/>
                             <p>
                                 Contributors <br>
@@ -64,8 +64,8 @@
                 </div>
             </div>
             <div class="container text-center community-links">
-                <a href="https://github.com/kestra-io/kestra" class="btn btn-lg btn-dark me-2">Follow on GitHub</a>
-                <a href="https://github.com/kestra-io/kestra/issues" class="btn btn-lg btn-primary">Find Open Issues</a>
+                <a href="https://github.com/kestra-io/kestra" data-aos="zoom-in" class="btn btn-lg btn-dark me-2">Follow on GitHub</a>
+                <a href="https://github.com/kestra-io/kestra/issues" data-aos="zoom-in" class="btn btn-lg btn-primary">Find Open Issues</a>
             </div>
         </div>
     </div>

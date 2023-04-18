@@ -57,7 +57,7 @@ blockquote.blockquote {
     padding-bottom: calc($spacer * 6);
 
     h1, p {
-        max-width: 600px;
+        max-width: $baseline-max-width;
     }
 
     &.text-center {
@@ -192,5 +192,9 @@ blockquote.blockquote {
     border-radius: var(--bs-border-radius);
     color: var(--bs-white);
     font-size: $font-size-sm;
+}
+
+.baseline-max-width {
+    max-width: $baseline-max-width;
 }
 

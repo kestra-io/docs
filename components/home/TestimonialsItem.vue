@@ -7,7 +7,7 @@
             <div class="footer">
                 <img :src="item.profile"  width="50" alt="" />
                 <span>
-                    <a :href="item.link">{{ item.name }}</a><br />
+                    <a :href="item.link" target="_blank">{{ item.name }}</a><br />
                     {{ item.designation }}
                 </span>
             </div>

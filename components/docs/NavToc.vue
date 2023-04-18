@@ -33,7 +33,7 @@
                 <nav>
                     <ul>
                         <li v-if="page.editLink !== false">
-                            <a :href="editLink"><Github /> Edit this page</a>
+                            <a :href="editLink" target="_blank"><Github /> Edit this page</a>
                         </li>
                         <li>
                             <a href="https://api.kestra.io/v1/communities/slack/redirect" target="_blank"><Slack /> Join us on Slack</a>

@@ -3,8 +3,8 @@
         <Section
             title="Leveraging Kestra's Features"
             subtitle="Key Features"
+            class="with-shadow"
         >
-
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
                     <div class="card">

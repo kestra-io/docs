@@ -1,6 +1,6 @@
 <template>
     <section>
-        <div class="subtitle" data-aos="fade-up" v-if="subtitle">
+        <div class="subtitle" data-aos="fade-right" v-if="subtitle">
             <p>{{ subtitle }}</p>
         </div>
         <h2 data-aos="fade-left">{{ title }}</h2>
@@ -72,7 +72,7 @@
         p.baseline {
             text-align: center;
             font-size: $font-size-xl;
-            max-width: 730px;
+            max-width: $baseline-max-width;
             margin: $spacer auto 0;
         }
 

@@ -4,9 +4,9 @@
         <div class="container py-4 py-md-5 px-4 px-md-3">
             <div class="row">
                 <div class="col-lg-3 mb-3">
-                    <a href="/public">
+                    <NuxtLink href="/">
                         <img src="/logo-white.svg" height="60" alt="">
-                    </a>
+                    </NuxtLink>
                     <p class="mt-2">Data Orchestration and Scheduling Platform</p>
                     <Socials class="mt-4" />
                 </div>
@@ -61,7 +61,7 @@
                 <div class="col-sm-6">
                     <div>
                         <p class="mb-0">
-                            © {{  new Date().getFullYear() }} <a href="https://kestra.io">Kestra Technologies</a>.
+                            © {{  new Date().getFullYear() }} <NuxtLink href="/">Kestra Technologies</NuxtLink>.
                             Developed with <Heart class="text-danger" /> in 🇫🇷 .
 
                         </p>

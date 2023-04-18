@@ -5,12 +5,11 @@
             subtitle="Orchestrate Success Together"
         >
             <div v-if="contributors" class="contributors">
-                <template v-for="contributor in contributorsRand">
+                <template v-for="(contributor) in contributorsRand">
                     <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
                         <img
                             :src="contributor.avatar"
-                            class="rounded-circle"
-                            alt=""
+                            :alt="contributor.username"
                         />
                     </a>
                 </template>
