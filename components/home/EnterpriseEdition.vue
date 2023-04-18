@@ -6,7 +6,7 @@
                     <h2>Take Kestra to the next level with the Enterprise Edition</h2>
                     <ul class="mb-5">
                         <li>SSO/OIDC Authentication</li>
-                        <li>Role Based Access</li>
+                        <li>Role-Based Access Control</li>
                         <li>Secret Manager Integration</li>
                         <li>High Availability</li>
                         <li>Best in Class Support</li>

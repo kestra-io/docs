@@ -12,10 +12,10 @@
                     <h3>Declarative code for creating flows</h3>
                     <ul>
                         <li>
-                            <strong>Easy Workflow Creation:</strong> Build custom workflows quickly and with minimal coding using YAML
+                            <strong>Easy Workflow Creation:</strong> Build custom workflows quickly and with minimal coding using YAML.
                         </li>
                         <li>
-                            <strong>Intuitive User Interface:</strong> visualize and manipulate workflow directly from the UI.
+                            <strong>Intuitive User Interface:</strong> Visualize and manipulate workflow directly from the UI.
                         </li>
                     </ul>
                 </div>

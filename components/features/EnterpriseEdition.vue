@@ -53,7 +53,7 @@
                             <div class="card-body">
                                 <span class="card-icon"><KeyOutline /></span>
                                 <h4 class="card-title">Service account</h4>
-                                <p class="card-text">Create service account allowing to triggers workflows for external systems</p>
+                                <p class="card-text">Create service accounts allowing to trigger workflows for external systems.</p>
                             </div>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                             <div class="card-body">
                                 <span class="card-icon"><MathLog /></span>
                                 <h4 class="card-title">Secrets</h4>
-                                <p class="card-text">Integrate your secret manager to ensure the security of your passwords and keys</p>
+                                <p class="card-text">Integrate your secret manager to ensure the security of your passwords and keys.</p>
                             </div>
                         </div>
                     </div>

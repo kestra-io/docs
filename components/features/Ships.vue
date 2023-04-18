@@ -26,7 +26,7 @@
                                     <GoogleCirclesExtended />
                                 </span>
                             <h4 class="card-title">Seamless Integrations</h4>
-                            <p class="card-text">Connect to various data sources and cloud services like AWS, GCP, and Microsoft Azure</p>
+                            <p class="card-text">Connect to various data sources and cloud services like AWS, GCP, and Microsoft Azure.</p>
                         </div>
                     </div>
                 </div>

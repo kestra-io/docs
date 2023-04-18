@@ -1,8 +1,8 @@
 <template>
     <div class="main">
         <div class="hero container text-center">
+            <p class="overline">OPEN SOURCE DECLARATIVE DATA ORCHESTRATION</p>
             <h1>Build stunning data pipelines, blazing fast, deploy in clicks<span class="dot">.</span></h1>
-            <p class="baseline">Build declarative data pipelines at scale. Edit your code live from the UI and benefit from faster feedback loops without CI/CD</p>
             <div class="text-center cta">
                 <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary me-2">
                     <Console /> Live demo
@@ -75,6 +75,16 @@
         padding-top: 80px;
         margin-top: -80px;
 
+        .hero {
+            h1 {
+                max-width: 900px;
+            }
+
+            p {
+                max-width: 900px;
+            }
+        }
+
         .companies-title {
             position: relative;
 
@@ -88,6 +98,10 @@
                 width: 51px;
                 background: var(--bs-pink);
             }
+        }
+
+        .overline {
+            color: #BAE6FE;
         }
 
         .companies {

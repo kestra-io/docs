@@ -7,10 +7,10 @@
                     <p class="baseline">Create and Deploy all kinds of Data Pipelines with Ease and Speed with Kestra: Your All-in-One Solution for Orchestrating Workflows</p>
                     <div class="cta">
                         <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary me-2">
-                            Get started <Flash />
+                            <Flash /> Get started
                         </NuxtLink>
                         <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary">
-                            Try live tool
+                            <Console /> Live demo
                         </a>
                     </div>
                 </div>
@@ -24,9 +24,10 @@
 
 <script>
     import Flash from "vue-material-design-icons/Flash.vue";
+    import Console from "vue-material-design-icons/Console.vue"
 
     export default {
-        components: {Flash},
+        components: {Flash, Console},
     }
 </script>
 
