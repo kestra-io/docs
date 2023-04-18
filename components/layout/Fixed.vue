@@ -34,7 +34,9 @@ export default {
         }
     },
     created() {
-        window.addEventListener('scroll', this.handleScroll);
+        if (process.client) {
+            window.addEventListener('scroll', this.handleScroll);
+        }
     }
 }
 </script>
