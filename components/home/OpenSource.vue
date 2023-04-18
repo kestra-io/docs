@@ -184,6 +184,11 @@
         }
     }
 
+    .metrics {
+        padding-left: calc($spacer * 10);
+        padding-right: calc($spacer * 10);
+    }
+
     .container {
         flex-grow: 1;
 

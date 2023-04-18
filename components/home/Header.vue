@@ -77,11 +77,11 @@
 
         .hero {
             h1 {
-                max-width: 900px;
+                max-width: 1024px;
             }
 
             p {
-                max-width: 900px;
+                max-width: 1024px;
             }
         }
 

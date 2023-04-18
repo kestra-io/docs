@@ -3,7 +3,7 @@
         <div class="hero container">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="overline">Reduce costs increase productivity</p>
+                    <p class="overline">Enterprise Edition</p>
                     <h1>Kestra Enterprise Edition for Scaling companies<span class="dot">.</span></h1>
                     <p class="baseline">Get full access of all the Open source features and unlock the full potential with Enterprise only features</p>
                     <a href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank" class="btn btn-lg btn-primary me-2">
@@ -27,5 +27,9 @@
     .container-fluid {
         background: $purple-7;
         color: var(--bs-white);
+
+        .baseline {
+            font-size: 1.15rem;
+        }
     }
 </style>

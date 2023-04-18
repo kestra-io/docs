@@ -2,11 +2,12 @@
     <div class="container-fluid bg-body-tertiary">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 text-right elevating">
+                <div class="col-md-5 text-right elevating">
                     <img src="/landing/company/group_48095708.png"/>
                     <h3>Elevating Data Orchestration and Automation</h3>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2 vr"></div>
+                <div class="col-md-5">
                     <p>
                         Our ambition is to provide a tool that enables all kinds of users to orchestrate and automate their data, workflows, and batches with unparalleled simplicity, autonomy, and high performance. From the first day of our journey, we have been driven by this goal, and we continue to challenge ourselves.
                     </p>
@@ -47,6 +48,12 @@
 
             .elevating {
                 padding-left: calc($spacer * 6);
+            }
+
+            .vr {
+                padding: 0px;
+                margin-top: calc($spacer * 4);
+                margin-bottom: calc($spacer * 4);
             }
        }
     }

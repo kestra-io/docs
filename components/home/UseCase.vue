@@ -7,7 +7,7 @@
             >
                 <ul class="nav nav-pills">
                     <li class="nav-item">
-                        <a class="nav-link" :class="{'active': active === 1}" @click="active = 1">Data platform orchestration</a>
+                        <a class="nav-link" :class="{'active': active === 1}" @click="active = 1">Data Platform Orchestration</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" :class="{'active': active === 2}" @click="active = 2">Efficient Workflow Automation</a>

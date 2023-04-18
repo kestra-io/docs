@@ -2,7 +2,7 @@
 title: "Welcome Kestra 0.8.0 ✨"
 description: Kestra is back with version 0.8.0, and this time, we're putting the spotlight on enhancing the flow creation experience. We've introduced powerful new features and developer tools that make Kestra the go-to data orchestration platform for data engineers like you.
 date: 2023-04-13T17:00:00
-layout: BlogsPost
+category: News & Products Updates
 author:
   name: Loïc Mathieu
   image: "loicmathieu"

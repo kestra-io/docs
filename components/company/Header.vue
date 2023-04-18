@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="team-image text-center">
-        <img src="/landing/company/team-image.png" />
+        <img src="/landing/company/team-image.png" width="670"/>
     </div>
     <div class="container">
         <Section

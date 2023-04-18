@@ -7,7 +7,7 @@
                     <a href="/public">
                         <img src="/logo-white.svg" height="60" alt="">
                     </a>
-                    <p class="mt-2">Open-source data orchestration and scheduling platform.</p>
+                    <p class="mt-2">Data Orchestration and Scheduling Platform</p>
                     <Socials class="mt-4" />
                 </div>
                 <div class="col-lg-9 mb-3">

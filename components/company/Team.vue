@@ -6,7 +6,7 @@
         >
             <div class="row">
                 <div class="col-md-3">
-                    <img src="/landing/company/emmanuel.png" />
+                    <img src="/landing/company/emmanuel.png" width="248"/>
                     <div>
                         <div class="team-name">Emmanuel Darras</div>
                         <div class="team-title font-small">CEO</div>
@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <img src="/landing/company/ludovic.png" />
+                    <img src="/landing/company/ludovic.png" width="248"/>
                     <div>
                         <div class="team-name">Ludovic Dehon</div>
                         <div class="team-title font-small">CTO</div>
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <img src="/landing/company/quentin.png" />
+                    <img src="/landing/company/quentin.png" width="248"/>
                     <div>
                         <div class="team-name">Quentin Sinig</div>
                         <div class="team-title font-small">VP Go-to-Market</div>
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <img src="/landing/company/martin-pierre.png" />
+                    <img src="/landing/company/martin-pierre.png" width="248"/>
                     <div>
                         <div class="team-name">Martin-Pierre Roset</div>
                         <div class="team-title font-small">Lead Growth & Marketing</div>
@@ -55,7 +55,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <img src="/landing/company/loic.png" />
+                    <img src="/landing/company/loic.png" width="248"/>
                     <div>
                         <div class="team-name">Loïc Mathieu</div>
                         <div class="team-title font-small">Lead Software Engineer</div>
@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <img src="/landing/company/nicolas.png" />
+                    <img src="/landing/company/nicolas.png" width="248"/>
                     <div>
                         <div class="team-name">Nicolas Callens</div>
                         <div class="team-title font-small">Lead product designer</div>
@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <img src="/landing/company/yann.png" />
+                    <img src="/landing/company/yann.png" width="248"/>
                     <div>
                         <div class="team-name">Yann Coornaert</div>
                         <div class="team-title font-small">Software Engineer</div>
@@ -92,7 +92,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <img src="/landing/company/benoit.png" />
+                    <img src="/landing/company/benoit.png" width="248"/>
                     <div>
                         <div class="team-name">Benoît Pimpaud</div>
                         <div class="team-title font-small">Product Owner & Data Engineer</div>
@@ -106,7 +106,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <img src="/landing/company/brian.png" />
+                    <img src="/landing/company/brian.png" width="248"/>
                     <div>
                         <div class="team-name">Brian Mullier</div>
                         <div class="team-title font-small">Software Engineer</div>
