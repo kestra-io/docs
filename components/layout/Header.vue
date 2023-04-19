@@ -15,7 +15,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" @mouseover="mouseOver" @mouseout="mouseOut" role="button" data-bs-toggle="dropdown" aria-expanded="false">Product</a>
                         <ul class="dropdown-menu">
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header">
+                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 <NuxtLink class="dropdown-item" href="/features">
                                     <FeatureSearch/>
                                     <p>
@@ -24,7 +24,7 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header">
+                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 <NuxtLink class="dropdown-item" href="/enterprise">
                                     <Security/>
                                     <p>
@@ -38,7 +38,7 @@
 
                     <li class="nav-item">
                         <NuxtLink class="nav-link" href="/use-cases" role="button">
-                            <span data-bs-toggle="collapse" data-bs-target="#main-header">
+                            <span data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 Solutions
                             </span>
                         </NuxtLink>
@@ -47,7 +47,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a>
                         <ul class="dropdown-menu">
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header">
+                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 <NuxtLink class="dropdown-item" href="/blogs">
                                     <PostOutline/>
                                     <p>
@@ -56,7 +56,7 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header">
+                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 <NuxtLink class="dropdown-item" href="/docs">
                                     <FileDocumentOutline/>
                                     <p>
@@ -65,7 +65,7 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header">
+                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 <NuxtLink class="dropdown-item" href="/plugins">
                                     <Security/>
                                     <p>
@@ -79,7 +79,7 @@
 
                     <li class="nav-item">
                         <NuxtLink class="nav-link" href="/community">
-                            <span data-bs-toggle="collapse" data-bs-target="#main-header">
+                            <span data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 Community
                             </span>
                         </NuxtLink>
@@ -89,7 +89,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">Company</a>
                         <ul class="dropdown-menu">
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header">
+                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 <NuxtLink class="dropdown-item" href="/about-us">
                                     <Domain/>
                                     <p>
@@ -98,7 +98,7 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header">
+                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 <NuxtLink class="dropdown-item" href="/careers">
                                     <AccountStarOutline/>
                                     <p>
@@ -107,7 +107,7 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header">
+                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 <NuxtLink class="dropdown-item" href="/contact-us">
                                     <Email/>
                                     <p>
@@ -122,10 +122,10 @@
 
                 <ul class="navbar-nav mb-2 mb-lg-0 nav-button">
                     <li class="nav-item">
-                        <GithubButton class="btn-secondary me-2" data-bs-toggle="collapse" data-bs-target="#main-header" toto="test"/>
+                        <GithubButton class="btn-secondary me-2" data-bs-toggle="collapse" data-bs-target="#main-header.show" toto="test"/>
 
                         <NuxtLink class="btn btn-primary me-2" href="/docs/getting-started">
-                                                    <span data-bs-toggle="collapse" data-bs-target="#main-header">
+                                                    <span data-bs-toggle="collapse" data-bs-target="#main-header.show">
                             <Flash/>
                             Getting Started
                                                     </span>
