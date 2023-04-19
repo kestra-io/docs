@@ -8,7 +8,7 @@
                         <img src="/logo-white.svg" height="60" alt="Kestra's logo white font">
                     </NuxtLink>
                     <p class="mt-2">Data Orchestration and Scheduling Platform</p>
-                    <Socials class="mt-4" />
+                    <Socials class="mt-4 socials" />
                 </div>
                 <div class="col-lg-9 mb-3">
                     <div class="row">
@@ -122,6 +122,10 @@
         .container {
             position: relative;
             z-index: 2;
+        }
+
+        .socials {
+            font-size: calc($font-size-base * 1.4);
         }
     }
 </style>
