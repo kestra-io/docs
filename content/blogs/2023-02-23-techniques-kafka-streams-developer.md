@@ -25,7 +25,7 @@ While building Kestra, we wanted to rely only on the queue as a database for our
 
 ## Same Kafka Topic for Source and Destination
 
-In Kestra, we have a [Kafka topic](https://kafka.apache.org/intro#intro_concepts_and_terms) for the current flow [execution](../docs/concepts/executions.md). That topic is both the source and the destination. We update the current execution to add some information and send it back to Kafka for further processing.
+In Kestra, we have a [Kafka topic](https://kafka.apache.org/intro#intro_concepts_and_terms) for the current flow [execution](../docs/05.concepts/02.executions.md). That topic is both the source and the destination. We update the current execution to add some information and send it back to Kafka for further processing.
 
 Initially, we were unsure if this design was possible with Kafka. We [asked](https://twitter.com/tchiotludo/status/1252197729406783488) Matthias J. Sax, one of the primary maintainers of Kafka Streams, who responded on [Stack Overflow](https://stackoverflow.com/questions/61316312/does-kafka-stream-with-same-sink-source-topics-with-join-is-supported).
 
@@ -101,7 +101,7 @@ This way, you will have a fully distributed system thanks to Kafka without the p
 
 ## Partitions to Detect Dead Kafka Consumers
 
-In Kestra, [workers](../docs/architecture#worker) are Kafka Consumers that process tasks submitted to it and will handle all the computing (connect and query a database, fetch data from external services, etc.) and are long-running processes. We need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
+In Kestra, [workers](../docs/06.architecture.md#worker) are Kafka Consumers that process tasks submitted to it and will handle all the computing (connect and query a database, fetch data from external services, etc.) and are long-running processes. We need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
 
 Thanks to the Kafka consumer mechanism, we can know the specific partitions affected by a died consumer. We use these features to detect dead workers:
 - We create a `UUID` on startup for the worker.
@@ -124,7 +124,7 @@ Our first assumption was that `all()` returns an object (Flow in our case), as t
 - Fetch all the data from RocksDB
 - Deserialize the data from RocksDB that is stored as byte, and map it to concrete Java POJO
 
-So each time we call the `all()` method, all values are deserialized, which can lead to high CPU usage and latency on your stream. We are talking about all [flow revisions](../docs/05.concepts/01.flows.#revision) on our cluster. The last revision had 2.5K flows, but we don't see people creating a lot of revisions. Imagine 100K `byte[]` to deserialize to POJO for every call. 🤯
+So each time we call the `all()` method, all values are deserialized, which can lead to high CPU usage and latency on your stream. We are talking about all [flow revisions](../docs/05.concepts/01.flows.md#revision) on our cluster. The last revision had 2.5K flows, but we don't see people creating a lot of revisions. Imagine 100K `byte[]` to deserialize to POJO for every call. 🤯
 
 Since we only need the last revision in our use case, we create an in-memory Map with all the flows using the following:
 

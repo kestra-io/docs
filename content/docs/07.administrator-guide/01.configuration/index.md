@@ -4,7 +4,7 @@ title: Configuration
 
 Kestra offers a lot of configuration options and customization.
 
-How to pass those configuration options depends on how you deploy Kestra. Check the [deployment](../../07.administrator-guide/deployment/index.md) section related to you deployment mode for more information.
+How to pass those configuration options depends on how you deploy Kestra. Check the [deployment](../../07.administrator-guide/02.deployment/index.md) section related to you deployment mode for more information.
 
 ## Kestra internal components configuration
 
@@ -17,18 +17,18 @@ Kestra has three internal components that must be configured:
 
 Kestra supports multiple internal storage types, the default being the local storage that will store data inside a local folder on the host filesystem. **Only suitable for local testing** as it doesn't provide resiliency or redundancy.
 
-To choose another storage type, you will need to configure the `kestra.storage.type` option, be sure to download the corresponding plugins first. The following example configures [Google Cloud Storage](./storage#gcs) for internal storage.
+To choose another storage type, you will need to configure the `kestra.storage.type` option, be sure to download the corresponding plugins first. The following example configures [Google Cloud Storage](./02.storage.md#gcs) for internal storage.
 ```yaml
 kestra:
   storage:
     type: gcs
 ```
 
-Details about storage configuration can be found [here](./storage.md).
+Details about storage configuration can be found [here](./02.storage.md).
 
 ### Queue configuration
 
-Kestra supports multiple queue types, the default depends on your [installation](../deployment/index.md) mode.
+Kestra supports multiple queue types, the default depends on your [installation](../02.deployment/index.md) mode.
 
 The queue type must be compatible with the repository type. Not all combinations are possible.
 
@@ -44,11 +44,11 @@ kestra:
     type: postgres
 ```
 
-Details about the database configuration can be found [here](./databases.md) and about the Kafka configuration [here](./enterprise-edition/kafka.md).
+Details about the database configuration can be found [here](./01.databases.md) and about the Kafka configuration [here](./03.enterprise-edition/kafka.md).
 
 ### Repository configuration
 
-Kestra supports multiple repository types, the default depends on your [installation](../deployment/index.md) mode.
+Kestra supports multiple repository types, the default depends on your [installation](../02.deployment/index.md) mode.
 
 The repository type must be compatible with the queue type. Not all combinations are possible.
 
@@ -64,13 +64,13 @@ kestra:
     type: postgres
 ```
 
-Details about the database configuration can be found [here](./databases.md) and about the Elasticsearch configuration [here](./enterprise-edition/elasticsearch.md).
+Details about the database configuration can be found [here](./01.databases.md) and about the Elasticsearch configuration [here](./03.enterprise-edition/elasticsearch.md).
 
 
 ## Other Kestra configuration
 
-Other Kestra configuration options can be found [here](./others.md).
+Other Kestra configuration options can be found [here](./05.others.md).
 
 ## Micronaut configuration
 
-As Kestra is a Java-based application built with Micronaut, you can configure any Micronaut configuration options. More details [here](./micronaut.md).
+As Kestra is a Java-based application built with Micronaut, you can configure any Micronaut configuration options. More details [here](./04.micronaut.md).

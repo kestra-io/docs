@@ -2,7 +2,7 @@
 title: currentEachOutput
 ---
 
-The `currentEachOutput` function retrieves the current output of a sibling task when using an [EachSequential](../../../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task. See [Lookup in sibling tasks](../../../04.developer-guide/outputs#lookup-in-sibling-tasks) for background on sibling tasks.
+The `currentEachOutput` function retrieves the current output of a sibling task when using an [EachSequential](../../../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task. See [Lookup in sibling tasks](../../../04.developer-guide/05.outputs.md#lookup-in-sibling-tasks) for background on sibling tasks.
 
 Look at the following flow:
 
