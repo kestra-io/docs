@@ -1,5 +1,0 @@
----
-title: Careers
-layout: CompanyCareers
----
-
