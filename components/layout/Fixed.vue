@@ -50,6 +50,10 @@ export default {
     bottom: 10px;
     right: 10px;
 
+    @include media-breakpoint-down("md") {
+        display: none;
+    }
+
     .v-enter-active,
     .v-leave-active {
         transition: opacity 0.8s ease;
