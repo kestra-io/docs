@@ -58,9 +58,11 @@ export default defineNuxtConfig({
                     instance: codeImport
                 },
             }
-        }
+        },
+        anchorLinks: true
     },
     router: {
+        trailingSlash: false,
         options: {
             strict: true
         }
@@ -106,5 +108,5 @@ export default defineNuxtConfig({
     },
     build: {
         transpile: ['vue3-count-to']
-    },
+    }
 })
