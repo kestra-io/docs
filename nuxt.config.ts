@@ -23,6 +23,9 @@ export default defineNuxtConfig({
                 {name: 'msapplication-TileColor', content: '#2c0059'},
                 {name: 'theme-color', content: '#2c0059'},
                 {property: 'og:image', content:'/og-image.png'}
+            ],
+            script: [
+                {src: "//js-eu1.hs-scripts.com/27220195.js"}
             ]
         }
     },

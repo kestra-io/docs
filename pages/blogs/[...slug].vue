@@ -1,16 +1,5 @@
 <template>
-    <Head>
-        <Title>Insights & News on Data Orchestration</Title>
-        <Meta name="description"
-              content="Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."/>
-        <!-- Start of HubSpot Embed Code -->
-        <!--      <Script async  src="//js-eu1.hs-scripts.com/27220195.js"></Script>-->
-        <!-- End of HubSpot Embed Code -->
-    </Head>
-
     <div class="container">
-        <nav v-if="false">
-        </nav>
         <BlogsList v-if="slug === '/blogs/'" :blogs="page"/>
 
         <main v-else class="bd-main order-1 mt-5">
@@ -40,14 +29,14 @@
     let page = null;
     if (slug === "/blogs/") {
         page = await queryContent("/blogs/").find();
+        useHead({
+            title: "Insights & News on Data Orchestration",
+            description: "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
+        })
     } else {
         page = await queryContent(slug).findOne();
+        useContentHead(page)
     }
-    useContentHead(page)
-    useHead({
-        script: [{src: "//js-eu1.hs-scripts.com/27220195.js"}]
-    })
-
 </script>
 
 <style lang="scss">
