@@ -77,15 +77,17 @@ export default defineNuxtConfig({
     },
     routeRules: {
         // 2023-04-17 : defines old site redirects
-        '/features/usages.html': { redirect: '/use-cases'},
-        '/features/features.html': { redirect: '/features'},
-        '/features/enterprise.html': { redirect: '/enterprise'},
-        '/company/privacy-policy.html': { redirect: '/privacy-policy'},
-        '/company/cookie-policy.html': { redirect: '/cookie-policy'},
-        '/company/contact.html': { redirect: '/contact-us'},
-        '/company/careers.html': { redirect: '/careers'},
-        '/company/company/about-us.html': { redirect: '/about-us'},
-        '/community.html': { redirect: '/community'},
+        '/features/usages.html': {redirect: '/use-cases'},
+        '/features/features.html': {redirect: '/features'},
+        '/features/enterprise.html': {redirect: '/enterprise'},
+        '/company/privacy-policy.html': {redirect: '/privacy-policy'},
+        '/company/cookie-policy.html': {redirect: '/cookie-policy'},
+        '/company/contact.html': {redirect: '/contact-us'},
+        '/company/careers.html': {redirect: '/careers'},
+        '/company/company/about-us.html': {redirect: '/about-us'},
+        '/community.html': {redirect: '/community'},
+        '/slack': {redirect: 'https://api.kestra.io/v1/communities/slack/redirect'},
+
     },
     build: {
         transpile: ['vue3-count-to']
