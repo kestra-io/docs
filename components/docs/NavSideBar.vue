@@ -15,6 +15,7 @@
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
                     <RecursiveNavSidebar
                         :parent-slug="'/' + type"
+                        :type="type"
                         :items="navigation[0].children"
                         :depth-level="1"
                         :active-slug="activeSlug"

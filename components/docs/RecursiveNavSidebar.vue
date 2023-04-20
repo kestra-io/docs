@@ -6,7 +6,7 @@
         :class="activeSlug.includes(parentSlug) ? 'collapse show' : 'collapse'"
     >
         <!-- Add the index statically to avoid having sub-nav for it-->
-        <div v-if="depthLevel === 1">
+        <div v-if="depthLevel === 1 && type === 'docs'">
             <ul class="bd-links-nav list-unstyled mb-0">
                 <li class="depth-1 bd-links-group">
                     <a href="/docs" :class="activeSlug === '/docs' || activeSlug === '/docs/' ? 'active' : ''" class="bd-links-link d-inline-block">
@@ -106,6 +106,10 @@
             pageList: {
                 type: Array,
                 required: true
+            },
+            type: {
+                type: String,
+                required: false
             }
         },
         created() {
