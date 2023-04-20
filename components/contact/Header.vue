@@ -23,7 +23,7 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="company">Company</label>
-                                <input type="text" class="form-control" id="company" required>
+                                <input type="text" class="form-control" id="company">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="email">Email *</label>
@@ -32,18 +32,23 @@
                         </div>
                         <div class="form-group">
                             <label for="message">Message *</label>
-                            <textarea class="form-control" rows="3" required></textarea>
+                            <textarea class="form-control" rows="3" id="message" required></textarea>
                         </div>
                         <div class="checkbox consent">
                             <label for="newsletterConsent">
-                                <input type="checkbox" id="newsletterConsent" class="form-check-input">&nbsp;&nbsp;I agree to receive Kestra's newsletter with updates, news, and insights. I can unsubscribe at any time.
+                                <input type="checkbox" id="newsletterConsent" class="form-check-input">&nbsp;&nbsp;I agree to receive other communications from Kestra.
                             </label>
                         </div>
-                        <div class="checkbox consent">
-                            <label for="personalDataConsent">
-                                <input type="checkbox" id="personalDataConsent" class="form-check-input" required>&nbsp;&nbsp;I consent to the processing of my personal data in accordance with Kestra's Privacy Policy and GDPR requirements. *
-                            </label>
+                        <div class="consent">
+                            <p>
+                                You can unsubscribe from these communications at any time. For more information on how to unsubscribe, our privacy practices, and how we are committed to protecting and respecting your privacy, please review our <NuxtLink href="/privacy-policy">Privacy Policy</NuxtLink>.
+                            </p>
+
+                            <p>
+                                By clicking submit below, you consent to allow Kestra to store and process the personal information submitted above to provide you with the content requested.
+                            </p>
                         </div>
+                        
                         <button type="submit" class="btn btn-primary me-2">Submit</button>
                     </form>
                     <p class="mandatory-fields">* Mandatory fields</p>
@@ -57,37 +62,65 @@
     import Console from "vue-material-design-icons/Console.vue"
     import Email from "vue-material-design-icons/Email.vue"
 
+    const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/77f32ae3-0f49-404a-a28d-6dfe92c8bc78";
+
     export default {
         components: {Console, Email},
-        mounted() {
-            if (document.getElementById("hubSpotContactScript") === undefined) {
-                const script = document.createElement("script");
-                script.src = "https://js-eu1.hsforms.net/forms/embed/v2.js";
-                script.id = "hubSpotContactScript";
-                document.body.appendChild(script);
-                script.addEventListener("load", () => {
-                    if (window.hbspt) {
-                        window.hbspt.forms.create({
-                            region: "eu1",
-                            portalId: "27220195",
-                            formId: "280598ab-5b42-4c63-9acf-57a591beeb8e"
-                        })
-                    }
-                })
-            }
-        },
         methods:{
             checkForm: function (e) {
-                var form = this.$refs.contactUs;
-                if (!form.checkValidity()) {
-                    e.preventDefault()
-                    e.stopPropagation()
-                }
+                e.preventDefault()
+                e.stopPropagation()
 
-                form.classList.add('was-validated')
+                const form = this.$refs.contactUs;
+                const route = useRoute()
+                if (form.checkValidity()) {
+                    form.classList.add('was-validated')
+
+                    const formData = {
+                        fields: [{
+                            objectTypeId: "0-1",
+                            name: "firstname",
+                            value: form.firstName.value
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "lastname",
+                            value: form.lastName.value
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "company",
+                            value: form.company.value
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "email",
+                            value: form.email.value
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "message",
+                            value: form.message.value
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "LEGAL_CONSENT.subscription_type_178282008",
+                            value: form.newsletterConsent.checked
+                        }],
+                        context: {
+                            pageUri: route.path,
+                            pageName: route.path
+                        }
+                    }
+                    fetch(hubSpotUrl, {method: "POST", body: JSON.stringify(formData), headers: {"Content-Type": "application/json"}})
+                        .then((_) => {
+                                form.reset()
+                                form.classList.remove('was-validated')
+                            })
+                }
             }
-        }
     }
+}
 </script>
 
 <style lang="scss" scoped>
