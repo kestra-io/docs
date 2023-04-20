@@ -36,7 +36,7 @@
                             <a :href="editLink" target="_blank"><Github /> Edit this page</a>
                         </li>
                         <li>
-                            <a href="https://api.kestra.io/v1/communities/slack/redirect" target="_blank"><Slack /> Join us on Slack</a>
+                            <a href="https://kestra.io/slack" target="_blank"><Slack /> Join us on Slack</a>
                         </li>
                         <li>
                             <a href="https://github.com/kestra-io/kestra" target="_blank"><Github /> GitHub</a>

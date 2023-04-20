@@ -7,7 +7,7 @@
                 <p>
                     Want to chat with the team or talk with other Kestra's enthusiasts?
                 </p>
-                <a href="https://api.kestra.io/v1/communities/slack/redirect" target="_blank" class="btn btn-lg btn-primary me-2 mb-2">
+                <a href="https://kestra.io/slack" target="_blank" class="btn btn-lg btn-primary me-2 mb-2">
                     Join our slack
                 </a>
                 <NuxtLink href="/community" class="btn btn-lg btn-secondary mb-2">

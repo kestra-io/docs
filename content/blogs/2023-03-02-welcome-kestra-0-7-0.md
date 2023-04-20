@@ -150,5 +150,5 @@ These functionalities may be delivered on multiple releases, but be sure to have
 
 We also want to keep improving our documentation and examples. We plan to write how-to guides or provide an example flow gallery. Don’t hesitate to share your needs and ideas on this topic with us!
 
-Be sure to follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Please reach out to us on [Slack](https://api.kestra.io/v1/communities/slack/redirect) if you have any questions or want to share what tutorial you’d like to see next. And if you love what we do, give a star ⭐️ on [our GitHub repository](https://github.com/kestra-io/kestra).
+Be sure to follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Please reach out to us on [Slack](https://kestra.io/slack) if you have any questions or want to share what tutorial you’d like to see next. And if you love what we do, give a star ⭐️ on [our GitHub repository](https://github.com/kestra-io/kestra).
 

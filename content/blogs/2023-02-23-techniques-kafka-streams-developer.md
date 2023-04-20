@@ -172,4 +172,4 @@ We have covered some tips that took us a lot of time to find to deal with our is
 
 We learned how to use the same Kafka topic for source and destination, write a custom joiner for Kafka Streams, distribute workloads between multiple backends, use partitions to detect dead Kafka Consumers, tradeoffs for using state store `all()`, and using many source topics within a Kafka Stream.
 
-We hope you enjoyed our story. Stay connected and follow [Kestra](https://kestra.io) on [GitHub](https://github.com/kestra-io/kestra), [Twitter](https://twitter.com/kestra_io), or [Slack](https://api.kestra.io/v1/communities/slack/redirect).
+We hope you enjoyed our story. Stay connected and follow [Kestra](https://kestra.io) on [GitHub](https://github.com/kestra-io/kestra), [Twitter](https://twitter.com/kestra_io), or [Slack](https://kestra.io/slack).

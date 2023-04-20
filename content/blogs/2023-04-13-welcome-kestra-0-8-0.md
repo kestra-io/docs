@@ -94,4 +94,4 @@ We wanted to thank all the contributors who helped us make this release.
 
 We will continue to work on our low-code editor, please test it and provide feedback! We also plan to add some metrics dashboard on the flow page later, if this is of interest to you don’t hesitate to get in touch with us on this subject. And of course, we will add new tasks to integrate Kestra with more and more systems easily.
 
-Be sure to follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Please reach out to us on [Slack](https://api.kestra.io/v1/communities/slack/redirect) if you have any questions or want to share feedback. And if you love what we do, give a star on [our GitHub repository](https://github.com/kestra-io/kestra).
+Be sure to follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Please reach out to us on [Slack](https://kestra.io/slack) if you have any questions or want to share feedback. And if you love what we do, give a star on [our GitHub repository](https://github.com/kestra-io/kestra).

@@ -1,6 +1,6 @@
 <template>
     <div v-if="widget" class="widget-chat">
-        <NuxtLink href="https://api.kestra.io/v1/communities/slack/redirect" class="btn btn-primary rounded">
+        <NuxtLink href="https://kestra.io/slack" class="btn btn-primary rounded">
             <slack title=""/>
             Chat <span v-if="online" class="online">{{ onlineText }} members</span>
         </NuxtLink>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="text-center ">
-                <a href="https://api.kestra.io/v1/communities/slack/redirect" class="btn btn-lg btn-primary me-2" target="_blank">
+                <a href="https://kestra.io/slack" class="btn btn-lg btn-primary me-2" target="_blank">
                     Join our slack
                 </a>
             </div>

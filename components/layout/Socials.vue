@@ -16,7 +16,7 @@
             </a>
         </li>
         <li class="list-inline-item ml-1">
-            <a href="https://api.kestra.io/v1/communities/slack/redirect" target="_blank">
+            <a href="https://kestra.io/slack" target="_blank">
                 <slack title="" />
             </a>
         </li>
