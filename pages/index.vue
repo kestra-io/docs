@@ -17,3 +17,8 @@
     <LayoutNewsletter />
 </template>
 
+<script setup>
+    definePageMeta({
+        transparentHeader: true,
+    })
+</script>

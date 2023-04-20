@@ -37,6 +37,11 @@ export default {
         if (process.client) {
             window.addEventListener('scroll', this.handleScroll);
         }
+    },
+    unmounted() {
+        if (process.client) {
+            window.removeEventListener('scroll', this.handleScroll);
+        }
     }
 }
 </script>

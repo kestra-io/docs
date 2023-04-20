@@ -206,3 +206,25 @@ blockquote.blockquote {
     max-width: $baseline-max-width;
 }
 
+@keyframes slide-in {
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+}
+
+.animation-slide-in {
+    animation-duration: 0.2s;
+    animation-fill-mode: backwards;
+    animation-name: slide-in;
+}
