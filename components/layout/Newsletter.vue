@@ -6,7 +6,7 @@
                 <form class="row row-cols-lg-auto g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate>
                     <div class="col-12">
                         <label class="visually-hidden" for="newsletter-email">Email</label>
-                        <input type="email" class="form-control form-control-lg" id="newsletter-email" placeholder="Email" required>
+                        <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" required>
                     </div>
 
                     <div class="col-12">
@@ -24,35 +24,37 @@
 <script>
     import Socials from "./Socials.vue";
 
+    const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/433b234f-f3c6-431c-898a-ef699e5525fa";
+
     export default {
         components: {Socials},
-        mounted() {
-            if (document.getElementById("hubSpotNewsletterScript") === undefined) {
-                const script = document.createElement("script");
-                script.id = "hubSpotNewsletterScript";
-                script.src = "https://js-eu1.hsforms.net/forms/embed/v2.js";
-                document.body.appendChild(script);
-
-                script.addEventListener("load", () => {
-                    if (window.hbspt) {
-                        window.hbspt.forms.create({
-                            region: "eu1",
-                            portalId: "27220195",
-                            formId: "433b234f-f3c6-431c-898a-ef699e5525fa"
-                        })
-                    }
-                })
-            }
-        },
         methods:{
             checkForm: function (e) {
-                var form = this.$refs.newsletter;
-                if (!form.checkValidity()) {
-                    e.preventDefault()
-                    e.stopPropagation()
-                }
+                e.preventDefault()
+                e.stopPropagation()
 
-                form.classList.add('was-validated')
+                const form = this.$refs.newsletter;
+                const route = useRoute()
+                if (form.checkValidity()) {
+                    form.classList.add('was-validated')
+
+                    const formData = {
+                        fields: [{
+                            objectTypeId: "0-1",
+                            name: "email",
+                            value: form.email.value
+                        }],
+                        context: {
+                            pageUri: route.path,
+                            pageName: route.path
+                        }
+                    }
+                    fetch(hubSpotUrl, {method: "POST", body: JSON.stringify(formData), headers: {"Content-Type": "application/json"}})
+                        .then((_) => {
+                            form.reset()
+                            form.classList.remove('was-validated')
+                        })
+                }
             }
         }
     }
