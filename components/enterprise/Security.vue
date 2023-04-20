@@ -7,7 +7,7 @@
         >
             <div class="row mb-5">
                 <div class="col-md-6">
-                    <img src="/landing/enterprise/security-1.svg" alt="Stylized view of administrator settings with role-based view">
+                    <img  class="img-fluid" src="/landing/enterprise/security-1.svg" alt="Stylized view of administrator settings with role-based view">
                 </div>
                 <div class="col-md-6">
                     <h3>Advanced Workflow Organization</h3>
@@ -33,12 +33,12 @@
                     </ul>
                 </div>
                 <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
-                    <img src="/landing/enterprise/security-2.svg" alt="A dashboard with success or fail task events">
+                    <img class="img-fluid" src="/landing/enterprise/security-2.svg" alt="A dashboard with success or fail task events">
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
-                    <img src="/landing/enterprise/security-3.svg" alt="Security shield with checkmark, representing a protected access with SSO and 2FA connection">
+                    <img class="img-fluid" src="/landing/enterprise/security-3.svg" alt="Security shield with checkmark, representing a protected access with SSO and 2FA connection">
                 </div>
                 <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
                     <h3>Advanced Workflow Organization</h3>

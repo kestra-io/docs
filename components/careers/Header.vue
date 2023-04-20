@@ -11,7 +11,7 @@
                     </a>
                 </div>
                 <div class="col-md-6">
-                    <img src="/landing/careers/frame_638.png" width="600" alt="A square with circles inside with emojis in It representing Kestra's inclusive and dynamic workplace culture"/>
+                    <img class="img-fluid" src="/landing/careers/frame_638.png" alt="A square with circles inside with emojis in It representing Kestra's inclusive and dynamic workplace culture"/>
                 </div>
             </div>
         </div>

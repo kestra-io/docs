@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <img src="/landing/features/features-ui.png" width="600" alt="A screenshot of the user interface of Kestra's application"/>
+                    <img class="img-fluid" src="/landing/features/features-ui.png" alt="A screenshot of the user interface of Kestra's application"/>
                 </div>
             </div>
         </div>

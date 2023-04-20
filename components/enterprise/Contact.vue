@@ -4,10 +4,10 @@
             title="Ready to take your data department to the next level?"
         >
         <div class="text-center cta">
-                <a href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank" class="btn btn-lg btn-primary me-2">
+                <a href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank" class="btn btn-lg btn-primary me-2 mb-2">
                     <Console /> Book a demo
                 </a>
-                <NuxtLink href="/contact-us" class="btn btn-lg btn-secondary">
+                <NuxtLink href="/contact-us" class="btn btn-lg btn-secondary mb-2">
                     <Email /> Contact us
                 </NuxtLink>
             </div>

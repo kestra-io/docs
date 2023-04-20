@@ -6,10 +6,10 @@
                     <p class="overline">Enterprise Edition</p>
                     <h1>Kestra Enterprise Edition for Scaling companies<span class="dot">.</span></h1>
                     <p class="baseline">Get full access of all the Open source features and unlock the full potential with Enterprise only features</p>
-                    <a href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank" class="btn btn-lg btn-primary me-2">
+                    <a href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank" class="btn btn-lg btn-primary me-2 mb-2">
                         Book a demo
                     </a>
-                    <NuxtLink href="/contact-us" class="btn btn-lg btn-dark">
+                    <NuxtLink href="/contact-us" class="btn btn-lg btn-dark mb-2">
                         Contact us
                     </NuxtLink>
                 </div>

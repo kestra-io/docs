@@ -1,12 +1,12 @@
 <template>
     <div class="container rounded-3">
         <div class="scale-img">
-            <img src="/landing/enterprise/ee-logo.svg" alt="" />
+            <img class="img-fluid" src="/landing/enterprise/ee-logo.svg" alt="EE logo" />
         </div>
         <Section
             title="Scale With no Point of Failure"
         >
-            <p class="baseline-max-width">
+            <p>
                 Ensure scalability and high availability with <b>Kafka</b> and <b>Elasticsearch</b> Features available on the Enterprise Edition to eliminate all points of failure.
             </p>
         </Section>
@@ -41,11 +41,16 @@
         }
 
         p {
-            padding-left: calc($spacer * 8);
-            padding-right: calc($spacer * 8);
+            padding-left: calc($spacer * 2);
+            padding-right: calc($spacer * 2);
             text-align: center;
             font-size: $font-size-xl;
             margin: 0 auto;
+
+            @include media-breakpoint-up(md) {
+                padding-left: calc($spacer * 8);
+                padding-right: calc($spacer * 8);
+            }
         }
 
         :deep(h2) {
