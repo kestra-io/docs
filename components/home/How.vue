@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <Section
-            title="High-Performance Automation and Integration for Optimized Data Operations"
+            title="Perfomant and Scalable Data Operations"
             subtitle="Master Data Workflows"
         >
             <div class="row mb-5">

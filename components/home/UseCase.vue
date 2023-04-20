@@ -2,6 +2,7 @@
     <div class="container-fluid bg-body-tertiary">
         <div class="container">
             <Section
+                class="dark"
                 title="Uncover a Wide Range of Use Cases to Leverage Kestra's Potential"
                 subtitle="Maximize Data Workflow Capabilities"
             >

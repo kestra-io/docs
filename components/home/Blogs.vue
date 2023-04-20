@@ -10,9 +10,6 @@
                                 <div class="card-body">
                                     <p class="type mt-3 mb-2">{{ blog.category }}</p>
                                     <h4 class="card-title">{{ blog.title }}</h4>
-                                    <p class="card-text">
-                                        {{ blog.description }}
-                                    </p>
                                     <p class="author">
                                         {{ blog.author.name }}  {{ timesAgo(blog.date) }}
                                     </p>
@@ -48,6 +45,7 @@ const lasts = blogs.reverse().slice(0,3);
 
     .card {
         height: 100%;
+        box-shadow: none;
     }
 
     .card-body {

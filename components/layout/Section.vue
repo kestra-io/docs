@@ -59,6 +59,15 @@
             }
         }
 
+
+        &.dark {
+            div.subtitle {
+                p {
+                    color: var(--bs-white);
+                }
+            }
+        }
+
         h2 {
             text-align: center;
             font-weight: 800;

@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <div v-if="contributors" class="contributors left" id="bla">
+        <div v-if="contributors && false" class="contributors left">
             <template v-for="contributor in contributorsPartition(0)">
                 <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
                     <img
@@ -87,7 +87,7 @@
                 </div>
             </Section>
         </div>
-        <div v-if="contributors" class="contributors right">
+        <div v-if="contributors && false" class="contributors right">
             <template v-for="contributor in contributorsPartition(10)">
                 <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
                     <img :src="contributor.avatar" class="img-fluid avatar avatar-small rounded-circle" :width="contributor.size" alt="">
@@ -192,7 +192,7 @@
         flex-grow: 1;
 
         .counter-box {
-            color: #DB9393;
+            color: $primary;
 
             .material-design-icon {
                 background: var(--bs-white);
@@ -215,7 +215,7 @@
             }
 
             h6 {
-                color: #DB9393;
+                color: $primary;
                 &:after {
                     display: none;
                 }

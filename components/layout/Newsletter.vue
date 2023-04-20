@@ -85,6 +85,12 @@
             }
         }
 
+        .btn-lg {
+            background: $purple-24;
+            padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
+            line-height: 2rem;
+        }
+
         h3 {
             font-size: $h3-font-size;
             font-weight: 800;
@@ -92,10 +98,6 @@
             span {
                 color: var(--bs-black);
             }
-        }
-
-        p {
-            font-weight: bold;
         }
 
         .socials {

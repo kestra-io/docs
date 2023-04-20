@@ -51,6 +51,14 @@ blockquote.blockquote {
     font-size: 1rem;
 }
 
+
+.btn.btn-lg {
+    font-weight: bold;
+    border-radius: $border-radius;
+    border: 0;
+    padding: 1.20rem 2rem;
+}
+
 // component
 .hero {
     padding-top: calc($spacer * 8);
@@ -97,7 +105,7 @@ blockquote.blockquote {
     }
 
     .cta {
-        padding-bottom: calc($spacer * 4);
+        padding-bottom: calc($spacer * 2);
     }
 }
 

@@ -1,6 +1,7 @@
 <template>
     <div class="container-fluid">
         <Section
+            class="dark"
             title="Over 300 plugins"
             subtitle="Expand Your Workflow Capabilities"
             baseline="Plugins are at the core of Kestra's extensibility. Many plugins are available from the Kestra core team, and creating your own is easy. With plugins, you can add new functionality to Kestra."

@@ -55,6 +55,10 @@
             p {
                 max-width: 1024px;
             }
+
+            .cta {
+                padding-bottom: 0;
+            }
         }
 
         .companies-title {

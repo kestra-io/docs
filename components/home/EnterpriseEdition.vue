@@ -39,6 +39,7 @@
     .container-fluid {
         background: $purple-7;
         color: var(--bs-white);
+        padding: 5rem 0;
 
         .row {
             background: url("/landing/ee/background.svg") no-repeat right center;
@@ -59,6 +60,10 @@
                 @include media-breakpoint-down(md) {
                     padding: 0;
                 }
+            }
+
+            .btn-dark {
+                background-color: rgba($white, 10%);
             }
         }
     }
