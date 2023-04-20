@@ -12,7 +12,7 @@ If you have any [Prometheus](https://prometheus.io/) compatible monitoring syste
 
 
 ### Kestra metrics
-Kestra expose some internal metrics allowing to add some alerts. Each metric declare many timeseries with tags allowing
+Kestra exposes some internal metrics allowing to add some alerts. Each metric declares many timeseries with tags allowing
 to track at least namespace & flow. But also some other tags depending on available tasks.
 
 Each task type can expose [custom metrics](../05.concepts/02.executions.md#metrics) that will be exposed on Prometheus.
@@ -70,23 +70,23 @@ Since Elasticsearch is used to store all executions & metrics, you can easily ma
 In a near future, we will provide a template dashboard as a quick start.
 
 
-## Kestra endpoint
-Kestra expose some internal endpoints on the management port (8081 by default), depending on servers:
+## Kestra endpoints
+Kestra exposes some internal endpoints on the management port (8081 by default), depending on servers:
 
 
-* `/worker`: will expose all current running task on this worker
-* `/scheduler`: will expose all current scheduled flows on this scheduler with next date
-* `/kafkastreams`: will expose all kafka stream state and aggregated store lag.
-* `/kafkastreams/{clientId}/lag`: will expose details lag for a clientId
-* `/kafkastreams/{clientId}/metrics`: will expose details metrics for a clientId
+* `/worker`: will expose all currently running tasks on this worker.
+* `/scheduler`: will expose all currently scheduled flows on this scheduler with the next date.
+* `/kafkastreams`: will expose all Kafka Streams states and aggregated store lag.
+* `/kafkastreams/{clientId}/lag`: will expose details lag for a clientId.
+* `/kafkastreams/{clientId}/metrics`: will expose details metrics for a clientId.
 
-## Others micronaut default endpoint
-Since Kestra is based on [Micronaut](https://micronaut.io), the [default micronaut endpoints](https://docs.micronaut.io/latest/guide/index.html#providedEndpoints) are enabled by default on port 8081 :
+## Other Micronaut default endpoints
+Since Kestra is based on [Micronaut](https://micronaut.io), the [default Micronaut endpoints](https://docs.micronaut.io/latest/guide/index.html#providedEndpoints) are enabled by default on port 8081 :
 
 * `/info` [Info Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#infoEndpoint) with git status information.
-* `/health` [Health Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#healthEndpoint) usable as external heathcheck for the application.
-* `/loggers` [Loggers Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#loggersEndpoint) allowing changing logger level at runtime.
-* `/metrics` [Metrics Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#metricsEndpoint) metrics in json format.
+* `/health` [Health Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#healthEndpoint) usable as an external heathcheck for the application.
+* `/loggers` [Loggers Endpoint allows changing logger level at runtime.
+* `/metrics` [Metrics Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#metricsEndpoint) metrics in JSON format.
 * `/env` [Env Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#environmentEndpoint) to debug configuration files.
 
-You can disabled some endpoints following micronaut configuration above.
+You can disable some endpoints following Micronaut configuration above.
