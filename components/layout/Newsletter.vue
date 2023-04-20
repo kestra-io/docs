@@ -2,8 +2,8 @@
     <div class="container text-center mb-5">
         <div class="rounded-3">
             <div>
-                <h3><span>Get Kestra updates</span> to your inbox</h3>
-                <form class="row row-cols-lg-auto g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate>
+                <h3 data-aos="fade-right"><span>Get Kestra updates</span> to your inbox</h3>
+                <form class="row row-cols-lg-auto g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate data-aos="fade-left">
                     <div class="col-12">
                         <label class="visually-hidden" for="newsletter-email">Email</label>
                         <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" required>
@@ -14,8 +14,8 @@
                     </div>
                 </form>
 
-                <p class="mt-3">Stay up to date with the latest features and changes to Kestra</p>
-                <Socials class="mt-4 mb-0 socials" />
+                <p class="mt-3" data-aos="zoom-in">Stay up to date with the latest features and changes to Kestra</p>
+                <Socials class="mt-4 mb-0 socials" data-aos="zoom-in" />
             </div>
         </div>
     </div>
@@ -85,6 +85,10 @@
                 position: relative;
                 z-index: 2;
             }
+        }
+
+        input {
+            border-radius: $border-radius;
         }
 
         .btn-lg {

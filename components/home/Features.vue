@@ -3,7 +3,7 @@
         <Section subtitle="Stand Out with Kestra's Exclusive Features" title="Enhanced Workflow Efficiency">
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CalculatorVariantOutline /></span>
                             <h4 class="card-title">Powerful Data Processing</h4>
@@ -13,7 +13,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><Lan /></span>
                             <h4 class="card-title">Robust Scheduling and Orchestration</h4>
@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><GoogleCirclesExtended /></span>
                             <h4 class="card-title">Extensive Library of plugins</h4>
@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><OpenInApp /></span>
                             <h4 class="card-title">Increase Productivity and Efficiency</h4>
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><RefreshAuto /></span>
                             <h4 class="card-title">Reliable Automated Production</h4>
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CloudOutline /></span>
                             <h4 class="card-title">Deploy anywhere with no point of failure</h4>
@@ -64,7 +64,7 @@
             </div>
 
             <div class="text-center">
-                <NuxtLink class="btn btn-lg btn-primary " href="/features">See all features</NuxtLink>
+                <NuxtLink class="btn btn-lg btn-primary " href="/features" data-aos="zoom-in">See all features</NuxtLink>
             </div>
         </Section>
     </div>

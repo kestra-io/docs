@@ -3,8 +3,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 p-5">
-                    <h2>Take Kestra to the next level with the Enterprise Edition</h2>
-                    <ul class="mb-5">
+                    <h2 data-aos="fade-left">Take Kestra to the next level with the Enterprise Edition</h2>
+                    <ul class="mb-5" data-aos="fade-right">
                         <li>SSO/OIDC Authentication</li>
                         <li>Role-Based Access Control</li>
                         <li>Secret Manager Integration</li>
@@ -13,8 +13,8 @@
                         <li>And More...</li>
                     </ul>
 
-                    <NuxtLink href="/enterprise" class="btn btn-lg btn-primary me-2">Learn more</NuxtLink>
-                    <NuxtLink href="/contact-us" class="btn btn-lg btn-dark">Contact us</NuxtLink>
+                    <NuxtLink href="/enterprise" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">Learn more</NuxtLink>
+                    <NuxtLink href="/contact-us" class="btn btn-lg btn-dark" data-aos="zoom-in">Contact us</NuxtLink>
                 </div>
                 <div class="col-md-6">
                 </div>

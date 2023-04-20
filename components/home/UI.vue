@@ -1,14 +1,21 @@
 <template>
     <div class="main">
         <div class="container">
-            <Section subtitle="All-Inclusive Dashboard" title="Empower Developers with a Comprehensive, User-Friendly Interface ">
+            <Section
+                class="dark"
+                subtitle="All-Inclusive Dashboard"
+                title="Empower Developers with a Comprehensive, User-Friendly Interface"
+            >
                 <div class="row mb-5">
-                    <div class="col-md-8">
-                        <img src="/landing/home/ui-1.png" alt="Picture of Kestra's user interface" class="img-fluid" />
+                    <div class="col-lg-8">
+                        <img v-if="active === 1" src="/landing/home/ui-1.png" alt="Picture of Kestra's user interface" class="img-fluid rounded-3" data-aos="fade-right" />
+                        <img v-if="active === 2" src="/landing/home/ui-2.png" alt="Picture of Kestra's user interface" class="img-fluid rounded-3" data-aos="fade-right" />
+                        <img v-if="active === 3" src="/landing/home/ui-3.png" alt="Picture of Kestra's user interface" class="img-fluid rounded-3" data-aos="fade-right" />
+                        <img v-if="active === 4" src="/landing/home/ui-4.png" alt="Picture of Kestra's user interface" class="img-fluid rounded-3" data-aos="fade-right" />
                     </div>
 
-                    <div class="col-md-4 mt-3">
-                        <div class="card">
+                    <div class="col-lg-4 mt-3 mt-lg-0">
+                        <div class="card" @click="active = 1" :class="{active: active === 1}" data-aos="fade-left">
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><WrenchOutline /></span>
@@ -16,7 +23,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card" @click="active = 2" :class="{active: active === 2}" data-aos="fade-left" data-aos-delay="50">
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
@@ -24,7 +31,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card" @click="active = 3" :class="{active: active === 3}" data-aos="fade-left" data-aos-delay="100">
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
@@ -32,7 +39,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card" @click="active = 4" :class="{active: active === 4}" data-aos="fade-left" data-aos-delay="150">
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ViewDashboardVariantOutline /></span>
@@ -44,7 +51,7 @@
                 </div>
 
                 <div class="text-center">
-                    <a class="btn btn-lg btn-primary" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank">Book a demo</a>
+                    <a class="btn btn-lg btn-primary" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank" data-aos="zoom-in">Book a demo</a>
                 </div>
             </Section>
         </div>
@@ -60,7 +67,12 @@
     import ViewDashboardVariantOutline from "vue-material-design-icons/ViewDashboardVariantOutline.vue";
 
     export default {
-        components: {Section, WrenchOutline, ChartTimelineVariant, ApplicationBracketsOutline, ViewDashboardVariantOutline}
+        components: {Section, WrenchOutline, ChartTimelineVariant, ApplicationBracketsOutline, ViewDashboardVariantOutline},
+        data() {
+            return {
+                active: 1,
+            };
+        },
     }
 </script>
 
@@ -77,6 +89,8 @@
             color: var(--bs-white);
             border: 1px solid $purple-11;
             margin-bottom: $spacer;
+            cursor: pointer;
+            transition: all ease 0.2s;
 
             p {
                 font-size: $font-size-lg;
@@ -85,6 +99,13 @@
             .card-icon {
                 margin-bottom: 0;
                 font-size: 2.25rem;
+            }
+
+            &:hover, &.active {
+                background: $purple-28;
+                p {
+                    font-weight: bold;
+                }
             }
         }
     }

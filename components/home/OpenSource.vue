@@ -82,8 +82,8 @@
                 </div>
 
                 <div class="text-center mt-5">
-                    <a href="https://kestra.io/slack" target="_blank" class="btn btn-lg btn-primary me-2">Join our slack</a>
-                    <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-lg btn-dark">Give us a ⭐</a>
+                    <a href="https://kestra.io/slack" target="_blank" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">Join our slack</a>
+                    <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-lg btn-dark" data-aos="zoom-in">Give us a ⭐</a>
                 </div>
             </Section>
         </div>

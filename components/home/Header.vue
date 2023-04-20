@@ -1,20 +1,20 @@
 <template>
     <div class="main">
         <div class="hero container text-center">
-            <p class="overline">OPEN SOURCE DECLARATIVE DATA ORCHESTRATION</p>
-            <h1>Build stunning data pipelines, blazing fast, deploy in clicks<span class="dot">.</span></h1>
+            <p class="overline" data-aos="fade-left">OPEN SOURCE DECLARATIVE DATA ORCHESTRATION</p>
+            <h1 data-aos="fade-right">Build stunning data pipelines, blazing fast, deploy in clicks<span class="dot">.</span></h1>
             <div class="text-center cta">
-                <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary me-2">
+                <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">
                     <Console /> Live demo
                 </a>
-                <GithubButton class="btn-secondary btn-lg" />
+                <GithubButton class="btn-secondary btn-lg" data-aos="zoom-in" />
             </div>
 
             <img class="img-fluid" src="/landing/home/animation.svg" alt="Kestra's flow animation from source to visualization" />
         </div>
 
         <div class=" container text-center">
-            <p class="companies-title">
+            <p class="companies-title" data-aos="zoom-in">
                 Loved & trusted by leading enterprises worldwide
             </p>
 

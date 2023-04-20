@@ -6,7 +6,7 @@
                 title="Uncover a Wide Range of Use Cases to Leverage Kestra's Potential"
                 subtitle="Maximize Data Workflow Capabilities"
             >
-                <ul class="nav nav-pills">
+                <ul class="nav nav-pills" data-aos="fade-right">
                     <li class="nav-item mt-2">
                         <a class="nav-link" :class="{'active': active === 1}" @click="active = 1">Data Platform Orchestration</a>
                     </li>
@@ -18,7 +18,7 @@
                     </li>
                 </ul>
 
-                <div class="row mt-5" v-if="active === 1">
+                <div class="row mt-5" v-if="active === 1" data-aos="fade-left">
                     <div class="col-lg-6 col-sm-12">
                         <ol>
                             <li>
@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-5" v-if="active === 2">
+                <div class="row mt-5" v-if="active === 2" data-aos="fade-left">
                     <div class="col-lg-6 col-sm-12">
                         <ol>
                             <li>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-5" v-if="active === 3">
+                <div class="row mt-5" v-if="active === 3" data-aos="fade-left">
                     <div class="col-lg-6 col-sm-12">
                         <ol>
                             <li>
@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="text-center mt-5">
-                    <NuxtLink class="btn btn-lg btn-primary " href="/use-cases">See more</NuxtLink>
+                    <NuxtLink class="btn btn-lg btn-primary " href="/use-cases" data-aos="zoom-in">See more</NuxtLink>
                 </div>
             </Section>
         </div>

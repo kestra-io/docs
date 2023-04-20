@@ -1,12 +1,13 @@
 <template>
     <nav ref="navbar" class="navbar navbar-expand-lg sticky-top" :class="{transparent: transparentClass, open: isOpen}">
-        <div class="container">
-            <NuxtLink class="navbar-brand" href="/">
-                <img v-if="transparentClass" src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" width="30" height="24">
-                <img v-else src="/logo.svg" alt="Kestra, Open source declarative data orchestration" width="30" height="24">
+        <div class="container-xl">
+            <NuxtLink class="navbar-brand" href="/" @click="globalClick(true)">
+                <img class="icon" src="/icon.svg" alt="Kestra, Open source declarative data orchestration" />
+                <img v-if="transparentClass" src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
+                <img v-else src="/logo.svg" alt="Kestra, Open source declarative data orchestration" />
             </NuxtLink>
 
-            <button class="navbar-toggler" @click="isOpen = !isOpen" type="button" data-bs-toggle="collapse" data-bs-target="#main-header" aria-controls="main-header" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" @click="globalClick(false)" type="button" aria-controls="main-header" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <Segment/>
             </button>
@@ -20,7 +21,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
-                                <NuxtLink class="dropdown-item" href="/features">
+                                <NuxtLink class="dropdown-item" href="/features" @click="globalClick(true)">
                                     <FeatureSearch/>
                                     <p>
                                         <span>Features</span><br/>
@@ -29,7 +30,7 @@
                                 </NuxtLink>
                             </li>
                             <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
-                                <NuxtLink class="dropdown-item" href="/enterprise">
+                                <NuxtLink class="dropdown-item" href="/enterprise" @click="globalClick(true)">
                                     <Security/>
                                     <p>
                                         <span>Enterprise Edition</span><br/>
@@ -41,7 +42,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <NuxtLink class="nav-link" href="/use-cases" role="button">
+                        <NuxtLink class="nav-link" href="/use-cases" role="button" @click="globalClick(true)">
                             <span data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 Solutions
                             </span>
@@ -55,7 +56,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-bs-toggle="collapse" data-bs-target="#main-header.show" class="animation-slide-left">
-                                <NuxtLink class="dropdown-item" href="/blogs">
+                                <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
                                     <PostOutline/>
                                     <p>
                                         <span>Blogs</span><br/>
@@ -64,7 +65,7 @@
                                 </NuxtLink>
                             </li>
                             <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
-                                <NuxtLink class="dropdown-item" href="/docs">
+                                <NuxtLink class="dropdown-item" href="/docs" @click="globalClick(true)">
                                     <FileDocumentOutline/>
                                     <p>
                                         <span>Documentation</span><br/>
@@ -73,7 +74,7 @@
                                 </NuxtLink>
                             </li>
                             <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
-                                <NuxtLink class="dropdown-item" href="/plugins">
+                                <NuxtLink class="dropdown-item" href="/plugins" @click="globalClick(true)">
                                     <Security/>
                                     <p>
                                         <span>Plugins documentation</span><br/>
@@ -85,7 +86,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <NuxtLink class="nav-link" href="/community">
+                        <NuxtLink class="nav-link" href="/community" @click="globalClick(true)">
                             <span data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 Community
                             </span>
@@ -98,7 +99,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
-                                <NuxtLink class="dropdown-item" href="/about-us">
+                                <NuxtLink class="dropdown-item" href="/about-us" @click="globalClick(true)">
                                     <Domain/>
                                     <p>
                                         <span>About us</span><br/>
@@ -107,7 +108,7 @@
                                 </NuxtLink>
                             </li>
                             <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
-                                <NuxtLink class="dropdown-item" href="/careers">
+                                <NuxtLink class="dropdown-item" href="/careers" @click="globalClick(true)">
                                     <AccountStarOutline/>
                                     <p>
                                         <span>Careers</span><br/>
@@ -116,7 +117,7 @@
                                 </NuxtLink>
                             </li>
                             <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
-                                <NuxtLink class="dropdown-item" href="/contact-us">
+                                <NuxtLink class="dropdown-item" href="/contact-us" @click="globalClick(true)">
                                     <Email/>
                                     <p>
                                         <span>Contact us</span><br/>
@@ -130,13 +131,13 @@
 
                 <ul class="navbar-nav mb-2 mb-lg-0 nav-button">
                     <li class="nav-item">
-                        <GithubButton class="btn-secondary me-2" data-bs-toggle="collapse" data-bs-target="#main-header.show" toto="test"/>
+                        <GithubButton class="btn-secondary btn-sm me-2" data-bs-toggle="collapse" data-bs-target="#main-header.show" />
 
-                        <a v-if="false" class="btn btn-dark me-2" target="_blank" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo">
+                        <a class="btn btn-sm btn-dark me-2 d-inline-block d-lg-none d-xxl-inline-block" target="_blank" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo">
                             <CalendarOutline /> Book a demo
                         </a>
 
-                        <NuxtLink class="btn btn-primary me-2" href="/docs/getting-started">
+                        <NuxtLink class="btn btn-primary btn-sm me-2" href="/docs/getting-started">
                             <span data-bs-toggle="collapse" data-bs-target="#main-header.show">
                                 <Flash/>
                                 Getting Started
@@ -216,6 +217,7 @@
                 isOpen: false,
             }
         },
+        collapse: undefined,
         created() {
             const route = useRoute();
             this.transparentHeader = route.meta.transparentHeader === true;
@@ -223,6 +225,12 @@
 
             if (process.client) {
                 window.addEventListener('scroll', this.handleScroll);
+            }
+
+            if (process.client) {
+                this.collapse = new this.$bootstrap.Collapse('#main-header', {
+                    toggle: false
+                })
             }
         },
         watch: {
@@ -284,11 +292,22 @@
                     }
                 }
             },
+            globalClick(close) {
+                if (close) {
+                    if (this.$refs.navbar.classList.contains("open")) {
+                        this.collapse.hide();
+                        this.isOpen = false;
+                    }
+                } else {
+                    this.collapse.toggle();
+                    this.isOpen = !this.isOpen;
+                }
+            }
         },
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
     nav {
@@ -297,13 +316,29 @@
         transition: all ease 0.2s;
 
         .navbar-brand {
-            img {
+            img:not(.icon) {
                 height: 100%;
-                width: 200px;
+                width: 180px;
+            }
+
+            .icon {
+                display: none;
+                height: 100%;
+            }
+
+            @media (max-width: 320px) {
+                .icon {
+                    width: 40px;
+                    display: block;
+                }
+
+                img:not(.icon) {
+                    display: none;
+                }
             }
         }
 
-        a, a.nav-link, button.navbar-toggler, &.btn.search {
+        a.nav-link, button.navbar-toggler, &.btn.search {
             color: var(--bs-black);
             box-shadow: none !important;
         }
@@ -318,6 +353,10 @@
         .navbar-collapse {
             ul.navbar-nav {
                 li {
+                    @include media-breakpoint-between(lg, xxl) {
+                        font-size: 1rem;
+                    }
+
                     font-size: 1.125rem;
 
                     a.nav-link {
@@ -325,7 +364,7 @@
                         border-radius: $border-radius;
 
                         @include media-breakpoint-down(lg) {
-                            padding-left: 2rem;
+                            padding-left: 1rem;
                         }
 
                         &:after {
@@ -338,6 +377,15 @@
                         }
                     }
 
+                    @include media-breakpoint-down(lg) {
+                        .chevron-down-icon {
+                            display: none;
+                        }
+                    }
+
+                    :deep(.material-design-icon__svg) {
+                        bottom: 0;
+                    }
 
                     .dropdown-menu {
                         --bs-dropdown-link-hover-bg: var(--bs-gray-100);
@@ -433,14 +481,12 @@
             }
 
             .nav-button {
+                white-space: nowrap;
                 li {
                     vertical-align: center;
                 }
 
                 .btn {
-                    font-weight: bold;
-                    font-size: var(--bs-font-size-sm);
-
                     &.search {
                         font-size: 1.5rem;
 
@@ -490,9 +536,10 @@
                         }
                     }
 
-                    .material-design-icon > .material-design-icon__svg {
+                    .material-design-icon, span {
                         color: var(--bs-white);
                     }
+
                     p {
                         color: var(--bs-gray-400);
 
@@ -507,6 +554,11 @@
             }
         }
     }
+
+</style>
+
+<style lang="scss">
+    @import "../../assets/styles/variable";
 
     #search-modal {
         .input-group-text {
@@ -575,5 +627,4 @@
             }
         }
     }
-
 </style>

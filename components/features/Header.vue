@@ -6,10 +6,10 @@
                     <h1>Fast, Scalable, and Declarative Data Management</h1>
                     <p class="baseline">Create and Deploy all kinds of Data Pipelines with Ease and Speed with Kestra: Your All-in-One Solution for Orchestrating Workflows</p>
                     <div class="cta">
-                        <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary mx-2 mt-2">
+                        <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary mx-2 mt-2" data-aos="zoom-in">
                             <Flash /> Get started
                         </NuxtLink>
-                        <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary mx-2 mt-2">
+                        <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-secondary mx-2 mt-2" data-aos="zoom-in">
                             <Console /> Live demo
                         </a>
                     </div>

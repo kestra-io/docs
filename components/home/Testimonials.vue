@@ -6,14 +6,14 @@
         >
             <div class="row">
                 <div class="col-md-4">
-                    <TestimonialsItem :item="testimonialData[0]" />
+                    <TestimonialsItem :item="testimonialData[0]" data-aos="fade-left" />
                 </div>
                 <div class="col-md-4">
-                    <TestimonialsItem :item="testimonialData[1]" />
-                    <TestimonialsItem :item="testimonialData[2]" />
+                    <TestimonialsItem :item="testimonialData[1]" data-aos="zoom-in" />
+                    <TestimonialsItem :item="testimonialData[2]" data-aos="zoom-in" />
                 </div>
                 <div class="col-md-4">
-                    <TestimonialsItem :item="testimonialData[3]" />
+                    <TestimonialsItem :item="testimonialData[3]" data-aos="fade-right" />
                 </div>
             </div>
 
