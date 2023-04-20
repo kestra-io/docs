@@ -38,10 +38,14 @@
 
     section {
         padding: calc($spacer * 4) 0;
+        overflow: hidden;
 
         &.with-shadow {
             text-align: center;
             background: url("/landing/shadow2.svg") no-repeat bottom center;
+            @include media-breakpoint-down(sm) {
+                background: url("/landing/shadow2.svg") no-repeat bottom center, var(--bs-white);
+            }
         }
 
         div.subtitle {

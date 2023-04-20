@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid bg-body-tertiary">
+    <div class="container-fluid bg-body-tertiary hide-overflow">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-right">
@@ -64,8 +64,8 @@
                 </div>
             </div>
             <div class="container text-center community-links">
-                <a href="https://github.com/kestra-io/kestra" data-aos="zoom-in" class="btn btn-lg btn-dark me-2">Follow on GitHub</a>
-                <a href="https://github.com/kestra-io/kestra/issues" data-aos="zoom-in" class="btn btn-lg btn-primary">Find Open Issues</a>
+                <a href="https://github.com/kestra-io/kestra" data-aos="zoom-in" class="btn btn-lg btn-dark mt-2 mx-2">Follow on GitHub</a>
+                <a href="https://github.com/kestra-io/kestra/issues" data-aos="zoom-in" class="btn btn-lg btn-primary mt-2">Find Open Issues</a>
             </div>
         </div>
     </div>
@@ -121,6 +121,9 @@
         background: $purple-7;
         color: var(--bs-white);
 
+        &.hide-overflow {
+            overflow: hidden;
+        }
 
         .container > .row {
             padding: calc($spacer * 2);
