@@ -3,7 +3,7 @@
         <NuxtLink class="text-dark" :href="blog._path">
             <img :alt="blog.image" :src="blog.image" class="small-img blog-img">
             <div class="mt-3">
-                <span class="small-text category">News & Product Updates</span>
+                <span class="small-text category">{{ blog.category }}</span>
                 <h6>{{ blog.title }}</h6>
                 <BlogCardDetails :name="blog.author.name" :date="blog.date"/>
             </div>
