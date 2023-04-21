@@ -1,6 +1,6 @@
 <template>
     <NuxtLink :href="link" :target="target">
-        <slot />
+        <slot/>
     </NuxtLink>
 </template>
 
@@ -22,17 +22,18 @@
         if (link.match(/(\.\.\/){2,}/) && page._file.includes('index.md')) {
             link = link.replace('../', '')
         }
-        if (link.match(/(\.\.\/){1}/) && page._file.includes('index.md')) {
-            link = link.replace('../', './')
+        else if (link.match(/(\.\.\/){1}/) && page._file.includes('index.md')) {
+            link = link.replace('../', '')
         }
         if (link.startsWith('./')) {
             link = absolutePath + link.replace('./', '/')
         } else {
-            link = (new URL(link, absolutePath).toString()).replace(config.public.siteUrl,"");
+            link = (new URL(link, absolutePath).toString()).replace(config.public.siteUrl, "");
         }
         if (link.endsWith('/')) {
             link = link.replace(/\/$/, '')
         }
+        link = link.replace(config.public.siteUrl, '')
     }
 
 </script>
