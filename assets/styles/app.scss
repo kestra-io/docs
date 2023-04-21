@@ -232,8 +232,7 @@ blockquote.blockquote {
 .animation-slide-up{
     top: 0 !important;
     box-shadow: none !important;
-    transition: all ease 0.2s !important;
-    transform: translateY(-100%) !important;
+    transform: translateY(-300%) !important;
 
     * {
         padding-bottom: 0;
@@ -243,6 +242,5 @@ blockquote.blockquote {
 .animation-slide-right{
     right: 0 !important;
     box-shadow: none !important;
-    transition: all ease 0.2s !important;
-    transform: translateX(100%) !important;
+    transform: translateX(300%) !important;
 }

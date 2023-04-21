@@ -39,7 +39,7 @@ For example, from [Amazon MSK connect](https://docs.aws.amazon.com/msk/latest/de
 
 
 <p align="center">
-  <img class="zoom" src="/blogs/2022-04-05-debezium-without-kafka-connect/msk.png" alt="MSK connect pricing on aws">
+  <img src="/blogs/2022-04-05-debezium-without-kafka-connect/msk.png" alt="MSK connect pricing on aws">
 </p>
 
 This lead to $160 for 1 source and 1 destination per month.
@@ -57,7 +57,7 @@ In short, the same features that make Debezium’s performance in streaming / hi
 Real-time change data capture is an **amazing accomplishment, and a valuable tool** to have in your toolbox, to be sure. But a racecar is not very useful on a highway, or in a school zone, and in the same way, real-time delivery of data changes is not required for every use case. A dashboard or KPI might only need to be **refreshed once a day**, or every few hours, for example. Whether it is cloud services or on-premises, resources cost money, and the challenge is to make the **most efficient use of resources** based on your requirements. Bandwidth, compute resources, or services based on throughput (such as BigQuery) are all expensive commodities, especially if they are always running.  If real-time performance is not necessary, then why waste money on resources you do not need?
 
 <p align="center">
-  <img class="zoom" src="/blogs/2022-04-05-debezium-without-kafka-connect/money.gif" alt="waste money">
+  <img src="/blogs/2022-04-05-debezium-without-kafka-connect/money.gif" alt="waste money">
 </p>
 
 Kestra is perfect for such situations and can scale performance up or down as needed from periodic updates to **near-real-time scenarios**. This functionality is possible due to the use of batch or micro-batch processing. Batch processing sends data at intervals, rather than in real-time. It is typically used when data freshness **is not a mission-critical issue**, and when you are working with large datasets and running complex algorithms that require a full dataset (sorting for example). **Micro-batch processing** is a similar process but on much smaller data sets, typically about a minute or so’s worth of data. This allows for near-real-time processing of datasets and is perfect for low-flow situations where a few minutes of delay is acceptable. In many cases, micro-batch processing and stream processing are used interchangeably in data architecture descriptions, because, depending on configuration, they can offer nearly the same performance.

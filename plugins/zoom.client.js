@@ -5,9 +5,11 @@ export default defineNuxtPlugin((nuxtApp) => {
         const zoomHandler = zoom('img.zoom:not(.medium-zoom-image)');
         const topBar = document.getElementById("top-bar");
         const fixedContainer = document.getElementById("fixed-container");
+        const navTocGlobal = document.getElementById("nav-toc-global");
         zoomHandler.on('close', event => {
             topBar.classList.remove("animation-slide-up");
             fixedContainer.classList.remove("animation-slide-right");
+            navTocGlobal?.classList.remove("animation-slide-right")
         })
 
         zoomHandler.on(
@@ -15,6 +17,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             event => {
                 topBar.classList.toggle("animation-slide-up", true);
                 fixedContainer.classList.toggle("animation-slide-right", true);
+                navTocGlobal?.classList.toggle("animation-slide-right", true);
             }
         )
     }
