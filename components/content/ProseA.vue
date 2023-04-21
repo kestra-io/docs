@@ -19,8 +19,11 @@
         const page = await queryContent(route.path).findOne()
         const routePath = route.path.replace(/\/$/, '')
         const absolutePath = config.public.siteUrl + routePath;
-        if (link.match(/(\.\.\/)+/) && page._file.includes('index.md')) {
+        if (link.match(/(\.\.\/){2,}/) && page._file.includes('index.md')) {
             link = link.replace('../', '')
+        }
+        if (link.match(/(\.\.\/){1}/) && page._file.includes('index.md')) {
+            link = link.replace('../', './')
         }
         if (link.startsWith('./')) {
             link = absolutePath + link.replace('./', '/')
