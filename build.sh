@@ -8,7 +8,7 @@ cd build || exit
 
 # plugins
 echo -e "\e[42m Doc :\e[0m Core"
-docker pull ghcr.io/kestra-io/kestra-ee:develop
+docker pull ghcr.io/kestra-io/kestra-ee:develop-full
 docker run --rm --user=0 --name kestra-docs -i \
     -v "$(pwd)"/cores/docs:/app/docs \
     ghcr.io/kestra-io/kestra-ee:develop-full \
