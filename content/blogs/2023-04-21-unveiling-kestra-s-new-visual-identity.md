@@ -1,6 +1,6 @@
 ---
 title: "Unveiling Kestra's New Visual Identity: A Symphony of Design and Innovation"
-description: As we unveil our new branding, we aim to showcase the sophistication and innovation behind our product, while maintaining a visual identity that is both intuitive and captivating. In this blog post, we will explore the story behind Kestra's logo, typography, and design elements, delving into the meaning and message they convey. Join us on this journey as we reveal the essence of our brand and how it reflects our dedication to providing the best data orchestration solution for all of our users.
+description: Delve into the essence of Kestra's captivating logo, mirroring our passion for providing state-of-the-art data orchestration solutions and a unique brand experience.
 date: 2023-04-21T11:00:00
 category: Company News
 author:
