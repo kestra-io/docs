@@ -26,7 +26,7 @@
 
     const route = useRoute()
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
-    let page = null;
+    let page;
     if (slug === "/blogs/") {
         page = await queryContent("/blogs/").find();
         useHead({
@@ -34,7 +34,6 @@
             description: "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
         })
     } else {
-        let page;
         try {
             page = await queryContent(slug).findOne();
         } catch (error) {
