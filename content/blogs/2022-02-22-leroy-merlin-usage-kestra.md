@@ -143,7 +143,7 @@ Thanks to Kestra, they moved **to full autonomy** and **reduced the time to mark
 :::
 
 ### Go Production
-<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/architecture.jpg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Kestra user interface">
+<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/architecture.jpg" class="zoom rounded img-thumbnail float-left mr-4 mb-4" alt="Kestra user interface">
 <div class="clearfix" />
 
 After a few months, **Kestra was confirmed** and was deployed to a production environment in May of 2020. They also decided to move to the Enterprise Edition of Kestra in August 2020 as they needed to have fine-grained security, role-based access control and single sign-on.
@@ -158,9 +158,9 @@ Here are some numbers that show the current usage for January 2022 ( for product
 - **3,000,000+ tasks** every month
 - **Equivalent of 2,300 days of task processing time** every month (yep, that’s the equivalent of seventy-five days of task processing every single day)
 
-<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/executions.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
-<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/taskruns.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
-<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/execution-duration.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
+<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/executions.svg" class="zoom rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
+<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/taskruns.svg" class="zoom rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
+<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/execution-duration.svg" class="zoom rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
 
 <div class="clearfix" />
 

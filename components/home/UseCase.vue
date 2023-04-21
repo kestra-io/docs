@@ -38,7 +38,7 @@
                         </ol>
                     </div>
                     <div class="col-lg-6 col-sm-12 use-case-img">
-                        <img class="img-fluid" src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
+                        <img class="zoom img-fluid" src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
                     </div>
                 </div>
 
@@ -62,7 +62,7 @@
                         </ol>
                     </div>
                     <div class="col-lg-6 col-sm-12 use-case-img">
-                        <img class="img-fluid" src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
+                        <img class="zoom img-fluid" src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
                     </div>
                 </div>
 
@@ -86,7 +86,7 @@
                         </ol>
                     </div>
                     <div class="col-lg-6 col-sm-12 use-case-img">
-                        <img class="img-fluid" src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
+                        <img class="zoom img-fluid" src="/landing/home/dashboard.png" width="600" alt="Kestra dashboard"/>
                     </div>
                 </div>
 

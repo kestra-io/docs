@@ -91,13 +91,13 @@ The Flow (DAG) executions can be analysed using the Execution section of Kestra.
 In the **Gantt chart**, we can see relevant information about the time taken for the data processing of each task in the Flow.
 
 <p style="text-align:center">
-<img src="/blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud/1.png" class="rounded img-thumbnail mt-4 mb-4" alt="Data execution in Kestra">
+<img src="/blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud/1.png" class="zoom rounded img-thumbnail mt-4 mb-4" alt="Data execution in Kestra">
 </p>
 
 In **Topology**, a sequence of tasks along with the dependencies present in the Flow can be visualised by the user to debug the tasks.
 
 <p style="text-align:center">
-<img src="/blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud/2.png" class="rounded img-thumbnail mt-4 mb-4" alt="Data lineage in Kestra">
+<img src="/blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud/2.png" class="zoom rounded img-thumbnail mt-4 mb-4" alt="Data lineage in Kestra">
 </p>
 
 All the necessary information about the flow can be accessed using the execution id. Resulting in providing Data Lineage on the flow. Also, while creating the Flow `executionId` can be accessible by <code v-pre>{{ execution.id }}</code> variable by which the user can add any execution identifier in the flow to separate out other executions. We can also inject an <code v-pre>{{ execution.id }}</code> variable in the SQL query that allows us to track the execution from where the data came from.

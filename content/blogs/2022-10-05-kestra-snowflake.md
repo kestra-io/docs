@@ -19,7 +19,7 @@ First, let's discuss Snowflake briefly.
 ### What is Snowflake?
 
 <p style="text-align:center">
-<img src="https://cdn-images-1.medium.com/max/800/0*KLr8jj4UG7HYd1DQ" class="rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
+<img src="https://cdn-images-1.medium.com/max/800/0*KLr8jj4UG7HYd1DQ" class="zoom rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
 </p>
 
 
@@ -40,7 +40,7 @@ Now, companies can build **scalable data workloads** that can perform strong dat
 ### Where does kestra fit in?
 
 <p style="text-align:center">
-<img src="/blogs/2022-10-05-kestra-snowflake/mario.jpg" class="rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
+<img src="/blogs/2022-10-05-kestra-snowflake/mario.jpg" class="zoom rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
 </p>
 
 

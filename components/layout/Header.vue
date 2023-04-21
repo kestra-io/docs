@@ -1,5 +1,5 @@
 <template>
-    <nav ref="navbar" class="navbar navbar-expand-lg sticky-top" :class="{transparent: transparentClass, open: isOpen}">
+    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg sticky-top" :class="{transparent: transparentClass, open: isOpen}">
         <div class="container-xl">
             <NuxtLink class="navbar-brand" href="/" @click="globalClick(true)">
                 <img class="icon" src="/icon.svg" alt="Kestra, Open source declarative data orchestration" />
@@ -318,6 +318,7 @@
         background: var(--bs-white);
         box-shadow: $box-shadow;
         transition: all ease 0.2s;
+        transform: translateY(0);
 
         .navbar-brand {
             img:not(.icon) {

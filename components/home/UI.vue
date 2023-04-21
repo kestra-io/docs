@@ -8,10 +8,10 @@
             >
                 <div class="row mb-5">
                     <div class="col-lg-8">
-                        <img v-if="active === 1" src="/landing/home/ui-1.png" alt="Picture of Kestra's user interface" class="img-fluid rounded-3" data-aos="fade-right" />
-                        <img v-if="active === 2" src="/landing/home/ui-2.png" alt="Picture of Kestra's user interface" class="img-fluid rounded-3" data-aos="fade-right" />
-                        <img v-if="active === 3" src="/landing/home/ui-3.png" alt="Picture of Kestra's user interface" class="img-fluid rounded-3" data-aos="fade-right" />
-                        <img v-if="active === 4" src="/landing/home/ui-4.png" alt="Picture of Kestra's user interface" class="img-fluid rounded-3" data-aos="fade-right" />
+                        <img v-if="active === 1" src="/landing/home/ui-1.png" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
+                        <img v-if="active === 2" src="/landing/home/ui-2.png" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
+                        <img v-if="active === 3" src="/landing/home/ui-3.png" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
+                        <img v-if="active === 4" src="/landing/home/ui-4.png" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
                     </div>
 
                     <div class="col-lg-4 mt-3 mt-lg-0">
