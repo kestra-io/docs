@@ -15,7 +15,7 @@ If you have any [Prometheus](https://prometheus.io/) compatible monitoring syste
 Kestra exposes some internal metrics allowing to add some alerts. Each metric declares many timeseries with tags allowing
 to track at least namespace & flow. But also some other tags depending on available tasks.
 
-Each task type can expose [custom metrics](../05.concepts/02.executions.md#metrics) that will be exposed on Prometheus.
+Each task type can expose [custom metrics](../../05.concepts/02.executions.md#metrics) that will be exposed on Prometheus.
 
 
 #### Worker
