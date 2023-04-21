@@ -20,7 +20,7 @@
                             <ChevronDown />
                         </a>
                         <ul class="dropdown-menu">
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
+                            <li>
                                 <NuxtLink class="dropdown-item" href="/features" @click="globalClick(true)">
                                     <FeatureSearch/>
                                     <p>
@@ -29,7 +29,7 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
+                            <li>
                                 <NuxtLink class="dropdown-item" href="/enterprise" @click="globalClick(true)">
                                     <Security/>
                                     <p>
@@ -43,7 +43,7 @@
 
                     <li class="nav-item">
                         <NuxtLink class="nav-link" href="/use-cases" role="button" @click="globalClick(true)">
-                            <span data-bs-toggle="collapse" data-bs-target="#main-header.show">
+                            <span>
                                 Solutions
                             </span>
                         </NuxtLink>
@@ -55,7 +55,7 @@
                             <ChevronDown />
                         </a>
                         <ul class="dropdown-menu">
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show" class="animation-slide-left">
+                            <li class="animation-slide-left">
                                 <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
                                     <PostOutline/>
                                     <p>
@@ -64,7 +64,7 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
+                            <li>
                                 <NuxtLink class="dropdown-item" href="/docs" @click="globalClick(true)">
                                     <FileDocumentOutline/>
                                     <p>
@@ -73,7 +73,7 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
+                            <li>
                                 <NuxtLink class="dropdown-item" href="/plugins" @click="globalClick(true)">
                                     <Security/>
                                     <p>
@@ -87,7 +87,7 @@
 
                     <li class="nav-item">
                         <NuxtLink class="nav-link" href="/community" @click="globalClick(true)">
-                            <span data-bs-toggle="collapse" data-bs-target="#main-header.show">
+                            <span>
                                 Community
                             </span>
                         </NuxtLink>
@@ -98,7 +98,7 @@
                             Company <ChevronDown />
                         </a>
                         <ul class="dropdown-menu">
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
+                            <li>
                                 <NuxtLink class="dropdown-item" href="/about-us" @click="globalClick(true)">
                                     <Domain/>
                                     <p>
@@ -107,7 +107,7 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
+                            <li>
                                 <NuxtLink class="dropdown-item" href="/careers" @click="globalClick(true)">
                                     <AccountStarOutline/>
                                     <p>
@@ -116,7 +116,7 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li data-bs-toggle="collapse" data-bs-target="#main-header.show">
+                            <li>
                                 <NuxtLink class="dropdown-item" href="/contact-us" @click="globalClick(true)">
                                     <Email/>
                                     <p>
@@ -131,14 +131,14 @@
 
                 <ul class="navbar-nav mb-2 mb-lg-0 nav-button">
                     <li class="nav-item">
-                        <GithubButton class="d-block d-sm-inline-block mb-1 mn-sm-0 btn-secondary btn-sm me-0 me-sm-2" data-bs-toggle="collapse" data-bs-target="#main-header.show" />
+                        <GithubButton class="d-block d-sm-inline-block mb-1 mn-sm-0 btn-secondary btn-sm me-0 me-sm-2"/>
 
                         <a class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm btn-dark me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block" target="_blank" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo">
                             <CalendarOutline /> Book a demo
                         </a>
 
                         <NuxtLink class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm me-0 me-sm-2" href="/docs/getting-started">
-                            <span data-bs-toggle="collapse" data-bs-target="#main-header.show">
+                            <span>
                                 <Flash/>
                                 Getting Started
                             </span>
