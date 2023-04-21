@@ -37,7 +37,14 @@
             required: true
         },
     })
-    const page = await queryContent(props.slug).findOne();
+
+    let page;
+    try {
+        page = await queryContent(props.slug).findOne();
+    } catch (error) {
+        throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
+    }
+
     const pageList = (await queryContent(props.type).find()).map(e => e._path);
     useContentHead(page)
 

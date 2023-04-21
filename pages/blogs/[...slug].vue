@@ -34,7 +34,13 @@
             description: "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
         })
     } else {
-        page = await queryContent(slug).findOne();
+        let page;
+        try {
+            page = await queryContent(slug).findOne();
+        } catch (error) {
+            throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
+        }
+
         useContentHead(page)
     }
 </script>
