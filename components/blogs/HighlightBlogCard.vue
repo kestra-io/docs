@@ -6,7 +6,7 @@
                     <img class="col-md-12 blog-img img-fluid" :alt="blog.image" :src="blog.image">
                 </div>
                 <div class="col-md-6 description">
-                    <span class="small-text category">News & Product Updates</span>
+                    <span class="small-text category">{{ blog.category }}</span>
                     <h3>
                         {{ blog.title }}
                     </h3>
