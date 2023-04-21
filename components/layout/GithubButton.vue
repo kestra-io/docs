@@ -1,8 +1,8 @@
 <template>
     <a class="btn" href="https://github.com/kestra-io/kestra" target="_blank" role="button">
-        <span v-bind="$attrs">
-        <Github/>
-        {{ stargazersText }} ⭐️
+        <span>
+            <Github/>
+            {{ stargazersText }} ⭐️
         </span>
     </a>
 </template>
