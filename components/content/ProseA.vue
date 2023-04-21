@@ -21,11 +21,13 @@
         const absolutePath = config.public.siteUrl + routePath;
         if (link.match(/(\.\.\/){2,}/) && page._file.includes('index.md')) {
             link = link.replace('../', '')
-        }
-        else if (link.match(/(\.\.\/){1}/) && page._file.includes('index.md')) {
+        } else if (link.match(/(\.\.\/){1}/) && page._file.includes('index.md')) {
             link = link.replace('../', '')
         }
-        if (link.startsWith('./')) {
+
+        if (link.startsWith('./') && !page._file.includes('index.md')) {
+            link = (new URL(link, absolutePath).toString());
+        } else if (link.startsWith('./')) {
             link = absolutePath + link.replace('./', '/')
         } else {
             link = (new URL(link, absolutePath).toString()).replace(config.public.siteUrl, "");

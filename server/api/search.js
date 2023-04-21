@@ -56,8 +56,6 @@ export default defineEventHandler(async(event) => {
         Object
             .values(collection)
             .forEach((value) => index.add(value));
-
-        console.log("buildind")
     }
 
     const around = 50;
