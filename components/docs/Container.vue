@@ -12,8 +12,12 @@
                 <NavToc :page="page"/>
 
                 <div class="bd-content ps-lg-2">
-                    <ContentRendererMarkdown class="bd-markdown" :value="page" data-bs-spy="scroll"
-                                             data-bs-target="#nav-toc"/>
+                    <ContentRendererMarkdown
+                        class="bd-markdown"
+                        :value="page"
+                        data-bs-spy="scroll"
+                        data-bs-target="#nav-toc"
+                    />
                     <PrevNext/>
                 </div>
             </ContentRenderer>
