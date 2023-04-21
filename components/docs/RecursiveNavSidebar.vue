@@ -9,10 +9,10 @@
         <div v-if="depthLevel === 1 && type === 'docs'">
             <ul class="bd-links-nav list-unstyled mb-0">
                 <li class="depth-1 bd-links-group">
-                    <a href="/docs" :class="activeSlug === '/docs' || activeSlug === '/docs/' ? 'active' : ''" class="bd-links-link d-inline-block">
+                    <NuxtLink href="/docs" :class="activeSlug === '/docs' || activeSlug === '/docs/' ? 'active' : ''" class="bd-links-link d-inline-block">
                         <span class="bold">
                             👁️‍🗨️ Overview</span>
-                        </a>
+                        </NuxtLink>
                     </li>
                 </ul>
         </div>
