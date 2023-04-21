@@ -7,13 +7,18 @@
             <div class="row">
                 <div class="col-md-4">
                     <TestimonialsItem :item="testimonialData[0]" data-aos="fade-left" />
+                    <TestimonialsItem :item="testimonialData[1]" data-aos="fade-left" />
+                    <TestimonialsItem :item="testimonialData[2]" data-aos="fade-left" />
                 </div>
                 <div class="col-md-4">
-                    <TestimonialsItem :item="testimonialData[1]" data-aos="zoom-in" />
-                    <TestimonialsItem :item="testimonialData[2]" data-aos="zoom-in" />
+                    <TestimonialsItem :item="testimonialData[4]" data-aos="zoom-in" />
+                    <TestimonialsItem :item="testimonialData[5]" data-aos="zoom-in" />
+                    <TestimonialsItem :item="testimonialData[6]" data-aos="zoom-in" />
                 </div>
                 <div class="col-md-4">
-                    <TestimonialsItem :item="testimonialData[3]" data-aos="fade-right" />
+                    <TestimonialsItem :item="testimonialData[7]" data-aos="fade-right" />
+                    <TestimonialsItem :item="testimonialData[8]" data-aos="fade-right" />
+                    <TestimonialsItem :item="testimonialData[9]" data-aos="fade-right" />
                 </div>
             </div>
 
@@ -31,41 +36,84 @@
             return {
                 testimonialData: [
                     {
-                        profile: "/landing/home/testimonials/alex.jpg",
-                        message: "Kestra is a product designed to facilitate the work of Ops & Data Engineers! The possibilities offered by the application are exponential, thanks to the many plugins that come out regularly.\n" +
-                            "Whatever the size of the organization that implements this solution, it has all the latitude to decide to keep control of its production plan or to leave sufficient autonomy to its employees to carry out their processing operations.\n" +
-                            "This application is really capable of supporting the growth of the company thanks to a complete and controlled scalability!",
-                        name: "Alexandre Millet-Bassez",
-                        link: "https://www.linkedin.com/in/alexandre-m-618399103/",
-                        designation: "Ntico",
-                        alt: "Picture of Alex testimony",
+                        profile: "/landing/home/testimonials/julien.jpeg",
+                        message: "Kestra is the unifying layer for our data and workflows.You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
+                        name: "Julien Henrion",
+                        link: "https://www.linkedin.com/in/julien-henrion-b007b416/",
+                        designation: "Head of Data Engineering @ Leroy Merlin",
+                        alt: "Picture of Julien testimony",
                     },
                     {
                         profile: "/landing/home/testimonials/fares.jpeg",
-                        message: "It's been great. Easy to use and very powerful, it does everything I need, and orchestrating flows has never been easier. It has also become such an integral part of our work thanks to a good documentation to help quickly gain technical knowledge.",
+                        message: "Easy to use and very powerful, it does everything I need, and orchestrating flows has never been easier.",
                         name: "Fares Daoud",
                         link: "https://www.linkedin.com/in/faresdaoudofficiel/",
-                        designation: "Logic@l Conseils",
+                        designation: "Senior Data Engineer @ Decathlon",
                         alt: "Picture of Fares testimony",
                     },
                     {
+                        profile: "/landing/home/testimonials/simonb.jpeg",
+                        message: "In less than a month, with no previous experience in data orchestration, I felt autonomous with my data flows and could collaborate with my teammates. Kestra had become a total necessity for me.",
+                        name: "Simon Barbier",
+                        link: "https://www.linkedin.com/in/simon-barbier-4b97a5192/",
+                        designation: "Data Engineer @ Leroy Merlin",
+                        alt: "Picture of Simon testimony",
+                    },
+                    {
                         profile: "/landing/home/testimonials/mourad.jpg",
-                        message: "Kestra is very easy to learn, with a large number of features covering a large number of use cases (scheduled workflows, API calls, triggers, flow synchronization, data and file transfers, etc.).\n"+
-                            "The Web interface facilitates the monitoring of flows and log consolidation.\n"+
-                            "New features are added very regularly in response to need. Kestra is evolving rapidly.",
+                        message: "Kestra is an easy-to-learn, feature-rich platform for a wide variety of use cases. Its web interface simplifies flows and logs monitoring.",
                         name: "Mourad Bouloussa",
                         link: "https://www.linkedin.com/in/mourad-bouloussa-541146191/",
-                        designation: "Sopra Steria",
+                        designation: "Senior Data Engineer @ Sopra Steria",
                         alt: "Picture of Mourad testimony",
                     },
                     {
+                        profile: "/landing/home/testimonials/michael.jpeg",
+                        message: "I’ve spent a huge part of my career looking for a solution that handle huge data sets for semi-technicals users and Kestra is the first exciting thing i’ve seen in a long time.",
+                        name: "Michael Reynolds",
+                        link: "https://www.linkedin.com/in/michael-reynolds-a0a32a28/",
+                        designation: "Lead Research Engineer @ Two Six Labs",
+                        alt: "Picture of Michael testimony",
+                    },
+                    {
+                        profile: "/landing/home/testimonials/yohann.jpeg",
+                        message: "I enjoy the overall robustness of Kestra, which allows for processing data at scale in cloud environments and ensures the reproducibility of processes. Its strong observability, ease of development, and flexibility make it a versatile solution for managing data pipelines, including those in the field of genomics.",
+                        name: "Yohann Nédélec",
+                        link: "https://www.linkedin.com/in/yohann-n%C3%A9d%C3%A9lec-9b367685/",
+                        designation: "Tech Lead, Bioinformatician",
+                        alt: "Picture of Alex testimony",
+                    },
+                    {
+                        profile: "/landing/home/testimonials/simonr.jpeg",
+                        message: "Kestra helped us simplify our data flows with and allowed us to improve developer productivity, code quality and computing costs using a template-based approach.",
+                        name: "Simon Richelle",
+                        link: "https://www.linkedin.com/in/richellesimon/",
+                        designation: "Tech Lead Data @ Leroy Merlin",
+                        alt: "Picture of Simon testimony",
+                    },
+                    {
                         profile: "/landing/home/testimonials/ousama.jpg",
-                        message: "The product allows you to build almost anything you want. You can also integrate different types of data (csv, json, txt, Avro) from SFTP server, google bucket, google drive, JDBC database (PostgreSQL, Oracle). The system of tasks is easy to manipulate/use and offers maximum flexibility in development.\n" +
-                            "The tool meets the needs perfectly; it’s very simple to use and manages all the complexities behind it to offer a huge saving in time and cost.",
+                        message: "Kestra meet the need perfectly, it’s very simple to use and manage the complexities behind it to offer  a huge saving in time and costs.",
                         name: "Oussama Bakkali",
                         link: "https://www.linkedin.com/in/oussama-bakkali-949708b6/",
-                        designation: "Umanis",
+                        designation: "Data Engineer DevOps @ ADEO Services",
                         alt: "Picture of Ousama testimony",
+                    },
+                    {
+                        profile: "/landing/home/testimonials/alex.jpg",
+                        message: "Kestra is really capable of supporting the growth of the company thanks to a complete and controlled scalability!",
+                        name: "Alexandre Millet-Bassez",
+                        link: "https://www.linkedin.com/in/alexandre-m-618399103/",
+                        designation: "Product Owner @ Ntico",
+                        alt: "Picture of Alex testimony",
+                    },
+                    {
+                        profile: "/landing/home/testimonials/patrick.jpeg",
+                        message: "The exceptional pre-sales support and commitment to providing a high-performance product have laid the foundation for a great partnership.",
+                        name: "Patrick Ferreira",
+                        link: "https://www.linkedin.com/in/simon-barbier-4b97a5192/",
+                        designation: "Product Manager @ CleverConnect",
+                        alt: "Picture of Patrick testimony",
                     }
                 ],
             };
