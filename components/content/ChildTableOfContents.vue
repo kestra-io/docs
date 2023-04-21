@@ -1,14 +1,10 @@
 <script>
     import {hash} from "ohash";
-    import {useAsyncData, fetchContentNavigation, useContent} from "#imports";
+    import {useAsyncData, fetchContentNavigation} from "#imports";
     import {NuxtLink} from "#components";
 
     export default defineComponent({
         props: {
-            header: {
-                type: Boolean,
-                default: false
-            },
             pageUrl: {
                 type: String,
                 default: undefined
@@ -19,7 +15,7 @@
             },
         },
         async setup(props) {
-            const {header, pageUrl, max} = toRefs(props);
+            const {pageUrl, max} = toRefs(props);
             const route = useRoute()
             const {navDirFromPath} = useContentHelpers()
 
@@ -28,7 +24,6 @@
             if (pageUrl.value) {
                 currentPage = pageUrl.value;
             } else {
-                const route = useRoute()
                 currentPage = route.path;
             }
 
@@ -43,7 +38,7 @@
             const dir = (navDirFromPath(routePath, navigation.value) || [])
                 .filter(value => value._path !== currentPage)
 
-            return {dir, max, header};
+            return {dir, max};
         },
 
         render(ctx) {
@@ -51,6 +46,7 @@
             const {dir, max} = ctx;
 
             const renderLink = (link) => h(NuxtLink, {to: link._path}, () => link.title);
+
 
             const renderLinks = (data, level) => {
                 return h(
