@@ -9,7 +9,7 @@
             </div>
             <div class="row mb-5">
                 <div class="col-md-6">
-                    <img class="img-fluid" src="/landing/usecases/cdc-feature-1.png" alt="Diagram illustrating Kestra's Change Data Capture process, with PostgreSQL for databases, Apache Kafka for streaming data, and Apache Spark for analytics processing" />
+                    <img class="img-fluid" src="/landing/usecases/cdc-feature-1.svg" alt="Diagram illustrating Kestra's Change Data Capture process, with PostgreSQL for databases, Apache Kafka for streaming data, and Apache Spark for analytics processing" />
                 </div>
                 <div class="col-md-6 p-5">
                     <h5>CDC Implementation for Seamless Data Synchronization</h5>
@@ -30,13 +30,13 @@
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <img class="img-fluid" src="/landing/usecases/cdc-feature-2.png" alt="Picture of tasks possible with Kestra Change Data capture like data transformation, filtering, and aggregation" />
+                    <img class="img-fluid" src="/landing/usecases/cdc-feature-2.svg" alt="Picture of tasks possible with Kestra Change Data capture like data transformation, filtering, and aggregation" />
                 </div>
             </div>
 
             <div class="row mb-5">
                 <div class="col-md-6">
-                    <img class="img-fluid" src="/landing/usecases/cdc-feature-3.png" alt="Illustration showing Kestra's event-driven triggers that initiate workflows automatically upon data changes, such as inserting a new customer record into the PostgreSQL database" />
+                    <img class="img-fluid" src="/landing/usecases/cdc-feature-3.svg" alt="Illustration showing Kestra's event-driven triggers that initiate workflows automatically upon data changes, such as inserting a new customer record into the PostgreSQL database" />
                 </div>
                 <div class="col-md-6 p-5">
                     <h5>Event-Driven Triggers for Automatic Workflow Initiation</h5>
@@ -57,7 +57,7 @@
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <img class="img-fluid" src="/landing/usecases/cdc-feature-4.png" alt="Image depicting Kestra's extensive integration capabilities, with logos of AWS, Fivetran, and Airbyte " />
+                    <img class="img-fluid" src="/landing/usecases/cdc-feature-4.svg" alt="Image depicting Kestra's extensive integration capabilities, with logos of AWS, Fivetran, and Airbyte " />
                 </div>
             </div>
         </Section>
