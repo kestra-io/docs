@@ -1,9 +1,9 @@
 <template>
     <div class="text-end mt-3 mb-3">
-        <NuxtLink class="btn btn-outline-primary" :href="href">
+        <div class="btn btn-outline-primary">
             <ChevronRight />
             <slot />
-        </NuxtLink>
+        </div>
     </div>
 </template>
 
@@ -13,12 +13,7 @@
 
 <script>
     export default {
-        props: {
-            href: {
-                type: String,
-                required: true
-            },
-        },
+
     }
 </script>
 
@@ -26,6 +21,12 @@
     @import "../../assets/styles/_variable.scss";
 
     div {
+        &:hover {
+            :deep(a), :deep(a:hover) {
+                color: var(--bs-white) !important;
+            }
+        }
+
         :deep(p) {
             display: inline;
             margin-bottom: 0 !important;
