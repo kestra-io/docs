@@ -30,6 +30,10 @@ export default defineNuxtConfig({
             ]
         }
     },
+    css: [
+        '@/assets/styles/vendor.scss',
+        '@/assets/styles/app.scss'
+    ],
     content: {
         documentDriven: false,
         highlight: {
