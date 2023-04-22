@@ -91,6 +91,7 @@ export default defineNuxtConfig({
     },
     // if using nuxt generate
     nitro: {
+        compressPublicAssets: true,
         prerender: {
             routes: ['/rss.xml'],
         },
