@@ -12,26 +12,27 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/content": "github:kestra-io/nuxt-content",
     "aos": "^2.3.4",
     "axios": "^1.3.5",
     "bootstrap": "5.3.0-alpha3",
     "dayjs": "^1.11.7",
-    "nuxt-simple-sitemap": "^2.4.11",
     "rapidoc": "^9.3.4",
-    "remark-code-import": "file:./utils/remark-code-import",
-    "remark-flexible-markers": "^1.0.2",
-    "rss": "^1.2.2",
-    "sass": "^1.62.0",
     "vue-material-design-icons": "^5.2.0",
     "vue3-count-to": "^1.1.2"
   },
   "devDependencies": {
+    "@nuxt/content": "github:kestra-io/nuxt-content",
     "@nuxt/devtools": "^0.4.0",
     "@nuxt/image": "^0.7.1",
     "flexsearch": "^0.7.31",
     "highlight-words-core": "^1.2.2",
     "nuxt": "^3.4.0",
-    "nuxt-gtag": "^0.5.4"
+    "nuxt-gtag": "^0.5.4",
+    "nuxt-simple-sitemap": "^2.4.11",
+    "nuxt-multi-cache": "^3.0.0-beta0",
+    "remark-code-import": "file:./utils/remark-code-import",
+    "remark-flexible-markers": "^1.0.2",
+    "rss": "^1.2.2",
+    "sass": "^1.62.0"
   }
 }

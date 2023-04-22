@@ -2,21 +2,21 @@
     <a class="btn" href="https://github.com/kestra-io/kestra" target="_blank" role="button">
         <span>
             <Github/>
-            {{ stargazersText }} ⭐️
+            &nbsp;
+            <ClientOnly>
+                <template v-slot:fallback>
+                    <span class="placeholder" style="width: 60px"></span>
+                </template>
+                <LayoutGithubStargazer />
+            </ClientOnly>
         </span>
     </a>
 </template>
 
 <script>
-import Github from "vue-material-design-icons/Github.vue"
+    import Github from "vue-material-design-icons/Github.vue"
 
-export default defineComponent({
-    components: {Github},
-    async setup() {
-        const {data} = await useFetch('/api/github')
-        const stargazersText = Intl.NumberFormat('en-US').format(data.value.stargazers);
-
-        return {stargazersText};
-    },
-});
+    export default {
+        components: {Github},
+    };
 </script>

@@ -5,6 +5,7 @@ export default defineNuxtConfig({
         '@nuxt/content',
         'nuxt-gtag',
         'nuxt-simple-sitemap',
+        'nuxt-multi-cache'
     ],
     app: {
         baseURL: "/",
@@ -106,5 +107,10 @@ export default defineNuxtConfig({
     },
     build: {
         transpile: ['vue3-count-to']
+    },
+    multiCache: {
+        data: {
+            enabled: true,
+        }
     }
 })
