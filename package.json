@@ -19,6 +19,7 @@
     "medium-zoom": "^1.0.8",
     "nuxt-simple-sitemap": "^2.4.11",
     "rapidoc": "^9.3.4",
+    "vanilla-cookieconsent": "^2.8.9",
     "vue-material-design-icons": "^5.2.0",
     "vue3-count-to": "^1.1.2"
   },
