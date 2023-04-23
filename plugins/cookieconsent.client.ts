@@ -1,5 +1,5 @@
 
-import 'vanilla-cookieconsent/src/cookieconsent.js'
+import 'vanilla-cookieconsent'
 
 export default defineNuxtPlugin(nuxtApp => {
 

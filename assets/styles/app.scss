@@ -267,3 +267,11 @@ blockquote.blockquote {
     --cc-overlay-opacity: .5;
     --cc-consent-modal-box-shadow: var(--bs-box-shadow-lg);
 }
+
+.medium-zoom-overlay {
+    z-index: $zindex-modal+1;
+}
+
+.medium-zoom-image--opened {
+    z-index: $zindex-modal+2;
+}
