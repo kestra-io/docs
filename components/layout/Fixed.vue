@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed-container text-right">
+    <div id="fixed-container" class="text-right">
         <div class="text-right">
             <Transition>
             <div @click="backToTop" v-if="yScroll > 200" class="top-arrow inline-block">
@@ -49,11 +49,13 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
 
-.fixed-container {
+#fixed-container {
     position: fixed;
     z-index: 9999;
     bottom: 10px;
     right: 10px;
+    transform: translateX(0);
+    transition: all ease 0.2s;
 
     @include media-breakpoint-down("md") {
         display: none;

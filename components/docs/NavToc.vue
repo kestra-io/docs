@@ -1,5 +1,5 @@
 <template>
-    <div class="bd-toc mb-4 text-body-secondary">
+    <div id="nav-toc-global" class="bd-toc mb-4 text-body-secondary">
         <template v-if="generated.length > 0">
             <button
                 class="btn d-lg-none"
@@ -101,6 +101,8 @@
     @import "../../assets/styles/variable";
 
     .bd-toc {
+        transition: all ease 0.2s;
+        transform: translateX(0);
         @include media-breakpoint-up(lg) {
             position: sticky;
             top: 5rem;

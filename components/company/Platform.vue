@@ -12,7 +12,7 @@
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <img class="img-fluid" src="/landing/company/ui.png" alt="Picture of the user interface of Kestra on light mode"/>
+                    <img class="zoom img-fluid" src="/landing/company/ui.png" alt="Picture of the user interface of Kestra on light mode"/>
                 </div>
             </div>
         </div>

@@ -228,3 +228,19 @@ blockquote.blockquote {
     animation-fill-mode: backwards;
     animation-name: slide-in;
 }
+
+.animation-slide-up{
+    top: 0 !important;
+    box-shadow: none !important;
+    transform: translateY(-300%) !important;
+
+    * {
+        padding-bottom: 0;
+    }
+}
+
+.animation-slide-right{
+    right: 0 !important;
+    box-shadow: none !important;
+    transform: translateX(300%) !important;
+}
