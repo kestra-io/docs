@@ -244,3 +244,26 @@ blockquote.blockquote {
     box-shadow: none !important;
     transform: translateX(300%) !important;
 }
+
+:root{
+    --cc-font-family: var(--bs-body-font-family);
+    --cc-bg: var(--bs-body-bg);
+    --cc-z-index: 2147483647;
+    --cc-text: var(--bs-body-color);
+    --cc-border-radius: var(--bs-border-radius-lg);
+    --cc-btn-primary-bg: var(--bs-primary);
+    --cc-btn-primary-hover-bg: var(--bs-primary-text-emphasis);
+    --cc-btn-secondary-bg: var(--bs-gray-300);
+    --cc-btn-secondary-text: var(--bs-body-color);
+    --cc-btn-secondary-hover-bg: var(--bs-gray-400);
+    --cc-btn-border-radius: var(--bs-border-radius);
+    --cc-toggle-bg-off: var(--bs-gray-600);
+    --cc-toggle-bg-readonly: var(--bs-gray-300);
+    --cc-cookie-category-block-bg: var(--bs-gray-200);
+    --cc-cookie-category-block-bg-hover: var(--bs-gray-300);
+    --cc-section-border: var(--bs-border-color);
+    --cc-cookie-table-border: var(--bs-border-color);
+    --cc-overlay-bg: var(--bs-black);
+    --cc-overlay-opacity: .5;
+    --cc-consent-modal-box-shadow: var(--bs-box-shadow-lg);
+}

@@ -1,4 +1,4 @@
-import 'vanilla-cookieconsent/dist/cookieconsent.css'
+
 import 'vanilla-cookieconsent/src/cookieconsent.js'
 
 export default defineNuxtPlugin(nuxtApp => {
@@ -13,10 +13,10 @@ export default defineNuxtPlugin(nuxtApp => {
             page_scripts: true,
             force_consent: true,
 
-            onAccept: function (cookie) {
+            onAccept: () => {
                 if(cookieConsent.allowedCategory('analytics')) {
                     useGtagConsent(true);
-                    if(cookieConsent.allowedCategory('marketing')){
+                    if (cookieConsent.allowedCategory('marketing')) {
                         cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
                     }
                 }
@@ -34,7 +34,7 @@ export default defineNuxtPlugin(nuxtApp => {
                         secondary_btn: {
                             text: 'Settings',
                             role: 'settings'                // 'settings' or 'accept_necessary'
-                        }
+                        },
                     },
                     settings_modal: {
                         title: 'Cookie preferences',
