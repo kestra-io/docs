@@ -11,14 +11,22 @@
         href: {
             type: String,
             default: ''
+        },
+        target: {
+            type: String,
+            default: undefined
         }
     })
     let link = props.href
+    let target = props.target || (link.startsWith("http") ? "_blank" : undefined);
+
+
     // if path is relative
     if (link.match(/(\.+\/)+/)) {
         const page = await queryContent(route.path).findOne()
         const routePath = route.path.replace(/\/$/, '')
         const absolutePath = config.public.siteUrl + routePath;
+
         if (link.match(/(\.\.\/){2,}/) && page._file.includes('index.md')) {
             link = link.replace('../', '')
         } else if (link.match(/(\.\.\/){1}/) && page._file.includes('index.md')) {
@@ -30,32 +38,14 @@
         } else if (link.startsWith('./')) {
             link = absolutePath + link.replace('./', '/')
         } else {
-            link = (new URL(link, absolutePath).toString()).replace(config.public.siteUrl, "");
+            link = (new URL(link, absolutePath).toString())
         }
+
         if (link.endsWith('/')) {
             link = link.replace(/\/$/, '')
         }
+
         link = link.replace(config.public.siteUrl, '')
     }
 
-</script>
-<script>
-    export default {
-        props: {
-            href: {
-                type: String,
-                default: ''
-            },
-            target: {
-                type: String,
-                default: undefined,
-                required: false
-            }
-        },
-        computed: {
-            hrefGenerated() {
-                return this.href;
-            },
-        },
-    }
 </script>
