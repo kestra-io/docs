@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import 'rapidoc';
+
     export default {
 
     }
@@ -25,5 +25,5 @@
         background: transparent;
         width: 100%;
     }
-    
+
 </style>

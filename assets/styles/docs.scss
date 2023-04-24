@@ -74,6 +74,15 @@ $bd-gutter-x: 3rem;
 
         .bd-content {
             max-width: none;
+            width: 100%;
+        }
+
+        h1 {
+            margin: 0;
+
+            @include media-breakpoint-up(xxl) {
+                margin-left: 3.5rem;
+            }
         }
     }
 }
