@@ -1,14 +1,14 @@
 <template>
     <div class="container">
         <Section
-            title="Prompt shipping"
+            title="Save on time, stress, and development costs."
             subtitle="FEATURES"
             baseline="Save on time, stress, and development costs."
         >
 
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <CloudUploadOutline />
@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <GoogleCirclesExtended />
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <AutoUpload />

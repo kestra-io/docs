@@ -2,8 +2,8 @@
     <div class="container">
         <Section subtitle="Centralized Data Control for Improved Efficiency" title="Data at Heart with Internal Storage">
             <div class="row card-group card-centered mb-2">
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><LightbulbOutline /></span>
                             <h4 class="card-title">Abstraction of Files</h4>
@@ -12,8 +12,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><Lifebuoy /></span>
                             <h4 class="card-title">Stateless Servers</h4>
@@ -22,8 +22,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><PhonePlus /></span>
                             <h4 class="card-title">Metadata Storage</h4>
@@ -32,8 +32,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CodeTags /></span>
                             <h4 class="card-title">Strongly Typed</h4>
@@ -42,8 +42,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><DeveloperBoard /></span>
                             <h4 class="card-title">Amazon Ion Integration</h4>
@@ -52,8 +52,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><ContentDuplicate /></span>
                             <h4 class="card-title">Communication Between Tasks</h4>
@@ -62,8 +62,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><BellOutline /></span>
                             <h4 class="card-title">Task Switch flexibility</h4>

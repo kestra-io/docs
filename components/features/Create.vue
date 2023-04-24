@@ -2,8 +2,8 @@
     <div class="container">
         <Section subtitle="Seamless Workflow Design and Management" title="Create your Flows, Avoid the Headache">
             <div class="row card-group card-centered mb-2">
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><LightbulbOutline /></span>
                             <h4 class="card-title">Simplicity</h4>
@@ -12,8 +12,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><HelpBoxOutline /></span>
                             <h4 class="card-title">Helpful</h4>
@@ -22,8 +22,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><Translate /></span>
                             <h4 class="card-title">Allow other programming languages</h4>
@@ -32,8 +32,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CodeBracesBox /></span>
                             <h4 class="card-title">Use workflows as code</h4>
@@ -42,8 +42,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CalculatorVariantOutline /></span>
                             <h4 class="card-title">File processing capabilities</h4>
@@ -52,8 +52,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><FileMultiple /></span>
                             <h4 class="card-title">Versioning</h4>
@@ -62,8 +62,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><ContentCopy /></span>
                             <h4 class="card-title">Reusability</h4>
@@ -72,8 +72,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CheckAll /></span>
                             <h4 class="card-title">Data validation</h4>
@@ -82,8 +82,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><OpenInApp /></span>
                             <h4 class="card-title">UI testing</h4>
@@ -92,8 +92,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><ShieldBugOutline /></span>
                             <h4 class="card-title">Debugging</h4>
@@ -103,8 +103,8 @@
                 </div>
 
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CloudArrowUpOutline /></span>
                             <h4 class="card-title">No more deployment complexity</h4>

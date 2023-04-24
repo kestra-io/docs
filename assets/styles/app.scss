@@ -31,6 +31,11 @@ h2 {
     font-weight: 800
 }
 
+
+main > .container, main > .container-fluid{
+    overflow: hidden;
+}
+
 // bootstrap
 table.table {
     thead {
@@ -130,10 +135,26 @@ blockquote.blockquote {
         background: url("/landing/shadow.svg") no-repeat center center;
         justify-content: center;
 
+        @include media-breakpoint-down(xl) {
+            background-size: contain;
+        }
+
+        @include media-breakpoint-down(lg) {
+            background: none;
+        }
+
+        .card-title {
+            font-size: $font-size-lg;
+        }
+
         .card-icon {
             display: block;
             float: none;
             margin: 0 auto $spacer;
+
+            .material-design-icon {
+                margin-top: 5px;
+            }
         }
     }
 
@@ -146,14 +167,14 @@ blockquote.blockquote {
     border-color: transparent;
 
     .card-icon {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         background-color: $primary;
         border-radius: $border-radius-lg;
         color: var(--bs-white);
         text-align: center;
         display: flex;
-        font-size: 2.5rem;
+        font-size: 2rem;
         float: left;
         margin-right: $spacer;
         align-items: center;

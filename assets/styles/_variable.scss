@@ -13,7 +13,6 @@ $gray-800: #2c3652;
 $gray-900: #1d2c48;
 $black: #26282D;
 
-
 $blue: #1761FD;
 $indigo: #8405FF;
 $purple: #9F9DFF;
@@ -26,6 +25,30 @@ $teal: #03D87F;
 $cyan: #60C5FE;
 $light-cyan: #E6F6F6;
 
+$primary: $primary;
+$secondary: $secondary;
+$success: $green;
+$info: $cyan;
+$warning: $yellow;
+$danger: $red;
+$light: $gray-100;
+$dark: $gray-900;
+
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark,
+    "indigo": $indigo,
+    "purple": $purple,
+    "pink": $pink,
+    "orange": $orange,
+    "teal": $teal,
+);
 
 $font-family-sans-serif: "Public Sans", sans-serif;
 $font-family-monospace: "Source Code Pro", monospace;

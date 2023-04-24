@@ -2,8 +2,8 @@
     <div class="container">
         <Section subtitle="Accelerate Development and Deployment" title="Build Faster, Ship Better">
             <div class="row card-group card-centered mb-2">
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CloudArrowUpOutline /></span>
                             <h4 class="card-title">CI/CD Deployment</h4>
@@ -12,8 +12,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><ViewDashboardVariantOutline /></span>
                             <h4 class="card-title">Production made easy, no more production plan</h4>
@@ -22,8 +22,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CalendarStartOutline /></span>
                             <h4 class="card-title">Event-Based</h4>
@@ -32,8 +32,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><ClockStart /></span>
                             <h4 class="card-title">Infinity of triggers</h4>
@@ -42,8 +42,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><MonitorDashboard /></span>
                             <h4 class="card-title">Monitoring</h4>
@@ -52,8 +52,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><RefreshAuto /></span>
                             <h4 class="card-title">Error Handling</h4>
@@ -62,8 +62,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><BellOutline /></span>
                             <h4 class="card-title">Notifications</h4>
@@ -72,8 +72,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CalculatorVariantOutline /></span>
                             <h4 class="card-title">Large Data Processing</h4>
@@ -82,8 +82,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><ViewStreamOutline /></span>
                             <h4 class="card-title">Micro-Batch for Real-Time</h4>
@@ -92,8 +92,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CloudOutline /></span>
                             <h4 class="card-title">No single point of failure</h4>
@@ -102,8 +102,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-4">
-                    <div class="card">
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><OneUp /></span>
                             <h4 class="card-title">Performance Gains</h4>

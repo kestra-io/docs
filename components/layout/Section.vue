@@ -4,7 +4,7 @@
             <p>{{ subtitle }}</p>
         </div>
         <h2 data-aos="fade-left">{{ title }}</h2>
-        <p v-if="baseline" class="baseline p-5" data-aos="fade-right">
+        <p v-if="baseline" class="baseline" data-aos="fade-right">
             {{ baseline }}
         </p>
         <div class="main">
@@ -38,7 +38,6 @@
 
     section {
         padding: calc($spacer * 4) 0;
-        overflow: hidden;
 
         &.with-shadow {
             text-align: center;
