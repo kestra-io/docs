@@ -6,40 +6,35 @@
         :class="activeSlug.includes(parentSlug) ? 'collapse show' : 'collapse'"
     >
         <!-- Add the index statically to avoid having sub-nav for it-->
-        <div v-if="depthLevel === 1 && type === 'docs'">
-            <ul class="bd-links-nav list-unstyled mb-0">
-                <li class="depth-1 bd-links-group">
-                    <NuxtLink href="/docs" :class="activeSlug === '/docs' || activeSlug === '/docs/' ? 'active' : ''" class="bd-links-link d-inline-block">
-                        <span class="bold">
-                            👁️‍🗨️ Overview</span>
-                        </NuxtLink>
-                    </li>
-                </ul>
-        </div>
-        <div v-for="item in items">
-            <ul class="bd-links-nav list-unstyled mb-0">
-                <li :class="{['depth-' + depthLevel]: true}" class="bd-links-group">
+        <template v-if="depthLevel === 1 && type === 'docs'">
+            <ul class="list-unstyled mb-0">
+                <li class="depth-1">
+                    <NuxtLink href="/docs" class="bold" :class="activeSlug === '/docs' || activeSlug === '/docs/' ? 'active' : ''"
+                    >
+                            👁️‍🗨️ Overview
+                    </NuxtLink>
+                </li>
+            </ul>
+        </template>
+        <template v-for="item in items">
+            <ul class="list-unstyled mb-0">
+                <li :class="{['depth-' + depthLevel]: true}" >
                     <NuxtLink
                         v-if="isPage(item)"
-                        :class="activeSlug.startsWith(item._path) ? 'active' : ''"
-                        class="bd-links-link d-inline-block"
+                        :class="getClass(item, depthLevel, false)"
                         :href="item._path">
-                        <span :class="depthLevel === 1 ? 'bold' : ''">
-                            <span>{{ item.emoji }}</span>
+                           {{ item.emoji }}
                             {{ item.title }}
-                        </span>
                     </NuxtLink>
                     <NuxtLink
                         v-else
-                        :class="activeSlug.startsWith(item._path) ? 'active disabled' : ''"
-                        class="bd-links-link d-inline-block disabled"
+                        :class="getClass(item, depthLevel, true)"
+                        class="disabled"
                         @click="toggle(item._path, isPage(item))" data-bs-toggle="collapse"
                         :data-bs-target="'#'+item._path"
                     >
-                        <span :class="depthLevel === 1 ? 'bold' : ''">
-                            <span>{{ item.emoji }}</span>
+                            {{ item.emoji }}
                             {{ item.title }}
-                        </span>
                     </NuxtLink>
                     <template v-if="filterChildren(item).length > 0">
                         <chevron-up
@@ -68,7 +63,7 @@
                     :page-list="pageList.filter(e => e.startsWith(item._path))"
                 />
             </ul>
-        </div>
+        </template>
     </div>
 </template>
 
@@ -134,6 +129,13 @@
             },
             isPage(item) {
                 return this.pageList.includes(item._path)
+            },
+            getClass(item, depthLevel, disabled) {
+                return {
+                    bold: depthLevel === 1,
+                    active: this.activeSlug.startsWith(item._path),
+                    disabled: this.activeSlug.startsWith(item._path) && disabled
+                }
             }
         }
     }
