@@ -3,14 +3,14 @@
         <Section
             title="Begin Your Kestra Adventure"
         >
-        <p class="text-center">
+        <p class="text-center" data-aos="fade-right">
             Start building with Kestra and enjoy your pipelines — the only limit is your imagination!
         </p>
-        <div class="text-center cta">
-                <NuxtLink href="/docs" target="_blank" class="btn btn-lg btn-primary me-2 mb-2">
+        <div class="text-center cta mt-5">
+                <NuxtLink href="/docs" target="_blank" class="btn btn-lg btn-primary me-2 mb-2" data-aos="zoom-in">
                     Read the docs
                 </NuxtLink>
-                <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-secondary mb-2">
+                <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-secondary mb-2" data-aos="zoom-in">
                     Get started
                 </NuxtLink>
             </div>

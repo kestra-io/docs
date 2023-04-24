@@ -6,8 +6,9 @@
         >
             <div v-if="contributors" class="contributors">
                 <template v-for="(contributor) in contributorsRand">
-                    <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
+                    <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark" data-aos="zoom-in" >
                         <img
+                            class="rounded-circle"
                             :src="contributor.avatar"
                             :alt="contributor.username"
                         />

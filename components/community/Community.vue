@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-6 text-right">
                     <img data-aos="fade-left" src="/landing/community/contributors.png" class="mb-5 img-fluid"/>
-                    <h3 data-aos="fade-left">Kestra is built by the open-source community</h3>
+                    <h2 data-aos="fade-left">Kestra is built by the open-source community</h2>
                     <p data-aos="fade-right">
                         Inspire and get inspired. Join our community of maintainers and contributors and help us make
                         Kestra better!
@@ -63,7 +63,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container text-center community-links">
+            <div class="container text-center community-links mb-3">
                 <a href="https://github.com/kestra-io/kestra" data-aos="zoom-in" class="btn btn-lg btn-dark mt-2 mx-2">Follow on GitHub</a>
                 <a href="https://github.com/kestra-io/kestra/issues" data-aos="zoom-in" class="btn btn-lg btn-primary mt-2">Find Open Issues</a>
             </div>

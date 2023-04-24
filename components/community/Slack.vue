@@ -14,7 +14,7 @@
         >
             <div class="row card-group card-centered no-shadow mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="fade-left">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <TooltipQuestion />
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="fade-right">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <HandWave />
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card"  data-aos="fade-left">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <MessageAlert />
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="text-center ">
-                <a href="https://kestra.io/slack" class="btn btn-lg btn-primary me-2" target="_blank">
+                <a href="https://kestra.io/slack" class="btn btn-lg btn-primary me-2" target="_blank"  data-aos="zoom-in">
                     Join our slack
                 </a>
             </div>
