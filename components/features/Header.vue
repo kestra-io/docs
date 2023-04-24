@@ -14,7 +14,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-md-6" data-aos="fade-zoom-in">
+                <div class="col-md-6" data-aos="zoom-in">
                     <img class="zoom img-fluid" src="/landing/features/features-ui.png" alt="A screenshot of the user interface of Kestra's application"/>
                 </div>
             </div>

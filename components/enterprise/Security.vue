@@ -6,7 +6,7 @@
             baseline="Collaborate with your team and manage your workflows, directly from your browser"
         >
             <div class="row mb-5">
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="fade-left">
                     <img  class="img-fluid" src="/landing/enterprise/security-1.svg" alt="Stylized view of administrator settings with role-based view">
                 </div>
                 <div class="col-md-6">
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="row mb-5">
-                <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
+                <div class="col-md-6 order-1 order-md-0" data-aos="fade-right">
                     <h3>Advanced Security and Access Control</h3>
                     <p>
                         Ensure that your data workflows and resources remain protected and compliant with industry standards.
@@ -32,15 +32,15 @@
                         <li><b>Role-Based Access Control:</b> Define custom roles and permissions for granular control over user access to workflows, tasks, and resources. Ensure that users only have access to the appropriate data and features</li>
                     </ul>
                 </div>
-                <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
+                <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
                     <img class="img-fluid" src="/landing/enterprise/security-2.svg" alt="A dashboard with success or fail task events">
                 </div>
             </div>
             <div class="row mb-5">
-                <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
+                <div class="col-md-6" data-aos="fade-left">
                     <img class="img-fluid" src="/landing/enterprise/security-3.svg" alt="Security shield with checkmark, representing a protected access with SSO and 2FA connection">
                 </div>
-                <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
+                <div class="col-md-6" data-aos="fade-left">
                     <h3>Advanced Workflow Organization</h3>
                     <p>
                         Take workflow organization and collaboration to the next level with configurable namespaces.

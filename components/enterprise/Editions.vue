@@ -2,66 +2,69 @@
     <div class="container">
         <Section>
             <div class="row card-group mb-4">
-                <div class="col-12 col-md-6 col-lg-4 mb-4">
-                    <div class="card">
+                <div class="col-12 col-md-6 d-flex justify-content-end">
+                    <div class="card col-lg-9 col-xl-7">
                         <div class="card-body p-5">
-                            <div class="text-center mb-5">
-                                <h4 class="card-title">Open Source Edition</h4>
-                                <p class="pricing">Free</p>
-                                <NuxtLink href="/docs/getting-started" class="btn btn-secondary btn-lg">
+                            <div class="text-center">
+                                <h4 class="card-title" data-aos="fade-right">Open Source Edition</h4>
+                                <p class="pricing" data-aos="fade-left">Free</p>
+                                <NuxtLink href="/docs/getting-started" class="btn btn-secondary btn-lg" data-aos="zoom-in">
                                     Get started
                                 </NuxtLink>
                             </div>
                             <ul>
-                                <li>Free, forever</li>
-                                <li>Self-hosted</li>
-                                <li>Open-Source under Apache 2 license</li>
-                                <li>Powerful Workflow Creation & Execution</li>
-                                <li>Scalable Workflow Orchestration & Scheduling</li>
-                                <li>Rich User Interface</li>
-                                <li>Rich Plugin Ecosystem</li>
-                                <li>Infinite Customization Capabilities</li>
-                                <li>Unlimited Usage (tasks, flows…)</li>
-                                <li>Community Support</li>
+                                <li data-aos="fade-right"><span>Free, forever</span></li>
+                                <li data-aos="fade-right" data-aos-delay="50"><span>Self-hosted</span></li>
+                                <li data-aos="fade-right" data-aos-delay="100"><span>Open-Source under Apache 2 license</span></li>
+                                <li data-aos="fade-right" data-aos-delay="150"><span>Powerful Workflow Creation & Execution</span></li>
+                                <li data-aos="fade-right" data-aos-delay="200"><span>Scalable Workflow Orchestration & Scheduling</span></li>
+                                <li data-aos="fade-right" data-aos-delay="250"><span>Rich User Interface</span></li>
+                                <li data-aos="fade-right" data-aos-delay="300"><span>Rich Plugin Ecosystem</span></li>
+                                <li data-aos="fade-right" data-aos-delay="350"><span>Infinite Customization Capabilities</span></li>
+                                <li data-aos="fade-right" data-aos-delay="400"><span>Unlimited Usage (tasks, flows…)</span></li>
+                                <li data-aos="fade-right" data-aos-delay="450"><span>Community Support</span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-4 mb-4">
-                    <div class="card">
+                <div class="col-12 col-md-6">
+                    <div class="card col-lg-9 col-xl-6">
                         <div class="card-body p-5">
-                            <div class="text-center mb-5">
-                                <h3 class="card-title">Enterprise Edition</h3>
-                                <p class="pricing custom">Custom</p>
-                                <NuxtLink href="/contact-us" class="btn btn-primary btn-lg">
-                                    Contact us
+                            <div class="text-center mb-7">
+                                <h3 class="card-title" data-aos="fade-right">Enterprise Edition</h3>
+                                <p class="pricing custom" data-aos="fade-left">Custom</p>
+                                <NuxtLink href="/contact-us" class="btn btn-primary btn-lg" data-aos="zoom-in">
+                                    Free trial
                                 </NuxtLink>
                             </div>
                             <ul>
-                                <li><b>All features included in the Open Source Edition</b></li>
-                                <li>Self-hosted</li>
-                                <li>Audit Logs</li>
-                                <li>RBAC</li>
-                                <li>SSO</li>
-                                <li>Secure Namespace Configuration</li>
-                                <li>Secret Managers Integration</li>
-                                <li>Worker Security Isolation</li>
-                                <li>High Availability with No Single Point of Failure</li>
-                                <li>Enterprise Support with SLAs</li>
-                                <li>Onboarding & Training</li>
+                                <li data-aos="fade-left"><span><strong>All features included in the Open Source Edition</strong></span></li>
+                                <li data-aos="fade-left" data-aos-delay="50"><span>Self-hosted</span></li>
+                                <li data-aos="fade-left" data-aos-delay="100"><span>Audit Logs</span></li>
+                                <li data-aos="fade-left" data-aos-delay="150"><span>RBAC</span></li>
+                                <li data-aos="fade-left" data-aos-delay="200"><span>SSO</span></li>
+                                <li data-aos="fade-left" data-aos-delay="250"><span>Secure Namespace Configuration</span></li>
+                                <li data-aos="fade-left" data-aos-delay="300"><span>Secret Managers Integration</span></li>
+                                <li data-aos="fade-left" data-aos-delay="350"><span>Worker Security Isolation</span></li>
+                                <li data-aos="fade-left" data-aos-delay="400"><span>High Availability with No Single Point of Failure</span></li>
+                                <li data-aos="fade-left" data-aos-delay="450"><span>Enterprise Support with SLAs</span></li>
+                                <li data-aos="fade-left" data-aos-delay="500"><span>Onboarding & Training</span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row card-group mb-4">
+
                 <div class="text-center mt-5">
-                    <button class="btn btn-lg btn-primary button-collapse mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#compare" aria-expanded="true" aria-controls="compare">
-                        Compare all features <ChevronUp />
+                    <button class="btn btn-lg btn-primary button-collapse mb-4" @click="isOpen = !isOpen" type="button" data-bs-toggle="collapse" data-bs-target="#compare" aria-expanded="true" aria-controls="compare" data-aos="zoom-in">
+                        Compare all features <ChevronUp v-if="!isOpen" /><ChevronDown v-if="isOpen" />
                     </button>
                     <div id="compare" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body feature-comparison">
                             <table>
                                 <tr>
-                                    <th class="text-center">Features</th>
+                                    <th>Features</th>
                                     <th>Open source</th>
                                     <th>Enterprise</th>
                                 </tr>
@@ -254,13 +257,22 @@
     </div>
 </template>
 
+<script setup>
+    import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
+    import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
+    import Check from "vue-material-design-icons/Check.vue"
+</script>
+
 <script>
     import Section from '../layout/Section.vue';
-    import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
-    import Check from "vue-material-design-icons/Check.vue"
 
     export default {
-        components: {Section, ChevronUp, Check},
+        components: {Section},
+        data() {
+            return {
+                isOpen: false
+            }
+        }
     }
 </script>
 
@@ -268,6 +280,9 @@
     @import "../../assets/styles/variable";
 
     .container {
+        .card {
+            border: 1px solid var(--bs-border-color);
+        }
         .card-title {
             font-size: $font-size-xl;
             font-weight: normal;
@@ -286,6 +301,16 @@
         .card-body {
             ul {
                 padding-top: $spacer;
+
+                li {
+                    padding: 0 0.5rem;
+                    list-style-image: url("data:image/svg+xml,%3Csvg%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2034%2033%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M12.7838%2021.8605L7.09347%2016.1702L5.15576%2018.0943L12.7838%2025.7223L29.1588%209.34728L27.2347%207.42322L12.7838%2021.8605Z%22%20fill%3D%22%239022FA%22%2F%3E%0A%3C%2Fsvg%3E%0A");
+                    span {
+                        position: relative;
+                        top: -0.75rem;
+                    }
+
+                }
             }
         }
 

@@ -49,7 +49,7 @@
                 </div>
                 <div class="row card-group mb-2">
                     <div class="col-md-4 mb-4">
-                        <div class="card" data-aos="fade-zoom-in">
+                        <div class="card" data-aos="zoom-in">
                             <div class="card-body">
                                 <span class="card-icon"><KeyOutline /></span>
                                 <h4 class="card-title">Service account</h4>
@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="col-md-4 mb-4">
-                        <div class="card" data-aos="fade-zoom-in">
+                        <div class="card" data-aos="zoom-in">
                             <div class="card-body">
                                 <span class="card-icon"><MathLog /></span>
                                 <h4 class="card-title">Secrets</h4>
@@ -69,7 +69,7 @@
                     </div>
 
                     <div class="col-md-4 mb-4">
-                        <div class="card" data-aos="fade-zoom-in">
+                        <div class="card" data-aos="zoom-in">
                             <div class="card-body">
                                 <span class="card-icon"><FormTextboxPassword /></span>
                                 <h4 class="card-title">Audit Log</h4>
@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="text-center">
-                    <NuxtLink class="btn btn-lg btn-primary me-2" href="/enterprise" data-aos="fade-zoom-in">Learn more</NuxtLink>
+                    <NuxtLink class="btn btn-lg btn-primary me-2" href="/enterprise" data-aos="zoom-in">Learn more</NuxtLink>
                     <NuxtLink class="btn btn-lg btn-dark " href="/contact-us" data-aos="zoom-in">Contact us</NuxtLink>
                 </div>
             </Section>

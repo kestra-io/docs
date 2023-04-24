@@ -1,12 +1,12 @@
 <template>
     <div class="container rounded-3">
-        <div class="scale-img">
+        <div class="scale-img" data-aos="zoom-in">
             <img class="img-fluid" src="/landing/enterprise/ee-logo.svg" alt="EE logo" />
         </div>
         <Section
             title="Scale With no Point of Failure"
         >
-            <p>
+            <p data-aos="fade-right">
                 Ensure scalability and high availability with <b>Kafka</b> and <b>Elasticsearch</b> Features available on the Enterprise Edition to eliminate all points of failure.
             </p>
         </Section>
