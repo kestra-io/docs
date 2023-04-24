@@ -4,13 +4,13 @@
             title="Join our community"
         >
             <div class="text-center cta">
-                <p>
+                <p data-aos="fade-left">
                     Want to chat with the team or talk with other Kestra's enthusiasts?
                 </p>
-                <a href="https://kestra.io/slack" target="_blank" class="btn btn-lg btn-primary me-2 mb-2">
+                <a href="https://kestra.io/slack" target="_blank" class="btn btn-lg btn-primary me-2 mb-2" data-aos="zoom-in">
                     Join our slack
                 </a>
-                <NuxtLink href="/community" class="btn btn-lg btn-secondary mb-2">
+                <NuxtLink href="/community" class="btn btn-lg btn-secondary mb-2" data-aos="zoom-in">
                     Contribute
                 </NuxtLink>
             </div>

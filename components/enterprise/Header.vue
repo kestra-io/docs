@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="hero container">
+        <div class="hero hero-sm container">
             <div class="row">
                 <div class="col-md-6">
                     <p data-aos="fade-left" class="overline">Enterprise Edition</p>
@@ -28,11 +28,6 @@
         background: $purple-7;
         color: var(--bs-white);
 
-        .hero {
-            padding-top: 5rem;
-            padding-bottom: 3rem;
-        }
-
         .baseline {
             font-size: 1.15rem;
         }
@@ -50,8 +45,6 @@
                     top: 0;
                 }
             }
-
         }
-
     }
 </style>

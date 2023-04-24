@@ -69,6 +69,11 @@ blockquote.blockquote {
     padding-top: calc($spacer * 8);
     padding-bottom: calc($spacer * 6);
 
+    &.hero-sm {
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+    }
+
     h1, p {
         max-width: $baseline-max-width;
     }
