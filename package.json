@@ -29,7 +29,7 @@
     "@nuxt/image": "^0.7.1",
     "flexsearch": "^0.7.31",
     "highlight-words-core": "^1.2.2",
-    "nuxt": "^3.4.0",
+    "nuxt": "^3.4.2",
     "nuxt-gtag": "^0.5.4",
     "nuxt-simple-sitemap": "^2.4.11",
     "nuxt-multi-cache": "^3.0.0-beta0",
