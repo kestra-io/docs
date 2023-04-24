@@ -22,12 +22,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         )
     }
 
-    nuxtApp.vueApp.mixin({
-        mounted: function () {
-            initZoom()
-        },
-        updated: function () {
-            initZoom()
-        },
-    });
+    nuxtApp.hook('page:finish', () => {
+        initZoom();
+    })
 })

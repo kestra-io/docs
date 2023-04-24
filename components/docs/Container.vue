@@ -1,8 +1,8 @@
 <template>
     <div class="container bd-gutter bd-layout margin">
-        <NavSideBar :type="type" :page-list="pageList"/>
+        <NavSideBar :type="type" v-if="pageList" :page-list="pageList"/>
 
-        <main class="bd-main order-1" :class="{'full': page.rightBar === false}">
+        <main class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
             <ContentRenderer :value="page">
                 <div>
                     <Breadcrumb :slug="props.slug" />
@@ -18,7 +18,7 @@
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
                     />
-                    <PrevNext/>
+                    <!-- <PrevNext /> -->
                 </div>
             </ContentRenderer>
         </main>
@@ -30,6 +30,7 @@
     import NavSideBar from "./NavSideBar.vue";
     import Breadcrumb from "./Breadcrumb.vue";
     import NavToc from "./NavToc.vue";
+    import {hash} from "ohash";
 
     const props = defineProps({
         slug: {
@@ -42,14 +43,26 @@
         },
     })
 
-    let page;
-    try {
-        page = await queryContent(props.slug).findOne();
-    } catch (error) {
-        throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
+    const {data: page, error} = await useAsyncData(`Container-${hash(props.slug)}`, () => {
+        try {
+            return queryContent(props.slug).findOne();
+        } catch (error) {
+            throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
+        }
+    });
+
+    if (error && error.value) {
+        throw error.value;
     }
 
-    const pageList = (await queryContent(props.type).find()).map(e => e._path);
+    const {data: pageList} = await useAsyncData(
+        `Container-pageList-${hash(props.type)}`,
+        () => queryContent(props.type).only("_path").find(),
+        {
+            transform: (pages) => pages.map(e => e._path)
+        }
+    );
+
     useContentHead(page)
 
     const removeEmoji = (text) => {

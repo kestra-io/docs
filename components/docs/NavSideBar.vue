@@ -55,7 +55,7 @@
             },
         },
         async setup(props) {
-            const queryBuilder = queryContent('/' + props.type + '/');
+            const queryBuilder = queryContent('/' + props.type + '/').without("body");
 
             const {data: navigation} = await useAsyncData(
                 `NavSideBar-${hash(props.type)}`,

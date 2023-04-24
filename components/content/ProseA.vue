@@ -5,6 +5,9 @@
 </template>
 
 <script setup>
+    import {useAsyncData} from "#imports";
+    import {hash} from "ohash";
+
     const route = useRoute()
     const config = useRuntimeConfig()
     const props = defineProps({
@@ -23,17 +26,21 @@
 
     // if path is relative
     if (link.match(/(\.+\/)+/)) {
-        const page = await queryContent(route.path).findOne()
+        const {data: page} = await useAsyncData(
+            `ProseA-${hash(route.path)}`,
+            () => queryContent(route.path).only("_file").findOne()
+        );
+
         const routePath = route.path.replace(/\/$/, '')
         const absolutePath = config.public.siteUrl + routePath;
 
-        if (link.match(/(\.\.\/){2,}/) && page._file.includes('index.md')) {
+        if (link.match(/(\.\.\/){2,}/) && page.value._file.includes('index.md')) {
             link = link.replace('../', '')
-        } else if (link.match(/(\.\.\/){1}/) && page._file.includes('index.md')) {
+        } else if (link.match(/(\.\.\/){1}/) && page.value._file.includes('index.md')) {
             link = link.replace('../', '')
         }
 
-        if (link.startsWith('./') && !page._file.includes('index.md')) {
+        if (link.startsWith('./') && !page.value._file.includes('index.md')) {
             link = (new URL(link, absolutePath).toString());
         } else if (link.startsWith('./')) {
             link = absolutePath + link.replace('./', '/')

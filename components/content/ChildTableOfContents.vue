@@ -27,11 +27,11 @@
                 currentPage = route.path;
             }
 
-            const queryBuilder = queryContent(currentPage);
+            const queryBuilder = queryContent(currentPage).without("body");
 
             const {data: navigation} = await useAsyncData(
                 `ChildTableOfContents-${hash(currentPage)}`,
-                () => fetchContentNavigation(queryBuilder)
+                () => fetchContentNavigation(queryBuilder),
             );
 
             const routePath = route.path.endsWith("/") ? route.path.slice(0, -1) : route.path;

@@ -2,7 +2,7 @@
     <div class="container">
         <Section subtitle="blog" title="What’s new at Kestra ?">
             <div class="row">
-                <template v-for="blog in lasts">
+                <template v-for="blog in blogs">
                     <div class="col-md-4 mb-4">
                         <div class="card" data-aos="fade-right">
                             <NuxtLink class="text-dark" :href="blog._path">
@@ -26,14 +26,20 @@
     </div>
 </template>
 <script setup>
-const blogs = await queryContent("/blogs/").find();
+    import {useAsyncData} from "#imports";
 
-const lasts = blogs.reverse().slice(0,3);
+    const {data: blogs} = await useAsyncData(
+        `Blogs`,
+        () => queryContent("/blogs/")
+            .sort({ date: -1 })
+            .without('unused-key')
+            .limit(3)
+            .find()
+    );
 
 </script>
 <script>
     import Section from '../layout/Section.vue';
-    import {timesAgo} from "~/utils/times.js";
 
     export default {
         components: {Section},
