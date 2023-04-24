@@ -13,7 +13,7 @@
             <img class="img-fluid" src="/landing/home/animation.svg" alt="Kestra's flow animation from source to visualization" />
         </div>
 
-        <div class=" container text-center">
+        <div class="container text-center">
             <p class="companies-title" data-aos="zoom-in">
                 Loved & trusted by leading enterprises worldwide
             </p>

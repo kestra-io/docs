@@ -42,8 +42,13 @@
         &.with-shadow {
             text-align: center;
             background: url("/landing/shadow2.svg") no-repeat bottom center;
-            @include media-breakpoint-down(sm) {
-                background: url("/landing/shadow2.svg") no-repeat bottom center, var(--bs-white);
+            @include media-breakpoint-down(lg) {
+                background-size: contain;
+                background-position: center center;
+            }
+
+            @include media-breakpoint-down(md) {
+                background: none;
             }
         }
 

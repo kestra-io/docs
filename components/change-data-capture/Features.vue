@@ -7,7 +7,7 @@
         >
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <LightbulbOutline />
@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <FolderTextOutline />
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <DeveloperBoard />
@@ -45,7 +45,7 @@
 
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <LightningBolt />
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <TimerOutline />
@@ -69,7 +69,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <ImageMultiple />
