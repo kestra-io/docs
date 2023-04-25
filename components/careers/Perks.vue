@@ -4,14 +4,11 @@
             class="with-shadow"
             title="Perks & Benefits"
             subtitle="Committed to Your Well-being"
+            baseline="Feeling your best allows you to do your best. We take care of the whole of you."
         >
-            <p class="text-center">
-                Feeling your best allows you to do your best. We take care of the whole of you.
-            </p>
-
             <div class="row card-group card-centered no-shadow mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <Earth />
@@ -23,7 +20,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <CalendarClock />
@@ -35,7 +32,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <ScaleBalance />
@@ -47,7 +44,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <MedicalBag />
@@ -59,7 +56,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <ChairRolling />
@@ -71,7 +68,7 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                                 <span class="card-icon">
                                     <Laptop />

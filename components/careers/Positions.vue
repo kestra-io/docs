@@ -3,13 +3,10 @@
         <Section
             title="Our open positions"
             subtitle="It's a Match"
+            baseline="We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, find a job you love, say goodbye to imposter syndrome, and apply."
         >
-            <p class="text-center">
-                We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, find a job you love, say goodbye to imposter syndrome, and apply.
-            </p>
-
             <ul class="list-unstyled">
-                <li>
+                <li data-aos="fade-left">
                     <NuxtLink class="rounded-3 shadow-sm" href="/careers/senior-full-stack-engineer">
                         <span>
                          Senior Full-Stack Engineer

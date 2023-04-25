@@ -1,15 +1,18 @@
 <template>
     <div class="container-fluid">
-        <div class="hero container">
+        <div class="hero hero-sm container">
             <div class="row">
-                <div class="col-md-6 get-in-touch">
-                    <p class="overline">Get in touch</p>
-                    <h1>Contact Us</h1>
-                    <p class="baseline">If you have questions, inquiries, or feedback about Kestra, we're looking to hearing from you.</p>
+                <div class="col-md-5 get-in-touch">
+                    <div>
+                        <p class="overline" data-aos="fade-left">Get in touch</p>
+                        <h1 data-aos="fade-right">Contact Us</h1>
+                        <p class="baseline" data-aos="fade-left">If you have questions, inquiries, or feedback about Kestra, we're looking to hearing from you.</p>
+                    </div>
                 </div>
+                <div class="col-md-1"></div>
                 <div class="col-md-6">
-                    <h3>Reach Out to Us</h3>
-                    <form id="contactUs" ref="contactUs" @submit="checkForm" class="needs-validation" novalidate>
+                    <h3 data-aos="fade-left">Reach Out to Us</h3>
+                    <form id="contactUs" ref="contactUs" @submit="checkForm" class="needs-validation" novalidate data-aos="fade-left">
                         <div class="row">
                             <div class="form-group col-md-6 has-error">
                                 <label for="firstName">First Name *</label>
@@ -48,10 +51,10 @@
                                 By clicking submit below, you consent to allow Kestra to store and process the personal information submitted above to provide you with the content requested.
                             </p>
                         </div>
-                        
-                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+
+                        <button type="submit" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">Submit</button>
                     </form>
-                    <p class="mandatory-fields">* Mandatory fields</p>
+                    <p class="mandatory-fields mt-2">* Mandatory fields</p>
                 </div>
             </div>
         </div>
@@ -147,9 +150,9 @@
         }
 
         .get-in-touch {
-            background: url("/landing/company/frame-645.png") no-repeat top right;
-            padding-left: calc($spacer * 4);
-            padding-right: calc($spacer * 4);
+            background: url("/landing/company/contact-us.svg") no-repeat top right;
+            display: flex;
+            align-items: center;
         }
     }
 </style>
