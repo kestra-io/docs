@@ -2,15 +2,16 @@
     <div class="container">
         <Section
             title="Join our community"
+            :animation="animation"
         >
             <div class="text-center cta">
-                <p data-aos="fade-left">
+                <p :data-aos="animationType('fade-left')">
                     Want to chat with the team or talk with other Kestra's enthusiasts?
                 </p>
-                <a href="https://kestra.io/slack" target="_blank" class="btn btn-lg btn-primary me-2 mb-2" data-aos="zoom-in">
+                <a href="https://kestra.io/slack" target="_blank" class="btn btn-lg btn-primary me-2 mb-2" :data-aos="animationType('zoom-in')">
                     Join our slack
                 </a>
-                <NuxtLink href="/community" class="btn btn-lg btn-secondary mb-2" data-aos="zoom-in">
+                <NuxtLink href="/community" class="btn btn-lg btn-secondary mb-2" :data-aos="animationType('zoom-in')">
                     Contribute
                 </NuxtLink>
             </div>
@@ -22,7 +23,18 @@
     import Section from './Section.vue';
 
     export default {
-        components: {Section}
+        components: {Section},
+        props: {
+            animation: {
+                type: Boolean,
+                default: true
+            }
+        },
+        methods: {
+            animationType(type) {
+                return this.animation ? type : ""
+            }
+        }
     }
 </script>
 

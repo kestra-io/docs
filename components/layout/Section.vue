@@ -1,10 +1,10 @@
 <template>
     <section>
-        <div class="subtitle" data-aos="fade-right" v-if="subtitle">
+        <div class="subtitle" :data-aos="animationType('fade-right')" v-if="subtitle">
             <p>{{ subtitle }}</p>
         </div>
-        <h2 data-aos="fade-left">{{ title }}</h2>
-        <p v-if="baseline" class="baseline" data-aos="fade-right">
+        <h2 :data-aos="animationType('fade-left')">{{ title }}</h2>
+        <p v-if="baseline" class="baseline" :data-aos="animationType('fade-right')">
             {{ baseline }}
         </p>
         <div class="main">
@@ -28,6 +28,15 @@
             baseline: {
                 type: String,
                 required: false,
+            },
+            animation: {
+                type: Boolean,
+                default: true
+            }
+        },
+        methods: {
+            animationType(type) {
+                return this.animation ? type : ""
             }
         }
     }
