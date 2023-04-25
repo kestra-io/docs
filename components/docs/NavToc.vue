@@ -74,7 +74,7 @@
         },
         computed: {
             editLink() {
-                return `https://github.com/kestra-io/kestra.io/edit/master/${this.page._file}`;
+                return `https://github.com/kestra-io/kestra.io/edit/main/content/${this.page._file}`;
             },
             generated() {
                 const recursive = (links) => {
