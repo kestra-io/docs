@@ -301,3 +301,9 @@ blockquote.blockquote {
 .medium-zoom-image--opened {
     z-index: $zindex-modal+2;
 }
+
+.bd-main {
+    h1 {
+        word-break: keep-all !important;
+    }
+}
