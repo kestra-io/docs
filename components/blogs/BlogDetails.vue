@@ -10,8 +10,7 @@
             </span>
         </p>
 
-
-        <img class="rounded-circle" :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name"/><br />
+        <img class="rounded-circle mt-5" :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name"/><br />
         <strong>{{ blog.author.name }}</strong>
 
     </div>
@@ -45,9 +44,15 @@
         margin-left: 1rem !important;
     }
 
-    .category {
+    p {
         font-size: $font-size-sm;
+
+        .category {
+
+            color: var(--bs-primary);
+        }
     }
+
 
     img {
         max-width: 68px;

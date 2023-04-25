@@ -20,7 +20,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     rapi-doc {
         background: transparent;
         width: 100%;

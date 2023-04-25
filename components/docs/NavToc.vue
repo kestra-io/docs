@@ -105,6 +105,7 @@
         transform: translateX(0);
         @include media-breakpoint-up(lg) {
             position: sticky;
+            top: 0;
             right: 0;
             z-index: 2;
             height: subtract(100vh, 7rem);

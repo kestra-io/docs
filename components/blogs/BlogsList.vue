@@ -100,4 +100,21 @@
             background: var(--bs-pink);
         }
     }
+
+
+    .rounded-button {
+        border-radius: 2rem;
+        padding: calc($spacer / 2) calc($spacer / 1);
+        margin-right: calc($spacer / 2);
+        background-color: var(--bs-white);
+        color: $purple;
+        border: 0.05rem solid $purple;
+        font-weight: lighter;
+
+        &.active {
+            background-color: var(--bs-primary);
+            color: var(--bs-white);
+            font-weight: bold;
+        }
+    }
 </style>

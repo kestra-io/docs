@@ -11,7 +11,7 @@
                 </NavToc>
                 <div class="bd-content ps-lg-2">
                     <h1>{{ page.title }}</h1>
-                    <img class="mb-5 blog-img" :alt="page.title" :src="page.image"/>
+                    <img class="mb-5 rounded-3" :alt="page.title" :src="page.image"/>
                     <ContentRendererMarkdown :value="page"/>
                 </div>
             </ContentRenderer>
@@ -57,8 +57,3 @@
         useContentHead(page)
     }
 </script>
-
-<style lang="scss" scoped>
-    @import '../../assets/styles/blogs.scss';
-</style>
-

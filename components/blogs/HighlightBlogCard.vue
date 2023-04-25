@@ -3,7 +3,7 @@
         <NuxtLink class="text-dark" :href="blog._path">
             <div class="row g-0">
                 <div class="col-md-6">
-                    <img class="col-md-12 blog-img img-fluid" :alt="blog.image" :src="blog.image">
+                    <img class="col-md-12 rounded-3 img-fluid" :alt="blog.image" :src="blog.image">
                 </div>
                 <div class="col-md-6 description">
                     <span class="small-text category">{{ blog.category }}</span>
@@ -33,13 +33,19 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import '../../assets/styles/_variable.scss';
 
     .row {
+
+        span {
+            color: var(--bs-primary);
+            font-size: $font-size-sm;
+        }
+
         .description {
             @include media-breakpoint-up(md) {
-                padding: 0 0rem 0 4rem;
+                padding: 0 0 0 4rem;
             }
 
             @include media-breakpoint-up(lg) {

@@ -1,5 +1,5 @@
 <template>
-    <p class="small-text details"><u>{{ name }}</u> {{ timesAgo(date) }}</p>
+    <p>{{ name }} - {{ timesAgo(date) }}</p>
 </template>
 
 <script>
@@ -22,6 +22,12 @@
     }
 </script>
 
-<style scoped lang="scss">
-    @import '../../assets/styles/blogs.scss';
+
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+
+    p {
+        color: var(--bs-gray-600);
+        font-size: $font-size-sm;
+    }
 </style>
