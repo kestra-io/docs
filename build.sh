@@ -53,5 +53,5 @@ sed -Ei  's/page_title: "([^ ]+).*"/title: Provider configurations/g' index.md
 sed -Ei  's/^# kestra Provider/# Provider configurations/g' index.md
 mv index.md guides/configurations.md
 
-cp -R * ../../../content/docs/10.terraform/
+cp -R * ../../../content/docs/11.terraform/
 rm -rf terraform-provider-kestra
