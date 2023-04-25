@@ -89,7 +89,7 @@ They also moved with great speed to develop a Kestra plugin to help simplify the
 - applied some qualities with rejection of records based on business rules (upper/lower bound, validate key with referential, deduplication, etc.)
 - loaded the data in ODS (Operational Data Store) — meaning the image of the data from the incoming system
 
-The transfer of the data was in HTTPS directly to the Kestra API in order to free any dependencies. The operational system used most frequently was a simple `curl` [command](../docs/04.developer-guide/04.inputs.md#set-inputs-with-curl) in order to trigger ingestion or develop a simple HTTP client reaching the Kestra API.
+The transfer of the data was in HTTPS directly to the Kestra API in order to free any dependencies. The operational system used most frequently was a simple `curl` [command](../docs/05.developer-guide/04.inputs.md#set-inputs-with-curl) in order to trigger ingestion or develop a simple HTTP client reaching the Kestra API.
 
 This single task handled all the complexities of loading data — it would create ten to twenty tasks:
 ```yaml
@@ -134,7 +134,7 @@ At Leroy Merlin, there are over eighty data engineers and data scientists. They 
 
 Also, as there was a rich UI, the deployment process was really easy at the beginning — just save on the UI, and you’re good to go!
 
-Subsequently, Leroy Merlin started using Terraform in order to deploy every cloud resource; they also deploy Kestra resources using [terraform providers](../docs/10.terraform/index.md). They were able to reach a full DataOps lifecycle, all deployment is atomic with a git push and a strong CI/CD applying resources from terraform.
+Subsequently, Leroy Merlin started using Terraform in order to deploy every cloud resource; they also deploy Kestra resources using [terraform providers](../docs/11.terraform/index.md). They were able to reach a full DataOps lifecycle, all deployment is atomic with a git push and a strong CI/CD applying resources from terraform.
 
 ::: success Reach a fast time to market
 Before this DataOps lifecycle was implemented, the deployment involved a number of teams: a transfer team that moved the files between systems, an orchestration team which triggered the job after the transfer, a data team that would develop the loading of the data in addition to a manual operation in order to create a resource on the data warehouse. All these operations needed to synchronize with the internal ticket that was now in service.

@@ -4,7 +4,7 @@ title: Configuration
 
 Kestra offers a lot of configuration options and customization.
 
-How to pass those configuration options depends on how you deploy Kestra. Check the [deployment](../../07.administrator-guide/02.deployment/index.md) section related to you deployment mode for more information.
+How to pass those configuration options depends on how you deploy Kestra. Check the [deployment](../02.deployment/index.md) section related to you deployment mode for more information.
 
 ## Kestra internal components configuration
 
