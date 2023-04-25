@@ -5,7 +5,7 @@ date: 2023-04-13T17:00:00
 category: News & Products Updates
 author:
   name: Loïc Mathieu
-  image: "loicmathieu"
+  image: "lmathieu"
   twitter: "@loicmathieu"
 image: /blogs/2023-04-13-welcome-kestra-0-8-0.png
 ---

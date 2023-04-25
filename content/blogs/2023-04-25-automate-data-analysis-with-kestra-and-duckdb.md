@@ -5,7 +5,7 @@ date: 2023-04-25T18:00:00
 category: Solutions
 author:
   name: Martin Pierre Roset
-  image: "martinroset"
+  image: "mproset"
 image: /blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb.jpg
 ---
 
