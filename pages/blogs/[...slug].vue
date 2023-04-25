@@ -59,7 +59,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" >
     @import '../../assets/styles/blogs.scss';
 </style>
 

@@ -40,3 +40,9 @@ h6 {
         font-weight: bold;
     }
 }
+
+.bd-main {
+    h1 {
+        word-break: keep-all !important;
+    }
+}
