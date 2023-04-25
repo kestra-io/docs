@@ -21,8 +21,8 @@ public/examples.zip
 public/kestra-ee.yml
 
 ## Terraform
-content/docs/10.terraform/**/*
-!content/docs/10.terraform/index.md
+content/docs/11.terraform/**/*
+!content/docs/11.terraform/index.md
 
 ## Nuxt
 node_modules
