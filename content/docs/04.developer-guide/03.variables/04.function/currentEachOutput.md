@@ -21,7 +21,7 @@ tasks:
 ```
 
 To retrieve the output of the `first` task from the `second` task, you need to use the special `taskrun.value` variable to lookup for the execution of the `first` task that is on the same sequential execution as the `second` task.
-And when there are multiple levels of EachSequential, you will need to use the special `parents` variable to lookup the correct execution. For example, `outputs.first[parents[1].taskrun.value][parents[0].taskrun.value]` for a 3-level EachSequential.
+And when there are multiple levels of EachSequential, you must use the special `parents` variable to lookup the correct execution. For example, `outputs.first[parents[1].taskrun.value][parents[0].taskrun.value]` for a 3-level EachSequential.
 
 The `currentEachOutput` function will facilitate this by looking up the current output of the sibling task, so you don't need to use the special variables `taskrun.value` and `parents`.
 
