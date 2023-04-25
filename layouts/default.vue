@@ -11,6 +11,21 @@
 </template>
 
 <script>
-    export default {
-    }
+    import {useNuxtApp} from "#app/nuxt.js";
+
+    export default defineComponent({
+        setup() {
+            const nuxtApp = useNuxtApp();
+
+            nuxtApp.hook("page:start", () => {
+                document.querySelector('body').classList.add("loading");
+            });
+
+            nuxtApp.hook("page:finish", () => {
+                document.querySelector('body').classList.remove("loading");
+            });
+
+            return {}
+        },
+    })
 </script>

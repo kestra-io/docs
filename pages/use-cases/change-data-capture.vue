@@ -1,14 +1,16 @@
 <template>
-    <Head>
-      <Title>Harness Change Data Capture for Efficient Data Processing and Analysis</Title>
-      <Meta name="description" content="Boost Data Synchronization and Streamlined Processing with Kestra's CDC Capabilities" />
-    </Head>
+    <div>
+        <Head>
+          <Title>Harness Change Data Capture for Efficient Data Processing and Analysis</Title>
+          <Meta name="description" content="Boost Data Synchronization and Streamlined Processing with Kestra's CDC Capabilities" />
+        </Head>
 
-    <ChangeDataCaptureHeader />
-    <ChangeDataCaptureMain />
-    <ChangeDataCaptureEmpower />
-    <ChangeDataCaptureFeatures />
-    <ChangeDataCaptureNext />
+        <ChangeDataCaptureHeader />
+        <ChangeDataCaptureMain />
+        <ChangeDataCaptureEmpower />
+        <ChangeDataCaptureFeatures />
+        <ChangeDataCaptureNext />
+    </div>
 </template>
 
 <script setup>
