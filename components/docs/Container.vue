@@ -18,7 +18,7 @@
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
                     />
-                    <!-- <PrevNext /> -->
+                    <PrevNext />
                 </div>
             </ContentRenderer>
         </main>

@@ -1,13 +1,13 @@
 <template>
     <div class="main">
         <div class="hero container text-center">
-            <img src="/icon.svg" class="kestra-logo" />
-            <p class="overline">About kestra</p>
-            <h1>Pioneering the Future of Data Orchestration and Automation</h1>
+            <img src="/icon.svg" class="kestra-logo" data-aos="zoom-in" />
+            <p class="overline" data-aos="fade-left">About kestra</p>
+            <h1 data-aos="fade-right">Pioneering the Future of Data Orchestration and Automation</h1>
         </div>
     </div>
     <div class="team-image text-center">
-        <img class="img-fluid" src="/landing/company/team-image.png" alt="A picture of all Kestra's team members"/>
+        <img class="img-fluid" src="/landing/company/team-image.png" alt="A picture of all Kestra's team members" data-aos="fade-right" />
     </div>
     <div class="container">
         <Section
@@ -15,7 +15,7 @@
             subtitle="Our story"
             class="pt-3"
         >
-            <div class="container text-center baseline-max-width">
+            <div class="container text-center baseline-max-width" data-aos="fade-left">
                 <p>
                     Our journey began with an inspiring vision: to design a data orchestration platform that would transcend the limitations of existing market solutions while offering an exceptional user experience.
                 </p>
@@ -41,7 +41,7 @@
     @import "../../assets/styles/variable";
 
     .main {
-        background: url("/landing/company/header.svg") no-repeat 52% 70px;
+        background: url("/landing/company/header.svg") no-repeat 50% 70px;
         background-size: cover;
         color: var(--bs-white);
         padding-top: 80px;

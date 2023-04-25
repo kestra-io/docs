@@ -2,12 +2,11 @@
     <div class="container-fluid bg-body-tertiary">
         <div class="container">
             <div class="row">
-                <div class="col-md-5 text-right elevating">
-                    <img class="img-fluid" src="/landing/company/group_48095708.png" alt="Square build of arrows creating a loop"/>
-                    <h3>Elevating Data Orchestration and Automation</h3>
+                <div class="col-md-5 elevating text-center text-md-end">
+                    <img data-aos="fade-left" class="img-fluid mb-3" src="/landing/company/elevating.svg" alt="Square build of arrows creating a loop" />
+                    <h3 data-aos="fade-right">Elevating Data Orchestration and Automation</h3>
                 </div>
-                <div class="col-md-2 vr"></div>
-                <div class="col-md-5">
+                <div class="col-md-5 mt-3 mt-md-0" data-aos="zoom-in">
                     <p>
                         Our ambition is to provide a tool that enables all kinds of users to orchestrate and automate their data, workflows, and batches with unparalleled simplicity, autonomy, and high performance. From the first day of our journey, we have been driven by this goal, and we continue to challenge ourselves.
                     </p>
@@ -37,23 +36,21 @@
         color: var(--bs-white);
 
         .row {
-            .text-right {
-                text-align: right;
-            }
-
-            div {
-                padding: calc($spacer * 2);
-                padding-top: calc($spacer * 4);
-            }
+            padding: 5rem 0;
 
             .elevating {
-                padding-left: calc($spacer * 6);
+                @include media-breakpoint-up(md) {
+                    border-right: 1px solid var(--bs-white);
+                }
+
+                padding-right: 3rem;
+                margin-right: 3rem;
             }
 
-            .vr {
-                padding: 0px;
-                margin-top: calc($spacer * 4);
-                margin-bottom: calc($spacer * 4);
+            @include media-breakpoint-up(sm) {
+                .elevating {
+                    padding-left: calc($spacer * 6);
+                }
             }
        }
     }

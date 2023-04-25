@@ -1,14 +1,20 @@
 <template>
     <div class="container-fluid">
-        <div class="hero container text-center">
-            <h2>The Public Launch and Beyond</h2>
-            <p>
-                Our commitment to excellence remains unwavering, and we are excited to see how Kestra will transform the way organizations approach data orchestration and automation.
-            </p>
-            <p>
-                We believe that Kestra's potential is limitless, and we are eager to explore new opportunities and partnerships as we move forward.
-            </p>
-        </div>
+        <Section
+            title="The Public Launch and Beyond"
+        >
+            <div class="justify-content-center d-flex">
+                <div>
+                    <p class="baseline-max-width text-center" data-aos="fade-left">
+                        Our commitment to excellence remains unwavering, and we are excited to see how Kestra will transform the way organizations approach data orchestration and automation.
+                    </p>
+                    <p class="baseline-max-width text-center" data-aos="fade-left">
+                        We believe that Kestra's potential is limitless, and we are eager to explore new opportunities and partnerships as we move forward.
+                    </p>
+                </div>
+            </div>
+        </Section>
+
         <div class="container-fluid pb-5">
             <Companies :inverted="true" />
         </div>
@@ -17,9 +23,10 @@
 
 <script>
     import Companies from "../layout/Companies.vue";
+    import Section from "~/components/layout/Section.vue";
 
     export default {
-        components: {Companies}
+        components: {Section, Companies}
     }
 </script>
 
@@ -27,7 +34,7 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: #F1F5FF;
+        background: $purple-29;
 
         .companies-title {
             position: relative;
