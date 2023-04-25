@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/nicolas.png"
+                    <img class="img-fluid team-member" src="/landing/company/teams/ncallens.png"
                          alt="Nicolas Callens Picture"/>
                     <div>
                         <div class="team-name">Nicolas Callens</div>
