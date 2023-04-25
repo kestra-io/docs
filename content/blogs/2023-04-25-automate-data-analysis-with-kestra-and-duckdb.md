@@ -32,51 +32,29 @@ Sounds exciting, right? Trust us, it's a thrilling ride! Check out the Kestra fl
 ```yaml
 
 id:  salaries_analysis
-
 namespace:  demo
-
 description:  Analyse  data  salaries.
-
 tasks:
-
   -  id:  download_csv
-
     type:  io.kestra.plugin.fs.http.Download
-
     description:  Data  Job  salaries  from  2020  to  2023  (source  ai-jobs.net)
-
     uri:  https://gist.githubusercontent.com/Ben8t/f182c57f4f71f350a54c65501d30687e/raw/940654a8ef6010560a44ad4ff1d7b24c708ebad4/salary-data.csv
 
   -  id:  average_salary_by_position
-
     type:  io.kestra.plugin.jdbc.duckdb.Query
-
     inputFiles:
-
       data.csv:  "{{  outputs.download_csv.uri  }}"
-
     sql:  |
-
       SELECT 
-
         job_title,
-
         ROUND(AVG(salary),2)  AS  avg_salary
-
       FROM  read_csv_auto('{{workingDir}}/data.csv',  header=True)
-
       GROUP  BY  job_title
-
       HAVING  COUNT(job_title)  >  10
-
       ORDER  BY  avg_salary  DESC;
-
     store:  true
-
   -  id:  export_result
-
     type:  io.kestra.plugin.serdes.csv.CsvWriter
-
     from:  "{{  outputs.average_salary_by_position.uri  }}"
 ```
 
@@ -88,29 +66,17 @@ Let's dive into the Kestra code we presented earlier and understand how it works
 
 ```yaml
  -  id:  average_salary_by_position
-
     type:  io.kestra.plugin.jdbc.duckdb.Query
-
     inputFiles:
-
       data.csv:  "{{  outputs.download_csv.uri  }}"
-
     sql:  |
-
       SELECT 
-
         job_title,
-
         ROUND(AVG(salary),2)  AS  avg_salary
-
       FROM  read_csv_auto('{{workingDir}}/data.csv',  header=True)
-
       GROUP  BY  job_title
-
       HAVING  COUNT(job_title)  >  10
-
       ORDER  BY  avg_salary  DESC;
-
     store:  true
 ```
 
@@ -137,9 +103,7 @@ In this task, we supply the downloaded CSV file as input and run a SQL query to 
 
 ```yaml
 id:  export_result
-
     type:  io.kestra.plugin.serdes.csv.CsvWriter
-
     from:  "{{  outputs.average_salary_by_position.uri  }}"
 ```
 
