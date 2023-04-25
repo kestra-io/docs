@@ -6,7 +6,7 @@
         >
             <div class="justify-content-center d-flex flex-wrap">
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/emmanuel.png" alt="Emmanuel Darras Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/edarras.png" alt="Emmanuel Darras Picture"/>
                     <div>
                         <div class="team-name">Emmanuel Darras</div>
                         <div class="team-title font-small">CEO</div>
@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/ludovic.png" alt="Ludovic Dehon Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/ldehon.png" alt="Ludovic Dehon Picture"/>
                     <div>
                         <div class="team-name">Ludovic Dehon</div>
                         <div class="team-title font-small">CTO</div>
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/quentin.png" alt="Quentin Sinig Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/qsinig.png" alt="Quentin Sinig Picture"/>
                     <div>
                         <div class="team-name">Quentin Sinig</div>
                         <div class="team-title font-small">VP Go-to-Market</div>
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/martin-pierre.png" alt="Martin Roset Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/mproset.png" alt="Martin Roset Picture"/>
                     <div>
                         <div class="team-name">Martin-Pierre Roset</div>
                         <div class="team-title font-small">Lead Growth & Marketing</div>
@@ -53,7 +53,7 @@
                     </span>
                 </div>
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/loic.png" alt="Loïc Mathieu Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/lmathieu.png" alt="Loïc Mathieu Picture"/>
                     <div>
                         <div class="team-name">Loïc Mathieu</div>
                         <div class="team-title font-small">Lead Software Engineer</div>
@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/nicolas.png"
+                    <img class="img-fluid team-member" src="/landing/company/teams/nicolas.png"
                          alt="Nicolas Callens Picture"/>
                     <div>
                         <div class="team-name">Nicolas Callens</div>
@@ -79,7 +79,7 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/yann.png" alt="Yann Coornaert Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/ycoornaert.png" alt="Yann Coornaert Picture"/>
                     <div>
                         <div class="team-name">Yann Coornaert</div>
                         <div class="team-title font-small">Software Engineer</div>
@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/benoit.png" alt="Benoît Pimpaud Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/bpimpaud.png" alt="Benoît Pimpaud Picture"/>
                     <div>
                         <div class="team-name">Benoît Pimpaud</div>
                         <div class="team-title font-small">Product Owner & Data Engineer</div>
@@ -103,7 +103,7 @@
                     </span>
                 </div>
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/brian.png" alt="Brian Mullier Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/bmulier.png" alt="Brian Mullier Picture"/>
                     <div>
                         <div class="team-name">Brian Mulier</div>
                         <div class="team-title font-small">Software Engineer</div>

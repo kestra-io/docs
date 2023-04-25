@@ -1,8 +1,11 @@
 <template>
     <div class="mt-5">
-        <h1>All things Kestra</h1>
-        <h5>Company news, product updates, and engineering deep dives.</h5>
-        <div class="grid gap-3">
+        <p class="subtitle" data-aos="fade-right">
+            Community
+        </p>
+        <h1 data-aos="fade-left">All things Kestra</h1>
+        <h5 data-aos="fade-right">Company news, product updates, and engineering deep dives.</h5>
+        <div class="grid gap-3 mt-5" data-aos="fade-left">
             <button
                 :class="filter === cat.name ? 'active': ''"
                 @click="setFilterBlogs(cat.name)"
@@ -11,10 +14,10 @@
                 {{ cat.name }}
             </button>
         </div>
-        <HighlightBlogCard v-if="highlightBlog" :blog="highlightBlog" class="mt-5"/>
+        <HighlightBlogCard v-if="highlightBlog" :blog="highlightBlog" class="mt-5" data-aos="fade-left" />
         <div class="row mt-5">
             <div v-for="blog in blogsList" class="col-lg-4 col-md-6">
-                <BlogCard :blog="blog"/>
+                <BlogCard :blog="blog" data-aos="zoom-in" />
             </div>
         </div>
         <Newsletter/>
@@ -73,11 +76,28 @@
 </script>
 
 <style lang="scss" scoped>
-    h1 {
-        font-weight: 900;
-    }
+    @import "../../assets/styles/variable";
 
     h5 {
         font-weight: 300;
+    }
+
+    .subtitle {
+        font-size: $font-size-sm;
+        color: var(--bs-primary);
+        font-family: var(--bs-font-monospace);
+        font-weight: 800;
+        text-transform: uppercase;
+
+        &:after {
+            content: '';
+            position: absolute;
+            margin-top: calc($font-size-sm / 1.5);
+            margin-left: $spacer;
+            display: inline-block;
+            height: 2px;
+            width: 51px;
+            background: var(--bs-pink);
+        }
     }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="blog-details ms-3">
+    <div class="blog-details mb-5">
         <p>
             <span class="category">
                 {{ blog.category }}
@@ -9,6 +9,11 @@
                 {{ date }}
             </span>
         </p>
+
+
+        <img class="rounded-circle" :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name"/><br />
+        <strong>{{ blog.author.name }}</strong>
+
     </div>
 </template>
 
@@ -33,17 +38,22 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+
     .blog-details {
-        margin-bottom: 8rem;
+        margin-left: 1rem !important;
     }
 
     .category {
-        font-size: 0.8rem;
+        font-size: $font-size-sm;
+    }
+
+    img {
+        max-width: 68px;
     }
 
     .date {
-        font-size: 0.9rem;
-        color: var(--bs-gray-500)
+        color: var(--bs-gray-600)
     }
 </style>

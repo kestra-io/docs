@@ -1,5 +1,6 @@
 <template>
     <div id="nav-toc-global" class="bd-toc mb-4 text-body-secondary">
+
         <template v-if="generated.length > 0">
             <button
                 class="btn d-lg-none"
@@ -11,9 +12,11 @@
             >
                 On this page
             </button>
-            <strong class="d-none d-lg-block h6 my-2 ms-3">On this page</strong>
-            <hr class="d-none d-lg-block my-2 ms-3">
+
             <div class="collapse bd-toc-collapse" id="tocContents">
+                <slot name="header"></slot>
+                <strong class="d-none d-lg-block h6 my-2 ms-3">On this page</strong>
+                <hr class="d-none d-lg-block my-2 ms-3">
                 <nav id="nav-toc">
                     <ul>
                         <template v-for="item in generated" >
@@ -51,10 +54,7 @@
                 </nav>
             </div>
         </div>
-
-
     </div>
-
 </template>
 
 <script setup>
@@ -105,7 +105,6 @@
         transform: translateX(0);
         @include media-breakpoint-up(lg) {
             position: sticky;
-            top: 5rem;
             right: 0;
             z-index: 2;
             height: subtract(100vh, 7rem);

@@ -1,5 +1,5 @@
 <template>
-    <div class="d-md-flex flex-row justify-content-between container" role="button">
+    <div class="d-md-flex flex-row justify-content-between" role="button">
         <NuxtLink class="text-dark" :href="blog._path">
             <div class="row g-0">
                 <div class="col-md-6">

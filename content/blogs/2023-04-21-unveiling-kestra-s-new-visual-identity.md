@@ -5,7 +5,7 @@ date: 2023-04-21T11:00:00
 category: Company News
 author:
   name: Nicolas Callens
-  image: "nicolascallens"
+  image: "ncallens"
 image: /blogs/2023-04-21-unveiling-kestra-s-new-visual-identity.png
 ---
 
@@ -23,7 +23,7 @@ When we created Kestra, our ambition was to design a simple yet powerful and fas
 
 The Electric Pink dot located in the pictogram represents Kestra, our data orchestrator. The six diamonds facing it symbolize the different tasks of the workflow and the data software plugins that Kestra manages with ease, just like a conductor who directs each musician with precision. Together, they execute a complex musical score, orchestrated with skill.
 
-The Electric Pink dot and the triangle formed by the six diamonds represent an upward arrow, a UP, symbolizing the improvement that Kestra brings to IT organizations. Indeed, thanks to our data orchestration platform, our clients can improve their performance and optimize their workflows. 
+The Electric Pink dot and the triangle formed by the six diamonds represent an upward arrow, a UP, symbolizing the improvement that Kestra brings to IT organizations. Indeed, thanks to our data orchestration platform, our clients can improve their performance and optimize their workflows.
 
 ## Typography and Typeface
 
