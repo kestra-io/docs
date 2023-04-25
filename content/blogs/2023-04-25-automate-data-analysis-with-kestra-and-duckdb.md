@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin Pierre Roset
   image: "martinroset"
-image: blogs\2023-04-25-automate-data-analysis-with-kestra-and-duckdb.jpg
+image: /blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb.jpg
 ---
 
 What if you could unlock the secrets of tech salaries with a few lines of code? Get ready to dive into a world of data possibilities with Kestra and DuckDB!
