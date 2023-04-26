@@ -1,5 +1,5 @@
 <template>
-    <div id="nav-toc-global" class="bd-toc mb-4 text-body-secondary">
+    <div id="nav-toc-global" class="bd-toc mb-4">
 
         <template v-if="generated.length > 0">
             <button
@@ -105,7 +105,7 @@
         transform: translateX(0);
         @include media-breakpoint-up(lg) {
             position: sticky;
-            top: 0;
+            top: 5rem;
             right: 0;
             z-index: 2;
             height: subtract(100vh, 7rem);
@@ -146,11 +146,20 @@
                 padding: .125rem .75rem;
                 color: inherit;
                 text-decoration: none;
+                color: var(--bs-gray-700);
 
                 code {
                     font: inherit;
                 }
             }
+        }
+
+        .h6 {
+            color: var(--bs-gray-600);
+        }
+
+        hr {
+            border-color: var(--bs-gray-600);
         }
     }
 

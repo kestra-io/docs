@@ -2,7 +2,7 @@
     <div class="container">
         <BlogsList v-if="slug === '/blogs/'" :blogs="page"/>
 
-        <main v-else class="bd-main order-1 mt-5">
+        <article v-else class="bd-main order-1 mt-5">
             <ContentRenderer :value="page">
                 <NavToc :page="page">
                     <template #header>
@@ -15,7 +15,7 @@
                     <ContentRendererMarkdown :value="page"/>
                 </div>
             </ContentRenderer>
-        </main>
+        </article>
     </div>
 </template>
 
@@ -57,3 +57,9 @@
         useContentHead(page)
     }
 </script>
+
+<style lang="scss" scoped>
+    .container {
+        overflow: visible;
+    }
+</style>

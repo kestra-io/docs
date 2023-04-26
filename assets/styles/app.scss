@@ -1,8 +1,13 @@
 @import "variable";
 
+html {
+    height: 100%;
+}
+
 body {
     min-width: 320px;
-    overflow-x: hidden;
+    min-height: 100%;
+    position: relative;
 }
 
 :root {
@@ -32,8 +37,11 @@ h2 {
 }
 
 
-main > .container, main > .container-fluid{
-    overflow: hidden;
+main {
+    padding-top: 67px;
+    > div {
+        overflow-x: hidden;
+    }
 }
 
 // bootstrap

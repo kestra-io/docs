@@ -1,8 +1,8 @@
 <template>
     <div class="container bd-gutter mt-3 my-md-4 bd-layout">
-        <main class="bd-main order-1">
+        <article class="bd-main order-1">
             <ContentDoc />
-        </main>
+        </article>
     </div>
 </template>
 

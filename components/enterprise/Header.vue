@@ -13,8 +13,8 @@
                         Contact us
                     </NuxtLink>
                 </div>
-                <div class="col-md-6 " data-aos="zoom-in">
-                    <img class="img-fluid" src="/landing/ee/background.svg" alt="Illustration of Kestra's logo with a dark background"/>
+                <div class="col-md-6 ">
+                    <img class="img-fluid" src="/landing/ee/background.svg" alt="Illustration of Kestra's logo with a dark background" data-aos="zoom-in"/>
                 </div>
             </div>
         </div>
@@ -27,13 +27,19 @@
     .container-fluid {
         background: $purple-7;
         color: var(--bs-white);
+        overflow: hidden;
 
+        .img-fluid {
+            max-height: 100%;
+        }
         .baseline {
             font-size: 1.15rem;
         }
 
         @include media-breakpoint-down(md) {
             .row {
+                position: relative;
+
                 & > div:first-child {
                     z-index: 1;
                 }

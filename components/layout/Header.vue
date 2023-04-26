@@ -1,5 +1,5 @@
 <template>
-    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg sticky-top" :class="{transparent: transparentClass, open: isOpen}">
+    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{transparent: transparentClass, open: isOpen}">
         <div class="container-xl">
             <NuxtLink class="navbar-brand" href="/" @click="globalClick(true)">
                 <img class="icon" src="/icon.svg" alt="Kestra, Open source declarative data orchestration" />
@@ -140,7 +140,7 @@
                         <NuxtLink class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm me-0 me-sm-2" href="/docs/getting-started">
                             <span>
                                 <Flash/>
-                                Getting Started
+                                Get Started
                             </span>
                         </NuxtLink>
 
@@ -488,6 +488,7 @@
                 }
 
                 .btn {
+                    border-radius: $border-radius;
                     &.search {
                         font-size: 1.5rem;
 

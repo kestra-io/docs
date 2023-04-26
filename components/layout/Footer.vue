@@ -56,25 +56,21 @@
                 </div>
             </div>
         </div>
-        <div class="container py-3">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div>
-                        <p class="mb-0">
-                            © {{  new Date().getFullYear() }} <NuxtLink href="/">Kestra Technologies</NuxtLink>.
-                            Developed with <Heart class="text-danger" /> in 🇫🇷 .
+        <div class="container bottom py-3">
+            <div class="d-flex d-100">
+                <div class="flex-grow-1">
+                    <p class="mb-0 d-none d-md-inline">
+                        © {{  new Date().getFullYear() }} <NuxtLink href="/">Kestra Technologies</NuxtLink>.
+                        Developed with <Heart class="text-danger" /> in the 🌎.
 
-                        </p>
-                    </div>
+                    </p>
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-end">
-                        <p class="mb-0">
-                            <NuxtLink href="/privacy-policy">Privacy Policy</NuxtLink>
-                            /
-                            <NuxtLink href="/cookie-policy">Cookie Policy</NuxtLink>
-                        </p>
-                    </div>
+                <div class="text-end">
+                    <p class="mb-0">
+                        <NuxtLink href="/privacy-policy">Privacy Policy</NuxtLink>
+                        /
+                        <NuxtLink href="/cookie-policy">Cookie Policy</NuxtLink>
+                    </p>
                 </div>
             </div>
         </div>
@@ -122,6 +118,10 @@
         .container {
             position: relative;
             z-index: 2;
+        }
+
+        .bottom {
+            border-top: 1px solid rgba(#FFF, 0.1);
         }
 
         .socials {

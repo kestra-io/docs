@@ -2,7 +2,7 @@
     <div class="container bd-gutter bd-layout margin">
         <NavSideBar :type="type" v-if="pageList" :page-list="pageList"/>
 
-        <main class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
+        <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
             <ContentRenderer :value="page">
                 <div>
                     <Breadcrumb :slug="props.slug" />
@@ -21,7 +21,7 @@
                     <PrevNext />
                 </div>
             </ContentRenderer>
-        </main>
+        </article>
     </div>
 </template>
 

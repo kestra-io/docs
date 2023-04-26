@@ -2,7 +2,7 @@
     <div class="container">
         <Section>
             <div class="row card-group mb-4">
-                <div class="col-12 col-md-6 d-flex justify-content-end">
+                <div class="col-12 col-md-6 d-md-flex d-md-justify-content-end">
                     <div class="card col-lg-9 col-xl-7">
                         <div class="card-body p-5">
                             <div class="text-center">
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
-                    <div class="card col-lg-9 col-xl-6">
+                    <div class="card col-lg-9 col-xl-7 mt-3 mt-md-0">
                         <div class="card-body p-5">
                             <div class="text-center mb-7">
                                 <h3 class="card-title" data-aos="fade-right">Enterprise Edition</h3>
@@ -55,7 +55,6 @@
                 </div>
             </div>
             <div class="row card-group mb-4">
-
                 <div class="text-center mt-5">
                     <button class="btn btn-lg btn-primary button-collapse mb-4" @click="isOpen = !isOpen" type="button" data-bs-toggle="collapse" data-bs-target="#compare" aria-expanded="true" aria-controls="compare" data-aos="zoom-in">
                         Compare all features <ChevronUp v-if="!isOpen" /><ChevronDown v-if="isOpen" />
@@ -309,7 +308,6 @@
                         position: relative;
                         top: -0.75rem;
                     }
-
                 }
             }
         }

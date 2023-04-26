@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class=" container text-center">
             <p class="companies-title">
                 Loved & trusted by leading enterprises worldwide

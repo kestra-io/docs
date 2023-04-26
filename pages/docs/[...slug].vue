@@ -9,3 +9,8 @@
     const slug = "/docs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
 </script>
 
+<style lang="scss" scoped>
+    .container {
+        overflow: visible;
+    }
+</style>
