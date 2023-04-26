@@ -113,6 +113,6 @@ export default {
 
 span.online {
     font-weight: normal;
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
 }
 </style>

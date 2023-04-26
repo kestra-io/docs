@@ -1,22 +1,22 @@
 <template>
-    <div id="fixed-container" class="text-right">
-        <div class="text-right">
+    <div id="fixed-container">
+        <div class="text-end">
             <Transition>
-            <div @click="backToTop" v-if="yScroll > 200" class="top-arrow inline-block">
-                <PanUp/>
-            </div>
+                <a href="#" class="btn btn-primary mb-2" @click="backToTop" v-if="yScroll > 200">
+                    <ChevronUp />
+                </a>
             </Transition>
-            <Slack :widget="true"/>
+            <Slack v-if="displaySlack" :widget="true"/>
         </div>
     </div>
 </template>
 
 <script>
-import PanUp from 'vue-material-design-icons/PanUp.vue'
+import ChevronUp from 'vue-material-design-icons/ChevronUp.vue'
 import Slack from '../community/Slack.vue'
 
 export default {
-    components: {Slack, PanUp},
+    components: {Slack, ChevronUp},
     data() {
         return {
             yScroll: 0
@@ -33,6 +33,11 @@ export default {
             });
         }
     },
+    computed: {
+        displaySlack() {
+            return this.$route.name !== "enterprise";
+        }
+    },
     created() {
         if (process.client) {
             window.addEventListener('scroll', this.handleScroll);
@@ -47,51 +52,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
-#fixed-container {
-    position: fixed;
-    z-index: 9999;
-    bottom: 10px;
-    right: 10px;
-    transform: translateX(0);
-    transition: all ease 0.2s;
+    #fixed-container {
+        position: fixed;
+        z-index: 9999;
+        bottom: 10px;
+        right: 10px;
+        transform: translateX(0);
+        transition: all ease 0.2s;
 
-    @include media-breakpoint-down("md") {
-        display: none;
-    }
-
-    .v-enter-active,
-    .v-leave-active {
-        transition: opacity 0.8s ease;
-    }
-
-    .v-enter-from,
-    .v-leave-to {
-        opacity: 0;
-    }
-
-    .top-arrow {
-        &:hover{
-            cursor: pointer;
-
-            .material-design-icon {
-                color: shade-color($primary, $btn-hover-bg-shade-amount);
-            }
+        @include media-breakpoint-down("md") {
+            display: none;
         }
 
-        .material-design-icon {
-            font-size: 500%;
-            color: $primary;
+        .v-enter-active,
+        .v-leave-active {
+            transition: opacity 0.8s ease;
+        }
+
+        .v-enter-from,
+        .v-leave-to {
+            opacity: 0;
         }
     }
-}
-
-.text-right {
-    text-align: right;
-}
-
-.inline-block {
-    display: inline-block;
-}
 </style>
