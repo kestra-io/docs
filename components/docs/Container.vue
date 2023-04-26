@@ -6,7 +6,7 @@
             <ContentRenderer :value="page">
                 <div>
                     <Breadcrumb :slug="props.slug" />
-                    <h1>{{ removeEmoji(page.title) }}</h1>
+                    <h1 v-html="transformTitle(page.title)"></h1>
                 </div>
 
                 <NavToc :page="page"/>
@@ -65,8 +65,10 @@
 
     useContentHead(page)
 
-    const removeEmoji = (text) => {
-        return text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
+    const transformTitle = (text) => {
+        return text
+            .replace(/([A-Z])/g, '&#x200B;$1')
+            .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
 </script>
 
