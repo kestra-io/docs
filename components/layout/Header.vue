@@ -144,11 +144,11 @@
                             </span>
                         </NuxtLink>
 
-                        <a class="d-block d-sm-none d-sm-inline-block mb-1 mn-sm-0 btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#search-modal">
+                        <a href="#" class="d-block d-sm-none d-sm-inline-block mb-1 mn-sm-0 btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#search-modal">
                             <Magnify/> Search
                         </a>
 
-                        <a class="btn d-none d-sm-inline-block search" data-bs-toggle="modal" data-bs-target="#search-modal">
+                        <a href="#" class="btn d-none d-sm-inline-block search" data-bs-toggle="modal" data-bs-target="#search-modal">
                             <Magnify/>
                         </a>
                     </li>
