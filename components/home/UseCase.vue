@@ -8,13 +8,13 @@
             >
                 <ul class="nav nav-pills" data-aos="fade-right">
                     <li class="nav-item mt-2">
-                        <a  class="nav-link" :class="{'active': active === 1}" @click="active = 1">Data Platform Orchestration</a>
+                        <button class="nav-link" :class="{'active': active === 1}" @click="active = 1;">Data Platform Orchestration</button>
                     </li>
                     <li class="nav-item mt-2">
-                        <a  class="nav-link" :class="{'active': active === 2}" @click="active = 2">Efficient Workflow Automation</a>
+                        <button class="nav-link" :class="{'active': active === 2}" @click="active = 2;">Efficient Workflow Automation</button>
                     </li>
                     <li class="nav-item mt-2">
-                        <a  class="nav-link" :class="{'active': active === 3}" @click="active = 3">Decentralized Workflow Automation</a>
+                        <button class="nav-link" :class="{'active': active === 3}" @click="active = 3;">Decentralized Workflow Automation</button>
                     </li>
                 </ul>
 
