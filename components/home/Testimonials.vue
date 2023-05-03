@@ -44,12 +44,12 @@
                         alt: "Picture of Julien testimony",
                     },
                     {
-                        profile: "/landing/home/testimonials/fares.jpeg",
-                        message: "Easy to use and very powerful, it does everything I need, and orchestrating flows has never been easier.",
-                        name: "Fares Daoud",
-                        link: "https://www.linkedin.com/in/faresdaoudofficiel/",
-                        designation: "Senior Data Engineer @ Decathlon",
-                        alt: "Picture of Fares testimony",
+                        profile: "/landing/home/testimonials/simonb.jpeg",
+                        message: "In less than a month, with no previous experience in data orchestration, I felt autonomous with my data flows and could collaborate with my teammates. Kestra had become a total necessity for me.",
+                        name: "Simon Barbier",
+                        link: "https://www.linkedin.com/in/simon-barbier-4b97a5192/",
+                        designation: "Data Engineer @ Leroy Merlin",
+                        alt: "Picture of Simon testimony",
                     },
                     {
                         profile: "/landing/home/testimonials/danielt.jpeg",
