@@ -9,10 +9,14 @@ export default defineNuxtPlugin(nuxtApp => {
         cookieConsent.run({
             autorun: true,
             current_lang: 'en',
-            autoclear_cookies: 'true',
+            autoclear_cookies: false,
+            gui_options: {
+                consent_modal: {
+                    swap_buttons: true
+                }
+            },
             page_scripts: true,
             force_consent: true,
-
             onAccept: () => {
                 if(cookieConsent.allowedCategory('analytics')) {
                     useGtagConsent(true);
