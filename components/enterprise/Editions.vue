@@ -2,7 +2,7 @@
     <div class="container">
         <Section>
             <div class="row card-group mb-4">
-                <div class="col-12 col-md-6 d-md-flex d-md-justify-content-end">
+                <div class="col-12 col-md-6 d-md-flex justify-content-md-end">
                     <div class="card col-lg-9 col-xl-7">
                         <div class="card-body p-5">
                             <div class="text-center">
