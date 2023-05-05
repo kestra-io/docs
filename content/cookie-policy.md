@@ -29,7 +29,7 @@ The cookies we use on our Website can be categorized as follows:
 We use the following third-party cookies on our Website:
 
 1.  **Google Analytics**: We use Google Analytics to collect information about how visitors use our website, such as the number of visitors, the pages they visit, and the duration of their visit. This information is used to improve the user experience and optimize our Website. You can learn more about Google Analytics cookies and how to opt out **[here](https://tools.google.com/dlpage/gaoptout)**.
-2.  **HubSpot**: We use HubSpot to manage our customer relationships and provide a better user experience on our Website. HubSpot uses cookies to track visitor activity, gather data about website usage, and understand user preferences. You can learn more about HubSpot cookies and how to opt-out **[here](https://knowledge.hubspot.com/reports/what-cookies-does-hubspot-set-in-a-visitor-s-browser)**.
+2.  **HubSpot**: We use HubSpot to manage our customer relationships and provide a better user experience on our Website. HubSpot uses cookies to track visitor activity, gather data about website usage, and understand user preferences. You can learn more about HubSpot cookies and how to opt out of using them **[here](https://knowledge.hubspot.com/reports/what-cookies-does-hubspot-set-in-a-visitor-s-browser)**.
 
 ## How to manage cookies?
 
