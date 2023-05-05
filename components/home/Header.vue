@@ -10,7 +10,10 @@
                 <GithubButton class="btn-secondary btn-lg" data-aos="zoom-in" />
             </div>
 
-            <img class="img-fluid" src="/landing/home/animation.svg" alt="Kestra's flow animation from source to visualization" />
+            <ClientOnly>
+                <HeaderAnimation />
+            </ClientOnly>
+<!--            <img class="img-fluid" src="/landing/home/animation.svg"   alt="Kestra's flow animation from source to visualization" />-->
         </div>
 
         <div class="container text-center">
@@ -31,9 +34,10 @@
     import Console from "vue-material-design-icons/Console.vue"
     import GithubButton from "../layout/GithubButton.vue";
     import Companies from "../layout/Companies.vue";
+    import HeaderAnimation from './HeaderAnimation.vue';
 
     export default {
-        components: {Console, Magnify, GithubButton, Companies},
+        components: {Console, Magnify, GithubButton, Companies, HeaderAnimation},
     }
 </script>
 
@@ -41,8 +45,23 @@
     @import "../../assets/styles/variable";
 
     .main {
-        background: #040114 url("/landing/home/Intro.svg") center no-repeat;
-        background-size: cover;
+        background: linear-gradient(160.34deg, rgba(130, 0, 255, 0.3) 5.3%, rgba(130, 0, 255, 0) 75.43%), #040114;
+
+        > * {
+            z-index:2;
+            position: relative;
+        }
+
+        &:after {
+            background: url("/landing/home/header-bg.svg") center bottom no-repeat;
+            content:'';
+            position: absolute;
+            width: 100%;
+            height: 702px;
+            margin-top: -702px;
+            z-index: 1;
+        }
+
         color: var(--bs-white);
         padding-top: 80px;
         margin-top: -80px;
@@ -61,6 +80,10 @@
             }
         }
 
+        .animation {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
         .companies-title {
             position: relative;
 

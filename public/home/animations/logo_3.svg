@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Product_Icons"
+   data-name="Product Icons"
+   viewBox="0 0 100 100"
+   version="1.1"
+   sodipodi:docname="logo_3.svg"
+   width="100"
+   height="100"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview20"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="5.2296439"
+     inkscape:cx="-30.116773"
+     inkscape:cy="5.354093"
+     inkscape:window-width="2560"
+     inkscape:window-height="1517"
+     inkscape:window-x="3840"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Product_Icons" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#aecbfa;}.cls-1,.cls-2,.cls-3{fill-rule:evenodd;}.cls-2{fill:#669df6;}.cls-3{fill:#4285f4;}</style>
+  </defs>
+  <title
+     id="title6">Icon_24px_Color_BigQuery</title>
+  <g
+     id="Shape"
+     transform="matrix(3.7476294,0,0,3.7476294,4.9486959,4.7807736)">
+    <path
+       class="cls-1"
+       d="m 6.73,10.83 v 2.63 a 4.91,4.91 0 0 0 1.71,1.74 v -4.37 z"
+       id="path8" />
+    <path
+       class="cls-2"
+       d="m 9.89,8.41 v 7.53 A 7.62,7.62 0 0 0 11,16 8,8 0 0 0 12,16 V 8.41 Z"
+       id="path10" />
+    <path
+       class="cls-1"
+       d="m 13.64,11.86 v 3.29 a 5,5 0 0 0 1.7,-1.82 v -1.47 z"
+       id="path12" />
+    <path
+       class="cls-3"
+       d="m 17.74,16.32 -1.42,1.42 a 0.42,0.42 0 0 0 0,0.6 l 3.54,3.54 a 0.42,0.42 0 0 0 0.59,0 l 1.43,-1.43 a 0.42,0.42 0 0 0 0,-0.59 l -3.54,-3.54 a 0.42,0.42 0 0 0 -0.6,0"
+       id="path14" />
+    <path
+       class="cls-2"
+       d="m 11,2 a 9,9 0 1 0 9,9 9,9 0 0 0 -9,-9 m 0,15.69 A 6.68,6.68 0 1 1 17.69,11 6.68,6.68 0 0 1 11,17.69"
+       id="path16" />
+  </g>
+  <metadata
+     id="metadata22">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Icon_24px_Color_BigQuery</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

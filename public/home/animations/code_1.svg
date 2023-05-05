@@ -1,0 +1,30 @@
+<svg width="1161" height="798" viewBox="0 0 1161 798" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <style>
+
+    </style>
+
+    <g clip-path="url(#clip0_101_4)">
+        <rect width="1161" height="798"/>
+        <text
+            fill="#DB00FF"
+            xml:space="preserve"
+            style="white-space: pre"
+            font-family="Source Code Pro"
+            font-size="40"
+            letter-spacing="0em"
+            font-weight="700"
+        >
+            <tspan x="28" y="53.22">tasks: &#10;</tspan>
+            <tspan x="28" y="133.22">- id: <tspan fill="#FFFFFF">syncStripe</tspan></tspan>
+            <tspan x="28" y="213.22">  type: <tspan fill="#FFFFFF">i.k.p.airbyte.connections.Sync</tspan></tspan>
+            <tspan x="28" y="293.22">  url: <tspan fill="#5FC269">&#34;https://api.airbyte.com&#34;</tspan></tspan>
+            <tspan x="28" y="373.22">  token: <tspan fill="#5FC269">&#39;{{ secret('AIRBYTE_TOKEN') }}&#39; &#10;</tspan></tspan>
+            <tspan x="28" y="453.22">  connectionId: <tspan fill="#5FC269">&#34;e3b1ce92-547c-436f-b1e8-23b6936c12cd&#34;</tspan></tspan>
+        </text>
+    </g>
+    <defs>
+        <clipPath id="clip0_101_4">
+            <rect width="1161" height="798"/>
+        </clipPath>
+    </defs>
+</svg>
