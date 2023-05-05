@@ -26,6 +26,8 @@ kestra:
       basic-auth:
         username: "<your-user>"
         password: "<your-password>"
+  repository:
+    type: elasticsearch
 ```
 
 ## `kestra.elasticsearch.client.trust-all-ssl`
