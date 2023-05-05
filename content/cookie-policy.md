@@ -4,73 +4,50 @@ description: Learn about our cookie policy, detailing how we use cookies to enha
 ---
 
 # Cookie Policy
+-----------------
 
-This Cookies Policy explains what Cookies are and how We use them. You should read this policy so You can understand what type of cookies We use, or the information We collect using Cookies and how that information is used.
+Last updated: 4th of May 2023
 
-Cookies do not typically contain any information that personally identifies a user, but personal information that we store about You may be linked to the information stored in and obtained from Cookies. For further information on how We use, store and keep your personal data secure, see our Privacy Policy.
+This Cookie Policy explains how Kestra uses cookies on our website [kestra.io](http://kestra.io) (the "Website"). By using our Website, you consent to the use of cookies in accordance with this Cookie Policy.
 
-We do not store sensitive personal information, such as mailing addresses, account passwords, etc. in the Cookies We use.
+## What are cookies?
 
-### Interpretation and Definitions
+Cookies are small text files that are stored on your computer or mobile device when you visit a website. They are used to help websites remember your preferences, login status, and browsing history, among other things. Cookies can enhance your online experience by saving your preferences and making interactions with the website more efficient.
 
-#### Interpretation
+## How do we use cookies?
 
-The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.
+We use cookies to improve the functionality of our Website, provide you with a better user experience, and analyze how our Website is used. We use two types of cookies on our Website:
 
-#### Definitions
-For the purposes of this Cookies Policy:
+1.  **Session cookies**: These are temporary cookies that remain in the cookie file of your browser until you close the browser. They are used to remember your preferences during a single browsing session.
+2.  **Persistent cookies**: These cookies remain in the cookie file of your browser for a longer period, depending on the cookie's expiration date. They are used to remember your preferences and track your usage of our Website over multiple browsing sessions.
 
-- **Company** (referred to as either "the Company", "We", "Us" or "Our" in this Cookies Policy) refers to Kestra Technologies, 81 RUE DU PRE CATELAN, 59110 LA MADELEINE.
-- **Cookies** means small files that are placed on Your computer, mobile device or any other device by a website, containing details of your browsing history on that website among its many uses.
-- **Website** refers to Kestra, accessible from [https://kestra.io/](https://kestra.io)
-- **You** means the individual accessing or using the Website, or a company, or any legal entity on behalf of which such individual is accessing or using the Website, as applicable.
+The cookies we use on our Website can be categorized as follows:
 
-### The use of the Cookies
-#### Type of Cookies We Use
+-   **Essential cookies**: These cookies are necessary for the proper functioning of our Website and cannot be switched off. They are usually set in response to actions made by you, such as setting your privacy preferences or filling in forms.
+-   **Performance cookies**: These cookies allow us to count visits and traffic sources to measure and improve the performance of our Website. They help us understand which pages are the most and least popular and see how visitors move around the site.
 
-Cookies can be "Persistent" or "Session" Cookies. Persistent Cookies remain on your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close your web browser.
+We use the following third-party cookies on our Website:
 
-We use both session and persistent Cookies for the purposes set out below:
+1.  **Google Analytics**: We use Google Analytics to collect information about how visitors use our Website, such as the number of visitors, the pages they visit, and the duration of their visit. This information is used to improve the user experience and optimize our Website. You can learn more about Google Analytics cookies and how to opt-out **[here](https://tools.google.com/dlpage/gaoptout)**.
+2.  **HubSpot**: We use HubSpot to manage our customer relationships and provide a better user experience on our Website. HubSpot uses cookies to track visitor activity, gather data about website usage, and understand user preferences. You can learn more about HubSpot cookies and how to opt-out **[here](https://knowledge.hubspot.com/reports/what-cookies-does-hubspot-set-in-a-visitor-s-browser)**.
 
+## How to manage cookies?
 
-##### Necessary / Essential Cookies
+Most web browsers automatically accept cookies, but you can usually modify your browser settings to decline cookies or to notify you when a cookie is being placed on your device. Please note that disabling cookies may affect the functionality of our Website and your user experience.
 
-- **Type:** Session Cookies
-- **Administered by:** Us
-- **Purpose:** These Cookies are essential to provide You with services available through the Website and to enable You to use some of its features. They help to authenticate users and prevent fraudulent use of user accounts. Without these Cookies, the services that You have asked for cannot be provided, and We only use these Cookies to provide You with those services.
+For more information on how to manage cookies in your browser, please refer to the following links:
 
+-   **[Google Chrome](https://support.google.com/chrome/answer/95647)**
+-   **[Mozilla Firefox](https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences)**
+-   **[Apple Safari](https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac)**
+-   **[Microsoft Edge](https://support.microsoft.com/en-us/help/4468242/microsoft-edge-browsing-data-and-privacy)**
 
-##### Functionality Cookies
+## Changes to our Cookie Policy
 
-- **Type:** Persistent Cookies
-- **Administered by:** Us
-- **Purpose:** These Cookies allow us to remember choices You make when You use the Website, such as remembering your login details or language preference. The purpose of these Cookies is to provide You with a more personal experience and to avoid You having to re-enter your preferences every time You use the Website.
-
-##### Third-party cookies on our site
-We may employ third-party companies and individuals on our websites — for example, analytics providers and content partners. We grant these third parties access to selected information to perform specific tasks on our behalf. They may also set third-party cookies in order to deliver the services they are providing. Third-party cookies can be used to track you on other websites that use the same third-party service. As we have no control over third-party cookies, they are not covered by Kestra's cookie policy.
-
-##### Google Analytics’ Cookies
-
-In order to collect data on the usage of our website and visits to the website, we use Google Analytics. Google Analytics stores a permanent cookie on your terminal which is subsequently used to register your use of the website. This enables us to get more insight in the way in which the website is used and, based on this information, to make adjustments to the website or the provided services.
-
-We use Google Analytics [IP Anonymization](https://support.google.com/analytics/answer/2763052?hl=en), so we don't store any personal information.
-
-### Your Choices Regarding Cookies
-
-If You prefer to avoid the use of Cookies on the Website, first You must disable the use of Cookies in your browser and then delete the Cookies saved in your browser associated with this website. You may use this option for preventing the use of Cookies at any time.
-
-If You do not accept Our Cookies, You may experience some inconvenience in your use of the Website and some features may not function properly.
+We may update our Cookie Policy from time to time. If we make any changes, we will notify you by revising the "Last updated" date at the top of this policy. Your continued use of our Website constitutes
 
 
-If You'd like to delete Cookies or instruct your web browser to delete or refuse Cookies, please visit the help pages of your web browser.
-
-- For the Chrome web browser, please visit this page from Google: [https://support.google.com/accounts/answer/32050](https://support.google.com/accounts/answer/32050)
-- For the Internet Explorer web browser, please visit this page from Microsoft: [http://support.microsoft.com/kb/278835](http://support.microsoft.com/kb/278835)
-- For the Firefox web browser, please visit this page from Mozilla: [https://support.mozilla.org/en-US/kb/delete-cookies-remove-info-websites-stored](https://support.mozilla.org/en-US/kb/delete-cookies-remove-info-websites-stored)
-- For the Safari web browser, please visit this page from Apple: [https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac](https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac)
-- For any other web browser, please visit your web browser's official web pages.
-
-
-### Contact Us
+## Contact Us
 If you have any questions about this Cookies Policy, You can contact us:
 - By email: [hello@kestra.io](mailto:hello@kestra.io)
+- By mail: 81 RUE DU PRE CATELAN 59110 LA MADELEINE Nord France

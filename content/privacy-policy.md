@@ -3,90 +3,87 @@ title: Privacy Policy
 description: Review our privacy policy, which outlines our commitment to protecting your personal data, the types of information we collect
 ---
 
-# Privacy Policy
+# Kestra Privacy Policy
+-------------------------
 
-At Kestra, accessible from [https://kestra.io](https://kestra.io), one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Kestra and how we use it.
+Last updated: 4th of May 2023
 
-If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.
+This Privacy Policy describes how Kestra collects, uses, and discloses your personal information when you visit or use our website [kestra.io](http://kestra.io) (the "Website"). By using our Website, you agree to the collection and use of information in accordance with this Privacy Policy.
 
-This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information that they shared and/or collect in Kestra. This policy is not applicable to any information collected offline or via channels other than this website. Our Privacy Policy was created with the help of the Free Privacy Policy Generator.
+## What information do we collect?
 
-### Consent
-By using our website, you hereby consent to our Privacy Policy and agree to its terms.
+We collect personal information that you voluntarily provide to us when you use our Website or contact us through various channels, such as:
 
-### Information we collect
-The personal information that you are asked to provide, and the reasons why you are asked to provide it, will be made clear to you at the point we ask you to provide your personal information.
+-   Name
+-   Email address
+-   Company name
+-   Job title
+-   Any other personal information you choose to provide
 
-If you contact us directly, we may receive additional information about you such as your name, email address, phone number, the contents of the message and/or attachments you may send us, and any other information you may choose to provide.
+We also automatically collect certain non-personal information when you use our Website, such as:
 
-When you register for an Account, we may ask for your contact information, including items such as name, company name, address, email address, and telephone number.
+-   IP address
+-   Browser type and version
+-   Operating system
+-   Pages viewed and time spent on our Website
+-   Referring website or source
 
-### How we use your information
-We use the information we collect in various ways, including to:
+## How do we use your information?
 
-- Provide, operate, and maintain our website
-- Improve, personalize, and expand our website
-- Understand and analyze how you use our website
-- Develop new products, services, features, and functionality
-- Communicate with you, either directly or through one of our partners, including for customer service, to provide you with updates and other information relating to the website, and for marketing and promotional purposes
-- Send you emails
-- Find and prevent fraud
+We use your personal information for various purposes, including:
 
-### Log Files
+-   To provide and improve our Website and services
+-   To respond to your inquiries and requests for support
+-   To communicate with you about our products, services, and events
+-   To monitor and analyze usage and trends of our Website
+-   To maintain the security and integrity of our Website
+-   To comply with legal obligations and protect our rights
 
-Kestra follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting services' analytics. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information.
+## How do we share your information?
 
+We may share your personal information with third-party service providers who assist us in operating our Website and providing our services, such as:
 
-### Cookies and Web Beacons
-Like any other website, Kestra uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.
+-   Website hosting and content delivery providers
+-   Analytics and marketing service providers
+-   Customer support and communication tools providers
 
-For more general information on cookies, please read the Cookies article on Generate Privacy Policy website.
+We require these third parties to maintain the confidentiality and security of your personal information and to use it only for the purposes for which it was provided to them.
 
-### Advertising Partners Privacy Policies
-You may consult this list to find the Privacy Policy for each of the advertising partners of Kestra.
+We may also disclose your personal information if required by law or in response to a court order, subpoena, or similar legal process, or if we believe that such disclosure is necessary to protect our rights or the rights of others.
 
-Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on Kestra, which are sent directly to users' browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
+## How do we protect your information?
 
-Note that Kestra has no access to or control over these cookies that are used by third-party advertisers.
+We take the security of your personal information seriously and use appropriate technical and organizational measures to protect it from unauthorized access, disclosure, alteration, or destruction. However, please note that no method of electronic transmission or storage is 100% secure, and we cannot guarantee the absolute security of your personal information.
 
-### Third Party Privacy Policies
-Kestra's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.
+## International data transfers
 
-You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers' respective websites.
+Your personal information may be transferred to and processed in countries other than your country of residence. These countries may have data protection laws that are different from the laws of your country. We take appropriate measures to ensure that your personal information is treated securely and in accordance with this Privacy Policy and applicable data protection laws.
 
-### CCPA Privacy Rights (Do Not Sell My Personal Information)
-Under the CCPA, among other rights, California consumers have the right to:
+## How long do we retain your information?
 
-- Request that a business that collects a consumer's personal data disclose the categories and specific pieces of personal data that a business has collected about consumers.
-- Request that a business delete any personal data about the consumer that a business has collected.
-- Request that a business that sells a consumer's personal data, not sell the consumer's personal data.
+We retain your personal information for as long as necessary to fulfill the purposes for which it was collected, to comply with our legal obligations, and to enforce our agreements. The retention period may vary depending on the type of information and the specific purposes for which it was collected.
 
-If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.
+## Your rights and choices
 
+Depending on your country of residence, you may have certain rights regarding your personal information, such as:
 
-### General Data Protection Regulation (GDPR)
-We are a Data Controller of your information.
+-   The right to access, update, or delete your personal information
+-   The right to object to or restrict the processing of your personal information
+-   The right to withdraw your consent to the processing of your personal information, if applicable
+-   The right to lodge a complaint with a supervisory authority
 
-Kestra Technologies legal basis for collecting and using the personal information described in this Privacy Policy depends on the Personal Information we collect and the specific context in which we collect the information:
+To exercise any of these rights, please contact us using the contact information provided below.
 
-- Kestra Technologies needs to perform a contract with you
-- You have given Kestra Technologies permission to do so
-- Processing your personal information is in Kestra Technologies legitimate interests
-- Kestra Technologies needs to comply with the law
-- Kestra Technologies will retain your personal information only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use your information to the extent necessary to comply with our legal obligations, resolve disputes, and enforce our policies.
+## Changes to our Privacy Policy
 
-If you are a resident of the European Economic Area (EEA), you have certain data protection rights. If you wish to be informed what Personal Information we hold about you and if you want it to be removed from our systems, please contact us.
+We may update our Privacy Policy from time to time. If we make any changes, we will notify you by revising the "Last updated" date at the top of this policy. Your continued use of our Website constitutes your acceptance of the updated Privacy Policy.
 
-In certain circumstances, you have the following data protection rights:
+## Contact us
 
-- The right to access, update or to delete the information we have on you.
-- The right of rectification.
-- The right to object.
-- The right of restriction.
-- The right to data portability
-- The right to withdraw consent
+If you have any questions or concerns regarding this Privacy Policy or our handling of your personal information, please contact us at:
 
-### Children's Information
-Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.
+<hello@kestra.io>
 
-Kestra does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records
+81 RUE DU PRE CATELAN 59110 LA MADELEINE Nord France
+
+We will make every effort to address your concerns and resolve any issues you may have with our privacy practices.
