@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@nuxt/content": "github:kestra-io/nuxt-content",
-    "@nuxt/devtools": "^0.4.0",
+    "@nuxt/devtools": "^0.4.6",
     "@nuxt/image": "^0.7.1",
     "flexsearch": "^0.7.31",
     "highlight-words-core": "^1.2.2",
