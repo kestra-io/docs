@@ -15,7 +15,7 @@ Check out how those three cloud-based technologies are working together to effic
 
 Azure Blob Storage is a highly-scalable, cost-effective cloud storage solution for unstructured data. It's designed to store massive amounts of data, making it perfect for serving images, documents, or even storing large-scale log files. Its pay-as-you-go pricing model and tiered storage options allow organizations to optimize storage costs and performance based on their specific requirements.
 
-On the other hand, Azure Batch is a cloud-based job scheduling service that simplifies running large-scale parallel and high-performance computing applications. With its ability to automatically scale resources, Azure Batch can efficiently manage and process large volumes of data, making it an ideal choice for when looking to optimize data processing capabilities.
+Azure Batch is a cloud-based job scheduling service that simplifies running large-scale parallel and high-performance computing applications. With its ability to automatically scale resources, Azure Batch can efficiently manage and process large volumes of data, making it an ideal choice when looking to optimize data processing capabilities.
 
 ## Use Case: Analyzing and Processing Log Files
 
@@ -29,7 +29,7 @@ Let's say you want to collect millions of log files daily from various sources, 
 The first step in the process is to store the log files in a secure and scalable environment. 
 
 Start by creating a blob storage container and configure it with the necessary access policies, to ensure that only authorized users can access the data.
-In our example, let say we consume logs directly from a Kafka topic:
+In our example, let's say we consume logs directly from a Kafka topic:
 
 ```yaml
 tasks:
@@ -61,9 +61,9 @@ tasks:
 
 Here we have three tasks:
 
-1. Consume data from a Kafka topic. Quite straightforward here, we just specific the topic and some polling parameters. More details in the proper Kafka integration in Kestra documentation.
+1. Consume data from a Kafka topic. Quite straightforward here, we just specify the topic and polling parameters. [You can find more details in the Kafka plugin documentation](https://kestra.io/plugins/plugin-kafka).
 
-2. Write a proper JSON file out of it. Here again, Kestra offers several ways to write and read data. Checkout the documentation for more details.
+2. Write a proper JSON file out of it. Kestra offers several ways to write and read data. [Check out the documentation for more details](https://kestra.io/plugins/plugin-serdes).
 
 3. Upload those logs to Azure blob storage. We pass data between tasks thanks to the “{{ outputs.consume_logs.uri }}”. Kestra supports main features of Azure blob storage such as uploading or downloading blobs, list containers, etc.
 
@@ -92,6 +92,8 @@ Here we can create a Batch task having the logic of analyzing the logs encapsula
       imageName: custom_python
 ```
 
+It's worth mentioning that credentials can be set in plain text, but this is not recommended for security reasons. Kestra offers more secure methods for storing secrets, which you can learn about in the documentation. For further details, please refer to the [Kestra Administrator Guide](https://kestra.io/docs/administrator-guide).
+
 ## Orchestrating the Workflow with Kestra
 
 Kestra can be used to manage the process of transferring logs from your sources to Azure Blob Storage and orchestrating the execution of the Azure Batch application.
@@ -100,7 +102,7 @@ You can create a Kestra workflow that gets triggered whenever a new log can be c
 
 ![analyze process logs azure with kestra editor view](/blogs/2023-05-09-analyzing-processing-logs-azure-kestra/azure-kestra-editor.png)
 
-Here are some resources if you want to reproduce such a use case : 
+Here are some resources if you want to reproduce such a use case: 
 
 * [How to run a Kafka service locally with Docker](https://towardsdatascience.com/kafka-docker-python-408baf0e1088)
 * Create an [Azure account](https://azure.microsoft.com/fr-fr/free/) and look at [Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) and [Batch](https://learn.microsoft.com/en-us/azure/batch/accounts) accounts
@@ -110,6 +112,6 @@ Here are some resources if you want to reproduce such a use case :
 
 The combination of Azure Blob Storage, Azure Batch, and Kestra offers a powerful solution for managing, storing, and processing large-scale data workloads. By leveraging these technologies, organizations can efficiently process vast amounts of data and derive valuable insights to drive their business decisions.
 
-[Join the Slack community](https://kestra.io/slack) if you have any questions or need assistance !
+[Join the Slack community](https://kestra.io/slack) if you have any questions or need assistance.
 
 Be sure to follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. And if you love what we do, give a star on [our GitHub repository](https://github.com/kestra-io/kestra).
