@@ -26,7 +26,7 @@ Let's say you want to collect millions of log files daily from various sources, 
 
 ## Storing Log Files with Azure Blob Storage
 
-The first step in the process is to store the log files in a secure and scalable environment. 
+The first step in the process is to store the log files in a secure and scalable environment.
 
 Start by creating a blob storage container and configure it with the necessary access policies, to ensure that only authorized users can access the data.
 In our example, let's say we consume logs directly from a Kafka topic:
@@ -65,7 +65,7 @@ Here we have three tasks:
 
 2. Write a proper JSON file out of it. Kestra offers several ways to write and read data. [Check out the documentation for more details](https://kestra.io/plugins/plugin-serdes).
 
-3. Upload those logs to Azure blob storage. We pass data between tasks thanks to the "\{\{ outputs.consume_logs.uri \}\}". Kestra supports main features of Azure blob storage such as uploading or downloading blobs, list containers, etc.
+3. Upload those logs to Azure blob storage. We pass data between tasks thanks to the `{{ outputs.consume_logs.uri }}`. Kestra supports main features of Azure blob storage such as uploading or downloading blobs, list containers, etc.
 
 ## Processing Logs with Azure Batch
 
@@ -89,7 +89,7 @@ Here we can create a Batch task having the logic of analyzing the logs encapsula
       commands:
         - 'python process_logs.py'
       containerSettings:
-      imageName: custom_python
+        imageName: custom_python
 ```
 
 It's worth mentioning that credentials can be set in plain text, but this is not recommended for security reasons. Kestra offers more secure methods for storing secrets, which you can learn about in the documentation. For further details, please refer to the [Kestra Administrator Guide](https://kestra.io/docs/administrator-guide).
@@ -102,7 +102,7 @@ You can create a Kestra workflow that gets triggered whenever a new log can be c
 
 ![analyze process logs azure with kestra editor view](/blogs/2023-05-09-analyzing-processing-logs-azure-kestra/azure-kestra-editor.png)
 
-Here are some resources if you want to reproduce such a use case: 
+Here are some resources if you want to reproduce such a use case:
 
 * [How to run a Kafka service locally with Docker](https://towardsdatascience.com/kafka-docker-python-408baf0e1088)
 * Create an [Azure account](https://azure.microsoft.com/fr-fr/free/) and look at [Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) and [Batch](https://learn.microsoft.com/en-us/azure/batch/accounts) accounts
