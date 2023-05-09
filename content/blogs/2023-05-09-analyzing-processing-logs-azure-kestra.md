@@ -98,7 +98,7 @@ Kestra can be used to manage the process of transferring logs from your sources 
 
 You can create a Kestra workflow that gets triggered whenever a new log can be consumed from Kafka. The workflow can perform tasks such as validating the log file's format, uploading it to Azure Blob Storage, and initiating the Azure Batch application to process the logs. Kestra can also monitor the progress of the Azure Batch application, send notifications in case of any issues, and store the results in a designated location.
 
-![analyze process logs azure with kestra editor view](/blogs/2023-05-09-analyzing-processing-logs-azure-kestra/azure-kestra-topology.png)
+![analyze process logs azure with kestra editor view](/blogs/2023-05-09-analyzing-processing-logs-azure-kestra/azure-kestra-editor.png)
 
 Here are some resources if you want to reproduce such a use case : 
 
