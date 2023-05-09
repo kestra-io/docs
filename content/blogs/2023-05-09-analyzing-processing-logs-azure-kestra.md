@@ -32,7 +32,7 @@ Start by creating a blob storage container and configure it with the necessary a
 In our example, let say we consume logs directly from a Kafka topic:
 
 ```yaml
-  tasks:
+tasks:
 
   - id: consume
     type: io.kestra.plugin.kafka.Consume
