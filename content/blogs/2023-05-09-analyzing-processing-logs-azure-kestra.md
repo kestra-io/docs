@@ -65,7 +65,7 @@ Here we have three tasks:
 
 2. Write a proper JSON file out of it. Kestra offers several ways to write and read data. [Check out the documentation for more details](https://kestra.io/plugins/plugin-serdes).
 
-3. Upload those logs to Azure blob storage. We pass data between tasks thanks to the “{{ outputs.consume_logs.uri }}”. Kestra supports main features of Azure blob storage such as uploading or downloading blobs, list containers, etc.
+3. Upload those logs to Azure blob storage. We pass data between tasks thanks to the "\{\{ outputs.consume_logs.uri \}\}". Kestra supports main features of Azure blob storage such as uploading or downloading blobs, list containers, etc.
 
 ## Processing Logs with Azure Batch
 
