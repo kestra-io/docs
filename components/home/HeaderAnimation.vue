@@ -7,7 +7,7 @@
         :assets-path="assetsPath"
         :loop="false"
         :auto-play="false"
-        :speed="1.2"
+        :speed="2"
         @complete="complete"
         @domLoaded="play"
     />
