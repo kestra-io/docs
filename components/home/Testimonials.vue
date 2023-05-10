@@ -52,6 +52,14 @@
                         alt: "Picture of Simon testimony",
                     },
                     {
+                        profile: "/landing/home/testimonials/mourad.jpg",
+                        message: "Kestra is an easy-to-learn, feature-rich platform for a wide variety of use cases. Its web interface simplifies flows and logs monitoring.",
+                        name: "Mourad Bouloussa",
+                        link: "https://www.linkedin.com/in/mourad-bouloussa-541146191/",
+                        designation: "Senior Data Engineer @ Sopra Steria",
+                        alt: "Picture of Mourad testimony",
+                    },
+                    {
                         profile: "/landing/home/testimonials/danielt.jpeg",
                         message: "Thank you for your hard work in creating this good software. It is beginner friendly and easy to customize",
                         name: "Daniel Theodorus",
