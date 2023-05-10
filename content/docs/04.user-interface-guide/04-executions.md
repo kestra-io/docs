@@ -21,7 +21,7 @@ The Gantt tab allows to see each task durations. From this interface you can rep
 
 ### Logs Tab
 
-The Log tab allows to access tasks logs. You can filter by log level, copy logs in your clipboard, or download logs as a file.
+The Logs tab allows to access tasks logs. You can filter by log level, copy logs in your clipboard, or download logs as a file.
 
 ![Kestra User Interface Execution Log Tab](/docs/user-interface-guide/28-Executions-Logs.png)
 
