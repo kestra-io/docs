@@ -31,7 +31,7 @@ Like in the editor view, you can see your execution topology. From this you can 
 
 ### Outputs Tab
 
-The outputs in an execution page allow to see each task outputs.
+The outputs tab in an execution page allow to see each task outputs.
 
 ![Kestra User Interface Execution Outputs Tab](/docs/user-interface-guide/25-Executions-Outputs.png)
 
