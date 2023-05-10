@@ -25,4 +25,4 @@ The "Eval Expression" box allows to evaluate [expressions](../05.developer-guide
 ![Kestra User Interface Execution Outputs Eval Expression](/docs/user-interface-guide/26-Executions-Outputs-Eval-Expression.png)
 
 
-
+For example, you can use the "Eval Expression" feature to deep-dive into your tasks outputs and play directly with [variables operations](../05.developer-guide/03.variables/02.basic-usage.md).
