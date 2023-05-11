@@ -73,7 +73,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>Low Code (YAML-based)</td>
+                                    <td><NuxtLink href="/features/declarative-data-orchestration">Low Code (YAML-based)</NuxtLink></td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>

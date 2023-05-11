@@ -7,7 +7,7 @@
                         <div class="card-body">
                             <span class="card-icon"><LightbulbOutline /></span>
                             <h4 class="card-title">Simplicity</h4>
-                            <p class="card-text">Easily create, configure, and modify flows with Kestra's YAML format and user interface.</p>
+                            <p class="card-text">Easily create, configure, and modify flows with <NuxtLink href="/features/declarative-data-orchestration">Kestra's YAML</NuxtLink> format and user interface.</p>
                         </div>
                     </div>
                 </div>

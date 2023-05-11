@@ -71,7 +71,7 @@
                         <ol>
                             <li>
                                 <strong>Decentralize your data:</strong><br />
-                                Kestra's YAML-based workflows and intuitive UI make it easy to decentralize data and build domain-specific data products, while minimizing dependencies between teams and reducing bottlenecks.
+                                <NuxtLink href="/features/declarative-data-orchestration">Kestra's YAML-based workflows</NuxtLink> and intuitive UI make it easy to decentralize data and build domain-specific data products, while minimizing dependencies between teams and reducing bottlenecks.
                             </li>
 
                             <li>

@@ -9,7 +9,7 @@
                     <p class="overline">Step 1</p>
                     <h3>Define your workflows</h3>
                     <p>
-                        Declare all your flows in Yaml, specify all tasks that need to be executed, the input and output data, and any dependencies between steps.
+                        Declare all <NuxtLink href="/features/declarative-data-orchestration">your flows in Yaml</NuxtLink>, specify all tasks that need to be executed, the input and output data, and any dependencies between steps.
                     </p>
                 </div>
                 <div class="col-md-6" data-aos="fade-right">
