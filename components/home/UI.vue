@@ -19,7 +19,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><WrenchOutline /></span>
-                                    Built-in Low code editor for your flows
+                                    Built-in low code editor for your flows
                                 </p>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
-                                    Execute and monitor directly from the interface
+                                    Execute and monitor directly from the user interface
                                 </p>
                             </div>
                         </div>
