@@ -2,7 +2,7 @@
 title: Overview
 ---
 
-Kestra is an orchestration and scheduling platform that helps you build, run, schedule, and monitor complex pipelines. It also makes it easy to [create a flow](./05.developer-guide/index.md), requiring only a few lines of YAML. It handles all other complexities like deploying, scaling, monitoring, and error handling.
+Kestra is an orchestration and scheduling platform that helps you build, run, schedule, and monitor complex pipelines. It also makes it easy to [create a flow](./05.developer-guide/01.flow.md), requiring only a few lines of YAML. It handles all other complexities like deploying, scaling, monitoring, and error handling.
 
 ![Kestra UI](/ui.gif)
 
