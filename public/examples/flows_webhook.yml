@@ -1,5 +1,5 @@
 id: webhook
-namespace: io.kestra.demo
+namespace: io.kestra.demo.flows
 
 description: |
   Example flow for a webhook trigger.
