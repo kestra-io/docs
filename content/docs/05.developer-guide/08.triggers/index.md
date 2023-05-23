@@ -6,7 +6,11 @@ Triggers are a way to start a flow from an external event. For example, a trigge
 
 ## Core triggers
 
-<ChildTableOfContents />
+The following triggers are included in Kestra core:
+
+- [Schedule](./01.schedule.md): to trigger a flow based on a schedule.
+- [Flow](./02.flow.md): to trigger a flow after another one.
+- [Webhook](./03.webhook.md): to trigger a flow from an HTTP request.
 
 ## Polling triggers
 
