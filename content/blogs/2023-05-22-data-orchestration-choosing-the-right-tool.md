@@ -25,7 +25,7 @@ Managing dependencies can be a challenge as workflows grow in complexity. Kestra
 Kestra takes data security seriously, with our Enterprise Edition[https://kestra.io/enterprise] we provide robust security measures to ensure your data is safeguarded throughout its life cycle. With features such as SSO/OIDC authentication, role-based access Control, and Secret Manager Integration, Kestra ensures a secure platform for data orchestration.
 
 ### Monitoring ###
-![monitoring](/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/monitoring.png)
+![monitoring](/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/Monitoring.png)
 
 Troubleshooting any issue occurring on your workflow is a very important step of your orchestration.  Kestra offers real-time visibility into your workflows, enabling you to identify and address issues quickly. You can track task execution, dependencies, failures, and more, which provides you with the granular detail necessary to effectively manage your data orchestration.
 
