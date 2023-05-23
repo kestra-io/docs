@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-05-22-data-orchestration-choosing-the-right-tool.jpg
 ---
 
-The world of data engineering is constantly evolving, especially in the face of the progress introduced by AI. Following Marc Lamberti[https://www.linkedin.com/in/marclamberti/] (Head of customer Education at Astronomer) evaluation criteria post[https://www.linkedin.com/feed/update/urn:li:activity:7065329373981089792/] we created this article to utline how Kestra addresses the requirements of organizations in search of a proficient data orchestrator.
+The world of data engineering is constantly evolving, especially in the face of the progress introduced by AI. We created this article to outline how Kestra addresses the requirements of organizations in search of a proficient data orchestrator.
 
 ## Making an Informed Choice: Key Considerations for an Orchestrator
 
@@ -33,7 +33,6 @@ Troubleshooting any issue occurring on your workflow is a very important step of
 Kestra has been designed with scalability at its core. Developed using leading cloud-native technologies and a robust architecture such as Apache Kafka or Elastic Search, Kestra is capable of scaling to millions of executions without any hassle. As data volumes grow and tasks become complex, Kestra can accommodate this growth without compromising performance, proving its value as a scalable data orchestrator.
 
 ### User Friendly ### 
-
 Kestra's intuitive and user-friendly interface makes the tool accessible to both data engineers and business stakeholders. Despite dealing with complex workflows, Kestra ensures the user interface remains simple and comprehensible. With an embedded code editor, auto-completion, and clear visualization of workflow dependencies, Kestra simplifies data orchestration management.
 
 ### Testing ### 
@@ -49,7 +48,7 @@ Good documentation supports a smoother learning process and encourages team coll
 ### Integration capabilities: ###
 ![plugins](\blogs\2023-05-22-data-orchestration-choosing-the-right-tool/plugins.png)
 
- Kestra's flexibility and versatility, underlined by its extensive [range of plugins](../plugins/index.md), makes it an ideal tool for creating complex workflows with deep integrations with multiple systems. For systems without existing plugins, Kestra's compatibility with containers such as **Docker** and **Kubernetes** makes integration straightforward.
+Kestra's flexibility and versatility, underlined by its extensive [range of plugins](../plugins/index.md), makes it an ideal tool for creating complex workflows with deep integrations with multiple systems. For systems without existing plugins, Kestra's compatibility with containers such as **Docker** and **Kubernetes** makes integration straightforward.
 
 
 ## A Declarative Data Orchestrator: Embracing YAML for Workflow ##
