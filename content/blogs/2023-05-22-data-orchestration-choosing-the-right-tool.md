@@ -25,7 +25,7 @@ Managing dependencies can be a challenge as workflows grow in complexity. Kestra
 Kestra takes data security seriously, with our Enterprise Edition[https://kestra.io/enterprise] we provide robust security measures to ensure your data is safeguarded throughout its life cycle. With features such as SSO/OIDC authentication, role-based access Control, and Secret Manager Integration, Kestra ensures a secure platform for data orchestration.
 
 ### Monitoring ###
-![monitoring](\blogs\2023-05-22-data-orchestration-choosing-the-right-tool/monitoring.png)
+![monitoring](/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/monitoring.png)
 
 Troubleshooting any issue occurring on your workflow is a very important step of your orchestration.  Kestra offers real-time visibility into your workflows, enabling you to identify and address issues quickly. You can track task execution, dependencies, failures, and more, which provides you with the granular detail necessary to effectively manage your data orchestration.
 
@@ -38,15 +38,16 @@ Kestra's intuitive and user-friendly interface makes the tool accessible to both
 ### Testing ### 
 Ensuring workflows are tested before they are pushed into production can save a lot of trouble down the line. With Kestra, workflows can be thoroughly tested before they go live, providing an essential safety net for your data project.
 
-### Documentation: ### 
-![documentation](\blogs\2023-05-22-data-orchestration-choosing-the-right-tool/doc-in-editor.png)
+### Documentation ### 
+![documentation](/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/doc-in-editor.png)
 
 Good documentation supports a smoother learning process and encourages team collaboration. We have a strong focus on our integrated documentation, reducing the learning curve and making it easier for teams to work together effectively.
 
-**Backfilling:** It's about ensuring no data is left unprocessed due to failures or delays. With Kestra, backfilling is built into the system, ensuring the continuity and completeness of data processing.
+### Backfilling ### 
+It's about ensuring no data is left unprocessed due to failures or delays. With Kestra, backfilling is built into the system, ensuring the continuity and completeness of data processing.
 
-### Integration capabilities: ###
-![plugins](\blogs\2023-05-22-data-orchestration-choosing-the-right-tool/plugins.png)
+### Integration capabilities ###
+![plugins](/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/plugins.png)
 
 Kestra's flexibility and versatility, underlined by its extensive [range of plugins](../plugins/index.md), makes it an ideal tool for creating complex workflows with deep integrations with multiple systems. For systems without existing plugins, Kestra's compatibility with containers such as **Docker** and **Kubernetes** makes integration straightforward.
 
