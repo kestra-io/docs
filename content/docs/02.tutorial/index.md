@@ -10,5 +10,5 @@ This tutorial is designed for anyone who wants to learn how to use Kestra, regar
 
 
 ::next-link
-[Let's start with the fundamental](./01.fundamentals.md)
+[Let's start with the fundamentals](./01.fundamentals.md)
 ::
