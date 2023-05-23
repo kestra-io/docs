@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-05-22-data-orchestration-choosing-the-right-tool.jpg
 ---
 
-The world of data engineering is constantly evolving, especially in the face of the progress introduced by AI. We created this article to outline how Kestra addresses the requirements of organizations in search of a proficient data orchestrator.
+The world of data engineering is constantly evolving, especially in the face of the progress introduced by AI. This article outlines how Kestra. how Kestra addresses the requirements of organizations in search of a proficient data orchestrator.
 
 ## Making an Informed Choice: Key Considerations for an Orchestrator
 
@@ -54,7 +54,7 @@ Kestra's flexibility and versatility, underlined by its extensive [range of plug
 
 ## A Declarative Data Orchestrator: Embracing YAML for Workflow ##
 
-A distinguishing feature of Kestra is its declarative nature, We leverage YAML (Yet Another Markup Language) to define workflows. YAML is  known for its simplicity, readability, and ease of use, making it an ideal choice for building data pipelines. With YAML, both data teams and business stakeholders can participate in the workflow creation process.
+A distinguishing feature of Kestra is its declarative nature, We leverage YAML (Yet Another Markup Language) to define workflows. YAML is  known for its simplicity, readability, and ease of use, making it an ideal choice for building data pipelines. With a declarative approach, both data teams and business stakeholders can participate in the workflow creation process.
 
 Through declarative orchestration, we aim to ensure that Kestra remains accessible and easy to use, facilitating collaboration and enabling fast iteration cycles. We're building a flexible, scalable, secure, and user-friendly tool. As we continue to evolve with the dynamic journey of data orchestration, we remain committed to evolving and adapting with it. you can learn more about declarative orchestration [here](https://kestra.io/features/declarative-data-orchestration). 
 
