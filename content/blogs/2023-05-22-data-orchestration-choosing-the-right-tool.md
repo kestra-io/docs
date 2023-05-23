@@ -1,6 +1,6 @@
 ---
 title: "What you Need to Know to Choose the Right Data Orchestrator"
-description: Discover the evolution of data orchestration and key factors to consider when choosing an orchestrator. 
+description: Key factors to consider when choosing a Data orchestrator. 
 date: 2023-05-22T18:00:00
 category: Solutions
 author:
