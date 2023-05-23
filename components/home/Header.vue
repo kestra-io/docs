@@ -4,7 +4,7 @@
             <p class="overline" data-aos="fade-left">OPEN SOURCE DECLARATIVE DATA ORCHESTRATION</p>
             <h1 data-aos="fade-right">Build reliable workflows, blazingly fast, deploy in just a few clicks<span class="dot">.</span></h1>
             <div class="text-center cta">
-                <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">
+                <a href="https://demo.kestra.io?auto" target="_blank" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">
                     <Console /> Live demo
                 </a>
                 <GithubButton class="btn-secondary btn-lg" data-aos="zoom-in" />

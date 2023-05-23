@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="text-center">
-                        <a href="https://demo.kestra.io" target="_blank" class="btn btn-lg btn-primary" data-aos="zoom-in">Live demo</a>
+                        <a href="https://demo.kestra.io?auto" target="_blank" class="btn btn-lg btn-primary" data-aos="zoom-in">Live demo</a>
                     </div>
                 </div>
             </div>
