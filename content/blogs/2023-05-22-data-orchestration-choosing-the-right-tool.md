@@ -9,14 +9,14 @@ author:
 image: /blogs/2023-05-22-data-orchestration-choosing-the-right-tool.jpg
 ---
 
-The world of data engineering is constantly evolving, especially in the face of the progress introduced by AI. Following Marc Lamberti[https://www.linkedin.com/in/marclamberti/] (Head of customer Education at Astronomer)  evaluation criteria post[https://www.linkedin.com/feed/update/urn:li:activity:7065329373981089792/] to compare data orchestrators we decided to give you some about how Kestra respond to those features needed when choosing a data orchestration tool.
+The world of data engineering is constantly evolving, especially in the face of the progress introduced by AI. Following Marc Lamberti[https://www.linkedin.com/in/marclamberti/] (Head of customer Education at Astronomer) evaluation criteria post[https://www.linkedin.com/feed/update/urn:li:activity:7065329373981089792/] we created this article to utline how Kestra addresses the requirements of organizations in search of a proficient data orchestrator.
 
 ## Making an Informed Choice: Key Considerations for an Orchestrator
 
 Choosing the right orchestrator for your organization requires thoughtful deliberation. Here are a few essential considerations to guide your decision:
 
 ### Adaptability ###
- Kestra's strength lies in its adaptability. We ensures that workflows are not just created, but they can be quickly modified, deployed, and adjusted as per the evolving data stack of the user. Its declarative approach with YAML allows for more straightforward workflow modification and adaptation, making it a suitable choice for a fast iteration cycle on the workflow management.
+Kestra's strength lies in its adaptability. We ensures that workflows are not just created, but they can be quickly modified, deployed, and adjusted as per the evolving data stack of the user. Its declarative approach with YAML allows for more straightforward workflow modification and adaptation, making it a suitable choice for a fast iteration cycle on the workflow management.
 
 ### Dependency Management ### 
 Managing dependencies can be a challenge as workflows grow in complexity. Kestra's topology view brings clarity to complex workflows, offering a transparent overview of task interdependencies. It enables you to visualize the complete workflow with its intuitive interface, thereby simplifying the management of interdependent tasks.
