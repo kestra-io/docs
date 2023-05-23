@@ -22,7 +22,7 @@ Kestra's strength lies in its adaptability. We ensures that workflows are not ju
 Managing dependencies can be a challenge as workflows grow in complexity. Kestra's topology view brings clarity to complex workflows, offering a transparent overview of task interdependencies. It enables you to visualize the complete workflow with its intuitive interface, thereby simplifying the management of interdependent tasks.
 
 ### Security ###
-Kestra takes data security seriously, with our Enterprise Edition[https://kestra.io/enterprise] we provide robust security measures to ensure your data is safeguarded throughout its life cycle. With features such as SSO/OIDC authentication, role-based access Control, and Secret Manager Integration, Kestra ensures a secure platform for data orchestration.
+Kestra takes data security seriously, with our [Enterprise Edition](https://kestra.io/enterprise) we provide robust security measures to ensure your data is safeguarded throughout its life cycle. With features such as SSO/OIDC authentication, role-based access Control, and Secret Manager Integration, Kestra ensures a secure platform for data orchestration.
 
 ### Monitoring ###
 ![monitoring](/blogs/2023-05-22-data-orchestration-choosing-the-right-tool/Monitoring.png)
@@ -56,7 +56,7 @@ Kestra's flexibility and versatility, underlined by its extensive [range of plug
 
 A distinguishing feature of Kestra is its declarative nature, We leverage YAML (Yet Another Markup Language) to define workflows. YAML is  known for its simplicity, readability, and ease of use, making it an ideal choice for building data pipelines. With YAML, both data teams and business stakeholders can participate in the workflow creation process.
 
-Through declarative orchestration, we aim to ensure that Kestra remains accessible and easy to use, facilitating collaboration and enabling fast iteration cycles. We're building a flexible, scalable, secure, and user-friendly tool. As we continue to evolve with the dynamic journey of data orchestration, we remain committed to evolving and adapting with it. you can learn more about declarative orchestration here[https://kestra.io/features/declarative-data-orchestration]. 
+Through declarative orchestration, we aim to ensure that Kestra remains accessible and easy to use, facilitating collaboration and enabling fast iteration cycles. We're building a flexible, scalable, secure, and user-friendly tool. As we continue to evolve with the dynamic journey of data orchestration, we remain committed to evolving and adapting with it. you can learn more about declarative orchestration [here](https://kestra.io/features/declarative-data-orchestration). 
 
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
