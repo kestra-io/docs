@@ -39,6 +39,8 @@ We've focused on enhancing the user experience with the following improvements:
 * **Task-required properties listed first**: In documentation pages, required properties of any task are now prioritized and listed first, making it clearer which properties are required and which are optional.
 * **Additional improvements and fixes**: We've implemented several enhancements and fixes, including improved flow and inputs validation, enhanced page redirects, fixed Gantt display issues, improved error messaging, resolved theme discrepancies, and more. These refinements ensure a smoother user experience and enhance the overall stability of Kestra.
 
+![editor window with slider](/blogs/2023-05-25-welcome-kestra-0-9-0/window_slider.gif)
+
 ## Introducing New Plugins
 With Kestra 0.9.0, we're thrilled to introduce new plugins that extend the capabilities of the platform:
 
