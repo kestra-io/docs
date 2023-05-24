@@ -55,15 +55,6 @@
                             <ChevronDown />
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="animation-slide-left">
-                                <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
-                                    <PostOutline/>
-                                    <p>
-                                        <span>Blogs</span><br/>
-                                        Product updates, user stories, and more
-                                    </p>
-                                </NuxtLink>
-                            </li>
                             <li>
                                 <NuxtLink class="dropdown-item" href="/docs" @click="globalClick(true)">
                                     <FileDocumentOutline/>
@@ -85,12 +76,31 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item">
-                        <NuxtLink class="nav-link" href="/community" @click="globalClick(true)">
-                            <span>
-                                Community
-                            </span>
-                        </NuxtLink>
+                    <li class="nav-item dropdown" @mouseover="mouseOver" @mouseleave="mouseOut">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Community
+                            <ChevronDown />
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/community" @click="globalClick(true)">
+                                    <AccountGroup/>
+                                    <p>
+                                        <span>Community Overview</span><br/>
+                                        Connect with peers and exchange ideas
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
+                                    <PostOutline/>
+                                    <p>
+                                        <span>Blogs</span><br/>
+                                        Product updates, user stories, and more
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="nav-item dropdown" @mouseover="mouseOver" @mouseout="mouseOut">
@@ -193,6 +203,7 @@
     import FeatureSearch from "vue-material-design-icons/FeatureSearch.vue"
     import Security from "vue-material-design-icons/Security.vue"
     import PostOutline from "vue-material-design-icons/PostOutline.vue"
+    import AccountGroup from "vue-material-design-icons/AccountGroup.vue"
     import AccountStarOutline from "vue-material-design-icons/AccountStarOutline.vue"
     import Segment from "vue-material-design-icons/Segment.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
