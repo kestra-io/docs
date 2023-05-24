@@ -1,7 +1,7 @@
 <template>
     <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{transparent: transparentClass, open: isOpen}">
         <div class="container-xl">
-            <NuxtLink class="navbar-brand" href="/" @click="globalClick(true)">
+            <NuxtLink class="navbar-brand" href="/" @click="logoClick">
                 <img class="icon" src="/icon.svg" alt="Kestra, Open source declarative data orchestration" />
                 <img v-if="transparentClass" src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
                 <img v-else src="/logo.svg" alt="Kestra, Open source declarative data orchestration" />
@@ -317,6 +317,15 @@
                     this.collapse.toggle();
                     this.isOpen = !this.isOpen;
                 }
+            },
+            logoClick(){
+                if(this.$route.path === "/"){
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                }
+                this.globalClick(true);
             }
         },
     }

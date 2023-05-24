@@ -179,7 +179,7 @@
         }
 
         .h6 {
-            color: var(--bs-gray-600);
+            color: var(--bs-gray-700);
         }
 
         hr {
