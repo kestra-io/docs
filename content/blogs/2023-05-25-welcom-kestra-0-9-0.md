@@ -35,7 +35,7 @@ This User Experience improvement allows you to save and return to your work at a
 We've focused on enhancing the user experience with the following improvements:
 * **Manage editor window size**: You can now resize the editor to simultaneously display the source and topology or source and documentation using a convenient slider.
 * **Re-execute Flows with last inputs**: You can now easily re-execute a Flow with the previously used inputs, saving you time on re-entering boilerplate configuration.
-* **Input validation**: You can configure inputs with validation rules that will be enforced at execution time. For example bounding an integer to a certain range of values or add a validation regex on strings.
+* **Input validation**: You can [configure inputs with validation rules](https://kestra.io/docs/developer-guide/inputs#input-validation) that will be enforced at execution time. For example bounding an integer to a certain range of values or add a validation regex on strings.
 * **Task-required properties listed first**: In documentation pages, required properties of any task are now prioritized and listed first, making it clearer which properties are required and which are optional.
 * **Additional improvements and fixes**: We've implemented several enhancements and fixes, including improved flow and inputs validation, enhanced page redirects, fixed Gantt display issues, improved error messaging, resolved theme discrepancies, and more. These refinements ensure a smoother user experience and enhance the overall stability of Kestra.
 
