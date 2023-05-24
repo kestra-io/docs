@@ -11,7 +11,7 @@
 
                 <NavToc :page="page"/>
 
-                <div class="bd-content ps-lg-2">
+                <div class="bd-content">
                     <ContentRendererMarkdown
                         class="bd-markdown"
                         :value="page"

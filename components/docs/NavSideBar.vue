@@ -93,6 +93,9 @@
             border: 1px solid var(--bs-gray-300);
             font-weight: bold;
             width: 100%;
+            @include media-breakpoint-down(lg) {
+                font-size: $font-size-sm
+            }
         }
 
         .bd-menu-collapse {

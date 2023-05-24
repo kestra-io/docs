@@ -109,6 +109,10 @@
         .socials {
             font-size: calc($font-size-base * 2);
         }
+
+        @include media-breakpoint-down(sm) {
+            max-width: 80%
+        }
     }
 
 </style>

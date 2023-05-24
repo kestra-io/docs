@@ -7,20 +7,23 @@
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#tocContents"
-                aria-expanded="false"
+                :aria-expanded="tableOfContentsExpanded"
                 aria-controls="tocContents"
+                @click="tableOfContentsExpanded = !tableOfContentsExpanded"
             >
-                On this page
+                Table of Contents
+                <ChevronUp v-if="tableOfContentsExpanded"/>
+                <ChevronDown v-else/>
             </button>
 
             <div class="collapse bd-toc-collapse" id="tocContents">
                 <slot name="header"></slot>
-                <strong class="d-none d-lg-block h6 my-2 ms-3">On this page</strong>
+                <strong class="d-none d-lg-block h6 my-2 ms-3">Table of Contents</strong>
                 <hr class="d-none d-lg-block my-2 ms-3">
                 <nav id="nav-toc">
                     <ul>
                         <template v-for="item in generated" >
-                            <li v-if="item.depth > 1 && item.depth < 6">
+                            <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc">
                                 <a :href="'#' + item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
                             </li>
                         </template>
@@ -62,6 +65,8 @@
     import Github from "vue-material-design-icons/Github.vue";
     import Linkedin from "vue-material-design-icons/Linkedin.vue";
     import Twitter from "vue-material-design-icons/Twitter.vue";
+    import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
+    import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 </script>
 
 <script>
@@ -71,6 +76,11 @@
                 type: Object,
                 required: true
             },
+        },
+        data() {
+            return {
+                tableOfContentsExpanded: false
+            }
         },
         computed: {
             editLink() {
@@ -93,6 +103,12 @@
 
                 return recursive(this.page.body.toc.links);
             }
+        },
+        methods: {
+            closeToc() {
+                this.tableOfContentsExpanded = false;
+                document.getElementById('tocContents').classList.remove("show");
+            }
         }
     }
 </script>
@@ -110,6 +126,14 @@
             z-index: 2;
             height: subtract(100vh, 7rem);
             overflow-y: auto;
+        }
+
+        > .btn.d-lg-none {
+            color: $black;
+            font-weight: 900;
+            font-size: $font-size-sm;
+            background-color: $white;
+            box-shadow: $box-shadow-sm;
         }
 
         nav {
@@ -193,7 +217,10 @@
 
         @include media-breakpoint-up(lg) {
             display: block !important; // stylelint-disable-line declaration-no-important
-
         }
+    }
+
+    #nav-toc ul li a {
+        border-left: none;
     }
 </style>

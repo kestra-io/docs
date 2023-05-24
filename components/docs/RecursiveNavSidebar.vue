@@ -167,7 +167,7 @@
 
             a {
                 color: var(--bs-body-color);
-                font-size: .8rem;
+                font-size: $font-size-base;
                 border-left: 2px solid var(--bs-gray-200);
                 padding: calc($spacer / 2);
                 display: flex;
@@ -200,6 +200,9 @@
                 }
             }
 
+            &:not(.depth-1) a {
+                font-size: $font-size-sm;
+            }
         }
     }
 

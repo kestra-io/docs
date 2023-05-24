@@ -27,6 +27,27 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
 
+@include media-breakpoint-down(lg) {
+    h1 {
+        font-size: 1.625rem;
+    }
+    h2 {
+        font-size: $h4-font-size;
+    }
+    h3 {
+        font-size: $h5-font-size;
+    }
+    h4 {
+        font-size: $h6-font-size;
+    }
+    h5 {
+        font-size: $font-size-base;
+    }
+    h6 {
+        font-size: $font-size-sm;
+    }
+}
+
 h1 {
     font-weight: 900
 }
