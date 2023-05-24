@@ -43,6 +43,12 @@
         margin-bottom: calc($spacer / 3);
         font-weight: bold;
 
+        @include media-breakpoint-down(lg) {
+            a {
+                font-size: 0.813rem
+            }
+        }
+
         @include media-breakpoint-up(xxl) {
             margin-left: 3.5rem;
         }
@@ -52,12 +58,10 @@
         }
 
         span {
-            margin-left: 0.25rem;
-
             &:before {
                 content: '>';
                 margin-right: 0.25rem;
-
+                margin-left: 0.25rem;
             }
 
             &:first-child {

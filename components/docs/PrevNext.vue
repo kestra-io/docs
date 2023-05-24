@@ -83,6 +83,10 @@
         display: flex;
         width: 100%;
 
+        .title {
+            font-size: $font-size-sm;
+        }
+
         a {
             border: 1px solid var(--bs-border-color);
             padding: calc($spacer/2) calc($spacer);

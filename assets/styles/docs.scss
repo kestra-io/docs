@@ -38,8 +38,55 @@ $bd-gutter-x: 3rem;
 
     h1 {
         padding-bottom: 1.5rem;
+        font-size: $h2-font-size;
     }
 
+    h2 {
+        padding-top: 1.5rem;
+        font-size: $h3-font-size;
+    }
+
+    h3 {
+        padding-top: 1.25rem;
+        font-size: $h4-font-size;
+    }
+
+    h4 {
+        padding-top: 1rem;
+        font-size: $h5-font-size;
+    }
+
+    h5 {
+        padding-top: .75rem;
+        font-size: $h6-font-size;
+    }
+
+    h6 {
+        padding-top: .5rem;
+        font-weight: 900;
+        font-size: $font-size-base;
+    }
+
+    @include media-breakpoint-down(lg) {
+        h1 {
+            font-size: $h4-font-size;
+        }
+        h2 {
+            font-size: $h5-font-size;
+        }
+        h3 {
+            font-size: $h6-font-size;
+        }
+        h4 {
+            font-size: $font-size-base;
+        }
+        h5 {
+            font-size: $font-size-sm;
+        }
+        h6 {
+            font-size: $font-size-xs;
+        }
+    }
 
     @include media-breakpoint-down(lg) {
         max-width: 760px;
@@ -116,27 +163,6 @@ $bd-gutter-x: 3rem;
         a {
             color: var(--bs-body-color);
         }
-    }
-
-
-    h2 {
-        padding-top: 1.5rem
-    }
-
-    h3 {
-        padding-top: 1.25rem
-    }
-
-    h4 {
-        padding-top: 1rem
-    }
-
-    h5 {
-        padding-top: .75rem
-    }
-
-    h6 {
-        padding-top: .5rem
     }
 
     img {
