@@ -84,6 +84,8 @@ For Kestra Enterprise Edition (EE) users, we've implemented the following enhanc
 * **Inherited Variables Accessibility**: Users now have access to inherited variables, even if they don't have explicit access to the namespace. This improvement simplifies variables and secrets management across teams.
 * **Namespace Dashboard**: Namespaces now have a dedicated dashboard, providing a centralized place to view, configure and modify namespace-level settings.
 
+Finally, we also move update Java from version 11 to 17. If you have custom plugins you will have to update your Java to version 17.
+
 
 ## Give it a try
 
