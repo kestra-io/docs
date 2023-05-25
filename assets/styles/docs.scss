@@ -28,7 +28,7 @@ $bd-gutter-x: 3rem;
     grid-area: sidebar;
 }
 
-.bd-content, .bd-main h1 {
+.bd-content, .bd-main > div.bd-title > h1 {
     max-width: 700px;
     margin: 0 auto;
 }

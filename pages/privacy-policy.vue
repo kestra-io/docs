@@ -1,7 +1,6 @@
 <template>
-    <div class="container bd-gutter mt-3 my-md-4 bd-layout">
-        <article class="bd-main order-1">
-            <h1>Privacy Policy</h1>
+    <div class="container mt-3 my-md-4 bd-layout">
+        <article class="bd-main">
             <ContentDoc />
         </article>
     </div>
@@ -10,3 +9,6 @@
 <style lang="scss">
     @import '../assets/styles/docs.scss';
 </style>
+<script setup lang="ts">
+import Breadcrumb from "~/components/docs/Breadcrumb.vue";
+</script>

@@ -4,9 +4,8 @@ description: Learn about our cookie policy, detailing how we use cookies to enha
 ---
 
 # Cookie Policy
------------------
 
-Last updated: 4th of May 2023
+*Last updated: 4th of May 2023*
 
 This page explains how Kestra uses cookies on [kestra.io](http://kestra.io) (i.e., the "Website"). By using the website, you consent to the use of cookies in accordance with this cookie policy.
 

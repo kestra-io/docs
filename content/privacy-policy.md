@@ -3,10 +3,9 @@ title: Privacy Policy
 description: Review our privacy policy, which outlines our commitment to protecting your personal data, the types of information we collect
 ---
 
-# Kestra Privacy Policy
--------------------------
+# Privacy Policy
 
-Last updated: 4th of May 2023
+*Last updated: 4th of May 2023*
 
 This Privacy Policy describes how Kestra collects, uses, and discloses your personal information when you visit or use our website [kestra.io](http://kestra.io) (the "Website"). By using our Website, you agree to the collection and use of information in accordance with this Privacy Policy.
 
