@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="text-center">
-                    <a class="btn btn-lg btn-primary" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank" data-aos="zoom-in">Book a demo</a>
+                    <a class="btn btn-primary" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank" data-aos="zoom-in">Book a demo</a>
                 </div>
             </Section>
         </div>

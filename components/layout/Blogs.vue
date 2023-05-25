@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <Section subtitle="blog" title="What’s new at Kestra ?">
+        <Section :subtitle="title ? 'blog' : undefined" :title="title || 'Get Kestra updates'">
             <div class="row">
                 <template v-for="blog in blogs">
                     <div class="col-md-4 mb-4">
@@ -20,7 +20,7 @@
                 </template>
             </div>
             <div class="text-center">
-                <NuxtLink class="btn btn-lg btn-primary " href="/blogs" data-aos="zoom-in">See all news</NuxtLink>
+                <NuxtLink class="btn btn-primary " href="/blogs" data-aos="zoom-in">See all news</NuxtLink>
             </div>
         </Section>
     </div>
@@ -39,10 +39,16 @@
 
 </script>
 <script>
-    import Section from '../layout/Section.vue';
+    import Section from './Section.vue';
 
     export default {
         components: {Section},
+        props: {
+            title: {
+                type: String,
+                default: undefined,
+            },
+        },
     }
 </script>
 

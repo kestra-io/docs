@@ -22,7 +22,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <NuxtLink class="dropdown-item" href="/features" @click="globalClick(true)">
-                                    <FeatureSearch/>
+                                    <FeatureSearch />
                                     <p>
                                         <span>Features</span><br/>
                                         Discover all the features of Kestra
@@ -31,10 +31,19 @@
                             </li>
                             <li>
                                 <NuxtLink class="dropdown-item" href="/enterprise" @click="globalClick(true)">
-                                    <Security/>
+                                    <Security />
                                     <p>
                                         <span>Enterprise Edition</span><br/>
                                         Security and High Availability for enterprise
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/features/declarative-data-orchestration" @click="globalClick(true)">
+                                    <FileCodeOutline />
+                                    <p>
+                                        <span>Declarative Orchestration</span><br/>
+                                        Simplified data workflow creation and execution with YAML
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -213,6 +222,8 @@
     import Flash from "vue-material-design-icons/Flash.vue"
     import Domain from "vue-material-design-icons/Domain.vue"
     import CalendarOutline from "vue-material-design-icons/CalendarOutline.vue"
+    import FileCodeOutline from "vue-material-design-icons/FileCodeOutline.vue"
+
 </script>
 
 <script>
@@ -416,6 +427,19 @@
                             display: none;
                         }
                     }
+
+
+                    .dropdown-toggle {
+                        .chevron-down-icon {
+                            transition: .2s all cubic-bezier(1, 0.25, 0.25, .8);
+                            will-change: transform;
+                        }
+
+                        &.show .chevron-down-icon {
+                            transform: rotate(180deg);
+                        }
+                    }
+
 
                     .dropdown-menu {
                         --bs-dropdown-link-hover-bg: var(--bs-gray-100);

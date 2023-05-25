@@ -8,7 +8,7 @@
                             <div class="text-center">
                                 <h4 class="card-title" data-aos="fade-right">Open Source Edition</h4>
                                 <p class="pricing" data-aos="fade-left">Free</p>
-                                <NuxtLink href="/docs/getting-started" class="btn btn-secondary btn-lg" data-aos="zoom-in">
+                                <NuxtLink href="/docs/getting-started" class="btn btn-secondary" data-aos="zoom-in">
                                     Get started
                                 </NuxtLink>
                             </div>
@@ -33,7 +33,7 @@
                             <div class="text-center mb-7">
                                 <h3 class="card-title" data-aos="fade-right">Enterprise Edition</h3>
                                 <p class="pricing custom" data-aos="fade-left">Custom</p>
-                                <NuxtLink href="/contact-us" class="btn btn-primary btn-lg" data-aos="zoom-in">
+                                <NuxtLink href="/contact-us" class="btn btn-primary" data-aos="zoom-in">
                                     Free trial
                                 </NuxtLink>
                             </div>
@@ -56,7 +56,7 @@
             </div>
             <div class="row card-group mb-4">
                 <div class="text-center mt-5">
-                    <button class="btn btn-lg btn-primary button-collapse mb-4" @click="isOpen = !isOpen" type="button" data-bs-toggle="collapse" data-bs-target="#compare" aria-expanded="true" aria-controls="compare" data-aos="zoom-in">
+                    <button class="btn btn-primary button-collapse mb-4" @click="isOpen = !isOpen" type="button" data-bs-toggle="collapse" data-bs-target="#compare" aria-expanded="true" aria-controls="compare" data-aos="zoom-in">
                         Compare all features <ChevronUp v-if="!isOpen" /><ChevronDown v-if="isOpen" />
                     </button>
                     <div id="compare" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
@@ -294,7 +294,7 @@
         }
 
         .custom {
-            color: $purple-13;
+            color: $primary;
         }
 
         .card-body {

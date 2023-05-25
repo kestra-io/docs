@@ -7,7 +7,7 @@
                 <p data-aos="fade-left">
                     Kickstart your journey with Kestra's declarative data orchestrator and unlock the full potential of your data.
                 </p>
-                <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary mt-3 mb-2" data-aos="zoom-in">
+                <NuxtLink href="/docs/getting-started" class="btn btn-primary mt-3 mb-2" data-aos="zoom-in">
                     Get Started with Kestra
                 </NuxtLink>
             </div>

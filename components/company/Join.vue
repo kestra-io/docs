@@ -10,7 +10,7 @@
             </div>
 
             <div class="text-center cta">
-                <NuxtLink href="/careers" target="_blank" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">
+                <NuxtLink href="/careers" target="_blank" class="btn btn-primary me-2" data-aos="zoom-in">
                     Join us
                 </NuxtLink>
             </div>

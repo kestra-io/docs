@@ -10,7 +10,7 @@
                         <p class="mb-5" data-aos="fade-right">
                             For Media Inquiries and Exclusive Insights, Reach Out to Our Press Team at <a href="mailto:press@kestra.io">press@kestra.io</a>
                         </p>
-                        <a href="https://drive.google.com/drive/folders/1nwf1BeIZqAGC9uPiq33W-nvDwXDK5tPR?usp=sharing" target="_blank" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">
+                        <a href="https://drive.google.com/drive/folders/1nwf1BeIZqAGC9uPiq33W-nvDwXDK5tPR?usp=sharing" target="_blank" class="btn btn-primary me-2" data-aos="zoom-in">
                             Download assets
                         </a>
 

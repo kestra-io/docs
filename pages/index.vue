@@ -14,7 +14,7 @@
         <HomeTestimonials />
         <HomeEnterpriseEdition />
         <HomeOpenSource />
-        <HomeBlogs />
+        <LayoutBlogs title="What’s new at Kestra ?" />
         <LayoutNewsletter />
     </div>
 </template>

@@ -64,7 +64,7 @@
             </div>
 
             <div class="text-center">
-                <NuxtLink class="btn btn-lg btn-primary " href="/features" data-aos="zoom-in">See all features</NuxtLink>
+                <NuxtLink class="btn btn-primary " href="/features" data-aos="zoom-in">See all features</NuxtLink>
             </div>
         </Section>
     </div>

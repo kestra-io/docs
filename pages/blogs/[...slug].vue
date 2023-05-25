@@ -16,6 +16,10 @@
                 </div>
             </ContentRenderer>
         </article>
+
+        <LayoutBlogs />
+
+        <LayoutNewsletter />
     </div>
 </template>
 

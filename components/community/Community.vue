@@ -64,8 +64,8 @@
                 </div>
             </div>
             <div class="container text-center community-links mb-3">
-                <a href="https://github.com/kestra-io/kestra" data-aos="zoom-in" class="btn btn-lg btn-dark mt-2 mx-2">Follow on GitHub</a>
-                <a href="https://github.com/kestra-io/kestra/issues" data-aos="zoom-in" class="btn btn-lg btn-primary mt-2">Find Open Issues</a>
+                <a href="https://github.com/kestra-io/kestra" data-aos="zoom-in" class="btn btn-dark mt-2 mx-2">Follow on GitHub</a>
+                <a href="https://github.com/kestra-io/kestra/issues" data-aos="zoom-in" class="btn btn-primary mt-2">Find Open Issues</a>
             </div>
         </div>
     </div>

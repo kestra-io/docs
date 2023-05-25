@@ -8,10 +8,10 @@
                 <p :data-aos="animationType('fade-left')">
                     Want to chat with the team or talk with other Kestra's enthusiasts?
                 </p>
-                <a href="https://kestra.io/slack" target="_blank" class="btn btn-lg btn-primary me-2 mb-2" :data-aos="animationType('zoom-in')">
+                <a href="https://kestra.io/slack" target="_blank" class="btn btn-primary me-2 mb-2" :data-aos="animationType('zoom-in')">
                     Join our slack
                 </a>
-                <NuxtLink href="/community" class="btn btn-lg btn-secondary mb-2" :data-aos="animationType('zoom-in')">
+                <NuxtLink href="/community" class="btn btn-secondary mb-2" :data-aos="animationType('zoom-in')">
                     Contribute
                 </NuxtLink>
             </div>

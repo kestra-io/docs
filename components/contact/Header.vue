@@ -52,7 +52,7 @@
                             </p>
                         </div>
 
-                        <button type="submit" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">Submit</button>
+                        <button type="submit" class="btn btn-primary me-2" data-aos="zoom-in">Submit</button>
                     </form>
                     <p class="mandatory-fields mt-2">* Mandatory fields</p>
                 </div>
@@ -145,7 +145,7 @@
         }
 
         .mandatory-fields {
-            color: $purple-17;
+            color: $primary;
             font-size: small;
         }
 

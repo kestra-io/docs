@@ -14,7 +14,7 @@
                         <h3>{{ error.message }}</h3>
                         <span v-html="error.stack" />
                     </div>
-                    <NuxtLink href="/" class="btn btn-lg btn-primary mb-2">
+                    <NuxtLink href="/" class="btn btn-primary mb-2">
                         Back to home
                     </NuxtLink>
                 </div>

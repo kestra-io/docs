@@ -15,75 +15,51 @@
         <div class="container container-min">
 
             <Section
-                title="Join our Open Source Community"
+                title="Join the Open Source Community"
                 subtitle="Community"
                 baseline="Kestra empowers you to customize and extend your data orchestration with plugins and features that can be deployed anywhere. Join our Open Source community and help us shape the best orchestration and scheduling platform on the market."
             >
-                <div class="row bd-gutter metrics">
-                    <div class="col-md-2 col-4 mt-4 pt-2" data-aos="fade-left">
-                        <div class="counter-box text-center">
-                            <Star title="" />
-                            <h6>Stars</h6>
-                            <h5 class="mb-0 mt-2">
-                                <CountTo :endVal="metrics ? metrics.stars : 0" :duration="4000"></CountTo>
-                            </h5>
-                        </div>
+                <div class="metrics">
+                    <div class="counter-box text-center">
+                        <Star title="" />
+                        <h6>Stars</h6>
+                        <h5 class="mb-0 mt-2">
+                            <CountTo :endVal="metrics ? metrics.stars : 0" :duration="4000"></CountTo>
+                        </h5>
                     </div>
-
-                    <div class="col-md-2 col-4 mt-4 pt-2" data-aos="fade-left">
-                        <div class="counter-box text-center">
-                            <DirectionsFork title="" />
-                            <h6>Forks</h6>
-                            <h5 class="mb-0 mt-2">
-                                <CountTo :endVal="metrics ? metrics.forks : 0" :duration="4000"></CountTo>
-                            </h5>
-                        </div>
+                    <div class="counter-box text-center">
+                        <DirectionsFork title="" />
+                        <h6>Forks</h6>
+                        <h5 class="mb-0 mt-2">
+                            <CountTo :endVal="metrics ? metrics.forks : 0" :duration="4000"></CountTo>
+                        </h5>
                     </div>
-
-                    <div class="col-md-2 col-4 mt-4 pt-2" data-aos="fade-left">
-                        <div class="counter-box text-center">
-                            <BugOutline title="" />
-                            <h6>Issues</h6>
-                            <h5 class="mb-0 mt-2">
-                                <CountTo :endVal="metrics ? metrics.issues : 0" :duration="4000"></CountTo>
-                            </h5>
-                        </div>
+                    <div class="counter-box text-center">
+                        <BugOutline title="" />
+                        <h6>Issues</h6>
+                        <h5 class="mb-0 mt-2">
+                            <CountTo :endVal="metrics ? metrics.issues : 0" :duration="4000"></CountTo>
+                        </h5>
                     </div>
-
-                    <div class="col-md-2 col-4 mt-4 pt-2" data-aos="fade-right">
-                        <div class="counter-box text-center">
-                            <SourcePull title="" />
-                            <h6>Pull Requests</h6>
-                            <h5 class="mb-0 mt-2">
-                                <CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo>
-                            </h5>
-                        </div>
+                    <div class="counter-box text-center">
+                        <SourcePull title="" />
+                        <h6>Pull Requests</h6>
+                        <h5 class="mb-0 mt-2">
+                            <CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo>
+                        </h5>
                     </div>
-
-                    <div class="col-md-2 col-4 mt-4 pt-2" data-aos="fade-right">
-                        <div class="counter-box text-center">
-                            <SourceCommitLocal title="" />
-                            <h6>Commits</h6>
-                            <h5 class="mb-0 mt-2">
-                                <CountTo :endVal="metrics ? metrics.commits : 0" :duration="4000"></CountTo>
-                            </h5>
-                        </div>
-                    </div>
-
-                    <div class="col-md-2 col-4 mt-4 pt-2" data-aos="fade-right">
-                        <div class="counter-box text-center">
-                            <AccountGroupOutline title="" />
-                            <h6>Contributors</h6>
-                            <h5 class="mb-0 mt-2">
-                                <CountTo :endVal="contributors ? contributors.length : 0" :duration="4000"></CountTo>
-                            </h5>
-                        </div>
+                    <div class="counter-box text-center">
+                        <AccountGroupOutline title="" />
+                        <h6>Contributors</h6>
+                        <h5 class="mb-0 mt-2">
+                            <CountTo :endVal="contributors ? contributors.length : 0" :duration="4000"></CountTo>
+                        </h5>
                     </div>
                 </div>
 
                 <div class="text-center mt-5">
-                    <a href="https://kestra.io/slack" target="_blank" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">Join our slack</a>
-                    <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-lg btn-dark" data-aos="zoom-in">Give us a ⭐</a>
+                    <a href="https://kestra.io/slack" target="_blank" class="btn btn-primary me-2" data-aos="zoom-in">Join our slack</a>
+                    <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-dark" data-aos="zoom-in">Give us a ⭐</a>
                 </div>
             </Section>
         </div>
@@ -186,6 +162,16 @@
     .metrics {
         padding-left: calc($spacer * 2);
         padding-right: calc($spacer * 2);
+        margin: 0 auto;
+        max-width: 750px;
+        display: flex;
+        justify-content: center;
+        gap: $spacer calc($spacer * 2);
+        flex-flow: row wrap;
+
+        > div {
+            width: 100px;
+        }
     }
 
     .container {
@@ -216,6 +202,7 @@
 
             h6 {
                 color: $primary;
+                font-size: $font-size-sm;
                 &:after {
                     display: none;
                 }

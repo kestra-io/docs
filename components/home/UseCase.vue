@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="text-center mt-5">
-                    <NuxtLink class="btn btn-lg btn-primary " href="/use-cases" data-aos="zoom-in">See more</NuxtLink>
+                    <NuxtLink class="btn btn-primary " href="/use-cases" data-aos="zoom-in">See more</NuxtLink>
                 </div>
             </Section>
         </div>

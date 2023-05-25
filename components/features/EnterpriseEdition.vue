@@ -86,8 +86,8 @@
                 </div>
 
                 <div class="text-center">
-                    <NuxtLink class="btn btn-lg btn-primary me-2" href="/enterprise" data-aos="zoom-in">Learn more</NuxtLink>
-                    <NuxtLink class="btn btn-lg btn-dark " href="/contact-us" data-aos="zoom-in">Contact us</NuxtLink>
+                    <NuxtLink class="btn btn-primary me-2" href="/enterprise" data-aos="zoom-in">Learn more</NuxtLink>
+                    <NuxtLink class="btn btn-dark " href="/contact-us" data-aos="zoom-in">Contact us</NuxtLink>
                 </div>
             </Section>
         </div>
@@ -117,7 +117,7 @@
         color: var(--bs-white);
 
         .container {
-            background: url("/landing/circle.png") no-repeat right center;
+            background: url("/landing/circle.png") no-repeat 90% 12%;
         }
         .card {
             background: $purple-10;
@@ -128,6 +128,11 @@
             .card-title {
                 color: var(--bs-white);
             }
+        }
+
+        .row > .col-md-6:first-child {
+            display: flex;
+            align-items: center;
         }
 
         .accordion {

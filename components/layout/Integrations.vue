@@ -11,8 +11,8 @@
                         <b>Customize and extend</b> the capabilities and functionalities of Kestra with the plugins feature. integrate and connect all kind of data sources, cloud services, databases, transformation, quality, notification tools and even more! It is also possible to create Custom Plugins that add specific custom features to meet your specifics needs.
                     </p>
 
-                    <NuxtLink href="/plugins" class="btn btn-lg btn-dark me-2 mb-2" data-aos="zoom-in">See all plugins</NuxtLink>
-                    <NuxtLink href="/docs/plugin-developer-guide" class="btn btn-lg btn-primary mb-2" data-aos="zoom-in">Create your plugin</NuxtLink>
+                    <NuxtLink href="/plugins" class="btn btn-dark me-2 mb-2" data-aos="zoom-in">See all plugins</NuxtLink>
+                    <NuxtLink href="/docs/plugin-developer-guide" class="btn btn-primary mb-2" data-aos="zoom-in">Create your plugin</NuxtLink>
                 </div>
             </div>
         </div>
