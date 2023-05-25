@@ -31,7 +31,7 @@
 
     .container {
         text-align: center;
-        background: url("/landing/shadow2.svg") no-repeat bottom center;
+        background: $purple-8 no-repeat bottom right;
         background-size: contain;
         color: var(--bs-black);
         padding-left: calc($spacer * 4);

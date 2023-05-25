@@ -103,7 +103,7 @@
                     </span>
                 </div>
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/bmulier.png" alt="Brian Mullier Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/bmulier.png" alt="Brian Mulier Picture"/>
                     <div>
                         <div class="team-name">Brian Mulier</div>
                         <div class="team-title font-small">Software Engineer</div>
@@ -111,6 +111,18 @@
                     <span>
                         <a href="https://www.linkedin.com/in/brian-mulier-326869150/" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/brian-mulier-p" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/ageller.png" alt="Anna Geller Picture"/>
+                    <div>
+                        <div class="team-name">Anna Geller</div>
+                        <div class="team-title font-small">Head of Developer Relations</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/anna-geller-12a86811a/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/anna-geller" target="_blank" class="me-2"><github /></a>
+                        <a href="https://twitter.com/anna__geller" target="_blank" class="me-2"><twitter /></a>
                     </span>
                 </div>
             </div>
