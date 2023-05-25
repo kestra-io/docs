@@ -191,6 +191,9 @@
                             </a>
                         </div>
                     </div>
+                    <div v-if="searchResults && searchResults.length === 0" class="alert alert-warning" role="alert">
+                        No results found for the current search
+                    </div>
                 </div>
             </div>
         </div>
