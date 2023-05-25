@@ -5,7 +5,7 @@
             subtitle="Key Features"
             class="with-shadow"
         >
-            <div class="row card-group mb-2">
+            <div class="row card-group card-centered no-shadow mb-2">
                 <div class="col-md-4 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <div class="card-body">
@@ -41,9 +41,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <div class="card-body">

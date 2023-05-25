@@ -51,8 +51,10 @@
                     <div class="col-md-4 mb-4">
                         <div class="card" data-aos="zoom-in">
                             <div class="card-body">
-                                <span class="card-icon"><KeyOutline /></span>
-                                <h4 class="card-title">Service account</h4>
+                                <div class="cart-title-container">
+                                    <span class="card-icon"><KeyOutline /></span>
+                                    <h4 class="card-title">Service account</h4>
+                                </div>
                                 <p class="card-text">Create service accounts allowing to trigger workflows for external systems.</p>
                             </div>
                         </div>
@@ -61,8 +63,10 @@
                     <div class="col-md-4 mb-4">
                         <div class="card" data-aos="zoom-in">
                             <div class="card-body">
-                                <span class="card-icon"><MathLog /></span>
-                                <h4 class="card-title">Secrets</h4>
+                                <div class="cart-title-container">
+                                    <span class="card-icon"><MathLog /></span>
+                                    <h4 class="card-title">Secrets</h4>
+                                </div>
                                 <p class="card-text">Integrate your secret manager to ensure the security of your passwords and keys.</p>
                             </div>
                         </div>
@@ -71,8 +75,10 @@
                     <div class="col-md-4 mb-4">
                         <div class="card" data-aos="zoom-in">
                             <div class="card-body">
-                                <span class="card-icon"><FormTextboxPassword /></span>
-                                <h4 class="card-title">Audit Log</h4>
+                                <div class="cart-title-container">
+                                    <span class="card-icon"><FormTextboxPassword /></span>
+                                    <h4 class="card-title">Audit Log</h4>
+                                </div>
                                 <p class="card-text">Audit all the resources created in one instance.</p>
                             </div>
                         </div>
