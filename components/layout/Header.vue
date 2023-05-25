@@ -8,7 +8,7 @@
             </NuxtLink>
 
             <button class="navbar-toggler" @click="globalClick(false)" type="button" aria-controls="main-header" aria-expanded="false" aria-label="Toggle navigation">
-                Menu
+                {{ isOpen ? "Close" : "Menu" }}
                 <Segment/>
             </button>
 
@@ -141,24 +141,24 @@
 
                 <ul class="navbar-nav mb-2 mb-lg-0 nav-button">
                     <li class="nav-item">
-                        <GithubButton class="d-block d-sm-inline-block mb-1 mn-sm-0 btn-secondary btn-sm me-0 me-sm-2"/>
+                        <GithubButton @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn-secondary btn-sm me-0 me-sm-2"/>
 
-                        <a class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm btn-dark me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block" target="_blank" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo">
+                        <a @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm btn-dark me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block" target="_blank" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo">
                             <CalendarOutline /> Book a demo
                         </a>
 
-                        <NuxtLink class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm me-0 me-sm-2" href="/docs/getting-started">
+                        <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm me-0 me-sm-2" href="/docs/getting-started">
                             <span>
                                 <Flash/>
                                 Get Started
                             </span>
                         </NuxtLink>
 
-                        <a href="#" class="d-block d-sm-none d-sm-inline-block mb-1 mn-sm-0 btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#search-modal">
+                        <a @click="globalClick(true)" href="#" class="d-block d-sm-none d-sm-inline-block mb-1 mn-sm-0 btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#search-modal">
                             <Magnify/> Search
                         </a>
 
-                        <a href="#" class="btn d-none d-sm-inline-block search" data-bs-toggle="modal" data-bs-target="#search-modal">
+                        <a @click="globalClick(true)" href="#" class="btn d-none d-sm-inline-block search" data-bs-toggle="modal" data-bs-target="#search-modal">
                             <Magnify/>
                         </a>
                     </li>
@@ -339,8 +339,13 @@
         box-shadow: $box-shadow;
         transition: all ease 0.2s;
         transform: translateY(0);
+        max-height: 100%;
 
-        .navbar-brand {
+        @include media-breakpoint-down(lg) {
+            overflow-y: scroll;
+        }
+
+            .navbar-brand {
             img:not(.icon) {
                 height: 100%;
                 width: 180px;
@@ -376,6 +381,7 @@
         }
 
         .navbar-collapse {
+            max-width: 100%;
             ul.navbar-nav {
                 li {
                     @include media-breakpoint-between(lg, xxl) {
@@ -476,6 +482,7 @@
                             .material-design-icon {
                                 font-size: 225%;
                                 margin-right: calc($spacer / 2);
+                                flex-shrink: 0;
 
                                 > .material-design-icon__svg {
                                     bottom: 0.125rem;
