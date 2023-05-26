@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-md-4" data-aos="fade-right">
                     <NuxtLink href="/use-cases/change-data-capture">
-                        <img src="/landing/usages/cdc.svg" alt="Change data capture" />
+                        <img class="img-fluid" src="/landing/usecases/cdc/intro.svg" alt="CI/CD with Github Action, Gitlab or Terraform" />
                         <h4 class="title">Change data capture</h4>
                         <p>
                             Streamline Complex Data Pipelines and Automate Repetitive Tasks for Enhanced Efficiency
@@ -15,22 +15,24 @@
                     </NuxtLink>
                 </div>
 
-                <div class="col-md-4 opacity-50" data-aos="fade-right">
-                    <div class="badge text-bg-primary">Coming soon</div>
-                    <img class="img-fluid" src="/landing/usages/cdc.svg" alt="Coming soon" />
-                    <h4 class="title">Automate Your Data Pipelines</h4>
-                    <p>
-                        Boost Data Synchronization and Streamlined Processing with Kestra's CDC Capabilities
-                    </p>
+                <div class="col-md-4" data-aos="fade-right">
+                    <NuxtLink href="/use-cases/modern-data-stack">
+                        <img class="img-fluid" src="/landing/usecases/mds/intro.svg" alt="CI/CD with Github Action, Gitlab or Terraform" />
+                        <h4 class="title">Automate Your Data Pipelines</h4>
+                        <p>
+                            Boost Data Synchronization and Streamlined Processing with Kestra's CDC Capabilities
+                        </p>
+                    </NuxtLink>
                 </div>
 
-                <div class="col-md-4 opacity-50" data-aos="fade-right">
-                    <div class="badge text-bg-primary">Coming soon</div>
-                    <img class="img-fluid" src="/landing/usages/cdc.svg" alt="Coming soon" />
-                    <h4 class="title">Automate Your Data Pipelines</h4>
-                    <p>
-                        Streamline Complex Data Pipelines and Automate Repetitive Tasks for Enhanced Efficiency
-                    </p>
+                <div class="col-md-4" data-aos="fade-right">
+                    <NuxtLink href="/use-cases/ci-cd">
+                        <img class="img-fluid" src="/landing/usecases/cicd/intro.svg" alt="CI/CD with Github Action, Gitlab or Terraform" />
+                        <h4 class="title">CI/CD for your Kestra Workflows</h4>
+                        <p>
+                            Embrace software engineering practices for versioning, deploying, and maintaining data workflows
+                        </p>
+                    </NuxtLink>
                 </div>
             </div>
         </Section>
@@ -57,6 +59,9 @@
         img {
             width: 100%;
             margin-bottom: 1rem;
+            background: $light-cyan;
+            border-radius: $border-radius;
+            padding: calc($spacer / 2);
         }
 
         .badge {
