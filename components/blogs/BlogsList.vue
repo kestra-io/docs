@@ -20,18 +20,16 @@
                 <BlogCard :blog="blog" data-aos="zoom-in" />
             </div>
         </div>
-        <Newsletter/>
     </div>
 </template>
 
 <script>
     import HighlightBlogCard from "./HighlightBlogCard.vue";
     import BlogCard from "./BlogCard.vue";
-    import Newsletter from "~/components/layout/Newsletter.vue";
 
     export default {
         name: "BlogsList",
-        components: {BlogCard, HighlightBlogCard, Newsletter},
+        components: {BlogCard, HighlightBlogCard},
         props: {
             blogs: {
                 type: Array,
@@ -81,26 +79,6 @@
     h5 {
         font-weight: 300;
     }
-
-    .subtitle {
-        font-size: $font-size-sm;
-        color: var(--bs-primary);
-        font-family: var(--bs-font-monospace);
-        font-weight: 800;
-        text-transform: uppercase;
-
-        &:after {
-            content: '';
-            position: absolute;
-            margin-top: calc($font-size-sm / 1.5);
-            margin-left: $spacer;
-            display: inline-block;
-            height: 2px;
-            width: 51px;
-            background: var(--bs-pink);
-        }
-    }
-
 
     .rounded-button {
         border-radius: 2rem;
