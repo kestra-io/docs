@@ -355,11 +355,7 @@
         transform: translateY(0);
         max-height: 100%;
 
-        @include media-breakpoint-down(lg) {
-            overflow-y: scroll;
-        }
-
-            .navbar-brand {
+        .navbar-brand {
             img:not(.icon) {
                 height: 100%;
                 width: 180px;
@@ -396,6 +392,13 @@
 
         .navbar-collapse {
             max-width: 100%;
+
+            @include media-breakpoint-down(lg) {
+                max-height: calc(100vh - 67px);
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
             ul.navbar-nav {
                 li {
                     @include media-breakpoint-between(lg, xxl) {
