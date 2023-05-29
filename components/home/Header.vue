@@ -4,16 +4,15 @@
             <p class="overline" data-aos="fade-left">OPEN SOURCE DECLARATIVE DATA ORCHESTRATION</p>
             <h1 data-aos="fade-right">Build reliable workflows, blazingly fast, deploy in just a few clicks<span class="dot">.</span></h1>
             <div class="text-center cta">
-                <a href="https://demo.kestra.io?auto" target="_blank" class="btn btn-lg btn-primary me-2" data-aos="zoom-in">
-                    <Console /> Live demo
+                <a href="https://demo.kestra.io?auto" target="_blank" class="btn btn-lg btn-secondary me-2" data-aos="zoom-in">
+                    <Console /> Try the live demo
                 </a>
-                <GithubButton class="btn-secondary btn-lg" data-aos="zoom-in" />
+                <a href="#" class="btn btn-lg btn-primary" data-aos="zoom-in" data-bs-toggle="modal" data-bs-target="#home-intro">
+                    <PlayCircleOutline /> Discover Kestra in video
+                </a>
             </div>
 
-            <ClientOnly>
-                <HeaderAnimation />
-            </ClientOnly>
-<!--            <img class="img-fluid" src="/landing/home/animation.svg"   alt="Kestra's flow animation from source to visualization" />-->
+            <img class="img-fluid" src="/landing/home/animation.svg"  alt="Kestra's flow animation from source to visualization" />
         </div>
 
         <div class="container text-center">
@@ -27,17 +26,36 @@
             <Companies />
         </div>
     </div>
+    <div v-on="{ 'show.bs.modal': () => videoVisible = true, 'hidden.bs.modal': () => videoVisible = false }" class="modal modal-full fade" id="home-intro" tabindex="-1" aria-labelledby="home-intro" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="video-responsive">
+                        <iframe v-if="videoVisible" width="560" height="315" src="https://www.youtube.com/embed/yuV_rgnpXU8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
     import Magnify from "vue-material-design-icons/Magnify.vue";
     import Console from "vue-material-design-icons/Console.vue"
+    import PlayCircleOutline from "vue-material-design-icons/PlayCircleOutline.vue"
     import GithubButton from "../layout/GithubButton.vue";
     import Companies from "../layout/Companies.vue";
     import HeaderAnimation from './HeaderAnimation.vue';
+    import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
+    import Check from "vue-material-design-icons/Check.vue";
 
     export default {
-        components: {Console, Magnify, GithubButton, Companies, HeaderAnimation},
+        components: {Console, Magnify, PlayCircleOutline, GithubButton, Companies, HeaderAnimation},
+        data() {
+            return {
+                videoVisible: false
+            }
+        },
     }
 </script>
 

@@ -104,6 +104,14 @@ blockquote.blockquote {
     padding: 0.375rem 1rem;
 }
 
+
+.modal-full {
+    .modal-dialog {
+        width: 95%;
+        max-width: none;
+    }
+}
+
 // component
 .hero {
     padding-top: calc($spacer * 8);
@@ -145,7 +153,7 @@ blockquote.blockquote {
     }
 
     .btn-secondary {
-        background: #7977F7;
+        background-color: rgba(#FFF, 10%);
     }
 
     .dot {
@@ -348,3 +356,17 @@ blockquote.blockquote {
     z-index: $zindex-modal+2;
 }
 
+.video-responsive {
+    overflow:hidden;
+    padding-bottom:56.25%;
+    position:relative;
+    height:0;
+}
+
+.video-responsive iframe {
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+}
