@@ -13,30 +13,30 @@
   },
   "dependencies": {
     "aos": "^2.3.4",
-    "axios": "^1.3.5",
+    "axios": "^1.4.0",
     "bootstrap": "5.3.0-alpha3",
     "dayjs": "^1.11.7",
     "lottie-web": "^5.11.0",
     "medium-zoom": "^1.0.8",
     "nuxt-simple-sitemap": "^2.4.11",
     "rapidoc": "^9.3.4",
-    "vanilla-cookieconsent": "^2.8.9",
+    "vanilla-cookieconsent": "^2.9.1",
     "vue-material-design-icons": "^5.2.0",
     "vue3-count-to": "^1.1.2"
   },
   "devDependencies": {
-    "@nuxt/content": "github:kestra-io/nuxt-content",
-    "@nuxt/devtools": "^0.4.0",
+    "@nuxt/content": "^2.6.0",
+    "@nuxt/devtools": "^0.5.5",
     "@nuxt/image": "^0.7.1",
     "flexsearch": "^0.7.31",
     "highlight-words-core": "^1.2.2",
-    "nuxt": "^3.4.2",
+    "nuxt": "^3.5.2",
     "nuxt-gtag": "^0.5.4",
-    "nuxt-multi-cache": "^3.0.0-beta0",
-    "nuxt-simple-sitemap": "^2.4.11",
+    "nuxt-multi-cache": "^3.0.1",
+    "nuxt-simple-sitemap": "^2.6.1",
     "remark-code-import": "file:./utils/remark-code-import",
     "remark-flexible-markers": "^1.0.2",
     "rss": "^1.2.2",
-    "sass": "^1.62.0"
+    "sass": "^1.62.1"
   }
 }
