@@ -18,7 +18,7 @@
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
                     />
-                    <PrevNext />
+                    <PrevNext :base-path="`/${type}`" />
                 </div>
             </ContentRenderer>
         </article>

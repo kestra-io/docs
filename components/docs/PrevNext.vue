@@ -33,22 +33,22 @@
 </template>
 
 <script>
-    import {upperFirst} from 'scule'
-    import {hash} from "ohash";
-    import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
-    import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-    import {prevNext} from "~/utils/navigation.js";
-    const {navDirFromPath} = useContentHelpers()
+import {upperFirst} from 'scule'
+import {hash} from "ohash";
+import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
+import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+import {prevNext} from "~/utils/navigation.js";
+
+const {navDirFromPath} = useContentHelpers()
 
     export default defineComponent({
         components: {ArrowLeft, ArrowRight},
-        async setup() {
+        async setup(props) {
             const route = useRoute();
-            let basePath = route.path.substring(0, route.path.substring(1).indexOf("/") + 2);
-            const queryBuilder = queryContent(basePath);
+            const queryBuilder = queryContent(props.basePath);
 
             const {data: navigation} = await useAsyncData(
-                `PrevNext-${hash(basePath)}`,
+                `PrevNext-${hash(props.basePath)}`,
                 () => fetchContentNavigation(queryBuilder)
             );
 
@@ -56,8 +56,8 @@
 
             return {navigation, prev, next};
         },
-        computed: {
-
+        props: {
+            basePath:  {type: String, default: '/'}
         },
         methods: {
             directory(link) {
@@ -67,7 +67,7 @@
                     return nav[0]._path
                 } else {
                     const dirs = link.split('/')
-                    const directory = dirs.length > 1 ? dirs[dirs.length - 2] : ''
+                    const directory = dirs[Math.max(1, dirs.length - 2)]
                     return directory.split('-').map(upperFirst).join(' ')
                 }
             },
