@@ -8,7 +8,7 @@
         <SolutionsDetailHeader
             title="Integrate Kestra in the Modern Data Stack"
             subtitle="Enhance Data Orchestration and Analytics by Integrating Kestra with Leading Data Tools"
-            detail-title="What is Mordern Data Stack?"
+            detail-title="What is Modern Data Stack?"
             detail-content="The modern data stack combines powerful automation and integration capabilities. Organizations can establish scalable, reliable, and streamlined data workflows by leveraging robust automation capabilities and seamless integrations with tools like DBT, Snowflake, Airbyte, and others. This ecosystem empowers data-driven decision-making and facilitates the generation of actionable insights."
             image="/landing/usecases/mds/intro.svg"
         />
