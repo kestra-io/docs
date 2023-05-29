@@ -16,6 +16,11 @@
             </a>
         </li>
         <li class="list-inline-item ml-1">
+            <a href="https://www.youtube.com/@kestra-io" title="YouTube" target="_blank">
+                <youtube />
+            </a>
+        </li>
+        <li class="list-inline-item ml-1">
             <a href="https://kestra.io/slack" title="Slack" target="_blank">
                 <slack title="" />
             </a>
@@ -28,8 +33,9 @@
     import Twitter from "vue-material-design-icons/Twitter.vue";
     import Slack from "vue-material-design-icons/Slack.vue";
     import Github from "vue-material-design-icons/Github.vue";
+    import Youtube from "vue-material-design-icons/Youtube.vue";
 
     export default {
-        components: {Github, Slack, Twitter, Linkedin}
+        components: {Github, Slack, Twitter, Linkedin, Youtube}
     }
 </script>
