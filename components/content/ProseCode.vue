@@ -1,5 +1,9 @@
 <script>
     import {defineComponent} from "#imports";
+    import { createPopper } from "@popperjs/core";
+
+    import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
+    import Check from "vue-material-design-icons/Check.vue";
 
     export default defineComponent({
         props: {
@@ -23,13 +27,63 @@
                 type: String,
                 default: null
             }
+        },
+        data() {
+            return {
+                icons: shallowRef({
+                    ContentCopy: shallowRef(ContentCopy),
+                    Check: shallowRef(Check)
+                }),
+                copyIcon: undefined,
+                copyIconResetTimer: undefined,
+                isHoveringCode: false
+            }
+        },
+        created() {
+            this.copyIcon = this.icons.ContentCopy;
+        },
+        methods: {
+            hoverCode(){
+                this.isHoveringCode = true;
+                if(this.copyIconResetTimer) {
+                    nextTick(() => {
+                        createPopper(this.$refs.copyButton, this.$refs.copyTooltip, {
+                            placement: 'left',
+                        });
+                    });
+                }
+            },
+            copyToClipboard() {
+                clearTimeout(this.copyIconResetTimer);
+
+                navigator.clipboard.writeText(this.code.trimEnd())
+
+                this.copyIcon = this.icons.Check;
+
+                this.copyIconResetTimer = setTimeout(() => {
+                    this.copyIcon = this.icons.ContentCopy;
+                    this.copyIconResetTimer = undefined;
+                }, 2000)
+            }
         }
     });
 </script>
 
 <template>
-    <div class="code-block mb-3">
+    <div class="code-block mb-3" @mouseover="hoverCode" @mouseleave="isHoveringCode = false">
         <div class="language" v-if="language">{{ language }}</div>
+        <template v-if="isHoveringCode">
+            <button ref="copyButton" class="copy">
+                <component
+                    :is="copyIcon"
+                    @click="copyToClipboard"
+                />
+            </button>
+            <div ref="copyTooltip" v-if="!!copyIconResetTimer" id="copied-tooltip" role="tooltip">
+                Copied!
+                <div id="arrow" data-popper-arrow></div>
+            </div>
+        </template>
         <slot />
     </div>
 </template>
@@ -46,7 +100,7 @@
 
         .language {
             position: absolute;
-            right: 0.75rem;
+            right: 0.35rem;
             top: 0.25rem;
             color: var(--bs-gray-600);
             font-size: calc($font-size-base * .75);
@@ -54,6 +108,42 @@
 
         :deep(pre) {
             margin-bottom: 0;
+        }
+
+        .copy {
+            position: absolute;
+            right: 0;
+            bottom: 0.1rem;
+            color: $gray-600;
+            border: none;
+            background: none;
+        }
+
+        #copied-tooltip {
+            border-radius: $border-radius;
+            background: $gray-500;
+            padding: 4px 8px;
+            font-size: $font-size-xs;
+            margin-right: $popper-margin !important;
+
+            #arrow,
+            #arrow::before {
+                position: absolute;
+                width: 8px;
+                height: 8px;
+                background: inherit;
+            }
+
+            #arrow {
+                visibility: hidden;
+                right: -4px;
+            }
+
+            #arrow::before {
+                visibility: visible;
+                content: '';
+                transform: rotate(45deg);
+            }
         }
     }
 
