@@ -50,12 +50,49 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item">
-                        <NuxtLink class="nav-link" href="/use-cases" role="button" @click="globalClick(true)">
-                            <span>
-                                Solutions
-                            </span>
-                        </NuxtLink>
+                    <li class="nav-item dropdown" @mouseover="mouseOver" @mouseleave="mouseOut">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Solutions
+                            <ChevronDown />
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/use-cases" @click="globalClick(true)">
+                                    <ChartDonut/>
+                                    <p>
+                                        <span>Usages & Use Cases</span><br/>
+                                        Uncover a wide range of use cases
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/use-cases/ci-cd" @click="globalClick(true)">
+                                    <Github/>
+                                    <p>
+                                        <span>CI/CD for your Kestra Workflows</span><br/>
+                                        Treat your workflow as code and embrace CI/CD practices
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/use-cases/modern-data-stack" @click="globalClick(true)">
+                                    <AxisArrow/>
+                                    <p>
+                                        <span>Modern Data Stack Integration</span><br/>
+                                        Integrate leading data tools with Kestra
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/use-cases/change-data-capture" @click="globalClick(true)">
+                                    <Reload/>
+                                    <p>
+                                        <span>Change Data Capture</span><br/>
+                                        Leverage Kestra's Change Data Capture capabilities
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="nav-item dropdown" @mouseover="mouseOver" @mouseleave="mouseOut">
@@ -235,6 +272,9 @@
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
     import Github from "vue-material-design-icons/Github.vue"
     import Slack from "vue-material-design-icons/Slack.vue"
+    import Reload from "vue-material-design-icons/Reload.vue"
+    import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
+    import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
 </script>
 
 <script>
@@ -570,7 +610,7 @@
                             flex-direction: row;
 
                             .material-design-icon {
-                                font-size: 225%;
+                                font-size: 135%;
                                 margin-right: calc($spacer / 2);
                                 flex-shrink: 0;
 
