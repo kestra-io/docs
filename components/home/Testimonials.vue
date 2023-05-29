@@ -84,7 +84,7 @@
                         alt: "Picture of Yohann testimony",
                     },
                     {
-                        profile: "/landing/home/testimonials/samuelb.jpeg",
+                        profile: "/landing/home/testimonials/samuelb.jpg",
                         message: "I Love Kestra! It allows me to focus on the hard problems and the interesting part of my work without having to spend time on boring and repetitive tasks. Orchestrating and monitoring complex systems has never been easier thanks to the beautiful web interface. It takes the best of Airflow and Google Workflows in one simple and elegant solution. It scales and integrates itself easily in any ecosystem thanks to the plugins library.",
                         name: "Samuel Boisgontier",
                         link: "https://www.linkedin.com/in/samuelboisgontier/",

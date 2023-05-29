@@ -150,13 +150,19 @@
 
                 <ul class="navbar-nav mb-2 mb-lg-0 nav-button">
                     <li class="nav-item">
-                        <GithubButton @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn-secondary btn-sm me-0 me-sm-2"/>
+                        <a href="/slack" class="btn btn-sm d-inline-block d-inline-block d-lg-none d-xxl-inline-block icon-button" target="_blank" title="Join our slack">
+                            <Slack />
+                        </a>
+
+                        <a class="d-sm-inline-block mb-1 mn-sm-0 btn btn-dark btn-sm me-sm-2" href="https://github.com/kestra-io/kestra" target="_blank">
+                            <Github /> Star us
+                        </a>
 
                         <a @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm btn-dark me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block" target="_blank" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo">
                             <CalendarOutline /> Book a demo
                         </a>
 
-                        <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm me-0 me-sm-2" href="/docs/getting-started">
+                        <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm" href="/docs/getting-started">
                             <span>
                                 <Flash/>
                                 Get Started
@@ -167,7 +173,7 @@
                             <Magnify/> Search
                         </a>
 
-                        <a @click="globalClick(true)" href="#" class="btn d-none d-sm-inline-block search" data-bs-toggle="modal" data-bs-target="#search-modal">
+                        <a @click="globalClick(true)" href="#" class="btn btn-sm d-none d-sm-inline-block icon-button" data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
                             <Magnify/>
                         </a>
                     </li>
@@ -227,17 +233,17 @@
     import CalendarOutline from "vue-material-design-icons/CalendarOutline.vue"
     import FileCodeOutline from "vue-material-design-icons/FileCodeOutline.vue"
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
+    import Github from "vue-material-design-icons/Github.vue"
+    import Slack from "vue-material-design-icons/Slack.vue"
 </script>
 
 <script>
     import axios from "axios";
-    import GithubButton from "../layout/GithubButton.vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
 
     export default {
         components: {
-            GithubButton,
             ChevronDown,
             ChevronUp
         },
@@ -600,7 +606,7 @@
 
                 .btn {
                     border-radius: $border-radius;
-                    &.search {
+                    &.icon-button {
                         font-size: 1.5rem;
 
                         &:hover {
