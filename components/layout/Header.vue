@@ -163,7 +163,7 @@
                             </span>
                         </NuxtLink>
 
-                        <a @click="globalClick(true)" href="#" class="d-block d-sm-none d-sm-inline-block mb-1 mn-sm-0 btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#search-modal">
+                        <a @click="globalClick(true)" href="#" class="d-block d-sm-none d-sm-inline-block mb-1 mn-sm-0 btn btn-info btn-sm" ref="search-button" data-bs-toggle="modal" data-bs-target="#search-modal">
                             <Magnify/> Search
                         </a>
 
@@ -187,21 +187,24 @@
                             <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search"/>
                         </div>
                     </div>
-                    <div class="search-result mt-3" v-if="searchResults">
-                        <div v-for="result in searchResults">
-                            <a :href="result.slug">
+                    <div class="search-result p-3" v-if="searchValue" @mouseover="onSearchMouseOver" @mouseout="onSearchMouseOut">
+                        <div v-for="(result, index) in searchResults">
+                            <a :href="result.slug" :class="{'active': index === selectedIndex && !searchOver}">
                                 <div class="slug">
                                     <span :class="{first: index === 0}"  v-for="(item, index) in breadcrumb(result.slug)" :key="item" >{{ item }}</span>
                                 </div>
                                 <div class="result rounded-3">
-                                    <h5>{{ result.title }}</h5>
-                                    <p v-if="result.content.length > 0" v-html="result.content[0]" class="search-result-extract"/>
+                                    <div>
+                                        <h5>{{ result.title }}</h5>
+                                        <p v-if="result.content.length > 0" v-html="result.content[0]" class="search-result-extract"/>
+                                    </div>
+                                    <ArrowRight />
                                 </div>
                             </a>
                         </div>
-                    </div>
-                    <div v-if="searchResults && searchResults.length === 0" class="alert alert-warning" role="alert">
-                        No results found for the current search
+                        <div v-if="searchValue && searchResults && searchResults.length === 0" class="alert alert-warning mb-0" role="alert">
+                            No results found for the current search
+                        </div>
                     </div>
                 </div>
             </div>
@@ -223,7 +226,7 @@
     import Domain from "vue-material-design-icons/Domain.vue"
     import CalendarOutline from "vue-material-design-icons/CalendarOutline.vue"
     import FileCodeOutline from "vue-material-design-icons/FileCodeOutline.vue"
-
+    import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
 </script>
 
 <script>
@@ -244,6 +247,10 @@
                 transparentHeader: false,
                 transparentClass: false,
                 isOpen: false,
+                cancelToken: undefined,
+                selectedIndex: 0,
+                searchValue: undefined,
+                searchOver: false
             }
         },
         collapse: undefined,
@@ -254,6 +261,7 @@
 
             if (process.client) {
                 window.addEventListener('scroll', this.handleScroll);
+                window.addEventListener('keydown', this.handleKeyboard);
             }
 
             if (process.client) {
@@ -261,6 +269,8 @@
                     toggle: false
                 })
             }
+
+            this.cancelToken = axios.CancelToken.source();
         },
         watch: {
             $route(to) {
@@ -271,6 +281,7 @@
         unmounted() {
             if (process.client) {
                 window.removeEventListener('scroll', this.handleScroll);
+                window.removeEventListener('keydown', this.handleKeyboard);
             }
         },
         methods: {
@@ -278,10 +289,14 @@
                 document.querySelector('#search-input').focus();
             },
             search(query) {
+                this.searchValue = query;
+                this.selectedIndex = 0;
+
                 return axios.get("/api/search", {
                     params: {
                         query: query
-                    }
+                    },
+                    cancelToken: this.cancelToken.token
                 }).then(response => {
                     this.searchResults = response.data;
 
@@ -312,12 +327,51 @@
                 element.classList.remove('show');
                 element.nextElementSibling.classList.remove('show');
             },
+            onSearchMouseOver(event) {
+                this.searchOver = true;
+            },
+            onSearchMouseOut(event) {
+                this.searchOver = false;
+            },
             handleScroll() {
                 if (this.transparentHeader) {
                     if (window.scrollY > 30) {
                         this.transparentClass = false;
                     } else {
                         this.transparentClass = true;
+                    }
+                }
+            },
+            handleKeyboard(e) {
+                if (e.key === "k" && e.ctrlKey) {
+                    e.preventDefault(); // present "Save Page" from getting triggered.
+
+                    this.$refs["search-button"].click();
+                }
+
+                if (e.key === "ArrowUp") {
+                    this.selectedIndex = this.selectedIndex <= 1 ? 0 : this.selectedIndex-1;
+                    this.handleSearchScroll();
+                }
+
+                if (e.key === "ArrowDown" && this.searchResults) {
+                    this.selectedIndex = this.selectedIndex >= this.searchResults.length - 1 ? this.searchResults.length - 1 : this.selectedIndex+1;
+                    this.handleSearchScroll();
+                }
+
+                if (e.key === "Enter" && this.searchResults && this.searchResults[this.selectedIndex]) {
+                    document.querySelector(".search-result .active").click();
+                }
+            },
+            handleSearchScroll() {
+                let active = document.querySelector(".search-result .active");
+                let container = document.querySelector(".search-result");
+
+                if (active) {
+                    if ((active.offsetTop + active.offsetHeight) >= container.offsetHeight) {
+                        container.scrollTop = active.offsetTop;
+                    } else if (active.offsetTop < container.offsetHeight) {
+                        container.scrollTop = 0;
                     }
                 }
             },
@@ -622,23 +676,46 @@
     #search-modal {
         .input-group-text {
             background: transparent;
+            font-size: 1.25rem;
+            border-bottom-left-radius: 0;
+            background: var(--bs-white);
+            border-top-left-radius: $border-radius-lg;
+        }
+
+        .form-control {
+            border-left: 0;
+            border-bottom-right-radius: 0;
         }
 
         .form-control:focus {
             box-shadow: none;
+            border-color: var(--bs-border-color);
+        }
+
+        .modal-content {
+            background: none;
+            border: 0;
+        }
+
+        .modal-body {
+            padding: 0;
         }
 
         .search-result {
             overflow: auto;
+            max-height: 93vh;
+            background: var(--bs-white);
+            border: 1px solid var(--bs-border-color);
+            border-bottom-left-radius: $border-radius-lg;
+            border-bottom-right-radius: $border-radius-lg;
 
             .slug {
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 width: 100%;
-                font-size: $font-size-sm;
-                color: $pink;
-                font-family: var(--bs-font-monospace);
+                font-size: $font-size-xs;
+                color: var(--bs-gray-600);
                 margin-bottom: calc($spacer / 3);
 
                 span {
@@ -668,20 +745,46 @@
 
             .result {
                 background: var(--bs-gray-100);
-                padding: 0.5rem 1.5rem;
+                transition: background-color 0.2s ease;
+                padding: 1.25rem ;
                 margin-bottom: calc($spacer * 1.5);
+                display: flex;
+                > div {
+                    flex-grow: 1;
 
-                h5 {
-                    font-size: $font-size-lg;
-                    font-weight: bold;
-                    margin-bottom: 0;
-                    color: var(--bs-dark);
+                    h5 {
+                        font-size: $font-size-lg;
+                        font-weight: bold;
+                        margin-bottom: 0;
+                        color: var(--bs-dark);
+                    }
+
+                    p {
+                        color: var(--bs-gray-600);
+                        font-size: $font-size-sm;
+                        margin-bottom: 0;
+                    }
                 }
 
-                p {
-                    color: var(--bs-gray-800);
-                    font-size: $font-size-sm;
-                    margin-bottom: 0;
+
+                span.material-design-icon {
+                    font-size: 1rem;
+                    opacity: 0;
+                    transition: opacity 0.2s ease;
+                }
+
+                mark {
+                    background-color: transparent;
+                    padding: 0;
+                    color: $primary;
+                }
+            }
+
+            .active .result, .result:hover {
+                background: var(--bs-gray-200);
+
+                span.material-design-icon {
+                    opacity: 1;
                 }
             }
         }
