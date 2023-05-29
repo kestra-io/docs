@@ -6,7 +6,7 @@ export function prevNext(navigation, path) {
 
     const recursiveFetch = (current) => {
         if (current.children) {
-            for (const item of current.children) {
+            for (const item of current.children.filter(item => item._path !== current._path)) {
                 if (next && prev) {
                     break;
                 }
@@ -30,5 +30,12 @@ export function prevNext(navigation, path) {
 
     recursiveFetch(navigation.value[0]);
 
+    if(!found){
+        // we're at a section's root
+        prev = undefined;
+        next = navigation.value[0].children[0];
+    }else if(prev === null) {
+        prev = navigation.value[0];
+    }
     return {prev, next};
 }
