@@ -1,9 +1,9 @@
 <template>
     <div class="container">
         <Section
-            title="Discover the endless possibilities of Kestra as a versatile data orchestration platform."
+            title="Explore the diverse uses of Kestra as a complete orchestration platform."
             subtitle="Uncover Kestra's Versatility"
-            baseline="From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains. Explore our use cases to learn how Kestra can revolutionize your data management processes, drive efficiency, and unlock new business opportunities."
+            baseline="From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains. Dive into the wide array of use cases Kestra efficiently addresses."
         >
 
             <div class="row">
