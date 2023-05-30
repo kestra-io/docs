@@ -62,6 +62,19 @@
                 () => fetchContentNavigation(queryBuilder)
             );
 
+            if (props.type === "plugins") {
+                navigation.value[0].children.sort((a, b) => {
+                    const nameA = a.title.toLowerCase(),
+                        nameB = b.title.toLowerCase();
+
+                    if (nameA === "core" || nameB === "core") {
+                        return 1;
+                    }
+
+                    return nameA === nameB ? 0 : nameA < nameB ? -1 : 1;
+                });
+            }
+
             return {navigation};
         },
         computed: {
