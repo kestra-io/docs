@@ -30,12 +30,11 @@ tasks:
         SUM(price) as sum_price 
       FROM sales.event_partitioned
       WHERE date = '{{ schedule.date }}'
-    fetch: true
 
 triggers:
   - id: schedule
     type: io.kestra.core.models.triggers.types.Schedule
-    cron: "0 * * * *
+    cron: "0 * * * *"
 ```
 
 ### Flow Code Breakdown ###
@@ -45,8 +44,6 @@ triggers:
 - The task contains a single task (or step), identified as `query`. The type of this task indicates it uses the BigQuery plugin to execute SQL queries.
 
 - The SQL query is structured to select the sum of a 'price' column from a BigQuery table named 'sales.event_partitioned', with the condition that the date equals the scheduled date.
-
-- The 'fetch' parameter is set to 'true', indicating that Kestra will retrieve and store the query results.
 
 - The task also includes a 'schedule' trigger. This is a type of Schedule trigger, which uses a cron format string to schedule when the task will be executed. The cron string "0 * * * *" indicates that the task will run every hour, on the hour.
 
