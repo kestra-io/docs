@@ -2,33 +2,47 @@
     <div class="container">
         <BlogsList v-if="slug === '/blogs/'" :blogs="page"/>
 
-        <article v-else class="bd-main order-1 mt-5">
-            <ContentRenderer :value="page">
-                <NavToc :page="page" data-aos="fade-zoom">
-                    <template #header>
-                        <BlogDetails :blog="page"/>
-                    </template>
-                </NavToc>
-                <div class="bd-content ps-lg-2">
-                    <p class="subtitle" data-aos="fade-right">
-                        Community > Blog
-                    </p>
-                    <h1 data-aos="fade-left">{{ page.title }}</h1>
-                    <img data-aos="fade-right" class="mb-5 rounded-3" :alt="page.title" :src="page.image"/>
-                    <ContentRendererMarkdown data-aos="fade-zoom" :value="page"/>
-                </div>
-            </ContentRenderer>
-        </article>
+        <div v-else class="container bd-gutter bd-layout margin">
+            <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
+                <ContentRenderer :value="page">
+                    <div class="bd-title">
+                        <p class="subtitle" data-aos="fade-right">
+                            Community > Blog
+                        </p>
+                        <h1 data-aos="fade-left">{{ page.title }}</h1>
+                    </div>
 
-        <LayoutBlogs v-if="slug !== '/blogs/'" />
-        <LayoutNewsletter />
+                    <NavToc data-aos="fade-zoom" :page="page">
+                        <template #header>
+                            <BlogDetails :blog="page"/>
+                        </template>
+                    </NavToc>
+
+                    <div class="bd-content">
+                        <img data-aos="fade-right" class="mb-5 rounded-3" :alt="page.title" :src="page.image"/>
+
+                        <ContentRendererMarkdown
+                            data-aos="fade-zoom"
+                            class="bd-markdown"
+                            :value="page"
+                            data-bs-spy="scroll"
+                            data-bs-target="#nav-toc"
+                        />
+                    </div>
+                </ContentRenderer>
+            </article>
+        </div>
+
+        <div class="bottom">
+            <LayoutBlogs v-if="slug !== '/blogs/'" />
+            <LayoutNewsletter />
+        </div>
     </div>
 </template>
 
 <script setup>
     import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
-    import {hash} from "ohash";
 
     const route = useRoute()
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
@@ -67,20 +81,14 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .container {
-        overflow: visible;
-    }
-
-    .bd-content {
-        margin-left: 0;
-    }
-
     :deep(.subtitle) {
         font-size: $font-size-sm;
         color: var(--bs-primary);
         font-family: var(--bs-font-monospace);
         font-weight: 800;
         text-transform: uppercase;
+        max-width: 700px;
+        margin: 0 auto;
 
         &:after {
             content: '';
