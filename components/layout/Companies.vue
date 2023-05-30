@@ -28,12 +28,14 @@
         },
         methods: {
             autoScrollIfNeeded() {
-                const companies = this.$refs.companies;
-                const classes = companies.classList;
-                if(companies.clientWidth >= this.$refs.container.parentElement.offsetWidth){
-                    classes.add("scrolling");
-                } else {
-                    classes.remove("scrolling")
+                if (this.$refs && this.$refs.companies) {
+                    const companies = this.$refs.companies;
+                    const classes = companies.classList;
+                    if (companies.clientWidth >= this.$refs.container.parentElement.offsetWidth) {
+                        classes.add("scrolling");
+                    } else {
+                        classes.remove("scrolling")
+                    }
                 }
             }
         },
@@ -76,15 +78,18 @@
             margin: auto;
 
             &.scrolling {
-                animation: auto-scroll 10s infinite linear;
+                animation: auto-scroll 30s infinite linear;
             }
 
             @keyframes auto-scroll {
-                from {
-                    margin-left: 100vw;
+                0% {
+                    margin-left: 0;
                 }
-                to {
-                    margin-left: -100%;
+                50% {
+                    margin-left: -25%;
+                }
+                100% {
+                    margin-left: 0;
                 }
             }
 
