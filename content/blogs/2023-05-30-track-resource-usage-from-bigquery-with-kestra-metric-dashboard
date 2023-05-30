@@ -50,7 +50,7 @@ triggers:
 
 - The task also includes a 'schedule' trigger. This is a type of Schedule trigger, which uses a cron format string to schedule when the task will be executed. The cron string "0 * * * *" indicates that the task will run every hour, on the hour.
 
-So, Kestra will execute this task every hour, running the specified SQL query on the BigQuery 'sales.event_partitioned' table, for the current date, and store the result. This Query allow to get the total bytes processed, the query duration or the number of referenced tables, and more.
+So, Kestra will execute this task every hour, running the specified SQL query on the BigQuery 'sales.event_partitioned' table, for the current date, and store the result. The Query task expose metrics such as the total bytes processed, the query duration or the number of referenced tables, and more.
 
 ### UI Results ###
 
