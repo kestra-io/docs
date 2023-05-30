@@ -18,7 +18,7 @@
                 <div class="col-md-4" data-aos="fade-right">
                     <NuxtLink href="/use-cases/modern-data-stack">
                         <img class="img-fluid" src="/landing/usecases/mds/intro.svg" alt="CI/CD with Github Action, Gitlab or Terraform" />
-                        <h4 class="title"Modern Data Stack Integration</h4>
+                        <h4 class="title">Modern Data Stack Integration</h4>
                         <p>
                             Integrate leading data tools from the Modern Data Stack with Kestra
                         </p>
