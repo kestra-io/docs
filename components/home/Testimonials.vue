@@ -37,7 +37,7 @@
                 testimonialData: [
                     {
                         profile: "/landing/home/testimonials/julien.jpeg",
-                        message: "Kestra is the unifying layer for our data and workflows.You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
+                        message: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
                         name: "Julien Henrion",
                         link: "https://www.linkedin.com/in/julien-henrion-b007b416/",
                         designation: "Head of Data Engineering @ Leroy Merlin",
@@ -69,7 +69,7 @@
                     },
                     {
                         profile: "/landing/home/testimonials/michael.jpeg",
-                        message: "I’ve spent a huge part of my career looking for a solution that handle huge data sets for semi-technicals users and Kestra is the first exciting thing i’ve seen in a long time.",
+                        message: "I’ve spent a huge part of my career looking for a solution that handle huge data sets for semi-technicals users and Kestra is the first exciting thing I’ve seen in a long time.",
                         name: "Michael Reynolds",
                         link: "https://www.linkedin.com/in/michael-reynolds-a0a32a28/",
                         designation: "Lead Research Engineer @ Two Six Labs",
@@ -93,7 +93,7 @@
                     },
                     {
                         profile: "/landing/home/testimonials/ousama.jpg",
-                        message: "Kestra meet the need perfectly, it’s very simple to use and manage the complexities behind it to offer  a huge saving in time and costs.",
+                        message: "Kestra meets the needs perfectly, it’s very simple to use and manages the complexities behind it to offer a huge saving in time and costs.",
                         name: "Oussama Bakkali",
                         link: "https://www.linkedin.com/in/oussama-bakkali-949708b6/",
                         designation: "Data Engineer DevOps @ ADEO Services",
