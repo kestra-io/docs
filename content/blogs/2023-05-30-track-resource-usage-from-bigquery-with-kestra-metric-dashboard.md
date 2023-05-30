@@ -39,15 +39,15 @@ triggers:
 
 ### Flow Code Breakdown ###
 
-- First, we establish a task, identified as "query_events", in the "sales" namespace.
+- First, we establish a task, identified as `query_events`, in the `sales` namespace.
 
 - The task contains a single task (or step), identified as `query`. The type of this task indicates it uses the BigQuery plugin to execute SQL queries.
 
-- The SQL query is structured to select the sum of a 'price' column from a BigQuery table named 'sales.event_partitioned', with the condition that the date equals the scheduled date.
+- The SQL query is structured to select the sum of a `price` column from a BigQuery table named `sales.event_partitioned`, with the condition that the date equals the scheduled date.
 
-- The task also includes a 'schedule' trigger. This is a type of Schedule trigger, which uses a cron format string to schedule when the task will be executed. The cron string "0 * * * *" indicates that the task will run every hour, on the hour.
+- The task also includes a `schedule` trigger. This is a type of Schedule trigger, which uses a cron format string to schedule when the task will be executed. The cron string `0 * * * *` indicates that the task will run every hour, on the hour.
 
-So, Kestra will execute this task every hour, running the specified SQL query on the BigQuery 'sales.event_partitioned' table, for the current date, and store the result. The BigQuery query task expose metrics such as the total bytes processed, the query duration or the number of referenced tables, and more.
+So, Kestra will execute this task every hour, running the specified SQL query on the BigQuery `sales.event_partitioned` table, for the current date, and store the result. The BigQuery query task expose metrics such as the total bytes processed, the query duration or the number of referenced tables, and more.
 
 ### UI Results ###
 
