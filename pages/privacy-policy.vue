@@ -5,10 +5,3 @@
         </article>
     </div>
 </template>
-
-<style lang="scss">
-    @import '../assets/styles/docs.scss';
-</style>
-<script setup lang="ts">
-import Breadcrumb from "~/components/docs/Breadcrumb.vue";
-</script>

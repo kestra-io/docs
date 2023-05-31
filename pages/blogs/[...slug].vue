@@ -80,6 +80,7 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
+    @import '../../assets/styles/docs.scss';
 
 
     .bd-layout {
@@ -93,7 +94,10 @@
         font-weight: 800;
         text-transform: uppercase;
         max-width: 700px;
-        margin: 0 auto;
+        .bd-gutter & {
+            margin: 0 auto;
+
+        }
 
         &:after {
             content: '';

@@ -6,6 +6,3 @@
     </div>
 </template>
 
-<style lang="scss">
-    @import '../assets/styles/docs.scss';
-</style>
