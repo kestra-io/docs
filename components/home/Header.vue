@@ -5,7 +5,7 @@
             <h1 data-aos="fade-right">Build reliable workflows, blazingly fast, deploy in just a few clicks<span class="dot">.</span></h1>
             <div class="text-center cta">
                 <a href="https://demo.kestra.io?auto" target="_blank" class="btn btn-lg btn-secondary me-2" data-aos="zoom-in">
-                    <Console /> Try the live demo
+                    <Console /> Try live demo
                 </a>
                 <a href="#" class="btn btn-lg btn-primary" data-aos="zoom-in" data-bs-toggle="modal" data-bs-target="#home-intro">
                     <PlayCircleOutline /> Discover Kestra in video
