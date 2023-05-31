@@ -140,7 +140,7 @@ tasks:
     from: "{{ outputs.downloadCsv.uri }}"
 ```
 
-![Topology](/blogs/2023-05-31-beginner-guide-kestra/topology.png)
+![Topology](/blogs/2023-05-31-beginner-guide-kestra/topo.png)
 
 Yaiiii! Congrats! You just wrote your first flow to download a CSV and transform it into a JSON file!
 
