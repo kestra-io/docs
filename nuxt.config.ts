@@ -73,8 +73,7 @@ export default defineNuxtConfig({
         sources: {
             kestraApiStorage: {
                 prefix: '/plugins',
-                driver: resolve('utils', 'driver', 'kestraApiDriver.js'),
-                dir: 'content/plugins'
+                driver: resolve('drivers', 'apidocs', 'driver.mjs'),
             }
         },
     },
