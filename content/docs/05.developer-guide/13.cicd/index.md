@@ -19,7 +19,7 @@ There are several ways to create a CI/CD pipeline for your flows in Kestra. Pick
 
 ### Kestra CLI 
 
-Kestra CLI provides several [CLI commands](./04.helpers.md) for validating and deploying your flows.
+Kestra CLI provides several [commands](./04.helpers.md) for validating and deploying your flows.
 
 If you run Kestra in a container, you can access those as follows:
 
@@ -104,7 +104,7 @@ triggers:
     key: "yourSecretKey1234"
 ```
 
-While you can trigger that deployment pipeline manually using Kestra UI or API, just like any other flow, it's better to combine that with a push event emitted by your Git repository. The above flow leverages the [Webhook trigger](../08.triggers/03.webhook.md) so that your CI/CD flow runs as soon as you push changes to your Git branch. 
+While you can trigger that deployment pipeline manually using Kestra UI or API (*i.e. just like any other Kestra flow*), it's better to combine that with a `push` event emitted by your Git repository. The above flow leverages the [Webhook trigger](../08.triggers/03.webhook.md) so that your CI/CD flow runs as soon as you push changes to your Git branch. 
 
 To configure the webhook for your GitHub repository, go to **Settings**, and then select **Webhooks**. The URL in your browser should look as follows:
 
@@ -116,16 +116,16 @@ Select "Add webhook":
 
 ![github_webhook_1](github_webhook_1.png)
 
-Then, paste the webhook into the Payload URL field, as shown below. The webhook to trigger a Kestra flow should be in the following format:
+Paste Kestra's webhook URL into the *Payload URL* field, as shown below. The webhook to trigger a Kestra flow should be in the following format:
 
 ```bash
-https://kestra_hostname/api/v1/executions/webhook/namespace/flow_id/webhook_key
+https://kestra_host_url/api/v1/executions/webhook/namespace/flow_id/webhook_key
 ```
 
 ![github_webhook_2](github_webhook_2.png)
 
 
-Note that we configured this webhook to be sent upon a push event to the main branch, but you can choose the option "Let me select individual events" for further customization.
+Note that we configured this webhook to be sent upon a push event to the default production branch, but you can choose the option "Let me select individual events" for further customization e.g. to trigger the flow any time there is a new pull request.
 
 ### Deploy flows from a GitHub Action
 
@@ -133,7 +133,7 @@ The official Kestra's [GitHub Actions](01.github-action.md) leverage the same CL
 1. Validate flows and templates using the [Validate Action](https://github.com/marketplace/actions/kestra-validate-action)
 2. Deploy flows and templates using the [Deploy Action](https://github.com/marketplace/actions/kestra-deploy-action).
 
-Here is a full example validating and deploying flows from a GitHub Action:
+Here is a full example validating and deploying flows within a GitHub Actions workflow:
 
 ```yaml
 name: Kestra CI/CD
@@ -176,19 +176,19 @@ jobs:
           delete: false
 ```
 
-Note that this example uses GitHub repository secrets to store Kestra host name, user name and password. 
+Note that this example uses GitHub repository **secrets** to store the host name, user name and password to your Kestra instance. Make sure to add those secrets to your repository before using this workflow.
 
 
 ### Deploy flows from a GitLab CI/CD
 
-GitLab CI/CD follows a similar pattern. See the [GitLab](02.gitlab.md) section for more details.
+GitLab CI/CD follows a similar pattern to the GitHub Actions example. See the [GitLab](02.gitlab.md) section for more details.
 
 
 ### Deploy flows from Terraform
 
-Finally, you can deploy flows using Terraform. While Terraform might be more challenging to understand at first, we highly recommend this option, as it provides the most flexibility and integrates your flows seamlessly with other Terraform providers from related tools in your stack.
+While Terraform might be more challenging to understand at first, we highly recommend this option, as it provides the highest degree of flexibility. Using Kestra and Terraform together, your flows can be deployed along with other infrastructure resources in your stack, making it easier to adopt Infrastructure as Code.
 
-The [Terraform CI/CD](03.terraform.md) page provides a more detailed explanation, but here is a simple Terraform configuration you can use to automate the deployment of flows stored in a `flows` directory:
+The [Terraform CI/CD](03.terraform.md) page provides a more detailed explanation, but here is a simple Terraform configuration that you can use to automate the deployment of flows stored in a `flows` directory:
 
 ```hcl
 terraform {
@@ -213,7 +213,7 @@ resource "kestra_flow" "flows" {
 }
 ```
 
-You can store the code shown above into a file named `main.tf`. Then run the following commands from the same directory where you stored that `main.tf` file:
+You can save the code shown above in a file named `main.tf`. Then, run the following commands from the same directory where you stored that `main.tf` file:
 
 ```bash
 terraform init # downloads the terraform provider for Kestra
