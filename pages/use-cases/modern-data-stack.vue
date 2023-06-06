@@ -9,7 +9,7 @@
             title="Integrate Kestra in the Modern Data Stack"
             subtitle="Enhance Data Orchestration and Analytics by Integrating Kestra with Leading Data Tools"
             detail-title="What is Modern Data Stack?"
-            detail-content="The modern data stack combines powerful automation and integration capabilities. Organizations can establish scalable, reliable, and streamlined data workflows by leveraging robust automation capabilities and seamless integrations with tools like DBT, Snowflake, Airbyte, and others. This ecosystem empowers data-driven decision-making and facilitates the generation of actionable insights."
+            detail-content="The modern data stack combines powerful automation and integration capabilities. Organizations can establish scalable, reliable, and streamlined data workflows by leveraging robust automation capabilities and seamless integrations with tools like dbt, Snowflake, Airbyte, and others. This ecosystem empowers data-driven decision-making and facilitates the generation of actionable insights."
             image="/landing/usecases/mds/intro.svg"
         />
         <SolutionsDetailMain
@@ -20,7 +20,7 @@
         />
         <SolutionsDetailEmpower
             title="Orchestrate the Modern Data Stack with Kestra"
-            subtitle="Kestra's flexibility enables seamless integration with a variety of modern data stack tools like Apache Kafka, Apache Spark for scalable processing, Fivetran for data replication, as well as leading data tools such as DBT, Snowflake, and Airbyte. By leveraging these integrations, organizations can automate data pipeline management, customize their data pipelines to meet specific requirements, and enhance their analytics capabilities."
+            subtitle="Kestra's flexibility enables seamless integration with a variety of modern data stack tools like Apache Kafka, Apache Spark for scalable processing, Fivetran for data replication, as well as leading data tools such as dbt, Snowflake, and Airbyte. By leveraging these integrations, organizations can automate data pipeline management, customize their data pipelines to meet specific requirements, and enhance their analytics capabilities."
         />
         <SolutionsDetailFeatures
             title="Leveraging Kestra's Features"
@@ -52,10 +52,10 @@
                         content: 'Kestra and Airbyte can be combined for powerful data workflows. Thanks to Kestra\'s automation capabilities merged with Airbyte\'s data connectors, users can create automated ETL processes, streamline data ingestion, and reduce manual intervention. This tight integration ensures efficient, fully automated data workflows.'
                     },
                     {
-                        title: 'Data Transformation with DBT',
+                        title: 'Data Transformation with dbt',
                         img: '/landing/usecases/mds/feature-2.svg',
-                        imgAlt: 'Picture of DBT task in Kestra to transform the data',
-                        content: 'Once the data is extracted, it can be transformed using DBT (Data Build Tool), an open-source data transformation tool. Kestra can initiate DBT transformations by triggering DBT commands, and automating the process of cleaning, modeling, and validating the data.',
+                        imgAlt: 'Picture of dbt task in Kestra to transform the data',
+                        content: 'Once the data is extracted, it can be transformed using dbt (Data Build Tool), an open-source data transformation tool. Kestra can initiate dbt transformations by triggering dbt commands, and automating the process of cleaning, modeling, and validating the data.',
                     },
                     {
                         title: 'Data Loading and Storage with Snowflake',
@@ -67,7 +67,7 @@
                         title: 'Data Quality with Soda',
                         img: '/landing/usecases/mds/feature-4.svg',
                         imgAlt: 'Picture of SODA to test data quality',
-                        content: 'In addition to DBT or Snowflake integrations, incorporating a data quality tool, such as Soda, into your modern data stack is essential for maintaining high-quality data. Soda helps monitor, test, and validate data at different stages of the pipeline, ensuring it meets the required quality standards.',
+                        content: 'In addition to dbt or Snowflake integrations, incorporating a data quality tool, such as Soda, into your modern data stack is essential for maintaining high-quality data. Soda helps monitor, test, and validate data at different stages of the pipeline, ensuring it meets the required quality standards.',
                     },
                 ],
                 features: [
