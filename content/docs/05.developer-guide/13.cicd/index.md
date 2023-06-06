@@ -8,7 +8,7 @@ Manual deployments can be challenging. CI/CD pipelines are a great way to automa
 
 ## Why a CI/CD pipeline?
 
-A CI/CD process helps ensure fast and reliable deployments. As soon as your changes are peer-reviewed and merged to a Git branch, your changes get deployed automatically.
+A CI/CD process helps ensure fast and reliable deployments. Your changes get deployed automatically, as soon as they get peer-reviewed and merged to a Git branch.
 
 ## CI/CD for data workflows
 
@@ -47,7 +47,7 @@ The CLI provides several options to customize your validation and deployment pro
 * `--server`: allows you to specify the remote server URL. The default URL is [http://localhost:8080](http://localhost:8080).
 
 
-For all available CLI options on both `flow validate` and `flow namespace update` commands, use the `-h` flag:
+For all available CLI options on both `flow validate` and `flow namespace update` commands, use the `-h` or `--help` flag:
 
 ```bash
 ./kestra flow validate -h
@@ -74,8 +74,8 @@ The CLI commands explained above can be used in a Bash script within a flow. Thi
 id: ci-cd
 namespace: prod
 variables:
-  host: "http://your_host_name:8080/" 
-  auth: "yourUsername:yourPassword"
+  host: "http://your_host_name:8080/" # e.g. "http://localhost:8080/"
+  auth: "yourUsername:yourPassword" # e.g. "" - leave as empty string for a locally running Kestra instance
 
 tasks:
   - id: deploy
@@ -106,7 +106,7 @@ triggers:
 
 While you can trigger that deployment pipeline manually using Kestra UI or API, just like any other flow, it's better to combine that with a push event emitted by your Git repository. The above flow leverages the [Webhook trigger](../08.triggers/03.webhook.md) so that your CI/CD flow runs as soon as you push changes to your Git branch. 
 
-To configure the webhook for your GitHub repository, go to **Settings**, and then select **Webhooks**. The URL should look as follows:
+To configure the webhook for your GitHub repository, go to **Settings**, and then select **Webhooks**. The URL in your browser should look as follows:
 
 ```bash
 https://github.com/your_username/your_repository_name/settings/hooks
@@ -119,7 +119,7 @@ Select "Add webhook":
 Then, paste the webhook into the Payload URL field, as shown below. The webhook to trigger a Kestra flow should be in the following format:
 
 ```bash
-https://kestra_hostname/api/v1/executions/webhook/namespace/flow_name/webhook_key
+https://kestra_hostname/api/v1/executions/webhook/namespace/flow_id/webhook_key
 ```
 
 
@@ -168,7 +168,7 @@ resource "kestra_flow" "flows" {
 }
 ```
 
-You can store the code shown above into a file named `main.tf`. Then run the following commands:
+You can store the code shown above into a file named `main.tf`. Then run the following commands from the same directory where you stored that `main.tf` file:
 
 ```bash
 terraform init # downloads the terraform provider for Kestra
