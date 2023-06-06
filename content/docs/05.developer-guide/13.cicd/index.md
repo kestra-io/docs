@@ -114,7 +114,7 @@ https://github.com/your_username/your_repository_name/settings/hooks
 
 Select "Add webhook":
 
-![[github_webhook_1.png]]
+![github_webhook_1](github_webhook_1.png)
 
 Then, paste the webhook into the Payload URL field, as shown below. The webhook to trigger a Kestra flow should be in the following format:
 
@@ -122,8 +122,8 @@ Then, paste the webhook into the Payload URL field, as shown below. The webhook 
 https://kestra_hostname/api/v1/executions/webhook/namespace/flow_id/webhook_key
 ```
 
+![github_webhook_2](github_webhook_2.png)
 
-![[github_webhook_2.png]]
 
 Note that we configured this webhook to be sent upon a push event to the main branch, but you can choose the option "Let me select individual events" for further customization.
 
