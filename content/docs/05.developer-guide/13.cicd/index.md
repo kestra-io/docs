@@ -133,6 +133,51 @@ The official Kestra's [GitHub Actions](01.github-action.md) leverage the same CL
 1. Validate flows and templates using the [Validate Action](https://github.com/marketplace/actions/kestra-validate-action)
 2. Deploy flows and templates using the [Deploy Action](https://github.com/marketplace/actions/kestra-deploy-action).
 
+Here is a full example validating and deploying flows from a GitHub Action:
+
+```yaml
+name: Kestra CI/CD
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: validate-all flows
+        uses: kestra-io/validate-action@develop
+        with:
+          directory: ./flows/prod
+          resource: flow
+          server: ${{secrets.KESTRA_HOST}}
+          user: ${{secrets.KESTRA_USER}}
+          password: ${{secrets.KESTRA_PASSWORD}}
+      - name: deploy-prod
+        uses: kestra-io/deploy-action@develop
+        with:
+          namespace: prod
+          directory: ./flows/prod
+          resource: flow
+          server: ${{secrets.KESTRA_HOST}}
+          user: ${{secrets.KESTRA_USER}}
+          password: ${{secrets.KESTRA_PASSWORD}}
+          delete: false
+      - name: deploy-prod-marketing
+        uses: kestra-io/deploy-action@develop
+        with:
+          namespace: prod.marketing
+          directory: ./flows/prod.marketing
+          resource: flow
+          server: ${{secrets.KESTRA_HOST}}
+          user: ${{secrets.KESTRA_USER}}
+          password: ${{secrets.KESTRA_PASSWORD}}
+          delete: false
+```
+
+Note that this example uses GitHub repository secrets to store Kestra host name, user name and password. 
+
 
 ### Deploy flows from a GitLab CI/CD
 
