@@ -77,7 +77,7 @@ tasks:
   - id: github-ci-cd
     type: io.kestra.core.tasks.flows.Worker
     tasks:
-      - id: cloneRepository
+      - id: clone-repository
         type: io.kestra.plugin.git.Clone
         url: https://github.com/anna-geller/kestra-ci-cd
         branch: main
