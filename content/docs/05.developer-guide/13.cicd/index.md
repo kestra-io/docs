@@ -13,26 +13,27 @@ A CI/CD process helps ensure fast and reliable deployments. Your changes get dep
 ## CI/CD for data workflows
 
 There are several ways to create a CI/CD pipeline for your flows in Kestra. Pick one of the options listed below that best suits your needs.
-
-
 <ChildTableOfContents :max="1" />
 
 ### Kestra CLI 
 
-Kestra CLI provides several [commands](./04.helpers.md) for validating and deploying your flows.
+Kestra CLI provides several [commands](./04.helpers.md) for validating and deploying your flows:
 
-If you run Kestra in a container, you can access those as follows:
+```bash
+./kestra flow validate flow_directory/myflow.yml
+./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete
+```
+
+If you run Kestra in a Docker container, you can access the CLI as follows:
 
 ```bash
 docker exec -it kestra-container-name /bin/bash
-./kestra flow validate flow_directory/myflow.yml
-./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete
+./kestra flow --help
 ```
 
 To validate and deploy multiple flows within a directory named `flows`, you can provide a path to that directory:
 
 ```bash
-docker exec -it kestra-container-name /bin/bash
 ./kestra flow validate flows/
 ./kestra flow namespace update namespace_name flows/ --no-delete
 ```
@@ -60,7 +61,6 @@ For all available CLI options on both `flow validate` and `flow namespace update
 Templates can be validated and deployed in the same way as flows:
 
 ```bash
-docker exec -it kestra-container-name /bin/bash
 ./kestra template validate path-to-template-directory
 ./kestra template namespace update template-namespace-to-update path-to-template-directory
 ```
@@ -85,7 +85,6 @@ tasks:
         type: io.kestra.plugin.git.Clone
         url: https://github.com/anna-geller/kestra-ci-cd
         branch: main
-        username: anna-geller 
         
       - id: validateFlows
         type: io.kestra.core.tasks.scripts.Bash
