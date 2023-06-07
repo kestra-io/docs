@@ -125,7 +125,7 @@ https://kestra_host_url/api/v1/executions/webhook/namespace/flow_id/webhook_key
 ![github_webhook_2](github_webhook_2.png)
 
 
-Note that we configured this webhook to be sent upon a push event to the default production branch, but you can choose the option "Let me select individual events" for further customization e.g. to trigger the flow any time there is a new pull request.
+Note that we configured this webhook to be sent upon a push event to the default branch, but you can choose the option "Let me select individual events" for further customization e.g. to trigger the flow any time there is a new pull request.
 
 ### Deploy flows from a GitHub Action
 
