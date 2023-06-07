@@ -8,7 +8,7 @@ Manual deployments can be challenging. CI/CD pipelines are a great way to automa
 
 ## Why a CI/CD pipeline?
 
-A CI/CD process helps ensure fast and reliable deployments. Your changes get deployed automatically, as soon as they get peer-reviewed and merged to a Git branch.
+A CI/CD process helps ensure fast and reliable deployments. Your changes get deployed automatically, as soon as they get peer-reviewed and merged to a VCS (Version Control System) like Git.
 
 ## CI/CD for data workflows
 
