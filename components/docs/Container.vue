@@ -5,7 +5,7 @@
         <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
-                    <Breadcrumb :slug="props.slug" />
+                    <Breadcrumb :slug="props.slug" :pageList="pageList"/>
                     <h1 v-html="transformTitle(page.title)"></h1>
                 </div>
 

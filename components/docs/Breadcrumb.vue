@@ -2,7 +2,7 @@
     <div class="slug">
         <span :class="{first: index === 0}" v-for="(item, index) in breadcrumb()"
               :key="item">
-            <NuxtLink :href="breadcrumbLink(item, index)">
+            <NuxtLink :href="breadcrumbLinkExist(item, index) ? breadcrumbLink(item, index) : ''">
                 {{ item.toUpperCase() }}
             </NuxtLink>
         </span>
@@ -16,6 +16,10 @@
             slug: {
                 type: String,
                 required: true
+            },
+            pageList: {
+                type: Array,
+                required: true
             }
         },
         methods: {
@@ -26,6 +30,9 @@
             },
             breadcrumbLink(item, index) {
                 return "/" + this.breadcrumb().slice(0, index + 1).join("/")
+            },
+            breadcrumbLinkExist(item, index) {
+                return this.pageList.includes(this.breadcrumbLink(item, index))
             }
         }
     }
