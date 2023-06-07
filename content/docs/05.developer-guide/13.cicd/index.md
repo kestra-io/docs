@@ -73,30 +73,23 @@ The CLI commands explained above can be used in a Bash script within a flow. Thi
 ```yaml
 id: ci-cd
 namespace: prod
-variables:
-  host: "http://your_host_name:8080/" # e.g. "http://localhost:8080/"
-  auth: "yourUsername:yourPassword" # e.g. "" - leave as empty string for a locally running Kestra instance
-
 tasks:
-  - id: deploy
+  - id: github-ci-cd
     type: io.kestra.core.tasks.flows.Worker
     tasks:
       - id: cloneRepository
         type: io.kestra.plugin.git.Clone
         url: https://github.com/anna-geller/kestra-ci-cd
         branch: main
-        
-      - id: validateFlows
+      - id: validate-flows
         type: io.kestra.core.tasks.scripts.Bash
         commands:
-          - /app/kestra flow validate flows/ --server={{vars.host}} --user={{vars.auth}}
-      
-      - id: deployFlows
+          - /app/kestra flow validate flows/
+      - id: deploy-flows
         type: io.kestra.core.tasks.scripts.Bash
         commands:
-          - /app/kestra flow namespace update prod flows/prod/ --no-delete --server={{vars.host}} --user={{vars.auth}}
-          - /app/kestra flow namespace update prod.marketing flows/prod.marketing/ --no-delete --server={{vars.host}} --user={{vars.auth}}
-
+          - /app/kestra flow namespace update prod flows/prod/
+          - /app/kestra flow namespace update prod.marketing flows/prod.marketing/
 triggers:
   - id: github
     type: io.kestra.core.models.triggers.types.Webhook
