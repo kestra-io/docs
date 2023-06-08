@@ -37,6 +37,6 @@
     "remark-code-import": "file:./utils/remark-code-import",
     "remark-flexible-markers": "^1.0.2",
     "rss": "^1.2.2",
-    "sass": "^1.62.1"
+    "sass": "^1.63.2"
   }
 }
