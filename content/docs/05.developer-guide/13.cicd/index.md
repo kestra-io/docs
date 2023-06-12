@@ -15,7 +15,7 @@ A CI/CD process helps ensure fast and reliable deployments. Your changes get dep
 There are several ways to create a CI/CD pipeline for your flows in Kestra. Pick one of the options listed below that best suits your needs.
 <ChildTableOfContents :max="1" />
 
-### Kestra CLI 
+### Kestra CLI
 
 Kestra CLI provides several [commands](./04.helpers.md) for validating and deploying your flows:
 
@@ -56,7 +56,7 @@ For all available CLI options on both `flow validate` and `flow namespace update
 ```
 
 
-#### Templates 
+#### Templates
 
 Templates can be validated and deployed in the same way as flows:
 
@@ -68,7 +68,7 @@ Templates can be validated and deployed in the same way as flows:
 
 ### Deploy flows... from a flow!
 
-The CLI commands explained above can be used in a Bash script within a flow. This way, your CI/CD pipeline can be managed directly from your Kestra instance. 
+The CLI commands explained above can be used in a Bash script within a flow. This way, your CI/CD pipeline can be managed directly from your Kestra instance.
 
 ```yaml
 id: ci-cd
@@ -96,7 +96,7 @@ triggers:
     key: "yourSecretKey1234"
 ```
 
-While you can trigger that deployment pipeline manually using Kestra UI or API (*i.e. just like any other Kestra flow*), it's better to combine that with a `push` event emitted by your Git repository. The above flow leverages the [Webhook trigger](../08.triggers/03.webhook.md) so that your CI/CD flow runs as soon as you push changes to your Git branch. 
+While you can trigger that deployment pipeline manually using Kestra UI or API (*i.e. just like any other Kestra flow*), it's better to combine that with a `push` event emitted by your Git repository. The above flow leverages the [Webhook trigger](../08.triggers/03.webhook.md) so that your CI/CD flow runs as soon as you push changes to your Git branch.
 
 To configure the webhook for your GitHub repository, go to **Settings**, and then select **Webhooks**. The URL in your browser should look as follows:
 
@@ -121,7 +121,7 @@ Note that we configured this webhook to be sent upon a push event to the default
 
 ### Deploy flows from a GitHub Action
 
-The official Kestra's [GitHub Actions](01.github-action.md) leverage the same CLI commands to:
+The official Kestra's [GitHub Actions](./01.github-action.md) leverage the same CLI commands to:
 1. Validate flows and templates using the [Validate Action](https://github.com/marketplace/actions/kestra-validate-action)
 2. Deploy flows and templates using the [Deploy Action](https://github.com/marketplace/actions/kestra-deploy-action).
 
@@ -129,7 +129,7 @@ Here is a full example validating and deploying flows within a GitHub Actions wo
 
 ```yaml
 name: Kestra CI/CD
-on: 
+on:
   push:
     branches:
       - main
@@ -173,14 +173,14 @@ Note that this example uses GitHub repository **secrets** to store the host name
 
 ### Deploy flows from a GitLab CI/CD
 
-GitLab CI/CD follows a similar pattern to the GitHub Actions example. See the [GitLab](02.gitlab.md) section for more details.
+GitLab CI/CD follows a similar pattern to the GitHub Actions example. See the [GitLab](./02.gitlab.md) section for more details.
 
 
 ### Deploy flows from Terraform
 
 While Terraform might be more challenging to understand at first, we highly recommend this option, as it provides the highest degree of flexibility. Using Kestra and Terraform together, your flows can be deployed along with other infrastructure resources in your stack, making it easier to adopt Infrastructure as Code.
 
-The [Terraform CI/CD](03.terraform.md) page provides a more detailed explanation, but here is a simple Terraform configuration that you can use to automate the deployment of flows stored in a `flows` directory:
+The [Terraform CI/CD](./03.terraform.md) page provides a more detailed explanation, but here is a simple Terraform configuration that you can use to automate the deployment of flows stored in a `flows` directory:
 
 ```hcl
 terraform {
