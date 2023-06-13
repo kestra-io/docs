@@ -4,12 +4,12 @@ title: Overview
 
 Kestra is an open-source, event-driven orchestrator that simplifies data operations and improves collaboration between engineers and business users. By bringing Infrastructure as Code best practices to data pipelines, Kestra allows you to build reliable workflows and manage them with confidence.
 
-Kestra allows you to [create flows](./05.developer-guide/01.flow.md) directly from the UI in just a few lines of code. Thanks to the declarative YAML interface for defining orchestration logic, everyone who benefits from analytics can participate in the data pipeline creation process. 
+Kestra allows you to [create flows](./05.developer-guide/01.flow.md) directly from the UI in just a few lines of code. Thanks to the declarative YAML interface for defining orchestration logic, business stakeholders can participate in the data pipeline creation process, instead of making that an engineering-only endeavor. 
 
 ![video-intro](https://kestra.io/video.gif)
 
 
-The UI automatically adjusts the YAML definition any time you make changes to a workflow from the UI or via an API call. Therefore, the orchestration logic is defined declaratively in code, even if some workflow components are modified in other ways.
+The UI automatically adjusts the YAML definition any time you make changes to a workflow from the UI or via an API call. Therefore, the orchestration logic is stored declaratively in code, even if some workflow components are modified in other ways.
 
 ![Adding new tasks in the UI](https://kestra.io/adding-tasks.gif)
 
