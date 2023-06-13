@@ -5,25 +5,28 @@
 </p>
 
 
-> Kestra is an orchestration & scheduler platform that helps you to build, run, schedule, and monitor complex pipelines.
+> Event-driven declarative orchestrator that simplifies data operations.
 
-![Kestra orchestrator](https://kestra.io/ui.gif)
+![gif](https://kestra.io/video.gif)
 
 
 ## Documentation
-* The official Kestra documentation can be found here: [kestra.io](https://kestra.io)
+
+The official Kestra documentation can be found at [kestra.io/docs](https://kestra.io/docs).
 
 
-## Run locally
+## Local development of the Kestra UI
 
-To run the website locally, you must have Node.js and NPM installed, then run the following commands:
+To run the UI locally, you must have Node.js and NPM installed. Then, run the following commands:
 
 ```bash
 npm install
 npm run dev
 ```
 
-The site will be accessible at http://localhost:8080/.
+You can access the UI from http://localhost:8080/.
+
+## Troubleshooting tips
 
 Depending on your Node.js and OS version, you may encounter the following error: `Error message "error:0308010C:digital envelope routines::unsupported"`.
 
