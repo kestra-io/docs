@@ -7,11 +7,12 @@ title: Elasticsearch configuration
 The most important thing is to configure the way Kestra connects to the Elasticsearch cluster.
 
 Here is a minimal configuration example:
+
 ```yaml
 kestra:
   elasticsearch:
     client:
-      http-hosts: http://localhost:9200
+      http-hosts: "http://localhost:9200"
   repository:
     type: elasticsearch
 ```
@@ -22,7 +23,10 @@ Here is another example with a secured Elasticsearch cluster with basic authenti
 kestra:
   elasticsearch:
     client:
-      http-hosts: "https://localhost:9200"
+      http-hosts:
+        - "http://node-1:9200"
+        - "http://node-2:9200"
+        - "http://node-3:9200"
       basic-auth:
         username: "<your-user>"
         password: "<your-password>"
