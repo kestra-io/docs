@@ -1,5 +1,5 @@
 ---
-title: Open Id Connect (OIDC)
+title: OpenID Connect (OIDC)
 ---
 
 To enable OIDC in the application, you will first have to enable OIDC in Micronaut:
@@ -16,11 +16,13 @@ micronaut:
           openid:
             issuer: "{{ issueUrl }}"
 ```
+
 More information can be found on [Micronaut OIDC configuration](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration).
 
 The following example allow to use Google as OIDC provider:
 
 > Google Auth
+
 ```yaml
 micronaut:
   security:
@@ -37,6 +39,7 @@ micronaut:
 The following example allow to use Microsoft as OIDC provider:
 
 > Microsoft Auth
+
 ```yaml
 micronaut:
   security:
