@@ -1,7 +1,7 @@
 ---
 title: "Locxia: Processing Satellite Imagery with Kestra"
 description: How Ntico Leverage Kestra Orchestrator for their data platform Locxia.
-date: 2023-06-22T18:00:00
+date: 2023-06-22T10:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-06-22-locxia-kestra.jpg
 ---
 
-Ntico has designed [Locxia](https://www.locxia.com/), a powerful platform that gives businesses and local authorities a deeper understanding of their territories and residents thanks to satellite imagery. At the core of their solution, they leveraged Kestra for its features and efficient management of large-scale data, including ingesting, processing, and visualizing vast datasets. 
+Ntico has designed [Locxia](https://www.locxia.com/), a powerful platform that gives businesses and local authorities a deeper understanding of their territories and residents thanks to satellite imagery. At the core of their solution lies Kestra, used for ingesting, processing, and visualizing vast datasets. 
 
 Let's look at how Nitco creates and manages data pipelines for their digital solution with Kestra.
 
