@@ -10,7 +10,7 @@ author:
 image: /blogs/2022-10-05-kestra-snowflake.jpg
 ---
 
-Snowflake is one of the most popular cloud data warehouse technologies. This post demonstrates Kestra plugins for Snowflake data management, including event-driven triggers based on changes in your Snowflake data, file management and queries.
+Snowflake is one of the most popular cloud data warehouse technologies. This post demonstrates Kestra plugins for Snowflake data management, including event-driven triggers based on changes in your Snowflake data, file management, and queries.
 
 ## About Snowflake ##
 
@@ -57,9 +57,9 @@ fetch: true
 ```
 
 ### Download from Snowflake stage
-This task downloads data from the Snowflake server to an internal Kestra stage. The Download task provides the URL of the downloaded file available on the Kestra storage server which is based on which is based on [Amazon ION](https://amzn.github.io/ion-docs/). The [Download](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Download.md) task offers properties such as data compression and access control role to streamline the download process of the connected database. The [Download](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Download.md) task outputs the URL of the downloaded file available on the Kestra storage server.
+This task downloads data from the Snowflake server to an internal Kestra stage which is based on [Amazon ION](https://amzn.github.io/ion-docs/). The Download task provides the URL of the downloaded file available on the Kestra storage server. The [Download](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Download.md) task offers properties such as data compression and access control role to streamline the download process of the connected database.
 
-The following code snippet downloads default database to specified `fileName` location on internal Kestra server.
+The following code snippet downloads the default database to the specified `fileName` location on the internal Kestra server.
 
 ```yaml
 id: "download"
