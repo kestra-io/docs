@@ -11,14 +11,14 @@ image: /blogs/2023-06-22-locxia-kestra.jpg
 
 Ntico has designed [Locxia](https://www.locxia.com/), a powerful platform that gives businesses and local authorities a deeper understanding of their territories and residents thanks to satellite imagery. At the core of their solution lies Kestra, used for ingesting, processing, and visualizing vast datasets. 
 
-Let's look at how Nitco creates and manages data pipelines for their digital solution with Kestra.
+This post dives into how Ntico uses Kestra to create and manage data pipelines for its digital solution.
 
 
 ## About Ntico
 
 [Ntico is a French consulting and software company](https://www.ntico.com/), specializing in developing data-driven applications and managing intricate projects. 
 
-They provide custom consulting, data analysis, and software development services tailored to enhance operational efficiency. 
+They provide consulting, data analysis, and software development services tailored to enhance operational efficiency. 
 
 Additionally, Ntico offers operational services encompassing production, network infrastructure, cloud, and security solutions. Their expertise extends to advanced logistics solutions that maximize productivity and streamline supply chains.
 
@@ -29,7 +29,7 @@ Ntico's unique offerings include Locxia, a data platform designed to develop com
 
 ![loxcia screenshot](blogs/2023-06-22-locxia-kestra/locxia-screenshot.png)
 
-Locxia is a data platform revolving around housing data. Developed by Ntico's data experts, it empowers businesses and local authorities to better understand their customers and territories. The platform provides access to over 250 value-added data sourced from satellite images and public data, all consolidated and accessible on a dedicated platform.
+Locxia is a data platform focused on housing data. Developed by Ntico's data experts, it empowers businesses and local authorities to better understand their customers and territories. The platform provides access to over 250 value-added data sourced from satellite images and public data; all consolidated and accessible on a dedicated platform.
 
 Their use-case is primarily aimed at large retail companies or specialized distribution brands, aiming to supplement their customer databases with reliable data that are easily accessible through their business applications (CRM, BI, etc.), thereby improving their customer knowledge. Additionally, it assists local authorities in better understanding their territories, enabling them to construct and communicate their public policies more effectively.
 
@@ -42,7 +42,7 @@ They provides a wide range of data at a very low granularity:
 
 ## Kestra
 
-To support high data volumetry and scalability requirements, Ntico experts choose Kestra as the data orchestrator behind Locxia.
+To support high data volume and scalability requirements, Ntico experts chose Kestra as the data orchestrator powering Locxia.
 
 ### Advanced Data Ingestion and Processing
 
@@ -78,7 +78,7 @@ Moreover, they develop flows in the proper user interface - allowing to limit co
 
 The collaboration between Ntico and Kestra has been instrumental in the development of Locxia, a modern data platform that revolutionizes the understanding of housing data. As specialized in logistics optimization and data-driven solutions, Ntico recognized the need for a robust data orchestrator to handle the vast volumes of geospatial data involved in Locxia.
 
-By leveraging Kestra's advanced data ingestion and processing capabilities, Ntico successfully tackled the challenges associated with diverse data sources, including APIs, open-data platforms, and raw satellite images. Kestra served as the backbone of Locxia, effectively coordinating data ingestion processes.
+By leveraging Kestra's simple data ingestion and processing capabilities, Ntico successfully tackled the challenges associated with diverse data sources, including APIs, open-data platforms, and raw satellite images. Kestra served as the backbone of Locxia, effectively coordinating data ingestion processes.
 
 Moreover, Kestra's user-friendly interface and customizable features empowered the Ntico team to design and build tailored data pipelines. This flexibility allowed Ntico to bring their own business logic to the platform, ensuring that Locxia met their specific requirements.
 
