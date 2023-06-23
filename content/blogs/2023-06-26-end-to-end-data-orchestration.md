@@ -10,7 +10,7 @@ image: /blogs/2023-06-26-end-to-end-data-orchestration.jpg
 ---
 
 
-The key benefit of the Modern Data Stack is that you can avoid vendor lock-in by selecting best-of-breed tools rather than paying an expensive license for one inflexible solution. However, assembling your modular stack based on multiple SaaS solutions will only marginally improve that situation. It’s undoubtedly easier to swap only one component by, e.g., migrating between two SaaS BI solutions than migrating an entire all-in-one stack. However, the vendor lock-in issue remains unresolved — all you’ll achieve is multiple vendor lock-ins at a smaller scale rather than one giant lock-in. This is where open-core technologies, and SaaS offerings built on top of them, can help.
+The key benefit of the Modern Data Stack is that you can avoid vendor lock-in by selecting best-of-breed tools rather than paying expensive license fees for one inflexible solution. However, assembling your modular stack based on multiple SaaS solutions will only marginally improve that situation. It’s undoubtedly easier to swap only one component by, e.g., migrating between two SaaS BI solutions than migrating an entire all-in-one stack. However, the vendor lock-in issue remains unresolved — all you’ll achieve is multiple vendor lock-ins at a smaller scale rather than one giant lock-in. Open-core technologies and SaaS offerings built on top of them can help avoid these issues and future-proof your data stack.
 
 This post will discuss a selection of open-core tools that you can use to build your data stack in a modular way. Specifically, we'll leverage **Airbyte**, **dbt**, and **Kestra** — all of them are either **source-available** (*Airbyte*) or entirely **open-source** (*dbt and Kestra*).
 
