@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: /blogs/2023-06-26-end-to-end-data-orchestration.jpg
+image: /blogs/2023-06-26-end-to-end-data-orchestration.png
 ---
 
 
