@@ -10,7 +10,7 @@ image: /blogs/2023-06-26-end-to-end-data-orchestration.jpg
 ---
 
 
-The key benefit of the Modern Data Stack is that you can avoid vendor lock-in by selecting best-of-breed tools rather than paying an expensive license for one inflexible solution. However, assembling your modular stack based on multiple SaaS solutions will only marginally improve that situation. It’s undoubtedly easier to swap only one component by, e.g., migrating between two SaaS BI solutions. However, the vendor lock-in issue remains unresolved — all you’ll achieve is multiple vendor lock-ins at a smaller scale rather than one giant lock-in. This is where open-core technologies, and SaaS offerings built on top of them, can help.
+The key benefit of the Modern Data Stack is that you can avoid vendor lock-in by selecting best-of-breed tools rather than paying an expensive license for one inflexible solution. However, assembling your modular stack based on multiple SaaS solutions will only marginally improve that situation. It’s undoubtedly easier to swap only one component by, e.g., migrating between two SaaS BI solutions than migrating an entire all-in-one stack. However, the vendor lock-in issue remains unresolved — all you’ll achieve is multiple vendor lock-ins at a smaller scale rather than one giant lock-in. This is where open-core technologies, and SaaS offerings built on top of them, can help.
 
 This post will discuss a selection of open-core tools that you can use to build your data stack in a modular way. Specifically, we'll leverage **Airbyte**, **dbt**, and **Kestra** — all of them are either **source-available** (*Airbyte*) or entirely **open-source** (*dbt and Kestra*).
 
@@ -20,7 +20,7 @@ This post will discuss a selection of open-core tools that you can use to build 
 
 [Airbyte](https://airbyte.com/) is a data integration platform that simplifies and standardizes replicating data from source systems to desired destinations, such as a data warehouse or a data lake. It provides many pre-built connectors to various databases, APIs, storage systems, and a [low-code CDK](https://docs.airbyte.com/connector-development/config-based/low-code-cdk-overview/) for creating new custom connectors.
 
-To start using Airbyte, you only need a workstation with Docker and a terminal. You can follow [the quickstart guide](https://docs.airbyte.com/quickstart/deploy-airbyte/) to launch Airbyte on your local machine.
+To start using Airbyte, you only need a workstation with Docker and a terminal. You can follow [the quickstart guide](https://docs.airbyte.com/quickstart/deploy-airbyte/) to launch Airbyte on your local machine:
 
 
 ```bash
