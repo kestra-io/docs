@@ -2,7 +2,23 @@
 title: Triggers & schedule
 ---
 
-Triggers are a way to start a flow from an external event. For example, a trigger can be set for a scheduled date or waiting for an external event (such as file creation or another flow's end).
+Triggers can start a flow based on an external event. A trigger can be a scheduled date, a new file arrival, a new message in a queue, or an end of another flow's execution.
+
+Triggers restrict parallel execution for a given trigger ID to one active run. For instance, if an Execution from a flow with a `Schedule` trigger with ID `hourly` is still in a `Running` state, another one will not be started. However, you can still trigger the same flow manually (from the UI or API), and the scheduled Executions will not be affected.
+
+```yaml
+id: hourlyFlow
+namespace: dev
+tasks:
+  - id: important-task
+    type: io.kestra.core.tasks.log.Log
+    message: If this runs for longer than 1h, next Executions will be queued rather than being started immediately
+triggers:
+  - id: hourly
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "@hourly"
+```
+
 
 ## Core triggers
 
