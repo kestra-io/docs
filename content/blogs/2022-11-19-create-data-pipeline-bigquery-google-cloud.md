@@ -17,7 +17,7 @@ This blog post dives into Kestra's integrations for Google Cloud Platform (GCP),
 Google Cloud Platform (GCP) is one of the major cloud providers. BigQuery is GCP's serverless data warehouse. It's typically leveraged for storing and analyzing large datasets, including use cases such as:
 
 *   **Data Warehousing** with serverless query operations for data analysis.
-*   **Data transfer services** to migrate data tables to/from BigQuery from another cloud platform.
+*   **Data integration** - Data Transfer Services integration allows you to ingest data from various services, including those outside of GCP's offerings, into BigQuery.
 *   **Multiple language-specific** **SDKs** and **gcloud CLI** are available to interact with BigQuery.
 *   **Machine learning model training** and prediction at regular intervals using scheduled BigQuery ML queries.
 
