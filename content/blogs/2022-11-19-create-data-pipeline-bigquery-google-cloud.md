@@ -255,7 +255,7 @@ A key aspect of data lineage visualization is the Gantt chart, which provides a 
 
 Accessing specific information about the flow is simple, requiring only the unique execution ID. This enables efficient data lineage tracking of the flow. You can leverage Kestra's null variable to add any execution identifier to separate different executions in the flow. Furthermore, you can inject a null variable into SQL queries for enhanced data tracking.
 
-Next Steps
+## Next Steps ##
 Stay tuned for our upcoming posts as we delve deeper into GCP integrations, providing more granular, real-world use cases and a step-by-step guide to leverage these powerful tools.
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
