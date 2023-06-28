@@ -28,7 +28,7 @@ Kestra provides a suite of plugins for various GCP services such as Google Cloud
 ### Integration of Kestra and BigQuery ###
 Kestra enables standard operations in BigQuery, such as creating and deleting datasets and tables, running queries, and importing/exporting tables to/from BigQuery and GCS, all through its BigQuery plugins.
 
-### Data Modelization
+### Data Modeling
 Data Modeling is a process that involves creating a visual representation of data flow between different data structures. This is achieved through a series of transformation or aggregation queries on the raw dataset, with the final data used for visualization, analysis, or machine learning. Kestra's [**Query**](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.md) plugin for BigQuery can be used for this purpose.
 
 For instance, you can apply complex aggregation on daily sales report data and use those data points in subsequent phases of transformations for gathering the daily sales trends.
