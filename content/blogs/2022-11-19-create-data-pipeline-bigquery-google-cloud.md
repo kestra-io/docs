@@ -1,5 +1,5 @@
 ---
-title: "How to create robust data pipeline for BigQuery and Google Cloud?"
+title: "Robust data pipelines for BigQuery and Google Cloud"
 description: Kestra has an entire range of plugins for Google Cloud. More specifically there are plugins for BigQuery used to create the ETL/ELT pipeline to any other services that are readily available in Kestra
 date: 2023-06-28T10:00:00
 category: Solutions
