@@ -49,9 +49,11 @@ By default, Kestra automatically creates all the needed topics. You can change t
 - `kestra.kafka.defaults.topic.replication-factor`: (default 1)
 
 ## `kestra.kafka.defaults.[consumer|producer|stream].properties`
+
 You can change the default properties of the Kafka client used by Kestra. These allow you to change any available properties.
 
-Here is the default configuration :
+Here is the default configuration:
+
 ```yaml
 kestra:
   kafka:
@@ -75,6 +77,7 @@ kestra:
           acks: "all"
           compression.type: "lz4"
           max.request.size: "10485760"
+          state.dir: "/tmp/kafka-streams"
 ```
 
 
