@@ -18,22 +18,22 @@ Google Cloud Platform (GCP) is one of the major cloud providers. BigQuery is GCP
 
 *   **Data Warehousing** with serverless query operations for data analysis.
 *   **Data integration** - Data Transfer Services integration allows you to ingest data from various services, including those outside of GCP's offerings, into BigQuery.
-*   **Multiple language-specific** **SDKs** and **gcloud CLI** are available to interact with BigQuery.
-*   **Machine learning model training** and prediction at regular intervals using scheduled BigQuery ML queries.
+*   **Cross-language analytics** - GCP offers SDKs and `gcloud` CLI to analyze data stored in BigQuery using various programming languages.
+*   **Machine learning** - model training and prediction at regular intervals using queries specialized for ML.
 
-Despite the utility of tools like the gcloud CLI and Scheduled Query for simple data processing tasks, they fall short when it comes to connecting multiple data sources and destinations, creating data modelization with dependencies, and visualizing each task.
+You can see that BigQuery offers a wide range of functionality out of the box. However, sometimes you may need to integrate additional data sources, custom scripts, or react to external events. That's where Kestra can help. 
 
-Kestra provides a suite of plugins for various GCP services such as Google Cloud Storage (GCS), BigQuery, VertexAI, and more. The plugins for BigQuery, in particular, facilitate the creation of ETL/ELT pipelines to various other services readily available in Kestra.
+Kestra provides a suite of plugins for various GCP services, such as Google Cloud Storage (GCS), BigQuery, VertexAI, and more. The plugins for BigQuery, in particular, make it easy to connect BigQuery data to external services beyond the boundaries of GCP.
 
 ### Integration of Kestra and BigQuery ###
-Kestra enables standard operations in BigQuery, such as creating and deleting datasets and tables, running queries, and importing/exporting tables to/from BigQuery and GCS, all through its BigQuery plugins.
+Kestra enables standard operations in BigQuery, such as creating and deleting datasets and tables, running queries, and importing/exporting tables to/from BigQuery and GCS, and many more, using simple plugins.
 
 ### Data Modeling
-Data Modeling is a process that involves creating a visual representation of data flow between different data structures. This is achieved through a series of transformation or aggregation queries on the raw dataset, with the final data used for visualization, analysis, or machine learning. Kestra's [**Query**](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.md) plugin for BigQuery can be used for this purpose.
+Data modeling is a process that involves setting up a coherent structure for data to make it useful for a business, reflecting the organization's goals and business logic. It's about organizing, standardizing, and understanding the data related to business processes, workflows, and definitions. This is achieved through a series of transformations applied to the raw datasets, with the final data used for visualization, analysis, or machine learning. Kestra's [**Query**](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.md) plugin for BigQuery can be used for this purpose.
 
 For instance, you can apply complex aggregation on daily sales report data and use those data points in subsequent phases of transformations for gathering the daily sales trends.
 
-Here's an illustrative flow that implements data modelization on daily sales data and calculates average sales for each product category. This flow is triggered daily and executes several BigQuery queries to transform and aggregate raw sales data: 
+Here's an illustrative flow that implements data modeling on daily sales data and calculates average sales for each product category. This flow is triggered daily and executes several BigQuery queries to transform and aggregate raw sales data: 
 
 ```yaml
 id: modelization
@@ -84,7 +84,7 @@ triggers:
     cron: "0 0 * * *"
 
 ```
-Here we have four tasks that each run a BigQuery query.
+Here we have four tasks, each executing a query within a BigQuery cloud data warehouse.
 
 - **Task 1** - `aggregate-sales`: This task aggregates the sales data by date and product category. The aggregated data is then written to a new BigQuery table sales_agg.
 
@@ -148,7 +148,7 @@ fieldDelimiter: ;
 printHeader: true
 ```
 
-Inputs for flow execution in Kestra can be provided either via the UI or Curl. A complete API with a sample Curl command for automating the execution from another application is shown below:
+Inputs for flow execution in Kestra can be provided either via the UI or when executing the flow via an API call, for example using the `curl` command. Here is an example `curl` command that you can use to execute the flow from other applications:
 
 ```yaml
 inputs:
@@ -167,7 +167,7 @@ curl -v "<http://localhost:8080/api/v1/executions/trigger/io.kestra.gcp/extract-
 ```
 
 ### Storage Write ###
-The [StorageWrite](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.StorageWrite.md) plugin, is used for importing data from diverse sources like databases, NoSQL, queues, or other plugins into BigQuery. This is especially useful when data is stored externally. Another advantage of using this plugin is to avoid quotas limitation to ingest the data while data streaming in real-time or in batch job writing.
+The [StorageWrite](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.StorageWrite.md) plugin is used for importing data from various sources, including databases, distributed message queues, or other plugins, into BigQuery. This is especially useful when data is stored externally. Another advantage of using this plugin is to avoid quotas limitation during streaming and batch data ingestion.
 
 Below is an example flow that streams data from a Kafka topic to a BigQuery table using the [Storage Write API](https://cloud.google.com/bigquery/docs/write-api) from BigQuery:
 
@@ -194,9 +194,9 @@ tasks:
     destinationTable: "kestra-dev.ETL_demo.transactions_logs"
 ```
 
-## Event Driven Orchestration ##
+## Event-Driven Orchestration ##
 
-Kestra also allows you to create dynamic data pipelines that can be triggered based on certain events. For example, your data pipeline might need to start when a new table is ingested into BigQuery, or when a file is uploaded into a Google Cloud Storage (GCS) bucket. Kestra supports these event-driven workflows through its trigger plugins for BigQuery and GCS.
+Kestra also allows you to create dynamic data pipelines that can be triggered based on external events. For example, your data pipeline might need to start when a new table is ingested into BigQuery, or when a file is uploaded into a Google Cloud Storage (GCS) bucket. Kestra supports such event-driven workflows via trigger plugins for BigQuery and GCS.
 
 ### BigQuery Trigger ### 
 The BigQuery [**Trigger**](../plugins/plugin-gcp/triggers/bigquery/io.kestra.plugin.gcp.bigquery.Trigger.md) will check for new data in a specified BigQuery table and, when found, invoke a flow for each new row with loop ([EachSequential](../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task). Here's how you could set up such a flow:
@@ -256,7 +256,7 @@ A key aspect of data lineage visualization is the Gantt chart, which provides a 
 Accessing specific information about the flow is simple, requiring only the unique execution ID. This enables efficient data lineage tracking of the flow. You can leverage Kestra's null variable to add any execution identifier to separate different executions in the flow. Furthermore, you can inject a null variable into SQL queries for enhanced data tracking.
 
 ## Next Steps ##
-Stay tuned for our upcoming posts as we delve deeper into GCP integrations, providing more granular, real-world use cases and a step-by-step guide to leverage these powerful tools.
+If you would like to see more posts diving into GCP integrations or integrations with other cloud providers, let us know. We'd love to hear your feedback and the use cases you would like us to cover next. 
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. 
