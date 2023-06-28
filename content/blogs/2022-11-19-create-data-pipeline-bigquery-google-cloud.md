@@ -251,7 +251,7 @@ With Kestra, the process of analyzing your flow (DAG) executions becomes intuiti
 
 A key aspect of data lineage visualization is the Gantt chart, which provides a clear overview of the time taken for each task's data processing within the flow. In parallel, the Topology feature enables the user to identify and debug the sequence of tasks along with their dependencies.
 
-![Topology](/blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud/gantt.png)
+![Gantt](/blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud/Gantt.png)
 
 Accessing specific information about the flow is simple, requiring only the unique execution ID. This enables efficient data lineage tracking of the flow. You can leverage Kestra's null variable to add any execution identifier to separate different executions in the flow. Furthermore, you can inject a null variable into SQL queries for enhanced data tracking.
 
