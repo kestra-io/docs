@@ -1,7 +1,7 @@
 ---
 title: "How to create robust data pipeline for BigQuery and Google Cloud?"
 description: Kestra has an entire range of plugins for Google Cloud. More specifically there are plugins for BigQuery used to create the ETL/ELT pipeline to any other services that are readily available in Kestra
-date: 2022-11-19T10:00:00
+date: 2023-06-28T10:00:00
 category: Solutions
 author:
   name: Ludovic Dehon
@@ -10,110 +10,106 @@ author:
 image: /blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud.png
 ---
 
-The Google Cloud Platform (GCP) is a widely used cloud platform to build an end-to-end solution for data pipeline starting from collecting the data in the Data warehouse to building and hosting scalable applications.
+This blog post explores the integration of Kestra with Google Cloud Platform (GCP), specifically focusing on enhancing BigQuery operations. We will elaborate on how to automate repetitive processes, streamline data pipelines, and create resilient workflows within the GCP environment using Kestra's orchestration capabilities.
 
-BigQuery is generally used to store and analyse structured Big data in GCP and also as a main tool for the below use-cases in GCP:
+## Kestra & Big Query ##
 
-*   BigQuery is often used as a **Data Warehouse** with serverless query operations for data analysis.
-*   It offers **data transfer services** to transfer the data tables to/from BigQuery to another cloud platform.
-*   There are **SDKs** in multiple language-specific and **gcloud CLI** available to interact with BigQuery
-*   It has features for ML model **training** and **prediction** on regular intervals using scheduled BigQuery ML queries
+Google Cloud Platform (GCP) is a widely adopted cloud solution for building end-to-end data pipelines, from data warehousing to building and hosting scalable applications. BigQuery, is a fully managed and serverless data warehouse, and it’s typically used for storing and analyzing large, structured data. It acts as the main tool for several use cases, such as:
 
-Though GCP provides tools like the gcloud CLI and Scheduled Query for simple data processing, these can’t be used to connect multiple data sources and destinations, to create data modelization along with creating the dependency structure, and visualization of each task. For such complex data pipelines, we would need an orchestration tool like Kestra.
+*   **Data Warehousing** with serverless query operations for data analysis.
+*   **Data transfer services** to migrate data tables to/from BigQuery from another cloud platform.
+*   **Multiple language-specific** **SDKs** and **gcloud CLI** are available to interact with BigQuery.
+*   **Machine learning model training** and prediction at regular intervals using scheduled BigQuery ML queries.
 
-### What is Kestra?
+Despite the utility of tools like the gcloud CLI and Scheduled Query for simple data processing tasks, they fall short when it comes to connecting multiple data sources and destinations, creating data modelization with dependencies, and visualizing each task.
 
-[**Kestra**](https://github.com/kestra-io/kestra) is an **open-source** and **cloud-native** tool that can **scale infinitely** and serves as a **low code** data orchestrator and dependency generator to create and schedule the data flow from multiple sources and destinations. It provides an elegant visualization of the entire DAG including all the tasks and plugins used in it. There are multiple [plugins](../plugins/index.md) available for many cloud platforms like GCP, AWS, and Azure to implement complex pipelines.
+Kestra provides a suite of plugins for various GCP services such as Google Cloud Storage (GCS), BigQuery, VertexAI, and more. The plugins for BigQuery, in particular, facilitate the creation of ETL/ELT pipelines to various other services readily available in Kestra.
 
-For Google Cloud, Kestra has an entire range of plugins for various services like GCS, BigQuery, VertexAI, etc. More specifically there are plugins for BigQuery used to create the ETL/ELT pipeline to any other services that are readily available in Kestra.
-
-We can create a flow to execute these operations using YAML language which would require minimum user inputs like the task name, type, and inputs configuration. This blog also has a simple tutorial that covers the most basic BigQuery operations using Kestra.
-
-### Kestra integrates widely with BigQuery
-
-Kestra cover all the standard operations in BigQuery like creating and deleting the dataset and table, running the query, copying and loading the table, and importing/exporting the table to/from BigQuery to GCS. All these can be done using the BigQuery plugins.
+### Integration of Kestra and BigQuery ###
+Kestra enables standard operations in BigQuery, such as creating and deleting datasets and tables, running queries, and importing/exporting tables to/from BigQuery and GCS, all through its BigQuery plugins.
 
 ### Data Modelization
+Data Modeling is a process that involves creating a visual representation of data flow between different data structures. This is achieved through a series of transformation or aggregation queries on the raw dataset, with the final data used for visualization, analysis, or machine learning. Kestra's [**Query**](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.md) plugin for BigQuery can be used for this purpose.
 
-The Data Modelization refers to creating a visual representation of data flow between data points and structures. This can be achieved by applying a sequence of transformation or aggregation queries to the raw dataset and using the final data used for visualization, analysis or machine learning. For example, To apply complex aggregation on daily sales report data and use those data points in subsequent phases of transformations for gathering the daily sales trends.
+For instance, you can apply complex aggregation on daily sales report data and use those data points in subsequent phases of transformations for gathering the daily sales trends.
 
-The [**Query**](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.md) plugin for BigQuery in Kestra is commonly used to achieve Data modelization by running the query on the table stored in BigQuery and applying any further transformation or aggregation using the SQL query. To implement data modelization in a data pipeline, the query result needed to be stored in the BigQuery table. Using the [**Query**](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.md) plugin and by providing the `destinationTable` in schema input, the result will be stored and can be used in the next phases.
-
-```yaml
-id: query
-type: io.kestra.plugin.gcp.bigquery.Query
-destinationTable: kestra-dev.ETL_demo.analysis_data
-writeDisposition: WRITE_APPEND
-sql: |
-  SELECT Sex, Age, COUNT(Survived) Survived_users, "{{ execution.id }}" as lineage_cols
-  FROM `kestra-dev.ETL_demo.raw_data`
-  GROUP BY 1,2
-  ORDER BY 3 DESC
-```
-
-To generate the daily sales report on a day to day basis, the frequency of flow should be set to one day. To eliminate the manual triggering, Kestra offers scheduling a flow where the cron setting is specified in the YAML or else in the schedule UI. The automated flow will ensure all the data modelization pipeline runs smoothly and generates insights every day.
-
-Here is a sample trigger for scheduling the flow:
+Here's an illustrative flow that implements data modelization on daily sales data and calculates average sales for each product category. This flow is triggered daily and executes several BigQuery queries to transform and aggregate raw sales data: 
 
 ```yaml
-triggers:
- - id: schedule
-   type: io.kestra.core.models.triggers.types.Schedule
-   cron: "0 0 * * *"
-```
-
-The [Query](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.md) plugin also allows the fetch parameters in order to use the output of a SQL query to be used on the next tasks. A common usage can be to fetch the max date currently on a table and to use it on a later query.
-
-```yaml
+id: modelization
+namespace: org.example
+description: This flow aggregates daily sales data and calculates average sales for each product category.
 tasks:
-- id: query
-  type: io.kestra.plugin.gcp.bigquery.Query
-  fetchOne: true
-  sql: |
-    SELECT MAX(added_date) AS date
-    FROM `kestra-dev.ETL_demo.raw_data`
-- id: query
-  type: io.kestra.plugin.gcp.bigquery.Query
-  fetchOne: true
-  destinationTable: kestra-dev.ETL_demo.destination
-  writeDisposition: WRITE_APPEND
-  sql: |
-    SELECT *
-    FROM `kestra-dev.ETL_demo.source`
-    WHERE added_date > date('{{ outputs.query.row.date }}')
+  - id: aggregate-sales
+    type: io.kestra.plugin.gcp.bigquery.Query
+    projectId: your-gcp-project-id
+    destinationTable: your-project.your-dataset.sales_agg
+    writeDisposition: WRITE_TRUNCATE
+    sql: |
+      SELECT DATE(timestamp) AS date, product_category, COUNT(*) as sales_count
+      FROM `your-project.your-dataset.sales_raw`
+      GROUP BY date, product_category
+
+  - id: calculate-average-sales
+    type: io.kestra.plugin.gcp.bigquery.Query
+    projectId: your-gcp-project-id
+    destinationTable: your-project.your-dataset.sales_avg
+    writeDisposition: WRITE_TRUNCATE
+    sql: |
+      SELECT date, product_category, AVG(sales_count) as avg_sales
+      FROM `your-project.your-dataset.sales_avg`
+      GROUP BY date, product_category
+     
+  - id: query_latest_date
+    type: io.kestra.plugin.gcp.bigquery.Query
+    projectId: your-gcp-project-id
+    fetchOne: true
+    sql: |
+      SELECT MAX(added_date) AS date
+      FROM `kestra-dev.ETL_demo.raw_data`
+
+  - id: query_new_data
+    type: io.kestra.plugin.gcp.bigquery.Query
+    projectId: your-gcp-project-id
+    destinationTable: your-project.your-dataset.sales_avg
+    writeDisposition: WRITE_APPEND
+    sql: |
+      SELECT *
+      FROM `kestra-dev.ETL_demo.source`
+      WHERE added_date > date('{{ outputs.query_latest_date.row.date }}')
+
+triggers:
+  - id: schedule
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "0 0 * * *"
+
 ```
+Here we have four tasks that each run a BigQuery query.
 
-### Data Lineage
+- **Task 1** - `aggregate-sales`: This task aggregates the sales data by date and product category. The aggregated data is then written to a new BigQuery table sales_agg.
 
+- **Task 2** - `calculate-average-sales`: This task calculates the average sales for each product category and date, and writes this data to another BigQuery table sales_avg.
 
-The Flow (DAG) executions can be analysed using the Execution section of Kestra. This section contains the list of all executions with details on how the flow is triggered (Manually or using the above approach) and an **Execution Id** is also assigned to every run. Each execution contains the various Data Lineage views like Gantt chart, Logs, Topology, and Outputs.
+- **Task 3** - `query_latest_date`: This task queries the latest date from the raw data table. The fetchOne: true option indicates that we're only interested in the first row of the result.
 
-In the **Gantt chart**, we can see relevant information about the time taken for the data processing of each task in the Flow.
+- **Task 4** - `query_new_data`: This task selects the new data from the source table that was added after the latest date fetched in the previous task. The data is then appended to the sales_avg table.
 
-<p style="text-align:center">
-<img src="/blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud/1.png" class="rounded img-thumbnail mt-4 mb-4" alt="Data execution in Kestra">
-</p>
+#### Triggers: ####
+Triggers are events that start the execution of the flow. Here, a Schedule trigger is used, which triggers the flow based on a cron expression, allowing you to automate the execution of the data pipeline. In this case, the pipeline is run daily at midnight (0:00).
 
-In **Topology**, a sequence of tasks along with the dependencies present in the Flow can be visualised by the user to debug the tasks.
+#### Query Plugin: ####
+This is used to run SQL queries on BigQuery tables. It's used for data transformation and aggregation in our tasks. fetchOne: true is used when we want the first row of the query result, and destinationTable is used to specify the table where we want to write our query results.
 
-<p style="text-align:center">
-<img src="/blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud/2.png" class="rounded img-thumbnail mt-4 mb-4" alt="Data lineage in Kestra">
-</p>
+#### Write Disposition: ####
+This option controls the behavior when writing query results to a table that already exists. WRITE_TRUNCATE will delete all rows in the table before writing the results, while WRITE_APPEND will add the results to the existing table content.
 
-All the necessary information about the flow can be accessed using the execution id. Resulting in providing Data Lineage on the flow. Also, while creating the Flow `executionId` can be accessible by <code v-pre>{{ execution.id }}</code> variable by which the user can add any execution identifier in the flow to separate out other executions. We can also inject an <code v-pre>{{ execution.id }}</code> variable in the SQL query that allows us to track the execution from where the data came from.
+#### Template Variables: #### 
+Kestra supports the use of template variables, which are denoted by {{ }}. In the `query_new_data task`, date('{{ outputs.query_latest_date.row.date }}') fetches the output date from the `query_latest_date` task and uses it in the SQL query.
 
-```sql
-SELECT Sex, Age, COUNT(Survived) Survived_users, "{{ execution.id }}" as lineage_cols
-FROM `kestra-dev.ETL_demo.raw_data`
-GROUP BY 1,2
-ORDER BY 3 DESC
-```
-
-### Interact with Google Cloud Storage
-
+### Interacting with Google Cloud Storage ###
 The [**LoadFromGcs**](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.LoadFromGcs.md) plugin is used to import the data from GCS and store it in the BigQuery table directly. This can be especially helpful to analyse and generate insights from the static data files stored in GCS. This plugin can take the input data files for **various file formats** like Avro, JSON, PARQUET, ORC, and CSV.
 
-A sample flow to load the data from GCS and store it in a BigQuery table with specified inputs.
+Here is an example of a flow that load the data from GCS and store it in a BigQuery table with specified inputs.
 
 ```yaml
 - id: load_from_gcs
@@ -137,9 +133,9 @@ A sample flow to load the data from GCS and store it in a BigQuery table with sp
   - gs://sandbox-kestra-dev/sandbox/titanic.csv
 ```
 
-On the other side, [**ExportToGCS**](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.ExtractToGcs.md) plugin is used to extract the table from BigQuery and store the table as per the specified path to the GCS bucket. This would be useful in the use-cases where a BigQuery table needs to be utilized in other services/platforms as part of the entire solution. Example: We may need to have a backup of the table in GCS to save the storage cost in BigQuery or even create a dataset file to train ML models.
+On the other side, the [**ExportToGCS**](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.ExtractToGcs.md) plugin is designed to extract tables from BigQuery and store them at a specified GCS bucket path. This comes in handy when a BigQuery table is needed for utilization in other services or platforms, like creating backups to save on BigQuery storage costs or generating a dataset for ML model training.
 
-Below is an example of a simple flow to upload the data back to GCS as a specific destination path.
+Here's an example of a flow that allows exporting data back to GCS:
 
 ```yaml
 id: export_to_gcs
@@ -152,7 +148,7 @@ fieldDelimiter: ;
 printHeader: true
 ```
 
-While executing the Flow in Kestra, the inputs can be provided in UI or Curl. For instance, to execute the flow, below are the inputs required.
+Inputs for flow execution in Kestra can be provided either via the UI or Curl. A complete API with a sample Curl command for automating the execution from another application is shown below:
 
 ```yaml
 inputs:
@@ -170,11 +166,10 @@ curl -v "<http://localhost:8080/api/v1/executions/trigger/io.kestra.gcp/extract-
     -F destinationFile="analysis_data_18"
 ```
 
-### Storage Write
+### Storage Write ###
+The [StorageWrite](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.StorageWrite.md) plugin, is used for importing data from diverse sources like databases, NoSQL, queues, or other plugins into BigQuery. This is especially useful when data is stored externally. Another advantage of using this plugin is to avoid quotas limitation to ingest the data while data streaming in real-time or in batch job writing.
 
-All these operations can be done if the data is stored in GCP platform services. But what if the data is stored in external servers like Database, NoSQL, Queue or any other plugins providing Kestra’s internal server files. Kestra offers a service to import data from other servers into BigQuery using the [StorageWrite](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.StorageWrite.md) plugin that will use the [Storage Write API](https://cloud.google.com/bigquery/docs/write-api) from BigQuery. Another advantage of using this plugin is to avoid quotas limitation to ingest the data while data streaming in real-time or in batch job writing.
-
-Refer below for an example flow that will stream from a Kafka topic to a BigQuery table using StorageWrite api, really useful to achieve near real time without hitting BigQuery limits.
+Below is an example flow that streams data from a Kafka topic to a BigQuery table using the [Storage Write API](https://cloud.google.com/bigquery/docs/write-api) from BigQuery:
 
 ```yaml
 tasks:
@@ -199,16 +194,12 @@ tasks:
     destinationTable: "kestra-dev.ETL_demo.transactions_logs"
 ```
 
-### React to event
+## Event Driven Orchestration ##
 
-Using the above scheduling features in data modelization, we can trigger the flow in a predefined time. Kestra has a lot of advanced features like triggering the flow when a file is uploaded in GCS or in a BigQuery table. There would be a scenario where the data pipeline needs to be started whenever a new table is ingested in BigQuery or archive the file in a different folder of GCS when any file is uploaded.
+Kestra also allows you to create dynamic data pipelines that can be triggered based on certain events. For example, your data pipeline might need to start when a new table is ingested into BigQuery, or when a file is uploaded into a Google Cloud Storage (GCS) bucket. Kestra supports these event-driven workflows through its trigger plugins for BigQuery and GCS.
 
-Kestra has two trigger plugins for both BigQuery and GCS:
-
-*   BigQuery Trigger
-*   GCS Trigger
-
-The BigQuery [**Trigger**](../plugins/plugin-gcp/triggers/bigquery/io.kestra.plugin.gcp.bigquery.Trigger.md) will check for the data arriving in the BigQuery table based on a Query and will invoke a flow with loop ([EachSequential](../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task) for each row. The below YAML can be used to create such a Flow in Kestra.
+### BigQuery Trigger ### 
+The BigQuery [**Trigger**](../plugins/plugin-gcp/triggers/bigquery/io.kestra.plugin.gcp.bigquery.Trigger.md) will check for new data in a specified BigQuery table and, when found, invoke a flow for each new row with loop ([EachSequential](../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task). Here's how you could set up such a flow:
 
 ```yaml
 id: Trigger_flow
@@ -228,8 +219,10 @@ triggers:
     interval: PT30S
     sql: SELECT * FROM `kestra-dev.ETL_demo.raw_data`
 ```
+In this YAML flow configuration, the `io.kestra.plugin.gcp.bigquery.Trigger` is set to watch a BigQuery table. When new rows are added to this table, it triggers the flow and executes a task for each row.
 
-We can also create a Flow that will trigger when a new file is uploaded to a specified folder of GCS and as an action, it will move the file to the archive folder.
+### GCS Trigger ###
+Similarly, Kestra can trigger a flow when a new file is uploaded to a specific GCS bucket. This flow could then, for example, move the uploaded file to an archive folder. Here's a YAML example of such a flow:
 
 ```yaml
 id: gcs-listen
@@ -251,31 +244,20 @@ triggers:
     moveDirectory: gs://my-bucket/kestra/archive/
 ```
 
-Here the **interval** in both flows means a time gap between subsequent calls to check for the data in order to avoid reaching Google Cloud limits.
+This flow is triggered by the `io.kestra.plugin.gcp.gcs.Trigger` whenever a new file is uploaded to the specified GCS bucket. It then moves the new file to an archive directory.
 
-### Complete ETL pipeline
+## Data Lineage with Kestra ##
+With Kestra, the process of analyzing your flow (DAG) executions becomes intuitive and informative. Accessible through the "Execution" section, each execution instance is logged with specific details, such as its trigger source (manual or automated), as well as a unique Execution ID. This meticulously detailed record of each flow allows for comprehensive data lineage views encompassing Gantt charts, logs, topology, and outputs.
 
-For the use cases where multiple tasks need to be run in parallel and we would need to create an internal dependency between those tasks. For this, we can use the Kestra features and plugins to maintain the pipeline orchestration, data modelization and data lineage.
+A key aspect of data lineage visualization is the Gantt chart, which provides a clear overview of the time taken for each task's data processing within the flow. In parallel, the Topology feature enables the user to identify and debug the sequence of tasks along with their dependencies.
 
-For instance, we want to build a pipeline where we want to find out daily available stock based on the previous day’s sales and stock data. We can create the pipeline using the above basic Kestra operations and plugin features and this pipeline could consist of the following tasks:
+![Topology](/blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud/gantt.png)
 
-1.  [Setup a trigger](../plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.Trigger.md) which will invoke the pipeline when daily sales and stock data are dumped in the GCS bucket.
-2.  [Creating a dataset](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.CreateDataset.md) in BigQuery specifically to store all the intermediate tables.
-3.  [Loading the data from the Google Cloud Storage](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.LoadFromGcs.md) and storing it in the destination tables.
-4.  Run [parallel](../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.md) tasks to aggregate the product level stock and sales data and store both tables in BigQuery.
-5.  Run a [query](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.Query.md) to calculate the remaining stock at the product level by subtracting from stock to sales only after storing the above tables.
-6.  [Export in Google Cloud Storage](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.ExtractToGcs.md) the updated stock data.
-7.  [Clean up all the intermediate tables](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.DeleteTable.md) and [datasets in BigQuery](../plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.DeleteDataset.md).
+Accessing specific information about the flow is simple, requiring only the unique execution ID. This enables efficient data lineage tracking of the flow. You can leverage Kestra's null variable to add any execution identifier to separate different executions in the flow. Furthermore, you can inject a null variable into SQL queries for enhanced data tracking.
 
-To trigger the flow, we can set the [**GCS**](../plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.Trigger.md) **Trigger** plugin where we can provide the condition to trigger the flow only if the file should be present in the listening folder of the GCS bucket.
+Next Steps
+Stay tuned for our upcoming posts as we delve deeper into GCP integrations, providing more granular, real-world use cases and a step-by-step guide to leverage these powerful tools.
 
-For creating a sequential execution of tasks that has the dependency on the previous task, we need to provide all the sub-tasks in the parent task of the [**Sequential**](../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.md) type. This sequential flow will be used to calculate the remaining stock at the product level using a Query plugin.
-
-While to run the tasks in parallel where the output of the task is not dependent, we need to specify all these tasks in type as [**Parallel**](../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.md). In the above example, aggregating sales and stock data at the product level are two independent tasks which can be run in parallel using this plugin type.
-
-Here we can also provide the output of one task to the input to another task using the <code v-pre>{{outputs.task_id.output_parameter}}</code>`.
-
-### Conclusion
-
-We saw that [Kestra](https://www.kestra.io/) offers a variety of plugins **for creating a complete ETL/ELT pipeline using the GCP BigQuery** service along with features for monitoring the pipeline executions. It can be also used to schedule the Flow, provide easy debugging, and maintain the external dependencies. This blog post tries to showcase a few uses-case of how Kestra can be used along with the sample snippets for using the Kestra hands-on for you to start exploring the [Kestra](https://github.com/kestra-io/kestra) as it can cover endless use-cases.
-
+Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. 
+Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
