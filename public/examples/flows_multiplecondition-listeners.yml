@@ -10,6 +10,10 @@ tasks:
     format: "childs"
 
 triggers:
+  - id: flow-status-conditions
+    type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+    in:
+      - SUCCESS
   - id: multiple-listen-flow
     type: io.kestra.core.models.triggers.types.Flow
     conditions:
@@ -18,10 +22,6 @@ triggers:
         window: P1D
         windowAdvance: P0D
         conditions:
-          success:
-            type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
-            in:
-              - SUCCESS
           flow-a:
             type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
             namespace: io.kestra.demo
