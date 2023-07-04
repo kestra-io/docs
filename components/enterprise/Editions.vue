@@ -46,7 +46,7 @@
                                 <li data-aos="fade-left" data-aos-delay="250"><span>Rich UI with Secure Namespace Configuration to Manage Multiple Environments</span></li>
                                 <li data-aos="fade-left" data-aos-delay="300"><span>Community and Custom Plugins</span></li>
                                 <li data-aos="fade-left" data-aos-delay="350"><span>Encrypted Namespace-level Secrets and Secrets Manager Integration</span></li>
-                                <li data-aos="fade-left" data-aos-delay="400"><span>Customized Onboarding & Training</span></li>
+                                <li data-aos="fade-left" data-aos-delay="400"><span>Personalized Onboarding & Training</span></li>
                                 <li data-aos="fade-left" data-aos-delay="450"><span>Enterprise Support with SLAs</span></li>
                                 <li data-aos="fade-left" data-aos-delay="500"><span>High Availability and Fault Tolerance</span></li>
                             </ul>
