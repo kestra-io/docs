@@ -7,7 +7,7 @@
                 <NuxtLink href="/contact-us" target="_blank" class="btn btn-primary me-2" data-aos="zoom-in">
                     Contact us
                 </NuxtLink>
-                <a href="https://demo.kestra.io?auto" target="_blank" class="btn btn-secondary" data-aos="zoom-in">
+                <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-secondary" data-aos="zoom-in">
                     Live demo
                 </a>
             </div>

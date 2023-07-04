@@ -70,7 +70,7 @@
                 <NuxtLink href="/docs/getting-started" class="btn btn-primary me-2" data-aos="zoom-in">
                     <Flash /> Get started
                 </NuxtLink>
-                <a href="https://demo.kestra.io?auto" target="_blank" class="btn btn-dark" data-aos="zoom-in">
+                <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-dark" data-aos="zoom-in">
                     <Console /> Live demo
                 </a>
             </div>
