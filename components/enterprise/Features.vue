@@ -35,7 +35,7 @@
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><FormTextboxPassword /></span>
-                                <h4 class="card-title">Secrets management</h4>
+                                <h4 class="card-title">Secrets Management</h4>
                             </div>
                             <p class="card-text">Store secrets or integrate your secret manager to ensure that your passwords and keys remain secure</p>
                         </div>
@@ -75,7 +75,7 @@
                                 <span class="card-icon"><Security /></span>
                                 <h4 class="card-title">Audit Logs</h4>
                             </div>
-                            <p class="card-text">All events such as modifing or executing a flow are automatically tracked to provide a holistic audit trail</p>
+                            <p class="card-text">All events such as modifing or executing flows are automatically tracked to provide a holistic audit trail</p>
                         </div>
                     </div>
                 </div>
