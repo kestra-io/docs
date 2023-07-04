@@ -48,7 +48,7 @@ From the left navigation menu, go to Blueprints. Then, select the Organization B
 
 ![Organization Blueprints](/docs/user-interface-guide/blueprint-org.png)
 
-Add a title, description, and the contents of the flow. You can add as many tags as you want. Then click on the Create button. 
+Add a title, description, and the contents of the flow. You can add as many tags as you want. Then click on the "Create" button. 
 
 ![New Organization Blueprint](/docs/user-interface-guide/blueprint-org-2.png)
 
