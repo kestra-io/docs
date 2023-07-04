@@ -20,6 +20,7 @@ On the left menu, you will have access to all the functionalities provided by th
 - [Templates](./03-templates.md): The **Templates** page allows flow template management.
 - [Executions](./04-executions.md): The **Executions** page allows flow execution management.
 - [Logs](./05-logs.md): The **Logs** page allows access to all task logs.
+- [Blueprints](./blueprints.md): The **Blueprints** page provides a catalog of ready-to-use flow examples.
 - [Documentations](./06-documentations.md): The **Documentations** page allows access to various documentation pages.
 - [Settings](./07-settings.md): The **Settings** page allows configuring the Kestra UI.
 
