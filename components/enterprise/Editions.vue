@@ -13,15 +13,15 @@
                                 </NuxtLink>
                             </div>
                             <ul>
-                                <li data-aos="fade-right"><span>Open-Source under Apache 2.0 license</span></li>
+                                <li data-aos="fade-right"><span>Free usage under Apache 2.0 license</span></li>
                                 <li data-aos="fade-right" data-aos-delay="50"><span>Self-hosted</span></li>
-                                <li data-aos="fade-right" data-aos-delay="100"><span>Basic Auth for a Single User</span></li>
-                                <li data-aos="fade-right" data-aos-delay="150"><span>Workflow Creation & Execution</span></li>
-                                <li data-aos="fade-right" data-aos-delay="200"><span>Community Blueprints</span></li>
-                                <li data-aos="fade-right" data-aos-delay="250"><span>Rich User Interface With Basic Namespace Isolation</span></li>
-                                <li data-aos="fade-right" data-aos-delay="300"><span>Community Plugins</span></li>
+                                <li data-aos="fade-right" data-aos-delay="100"><span>Community Blueprints</span></li>
+                                <li data-aos="fade-right" data-aos-delay="150"><span>Community Plugins</span></li>
+                                <li data-aos="fade-right" data-aos-delay="200"><span>Basic Auth for a Single User</span></li>
+                                <li data-aos="fade-right" data-aos-delay="250"><span>Basic Namespace Configuration</span></li>
+                                <li data-aos="fade-right" data-aos-delay="300"><span>Basic Workflow Management</span></li>
                                 <li data-aos="fade-right" data-aos-delay="350"><span>Basic Secrets Management via Environment Variables</span></li>
-                                <li data-aos="fade-right" data-aos-delay="400"><span>Onboarding via Documentation and Online Resources</span></li>
+                                <li data-aos="fade-right" data-aos-delay="400"><span>Onboarding via Online Documentation</span></li>
                                 <li data-aos="fade-right" data-aos-delay="450"><span>Community Support</span></li>
                             </ul>
                         </div>
@@ -40,15 +40,16 @@
                             <ul>
                                 <li data-aos="fade-left"><span><strong>All features from the Open-Source Edition and More</strong></span></li>
                                 <li data-aos="fade-left" data-aos-delay="50"><span>Self-hosted or Managed</span></li>
-                                <li data-aos="fade-left" data-aos-delay="100"><span>Enterprise-Grade Auth with SSO and RBAC</span></li>
-                                <li data-aos="fade-left" data-aos-delay="150"><span>Workflow Creation & Execution with Audit Logs for Every Action</span></li>
-                                <li data-aos="fade-left" data-aos-delay="200"><span>Community and Organization Blueprints</span></li>
-                                <li data-aos="fade-left" data-aos-delay="250"><span>Rich UI with Secure Namespace Configuration to Manage Multiple Environments</span></li>
-                                <li data-aos="fade-left" data-aos-delay="300"><span>Community and Custom Plugins</span></li>
+                                <li data-aos="fade-left" data-aos-delay="100"><span>Community and Organization Blueprints</span></li>
+                                <li data-aos="fade-left" data-aos-delay="150"><span>Community and Custom Plugins</span></li>
+                                <li data-aos="fade-left" data-aos-delay="200"><span>Enterprise-Grade Auth with SSO and RBAC</span></li>
+                                <li data-aos="fade-left" data-aos-delay="250"><span>Secure Namespace Configuration</span></li>
+                                <li data-aos="fade-left" data-aos-delay="300"><span>Workflow Management with Audit Logs for Every Action</span></li>
                                 <li data-aos="fade-left" data-aos-delay="350"><span>Encrypted Namespace-level Secrets and Secrets Manager Integration</span></li>
                                 <li data-aos="fade-left" data-aos-delay="400"><span>Personalized Onboarding & Training</span></li>
                                 <li data-aos="fade-left" data-aos-delay="450"><span>Enterprise Support with SLAs</span></li>
-                                <li data-aos="fade-left" data-aos-delay="500"><span>High Availability and Fault Tolerance</span></li>
+                                <li data-aos="fade-left" data-aos-delay="500"><span>Worker Security Isolation</span></li>
+                                <li data-aos="fade-left" data-aos-delay="550"><span>High Availability and Fault Tolerance</span></li>
                             </ul>
                         </div>
                     </div>
