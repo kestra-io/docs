@@ -1,9 +1,9 @@
 <template>
     <div class="container">
         <Section
-            title="Robust Security, User Management and Access Control"
-            subtitle="Total Control and Protection"
-            baseline="Collaborate with your team and manage your workflows, directly from your browser"
+            title="Enterprise-Grade Security, User Management and Access Control"
+            subtitle="Full Control and Compliance"
+            baseline="Collaborate with your team and manage your workflows directly from your browser"
         >
             <div class="row mb-5">
                 <div class="col-md-6" data-aos="fade-left">

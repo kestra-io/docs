@@ -5,10 +5,10 @@
                 <img class="img-fluid" src="/landing/enterprise/ee-logo.svg" alt="EE logo" />
             </div>
             <Section
-                title="Scale With no Point of Failure"
+                title="Scale with High Availability and Fault Tolerance"
             >
                 <p data-aos="fade-right">
-                    Ensure scalability and high availability with <b>Kafka</b> and <b>Elasticsearch</b> Features available on the Enterprise Edition to eliminate all points of failure.
+                    Ensure scalability and high availability with managed <b>Kafka</b> and <b>Elasticsearch</b> integrated into the Enterprise Edition to eliminate single point of failure.
                 </p>
             </Section>
         </div>
