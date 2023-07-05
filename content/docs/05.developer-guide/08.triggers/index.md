@@ -2,7 +2,7 @@
 title: Triggers & schedule
 ---
 
-Triggers can start a flow based on an external event. A trigger can be a scheduled date, a new file arrival, a new message in a queue, or an end of another flow's execution.
+Triggers can start a flow based on an external event. A trigger can be a scheduled date, a new file arrival, a new message in a queue, or the end of another flow's execution.
 
 Triggers restrict parallel execution for a given trigger ID to one active run. For instance, if an Execution from a flow with a `Schedule` trigger with ID `hourly` is still in a `Running` state, another one will not be started. However, you can still trigger the same flow manually (from the UI or API), and the scheduled Executions will not be affected.
 
@@ -56,3 +56,5 @@ triggers:
     interval: "PT5M"
     sql: "SELECT * FROM my_table"
 ```
+
+Polling triggers can be evaluated on a specific [Worker Group (EE)](../08.architecture.md#worker-group-ee), thanks to the `workerGroup.key` property.
