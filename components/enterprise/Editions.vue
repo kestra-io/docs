@@ -6,22 +6,22 @@
                     <div class="card col-lg-9 col-xl-7">
                         <div class="card-body p-5">
                             <div class="text-center">
-                                <h4 class="card-title" data-aos="fade-right">Open Source Edition</h4>
+                                <h4 class="card-title" data-aos="fade-right">Open-Source Edition</h4>
                                 <p class="pricing" data-aos="fade-left">Free</p>
                                 <NuxtLink href="/docs/getting-started" class="btn btn-secondary" data-aos="zoom-in">
                                     Get started
                                 </NuxtLink>
                             </div>
                             <ul>
-                                <li data-aos="fade-right"><span>Free, forever</span></li>
+                                <li data-aos="fade-right"><span>Free usage under Apache 2.0 license</span></li>
                                 <li data-aos="fade-right" data-aos-delay="50"><span>Self-hosted</span></li>
-                                <li data-aos="fade-right" data-aos-delay="100"><span>Open-Source under Apache 2 license</span></li>
-                                <li data-aos="fade-right" data-aos-delay="150"><span>Powerful Workflow Creation & Execution</span></li>
-                                <li data-aos="fade-right" data-aos-delay="200"><span>Scalable Workflow Orchestration & Scheduling</span></li>
-                                <li data-aos="fade-right" data-aos-delay="250"><span>Rich User Interface</span></li>
-                                <li data-aos="fade-right" data-aos-delay="300"><span>Rich Plugin Ecosystem</span></li>
-                                <li data-aos="fade-right" data-aos-delay="350"><span>Infinite Customization Capabilities</span></li>
-                                <li data-aos="fade-right" data-aos-delay="400"><span>Unlimited Usage (tasks, flows…)</span></li>
+                                <li data-aos="fade-right" data-aos-delay="100"><span>Community Blueprints</span></li>
+                                <li data-aos="fade-right" data-aos-delay="150"><span>Community Plugins</span></li>
+                                <li data-aos="fade-right" data-aos-delay="200"><span>Basic Auth for a Single User</span></li>
+                                <li data-aos="fade-right" data-aos-delay="250"><span>Basic Namespace Configuration</span></li>
+                                <li data-aos="fade-right" data-aos-delay="300"><span>Basic Workflow Management</span></li>
+                                <li data-aos="fade-right" data-aos-delay="350"><span>Basic Secrets Management via Environment Variables</span></li>
+                                <li data-aos="fade-right" data-aos-delay="400"><span>Onboarding via Online Documentation</span></li>
                                 <li data-aos="fade-right" data-aos-delay="450"><span>Community Support</span></li>
                             </ul>
                         </div>
@@ -38,17 +38,18 @@
                                 </NuxtLink>
                             </div>
                             <ul>
-                                <li data-aos="fade-left"><span><strong>All features included in the Open Source Edition</strong></span></li>
-                                <li data-aos="fade-left" data-aos-delay="50"><span>Self-hosted</span></li>
-                                <li data-aos="fade-left" data-aos-delay="100"><span>Audit Logs</span></li>
-                                <li data-aos="fade-left" data-aos-delay="150"><span>RBAC</span></li>
-                                <li data-aos="fade-left" data-aos-delay="200"><span>SSO</span></li>
+                                <li data-aos="fade-left"><span><strong>All features from the Open-Source Edition and More</strong></span></li>
+                                <li data-aos="fade-left" data-aos-delay="50"><span>Self-hosted or Managed</span></li>
+                                <li data-aos="fade-left" data-aos-delay="100"><span>Community and Organization Blueprints</span></li>
+                                <li data-aos="fade-left" data-aos-delay="150"><span>Community and Custom Plugins</span></li>
+                                <li data-aos="fade-left" data-aos-delay="200"><span>Enterprise-Grade Auth with SSO and RBAC</span></li>
                                 <li data-aos="fade-left" data-aos-delay="250"><span>Secure Namespace Configuration</span></li>
-                                <li data-aos="fade-left" data-aos-delay="300"><span>Secret Managers Integration</span></li>
-                                <li data-aos="fade-left" data-aos-delay="350"><span>Worker Security Isolation</span></li>
-                                <li data-aos="fade-left" data-aos-delay="400"><span>High Availability with No Single Point of Failure</span></li>
+                                <li data-aos="fade-left" data-aos-delay="300"><span>Workflow Management with Audit Logs for Every Action</span></li>
+                                <li data-aos="fade-left" data-aos-delay="350"><span>Encrypted Namespace-level Secrets and Secrets Manager Integration</span></li>
+                                <li data-aos="fade-left" data-aos-delay="400"><span>Personalized Onboarding & Training</span></li>
                                 <li data-aos="fade-left" data-aos-delay="450"><span>Enterprise Support with SLAs</span></li>
-                                <li data-aos="fade-left" data-aos-delay="500"><span>Onboarding & Training</span></li>
+                                <li data-aos="fade-left" data-aos-delay="500"><span>Worker Security Isolation</span></li>
+                                <li data-aos="fade-left" data-aos-delay="550"><span>High Availability and Fault Tolerance</span></li>
                             </ul>
                         </div>
                     </div>

@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <Section
-            title="Unlock exclusive feature with the Enterprise Edition"
-            subtitle="Access Advanced Solutions"
+            title="Unlock exclusive features with the Enterprise Edition"
+            subtitle="Advanced Solutions for Your Organization"
         >
 
             <div class="row card-group mb-2">
@@ -13,7 +13,7 @@
                                 <span class="card-icon"><Key /></span>
                                 <h4 class="card-title">SSO/OIDC and RBAC</h4>
                             </div>
-                            <p class="card-text">Control users and group access with fine-grained ACL</p>
+                            <p class="card-text">Fine-grained Role-Based Access Control for users, user groups and roles</p>
                         </div>
                     </div>
                 </div>
@@ -23,9 +23,9 @@
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><ShieldAccount /></span>
-                                <h4 class="card-title">Service account</h4>
+                                <h4 class="card-title">Service Accounts</h4>
                             </div>
-                            <p class="card-text">Create service account allowing to triggers workflows for external systems</p>
+                            <p class="card-text">Create custom service accounts with programmatic access allowing you to trigger workflows from external systems</p>
                         </div>
                     </div>
                 </div>
@@ -35,9 +35,9 @@
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><FormTextboxPassword /></span>
-                                <h4 class="card-title">Secrets manager</h4>
+                                <h4 class="card-title">Secrets Management</h4>
                             </div>
-                            <p class="card-text">Integrate your secret manager to ensure the security of your passwords and keys</p>
+                            <p class="card-text">Store secrets or integrate your secret manager to ensure that your passwords and keys remain secure</p>
                         </div>
                     </div>
                 </div>
@@ -49,9 +49,9 @@
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><ViewDashboardVariantOutline /></span>
-                                <h4 class="card-title">Audit Log</h4>
+                                <h4 class="card-title">Organization Blueprints</h4>
                             </div>
-                            <p class="card-text">Audit all the resources created in one instance</p>
+                            <p class="card-text">Reuse custom code thanks to verified and documented workflow templates built by your team for your team</p>
                         </div>
                     </div>
                 </div>
@@ -61,9 +61,9 @@
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><Cog /></span>
-                                <h4 class="card-title">Configuration management</h4>
+                                <h4 class="card-title">Configuration Management</h4>
                             </div>
-                            <p class="card-text">Automatically configure all flows from a namespace with task defaults variables & secrets</p>
+                            <p class="card-text">Avoid boilerplate code thanks to namespace-level secrets, variables and default configuration for specific tasks</p>
                         </div>
                     </div>
                 </div>
@@ -73,9 +73,9 @@
                         <div class="card-body">
                             <div class="cart-title-container">
                                 <span class="card-icon"><Security /></span>
-                                <h4 class="card-title">Best in class support</h4>
+                                <h4 class="card-title">Audit Logs</h4>
                             </div>
-                            <p class="card-text">Custom SLA to ensure that you have the help you need, whenever you need it</p>
+                            <p class="card-text">All events such as modifing or executing flows are automatically tracked to provide a holistic audit trail</p>
                         </div>
                     </div>
                 </div>

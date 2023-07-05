@@ -32,3 +32,4 @@ The [Kestra Enterprise Edition](/enterprise) comes with additional functionaliti
 - [Groups](./11-groups.md): The **Groups** page allows the management of Kestra user groups.
 - [Roles](./12-roles.md): The **Roles** page allows the management of Kestra user roles.
 - [Audit Logs](./13-audit-logs.md): The **Audit Logs** page allows access to Kestra audit logs.
+- [Organization Blueprints](./blueprints.md): The **Organization Blueprints** page allows you to add custom workflow examples to reuse code and share best practices in your team.

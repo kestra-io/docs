@@ -6,13 +6,13 @@
                     <img class="img-fluid mt-5 mt-kg-0" src="/landing/features/integration.svg" alt="Logos of tools that integrate with Kestra such as Snowflake, Airbyte, DBT or Fivetran and Kestra at the center of It"/>
                 </div>
                 <div class="col-lg-6 mb-5">
-                    <h2 data-aos="fade-left">Limitless Integration</h2>
+                    <h2 data-aos="fade-left">Simple Integration</h2>
                     <p class="mb-5" data-aos="fade-right">
-                        <b>Customize and extend</b> the capabilities and functionalities of Kestra with the plugins feature. integrate and connect all kind of data sources, cloud services, databases, transformation, quality, notification tools and even more! It is also possible to create Custom Plugins that add specific custom features to meet your specifics needs.
+                        <b>Customize and extend</b> Kestra's integrations with custom plugins, tailored to your specifics needs. Integrate internal systems, third-party APIs, cloud services or databases using simple and scalable integrations.
                     </p>
 
-                    <NuxtLink href="/plugins" class="btn btn-dark me-2 mb-2" data-aos="zoom-in">See all plugins</NuxtLink>
-                    <NuxtLink href="/docs/plugin-developer-guide" class="btn btn-primary mb-2" data-aos="zoom-in">Create your plugin</NuxtLink>
+                    <NuxtLink href="/plugins" class="btn btn-dark me-2 mb-2" data-aos="zoom-in">See open-source plugins</NuxtLink>
+                    <NuxtLink href="/docs/plugin-developer-guide" class="btn btn-primary mb-2" data-aos="zoom-in">Create a custom plugin</NuxtLink>
                 </div>
             </div>
         </div>
