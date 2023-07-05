@@ -1,24 +1,23 @@
 ---
-title: secret (EE)
+title: secret
 ---
 
-::alert{type="warning"}
-Secret management is an [Enterprise Edition](https://kestra.io/enterprise) feature.
-::
+The `secret` function is used to retrieve a secret from a secret backend based on the secret key provided as input to that function.
 
-The `secret` function is used to retrieve a secret from a secret management back-end based on the secret key.
-
-Look at the following flow:
+Here is an example flow that retrieves the Personal Access Token secret stored using the secret key `'GITHUB_ACCESS_TOKEN'`:
 
 
 ```yaml
 id: secret
-namespace: io.kestra.tests
+namespace: dev
 
 tasks:
-  - id: myTask
-    type: io.kestra.core.tasks.debugs.Return
-    format: "{{secret('my-key')}}"
+  - id: githubPAT
+    type: io.kestra.core.tasks.log.Log
+    message: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
 ```
 
-The `secret('key')` function will lookup up the configured secret manager back-end for a secret with the key `my-key` and output it in the property. If the key is missing, an exception will be raised.
+The `secret('key')` function will lookup up the configured secret manager backend for a secret with the key `GITHUB_ACCESS_TOKEN`. The secret value can then be used in the task, here simply logging the output. If the key is missing, an exception will be raised.
+
+There are some differences between the secret management backend in the Open-Source and Enterprise editions. By default, Kestra provides a secret management backend based on environment variables. Each environment variable starting with `SECRET_` will be available as a secret, and its value must be base64-encoded. The above example will retrieve the secret `GITHUB_ACCESS_TOKEN` from an environment variable `SECRET_GITHUB_ACCESS_TOKEN` and base64-decode it at runtime. See the [Secrets section](../../10.secrets.md) in the Developer Guide for more details.
+
