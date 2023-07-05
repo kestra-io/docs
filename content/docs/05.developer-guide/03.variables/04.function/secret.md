@@ -2,9 +2,9 @@
 title: secret
 ---
 
-The `secret` function is used to retrieve a secret from a secret backend based on the secret key provided as input to that function.
+The `secret()` function is used to retrieve a secret from a secret backend based on the key provided as input to that function.
 
-Here is an example flow that retrieves the Personal Access Token secret stored using the secret key `'GITHUB_ACCESS_TOKEN'`:
+Here is an example flow that retrieves the Personal Access Token secret stored using the secret key `GITHUB_ACCESS_TOKEN`:
 
 
 ```yaml
@@ -17,7 +17,13 @@ tasks:
     message: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
 ```
 
-The `secret('key')` function will lookup up the configured secret manager backend for a secret with the key `GITHUB_ACCESS_TOKEN`. The secret value can then be used in the task, here simply logging the output. If the key is missing, an exception will be raised.
+The `secret('key')` function will lookup up the configured secret manager backend for a secret value using the key `GITHUB_ACCESS_TOKEN`. If the key is missing, an exception will be raised. The example flow shown above will look up the secret value by key and will log the output with the secret value. 
 
-There are some differences between the secret management backend in the Open-Source and Enterprise editions. By default, Kestra provides a secret management backend based on environment variables. Each environment variable starting with `SECRET_` will be available as a secret, and its value must be base64-encoded. The above example will retrieve the secret `GITHUB_ACCESS_TOKEN` from an environment variable `SECRET_GITHUB_ACCESS_TOKEN` and base64-decode it at runtime. See the [Secrets section](../../10.secrets.md) in the Developer Guide for more details.
+There are some differences between the secret management backend in the Open-Source and Enterprise editions. By default, Kestra provides a secret management backend based on environment variables. Each environment variable starting with `SECRET_` will be available as a secret, and its value must be base64-encoded. 
+
+The above example will:
+1. retrieve the secret `GITHUB_ACCESS_TOKEN` from an environment variable `SECRET_GITHUB_ACCESS_TOKEN` 
+2. base64-decode it at runtime. 
+
+See the [Secrets section](../../10.secrets.md) in the Developer Guide for more details.
 
