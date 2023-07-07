@@ -10,7 +10,7 @@ image: /blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts.png
 ---
 
 
-We're thrilled to announce Kestra 0.10.0, which introduces Blueprints and a new script plugin, further enhancing Python, R, Node.js, Shell, and Docker support. We've added basic authentication and the `secret()` function to make Kestra more secure for open-source deployments. The new DAG task automatically resolves the dependency structure so that you don't even have to think about a DAG — just define upstream dependencies on a per-task basis when needed. Finally, the new worker group feature simplifies remote workflow execution, allowing you to run your tasks on remote on-prem and cloud servers.
+We're thrilled to announce Kestra 0.10.0, which introduces Blueprints and a new script plugin, further enhancing Python, R, Node.js, Shell, and Docker support. We've added basic authentication and the `secret()` function to make Kestra more secure for open-source deployments. The new DAG task automatically resolves the dependency structure so that you don't even have to think about a DAG — just define upstream dependencies on a per-task basis when needed. Finally, the new worker group feature simplifies remote workflow execution, allowing you to run your tasks on dedicated on-prem and cloud servers.
 
 ---
 
@@ -195,11 +195,12 @@ tasks:
           - payments
 ```
 
-When comparing the workflow code and the topology view, note how the DAG task automatically figured out that the first three tasks can run in parallel because those tasks have no upstream dependencies. The transformation task must wait for the successful completion of the dependent tasks, defined by referencing the upstream task IDs inside the `dependsOn` property.
+When comparing the workflow code and the topology view, you can see how the DAG task automatically designated the first three tasks to run in parallel because they have no upstream dependencies. The transformation task must wait for the successful completion of the dependent tasks, defined by referencing the upstream task IDs inside the `dependsOn` property.
+
 
 ## Basic Authentication
 
-This release brings an important addition to Kestra's open-source version: a basic authentication feature. This enhancement strengthens your instance's security, making the open-source Kestra server more fitting for production applications.
+This release brings an important addition to Kestra's open-source version: a basic authentication feature. This enhancement strengthens your instance's security, making the open-source Kestra server more suitable for production applications.
 
 Here is how to set a basic authentication user in your Kestra configuration:
 
@@ -214,7 +215,7 @@ kestra:
 
 ## Secret Function
 
-Furthermore, we're introducing a `secret()` function to securely retrieve sensitive values in your workflows. Your sensitive values should be base64-encoded, and the environment variable name should start with the `SECRET_` prefix. The `secret()` function will look up only environment variables with that prefix, and base64-decode the values at runtime.
+Furthermore, we're introducing a `secret()` function to securely retrieve sensitive values in your workflows using special environment variables — key-value pairs, where the key starts with the `SECRET_` prefix and the value is base64-encoded. The `secret()` function will look up only environment variables with that prefix, and base64-decode the values at runtime.
 
 The example below uses the `secret()` function to retrieve the value of a Slack webhook key:
 
@@ -227,7 +228,8 @@ tasks:
     format: "{{ secret('SLACK_WEBHOOK_KEY') }}"
 ```    
 
-Even though the environment variable name is prefixed with `SECRET_`, you only need to reference the environment variable's name without a prefix in your flow. For more information, check the detailed [Managing Secrets](../docs/05.developer-guide/10.secrets.md) guide.
+Even though the environment variable name is prefixed with `SECRET_`, you only need to reference the key without a prefix in your flow. For more information, check the detailed [Managing Secrets](../docs/05.developer-guide/10.secrets.md) guide.
+
 
 ## Improved Polling Triggers
 
@@ -239,7 +241,7 @@ From now on, the Scheduler delegates the evaluation of polling triggers to the W
 
 ## Worker Group
 
-Apart from all these exciting open-source features, this release introduces a powerful concept of **worker groups** to the Enterprise Edition of Kestra. A worker group allows you to execute any task on a remote compute instance or a distributed compute cluster simply by specifying the worker group key on a given task.
+Apart from all the exciting open-source features, this release introduces a powerful concept of **worker groups** to the Enterprise Edition of Kestra. A worker group allows you to execute any task on a remote compute instance or a distributed compute cluster simply by specifying the worker group key on a given task.
 
 Imagine you want to execute a task on a worker with access to a Spark cluster. The example below ensures that a Spark job will be picked up only by Kestra workers that have been started with the key `spark`:
 
