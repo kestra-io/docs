@@ -10,14 +10,13 @@ image: /blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts.png
 ---
 
 
-We're thrilled to announce Kestra 0.10.0, which introduces Blueprints and a new script plugin, further enhancing support for Python, R, Node.js, Shell, and Docker. We've added basic authentication and a secret function to make Kestra more secure for open-source deployments. The new DAG task automatically resolves the dependency structure so that you don't even have to think about a DAG — just define upstream dependencies on a per-task basis when needed. Finally, the new worker group feature simplifies remote workflow execution, allowing you to run your tasks on remote on-prem and cloud servers.
+We're thrilled to announce Kestra 0.10.0, which introduces Blueprints and a new script plugin, further enhancing Python, R, Node.js, Shell, and Docker support. We've added basic authentication and the `secret()` function to make Kestra more secure for open-source deployments. The new DAG task automatically resolves the dependency structure so that you don't even have to think about a DAG — just define upstream dependencies on a per-task basis when needed. Finally, the new worker group feature simplifies remote workflow execution, allowing you to run your tasks on remote on-prem and cloud servers.
 
 ---
 
 ## Blueprints
 
 ![blueprint1](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint1.jpeg)
-![blueprint1](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint1.jpeg)
 
 Blueprints provide a curated, organized, and searchable catalog of ready-to-use examples designed to help you kick-start your workflow. Each Blueprint combines code and documentation and can be assigned several tags for easier discoverability.
 
@@ -28,7 +27,6 @@ Blueprints are accessible from two places in the UI:
 2. A dedicated **tab in the code editor** named "Source and Blueprints", showing your source code and blueprints side by side.
 
 ![blueprint2](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint2.png)
-![blueprint2](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint2.png)
 
 The current blueprint catalog encompasses a wide range of use cases and integrations, e.g., Snowflake, BigQuery, DuckDB, Slack, ETL, ELT, Pandas, GPU, Git, Python, Docker, Redis, MongoDB, dbt, Airbyte, Fivetran, etc.
 
@@ -43,14 +41,12 @@ Here is what Organization Blueprints look like in the UI:
 
 ![blueprint3](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint3.png)
 
-![blueprint3](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint3.png)
-
 
 ## Improved Support for Scripts and Docker
 
-We've added a new Script plugin making it easier to work with custom Python, R, Node.js, Shell, and Powershell scripts. By default, each task runs in a **separate Docker container** to ensure environment isolation and simple deployment patterns. You can manage custom dependencies either by providing a custom Docker image or by installing required packages at runtime. This is possible thanks to the new `beforeCommands` property, available on each of these tasks, allowing you to execute any instruction needed before running the main script.
+We've added a new Script plugin making it easier to work with custom Python, R, Node.js, Shell, and Powershell scripts. By default, each task runs in a **separate Docker container** to ensure environment isolation and simple deployment patterns. You can manage custom dependencies by providing a custom Docker image or installing required packages at runtime. This customizability is possible thanks to the new `beforeCommands` property, available on each task from the script plugin, allowing you to execute any instruction needed before running the main script.
 
-For each of these languages, Kestra provides two types of tasks — `Script` tasks and `Commands` tasks.
+Kestra provides two types of tasks for each of these languages — `Script` tasks and `Commands` tasks.
 
 ### `Script` tasks
 
@@ -89,7 +85,7 @@ tasks:
     script: cat {{outputs.myresult.uris['output.json']}}
 ```
 
-To make working with custom scripts easier, the new `LocalFiles` task allows you to output files generated in a script, as well as add new files inline within the YAML workflow definition. The code snippet shown above generates a JSON file as output. You can download that JSON file from the Outputs tab on the Executions page. You can also use that output in downstream tasks (*as shown in the `getFileContent` task*), e.g., to load that JSON file to your cloud data warehouse or a data lake using a dedicated plugin.
+The new `LocalFiles` task allows you to output files generated in a script and add new files inline within the YAML workflow definition. The code snippet shown above generates a JSON file as output. You can download that JSON file from the Outputs tab on the Executions page. You can also use that output in downstream tasks (*as shown in the `getFileContent` task*), e.g., to load that JSON file to your cloud data warehouse or a data lake using a dedicated plugin.
 
 ### `Commands` tasks
 
@@ -149,29 +145,28 @@ tasks:
 
 When you execute that flow, the labels will be visible on the execution page.
 
-So far, it was only possible to add labels on a flow level by adjusting the workflow code. This release adds the ability to set custom labels for specific *Executions*. This might be helpful if you are experimenting with multiple input parameters and you want to easily distinguish between multiple Executions for auditability and observability.
+So far, adding labels on a flow level was only possible by adjusting the workflow code. This release adds the ability to set custom labels for specific Executions. This addition might be helpful if you experiment with various input parameters and want to easily distinguish between multiple Executions for auditability and observability.
 
 The labels added on a flow level will be automatically propagated to Execution labels.
 For instance, if you override the `owner` label at runtime, the result will be tracked as follows:
 
 ![labels](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/labels.png)
-![labels](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/labels.png)
 
 
 ## DAG task
 
-Dependencies between tasks in Kestra flows are defined in a *declarative* way. For instance, running tasks in parallel requires an **explicit** definition of a `Parallel` parent task along with children tasks that should run in parallel. Such explicit definition gives you fine-grain control over task dependencies.
+Dependencies between tasks in Kestra flows are defined in a *declarative* way. For instance, running tasks in parallel requires an **explicit** definition of a `Parallel` parent task along with child tasks that should run in parallel. Such a precise definition gives you fine-grained control over task dependencies.
 
 However, in certain scenarios, it's easier to define only the upstream dependencies for each task and let the orchestration engine figure out the optimal execution order. That's where the new DAG task, introduced in Kestra 0.10.0, comes in handy.
 
 The workflow below demonstrates a simple use case where there are: 
-- several tasks that extract raw data (*here: orders, customers and payments tasks*)
+- several tasks that extract raw data (*here: orders, customers, and payments tasks*)
 - one task that takes that raw data as input and transforms it (*here, using `dbt`*).
 
 ![dag](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/dag.png)
-![dag](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/dag.png)
 
 Here is a workflow example that uses the [new DAG task](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.dag):
+
 ```yaml
 id: magicDAG
 namespace: dev
@@ -200,13 +195,13 @@ tasks:
           - payments
 ```
 
-When comparing the workflow code and the topology view, note how the DAG task automatically figured out that the first three tasks can run in parallel. This is because those tasks have no upstream dependencies. The transformation task needs to wait for a successful completion of the dependent tasks, defined by referencing the upstream task IDs inside the `dependsOn` property.
+When comparing the workflow code and the topology view, note how the DAG task automatically figured out that the first three tasks can run in parallel because those tasks have no upstream dependencies. The transformation task must wait for the successful completion of the dependent tasks, defined by referencing the upstream task IDs inside the `dependsOn` property.
 
 ## Basic Authentication
 
-This release brings an important addition to Kestra's open-source version: a basic authentication feature. This enhancement strengthens your instance's security, making the open-source Kestra server more fitting for production use.
+This release brings an important addition to Kestra's open-source version: a basic authentication feature. This enhancement strengthens your instance's security, making the open-source Kestra server more fitting for production applications.
 
-Here is how you can set a basic authentication user in your Kestra configuration:
+Here is how to set a basic authentication user in your Kestra configuration:
 
 ```yaml
 kestra:
@@ -219,7 +214,7 @@ kestra:
 
 ## Secret Function
 
-Furthermore, we're introducing a `secret()` function designed to securely retrieve sensitive values in your workflows. Your sensitive values should be base64-encoded and the environment variable name should start with the `SECRET_` prefix. The `secret()` function will look up only environment variables with that prefix, and will base64-decode the values at runtime.
+Furthermore, we're introducing a `secret()` function to securely retrieve sensitive values in your workflows. Your sensitive values should be base64-encoded, and the environment variable name should start with the `SECRET_` prefix. The `secret()` function will look up only environment variables with that prefix, and base64-decode the values at runtime.
 
 The example below uses the `secret()` function to retrieve the value of a Slack webhook key:
 
@@ -236,18 +231,17 @@ Even though the environment variable name is prefixed with `SECRET_`, you only n
 
 ## Improved Polling Triggers
 
-Kestra 0.10.0 adds significant improvements to the polling triggers to enhance performance, strengthen security, and simplify maintenance.
+Kestra 0.10.0 significantly improves polling triggers to enhance performance, strengthen security, and simplify maintenance.
+Until now, the trigger evaluation process was handled directly by the Scheduler. The Worker and the Scheduler needed access to external systems, leading to high memory and CPU consumption.
 
-Until now, the trigger evaluation process was handled directly by the Scheduler. This meant that both the Worker and the Scheduler needed access to external systems, leading to high memory and CPU consumption.
-
-From now on, the Scheduler delegates the evaluation of polling triggers to the Worker so that only the Worker needs to interact with external systems. This separation of concerns streamlines the flow of data, improves performance, and minimizes potential security vulnerabilities.
+From now on, the Scheduler delegates the evaluation of polling triggers to the Worker so that only the Worker needs to interact with external systems. This separation of concerns streamlines the data flow, improves performance, and minimizes potential security vulnerabilities.
 
 
 ## Worker Group
 
 Apart from all these exciting open-source features, this release introduces a powerful concept of **worker groups** to the Enterprise Edition of Kestra. A worker group allows you to execute any task on a remote compute instance or a distributed compute cluster simply by specifying the worker group key on a given task.
 
-Imagine that you want to execute a task on a worker that has access to a Spark cluster. The example below ensures that a Spark job will be picked up only by Kestra workers that have been started with key `spark`:
+Imagine you want to execute a task on a worker with access to a Spark cluster. The example below ensures that a Spark job will be picked up only by Kestra workers that have been started with the key `spark`:
 
 ```yaml
 id: gpuTask
@@ -263,9 +257,9 @@ tasks:
 
 You can start a new worker from a CLI using the command `kestra server worker --worker-group=workerGroupKey --server=your_ee_host --user=your_ee_auth`, which points the worker to your Kestra Enterprise server.
 
-Worker groups are especially useful when your tasks require access to specific Operating Systems, libraries, on-prem applications, network resources (such as VPN), and GPUs, or when your processes need to run in a particular region to satisfy compliance requirements.
+Worker groups are beneficial when your tasks require access to specific Operating Systems, libraries, on-prem applications, network resources (such as VPN), and GPUs or when your processes need to run in a particular region to satisfy compliance requirements.
 
-Keep in mind that **worker groups are entirely optional**. Use them only for complex use cases or when dealing with demanding computational requirements. Check the [Worker Groups documentation](../docs/08.architecture.md#worker-group-ee) for more details.
+Keep in mind that **worker groups are entirely optional**. Use them only for complex use cases or demanding computational requirements. Check the [Worker Groups documentation](../docs/08.architecture.md#worker-group-ee) for more details.
 
 
 ## New Plugin to interact with OpenAI
@@ -281,16 +275,16 @@ The [new OpenAI plugin](https://kestra.io/plugins/plugin-openai) allows you to i
 Further enhancements added as part of this release include: 
 - The ability to filter all dashboards with precision up to the minute by changing the date filter granularity
 - Enhancements to the guided onboarding tour
-- Logs pagination and customization — this not only helps with performance but also allows you to configure how you want logs to be displayed in your Kestra UI settings.
+- Logs pagination and customization — his helps with performance and allows you to configure how you want logs to be displayed in your Kestra UI settings.
 
-For a detailed overview of all changes, check [the release notes on GitHub](https://github.com/kestra-io/kestra/releases/tag/v0.10.0).
+ Check [the release notes on GitHub](https://github.com/kestra-io/kestra/releases/tag/v0.10.0) for a detailed overview of all changes.
 
 
 ---
 
 ## Next steps
 
-This post covered new features and enhacements added in Kestra 0.10.0 release. We are looking forward to see how you use those new features. Your input and feedback help us prioritize future enhancements. 
+This post covered new features and enhancements added in Kestra 0.10.0 release. We are looking forward to seeing how you use those new features. Your input and feedback help us prioritize future enhancements. 
 
 If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). 
 
