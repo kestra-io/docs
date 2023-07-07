@@ -44,7 +44,7 @@ Here is what Organization Blueprints look like in the UI:
 
 ## Improved Support for Scripts and Docker
 
-We've added a new Script plugin making it easier to work with custom Python, R, Node.js, Shell, and Powershell scripts. By default, each task runs in a **separate Docker container** to ensure environment isolation and simple deployment patterns. You can manage custom dependencies by providing a custom Docker image or installing required packages at runtime. This customizability is possible thanks to the new `beforeCommands` property, available on each task from the script plugin, allowing you to execute any instruction needed before running the main script.
+We've added a new Script plugin making it easier to work with custom Python, R, Node.js, Shell, and Powershell scripts. By default, each task runs in a **separate Docker container** to ensure environment isolation and simple deployment patterns. You can manage custom dependencies by providing a custom Docker image or installing required packages at runtime. This customizability is possible thanks to the new `beforeCommands` property, available on each task from the script plugin, allowing you to execute any instructions needed before running the main script.
 
 Kestra provides two types of tasks for each of these languages — `Script` tasks and `Commands` tasks.
 
@@ -124,11 +124,13 @@ tasks:
 
 ## Execution Labels
 
+### Labels defined in code
+
 Labels can help you filter your flows and executions across multiple criteria. Here is an example flow that demonstrates how you can use labels:
 
 ```yaml
 id: flowWithLabels
-namespace: release
+namespace: dev
 
 labels:
   environment: production
@@ -143,12 +145,15 @@ tasks:
     message: Have a great day!
 ```
 
-When you execute that flow, the labels will be visible on the execution page.
+When you execute that flow, the labels will be visible on the Execution page.
 
-So far, adding labels on a flow level was only possible by adjusting the workflow code. This release adds the ability to set custom labels for specific Executions. This addition might be helpful if you experiment with various input parameters and want to easily distinguish between multiple Executions for auditability and observability.
+### New: Labels defined at runtime
 
-The labels added on a flow level will be automatically propagated to Execution labels.
-For instance, if you override the `owner` label at runtime, the result will be tracked as follows:
+So far, modifying existing labels or introducing new ones was only possible by adjusting the workflow code. This release adds the ability to set custom labels for specific Executions. This feature might be helpful if you experiment with various input parameters and want to easily distinguish between multiple workflow runs for auditability and observability.
+
+### Labels defined in code propagate to Execution labels
+
+The labels configured within workflow code are automatically propagated to Execution labels. For instance, if you override the `owner` label at runtime, the result will be tracked as follows:
 
 ![labels](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/labels.png)
 
