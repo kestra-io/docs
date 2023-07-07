@@ -238,10 +238,9 @@ Even though the environment variable name is prefixed with `SECRET_`, you only n
 
 ## Improved Polling Triggers
 
-Kestra 0.10.0 significantly improves polling triggers to enhance performance, strengthen security, and simplify maintenance.
-Until now, the trigger evaluation process was handled directly by the Scheduler. The Worker and the Scheduler needed access to external systems, leading to high memory and CPU consumption.
+Kestra 0.10.0 significantly improves polling triggers to enhance performance, strengthen privacy, and simplify maintenance. Until now, the trigger evaluation process was handled directly by the Scheduler requiring access to user's infrastructure by both the Scheduler and the Worker.
 
-From now on, the Scheduler delegates the evaluation of polling triggers to the Worker so that only the Worker needs to interact with external systems. This separation of concerns streamlines the data flow, improves performance, and minimizes potential security vulnerabilities.
+From now on, the Scheduler delegates the evaluation of polling triggers to the Worker so that only the Worker needs to interact with external systems. This separation of concerns further enhances privacy when polling user's internal systems for specific trigger conditions.
 
 
 ## Worker Group
