@@ -1,7 +1,7 @@
 ---
 title: "Kestra 0.10.0 release adds Blueprints, Worker Groups, and a new plugin for Python, R, Node.js, and Shell Scripts"
 description: "Blueprints, a new script and OpenAI plugins, basic authentication and secrets management, and improved UX for Python, R, Node.js, Shell, and Docker."
-date: 2023-07-10T14:00:00
+date: 2023-07-07T12:30:00
 category: News & Products Updates
 author:
   name: Anna Geller
@@ -16,7 +16,7 @@ We're thrilled to announce Kestra 0.10.0, which introduces Blueprints and a new 
 
 ## Blueprints
 
-![blueprint1](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint1.jpeg)
+![blueprint1](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint1.jpeg)
 
 Blueprints provide a curated, organized, and searchable catalog of ready-to-use examples designed to help you kick-start your workflow. Each Blueprint combines code and documentation and can be assigned several tags for easier discoverability.
 
@@ -26,7 +26,7 @@ Blueprints are accessible from two places in the UI:
 1. The left navigation **sidebar**
 2. A dedicated **tab in the code editor** named "Source and Blueprints", showing your source code and blueprints side by side.
 
-![blueprint2](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint2.png)
+![blueprint2](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint2.png)
 
 The current blueprint catalog encompasses a wide range of use cases and integrations, e.g., Snowflake, BigQuery, DuckDB, Slack, ETL, ELT, Pandas, GPU, Git, Python, Docker, Redis, MongoDB, dbt, Airbyte, Fivetran, etc.
 
@@ -39,7 +39,7 @@ The Enterprise Edition allows the creation of **internal** Blueprints, helping y
 
 Here is what Organization Blueprints look like in the UI:
 
-![blueprint3](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint3.png)
+![blueprint3](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint3.png)
 
 
 ## Improved Support for Scripts and Docker
@@ -155,7 +155,7 @@ So far, modifying existing labels or introducing new ones was only possible by a
 
 The labels configured within workflow code are automatically propagated to Execution labels. For instance, if you override the `owner` label at runtime, the result will be tracked as follows:
 
-![labels](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/labels.png)
+![labels](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/labels.png)
 
 
 ## DAG task
@@ -168,7 +168,7 @@ The workflow below demonstrates a simple use case where there are: 
 - several tasks that extract raw data (*here: orders, customers, and payments tasks*)
 - one task that takes that raw data as input and transforms it (*here, using `dbt`*).
 
-![dag](/public/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/dag.png)
+![dag](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/dag.png)
 
 Here is a workflow example that uses the [new DAG task](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.dag):
 
