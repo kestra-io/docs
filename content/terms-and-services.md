@@ -2,6 +2,7 @@
 title: Kestra Enterprise Agreement
 description: Review our Enterprise agreement
 ---
+# Kestra Enterprise Agreement #
 
 **Please read these terms carefully. If you do not agree to be bound by these terms, you must not use the Kestra Solution. Your continued use of the Solution implies acceptance of these terms.** 
 
