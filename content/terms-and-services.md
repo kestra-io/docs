@@ -306,3 +306,154 @@ It is understood between the Parties that the Agreement may be signed by any ele
 The Agreement shall be governed by and construed in accordance with French law.
 
 In the event of a dispute between the Parties concerning its validity, interpretation or performance, the Parties shall endeavor to settle their dispute amicably. In the absence of an agreement within one month of the first notification by any means in writing sent by one Party to the other concerning the dispute concerned, the latter shall be subject to the exclusive jurisdiction of the courts of Paris (France), even in the event of multiple defendants and third-party claims.
+
+## APPENDIX 1
+## ENTERPRISE SUPPORT ##
+
+1.  **Definitions**
+
+As a reminder, terms with a capital letter in the Agreement and/or this Appendix have the following meaning:
+
+**Content**: Data, comments and information exchanged through the Solution by the Users.
+
+**Excluded matters**: Services excluded from the scope of the License.
+
+**Included matters**: Services included in the scope of the License.
+
+**Instance**: An instance corresponds to the set of Enterprise Edition services (executor, worker, indexer, webserver, etc.) installed on a set of servers communicating on the same database. Each instance has a list of flows, users, and executions that are distinct from other instances. As soon as the Enterprise Edition entity is present on one instance and not on another, they are considered different instances (hereinafter referred to as "Instance").
+
+**Onboarding Service**: Service provided by Kestra to setup the support services and deliver multiple checkpoints to follow-up on the client's situation.
+
+**Kestra Enterprise Edition**: Proprietary software with private and non-available source code. Distribution of Community Edition providing additional features such as authentication, security, performance or feature improvements (hereinafter referred to as "Enterprise Edition").
+
+**Training Service**: Service provided by Kestra consisting of a unique training session that aims to introduce the Client to main concepts to guarantee the services quality.
+
+**Kestra Open Source**: An open-source software under the Apache license, whose sources are available at the following address: [https://github.com/Kestra-io/Kestra](https://github.com/kestra-io/kestra). This software contains the core of the Kestra Solution (hereinafter referred to as "Community Edition").
+
+**License**: The non-exclusive, personal and non-transferable license to use the Enterprise Edition of the Solution granted by Kestra to the Client.
+
+**Official Kestra Plugins**: Open-source software under the Apache license, whose sources are available at the following address: [https://github.com/Kestra-io](https://github.com/kestra-io), which adds connectivity features to the Community Edition or Enterprise Edition (hereinafter referred to as "Official Plugins").
+
+**Period**: Refers to a twelve months period starting from the signature date of the Order Form by the Parties, and each subsequent twelve months period thereafter, unless terminated by one of the Parties in accordance with the provisions of this Agreement.
+
+**Professional Services**: Assistance provided by Kestra to the Client on Excluded matters.
+
+**Solution**: A support solution provided by Kestra as a platform to orchestrate and schedule and helps you build, run, schedule, and monitor pipelines.
+
+**Statistics Report**: Kestra, using the license key, automatically generates precise statistics reports several times a day, including open source usage trackers plus enterprise usages tracker (numbers of groups, number of namespaces, number of roles, each user with hashed username and number of authorisation). Kestra guarantees that these statistics reports are completely anonymized and will not contain any personal data (email of users) of the Client. All personal data will be hashed (irreversible encryption based on MD5) and securely transmitted from instance to Kestra servers by HTTPS protocol on server https://api.kestra.io . With this count, Kestra will be able to invoice according to the model defined in the Order Form.
+
+**Subscription Fees**: Prices paid by the Client, as described in the Order Form.
+
+**Task**: A "Task" is a category of various types of tasks, as well as triggers and listeners, all corresponding to a unique ID and falling under the same definition. The definition of "Task" is solely based on the most recent revision of the flow and applies consistently across all instances. "Task" shall be identified based on their individual unique ID, and subsequently subjected to appropriate charges correspondingly.
+
+Example: one flow with id "my-flow" on the namespace "my-namespace" that contains 2 tasks with id "my-task-a" and "my-task-b" will generate a combination "my-namespace/my-flow/my-task-a" and "my-namespace/my-flow/my-task-b" that will count for 2 tasks even if the flow is used on multiple instance
+
+**Third-party or community Kestra Plugins**: Software developed by other organizations not affiliated with Kestra, which can be either available on the internet under an open-source license or proprietary and developed by private source code and installed on the Client's instance (hereinafter referred to as "Third-Party Plugins").
+
+**Third-party Softwares**: Softwares that the Solution depends on, including, but not limited to, this list Data Sources Database and Deployment infrastructure developed or maintained by other organizations not affiliated with Kestra.
+
+**User(s)**: means any natural person who is an employee, trainee or temporary worker of the Client or a Client's partner who is authorized by the Client to use the Solution and who has an identifier for this purpose.
+
+2.  **The Solution**
+
+**Scope**
+
+Provided that the Client has purchased the Enterprise Support and has paid the applicable Fees as set forth in the Order Form, Kestra will provide the support and maintenance services described in this Appendix during the Period indicated in the Order Form. If the Enterprise Support is not included in the Order Form, The Client will receive Standard Support included in the price of the Solution. The details of the Enterprise Support, as described under the "Support" and "Included matters" articles, can be found here.
+
+**Support**
+
+During the applicable Period, Kestra will use reasonable efforts to correct and provide a workaround for any reproducible programming error in the Solution with a level of effort commensurate with the severity of the error, as reasonably determined by Kestra, so as to ensure that the Solution operates in substantial conformity with the documentation. Upon identification of any programming error, the Client will promptly notify Kestra of such error and will provide Kestra with enough information to reproduce the error, including a listing of output and any other data that Kestra may reasonably request in order to reproduce the error and operating conditions under which the error occurred or was discovered.
+
+**Maintenance, Updates & Upgrades**
+
+During the applicable Period, and subject to the terms of the Agreement, the Client will be entitled to receive all maintenance upgrades and updates to the Solution that are publicly released by Kestra. The contents and timing of all upgrades and updates will be decided upon by Kestra at its sole discretion. Updates and upgrades include new versions of the Solution designated by Kestra and is identified by a change in the first (X) or second (Y) number in the following version nomenclature: Version X.Y.Z. (e.g., 0.8.x to 0.9.x; 0.8.1 to 0.8.2) but exclude any separate modules and other functionality.
+
+In this regard, the Client expressly undertakes to install all available latest updates and new releases of the Solution, which are essential to the proper functioning of the Solution. Kestra shall not be liable in any way whatsoever for any malfunction and/or loss of data of any kind caused by an incorrect version of the Solution.
+
+Included matters:
+
+-   Guidance & assistance around Kestra Open-Source,
+
+-   Guidance & assistance around Kestra Entreprise,
+
+-   Guidance & assistance around Kestra Official Plugins,
+
+-   Guidance & assistance around Kestra installation process,
+
+-   Assistance with documentation-related questions,
+
+-   Assistance with issues during upgrades,
+
+-   Assistance identifying & troubleshooting problems,
+
+-   Assistance identifying & creation appropriate bug reports
+
+**Excluded matters**
+
+The following matters are not covered under this Appendix:
+
+-   Resolution in any version of the Solution other than the most recent release, provided that Kestra will continue to provide Support for superseded releases for a reasonable period ;
+
+-   Audit of any types: architecture, performance analysis, flows optimization, specific recommendations, etc.;
+
+-   Troubleshooting, assistance or guidance on third-parties softwares, whether or not connected to Kestra ;
+
+-   Troubleshooting, assistance or guidance infrastructure deployment & provisioning, connected to Kestra;
+
+-   Troubleshooting or assistance with Custom development and unsupported workarounds ;
+
+-   Troubleshooting or assistance with Custom plugins not officially supported by Kestra.
+
+And more generally:
+
+-   Support for organizations without a valid Enterprise Edition subscription ;
+
+-   Support for organizations for which fees have not been paid with 90-days following the Effective Date ;
+
+-   Support in languages other than English or French ;
+
+-   Support on-sites.
+
+**Onboarding**
+
+The Onboarding Service aims  to setup the support services and deliver multiple checkpoints (Quarterly Business Review) to follow-up on the client's situation. It does not include any of the responsibilities detailed in the excluded matter on this Appendix.
+
+**Training**
+
+The Training Service is a unique training session that aims to introduce the Client to main concepts to guarantee the services quality. It should be delivered to a reasonable number of users determined by Kestra. It does not include any of the responsibilities detailed in the excluded matter on this Appendix.
+
+**Professional Services**
+
+Kestra may provide assistance on excluded matters as Professional Services and this would result in an additional fee and excluded from this Appendix.
+
+Kestra is not to be obliged to comply with the delivery of any Professional Services in any circumstances. Kestra can provide these services in best efforts as the result of ad-hoc situations. In any case, Kestra should not be liable for failure to resolve an issue.
+
+**Service Level Agreement (SLA)**
+
+The Service Level Agreement strictly applies to Response Times as the maximum timeout for the first response depending on the severity level. Severity Levels are determined by Kestra based on information reported by the Client.
+
+-   Severity 1 (Critical): An instance is not responding, there is no workaround. It affects the company's ability to perform its business.
+
+Response time: 1 business day.
+
+-   Severity 2 (High): A running instance reports degraded performances/limited functions and/or a workaround is available.It affects partially the company's ability to perform its business.
+
+Response time: 2 business days.
+
+-   Severity 3 (Medium): A running instance reports minor errors. A workaround is available. It affects a small number of users but not the company's business.
+
+Response time: 3 business days.
+
+-   Severity 4 (Low): A running instance doesn't report any error. It affects users having questions around the product.
+
+Response time: 5 business days.
+
+Business day coverage is from Monday to Friday, 9am to 6pm CET time zone (UTC+1) on non-French holidays.
+
+**Support Team**
+
+The Support Team can be reached via tickets or directly by email at [support@Kestra.io](mailto:support@kestra.io).
+
+**Modifications**
+
+Kestra reserves the right to modify this Appendix upon written notice to the Client, provided that such modifications will not materially degrade the support obligations set forth in this Appendix.
