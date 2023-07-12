@@ -39,7 +39,7 @@
                             </div>
                             <ul>
                                 <li data-aos="fade-left"><span><strong>All features from the Open-Source Edition and More</strong></span></li>
-                                <li data-aos="fade-left" data-aos-delay="50"><span>Self-hosted or Managed</span></li>
+                                <li data-aos="fade-left" data-aos-delay="50"><span>Self-hosted</span></li>
                                 <li data-aos="fade-left" data-aos-delay="100"><span>Community and Organization Blueprints</span></li>
                                 <li data-aos="fade-left" data-aos-delay="150"><span>Community and Custom Plugins</span></li>
                                 <li data-aos="fade-left" data-aos-delay="200"><span>Enterprise-Grade Auth with SSO and RBAC</span></li>
