@@ -71,22 +71,22 @@ In a near future, we will provide a template dashboard as a quick start.
 
 
 ## Kestra endpoints
-Kestra exposes some internal endpoints on the management port (8081 by default), depending on servers:
 
+Kestra exposes internal endpoints on the management port (8081 by default) to provide status corresponding to the [server type](../../08.architecture.md#the-kestra-server-components):
 
 * `/worker`: will expose all currently running tasks on this worker.
 * `/scheduler`: will expose all currently scheduled flows on this scheduler with the next date.
-* `/kafkastreams`: will expose all Kafka Streams states and aggregated store lag.
-* `/kafkastreams/{clientId}/lag`: will expose details lag for a clientId.
-* `/kafkastreams/{clientId}/metrics`: will expose details metrics for a clientId.
+* `/kafkastreams`: will expose all [Kafka Streams](https://kafka.apache.org/documentation/streams/) states and aggregated store lag.
+* `/kafkastreams/{clientId}/lag`: will expose details lag for a `clientId`.
+* `/kafkastreams/{clientId}/metrics`: will expose details metrics for a `clientId`.
 
 ## Other Micronaut default endpoints
 Since Kestra is based on [Micronaut](https://micronaut.io), the [default Micronaut endpoints](https://docs.micronaut.io/latest/guide/index.html#providedEndpoints) are enabled by default on port 8081 :
 
 * `/info` [Info Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#infoEndpoint) with git status information.
 * `/health` [Health Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#healthEndpoint) usable as an external heathcheck for the application.
-* `/loggers` [Loggers Endpoint allows changing logger level at runtime.
+* `/loggers` [Loggers Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#loggersEndpoint) allows changing logger level at runtime.
 * `/metrics` [Metrics Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#metricsEndpoint) metrics in JSON format.
-* `/env` [Env Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#environmentEndpoint) to debug configuration files.
+* `/env` [Environment Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#environmentEndpoint) to debug configuration files.
 
 You can disable some endpoints following Micronaut configuration above.
