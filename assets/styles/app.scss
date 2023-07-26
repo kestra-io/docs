@@ -11,6 +11,7 @@ body {
 }
 
 :root {
+    --spacer: #{$spacer};
     --#{$prefix}font-size-lg: #{$font-size-lg};
     --#{$prefix}font-size-sm: #{$font-size-sm};
 }

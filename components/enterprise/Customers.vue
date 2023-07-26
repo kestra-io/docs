@@ -34,6 +34,8 @@
                 content: '';
                 position: absolute;
                 left: 50%;
+                bottom: calc(-1 * var(--spacer));
+                transform: translateX(-50%);
                 top: 2.5rem;
                 display: inline-block;
                 height: 2px;
