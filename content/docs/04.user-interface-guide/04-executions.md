@@ -8,7 +8,7 @@ When clicking on an execution id or on the eye icon, you can open the page of an
 
 ![Kestra User Interface Executions Page](/docs/user-interface-guide/08-Executions.png)
 
-An **Execution** page will allow access to the details of a flow execution, including logs, outputs, and metrics. 
+An **Execution** page will allow access to the details of a flow execution, including logs, outputs, and metrics.
 
 ![Kestra User Interface Execution Page](/docs/user-interface-guide/09-Executions-Execution.png)
 
@@ -39,15 +39,12 @@ The "Eval Expression" box allows to evaluate [expressions](../05.developer-guide
 
 > Note: you have to select one task to be able to use the "Eval Expression" button.
 
-
 ![Kestra User Interface Execution Outputs Eval Expression](/docs/user-interface-guide/26-Executions-Outputs-Eval-Expression.png)
-
 
 For example, you can use the "Eval Expression" feature to deep-dive into your tasks outputs and play directly with [variables operations](../05.developer-guide/03.variables/02.basic-usage.md).
 
+### Metrics Tab
 
-### Metric Tab
-
-The Metric tab shows every metric exposed by tasks after execution.
+The Metrics tab shows every metric exposed by tasks after execution.
 
 ![Kestra User Interface Execution Metric Tab](/docs/user-interface-guide/29-Executions-Metric.png)
