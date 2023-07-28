@@ -57,6 +57,16 @@ h2 {
     font-weight: 800
 }
 
+// Offsets anchor headers to scroll past the top-bar
+.container {
+    h1, h2, h3, h4, h5, h6 {
+        &[id] {
+            --anchor-offset: calc(var(--top-bar-height) + var(--spacer));
+            margin-top: calc(var(--anchor-offset) * -1);
+            padding-top: var(--anchor-offset);
+        }
+    }
+}
 
 main {
     padding-top: 67px;
@@ -346,6 +356,7 @@ blockquote.blockquote {
     --cc-overlay-bg: var(--bs-black);
     --cc-overlay-opacity: .5;
     --cc-consent-modal-box-shadow: var(--bs-box-shadow-lg);
+    --spacer: #{$spacer};
 }
 
 .medium-zoom-overlay {

@@ -324,10 +324,16 @@
                 this.transparentClass = to.meta.transparentHeader === true;
             }
         },
+        mounted() {
+            if(process.client) {
+                document.documentElement.style.setProperty("--top-bar-height", this.$refs.navbar.offsetHeight + "px");
+            }
+        },
         unmounted() {
             if (process.client) {
                 window.removeEventListener('scroll', this.handleScroll);
                 window.removeEventListener('keydown', this.handleKeyboard);
+                document.documentElement.style.removeProperty("--top-bar-height");
             }
         },
         methods: {
