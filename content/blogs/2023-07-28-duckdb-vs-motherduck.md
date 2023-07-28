@@ -206,8 +206,6 @@ The local `orders` database is now in the cloud, and you can run queries from a 
 ![blueprintKestra2](/blogs/2023-07-28-duckdb-vs-motherduck/md3.png)
 
 
-!https://cdn-images-1.medium.com/max/720/1*7V-uxOu51BS6NRI3CIznYQ.png
-
 Our local orders database is now in the cloud — image by the author
 
 ### 3) Create a share URL
