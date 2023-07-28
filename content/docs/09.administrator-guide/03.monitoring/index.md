@@ -8,17 +8,19 @@ Kestra will deploy a monitoring endpoint on port 8081 by default. (You can chang
 This monitoring endpoint will expose some helpful routes in order to monitor Kestra:
 
 ## Prometheus
-If you have any [Prometheus](https://prometheus.io/) compatible monitoring system, Kestra exposes Prometheus metrics on the endpoint `/prometheus`.
 
+Kestra exposes [Prometheus](https://prometheus.io/) metrics on the endpoint `/prometheus`. This endpoint can be used by any compatible monitoring system.
 
 ### Kestra metrics
-Kestra exposes some internal metrics allowing to add some alerts. Each metric declares many timeseries with tags allowing
-to track at least namespace & flow. But also some other tags depending on available tasks.
+
+Kestra exposes its internal metrics allowing to add some alerts. Each metric declares multiple time series with tags allowing to track at least namespace & flow but also other tags depending on available tasks.
+
+Kestra metrics use default prefix `kestra`. This value can be changed using [configuration options](../01.configuration/05.others.md#metrics-configuration).
 
 Each task type can expose [custom metrics](../../03.concepts/02.executions.md#metrics) that will be exposed on Prometheus.
 
-
 #### Worker
+
 |Metrics|Type|Description|
 |-|-|-|
 |worker.running.count|`GAUGE`|Count of tasks actually running|
@@ -28,6 +30,7 @@ Each task type can expose [custom metrics](../../03.concepts/02.executions.md#me
 |worker.ended.duration|`TIMER`|Duration of tasks ended|
 
 #### Executor
+
 |Metrics|Type|Description|
 |-|-|-|
 |executor.taskrun.next.count|`COUNTER`|Count of tasks found|
@@ -39,28 +42,31 @@ Each task type can expose [custom metrics](../../03.concepts/02.executions.md#me
 |executor.execution.duration|`TIMER`|Duration of executions ended|
 
 #### Indexer
+
 |Metrics|Type|Description|
 |-|-|-|
 |indexer.count|`COUNTER`|Count of indexation sent to repository|
 |indexer.duration|`DURATION`|Duration of indexation sent to repository|
 
 #### Scheduler
+
 |Metrics|Type|Description|
 |-|-|-|
 |scheduler.trigger.count|`COUNTER`|Count of trigger found|
 |scheduler.evaluate.running.count|`COUNTER`|Evaluation of trigger actually running (aka: number of threads used by the scheduler)|
 |scheduler.evaluate.duration|`TIMER`|Duration of evaluation of trigger|
 
-
 ### Others metrics
 
-It will also expose all internal metrics from :
+It will also expose all internal metrics from:
+
 - [Micronaut](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/)
 - [Kafka](https://kafka.apache.org/documentation/#remote_jmx)
 - Thread pools of the application
+- JVM
 - ...
 
-Some additional information can be found on [Micronaut documentation](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/)
+Additional information can be found in [Micronaut documentation](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/).
 
 
 ## Grafana or Kibana
