@@ -246,7 +246,7 @@ I found the blueprint “[Extract data, mask sensitive columns using DuckDB and 
 
 Here is a brief summary of other data pipeline blueprints using DuckDB:
 
-- **[Git workflow for dbt** with DuckDB](https://demo.kestra.io/ui/blueprints/community/50) and [MotherDuck](https://demo.kestra.io/ui/blueprints/community/111)** — this flow uses DuckDB for data transformations in SQL, but this time combines it with [dbt](https://www.getdbt.com/) models and tests.
+- **[Git workflow for dbt with DuckDB](https://demo.kestra.io/ui/blueprints/community/50)** and **[MotherDuck](https://demo.kestra.io/ui/blueprints/community/111)** — this flow uses DuckDB for data transformations in SQL, but this time combines it with [dbt](https://www.getdbt.com/) models and tests.
 - **[Email Report](https://demo.kestra.io/ui/blueprints/community/109)—** every first day of the month, this flow sends current sales numbers to business stakeholders via email. To do that, the workflow reads raw data from S3 and aggregates it using a DuckDB query. The final result is then stored as a CSV file and sent as an email attachment.
 - **[Send KPIs via Slack](https://demo.kestra.io/ui/blueprints/community/38):** if a certain KPI is outside of a valid threshold, the flow sends a Slack message to a given channel every Monday at 9 AM. To check whether KPI is valid or not, the flow uses a DuckDB query.
 - **[Event-driven anomaly detection](https://demo.kestra.io/ui/blueprints/community/110):** any time a new file arrives in S3, a DuckDB query checks for anomalies in the data and sends an alert if outliers are detected.
