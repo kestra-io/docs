@@ -1,5 +1,5 @@
 ---
-title: "DuckDB vs. MotherDuck - should you switch to the Cloud version?"
+title: "DuckDB vs. MotherDuck — should you switch to the cloud version?"
 description: "Why and when to use MotherDuck over local DuckDB"
 date: 2023-07-28T14:00:00
 category: Solutions
