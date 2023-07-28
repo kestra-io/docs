@@ -203,7 +203,7 @@ D show databases; -- verify that orders database got ingested
 
 The local `orders` database is now in the cloud, and you can run queries from a friendly, lightweight notebook interface.
 
-![blueprintKestra2](/blogs/2023-07-28-duckdb-vs-motherduck/md3.png)
+![blueprintKestra2](/blogs/2023-07-28-duckdb-vs-motherduck/md.png)
 
 
 Our local orders database is now in the cloud — image by the author
