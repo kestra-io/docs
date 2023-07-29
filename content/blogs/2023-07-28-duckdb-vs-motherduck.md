@@ -38,7 +38,7 @@ MotherDuck adds several features, including the following:
 - [Hybrid execution](https://motherduck.com/docs/architecture-and-capabilities#hybrid-execution) between datasets on your computer and datasets on MotherDuck
 - [Secrets management](https://motherduck.com/docs/authenticating-to-s3#setting-s3-credentials-by-creating-a-secret-object) to store, e.g., your AWS S3 credentials
 - Additional [notebook-like SQL IDE](https://motherduck.com/docs/getting-started/motherduck-quick-tour) built into the [UI](https://motherduck.com/docs/getting-started/motherduck-quick-tour) for interactive queries, analysis, and data management (*to load and organize your data*)
-- [Sharing databases with your teammates](https://motherduck.com/docs/key-tasks/sharing-a-motherduck-database) and additional collaboration features.
+- [Sharing databases with your teammates](https://motherduck.com/docs/key-tasks/managing-shared-motherduck-database) and additional collaboration features.
 
 ---
 
@@ -145,7 +145,7 @@ So far, we’ve created just two tables: orders and bestsellers. Let’s say you
 
 1. [Authenticate](https://motherduck.com/docs/authenticating-to-motherduck) your terminal using a MotherDuck service token
 2. [Ingest the entire local database](https://motherduck.com/docs/getting-started/connect-query-from-python/loading-data-into-md#copying-an-entire-local-duckdb-database-to-motherduck) to the cloud in a single SQL statement
-3. [Create a share](https://motherduck.com/docs/key-tasks/sharing-a-motherduck-database) that your colleagues can attach within their duckdb session.
+3. [Create a share](https://motherduck.com/docs/key-tasks/managing-shared-motherduck-database) that your colleagues can attach within their duckdb session.
 
 Let’s explain that in more detail.
 
