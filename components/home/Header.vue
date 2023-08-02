@@ -2,7 +2,7 @@
     <div class="main">
         <div class="hero container text-center">
             <p class="overline" data-aos="fade-left">OPEN SOURCE DECLARATIVE DATA ORCHESTRATION</p>
-            <h1 data-aos="fade-right">Simple and fast orchestration <br> without Python dependency hell<span class="dot">.</span></h1>
+            <h1 data-aos="fade-right">Accelerate and Simplify Orchestration <br> for a new Data & AI era<span class="dot">.</span></h1>
             <div class="text-center cta">
                 <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-lg btn-secondary me-2" data-aos="zoom-in">
                     <Console /> Live Demo
