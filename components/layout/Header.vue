@@ -24,7 +24,7 @@
                                 <NuxtLink class="dropdown-item" href="/features" @click="globalClick(true)">
                                     <FeatureSearch />
                                     <p>
-                                        <span>Features</span><br/>
+                                        <span>Open Source</span><br/>
                                         Discover all the features of Kestra
                                     </p>
                                 </NuxtLink>
@@ -60,7 +60,7 @@
                                 <NuxtLink class="dropdown-item" href="/use-cases" @click="globalClick(true)">
                                     <ChartDonut/>
                                     <p>
-                                        <span>Usages & Use Cases</span><br/>
+                                        <span>Use cases</span><br/>
                                         Uncover a wide range of use cases
                                     </p>
                                 </NuxtLink>
@@ -69,7 +69,7 @@
                                 <NuxtLink class="dropdown-item" href="/use-cases/ci-cd" @click="globalClick(true)">
                                     <Github/>
                                     <p>
-                                        <span>CI/CD for your Kestra Workflows</span><br/>
+                                        <span>CI/CD for Kestra Workflows</span><br/>
                                         Treat your workflow as code and embrace CI/CD practices
                                     </p>
                                 </NuxtLink>
@@ -94,37 +94,30 @@
                             </li>
                         </ul>
                     </li>
-
-                    <li class="nav-item dropdown" @mouseover="mouseOver" @mouseleave="mouseOut">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Docs
-                            <ChevronDown />
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <NuxtLink class="dropdown-item" href="/docs" @click="globalClick(true)">
-                                    <FileDocumentOutline/>
-                                    <p>
-                                        <span>Documentation</span><br/>
-                                        Get started with Kestra
-                                    </p>
-                                </NuxtLink>
-                            </li>
-                            <li>
-                                <NuxtLink class="dropdown-item" href="/plugins" @click="globalClick(true)">
-                                    <Security/>
-                                    <p>
-                                        <span>Plugins documentation</span><br/>
-                                        Extends Kestra with many plugins
-                                    </p>
-                                </NuxtLink>
-                            </li>
-                        </ul>
+                    <li class="nav-item">
+                        <NuxtLink class="nav-link" href="/docs" role="button" @click="globalClick(true)">
+                            <span>
+                                Docs
+                            </span>
+                        </NuxtLink>
                     </li>
-
+                    <li class="nav-item">
+                        <NuxtLink class="nav-link" href="/plugins" role="button" @click="globalClick(true)">
+                            <span>
+                                Plugins
+                            </span>
+                        </NuxtLink>
+                    </li>
+                    <li class="nav-item">
+                        <NuxtLink class="nav-link" href="/blogs" role="button" @click="globalClick(true)">
+                            <span>
+                                Blog
+                            </span>
+                        </NuxtLink>
+                    </li>
                     <li class="nav-item dropdown" @mouseover="mouseOver" @mouseleave="mouseOut">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Community
+                            Resources
                             <ChevronDown />
                         </a>
                         <ul class="dropdown-menu">
@@ -137,23 +130,6 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li>
-                                <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
-                                    <PostOutline/>
-                                    <p>
-                                        <span>Blogs</span><br/>
-                                        Product updates, user stories, and more
-                                    </p>
-                                </NuxtLink>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown" @mouseover="mouseOver" @mouseout="mouseOut">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Company <ChevronDown />
-                        </a>
-                        <ul class="dropdown-menu">
                             <li>
                                 <NuxtLink class="dropdown-item" href="/about-us" @click="globalClick(true)">
                                     <Domain/>
