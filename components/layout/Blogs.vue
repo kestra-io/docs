@@ -29,7 +29,7 @@
     import {useAsyncData} from "#imports";
 
     const {data: blogs} = await useAsyncData(
-        `Blogs`,
+        `Blog`,
         () => queryContent("/blogs/")
             .sort({ date: -1 })
             .without('unused-key')
