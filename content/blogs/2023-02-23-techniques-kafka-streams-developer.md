@@ -156,7 +156,7 @@ At first, we designed Kestra to have only one **huge** stream for all the proces
 
 Here is the last version of our main and only Kafka Stream with many topics 🙉:
 ![Kestra Topology](/blogs/2023-02-23-techniques-kafka-streams-developer/topology.jpg)
-Yes, this is a huge Kafka Stream. It was working well despite its complexity. But the major drawbacks were :
+Yes, this is a huge Kafka Stream. It was working well despite its complexity. But the major drawbacks were:
 - **Monitoring**: All the metrics are under the same consumer group.
 - **Debugging**: Each topic is consumed independently during a crash. When a message fails, the whole process crashes.
 - **Lag**: This is the most important one. Since Kafka Streams optimize the consumption of messages by themselves, a topic with large outputs could lead to lag on unrelated topics. In that case, it is impossible to understand the lag on our consumers.

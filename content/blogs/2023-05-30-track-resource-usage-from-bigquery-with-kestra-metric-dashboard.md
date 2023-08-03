@@ -13,7 +13,7 @@ Data Warehouse solutions can sometimes become costly, especially with an uptick 
 
 ## Track BigQuery usage ##
 
-BigQuery is very fast and easy to use. But it can be very expensive, especially when running scheduled queries : you’re not here to look at the bytes billed every time you’re query run.
+BigQuery is very fast and easy to use. But it can be very expensive, especially when running scheduled queries: you’re not here to look at the bytes billed every time you’re query run.
 
 In the example below, we create a Kestra task to run a query on a Big Query table. To schedule our query, we just add a Kestra Trigger with a cron property allowing us to run the query every hour.
 
@@ -65,7 +65,7 @@ For instance, a spike in bytes processed during certain hours may suggest the ne
 
 The Metric Dashboard feature goes beyond just tracking cloud resource usage. Its versatility allows you to monitor a broad array of metrics, from ones like BigQuery to custom metrics that cater to your specific data processing tasks. You can gain insights into your ETL processes, track the number of processed lines, monitor processing time per batch, and so much more.
 
-In future releases we will add [proper SLA capabilities](https://github.com/kestra-io/kestra/issues/1246) : the idea would be to let users use the Metrics presented in this article as a SLA to stop a Flow to run or trigger an alert for example. You will be also able to have a complete dashboard with all the metrics gathered by Kestra with an overview on what happen in your data pipeline.
+In future releases we will add [proper SLA capabilities](https://github.com/kestra-io/kestra/issues/1246): the idea would be to let users use the Metrics presented in this article as a SLA to stop a Flow to run or trigger an alert for example. You will be also able to have a complete dashboard with all the metrics gathered by Kestra with an overview on what happen in your data pipeline.
 
 For a deeper exploration of the potential applications of the Metric Dashboard you can learn more with our [documentation](https://kestra.io/docs/plugin-developer-guide/outputs#use-cases-for-metrics).
 

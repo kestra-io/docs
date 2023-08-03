@@ -11,7 +11,7 @@ title: Date functions
 
 
 #### Arguments:
-- `format`: Format parameters is one of :
+- `format`: Format parameters is one of:
   - `full`: Sunday, September 8, 2013 at 4:19:12 PM Central European Summer Time
   - `long`: September 8, 2013 at 4:19:12 PM CEST
   - `medium`: Sep 8, 2013, 4:19:12 PM
@@ -76,7 +76,7 @@ title: Date functions
    {{ dateAdd yourDate -1 "DAYS" }}
 ```
 - `quantity`: an integer value positive or negative
-- `format`: Format parameters is one of :
+- `format`: Format parameters is one of:
   - `NANOS`
   - `MICROS`
   - `MILLIS`

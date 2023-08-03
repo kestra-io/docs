@@ -14,7 +14,7 @@ Today, our team is proud to announce a first public release of Kestra, an open-s
 
 
 ## What is Kestra?
-Kestra is :
+Kestra is:
 - **an orchestrator**: Build a complex pipeline in couple of minutes.
 - **a scheduler**: Launch your flows whatever your need!
 - **a rich ui**: Create, run, and monitor all your flows with a real-time user interface.

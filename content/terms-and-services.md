@@ -203,7 +203,7 @@ Each Party processes personal data of contact person of the other Party involved
 
 Personal data are retained during the duration strictly necessary for the purposes of managing the business relationship between Parties. The staff of the Party controller of the processing, its control services (notably auditor) and its processors could have access to personal data.
 
-The processing may result in the exercise by each Party's contact person of their rights under the Applicable Regulation. In such event, the Client may send such request to : [dpo@Kestra.io ](mailto:dpo@kestra.io)
+The processing may result in the exercise by each Party's contact person of their rights under the Applicable Regulation. In such event, the Client may send such request to: [dpo@Kestra.io ](mailto:dpo@kestra.io)
 
 ### 14. Convention of proof
 The Parties expressly acknowledge and agree that the data collected on Kestra’s infrastructure  equipment:
