@@ -493,8 +493,6 @@ tasks:
 
       - id: mergeQuery
         type: io.kestra.plugin.aws.athena.Query
-        database: "{{vars.database}}"
-        outputLocation: "s3://{{vars.bucket}}/query_results/"
         query: |
           MERGE INTO fruits f USING raw_fruits r
               ON f.fruit = r.fruit
@@ -504,6 +502,11 @@ tasks:
               WHEN NOT MATCHED
                   THEN INSERT (id, fruit, berry, update_timestamp)
                         VALUES(r.id, r.fruit, r.berry, current_timestamp);
+
+      - id: optimize
+        type: io.kestra.plugin.aws.athena.Query
+        query: |
+          OPTIMIZE fruits REWRITE DATA USING BIN_PACK;
 
       - id: moveToArchive
         type: io.kestra.plugin.aws.cli.AwsCLI
@@ -529,6 +532,8 @@ taskDefaults:
         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
         secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
         region: "{{ secret('AWS_DEFAULT_REGION') }}"
+        database: "{{vars.database}}"
+        outputLocation: "s3://{{vars.bucket}}/query_results/"
 
 triggers:
   - id: hourlySchedule
@@ -590,6 +595,11 @@ tasks:
                 THEN INSERT (id, fruit, berry, update_timestamp)
                       VALUES(r.id, r.fruit, r.berry, current_timestamp);
 
+    - id: optimize
+      type: io.kestra.plugin.aws.athena.Query
+      query: |
+        OPTIMIZE fruits REWRITE DATA USING BIN_PACK;
+
     - id: moveToArchive
       type: io.kestra.plugin.aws.cli.AwsCLI
       commands:
@@ -645,6 +655,7 @@ namespace: blueprint
 variables:
   sourcePrefix: inbox
   destinationPrefix: archive
+  database: default
 
 tasks:
   - id: wdir
@@ -668,11 +679,6 @@ tasks:
 
   - id: mergeQuery
     type: io.kestra.plugin.aws.athena.Query
-    database: "{{vars.database}}"
-    outputLocation: "s3://{{vars.bucket}}/query_results/"
-    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-    region: "{{ secret('AWS_DEFAULT_REGION') }}"
     query: |
       MERGE INTO fruits f USING raw_fruits r
           ON f.fruit = r.fruit
@@ -682,6 +688,20 @@ tasks:
           WHEN NOT MATCHED
               THEN INSERT (id, fruit, berry, update_timestamp)
                     VALUES(r.id, r.fruit, r.berry, current_timestamp);
+
+  - id: optimize
+    type: io.kestra.plugin.aws.athena.Query
+    query: |
+      OPTIMIZE fruits REWRITE DATA USING BIN_PACK; 
+
+taskDefaults:
+  - type: io.kestra.plugin.aws.athena.Query
+    values:
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+      region: "{{ secret('AWS_DEFAULT_REGION') }}"
+      database: "{{vars.database}}"
+      outputLocation: "s3://{{vars.bucket}}/query_results/"
 
 triggers:
   - id: waitForNewS3objects
