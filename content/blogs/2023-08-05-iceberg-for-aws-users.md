@@ -9,6 +9,9 @@ author:
 image: /blogs/2023-08-05-iceberg-for-aws-users.png
 ---
 
+This crash course will guide you on how to get started with Apache Iceberg on AWS. By the end of this tutorial, you'll be able to create Iceberg tables, ingest and modify data stored in S3 in Parquet format, query data and table metadata in plain SQL, and declaratively manage the data ingestion process. Let's get started.  
+
+
 ## What is Iceberg
 
 Iceberg is an open [table format](https://iceberg.apache.org/spec/). It’s a metadata layer that brings reliable transactions, schema evolution, version history, and data management to files in a data lake at a petabyte scale. You can think of Iceberg as an API between storage (*e.g., parquet files on S3)* and compute *(Spark, Flink, DuckDB, Trino, Presto, Amazon Athena, Hive, BigQuery, Snowflake warehouse, etc.*). You can define your table structure once on the API layer and then simultaneously query that table from anywhere (*Snowflake, Spark, DuckDB, and more*) without having to think about where data is physically located or [how it is partitioned](https://iceberg.apache.org/docs/latest/partitioning/#icebergs-hidden-partitioning).
