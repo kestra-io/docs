@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-08-05-iceberg-for-aws-users.png
 ---
 
-This crash course will guide you on how to get started with Apache Iceberg on AWS. By the end of this tutorial, you'll be able to create Iceberg tables, ingest and modify data stored in S3 in Parquet format, query data and table metadata in plain SQL, and declaratively manage the data ingestion process. Let's get started.  
+This crash course will guide you on how to get started with [Apache Iceberg](https://iceberg.apache.org/) on AWS. By the end of this tutorial, you'll be able to create Iceberg tables, insert and modify data stored in S3 in Parquet format, query data and table metadata in plain SQL, and declaratively manage the data ingestion process. Let's get started.  
 
 
 ## What is Iceberg
@@ -669,9 +669,15 @@ See the screenshots below which demonstrate how the flow was triggered for each 
 
 ![iceberg15](/blogs/2023-08-05-iceberg-for-aws-users/iceberg15.png)
 
+### Iceberg Blueprints
+
+All Kestra workflows covered in this post are available as [Blueprints](../docs/04.user-interface-guide/blueprints.md) directly from the Kestra UI. Start Kestra using Docker Compose, as explained in the [Getting Started](../docs/01.getting-started.md) guide, and select the Iceberg tag from the Blueprints section:
+
+![iceberg16](/blogs/2023-08-05-iceberg-for-aws-users/iceberg16.png)
+
 
 ## Next steps
 
-This tutorial demonstrated how to use Apache Iceberg with Amazon Athena and Amazon S3 and how to manage a scheduled and event-driven data ingestion process with Kestra. 
+This tutorial demonstrated how to use Apache Iceberg with Amazon Athena, AWS Glue and Amazon S3, and how to manage a scheduled and event-driven data ingestion process with Kestra. 
 
 If you have any questions about what we've covered in this post, reach out via [our community Slack](https://kestra.io/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra). 
