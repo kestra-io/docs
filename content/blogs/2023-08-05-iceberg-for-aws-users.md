@@ -86,7 +86,9 @@ INSERT INTO fruits (id, fruit, berry)
 Finally, let's inspect the data we've just inserted.
 
 ```sql
-SELECT * FROM fruits order by berry;
+SELECT * 
+FROM fruits 
+ORDER BY berry;
 ```
 
 You should see the following results:
@@ -107,19 +109,24 @@ Let's imagine that, [as Erik](https://twitter.com/bernhardsson/status/1685636090
 Let's correct that in our data:
 
 ```sql
-UPDATE fruits SET fruit = 'Bilberry' where fruit = 'Blueberry';
+UPDATE fruits 
+SET fruit = 'Bilberry' 
+WHERE fruit = 'Blueberry';
 ```
 
 Let’s also remove the banana to avoid debates about whether a banana is actually a berry or not.
 
 ```sql
-DELETE FROM fruits WHERE fruit = 'Banana';
+DELETE FROM fruits 
+WHERE fruit = 'Banana';
 ```
 
 Let's validate what we have so far in the table:
 
 ```sql
-SELECT * FROM fruits order by berry;
+SELECT * 
+FROM fruits 
+ORDER BY berry;
 ```
 
 ![iceberg5](/blogs/2023-08-05-iceberg-for-aws-users/iceberg5.png)
@@ -154,13 +161,15 @@ SELECT * FROM "fruits$refs";
 Let's look at the table history:
 
 ```sql
-SELECT * FROM "fruits$history";
+SELECT * 
+FROM "fruits$history";
 ```
 
 You should see four rows, which reflect two INSERTS, one UPDATE and one DELETE operations that we have executed so far. The ``fruits$snapshots`` provides a summary of each operation (*showing which files or partitions have been added, modified or deleted*), as you can see in the image below:
 
 ```sql
-SELECT snapshot_id, summary FROM "fruits$snapshots";
+SELECT snapshot_id, summary 
+FROM "fruits$snapshots";
 ```
 
 ![iceberg7](/blogs/2023-08-05-iceberg-for-aws-users/iceberg7.png)
@@ -168,7 +177,9 @@ SELECT snapshot_id, summary FROM "fruits$snapshots";
 Let's copy that snapshot ID and inspect the table as of the time when that snapshot was taken:
 
 ```sql
-SELECT * FROM fruits FOR VERSION AS OF 4739764842480661991;
+SELECT * 
+FROM fruits 
+FOR VERSION AS OF 4739764842480661991;
 ```
 
 You can see that back then, Banana was still in our data:
@@ -195,7 +206,7 @@ Back then, we were still under the illusion that we grew up eating Blueberries, 
 
 ### Bulk data ingestion
 
-So far, we've been inserting data into our table row by row. However, data lakes are typically used for big data, which is processed in bulk via batch or streaming jobs. 
+So far, we've been inserting data into our table row by row. However, data lakes are typically used for big data processed via batch or streaming jobs. 
 
 There are two common patterns of ingesting data to existing Iceberg tables: inserts and upserts. Both of them require loading data into a different (temporary) table before being ingested to the final destination via a separate query. 
 
@@ -233,10 +244,11 @@ Don't forget to adjust the S3 bucket name. Also, make sure to install the `awswr
 pip install awswrangler
 ```
 
-We can validate that table was created by running the following query:
+We can validate that the table was successfully created by running the following query:
 
 ```sql
-SELECT * FROM raw_fruits;
+SELECT * 
+FROM raw_fruits;
 ```
 
 ![iceberg10](/blogs/2023-08-05-iceberg-for-aws-users/iceberg10.png)
@@ -266,7 +278,8 @@ MERGE INTO fruits f USING raw_fruits r
 Let's inspect all fruits that start with B (to check on our beloved Bilberry, Blueberry and Banana):
 
 ```sql
-SELECT * FROM fruits 
+SELECT * 
+FROM fruits 
 WHERE fruit LIKE 'B%';
 ```
 
@@ -277,7 +290,8 @@ This looks great! We inserted new data and ensured that no Blueberries or Banana
 Let's look at the files generated so far by Iceberg:
 
 ```sql
-SELECT * FROM "fruits$files";
+SELECT * 
+FROM "fruits$files";
 ```
 
 ![iceberg12](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12.png)
@@ -298,7 +312,8 @@ OPTIMIZE fruits REWRITE DATA USING BIN_PACK;
 Let's look at the files again:
 
 ```sql
-SELECT record_count, file_path FROM "fruits$files";
+SELECT record_count, file_path 
+FROM "fruits$files";
 ```
 
 ![iceberg12a](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12a.png)
@@ -326,10 +341,10 @@ We've covered a lot of ground so far. We created an Iceberg table, inserted new 
 
 ### Python script to ingest new data
 
-First, let's create a Python script that will ingest new data into our table. You can download the CSV files that start with ``fruit`` from the [kestra-io/datasets](https://github.com/kestra-io/datasets/tree/main/csv) repository and add them to the same directory as your Python script.
+First, let's create [a Python script](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py) that will ingest new data into our table. You can download the CSV files that start with ``fruit`` from the [kestra-io/datasets](https://github.com/kestra-io/datasets/tree/main/csv) repository and add them to the same directory as your Python script.
 
 We'll use the same code as before with the following adjustments:
-- The `wr.catalog.delete_table_if_exists(database=DATABASE, table=TABLE)` will delete the temporary table if it exists. This allows us to make the pipeline idempotent, i.e. running this script multiple times will result in the same state in the data lake without side effects.
+- The `wr.catalog.delete_table_if_exists(...)` method will delete the temporary table if it exists. This allows us to make the pipeline idempotent, i.e. running this script multiple times will result in the same state in the data lake without side effects.
 - When orchestrating this process from Kestra, the line ``Kestra.counter("nr_rows", nr_rows, {"table": TABLE})`` will send a metric to Kestra's backend to track the number of rows ingested into the data lake over time. This is useful for monitoring and troubleshooting. Running this script locally won't send anything to Kestra's backend — it will only print the metric to the ``stdout``.
 - Remember that we don't want blueberries or bananas 🍌 in the final dataset? We'll remove them as part of a data cleaning step in Pandas.
 
@@ -397,7 +412,7 @@ wr.athena.start_query_execution(
 print(f"New data successfully ingested into {S3_PATH}")
 ```
 
-As long as you installed the required libraries, you can run this script from a local environment. Next, we'll see how to orchestrate this process using Kestra.
+As long as you installed the required libraries, you can run this script from a local environment. Next, we'll see how to orchestrate this process using [Kestra](https://www.youtube.com/watch?v=h-P0eK2xN58).
 
 
 ### Scheduled data pipeline
@@ -514,7 +529,7 @@ triggers:
     cron: "@hourly"
 ```
 
-If you stored your script in Git, your pipeline can be simplified as follows:
+Once you push [your script to Git](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py), your pipeline can be simplified as follows:
 
 ```yaml
 id: ingestToDataLakeGit
@@ -578,7 +593,7 @@ triggers:
     cron: "@hourly"
 ```
 
-The [kestra-io/scripts](https://github.com/kestra-io/scripts) is a public repository, so you can reproduce that flow directly as long as you adjust the S3 bucket name and set your AWS credentials. Check the [Secrets docs](https://kestra.io/docs/developer-guide/secrets) to see how to manage sensitive values in Kestra.
+The [kestra-io/scripts](https://github.com/kestra-io/scripts) is a public repository, so you can reproduce that flow directly as long as you adjust the S3 bucket name and set your AWS credentials. To leverage private repositories, you only need to add your Git user name and a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). Check the [Secrets docs](https://kestra.io/docs/developer-guide/secrets) to see how to manage sensitive values in Kestra.
 
 When you execute the flow, you should see the following output in the logs:
 
@@ -591,7 +606,7 @@ This scheduled workflow is simple to understand and easy to run locally. However
 
 Kestra makes it easy to switch between scheduled and event-driven workflows simply by adjusting the trigger configuration. 
 
-The flow shown below uses the same Python script we used before for a scheduled workflow. The only difference is that when calling that script we now pass the detected S3 object key from the trigger as an input argument. Then, the script transforms and loads data to the S3 data lake exactly the same way as before. 
+The flow shown below uses [the same Python script](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py) we used before for a scheduled workflow. The only difference is that, when calling the script, we now pass the detected S3 object key from the trigger as an input argument. Then, the script transforms and loads data to the S3 data lake exactly the same way as before. 
 
 You can see here a significant advantage of Kestra: a separation of concerns between orchestration and business logic. You don't have to modify your code in any way - Kestra can orchestrate your custom code written in any language with no modifications.
 
@@ -643,7 +658,9 @@ The trigger polls the S3 location, indicated by `prefix`, for new files every se
 
 ![iceberg13](/blogs/2023-08-05-iceberg-for-aws-users/iceberg13.png)
 
-The processed file is moved to the `archive` directory to avoid the flow being triggered multiple times for the same file. The `maxKeys` property is extremely helpful in our use case as it allows us to process each incoming file sequentially as if you were using a FIFO queue. See the screenshots below which demonstrates how the flow was triggered for each file under the `inbox` prefix in our S3 bucket.
+The processed file is moved to the `archive` directory to avoid the flow being triggered multiple times for the same file. The `maxKeys` property is particularly helpful in our use case as it allows us to process each incoming file sequentially as if you were using [a FIFO queue](https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)). 
+
+See the screenshots below which demonstrate how the flow was triggered for each new S3 object with the `inbox` prefix.
 
 ![iceberg14](/blogs/2023-08-05-iceberg-for-aws-users/iceberg14.png)
 
@@ -652,6 +669,6 @@ The processed file is moved to the `archive` directory to avoid the flow being t
 
 ## Next steps
 
-This tutorial demonstrated how to use Apache Iceberg with Amazon Athena and S3 and how to manage a scheduled and event-driven data ingestion process with Kestra. 
+This tutorial demonstrated how to use Apache Iceberg with Amazon Athena and Amazon S3 and how to manage a scheduled and event-driven data ingestion process with Kestra. 
 
 If you have any questions about what we've covered in this post, reach out via [our community Slack](https://kestra.io/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra). 
