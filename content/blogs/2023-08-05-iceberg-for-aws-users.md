@@ -433,6 +433,7 @@ namespace: blueprint
 variables:
   bucket: kestraio
   prefix: inbox
+  database: default
 
 tasks:
   - id: listObjects
@@ -458,27 +459,16 @@ tasks:
 
           # Iceberg table
           BUCKET_NAME = "{{vars.bucket}}"
-          DATABASE = "default"
+          DATABASE = "{{vars.database}}"
           TABLE = "raw_fruits"
-          
-          # File to ingest
-          PREFIX = "{{vars.prefix}}"
-          INGEST_S3_KEY_PATH = f"s3://{BUCKET_NAME}/{PREFIX}/"
 
           # Iceberg table's location
           S3_PATH = f"s3://{BUCKET_NAME}/{TABLE}"
           S3_PATH_TMP = f"{S3_PATH}_tmp"
 
-          MERGE_QUERY = """
-          MERGE INTO fruits f USING raw_fruits r
-              ON f.fruit = r.fruit
-              WHEN MATCHED
-                  THEN UPDATE
-                      SET id = r.id, berry = r.berry, update_timestamp = current_timestamp
-              WHEN NOT MATCHED
-                  THEN INSERT (id, fruit, berry, update_timestamp)
-                        VALUES(r.id, r.fruit, r.berry, current_timestamp);
-          """
+          # File to ingest
+          PREFIX = "{{vars.prefix}}"
+          INGEST_S3_KEY_PATH = f"s3://{BUCKET_NAME}/{PREFIX}/"
 
           df = wr.s3.read_csv(INGEST_S3_KEY_PATH)
           nr_rows = df.id.nunique()
@@ -499,15 +489,23 @@ tasks:
               partition_cols=["berry"],
               keep_files=False,
           )
-
-          wr.athena.start_query_execution(
-              sql=MERGE_QUERY,
-              database=DATABASE,
-              wait=True,
-          )
           print(f"New data successfully ingested into {S3_PATH}")
 
-      - id: moveToProcessed
+      - id: mergeQuery
+        type: io.kestra.plugin.aws.athena.Query
+        database: "{{vars.database}}"
+        outputLocation: "s3://{{vars.bucket}}/query_results/"
+        query: |
+          MERGE INTO fruits f USING raw_fruits r
+              ON f.fruit = r.fruit
+              WHEN MATCHED
+                  THEN UPDATE
+                      SET id = r.id, berry = r.berry, update_timestamp = current_timestamp
+              WHEN NOT MATCHED
+                  THEN INSERT (id, fruit, berry, update_timestamp)
+                        VALUES(r.id, r.fruit, r.berry, current_timestamp);
+
+      - id: moveToArchive
         type: io.kestra.plugin.aws.cli.AwsCLI
         commands:
           - aws s3 mv s3://{{vars.bucket}}/{{vars.prefix}}/ s3://{{vars.bucket}}/archive/{{vars.prefix}}/ --recursive
@@ -526,6 +524,12 @@ taskDefaults:
       secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
       region: "{{ secret('AWS_DEFAULT_REGION') }}"
 
+  - type: io.kestra.plugin.aws.athena.Query
+      values:
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+        region: "{{ secret('AWS_DEFAULT_REGION') }}"
+
 triggers:
   - id: hourlySchedule
     type: io.kestra.core.models.triggers.types.Schedule
@@ -541,6 +545,7 @@ namespace: blueprint
 variables:
   bucket: kestraio
   prefix: inbox
+  database: default
 
 tasks:
   - id: listObjects
@@ -571,6 +576,20 @@ tasks:
           commands:
             - python etl/aws_iceberg_fruit.py
 
+    - id: mergeQuery
+      type: io.kestra.plugin.aws.athena.Query
+      database: "{{vars.database}}"
+      outputLocation: "s3://{{vars.bucket}}/query_results/"
+      query: |
+        MERGE INTO fruits f USING raw_fruits r
+            ON f.fruit = r.fruit
+            WHEN MATCHED
+                THEN UPDATE
+                    SET id = r.id, berry = r.berry, update_timestamp = current_timestamp
+            WHEN NOT MATCHED
+                THEN INSERT (id, fruit, berry, update_timestamp)
+                      VALUES(r.id, r.fruit, r.berry, current_timestamp);
+
     - id: moveToArchive
       type: io.kestra.plugin.aws.cli.AwsCLI
       commands:
@@ -585,6 +604,12 @@ taskDefaults:
       bucket: "{{vars.bucket}}"
   
   - type: io.kestra.plugin.aws.s3.AwsCLI
+    values:
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+      region: "{{ secret('AWS_DEFAULT_REGION') }}"
+
+  - type: io.kestra.plugin.aws.athena.Query
     values:
       accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
       secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
@@ -640,6 +665,23 @@ tasks:
           AWS_DEFAULT_REGION: "{{ secret('AWS_DEFAULT_REGION') }}"
         commands:
           - python etl/aws_iceberg_fruit.py {{vars.destinationPrefix}}/{{ trigger.objects | jq('.[].key') | first }}
+
+  - id: mergeQuery
+    type: io.kestra.plugin.aws.athena.Query
+    database: "{{vars.database}}"
+    outputLocation: "s3://{{vars.bucket}}/query_results/"
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+    region: "{{ secret('AWS_DEFAULT_REGION') }}"
+    query: |
+      MERGE INTO fruits f USING raw_fruits r
+          ON f.fruit = r.fruit
+          WHEN MATCHED
+              THEN UPDATE
+                  SET id = r.id, berry = r.berry, update_timestamp = current_timestamp
+          WHEN NOT MATCHED
+              THEN INSERT (id, fruit, berry, update_timestamp)
+                    VALUES(r.id, r.fruit, r.berry, current_timestamp);
 
 triggers:
   - id: waitForNewS3objects
