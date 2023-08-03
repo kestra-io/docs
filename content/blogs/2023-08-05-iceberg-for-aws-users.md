@@ -1,5 +1,5 @@
 ---
-title: "Apache Iceberg crash course for AWS users: S3, Athena, Glue ❤️ Iceberg"
+title: "Apache Iceberg Crash Course for AWS users: Amazon S3, Athena & AWS Glue ❤️ Iceberg"
 description: "How to turn AWS data lake into a data lakehouse using Iceberg, the open table format"
 date: 2023-08-04T14:00:00
 category: Solutions
