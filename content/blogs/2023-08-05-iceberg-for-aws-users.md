@@ -1,7 +1,7 @@
 ---
 title: "Apache Iceberg Crash Course for AWS users: Amazon S3, Athena & AWS Glue ❤️ Iceberg"
 description: "How to turn AWS data lake into a data lakehouse using Iceberg, the open table format"
-date: 2023-08-04T14:00:00
+date: 2023-08-03T15:00:00
 category: Solutions
 author:
   name: Anna Geller
@@ -24,7 +24,7 @@ To follow along with this demo, you need an AWS account. We'll be using Amazon A
 
 If you don't have an S3 bucket yet, you can create one following [this AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html).
 
-Then, go to the Athena console and click on "Edit Settings" to configure your query result location. This is required by Athena to e.g. cache query results. You can use the same bucket you created earlier as a location for query results. 
+Then, go to the Athena console and click "Edit Settings" to configure your query result location. This is required by Athena to e.g. cache query results. You can use the same bucket you created earlier as a location for query results. 
 
 To keep things simple, choose the same AWS region for both Athena and your S3 bucket.
 
@@ -144,7 +144,7 @@ First, let's look at files that are stored in our S3 bucket. You can explore the
 aws s3 ls s3://yourbucket/fruits/ --recursive --summarize --human-readable
 ``` 
 
-You should see 28 files, structured in the following way:
+You should see 28 files structured in the following way:
 
 ![iceberg6](/blogs/2023-08-05-iceberg-for-aws-users/iceberg6.png)
 
@@ -639,7 +639,7 @@ This scheduled workflow is simple to understand and easy to run locally. However
 
 Kestra makes it easy to switch between scheduled and event-driven workflows simply by adjusting the trigger configuration. 
 
-The flow shown below uses [the same Python script](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py) we used before for a scheduled workflow. The only difference is that, when calling the script, we now pass the detected S3 object key from the trigger as an input argument. Then, the script transforms and loads data to the S3 data lake exactly the same way as before. 
+The flow code below uses [the same Python script](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py) we used for a scheduled workflow. The only difference is that, when calling the script, we now pass the detected S3 object key from the trigger as an input argument. Then, the script transforms and loads data to the S3 data lake exactly the same way as before. 
 
 You can see here a significant advantage of Kestra: a separation of concerns between orchestration and business logic. You don't have to modify your code in any way - Kestra can orchestrate your custom code written in any language with no modifications.
 
