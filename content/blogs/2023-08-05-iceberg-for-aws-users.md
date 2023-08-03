@@ -57,7 +57,7 @@ After executing this query, you should see a new Iceberg table called `fruits` i
 ![iceberg2](/blogs/2023-08-05-iceberg-for-aws-users/iceberg2.png)
 
 
-### `INSERT` new rows
+### Insert new rows using `INSERT INTO`
 
 So far, we've created an empty table. Let's insert some data into it.
 
