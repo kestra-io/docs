@@ -111,7 +111,7 @@
                     <li class="nav-item">
                         <NuxtLink class="nav-link" href="/blogs" role="button" @click="globalClick(true)">
                             <span>
-                                Blogs
+                                Blog
                             </span>
                         </NuxtLink>
                     </li>

@@ -7,7 +7,7 @@
                 <ContentRenderer :value="page">
                     <div class="bd-title">
                         <p class="subtitle" data-aos="fade-right">
-                            <NuxtLink href="/blogs">Blogs</NuxtLink>
+                            <NuxtLink href="/blogs">Blog</NuxtLink>
                         </p>
                         <h1 data-aos="fade-left">{{ page.title }}</h1>
                     </div>

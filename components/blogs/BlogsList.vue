@@ -1,7 +1,7 @@
 <template>
     <div class="mt-5">
         <p class="subtitle" data-aos="fade-right">
-            Blogs
+            Blog
         </p>
         <h1 data-aos="fade-left">All things Kestra</h1>
         <h5 data-aos="fade-right">Company news, product updates, and engineering deep dives.</h5>
