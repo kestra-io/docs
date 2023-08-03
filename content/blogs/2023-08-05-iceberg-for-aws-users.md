@@ -439,6 +439,10 @@ tasks:
   - id: listObjects
     type: io.kestra.plugin.aws.s3.List
     prefix: "{{vars.prefix}}"
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+    region: "{{ secret('AWS_DEFAULT_REGION') }}"
+    bucket: "{{vars.bucket}}"
   
   - id: check
     type: io.kestra.core.tasks.flows.If
@@ -493,6 +497,11 @@ tasks:
 
       - id: mergeQuery
         type: io.kestra.plugin.aws.athena.Query
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+        region: "{{ secret('AWS_DEFAULT_REGION') }}"
+        database: "{{vars.database}}"
+        outputLocation: "s3://{{vars.bucket}}/query_results/"
         query: |
           MERGE INTO fruits f USING raw_fruits r
               ON f.fruit = r.fruit
@@ -505,41 +514,32 @@ tasks:
 
       - id: optimize
         type: io.kestra.plugin.aws.athena.Query
-        query: |
-          OPTIMIZE fruits REWRITE DATA USING BIN_PACK;
-
-      - id: moveToArchive
-        type: io.kestra.plugin.aws.cli.AwsCLI
-        commands:
-          - aws s3 mv s3://{{vars.bucket}}/{{vars.prefix}}/ s3://{{vars.bucket}}/archive/{{vars.prefix}}/ --recursive
-
-taskDefaults:
-  - type: io.kestra.plugin.aws.s3.List
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_DEFAULT_REGION') }}"
-      bucket: "{{vars.bucket}}"
-  
-  - type: io.kestra.plugin.aws.cli.AwsCLI
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_DEFAULT_REGION') }}"
-
-  - type: io.kestra.plugin.aws.athena.Query
-      values:
         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
         secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
         region: "{{ secret('AWS_DEFAULT_REGION') }}"
         database: "{{vars.database}}"
         outputLocation: "s3://{{vars.bucket}}/query_results/"
+        query: |
+          OPTIMIZE fruits REWRITE DATA USING BIN_PACK;
+
+      - id: moveToArchive
+        type: io.kestra.plugin.aws.cli.AwsCLI
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+        region: "{{ secret('AWS_DEFAULT_REGION') }}"
+        commands:
+          - aws s3 mv s3://{{vars.bucket}}/{{vars.prefix}}/ s3://{{vars.bucket}}/archive/{{vars.prefix}}/ --recursive      
 
 triggers:
   - id: hourlySchedule
     type: io.kestra.core.models.triggers.types.Schedule
     cron: "@hourly"
+    disabled: true
 ```
+
+When you execute the flow, you should see the following output in the logs:
+
+![iceberg12b](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12b.png)
 
 Once you push [your script to Git](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py), your pipeline can be simplified as follows:
 
@@ -556,7 +556,11 @@ tasks:
   - id: listObjects
     type: io.kestra.plugin.aws.s3.List
     prefix: "{{vars.prefix}}"
-  
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+    region: "{{ secret('AWS_DEFAULT_REGION') }}"
+    bucket: "{{vars.bucket}}"
+
   - id: check
     type: io.kestra.core.tasks.flows.If
     condition: "{{outputs.listObjects.objects}}"
@@ -583,6 +587,9 @@ tasks:
 
     - id: mergeQuery
       type: io.kestra.plugin.aws.athena.Query
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+      region: "{{ secret('AWS_DEFAULT_REGION') }}"
       database: "{{vars.database}}"
       outputLocation: "s3://{{vars.bucket}}/query_results/"
       query: |
@@ -597,33 +604,21 @@ tasks:
 
     - id: optimize
       type: io.kestra.plugin.aws.athena.Query
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+      region: "{{ secret('AWS_DEFAULT_REGION') }}"
+      database: "{{vars.database}}"
+      outputLocation: "s3://{{vars.bucket}}/query_results/"
       query: |
         OPTIMIZE fruits REWRITE DATA USING BIN_PACK;
 
     - id: moveToArchive
       type: io.kestra.plugin.aws.cli.AwsCLI
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+      region: "{{ secret('AWS_DEFAULT_REGION') }}"
       commands:
-        - aws s3 mv s3://{{vars.bucket}}/{{vars.prefix}}/ s3://{{vars.bucket}}/archive/{{vars.prefix}}/ --recursive
-
-taskDefaults:
-  - type: io.kestra.plugin.aws.s3.List
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_DEFAULT_REGION') }}"
-      bucket: "{{vars.bucket}}"
-  
-  - type: io.kestra.plugin.aws.s3.AwsCLI
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_DEFAULT_REGION') }}"
-
-  - type: io.kestra.plugin.aws.athena.Query
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_DEFAULT_REGION') }}"
+        - aws s3 mv s3://{{vars.bucket}}/{{vars.prefix}}/ s3://{{vars.bucket}}/archive/{{vars.prefix}}/ --recursive      
 
 triggers:
   - id: hourlySchedule
@@ -633,9 +628,9 @@ triggers:
 
 The [kestra-io/scripts](https://github.com/kestra-io/scripts) is a public repository, so you can reproduce that flow directly as long as you adjust the S3 bucket name and set your AWS credentials. To leverage private repositories, you only need to add your Git user name and a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). Check the [Secrets docs](https://kestra.io/docs/developer-guide/secrets) to see how to manage sensitive values in Kestra.
 
-When you execute the flow, you should see the following output in the logs:
+Executing this workflow should give you the following output:
 
-![iceberg12b](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12b.png)
+![iceberg12c](/blogs/2023-08-05-iceberg-for-aws-users/iceberg12c.png)
 
 This scheduled workflow is simple to understand and easy to run locally. However, in certain circumstances, it might be inefficient. External systems are often unpredictable, making it difficult to figure out the optimal batch pipeline frequency. The flow shown above will run every hour, even if there are no new files in S3 for days or weeks. In such scenarios, event triggers and a decoupled approach to pipelines become incredibly useful. 
 
@@ -656,6 +651,7 @@ variables:
   sourcePrefix: inbox
   destinationPrefix: archive
   database: default
+  bucket: kestraio
 
 tasks:
   - id: wdir
@@ -679,6 +675,11 @@ tasks:
 
   - id: mergeQuery
     type: io.kestra.plugin.aws.athena.Query
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+    region: "{{ secret('AWS_DEFAULT_REGION') }}"
+    database: "{{vars.database}}"
+    outputLocation: "s3://{{vars.bucket}}/query_results/"
     query: |
       MERGE INTO fruits f USING raw_fruits r
           ON f.fruit = r.fruit
@@ -691,17 +692,13 @@ tasks:
 
   - id: optimize
     type: io.kestra.plugin.aws.athena.Query
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+    region: "{{ secret('AWS_DEFAULT_REGION') }}"
+    database: "{{vars.database}}"
+    outputLocation: "s3://{{vars.bucket}}/query_results/"
     query: |
-      OPTIMIZE fruits REWRITE DATA USING BIN_PACK; 
-
-taskDefaults:
-  - type: io.kestra.plugin.aws.athena.Query
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_DEFAULT_REGION') }}"
-      database: "{{vars.database}}"
-      outputLocation: "s3://{{vars.bucket}}/query_results/"
+      OPTIMIZE fruits REWRITE DATA USING BIN_PACK;       
 
 triggers:
   - id: waitForNewS3objects
@@ -728,7 +725,6 @@ The processed file is moved to the `archive` directory to avoid the flow being t
 See the screenshots below which demonstrate how the flow was triggered for each new S3 object with the `inbox` prefix.
 
 ![iceberg14](/blogs/2023-08-05-iceberg-for-aws-users/iceberg14.png)
-
 ![iceberg15](/blogs/2023-08-05-iceberg-for-aws-users/iceberg15.png)
 
 ### Iceberg Blueprints
