@@ -75,7 +75,7 @@ One special case for input variables is the `FILE` type, where the file is prepe
 One of Kestra's most important abilities is to use all outputs from previous tasks in the next one.
 
 ### Without dynamic tasks (Each)
-This is the simplest and most common way to use outputs in the next task. In order to fetch a variable, just use `{{ outputs.ID.NAME }}` where :
+This is the simplest and most common way to use outputs in the next task. In order to fetch a variable, just use `{{ outputs.ID.NAME }}` where:
 * `ID` is the task id
 * `NAME` is the name of the output. Each task type can have any outputs that are documented on the part outputs of their docs. For example, [Bash task](../../../../plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.md#outputs) can have `{{ outputs.ID.exitCode }}`, `{{ outputs.ID.outputFiles }}`, `{{ outputs.ID.stdErrLineCount }}`, etc...
 

@@ -1,23 +1,134 @@
 ---
-title: Monitoring & Alerting
+title: Alerting & Monitoring
 ---
 
-Kestra will deploy a monitoring endpoint on port 8081 by default. (You can change this port with
-[configuration options](../01.configuration/index.md) `endpoints.all.port`)
+## Alerting
 
-This monitoring endpoint will expose some helpful routes in order to monitor Kestra:
+Failure alerts are non-negotiable. When a production workflow fails, you should get notified about it as soon as possible. To implement failure alerting, you can leverage Kestra's built in notification tasks, including: 
+- [Slack](../../../plugins/plugin-notifications/tasks/slack/io.kestra.plugin.notifications.slack.slackexecution.md) 
+- [Microsoft Teams](../../../plugins/plugin-notifications/tasks/teams/io.kestra.plugin.notifications.teams.teamsexecution.md) 
+- [Email](../../../plugins/plugin-notifications/tasks/mail/io.kestra.plugin.notifications.mail.mailexecution.md)
+
+
+Technically, you can add custom failure alerts to each flow separately using the [`errors` tasks](../../02.tutorial/06.errors.md):
+
+```yaml
+id: onFailureAlert
+namespace: blueprint
+
+tasks:
+  - id: fail
+    type: io.kestra.plugin.scripts.shell.Commands
+    runner: PROCESS
+    commands:
+      - exit 1
+
+errors:
+  - id: slack
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    payload: |
+      {
+        "channel": "#alerts",
+        "text": "Failure alert for flow {{ flow.namespace }}.{{ flow.id }} with ID {{ execution.id }}"
+      }
+```
+
+However, this can lead to some boilerplate code if you start copy-pasting this `errors` configuration to multiple flows. 
+
+To implement a centralized namespace-level alerting, we instead recommend a dedicated monitoring workflow with a notification task and a [Flow trigger](../../05.developer-guide/08.triggers/02.flow.md). Below is an example workflow that automatically sends a Slack alert as soon as any flow in a namespace `prod` fails or finishes with warnings. 
+
+```yaml
+id: failureAlertToSlack
+namespace: prod.monitoring
+
+tasks:
+  - id: send
+    type: io.kestra.plugin.notifications.slack.SlackExecution
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    channel: "#general"
+    executionId: "{{trigger.executionId}}"
+
+triggers:
+  - id: listen
+    type: io.kestra.core.models.triggers.types.Flow
+    conditions:
+      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+        in:
+          - FAILED
+          - WARNING
+      - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
+        namespace: prod
+        prefix: true
+```
+
+Adding this single flow will ensure that you receive a Slack alert on any flow failure in the `prod` namespace. Here is an example alert notification:
+
+![alert notification](/docs/administrator-guide/alert-notification.png)
+
+
+## Monitoring 
+
+By default, Kestra exposes a monitoring endpoint on port 8081. You can change this port using the `endpoints.all.port` property in the [configuration options](../01.configuration/index.md).
+
+This monitoring endpoint provides invaluable information for troubleshooting and monitoring, including Prometheus metrics and several Kestra's internal routes. For instance, the `/health` endpoint exposed by default on port 8081 (e.g. http://localhost:8081/health) generates a similar response as shown below as long as your Kestra instance is healthy:
+
+```json
+{
+  "name": "kestra",
+  "status": "UP",
+  "details": {
+    "jdbc": {
+      "name": "kestra",
+      "status": "UP",
+      "details": {
+        "jdbc:postgresql://postgres:5432/kestra": {
+          "name": "kestra",
+          "status": "UP",
+          "details": {
+            "database": "PostgreSQL",
+            "version": "15.3 (Debian 15.3-1.pgdg110+1)"
+          }
+        }
+      }
+    },
+    "compositeDiscoveryClient()": {
+      "name": "kestra",
+      "status": "UP",
+      "details": {
+        "services": {
+          
+        }
+      }
+    },
+    "service": {
+      "name": "kestra",
+      "status": "UP"
+    },
+    "diskSpace": {
+      "name": "kestra",
+      "status": "UP",
+      "details": {
+        "total": 204403494912,
+        "free": 13187035136,
+        "threshold": 10485760
+      }
+    }
+  }
+}
+```
 
 ## Prometheus
 
 Kestra exposes [Prometheus](https://prometheus.io/) metrics on the endpoint `/prometheus`. This endpoint can be used by any compatible monitoring system.
 
-### Kestra metrics
+### Kestra's metrics
 
-Kestra exposes its internal metrics allowing to add some alerts. Each metric declares multiple time series with tags allowing to track at least namespace & flow but also other tags depending on available tasks.
+You can leverage Kestra's internal metrics to configure custom alerts. Each metric provides multiple timeseries with tags allowing to track at least namespace & flow but also other tags depending on available tasks.
 
-Kestra metrics use default prefix `kestra`. This value can be changed using [configuration options](../01.configuration/05.others.md#metrics-configuration).
+Kestra metrics use the prefix `kestra`. This prefix can be changed using the `kestra.metrics.prefix` property in the [configuration options](../01.configuration/05.others.md#metrics-configuration).
 
-Each task type can expose [custom metrics](../../03.concepts/02.executions.md#metrics) that will be exposed on Prometheus.
+Each task type can expose [custom metrics](../../03.concepts/02.executions.md#metrics) that will be also exposed on Prometheus.
 
 #### Worker
 
@@ -36,44 +147,43 @@ Each task type can expose [custom metrics](../../03.concepts/02.executions.md#me
 |executor.taskrun.next.count|`COUNTER`|Count of tasks found|
 |executor.taskrun.ended.count|`COUNTER`|Count of tasks ended|
 |executor.taskrun.ended.duration|`TIMER`|Duration of tasks ended|
-|executor.workertaskresult.count|`COUNTER`|Count of task result send by worker|
+|executor.workertaskresult.count|`COUNTER`|Count of task results sent by a worker|
 |executor.execution.started.count|`COUNTER`|Count of executions started|
 |executor.execution.end.count|`COUNTER`|Count of executions ended|
 |executor.execution.duration|`TIMER`|Duration of executions ended|
 
 #### Indexer
 
-|Metrics|Type|Description|
-|-|-|-|
-|indexer.count|`COUNTER`|Count of indexation sent to repository|
-|indexer.duration|`DURATION`|Duration of indexation sent to repository|
+|Metrics|Type| Description                               |
+|-|-|-------------------------------------------|
+|indexer.count|`COUNTER`| Count of index requests sent to a repository      |
+|indexer.duration|`DURATION`| Duration of index requests sent to a repository |
 
 #### Scheduler
 
-|Metrics|Type|Description|
-|-|-|-|
-|scheduler.trigger.count|`COUNTER`|Count of trigger found|
-|scheduler.evaluate.running.count|`COUNTER`|Evaluation of trigger actually running (aka: number of threads used by the scheduler)|
-|scheduler.evaluate.duration|`TIMER`|Duration of evaluation of trigger|
+|Metrics|Type| Description                                                                                         |
+|-|-|-----------------------------------------------------------------------------------------------------|
+|scheduler.trigger.count|`COUNTER`| Count of triggers                                                                                   |
+|scheduler.evaluate.running.count|`COUNTER`| Evaluation of triggers actually running |
+|scheduler.evaluate.duration|`TIMER`| Duration of trigger evaluation                                                                      |
 
 ### Others metrics
 
-It will also expose all internal metrics from:
+Kestra also exposes all internal metrics from the following sources:
 
 - [Micronaut](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/)
 - [Kafka](https://kafka.apache.org/documentation/#remote_jmx)
 - Thread pools of the application
 - JVM
-- ...
 
-Additional information can be found in [Micronaut documentation](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/).
+Check out the [Micronaut documentation](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/) for more information.
 
 
-## Grafana or Kibana
-Since Elasticsearch is used to store all executions & metrics, you can easily make a dashboard with
-[Grafana](https://grafana.com/) or [Kibana](https://www.elastic.co/kibana) in order to follow your Kestra instance.
+## Grafana and Kibana
 
-In a near future, we will provide a template dashboard as a quick start.
+Kestra uses Elasticsearch to store all executions and metrics. Therefore, you can easily create a dashboard with [Grafana](https://grafana.com/) or [Kibana](https://www.elastic.co/kibana) to monitor the health of your Kestra instance.
+
+We'd love to see what dashboards you will build. Feel free to share a screenshot or a template of your dashboard with [the community](https://kestra.io/slack).
 
 
 ## Kestra endpoints
@@ -87,7 +197,8 @@ Kestra exposes internal endpoints on the management port (8081 by default) to pr
 * `/kafkastreams/{clientId}/metrics`: will expose details metrics for a `clientId`.
 
 ## Other Micronaut default endpoints
-Since Kestra is based on [Micronaut](https://micronaut.io), the [default Micronaut endpoints](https://docs.micronaut.io/latest/guide/index.html#providedEndpoints) are enabled by default on port 8081 :
+
+Since Kestra is based on [Micronaut](https://micronaut.io), the [default Micronaut endpoints](https://docs.micronaut.io/latest/guide/index.html#providedEndpoints) are enabled by default on port 8081:
 
 * `/info` [Info Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#infoEndpoint) with git status information.
 * `/health` [Health Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#healthEndpoint) usable as an external heathcheck for the application.
@@ -95,4 +206,4 @@ Since Kestra is based on [Micronaut](https://micronaut.io), the [default Microna
 * `/metrics` [Metrics Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#metricsEndpoint) metrics in JSON format.
 * `/env` [Environment Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#environmentEndpoint) to debug configuration files.
 
-You can disable some endpoints following Micronaut configuration above.
+You can disable some endpoints following the above Micronaut configuration.

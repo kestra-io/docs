@@ -13,7 +13,7 @@ The `jq` filter apply a [JQ expression](https://stedolan.github.io/jq/) to a var
 ```
 
 
-Another example, if the current context is :
+Another example, if the current context is:
 ```json
 {
   "outputs": {

@@ -10,7 +10,7 @@ Convert an object to is JSON representation
 {{json output['task-id']}}
 ```
 
-Example, if the current context is :
+Example, if the current context is:
 ```json
 {
   "outputs": {
@@ -43,7 +43,7 @@ Internally, [Jackson JQ](https://github.com/eiiches/jackson-jq) is used and supp
 ::
 
 
-Example, if the current context is :
+Example, if the current context is:
 ```json
 {
   "outputs": {
