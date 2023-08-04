@@ -36,7 +36,7 @@ Moreover, even in the most simplified Debezium deployment, there are typically a
 
 Although Debezium shines as an efficient and performance-oriented solution in real-time Change Data Capture (CDC) use cases, this perpetual operation can become a resource drain. The always-on nature of Debezium's connectors may lead to an overuse of resources, especially in scenarios where changes are not frequent or the data volume is low. Hence, while Debezium's continuous monitoring feature is an asset in certain scenarios, it may be an overkill and resource drain in others.
 
-For example, from [Amazon MSK connect](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-connectors.html) documentation :
+For example, from [Amazon MSK connect](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-connectors.html) documentation:
 > Each MCU represents 1 vCPU of compute and 4 GiB of memory.
 
 <p align="center">
