@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: 📓 Overview
 ---
 
 Kestra is an open-source, event-driven orchestrator that simplifies data operations and improves collaboration between engineers and business users. By bringing Infrastructure as Code best practices to data pipelines, Kestra allows you to build reliable workflows and manage them with confidence.

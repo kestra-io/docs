@@ -1,5 +1,5 @@
 ---
-title: 🤓 Tutorial
+title: 📚 Tutorial
 ---
 
 Welcome to this tutorial on Kestra! Kestra is an open-source workflow engine and job scheduler that allows you to automate and manage complex workflows efficiently.
