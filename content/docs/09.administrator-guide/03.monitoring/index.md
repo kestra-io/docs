@@ -71,8 +71,52 @@ Adding this single flow will ensure that you receive a Slack alert on any flow f
 
 By default, Kestra exposes a monitoring endpoint on port 8081. You can change this port using the `endpoints.all.port` property in the [configuration options](../01.configuration/index.md).
 
-This monitoring endpoint provides invaluable information for troubleshooting and monitoring, including Prometheus metrics and several Kestra's internal routes.
+This monitoring endpoint provides invaluable information for troubleshooting and monitoring, including Prometheus metrics and several Kestra's internal routes. For instance, the `/health` endpoint exposed by default on port 8081 (e.g. http://localhost:8081/health) generates a similar response as shown below as long as your Kestra instance is healthy:
 
+```json
+{
+  "name": "kestra",
+  "status": "UP",
+  "details": {
+    "jdbc": {
+      "name": "kestra",
+      "status": "UP",
+      "details": {
+        "jdbc:postgresql://postgres:5432/kestra": {
+          "name": "kestra",
+          "status": "UP",
+          "details": {
+            "database": "PostgreSQL",
+            "version": "15.3 (Debian 15.3-1.pgdg110+1)"
+          }
+        }
+      }
+    },
+    "compositeDiscoveryClient()": {
+      "name": "kestra",
+      "status": "UP",
+      "details": {
+        "services": {
+          
+        }
+      }
+    },
+    "service": {
+      "name": "kestra",
+      "status": "UP"
+    },
+    "diskSpace": {
+      "name": "kestra",
+      "status": "UP",
+      "details": {
+        "total": 204403494912,
+        "free": 13187035136,
+        "threshold": 10485760
+      }
+    }
+  }
+}
+```
 
 ## Prometheus
 
@@ -112,15 +156,15 @@ Each task type can expose [custom metrics](../../03.concepts/02.executions.md#me
 
 |Metrics|Type| Description                               |
 |-|-|-------------------------------------------|
-|indexer.count|`COUNTER`| Count of indexers sent to a repository      |
-|indexer.duration|`DURATION`| Duration of indexers sent to a repository |
+|indexer.count|`COUNTER`| Count of index requests sent to a repository      |
+|indexer.duration|`DURATION`| Duration of index requests sent to a repository |
 
 #### Scheduler
 
 |Metrics|Type| Description                                                                                         |
 |-|-|-----------------------------------------------------------------------------------------------------|
 |scheduler.trigger.count|`COUNTER`| Count of triggers                                                                                   |
-|scheduler.evaluate.running.count|`COUNTER`| Evaluation of triggers actually running (equivalent to the number of threads used by the scheduler) |
+|scheduler.evaluate.running.count|`COUNTER`| Evaluation of triggers actually running |
 |scheduler.evaluate.duration|`TIMER`| Duration of trigger evaluation                                                                      |
 
 ### Others metrics
