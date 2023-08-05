@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <Section
-            title="Begin Your Kestra Adventure"
+            title="Getting started with Kestra"
         >
         <p class="text-center" data-aos="fade-right">
             Start building with Kestra and enjoy your pipelines — the only limit is your imagination!
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    import Section from '../../components/layout/Section.vue';
+    import Section from './Section.vue';
 
     export default {
         components: {Section}

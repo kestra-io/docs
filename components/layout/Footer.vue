@@ -24,12 +24,16 @@
                             <h5>Solutions</h5>
                             <ul class="list-unstyled">
                                 <li class="mb-2"><NuxtLink href="/use-cases">Usages</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/enterprise">For Companies</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/use-cases/ci-cd">CI/CD for Kestra Workflows</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/use-cases/modern-data-stack">Modern Data Stack Integration</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/use-cases/change-data-capture">Change Data Capture</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/vs/airflow">Airflow vs Kestra</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Community</h5>
                             <ul class="list-unstyled">
+                                <li class="mb-2"><NuxtLink href="/community">Community Overview</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/blogs">Blog</NuxtLink></li>
                                 <li class="mb-2"><a href="https://kestra.io/slack" target="_blank">Slack</a></li>
                                 <li class="mb-2"><a href="https://github.com/kestra-io" target="_blank">Github</a></li>

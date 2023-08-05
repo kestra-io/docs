@@ -9,7 +9,7 @@
         <CommunitySlack />
         <Community />
         <CommunityContributors />
-        <CommunityBegin />
+        <LayoutBottomCallToAction />
     </div>
 </template>
 
