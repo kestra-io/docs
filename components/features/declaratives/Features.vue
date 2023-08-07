@@ -84,6 +84,9 @@
 </script>
 
 <style lang="scss" scoped>
+    @import "../../../assets/styles/variable";
+
+
     .container-fluid {
         background-color: var(--bs-gray-200);
         position: relative;
@@ -95,9 +98,16 @@
             opacity: 0.3;
             position: absolute;
             top: 0;
-            background: url("/landing/shadow3.svg") no-repeat bottom center;
+            background: url("/landing/shadow3.svg") no-repeat 50% 150px;
+
+            @include media-breakpoint-down(md) {
+                & {
+                    display: none;
+                }
+            }
         }
     }
+
 
     .code {
         position: relative;
@@ -107,6 +117,7 @@
         font-family: var(--bs-font-monospace);
         color: var(--bs-indigo);
         white-space: pre;
+        overflow: hidden;
 
         .text-success {
             color: #2C3F3A !important;
