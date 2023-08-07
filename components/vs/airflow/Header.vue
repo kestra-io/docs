@@ -5,7 +5,7 @@
                 <div class="col-md-6 align-items-center d-flex">
                     <div>
                         <h1 data-aos="fade-right">The differences between Kestra and Airflow</h1>
-                        <p class="baseline" data-aos="fade-left">How to Choose the Right Orchestration Platform to Meet Your Needs</p>
+                        <p class="baseline" data-aos="fade-left">How to Choose the Right Orchestration Platform</p>
                         <div class="cta">
                             <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary mx-2 mt-2" data-aos="zoom-in">
                                 Get started with Kestra
