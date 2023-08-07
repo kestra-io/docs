@@ -3,8 +3,8 @@
         <Section>
             <div data-aos="fade-right">
                 <h2>About Kestra & Airflow</h2>
-                <p>Kestra is an open-source data orchestrator that brings Infrastructure as Code best practices to data pipelines. Kestra empowers users to build data pipelines using a declarative YAML interface, accelerating development time while maintaining code quality.</p>
-                <p>On the other hand, Apache Airflow, born out of Airbnb in 2014 and later fostered under the Apache Software Foundation, provides a platform that enables programmatic authoring, scheduling, and monitoring of workflows. It has emerged as a widely adopted choice for managing complex data pipelines.</p>
+                <p>Kestra is an open-source data orchestrator that brings Infrastructure as Code best practices to data pipelines. Kestra empowers users to build data pipelines in an API first way rather than tying it to a single Python client's implementation. Every action in Kestra is API-driven and declared using a simple YAML configuration file. Being API-first opens up your orchestration platform to more integrations and use cases without having to touch any client code.</p>
+                <p>On the other hand, Apache Airflow, born out of Airbnb in 2014, provides a Python client for authoring, scheduling, and monitoring workflows. Your workflows are tied to a specific Python client implementation, requiring redeploying code and rebuilding infrastructure for every change.</p>
             </div>
 
             <div data-aos="fade-left">
@@ -14,28 +14,22 @@
 
             <div data-aos="fade-right">
                 <h2>Python Architecture vs. Decoupled Event-Driven System</h2>
-                <p>While Airflow is built as a Python-based web framework, this architecture can present its own challenges. Its reliance on Python can lead to issues due to dependency conflicts. Integration with third-party systems often requires additional Python packages, which can result in conflicts unless everything is containerized. However, containerization can add complexity and may counteract the benefits of Python's lightweight framework.</p>
-                <p>Kestra, on the other hand, uses a decoupled microservice-oriented architecture built based on time-tested proven technologies such as Postgres, Java, Kafka, and Elasticsearch. This design offers significant performance advantages, as Java can handle a large number of concurrent threads, allowing robust data processing at scale. Kestra can handle a large volume of data and millions of concurrent workloads without degradation in performance.</p>
-            </div>
-
-            <div data-aos="fade-left">
-                <h2>Python Architecture vs. Decoupled Event-Driven System</h2>
-                <p>While Airflow is built as a Python-based web framework, this architecture can present its own challenges. Its reliance on Python can lead to issues due to dependency conflicts. Integration with third-party systems often requires additional Python packages, which can result in conflicts unless everything is containerized. However, containerization can add complexity and may counteract the benefits of Python's lightweight framework.</p>
-                <p>Kestra, on the other hand, uses a decoupled microservice-oriented architecture built based on time-tested proven technologies such as Postgres, Java, Kafka, and Elasticsearch. This design offers significant performance advantages, as Java can handle a large number of concurrent threads, allowing robust data processing at scale. Kestra can handle a large volume of data and millions of concurrent workloads without degradation in performance.</p>
+                <p>While Airflow is built as a Python-based web framework, this architecture can present some challenges. Its reliance on Python can lead to issues due to dependency conflicts. Integration with third-party systems often requires additional Python packages, resulting in conflicts unless everything is containerized. However, containerizing every small component adds complexity and counteracts the benefits of a lightweight Python-based framework.</p>
+                <p>Kestra, on the other hand, uses a decoupled microservice-oriented architecture built based on time-tested, proven technologies such as Postgres, Java, Kafka, and Elasticsearch. This design offers significant performance advantages, as Java can handle a large number of concurrent threads, allowing robust data processing at scale. Kestra can handle a large volume of data and millions of concurrent workloads without degradation in performance.</p>
             </div>
 
             <div data-aos="fade-right">
                 <h2>Workflow Definition</h2>
-                <p>While Kestra uses YAML for workflow definitions, it also supports inline scripting in a variety of languages. This makes Kestra language agnostic and accessible to stakeholders who might be familiar with SQL or other languages but not with Python or Docker. With Kestra, workflows can be divided into manageable subflows that can be triggered based on certain events.</p>
+                <p>While Kestra uses YAML for workflow definitions, it also supports inline scripting in a variety of languages. The API-first design makes Kestra language-agnostic and accessible to stakeholders who might be familiar with SQL or other languages but not with Python or Docker. With Kestra, workflows can be divided into manageable subflows that can be triggered based on certain events.</p>
                 <p>Airflow's workflow definition is Python-based. This design choice limits building data workflows only to Python developers and hinders wider adoption across business domain experts and engineers working on different technology stacks.</p>
                 <p>While Airflow can handle complex workflows, it does not come with an event-driven system, making decoupled workflow patterns difficult, if not impossible, to accomplish.</p>
             </div>
 
             <div data-aos="fade-left">
                 <h2>Workflow Deployment</h2>
-                <p>Airflow's deployment strategy reflects the Python-centric nature of the platform, which involves packaging Python applications, managing dependencies, and deploying code to the server. Despite the widespread adoption of Python, handling the underlying dependencies is challenging, especially when managing your data platform at scale. Data movement usually involves communicating with various third-party services via API calls. We believe that dealing with multiple Python environments only to perform simple integration tasks (e.g., triggering batch jobs or data ingestion) adds unnecessary complexity. You can accomplish the Workflows as Code paradigm much easier when your orchestration logic is decoupled from your business logic (written in languages such as Python).</p>
-                <p>With Kestra, you can directly create and edit workflows through the interface, allowing immediate deployment. Kestra can also be integrated with Continuous Integration and Continuous Deployment (CI/CD) pipelines, smoothly integrating with tools like GitHub Actions and GitLab CI to automate the testing and deployment of workflows. For organizations using Infrastructure as Code (IaC), Kestra presents an excellent fit. You can manage your workflows with IaC tools like Terraform, benefiting from version control, peer review, and the ability to automatically rollout or rollback workflows. Kestra's architecture is heavily focused on APIs, allowing users to manage workflows programmatically and integrate Kestra with other tools and systems.</p>
-                <p>The Code editor embed in Kestra also comes with autocompletion, syntax validation, and task documentation, which allows you to see at a glance which tools are used in any given pipeline.</p>
+                <p>Airflow's deployment strategy reflects the Python-centric nature of the platform, which involves packaging Python applications, managing dependencies, and deploying code to the server. Despite the widespread adoption of Python, handling the underlying dependencies is challenging, especially at scale. Data movement usually involves communicating with various third-party services via API calls. We believe that dealing with multiple Python environments only to perform simple integration tasks (e.g., triggering batch jobs or data ingestion) adds unnecessary complexity. You can accomplish the Workflows as Code paradigm much easier when your orchestration logic is decoupled from your business logic (written in languages such as Python).</p>
+                <p>With Kestra, you can directly create and modify workflows from the UI, API, Terraform, and CI/CD tools, allowing immediate deployment. Kestra seamlessly integrates with tools like GitHub Actions and GitLab CI to automate the testing and deployment of workflows. You can manage your workflows with Infrastructure as Code (IaC) tools like Terraform, benefiting from version control, peer review, and the ability to automatically rollout or rollback workflows. Kestra's architecture is heavily focused on APIs, allowing users to manage workflows programmatically and integrate Kestra with other tools and systems.</p>
+                <p>The Code editor embedded in Kestra also comes with autocompletion, syntax validation, and task documentation, which allows you to see at a glance which tools are used in any given pipeline.</p>
             </div>
 
             <div data-aos="fade-right">
@@ -58,8 +52,8 @@
                 </div>
                 <div class="col-lg-6 col-sm-12 pe-5 mt-5 mt-lg-0" data-aos="fade-right">
                     <h3>Modern Data Stack Integration</h3>
-                    <p>Kestra's flexible plugin system enables seamless integration with a wide range of popular data tools. All workflow components are also exposed via REST APIs, allowing third-party systems to interact with Kestra</p>
-                    <p>In contrast, modifying workflow components in Airflow always require redeploying code.</p>
+                    <p>Kestra's flexible plugin ecosystem enables seamless integration with a wide range of popular data tools. All workflow components are also exposed via REST APIs, allowing third-party systems to interact with Kestra</p>
+                    <p>In contrast, modifying workflow components in Airflow always requires redeploying code.</p>
                 </div>
             </div>
         </Section>
@@ -81,8 +75,8 @@
                     </tr>
                     <tr>
                         <td>Architecture</td>
-                        <td>Decoupled microservice-oriented architecture capable of handling a large number of workloads/</td>
-                        <td>Python-based monolithic architecture may have scaling and dependency management issues.</td>
+                        <td>API-first, decoupled microservice-oriented architecture capable of handling a large number of scheduled and event-driven workloads at any scale.</td>
+                        <td>Orchestration configuration bound to a Python-client and monolithic architecture with scaling and dependency management issues.</td>
                     </tr>
                     <tr>
                         <td>Workflow Definition</td>
@@ -91,7 +85,7 @@
                     </tr>
                     <tr>
                         <td>Developer Experience</td>
-                        <td>Intuitive UI, live topology view, integrated code editor with advanced features.</td>
+                        <td>Intuitive UI, live topology view, integrated documentation next to the code editor with autocompletion, blueprints and advanced features.</td>
                         <td>Deployable DAGs, but no integrated code editor. DAGs are only visible post-deployment.</td>
                     </tr>
                     <tr>
@@ -101,8 +95,8 @@
                     </tr>
                     <tr>
                         <td>Data Integration</td>
-                        <td>Flexible plugin system. All workflow components are accessible via REST APIs.</td>
-                        <td>Supports many data tools but may require extra work due to dependency management.</td>
+                        <td>Flexible plugin ecosystem. All workflow components are accessible via REST APIs.</td>
+                        <td>Supports many data tools but requires redeploying code and additional infrastructure work due to dependency management.</td>
                     </tr>
                 </tbody>
             </table>

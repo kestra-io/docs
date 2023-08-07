@@ -4,7 +4,7 @@
             title="Getting started with Kestra"
         >
         <p class="text-center" data-aos="fade-right">
-            Start building with Kestra and enjoy your pipelines — the only limit is your imagination!
+            Start building with Kestra — Automate Everything Everywhere All at Once.
         </p>
         <div class="text-center cta mt-5">
                 <NuxtLink href="/docs" target="_blank" class="btn btn-primary me-2 mb-2" data-aos="zoom-in">
