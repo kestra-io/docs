@@ -1,6 +1,6 @@
 <template>
     <div class="mt-5">
-        <p class="subtitle" data-aos="fade-right">
+        <p class="top-breadcrumb" data-aos="fade-right">
             Blog
         </p>
         <h1 data-aos="fade-left">All things Kestra</h1>

@@ -46,6 +46,7 @@
                                 <li class="mb-2"><NuxtLink href="/plugins/">Plugins documentation</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/docs/terraform">Terraform provider</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/docs/administrator-guide">Administrator guide</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/faq">FAQ</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">

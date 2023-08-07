@@ -86,29 +86,4 @@
     .bd-layout {
         display: block;
     }
-
-    :deep(.subtitle) {
-        font-size: $font-size-sm;
-        color: var(--bs-primary);
-        font-family: var(--bs-font-monospace);
-        font-weight: 800;
-        text-transform: uppercase;
-        max-width: 700px;
-        .bd-gutter & {
-            margin: 0 auto;
-
-        }
-
-        &:after {
-            content: '';
-            position: absolute;
-            margin-top: calc($font-size-sm / 1.5);
-            margin-left: $spacer;
-            display: inline-block;
-            height: 2px;
-            width: 51px;
-            background: var(--bs-pink);
-        }
-    }
-
 </style>
