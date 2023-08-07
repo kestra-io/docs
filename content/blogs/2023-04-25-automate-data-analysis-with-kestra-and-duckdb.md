@@ -9,25 +9,9 @@ author:
 image: /blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb.jpg
 ---
 
-What if you could unlock the secrets of tech salaries with a few lines of code? Get ready to dive into a world of data possibilities with Kestra and DuckDB!
+Kestra, in collaboration with DuckDB, offers a highly efficient way to analyze CSV files. In this blog post, we will focus on how these two platforms can be employed to automate data analysis.
 
-If you've ever found yourself itching to discover the ins and outs of tech salaries, you're in for a treat! In today's data-driven world, staying informed about the job market can be quite a challenge. But fear not, we're about to embark on an exciting adventure with Kestra and DuckDB, two powerful tools that can help you uncover some hidden gems.
-
-### About Kestra
-
-Kestra is our fantastic declarative data orchestration platform that makes managing complex data workflows a breeze.
-
-### About DuckDB
-
-On the other hand, DuckDB is a super cool open-source, embedded analytical database that's lightweight, super-fast, and perfect for on-the-fly data analysis. Imagine having a portable data warehouse in your pocket, ready to crunch numbers at a moment's notice!
-
-## The Ultimate Duo: Kestra and DuckDB
-
-Now that we know our heroes, let's see what they can do together. By combining Kestra's data orchestration prowess with DuckDB's analytical capabilities, we can easily access, process, and analyze data on tech salaries.
-
-But enough chit-chat, let's dive into some code! We've got a Kestra flow that will download a CSV file containing tech salary data from 2020 to 2023, then use DuckDB to crunch the numbers and reveal some intriguing insights. To top it off, we'll save our findings in a Google Sheets CSV file for easy sharing and analysis.
-
-Sounds exciting, right? Trust us, it's a thrilling ride! Check out the Kestra flow code snippet below:
+Here is a sample Kestra flow code that downloads a CSV file containing tech salary data from 2020 to 2023, uses DuckDB to analyze the data, and saves the findings in a Google Sheets CSV file:
 
 ```yaml
 
@@ -58,13 +42,14 @@ tasks:
     from:  "{{  outputs.average_salary_by_position.uri  }}"
 ```
 
-## Breaking Down the Code: Step by Step
+## Kestra and DuckDB
 
-![salaries analyses flow](/blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb/image-1.png)
+Creating a flow in Kestra to execute this task becomes a straightforward process. You would set up an initial task to download your CSV file, followed by a DuckDB task. This task would use the DuckDB CLI to read the CSV and run a SQL query on it, processing the data directly in memory and spitting out the results. From here, you could add further tasks as needed: for example, sending the output to a Slack channel, an email, or even another system for further analysis.
 
-Let's dive into the Kestra code we presented earlier and understand how it works step by step, while also discussing more about DuckDB and its real-world applications.
+## How it Works
 
 ```yaml
+
  -  id:  average_salary_by_position
     type:  io.kestra.plugin.jdbc.duckdb.Query
     inputFiles:
@@ -80,26 +65,9 @@ Let's dive into the Kestra code we presented earlier and understand how it works
     store:  true
 ```
 
-The next task, average_salary_by_position, uses the DuckDB Query plugin. DuckDB is an embeddable SQL OLAP database management system that provides powerful analytical capabilities with minimal setup and maintenance. It excels at efficiently processing large volumes of data and is highly compatible with other tools in the data ecosystem, like Apache Arrow, Pandas, and R.
+The task, average_salary_by_position, uses the DuckDB Query plugin. DuckDB is an embeddable SQL OLAP database management system that provides powerful analytical capabilities with minimal setup and maintenance. It excels at efficiently processing large volumes of data and is highly compatible with other tools in the data ecosystem, like Apache Arrow, Pandas, and R.
 
 In this task, we supply the downloaded CSV file as input and run a SQL query to calculate the average salary for each job title. We only consider job titles with more than 10 records and sort the results in descending order by average salary.
-
-### DuckDB's advantages include:
-
--   Fast query execution: DuckDB's columnar storage and vectorized query execution make it blazing fast at processing analytical queries.
-
--   Low resource consumption: DuckDB's lightweight and embeddable nature allows it to run efficiently even on resource-constrained devices.
-
--   Seamless integration: DuckDB supports various data formats and integrates smoothly with data science tools like Python, R, and Julia.
-
-### Real-world applications of DuckDB include:
-
--   Analyzing large-scale scientific datasets for research purposes.
-
--   Processing log data for debugging or monitoring purposes in software development.
-
--   Exploring customer data for insights in sales and marketing departments.
-
 
 ```yaml
 id:  export_result
@@ -111,24 +79,12 @@ The final task, export_result, uses Kestra's CsvWriter plugin to convert the res
 
 ![tasks execution svg dll](/blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb/image-2.png)
 
-## Exploring Further: New Horizons with Kestra and DuckDB
+## Exploring Further with Kestra and DuckDB
 
-So, we've already dived into the wonders of analyzing tech salaries with Kestra and DuckDB, but what else can this dynamic duo do? The possibilities are virtually endless! Let's explore some other use cases that can be tackled by leveraging the power of Kestra and DuckDB.
+For those who are interested in exploring more about the capabilities and use cases of Kestra and DuckDB, the [Blueprints](https://demo.kestra.io/ui/blueprints/community?q=duck&page=1&selectedTag=35) provides valuable resources and pre-built workflows that you can use as a starting point for your own tasks.
 
-### Real Estate Market Analysis
+![duckdb blueprints](/blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb/blueprints-DuckDB.png)
 
-Want to stay informed about the ever-changing real estate market? Use Kestra and DuckDB to download, process, and analyze housing data from various sources. Identify trends, calculate average prices, or discover the hottest neighborhoods for investment -- all with a few lines of code!
+If you are particularly interested in learning more about DuckDB and its various applications, you can check out this blog post: [DuckDB vs MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck). It provides a comprehensive comparison between DuckDB and its in-memory, shareable version, MotherDuck, and will give you further insights into how to use these tools effectively in your own data workflows.
 
-### Social Media Sentiment Analysis
-
-Curious about how people feel about a particular topic or brand? You can use Kestra to scrape social media data and then employ DuckDB to analyze the sentiment behind those tweets, posts, or comments. Make data-driven decisions to improve your marketing strategy or track the impact of a recent product launch.
-
-### Customer Segmentation and Personalization
-
-E-commerce businesses can benefit immensely from Kestra and DuckDB. Gather customer data from various touchpoints, like web analytics and purchase history, and then process and analyze this data to identify valuable customer segments. Create personalized marketing campaigns or product recommendations to boost customer engagement and increase revenue.
-
-### The Adventure Awaits: Exploring Beyond
-
-With this nifty Kestra flow and DuckDB combo, you can start exploring tech salaries like a pro. But don't stop there! The possibilities are endless  think about all the data sets you can explore and the insights you can uncover!
-
-Be sure to follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Please reach out to us on [Slack](https://kestra.io/slack) if you have any questions or want to share feedback. And if you love what we do, give a star on [our GitHub repository](https://github.com/kestra-io/kestra).
+If you have any questions about what we've covered in this post, reach out via [our community Slack](https://kestra.io/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra). 
