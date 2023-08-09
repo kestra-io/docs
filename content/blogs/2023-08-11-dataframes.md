@@ -405,10 +405,28 @@ Note that this table is what _they_ say in their docs — I wasn't able to verif
 
 We've covered a lot already. Here are some additional tools that support Dataframe and SQL workflows:
 - [Vaex](https://github.com/vaexio/vaex) - Out-of-core hybrid Apache Arrow/NumPy DataFrame library for Python, ML, visualization and exploration of big tabular data at a billion rows per second.
-- [Spark SQL](https://spark.apache.org/sql/) - a SQL interface to Spark dataframes. This is the most mature interface when it comes to seamlessly combining SQL with imperative code written in Python, Scala and Java.
-- [Dask](https://www.dask.org/) and [Ray](https://www.ray.io/) — distributed framework to parallelize Python and ML applications. The [dask-sql](https://dask-sql.readthedocs.io/en/latest/) project provides a distributed query engine in Python, allowing a mixture of SQL operations and Python code.
+- [Spark SQL](https://spark.apache.org/sql/) - a SQL interface to Spark dataframes. This is the most mature interface when it comes to seamlessly combining SQL with imperative code written in Python, Scala and Java. Spark was the first dataframe framework that added SQL support.
+- [Pandas on Spark](https://spark.apache.org/docs/latest/api/python/user_guide/pandas_on_spark/index.html) — while Spark SQL is mature, the Pandas API for Spark is rather limited with at most around 70% coverage of what you can do with Pandas. Still, if you need some Pandas functionality while mostly using [PySpark](https://spark.apache.org/docs/latest/api/python/index.html), it's worth checking out. You can notice here that Spark is the most comprehensive among all these dataframe frameworks, covering Pandas API, DataFrame libraries in multiple lanuages, while also providing a reliable SQL interface on top of them.
+- [Dask](https://www.dask.org/) and [Ray](https://www.ray.io/) — distributed frameworks to parallelize Python and ML applications. The [dask-sql](https://dask-sql.readthedocs.io/en/latest/) project provides a distributed query engine in Python, allowing a mixture of SQL operations and Python code. Ray supports SQL via an external open-source contribution called [ray-sql](https://github.com/datafusion-contrib/ray-sql). However, judging by the number of downloads, both ``dask-sql`` and ``ray-sql`` are not widely used yet.
 - [R's data.table](https://github.com/Rdatatable/data.table) — provides a high-performance version of [base R](https://www.r-project.org/about.html)'s `data.frame` table abstraction.
+- [bodo.ai](https://www.bodo.ai/) is a SQL and Python data processing platform powered by MPI parallelization technologies. Initially, they promised faster performance than pandas simply by wrapping your functions with a `@bodo.jit` Python decorator, but since then, they seemed to have largely switched their focus to SQL-based workflows with their Bodo SQL context.
+- [Ibis](https://github.com/ibis-project/ibis) — a Python framework which strives to offer flexibility of Python analytics with the scale and performance of modern SQL. It's neither a pandas-like dataframe, nor SQL, but it gives you a way to write SQL queries in Python.
 - [Rapids](https://rapids.ai/) - GPU-accelerated dataframes.
+
+## How should you choose among so many options?
+
+Here is what you should consider when choosing a dataframe framework:
+1. What problems are you trying to solve?
+2. What skills do people in your organization have? Are they more comfortable with SQL or Python?
+3. How much data do you have? Do you need to scale to multiple machines?
+
+It's always best to start simple, and start with what you already have. If you don't have big data, you can start with:
+- DuckDB and dbt for SQL-oriented use cases
+- Polars for Python-, Node- or Rust-oriented workflows.
+
+With both of these tools, you can easily transition to pandas and other frameworks when you need to because they build on Apache Arrow standard.
+
+If maturity is important to you, it's worth looking at Spark. Even though the landscape is progressing quickly, Spark is still the most mature and comprehensive framework.
 
 ---
 
