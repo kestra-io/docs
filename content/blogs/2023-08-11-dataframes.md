@@ -33,7 +33,7 @@ In the past, SQL and dataframes were two separate worlds. SQL was used by data e
 
 💦 **Modin** provides a [drop-in replacement for pandas](https://ponder.io/) using [Modin](https://github.com/modin-project/modin), and their commercial offering, Ponder, can translate your pandas code to SQL under the hood and run it on a cloud data warehouse such as BigQuery or Snowflake.
 
-✨ While DataFrame is the core API in **Spark**, [Spark SQL](https://spark.apache.org/docs/latest/sql-programming-guide.html) is a module that brings a SQL interface, again making the lines between SQL and dataframes blurry.
+✨ While DataFrame is the core API in **Spark**, [Spark SQL](https://spark.apache.org/docs/latest/sql-programming-guide.html) is a module that brings a SQL interface, again blurring the distinction between SQL and dataframes.
 
 ❄️ **Snowpark** is Snowflake's framework for building [distributed dataframes](https://docs.snowflake.com/en/developer-guide/snowpark/python/working-with-dataframes#constructing-a-dataframe). It allows writing custom imperative code in Python, Java, or Scala and pushes down computation to Snowflake as if you would write and execute SQL.
 
@@ -86,7 +86,7 @@ top.to_json("bestsellers_pandas.json", orient="records")
 
 When writing pandas code, you need to be aware of the index. For instance, without adding ``as_index=False``, the result in this example would be a pandas Series rather than a DataFrame object, and saving the result to JSON would result in a list of values without matching product IDs.
 
-**What about SQL?** Pandas can execute SQL queries to load data from external databases using a SQLAlchemy connection. However, pandas doesn't provide a SQL interface to define data transformations — SQL is only limited to fetching data into a dataframe.
+**What about SQL?** You can [execute SQL queries](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html) to load data from external databases using [SQLAlchemy](https://docs.sqlalchemy.org/en/13/core/connections.html). However, pandas doesn't provide a SQL-based interface to manipulate and query data — SQL is only limited to fetching data into a dataframe.
 
 ---
 
@@ -110,7 +110,10 @@ csv_files = glob.glob("dataframes/2023*.csv")
 
 df = (
     (
-        pl.concat([pl.scan_csv(f) for f in csv_files]).join(
+        pl.concat(
+          [pl.scan_csv(f) for f in csv_files]
+        )
+        .join(
             pl.scan_csv("dataframes/products.csv"), on="product_id", how="left"
         )
     )
@@ -123,11 +126,11 @@ df = (
 df.write_json("bestsellers_polars.json", row_oriented=True)
 ```
 
-Personally, I love how composable Polars API is and that I didn't have to worry about the index (_which doesn't exist in Polars!_). Writing Polars code feels as intuitive as the ``dplyr`` package in R. Polars even has a ``glimpse()`` function, extremely useful for wide data with many columns.
+Polars API is composable and you don't have to worry about the index (_in fact, it doesn't exist!_). Writing Polars code feels as intuitive as the [``dplyr`` package in R](https://dplyr.tidyverse.org/).
 
-The Polars code ran twice as fast as the one from pandas. This doesn't matter as much in this toy example, but when dealing with large datasets, the difference becomes quite significant.
+The solution to our use case in Polars ran twice as fast as the one from pandas. This doesn't matter as much in this toy example, but when dealing with large datasets, the difference becomes quite significant.
 
-**What about SQL?** Polars provides SQL context supporting many SQL operations. Here is the same example as before but using a combination of Python and SQL:
+**What about SQL?** Polars provides SQL context supporting many operations. Here is the same example as before but using a combination of Python and SQL:
 
 ```python
 import polars as pl
@@ -154,10 +157,10 @@ df = ctx.execute(query)
 df.write_json("bestsellers_polars.json", row_oriented=True)
 ```
 
-This example seamlessly combines Python and SQL code. You can see here that the lines between dataframes and SQL tables are becoming increasingly blurry. You can use both of them in combination — it's no longer `SQL` OR `dataframes`, it's now `SQL` AND `dataframes`.
+This example seamlessly combines Python and SQL code. You can see here that the differences between the "dataframe world" and the "SQL world" are disappearing. You can use both SQL and dataframes together — it's no longer `SQL` OR `dataframes`, it's now `SQL` AND `dataframes`.
 
 
-**What about distributed compute?** Currently, the query engine can run only on a single machine. However, Polars has recently [announced that they started a company](https://www.pola.rs/posts/company-announcement/). This means that, in the future, you can expect a distributed version of Polars that will be able to run in a managed environment.
+**What about distributed compute?** Currently, the query engine can run only on a single machine. However, Polars has recently [announced that they started a company](https://www.pola.rs/posts/company-announcement/). In the future, you can expect a distributed version of Polars available as a managed service.
 
 ---
 
@@ -195,6 +198,7 @@ df = (
     .order("total DESC")
     .limit(10)
 ).pl()
+
 df.write_json("bestsellers_duckdb_py.json", row_oriented=True)
 ```
 
@@ -205,11 +209,11 @@ Overall, DuckDB SQL is fantastic. It's incredibly rich and fast. But if you pref
 - for super-fast single-node data transformations in Python, use Polars.
 
 
-As mentioned in the introduction, I believe the lines here will continue to become increasingly blurry. I can imagine that DuckDB will likely continue improving Python's ergonomics, and Polars will extend its SQL support.
+As mentioned in the introduction, I believe that, over time, the differences here will continue to disappear. I can imagine that DuckDB will continue improving Python's ergonomics, and Polars will extend its SQL support.
 
-It's also worth mentioning that DuckDB integrates well with Polars - just add ``.pl()`` to convert your DuckDB table to a Polars DataFrame.
+It's also worth mentioning that DuckDB integrates well with Polars — just add ``.pl()`` to convert your DuckDB table to a Polars DataFrame.
 
-**What about distributed compute?** DuckDB is an in-process single-node database. However, MotherDuck offers a distributed DuckDB offering. Check our [DuckDB vs. MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck) guide and [our DuckDB blueprints](https://demo.kestra.io/ui/blueprints/community?selectedTag=35) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
+**What about distributed compute?** DuckDB is an in-process single-node database. However, MotherDuck offers a distributed DuckDB offering. Check our [DuckDB vs. MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck) guide and our [DuckDB blueprints](https://demo.kestra.io/ui/blueprints/community?selectedTag=35) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
 
 Speaking of scaling your dataframes to distributed compute, let's cover Modin, Ponder, and Fugue next.
 
@@ -217,7 +221,7 @@ Speaking of scaling your dataframes to distributed compute, let's cover Modin, P
 
 ## Modin
 
-Modin is a drop-in replacement for pandas that scales to multiple cores and distributed clusters. It is built on top of Ray and Dask. It is a great way to scale pandas without having to rewrite your code.
+[Modin](https://github.com/modin-project/modin) is a drop-in replacement for pandas that scales to multiple cores and distributed clusters. It is built on top of Ray and Dask. It is a great way to scale pandas without having to rewrite your code.
 
 Here is the same example as shown before with pandas but using Modin:
 
@@ -317,9 +321,9 @@ Ponder created 14 intermediate tables in my BigQuery dataset (yes, 14!) to perfo
 ![ponder](/blogs/2023-08-11-dataframes/ponder.png)
 
 
-My overall impression is that Ponder seems like an interesting product for big data as it executes everything on BigQuery. It seems quite early (_I got a bunch of errors even when following their getting started guide_).
+My overall impression is that Ponder seems like an interesting product for big data as it executes everything on BigQuery. It seems quite early — I got a bunch of errors even when following their getting started guide.
 
-Let's look at **Fugue**, which is a little bit similar to Modin, as it also provides a distributed dataframe abstraction that can run on top of Ray, Dask, Spark, and more.
+Next, let's look at **Fugue**, which also provides a distributed dataframe abstraction that can run on top of BigQuery, Ray, Dask, Spark, DuckDB, and more.
 
 ---
 
@@ -368,7 +372,7 @@ run(engine="spark")  # runs on Spark
 run()  # runs on pandas
 ```
 
-It's nice that switching between pandas, Spark and Dask is quite straightforward. Many users may also appreciate the ability to mix and match SQL and Python objects.
+The biggest strength of Fugue is that switching between pandas, Spark and Dask is as simple as changing the engine variable. Many users also appreciate the ability to interleave SQL and Python code within the same data transformation.
 
 ---
 
@@ -393,18 +397,18 @@ Simiar to Ponder, the project seems to be quite early. I was getting `exit code 
 | [`Pyspark`](https://github.com/apache/spark) | Yes | No | Yes | Pandas UDF/IO | Pandas UDF | Yes |
 | [`Dask DF`](https://github.com/dask/dask) | No | Python object | Yes | No | Some(Pandas) | Yes |
 
-Note that this table is what they say — I haven't verified it myself.
+Note that this table is what _they_ say in their docs — I wasn't able to verify it myself yet.
 
 ---
 
 ## Honorable mentions
 
 We've covered a lot already. Here are some additional tools that support Dataframe and SQL workflows:
-- [Vaex](https://github.com/vaexio/vaex) - Out-of-Core hybrid Apache Arrow/NumPy DataFrame for Python, ML, visualization and exploration of big tabular data at a billion rows per second
+- [Vaex](https://github.com/vaexio/vaex) - Out-of-core hybrid Apache Arrow/NumPy DataFrame library for Python, ML, visualization and exploration of big tabular data at a billion rows per second.
 - [Spark SQL](https://spark.apache.org/sql/) - a SQL interface to Spark dataframes. This is the most mature interface when it comes to seamlessly combining SQL with imperative code written in Python, Scala and Java.
 - [Dask](https://www.dask.org/) and [Ray](https://www.ray.io/) — distributed framework to parallelize Python and ML applications. The [dask-sql](https://dask-sql.readthedocs.io/en/latest/) project provides a distributed query engine in Python, allowing a mixture of SQL operations and Python code.
-- [R's data.table](https://github.com/Rdatatable/data.table) — provides a high-performance version of [base R](https://www.r-project.org/about.html)'s data.frame
-- [Rapids](https://rapids.ai/) - GPU accelerated dataframes.
+- [R's data.table](https://github.com/Rdatatable/data.table) — provides a high-performance version of [base R](https://www.r-project.org/about.html)'s `data.frame` table abstraction.
+- [Rapids](https://rapids.ai/) - GPU-accelerated dataframes.
 
 ---
 
