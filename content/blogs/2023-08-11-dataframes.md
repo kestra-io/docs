@@ -9,10 +9,6 @@ author:
 image: /blogs/2023-08-11-dataframes.jpg
 ---
 
-# Polars, DuckDB, Ponder, Fugue, dbt, Vaex, Rapids, Pandas vs. good old SQL
-
-![dataframes.jpg](2023-08-11-dataframes.jpg)
-
 Tabular format with rows and columns, popularized by relational databases and Microsoft Excel, is an intuitive way of organizing and manipulating data for analytics.
 
 There are two main ways of transforming and analyzing tabular data — **SQL** and **dataframes** (_sorry, Excel!_).
@@ -21,8 +17,9 @@ There are two main ways of transforming and analyzing tabular data — **SQL** a
 
 However, some data transformations are more easily expressed using dataframes defined in an imperative language such as Python. This includes pivoting and melting (_reverse process to pivoting_), dealing with missing values or time series, visualizing and iteratively exploring data, or applying custom functions and machine learning algorithms. For such use cases, **dataframes** offer a great addition to SQL-based processes allowing in-memory computation and integrating well with data science workflows.
 
+---
 
-## SQL vs. dataframes
+## SQL vs. dataframes or SQL _and_ dataframes?
 
 In the past, SQL and dataframes were two separate worlds. SQL was used by data engineers for querying data lakes and data warehouses, while dataframes were used by ML engineers for in-memory computation and data science. Nowadays, this is changing. The lines between SQL and dataframes are becoming increasingly blurry.
 
@@ -42,7 +39,6 @@ In the past, SQL and dataframes were two separate worlds. SQL was used by data e
 
 🔸 **[dbt](https://github.com/dbt-labs/dbt-core)** is primarily a SQL-based data transformation tool but it also has a [Python model abstraction](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/python-models) to support... you guessed it, dataframes!
 
-## Use case
 
 By now, you should be convinced that both SQL and dataframes can be used in tandem across a variety of data tools. But which one should you use? And when?
 
@@ -318,7 +314,6 @@ While the setup guide was helpful, I couldn't solve our use case with Ponder.
 
 Ponder created 14 intermediate tables in my BigQuery dataset (yes, 14!) to perform that simple task, and it didn't even succeed in generating a JSON file as output. See the screenshot below for reference:
 
-![ponder.png](ponder.png)
 ![ponder](/blogs/2023-08-11-dataframes/ponder.png)
 
 
@@ -326,6 +321,7 @@ My overall impression is that Ponder seems like an interesting product for big d
 
 Let's look at **Fugue**, which is a little bit similar to Modin, as it also provides a distributed dataframe abstraction that can run on top of Ray, Dask, Spark, and more.
 
+---
 
 ## Fugue
 
@@ -374,6 +370,7 @@ run()  # runs on pandas
 
 It's nice that switching between pandas, Spark and Dask is quite straightforward. Many users may also appreciate the ability to mix and match SQL and Python objects.
 
+---
 
 ## Daft
 
@@ -405,7 +402,7 @@ Note that this table is what they say — I haven't verified it myself.
 We've covered a lot already. Here are some additional tools that support Dataframe and SQL workflows:
 - [Vaex](https://github.com/vaexio/vaex) - Out-of-Core hybrid Apache Arrow/NumPy DataFrame for Python, ML, visualization and exploration of big tabular data at a billion rows per second
 - [Spark SQL](https://spark.apache.org/sql/) - a SQL interface to Spark dataframes. This is the most mature interface when it comes to seamlessly combining SQL with imperative code written in Python, Scala and Java.
-- Dask and Ray — distributed framework to parallelize Python and ML applications. The [dask-sql](https://dask-sql.readthedocs.io/en/latest/) project provides a distributed query engine in Python, allowing a mixture of SQL operations and Python code.
+- [Dask](https://www.dask.org/) and [Ray](https://www.ray.io/) — distributed framework to parallelize Python and ML applications. The [dask-sql](https://dask-sql.readthedocs.io/en/latest/) project provides a distributed query engine in Python, allowing a mixture of SQL operations and Python code.
 - [R's data.table](https://github.com/Rdatatable/data.table) — provides a high-performance version of [base R](https://www.r-project.org/about.html)'s data.frame
 - [Rapids](https://rapids.ai/) - GPU accelerated dataframes.
 
@@ -413,5 +410,5 @@ We've covered a lot already. Here are some additional tools that support Datafra
 
 ## Summary
 
-This post covered several open-source projects that support dataframes and SQL workflows. Some projects are more mature than others, but all of them are worth keeping an eye on. Which table abstractions are your favorite? Let us know in the [community Slack](https://kestra.io/slack). Check out [Kestra's blueprints](2023-07-12-your-private-app-store-for-data-pipelines.md) to discover how to orchestrate both SQL and dataframe workflows. If you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra).
+This post covered several open-source projects that support dataframes and SQL workflows. Which table abstraction is your favorite? Let us know in the [community Slack](https://kestra.io/slack). Check out [Kestra's blueprints](2023-07-12-your-private-app-store-for-data-pipelines.md) to discover how to orchestrate both SQL and dataframe workflows. If you like Kestra and our blog, give us a [star on GitHub](https://github.com/kestra-io/kestra).
 
