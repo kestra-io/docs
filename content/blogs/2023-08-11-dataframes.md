@@ -1,6 +1,6 @@
 ---
-title: "Polars, DuckDB, Pandas, Modin, Ponder, Fugue, Daft — dataframes or SQL?"
-description: "Which table abstraction is best for you?"
+title: "Polars, DuckDB, Pandas, Modin, Ponder, Fugue, Daft — which one is the best dataframe and SQL tool?"
+description: "Comparing open-source dataframe and SQL frameworks for data engineering and analytics"
 date: 2023-08-11T10:00:00
 category: Solutions
 author:
