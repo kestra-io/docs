@@ -329,7 +329,7 @@ Next, let's look at **Fugue**, which also provides a distributed dataframe abstr
 
 ## Fugue
 
-Fugue is described as a unified interface for distributed computing. You can execute Python, pandas, and SQL code on Spark, Dask, and Ray with minimal rewrites.
+[Fugue](https://github.com/fugue-project/fugue) is described as a unified interface for distributed computing. You can execute Python, pandas, and SQL code on Spark, Dask, and Ray with minimal rewrites.
 
 Similarly to Modin, Fugue can help you scale pandas code across distributed compute clusters. In contrast to Modin, though, Fugue is not a drop-in replacement for pandas. Fugue's core contributors believe that [pandas-like interfaces are sub-optimal](https://towardsdatascience.com/why-pandas-like-interfaces-are-sub-optimal-for-distributed-computing-322dacbce43) for distributed computing.
 
@@ -337,7 +337,7 @@ This means that you can continue writing pandas code, but Fugue will translate i
 
 Fugue also encourages a mix of Python and SQL code by providing Fugue SQL on top of the core dataframe abstraction.
 
-When demonstrating Modin, we've used Ray and BigQuery. Let's now use Dask as compute engine for Fugue. You can install Fugue as follows:
+You can install Fugue and extensions for the specific distributed compute engine as follows:
 
 ```bash
 pip install fugue
@@ -368,11 +368,16 @@ def run(engine=None):
 
 
 run(engine="dask")  # runs on Dask
-run(engine="spark")  # runs on Spark
-run()  # runs on pandas
 ```
 
-The biggest strength of Fugue is that switching between pandas, Spark and Dask is as simple as changing the engine variable. Many users also appreciate the ability to interleave SQL and Python code within the same data transformation.
+The biggest strength of Fugue is that switching between pandas, Spark, Dask, and many other compute engines is as simple as changing the `engine` variable:
+
+```python
+run(engine="spark")  # runs on Spark
+run()  # runs on pandas#
+```
+
+Many Fugue users also appreciate the ability to interleave SQL and Python code within the same data transformation.
 
 ---
 
