@@ -12,7 +12,7 @@
                 <h1 data-aos="fade-left">Frequently Asked Questions</h1>
             </div>
 
-            <h2 data-aos="zoom-in">General Questions</h2>
+            <h2 data-aos="zoom-in" class="mt-5">General Questions</h2>
             <CustomDetails title="What is Kestra?">
                 <p>Kestra is a powerful and easy-to-use data orchestration platform that helps you automate, schedule, and monitor data workflows across various systems and services.</p>
             </CustomDetails>
@@ -34,7 +34,7 @@
                 <p>Kestra is perfect for data engineers, developers, data scientists, and anyone who needs to process, manage, and orchestrate data workflows across multiple systems.</p>
             </CustomDetails>
 
-            <h2 data-aos="zoom-in">Features and Functionality</h2>
+            <h2 data-aos="zoom-in" class="mt-5">Features and Functionality</h2>
             <CustomDetails title="What are some of the key features of Kestra?">
                 <p>Kestra offers a wide range of features, including:</p>
                 <ul>
@@ -53,7 +53,7 @@
                 <p>Furthermore, Kestra supports Docker, which enables you to execute tasks using any language, expanding the range of possibilities for your workflows. This flexibility allows you to leverage the power of different programming languages within your Kestra flows to suit your specific requirements.</p>
             </CustomDetails>
 
-            <h2 data-aos="zoom-in">Getting Started</h2>
+            <h2 data-aos="zoom-in" class="mt-5">Getting Started</h2>
             <CustomDetails title="How do I get started with Kestra?">
                 <p>To get started with Kestra, follow the <NuxtLink href="/docs/getting-started">Getting Started Guide</NuxtLink> on the Kestra website. This guide will walk you through the installation and configuration process, as well as provide an introduction to creating your first flows and tasks.</p>
             </CustomDetails>
@@ -64,7 +64,7 @@
                 <p>Yes, Kestra has a growing community and support forum. You can join the <a target="_blank" href="/slack">Kestra Slack channel</a> to ask questions, share your experience, and connect with other users and developers.</p>
             </CustomDetails>
 
-            <h2 data-aos="zoom-in">Pricing and Licensing</h2>
+            <h2 data-aos="zoom-in" class="mt-5">Pricing and Licensing</h2>
             <CustomDetails title="Is Kestra open-source?">
                 <p>Yes, Kestra is an open-source project. The source code is available on <a href="https://github.com/kestra-io/kestra" target="_blank">GitHub</a> under the Apache 2.0 license.</p>
             </CustomDetails>
