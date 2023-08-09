@@ -29,7 +29,7 @@ In the past, SQL and dataframes were two separate worlds. SQL was used by data e
 
 🦆 **DuckDB** is an in-process OLAP database management system. While SQL is the "mother tongue" of MotherDuck and DuckDB, the tool seamlessly integrates with dataframe libraries such as [pandas](https://duckdb.org/docs/guides/python/import_pandas), [Polars](https://duckdb.org/docs/guides/python/polars), [Vaex](https://duckdb.org/docs/guides/python/vaex), [Ibis](https://duckdb.org/docs/guides/python/ibis) and [Fugue](https://duckdb.org/docs/guides/python/fugue), and provides an imperative [Python client API](https://duckdb.org/docs/api/python/reference/) on top of pandas DataFrames, Polars DataFrames and Arrow tables.
 
-🎶 **Fugue** is a [Python interface](https://github.com/fugue-project/fugue) for distributed transformations over dataframes but it also can execute Fugue-SQL on top of local (pandas, Polars) or distributed (Spark, Dask, or Ray) dataframes.
+🎶 **Fugue** is a [Python interface](https://github.com/fugue-project/fugue) for distributed transformations over dataframes but it also can execute Fugue-SQL on top of local (pandas, Polars, DuckDB) or distributed (Spark, Dask, Ray, BigQuery, and more) dataframes.
 
 💦 **Modin** provides a [drop-in replacement for pandas](https://ponder.io/) using [Modin](https://github.com/modin-project/modin), and their commercial offering, Ponder, can translate your pandas code to SQL under the hood and run it on a cloud data warehouse such as BigQuery or Snowflake.
 
@@ -87,6 +87,10 @@ top.to_json("bestsellers_pandas.json", orient="records")
 When writing pandas code, you need to be aware of the index. For instance, without adding ``as_index=False``, the result in this example would be a pandas Series rather than a DataFrame object, and saving the result to JSON would result in a list of values without matching product IDs.
 
 **What about SQL?** You can [execute SQL queries](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html) to load data from external databases using [SQLAlchemy](https://docs.sqlalchemy.org/en/13/core/connections.html). However, pandas doesn't provide a SQL-based interface to manipulate and query data — SQL is only limited to fetching data into a dataframe.
+
+**What about integrating it into an end-to-end data pipeline?** If you want to schedule your SQL and Pandas data transformations, you can leverage [Kestra](https://kestra.io/docs/getting-started) — a simple and fast open-source event-driven automation platform. The [following blueprint](https://demo.kestra.io/ui/blueprints/community/113) shows how you can easily orchestrate your SQL and Pandas data transformations.
+
+![dataframes_kestra](/blogs/2023-08-11-dataframes/dataframes_kestra.png)
 
 ---
 
