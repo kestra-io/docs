@@ -407,4 +407,16 @@ blockquote.blockquote {
     }
 }
 
+@include media-breakpoint-down(lg) {
+    .desktop {
+        display: none;
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    .mobile {
+        display: none;
+    }
+}
+
 @import "./docs";

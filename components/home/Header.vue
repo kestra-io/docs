@@ -3,9 +3,9 @@
         <div class="hero container">
             <div class="text-block">
                 <p class="overline" data-aos="fade-left">OPEN SOURCE DECLARATIVE<br/>DATA ORCHESTRATION</p>
-                <h1 data-aos="fade-right">Automate <br />Everything <br v-if="!isMobile" />Everywhere <br />All at Once.</h1>
+                <h1 data-aos="fade-right">Automate <br />Everything <br class="desktop" />Everywhere <br />All at Once.</h1>
                 <ClientOnly>
-                    <a class="video" href="https://www.youtube.com/watch?v=h-P0eK2xN58" v-if="isMobile">
+                    <a class="mobile video" href="https://www.youtube.com/watch?v=h-P0eK2xN58">
                         <img src="/landing/home/video.png" alt="Kestra introduction video picture"/>
                         <div class="play-button">
                             <img src="/landing/home/play-button-bg.png" alt="Play button" />
@@ -22,9 +22,11 @@
                     </NuxtLink>
                 </div>
             </div>
-            <ClientOnly>
-                <HeaderAnimation v-if="!isMobile" class="animation"/>
-            </ClientOnly>
+            <div class="desktop">
+                <ClientOnly>
+                    <HeaderAnimation class="animation"/>
+                </ClientOnly>
+            </div>
         </div>
 
         <div class="container text-center">
@@ -62,22 +64,7 @@
         components: {Console, PlayOutline, LightningBolt, GithubButton, Companies, HeaderAnimation},
         data() {
             return {
-                videoVisible: false,
-                isMobile: false
-            }
-        },
-        mounted() {
-            if(process.client) {
-                this.computeIsMobile();
-                window.onresize = () => {
-                    this.computeIsMobile();
-                }
-            }
-        },
-        methods: {
-            computeIsMobile() {
-                // LG devices breakpoint = 992px
-                this.isMobile = window.innerWidth < 992;
+                videoVisible: false
             }
         }
     }
