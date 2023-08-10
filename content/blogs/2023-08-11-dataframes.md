@@ -394,21 +394,21 @@ import fugue.api as fa
 
 def run(engine=None):
     query = """
-    orders = LOAD "dataframes/2023*.csv" (header=True)
-    products = LOAD "dataframes/products.csv" (header=True)
+    orders = LOAD "dataframes/2023*.csv" (header=true)
+    products = LOAD "dataframes/products.csv" (header=true)
 
-    df = SELECT *
+    df = SELECT product_name, CAST(total AS INT) AS total
            FROM orders
       LEFT JOIN products
-             ON orders.product_id = products.products_id
+             ON orders.product_id = products.product_id
 
-    res = SELECT product_name, SUM(total) as total
+    res = SELECT product_name, SUM(total) AS total
             FROM df
            GROUP BY product_name
            ORDER BY total
            LIMIT 10
 
-    SAVE "bestsellers_fugue.json"
+    SAVE TO "bestsellers_fugue.json"
     """
 
     fa.fugue_sql(query, engine=engine)
