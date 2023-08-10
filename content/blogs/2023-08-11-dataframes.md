@@ -455,20 +455,24 @@ We've covered a lot already. Here are some additional tools that support Datafra
 - [Ibis](https://github.com/ibis-project/ibis) — a Python framework which strives to offer flexibility of Python analytics with the scale and performance of modern SQL. It's neither a pandas-like dataframe, nor SQL, but it gives you a way to write SQL queries in Python.
 - [Rapids](https://rapids.ai/) - GPU-accelerated dataframes.
 
+---
+
 ## How should you choose among so many options?
 
 Here is what you should consider when choosing a dataframe framework:
-1. What problems are you trying to solve?
-2. What skills do people in your organization have? Are they more comfortable with SQL or Python?
-3. How much data do you have? Do you need to scale to multiple machines?
+1. What skills do people in your organization have? Are they more comfortable with SQL or Python?
+2. How much data do you have? Do you need to scale to multiple machines?
+3. What is the maturity of the framework? Is it actively maintained?
 
-It's always best to start simple, and start with what you already have. If you don't have big data, you can start with:
-- DuckDB and dbt for SQL-oriented use cases
-- Polars for Python-, Node- or Rust-oriented workflows.
+It's always best to start simple. Usually, you can start with:
+- [DuckDB](https://duckdb.org/) and [dbt](https://github.com/dbt-labs/dbt-core) for SQL-oriented use cases
+- [Polars](https://www.pola.rs/) for Python-, Node- or Rust-oriented workflows.
 
-With both of these tools, you can easily transition to pandas and other frameworks when you need to because they build on Apache Arrow standard.
+With both of these tools, you can easily transition to pandas and other frameworks when you need to thanks to the Apache Arrow format.
 
-If maturity is important to you, it's worth looking at Spark. Even though the landscape is progressing quickly, Spark is still the most mature and comprehensive framework.
+If maturity is important to you, it's still worth considering Spark. Even though the landscape is progressing quickly, Spark is still the most mature and comprehensive dataframe framework.
+
+---
 
 ## Using SQL and dataframes in your data pipelines
 
@@ -482,5 +486,5 @@ The [following blueprint](https://demo.kestra.io/ui/blueprints/community/113) sh
 
 ## Summary
 
-This post covered several open-source projects that support dataframes and SQL workflows. Which table abstraction is your favorite? Let us know in the [community Slack](https://kestra.io/slack). Check out [Kestra's blueprints](2023-07-12-your-private-app-store-for-data-pipelines.md) to discover how to orchestrate both SQL and dataframe workflows. If you like Kestra and our blog, give us a [star on GitHub](https://github.com/kestra-io/kestra).
+This post covered several open-source projects that support dataframes and SQL workflows. Which table abstraction is your favorite? Let us know in the [community Slack](https://kestra.io/slack). Make sure to check out [Kestra's blueprints](2023-07-12-your-private-app-store-for-data-pipelines.md) to discover how to orchestrate both SQL and dataframe workflows. If you like Kestra, give us a [star on GitHub](https://github.com/kestra-io/kestra) and join the [community](https://kestra.io/slack).
 
