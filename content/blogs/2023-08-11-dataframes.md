@@ -1,7 +1,7 @@
 ---
 title: "Polars, DuckDB, Pandas, Modin, Ponder, Fugue, Daft — which one is the best dataframe and SQL tool?"
 description: "Comparing open-source dataframe and SQL frameworks for data engineering, machine learning and analytics"
-date: 2023-08-11T10:00:00
+date: 2023-08-10T16:00:00
 category: Solutions
 author:
   name: Anna Geller
