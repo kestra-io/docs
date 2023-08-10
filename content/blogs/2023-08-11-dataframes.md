@@ -31,9 +31,9 @@ In the past, SQL and dataframes were two separate worlds. SQL was used by data e
 
 🎶 **Fugue** is a [Python interface](https://github.com/fugue-project/fugue) for distributed transformations over dataframes but it also can execute Fugue-SQL on top of local (pandas, Polars, DuckDB) or distributed (Spark, Dask, BigQuery, and more) dataframes.
 
-💦 **Modin** provides a [drop-in replacement for pandas](https://github.com/modin-project/modin), and their commercial offering, [Ponder](https://ponder.io/), can translate your pandas code to SQL under the hood and run it on a cloud data warehouse such as BigQuery or Snowflake.
+💦 **Modin** provides a [drop-in replacement for pandas](https://github.com/modin-project/modin), and their commercial offering ([Ponder](https://ponder.io/)) can translate your pandas code to SQL under the hood and run it on DuckDB or a cloud data warehouse such as BigQuery or Snowflake.
 
-✨ [Spark SQL](https://spark.apache.org/docs/latest/sql-programming-guide.html) makes the distinction between dataframes and SQL almost invisible. To the end user, everything is a Spark dataframe regardless of whether you use SQL, Java, Scala, Python, or [Pandas API](https://spark.apache.org/docs/latest/api/python/user_guide/pandas_on_spark/index.html).
+✨ **[Spark SQL](https://spark.apache.org/docs/latest/sql-programming-guide.html)** makes the distinction between dataframes and SQL almost invisible. To the end user, everything is a Spark dataframe regardless of whether you use SQL, Java, Scala, Python, or [Pandas API](https://spark.apache.org/docs/latest/api/python/user_guide/pandas_on_spark/index.html).
 
 ❄️ **Snowpark** is Snowflake's framework for building [distributed dataframes](https://docs.snowflake.com/en/developer-guide/snowpark/python/working-with-dataframes#constructing-a-dataframe). It allows writing custom imperative code in Python, Java, or Scala and pushes down computation to Snowflake as if you would write and execute SQL.
 
@@ -57,7 +57,7 @@ Let's get started with the most popular dataframe library in Python — **pandas
 
 ## Pandas
 
-The concept of DataFrames has been initially established in the R programming language. Pandas, released in 2008, has brought dataframes to Python. Due to growing Python's popularity, pandas has, over time, become the default choice for many data science and analytics tasks.
+The concept of dataframes has been initially established in the R programming language. Pandas, released in 2008, has brought dataframes to Python. Due to growing Python's popularity, pandas has, over time, become the default choice for many data science and analytics tasks.
 
 Despite the wide adoption, pandas has several drawbacks, which inspired many new open-source and commercial products. The creator of pandas alone, Wes McKinney, famously wrote ["10 Things I Hate About pandas"](https://wesmckinney.com/blog/apache-arrow-pandas-internals/) on his blog, including aspects such as poor memory management, inefficient data types, and lack of query planning and multicore execution.
 
@@ -97,7 +97,7 @@ Polars is a blazingly fast DataFrame library written in Rust. Ritchie Vink, the 
 The key drivers behind Polar's performance (_and popularity_) are:
 1. The **query optimizer** that allows lazy evaluation so that users don't need to worry about optimizations — Polars figures out the optimal path to run a query. According to Polars, without a query optimizer, other dataframe implementations ignore several decades of database research.
 2. **Parallelism** - Polars leverages **lazy evaluation** to parallelize query execution across all cores of your machine.
-3. Memory- and cache-efficient [columnar format](https://arrow.apache.org/docs/format/Columnar.html) — pandas' approach of storing arrays, strings, and structs as Python objects results in a single-threaded execution. In contrast, Polars uses data types based on **Apache Arrow** and can "put your machine to work". By leveraging the [streaming API](https://pola-rs.github.io/polars-book/user-guide/concepts/streaming/), Polars can even work with larger-than-memory datasets.
+3. Memory- and cache-efficient [columnar format](https://arrow.apache.org/docs/format/Columnar.html) — pandas' approach of storing arrays, strings, and structs as Python objects results in a single-threaded execution. In contrast, Polars uses data types based on [Apache Arrow](https://arrow.apache.org/) and can "put your machine to work". By leveraging the [streaming API](https://pola-rs.github.io/polars-book/user-guide/concepts/streaming/), Polars can even work with larger-than-memory datasets.
 
 
 Here is the representation of our use case in Polars:
@@ -166,9 +166,9 @@ This example seamlessly combines Python and SQL code. You can see here that the 
 
 ## DuckDB
 
-DuckDB is an in-process OLAP DBMS designed to be embedded into applications. It is written in C++ and has client libraries for Python, SQL, Java, Swift (enabling DuckDB in mobile applications).
+DuckDB is an in-process OLAP DBMS designed to be embedded into applications. It is written in C++ and has client libraries for Python, SQL, Java, and even Swift (enabling DuckDB in mobile applications).
 
-DuckDB SQL dialect supports complex types (arrays, structs), window functions, nested correlated subqueries, and many (many!) more. You can even execute SQL on top of your Pandas dataframe.
+DuckDB SQL dialect supports complex types (arrays, structs), window functions, nested correlated subqueries, and many (many!) more. You can even execute SQL on top of your pandas or Polars dataframe.
 
 Here is the same example using DuckDB in plain SQL:
 
@@ -217,7 +217,7 @@ It's also worth mentioning that DuckDB integrates _extremely_ well with Polars �
 ![dataframes_polars_duckdb](/blogs/2023-08-11-dataframes/dataframes_polars_duckdb.png)
 
 
-**What about distributed compute?** DuckDB is an in-process single-node database. However, MotherDuck scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck) guide and our [DuckDB blueprints](https://demo.kestra.io/ui/blueprints/community?selectedTag=35) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
+**What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck) guide and our [blueprints](https://demo.kestra.io/ui/blueprints/community?selectedTag=35) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
 
 Speaking of scaling your dataframes, let's cover Modin, Ponder, and Fugue next.
 
@@ -320,12 +320,12 @@ top.to_json("bestsellers_ponder.json", orient="records")
 
 While the setup guide was helpful, I couldn't solve our use case with Ponder.
 
-Ponder created 14 intermediate tables in my BigQuery dataset (yes, 14!) to perform that simple task, and it didn't even succeed in generating a JSON file as output. See the screenshot below for reference:
+Ponder created 14 intermediate tables in my BigQuery dataset (yes, 14!) to perform that simple task, and it didn't even succeed in generating a JSON file as output. See the screenshot below for reference.
 
 ![ponder](/blogs/2023-08-11-dataframes/ponder.png)
 
 
-My overall impression is that Ponder seems like an interesting product for big data as it executes everything in a cloud data warehouse such as BigQuery. It seems quite early — I got a bunch of errors even when following their getting started guide.
+My overall impression is that Ponder seems like an interesting product for big data as it executes everything in a cloud data warehouse such as BigQuery. It seems quite early, though — I got a bunch of errors even when following the getting started guide.
 
 Next, let's look at **Fugue**, which also provides a distributed dataframe abstraction that can run on top of BigQuery, Dask, Spark, DuckDB, and more.
 
@@ -383,7 +383,7 @@ The biggest strength of Fugue is that switching between pandas, Spark, Dask, and
 ```python
 run(engine="spark")  # runs on Spark
 run(engine="duckdb")  # runs on DuckDB
-run()  # runs on pandas#
+run()  # runs on pandas
 ```
 
 Many Fugue users also appreciate the ability to interleave SQL and Python code within the same data transformation. However, if you prefer pure SQL, Fugure supports that too. Here is the same example using only SQL:
@@ -420,7 +420,7 @@ run(engine="duckdb")
 
 ## Daft
 
-[Daft](https://github.com/Eventual-Inc/Daft) is another recently started open-source DataFrame project. At first glance, Daft seems to be as powerful and expressive as Polars while also being able to support distributed computation as Spark, Dask, and Ray do it.
+[Daft](https://github.com/Eventual-Inc/Daft) is another recently started open-source DataFrame project. At first glance, Daft seems to be as powerful and expressive as Polars while also being able to support distributed computation as Spark, Dask, and Ray.
 
 To get started, you can install it using:
 
@@ -446,8 +446,8 @@ Note that this table is what _they_ say in their docs — I wasn't able to verif
 ## Honorable mentions
 
 We've covered a lot already. Here are some additional tools that support Dataframe and SQL workflows:
-- [Vaex](https://github.com/vaexio/vaex) - Out-of-core hybrid Apache Arrow/NumPy DataFrame library for Python, ML, visualization and exploration of big tabular data at a billion rows per second.
-- [Spark SQL](https://spark.apache.org/sql/) - a SQL interface to Spark dataframes. This is the most mature interface when it comes to seamlessly combining SQL with imperative code written in Python, Scala and Java. Spark was the first dataframe framework that added SQL support.
+- [Vaex](https://github.com/vaexio/vaex) - out-of-core hybrid Apache Arrow/NumPy DataFrame library for Python, ML, visualization and exploration of big tabular data at a billion rows per second.
+- [Spark SQL](https://spark.apache.org/sql/) - a SQL interface to Spark dataframes. This is the most mature interface when it comes to seamlessly combining SQL with imperative code written in Python, Scala and Java. Spark was also the first dataframe framework that added SQL support.
 - [Pandas on Spark](https://spark.apache.org/docs/latest/api/python/user_guide/pandas_on_spark/index.html) — while Spark SQL is mature, the Pandas API for Spark is rather limited with only [around 60% coverage](https://modin.readthedocs.io/en/stable/getting_started/why_modin/modin_vs_dask_vs_koalas.html#modin-vs-dask-dataframe-vs-koalas) of what you can do with Pandas. Still, if you need some Pandas functionality while mostly using [PySpark](https://spark.apache.org/docs/latest/api/python/index.html), it's worth checking out. You can notice here that Spark is the most comprehensive among all these dataframe frameworks, covering Pandas API, DataFrame libraries in multiple lanuages, while also providing a reliable SQL interface on top of them.
 - [Dask](https://www.dask.org/) and [Ray](https://www.ray.io/) — distributed frameworks to parallelize Python and ML applications. The [dask-sql](https://dask-sql.readthedocs.io/en/latest/) project provides a distributed query engine in Python, allowing a mixture of SQL operations and Python code. Ray supports SQL via an external open-source contribution called [ray-sql](https://github.com/datafusion-contrib/ray-sql). However, judging by the number of downloads, both ``dask-sql`` and ``ray-sql`` are not widely used yet.
 - [R's data.table](https://github.com/Rdatatable/data.table) — provides a high-performance version of [base R](https://www.r-project.org/about.html)'s `data.frame` table abstraction.
@@ -464,11 +464,11 @@ Here is what you should consider when choosing a dataframe framework:
 2. How much data do you have? Do you need to scale to multiple machines?
 3. What is the maturity of the framework? Is it actively maintained?
 
-It's always best to start simple. Usually, you can start with:
+It's always best to start simple. You can start with:
 - [DuckDB](https://duckdb.org/) and [dbt](https://github.com/dbt-labs/dbt-core) for SQL-oriented use cases
 - [Polars](https://www.pola.rs/) for Python-, Node- or Rust-oriented workflows.
 
-With both of these tools, you can easily transition to pandas and other frameworks when you need to thanks to the Apache Arrow format.
+With these tools, you can easily transition to pandas and other frameworks when you need to thanks to the Apache Arrow format.
 
 If maturity is important to you, it's still worth considering Spark. Even though the landscape is progressing quickly, Spark is still the most mature and comprehensive dataframe framework.
 
@@ -476,7 +476,7 @@ If maturity is important to you, it's still worth considering Spark. Even though
 
 ## Using SQL and dataframes in your data pipelines
 
-[Kestra](https://kestra.io/docs/getting-started) is a simple and fast open-source data orchestrator that can help you integrate your SQL and dataframe transformations into an end-to-end data pipeline. The UI ships with a variety of [blueprints](../docs/04.user-interface-guide/blueprints.md) that you can use to get started quickly.
+[Kestra](https://kestra.io/docs/getting-started) is a simple and fast open-source data orchestrator that can help you integrate your SQL and dataframe transformations into end-to-end data pipelines. The UI ships with a variety of [blueprints](../docs/04.user-interface-guide/blueprints.md) that you can use to get started quickly.
 
 The [following blueprint](https://demo.kestra.io/ui/blueprints/community/113) shows how you can easily orchestrate your SQL and Pandas data transformations.
 
