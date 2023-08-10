@@ -6,7 +6,7 @@
             <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
                 <ContentRenderer :value="page">
                     <div class="bd-title">
-                        <p class="subtitle" data-aos="fade-right">
+                        <p class="top-breadcrumb" data-aos="fade-right">
                             <NuxtLink href="/blogs">Blog</NuxtLink>
                         </p>
                         <h1 data-aos="fade-left">{{ page.title }}</h1>

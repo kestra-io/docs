@@ -9,7 +9,6 @@
         <HomeFeatures />
         <HomeUI />
         <HomeHow />
-        <HomeUseCase />
         <HomePlugins />
         <HomeTestimonials />
         <HomeEnterpriseEdition />
