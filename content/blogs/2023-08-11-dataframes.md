@@ -1,6 +1,6 @@
 ---
 title: "Polars, DuckDB, Pandas, Modin, Ponder, Fugue, Daft — which one is the best dataframe and SQL tool?"
-description: "Comparing open-source dataframe and SQL frameworks for data engineering and analytics"
+description: "Comparing open-source dataframe and SQL frameworks for data engineering, machine learning and analytics"
 date: 2023-08-11T10:00:00
 category: Solutions
 author:
@@ -13,7 +13,7 @@ Tabular format with rows and columns, popularized by relational databases and Mi
 
 There are two main ways of transforming and analyzing tabular data — **SQL** and **dataframes** (_sorry, Excel!_).
 
-**SQL** is a declarative language for querying datasets of any size. It's versatile, mature, time-tested, and widely adopted across various professions and tools.
+**SQL** is a declarative language for querying datasets of any size. It's versatile, mature, time-tested, and widely adopted across various professions, organizations and tools.
 
 However, some data transformations are more easily expressed using dataframes defined in an imperative language such as Python. This includes pivoting and melting (_reverse process to pivoting_), dealing with missing values or time series, visualizing and iteratively exploring data, or applying custom functions and machine learning algorithms. For such use cases, **dataframes** offer a great addition to SQL-based processes allowing in-memory computation and integrating well with data science workflows.
 
@@ -260,7 +260,7 @@ Let's now look at Ponder, which is a commercial product built on top of Modin.
 
 ## Ponder
 
-The promise of [Ponder](https://ponder.io/) is that you can execute your Modin code (_which is a drop-in replacement for pandas_) directly in your cloud data warehouse, such as BigQuery or Snowflake.
+The promise of [Ponder](https://ponder.io/) is that you can execute your Modin code directly in your cloud data warehouse, such as BigQuery or Snowflake.
 
 I was trying to use [Ponder with BigQuery](https://docs.ponder.io/resources/bigquery_setup.html). To do that, I needed to [sign up](https://app.ponder.io/signup), authenticate my terminal with Ponder's API token and install a bunch of Python libraries:
 
