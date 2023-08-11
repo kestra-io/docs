@@ -11,6 +11,7 @@ body {
 }
 
 :root {
+    --spacer: #{$spacer};
     --#{$prefix}font-size-lg: #{$font-size-lg};
     --#{$prefix}font-size-sm: #{$font-size-sm};
 }
@@ -403,6 +404,18 @@ blockquote.blockquote {
         height: 2px;
         width: 51px;
         background: var(--bs-pink);
+    }
+}
+
+@include media-breakpoint-down(lg) {
+    .desktop {
+        display: none;
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    .mobile {
+        display: none;
     }
 }
 
