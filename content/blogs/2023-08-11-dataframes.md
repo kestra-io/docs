@@ -219,7 +219,7 @@ It's also worth mentioning that DuckDB integrates exceptionally well with Polars
 
 **What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](https://kestra.io/blogs/2023-07-28-duckdb-vs-motherduck) guide and our [blueprints](https://demo.kestra.io/ui/blueprints/community?selectedTag=35) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
 
-Speaking of scaling your dataframes, let's cover Modin, Ponder, and Fugue next.
+Speaking of scaling your dataframes, let's cover Modin, Ponder, Fugue, and Daft next.
 
 ---
 
