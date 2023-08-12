@@ -429,7 +429,9 @@ pip install getdaft
 pip install charset_normalizer --upgrade # I had to add this on M1
 ```
 
-Initially, I was getting `exit code 132` even when running a simple script only reading a tiny CSV file. It turned out that this was [M1-mac issue](https://github.com/Eventual-Inc/Daft/issues/1021#issuecomment-1583436674) running Python (installed with `brew`) in emulation mode with Rosetta (Thanks [Jay Chia](https://twitter.com/jaychia5) for help with that!). Daft is running a bunch of optimizations which break in emulation mode. After installing Conda for M1/M2, running `python -c "import sysconfig; print(sysconfig.get_platform())"` validated that I was now on the correct Python distribution for my architecture: `macosx-11.1-arm64`.  
+Initially, I was getting `exit code 132` even when running a simple script only reading a tiny CSV file. It turned out that this was an [M1-mac issue](https://github.com/Eventual-Inc/Daft/issues/1021#issuecomment-1583436674) running Python (installed with `brew`) in emulation mode with Rosetta (kudos to [Jay Chia](https://twitter.com/jaychia5) for help with that!). Daft is running a bunch of optimizations that break in emulation mode, hence the initial error. 
+
+After installing Conda for M1/M2, running `python -c "import sysconfig; print(sysconfig.get_platform())"` validated that I was now on the correct Python distribution for my architecture: `macosx-11.1-arm64`.  
 
 Here is the Daft syntax for our use case:
 
