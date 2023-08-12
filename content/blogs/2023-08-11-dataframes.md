@@ -426,9 +426,31 @@ To get started, you can install it using:
 
 ```bash
 pip install getdaft
+pip install charset_normalizer --upgrade # I had to add this on M1
 ```
 
-Similar to Ponder, the project seems to be quite early. I was getting `exit code 132` even when running a simple script only reading a tiny CSV file. Still, the project seems to be heading in an interesting direction. The table below shows how [Daft positions itself](https://www.getdaft.io/projects/docs/en/latest/dataframe_comparison.html) among other dataframe libraries:
+Initially, I was getting `exit code 132` even when running a simple script only reading a tiny CSV file. It turned out that this was [M1-mac issue](https://github.com/Eventual-Inc/Daft/issues/1021#issuecomment-1583436674) running Python (installed with `brew`) in emulation mode with Rosetta (Thanks [Jay Chia](https://twitter.com/jaychia5) for help with that!). Daft is running a bunch of optimizations which break in emulation mode. After installing Conda for M1/M2, running `python -c "import sysconfig; print(sysconfig.get_platform())"` validated that I was now on the correct Python distribution for my architecture: `macosx-11.1-arm64`.  
+
+Here is the Daft syntax for our use case:
+
+```python
+import daft
+
+df = (
+    daft.read_csv("dataframes/2023_*.csv")
+    .join(daft.read_csv("dataframes/products.csv"), on="product_id", how="inner")
+    .groupby("product_name")
+    .sum("total")
+    .sort("total", desc=True)
+    .limit(10)
+)
+df.to_pandas().to_json("bestsellers_daft.json", orient="records")
+print(df.collect())
+```
+
+There is no `DataFrame.write_json()` method yet, so you need to convert Daft DataFrame to pandas to get the result in a JSON format.
+
+Overall, the project seems to be heading in an interesting direction. The table below shows how [Daft positions itself](https://www.getdaft.io/projects/docs/en/latest/dataframe_comparison.html) among other dataframe libraries:
 
 | Dataframe | Query Optimizer | Complex Types | Distributed | Arrow Backed | Vectorized Execution Engine | Out-of-core |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -439,7 +461,6 @@ Similar to Ponder, the project seems to be quite early. I was getting `exit code
 | [`Pyspark`](https://github.com/apache/spark) | Yes | No | Yes | Pandas UDF/IO | Pandas UDF | Yes |
 | [`Dask DF`](https://github.com/dask/dask) | No | Python object | Yes | No | Some(Pandas) | Yes |
 
-Note that this table is what _they_ say in their docs — I wasn't able to verify it myself yet.
 
 ---
 
