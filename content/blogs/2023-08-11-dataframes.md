@@ -317,15 +317,11 @@ top = (
 
 top.to_json("bestsellers_ponder.json", orient="records")
 ```
-
-While the setup guide was helpful, I couldn't solve our use case with Ponder.
-
-Ponder created 14 intermediate tables in my BigQuery dataset (yes, 14!) to perform that simple task, and it didn't even succeed in generating a JSON file as output. See the screenshot below for reference.
+It took some time but eventually Ponder was able to finish the task. However, it also created 14 intermediate tables in my BigQuery dataset (yes, 14!) to perform that simple task. See the screenshot below for reference.
 
 ![ponder](/blogs/2023-08-11-dataframes/ponder.png)
 
-
-My overall impression is that Ponder seems like an interesting product for big data as it executes everything in a cloud data warehouse such as BigQuery. It seems pretty early, though — I got a bunch of errors even when following the getting started guide.
+My overall impression is that Ponder seems like an interesting product for big data as it executes everything in a cloud data warehouse such as BigQuery. However, for our use case, Ponder felt a bit too *heavy*.
 
 Next, let's look at **Fugue**, which also provides a distributed dataframe abstraction that can run on top of BigQuery, Dask, Spark, DuckDB, and more.
 
