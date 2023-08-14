@@ -15,7 +15,7 @@
                             <strong>Strong typing and autocompletion:</strong> iterate quickly when adding new flows, triggers and tasks. If something is incorrect in your workflow definition, you will know in advance thanks to the built-in syntax validation.
                         </li>
                         <li>
-                            <strong>Data-mesh friendly design:</strong> thanks to the  thanks to the simple <NuxtLink href="/features/declarative-data-orchestration"> YAML interface</NuxtLink>, built-in documentation and blueprints, domain experts who can't code can build their own workflows too.
+                            <strong>Support for data-mesh:</strong> thanks to the  thanks to the simple <NuxtLink href="/features/declarative-data-orchestration"> YAML interface</NuxtLink>, built-in documentation and blueprints, domain experts can build their own workflows, too.
                         </li>
                         <li>
                             <strong>Intuitive UI built not only for engineers:</strong> when you add workflows directly from the UI, the live-updating topology view helps you see dependencies between processes, systems and tasks. 
@@ -29,10 +29,10 @@
                     <h3>Iterate faster without the overhead of CI/CD</h3>
                     <ul>
                         <li>
-                            <strong>Less time spent babysitting orchestration:</strong> Seamlessly configure your tasks to run sequentially, in parallel or only based on a specific condition or presence of events without having to navigate convoluted orchestration code bases. 
+                            <strong>Less time spent on orchestration:</strong> Seamlessly configure your tasks to run sequentially, in parallel or only based on a specific condition or presence of events without having to navigate convoluted orchestration code bases. 
                         </li>
                         <li>
-                            <strong>Intuitive Orchestration:</strong> Easily manage task dependencies — defining proper execution order is as simple as adding a list of tasks in the order you want them to be executed.
+                            <strong>Intuitive dependency management:</strong> Easily manage task dependencies — defining proper execution order is as simple as adding a list of tasks in the order you want them to be executed.
                         </li>
                         <li>
                             <strong>Built-in documentation and blueprints:</strong> No need to navigate bulky documentation to figure out the right task or trigger properties — they are available right next to your code editor.

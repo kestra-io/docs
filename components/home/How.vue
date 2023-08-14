@@ -2,7 +2,7 @@
     <div class="container">
         <Section
             title="Performant and Scalable Data Operations"
-            subtitle="Master Data Workflows"
+            subtitle="Simpler and Faster Data Workflows"
         >
             <div class="row mb-5">
                 <div class="col-md-6 p-5" data-aos="fade-right">
