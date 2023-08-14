@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <span class="card-icon"><OpenInApp /></span>
                             <h4 class="card-title">Fast development cycles</h4>
-                            <p class="card-text">Create flows in a simple <NuxtLink href="/features/declarative-data-orchestration">declarative YAML config</NuxtLink> directly from the UI with autocompletion, syntax validation and built-in documentation. Or use our official VS Code extension integrating with Git and CI/CD systems.</p>
+                            <p class="card-text">Create flows in a simple <NuxtLink href="/features/declarative-data-orchestration">declarative YAML config</NuxtLink> directly from the UI with autocompletion, syntax validation and built-in documentation. Or use our official VS Code extension to integrate your workflows with Git and CI/CD systems.</p>
                         </div>
                     </div>
                 </div>
