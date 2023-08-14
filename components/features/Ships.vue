@@ -1,9 +1,9 @@
 <template>
     <div class="container">
         <Section
-            title="Save on time, stress, and development costs."
-            subtitle="FEATURES"
-            baseline="Save on time, stress, and development costs."
+            title="Save time and development costs."
+            subtitle="Simplicity scales, complexity fails"
+            baseline="Less time spent writing boilerplate orchestration code, more time for what matters to your business"
         >
 
             <div class="row card-group mb-2">

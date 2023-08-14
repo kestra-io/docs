@@ -22,7 +22,7 @@
 
         <div class="row mb-5">
             <div class="col-md-6 p-5 order-1 order-md-0" data-aos="fade-left">
-                <h3>Empower Your Data Team with Declarative Orchestration</h3>
+                <h3>Empower Your Team with Declarative Orchestration</h3>
                 <ul>
                     <li>
                         <strong>Accelerate Time to Value:</strong> Declarative orchestration modernized the creation and maintenance of data pipelines, enabling data teams to deliver results faster and more efficiently.
