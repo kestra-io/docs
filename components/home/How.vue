@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <Section
-            title="Performant and Scalable Data Operations"
+            title="Scheduled and Event-Driven Data Operations"
             subtitle="Simpler and Faster Data Workflows"
         >
             <div class="row mb-5">
