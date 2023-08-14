@@ -26,7 +26,7 @@
                     <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><CalendarStartOutline /></span>
-                            <h4 class="card-title">Event-Based</h4>
+                            <h4 class="card-title">Real-Time Events</h4>
                             <p class="card-text">Flow execution based on events from the core or plugins, such as the result of other flows in real-time, detection of files from SFTP or Google Cloud Storage, or results of an SQL query.</p>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                     <div class="card" data-aos="zoom-in">
                         <div class="card-body">
                             <span class="card-icon"><ClockStart /></span>
-                            <h4 class="card-title">Infinity of triggers</h4>
+                            <h4 class="card-title">Event-driven Triggers</h4>
                             <p class="card-text">Endless possibilities to start a flow through API, using a webhook, waiting for a trigger, or simply starting directly from the Web UI.</p>
                         </div>
                     </div>

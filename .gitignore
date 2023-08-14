@@ -34,3 +34,4 @@ node_modules
 .env
 dist
 .obsidian/**/*
+package-lock.json

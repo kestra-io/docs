@@ -4,7 +4,7 @@
             <Section
                 class="dark"
                 subtitle="All-Inclusive Dashboard"
-                title="Empower Developers with a Comprehensive, User-Friendly Interface"
+                title="Empower Your Team with a Comprehensive, User-Friendly Orchestration Interface"
             >
                 <div class="row mb-5">
                     <div class="col-lg-8">
@@ -19,7 +19,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><WrenchOutline /></span>
-                                    Built-in low code editor for your flows
+                                    Built-in editor to define flows, SQL queries and custom scripts
                                 </p>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
-                                    Execute and monitor directly from the user interface
+                                    Dashboards to monitor your system's health
                                 </p>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
-                                    Simple declarative language editor
+                                    Simple declarative editor with live-updating DAG view
                                 </p>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ViewDashboardVariantOutline /></span>
-                                    Complete and comprehensive dashboard
+                                    Language-agnostic interface for scheduled and event-driven flows
                                 </p>
                             </div>
                         </div>

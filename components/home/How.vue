@@ -1,15 +1,15 @@
 <template>
     <div class="container">
         <Section
-            title="Performant and Scalable Data Operations"
-            subtitle="Master Data Workflows"
+            title="Scheduled and Event-Driven Data Operations"
+            subtitle="Simpler and Faster Data Workflows"
         >
             <div class="row mb-5">
                 <div class="col-md-6 p-5" data-aos="fade-right">
                     <p class="overline">Step 1</p>
                     <h3>Define your workflows</h3>
                     <p>
-                        Declare all <NuxtLink href="/features/declarative-data-orchestration">your flows in Yaml</NuxtLink>, specify all tasks that need to be executed, the input and output data, and any dependencies between steps.
+                        Declare all <NuxtLink href="/features/declarative-data-orchestration">your flows in YAML</NuxtLink>, specify all tasks that need to be executed, the input and output data, and any dependencies between steps.
                     </p>
                 </div>
                 <div class="col-md-6" data-aos="fade-right">
