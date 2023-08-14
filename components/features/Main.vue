@@ -29,7 +29,7 @@
                     <h3>Iterate faster without the overhead of CI/CD</h3>
                     <ul>
                         <li>
-                            <strong>Less time spent on orchestration:</strong> Seamlessly configure your tasks to run sequentially, in parallel or only based on a specific condition or presence of events without having to navigate convoluted orchestration code bases. 
+                            <strong>Less time spent babysitting orchestration code:</strong> Seamlessly configure your tasks to run sequentially, in parallel or only based on a specific condition or presence of events without having to navigate convoluted orchestration code bases. 
                         </li>
                         <li>
                             <strong>Intuitive dependency management:</strong> Easily manage task dependencies — defining proper execution order is as simple as adding a list of tasks in the order you want them to be executed.
