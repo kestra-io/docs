@@ -36,22 +36,6 @@
                     <img class="img-fluid" src="/landing/enterprise/security-2.svg" alt="A dashboard with success or fail task events">
                 </div>
             </div>
-            <div class="row mb-5">
-                <div class="col-md-6" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/enterprise/security-3.svg" alt="Security shield with checkmark, representing a protected access with SSO and 2FA connection">
-                </div>
-                <div class="col-md-6" data-aos="fade-left">
-                    <h3>Advanced Workflow Organization</h3>
-                    <p>
-                        Take workflow organization and collaboration to the next level with configurable namespaces.
-                    </p>
-                    <ul>
-                        <li><b>Organize Workflows with Namespaces:</b> Create separate namespaces for different teams or projects, making it easy to find and manage your workflows</li>
-                        <li><b>Control Access and Permissions:</b> Configure access and permissions at the namespace level, ensuring that users only have access to the workflows and resources relevant to their roles</li>
-                        <li><b>Share Workflows and Resources:</b> Easily share workflows, tasks, and other resources across namespaces, fostering efficient collaboration between teams</li>
-                    </ul>
-                </div>
-            </div>
         </Section>
     </div>
 </template>
