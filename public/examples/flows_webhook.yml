@@ -18,4 +18,5 @@ tasks:
 triggers:
   - id: webhook
     type: io.kestra.core.models.triggers.types.Webhook
+    # the required key to start this flow
     key: 1KERKzRQZSMtLdMdNI7Nkr
