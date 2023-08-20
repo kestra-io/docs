@@ -28,12 +28,10 @@ As you can see, Kestra will handle **all your pipelines** !
 ## The History of Kestra!
 Kestra started in 2019 with this [initial commit](https://github.com/kestra-io/kestra/commit/d57e30c0c0d450590a1eaac5df0e82e1ea94e562). At this time, Kestra was at the proof-of-concept stage.
 
-<img src="/blogs/2022-02-01-kestra-opensource/initial-commit.jpg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 450px">
+![Initial commit](/blogs/2022-02-01-kestra-opensource/initial-commit.jpg)
 
 
 To provide a bit of a background: I was working for Leroy Merlin as a consultant. We needed to build a new cloud-based data platform from scratch (destination: mostly Google Cloud Platform). We tried a [lot of things](../blogs/2022-02-22-leroy-merlin-usage-kestra) and failed with some of our attempts. The **biggest setback was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed simply due to the Airflow scheduler), performance issues (unable to handle a light workload), and a lack of features (scaling, data processing). After many tests (Google Composer, Open source Airflow on Kubernetes), the decision was final: **Airflow was rejected by Leroy Merlin**.
-
-<div class="clearfix" />
 
 I did some research on the orchestrator ecosystem; most are **proprietary and license based** (far from my mindset), some are open source (at this time, only Apache Airflow seemed to be active — and it was rejected). I was really surprised by this discovery and faced this challenge from a co-worker:
 > If you think Airflow is bad, do better!

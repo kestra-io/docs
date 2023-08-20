@@ -20,9 +20,8 @@ We have interview many people on our slack community, twitter, ... also that **c
 
 For now, we continue to think a high-availability solution is a **must-have**, a solution that can ensure you that if your needs increase, you will have a solution to scale without having to do without the features. So we decide to create a new version of Kestra (in Beta for now) that will work for a Medium-sized environment.
 
-<p style="text-align:center">
-  <img src="/docs/architecture/architecture-sql.svg" class="rounded img-thumbnail mt-4 mb-4" alt="Kestra Architecture">
-</p>
+![Kestra Architecture](/docs/architecture/architecture-sql.svg)
+
 
 The solution is to **remove the dependencies of Kafka & ElasticSearch** and to allow to replace them with a **simple MySQL of Postgres** database for the both of them.
 
@@ -32,9 +31,7 @@ The new version is possible since Kestra thought since its inception as **plugga
 
 ## Tradeoff using a Database
 
-<p style="text-align:center">
-<img src="/blogs/2022-06-21-light-architecture/warning.jpg" class="rounded img-thumbnail mt-4 mb-4" alt="Tradeoff using a Database">
-</p>
+![Tradeoff using a Database](/blogs/2022-06-21-light-architecture/warning.jpg)
 
 We have worked harder to be able to have the **more fluent change** using a database, but we have made some tradeoffs for now (maybe you can go deeper depending on your feedback for a certain point).
 

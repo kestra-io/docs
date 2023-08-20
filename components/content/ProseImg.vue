@@ -1,5 +1,7 @@
 <template>
-    <img :src="refinedSrc" :alt="alt" :width="width" :height="height" :class="classWithZoom">
+    <span class="text-center d-block">
+        <NuxtImg :src="refinedSrc" :alt="alt" :width="width" :height="height" :class="classWithZoom" loading="lazy" format="webp" quality="80" />
+    </span>
 </template>
 
 <script setup lang="ts">

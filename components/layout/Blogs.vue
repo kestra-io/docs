@@ -6,7 +6,7 @@
                     <div class="col-md-4 mb-4">
                         <div class="card" data-aos="fade-right">
                             <NuxtLink class="text-dark" :href="blog._path">
-                                <img :src="blog.image" class="card-img-top rounded-3" :alt="blog.image">
+                                <NuxtImg loading="lazy" format="webp" quality="80" :src="blog.image" class="card-img-top rounded-3" :alt="blog.image" />
                                 <div class="card-body">
                                     <p class="type mt-3 mb-2">{{ blog.category }}</p>
                                     <h4 class="card-title">{{ blog.title }}</h4>

@@ -143,8 +143,7 @@ Thanks to Kestra, they moved **to full autonomy** and **reduced the time to mark
 :::
 
 ### Go Production
-<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/architecture.jpg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Kestra user interface">
-<div class="clearfix" />
+![Kestra user interface](/blogs/2022-02-22-leroy-merlin-usage-kestra/architecture.jpg)
 
 After a few months, **Kestra was confirmed** and was deployed to a production environment in May of 2020. They also decided to move to the Enterprise Edition of Kestra in August 2020 as they needed to have fine-grained security, role-based access control and single sign-on.
 
@@ -158,11 +157,9 @@ Here are some numbers that show the current usage for January 2022 ( for product
 - **3,000,000+ tasks** every month
 - **Equivalent of 2,300 days of task processing time** every month (yep, that’s the equivalent of seventy-five days of task processing every single day)
 
-<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/executions.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
-<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/taskruns.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
-<img src="/blogs/2022-02-22-leroy-merlin-usage-kestra/execution-duration.svg" class="rounded img-thumbnail float-left mr-4 mb-4" alt="Initial commit" style="max-width: 370px">
-
-<div class="clearfix" />
+![Kestra user interface](/blogs/2022-02-22-leroy-merlin-usage-kestra/executions.svg)
+![Kestra user interface](/blogs/2022-02-22-leroy-merlin-usage-kestra/taskruns.svg)
+![Kestra user interface](/blogs/2022-02-22-leroy-merlin-usage-kestra/execution-duration.svg)
 
 ### Some Testimonials
 Leroy Merlin has strongly supported the development of Kestra. As with any software, its young age could be a source of frustration for users. They needed to handle  missing features, report some bugs, suffer some time loss from instability. But what was astounding was the realization that the **pain was far less than the gain**, and we obtained many good reports on software internal notation tools. It proved to be a solution that users really love and uphold.

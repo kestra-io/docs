@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   modules: [
       '@nuxt/devtools',
       '@nuxt/content',
+      '@nuxt/image',
       'nuxt-gtag',
       'nuxt-simple-sitemap',
       'nuxt-multi-cache'
@@ -27,7 +28,7 @@ export default defineNuxtConfig({
               {property: 'og:image', content:'/og-image.png'}
           ],
           script: [
-              {src: '//js-eu1.hsforms.net/forms/embed/v2.js'}
+              {src: 'https://js-eu1.hsforms.net/forms/embed/v2.js'}
           ],
       }
   },
