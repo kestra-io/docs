@@ -1,7 +1,7 @@
 ---
 title: "Generating Fake Data to Create End-to End Orchestration Projects"
 description: " generates dynamic fake data for end-to-end orchestration projects with Kestra, for realistic data use cases and hands-on experience"
-date: 2023-08-16T16:00:00
+date: 2023-08-22T16:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
