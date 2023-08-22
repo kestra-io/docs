@@ -8,7 +8,7 @@ author:
   image: "Bpimpaud"
 image: /blogs/2023-08-22-generating-fake-data.jpg
 ---
-Welcome to the world of Shiny Rocks! Although this company might not exist outside Kestra it has its own purpose.
+Welcome to the world of [Shiny Rocks](https://github.com/kestra-io/shiny_rocks)! Although this company might not exist outside Kestra it has its own purpose.
 
 We often face the challenge of presenting concepts without real data, due to privacy concerns or practicalities.
 
@@ -38,7 +38,7 @@ For example we want two products, one being present in 64% of orders and the oth
 ```python
 class ShinyRockProvier(BaseProvider):
 
-    def order(self, order_date) -> str:
+    def order(self, order_date):
         return {
             "user_id": uuid.uuid4().hex,
             "order_id": uuid.uuid4().hex,
@@ -93,7 +93,7 @@ tasks:
 
       - id: clone
         type: io.kestra.plugin.git.Clone
-        url: https://github.com/Ben8t/shiny_rocks
+        url: https://github.com/kestra-io/shiny_rocks
 
       - id: python
         type: io.kestra.plugin.scripts.python.Commands
@@ -234,7 +234,7 @@ triggers:
     cron: "0 10 * * *
 ```
 
-When every data has been loaded into our data warehouse we trigger a dbt run to model our data. You can find the dbt project inside the shiny rocks [GitHub repository](https://github.com/Ben8t/shiny_rocks/tree/main/shiny_rocks_dbt). We use the SIM data model (Staging, Intermediate, Mart, also known as the Medallion architecture) as explained in [dbt documentation](https://docs.getdbt.com/guides/best-practices/how-we-structure/1-guide-overview#guide-structure-overview).
+When every data has been loaded into our data warehouse we trigger a dbt run to model our data. You can find the dbt project inside the shiny rocks [GitHub repository](https://github.com/kestra-io/shiny_rocks/tree/main/shiny_rocks_dbt). We use the SIM data model (Staging, Intermediate, Mart, also known as the Medallion architecture) as explained in [dbt documentation](https://docs.getdbt.com/guides/best-practices/how-we-structure/1-guide-overview#guide-structure-overview).
 This Flow is triggered when the three upstream dependencies are in success on the last running day.
 
 ```yaml
@@ -252,7 +252,7 @@ tasks:
     tasks:
       - id: cloneRepository
         type: io.kestra.plugin.git.Clone
-        url: https://github.com/Ben8t/shiny_rocks
+        url: https://github.com/kestra-io/shiny_rocks
         branch: main
 
       - id: profile
@@ -413,7 +413,7 @@ triggers:
 
 ## Conclusion ##
 
-For those who wish to dive deeper, we have made the entire Shiny Rocks dataset available for your exploration and usage. 
+For those who wish to dive deeper, we have made the entire [Shiny Rocks project available for your exploration and usage](https://github.com/kestra-io/shiny_rocks). 
 
 Feel free to access the data and use it as a base for your projects or demos. These "plausible" datasets can be invaluable for learning, testing, and showcasing various tools and concepts.
 You can also look at our live demo where you could find all Flow showcased here running everyday in the shiny_rocks namespace.
