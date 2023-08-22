@@ -1,6 +1,6 @@
 ---
 title: "Generating Fake Data to Create End-to End Orchestration Projects"
-description: "Dive into their transformative journey migrating from Apache Airflow to a scalable Data Mesh Architecture with Kestra."
+description: " generates dynamic fake data for end-to-end orchestration projects with Kestra, for realistic data use cases and hands-on experience"
 date: 2023-08-16T16:00:00
 category: Solutions
 author:
