@@ -18,7 +18,7 @@ Shiny Rocks is a fictional company creating smartphones. "Those shiny rocks in o
 
 ## Generating fake data ##
 
-While we admire dbt [jaffle-shop's portrayal](https://github.com/dbt-labs/jaffle_shop) of a fictional e-commerce store, we wanted something more dynamic, especially when showcasing orchestration patterns. Thus, Shiny Rocks was born. Unlike static files that don't change, Shiny Rocks comes with custom scripts that generate fresh data every day. These scripts rely on a mix of mathematical functions to simulate various trends for our imaginary company.
+Unlike static files that don't change, Shiny Rocks comes with custom scripts that generate fresh data every day. These scripts rely on a mix of mathematical functions to simulate various trends for our imaginary company.
 
 Here is for example the mathematical function used to generate orders volume over a year.
 
