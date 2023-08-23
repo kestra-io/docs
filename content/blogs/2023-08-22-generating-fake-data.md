@@ -1,11 +1,11 @@
 ---
 title: "Generating Fake Data to Create End-to End Orchestration Projects"
-description: " generates dynamic fake data for end-to-end orchestration projects with Kestra, for realistic data use cases and hands-on experience"
+description: "Generates dynamic fake data for end-to-end orchestration projects with Kestra, for realistic data use cases and hands-on experience"
 date: 2023-08-22T16:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
-  image: "Bpimpaud"
+  image: "bpimpaud"
 image: /blogs/2023-08-22-generating-fake-data.jpg
 ---
 Welcome to the world of [Shiny Rocks](https://github.com/kestra-io/shiny_rocks)! Although this company might not exist outside Kestra it has its own purpose.
