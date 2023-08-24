@@ -67,7 +67,7 @@ The Metric Dashboard feature goes beyond just tracking cloud resource usage. Its
 
 In future releases we will add [proper SLA capabilities](https://github.com/kestra-io/kestra/issues/1246): the idea would be to let users use the Metrics presented in this article as a SLA to stop a Flow to run or trigger an alert for example. You will be also able to have a complete dashboard with all the metrics gathered by Kestra with an overview on what happen in your data pipeline.
 
-For a deeper exploration of the potential applications of the Metric Dashboard you can learn more with our [documentation](https://kestra.io/docs/plugin-developer-guide/outputs#use-cases-for-metrics).
+For a deeper exploration of the potential applications of the Metric Dashboard you can learn more with our [documentation](https://kestra.io/docs/developer-guide/outputs).
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. 
