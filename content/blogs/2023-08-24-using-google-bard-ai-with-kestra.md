@@ -41,7 +41,7 @@ tasks:
 
 This task will output Bard's response in the form of predictions.
 
-![outputs](/blogs/2023-08-24-bard-ai-joke/outputs.png)
+![outputs](/blogs/2023-08-24-using-google-bard-ai-with-kestra/outputs.png)
 
 You can see that the joke is in the content property.
 
@@ -82,11 +82,13 @@ subject: Daily Joke
 htmlTextContent: "{{outputs['ask-for-jokes'].predictions[0].candidates[0].content}}"
 ```
 
-The expression {{outputs['ask-for-jokes'].predictions[0].candidates[0].content}} will refer to the content of the first candidate of the first prediction. Predictions are the output of the ask-for-job task.
+The expression `{{outputs['ask-for-jokes'].predictions[0].candidates[0].content}}` will refer to the content of the first candidate of the first prediction. Predictions are the output of the ask-for-job task.
 
 If you want to test this example, you can use this Docker command to start a GreenMail test mail server: 
 ```shell
-docker run -t -i -p 3025:3025 -p 3110:3110 -p 3143:3143                  -p 3465:3465 -p 3993:3993 -p 3995:3995 -p 8888:8080                  greenmail/standalone:2.0.0
+docker run -t -i -p 3025:3025 -p 3110:3110 -p 3143:3143 \
+        -p 3465:3465 -p 3993:3993 -p 3995:3995 -p 8888:8080 \
+        greenmail/standalone:2.0.0
 ```
 
 ## Ensuring Content Safety & Delivery ##
