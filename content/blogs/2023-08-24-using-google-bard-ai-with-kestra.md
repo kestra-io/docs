@@ -1,19 +1,19 @@
 ---
-title: "Automating Daily Jokes with Bard: Setting Up Google's PaLM 2 AI for a Smiling Start to Your Day"
+title: "How to Use Google's PaLM 2 Bard AI to Start Your Day with a Smile"
 description: "Explore how to use Bard, Google's AI, with Kestra to get daily jokes by email. Step-by-step guide for a humorous start to your day."
 date: 2023-08-24T12:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
   image: "lmathieu"
-image: /blogs/2023-08-24-bard-ai-joke.jpg
+image: /blogs/2023-08-24-using-google-bard-ai-with-kestra.jpg
 ---
 
 Maybe you’ve already heard about [Bard](https://bard.google.com/?hl=en), an AI experiment by Google. Bard is generative AI, it can respond to questions posed in natural language.
 
 I love jokes, so I asked Bard to tell me a joke, and I love sarcasm, so I asked it to tell me a sarcastic joke.
 
-![Joke bard ai](/blogs/2023-08-24-bard-ai-joke/joke-bard-ai.png)
+![Joke bard ai](/blogs/2023-08-24-using-google-bard-ai-with-kestra/joke-bard-ai.png)
 
 Behind Bard, there is a generative AI based on [Google's PaLM 2](https://ai.google/discover/palm2/) large language models (LLMs) that you can use via the [Google Vertex AI API](https://cloud.google.com/vertex-ai).
 
