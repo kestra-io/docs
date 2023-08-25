@@ -5,10 +5,19 @@ title: Deprecation of Templates
 Templates are marked as deprecated and disabled by default starting from the 0.11.0 release. Please use subflows instead. You can re-enable them with this [configuration](../09.administrator-guide/01.configuration/05.others.md).
 
 
-## Why are templates are being deprecated?
+## Why templates are deprecated
 
 1. Subflows are more powerful — subflows provide the same functionality as templates while simultaneously being more flexible than templates. For instance,  `inputs` are not allowed in a template because a template is only a list of tasks that get copied to another flow that references it. In contrast, when invoking a subflow, you can parametrize it with custom parameters. This way, subflows allow you to define workflow logic once and invoke it in other flows with custom parameters.
 2. Subflows are more transparently reflected in the topology view and don't require copying tasks.
+
+
+If you are using templates and you are not ready to migrate to subflows yet, add the following Kestra configuration option to still be able to use them:
+
+```yaml
+kestra:
+  templates:
+    enabled: true
+```
 
 
 ---
