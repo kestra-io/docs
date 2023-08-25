@@ -43,7 +43,7 @@
                                     <FileCodeOutline />
                                     <p>
                                         <span>Declarative Orchestration</span><br/>
-                                        Simplified data workflow creation and execution with YAML
+                                        Simplified data workflow creation and execution
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -135,7 +135,16 @@
                                     <AccountGroup/>
                                     <p>
                                         <span>Community Overview</span><br/>
-                                        Connect with peers and exchange ideas
+                                        Ask any questions and share your feedback
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/faq" @click="globalClick(true)">
+                                    <AccountGroup/>
+                                    <p>
+                                        <span>FAQ</span><br/>
+                                        Frequently Asked Questions about the product and the company
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -144,7 +153,7 @@
                                     <Domain/>
                                     <p>
                                         <span>About us</span><br/>
-                                        Discover our story and our team
+                                        Discover our story and meet our team
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -153,7 +162,7 @@
                                     <AccountStarOutline/>
                                     <p>
                                         <span>Careers</span><br/>
-                                        Join an open company
+                                        Join a remote-first company
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -162,7 +171,7 @@
                                     <Email/>
                                     <p>
                                         <span>Contact us</span><br/>
-                                        Extends Kestra with many plugins
+                                        Get in touch with us
                                     </p>
                                 </NuxtLink>
                             </li>
