@@ -2,18 +2,18 @@
 title: Deprecation of Templates
 ---
 
-Templates are marked as deprecated starting from the 0.11.0 release. Please use subflows instead.
+Templates are marked as deprecated and disabled by default starting from the 0.11.0 release. Please use subflows instead. You can re-enable them with this [configuration](../09.administrator-guide/01.configuration/05.others.md).
 
 
 ## Why are templates are being deprecated?
 
-1. Subflows are more powerful — subflows provide the same functionality as templates while simultaneously being more flexible than templates. For instance,  `inputs` are not allowed in a template because a template is only a list of tasks that get copied to another flow that references it. In contrast, when invoking a subflow, you can parametrize it with custom parameters. This way, subflows allow you to define workflow logic once and invoke it in other flows with custom parameters.  
+1. Subflows are more powerful — subflows provide the same functionality as templates while simultaneously being more flexible than templates. For instance,  `inputs` are not allowed in a template because a template is only a list of tasks that get copied to another flow that references it. In contrast, when invoking a subflow, you can parametrize it with custom parameters. This way, subflows allow you to define workflow logic once and invoke it in other flows with custom parameters.
 2. Subflows are more transparently reflected in the topology view and don't require copying tasks.
 
 
 ---
 
-## Templates :warning: 
+## Templates :warning:
 
 A typical template has an ID, a namespace, and a list of tasks. Here is an example template:
 
@@ -76,9 +76,9 @@ This example shows that templates are pretty restrictive — you can only invoke
 
 ---
 
-## Subflows ✅ 
+## Subflows ✅
 
-To migrate from a template to a subflow, you can create a flow that is a 1:1 copy of your template. This flow can then be invoked as a subflow the same way you used to invoke a template (only using a different task). 
+To migrate from a template to a subflow, you can create a flow that is a 1:1 copy of your template. This flow can then be invoked as a subflow the same way you used to invoke a template (only using a different task).
 
 In our example, we can create a new flow called `mytemplate` in a namespace `dev`. This flow will be invoked from a parent flow as a subflow.
 
