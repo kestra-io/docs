@@ -144,7 +144,7 @@
                                     <AccountGroup/>
                                     <p>
                                         <span>FAQ</span><br/>
-                                        Frequently Asked Questions about the product and the company
+                                        FAQ about the product and the company
                                     </p>
                                 </NuxtLink>
                             </li>
