@@ -94,7 +94,7 @@
                     <img class="img-fluid team-member" src="/landing/company/teams/bpimpaud.png" alt="Benoît Pimpaud Picture"/>
                     <div>
                         <div class="team-name">Benoît Pimpaud</div>
-                        <div class="team-title font-small">Product Owner & Data Engineer</div>
+                        <div class="team-title font-small">Solutions Engineer</div>
                     </div>
                     <span>
                         <a href="https://www.linkedin.com/in/pimpaudben/" target="_blank" class="me-2"><linkedin /></a>
@@ -117,7 +117,7 @@
                     <img class="img-fluid team-member" src="/landing/company/teams/ageller.png" alt="Anna Geller Picture"/>
                     <div>
                         <div class="team-name">Anna Geller</div>
-                        <div class="team-title font-small">Head of Developer Relations</div>
+                        <div class="team-title font-small">Product Lead</div>
                     </div>
                     <span>
                         <a href="https://www.linkedin.com/in/anna-geller-12a86811a/" target="_blank" class="me-2"><linkedin /></a>
