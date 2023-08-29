@@ -6,7 +6,7 @@ category: News & Products Updates
 author:
   name: Anna Geller
   image: "ageller"
-image: /blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more.png
+image: /blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more.png
 ---
 
 
@@ -32,11 +32,11 @@ The flagship feature of this release is the fully redesigned Topology view. Your
 
 Here is what the new topology view looks like:
 
-![topology1](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/topology1.png)
+![topology1](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/topology1.png)
 
 And here is the same flow when you expand the `Parallel` task group:
 
-![topology2](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/topology2.png)
+![topology2](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/topology2.png)
 
 
 ---
@@ -49,16 +49,16 @@ When you navigate complex workflows that produce specific outputs, it's useful t
 
 Here is an example of a Query task returning output results, serialized in Amazon ION format, which Kestra renders as a table:
 
-![preview1](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/preview1.png)
+![preview1](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/preview1.png)
 
-![preview2](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/preview2.png)
+![preview2](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/preview2.png)
 
 
 And here is a preview of a CSV file `products.csv`, returned by a Python task:
 
-![preview3](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/preview3.png)
+![preview3](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/preview3.png)
 
-![preview4](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/preview4.png)
+![preview4](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/preview4.png)
 
 
 Finally, here is a simple flow example rendering a markdown file:
@@ -81,7 +81,7 @@ tasks:
       - "*.md"
 ```
 
-![preview5](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/preview5.png)
+![preview5](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/preview5.png)
 
 
 ---
@@ -92,7 +92,7 @@ While Kestra allows you to use namespaces to separate environments, most of our 
 
 [Inspired](https://github.com/kestra-io/kestra/issues/1483) by [Gunnar Morling's](https://twitter.com/gunnarmorling) excellent blog post ["Oh... This is Prod?!"](https://www.morling.dev/blog/oh_this_is_prod/), you can now optionally set a custom environment name and color in the top bar in the UI. Simply go to Settings and from there, set the desired environment name and color.
 
-![envs_color](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/envs_color.png)
+![envs_color](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/envs_color.png)
 
 Big thanks to the community member, [yuri](https://github.com/yuri1969), for [contributing this feature](https://github.com/kestra-io/kestra/pull/1875)!
 
@@ -112,30 +112,30 @@ The [VS Code extension](https://github.com/kestra-io/vscode-kestra) provides **a
 
 First, install the extension by searching for "Kestra" in the VS Code extensions marketplace or using the following [marketplace link](https://marketplace.visualstudio.com/items?itemName=kestra-io.kestra).
 
-![vscode1](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/vscode_1.png)
+![vscode1](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/vscode_1.png)
 
 After installing the extension, press `Command/Ctrl + Shift + P` in VS Code to navigate to the Command Palette. Start typing the command called **"Download Kestra schema"** and paste the endpoint of your Kestra's instance.
 
-![vscode2](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/vscode_2.png)
+![vscode2](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/vscode_2.png)
 
 If you use the open-source version running locally, type: ``http://localhost:8080/`` and hit Enter.
 
-![vscode3](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/vscode_3.png)
+![vscode3](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/vscode_3.png)
 
 If your instance is secured with some authentication mechanism (e.g. basic auth), you'll be prompted to enter credentials.
 
 You should then see a notification that the schema has been downloaded, requesting you to save your work and reload the VS Code window.
 
-![vscode4](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/vscode_4.png)
+![vscode4](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/vscode_4.png)
 
 After reloading the window, you can open a Kestra flow file (or create a new YAML file) and use the `Control + Space` command to get **autocompletion**.
 
-![vscode5](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/vscode_5.png)
+![vscode5](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/vscode_5.png)
 
 
 Note how flows that don't pass the **syntax validation** are marked red. As soon as we fix the syntax error, the red underlines disappear.
 
-![vscode6](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/vscode_6.png)
+![vscode6](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/vscode_6.png)
 
 
 The VS Code extension can make CI/CD and infrastructure build pipelines easier:
@@ -229,16 +229,16 @@ As Werner Vogels, Amazon's CTO, once said: "Everything fails all the time". Exte
 
 The triggers page gives an overview of all triggers, grouped by a namespace. You can see the last time a given trigger was modified and whether there are some executions currently in progress that have been executed as a result of that trigger. For instance, the image below shows that the trigger named `everyMinute` is currently locked due to an Execution in progress.
 
-![admin_triggers](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/admin_triggers.png)
+![admin_triggers](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/admin_triggers.png)
 
 You can either troubleshoot why this execution is still in progress (e.g., a process stuck due to infrastructure issues) or manually unlock this trigger. Note that manually unlocking triggers may result in multiple concurrent (potentially duplicated) executions.
 
-![admin_triggers_2](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/admin_triggers_2.png)
+![admin_triggers_2](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/admin_triggers_2.png)
 
 
 In the Enterprise Editon, the Administration section also includes user management (Users, Groups, Roles) as well as the recently introduced Workers to help you monitor the health of the remote infrastructure.
 
-![admin_workers](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/admin_workers.png)
+![admin_workers](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/admin_workers.png)
 
 ---
 
@@ -508,7 +508,7 @@ Several tables in Kestra allow you to perform bulk operations, such as exporting
 
 In the example below, you can select all elements in just one click and easily perform any bulk operation.
 
-![bulk_actions](/blogs/2023-08-31-release-0-11-topology-preview-vscode-and-more/bulk_actions.png)
+![bulk_actions](/blogs/2023-08-30-release-0-11-topology-preview-vscode-and-more/bulk_actions.png)
 
 
 ---
