@@ -88,7 +88,7 @@ tasks:
 
 ## Even easier environment separation
 
-While Kestra allows you to use namespaces to separate environments, most of our users deploy multiple Kestra instances for development, staging, and production. This release introduces a UI setting to easily distinguish between environments.
+While Kestra allows you to use namespaces to separate environments, most of our users deploy dedicated instances for development, staging, and production. This release introduces a UI setting to easily distinguish between environments.
 
 [Inspired](https://github.com/kestra-io/kestra/issues/1483) by [Gunnar Morling's](https://twitter.com/gunnarmorling) excellent blog post ["Oh... This is Prod?!"](https://www.morling.dev/blog/oh_this_is_prod/), you can now optionally set a custom environment name and color in the top bar in the UI. Simply go to Settings and from there, set the desired environment name and color.
 
@@ -498,7 +498,7 @@ Before Kestra 0.10.0, script tasks were offered exclusively by the `core` plugin
 If you use one of these `core` script tasks e.g. `io.kestra.core.tasks.scripts.python`, you should **migrate to the new script task** that runs by default in a Docker container and is more feature-rich. Using the same Python task as an example, you should now use the  `io.kestra.plugin.scripts.python.Script` task instead.
 ::
 
-Our `*-full` Docker images include both the new and the deprecated `core` script tasks. If you still want to use one of the deprecated tasks, make sure to **install the new script plugins** if you're not use our `*-full` Docker images, as the deprecated tasks are now packaged alongside the new script plugins.
+Our `*-full` Docker images include both the new and the deprecated `core` script tasks. If you're not using our `*-full` Docker images in which plugins are preinstalled, make sure to **install the new script plugins**  as the deprecated tasks are now packaged alongside the new script plugins.
 
 ---
 
