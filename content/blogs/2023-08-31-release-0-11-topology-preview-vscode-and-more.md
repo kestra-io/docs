@@ -498,8 +498,7 @@ Before Kestra 0.10.0, script tasks were offered exclusively by the `core` plugin
 If you use one of these `core` script tasks e.g. `io.kestra.core.tasks.scripts.python`, you should **migrate to the new script task** that runs by default in a Docker container and is more feature-rich. Using the same Python task as an example, you should now use the  `io.kestra.plugin.scripts.python.Script` task instead.
 ::
 
-Our `*-full` Docker images include both the new and the deprecated `core` script tasks. If you still want to use one of the deprecated tasks, make sure to **install the new script plugins**, as the deprecated tasks are now packaged alongside the new script plugins.
-
+Our `*-full` Docker images include both the new and the deprecated `core` script tasks. If you still want to use one of the deprecated tasks, make sure to **install the new script plugins** if you're not use our `*-full` Docker images, as the deprecated tasks are now packaged alongside the new script plugins.
 
 ---
 
