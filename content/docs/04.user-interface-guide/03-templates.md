@@ -1,6 +1,11 @@
 ---
-title: Templates Page
+title: Templates Page (deprecated)
 ---
+
+::alert{type="warning"}
+⚠️ Templates are deprecated. Please use subflows instead of templates. See the [Migrations section](../15.migrations/templates.md) explaining how you can migrate from templates to subflows.
+::
+
 
 On the **Templates** page, you will see a list of templates.
 

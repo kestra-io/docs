@@ -56,3 +56,14 @@ kestra:
     defaults:
       indice-prefix: "uat_kestra"
 ```
+
+## `kestra.elasticsearch.defaults.indices`
+This configuration allows to change indices settings created by kestra, example:
+
+```yaml
+kestra:
+  elasticsearch:
+    defaults:
+      indices:
+        index.number_of_replicas: 0
+```
