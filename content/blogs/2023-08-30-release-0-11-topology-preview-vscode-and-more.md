@@ -1,7 +1,7 @@
 ---
 title: "Kestra 0.11 adds new Topology view, Admin UI, Outputs Preview, new CLI Tasks and Dynamic Webhooks ✨"
 description: "We're excited to announce Kestra 0.11.0 which includes a redesigned topology view and many highly anticipated features. We've introduced outputs preview, caching, dynamic webhooks, and a new Administration UI to observe and troubleshoot event-driven workflows."
-date: 2023-08-31T12:00:00
+date: 2023-08-30T14:00:00
 category: News & Products Updates
 author:
   name: Anna Geller
