@@ -131,13 +131,17 @@ Labels can help you filter your flows and executions across multiple criteria. H
 ```yaml
 id: flowWithLabels
 namespace: dev
-
 labels:
-  environment: production
-  owner: john-doe
-  project: usage-metrics
-  team: product
-  source: github
+  - key: environment
+    value: production
+  - key: owner
+    value: john-doe
+  - key: project
+    value: usage-metrics
+  - key: team
+    value: product
+  - key: source
+    value: github
 
 tasks:
   - id: hello

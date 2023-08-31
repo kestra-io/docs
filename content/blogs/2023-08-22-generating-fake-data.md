@@ -89,8 +89,8 @@ description: |
   Like in reality, those data change everyday.
 
 labels:
-  tag: producer
-
+  - key: tag
+    value: producer
 tasks:
   - id: working_dir
     type: io.kestra.core.tasks.flows.WorkingDirectory
@@ -200,7 +200,8 @@ description: |
   The marketing teams manage their investments into a Google Spreadsheet, hence we load those data into BigQuery for further processing and join with other data.
 
 labels:
-  tag: marketing
+  - key: tag
+    value: marketing
 
 variables:
   spreadsheet_id: 1C0UWuMuiEIxkOKzSQhbhFn6AILzmXX59NUbtI4s3wpU
@@ -249,7 +250,8 @@ description: |
   Whenever all data are loaded in BigQuery, this flow will run a dbt job to transform data.
 
 labels:
-  tag: analytics
+  - key: tag
+    value: analytics
 
 tasks:
   - id: workingdir
@@ -336,7 +338,8 @@ description: |
   Then it sends this chart by email to the marketing team.
 
 labels:
-  tag: marketing
+  - key: tag
+    value: marketing
 
 tasks:
   - id: get_data
