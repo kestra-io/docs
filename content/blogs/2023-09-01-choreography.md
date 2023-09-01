@@ -1,6 +1,6 @@
 ---
 title: "Building the Layer for Data Choreography"
-description: "Dive into their transformative journey migrating from Apache Airflow to a scalable Data Mesh Architecture with Kestra."
+description: "Going beyond classic data orchestration: the user experience"
 date: 2023-09-01T16:00:00
 category: Solutions
 author:
