@@ -27,13 +27,13 @@ While CDPs and Reverse ETL tools have overlapping functionalities, they cater to
 
 So why would a business opt for a CDP even when Reverse ETL can push data back to operational systems? The answer lies in the specific use cases. A CDP gives a 360-degree view of customer interactions, which is instrumental for marketing strategies, personalization, and optimizing the customer experience. On the other hand, Reverse ETL's strength is in leveraging the curated analytical data, making it actionable across various platforms. While there might be areas of overlap, especially in the current CDPs landscape that offer reverse ETL functionalities, the core objectives of the two differ.
 
-### Primary Functionality ##
+### Primary Functionality ###
 
 - Reverse ETL focus on making analytical data actionable. It takes curated data from a warehouse and allows you to push it back to most [common platforms](https://hightouch.com/integrations). This supports operational analytics, enabling business units to drive actionable insights based on data that has been processed, cleaned, and structured in data warehouses.
 
 - CDP acts as a repository for customer data. It's designed to pull data from various sources, consolidate it, and then provide a unified view of a customer. This helps businesses in marketing, sales, and service efforts by providing a singular view of the customer's journey and behavior.
 
-## Depth vs. Breadth ###
+### Depth vs. Breadth ###
 Reverse ETL is concerned with the **breadth** of data utilization. It focuses on taking curated, analytical data from data warehouses and making it actionable across a wide variety of tools that are used in day-to-day business operations. This makes Reverse ETL highly versatile, as it enables businesses to feed enriched data into different segments of the business, from sales and marketing to finance and operations.
 
 Customer Data Platforms (CDPs), in contrast, are more focused on the **depth** of data. They specialize in aggregating customer data from multiple sources into a unified profile, allowing for a more in-depth analysis of individual customer behaviors and preferences. The emphasis is on diving deep into customer interactions for granular insights, which can then be used for highly personalized marketing campaigns, customer service improvements, and other customer-centric initiatives.
@@ -45,7 +45,7 @@ In terms of time sensitivity, it's crucial to understand the nuances of both Rev
 
 On the other hand, data in a Reverse ETL process may not be as immediate. This doesn't have to be a limitation, especially if your analytics pipeline is running frequently and the small time difference is not critical for your operations.
 
-Therefore, while CDPs offer real-time data capturing capabilities, this advantage isn't always as significant depending on your specific needs and how frequently your Reverse ETL processes are run.
+Therefore, while CDPs offer real-time data-capturing capabilities, this advantage isn't always as significant depending on your specific needs and how frequently your Reverse ETL processes are run.
 
 ### Customizability vs. Specificity ###
 Reverse ETL provides a high degree of flexibility, particularly when it comes to data customization and workflow design. Businesses can select specific data subsets to push back into operational systems for particular use cases. This system allows for complex event designs and trigger-based actions that are dependent on multiple data sources—such as website visits, product usage, email interaction, LinkedIn activities, and more. Essentially, Reverse ETL can be highly customized to meet the unique demands and data architecture of a business.
@@ -55,10 +55,10 @@ CDPs, meanwhile, offer specialized functionalities that are tailored for compreh
 ## Spotlight on CDP Platforms ##
 Understanding the value of CDPs requires a closer examination of their architecture, functionality, and integration capabilities. Let’s delve deeper into some of the leading platforms.
 
-### Segment: An Holistic Data Platform ###
+### Segment: A Holistic Data Platform ###
 Segment serves as both a data collection and distribution hub. It distinguishes itself with its architecture centered on microservices. This design breaks down the application into independent services, each dedicated to executing specific business functions for enhanced scalability and resilience. Should a service encounter issues, others remain unaffected, guaranteeing continuous operation.
 
-Central to Segment are its protocols and SDKs, which grant businesses the capability to pull data from varied sources. whether web, mobile, server, or cloud applications, and dispatch it to any desired destination. Segment's 'Sources' and 'Destinations' functionalities allows raw data extraction from diverse platforms, undergoing transformation within Segment, and subsequent distribution to a range of marketing and analytical tools.
+Central to Segment are its protocols and SDKs, which grant businesses the capability to pull data from varied sources. whether web, mobile, server, or cloud applications, and dispatch it to any desired destination. Segment's 'Sources' and 'Destinations' functionalities allow raw data extraction from diverse platforms, undergoing transformation within Segment, and subsequent distribution to a range of marketing and analytical tools.
 
 From a tech-stack perspective, Segment leans into languages such as Go and TypeScript, paired with databases like Postgres. It operates on platforms including AWS, while leveraging Docker for containerization, ensuring optimized performance.
 
@@ -76,7 +76,7 @@ BlueConic have a strong dedication to real-time data synchronization. The indivi
 While many platforms leverage machine learning, BlueConic uses it to identify and predict data segments. It's a tool designed with foresight, allowing engineers and businesses to be one step ahead in system adjustments.
 BlueConic's integration points are built to ensure it interfaces smoothly with a lot of data sources, from traditional databases to advanced cloud services While synchronization ensures data is up-to-date, BlueConic goes a step further. It cross-verifies data across sources, ensuring a singular version of the truth.
 
-For businesses concerned about GDPR and similar regulations, BlueConic offers a respite. Its embedded data privacy protocols, including features for data anonymization and user's right-to-forget.
+For businesses concerned about GDPR and similar regulations, BlueConic offers a respite. Its embedded data privacy protocols, include features for data anonymization and user's right-to-forget.
 
 ## Hightouch: Merging Reverse ETL and CDP Advantages ##
 
@@ -122,7 +122,7 @@ The Sync task has properties such as fullResynchronization to run a full synchro
 
 This plugin allows you to build even more complex workflows and reduce latency between data sync. Just after running an Airbyte sync (ETL to extract your data from a source), you can apply some transformations using Kestra dbt plugin and at the end running an Hightouch sync to activate your data without waiting for the next schedule.
 
-Checkout the full [plugin documentation](https://kestra.io/plugins/plugin-hightouch) for all specifications. A big thanks to our community member [Antoine Baillet](https://github.com/aballiet) for the creation of this plugin!
+Check out the full [plugin documentation](https://kestra.io/plugins/plugin-hightouch) for all specifications. A big thanks to our community member [Antoine Baillet](https://github.com/aballiet) for the creation of this plugin!
 
 ## What's Next? ##
 
