@@ -37,11 +37,11 @@ The collaborative efforts offer a unified platform for end-to-end data orchestra
 
 - **Dynamic Data Workflows**: You can use Kestra's Airbyte plugin to trigger various operations, such as parallel syncs, scheduled ingestion, and complex data processing jobs.
 
-![dbt-airbyte-jobs](/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership/dbt-job-airbyte.png)
+![parallel](/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership/parallel.png)
 
 - **Robust Orchestration Capabilities**: From triggering multiple Airbyte Cloud syncs to running complex dbt jobs, Kestra's flexibility empowers users to control and automate their data processes.
 
-![parallel](/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership/parallel.png)
+![dbt-airbyte-jobs](/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership/dbt-job-airbyte.png) 
 
 - **Efficient Data Management**: Learn how this collaboration supports an end-to-end data orchestration approach in [this blog post](https://kestra.io/blogs/2023-06-26-end-to-end-data-orchestration).
 
