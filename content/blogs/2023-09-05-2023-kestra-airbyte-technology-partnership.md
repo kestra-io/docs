@@ -17,6 +17,10 @@ We are pleased to announce a technology partnership with [Airbyte](https://airby
 
 With technology partners like Airbyte, we're able to cover more use cases in our existing framework. By integrating with Airbyte, Kestra can provide an open technology stack that can integrate, transform, process, and move data at any scale.
 
+>“Kestra excels at orchestrating data pipelines, and often the most challenging part of this is the initial data integration, a stage where Airbyte shines. The collaboration between Kestra and Airbyte, both open-source platforms, is a natural fit as we share a common mission: to simplify and optimize data solutions for business users.”
+
+*Ludovic Dehon CTO @ Kestra*
+
 ---
 
 ### Kestra's Airbyte Plugin ###
