@@ -3,7 +3,7 @@
         <Section title="Technologies Partners">
             <div class="row card-group mb-2">
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card">
                         <img src="/partners/partners-logos/airbytelogo.svg" class="card-img-top" alt="airbytelogo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card">
                         <img src="/partners/partners-logos/dlthublogo.svg" class="card-img-top" alt="dlthublogo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card">
                         <img src="/partners/partners-logos/terraformlogo.svg" class="card-img-top" alt="terraformlogo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card">
                         <img src="/partners/partners-logos/databrickslogo.svg" class="card-img-top" alt="databrickslogo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
@@ -56,7 +56,7 @@
         <Section title="Services Partners">
             <div class="row card-group mb-2">
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card">
                         <img src="/partners/partners-logos/converteologo.svg" class="card-img-top" alt="converteologo">
                         <div class="card-body">
                             <p class="card-text">Service Partner</p>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card">
                         <img src="/partners/partners-logos/nticologo.svg" class="card-img-top" alt="nticologo">
                         <div class="card-body">
                             <p class="card-text">Service Partner</p>
@@ -104,18 +104,19 @@ import OpenInNew from 'vue-material-design-icons/OpenInNew.vue'
         .coming-soon {
             background: $purple-18;
             padding: 0 0.5rem;
+            line-height: 22px;
         }
-    }
-    .card-text {
-        font-size: $font-size-sm;
-        color: var(--bs-pink);
-        font-weight: 800;
-        text-transform: uppercase;
-        font-family: var(--bs-font-monospace);
-        display: inline;
-    }
-    .card-title {
-        margin: 1rem 0;
+        .card-text {
+            font-size: $font-size-sm;
+            color: var(--bs-pink);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-family: var(--bs-font-monospace);
+            display: inline;
+        }
+        .card-title {
+            margin: 1rem 0;
+        }
     }
 }
 </style>

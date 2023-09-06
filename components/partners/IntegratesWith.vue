@@ -22,7 +22,7 @@
                     alt="Airbyte logo"
                 />
                 <img
-                    src="/partners/integrate-with-logos/logo-horizontal-color.svg"
+                    src="/partners/integrate-with-logos/tabular.svg"
                     alt="logo-horizontal-color"
                 />
                 <img
