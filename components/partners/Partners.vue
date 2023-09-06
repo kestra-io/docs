@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card text-center">
+                    <div class="card text-center" data-aos="zoom-in">
                         <img src="/partners/Badge_Kestra_Technology_Partner.svg" class="card-img-top" alt="Badge_Kestra_Technology_Partner" height="118" width="118">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Want to be listed as a Kestra Partner?</h5>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card text-center">
+                    <div class="card text-center" data-aos="zoom-in">
                         <img src="/partners/Badge_Kestra_Technology_Partner.svg" class="card-img-top" alt="Badge_Kestra_Technology_Partner" height="118" width="118">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Want to be listed as a Kestra Partner?</h5>

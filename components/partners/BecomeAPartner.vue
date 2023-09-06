@@ -148,15 +148,6 @@ const checkForm = function (){
 
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
-// .container-fluid {
-//     .mandatory-fields {
-//         color: $purple-15;
-//         font-size: small;
-//     }
-//     .contact-us {
-//         background-color: $purple-14;
-//     }
-// }
 .container-fluid {
     background: $purple-13;
 
