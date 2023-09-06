@@ -49,31 +49,29 @@
                                         />
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label class="mb-1">Job Title</label>
-                                        <select
-                                            class="form-select"
-                                            aria-label="Default select example"
-                                            id="jobTitle"
+                                        <label for="jobTitle" class="mb-1"
                                         >
-                                            <!-- <option value="1"></option>
-                                            <option value="2"></option>
-                                            <option value="3"></option> -->
-                                        </select>
+                                            Job Title
+                                        </label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="jobTitle"
+                                            required
+                                        />
                                     </div>
                                     <div class="form-group mb-4">
-                                        <label class="mb-1"
-                                            >How would you integrate Kestra partnership
-                                            program?</label
+                                        <label for="howToIntegrateKestraPartnerShip" class="mb-1"
                                         >
-                                        <select
-                                            class="form-select"
-                                            aria-label="Default select example"
+                                            How would you integrate Kestra partnership program?
+                                        </label
+                                        >
+                                        <input
+                                            type="text"
+                                            class="form-control"
                                             id="howToIntegrateKestraPartnerShip"
-                                        >
-                                            <!-- <option value="1"></option>
-                                            <option value="2"></option> 
-                                            <option value="3"></option> -->
-                                        </select>
+                                            required
+                                        />
                                     </div>
                                     <div class="d-flex justify-content-center mb-4">
                                         <button
