@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: /blogs/2023-06-22-locxia-kestra.jpg
+image: /blogs/2023-09-07-locxia-kestra.jpg
 ---
 
 Ntico has designed [Locxia](https://www.locxia.com/), a powerful platform that gives businesses and local authorities a deeper understanding of their territories and residents thanks to satellite imagery. At the core of their solution lies Kestra, used for ingesting, processing, and visualizing vast datasets. 
@@ -27,7 +27,7 @@ Ntico's unique offerings include Locxia, a data platform designed to develop com
 
 ## About Locxia
 
-![loxcia screenshot](blogs/2023-06-22-locxia-kestra/locxia-screenshot.png)
+![loxcia screenshot](blogs/2023-09-07-locxia-kestra/locxia-screenshot.png)
 
 Locxia is a data platform focused on housing data. Developed by Ntico's data experts, it empowers businesses and local authorities to better understand their customers and territories. The platform provides access to over 250 value-added data sourced from satellite images and public data; all consolidated and accessible on a dedicated platform.
 
@@ -50,7 +50,7 @@ Kestra is used in the process of coordinating data ingestion processes for Locxi
 
 > “Kestra is really good because it can be used by a beginner as well as an expert!” Thomas Depierre - NTICO Engineer.
 
-![loxcia pipeline](blogs/2023-06-22-locxia-kestra/post-locxia-pipeline.jpg)
+![loxcia pipeline](blogs/2023-09-07-locxia-kestra/post-locxia-pipeline.jpg)
 
 Right from the onset, the team at Ntico knew they would be dealing with an enormous amount of data - terabytes worth of valuable, detailed geospatial data. The challenge was to create a platform that could effectively handle this vast volume of information, not just in terms of storage, but in data processing and cost management as well.
 
