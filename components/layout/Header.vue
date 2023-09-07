@@ -140,6 +140,15 @@
                                 </NuxtLink>
                             </li>
                             <li>
+                                <NuxtLink class="dropdown-item" href="/kestra-partners" @click="globalClick(true)">
+                                    <Handshake />
+                                    <p>
+                                        <span>Partners</span><br/>
+                                        Elevate your Kestra use through our partner ecosystem
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
                                 <NuxtLink class="dropdown-item" href="/faq" @click="globalClick(true)">
                                     <AccountGroup/>
                                     <p>
@@ -256,6 +265,7 @@
     import Security from "vue-material-design-icons/Security.vue"
     import PostOutline from "vue-material-design-icons/PostOutline.vue"
     import AccountGroup from "vue-material-design-icons/AccountGroup.vue"
+    import Handshake from "vue-material-design-icons/Handshake.vue"
     import AccountStarOutline from "vue-material-design-icons/AccountStarOutline.vue"
     import Segment from "vue-material-design-icons/Segment.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
