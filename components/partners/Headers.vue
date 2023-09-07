@@ -1,7 +1,7 @@
 <template>
     <div class="position-relative container-fluid d-flex justify-content-center">
         <div class="position-relative">
-            <img src="../../public/partners/Frame 922.svg" alt="Frame 922">
+            <img src="../../public/partners/Frame922.svg" alt="Frame 922">
             <div class="logo position-absolute start-50 translate-middle">
                 <img src="../../public/partners/Badge_Kestra_Technology_Partner.svg" alt="Badge_Kestra_Technology_Partner">
             </div>

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <Section title="Technologies Partners">
+        <Section title="Technology Partners">
             <div class="row card-group mb-2">
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
@@ -46,20 +46,20 @@
                     <div class="card text-center" data-aos="zoom-in">
                         <img src="/partners/Badge_Kestra_Technology_Partner.svg" class="card-img-top" alt="Badge_Kestra_Technology_Partner" height="118" width="118">
                         <div class="card-body">
-                            <h5 class="card-title mb-3">Want to be listed as a Kestra Partner?</h5>
-                            <button class="btn btn-primary">Become a Technology Partner</button>
+                            <h5 class="card-title mb-3">Want to join our Partner Program?</h5>
+                            <button class="btn btn-primary">Become a Partner</button>
                         </div>
                     </div>
                 </div>
             </div>
         </Section>
-        <Section title="Services Partners">
+        <Section title="Consulting Partners">
             <div class="row card-group mb-2">
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <img src="/partners/partners-logos/converteologo.svg" class="card-img-top" alt="converteologo">
                         <div class="card-body">
-                            <p class="card-text">Service Partner</p>
+                            <p class="card-text">Consulting Partner</p>
                             <h5 class="card-title">Converteo</h5>
                             <a href="#">Visit the Converteo website <OpenInNew /></a>
                         </div>
@@ -69,7 +69,7 @@
                     <div class="card" data-aos="zoom-in">
                         <img src="/partners/partners-logos/nticologo.svg" class="card-img-top" alt="nticologo">
                         <div class="card-body">
-                            <p class="card-text">Service Partner</p>
+                            <p class="card-text">Consulting Partner</p>
                             <h5 class="card-title">Ntico</h5>
                             <div class="coming-soon d-inline-block rounded text-white">Coming soon...</div>
                         </div>
@@ -79,8 +79,8 @@
                     <div class="card text-center" data-aos="zoom-in">
                         <img src="/partners/Badge_Kestra_Technology_Partner.svg" class="card-img-top" alt="Badge_Kestra_Technology_Partner" height="118" width="118">
                         <div class="card-body">
-                            <h5 class="card-title mb-3">Want to be listed as a Kestra Partner?</h5>
-                            <button class="btn btn-primary">Become a Technology Partner</button>
+                            <h5 class="card-title mb-3">Want to join our Partner Program?</h5>
+                            <button class="btn btn-primary">Become a Partner</button>
                         </div>
                     </div>
                 </div>
