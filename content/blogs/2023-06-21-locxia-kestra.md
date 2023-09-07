@@ -1,7 +1,7 @@
 ---
 title: "Locxia: Processing Satellite Imagery with Kestra"
 description: How Ntico Leverage Kestra Orchestrator for their data platform Locxia.
-date: 2023-06-22T10:00:00
+date: 2023-09-07T15:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
