@@ -7,7 +7,7 @@
                     <div class="schedule-demo position-absolute">
                         <div class="subtitle">SCHEDULE A DEMO</div>
                         <h1>Ready to See Kestra in Action?</h1>
-                        <p class="description">Connect with of our Product Specalist to get of our product and its value proposition</p>
+                        <p class="description">Connect with one of our Product Specialist to get the best out of our product and its value proposition</p>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 align-items-center d-flex">
