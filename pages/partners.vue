@@ -1,9 +1,9 @@
 <template>
     <div>
         <PartnersHeaders />
-        <PartnersBetterTogether />
         <Partners />
         <PartnersIntegratesWith />
+        <PartnersBetterTogether />
         <PartnersPerksAndBenefits />
         <PartnersBecomeAPartner />
     </div>
