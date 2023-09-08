@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <Section
-            title="Reasons to integrate with Kestra"
-            subtitle="Better together"
+            title="What do our partners love about Kestra"
+            subtitle="Reasons to integrate with Kestra"
         >
             <div class="row">
                 <div class="col-md-4 testimonials-item">
