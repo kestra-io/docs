@@ -8,15 +8,15 @@
                 />
             </div>
             <div class="my-3">
-                <h2>Kestra Integrates with:</h2>
+                <h2>Kestra's Integrations Ecosystem</h2>
             </div>
             <div>
                 <img src="/partners/integrate-with-logos/aws.svg" alt="AWS logo" />
                 <img src="/partners/integrate-with-logos/gcp.svg" alt="GCP logo" />
                 <img src="/partners/integrate-with-logos/azure.svg" alt="Microsoft Azure logo" />
                 <img src="/partners/integrate-with-logos/airbyte.svg" alt="Airbyte logo" />
-                <img src="/partners/integrate-with-logos/tabular.svg" alt="Tabular logo" />
-                <img src="/partners/integrate-with-logos/mother-duck.svg" alt="MotherDuck logo" />
+                <img src="/partners/integrate-with-logos/snowflake.svg" alt="snowflake logo" />
+                <img src="/partners/integrate-with-logos/fivetran.svg" alt="fivetran logo" />
                 <div class="py-3"><p class="and-more fw-bold">And more...</p></div>
             </div>
         </div>
