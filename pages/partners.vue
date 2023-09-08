@@ -1,10 +1,10 @@
 <template>
     <div>
         <PartnersHeaders />
-        <PartnersPerksAndBenefits />
+        <PartnersBetterTogether />
         <Partners />
         <PartnersIntegratesWith />
-        <PartnersBetterTogether />
+        <PartnersPerksAndBenefits />
         <PartnersBecomeAPartner />
     </div>
 </template>

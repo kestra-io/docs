@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <Section
-            title="What do our partners love about Kestra"
+            title="What our Partners Love About Kestra"
             subtitle="Reasons to integrate with Kestra"
         >
             <div class="row">
