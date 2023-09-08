@@ -10,7 +10,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="col-6 col-md-4 col-lg-3 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <div class="card-body">
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="col-6 col-md-4 col-lg-3 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <div class="card-body">
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="col-6 col-md-4 col-lg-3 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <div class="card-body">
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="col-6 col-md-4 col-lg-3 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <div class="card-body">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="col-6 col-md-4 col-lg-3 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <div class="card-body">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="col-6 col-md-4 col-lg-3 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <div class="card-body">
@@ -70,23 +70,24 @@
 </template>
 
 <script setup>
-import Section from '../layout/Section.vue'
-import MedalOutline from 'vue-material-design-icons/MedalOutline.vue'
-import PlaylistStar from 'vue-material-design-icons/PlaylistStar.vue'
-import Looks from 'vue-material-design-icons/Looks.vue'
-import ToggleSwitchOutline from 'vue-material-design-icons/ToggleSwitchOutline.vue'
-import ClockFast from 'vue-material-design-icons/ClockFast.vue'
-import GamepadOutline from 'vue-material-design-icons/GamepadOutline.vue'
-import TimerSandEmpty from 'vue-material-design-icons/TimerSandEmpty.vue'
+    import Section from '../layout/Section.vue'
+    import MedalOutline from 'vue-material-design-icons/MedalOutline.vue'
+    import PlaylistStar from 'vue-material-design-icons/PlaylistStar.vue'
+    import Looks from 'vue-material-design-icons/Looks.vue'
+    import ToggleSwitchOutline from 'vue-material-design-icons/ToggleSwitchOutline.vue'
+    import ClockFast from 'vue-material-design-icons/ClockFast.vue'
+    import GamepadOutline from 'vue-material-design-icons/GamepadOutline.vue'
+    import TimerSandEmpty from 'vue-material-design-icons/TimerSandEmpty.vue'
 </script>
 
 <style scoped lang="scss">
-.card-group {
-    background: none !important;
-    justify-content: start;
-    .card {
-        min-height: 190px;
-        padding: 32px 16px;
+    .card-group {
+        background: none !important;
+        justify-content: start;
+
+        .card {
+            min-height: 190px;
+            padding: 32px 16px;
+        }
     }
-}
 </style>

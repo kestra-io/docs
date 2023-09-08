@@ -140,7 +140,7 @@
                                 </NuxtLink>
                             </li>
                             <li>
-                                <NuxtLink class="dropdown-item" href="/kestra-partners" @click="globalClick(true)">
+                                <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
                                     <Handshake />
                                     <p>
                                         <span>Partners</span><br/>

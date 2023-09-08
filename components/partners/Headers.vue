@@ -1,9 +1,9 @@
 <template>
     <div class="position-relative container-fluid d-flex justify-content-center">
         <div class="position-relative">
-            <img src="/partners/Frame922.svg" alt="Frame 922">
+            <img src="/partners/background.svg" alt="Frame 922" />
             <div class="logo position-absolute start-50 translate-middle">
-                <img src="/partners/Badge_Kestra_Technology_Partner.svg" alt="Badge_Kestra_Technology_Partner">
+                <img src="/partners/badge-partner.svg" alt="Become Kestra partner">
             </div>
         </div>
         <div class="description position-absolute start-50 translate-middle text-center w-50">
@@ -15,19 +15,22 @@
 </template>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
-.container-fluid {
-    background: $purple-17;
-    padding-bottom: 3rem;
-    .logo {
-        top: 245px;
+    @import "../../assets/styles/variable";
+
+    .container-fluid {
+        background: $purple-17;
+        padding-bottom: 3rem;
+
+        .logo {
+            top: 245px;
+        }
+
+        .description {
+            top: 75%;
+        }
+
+        h2 span {
+            font-weight: 100;
+        }
     }
-    .description {
-        top: 75%;
-    }
-    
-    h2 span {
-        font-weight: 100;
-    }
-}
 </style>
