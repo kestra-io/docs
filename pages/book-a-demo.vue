@@ -1,7 +1,7 @@
 <template>
     <div>
-        <BookADemoHeaders />
-        <BookADemoTestimonials />
+        <BookDemoHeaders />
+        <BookDemoTestimonials />
     </div>
 </template>
 
