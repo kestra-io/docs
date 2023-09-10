@@ -15,7 +15,7 @@
                             <strong>Strong typing and autocompletion:</strong> iterate quickly when adding new flows, triggers and tasks. If something is incorrect in your workflow definition, you will know in advance thanks to the built-in syntax validation.
                         </li>
                         <li>
-                            <strong>Support for data-mesh:</strong> thanks to the  thanks to the simple <NuxtLink href="/features/declarative-data-orchestration"> YAML interface</NuxtLink>, built-in documentation and blueprints, domain experts can build their own workflows, too.
+                            <strong>Support for data-mesh:</strong> thanks to the simple <NuxtLink href="/features/declarative-data-orchestration"> YAML interface</NuxtLink>, built-in documentation and blueprints, domain experts can build their own workflows, too.
                         </li>
                         <li>
                             <strong>Intuitive UI built not only for engineers:</strong> when you add workflows directly from the UI, the live-updating topology view helps you see dependencies between processes, systems and tasks. 
