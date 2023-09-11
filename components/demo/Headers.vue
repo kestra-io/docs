@@ -3,7 +3,7 @@
         <div class="hero container">
             <div class="row">
                 <div class="col-12 col-md-5 position-relative">
-                    <img class="img-fluid" src="/landing/ee/background.svg" alt="Illustration of Kestra's logo with a dark background" data-aos="zoom-in"/>
+                    <img class="img-fluid" src="/demo/background.svg" alt="Illustration of Kestra's logo with a dark background" data-aos="zoom-in"/>
                     <div class="schedule-demo position-absolute">
                         <div class="subtitle">SCHEDULE A DEMO</div>
                         <h1>Ready to See Kestra in Action?</h1>
@@ -47,7 +47,7 @@ onMounted(() => {
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 .container-fluid {
-    background: $purple-7;
+    background: $purple-16;
     color: var(--bs-white);
     overflow: hidden;
 
@@ -59,11 +59,12 @@ onMounted(() => {
         }
         .schedule-demo {
             top: 50%;
-            left: 20%;
+            left: 10%;
             right: 10%;
 
             h1 {
                 padding-bottom: 0 !important;
+                line-height: 4rem;
             }
             div.subtitle {
                 font-size: $font-size-xl;
@@ -72,6 +73,7 @@ onMounted(() => {
                 text-transform: uppercase;
                 font-family: var(--bs-font-monospace);
                 display: inline;
+                line-height: 1.875rem;
             }
             p.description {
                 line-height: 2rem;
@@ -82,6 +84,7 @@ onMounted(() => {
 
         .img-fluid {
             max-height: 100%;
+            max-width: 100%;
         }
     }
 

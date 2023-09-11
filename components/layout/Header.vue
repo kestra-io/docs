@@ -189,9 +189,12 @@
                             <Github /> Star us
                         </a>
 
-                        <a @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm btn-dark me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block" target="_blank" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo">
-                            <CalendarOutline /> Book a demo
-                        </a>
+                        <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm btn-dark me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block" href="/demo">
+                            <span>
+                                <CalendarOutline /> 
+                                Book a demo
+                            </span>
+                        </NuxtLink>
 
                         <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm" href="/docs/getting-started">
                             <span>
