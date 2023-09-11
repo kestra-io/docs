@@ -3,6 +3,8 @@
         <div class="rounded-3">
             <div>
                 <h3 data-aos="fade-right"><span>Get Kestra updates</span> to your inbox</h3>
+                <div v-if="valid === true && message" class="alert alert-success" v-html="message" />
+                <div v-if="valid === false && message" class="alert alert-danger">{{ message }}</div>
                 <form class="row row-cols-lg-auto g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate data-aos="fade-left">
                     <div class="col-12">
                         <label class="visually-hidden" for="newsletter-email">Email</label>
@@ -23,11 +25,18 @@
 
 <script>
     import Socials from "./Socials.vue";
+    import axios from "axios";
 
     const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/433b234f-f3c6-431c-898a-ef699e5525fa";
 
     export default {
         components: {Socials},
+        data() {
+            return {
+                valid: undefined,
+                message: undefined,
+            };
+        },
         methods:{
             checkForm: function (e) {
                 e.preventDefault()
@@ -35,7 +44,11 @@
 
                 const form = this.$refs.newsletter;
                 const route = useRoute()
-                if (form.checkValidity()) {
+                if (!form.checkValidity()) {
+                    this.valid = false;
+                    this.message = "Invalid form, please review the fields."
+                } else {
+                    this.valid = true;
                     form.classList.add('was-validated')
 
                     const formData = {
@@ -49,10 +62,19 @@
                             pageName: route.path
                         }
                     }
-                    fetch(hubSpotUrl, {method: "POST", body: JSON.stringify(formData), headers: {"Content-Type": "application/json"}})
-                        .then((_) => {
-                            form.reset()
-                            form.classList.remove('was-validated')
+
+                    axios.post(hubSpotUrl, formData)
+                        .then((response) => {
+                            if (response.status !== 200) {
+                                console.log(response.data)
+                                this.message = response.data.message;
+                                this.valid = false;
+                            } else {
+                                this.valid = true;
+                                this.message = response.data.inlineMessage;
+                                form.reset()
+                                form.classList.remove('was-validated')
+                            }
                         })
                 }
             }
