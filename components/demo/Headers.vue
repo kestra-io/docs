@@ -33,14 +33,20 @@
 
 <script setup>
 import Companies from "../layout/Companies.vue";
+const newForm = ref()
 
 onMounted(() => {
-    const newForm = hbspt.forms.create({ region: "eu1", portalId: "27220195", formId: "d8175470-14ee-454d-afc4-ce8065dee9f2" })
-    const hsForm = document.getElementById(`hbspt-form-${newForm.instanceId}`)
+    newForm.value = hbspt.forms.create({ region: "eu1", portalId: "27220195", formId: "d8175470-14ee-454d-afc4-ce8065dee9f2" })
+    const hsForm = document.getElementById(`hbspt-form-${newForm.value.instanceId}`)
     const cardText = document.getElementsByClassName("hs-form-text").item(0)
     const currentParent = hsForm.parentNode;
     currentParent.removeChild(hsForm);
     cardText.appendChild(hsForm);
+})
+
+onBeforeUnmount(() => {
+    const hsForm = document.getElementById(`hbspt-form-${newForm.value.instanceId}`)
+    hsForm.parentNode.removeChild(hsForm)
 })
 </script>
 
