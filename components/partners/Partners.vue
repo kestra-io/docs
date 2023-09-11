@@ -47,7 +47,7 @@
                         <img src="/partners/badge-partner.svg" class="card-img-top" alt="Technology Partner" height="118" width="118">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Want to join our Partner Program?</h5>
-                            <button class="btn btn-primary">Become a Partner</button>
+                            <a href="#form" class="btn btn-primary">Become a Partner</a>
                         </div>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                         <img src="/partners/badge-partner.svg" class="card-img-top" alt="Badge_Kestra_Technology_Partner" height="118" width="118">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Want to join our Partner Program?</h5>
-                            <button class="btn btn-primary">Become a Partner</button>
+                            <a href="#form" class="btn btn-primary">Become a Partner</a>
                         </div>
                     </div>
                 </div>

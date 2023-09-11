@@ -9,7 +9,7 @@
         <div class="description position-absolute start-50 translate-middle text-center w-50">
             <h2>Kestra Partner <br><span>Ecosystem</span></h2>
             <span>Whether you are building something new, upgrading a legacy stack, or re-platforming, you can trust Kestra and our partner ecosystem to make that journey a success.</span><br>
-            <button class="btn btn-primary mt-4">Become a partner</button>
+            <a href="#form" class="btn btn-primary mt-4">Become a partner</a>
         </div>
     </div>
 </template>

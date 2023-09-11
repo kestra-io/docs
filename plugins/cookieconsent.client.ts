@@ -1,18 +1,16 @@
-
 import 'vanilla-cookieconsent'
-import 'axios'
-import axios from "axios";
 
 export default defineNuxtPlugin(nuxtApp => {
 
     nuxtApp.hook('page:finish', () => {
-        const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
+        const {grantConsent} = useGtag()
 
+        const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
 
         const cookieConsent = window.initCookieConsent()
 
         if (!isEurope) {
-            useGtagConsent(true);
+            grantConsent();
             cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
 
             return;
@@ -32,7 +30,7 @@ export default defineNuxtPlugin(nuxtApp => {
             force_consent: true,
             onAccept: () => {
                 if(cookieConsent.allowedCategory('analytics')) {
-                    useGtagConsent(true);
+                    grantConsent();
                     if (cookieConsent.allowedCategory('marketing')) {
                         cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
                     }
