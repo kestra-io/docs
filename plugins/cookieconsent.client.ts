@@ -1,7 +1,4 @@
-
 import 'vanilla-cookieconsent'
-import 'axios'
-import axios from "axios";
 
 export default defineNuxtPlugin(nuxtApp => {
 
