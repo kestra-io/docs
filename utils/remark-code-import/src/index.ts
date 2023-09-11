@@ -3,7 +3,7 @@ import path from 'node:path';
 import { EOL } from 'node:os';
 import { visit } from 'unist-util-visit';
 import stripIndent from 'strip-indent';
-import type { Root, Code, Parent } from 'mdast';
+import type { Code, Parent } from 'mdast';
 import type { VFile } from 'vfile';
 
 export type CodeImportOptions = {
@@ -43,8 +43,8 @@ function codeImport(options: CodeImportOptions = {}) {
     throw new Error(`"rootDir" has to be an absolute path`);
   }
 
-  return (tree: Root, file: VFile) => {
-    const codes: [Code, number | undefined, Parent][] = [];
+  return (tree: any, file: VFile) => {
+    const codes: [Code, number | null, Parent][] = [];
 
     if (file) {
       visit(tree, 'code', (node, index, parent) => {
