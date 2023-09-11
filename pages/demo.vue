@@ -4,6 +4,3 @@
         <HomeTestimonials />
     </div>
 </template>
-
-<script setup>
-</script>
