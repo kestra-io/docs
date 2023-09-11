@@ -5,7 +5,6 @@ import { visit } from 'unist-util-visit';
 import stripIndent from 'strip-indent';
 import type { Root, Code, Parent } from 'mdast';
 import type { VFile } from 'vfile';
-import type { Plugin, Transformer } from 'unified';
 
 export type CodeImportOptions = {
   async?: boolean;
@@ -37,17 +36,15 @@ function extractLines(
   return lines.slice(start - 1, end).join('\n');
 }
 
-export const codeImport: Plugin<[CodeImportOptions], Root> = (
-  options: CodeImportOptions = {}
-) => {
+function codeImport(options: CodeImportOptions = {}) {
   const rootDir = options.rootDir || process.cwd();
 
   if (!path.isAbsolute(rootDir)) {
     throw new Error(`"rootDir" has to be an absolute path`);
   }
 
-  const transformer: Transformer<Root> = (tree: Root, file: VFile) => {
-    const codes: [Code, number | null, Parent][] = [];
+  return (tree: Root, file: VFile) => {
+    const codes: [Code, number | undefined, Parent][] = [];
 
     if (file) {
       visit(tree, 'code', (node, index, parent) => {
@@ -107,7 +104,6 @@ export const codeImport: Plugin<[CodeImportOptions], Root> = (
       }
     }
   };
-
-  return transformer;
 };
+export { codeImport };
 export default codeImport;
