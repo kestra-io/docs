@@ -33,7 +33,12 @@
                         region: "eu1",
                         portalId: "27220195",
                         formId: "e044de55-bda2-4bb8-9e50-ed8c78b94922",
-                        target: "#hubspotForm"
+                        target: "#hubspotForm",
+                        onFormSubmit: function($form) {
+                            if (window.dataLayer) {
+                                window.dataLayer.push({'event': 'partner_form'});
+                            }
+                        },
                     })
                 }
             }

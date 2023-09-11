@@ -63,6 +63,10 @@
                         }
                     }
 
+                    if (window.dataLayer) {
+                        window.dataLayer.push({'event': 'newsletter_form'});
+                    }
+
                     axios.post(hubSpotUrl, formData)
                         .then((response) => {
                             if (response.status !== 200) {
