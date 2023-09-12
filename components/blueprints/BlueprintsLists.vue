@@ -7,121 +7,213 @@
     <h5 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h5>
     <div class="grid gap-3 mt-5" data-aos="fade-left">
         <button
-            v-for="filter in filters"
-            :key="filter.name"
-            :class="{ 'active': filter.name === activeFilter.name }"
-            @click="setFilterBlueprints(filter)"
+            v-for="cat in categories"
+            :key="cat"
+            :class="{ 'active': filter === cat.name }"
+            @click="setFilterBlueprints(cat.name)"
             class="m-1 rounded-button"
         >
-            {{ filter.name }}
+            {{ cat.name }}
         </button>
     </div>
     <div class="row my-5">
         <div class="row mb-4 justify-content-center">
             <div class="col-12 col-md-6 col-lg-4">
-                <input type="text" class="form-control form-control-lg" id="search-input" placeholder="Search blueprints" v-model="searchQuery">
+                <input type="text" class="form-control form-control-lg" id="search-input" placeholder="Search blueprints">
             </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id">
-            <BlueprintsBlueprintCard :blueprint="blueprint" :icons="icons" data-aos="zoom-in" />
-        </div>
-        <div class="d-flex justify-content-between">
-            <div class="items-per-page">
-                <select class="form-select" aria-label="Default select example" v-model="itemsPerPage">
-                    <option :value="10">10</option>
-                    <option :value="25">25</option>
-                    <option :value="50">50</option>
-                </select>
-            </div>
-            <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
-                <BlueprintsPagination :total-pages="totalPages" @on-page-change="changePage" />
-                <span class="total-pages">Total {{ totalBlueprints }}</span>
-            </div>
+            <BlueprintsBlueprintCard :blueprint="blueprint" data-aos="zoom-in" />
         </div>
     </div>
 </div>
 </template>
 
-<script setup>
-const currentPage = ref(1)
-const itemsPerPage = ref(25)
-const blueprints = ref([])
-const activeFilter = ref({ name: 'All tags' })
-const filters = ref([])
-const props = defineProps(['icons'])
-const totalPages = ref(0)
-const totalBlueprints = ref(0)
-const searchQuery = ref('')
-const route = useRoute()
-const router = useRouter()
-
-const { data: filtersData } = await useAsyncData('filters', () => {
-    return $fetch('https://api.kestra.io/v1/blueprints/tags')
-})
-
-
-if(filtersData.value) {
-    filters.value = [{ name: 'All tags' }, ...filtersData.value]
-}
-
-const setFilterBlueprints = (filterVal) => {
-    activeFilter.value = filterVal
-}
-
-if(route.query.page) currentPage.value = parseInt(route.query.page)
-if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
-if(route.query.tags) activeFilter.value = filters.value.find(f => f.id == route.query.tags)
-if(route.query.q) searchQuery.value = route.query.q
-
-const { data: blueprintsData } = await useAsyncData('blueprints', () => {
-    return $fetch(`https://api.kestra.io/v1/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeFilter.value.id}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
-})
-
-const setBlueprints = (allBlueprints, total) => {
-    blueprints.value = allBlueprints
-    totalBlueprints.value = total
-    totalPages.value = Math.ceil(total / itemsPerPage.value)
-}
-
-if(blueprintsData.value) {
-    setBlueprints(blueprintsData.value.results, blueprintsData.value.total)
-}
-
-const changePage = (pageNo) => {
-    currentPage.value = pageNo
-}
-
-let timer;
-watch([currentPage, itemsPerPage, activeFilter, searchQuery], ([pageVal, itemVal, filterVal, searchVal], [__, oldItemVal, oldFilterVal]) => {
-    if(timer) {
-        clearTimeout(timer)
+<script>
+export default {
+  data() {
+    return {
+      filter: 'All tags',
+      categories: [
+          {
+              name: 'All tags'
+          },
+          {
+              name: 'Kestra'
+          },
+          {
+              name: 'Database'
+          },
+          {
+              name: 'Trigger'
+          },
+          {
+              name: 'AWS'
+          },
+          {
+              name: 'GCP'
+          },
+          {
+              name: 'Azure'
+          },
+          {
+              name: 'Ingest'
+          },
+          {
+              name: 'Transform'
+          },
+          {
+              name: 'Analyze'
+          },
+          {
+              name: 'SaaS'
+          },
+          {
+              name: 'Python'
+          },
+          {
+              name: 'Files'
+          },
+          {
+              name: 'Snowflake'
+          },
+          {
+              name: 'Pip'
+          },
+          {
+              name: 'CLI'
+          },
+          {
+              name: 'R'
+          },
+          {
+              name: 'Metrics'
+          },
+          {
+              name: 'Outputs'
+          },
+          {
+              name: 'Databricks'
+          },
+          {
+              name: 'SQL'
+          },
+          {
+              name: 'Container Registries'
+          },
+          {
+              name: 'S3'
+          },
+          {
+              name: 'BigQuery'
+          },
+          {
+              name: 'DuckDB'
+          },
+          {
+              name: 'dbt'
+          },
+      ],
+      blueprints: [
+        {
+            id: 1,
+            category: "GIT TRANSFORM DBT DUCKDB SAAS",
+            title: "Git workflow for dbt with MotherDuck"
+        },
+        {
+            id: 2,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment..."
+        },
+        {
+            id: 3,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send..."
+        },
+        {
+            id: 4,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery"
+        },
+        {
+            id: 5,
+            category: "KESTRA FILES",
+            title: "Process files in parallel"
+        },
+        {
+            id: 6,
+            category: "TRANSFORM GIT",
+            title: "Run dbt CLI commands in one container: dbt deps & dbt build"
+        },
+        {
+            id: 7,
+            category: "AI",
+            title: "Create an image using OpenAI's DALL-E"
+        },
+        {
+            id: 8,
+            category: "S3 INGEST TRANSFORM DATABASE",
+            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!"
+        },
+        {
+            id: 9,
+            category: "AI",
+            title: "Send a prompt to OpenAI's ChatCompletion API"
+        },
+        {
+            id: 10,
+            category: "AI",
+            title: "Create an image using OpenAI's DALL-E"
+        },
+        {
+            id: 11,
+            category: "AI",
+            title: "Send a prompt to OpenAI's ChatCompletion API"
+        },
+        {
+            id: 12,
+            category: "S3 INGEST TRANSFORM DATABASE",
+            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!"
+        },
+        {
+            id: 13,
+            category: "S3 INGEST TRANSFORM DATABASE",
+            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!"
+        },
+        {
+            id: 14,
+            category: "AI",
+            title: "Create an image using OpenAI's DALL-E"
+        },
+        {
+            id: 15,
+            category: "AI",
+            title: "Send a prompt to OpenAI's ChatCompletion API"
+        },
+        {
+            id: 16,
+            category: "AI",
+            title: "Create an image using OpenAI's DALL-E"
+        },
+        {
+            id: 17,
+            category: "AI",
+            title: "Send a prompt to OpenAI's ChatCompletion API"
+        },
+        {
+            id: 18,
+            category: "S3 INGEST TRANSFORM DATABASE",
+            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!"
+        },
+      ]
     }
-    timer = setTimeout(async () => {
-
-        const { data } = await useFetch(`https://api.kestra.io/v1/blueprints?page=${(itemVal != oldItemVal) || (filterVal != oldFilterVal) ? 1 : pageVal}&size=${itemVal}${Object.keys(filterVal).length && filterVal.name != 'All tags' ? `&tags=${filterVal.id}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
-        setBlueprints(data.value.results, data.value.total)
-
-        function getQuery() {
-            let query = {
-                page: (itemVal != oldItemVal) || (filterVal != oldFilterVal) ? 1 : pageVal,
-                size: itemVal,
-            }
-            if(searchVal.length) {
-                query['q'] = searchVal
-            }
-            if(filterVal.name != 'All tags') {
-                query['tags'] = filterVal.id
-            }
-
-            return query
-        }
-
-        router.push({
-            query: getQuery()
-        })
-        
-    }, 500)
-})
+  },
+  methods: {
+    setFilterBlueprints(id) {
+        this.filter = id;
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -133,9 +225,6 @@ h5 {
 .form-control {
     background: url('/search.svg') no-repeat 13px;
     padding-left: 2.5rem;
-}
-.total-pages {
-    font-size: $font-size-xs;
 }
 
 .top-breadcrumb {

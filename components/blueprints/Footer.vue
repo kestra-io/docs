@@ -4,9 +4,7 @@
         <div>
             <h3 data-aos="fade-right">New to Kestra?</h3>
             <h6 class="mt-3" data-aos="zoom-in">Use blueprints to kickstart your first workflows.</h6>
-            <NuxtLink href="/docs/getting-started">
-                <button class="btn btn-primary">Get started with Kestra</button>
-            </NuxtLink>
+            <button class="btn btn-primary">Get started with Kestra</button>
         </div>
     </div>
 </div>
