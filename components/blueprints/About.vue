@@ -2,25 +2,22 @@
 <div class="mt-5">
     <h3>About this blueprint</h3>
     <div class="title">
-        <p>{{ page.title }}</p>
+        <p>{{ title }}</p>
     </div>
-
-    <div class="markdown" v-html="description"></div>
+    <div class="description">{{ description }}</div>
 </div>
 </template>
 
 <script>
-import markdownIt from 'markdown-it'
 export default {
     props: {
-        page: {
-            type: Object,
+        title: {
+            type: String,
             required: true
         },
-    },
-    computed: {
-        description() {
-            return markdownIt().render(this.page.description)
+        description: {
+            type: String,
+            required: true
         }
     }
 }
@@ -40,11 +37,10 @@ div.title {
         display: inline;
     }
 }
-
-:deep(pre) {
-    background: #24292e;
-    color: #e1e4e8;
-    padding: 1.25rem 1.5rem;
-    border-radius: 0.5rem;
+div.description {
+  white-space: pre;
+  font-size: $font-size-sm;
+  line-height: 1.375rem;
+  color: black;
 }
 </style>

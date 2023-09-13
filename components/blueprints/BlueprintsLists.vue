@@ -25,12 +25,29 @@
         <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id">
             <BlueprintsBlueprintCard :blueprint="blueprint" data-aos="zoom-in" />
         </div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-end">
+                <li class="page-item">
+                    <span class="page-link text-dark fw-bold" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
+                </li>
+                <li class="page-item"><span class="page-link text-dark fw-bold">1</span></li>
+                <li class="page-item"><span class="page-link text-dark fw-bold">2</span></li>
+                <li class="page-item"><span class="page-link text-dark fw-bold">3</span></li>
+                <li class="page-item">
+                    <span class="page-link text-dark fw-bold"><ChevronRight /></span>
+                </li>
+                <li class="align-self-center total-pages">Total 109</li>
+            </ul>
+        </nav>
     </div>
 </div>
 </template>
 
 <script>
+import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue"
+import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 export default {
+  components: { ChevronLeft, ChevronRight },
   data() {
     return {
       filter: 'All tags',
@@ -118,92 +135,110 @@ export default {
         {
             id: 1,
             category: "GIT TRANSFORM DBT DUCKDB SAAS",
-            title: "Git workflow for dbt with MotherDuck"
+            title: "Git workflow for dbt with MotherDuck",
+            path: ""
         },
         {
             id: 2,
             category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
-            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment..."
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
         },
         {
             id: 3,
             category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
-            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send..."
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
         },
         {
             id: 4,
             category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
-            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery"
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
         },
         {
             id: 5,
             category: "KESTRA FILES",
-            title: "Process files in parallel"
+            title: "Process files in parallel",
+            path: ""
         },
         {
             id: 6,
             category: "TRANSFORM GIT",
-            title: "Run dbt CLI commands in one container: dbt deps & dbt build"
+            title: "Run dbt CLI commands in one container: dbt deps & dbt build",
+            path: ""
         },
         {
             id: 7,
             category: "AI",
-            title: "Create an image using OpenAI's DALL-E"
+            title: "Create an image using OpenAI's DALL-E",
+            path: ""
         },
         {
             id: 8,
             category: "S3 INGEST TRANSFORM DATABASE",
-            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!"
+            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!",
+            path: ""
         },
         {
             id: 9,
             category: "AI",
-            title: "Send a prompt to OpenAI's ChatCompletion API"
+            title: "Send a prompt to OpenAI's ChatCompletion API",
+            path: ""
         },
         {
             id: 10,
             category: "AI",
-            title: "Create an image using OpenAI's DALL-E"
+            title: "Create an image using OpenAI's DALL-E",
+            path: ""
         },
         {
             id: 11,
             category: "AI",
-            title: "Send a prompt to OpenAI's ChatCompletion API"
+            title: "Send a prompt to OpenAI's ChatCompletion API",
+            path: ""
         },
         {
             id: 12,
             category: "S3 INGEST TRANSFORM DATABASE",
-            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!"
+            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!",
+            path: ""
         },
         {
             id: 13,
             category: "S3 INGEST TRANSFORM DATABASE",
-            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!"
+            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!",
+            path: ""
         },
         {
             id: 14,
             category: "AI",
-            title: "Create an image using OpenAI's DALL-E"
+            title: "Create an image using OpenAI's DALL-E",
+            path: ""
         },
         {
             id: 15,
             category: "AI",
-            title: "Send a prompt to OpenAI's ChatCompletion API"
+            title: "Send a prompt to OpenAI's ChatCompletion API",
+            path: ""
         },
         {
             id: 16,
             category: "AI",
-            title: "Create an image using OpenAI's DALL-E"
+            title: "Create an image using OpenAI's DALL-E",
+            path: ""
         },
         {
             id: 17,
             category: "AI",
-            title: "Send a prompt to OpenAI's ChatCompletion API"
+            title: "Send a prompt to OpenAI's ChatCompletion API",
+            path: ""
         },
         {
             id: 18,
             category: "S3 INGEST TRANSFORM DATABASE",
-            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!"
+            title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!",
+            path: ""
         },
       ]
     }
@@ -221,6 +256,14 @@ export default {
 
 h5 {
     font-weight: normal;
+}
+.pagination {
+    li {
+        margin-right: 0.5rem;
+        &.total-pages {
+            font-size: $font-size-xs;
+        }
+    }
 }
 .form-control {
     background: url('/search.svg') no-repeat 13px;
