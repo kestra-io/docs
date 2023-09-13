@@ -17,7 +17,7 @@
              </div>
 
              <div clas="mt-5">
-                <h2>Similarities</h2>
+                <h2>Differences</h2>
                 <ul>
                 <li>Prefect can orchestrate Python, while Kestra is language-agnostic.</li>
                 <li>While Kestra’s event-driven capabilities are available in the open-source version, Prefect only offers event-driven features as part of the paid product, Prefect Cloud.</li>
