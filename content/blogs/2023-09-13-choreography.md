@@ -1,12 +1,12 @@
 ---
 title: "Building the Layer for Data Choreography"
 description: "Going beyond classic data orchestration: the user experience"
-date: 2023-09-01T16:00:00
+date: 2023-09-13T15:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: /blogs/2023-09-01-choreography.jpg
+image: /blogs/2023-09-13-choreography.jpg
 ---
 
 Most of the best practices we apply in the data ecosystem are coming from software culture. CI/CD, tests, versioning, atomic code or package management all have been introduced because of their success in transforming software development practices.
