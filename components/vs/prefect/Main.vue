@@ -56,9 +56,8 @@
             </div>
 
             <div class="mt-5">
-                <h2>Collaboration and Accessibility</h2>
-                <p>Kestra's design aims to be user-friendly, not just for developers and engineers but also for business stakeholders. The user interface allows SQL-savvy users to modify queries or parameters directly from the UI, enabling them to contribute without needing to delve into the codebase.</p>
-                <p>In contrast, Airflow only supports writing workflows in Python without the possibility of building them from the UI in collaboration with business stakeholders.</p>
+                <h2>Cross-role Collaboration and Accessibility</h2>
+                <p>Kestra's user-friendly interface is designed for cross-role collaboration, inviting not just engineers but also business stakeholders. Prefect is a developer tool — it doesn’t offer features for non-technical team members. Prefect can orchestrate Python, while Kestra can orchestrate your entire business.</p>
             </div>
         </Section>
 
