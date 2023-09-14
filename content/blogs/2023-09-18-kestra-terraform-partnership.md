@@ -15,16 +15,7 @@ We're thrilled to reveal that Kestra has formed a technology partnership with[Te
 
 ## Why Terraform and Kestra? A Technologic Alignment ##
 
-Both Terraform and Kestra are deeply committed to simplifying operational workflows. Together, we offer a cohesive experience for professionals across all kinds of industries, ensuring both infrastructural and data operational simplification.
-
-### Boundless Possibilities ###
-
-- **Automated Resource Provisioning**: Define your Kestra workflows, tasks, and triggers directly in your Terraform configuration file.
-
-- **Dynamic Scalability**: Scale your data workflows and infrastructure in a coordinated way, directly from your Terraform configuration.
-
-- **Version-Controlled Workflows**: With everything represented as code, you can version control your entire operational environment, from infrastructure to data workflows.
-
+Our partnership with Terraform goes beyond just working together; it's about synchronizing our strengths. Both of our technologies aim to make your operational tasks less complicated. With this partnership, you can easily configure Kestra workflows and tasks within your Terraform settings. This coordination makes scaling straightforward and keeps your operational changes well-documented through a code-based approach.
 --- 
 
 ## Elevating Your Data Workflow With Kestra's Terraform Provider ##
