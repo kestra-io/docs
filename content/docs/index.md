@@ -2,11 +2,9 @@
 title: 📓 Welcome to Kestra
 ---
 
-Kestra is an open-source data orchestrator that makes both **scheduled** and **event-driven workflows** easy. By bringing Infrastructure as Code best practices to data pipelines, you can build reliable data pipelines and manage them with confidence.
+Kestra is a universal open-source orchestrator that makes both **scheduled** and **event-driven workflows** easy. By bringing Infrastructure as Code best practices to data, process, and microservice orchestration, you can build reliable workflows and manage them with confidence.
 
-In just a few lines of code, you can [create a flow](./05.developer-guide/01.flow.md) directly from the UI. Thanks to the declarative YAML interface for defining orchestration logic, business stakeholders can participate in the workflow creation process, instead of making that an engineering-only endeavor. 
-
-Because the UI automatically adjusts the YAML definition any time you make changes to a workflow from the UI or via an API call, the orchestration logic is stored declaratively in code, even if some workflow components are modified in other ways (UI, CI/CD, Terraform, API call).
+In just a few lines of code, you can [create a flow](./05.developer-guide/01.flow.md) directly from the UI. Thanks to the declarative YAML interface for defining orchestration logic, business stakeholders can participate in the workflow creation process. Instead of making orchestration an engineering-only endeavor, Kestra offers a versatile set of language-agnostic developer tools while simultaneously providing an intuitive user interface tailored for business professionals. The YAML definition gets automatically adjusted any time you make changes to a workflow from the UI or via an API call. Therefore, Kestra's orchestration logic is always managed declaratively in code, even if some workflow components are modified in other ways (UI, CI/CD, Terraform, API call).
 
 ![Adding new tasks in the UI](https://kestra.io/adding-tasks.gif)
 
@@ -19,7 +17,7 @@ Because the UI automatically adjusts the YAML definition any time you make chang
 
 **Real-time & event-driven**: Kestra is built with real-time use cases in mind. You can create flows, run them, and see all their logs in real-time. Kestra can be used along with Kafka to process a large number of events at any scale.
 
-**Scalable architecture as a foundation**: Kestra's [architecture](./08.architecture.md) is built with proven and time-tested technologies including Postgres, Kafka and Elasticsearch. The [Enterprise Edition](/enterprise) can can handle millions of executions per second without breaking a sweat thanks to a backend built on top of Kafka and Elasticsearch.
+**Scalable architecture as a foundation**: Kestra's [architecture](./08.architecture.md) is built with proven and time-tested technologies. The [Enterprise Edition](/enterprise) can handle millions of executions per second without breaking a sweat thanks to a backend built on top of Kafka and Elasticsearch.
 
 **API-first design**: every action in Kestra is API-driven. In contrast to Python-based workflows that heavily rely on client-side imlementation in a single language, Kestra's workflow definition is a config that gets sent as a payload to an API call. 
 - You define in a YAML config **which tasks** do you want to orchestrate, and **how**, and that config is sent to Kestra's backend via an API call. 
@@ -27,7 +25,7 @@ Because the UI automatically adjusts the YAML definition any time you make chang
 
 **Portability**: Kestra's workflows are programming-language agnostic. Your tasks can be written in Python, R, Node.js, Julia, Rust, Bash or Powershell. You can also extend the platform via custom plugins, triggers and tasks.
 
-**Declarative AND imperative**: we believe that declarativeness is a spectrum and you decide about the degree of how declarative or imperative you want your tasks to be. You can write as simple or as [complex](./05.developer-guide/02.tasks.md#flowable-tasks) workflows as you want them to be. 
+**Declarative AND imperative**: we believe that declarativeness is a spectrum and you decide about the degree of how declarative or imperative you want your workflows to be. You can write as simple or as [complex](./05.developer-guide/02.tasks.md#flowable-tasks) workflows as you wish. 
 
 **Separation of orchestration and business logic**: mixing the two can result in a complicated data platform that ties you to a specific platform. Kestra can orchestrate business logic written in any language or platform without you having to make ANY modifications to your code. No Python decorators are required, and no need to worry about breaking your orchestration system due to misaligned Python package dependencies. 
 

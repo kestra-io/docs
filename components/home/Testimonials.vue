@@ -65,6 +65,7 @@
                         name: "Daniel Theodorus",
                         link: "https://www.linkedin.com/in/hamrio/",
                         designation: "IT Project Manager @ Airpaz",
+                        enterpriseLogo: "/landing/enterprises/airpaz.svg",
                         alt: "Picture of Daniel testimony",
                     },
                     {
@@ -73,6 +74,7 @@
                         name: "Michael Reynolds",
                         link: "https://www.linkedin.com/in/michael-reynolds-a0a32a28/",
                         designation: "Lead Research Engineer @ Two Six Labs",
+                        enterpriseLogo: "/landing/enterprises/twosix.svg",
                         alt: "Picture of Michael testimony",
                     },
                     {
@@ -97,6 +99,7 @@
                         name: "Oussama Bakkali",
                         link: "https://www.linkedin.com/in/oussama-bakkali-949708b6/",
                         designation: "Data Engineer DevOps @ ADEO Services",
+                        enterpriseLogo: "/landing/enterprises/adeo-services.svg",
                         alt: "Picture of Ousama testimony",
                     },
                     {

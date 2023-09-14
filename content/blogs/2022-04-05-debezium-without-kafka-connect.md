@@ -16,9 +16,7 @@ The importance of data pipeline management and orchestration in today's data lan
 
 ### Breaking Down Debezium's Architecture ###
 
-<p align="center">
-  <img src="/blogs/2022-04-05-debezium-without-kafka-connect/debezium-architecture.png" alt="debezium architecture">
-</p>
+![debezium architecture](/blogs/2022-03-14-kestra-0.4.0/executor-cpu-before.png)
 
 Debezium is an open-source platform developed by Red Hat that stands out in the [Change Data Capture (CDC)](https://en.wikipedia.org/wiki/Change_data_capture) field. It tracks and records row-level changes in your databases, enabling connected applications to respond in real time. Debezium's strength lies in ensuring exactly-once delivery of all changes in the precise order they were made. Furthermore, Debezium's ability to monitor changes in data from multiple sources and various types of databases makes it a highly adaptable tool in data pipeline management.
 
@@ -39,9 +37,8 @@ Although Debezium shines as an efficient and performance-oriented solution in re
 For example, from [Amazon MSK connect](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-connectors.html) documentation:
 > Each MCU represents 1 vCPU of compute and 4 GiB of memory.
 
-<p align="center">
-  <img src="/blogs/2022-04-05-debezium-without-kafka-connect/msk.png" alt="MSK connect pricing on aws">
-</p>
+
+![MSK connect pricing on aws](/blogs/2022-03-14-kestra-0.4.0/msk.png)
 
 This lead to $160 for 1 source and 1 destination per month.
 
@@ -58,7 +55,7 @@ Kestra is designed to streamline the construction, execution, scheduling, and mo
 It offers batch or micro-batch processing capabilities, thereby scaling performance based on specific requirements from periodic updates to near-real-time scenarios. This adaptability optimizes resource usage, particularly when real-time performance isn't required.
 Kestra's Role in Resource Efficiency
 
-When combined with Debezium, Kestra can offer a solution that uses resources precisely based on specific use cases. For example, a dashboard or KPI might only need to be **refreshed once a day**, or every few hours, for example. Whether it is cloud services or on-premises, resources cost money, and the challenge is to make the **most efficient use of resources** based on your requirements. Bandwidth, compute resources, or services based on throughput (such as BigQuery) are all expensive commodities, especially if they are always running. 
+When combined with Debezium, Kestra can offer a solution that uses resources precisely based on specific use cases. For example, a dashboard or KPI might only need to be **refreshed once a day**, or every few hours, for example. Whether it is cloud services or on-premises, resources cost money, and the challenge is to make the **most efficient use of resources** based on your requirements. Bandwidth, compute resources, or services based on throughput (such as BigQuery) are all expensive commodities, especially if they are always running.
 
 If real-time performance is not necessary, then why waste money on resources you do not need? This approach avoids the application of resource-intensive streaming resources to every process. The result is an efficient solution that maximizes resource usage and saves money, while still ensuring comprehensive capture of all row-level changes.
 

@@ -19,7 +19,7 @@
                     </NavToc>
 
                     <div class="bd-content">
-                        <img data-aos="fade-right" class="mb-5 rounded-3" :alt="page.title" :src="page.image"/>
+                        <NuxtImg loading="lazy" format="webp" quality="80" data-aos="fade-right" class="mb-5 rounded-3" :alt="page.title" :src="page.image"/>
 
                         <ContentRendererMarkdown
                             data-aos="fade-zoom"

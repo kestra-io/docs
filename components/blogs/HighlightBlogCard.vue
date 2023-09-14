@@ -3,7 +3,7 @@
         <NuxtLink class="text-dark" :href="blog._path">
             <div class="row g-0">
                 <div class="col-md-6">
-                    <img class="col-md-12 rounded-3 img-fluid" :alt="blog.image" :src="blog.image">
+                    <NuxtImg width="512" loading="lazy" format="webp" quality="80" class="col-md-12 rounded-3 img-fluid" :alt="blog.image" :src="blog.image" />
                 </div>
                 <div class="col-md-6 description">
                     <span class="small-text category">{{ blog.category }}</span>

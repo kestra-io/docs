@@ -28,6 +28,7 @@
                                 <li class="mb-2"><NuxtLink href="/use-cases/modern-data-stack">Modern Data Stack Integration</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/use-cases/change-data-capture">Change Data Capture</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/vs/airflow">Airflow vs Kestra</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/vs/prefect">Prefect vs Kestra</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">

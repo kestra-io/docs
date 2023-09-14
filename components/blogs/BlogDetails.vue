@@ -10,7 +10,7 @@
             </span>
         </p>
 
-        <img class="rounded-circle mt-5" :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name"/><br />
+        <NuxtImg loading="lazy" format="webp" width="68" class="rounded-circle mt-5" :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name"/><br />
         <strong>{{ blog.author.name }}</strong>
 
     </div>

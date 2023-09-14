@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   modules: [
       '@nuxt/devtools',
       '@nuxt/content',
+      '@nuxt/image',
       'nuxt-gtag',
       'nuxt-simple-sitemap',
       'nuxt-multi-cache'
@@ -25,7 +26,10 @@ export default defineNuxtConfig({
               {name: 'msapplication-TileColor', content: '#2c0059'},
               {name: 'theme-color', content: '#2c0059'},
               {property: 'og:image', content:'/og-image.png'}
-          ]
+          ],
+          script: [
+              {src: 'https://js-eu1.hsforms.net/forms/embed/v2.js'}
+          ],
       }
   },
 
