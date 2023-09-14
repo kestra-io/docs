@@ -23,26 +23,6 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <img src="/partners/partners-logos/terraform.svg" class="card-img-top" alt="Terraform's logo">
-                        <div class="card-body">
-                            <p class="card-text">Technology Partner</p>
-                            <h5 class="card-title">Terraform</h5>
-                            <div class="coming-soon d-inline-block rounded text-white">Coming soon...</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <img src="/partners/partners-logos/databricks.svg" class="card-img-top" alt="Databricks's logo">
-                        <div class="card-body">
-                            <p class="card-text">Technology Partner</p>
-                            <h5 class="card-title">Databricks</h5>
-                            <div class="coming-soon d-inline-block rounded text-white">Coming soon...</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card text-center" data-aos="zoom-in">
                         <img src="/partners/badge-partner.svg" class="card-img-top" alt="Technology Partner" height="118" width="118">
                         <div class="card-body">
