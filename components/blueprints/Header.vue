@@ -2,16 +2,18 @@
 <div class="main">
     <div class="container-fluid d-flex justify-content-center pt-5">
         <div class="header">
-            <p class="top-breadcrumb me-4" data-aos="fade-right">
-                SOLUTIONS > BLUEPRINTS
-            </p>
+            <DocsBreadcrumb :slug="page.slug" :page-list="[]" />
             <div class="row">
                 <div class="col-12 col-md-9">
                     <h2>Event-driven workflow based on a Snowflake query condition</h2>
                 </div>
                 <div class="col-12 col-md-3">
-                    <div class="d-flex justify-content-md-end justify-content-start"><button class="btn btn-primary mb-2">Try this blueprint</button></div>
-                    <div class="d-flex justify-content-md-end justify-content-start"><button class="btn bg-white">Copy source code</button></div>
+                    <div class="justify-content-start d-flex justify-content-md-end">
+                        <button class="btn btn-primary mb-2">Try this blueprint</button>
+                    </div>
+                    <div class="justify-content-start d-flex justify-content-md-end">
+                        <button class="btn bg-white" @click="copySourceCode">Copy source code</button>
+                    </div>
                 </div>
             </div>
             <ul class="nav nav-tabs">
@@ -22,19 +24,11 @@
                     <span class="nav-link" :class="{ 'active': activeTab == 'source-code' }">Source Code</span>
                 </li>
             </ul>
-            <div v-if="activeTab == 'topology'" class="pt-3">
+            <div class="pt-3">
                 <div class="card">
                     <div class="card-body">
-                    <!-- topology graph -->
-                        graph
-                    </div>
-                </div>
-            </div>
-            <div v-else class="pt-3">
-                <div class="card">
-                    <div class="card-body">
-                    <!--  source code -->
-                        source code
+                        <div v-if="activeTab == 'topology'">graph  <!-- topology graph --></div>
+                        <pre v-else>{{ page.flow }}</pre>
                     </div>
                 </div>
             </div>
@@ -60,6 +54,12 @@
 
 <script>
 export default {
+    props: {
+        page: {
+            type: Object,
+            required: true
+        }
+    },
     data() {
         return {
             activeTab: 'topology'
@@ -68,6 +68,11 @@ export default {
     methods: {
         setTab(tabName) {
             this.activeTab = tabName
+        },
+        copySourceCode() {
+            if(navigator) {
+                navigator.clipboard.writeText(this.page.flow)
+            }
         }
     }
 }
@@ -75,14 +80,14 @@ export default {
 
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
+:deep(.slug) {
+    @include media-breakpoint-up(xxl) {
+        margin-left: 0;
+    }
+}
 .container-fluid {
   background: $purple-17;
   padding-bottom: calc($spacer * 2.5);
-  .top-breadcrumb {
-    &:after {
-        width: 13px;
-    }
-  }
 
   .nav-link {
     color: $dark;
