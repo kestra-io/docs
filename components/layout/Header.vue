@@ -92,15 +92,6 @@
                                     </p>
                                 </NuxtLink>
                             </li>
-                            <li>
-                                <NuxtLink class="dropdown-item" href="/vs/airflow" @click="globalClick(true)">
-                                    <Reload/>
-                                    <p>
-                                        <span>Airflow vs. Kestra for Data Pipelines</span><br/>
-                                        How to Choose the Right Orchestration Platform
-                                    </p>
-                                </NuxtLink>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
