@@ -8,7 +8,7 @@
     <div class="grid gap-3 mt-5" data-aos="fade-left">
         <button
             v-for="cat in categories"
-            :key="cat"
+            :key="cat.name"
             :class="{ 'active': filter === cat.name }"
             @click="setFilterBlueprints(cat.name)"
             class="m-1 rounded-button"

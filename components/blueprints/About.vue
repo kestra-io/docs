@@ -1,24 +1,27 @@
 <template>
 <div class="mt-5">
-    <h3>About this blueprint</h3>
-    <div class="title">
-        <p>{{ title }}</p>
-    </div>
-    <div class="description">{{ description }}</div>
+    <ContentRenderer :value="page">
+        <h3>About this blueprint</h3>
+        <div class="title">
+            <p>{{ page.title }}</p>
+        </div>
+        <ContentRendererMarkdown
+            data-aos="fade-zoom"
+            class="bd-markdown"
+            :value="page"
+            data-bs-spy="scroll"
+        />
+    </ContentRenderer>
 </div>
 </template>
 
 <script>
 export default {
     props: {
-        title: {
-            type: String,
+        page: {
+            type: Object,
             required: true
         },
-        description: {
-            type: String,
-            required: true
-        }
     }
 }
 </script>
@@ -36,11 +39,5 @@ div.title {
         font-family: var(--bs-font-monospace);
         display: inline;
     }
-}
-div.description {
-  white-space: pre;
-  font-size: $font-size-sm;
-  line-height: 1.375rem;
-  color: black;
 }
 </style>
