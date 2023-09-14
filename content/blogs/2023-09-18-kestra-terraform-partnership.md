@@ -11,11 +11,13 @@ image: /blogs/2023-09-18-kestra-terraform-partnership.jpg
 We're thrilled to reveal that Kestra has formed a technology partnership with[Terraform](https://www.terraform.io/) by HashiCorp! We are both united by a shared vision to simplify data and infrastructure complexities. And to add to this amazing news, our Terraform provider is already a hit, with **200,000 downloads** making it one of the top Terraform provider! 
 
 >waiting for the quote
+
 ---
 
 ## Why Terraform and Kestra? A Technologic Alignment ##
 
 Our partnership with Terraform goes beyond just working together; it's about synchronizing our strengths. Both of our technologies aim to make your operational tasks less complicated. With this partnership, you can easily configure Kestra workflows and tasks within your Terraform settings. This coordination makes scaling straightforward and keeps your operational changes well-documented through a code-based approach.
+
 --- 
 
 ## Elevating Your Data Workflow With Kestra's Terraform Provider ##
