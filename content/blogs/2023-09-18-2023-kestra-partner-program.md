@@ -29,27 +29,11 @@ Our commitment is to develop a significant network of Partners, each bringing a 
 
 If you are looking to partner with the simplest and fastest open-source declarative data orchestrator, fill out the form below to become a partner!
 
-<template>
-    <a id="form" />
-    <div class="container-fluid">
-        <div class="hero hero-sm container">
-            <div class="row justify-content-center mb-4">
-                <div class="col-md-10 col-lg-7 text-center">
-                    <h3 data-aos="fade-left">Become a Partner</h3>
-                    <p>If you are interested in becoming a Kestra partner, please  contact us with any questions.</p>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-12 col-lg-12 col-xl-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-text">
-                                <div id="hubspotForm" data-aos="fade-left" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
+<script charset="utf-8" type="text/javascript" src="//js-eu1.hsforms.net/forms/embed/v2.js"></script>
+<script>
+  hbspt.forms.create({
+    region: "eu1",
+    portalId: "27220195",
+    formId: "e044de55-bda2-4bb8-9e50-ed8c78b94922"
+  });
+</script>
