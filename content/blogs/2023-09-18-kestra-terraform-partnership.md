@@ -27,8 +27,9 @@ Our Terraform provider is a significant step in aligning data orchestration with
 
 ### Supercharge Your CI/CD with Terraform & Kestra ###
 Bring Kestra into your CI/CD pipelines using tools like GitHub Actions. By doing so you can automate your infrastructure provisioning but also deploy your Kestra flows in the CI/CD model. With a GitHub Actions workflow, you can also validate and deploy flows directly into different namespaces ensuring that your data workflows are as agile and adaptable as your infrastructure.
-
+<br>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tiHa3zucS_Q?si=MQJXuWHF_ZK9fSnU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<br>
 
 ### Unlocking Data Efficiency: 5 Million Executions and 4,000+ Flows with Kestra and Terraform ###
 **Leroy Merlin France** achieved new heights in data agility by integrating Kestra and Terraform, both employing declarative language and fully embracing Git-based version control. They used Terraform for automated deployments of BigQuery assets like datasets, tables, views, and ACLs, all part of a streamlined CI/CD process. Upon adopting Kestra, a custom Terraform provider was developed to bring the same level of version control and automation to Kestra’s resources. This harmonized architecture has led to over **5 million pipeline executions** each month, and more than **4.000+ data flows created**, and a staggering 900% increase in data activity, all while fostering team-wide confidence during production deployments. [Learn more about this amazing use case](https://kestra.io/blogs/2023-08-16-datamesh)
@@ -39,7 +40,7 @@ Bring Kestra into your CI/CD pipelines using tools like GitHub Actions. By doing
 
 Our collaboration is just the beginning. Your insights and contributions can greatly influence the utility and success of this integration. Stay tuned for more updates and opportunities.
 
-Hungry for more? Dive into Kestra's Terraform Provider [Documentation](https://kestra.io/docs/terraform) or watch our video on [Building a CI/CD pipeline with Terraform & Kestra for Data Workflows as Code](https://www.youtube.com/watch?v=tiHa3zucS_Q&t=1s&ab_channel=Kestra).
+Hungry for more? Dive into Kestra's Terraform Provider [Documentation](https://kestra.io/docs/terraform).
 
 If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
