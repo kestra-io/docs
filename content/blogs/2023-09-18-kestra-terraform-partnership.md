@@ -28,7 +28,7 @@ Our Terraform provider is a significant step in aligning data orchestration with
 ### Supercharge Your CI/CD with Terraform & Kestra ###
 Bring Kestra into your CI/CD pipelines using tools like GitHub Actions. By doing so you can automate your infrastructure provisioning but also deploy your Kestra flows in the CI/CD model. With a GitHub Actions workflow, you can also validate and deploy flows directly into different namespaces ensuring that your data workflows are as agile and adaptable as your infrastructure.
 <br>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tiHa3zucS_Q?si=MQJXuWHF_ZK9fSnU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=jXSj49xwStR5Wqk8&amp;list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 <br>
 
 ### Unlocking Data Efficiency: 5 Million Executions and 4,000+ Flows with Kestra and Terraform ###
