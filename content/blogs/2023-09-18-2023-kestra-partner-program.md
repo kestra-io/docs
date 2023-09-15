@@ -29,11 +29,12 @@ Our commitment is to develop a significant network of Partners, each bringing a 
 
 If you are looking to partner with the simplest and fastest open-source declarative data orchestrator, fill out the form below to become a partner!
 
-<script charset="utf-8" type="text/javascript" src="//js-eu1.hsforms.net/forms/embed/v2.js"></script>
-<script>
-  hbspt.forms.create({
-    region: "eu1",
-    portalId: "27220195",
-    formId: "e044de55-bda2-4bb8-9e50-ed8c78b94922"
-  });
-</script>
+
+::HubspotForm
+{
+  "region": "eu1",
+  "portalId": "27220195",
+  "formId": "e044de55-bda2-4bb8-9e50-ed8c78b94922",
+  "event": "partner_form"
+}
+::
