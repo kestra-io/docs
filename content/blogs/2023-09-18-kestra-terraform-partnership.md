@@ -8,7 +8,7 @@ author:
   image: "mproset"
 image: /blogs/2023-09-18-kestra-terraform-partnership.jpg
 ---
-We're thrilled to reveal that Kestra has formed a technology partnership with[Terraform](https://www.terraform.io/) by HashiCorp! We are both united by a shared vision to simplify data and infrastructure complexities. And to add to this amazing news, our Terraform provider is already a hit, with **200,000 downloads** making it one of the top Terraform providers! 
+We're thrilled to reveal that Kestra has formed a technology partnership with [Terraform](https://www.terraform.io/) by HashiCorp! We are both united by a shared vision to simplify data and infrastructure complexities. And to add to this amazing news, our Terraform provider is already a hit, with **200,000 downloads** making it one of the top Terraform providers! 
 
 >waiting for the quote
 
@@ -28,6 +28,7 @@ Our Terraform provider is a significant step in aligning data orchestration with
 ### Supercharge Your CI/CD with Terraform & Kestra ###
 Bring Kestra into your CI/CD pipelines using tools like GitHub Actions. By doing so you can automate your infrastructure provisioning but also deploy your Kestra flows in the CI/CD model. With a GitHub Actions workflow, you can also validate and deploy flows directly into different namespaces ensuring that your data workflows are as agile and adaptable as your infrastructure.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tiHa3zucS_Q?si=MQJXuWHF_ZK9fSnU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ### Unlocking Data Efficiency: 5 Million Executions and 4,000+ Flows with Kestra and Terraform ###
 **Leroy Merlin France** achieved new heights in data agility by integrating Kestra and Terraform, both employing declarative language and fully embracing Git-based version control. They used Terraform for automated deployments of BigQuery assets like datasets, tables, views, and ACLs, all part of a streamlined CI/CD process. Upon adopting Kestra, a custom Terraform provider was developed to bring the same level of version control and automation to Kestra’s resources. This harmonized architecture has led to over **5 million pipeline executions** each month, and more than **4.000+ data flows created**, and a staggering 900% increase in data activity, all while fostering team-wide confidence during production deployments. [Learn more about this amazing use case](https://kestra.io/blogs/2023-08-16-datamesh)
