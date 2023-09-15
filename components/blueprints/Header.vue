@@ -25,12 +25,12 @@
                 </li>
             </ul>
             <div class="pt-3">
-                <div class="card">
+                <div class="card" v-if="activeTab == 'topology'">
                     <div class="card-body">
-                        <div v-if="activeTab == 'topology'">graph  <!-- topology graph --></div>
-                        <pre v-else>{{ page.flow }}</pre>
+                        <div>graph  <!-- topology graph --></div>
                     </div>
                 </div>
+                <ProsePre :code="page.flow" :language="yaml" v-else><code class="language-yaml">{{ page.flow }}</code></ProsePre>
             </div>
             <p class="text-center my-4">Plugins Used in this Blueprints</p>
         </div>
@@ -74,7 +74,7 @@ export default {
                 navigator.clipboard.writeText(this.page.flow)
             }
         }
-    }
+    },
 }
 </script>
 
