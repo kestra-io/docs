@@ -24,6 +24,10 @@ Our partnership with Terraform goes beyond just working together; it's about syn
 
 Our Terraform provider is a significant step in aligning data orchestration with infrastructure-as-code best practices. With this integration, configuring Kestra workflows and tasks directly within your Terraform scripts is a seamless experience. It's an integrated approach to streamline and automate all your flows.
 
+## Breaking the Production Barrier: The Kestra and Terraform Solution ##
+
+Moving data pipelines from development to production comes with its own set of challenges. Be it environment setups, database schema access, or cloud resource permissions, the list seems endless. The alliance between Kestra and Terraform aims to bridge this gap by integrating open-source tools that make this transition easier for developers. Learn more about this Everything as [Code for Data Infrastructure solution](https://levelup.gitconnected.com/programmable-data-infrastructure-is-finally-within-reach-83fb8e6392ac).
+
 
 ### Supercharge Your CI/CD with Terraform & Kestra ###
 Bring Kestra into your CI/CD pipelines using tools like GitHub Actions. By doing so you can automate your infrastructure provisioning but also deploy your Kestra flows in the CI/CD model. With a GitHub Actions workflow, you can also validate and deploy flows directly into different namespaces ensuring that your data workflows are as agile and adaptable as your infrastructure.
