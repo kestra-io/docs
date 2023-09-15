@@ -1,5 +1,5 @@
 ---
-title: "A Game-Changer in Everything-as-Code: Kestra and Terraform by HashiCorp Join Forces"
+title: "Kestra and Terraform by HashiCorp Join Forces to Enable Everything-as-Code"
 description: "Discover the technology partnership between Kestra and Terraform by HashiCorp. Experience simplified operational workflows across data and infrastructure, seamless CI/CD integrations, and a Terraform provider with already 200,000 downloads."
 date: 2023-09-18T12:00:00
 category: Company News
