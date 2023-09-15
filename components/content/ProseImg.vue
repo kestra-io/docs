@@ -1,6 +1,6 @@
 <template>
     <span class="text-center d-block">
-        <NuxtImg :src="refinedSrc" :alt="alt" :width="width" :height="height" :class="classWithZoom" loading="lazy" format="webp" quality="80" />
+        <NuxtImg :src="refinedSrc" :alt="alt" :width="width" :height="height" :class="classWithZoom" loading="lazy" format="webp" quality="80" densities="x1 x2" />
     </span>
 </template>
 
