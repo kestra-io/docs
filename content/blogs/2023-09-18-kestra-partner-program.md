@@ -21,7 +21,7 @@ As the demand for Kestra continues to grow, we recognize the need for hands-on a
 
 > “Kestra is an efficient solution for processing all types of data streams. Efficient in development with a clear UI, a comprehensive DevOps process, and an impressive number of plugins that allow it to adapt to all of our clients' technical contexts. Efficient in execution thanks to its scalability and real-time processing monitoring. Efficient in client support with a highly skilled and available team. We are happy to be able to support this wonderful project.”
 
-*Emmanuel Santerne, Partner at NTICO.
+*Emmanuel Santerne, Partner at NTICO.*
 
 ---
 
