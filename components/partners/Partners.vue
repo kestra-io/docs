@@ -24,11 +24,11 @@
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
-                        <img src="/partners/partners-logos/snoflake.svg" class="card-img-top" alt="snoflake's Logo">
+                        <img src="/partners/partners-logos/snowflake.svg" class="card-img-top" alt="snoflake's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
                             <h5 class="card-title">Snowflake</h5>
-                            <a href="https://dlthub.com/" target="_blank">Visit Snowflake website <OpenInNew /></a>
+                            <a href="https://snowflake.com/" target="_blank">Visit Snowflake website <OpenInNew /></a>
                         </div>
                     </div>
                 </div>
