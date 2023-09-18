@@ -14,15 +14,15 @@
 
             <h2 data-aos="zoom-in" class="mt-5">General Questions</h2>
             <CustomDetails title="What is Kestra?">
-                <p>Kestra is a powerful and easy-to-use data orchestration platform that helps you automate, schedule, and monitor data workflows across various systems and services.</p>
+                <p>Kestra is an open-source orchestrator designed to bring Infrastructure as Code (IaC) best practices to all workflows — from those orchestrating mission-critical operations, business processes, and data pipelines to simple Zapier-style automation. Built with an API-first philosophy, Kestra enables users to define and manage data pipelines through a simple YAML configuration file. This approach frees you from being tied to a specific client implementation, allowing for greater flexibility and easier integration with various tools and services.</p>
             </CustomDetails>
             <CustomDetails title="What is a declarative Orchestrator?">
                 <p>A declarative orchestrator is a system that allows you to define and manage complex workflows using a high-level, descriptive language. Instead of specifying the exact steps and sequences to achieve a specific outcome, a declarative orchestrator lets you define the desired end state and the system figures out how to reach it.</p>
 
-                <p>Kestra is a declarative orchestrator designed for managing data workflows. It uses YAML (Yet Another Markup Language) to define workflows in a human-readable and structured format. Kestra workflows consist of tasks and triggers that represent various data processing operations, connected by data dependencies and flow control structures.</p>
+                <p>Kestra is a declarative orchestrator designed for managing all kinds of workflows. It uses YAML (Yet Another Markup Language) to define workflows in a human-readable and structured format. Kestra workflows consist of tasks and triggers that represent various data processing operations, connected by data dependencies and flow control structures.</p>
             </CustomDetails>
             <CustomDetails title="What are the advantages of a Declarative Orchestrator?">
-                <p>By using a declarative approach, Kestra simplifies the development, maintenance, and scalability of data workflows. It allows you to focus on the high-level goals and objectives of your data workflows, while Kestra takes care of executing the tasks and handling errors, retries, and parallelism.</p>
+                <p>By using a declarative approach, Kestra simplifies the development, maintenance, and scalability of workflows. It allows you to focus on the high-level goals and objectives of your data workflows, while Kestra takes care of executing the tasks and handling errors, retries, and parallelism.</p>
 
                 <p>Some key benefits of using Kestra as a declarative orchestrator include:</p>
                 <ol>
@@ -31,14 +31,14 @@
                 </ol>
             </CustomDetails>
             <CustomDetails title="Who can benefit from using Kestra?">
-                <p>Kestra is perfect for data engineers, developers, data scientists, and anyone who needs to process, manage, and orchestrate data workflows across multiple systems.</p>
+                <p>Kestra is perfect for data engineers, developers, data scientists, and anyone who needs to process, manage, and orchestrate workflows across multiple systems.</p>
             </CustomDetails>
 
             <h2 data-aos="zoom-in" class="mt-5">Features and Functionality</h2>
             <CustomDetails title="What are some of the key features of Kestra?">
                 <p>Kestra offers a wide range of features, including:</p>
                 <ul>
-                    <li>Intuitive flow creation with a low-code editor</li>
+                    <li>Intuitive flow creation with a built-in code editor</li>
                     <li>Powerful and flexible task execution with support for parallelism and retries</li>
                     <li>Comprehensive plugin ecosystem for easy integration with various services and systems</li>
                     <li>Advanced flow and task monitoring with metrics, logs, and notifications</li>
@@ -58,10 +58,10 @@
                 <p>To get started with Kestra, follow the <NuxtLink href="/docs/getting-started">Getting Started Guide</NuxtLink> on the Kestra website. This guide will walk you through the installation and configuration process, as well as provide an introduction to creating your first flows and tasks.</p>
             </CustomDetails>
             <CustomDetails title="How to install Kestra?">
-                <p>Kestra is designed to be easy to install and set up. The installation process involves following the <NuxtLink href="/docs/installation/">official documentation</NuxtLink>, which provides step-by-step instructions on how to get started with Kestra on various platforms, including Docker, Kubernetes, and Helm. The Kestra team is also available on their <a target="_blank" href="/slack">Slack channel</a> to provide assistance and answer any questions you might have during the installation process.</p>
+                <p>Kestra is designed to be easy to install and set up. The installation process involves following the <NuxtLink href="/docs/getting-started/">official documentation</NuxtLink>, which provides step-by-step instructions on how to get started with Kestra on various platforms, including Docker, Kubernetes, and Helm. The Kestra team is also available on their <a target="_blank" href="/slack">Slack channel</a> to provide assistance and answer any questions you might have during the installation process.</p>
             </CustomDetails>
             <CustomDetails title="Is there a community or support forum for Kestra?">
-                <p>Yes, Kestra has a growing community and support forum. You can join the <a target="_blank" href="/slack">Kestra Slack channel</a> to ask questions, share your experience, and connect with other users and developers.</p>
+                <p>Yes, Kestra has a growing community and support forum. You can join the <a target="_blank" href="https://kestra.io/slack">Kestra Slack channel</a> to ask questions, share your experience, and connect with other users and developers.</p>
             </CustomDetails>
 
             <h2 data-aos="zoom-in" class="mt-5">Pricing and Licensing</h2>
@@ -85,7 +85,7 @@
                 </ul>
             </CustomDetails>
             <CustomDetails title="How can I get access to the Kestra Enterprise Edition?">
-                <p>To get access to the Kestra Enterprise Edition, please contact us through our <a target="_blank" href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo">Slack channel</a> or <a target="_blank" href="/slack">Slack channel</a>. We will provide you with the necessary information and guide you through the process of setting up the Enterprise Edition.</p>
+                <p>To get access to the Kestra Enterprise Edition, please contact us through our <a target="_blank" href="/demo">Slack channel</a> or <a target="_blank" href="/demo">book a demo</a>. We will provide you with the necessary information and guide you through the process of setting up the Enterprise Edition.</p>
             </CustomDetails>
             <CustomDetails title="Are there additional costs associated with the Enterprise Edition?">
                 <p>Yes, there are additional licensing fees for using the Kestra Enterprise Edition. The fees depend on the size of your organization and the specific features you require. To get more information about pricing, please get in touch with the Kestra team.</p>
@@ -99,7 +99,7 @@
                 <p>YAML's simplicity and readability make it easy to understand and maintain your data workflows. Kestra provides extensive support for various YAML features, such as variables, loops, and conditions, allowing you to create complex workflows without the need for a separate programming language. If you require more advanced functionality, you can always use scripting languages like Python, JavaScript, or Bash within your tasks to extend your flows' capabilities.</p>
             </CustomDetails>
             <CustomDetails title="How can I contribute to the Kestra project?">
-                <p>Contributions to the Kestra project are always welcome! You can contribute by submitting bug reports, feature requests, or pull requests on the <a href="https://github.com/kestra-io/kestra" target="_blank">GitHub repository</a>. You can also join the community on Slack to discuss ideas and collaborate with other developers.</p>
+                <p>Contributions to the Kestra project are always welcome! You can contribute by submitting bug reports, feature requests, or pull requests on the <a href="https://github.com/kestra-io/kestra" target="_blank">GitHub repository</a>. You can also join the community on <a target="_blank" href="https://kestra.io/slack">Slack</a> to discuss ideas and collaborate with other developers.</p>
             </CustomDetails>
         </div>
     </div>
