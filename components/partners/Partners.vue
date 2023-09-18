@@ -8,7 +8,7 @@
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
                             <h5 class="card-title">Airbyte</h5>
-                            <a href="https://airbyte.com/" target="_blank">Visit the Airbyte website <OpenInNew /></a>
+                            <a href="https://airbyte.com/" target="_blank">Visit Airbyte website <OpenInNew /></a>
                         </div>
                     </div>
                 </div>
@@ -18,7 +18,17 @@
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
                             <h5 class="card-title">dlthub</h5>
-                            <a href="https://dlthub.com/" target="_blank">Visit the dlthub website <OpenInNew /></a>
+                            <a href="https://dlthub.com/" target="_blank">Visit dlthub website <OpenInNew /></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 mb-4">
+                    <div class="card" data-aos="zoom-in">
+                        <img src="/partners/partners-logos/snoflake.svg" class="card-img-top" alt="snoflake's Logo">
+                        <div class="card-body">
+                            <p class="card-text">Technology Partner</p>
+                            <h5 class="card-title">Snowflake</h5>
+                            <a href="https://dlthub.com/" target="_blank">Visit Snowflake website <OpenInNew /></a>
                         </div>
                     </div>
                 </div>
@@ -41,7 +51,7 @@
                         <div class="card-body">
                             <p class="card-text">Consulting Partner</p>
                             <h5 class="card-title">Converteo</h5>
-                            <a href="https://converteo.com/en/" target="_blank">Visit the Converteo website <OpenInNew /></a>
+                            <a href="https://converteo.com/en/" target="_blank">Visit Converteo website <OpenInNew /></a>
                         </div>
                     </div>
                 </div>
@@ -51,7 +61,7 @@
                         <div class="card-body">
                             <p class="card-text">Consulting Partner</p>
                             <h5 class="card-title">Ntico</h5>
-                            <div class="coming-soon d-inline-block rounded text-white">Coming soon...</div>
+                            <a href="https://ntico.com/" target="_blank">Visit Ntico website <OpenInNew /></a>
                         </div>
                     </div>
                 </div>
