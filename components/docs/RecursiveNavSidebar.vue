@@ -1,7 +1,7 @@
 <template>
     <div
-        :id="parentSlug"
-        :data-bs-parent="'#'+parentSlug"
+        :id="parentSlug.replaceAll('/', '_')"
+        :data-bs-parent="'#'+parentSlug.replaceAll('/', '_')"
         class="accordion-collapse"
         :class="activeSlug.includes(parentSlug) ? 'collapse show' : 'collapse'"
     >
@@ -31,7 +31,7 @@
                         :class="getClass(item, depthLevel, true)"
                         class="disabled"
                         @click="toggle(item._path, isPage(item))" data-bs-toggle="collapse"
-                        :data-bs-target="'#'+item._path"
+                        :data-bs-target="'#'+item._path.replaceAll('/', '_')"
                     >
                             {{ item.emoji }}
                             {{ item.title }}
@@ -41,14 +41,14 @@
                             v-if="isShow(item._path)"
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
-                            :data-bs-target="'#'+item._path"
+                            :data-bs-target="'#'+item._path.replaceAll('/', '_')"
                             role="button"
                         />
                         <chevron-down
                             v-else
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
-                            :data-bs-target="'#'+item._path"
+                            :data-bs-target="'#'+item._path.replaceAll('/', '_')"
                             role="button"
                         />
                     </template>
