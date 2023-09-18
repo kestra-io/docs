@@ -58,10 +58,10 @@
                 <p>To get started with Kestra, follow the <NuxtLink href="/docs/getting-started">Getting Started Guide</NuxtLink> on the Kestra website. This guide will walk you through the installation and configuration process, as well as provide an introduction to creating your first flows and tasks.</p>
             </CustomDetails>
             <CustomDetails title="How to install Kestra?">
-                <p>Kestra is designed to be easy to install and set up. The installation process involves following the <NuxtLink href="/docs/getting-started/">official documentation</NuxtLink>, which provides step-by-step instructions on how to get started with Kestra on various platforms, including Docker, Kubernetes, and Helm. The Kestra team is also available on their <a target="_blank" href="/slack">Slack channel</a> to provide assistance and answer any questions you might have during the installation process.</p>
+                <p>Kestra is designed to be easy to install and set up. The installation process involves following the <NuxtLink href="/docs/getting-started/">official documentation</NuxtLink>, which provides step-by-step instructions on how to get started with Kestra on various platforms, including Docker, Kubernetes, and Helm. We are also available on our <a target="_blank" href="/slack">Slack channel</a> to provide assistance and answer any questions you might have during the installation process.</p>
             </CustomDetails>
             <CustomDetails title="Is there a community or support forum for Kestra?">
-                <p>Yes, Kestra has a growing community and support forum. You can join the <a target="_blank" href="https://kestra.io/slack">Kestra Slack channel</a> to ask questions, share your experience, and connect with other users and developers.</p>
+                <p>Yes, Kestra has a growing community. You can join the <a target="_blank" href="https://kestra.io/slack">Kestra Slack channel</a> to ask questions, share your experience, and connect with other users and developers.</p>
             </CustomDetails>
 
             <h2 data-aos="zoom-in" class="mt-5">Pricing and Licensing</h2>
@@ -85,7 +85,7 @@
                 </ul>
             </CustomDetails>
             <CustomDetails title="How can I get access to the Kestra Enterprise Edition?">
-                <p>To get access to the Kestra Enterprise Edition, please contact us through our <a target="_blank" href="/demo">Slack channel</a> or <a target="_blank" href="/demo">book a demo</a>. We will provide you with the necessary information and guide you through the process of setting up the Enterprise Edition.</p>
+                <p>To get access to the Kestra Enterprise Edition, please contact us through our <a target="_blank" href="/slack">Slack channel</a> or <a target="_blank" href="/demo">book a demo</a>. We will provide you with the necessary information and guide you through the process of setting up the Enterprise Edition.</p>
             </CustomDetails>
             <CustomDetails title="Are there additional costs associated with the Enterprise Edition?">
                 <p>Yes, there are additional licensing fees for using the Kestra Enterprise Edition. The fees depend on the size of your organization and the specific features you require. To get more information about pricing, please get in touch with the Kestra team.</p>
@@ -94,6 +94,8 @@
             <h2 data-aos="zoom-in">Miscellaneous</h2>
             <CustomDetails title="How does Kestra compare to other data orchestration platforms?">
                 <p>Kestra stands out from other data orchestration platforms due to its focus on ease of use thanks to declarative language YAML, powerful features, and a growing ecosystem of plugins. The user-friendly interface and robust architecture make it an excellent choice for orchestrating complex data workflows across various systems and services.</p>
+                <li> See how Kestra compare with <a target="_blank" href="/vs/airflow">Airflow</a>
+                <li> See how Kestra compare with <a target="_blank" href="/vs/prefect">Prefect</a>
             </CustomDetails>
             <CustomDetails title="Are there any limitations when using declarative flows in YAML?">
                 <p>YAML's simplicity and readability make it easy to understand and maintain your data workflows. Kestra provides extensive support for various YAML features, such as variables, loops, and conditions, allowing you to create complex workflows without the need for a separate programming language. If you require more advanced functionality, you can always use scripting languages like Python, JavaScript, or Bash within your tasks to extend your flows' capabilities.</p>
