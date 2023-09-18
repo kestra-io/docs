@@ -38,5 +38,3 @@ If you are looking to partner with the simplest and fastest open-source declarat
   "event": "partner_form"
 }
 ::
-
-<br>
