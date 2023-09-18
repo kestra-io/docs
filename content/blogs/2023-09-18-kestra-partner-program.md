@@ -13,7 +13,7 @@ We are thrilled to announce the launch of our partner program, a significant mil
 
 As the demand for Kestra continues to grow, we recognize the need for hands-on assistance in various aspects of data orchestration. Whether it's a from-scratch implementation, a re-platforming initiative, a migration project, or an extension through custom development, organizations often require expert guidance and support to ensure successful outcomes. This is where our **Consulting Partners** step in and we couldn't be more excited to welcome [Converteo](https://converteo.com/en/) and [NTICO](https://www.ntico.com/) as our inaugural partners.
 
-![Converteo & Ntico & Kestra Partnership](/blogs/2023-09-18-partners.png)
+![Converteo & Ntico & Kestra Partnership](/blogs/2023-09-18-kestra-partner-program/partners.png)
 
 > “Kestra offers an elegant solution to the pain points we face in the data transformation projects of our customers: monitoring, management, and maintenance of large-scale data flow. What sets Kestra apart is not only its open-source community but also its seamless integration with modern data stack tools like Airbyte and Restack. We are genuinely thrilled to engage with Kestra.”
 
