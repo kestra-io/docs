@@ -30,7 +30,7 @@
                 <h2>Declarative Paradigms</h2>
                 <p>Dagster embraces a Python-first environment, with its Software-Defined Assets (SDAs). This approach naturally attracts those who are comfortable in a Pythonic ecosystem. SDAs serve not just as units of computation but as documented assets within the framework. By isolating the business logic from I/O operations, they grant engineers fine-grained control over data lineage, aiding debugging and understanding of asset states. This Python-centric philosophy extends into Dagster’s environmental abstraction, allowing users to swap out external services and runtimes without altering any user code. Dagster is designed for data engineers and analytics engineers who desire a platform that accommodates a complex Python-based asset lifecycle.</p>
                 <p>On the other side, Kestra aims for an agnostic approach to programming languages and focuses on the YAML-based orchestration. Data pipeline orchestration can be language-neutral and still maintain robustness and scalability.  YAML serves as the primary interface through which workflows are defined. This inclusivity manifests in its ability to incorporate business logic written in languages as diverse as SQL, R, Rust, and even Bash. Consequently, Kestra finds its audience among senior software engineers, especially those who work in diverse tech stacks.</p>
-                <p>both Kestra and Dagster offer unique answers to the question of what declarative orchestration can be. While Dagster may appeal to those who favor a Pythonic richness in their workflows, Kestra attracts those who seek language flexibility, scalability, and a more inclusive approach to defining orchestration logic. The choice between the two will, therefore, depend heavily on the specific technical needs, the programming languages your team is comfortable with, and your long-term vision for data pipeline or workflow management.</p>
+                <p> Both Kestra and Dagster offer unique answers to the question of what declarative orchestration can be. While Dagster may appeal to those who favor a Pythonic richness in their workflows, Kestra attracts those who seek language flexibility, scalability, and a more inclusive approach to defining orchestration logic. The choice between the two will, therefore, depend heavily on the specific technical needs, the programming languages your team is comfortable with, and your long-term vision for data pipeline or workflow management.</p>
             </div>
 
             <div class="mt-5">
@@ -41,7 +41,7 @@
             <div class="mt-5">
                 <h2>Workflow Deployment</h2>
                 <p>Kestra allows for workflow deployments directly from its integrated UI code editor. Moreover, it supports Terraform and integrates with various CI/CD systems like GitHub Actions.</p> 
-                <p>Dagster, by contrast, requires you to manage multiple Helm charts with complex configurations.</p>
+                <p>In contrast, the deployment patterns in Dagster might be more challenging, especially in the open-source version .</p>
             </div>
 
             <div class="mt-5">
@@ -51,7 +51,7 @@
 
             <div class="mt-5">
                 <h2>Cross-role Collaboration and Accessibility</h2>
-                <p>KKestra’s user-friendly interface aims to invite not just engineers but also business stakeholders into the data pipeline process. Dagster comes with a steeper learning curve; it introduces many concepts that can be overwhelming when onboarding new colleagues and stakeholders to the platform.</p>
+                <p>Kestra’s user-friendly interface aims to invite not just engineers but also business stakeholders into the data pipeline process. Dagster comes with a steeper learning curve; it introduces many concepts that can be overwhelming when onboarding new colleagues and stakeholders to the platform.</p>
             </div>
         </Section>
 
@@ -89,18 +89,18 @@
             </tr>
             <tr>
                 <td>Declarative Interface</td>
-                <td>Yes (YAML)</td>
-                <td>Yes (Python DSL & Software-Defined Assets)</td>
+                <td>Yes — API-first with YAML syntax exposed for simplicity</td>
+                <td>Yes — client-side implementation with Python DSL</td>
             </tr>
             <tr>
                 <td>Ease of Setup</td>
                 <td>Quick setup, scheduled workflow in minutes</td>
-                <td>Steeper learning curve, requires understanding of framework</td>
+                <td>Steeper learning curve, requires an understanding of the framework</td>
             </tr>
             <tr>
                 <td>Developer Experience</td>
-                <td>Built-in documentation, code editor, live-updating DAG view</td>
-                <td>Tailored for Python-experienced data engineers</td>
+                <td>Built-in code editor, live-updating DAG view, documentation and blueprints</td>
+                <td>Tailored for senior data engineers experienced in Python</td>
             </tr>
             <tr>
                 <td>Workflow Definitions</td>
@@ -109,18 +109,13 @@
             </tr>
             <tr>
                 <td>Integration/Extensibility</td>
-                <td>Plugin ecosystem, REST API</td>
-                <td>Python-based, potential for package conflicts</td>
-            </tr>
-            <tr>
-                <td>Environmental Flexibility</td>
-                <td>API-first design principles</td>
-                <td>Abstracts environment, allowing service and runtime swapping</td>
+                <td>Plugin ecosystem, REST API, webhooks and event triggers</td>
+                <td>Integrations via Python libraries (may lead to dependency conflicts) and GraphQL API</td>
             </tr>
             <tr>
                 <td>Cross-role Collaboration</td>
-                <td>Designed for broad inclusivity (engineers and business users)</td>
-                <td>More focused on data engineers</td>
+                <td>Designed for all engineers and business users</td>
+                <td>Designed for data engineers maintaining a data warehouse</td>
             </tr>
             <tr>
                 <td>Data Lineage & Debugging</td>
@@ -129,7 +124,7 @@
             </tr>
             <tr>
                 <td>Business Logic Support</td>
-                <td>SQL, Python, R, Rust, Bash, etc.</td>
+                <td>SQL, Python, R, Rust, Bash, and more.</td>
                 <td>Primarily Python</td>
             </tr>
         </tbody>
