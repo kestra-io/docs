@@ -13,7 +13,7 @@
             <div class="d-flex flex-wrap gap-3">
                 <!-- Placeholder for now as data will come from api -->
                 <span class="icon" v-for="n in blueprint.includedTasks" :key="n">
-                    <!-- <TaskIcon :cls="n"></TaskIcon> -->
+                     <TaskIcon :cls="n"></TaskIcon>
                 </span>
             </div>
         </div>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-// import TaskIcon from '@kestra-io/ui-libs/src/components/misc/TaskIcon.vue'
+import TaskIcon from './TaskIcon.vue'
 export default {
     props: {
         blueprint: {
@@ -30,7 +30,7 @@ export default {
             required: true
         }
     },
-    // components: { TaskIcon }
+    components: { TaskIcon }
 }
 </script>
 
@@ -57,7 +57,7 @@ export default {
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-    .description::-webkit-scrollbar { 
+    .description::-webkit-scrollbar {
         display: none;
     }
 }
