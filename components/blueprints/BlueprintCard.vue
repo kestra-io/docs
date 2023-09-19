@@ -4,13 +4,17 @@
         <div class="card-body d-flex flex-column justify-content-between gap-3">
             <div>
                 <div class="card-text">
-                    <div class="category">{{ blueprint.category }}</div>
+                    <p class="title">{{ blueprint.title }}</p>
                 </div>
-                <h6 class="card-title">{{ blueprint.title }}</h6>
+                <h6>
+                    {{ blueprint.description.length > 150 ? blueprint.description.substring(0, 150) + '...' : blueprint.description }}
+                </h6>
             </div>
             <div class="d-flex flex-wrap gap-3">
                 <!-- Placeholder for now as data will come from api -->
-                <span class="icon" v-for="n in 3" :key="n">Icon</span>
+                <span class="icon" v-for="n in blueprint.includedTasks" :key="n">
+                    <!-- <TaskIcon :cls="n"></TaskIcon> -->
+                </span>
             </div>
         </div>
     </div>
@@ -18,13 +22,15 @@
 </template>
 
 <script>
+// import TaskIcon from '@kestra-io/ui-libs/src/components/misc/TaskIcon.vue'
 export default {
     props: {
         blueprint: {
             type: Object,
             required: true
         }
-    }
+    },
+    // components: { TaskIcon }
 }
 </script>
 
@@ -39,13 +45,20 @@ export default {
             padding: 0.313rem 0.625rem;
         }
     }
-    div.category {
+    .title {
         font-size: $font-size-xs;
         color: var(--bs-pink);
         font-weight: 700;
         text-transform: uppercase;
         font-family: var(--bs-font-monospace);
         line-height: 1.75rem;
+    }
+    .description {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .description::-webkit-scrollbar { 
+        display: none;
     }
 }
 </style>
