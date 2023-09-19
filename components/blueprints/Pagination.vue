@@ -4,7 +4,7 @@
             <li class="page-item" @click="changePage({ direction: 'previous' })" role="button">
                 <span class="page-link text-dark fw-bold" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
             </li>
-            <li v-for="n in totalPages" :key="n" role="button" class="page-item" :class="{ 'active': currentPage == n }" @click="changePage({ pageNo: n })"><span class="page-link text-dark fw-bold">{{ n }}</span></li>
+            <li v-for="n in pages" :key="n" :role="n != '...' ? 'button' : ''" class="page-item" :class="{ 'active': (currentPage == n && n != '...'), 'disabled': n == '...' }" @click="changePage({ pageNo: n })"><span class="page-link text-dark fw-bold">{{ n }}</span></li>
             <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
                 <span class="page-link text-dark fw-bold"><ChevronRight /></span>
             </li>
@@ -39,6 +39,18 @@ export default {
             else if(event.pageNo) {
                 this.currentPage = event.pageNo
             }
+        },
+        paginate(current_page, last_page) {
+            let pages = [];
+            for (let i = 1; i <= last_page; i++) {
+                let offset = 1;
+                if (i == 1 || (current_page - offset <= i && current_page + offset >= i) || i == current_page || i == last_page) {
+                    pages.push(i);
+                } else if (i == current_page - (offset + 1) || i == current_page + (offset + 1)) {
+                    pages.push('...');
+                }
+            }
+            return pages;
         }
     },
     watch: {
@@ -48,6 +60,11 @@ export default {
         totalPages() {
             this.currentPage = 1
             this.$emit('onPageChange', this.currentPage)
+        }
+    },
+    computed: {
+        pages() {
+            return this.paginate(this.currentPage, this.totalPages)
         }
     }
 }
