@@ -16,7 +16,7 @@
     "pages:build-deploy": "npm run pages:build && npm run pages:deploy"
   },
   "dependencies": {
-    "@kestra-io/ui-libs": "github:kestra-io/ui-libs",
+    "@kestra-io/ui-libs": "^0.0.17",
     "@amplitude/analytics-browser": "^2.3.5",
     "aos": "^2.3.4",
     "axios": "^1.4.0",
