@@ -110,6 +110,15 @@
                                     </p>
                                 </NuxtLink>
                             </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/blueprints" @click="globalClick(true)">
+                                    <Reload/>
+                                    <p>
+                                        <span>Blueprints</span><br/>
+                                        Leverage Kestra's Change Data Capture capabilities
+                                    </p>
+                                </NuxtLink>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
