@@ -22,35 +22,33 @@
                 <input type="text" class="form-control form-control-lg" id="search-input" placeholder="Search blueprints">
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id">
+        <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprintsPerPage" :key="blueprint.id">
             <BlueprintsBlueprintCard :blueprint="blueprint" data-aos="zoom-in" />
         </div>
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-end">
-                <li class="page-item">
-                    <span class="page-link text-dark fw-bold" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
-                </li>
-                <li class="page-item"><span class="page-link text-dark fw-bold">1</span></li>
-                <li class="page-item"><span class="page-link text-dark fw-bold">2</span></li>
-                <li class="page-item"><span class="page-link text-dark fw-bold">3</span></li>
-                <li class="page-item">
-                    <span class="page-link text-dark fw-bold"><ChevronRight /></span>
-                </li>
-                <li class="align-self-center total-pages">Total 109</li>
-            </ul>
-        </nav>
+        <div class="d-flex justify-content-between">
+            <div class="items-per-page">
+                <select class="form-select" aria-label="Default select example" v-model="itemsPerPage">
+                    <option :value="10">10</option>
+                    <option :value="25">25</option>
+                    <option :value="50">50</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-baseline">
+                <BlueprintsPagination :total-pages="totalPages" @on-page-change="changePage" />
+                <span class="total-pages">Total {{ blueprints.length }}</span>
+            </div>
+        </div>
     </div>
 </div>
 </template>
 
 <script>
-import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue"
-import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 export default {
-  components: { ChevronLeft, ChevronRight },
   data() {
     return {
       filter: 'All tags',
+      itemsPerPage: 25,
+      pageNo: 1,
       categories: [
           {
               name: 'All tags'
@@ -240,14 +238,223 @@ export default {
             title: "Extract data, transform it, and load it in parallel to S3 and Postgres — all in less than 7 seconds!",
             path: ""
         },
+        {
+            id: 19,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 20,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 21,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
+        {
+            id: 22,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 23,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 24,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
+        {
+            id: 25,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 26,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 27,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
+        {
+            id: 28,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 29,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 30,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
+        {
+            id: 31,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 32,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 33,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
+        {
+            id: 34,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 35,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 36,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
+        {
+            id: 37,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 38,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 39,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
+        {
+            id: 40,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 41,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 42,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
+        {
+            id: 43,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 45,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 46,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
+        {
+            id: 47,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 48,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 49,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
+        {
+            id: 50,
+            category: "S3 TRIGGER DUCKDB NOTIFICATIONS",
+            title: "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment...",
+            path: ""
+        },
+        {
+            id: 51,
+            category: "ANALYZE NOTIFICATIONS AWS S3 DUCKDB SAAS TRIGGER",
+            title: "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send...",
+            path: ""
+        },
+        {
+            id: 52,
+            category: "FILES TRANSFORM GCP BIGQUERY DUCKDB",
+            title: "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+            path: ""
+        },
       ]
     }
   },
   methods: {
     setFilterBlueprints(id) {
         this.filter = id;
+    },
+    changePage(pageNo) {
+        this.pageNo = pageNo
     }
-  }
+  },
+  computed: {
+    blueprintsPerPage() {
+        return this.blueprints.slice((this.pageNo - 1) * this.itemsPerPage, this.itemsPerPage + ((this.pageNo - 1) * this.itemsPerPage))
+    },
+    totalPages() {
+      return Math.ceil(this.blueprints.length / this.itemsPerPage)
+    }
+  },
 }
 </script>
 
@@ -257,17 +464,12 @@ export default {
 h5 {
     font-weight: normal;
 }
-.pagination {
-    li {
-        margin-right: 0.5rem;
-        &.total-pages {
-            font-size: $font-size-xs;
-        }
-    }
-}
 .form-control {
     background: url('/search.svg') no-repeat 13px;
     padding-left: 2.5rem;
+}
+.total-pages {
+    font-size: $font-size-xs;
 }
 
 .top-breadcrumb {
