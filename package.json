@@ -12,9 +12,11 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@kestra-io/ui-libs": "github:kestra-io/ui-libs",
     "aos": "^2.3.4",
     "axios": "^1.4.0",
     "bootstrap": "5.3.2",
+    "buffer": "^6.0.3",
     "dayjs": "^1.11.9",
     "lottie-web": "^5.12.2",
     "medium-zoom": "^1.0.8",
