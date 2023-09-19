@@ -8,22 +8,19 @@
 </template>
 <script>
     import {Buffer} from "buffer";
-
-    // Removed this because getting error that document is not defined
-
-    // import Tooltip from "@kestra-io/ui-libs/src/components/misc/Tooltip.vue";
-    // import {cssVariable} from "@kestra-io/ui-libs/src/utils/global.js";
+    import Tooltip from "@kestra-io/ui-libs/src/components/misc/Tooltip.vue";
+    import {cssVariable} from "@kestra-io/ui-libs/src/utils/global.js";
 
     export default {
         name: "TaskIcon",
-        // components: {Tooltip},
+        components: {Tooltip},
         props: {
             customIcon: {
                 type: Object,
                 default: undefined
             },
             cls: {
-                type: Object,
+                type: String,
                 default: undefined
             },
             theme: {
@@ -33,6 +30,9 @@
                     return ["dark", "light"].includes(value)
                 }
             }
+        },
+        created() {
+            console.log(this.cls)
         },
         computed: {
             backgroundImage() {
@@ -61,16 +61,14 @@
                         "</svg>";
                 }
 
-                // Removed this because getting error that document is not defined
+                const darkTheme = document.getElementsByTagName("html")[0].className.indexOf("dark") >= 0;
+                let color = darkTheme ? cssVariable("--bs-gray-900") : cssVariable("--bs-black");
 
-                // const darkTheme = document.getElementsByTagName("html")[0].className.indexOf("dark") >= 0;
-                // let color = darkTheme ? cssVariable("--bs-gray-900") : cssVariable("--bs-black");
+                if (this.theme) {
+                    color = this.theme === "dark" ? cssVariable("--bs-gray-900") : cssVariable("--bs-black");
+                }
 
-                // if (this.theme) {
-                //     color = this.theme === "dark" ? cssVariable("--bs-gray-900") : cssVariable("--bs-black");
-                // }
-
-                // icon = icon.replaceAll("currentColor", color);
+                icon = icon.replaceAll("currentColor", color);
 
                 return Buffer.from(icon, "utf8").toString("base64");
             },
