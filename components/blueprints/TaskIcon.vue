@@ -8,10 +8,15 @@
 </template>
 <script>
     import {Buffer} from "buffer";
-    import {cssVariable} from "@kestra-io/ui-libs/src/utils/global.js";
+
+    // Removed this because getting error that document is not defined
+
+    // import Tooltip from "@kestra-io/ui-libs/src/components/misc/Tooltip.vue";
+    // import {cssVariable} from "@kestra-io/ui-libs/src/utils/global.js";
 
     export default {
         name: "TaskIcon",
+        // components: {Tooltip},
         props: {
             customIcon: {
                 type: Object,
@@ -56,14 +61,16 @@
                         "</svg>";
                 }
 
-                const darkTheme = document.getElementsByTagName("html")[0].className.indexOf("dark") >= 0;
-                let color = darkTheme ? cssVariable("--bs-gray-900") : cssVariable("--bs-black");
+                // Removed this because getting error that document is not defined
 
-                if (this.theme) {
-                    color = this.theme === "dark" ? cssVariable("--bs-gray-900") : cssVariable("--bs-black");
-                }
+                // const darkTheme = document.getElementsByTagName("html")[0].className.indexOf("dark") >= 0;
+                // let color = darkTheme ? cssVariable("--bs-gray-900") : cssVariable("--bs-black");
 
-                icon = icon.replaceAll("currentColor", color);
+                // if (this.theme) {
+                //     color = this.theme === "dark" ? cssVariable("--bs-gray-900") : cssVariable("--bs-black");
+                // }
+
+                // icon = icon.replaceAll("currentColor", color);
 
                 return Buffer.from(icon, "utf8").toString("base64");
             },
