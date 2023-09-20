@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-09-07-locxia-kestra.jpg
 ---
 
-Ntico has designed [Locxia](https://www.locxia.com/), a powerful platform that gives businesses and local authorities a deeper understanding of their territories and residents thanks to satellite imagery. At the core of their solution lies Kestra, used for ingesting, processing, and visualizing vast datasets. 
+Ntico has designed [Locxia](https://www.locxia.com/), a powerful platform that gives businesses and local authorities a deeper understanding of their territories and residents thanks to satellite imagery. At the core of their solution lies [Kestra](https://github.com/kestra-io/kestra), used for ingesting, processing, and visualizing vast datasets. 
 
 This post dives into how Ntico uses Kestra to create and manage data pipelines for its digital solution.
 

@@ -12,7 +12,7 @@ image: /blogs/2022-04-05-debezium-without-kafka-connect.jpg
 
 ## An In-depth Look at Data Pipeline Management Solutions ##
 
-The importance of data pipeline management and orchestration in today's data landscape cannot be overstated. Various products available in the market, each with its unique approach to data handling, can make the task of selecting the ideal solution daunting. This article delves into comparing [Debezium](https://debezium.io/) with [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) and Kestra, our declarative data orchestration platform for a more resource-efficient and cost-effective hybrid solution.
+The importance of data pipeline management and orchestration in today's data landscape cannot be overstated. Various products available in the market, each with its unique approach to data handling, can make the task of selecting the ideal solution daunting. This article delves into comparing [Debezium](https://debezium.io/) with [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) and [Kestra](https://github.com/kestra-io/kestra), our declarative data orchestration platform for a more resource-efficient and cost-effective hybrid solution.
 
 ### Breaking Down Debezium's Architecture ###
 

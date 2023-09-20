@@ -14,7 +14,7 @@ image: /blogs/2022-02-22-leroy-merlin-usage-kestra.jpg
 
 [Leroy Merlin](https://www.leroymerlin.fr/) is the leading brand of the Adeo Group and helps residents around the world with all their home improvement projects - from renovations and extensions, to decoration and repairs. With more than 450 stores across the globe and 140 in France alone, Leroy Merlin France has strong data values and a need to deliver on their KPI to their 80,000+ employees to drive their expansion.
 
-In this article, we will explore Leroy Merlin's data architecture, their development project in the cloud, and how our Kestra orchestration platform contributed to perfectly meet the constraints and ambitions of our partner.
+In this article, we will explore Leroy Merlin's data architecture, their development project in the cloud, and how our [Kestra](https://github.com/kestra-io/kestra) orchestration platform contributed to perfectly meet the constraints and ambitions of our partner.
 
 
 ## Before the Cloud: The On-premise Choice
@@ -39,7 +39,7 @@ They decided to create an entirely new team with that goal in mind, and took an 
 
 Adeo has a strong partnership with Google, and since Leroy Merlin is a subsidiary, the storage choice was Google BigQuery. Second decision: everything needed to be hosted on GitHub and to have a strong CI/CD process in order to go to production. Terraform was the obvious choice here due to the large ecosystem and native integration with BigQuery and other GCP resources.
 
-Next, they needed to decide on how to transfer the data, load it in BigQuery, and transform and aggregate the data. For the transport layer and load, no obvious choice had presented itself. So, they decided to build a custom solution (based on the GCP (Google Cloud Platform) service). For the orchestration, a lot of people were using Airflow, so why not use such a popular system? What’s more, GCP even had a fully managed orchestration service: Cloud composer.
+Next, they needed to decide on how to transfer the data, load it in BigQuery, and transform and aggregate the data. For the transport layer and load, no obvious choice had presented itself. So, they decided to build a custom solution (based on the GCP (Google Cloud Platform) service). For the orchestration, a lot of people were using [Airflow](https://kestra.io/vs/airflow), so why not use such a popular system? What’s more, GCP even had a fully managed orchestration service: Cloud composer.
 
 ## On the Cloud After Few Months
 Leroy Merlin decided to start each of these new projects on the cloud directly before beginning the migration of existing projects. The first projects were coming along, the build was done, and more projects were in production — now they could start the process of concluding past projects.

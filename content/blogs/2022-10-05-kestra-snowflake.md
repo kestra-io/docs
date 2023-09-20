@@ -10,7 +10,7 @@ author:
 image: /blogs/2022-10-05-kestra-snowflake.jpg
 ---
 
-Snowflake is one of the most popular cloud data warehouse technologies. This post demonstrates Kestra plugins for Snowflake data management, including event-driven triggers based on changes in your Snowflake data, file management, and queries.
+Snowflake is one of the most popular cloud data warehouse technologies. This post demonstrates [Kestra](https://github.com/kestra-io/kestra) plugins for Snowflake data management, including event-driven triggers based on changes in your Snowflake data, file management, and queries.
 
 ## About Snowflake ##
 

@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-05-22-data-orchestration-choosing-the-right-tool.jpg
 ---
 
-The world of data engineering is constantly evolving, especially in the face of the progress introduced by AI. This article outlines how Kestra addresses the requirements of organizations in search of a proficient data orchestrator.
+The world of data engineering is constantly evolving, especially in the face of the progress introduced by AI. This article outlines how [Kestra](https://github.com/kestra-io/kestra) addresses the requirements of organizations in search of a proficient data orchestrator.
 
 ## Making an Informed Choice: Key Considerations for an Orchestrator
 

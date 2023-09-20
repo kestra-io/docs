@@ -8,7 +8,7 @@ author:
   image: "bpimpaud"
 image: /blogs/2023-08-22-generating-fake-data.jpg
 ---
-Welcome to the world of [Shiny Rocks](https://github.com/kestra-io/shiny_rocks)! Although this company might not exist outside Kestra it has its own purpose.
+Welcome to the world of [Shiny Rocks](https://github.com/kestra-io/shiny_rocks)! Although this company might not exist outside [Kestra](https://github.com/kestra-io/kestra) it has its own purpose.
 
 We often face the challenge of presenting concepts without real data, due to privacy concerns or practicalities.
 

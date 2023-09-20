@@ -12,7 +12,7 @@ This guide was written by a non-technical user **for** non-technical users. Bein
 
 After completing this tutorial, you'll be able to:
 
-- install Kestra in a few clicks
+- install [Kestra](https://github.com/kestra-io/kestra) in a few clicks
 - create a simple flow
 - be familiar with the main concepts
 
