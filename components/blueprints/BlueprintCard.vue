@@ -6,14 +6,13 @@
                 <div class="card-text">
                     <p class="title">{{ blueprint.title }}</p>
                 </div>
-                <h6>
+                <h6 v-if="blueprint.description">
                     {{ blueprint.description.length > 150 ? blueprint.description.substring(0, 150) + '...' : blueprint.description }}
                 </h6>
             </div>
-            <div class="d-flex flex-wrap gap-3">
-                <!-- Placeholder for now as data will come from api -->
+            <div class="d-flex flex-wrap gap-3" v-if="icons">
                 <span class="icon" v-for="n in blueprint.includedTasks" :key="n">
-                     <TaskIcon :cls="n"></TaskIcon>
+                    <BlueprintsTaskIcon :cls="icons[n]" v-if="icons[n]" />
                 </span>
             </div>
         </div>
@@ -22,15 +21,17 @@
 </template>
 
 <script>
-import TaskIcon from './TaskIcon.vue'
 export default {
     props: {
         blueprint: {
             type: Object,
             required: true
+        },
+        icons: {
+            type: Object,
+            default: undefined
         }
-    },
-    components: { TaskIcon }
+    }
 }
 </script>
 
@@ -43,6 +44,7 @@ export default {
         .icon {
             border: 1px solid #E5E4F7;
             padding: 0.313rem 0.625rem;
+            width: 44px;
         }
     }
     .title {
@@ -51,7 +53,7 @@ export default {
         font-weight: 700;
         text-transform: uppercase;
         font-family: var(--bs-font-monospace);
-        line-height: 1.75rem;
+        line-height: 1.375rem;
     }
     .description {
         -ms-overflow-style: none;
