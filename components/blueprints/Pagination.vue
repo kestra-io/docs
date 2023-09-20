@@ -28,6 +28,11 @@ export default {
             required: true
         }
     },
+    mounted() {
+        if(this.$route.query.page) {
+            this.currentPage = parseInt(this.$route.query.page)
+        }
+    },
     methods: {
         changePage(event) {
             if(event.direction && event.direction == 'previous' && this.currentPage > 1) {
