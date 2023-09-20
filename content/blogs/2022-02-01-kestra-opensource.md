@@ -10,7 +10,7 @@ author:
 image: /blogs/2022-02-01-kestra-opensource.jpg
 ---
 
-Today, our team is proud to announce a first public release of Kestra, an open-source platform to orchestrate & schedule any kinds of workflow at scale.
+Today, our team is proud to announce a first public release of [Kestra](https://github.com/kestra-io/kestra), an open-source platform to orchestrate & schedule any kinds of workflow at scale.
 
 
 ## What is Kestra?

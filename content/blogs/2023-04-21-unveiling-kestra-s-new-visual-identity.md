@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-04-21-unveiling-kestra-s-new-visual-identity.png
 ---
 
-As we unveil our new branding, we aim to showcase the sophistication and innovation behind our product, while maintaining a visual identity that is both intuitive and captivating. In this blog post, we will explore the story behind Kestra's logo, typography, and design elements, delving into the meaning and message they convey. Join us on this journey as we reveal the essence of our brand and how it reflects our dedication to providing the best data orchestration solution for all of our users.
+As we unveil our new branding, we aim to showcase the sophistication and innovation behind our product, while maintaining a visual identity that is both intuitive and captivating. In this blog post, we will explore the story behind [Kestra](https://github.com/kestra-io/kestra)'s logo, typography, and design elements, delving into the meaning and message they convey. Join us on this journey as we reveal the essence of our brand and how it reflects our dedication to providing the best data orchestration solution for all of our users.
 
 ## The Story Behind Kestra's Logo and the Message It Conveys
 

@@ -26,7 +26,7 @@ Our partnership with Terraform extends beyond technical integration. We both sha
 
 ![Terraform Kestra](/blogs/2023-09-19-kestra-terraform-partnership/terraform-kestra.png)
 
-Our Terraform provider is a significant step in aligning workflow orchestration with infrastructure-as-code best practices. With this integration, you can seamlessly manage your entire Kestra environment in code, including flows, triggers, tasks, input variables, secrets, users, and namespaces. Software engineers manage their entire Kestra infrastructure along with their other applications with Terraform to ensure a robust software delivery process.
+Our Terraform provider is a significant step in aligning workflow orchestration with infrastructure-as-code best practices. With this integration, you can seamlessly manage your entire [Kestra](https://github.com/kestra-io/kestra) environment in code, including flows, triggers, tasks, input variables, secrets, users, and namespaces. Software engineers manage their entire Kestra infrastructure along with their other applications with Terraform to ensure a robust software delivery process.
 
 
 ### Breaking the Production Barrier: The Kestra and Terraform Solution

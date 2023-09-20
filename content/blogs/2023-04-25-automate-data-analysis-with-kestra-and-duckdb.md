@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-04-25-automate-data-analysis-with-kestra-and-duckdb.jpg
 ---
 
-Kestra, in collaboration with DuckDB, offers a highly efficient way to analyze CSV files. In this blog post, we will focus on how these two platforms can be employed to automate data analysis.
+[Kestra](https://github.com/kestra-io/kestra), in collaboration with [DuckDB](https://motherduck.com/), offers a highly efficient way to analyze CSV files. In this blog post, we will focus on how these two platforms can be employed to automate data analysis.
 
 Here is a sample Kestra flow code that downloads a CSV file containing tech salary data from 2020 to 2023, uses DuckDB to analyze the data, and saves the findings in a Google Sheets CSV file:
 

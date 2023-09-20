@@ -79,7 +79,7 @@ Still we can foresee a future where the data stack lands in a space where experi
 
 We think Kestra helps to achieve this vision. 
 
-Kestra is a declarative data orchestration tool. Bringing declarative to the party isn’t just a trend: it's the realization that consistency and efficiency can't be done without a proper domain system language. 
+[Kestra](https://github.com/kestra-io/kestra) is a declarative orchestration tool. Bringing declarative to the party isn’t just a trend: it's the realization that consistency and efficiency can't be done without a proper domain system language. 
 
 That’s why we created a rich user interface. In Kestra, every click, every drag, is translated to code at some point. It allows speed and great user experience. 
 

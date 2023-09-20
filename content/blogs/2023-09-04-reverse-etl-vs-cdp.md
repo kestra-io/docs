@@ -112,7 +112,7 @@ Hightouch leverages real-time syncing mechanisms, ensuring that data from wareho
 - **Scalability Through Cloud-native Principles**: Hightouch is designed with a cloud-native architecture, ensuring consistent performance regardless of data volume.
 
 ### Integration Capabilities with Kestra ###
-Kestra integrates Hightouch with a dedicated plugin. You can run any sync by providing a Hightouch API token and a sync ID:
+[Kestra](https://github.com/kestra-io/kestra) integrates Hightouch with a dedicated plugin. You can run any sync by providing a Hightouch API token and a sync ID:
 
 ```yaml
 id: test-hightouch
