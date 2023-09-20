@@ -8,19 +8,17 @@
 </template>
 <script>
     import {Buffer} from "buffer";
-    import Tooltip from "@kestra-io/ui-libs/src/components/misc/Tooltip.vue";
     import {cssVariable} from "@kestra-io/ui-libs/src/utils/global.js";
 
     export default {
         name: "TaskIcon",
-        components: {Tooltip},
         props: {
             customIcon: {
                 type: Object,
                 default: undefined
             },
             cls: {
-                type: String,
+                type: Object,
                 default: undefined
             },
             theme: {
@@ -30,9 +28,6 @@
                     return ["dark", "light"].includes(value)
                 }
             }
-        },
-        created() {
-            console.log(this.cls)
         },
         computed: {
             backgroundImage() {

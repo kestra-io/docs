@@ -7,23 +7,23 @@
     <h5 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h5>
     <div class="grid gap-3 mt-5" data-aos="fade-left">
         <button
-            v-for="cat in categories"
-            :key="cat.id"
-            :class="{ 'active': filter === cat.id }"
-            @click="setFilterBlueprints(cat.id)"
+            v-for="fil in filters"
+            :key="fil.name"
+            :class="{ 'active': fil.name === filter.name }"
+            @click="setFilterBlueprints(fil)"
             class="m-1 rounded-button"
         >
-            {{ cat.name }}
+            {{ fil.name }}
         </button>
     </div>
     <div class="row my-5">
         <div class="row mb-4 justify-content-center">
             <div class="col-12 col-md-6 col-lg-4">
-                <input type="text" class="form-control form-control-lg" id="search-input" placeholder="Search blueprints">
+                <input type="text" class="form-control form-control-lg" id="search-input" placeholder="Search blueprints" v-model="searchQuery">
             </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id">
-            <BlueprintsBlueprintCard :blueprint="blueprint" data-aos="zoom-in" />
+            <BlueprintsBlueprintCard :blueprint="blueprint" :icons="icons" data-aos="zoom-in" />
         </div>
         <div class="d-flex justify-content-between">
             <div class="items-per-page">
@@ -33,7 +33,7 @@
                     <option :value="50">50</option>
                 </select>
             </div>
-            <div class="d-flex align-items-baseline">
+            <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
                 <BlueprintsPagination :total-pages="totalPages" @on-page-change="changePage" />
                 <span class="total-pages">Total {{ totalBlueprints }}</span>
             </div>
@@ -46,41 +46,92 @@
 const currentPage = ref(1)
 const itemsPerPage = ref(25)
 const blueprints = ref([])
-const filter = ref('')
-const categories = ref([])
+const filter = ref({ name: 'All tags' })
+const filters = ref([])
+const icons = ref()
 const totalPages = ref(0)
 const totalBlueprints = ref(0)
+const searchQuery = ref('')
+const route = useRoute()
+const router = useRouter()
 
-const { data: filtersData } = await useAsyncData('categories', () => {
+const { data: filtersData } = await useAsyncData('filters', () => {
     return $fetch('https://api.kestra.io/v1/blueprints/tags')
 })
 
+
 if(filtersData.value) {
-    categories.value = filtersData.value
-    filter.value = filtersData.value[0].id
+    filters.value = [{ name: 'All tags' }, ...filtersData.value]
+}
+
+const setFilterBlueprints = (filterVal) => {
+    filter.value = filterVal
+}
+
+if(Object.keys(route.query).length) {
+    if(route.query.page) currentPage.value = parseInt(route.query.page)
+    if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
+    if(route.query.tags) filter.value = filters.value.find(f => f.id == route.query.tags)
+    if(route.query.q) searchQuery.value = route.query.q
+}
+
+const { data: iconsData } = await useAsyncData('icons', () => {
+    return $fetch('https://api.kestra.io/v1/plugins/icons')
+})
+
+if(iconsData.value) {
+    icons.value = iconsData.value
 }
 
 const { data: blueprintsData } = await useAsyncData('blueprints', () => {
-    return $fetch(`https://api.kestra.io/v1/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}`)
+    return $fetch(`https://api.kestra.io/v1/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${filter.value.id}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
 })
 
-if(blueprintsData.value) {
-    blueprints.value = blueprintsData.value.results
-    totalBlueprints.value = blueprintsData.value.total
-    totalPages.value = Math.ceil(blueprintsData.value.total / blueprints.value.length)
+const setBlueprints = (allBlueprints, total) => {
+    blueprints.value = allBlueprints
+    totalBlueprints.value = total
+    totalPages.value = Math.ceil(total / itemsPerPage.value)
 }
 
-const setFilterBlueprints = (id) => {
-    filter.value = id
+if(blueprintsData.value) {
+    setBlueprints(blueprintsData.value.results, blueprintsData.value.total)
 }
+
 const changePage = (pageNo) => {
     currentPage.value = pageNo
 }
 
-watch([currentPage, itemsPerPage], async ([pageVal, itemVal], [oldPageVal, oldItemVal]) => {
-    const { data } = await useFetch(`https://api.kestra.io/v1/blueprints?page=${itemVal != oldItemVal ? 1 : pageVal}&size=${itemVal}`)
-    blueprints.value = data.value.results
-    totalPages.value = Math.ceil(data.value.total / blueprints.value.length)
+let timer;
+watch([currentPage, itemsPerPage, filter, searchQuery], ([pageVal, itemVal, filterVal, searchVal], [__, oldItemVal, oldFilterVal]) => {
+    if(timer) {
+        clearTimeout(timer)
+    }
+    timer = setTimeout(async () => {
+
+        const { data } = await useFetch(`https://api.kestra.io/v1/blueprints?page=${(itemVal != oldItemVal) || (filterVal != oldFilterVal) ? 1 : pageVal}&size=${itemVal}${Object.keys(filterVal).length && (itemVal == oldItemVal) && filterVal.name != 'All tags' ? `&tags=${filterVal.id}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
+        if(itemVal != oldItemVal) filter.value = {}
+        setBlueprints(data.value.results, data.value.total)
+
+        function getQuery() {
+            let query = {
+                page: pageVal,
+                size: itemVal,
+            }
+            if(searchVal.length) {
+                query['q'] = searchVal
+            }
+            if(filterVal.name != 'All tags') {
+                query['tags'] = filterVal.id
+            }
+
+            return query
+        }
+
+        router.push({
+            query: getQuery()
+        })
+        
+    }, 500)
 })
 </script>
 
