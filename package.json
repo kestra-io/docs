@@ -32,7 +32,7 @@
     "nuxt": "^3.6.5",
     "nuxt-gtag": "^1.1.0",
     "nuxt-multi-cache": "^3.0.1",
-    "nuxt-simple-sitemap": "^3.1.4",
+    "nuxt-simple-sitemap": "^3.3.4",
     "remark-code-import": "file:./utils/remark-code-import",
     "remark-flexible-markers": "^1.0.3",
     "rss": "^1.2.2",
