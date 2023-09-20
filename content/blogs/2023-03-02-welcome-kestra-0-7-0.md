@@ -10,7 +10,7 @@ author:
 image: /blogs/2023-03-02-welcome-kestra-0-7-0.jpg
 ---
 
-We’ve been super busy at Kestra over the last few months, making working with data much more delightful for you. We’ve done much work to elevate the developer experience and introduce powerful features to make Kestra the best data orchestration platform.
+We’ve been super busy at [Kestra](https://github.com/kestra-io/kestra) over the last few months, making working with data much more delightful for you. We’ve done much work to elevate the developer experience and introduce powerful features to make Kestra the best data orchestration platform.
 
 We are proud to present to you **Kestra 0.7.0 🎉**.
 

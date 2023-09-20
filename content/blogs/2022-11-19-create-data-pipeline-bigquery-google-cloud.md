@@ -10,7 +10,7 @@ author:
 image: /blogs/2022-11-19-create-data-pipeline-bigquery-google-cloud.png
 ---
 
-This blog post dives into Kestra's integrations for Google Cloud Platform (GCP), focusing on BigQuery operations. It demonstrates how to automate repetitive processes and create resilient workflows within the GCP environment using Kestra's orchestration capabilities.
+This blog post dives into [Kestra](https://github.com/kestra-io/kestra)'s integrations for Google Cloud Platform (GCP), focusing on BigQuery operations. It demonstrates how to automate repetitive processes and create resilient workflows within the GCP environment using Kestra's orchestration capabilities.
 
 ## Kestra & Big Query ##
 

@@ -10,7 +10,7 @@ image: /blogs/2023-07-12-your-private-app-store-for-data-pipelines.png
 ---
 
 
-Data professionals are exposed to a growing number of tools in the data, AI, and engineering ecosystem. If you combined the logo of every tool used by a typical data team, you would likely get a picture resembling an app store. Amidst a wide variety of such apps, it can be challenging to integrate *existing* applications with *new* ones while retaining institutional knowledge and staying adaptable to change. We’ve  introduced a **new feature** in the Kestra UI called **Blueprints** to help you implement repeatable workflow patterns and share knowledge within your organization.
+Data professionals are exposed to a growing number of tools in the data, AI, and engineering ecosystem. If you combined the logo of every tool used by a typical data team, you would likely get a picture resembling an app store. Amidst a wide variety of such apps, it can be challenging to integrate *existing* applications with *new* ones while retaining institutional knowledge and staying adaptable to change. We’ve  introduced a **new feature** in the [Kestra](https://github.com/kestra-io/kestra) UI called **Blueprints** to help you implement repeatable workflow patterns and share knowledge within your organization.
 
 ## Why Blueprints
 

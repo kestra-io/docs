@@ -14,7 +14,7 @@ We're excited to announce the release of Kestra 0.9. This latest update brings a
 
 ## Flow Metrics Dashboard
 
-In previous versions, Kestra provided metrics for flow execution. However, there was no user-friendly interface to explore and visualize these metrics. 
+In previous versions, [Kestra](https://github.com/kestra-io/kestra) provided metrics for flow execution. However, there was no user-friendly interface to explore and visualize these metrics. 
 
 With Kestra 0.9.0, we've introduced a new Metrics tab at the flow-execution level. You can now easily track specific metrics, such as the number of rows processed, fine-grained processing times of specific steps within your task and more. 
 There are two types of metrics that you can track: counter and timer. [This documentation page](https://kestra.io/docs/plugin-developer-guide/outputs#use-cases-for-metrics) includes an example showing how you can leverage these two metric types to track how many rows get processed in each partition and how long this process took.

@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-09-05-2023-kestra-airbyte-technology-partnership.jpg
 ---
 
-We are pleased to announce a technology partnership with [Airbyte](https://airbyte.com/). Kestra and Airbyte share a common vision for the future of the Modern Data Stack. This technical partnership ensures seamless data transfer, task execution, and process automation between Kestra and Airbyte.
+We are pleased to announce a technology partnership with [Airbyte](https://airbyte.com/). [Kestra](https://github.com/kestra-io/kestra) and Airbyte share a common vision for the future of the Modern Data Stack. This technical partnership ensures seamless data transfer, task execution, and process automation between Kestra and Airbyte.
 
 >“Airbyte and Kestra share a common vision: to simplify data pipeline creation. This partnership brings together the strengths of two leading data management companies, so our customers can get the most out of their data and achieve their business goals.”
 

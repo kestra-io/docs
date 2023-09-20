@@ -19,7 +19,7 @@ Azure Batch is a cloud-based job scheduling service that simplifies running larg
 
 ## Use Case: Analyzing and Processing Log Files
 
-Let's say you want to collect millions of log files daily from various sources, such as web servers, IoT devices, and mobile applications. You will need to process and analyze these logs to gain insights, detect anomalies, and optimize the performance of your systems. To accomplish this, you can utilize Azure Blob Storage, Azure Batch, and an orchestrator such as Kestra.
+Let's say you want to collect millions of log files daily from various sources, such as web servers, IoT devices, and mobile applications. You will need to process and analyze these logs to gain insights, detect anomalies, and optimize the performance of your systems. To accomplish this, you can utilize Azure Blob Storage, Azure Batch, and an orchestrator such as [Kestra](https://github.com/kestra-io/kestra).
 
 ![azure log process topology](/blogs/2023-05-09-analyzing-processing-logs-azure-kestra/azure-kestra-topology.png)
 

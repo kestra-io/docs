@@ -15,7 +15,7 @@ Data Warehouse solutions can sometimes become costly, especially with an uptick 
 
 BigQuery is very fast and easy to use. But it can be very expensive, especially when running scheduled queries: you’re not here to look at the bytes billed every time you’re query run.
 
-In the example below, we create a Kestra task to run a query on a Big Query table. To schedule our query, we just add a Kestra Trigger with a cron property allowing us to run the query every hour.
+In the example below, we create a [Kestra](https://github.com/kestra-io/kestra) task to run a query on a Big Query table. To schedule our query, we just add a Kestra Trigger with a cron property allowing us to run the query every hour.
 
 ```yaml
 id: query_events

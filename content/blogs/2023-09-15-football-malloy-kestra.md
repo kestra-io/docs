@@ -93,7 +93,7 @@ Now that we have a scraper to get data and a tool to analyze them, we need to li
 
 That’s where Kestra makes the glue !
 
-Kestra is an open-source declarative data orchestrator. You can write data workflows using YAML files and trigger executions seamlessly.
+[Kestra](https://github.com/kestra-io/kestra) is an open-source declarative orchestrator. You can write data workflows using YAML files and trigger executions seamlessly.
 
 Let’s create a first flow to scrape matches results every day.
 

@@ -7,7 +7,7 @@
                         <p data-aos="fade-left" class="overline">Enterprise Edition</p>
                         <h1 data-aos="fade-right">Kestra Enterprise to Scale Your Workflows<span class="dot">.</span></h1>
                         <p data-aos="fade-left" class="baseline">Get full access to the Enterprise-only features and enjoy best in class support with custom SLAs to ensure that you have the help you need, whenever you need it</p>
-                        <a href="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo" target="_blank" class="btn btn-lg btn-primary me-2 mb-2" data-aos="zoom-in">
+                        <a href="https://kestra.io/demo" target="_blank" class="btn btn-lg btn-primary me-2 mb-2" data-aos="zoom-in">
                             Book a demo
                         </a>
                         <NuxtLink href="/contact-us" class="btn btn-lg btn-dark mb-2" data-aos="zoom-in">

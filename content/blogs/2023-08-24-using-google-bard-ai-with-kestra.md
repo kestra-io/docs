@@ -21,7 +21,7 @@ What I would like is to receive, each morning, a joke in my professional email s
 
 ## Setting Up Joke Retrieval with Kestra ##
 
-We are using kestra to schedule a workflow that will call the Vertex AI API and then send an email.
+We are using [Kestra](https://github.com/kestra-io/kestra) to schedule a workflow that will call the Vertex AI API and then send an email.
 
 If you’re new to Kestra, check the [getting started guide](https://kestra.io/docs/getting-started).
 

@@ -50,7 +50,7 @@ The easiest way to get started with dbt is to leverage the [dbt-duckdb](https://
 
 Orchestration is a critical aspect of end-to-end data management, as it helps you coordinate all steps, control and monitor their execution, and respond to failure scenarios. For instance, you can ensure that transformation steps run only after your data has been successfully ingested. If something fails, you can retry it and get notified about that failure.
 
-Kestra is a simple, event-driven orchestrator that helps to maintain orchestration logic as code while bridging the gap between engineers and domain experts. The declarative YAML syntax opens the process of building data workflows to domain experts who are not programmers, as well as programmers working on a different stack (*a language-agnostic interface rather than only Python*).
+[Kestra](https://github.com/kestra-io/kestra) is a simple, event-driven orchestrator that helps to maintain orchestration logic as code while bridging the gap between engineers and domain experts. The declarative YAML syntax opens the process of building data workflows to domain experts who are not programmers, as well as programmers working on a different stack (*a language-agnostic interface rather than only Python*).
 
 ---
 
