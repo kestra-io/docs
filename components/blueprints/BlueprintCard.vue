@@ -11,9 +11,9 @@
                 </h6>
             </div>
             <div class="d-flex flex-wrap gap-3" v-if="icons">
-                <span class="icon" v-for="n in blueprint.includedTasks" :key="n">
+                <div class="icon" v-for="n in blueprint.includedTasks" :key="n">
                     <BlueprintsTaskIcon :cls="icons[n]" v-if="icons[n]" />
-                </span>
+                </div>
             </div>
         </div>
     </div>
