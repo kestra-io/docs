@@ -30,7 +30,7 @@
                         <div>graph  <!-- topology graph --></div>
                     </div>
                 </div>
-                <ProsePre :code="page.flow" :language="yaml" v-else><code class="language-yaml">{{ page.flow }}</code></ProsePre>
+                <ProsePre :code="page.flow" v-else><code class="language-yaml">{{ page.flow }}</code></ProsePre>
             </div>
             <p class="text-center my-4">Plugins Used in this Blueprints</p>
         </div>
