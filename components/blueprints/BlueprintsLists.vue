@@ -48,7 +48,7 @@ const itemsPerPage = ref(25)
 const blueprints = ref([])
 const filter = ref({ name: 'All tags' })
 const filters = ref([])
-const icons = ref()
+const props = defineProps(['icons'])
 const totalPages = ref(0)
 const totalBlueprints = ref(0)
 const searchQuery = ref('')
@@ -73,14 +73,6 @@ if(Object.keys(route.query).length) {
     if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
     if(route.query.tags) filter.value = filters.value.find(f => f.id == route.query.tags)
     if(route.query.q) searchQuery.value = route.query.q
-}
-
-const { data: iconsData } = await useAsyncData('icons', () => {
-    return $fetch('https://api.kestra.io/v1/plugins/icons')
-})
-
-if(iconsData.value) {
-    icons.value = iconsData.value
 }
 
 const { data: blueprintsData } = await useAsyncData('blueprints', () => {

@@ -5,12 +5,17 @@
         <div class="title">
             <p>{{ page.title }}</p>
         </div>
-        <ContentRendererMarkdown
+
+        <p>{{ page.description }}</p>
+
+        <!-- Removed this because of error, as not getting data in markdown format from api -->
+
+        <!-- <ContentRendererMarkdown
             data-aos="fade-zoom"
             class="bd-markdown"
             :value="page"
             data-bs-spy="scroll"
-        />
+        /> -->
     </ContentRenderer>
 </div>
 </template>
