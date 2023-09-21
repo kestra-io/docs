@@ -7,13 +7,13 @@
     <h5 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h5>
     <div class="grid gap-3 mt-5" data-aos="fade-left">
         <button
-            v-for="fil in filters"
-            :key="fil.name"
-            :class="{ 'active': fil.name === filter.name }"
-            @click="setFilterBlueprints(fil)"
+            v-for="filter in filters"
+            :key="filter.name"
+            :class="{ 'active': filter.name === activeFilter.name }"
+            @click="setFilterBlueprints(filter)"
             class="m-1 rounded-button"
         >
-            {{ fil.name }}
+            {{ filter.name }}
         </button>
     </div>
     <div class="row my-5">
@@ -46,7 +46,7 @@
 const currentPage = ref(1)
 const itemsPerPage = ref(25)
 const blueprints = ref([])
-const filter = ref({ name: 'All tags' })
+const activeFilter = ref({ name: 'All tags' })
 const filters = ref([])
 const props = defineProps(['icons'])
 const totalPages = ref(0)
@@ -65,18 +65,16 @@ if(filtersData.value) {
 }
 
 const setFilterBlueprints = (filterVal) => {
-    filter.value = filterVal
+    activeFilter.value = filterVal
 }
 
-if(Object.keys(route.query).length) {
-    if(route.query.page) currentPage.value = parseInt(route.query.page)
-    if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
-    if(route.query.tags) filter.value = filters.value.find(f => f.id == route.query.tags)
-    if(route.query.q) searchQuery.value = route.query.q
-}
+if(route.query.page) currentPage.value = parseInt(route.query.page)
+if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
+if(route.query.tags) activeFilter.value = filters.value.find(f => f.id == route.query.tags)
+if(route.query.q) searchQuery.value = route.query.q
 
 const { data: blueprintsData } = await useAsyncData('blueprints', () => {
-    return $fetch(`https://api.kestra.io/v1/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${filter.value.id}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
+    return $fetch(`https://api.kestra.io/v1/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeFilter.value.id}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
 })
 
 const setBlueprints = (allBlueprints, total) => {
@@ -94,19 +92,18 @@ const changePage = (pageNo) => {
 }
 
 let timer;
-watch([currentPage, itemsPerPage, filter, searchQuery], ([pageVal, itemVal, filterVal, searchVal], [__, oldItemVal, oldFilterVal]) => {
+watch([currentPage, itemsPerPage, activeFilter, searchQuery], ([pageVal, itemVal, filterVal, searchVal], [__, oldItemVal, oldFilterVal]) => {
     if(timer) {
         clearTimeout(timer)
     }
     timer = setTimeout(async () => {
 
-        const { data } = await useFetch(`https://api.kestra.io/v1/blueprints?page=${(itemVal != oldItemVal) || (filterVal != oldFilterVal) ? 1 : pageVal}&size=${itemVal}${Object.keys(filterVal).length && (itemVal == oldItemVal) && filterVal.name != 'All tags' ? `&tags=${filterVal.id}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
-        if(itemVal != oldItemVal) filter.value = {}
+        const { data } = await useFetch(`https://api.kestra.io/v1/blueprints?page=${(itemVal != oldItemVal) || (filterVal != oldFilterVal) ? 1 : pageVal}&size=${itemVal}${Object.keys(filterVal).length && filterVal.name != 'All tags' ? `&tags=${filterVal.id}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
         setBlueprints(data.value.results, data.value.total)
 
         function getQuery() {
             let query = {
-                page: pageVal,
+                page: (itemVal != oldItemVal) || (filterVal != oldFilterVal) ? 1 : pageVal,
                 size: itemVal,
             }
             if(searchVal.length) {
