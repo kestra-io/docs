@@ -2,7 +2,7 @@
 <div class="main">
     <div class="container-fluid d-flex justify-content-center pt-5">
         <div class="header">
-            <DocsBreadcrumb :slug="page.slug" :page-list="[]" />
+            <DocsBreadcrumb :slug="slug" :page-list="[]" />
             <div class="row">
                 <div class="col-12 col-md-9">
                     <h2>Event-driven workflow based on a Snowflake query condition</h2>
@@ -35,18 +35,12 @@
             <p class="text-center my-4">Plugins Used in this Blueprints</p>
         </div>
     </div>
-    <div class="plugins-icons d-flex justify-content-center gap-3">
-        <div class="plugin-icon card">
-            <span>Icon</span>
-            <span>EachSequential</span>
-        </div>
-        <div class="plugin-icon card">
-            <span>Icon</span>
-            <span>Return</span>
-        </div>
-        <div class="plugin-icon card">
-            <span>Icon</span>
-            <span>Triggers</span>
+    <div class="plugins-icons d-flex justify-content-center gap-3" v-if="page.includedTasks && page.includedTasks.length">
+        <div class="plugin-icon card" v-for="icon in page.includedTasks" :key="icon">
+            <span class="icon">
+                <BlueprintsTaskIcon :cls="icons[icon]" />
+            </span>
+            <span>{{ icons[icon].name }}</span>
         </div>
     </div>
 </div>
@@ -58,7 +52,15 @@ export default {
         page: {
             type: Object,
             required: true
-        }
+        },
+        slug: {
+            type: String,
+            required: true
+        },
+        icons: {
+            type: Object,
+            required: true
+        },
     },
     data() {
         return {
@@ -110,12 +112,17 @@ export default {
     gap: 0.25rem;
     align-items: center;
     justify-content: center;
-    width: 134px;
+    min-width: 134px;
     height: 96px;
     background-color: #fff;
     border-radius: 0.5rem;
     font-weight: bold;
     font-size: $font-size-sm;
+
+    .icon {
+        width: 30px;
+        height: 37px;
+    }
   }
 }
 </style>
