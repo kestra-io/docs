@@ -46,6 +46,7 @@ if(slug.value != '/blueprints/') {
 
   if(pageData.value) {
     page.value = pageData.value
+    console.log(page.value);
 
     for (const tag of page.value.tags) {
       const { data } = await useAsyncData('relatedBlueprints', () => {

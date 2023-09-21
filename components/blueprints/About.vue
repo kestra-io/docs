@@ -1,32 +1,27 @@
 <template>
 <div class="mt-5">
-    <ContentRenderer :value="page">
-        <h3>About this blueprint</h3>
-        <div class="title">
-            <p>{{ page.title }}</p>
-        </div>
+    <h3>About this blueprint</h3>
+    <div class="title">
+        <p>{{ page.title }}</p>
+    </div>
 
-        <p>{{ page.description }}</p>
-
-        <!-- Removed this because of error, as not getting data in markdown format from api -->
-
-        <!-- <ContentRendererMarkdown
-            data-aos="fade-zoom"
-            class="bd-markdown"
-            :value="page"
-            data-bs-spy="scroll"
-        /> -->
-    </ContentRenderer>
+    <div class="markdown" v-html="description"></div>
 </div>
 </template>
 
 <script>
+import markdownIt from 'markdown-it'
 export default {
     props: {
         page: {
             type: Object,
             required: true
         },
+    },
+    computed: {
+        description() {
+            return markdownIt().render(this.page.description)
+        }
     }
 }
 </script>
@@ -44,5 +39,12 @@ div.title {
         font-family: var(--bs-font-monospace);
         display: inline;
     }
+}
+
+:deep(pre) {
+    background: #24292e;
+    color: #e1e4e8;
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.5rem;
 }
 </style>
