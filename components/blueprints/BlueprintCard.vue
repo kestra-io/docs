@@ -1,5 +1,5 @@
 <template>
-<NuxtLink :href="blueprint.path">
+<NuxtLink :href="`/blueprints/${blueprint.id}`">
     <div class="card">
         <div class="card-body d-flex flex-column justify-content-between gap-3">
             <div>
