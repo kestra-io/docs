@@ -64,7 +64,6 @@ export default {
         },
         totalPages() {
             this.currentPage = 1
-            this.$emit('onPageChange', this.currentPage)
         }
     },
     computed: {
