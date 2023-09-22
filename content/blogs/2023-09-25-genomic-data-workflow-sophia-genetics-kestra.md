@@ -14,7 +14,6 @@ Genomic sequence analysis is a key process for leading companies in the pharmace
 Quite surprisingly, none of the existing tools in this space appeared to adequately address the aforementioned pain point.
 
 
-These tools either focus too heavily on scientific aspects, lacking the flexibility to accommodate side-business use cases and integrate with modern tools. Alternatively, researchers rely on Python packages and encounter the limitations associated with an interpreted language.
 These limitations make it harder to scale, update the architecture, and bring in people who are new to this specialized field. The bioinformaticians' collective experiences shed light on the need for innovative solutions that strike a balance between scientific rigor and compatibility with modern tooling, overcoming the limitations imposed by language choices.
 
 ## Workflow Challenges in Genomic Sequence Analysis
