@@ -90,6 +90,14 @@ export default defineNuxtConfig({
       }
   },
 
+  vite: {
+      optimizeDeps: {
+          exclude: [
+              '* > @kestra-io/ui-libs'
+          ]
+      },
+  },
+
   gtag: {
       id: 'G-EYVNS03HHR',
       initialConsent: false
