@@ -64,7 +64,7 @@ We're proud to be aiding one of the industry's leading giants, [Sophia Genetics]
 ### Data Chunking: A Compute Challenge
 
 Bioinformaticians employ a 'divide-and-conquer' strategy, often referred to as Split/Merge in data processing. This involves breaking down the dataset into manageable chunks, applying the same processing to each.
-However, the true challenge arises from the unpredictability of the number of splits needed before execution. This variability can stem from factors like dataset size, complexity, and the specific algorithms being used. To ensure efficient execution, it becomes paramount to provision a dedicated compute node for each split. This targeted allocation of computing resources substantially reduces processing time.
+However, the true challenge arises from the unpredictability of the number of splits needed before execution. This variability can stem from factors like dataset size, complexity, and the specific algorithms being used. To ensure efficient execution, it becomes essential to provision a dedicated compute node for each split. This targeted allocation of computing resources reduces processing time.
 
 Without this strategic allocation, one might find themselves waiting for an extended period, potentially up to 10 hours, just to process a 100GB file. This emphasizes the critical role of resource management in the seamless execution of bioinformatics workflows.
 
