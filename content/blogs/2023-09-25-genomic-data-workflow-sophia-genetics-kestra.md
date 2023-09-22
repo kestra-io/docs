@@ -54,7 +54,7 @@ As a bioinformatician orchestrating the different steps in genomic sequence anal
 
 
 The complexity of genomic sequence analysis is apparent. This process necessitates the use of over 12 tools tailored to each step's requirements. Imagine how overwhelming this could be if relying on manual execution… Data engineering plays a crucial role in implementing these transformations efficiently and at scale. It involves designing data pipelines, selecting appropriate algorithms and tools, optimizing performance, and ensuring data integrity and reliability throughout the process.
-This is precisely where Kestra stands out. It empowers you to effortlessly manage hundreds of diverse, both small and large panel workflows on a daily basis, all within a cost-effective production environment.
+This is where Kestra stands out. It empowers bio-informaticians to manage a large panel of workflows from all sizes on a daily basis, all within a cost-effective production environment.
 
 
 ## Kestra: The Solution for Sophia Genetics
