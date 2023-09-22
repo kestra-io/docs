@@ -14,7 +14,6 @@ Genomic sequence analysis is a key process for leading companies in the pharmace
 Quite surprisingly, none of the existing tools in this space appeared to adequately address the aforementioned pain point.
 
 
-These limitations make it harder to scale, update the architecture, and bring in people who are new to this specialized field. The bioinformaticians' collective experiences shed light on the need for innovative solutions that strike a balance between scientific rigor and compatibility with modern tooling, overcoming the limitations imposed by language choices.
 
 ## Workflow Challenges in Genomic Sequence Analysis
 
