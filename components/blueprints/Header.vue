@@ -25,12 +25,14 @@
                 </li>
             </ul>
             <div class="pt-3">
-                <div class="card" v-if="activeTab == 'topology'">
+                <div class="card">
                     <div class="card-body">
-                        <div>graph  <!-- topology graph --></div>
+                        <div v-if="activeTab == 'topology'">graph  <!-- topology graph --></div>
+                        <div v-else>
+                            <pre><code>{{ page.flow }}</code></pre>
+                        </div>
                     </div>
                 </div>
-                <ProsePre :code="page.flow" v-else><code class="language-yaml">{{ page.flow }}</code></ProsePre>
             </div>
             <p class="text-center my-4">Plugins Used in this Blueprints</p>
         </div>
@@ -47,7 +49,9 @@
 </template>
 
 <script>
+// import Topology from '@kestra-io/ui-libs/src/components/topology/Topology.vue'
 export default {
+    // components: { Topology },
     props: {
         page: {
             type: Object,
