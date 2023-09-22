@@ -1,5 +1,5 @@
 ---
-title: ""Kestra Partners with Snowflake for Enhanced Data Workflow Management"
+title: "Kestra Partners with Snowflake for Enhanced Data Workflow Management"
 description: "Kestra and Snowflake join forces to offer integrated solutions for data workflow management. Learn how this partnership brings efficiency and reliability to your data pipelines, from event-driven triggers to simplified file management."
 date: 2023-09-25T17:00:00
 category: Company News
