@@ -11,7 +11,7 @@
       <LayoutSection title="More Related Blueprints">
         <div class="row">
           <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in relatedBlueprints" :key="blueprint.id">
-            <BlueprintsBlueprintCard :blueprint="blueprint" data-aos="zoom-in" />
+            <BlueprintsBlueprintCard :blueprint="blueprint" :icons="icons" data-aos="zoom-in" />
           </div>
         </div>
       </LayoutSection>
@@ -46,15 +46,18 @@ if(slug.value != '/blueprints/') {
 
   if(pageData.value) {
     page.value = pageData.value
-    console.log(page.value);
 
-    for (const tag of page.value.tags) {
-      const { data } = await useAsyncData('relatedBlueprints', () => {
-        return $fetch(`https://api.kestra.io/v1/blueprints?tags=${tag}`)
-      })
+    const { data } = await useAsyncData('relatedBlueprints', () => {
+      return $fetch(`https://api.kestra.io/v1/blueprints?tags=${page.value.tags}&size=3`)
+    })
 
-      relatedBlueprints.value = relatedBlueprints.value.concat(data.value.results)
-    }
+    relatedBlueprints.value = data.value.results
   }
+
+  // const { data: graphData } = await useAsyncData('topologyGraph', () => {
+  //   return $fetch(`https://api.kestra.io/v1/blueprints/${route.params.slug.join()}/graph`)
+  // })
+
+  // console.log(graphData.value);
 }
 </script>
