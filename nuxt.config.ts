@@ -92,6 +92,11 @@ export default defineNuxtConfig({
 
   vite: {
       optimizeDeps: {
+          include: [
+            "humanize-duration",
+            "lodash",
+            "dagre"
+          ],
           exclude: [
               '* > @kestra-io/ui-libs'
           ]
