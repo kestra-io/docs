@@ -89,6 +89,19 @@ export default defineNuxtConfig({
       }
   },
 
+  vite: {
+      optimizeDeps: {
+          include: [
+            "humanize-duration",
+            "lodash",
+            "dagre"
+          ],
+          exclude: [
+              '* > @kestra-io/ui-libs'
+          ]
+      },
+  },
+
   gtag: {
       id: 'G-EYVNS03HHR',
       initialConsent: false

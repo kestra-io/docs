@@ -12,19 +12,30 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@kestra-io/ui-libs": "^0.0.17",
+    "@kestra-io/ui-libs": "^0.0.20",
+    "@vue-flow/background": "^1.2.0",
+    "@vue-flow/controls": "1.0.6",
+    "@vue-flow/core": "1.14.3",
     "aos": "^2.3.4",
     "axios": "^1.4.0",
     "bootstrap": "5.3.2",
     "buffer": "^6.0.3",
+    "dagre": "^0.8.5",
     "dayjs": "^1.11.9",
+    "humanize-duration": "^3.30.0",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
     "lottie-web": "^5.12.2",
     "markdown-it": "^13.0.1",
     "medium-zoom": "^1.0.8",
+    "moment": "^2.29.4",
     "rapidoc": "^9.3.4",
     "vanilla-cookieconsent": "^2.9.1",
+    "vue": "^3.3.4",
     "vue-material-design-icons": "^5.2.0",
-    "vue3-count-to": "^1.1.2"
+    "vue3-count-to": "^1.1.2",
+    "vuex": "^4.1.0",
+    "yaml": "^2.3.1"
   },
   "devDependencies": {
     "@nuxt/content": "2.7.2",

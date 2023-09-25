@@ -27,7 +27,9 @@
             <div class="pt-3">
                 <div class="card">
                     <div class="card-body">
-                        <div v-if="activeTab == 'topology'">graph  <!-- topology graph --></div>
+                        <div v-if="activeTab == 'topology'">
+                            <BlueprintsTopology :flow-graph="graph" :source="page.flow" :id="page.id" />
+                        </div>
                         <div v-else>
                             <pre><code>{{ page.flow }}</code></pre>
                         </div>
@@ -42,16 +44,14 @@
             <span class="icon">
                 <BlueprintsTaskIcon :cls="icons[icon]" />
             </span>
-            <span>{{ icons[icon].name }}</span>
+            <span v-if="icons[icon]">{{ icons[icon].name }}</span>
         </div>
     </div>
 </div>
 </template>
 
 <script>
-// import Topology from '@kestra-io/ui-libs/src/components/topology/Topology.vue'
 export default {
-    // components: { Topology },
     props: {
         page: {
             type: Object,
@@ -65,6 +65,11 @@ export default {
             type: Object,
             required: true
         },
+        graph: {
+            type: Object,
+            required: true,
+            default: () => ({})
+        }
     },
     data() {
         return {

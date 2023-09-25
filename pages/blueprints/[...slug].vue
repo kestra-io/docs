@@ -5,7 +5,7 @@
   </div>
 
   <div v-else>
-    <BlueprintsHeader :page="page" :slug="slug" :icons="icons" />
+    <BlueprintsHeader :page="page" :graph="graph" :slug="slug" :icons="icons" />
     <div class="container">
       <BlueprintsAbout :page="page" />
       <LayoutSection title="More Related Blueprints">
@@ -30,6 +30,7 @@ const slug = ref("/blueprints/" + (route.params.slug instanceof Array ? route.pa
 const page = ref()
 const icons = ref()
 const relatedBlueprints = ref([])
+const graph = ref({})
 
 const { data: iconsData } = await useAsyncData('icons', () => {
     return $fetch('https://api.kestra.io/v1/plugins/icons')
@@ -54,10 +55,13 @@ if(slug.value != '/blueprints/') {
     relatedBlueprints.value = data.value.results
   }
 
-  // const { data: graphData } = await useAsyncData('topologyGraph', () => {
-  //   return $fetch(`https://api.kestra.io/v1/blueprints/${route.params.slug.join()}/graph`)
-  // })
+  const { data: graphData } = await useAsyncData('topologyGraph', () => {
+    return $fetch(`https://api.kestra.io/v1/blueprints/${route.params.slug.join()}/graph`)
+  })
 
-  // console.log(graphData.value);
+  console.log(graphData.value);
+  if(graphData.value) {
+    graph.value = graphData.value
+  }
 }
 </script>
