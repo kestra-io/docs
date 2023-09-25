@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Topology :flow-graph="flowGraph" :id="id" :source="source" />
+        <Topology class="topology-root" :flow-graph="flowGraph" :id="id" :source="source" />
     </div>
 </template>
 
@@ -28,4 +28,8 @@
 </script>
 
 <style scoped lang="scss">
+    .topology-root {
+        width: 100%;
+        height: 400px;
+    }
 </style>
