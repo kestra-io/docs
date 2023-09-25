@@ -28,9 +28,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div v-if="activeTab == 'topology'">
-                            <ClientOnly>
-                                <topology />
-                            </ClientOnly>
+                            <BlueprintsTopology />
                         </div>
                         <div v-else>
                             <pre><code>{{ page.flow }}</code></pre>
@@ -53,9 +51,7 @@
 </template>
 
 <script>
-import Topology from './Topology.vue'
 export default {
-    components: { Topology },
     props: {
         page: {
             type: Object,
