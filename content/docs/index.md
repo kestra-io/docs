@@ -4,14 +4,13 @@ title: 📓 Welcome to Kestra
 
 Kestra is a universal open-source orchestrator that makes both **scheduled** and **event-driven workflows** easy. By bringing Infrastructure as Code best practices to data, process, and microservice orchestration, you can build reliable workflows and manage them with confidence.
 
-In just a few lines of code, you can [create a flow](./05.developer-guide/01.flow.md) directly from the UI. Thanks to the declarative YAML interface for defining orchestration logic, business stakeholders can participate in the workflow creation process. Instead of making orchestration an engineering-only endeavor, Kestra offers a versatile set of language-agnostic developer tools while simultaneously providing an intuitive user interface tailored for business professionals. The YAML definition gets automatically adjusted any time you make changes to a workflow from the UI or via an API call. Therefore, Kestra's orchestration logic is always managed declaratively in code, even if some workflow components are modified in other ways (UI, CI/CD, Terraform, API call).
+In just a few lines of code, you can [create a flow](./05.developer-guide/01.flow.md) directly from the UI. Thanks to the declarative YAML interface for defining orchestration logic, business stakeholders can participate in the workflow creation process. Kestra offers a versatile set of language-agnostic developer tools while simultaneously providing an intuitive user interface tailored for business professionals. The YAML definition gets automatically adjusted any time you make changes to a workflow from the UI or via an API call. Therefore, the orchestration logic is always managed declaratively in code, even if some workflow components are modified in other ways (UI, CI/CD, Terraform, API calls).
 
 ![Adding new tasks in the UI](https://kestra.io/adding-tasks.gif)
 
-
 ---
 
-## Design Principles
+## Product Principles
 
 **Simple is better than complex**: you can build your first scheduled workflow in less than 5 minutes from the UI without even having to think about managing local environments, infrastructure, deployments or CI/CD. Simplicity scales, complexity fails. We believe that, in the long run, a simple orchestration API is less likely to fail than convoluted client-side orchestration tied to a single programming language.
 
@@ -19,15 +18,15 @@ In just a few lines of code, you can [create a flow](./05.developer-guide/01.flo
 
 **Scalable architecture as a foundation**: Kestra's [architecture](./08.architecture.md) is built with proven and time-tested technologies. The [Enterprise Edition](/enterprise) can handle millions of executions per second without breaking a sweat thanks to a backend built on top of Kafka and Elasticsearch.
 
-**API-first design**: every action in Kestra is API-driven. In contrast to Python-based workflows that heavily rely on client-side imlementation in a single language, Kestra's workflow definition is a config that gets sent as a payload to an API call. 
-- You define in a YAML config **which tasks** do you want to orchestrate, and **how**, and that config is sent to Kestra's backend via an API call. 
-- This **microservice-oriented design** makes your orchestration language-agnostic, and opens up the door to all sorts of automations. With every action behind the API, there are no limits to what you can automate, from changing task configuration using your internal tools, to triggering, adding or modifying workflows in any way you can imagine. All that without having to redeploy any code or rebuild Docker images.  
+**API-first design**: every action in Kestra is API-driven. In contrast to Python-based workflows that heavily rely on client-side imlementation in a single language, Kestra's workflow definition is a config that gets sent as a payload to an API call.
+- You define in a YAML config **which tasks** do you want to orchestrate, and **how**, and that config is sent to Kestra's backend via an API call.
+- This **microservice-oriented design** makes your orchestration language-agnostic, and opens up the door to all sorts of automations. With every action behind the API, there are no limits to what you can automate, from changing task configuration using your internal tools, to triggering, adding or modifying workflows in any way you can imagine. All that without having to redeploy any code or rebuild Docker images.
 
 **Portability**: Kestra's workflows are programming-language agnostic. Your tasks can be written in Python, R, Node.js, Julia, Rust, Bash or Powershell. You can also extend the platform via custom plugins, triggers and tasks.
 
-**Declarative AND imperative**: we believe that declarativeness is a spectrum and you decide about the degree of how declarative or imperative you want your workflows to be. You can write as simple or as [complex](./05.developer-guide/02.tasks.md#flowable-tasks) workflows as you wish. 
+**Declarative AND imperative**: we believe that declarativeness is a spectrum and you decide about the degree of how declarative or imperative you want your workflows to be. You can write as simple or as [complex](./05.developer-guide/02.tasks.md#flowable-tasks) workflows as you wish.
 
-**Separation of orchestration and business logic**: mixing the two can result in a complicated data platform that ties you to a specific platform. Kestra can orchestrate business logic written in any language or platform without you having to make ANY modifications to your code. No Python decorators are required, and no need to worry about breaking your orchestration system due to misaligned Python package dependencies. 
+**Separation of orchestration and business logic**: mixing the two can result in a complicated data platform that ties you to a specific platform. Kestra can orchestrate business logic written in any language or platform without you having to make ANY modifications to your code. No Python decorators are required, and no need to worry about breaking your orchestration system due to misaligned Python package dependencies.
 
 **Extensible**: Kestra is built on top of a plugins ecosystem. You can use an existing plugin from our [plugin library](../plugins/index.md) or build your [own](./10.plugin-developer-guide/index.md). You don't even need to know much of Java to build your own plugin — as long as your custom script can be packages into a Docker container, you can use it similarly to [script plugins](https://github.com/kestra-io/plugin-scripts).
 
@@ -49,4 +48,4 @@ In just a few lines of code, you can [create a flow](./05.developer-guide/01.flo
 ![video-intro](https://kestra.io/video.gif)
 
 
-It's time to [get started](./01.getting-started.md)! 🚀 Move on to the next section to launch Kestra and create your first flow.
+Move on to the next section to [get started](./01.getting-started.md) with Kestra and create your first flow.
