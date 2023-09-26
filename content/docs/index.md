@@ -10,7 +10,7 @@ In just a few lines of code, you can [create a flow](./05.developer-guide/01.flo
 
 ---
 
-## Design Principles
+## Product Principles
 
 **Simple is better than complex**: you can build your first scheduled workflow in less than 5 minutes from the UI without even having to think about managing local environments, infrastructure, deployments or CI/CD. Simplicity scales, complexity fails. We believe that, in the long run, a simple orchestration API is less likely to fail than convoluted client-side orchestration tied to a single programming language.
 
@@ -48,4 +48,4 @@ In just a few lines of code, you can [create a flow](./05.developer-guide/01.flo
 ![video-intro](https://kestra.io/video.gif)
 
 
-It's time to [get started](./01.getting-started.md)! 🚀 Move on to the next section to launch Kestra and create your first flow.
+Move on to the next section to [get started](./01.getting-started.md) with Kestra and create your first flow.
