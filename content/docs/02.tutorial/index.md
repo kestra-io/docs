@@ -2,11 +2,14 @@
 title: 📚 Tutorial
 ---
 
-Welcome to this tutorial on Kestra! Kestra is an open-source workflow engine and job scheduler that allows you to automate and manage complex workflows efficiently.
+Kestra is an open-source orchestrator designed to bring Infrastructure as Code (IaC) best practices to all workflows — from those orchestrating mission-critical applications, IT operations, business processes, and data pipelines, to simple Zapier-style automations.
 
-In this tutorial, we will guide you through the basics of Kestra and show you how to use its key features. You will learn how to create flows, schedule jobs, and manage the execution of tasks. We will also cover topics such as parallel task execution, error handling, or task running in Docker.
+You can use Kestra to:
+- run workflows on-demand, event-driven or based on a regular schedule
+- programmatically interact with any system or programming language
+- orchestrate microservices, batch jobs, ad-hoc scripts (written in Python, R, Julia, Node.js, and more), SQL queries, data ingestion syncs, dbt or Spark jobs, or any other applications or processes.
 
-This tutorial is designed for anyone who wants to learn how to use Kestra, regardless of their experience level. Whether you are a developer, data scientist, or IT professional, this tutorial will provide you with the knowledge you need to start with Kestra and automate your workflows. So let's get started!
+This tutorial will guide you through **key concepts** in Kestra. We'll build upon the "Hello-world" flow from the [Getting Started](../01.getting-started.md) section, and we'll gradually introduce new concepts including `namespaces`, `tasks`, parametrization with `inputs` and scheduling using `triggers`. We'll then dive into `parallel` task execution, error handling, as well as custom scripts and microservices running in isolated containers. Let's get started!
 
 
 ::next-link
