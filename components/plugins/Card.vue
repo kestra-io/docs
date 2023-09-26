@@ -4,13 +4,13 @@
             <div class="card-body d-flex flex-column justify-content-between gap-3">
                 <div>
                     <div class="d-flex flex-wrap gap-3" v-if="icon.name">
-                        {{ plugin.icon }}
+                        <BlueprintsTaskIcon :cls="icon" />
                     </div>
                     <div class="card-text">
-                        <p class="title" v-if="plugin.title">{{ plugin.title }}</p>
+                        <p class="title" v-if="plugin.categories">{{ plugin.categories.join() }}</p>
                     </div>
-                    <h6 v-if="plugin.description">
-                        {{ plugin.description }}
+                    <h6 v-if="plugin.plugin">
+                        {{ plugin.plugin.replace('plugin-', '').split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ') }}
                     </h6>
                 </div>
             </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
     plugin: {
         type: Object,
         required: true
