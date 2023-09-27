@@ -1,16 +1,18 @@
 <template>
     <!-- <DocContainer type="plugins" :slug="slug" /> -->
     <div class="container">
-        <div class="mt-5 row">
-            <div class="side-bar col-12 col-md-3 col-lg-2 border-end">
+        <div class="mt-5 main">
+            <div class="side-bar border-end">
                 <div class="side-bar-item" v-for="group in groups" :key="group.title" role="button">
-                    <span>{{ group.title }}</span>
+                    <NuxtLink :href="`https://kestra.io/plugins/${group.name}`" class="text-black">
+                        <span>{{ group.title }}</span>
+                    </NuxtLink>
                 </div>
             </div>
-            <div class="col-12 col-md-9 col-lg-10">
+            <div class="content">
                 <div class="ms-4">
                     <h1 data-aos="fade-left">Plugins</h1>
-                    <h5 data-aos="fade-right">Extend Kestra with our 350 plugins</h5>
+                    <h5 data-aos="fade-right">Extend Kestra with our {{ subgroupsData.length }} plugins</h5>
                     <div class="grid gap-3 mt-5" data-aos="fade-left">
                         <button
                             v-for="cat in categories"
@@ -39,7 +41,7 @@
                                     <option :value="50">50</option>
                                 </select>
                             </div>
-                            <div class="d-flex align-items-baseline" v-if="plugins.length > itemsPerPage">
+                            <div class="d-flex align-items-baseline" v-if="totalPages > 1">
                                 <BlueprintsPagination :total-pages="totalPages" @on-page-change="changePage" />
                                 <span class="total-pages">Total {{ plugins.length }}</span>
                             </div>
@@ -80,7 +82,7 @@
     })
 
     if(subgroupsData.value) {
-        plugins.value = subgroupsData.value.filter((sGroup, i) => sGroup.subgroup && i == subgroupsData.value.findIndex(sg => sg.subgroup == sGroup.subgroup))
+        plugins.value = subgroupsData.value.filter((sGroup, i) => i == subgroupsData.value.findIndex(sg => sg.plugin == sGroup.plugin))
     }
 
     const { data: groupsData } = await useAsyncData('groups', () => {
@@ -101,12 +103,27 @@
         pageNo.value = pageNum
     }
 
+    const filteredPlugins = computed(() => {
+        return plugins.value.filter((plugin) => {
+            if(selectedCategory.value != 'All Categories') {
+                return (plugin.categories && plugin.categories.some(c => c.toUpperCase() == selectedCategory.value.toUpperCase()))
+            }
+
+            return true
+        }).filter((plugin) => {
+            return (plugin.categories && plugin.categories.includes(searchQuery.value.toUpperCase())) ||
+                (plugin.plugin && plugin.plugin.toLocaleLowerCase().includes(searchQuery.value.toLowerCase())) || 
+                (plugin.subgroup && plugin.subgroup.toLocaleLowerCase().includes(searchQuery.value.toLowerCase())) ||
+                (plugin.description && plugin.description.toLocaleLowerCase().includes(searchQuery.value.toLocaleLowerCase()))
+        })
+    })
+
     const totalPages = computed(() => {
-        return Math.ceil(plugins.value.length / itemsPerPage.value)
+        return Math.ceil(filteredPlugins.value.length / itemsPerPage.value)
     })
 
     const paginatedPlugins = computed(() => {
-        return plugins.value.slice((pageNo.value - 1) * itemsPerPage.value, pageNo.value * itemsPerPage.value)
+        return filteredPlugins.value.slice((pageNo.value - 1) * itemsPerPage.value, pageNo.value * itemsPerPage.value)
     })
 </script>
 
@@ -114,34 +131,69 @@
 @import "../../assets/styles/variable";
     .container {
         overflow: visible;
+        .main {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr 4fr;
+            padding-bottom: 2rem;
 
-        h5 {
-            font-weight: normal;
-        }
+            h5 {
+                font-weight: normal;
+            }
 
-        .side-bar {
-            padding-top: 2rem;
-            // padding-left: 2rem !important;
-            .side-bar-item {
-                padding-top: 0.938rem !important;
-                padding-bottom: 0.938rem !important;
+            .form-control {
+                background: url('/search.svg') no-repeat 13px;
+                padding-left: 2.5rem;
+            }
+
+            .side-bar {
+                position: sticky;
+                top: 5rem;
+                display: block;
+                height: calc(100vh - 7rem);
+                padding-top: 2rem;
+                overflow-y: scroll;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            
+                &::-webkit-scrollbar { 
+                    display: none;
+                }
+                .side-bar-item {
+                    padding-top: 0.938rem !important;
+                    padding-bottom: 0.938rem !important;
+                    text-overflow: ellipsis;
+                    font-weight: bold;
+                    line-height: 24px;
+                }
+            }
+
+            .rounded-button {
+                border-radius: 0.25rem;
+                padding: calc($spacer / 2) calc($spacer / 1);
+                margin-right: calc($spacer / 2);
+                background-color: var(--bs-white);
+                border: 0.063rem solid #E5E4F7;
+                font-weight: bold;
+                font-size: $font-size-sm;
+                line-height: 1.375rem;
+
+                &.active {
+                    background-color: var(--bs-primary);
+                    color: var(--bs-white);
+                }
+            }
+
+            @include media-breakpoint-down(sm) {
+                .side-bar {
+                    display: none;
+                }
+
+                & {
+                    grid-template-columns: auto;
+                }
             }
         }
 
-        .rounded-button {
-            border-radius: 0.25rem;
-            padding: calc($spacer / 2) calc($spacer / 1);
-            margin-right: calc($spacer / 2);
-            background-color: var(--bs-white);
-            border: 0.063rem solid #E5E4F7;
-            font-weight: bold;
-            font-size: $font-size-sm;
-            line-height: 1.375rem;
-
-            &.active {
-                background-color: var(--bs-primary);
-                color: var(--bs-white);
-            }
-        }
     }
 </style>

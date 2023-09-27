@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="plugin.plugin ? `/plugins/plugin-${plugin.plugin}` : ''">
+    <NuxtLink :href="plugin.plugin ? `https://kestra.io/plugins/${plugin.plugin}` : ''">
         <div class="card">
             <div class="card-body d-flex flex-column justify-content-between gap-3">
                 <div>
