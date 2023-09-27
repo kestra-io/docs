@@ -134,7 +134,7 @@
         .main {
             display: grid;
             gap: 1rem;
-            grid-template-columns: 1fr 4fr;
+            grid-template-columns: 1fr 5fr;
             padding-bottom: 2rem;
 
             h5 {
