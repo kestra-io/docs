@@ -33,9 +33,11 @@ Kestra's subflows are modular components helping to build reusable and maintaina
 
 🔹 **Subflow topology:** you can now see the topology of a subflow from the parent flow. [This enhancement](https://github.com/kestra-io/kestra/pull/2007) makes it easier to understand the structure of the subflow and how it fits into the bigger picture.
 
+![subflows](/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/subflows.png)
+
 🔹 **Zoom in and out:** expand the subflow to see more details and collapse it to get a bird's eye view of the complete workflow comprised of multiple modular components. With [this change](https://github.com/kestra-io/kestra/pull/2171), you can decompose large workflows into smaller parts.
 
-![subflows gif](/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/subflows.gif)
+![subflows](https://kestra.io/subflows.gif)
 
 🔹 **Subflow labels** - subflows now inherit labels from the parent flow. [This change](https://github.com/kestra-io/kestra/issues/2114) is particularly useful to filter executions in the UI.
 
@@ -333,8 +335,6 @@ Apart from all the exciting new features and integrations, we've also made sever
 🔹 **UI logs now only display the last 7 days:** to improve performance and reliability of large-scale workflows, the UI logs now only display the last 7 days instead of 30 days. [This change](https://github.com/kestra-io/kestra/issues/2112) makes the UI logs page load faster. You can still view older logs when needed by adjusting the date range in the UI filter.
 
 🔹 **Boolean-type input improvements:** boolean inputs now have a more explicit form, making it even easier to spot whether a given input has a default value of true/false or whether it's undefined (_i.e., no default values provided_).
-
-![subflows](/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/subflows.png)
 
 
 ---
