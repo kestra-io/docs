@@ -1,6 +1,6 @@
 ---
 title: "Kestra 0.12 simplifies building modular, event-driven and containerized workflows"
-description: "Kestra 0.12.0 ships with a new subflow UX, allowing you to zoom in and out across modular workflows and their logs. With the new Docker and AWS EventBridge integration, you can automate any process across platforms and programming languages."
+description: "Kestra 0.12.0 is now available, featuring an enhanced subflow UX, allowing you to zoom in and out across modular workflows and their logs. With the new Docker and AWS EventBridge integration, you can automate any process across platforms and programming languages."
 date: 2023-09-28T14:00:00
 category: News & Products Updates
 author:
@@ -9,19 +9,25 @@ author:
 image: /blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda.png
 ---
 
-We’re happy to announce the 0.12.0 release. It adds significant improvements to the representation of the **subflow** topology and subflow logs, along with the new [Docker](https://kestra.io/plugins/plugin-docker) and [SurrealDB](https://kestra.io/plugins/plugin-surrealdb) plugins, as well as several **new AWS integrations**, including [AWS Lambda](https://kestra.io/plugins/plugin-aws/tasks/lambda/io.kestra.plugin.aws.lambda.invoke), [Amazon EventBridge](https://kestra.io/plugins/plugin-aws/tasks/eventbridge/io.kestra.plugin.aws.eventbridge.putevents), and [Amazon Kinesis Data Streams](https://kestra.io/plugins/plugin-aws/tasks/kinesis/io.kestra.plugin.aws.kinesis.putrecords).
+We’re happy to announce Kestra 0.12.0. This release significantly improves **subflow** topology and logs, making navigating complex workflows a breeze. We've also added [Docker](https://kestra.io/plugins/plugin-docker) and [SurrealDB](https://kestra.io/plugins/plugin-surrealdb) plugins, and **new AWS integrations**, including [AWS Lambda](https://kestra.io/plugins/plugin-aws/tasks/lambda/io.kestra.plugin.aws.lambda.invoke), [Amazon EventBridge](https://kestra.io/plugins/plugin-aws/tasks/eventbridge/io.kestra.plugin.aws.eventbridge.putevents), and [Amazon Kinesis Data Streams](https://kestra.io/plugins/plugin-aws/tasks/kinesis/io.kestra.plugin.aws.kinesis.putrecords).
 
 Here's a list of all enhancements in this release:
 
 🔹 **New subflow UX** bringing modularity and structure to complex workflows
 
-🔹 New **Docker plugin** to build and push Docker images and automate containerized processes
+🔹 New plugin to build and push **Docker** images and automate containerized processes
 
-🔹 New **SurrealDB plugin** to query SurrealDB and react to events from your applications via SurrealDB trigger
+🔹 New plugin to query and react to events from your applications built with **SurrealDB**
 
 🔹 New **AWS Lambda**, **Amazon EventBridge**, and **Amazon Kinesis Data Streams** integrations to orchestrate microservices and real-time, event-driven applications running on AWS
 
-🔹 Worker task **heartbeats** for robust handling of long-running jobs and infrastructure downtime when using Kestra on a JDBC architecture without Kafka.
+🔹 Worker task **heartbeats** for robust handling of infrastructure downtime when using Kestra on a JDBC architecture without Kafka.
+
+🔹 **Improved dbt tasks** with the option to turn off parsing dbt DAG
+
+🔹 **UI improvements**, including read-only display of **deleted flows** and better display of **skipped tasks**
+
+🔹 New AWS, GCP, and Azure **Secrets Managers** in the Enterprise Edition to optionally store Kestra secrets in your chosen cloud provider's service.
 
 Let's dive into each of these enhancements in more detail.
 
@@ -223,7 +229,7 @@ This integration allows you to:
 
 🔹 wait for the function's completion and retrieve the `output` and `logs` of the Lambda function
 
-🔹 contnue the end-to-end workflow by (optionally) passing the results of the Lambda function execution to the next task(s) in the workflow.
+🔹 (optionally) pass the results of the Lambda function execution to the next task(s) in the workflow.
 
 ![plugins](/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/plugins.png)
 
@@ -294,7 +300,7 @@ The [following Blueprint](https://demo.kestra.io/ui/blueprints/community/135) de
 
 Amazon Kinesis Data Streams is a massively scalable and durable real-time data streaming service that continuously captures data from website clickstreams, database event streams, financial transactions, social media feeds, IT logs, or location-tracking events.
 
-The new `PutRecords` task lets you send data to Amazon Kinesis Data Streams. This way, you can build end-to-end workflows that extract data from various sources, transform it, and load it to Kinesis for real-time analytics use cases such as anomaly detection, dynamic pricing, and many more.
+The new `PutRecords` task lets you send data to Amazon Kinesis Data Streams. This way, you can build end-to-end workflows that extract data from various sources, transform it, and load it to Kinesis for (near) real-time analytics use cases such as anomaly detection, dynamic pricing, and many more.
 
 
 The [following Blueprint example](https://demo.kestra.io/ui/blueprints/community/137) shows how you can orchestrate near-real-time applications using the `PutRecords` task. Here is a simple example:
@@ -318,13 +324,13 @@ tasks:
 
 ## UI improvements
 
-Apart from all the exciting new features and integrations, we've also made several improvements to the UI. Here are some of the highlights:
+Apart from new features and integrations, we've also made several improvements to the UI. Here are some of the highlights:
 
-🔹 **Improved display of the execution logs:** the task run logs have been [redesigned](https://github.com/kestra-io/kestra/issues/1869) to allow drilling down into subflow child executions; the logs are now displayed in a more readable format with a dedicated dropdown for each task run attempt, making it easier to identify the root cause of any issues and fix them faster.
+🔹 **Improved display of the execution logs:** the task run logs have been [redesigned](https://github.com/kestra-io/kestra/issues/1869) to allow drilling down into subflow child executions; the logs tab includes a dedicated dropdown for each task run attempt, making it easier to identify the root cause of any issues and fix them faster.
 
-🔹 **The Gantt view now displays iteration value as a name for each child task:** this simple [enhancement](https://github.com/kestra-io/kestra/issues/2134) leads to a significant UX improvement, making it easier to troubleshoot and debug parallel tasks in your workflows.
+🔹 **The Gantt view now displays iteration value as a name for each child task:** this simple [change](https://github.com/kestra-io/kestra/issues/2134) leads to a significant UX improvement, providing more visibility into the status of each parallel task.
 
-🔹 **Read-only display of deleted flows:** deleted flows are now marked as read-only, and you'll see the flow's revision in the Execution URL (query parameter). [This enhancement](https://github.com/kestra-io/kestra/pull/2152) helps to keep an audit trail of the deleted flows and makes troubleshooting easier.
+🔹 **Read-only display of deleted flows:** deleted flows are [now marked as read-only](https://github.com/kestra-io/kestra/pull/2152), and you'll see the flow's revision in the Execution URL (query parameter).
 
 🔹 **Improved display of JSON columns in the output preview:** the output preview can now display a table with JSON columns - this feature is handy when working with API calls and JSON data, e.g., when using the new Amazon EventBridge and Kinetic Data Streams integrations.
 
