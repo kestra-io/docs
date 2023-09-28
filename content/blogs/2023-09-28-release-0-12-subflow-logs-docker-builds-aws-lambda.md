@@ -175,7 +175,7 @@ tasks:
 
 ---
 
-## Plugins and integrations
+## Plugins
 
 Kestra 0.12 brings several new integrations, including new `Docker` and `SurrealDB` plugins, and a useful change to the `dbt` tasks.
 
@@ -222,7 +222,7 @@ The [SurrealDB plugin](https://github.com/kestra-io/plugin-surrealdb) allows you
 
 ---
 
-### dbt tasks
+### dbt plugin
 
 The dbt tasks now have the option to turn off parsing dbt DAG with the `parseRunResults` flag, a boolean property allowing disabling parsing of the dbt manifest. If your dbt project is large, with hundreds or thousands of models and tests, parsing the manifest may be unnecessary. This flag allows you to turn off parsing the manifest and still get the results of the dbt job by inspecting the execution logs.
 
