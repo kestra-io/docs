@@ -54,7 +54,7 @@ Kestra's subflows are modular components helping to build reusable and maintaina
 
 ---
 
-## JDBC worker task heartbeats
+## Worker task heartbeats are now available in the open-source version
 
 This release resolves the challenges related to Zombie Worker Tasks. We have been attentive to the issues raised by our open-source community, particularly users experiencing difficulties with tasks getting stuck in a `Running` state due to Kubernetes pod restarts.
 
