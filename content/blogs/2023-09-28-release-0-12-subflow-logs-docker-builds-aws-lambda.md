@@ -99,17 +99,17 @@ tasks:
     tasks:
       - id: lambda
         type: io.kestra.plugin.aws.lambda.Invoke
-        functionArn: arn:aws:lambda:eu-central-1:123456789:function:first
+        functionArn: arn:aws:lambda:us-east-1:12345:function:first
 
       - id: lambda_with_version
         type: io.kestra.plugin.aws.lambda.Invoke
-        functionArn: arn:aws:lambda:eu-central-1:123456789:function:second:1
+        functionArn: arn:aws:lambda:us-east-1:12345:function:second:1
         functionPayload:
           your_event_input: hello world
 
       - id: lambda_with_alias
         type: io.kestra.plugin.aws.lambda.Invoke
-        functionArn: arn:aws:lambda:eu-central-1:123456789:function:third:myalias
+        functionArn: arn:aws:lambda:us-east-1:12345:function:third:alias
         functionPayload:
           your_event_input: event payload
 
@@ -142,7 +142,7 @@ tasks:
         eventBusName: default
         detailType: my-custom-app
         detail:
-          message: this could be any event - a user sign-in event or a payment
+          message: this could be any event
 ```
 
 The [following Blueprint](https://demo.kestra.io/ui/blueprints/community/135) demonstrates additional ways of sending custom events to the AWS event bus using the `PutEvents` task.
