@@ -62,6 +62,117 @@ In our open-source edition, we previously did not support auto-resubmitting task
 
 This enhancement ensures that processes such as dbt Cloud jobs or Airbyte syncs will no longer be inaccurately marked as `Running` due to intermittent pod restarts caused by e.g. autoscaling events. This change is a step forward in our continuous effort to support the open-source community.
 
+
+---
+
+## New AWS Lambda, Amazon EventBridge, and Amazon Kinesis Data Streams integrations
+
+We've added several new integrations to the AWS plugin, including  `LambdaInvoke`, EventBridge `PutEvents`, and Kinesis Data Streams `PutRecords` tasks to orchestrate microservices and applications running on AWS.
+
+
+### Orchestrate microservices running on AWS Lambda
+
+Many organizations use AWS Lambda, as it can run code without provisioning or managing servers. This release adds a new integration allowing you to orchestrate microservices and applications built with AWS Lambda. Use the new `LambdaInvoke` task to invoke serverless functions from Kestra workflows.
+
+This integration allows you to:
+
+🔹 invoke a Lambda function by providing a custom function `payload` and function `ARN`
+
+🔹 wait for the function's completion and retrieve the `output` and `logs` of the Lambda function
+
+🔹 (optionally) pass the results of the Lambda function execution to the next task(s) in the workflow.
+
+![plugins](/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/plugins.png)
+
+
+With this integration, you can seamlessly incorporate serverless functions as part of an end-to-end workflow and orchestrate microservices running on AWS along with on-prem and cloud-native applications and data pipelines.
+
+The following example from [a Blueprint library](https://demo.kestra.io/ui/blueprints/community/126) shows how you can trigger multiple AWS Lambda functions in parallel:
+
+```yaml
+id: aws_lambda
+namespace: dev
+
+tasks:
+  - id: parallel
+    type: io.kestra.core.tasks.flows.Parallel
+    tasks:
+      - id: lambda
+        type: io.kestra.plugin.aws.lambda.Invoke
+        functionArn: arn:aws:lambda:eu-central-1:123456789:function:first
+
+      - id: lambda_with_version
+        type: io.kestra.plugin.aws.lambda.Invoke
+        functionArn: arn:aws:lambda:eu-central-1:123456789:function:second:1
+        functionPayload:
+          your_event_input: hello world
+
+      - id: lambda_with_alias
+        type: io.kestra.plugin.aws.lambda.Invoke
+        functionArn: arn:aws:lambda:eu-central-1:123456789:function:third:myalias
+        functionPayload:
+          your_event_input: event payload
+
+  - id: lambda_result
+    type: io.kestra.plugin.scripts.shell.Commands
+    runner: PROCESS
+    commands:
+      - cat {{outputs.lambda.uri}} | jq -r '.body'
+```
+
+---
+
+### Send custom events to Amazon EventBridge
+
+Amazon EventBridge is a serverless event bus that integrates events from your custom applications, AWS services, and third-party providers. EventBridge routes those events to various targets for processing.
+
+With the new `PutEvents` task, you can send custom events to the AWS event bus. This way, you can trigger any AWS action based on an event in your custom application, data pipeline or microservice. The automation possibilities here are endless, especially when combined with Kestra's `webhook` triggers. For example, you can trigger a workflow any time an EC2 instance gets terminated, an S3 file gets added/modified or deleted, or when there is a new entry in DynamoDB. All that is possible via a `webhook` trigger reacting to EventBridge events sent automatically via CloudTrail.
+
+Here is a simple usage example:
+
+```yaml
+id: aws_event_bridge
+namespace: dev
+
+tasks:
+  - id: send_events
+    type: io.kestra.plugin.aws.eventbridge.PutEvents
+    entries:
+      - source: kestra
+        eventBusName: default
+        detailType: my-custom-app
+        detail:
+          message: this could be any event - a user sign-in event or a payment
+```
+
+The [following Blueprint](https://demo.kestra.io/ui/blueprints/community/135) demonstrates additional ways of sending custom events to the AWS event bus using the `PutEvents` task.
+
+---
+
+### Stream data from your applications to Amazon Kinesis Data Streams
+
+Amazon Kinesis Data Streams is a massively scalable and durable real-time data streaming service that continuously captures data from website clickstreams, database event streams, financial transactions, social media feeds, IT logs, or location-tracking events.
+
+The new `PutRecords` task lets you send data to Amazon Kinesis Data Streams. This way, you can build end-to-end workflows that extract data from various sources, transform it, and load it to Kinesis for (near) real-time analytics use cases such as anomaly detection, dynamic pricing, and many more.
+
+
+The [following Blueprint example](https://demo.kestra.io/ui/blueprints/community/137) shows how you can orchestrate near-real-time applications using the `PutRecords` task. Here is a simple example:
+
+```yaml
+id: aws_kinesis
+namespace: dev
+
+tasks:
+  - id: sign_in_events
+    type: io.kestra.plugin.aws.kinesis.PutRecords
+    streamName: kestra
+    records:
+      - data: sign-in
+        partitionKey: user1
+      - data: sign-out
+        partitionKey: user1
+```
+
 ---
 
 ## Plugins and integrations
@@ -79,9 +190,7 @@ This plugin provides an additional mechanism to build decoupled workflows. For e
 
 You can also use it to build and push images as part of CI/CD pipelines orchestrated with Kestra, especially when combined with the [GitHub Webhook](https://levelup.gitconnected.com/when-github-actions-get-painful-to-troubleshoot-try-this-instead-9a134c9e9baf) used as a trigger.
 
-Search for [blueprints](../docs/04.user-interface-guide/blueprints.md) with the `Docker` tag to see examples leveraging this plugin in combination with various container registries.
-
-Below is an example of a workflow that builds and pushes a Docker image to GitHub Container Registry. The `dockerfile` parameter is a multiline string that contains the Dockerfile content. However, it can also be a path to a file. The `tags` parameter is a list of tags of the image to build. Make sure to replace the credentials below to match your GitHub username or organization. The `push` parameter is a boolean that indicates whether to push the image to GitHub Container Registry. Finally, make sure to securely store your GitHub Access Token as a secret.
+Search for [blueprints](../docs/04.user-interface-guide/blueprints.md) with the `Docker` tag to see examples leveraging this plugin in combination with various container registries. Below is one of such examples, which builds and pushes a Docker image to **GitHub Container Registry**. The `dockerfile` parameter is a multiline string with the Dockerfile content. However, it can also be a path to a file. The `tags` parameter is a list of tags of the image to build. Make sure to replace the credentials below to match your GitHub username or organization. The `push` parameter is a boolean that indicates whether to push the image to GitHub Container Registry. Finally, make sure to securely store your GitHub Access Token as a secret.
 
 ```yaml
 id: build_github_container_image
@@ -111,7 +220,7 @@ SurrealDB is a cloud-native database for modern web, mobile, and serverless appl
 
 The [SurrealDB plugin](https://github.com/kestra-io/plugin-surrealdb) allows you to run [SurrealQL](https://surrealdb.com/docs/surrealql) `queries` and react to events from your application via the SurrealDB `trigger` — type **SurrealDB** in the [blueprints](../docs/04.user-interface-guide/blueprints.md) search bar to see examples of how to use this plugin.
 
-Here is an example of a workflow that runs multiple SurrealQL queries (covering all CRUD operations) one after the other. At the end, it sends the results of a particular query via Slack:
+Here is an example covering all CRUD operations in SurrealQL. The flow runs multiple queries and sends the query results via Slack:
 
 ```yaml
 id: surreal_db
@@ -210,114 +319,6 @@ tasks:
       commands:
         - dbt deps
         - dbt build
-```
-
----
-
-## New AWS Lambda, Amazon EventBridge, and Amazon Kinesis Data Streams integrations
-
-We've added several new integrations to the AWS plugin, including  `LambdaInvoke`, EventBridge `PutEvents`, and Kinesis Data Streams `PutRecords` tasks to orchestrate microservices and applications running on AWS.
-
-
-### Orchestrate microservices running on AWS Lambda
-
-Many organizations use AWS Lambda, as it can run code without provisioning or managing servers. This release adds a new integration allowing you to orchestrate microservices and applications built with AWS Lambda. Use the new `LambdaInvoke` task to invoke serverless functions from Kestra workflows.
-
-This integration allows you to:
-
-🔹 invoke a Lambda function by providing a custom function `payload` and function `ARN`
-
-🔹 wait for the function's completion and retrieve the `output` and `logs` of the Lambda function
-
-🔹 (optionally) pass the results of the Lambda function execution to the next task(s) in the workflow.
-
-![plugins](/blogs/2023-09-28-release-0-12-subflow-logs-docker-builds-aws-lambda/plugins.png)
-
-
-With this integration, you can seamlessly incorporate serverless functions as part of an end-to-end workflow and orchestrate microservices running on AWS along with on-prem and cloud-native applications and data pipelines.
-
-The following example from [a Blueprint library](https://demo.kestra.io/ui/blueprints/community/126) shows how you can trigger multiple AWS Lambda functions in parallel:
-
-```yaml
-id: aws_lambda
-namespace: dev
-
-tasks:
-  - id: parallel
-    type: io.kestra.core.tasks.flows.Parallel
-    tasks:
-      - id: lambda
-        type: io.kestra.plugin.aws.lambda.Invoke
-        functionArn: arn:aws:lambda:eu-central-1:123456789:function:first
-
-      - id: lambda_with_version
-        type: io.kestra.plugin.aws.lambda.Invoke
-        functionArn: arn:aws:lambda:eu-central-1:123456789:function:second:1
-        functionPayload:
-          your_event_input: hello world
-
-      - id: lambda_with_alias
-        type: io.kestra.plugin.aws.lambda.Invoke
-        functionArn: arn:aws:lambda:eu-central-1:123456789:function:third:myalias
-        functionPayload:
-          your_event_input: event payload
-
-  - id: lambda_result
-    type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
-    commands:
-      - cat {{outputs.lambda.uri}} | jq -r '.body'
-```
-
----
-
-### Send custom events to Amazon EventBridge
-
-Amazon EventBridge is a serverless event bus that integrates events from your custom applications, AWS services, and third-party providers. EventBridge routes those events to various targets for processing.
-
-With the new `PutEvents` task, you can send custom events to the AWS event bus. This way, you can trigger any AWS action based on an event in your custom application, data pipeline or microservice. The automation possibilities here are endless, especially when combined with Kestra's `webhook` triggers. For example, you can trigger a workflow any time an EC2 instance gets terminated, an S3 file gets added/modified or deleted, or when there is a new entry in DynamoDB. All that is possible via a `webhook` trigger reacting to EventBridge events sent automatically via CloudTrail.
-
-Here is a simple usage example:
-
-```yaml
-id: aws_event_bridge
-namespace: dev
-
-tasks:
-  - id: send_events
-    type: io.kestra.plugin.aws.eventbridge.PutEvents
-    entries:
-      - source: kestra
-        eventBusName: default
-        detailType: my-custom-app
-        detail:
-          message: this could be any event - a user sign-in event or a payment
-```
-
-The [following Blueprint](https://demo.kestra.io/ui/blueprints/community/135) demonstrates additional ways of sending custom events to the AWS event bus using the `PutEvents` task.
-
-### Stream data from your applications to Amazon Kinesis Data Streams
-
-Amazon Kinesis Data Streams is a massively scalable and durable real-time data streaming service that continuously captures data from website clickstreams, database event streams, financial transactions, social media feeds, IT logs, or location-tracking events.
-
-The new `PutRecords` task lets you send data to Amazon Kinesis Data Streams. This way, you can build end-to-end workflows that extract data from various sources, transform it, and load it to Kinesis for (near) real-time analytics use cases such as anomaly detection, dynamic pricing, and many more.
-
-
-The [following Blueprint example](https://demo.kestra.io/ui/blueprints/community/137) shows how you can orchestrate near-real-time applications using the `PutRecords` task. Here is a simple example:
-
-```yaml
-id: aws_kinesis
-namespace: dev
-
-tasks:
-  - id: sign_in_events
-    type: io.kestra.plugin.aws.kinesis.PutRecords
-    streamName: kestra
-    records:
-      - data: sign-in
-        partitionKey: user1
-      - data: sign-out
-        partitionKey: user1
 ```
 
 ---
