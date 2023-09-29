@@ -3,7 +3,7 @@
         :class="classes"
         class="wrapper"
     >
-            <div class="icon" :style="styles" />
+            <div class="icon" :style="styles"></div>
     </div>
 </template>
 <script>

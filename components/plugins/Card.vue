@@ -3,8 +3,8 @@
         <div class="card">
             <div class="card-body d-flex flex-column justify-content-between gap-3">
                 <div>
-                    <div class="d-flex flex-wrap gap-3" v-if="icon.name">
-                        <BlueprintsTaskIcon :cls="icon" />
+                    <div class="plugin-icon d-flex align-items-center justify-content-center" v-if="icon.name && icon.icon">
+                        <BlueprintsTaskIcon :cls="icon" class="h-50"/>
                     </div>
                     <div class="card-text">
                         <p class="title" v-if="plugin.categories">{{ plugin.categories.join() }}</p>
@@ -37,10 +37,12 @@ defineProps({
     height: 100%;
     .card-body {
         padding: 2rem !important;
-        .icon {
+        .plugin-icon {
+            height: 115px;
             border: 1px solid #E5E4F7;
             padding: 0.313rem 0.625rem;
-            width: 44px;
+            margin-bottom: 1rem;
+            background-color: $purple-13;
         }
     }
     .title {

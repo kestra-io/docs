@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 mb-4" v-for="plugin in paginatedPlugins" :key="plugin.name">
-                            <PluginsCard :plugin="plugin" :icon="plugin.icon ? getIcon(plugin.icon) : {}" data-aos="zoom-in"></PluginsCard>
+                            <PluginsCard :plugin="plugin" :icon="plugin.icon ? getIcon(plugin.plugin) : {}" data-aos="zoom-in"></PluginsCard>
                         </div>
                         <div class="d-flex justify-content-between">
                             <div class="items-per-page">
@@ -66,8 +66,10 @@
     const icons = ref({})
 
     const { data: iconsData } = await useAsyncData('icons', () => {
-        return $fetch('https://api.kestra.io/v1/plugins/icons')
+        return $fetch('https://api.kestra.io/v1/plugins/icons/subgroups')
     })
+
+    console.log(iconsData.value);
 
     if(iconsData.value) icons.value = iconsData.value
 
@@ -82,7 +84,7 @@
     })
 
     if(subgroupsData.value) {
-        plugins.value = subgroupsData.value.filter((sGroup, i) => i == subgroupsData.value.findIndex(sg => sg.plugin == sGroup.plugin))
+        plugins.value = subgroupsData.value.filter((sGroup, i) => (sGroup.categories && i == subgroupsData.value.findIndex(sg => sg.plugin == sGroup.plugin)))
     }
 
     const { data: groupsData } = await useAsyncData('groups', () => {
@@ -105,11 +107,7 @@
 
     const filteredPlugins = computed(() => {
         return plugins.value.filter((plugin) => {
-            if(selectedCategory.value != 'All Categories') {
-                return (plugin.categories && plugin.categories.some(c => c.toUpperCase() == selectedCategory.value.toUpperCase()))
-            }
-
-            return true
+            return selectedCategory.value == 'All Categories' ? true : (plugin.categories && plugin.categories.some(c => c.toUpperCase() == selectedCategory.value.toUpperCase()))
         }).filter((plugin) => {
             return (plugin.categories && plugin.categories.includes(searchQuery.value.toUpperCase())) ||
                 (plugin.plugin && plugin.plugin.toLocaleLowerCase().includes(searchQuery.value.toLowerCase())) || 
