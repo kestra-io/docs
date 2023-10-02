@@ -16,7 +16,7 @@
     "pages:build-deploy": "npm run pages:build && npm run pages:deploy"
   },
   "dependencies": {
-    "@kestra-io/ui-libs": "^0.0.20",
+    "@kestra-io/ui-libs": "^0.0.28",
     "@vue-flow/background": "^1.2.0",
     "@vue-flow/controls": "1.0.6",
     "@vue-flow/core": "1.14.3",
@@ -27,6 +27,7 @@
     "buffer": "^6.0.3",
     "dagre": "^0.8.5",
     "dayjs": "^1.11.9",
+    "highlight.js": "^11.8.0",
     "humanize-duration": "^3.30.0",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",

@@ -1,63 +1,61 @@
 <template>
-<div>
-  <div class="container" v-if="slug === '/blueprints/'">
-    <BlueprintsLists :icons="icons" />
-  </div>
-
-  <div v-else>
-    <BlueprintsHeader :page="page" :slug="slug" :icons="icons" />
-    <div class="container">
-      <BlueprintsAbout :page="page" />
-      <LayoutSection title="More Related Blueprints">
-        <div class="row">
-          <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in relatedBlueprints" :key="blueprint.id">
-            <BlueprintsBlueprintCard :blueprint="blueprint" :icons="icons" data-aos="zoom-in" />
-          </div>
+    <div>
+        <div class="container" v-if="slug === '/blueprints/'">
+            <BlueprintsLists :icons="icons" :tags="tags"/>
+            <BlueprintsNewToKestra/>
         </div>
-      </LayoutSection>
-    </div>
-  </div>
 
-  <div class="bottom">
-    <BlueprintsFooter />
-  </div>
-</div>
+        <div v-else>
+            <BlueprintsHeader :page="page" :graph="graph" :slug="slug" :icons="icons" :flow="flowAsMd"/>
+            <div class="container">
+                <BlueprintsAbout :page="page" :description="descriptionAsMd"/>
+                <BlueprintsNewToKestra/>
+                <BlueprintsRelatedBlueprints
+                    v-if="relatedBlueprints.length > 0"
+                    :related-blueprints="relatedBlueprints"
+                    :icons="icons"
+                    :tags="tags"
+                />
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
-const route = useRoute()
-const slug = ref("/blueprints/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug));
-const page = ref()
-const icons = ref()
-const relatedBlueprints = ref([])
+    const route = useRoute()
+    const slug = ref("/blueprints/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug));
+    const page = ref()
+    const icons = ref()
+    const tags = ref([])
+    const relatedBlueprints = ref([])
+    const graph = ref({})
+    const descriptionAsMd = ref("")
+    const flowAsMd = ref("")
 
-const { data: iconsData } = await useAsyncData('icons', () => {
-    return $fetch('https://api.kestra.io/v1/plugins/icons')
-})
-
-if(iconsData.value) {
-    icons.value = iconsData.value
-}
-
-if(slug.value != '/blueprints/') {
-  const { data: pageData } = await useAsyncData('blueprintDetail', () => {
-    return $fetch(`https://api.kestra.io/v1/blueprints/${route.params.slug.join()}`)
-  })
-
-  if(pageData.value) {
-    page.value = pageData.value
-
-    const { data } = await useAsyncData('relatedBlueprints', () => {
-      return $fetch(`https://api.kestra.io/v1/blueprints?tags=${page.value.tags}&size=3`)
+    const {data: iconsData} = await useAsyncData('plugins-icons', () => {
+        return $fetch('https://api.kestra.io/v1/plugins/icons')
     })
 
-    relatedBlueprints.value = data.value.results
-  }
+    const {data: tagsData} = await useAsyncData('blueprints-tags', () => {
+        return $fetch('https://api.kestra.io/v1/blueprints/tags')
+    })
 
-  // const { data: graphData } = await useAsyncData('topologyGraph', () => {
-  //   return $fetch(`https://api.kestra.io/v1/blueprints/${route.params.slug.join()}/graph`)
-  // })
+    if (iconsData.value) {
+        icons.value = iconsData.value
+    }
 
-  // console.log(graphData.value);
-}
+    if (tagsData.value) {
+        tags.value = tagsData.value
+    }
+
+    if (slug.value !== '/blueprints/') {
+        const {data: blueprintInformations} = await useAsyncData('blueprints-informations', () => {
+            return $fetch(`/api/blueprint?query=${route.params.slug.join()}`)
+        })
+        page.value = blueprintInformations.value.page
+        relatedBlueprints.value = blueprintInformations.value.relatedBlueprints
+        graph.value = blueprintInformations.value.graph
+        descriptionAsMd.value = blueprintInformations.value.descriptionAsMd
+        flowAsMd.value = blueprintInformations.value.flowAsMd
+    }
 </script>

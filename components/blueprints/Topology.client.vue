@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Topology class="topology-root" :flow-graph="flowGraph" :id="id" :source="source" />
+        <Topology class="topology-root" :flow-graph="flowGraph" :id="id" :source="source" :icons="icons" :enable-subflow-interaction="false"/>
     </div>
 </template>
 
@@ -22,6 +22,10 @@
             id: {
                 type: String,
                 required: true
+            },
+            icons: {
+                type: Object,
+                default: undefined
             }
         }
     }

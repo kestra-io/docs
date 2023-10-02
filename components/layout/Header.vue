@@ -112,10 +112,10 @@
                             </li>
                             <li>
                                 <NuxtLink class="dropdown-item" href="/blueprints" @click="globalClick(true)">
-                                    <Reload/>
+                                    <Ballot/>
                                     <p>
                                         <span>Blueprints</span><br/>
-                                        Leverage Kestra's Change Data Capture capabilities
+                                        Explore blueprints to kick-start your next flow
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -295,6 +295,7 @@
     import Terraform from "vue-material-design-icons/Terraform.vue"
     import Slack from "vue-material-design-icons/Slack.vue"
     import Reload from "vue-material-design-icons/Reload.vue"
+    import Ballot from "vue-material-design-icons/Ballot.vue"
     import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
     import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
     import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"

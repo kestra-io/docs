@@ -5,22 +5,23 @@
         <p>{{ page.title }}</p>
     </div>
 
-    <div class="markdown" v-html="description"></div>
+    <ContentRendererMarkdown
+        class="bd-markdown"
+        :value="description"
+    />
 </div>
 </template>
 
 <script>
-import markdownIt from 'markdown-it'
 export default {
     props: {
         page: {
             type: Object,
             required: true
         },
-    },
-    computed: {
-        description() {
-            return markdownIt().render(this.page.description)
+        description: {
+            type: Object,
+            required: true
         }
     }
 }
@@ -39,12 +40,5 @@ div.title {
         font-family: var(--bs-font-monospace);
         display: inline;
     }
-}
-
-:deep(pre) {
-    background: #24292e;
-    color: #e1e4e8;
-    padding: 1.25rem 1.5rem;
-    border-radius: 0.5rem;
 }
 </style>
