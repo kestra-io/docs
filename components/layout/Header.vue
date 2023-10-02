@@ -94,10 +94,10 @@
                             </li>
                             <li>
                                 <NuxtLink class="dropdown-item" href="/blueprints" @click="globalClick(true)">
-                                    <Reload/>
+                                    <Ballot/>
                                     <p>
                                         <span>Blueprints</span><br/>
-                                        Leverage Kestra's Change Data Capture capabilities
+                                        Explore blueprints to kick-start your next flow
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -200,7 +200,7 @@
 
                         <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm btn-dark me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block" href="/demo">
                             <span>
-                                <CalendarOutline /> 
+                                <CalendarOutline />
                                 Book a demo
                             </span>
                         </NuxtLink>
@@ -280,6 +280,7 @@
     import Github from "vue-material-design-icons/Github.vue"
     import Slack from "vue-material-design-icons/Slack.vue"
     import Reload from "vue-material-design-icons/Reload.vue"
+    import Ballot from "vue-material-design-icons/Ballot.vue"
     import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
     import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
 </script>

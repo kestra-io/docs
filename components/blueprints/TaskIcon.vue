@@ -8,12 +8,6 @@
 </template>
 <script>
     import {Buffer} from "buffer";
-
-    // Removed this because getting error that document is not defined
-
-    // import Tooltip from "@kestra-io/ui-libs/src/components/misc/Tooltip.vue";
-    // import {cssVariable} from "@kestra-io/ui-libs/src/utils/global.js";
-
     export default {
         name: "TaskIcon",
         // components: {Tooltip},
@@ -60,17 +54,6 @@
                         "<path d=\"M288 32H0v448h384V128l-96-96zm64 416H32V64h224l96 96v288z\" fill=\"currentColor\"/>" +
                         "</svg>";
                 }
-
-                // Removed this because getting error that document is not defined
-
-                // const darkTheme = document.getElementsByTagName("html")[0].className.indexOf("dark") >= 0;
-                // let color = darkTheme ? cssVariable("--bs-gray-900") : cssVariable("--bs-black");
-
-                // if (this.theme) {
-                //     color = this.theme === "dark" ? cssVariable("--bs-gray-900") : cssVariable("--bs-black");
-                // }
-
-                // icon = icon.replaceAll("currentColor", color);
 
                 return Buffer.from(icon, "utf8").toString("base64");
             },

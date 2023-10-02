@@ -2,15 +2,16 @@
 <div class="main">
     <div class="container-fluid d-flex justify-content-center pt-5">
         <div class="header">
-            <DocsBreadcrumb :slug="slug" :page-list="[]" />
+            <DocsBreadcrumb :slug="slug" :page-list="['/blueprints']" />
             <div class="row">
                 <div class="col-12 col-md-9">
-                    <h2>Event-driven workflow based on a Snowflake query condition</h2>
+                    <h2>{{ page.title }}</h2>
                 </div>
                 <div class="col-12 col-md-3">
-                    <div class="justify-content-start d-flex justify-content-md-end">
-                        <button class="btn btn-primary mb-2">Try this blueprint</button>
-                    </div>
+<!--                    Will be used later -->
+<!--                    <div class="justify-content-start d-flex justify-content-md-end">-->
+<!--                        <button class="btn btn-primary mb-2">Try this blueprint</button>-->
+<!--                    </div>-->
                     <div class="justify-content-start d-flex justify-content-md-end">
                         <button class="btn bg-white" @click="copySourceCode">Copy source code</button>
                     </div>
@@ -28,10 +29,13 @@
                 <div class="card">
                     <div class="card-body">
                         <div v-if="activeTab == 'topology'">
-                            <BlueprintsTopology :flow-graph="graph" :source="page.flow" :id="page.id" />
+                            <BlueprintsTopology :flow-graph="graph" :source="page.flow" :id="page.id" :icons="icons" />
                         </div>
                         <div v-else>
-                            <pre><code>{{ page.flow }}</code></pre>
+                            <ContentRendererMarkdown
+                                class="bd-markdown"
+                                :value="flow"
+                            />
                         </div>
                     </div>
                 </div>
@@ -49,9 +53,8 @@
     </div>
 </div>
 </template>
-
 <script>
-export default {
+    export default {
     props: {
         page: {
             type: Object,
@@ -68,7 +71,10 @@ export default {
         graph: {
             type: Object,
             required: true,
-            default: () => ({})
+        },
+        flow: {
+            type: Object,
+            required: true,
         }
     },
     data() {
@@ -85,7 +91,7 @@ export default {
                 navigator.clipboard.writeText(this.page.flow)
             }
         }
-    },
+    }
 }
 </script>
 
@@ -123,7 +129,7 @@ export default {
     justify-content: center;
     min-width: 134px;
     height: 96px;
-    background-color: #fff;
+    background-color: $white;
     border-radius: 0.5rem;
     font-weight: bold;
     font-size: $font-size-sm;

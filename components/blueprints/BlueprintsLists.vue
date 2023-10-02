@@ -7,13 +7,13 @@
     <h5 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h5>
     <div class="grid gap-3 mt-5" data-aos="fade-left">
         <button
-            v-for="filter in filters"
-            :key="filter.name"
-            :class="{ 'active': filter.name === activeFilter.name }"
-            @click="setFilterBlueprints(filter)"
+            v-for="tag in tags"
+            :key="tag.name"
+            :class="{ 'active': tag.name === activeTag.name }"
+            @click="setTagBlueprints(tag)"
             class="m-1 rounded-button"
         >
-            {{ filter.name }}
+            {{ tag.name }}
         </button>
     </div>
     <div class="row my-5">
@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id">
-            <BlueprintsBlueprintCard :blueprint="blueprint" :icons="icons" data-aos="zoom-in" />
+            <BlueprintsBlueprintCard :blueprint="blueprint" :icons="icons" data-aos="zoom-in" :tags="tags" />
         </div>
         <div class="d-flex justify-content-between">
             <div class="items-per-page">
@@ -46,35 +46,30 @@
 const currentPage = ref(1)
 const itemsPerPage = ref(25)
 const blueprints = ref([])
-const activeFilter = ref({ name: 'All tags' })
-const filters = ref([])
-const props = defineProps(['icons'])
+const activeTag = ref({ name: 'All tags' })
+const tags = ref([])
+const props = defineProps(["icons","tags"])
 const totalPages = ref(0)
 const totalBlueprints = ref(0)
 const searchQuery = ref('')
 const route = useRoute()
 const router = useRouter()
 
-const { data: filtersData } = await useAsyncData('filters', () => {
-    return $fetch('https://api.kestra.io/v1/blueprints/tags')
-})
-
-
-if(filtersData.value) {
-    filters.value = [{ name: 'All tags' }, ...filtersData.value]
+if(props.tags) {
+    tags.value = [{ name: 'All tags' }, ...props.tags]
 }
 
-const setFilterBlueprints = (filterVal) => {
-    activeFilter.value = filterVal
+const setTagBlueprints = (tagVal) => {
+    activeTag.value = tagVal
 }
 
 if(route.query.page) currentPage.value = parseInt(route.query.page)
 if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
-if(route.query.tags) activeFilter.value = filters.value.find(f => f.id == route.query.tags)
+if(route.query.tags) activeTag.value = tags.value.find(f => f.id == route.query.tags)
 if(route.query.q) searchQuery.value = route.query.q
 
 const { data: blueprintsData } = await useAsyncData('blueprints', () => {
-    return $fetch(`https://api.kestra.io/v1/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeFilter.value.id}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
+    return $fetch(`https://api.kestra.io/v1/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeTag.value.id}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
 })
 
 const setBlueprints = (allBlueprints, total) => {
@@ -89,28 +84,29 @@ if(blueprintsData.value) {
 
 const changePage = (pageNo) => {
     currentPage.value = pageNo
+    window.scrollTo(0, 0)
 }
 
 let timer;
-watch([currentPage, itemsPerPage, activeFilter, searchQuery], ([pageVal, itemVal, filterVal, searchVal], [__, oldItemVal, oldFilterVal]) => {
+watch([currentPage, itemsPerPage, activeTag, searchQuery], ([pageVal, itemVal, tagVal, searchVal], [__, oldItemVal, oldTagVal]) => {
     if(timer) {
         clearTimeout(timer)
     }
     timer = setTimeout(async () => {
 
-        const { data } = await useFetch(`https://api.kestra.io/v1/blueprints?page=${(itemVal != oldItemVal) || (filterVal != oldFilterVal) ? 1 : pageVal}&size=${itemVal}${Object.keys(filterVal).length && filterVal.name != 'All tags' ? `&tags=${filterVal.id}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
+        const { data } = await useFetch(`https://api.kestra.io/v1/blueprints?page=${(itemVal != oldItemVal) || (tagVal != oldTagVal) ? 1 : pageVal}&size=${itemVal}${Object.keys(tagVal).length && tagVal.name != 'All tags' ? `&tags=${tagVal.id}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
         setBlueprints(data.value.results, data.value.total)
 
         function getQuery() {
             let query = {
-                page: (itemVal != oldItemVal) || (filterVal != oldFilterVal) ? 1 : pageVal,
+                page: (itemVal != oldItemVal) || (tagVal != oldTagVal) ? 1 : pageVal,
                 size: itemVal,
             }
             if(searchVal.length) {
                 query['q'] = searchVal
             }
-            if(filterVal.name != 'All tags') {
-                query['tags'] = filterVal.id
+            if(tagVal.name != 'All tags') {
+                query['tags'] = tagVal.id
             }
 
             return query
@@ -119,7 +115,7 @@ watch([currentPage, itemsPerPage, activeFilter, searchQuery], ([pageVal, itemVal
         router.push({
             query: getQuery()
         })
-        
+
     }, 500)
 })
 </script>
