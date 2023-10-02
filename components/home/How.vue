@@ -23,18 +23,16 @@
                 </div>
                 <div class="col-md-6 p-5 order-0 order-md-1" data-aos="fade-left">
                     <p class="overline">Step 2</p>
-                    <h3>Schedule your workflows</h3>
-                    <p>Specify when and how often they should run, and how to trigger them. You can also trigger workflows manually, or run them as part of a larger pipeline.</p>
+                    <h3>Integrate with your existing data stack</h3>
+                    <p>Kestra integrates with a wide variety of data sources and tools, so you can easily connect your workflows to your existing data stack. This includes support for popular databases, file formats, APIs, and more.</p>
                 </div>
             </div>
 
             <div class="row mb-5">
                 <div class="col-md-6 p-5" data-aos="fade-right">
                     <p class="overline">Step 3</p>
-                    <h3>Execute your workflows</h3>
-                    <p>
-                        When a workflow is triggered, Kestra orchestrates the execution of each step, ensuring that data is processed correctly and dependencies are satisfied.
-                    </p>
+                    <h3>Schedule your workflows</h3>
+                    <p>Specify when and how often they should run, and how to trigger them. You can also trigger workflows manually, or run them as part of a larger pipeline.</p>
                 </div>
                 <div class="col-md-6" data-aos="fade-right">
                     <img class="img-fluid" src="/landing/home/how-3.svg" alt="How to schedule example" />
@@ -47,11 +45,13 @@
                 </div>
                 <div class="col-md-6 p-5 order-0 order-md-1" data-aos="fade-left">
                     <p class="overline">Step 4</p>
-                    <h3>Integrate with your existing data stack</h3>
-                    <p>Kestra integrates with a wide variety of data sources and tools, so you can easily connect your workflows to your existing data stack. This includes support for popular databases, file formats, APIs, and more.</p>
+                    <h3>Execute your workflows</h3>
+                    <p>
+                        When a workflow is triggered, Kestra orchestrates the execution of each step, ensuring that data is processed correctly and dependencies are satisfied.
+                    </p>
                 </div>
             </div>
-
+            
             <div class="row mb-5">
                 <div class="col-md-6 p-5" data-aos="fade-right">
                     <p class="overline">Step 5</p>
