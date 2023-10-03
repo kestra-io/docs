@@ -85,7 +85,7 @@
 </template>
 
 <script>
-    import Section from '../layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     import Key from "vue-material-design-icons/Key.vue";
     import ShieldAccount from "vue-material-design-icons/ShieldAccount.vue";
     import FormTextboxPassword from "vue-material-design-icons/FormTextboxPassword.vue";

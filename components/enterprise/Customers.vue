@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import Companies from "../layout/Companies.vue";
+    import Companies from "~/components/layout/Companies.vue";
 
     export default {
         components: {Companies},
