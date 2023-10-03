@@ -33,7 +33,7 @@
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import Menu from "vue-material-design-icons/Menu.vue"
-    import RecursiveNavSidebar from "./RecursiveNavSidebar.vue";
+    import RecursiveNavSidebar from "~/components/docs/RecursiveNavSidebar.vue";
     import {fetchContentNavigation, useAsyncData} from "#imports";
     import {hash} from "ohash";
 

@@ -26,10 +26,10 @@
 </template>
 
 <script setup>
-    import PrevNext from "./PrevNext.vue";
-    import NavSideBar from "./NavSideBar.vue";
-    import Breadcrumb from "./Breadcrumb.vue";
-    import NavToc from "./NavToc.vue";
+    import PrevNext from "~/components/docs/PrevNext.vue";
+    import NavSideBar from "~/components/docs/NavSideBar.vue";
+    import Breadcrumb from "~/components/docs/Breadcrumb.vue";
+    import NavToc from "~/components/docs/NavToc.vue";
     import {hash} from "ohash";
 
     const props = defineProps({
