@@ -24,8 +24,8 @@
 </template>
 
 <script>
-    import HighlightBlogCard from "./HighlightBlogCard.vue";
-    import BlogCard from "./BlogCard.vue";
+    import HighlightBlogCard from "~/components/blogs/HighlightBlogCard.vue";
+    import BlogCard from "~components/blogs/BlogCard.vue";
 
     export default {
         name: "BlogsList",

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import BlogCardDetails from "./BlogCardDetails.vue";
+    import BlogCardDetails from "~/components/blogs/BlogCardDetails.vue";
 
     export default {
         name: "BlogCard",
