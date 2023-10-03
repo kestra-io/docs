@@ -85,7 +85,7 @@
 </template>
 
 <script>
-    import Socials from "./Socials.vue";
+    import Socials from "~/components/layout/Socials.vue";
     import Heart from "vue-material-design-icons/Heart.vue";
 
     export default {

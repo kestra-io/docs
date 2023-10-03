@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    import Section from './Section.vue';
+    import Section from '~/components/layout/Section.vue';
 
     export default {
         components: {Section}

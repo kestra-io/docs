@@ -13,7 +13,7 @@
 
 <script>
 import ChevronUp from 'vue-material-design-icons/ChevronUp.vue'
-import Slack from '../community/Slack.vue'
+import Slack from '~/components/community/Slack.vue'
 
 export default {
     components: {Slack, ChevronUp},

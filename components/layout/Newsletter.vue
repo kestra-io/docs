@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    import Socials from "./Socials.vue";
+    import Socials from "~/components/layout/Socials.vue";
     import axios from "axios";
 
     const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/433b234f-f3c6-431c-898a-ef699e5525fa";
