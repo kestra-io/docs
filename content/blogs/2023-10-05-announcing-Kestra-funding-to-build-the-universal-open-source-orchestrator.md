@@ -25,6 +25,8 @@ To address this, Kestra offers a versatile and language-agnostic developer platf
 
 ## The Orchestration Platform for Mission-Critical Operations
 
+![Kestra Baseline](/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator/baseline.png)
+
 Our initial mission was to build the most efficient open-source workflow platform targeting the data engineering space. Since then, we’ve experienced tremendous growth well beyond that domain. Our users leverage Kestra not only to orchestrate data pipelines but also to power their **mission-critical applications**. They use our platform to orchestrate microservices and applications feeding data to their end products, and then they use Kestra for analytical workflows to understand how their products are performing. This way, Kestra serves as a **universal orchestration** solution for their business.
 
 ## Addressing the Orchestration Gap for Software Engineers
@@ -33,7 +35,9 @@ After talking to our customers and design partners, we’ve realized that softwa
 
 Software engineers appreciate the **API-first** design and **robust**, **scalable**, **cloud-native** architecture of our product. **Event-driven** capabilities are within Kestra’s DNA, enabling the creation, execution, and real-time monitoring of workflows at any scale. Kestra can efficiently process millions of events and ensures that businesses can reliably expand without sacrificing performance.
 
-## Run Anywhere, Code in Any Language**Les languages des programmations Kestra en images**
+## Run Anywhere, Code in Any Language
+
+**Les languages des programmations Kestra en images + cloud/premise**
 
 In terms of language compatibility, Kestra supports tasks written in a wide array of programming languages, including **Python**, **R**, **Node.js**, **Julia**, **Rust**, **Bash**, **PowerShell**, and anything that can run as a containerized process. Kestra's flows can run anywhere — from your laptop or on-prem VM to a Kubernetes cluster in a public cloud. Thanks to the extensible integrations ecosystem, including features such as custom plugins, triggers, tasks, blueprints, and fully customizable scripts and microservices, the product keeps evolving along with the business requirements of our users.
 
