@@ -25,7 +25,7 @@
 
 <script>
     import HighlightBlogCard from "~/components/blogs/HighlightBlogCard.vue";
-    import BlogCard from "~components/blogs/BlogCard.vue";
+    import BlogCard from "~/components/blogs/BlogCard.vue";
 
     export default {
         name: "BlogsList",
