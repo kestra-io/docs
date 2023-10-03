@@ -48,7 +48,7 @@
 </template>
 
 <script>
-    import Section from '../layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     import CloudUploadOutline from "vue-material-design-icons/CloudUploadOutline.vue";
     import GoogleCirclesExtended from "vue-material-design-icons/GoogleCirclesExtended.vue";
     import AutoUpload from "vue-material-design-icons/AutoUpload.vue";

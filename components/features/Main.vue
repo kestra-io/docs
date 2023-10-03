@@ -18,7 +18,7 @@
                             <strong>Support for data-mesh:</strong> thanks to the simple <NuxtLink href="/features/declarative-data-orchestration"> YAML interface</NuxtLink>, built-in documentation and blueprints, domain experts can build their own workflows, too.
                         </li>
                         <li>
-                            <strong>Intuitive UI built not only for engineers:</strong> when you add workflows directly from the UI, the live-updating topology view helps you see dependencies between processes, systems and tasks. 
+                            <strong>Intuitive UI built not only for engineers:</strong> when you add workflows directly from the UI, the live-updating topology view helps you see dependencies between processes, systems and tasks.
                         </li>
                     </ul>
                 </div>
@@ -29,7 +29,7 @@
                     <h3>Iterate faster without the overhead of CI/CD</h3>
                     <ul>
                         <li>
-                            <strong>Less time spent babysitting orchestration code:</strong> Seamlessly configure your tasks to run sequentially, in parallel or only based on a specific condition or presence of events without having to navigate convoluted orchestration code bases. 
+                            <strong>Less time spent babysitting orchestration code:</strong> Seamlessly configure your tasks to run sequentially, in parallel or only based on a specific condition or presence of events without having to navigate convoluted orchestration code bases.
                         </li>
                         <li>
                             <strong>Intuitive dependency management:</strong> Easily manage task dependencies — defining proper execution order is as simple as adding a list of tasks in the order you want them to be executed.
@@ -55,7 +55,7 @@
                             <strong>Time-based scheduling:</strong> Workflows run automatically at specific times, such as daily, weekly, or monthly without the need for manual intervention or inspecting crontabs.
                         </li>
                         <li>
-                            <strong>Event-based orchestration:</strong> Automate workflow executions based on real-time events. Trigger workflows to run automatically in response to events, such as the arrival of new data in a database, file detection in your cloud storage bucket, new message in a message queue, or the completion of other workflows. 
+                            <strong>Event-based orchestration:</strong> Automate workflow executions based on real-time events. Trigger workflows to run automatically in response to events, such as the arrival of new data in a database, file detection in your cloud storage bucket, new message in a message queue, or the completion of other workflows.
                         </li>
                     </ul>
                 </div>
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-    import Section from '../layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     export default {
         components: {Section}
     }
