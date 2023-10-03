@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import Section from '../../components/layout/Section.vue';
+import Section from '~/components/layout/Section.vue';
 import TooltipQuestion from "vue-material-design-icons/TooltipQuestion.vue";
 import HandWave from "vue-material-design-icons/HandWave.vue";
 import MessageAlert from "vue-material-design-icons/MessageAlert.vue";

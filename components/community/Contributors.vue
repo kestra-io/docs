@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import Section from '../../components/layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     import axios from "axios";
 
     export default {
