@@ -100,7 +100,7 @@
 </template>
 
 <script setup>
-    import Section from '../layout/Section.vue'
+    import Section from '~/components/layout/Section.vue'
     import OpenInNew from 'vue-material-design-icons/OpenInNew.vue'
 </script>
 

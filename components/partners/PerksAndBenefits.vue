@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-    import Section from '../layout/Section.vue'
+    import Section from '~/components/layout/Section.vue'
     import MedalOutline from 'vue-material-design-icons/MedalOutline.vue'
     import PlaylistStar from 'vue-material-design-icons/PlaylistStar.vue'
     import Looks from 'vue-material-design-icons/Looks.vue'
