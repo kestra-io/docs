@@ -1,15 +1,15 @@
-import {} from '#nuxt-multi-cache/composables'
-
 import {parseContent} from '#content/server';
 import url from "node:url";
-
 
 export default defineEventHandler(async (event) => {
 
     let relatedBlueprints = []
     let flowAsMd = '';
 
+    console.log('Event', event)
+
     const requestUrl = new url.URL("http://localhost" + event.node.req.url);
+    console.log("requestUrl", requestUrl)
     const query = requestUrl.searchParams.get("query");
     const pageData = await $fetch(`https://api.kestra.io/v1/blueprints/${query}`)
     if (pageData) {
