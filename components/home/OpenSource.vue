@@ -74,7 +74,7 @@
 </template>
 
 <script>
-    import Section from '../layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     import axios from "axios";
     import {CountTo} from 'vue3-count-to';
     import SourceCommitLocal from "vue-material-design-icons/SourceCommitLocal.vue";

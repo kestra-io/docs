@@ -51,7 +51,7 @@
                     </p>
                 </div>
             </div>
-            
+
             <div class="row mb-5">
                 <div class="col-md-6 p-5" data-aos="fade-right">
                     <p class="overline">Step 5</p>
@@ -79,7 +79,7 @@
 </template>
 
 <script>
-    import Section from '../layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     import Flash from "vue-material-design-icons/Flash.vue";
     import Console from "vue-material-design-icons/Console.vue"
 

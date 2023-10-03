@@ -99,7 +99,7 @@
 </template>
 
 <script>
-    import Section from '../layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
 
     export default {
         components: {Section},

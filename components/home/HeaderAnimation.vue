@@ -16,8 +16,8 @@
 </template>
 
 <script>
-    import VueLottie from '../layout/VueLottie';
-    import * as animationData from './animation.json';
+    import VueLottie from '~/components/layout/VueLottie';
+    import * as animationData from '~/components/home/animation.json';
 
     export default {
         components: {VueLottie},

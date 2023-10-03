@@ -60,7 +60,7 @@
 </template>
 
 <script>
-    import Section from '../layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     import WrenchOutline from "vue-material-design-icons/WrenchOutline.vue";
     import ChartTimelineVariant from "vue-material-design-icons/ChartTimelineVariant.vue";
     import ApplicationBracketsOutline from "vue-material-design-icons/ApplicationBracketsOutline.vue";
