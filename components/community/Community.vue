@@ -101,7 +101,7 @@
         },
         async created() {
             try {
-                const [ metrics, contributors] = await Promise.all([
+                const [metrics, contributors] = await Promise.all([
                     kestraInstance.get('/communities/github/metrics'),
                     kestraInstance.get('/communities/github/contributors')
                 ])
