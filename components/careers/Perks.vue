@@ -84,7 +84,8 @@
 </template>
 
 <script>
-    import Section from '../../components/layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
+
     import Earth from "vue-material-design-icons/Earth.vue";
     import CalendarClock from "vue-material-design-icons/CalendarClock.vue";
     import ScaleBalance from "vue-material-design-icons/ScaleBalance.vue";
