@@ -111,8 +111,8 @@
 </template>
 
 <script>
-    import CustomDetails from "../components/layout/CustomDetails.vue";
-    import Newsletter from "../components/layout/Newsletter.vue";
+    import CustomDetails from "~/components/layout/CustomDetails.vue";
+    import Newsletter from "~/components/layout/Newsletter.vue";
 
     export default {
         components: {CustomDetails, Newsletter},
