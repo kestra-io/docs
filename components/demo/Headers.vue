@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import Companies from "../layout/Companies.vue";
+import Companies from "~/components/layout/Companies.vue";
 const newForm = ref()
 
 onMounted(() => {
@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
             background: var(--bs-pink);
         }
     }
-    
+
     @include media-breakpoint-down(lg) {
         .schedule-demo {
            position: relative !important;
