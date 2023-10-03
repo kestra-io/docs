@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 mb-4" v-for="plugin in paginatedPlugins" :key="plugin.name">
-                            <PluginsCard :plugin="plugin" :icon="plugin.icon ? getIcon(plugin.plugin) : {}" data-aos="zoom-in"></PluginsCard>
+                            <PluginsCard :plugin="plugin" :icon="getIcon(plugin.plugin)" data-aos="zoom-in"></PluginsCard>
                         </div>
                         <div class="d-flex justify-content-between">
                             <div class="items-per-page">
@@ -69,8 +69,6 @@
         return $fetch('https://api.kestra.io/v1/plugins/icons/subgroups')
     })
 
-    console.log(iconsData.value);
-
     if(iconsData.value) icons.value = iconsData.value
 
     const { data: categoriesData } = await useAsyncData('categories', () => {
@@ -94,7 +92,7 @@
     if(groupsData.value) groups.value = groupsData.value
 
     const getIcon = (iconName) => {
-        if(icons.value[iconName]) {
+        if(iconName && icons.value[iconName]) {
             return icons.value[iconName]
         }
 
