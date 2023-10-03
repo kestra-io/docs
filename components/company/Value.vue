@@ -68,7 +68,7 @@
 </template>
 
 <script>
-    import Section from '../../components/layout/Section.vue';
+    import Section from '~/components/layout/Section.vue';
     import QualityHigh from "vue-material-design-icons/QualityHigh.vue";
     import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue";
     import EmoticonOutline from "vue-material-design-icons/EmoticonOutline.vue";
