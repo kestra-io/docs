@@ -39,7 +39,7 @@
         },
         mounted() {
             this.handleTextChange();
-            setInterval(this.handleTextChange, 3000);
+            setInterval(this.handleTextChange, 1000);
         }
     }
 </script>
