@@ -2,7 +2,7 @@
     <div class="main">
         <div class="hero container">
             <div class="text-block">
-                <h1 data-aos="fade-right"><span>Orchestrate</span><br /> Everything Everywhere <br />All at Once.</h1>
+                <h1 data-aos="fade-right"><text-scroller :texts="scrollingTexts" /><br />Everything Everywhere <br />All at Once.</h1>
 
                 <div class="buttons">
                     <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-dark-animated me-2" data-aos="zoom-in">
@@ -38,12 +38,17 @@
     import LightningBolt from "vue-material-design-icons/LightningBolt.vue"
     import Companies from "../layout/Companies.vue";
     import HeaderAnimation from './HeaderAnimation.vue';
+    import TextScroller from "~/components/layout/TextScroller.vue";
 
     export default {
-        components: {Console, PlayOutline, LightningBolt, Companies, HeaderAnimation},
+        components: {Console, PlayOutline, LightningBolt, Companies, HeaderAnimation, TextScroller},
         data() {
             return {
-                videoVisible: false
+                videoVisible: false,
+                scrollingTexts: [
+                    {text: "Automate"},
+                    {text: "Orchestrate"}
+                ]
             }
         }
     }
@@ -75,7 +80,7 @@
                 font-size: 76px;
             }
 
-            span {
+            :deep(span) {
                 color: #E500EA;
             }
         }
