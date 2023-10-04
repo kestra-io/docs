@@ -18,16 +18,16 @@
                         <div class="card" @click="active = 1" :class="{active: active === 1}" data-aos="fade-left">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon rounded-5"><WrenchOutline /></span>
-                                    Built-in editor to define flows, SQL queries and custom scripts
+                                    <span class="card-icon rounded-5"><ViewDashboardVariantOutline /></span>
+                                    Complete and comprehensive Dashboard
                                 </p>
                             </div>
                         </div>
                         <div class="card" @click="active = 2" :class="{active: active === 2}" data-aos="fade-left" data-aos-delay="50">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
-                                    Dashboards to monitor your system's health
+                                    <span class="card-icon rounded-5"><WrenchOutline /></span>
+                                    Built-in code editor
                                 </p>
                             </div>
                         </div>
@@ -35,15 +35,15 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
-                                    Simple declarative editor with live-updating DAG view
+                                    Declarative language editor
                                 </p>
                             </div>
                         </div>
                         <div class="card" @click="active = 4" :class="{active: active === 4}" data-aos="fade-left" data-aos-delay="150">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon rounded-5"><ViewDashboardVariantOutline /></span>
-                                    Language-agnostic interface for scheduled and event-driven flows
+                                    <span class="card-icon rounded-5"><ChartTimelineVariant  /></span>
+                                    Execute and monitor directly from the interface 
                                 </p>
                             </div>
                         </div>
