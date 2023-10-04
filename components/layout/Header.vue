@@ -185,18 +185,16 @@
                             <Slack />
                         </a>
 
-                        <a class="d-sm-inline-block mb-1 mn-sm-0 btn btn-dark btn-sm me-sm-2" href="https://github.com/kestra-io/kestra" target="_blank">
-                            <Github /> Star us
-                        </a>
+                        <GithubButton />
 
                         <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm btn-dark me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block" href="/demo">
                             <span>
-                                <CalendarOutline /> 
+                                <CalendarOutline />
                                 Book a demo
                             </span>
                         </NuxtLink>
 
-                        <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm" href="/docs/getting-started">
+                        <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-animated btn-purple-animated btn-sm" href="/docs/getting-started">
                             <span>
                                 <Flash/>
                                 Get Started
@@ -253,11 +251,9 @@
 </template>
 
 <script setup>
-    import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue";
     import Email from "vue-material-design-icons/Email.vue";
     import FeatureSearch from "vue-material-design-icons/FeatureSearch.vue"
     import Security from "vue-material-design-icons/Security.vue"
-    import PostOutline from "vue-material-design-icons/PostOutline.vue"
     import AccountGroup from "vue-material-design-icons/AccountGroup.vue"
     import Handshake from "vue-material-design-icons/Handshake.vue"
     import AccountStarOutline from "vue-material-design-icons/AccountStarOutline.vue"
@@ -279,11 +275,13 @@
     import axios from "axios";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
+    import GithubButton from "../layout/GithubButton.vue";
 
     export default {
         components: {
             ChevronDown,
-            ChevronUp
+            ChevronUp,
+            GithubButton
         },
         data() {
             return {
@@ -509,10 +507,7 @@
                         font-size: 1rem;
                     }
 
-                    font-size: 1.125rem;
-
                     a.nav-link {
-                        font-weight: bold;
                         border-radius: $border-radius;
 
                         @include media-breakpoint-down(lg) {
@@ -649,7 +644,6 @@
                 }
 
                 .btn {
-                    border-radius: $border-radius;
                     &.icon-button {
                         font-size: 1.5rem;
 
@@ -657,6 +651,10 @@
                             color: $primary;
                         }
                     }
+                }
+
+                :deep(.btn) {
+                    font-weight: normal;
                 }
             }
         }
@@ -667,6 +665,10 @@
             box-shadow: none;
 
             a, a.nav-link, button.navbar-toggler, &.btn.search {
+                color: var(--bs-white);
+            }
+
+            :deep(.github .btn-outline-dark) {
                 color: var(--bs-white);
             }
 
