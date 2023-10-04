@@ -67,56 +67,6 @@ If you want to participate to Kestra success, give us a [GitHub star](https://gi
 
 ## Trusted by Leading Tech Investors
 
-This funding was co-led by [ISAI](http://www.isai.vc/), [Axeleo Capital](https://www.axc.vc/), alongside several SaaS and Open source specialists angel investors, including founders and executives from Datadog (Olivier Pomel, Co-Founder and CEO), Collibra (Stan Christians, Co-founder & Chief Data Citizen), Strapi (Pierre Burgy, Co-Founder and CEO), BlaBlaCar (Olivier Bonnet, CTO) and many more.
+This funding was co-led by [ISAI](http://www.isai.vc/), [Axeleo Capital](https://www.axc.vc/), alongside several SaaS and Open source specialists angel investors, including founders and executives including: Olivier Pomel (CEO & Co-founder at Datadog), Stijn Christiaens (Co-founder & Chief Data Citizen at Collibra), Olivier Bonnet (CTO at Blablacar, formerly iCloud at Apple), Pierre Burgy (Co-founder & CEO at Strapi), Luc Delsalle (VP of Engineering at Tenable, formerly co-founder at Alsid), Gabriel-James Safar (Director of Product Management at Datadog, formerly founder at Madumbo), Fabrice Bernhard (Co-founder & CTO at Theodo Group), Vincent Pineau (Tech Entrepreneur, formerly VP GM at Talend Americas), Yacine Terki (Co-founder & CEO at Data Impact by NielsenIQ), Ludovic Gallen (Co-founder at Data Impact by NielsenIQ), Emmanuel Martin-Chave (VP Data at Blablacar), Nicolas Fonrose (Founder & CEO at Teevity), Amirhossein Malekzadeh (Entrepreneur & Investor, formerly founder at Logmatic), Philippe Besnard (Entrepreneur & Investor, Senior Advisor and Board Member, President of Pentagram Ventures), Yann Fleureau (Tech Entrepreneur & Investor, formerly co-founder at Cardiologs), Baptiste Hamel (Entrepreneur & Investor, formerly co-founder at iii-financement), Romain Hervé (Entrepreneur & Investor, formerly Managing Director at Accenture), Eric Mahe (Entrepreneur & Investor, formerly founder at CloudSkiff), Denis Lafont-Trevisan (Entrepreneur & Investor, formerly VP at Capgemini), Abdelillah Hassam (Software Engineer & Investor), Arnaud Ladrière (Entrepreneur & Investor, formerly founder at Easyteam), Marc Chancerel (Investor at Blueprint Partners), Romain Dardour (Head of Product at L’Oréal Beauty Tech, formerly founder at Hull), Jia Li (Co-founder & CSO/CTO at CardioLogs), Noé Gersanois (Co-Head at Raise Sherpas & Angel Investor).
 
-We are honored to have the support and trust of an exceptional group of investors, deeply rooted in the technology sector, including:
 
-**Olivier Pomel**: Co-founder & CEO at Datadog
-
-**Stijn (Stan) Christiaens**: Co-founder & Chief Data Citizen at Collibra
-
-**Olivier Bonnet**: CTO at Blablacar, formerly iCloud @ Apple
-
-**Pierre Burgy**: Co-founder & CEO at Strapi
-
-**Luc Delsalle**: VP of Engineering at Tenable, formerly co-founder Alsid
-
-**Gabriel-James Safar**: Director of Product Management at Datadog, formerly founder Madumbo
-
-**Fabrice Bernhard**: Co-founder & CTO at Theodo Group
-
-**Vincent Pineau**: Tech Entrepreneur, formerly VP GM at Talend Americas
-
-**Yacine Terki**: Co-founder & CEO at Data Impact by NielsenIQ
-
-**Ludovic Gallen**: Co-founder at Data Impact by NielsenIQ
-
-**Emmanuel Martin-Chave**: VP Data Blablacar
-
-**Nicolas Fonrose**: Founder & CEO Teevity
-
-**Amirhossein Malekzadeh**: Entrepreneur & investor, formerly founder Logmatic
-
-**Philippe Besnard**: Entrepreneur & Investor, Senior Advisor and Board Member, President of Pentagram Ventures
-
-**Yann Fleureau**: Tech entrepreneur & investor, formerly co-founder Cardiologs
-
-**Baptiste HAMEL**: Entrepreneur & Investor, formerly co-founder iii-financement
-
-**Romain Hervé**: Entrepreneur & Investor, formerly Managing director Accenture
-
-**Eric Mahe**: Entrepreneur & Investor, formerly founder CloudSkiff
-
-**Denis Lafont-Trevisan**: Entrepreneur & Investor, formerly VP Capgemini
-
-**Abdelillah Hassam**: Software engineer & Investor
-
-**Arnaud Ladrière**: Entrepreneur & Investor, formerly founder Easyteam
-
-**Marc Chancerel**: Investor at Blueprint Partners
-
-**Romain Dardour**: Head of product at L’Oréal Beauty Tech, formerly founder Hull
-
-**Jia Li**: Co-founder & CSO/CTO at CardioLogs
-
-**Noé Gersanois**: Co-Head at Raise Sherpas & Angel Investor
