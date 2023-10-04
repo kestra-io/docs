@@ -48,8 +48,9 @@
             return {
                 videoVisible: false,
                 scrollingTexts: [
-                    {text: "Automate"},
-                    {text: "Orchestrate"}
+                    {text: "Orchestrate", color: "#C005EF"},
+                    {text: "Automate", color: "#5D48F5"},
+                    {text: "Schedule", color: "#7604E3"}
                 ]
             }
         }

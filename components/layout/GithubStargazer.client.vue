@@ -1,6 +1,6 @@
 <template>
     <span v-if="stargazersText">{{ stargazersText }}</span>
-    <span v-else class="placeholder" style="width: 59px"></span>
+    <span v-else class="placeholder" style="width: 39px"></span>
 </template>
 
 <script>

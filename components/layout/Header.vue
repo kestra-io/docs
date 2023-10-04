@@ -274,13 +274,11 @@
 <script>
     import axios from "axios";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
-    import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
     import GithubButton from "../layout/GithubButton.vue";
 
     export default {
         components: {
             ChevronDown,
-            ChevronUp,
             GithubButton
         },
         data() {
@@ -534,11 +532,13 @@
                     .dropdown-toggle {
                         .chevron-down-icon {
                             transition: .2s all cubic-bezier(1, 0.25, 0.25, .8);
-                            will-change: transform;
+                            will-change: scaleY;
+                            position: relative;
+                            top: 4px;
                         }
 
                         &.show .chevron-down-icon {
-                            transform: rotate(180deg);
+                            transform: scaleY(-1);
                         }
                     }
 
@@ -659,6 +659,22 @@
             }
         }
 
+        :deep(.github .btn) {
+            font-weight: bold !important;
+            font-size: 12px !important;
+        }
+
+        &:not(.transparent) {
+            :deep(.github .btn-dark) {
+                background-color: var(--bs-gray-200);
+                border-color: var(--bs-border-color);
+                color: var(--bs-body-color);
+            }
+
+            :deep(.github .btn-outline-dark) {
+                border-color: var(--bs-border-color);
+            }
+        }
 
         &.transparent {
             background: transparent;

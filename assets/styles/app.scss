@@ -149,6 +149,10 @@ blockquote.blockquote {
     }
 
 
+    &:active {
+        color: var(--bs-white) !important;
+    }
+
     &:hover {
         color: var(--bs-white);
         &::before {

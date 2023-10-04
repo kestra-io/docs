@@ -6,7 +6,7 @@
         <a class="btn btn-outline-dark " :class="{'btn-sm' : small}" href="https://github.com/kestra-io/kestra" target="_blank">
             <ClientOnly>
                 <template v-slot:fallback>
-                    <span class="placeholder" style="width: 60px"></span>
+                    <span class="placeholder" style="width: 39px"></span>
                 </template>
                 <LayoutGithubStargazer />
             </ClientOnly>
@@ -50,6 +50,14 @@
         .btn-outline-dark {
             border-left: 0;
             color: #333336;
+
+            .placeholder {
+                background: transparent;
+            }
+        }
+
+        .btn-outline-dark:hover {
+            background: transparent;
         }
     }
 </style>
