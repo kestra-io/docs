@@ -45,16 +45,18 @@
                     "aimtec",
                     "cleverconnect",
                     "decathlon",
-                    "dnb",
                     "fortinet",
                     "hcl",
                     "huawei",
-                    "iqtig",
                     "leroymerlin",
                     "ntico",
                     "tencent",
-                    "twosix",
                     "facily",
+                    "airpazz",
+                    "gorgias",
+                    "jcdecaux",
+                    "orlando-city",
+                    "sophia-genetics",
                 ]
                     .sort(() => .5 - Math.random())
             },
@@ -95,7 +97,6 @@
 
             img {
                 margin-right: calc($spacer * 2);
-
 
                 &.inverted {
                     filter: invert(100%);
