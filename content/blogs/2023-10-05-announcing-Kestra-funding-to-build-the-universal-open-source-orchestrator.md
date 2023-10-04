@@ -17,7 +17,7 @@ Through a seamless UI and IDE access, all workflows — from those orchestrating
 
 ## Trusted by Companies of All Sizes
 
-Since its inception, Kestra has experienced significant traction as an open-source project, thriving with a vibrant community of users and contributors. Thousands of companies, from startups to large enterprises, including **Huawei**, **Leroy Merlin**, **Acxiom**, **Tencent**, **Gorgias**, **Sophia Genetics**, and **Decathlon**, are already orchestrating their **mission-critical workloads** with Kestra.
+Since its inception, Kestra has experienced significant traction as an open-source project, thriving with a vibrant community of users and contributors. Thousands of companies, from startups to large enterprises, including **Huawei**, **Leroy Merlin**, **Acxiom**, **Tencent**, **Gorgias**, **Sophia Genetics**, and **Decathlon**, are already orchestrating their **business-critical workloads** with Kestra.
 
 ![clients](/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator/clients.png)
 
@@ -27,11 +27,11 @@ Since its inception, Kestra has experienced significant traction as an open-sour
 
 To address this, Kestra offers a versatile and language-agnostic developer platform while simultaneously providing an intuitive user interface tailored to business professionals. This holistic solution aims to bridge the gap between different organizational units, thereby fostering a collaborative environment conducive to greater operational efficiency.
 
-## The Orchestration Platform for Mission-Critical Operations
+## The Orchestration Platform for Business-Critical Operations
 
 ![Kestra Baseline](/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator/baseline.png)
 
-Our initial mission was to build the most efficient open-source workflow platform targeting the data engineering space. Since then, we’ve experienced tremendous growth well beyond that domain. Our users leverage Kestra not only to orchestrate data pipelines but also to power their **mission-critical applications**. They use our platform to orchestrate microservices and applications feeding data to their end products, and then they use Kestra for analytical workflows to understand how their products are performing. This way, Kestra serves as a **universal orchestration** solution for their business.
+Our initial mission was to build the most efficient open-source workflow platform targeting the data engineering space. Since then, we’ve experienced tremendous growth well beyond that domain. Our users leverage Kestra not only to orchestrate data pipelines but also to power their **business-critical applications**. They use our platform to orchestrate microservices and applications feeding data to their end products, and then they use Kestra for analytical workflows to understand how their products are performing. This way, Kestra serves as a **universal orchestration** solution for their business.
 
 ## Addressing the Orchestration Gap for Software Engineers
 
