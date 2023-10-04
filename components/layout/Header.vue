@@ -185,9 +185,9 @@
                             <Slack />
                         </a>
 
-                        <GithubButton />
+                        <GithubButton :small="true" />
 
-                        <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm btn-dark me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block" href="/demo">
+                        <NuxtLink @click="globalClick(true)" class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block" href="/demo">
                             <span>
                                 <CalendarOutline />
                                 Book a demo

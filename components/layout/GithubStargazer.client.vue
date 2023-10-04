@@ -1,5 +1,5 @@
 <template>
-    <span v-if="stargazersText">{{ stargazersText }} ⭐️</span>
+    <span v-if="stargazersText">{{ stargazersText }}</span>
     <span v-else class="placeholder" style="width: 59px"></span>
 </template>
 

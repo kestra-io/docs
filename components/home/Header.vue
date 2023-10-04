@@ -5,10 +5,11 @@
                 <h1 data-aos="fade-right"><text-scroller :texts="scrollingTexts" /><br />Everything Everywhere <br />All at Once.</h1>
 
                 <div class="buttons">
-                    <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-dark-animated me-2" data-aos="zoom-in">
-                        <Console /> Try the live demo
+                    <a href="#" class="btn btn-animated btn-dark-animated me-2 mb-2" data-aos="zoom-in" data-bs-toggle="modal" data-bs-target="#home-intro">
+                        <PlayCircleOutline /> Product Video
                     </a>
-                    <NuxtLink href="/docs" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+
+                    <NuxtLink href="/docs" class="btn btn-animated btn-purple-animated mb-2" data-aos="zoom-in">
                         <LightningBolt /> Get started
                     </NuxtLink>
                 </div>
@@ -38,10 +39,11 @@
     import LightningBolt from "vue-material-design-icons/LightningBolt.vue"
     import Companies from "../layout/Companies.vue";
     import HeaderAnimation from './HeaderAnimation.vue';
+    import PlayCircleOutline from 'vue-material-design-icons/PlayCircleOutline.vue'
     import TextScroller from "~/components/layout/TextScroller.vue";
 
     export default {
-        components: {Console, PlayOutline, LightningBolt, Companies, HeaderAnimation, TextScroller},
+        components: {Console, PlayOutline, LightningBolt, PlayCircleOutline, Companies, HeaderAnimation, TextScroller},
         data() {
             return {
                 videoVisible: false,
