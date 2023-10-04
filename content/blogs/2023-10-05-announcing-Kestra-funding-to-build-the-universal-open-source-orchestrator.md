@@ -41,7 +41,7 @@ Software engineers appreciate the **API-first** design and **robust**, **scalabl
 
 ## Run Anywhere, Code in Any Language
 
-**Les languages des programmations Kestra en images + cloud/premise**
+![languages and installation](/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator/code-install.png)
 
 In terms of language compatibility, Kestra supports tasks written in a wide array of programming languages, including **Python**, **R**, **Node.js**, **Julia**, **Rust**, **Bash**, **PowerShell**, and anything that can run as a containerized process. Kestra's flows can run anywhere — from your laptop or on-prem VM to a Kubernetes cluster in a public cloud. Thanks to the extensible integrations ecosystem, including features such as custom plugins, triggers, tasks, blueprints, and fully customizable scripts and microservices, the product keeps evolving along with the business requirements of our users.
 
