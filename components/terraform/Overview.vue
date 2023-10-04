@@ -40,7 +40,7 @@
         </div>
         <div class="hero row justify-content-center align-items-center">
             <div class="col-12 col-md-6">
-                <img src="/terraform/overview/Code.svg" class="w-100" alt="code svg">
+                <img src="/terraform/overview/declarative-configurations-code.svg" class="w-100" alt="declarative configurations code svg">
             </div>
             <div class="col-12 col-md-6">
                 <div class="row justify-content-center">
@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-6">
-                <img src="/terraform/overview/Code (1).svg" class="w-100" alt="code svg">
+                <img src="/terraform/overview/modular-resource-management-code.svg" class="w-100" alt="modular resource management code svg">
             </div>
             <div class="col-12 col-md-6">
                 <p class="mt-5">Additionally, the inherent modularity in both Terraform and Kestra's configurations allows you to create reusable blocks of code. These can be shared across multiple teams or projects, contributing to more efficient, maintainable operations.</p>

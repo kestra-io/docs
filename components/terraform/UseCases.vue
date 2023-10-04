@@ -2,7 +2,7 @@
     <LayoutSection title="Use Cases">
         <div class="row justify-content-center align-items-center">
             <div class="col-12 col-md-5">
-                <img src="/terraform/use-cases/Artworks_Features (1).svg" class="w-100" alt="frame">
+                <img src="/terraform/use-cases/reliable-deployments.svg" class="w-100" alt="frame">
             </div>
             <div class="col-12 col-md-5">
                 <div class="row justify-content-center">
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-5">
-                <img src="/terraform/use-cases/Artworks_Features.svg" class="w-100" alt="artworks">
+                <img src="/terraform/use-cases/version-control.svg" class="w-100" alt="artworks">
             </div>
         </div>
     </LayoutSection>
