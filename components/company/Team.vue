@@ -41,8 +41,9 @@
                         <a href="https://twitter.com/anna__geller" target="_blank" class="me-2"><twitter /></a>
                     </span>
                 </div>
+                
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/mguibert.png" alt="Anna Geller Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/mguibert.png" alt="Martin Guibert Picture"/>
                     <div>
                         <div class="team-name">Martin Guibert</div>
                         <div class="team-title font-small">Full Stack Engineer</div>
@@ -52,7 +53,7 @@
                         <a href="https://github.com/moadibfr" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>
-            </div>
+
                 <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/qsinig.png" alt="Quentin Sinig Picture"/>
                     <div>
@@ -137,6 +138,7 @@
                         <a href="https://github.com/brian-mulier-p" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>
+            </div>
         </Section>
     </div>
 </template>
