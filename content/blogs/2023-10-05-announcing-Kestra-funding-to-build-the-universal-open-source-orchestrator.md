@@ -57,7 +57,7 @@ Kestra strives to be the easiest-to-use orchestration tool on the market. Our us
 
 ## What's Coming Next
 
-The introduction of a fully-managed offering is among our upcoming milestones, further simplifying the user experience by removing the complexity of managing infrastructure. This will serve as an additional option alongside our existing [Kestra Enterprise](url) solution.
+The introduction of a fully-managed offering is among our upcoming milestones, further simplifying the user experience by removing the complexity of managing infrastructure. This will serve as an additional option alongside our existing [Kestra Enterprise](https://kestra.io/enterprise) solution.
 
 We're also planning to expand and refine features that facilitate intra-organizational collaboration and improve operational efficiency.
 
