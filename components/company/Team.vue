@@ -43,7 +43,7 @@
                 </div>
                 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/mguibert.png" alt="Martin Guibert Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/mguibert.png" alt="Martin guibert Picture"/>
                     <div>
                         <div class="team-name">Martin Guibert</div>
                         <div class="team-title font-small">Full Stack Engineer</div>
