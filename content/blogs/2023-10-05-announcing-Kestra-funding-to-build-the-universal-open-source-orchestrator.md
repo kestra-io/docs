@@ -59,7 +59,7 @@ Kestra strives to be the easiest-to-use orchestration tool on the market. Our us
 
 The introduction of a fully-managed offering is among our upcoming milestones, further simplifying the user experience by removing the complexity of managing infrastructure. This will serve as an additional option alongside our existing [Kestra Enterprise](https://kestra.io/enterprise) solution.
 
-We're also planning to expand and refine features that facilitate intra-organizational collaboration and improve operational efficiency.
+We'll be working on many exciting features to make orchestration not only reliable, but also enjoyable. This includes, among others, a new code editor, additional remote infrastructure and marketplace offerings, along with many new integrations.
 
 We're incredibly grateful for the support and confidence shown by our investors, community, and customers. This funding enables us to further our vision of making Kestra the go-to orchestration platform.
 
@@ -69,7 +69,7 @@ If you want to participate to Kestra success, give us a [GitHub star](https://gi
 
 This funding was co-led by [ISAI](http://www.isai.vc/), [Axeleo Capital](https://www.axc.vc/), alongside several SaaS and Open source specialists angel investors, including founders and executives from Datadog (Olivier Pomel, Co-Founder and CEO), Collibra (Stan Christians, Co-founder & Chief Data Citizen), Strapi (Pierre Burgy, Co-Founder and CEO), BlaBlaCar (Olivier Bonnet, CTO) and many more.
 
-We are honored to have the support and trust of an exceptional group of investors, deeply rooted in the technology sector. Below is a list of these esteemed individuals who believe in Kestra's mission and potential.
+We are honored to have the support and trust of an exceptional group of investors, deeply rooted in the technology sector, including:
 
 **Olivier Pomel**: Co-founder & CEO at Datadog
 
