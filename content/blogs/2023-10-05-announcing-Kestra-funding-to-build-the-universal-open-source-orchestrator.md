@@ -19,7 +19,7 @@ Through a seamless UI and IDE access, all workflows — from those orchestrating
 
 Since its inception, Kestra has experienced significant traction as an open-source project, thriving with a vibrant community of users and contributors. Thousands of companies, from startups to large enterprises, including **Huawei**, **Leroy Merlin**, **Acxiom**, **Tencent**, **Gorgias**, **Sophia Genetics**, and **Decathlon**, are already orchestrating their **mission-critical workloads** with Kestra.
 
-**Images avec une liste des clients**
+![clients](/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator/clients.png)
 
 ## Breaking Down the Orchestration Silos
 
@@ -46,8 +46,6 @@ Software engineers appreciate the **API-first** design and **robust**, **scalabl
 In terms of language compatibility, Kestra supports tasks written in a wide array of programming languages, including **Python**, **R**, **Node.js**, **Julia**, **Rust**, **Bash**, **PowerShell**, and anything that can run as a containerized process. Kestra's flows can run anywhere — from your laptop or on-prem VM to a Kubernetes cluster in a public cloud. Thanks to the extensible integrations ecosystem, including features such as custom plugins, triggers, tasks, blueprints, and fully customizable scripts and microservices, the product keeps evolving along with the business requirements of our users.
 
 ## Infrastructure as Code Meets Orchestration
-
-**CI/CD image**
 
 In contrast to orchestrators that confine workflow creation to a single programming language, Kestra leverages a **declarative YAML interface** that democratizes orchestration and facilitates participation from developers utilizing diverse technology stacks. What our users appreciate most is that our product brings Infrastructure as Code best practices to all workflows — from those orchestrating mission-critical operations, business processes, and data pipelines to simple Zapier-style automations. Everything can be version-controlled and governed using software engineering best practices. Whether you make changes through the user interface, **CI/CD**, or via API calls, those changes are always automatically reflected in the codebase. This API-first approach fosters a synergistic workspace, allowing our users to build an internal platform loved by engineers and business stakeholders.
 
