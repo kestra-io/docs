@@ -1,6 +1,6 @@
 ---
-title: "Kestra Raises $3 Million to Build the Universal Open Source Orchestration Solution for All Engineers"
-description: "Kestra raises $3 million in funding to build a universal open-source orchestration platform, empowering software and data engineers across industries."
+title: "Kestra Raises $3 Million to Simplify and Unify Orchestration for All Engineers"
+description: "Kestra raises $3 million in funding to continue building a language-agnostic, universal open-source orchestration platform, empowering software and data engineers across industries."
 date: 2023-10-05T10:00:00
 category: News & Products Updates
 author:
@@ -9,7 +9,11 @@ author:
 image: /blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator.jpg
 ---
 
-We are thrilled to announce that Kestra has raised **$3 million of funding** to build the leading universal open-source orchestrator. We aim to empower a wide range of users, from software developers to data engineers, by simplifying and unifying their automation and orchestration needs. We envision Kestra as the go-to solution for organizations seeking **simple** and **powerful** orchestration solutions for any kind of process and data automation usage.
+We are thrilled to announce that Kestra has raised **$3 million of funding** to make orchestration more accessible, collaborative, and scalable. 
+
+We aim to empower a wide range of users, from software engineers to data professionals, by simplifying and unifying their automation and orchestration needs. We envision Kestra as the go-to solution for organizations seeking **simple** and **versatile** orchestration.
+
+Through a seamless UI and IDE access, all workflows — from those orchestrating mission-critical applications, business processes, and data pipelines to simple automations — can be version controlled and governed using engineering best practices.
 
 ## Trusted by Companies of All Sizes
 
@@ -17,7 +21,7 @@ Since its inception, Kestra has experienced significant traction as an open-sour
 
 **Images avec une liste des clients**
 
-## Breaking Down the Barriers of hyperspecialization
+## Breaking Down the Orchestration Silos
 
 [Kestra](https://github.com/kestra-io/kestra)’s innovative approach to orchestration aims to overcome the challenges posed by hyperspecialization in various domains — be it **data orchestration**, **process** and **microservice** orchestration, or **infrastructure** and **business automation**. Such hyperspecialization has often resulted in organizational silos, hindering collaboration and operational excellence.
 
@@ -53,7 +57,7 @@ Kestra strives to be the easiest-to-use orchestration tool on the market. Our us
 
 ## What's Coming Next
 
-The introduction of a SaaS offering is among our upcoming milestones, further simplifying the user experience by removing initial setup complexities. This will serve as an additional option alongside our existing solutions, catering to a wider range of user needs.
+The introduction of a fully-managed offering is among our upcoming milestones, further simplifying the user experience by removing the complexity of managing infrastructure. This will serve as an additional option alongside our existing [Kestra Enterprise](url) solution.
 
 We're also planning to expand and refine features that facilitate intra-organizational collaboration and improve operational efficiency.
 
