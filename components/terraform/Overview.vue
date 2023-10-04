@@ -50,7 +50,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 mb-5"></div>
             <div class="col-12 col-md-6">
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-7">
@@ -68,9 +67,6 @@
         </div>
     </LayoutSection>
 </template>
-
-<script setup>
-</script>
 
 <style scoped lang="scss">
 @import "../../assets/styles/variable";

@@ -9,9 +9,6 @@
     </div>
 </template>
 
-<script setup>
-</script>
-
 <style scoped lang="scss">
 .main {
     background-color: #0F011D;
