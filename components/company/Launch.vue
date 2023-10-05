@@ -6,7 +6,7 @@
             <div class="justify-content-center d-flex">
                 <div>
                     <p class="baseline-max-width text-center" data-aos="fade-left">
-                        Our commitment to excellence remains unwavering, and we are excited to see how Kestra will transform the way organizations approach data orchestration and automation.
+                        We are excited to see how Kestra will transform the way organizations approach data orchestration and automation.
                     </p>
                     <p class="baseline-max-width text-center" data-aos="fade-left">
                         We believe that Kestra's potential is limitless, and we are eager to explore new opportunities and partnerships as we move forward.
