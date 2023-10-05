@@ -109,5 +109,16 @@
                 background: var(--bs-pink);
             }
         }
+
+        @include media-breakpoint-down(lg) {
+            .hero {
+                padding-top: 6rem;
+                padding-bottom: 2rem;
+
+                .text-block {
+                    margin-bottom: 0;
+                }
+            }
+        }
     }
 </style>
