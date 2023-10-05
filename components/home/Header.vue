@@ -9,7 +9,7 @@
                         <PlayCircleOutline /> Product Video
                     </a>
 
-                    <NuxtLink href="/docs" class="btn btn-animated btn-purple-animated mb-2" data-aos="zoom-in">
+                    <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated mb-2" data-aos="zoom-in">
                         <LightningBolt /> Get started
                     </NuxtLink>
                 </div>
