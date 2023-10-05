@@ -92,7 +92,7 @@
                         alt: "Picture of Samuel testimony",
                     },
                     {
-                        profile: "/landing/home/testimonials/danielt.jpeg",
+                        profile: "/landing/home/testimonials/danielt.jpg",
                         message: "Thank you for your hard work in creating this good software. It is beginner friendly and easy to customize",
                         name: "Daniel Theodorus",
                         link: "https://www.linkedin.com/in/hamrio/",
