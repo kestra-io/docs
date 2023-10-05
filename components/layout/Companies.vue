@@ -16,28 +16,12 @@
 
 <script>
     export default defineComponent({
-        mounted() {
-            // window.addEventListener("resize", this.autoScrollIfNeeded);
-            // this.autoScrollIfNeeded();
-        },
+
         props: {
             inverted: {
                 type: Boolean,
                 default: false
             }
-        },
-        methods: {
-            // autoScrollIfNeeded() {
-            //     if (this.$refs && this.$refs.companies) {
-            //         const companies = this.$refs.companies;
-            //         const classes = companies.classList;
-            //         if (companies.clientWidth >= this.$refs.container.parentElement.offsetWidth) {
-            //             classes.add("scrolling");
-            //         } else {
-            //             classes.remove("scrolling")
-            //         }
-            //     }
-            // }
         },
         computed: {
             companies() {

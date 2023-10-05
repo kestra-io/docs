@@ -16,9 +16,7 @@
             </div>
         </div>
 
-        <div class="container-fluid pt-4 pb-4">
-            <Companies />
-        </div>
+        <Companies class="mt-4 pb-4 companies" />
     </div>
     <div v-on="{ 'show.bs.modal': () => videoVisible = true, 'hidden.bs.modal': () => videoVisible = false }" class="modal modal-full fade" id="home-intro" tabindex="-1" aria-labelledby="home-intro" aria-hidden="true">
         <div class="modal-dialog">
@@ -90,6 +88,10 @@
 
         .buttons {
             text-align: center;
+        }
+
+        .companies {
+            border-top: 1px solid rgba(255, 255, 255, 0.10);
         }
 
         .companies-title {
