@@ -1,5 +1,5 @@
 <template>
-    <LayoutSection title="Overview">
+    <LayoutSection title="Overview" class="overview">
         <div class="row">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                 <div class="card h-100">
@@ -54,7 +54,7 @@
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-7">
                         <h3>Comprehensive & Modular Resource Management</h3>
-                        <p>Our Terraform provider for Kestra is designed to easily manage your Kestra resources using Terraform. This includes, among others, flows, namespace, and user management, as well as secrets. Check the list of available resources in our documentation.</p>
+                        <p>Our Terraform provider for Kestra is designed to easily manage your Kestra resources using Terraform. This includes, among others, flows, namespace, and user management, as well as secrets. Check the list of available resources <NuxtLink href="/docs/terraform">in our documentation.</NuxtLink></p>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                 <img src="/terraform/overview/modular-resource-management-code.svg" class="w-100" alt="modular resource management code svg">
             </div>
             <div class="col-12 col-md-6">
-                <p class="mt-5">Additionally, the inherent modularity in both Terraform and Kestra's configurations allows you to create reusable blocks of code. These can be shared across multiple teams or projects, contributing to more efficient, maintainable operations.</p>
+                <p class="mt-5 text-white">Additionally, the inherent modularity in both Terraform and Kestra's configurations allows you to create reusable blocks of code. These can be shared across multiple teams or projects, contributing to more efficient, maintainable operations.</p>
             </div>
         </div>
     </LayoutSection>
@@ -70,8 +70,8 @@
 
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
-:deep(.main) {
-    background: url('/terraform/overview/background.svg') no-repeat 0 -15%;
+.overview {
+    background: url('/terraform/overview/background.svg') no-repeat 0 -4%;
 }
 
 .card {
@@ -89,6 +89,7 @@
         p {
             font-size: $font-size-sm;
             line-height: 1.375rem;
+            color: #CFCEFF;
         }
     }
 
@@ -98,7 +99,8 @@
     padding-bottom: 0;
 
     p {
-        line-height: 24px;
+        line-height: 1.5rem;
+        color: #CFCEFF;
     }
 }
 
