@@ -3,7 +3,7 @@
         <div class="announce">
             <div class="alert alert-primary">
                 <p class="text-truncate">
-                    🚀 New! <strong>Kestra raises $3 millions to grow</strong> <NuxtLink href="/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator">Learn more</NuxtLink>
+                    🚀 New! <strong>Kestra raises $3 million to grow</strong> <NuxtLink href="/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator">Learn more</NuxtLink>
                 </p>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="alertHide">
                     <span aria-hidden="true">&times;</span>
