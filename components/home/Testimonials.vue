@@ -112,7 +112,7 @@
                         message: "Kestra has been a keystone to design complex executions flows while enhancing our Infrastructure as Code best practices. It now empowers our ingestion with Airbyte, transformation with dbt and our HighTouch reverse-ETL jobs seamlessly!",
                         name: "Antoine Balliet",
                         link: "https://www.linkedin.com/in/antoineballiet/",
-                        designation: "Data & Analytics Engineer @ Gorgia",
+                        designation: "Data & Analytics Engineer @ Gorgias",
                         alt: "Picture of Antoine testimony",
                     }
                 ],
