@@ -3,7 +3,7 @@
         <div class="col-12 col-md-12 col-lg-10">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h1>Kestra Terraform Provider: Deploy All Your Workflows in a CI/CD Process</h1>
+                    <h1>Kestra Terraform Provider: Deploy All Your Workflows <br/> in a CI/CD Process</h1>
                     <p>Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations.</p>
                     <div class="d-flex flex-wrap gap-2">
                         <NuxtLink href="https://github.com/kestra-io/kestra">

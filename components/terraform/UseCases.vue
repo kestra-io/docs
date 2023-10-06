@@ -1,8 +1,8 @@
 <template>
-    <LayoutSection title="Use Cases">
+    <LayoutSection title="Benefits of the Integration">
         <div class="row justify-content-center align-items-center">
             <div class="col-12 col-md-5">
-                <img src="/terraform/use-cases/reliable-deployments.svg" class="w-100" alt="frame">
+                <img src="/terraform/use-cases/reliable-deployments.svg" class="w-100" alt="reliable deployments">
             </div>
             <div class="col-12 col-md-5">
                 <div class="row justify-content-center">
@@ -10,7 +10,7 @@
                         <h3>Reliable Deployments with Infrastructure as Code</h3>
                         <p>
                             Combine Kestra's orchestration capabilities with Terraform's infrastructure-as-code model. Provision resources in minutes for consistent, reproducible, and scalable workflows. <br/>
-                            <NuxtLink href="/use-cases/ci-cd">Learn more</NuxtLink>
+                            <NuxtLink href="/use-cases/ci-cd" class="text-decoration-underline link-offset-2">Learn more</NuxtLink>
                         </p>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-5">
-                <img src="/terraform/use-cases/version-control.svg" class="w-100" alt="artworks">
+                <img src="/terraform/use-cases/version-control.svg" class="w-100" alt="version control">
             </div>
         </div>
     </LayoutSection>
