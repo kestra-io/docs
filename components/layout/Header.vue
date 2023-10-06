@@ -109,7 +109,7 @@
                         </NuxtLink>
                     </li>
                     <li class="nav-item">
-                        <NuxtLink class="nav-link" href="/blogs" role="button" @click="globalClick(true)">
+                        <NuxtLink class="nav-link dropdown-toggle" href="/blogs" role="button" @click="globalClick(true)">
                             <span>
                                 Blog
                             </span>
@@ -516,7 +516,7 @@
                             display: none;
                         }
 
-                        &.show {
+                        &.show, &:hover {
                             color: $primary;
                             background: var(--bs-gray-100);
                         }
@@ -532,13 +532,14 @@
                     .dropdown-toggle {
                         .chevron-down-icon {
                             transition: .2s all cubic-bezier(1, 0.25, 0.25, .8);
-                            will-change: scaleY;
+                            will-change: scaleY, top;
                             position: relative;
-                            top: 4px;
+                            top: 0;
                         }
 
                         &.show .chevron-down-icon {
                             transform: scaleY(-1);
+                            top: 4px;
                         }
                     }
 
@@ -676,6 +677,10 @@
             }
         }
 
+        .btn:hover {
+            color: var(--bs-primary);
+        }
+
         &.transparent {
             background: transparent;
             box-shadow: none;
@@ -683,6 +688,7 @@
             a, a.nav-link, button.navbar-toggler, &.btn.search {
                 color: var(--bs-white);
             }
+
 
             :deep(.github .btn-outline-dark) {
                 color: var(--bs-white);
@@ -692,7 +698,7 @@
                 ul.navbar-nav {
                     li {
                         a.nav-link {
-                            &.show {
+                            &.show, &:hover {
                                 color: $secondary;
                                 background: rgba($gray-100, 5%);
                             }
