@@ -20,6 +20,9 @@
             window.addEventListener("resize", this.autoScrollIfNeeded);
             this.autoScrollIfNeeded();
         },
+        unmounted() {
+            window.removeEventListener("resize", this.autoScrollIfNeeded)
+        },
         props: {
             inverted: {
                 type: Boolean,
@@ -68,35 +71,12 @@
     @import "../../assets/styles/variable";
 
     .container {
-        width: fit-content;
-        max-width: unset;
-
+        text-align: center;
         .companies {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            overflow-y: hidden;
-            width: fit-content;
-            margin: auto;
-
-            &.scrolling {
-                animation: auto-scroll 30s infinite linear;
-            }
-
-            @keyframes auto-scroll {
-                0% {
-                    margin-left: 0;
-                }
-                50% {
-                    margin-left: -25%;
-                }
-                100% {
-                    margin-left: 0;
-                }
-            }
 
             img {
                 margin-right: calc($spacer * 2);
+                margin-top: calc($spacer * 2);
 
                 &.inverted {
                     filter: invert(100%);
@@ -104,4 +84,37 @@
             }
         }
     }
+
+    @keyframes auto-scroll {
+        0% {
+            margin-left: 0;
+        }
+        50% {
+            margin-left: -25%;
+        }
+        100% {
+            margin-left: 0;
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        .container {
+            width: fit-content;
+            max-width: unset;
+
+            .companies {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                overflow-y: hidden;
+                width: fit-content;
+                margin: auto;
+
+                &.scrolling {
+                    animation: auto-scroll 30s infinite linear;
+                }
+            }
+        }
+    }
+
 </style>

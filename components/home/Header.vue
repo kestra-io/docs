@@ -9,16 +9,14 @@
                         <PlayCircleOutline /> Product Video
                     </a>
 
-                    <NuxtLink href="/docs" class="btn btn-animated btn-purple-animated mb-2" data-aos="zoom-in">
+                    <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated mb-2" data-aos="zoom-in">
                         <LightningBolt /> Get started
                     </NuxtLink>
                 </div>
             </div>
         </div>
 
-        <div class="container-fluid pt-4 pb-4">
-            <Companies />
-        </div>
+        <Companies class="mt-4 pb-4 companies" />
     </div>
     <div v-on="{ 'show.bs.modal': () => videoVisible = true, 'hidden.bs.modal': () => videoVisible = false }" class="modal modal-full fade" id="home-intro" tabindex="-1" aria-labelledby="home-intro" aria-hidden="true">
         <div class="modal-dialog">
@@ -92,6 +90,10 @@
             text-align: center;
         }
 
+        .companies {
+            border-top: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
         .companies-title {
             position: relative;
 
@@ -105,6 +107,17 @@
                 height: 2px;
                 width: 51px;
                 background: var(--bs-pink);
+            }
+        }
+
+        @include media-breakpoint-down(lg) {
+            .hero {
+                padding-top: 6rem;
+                padding-bottom: 2rem;
+
+                .text-block {
+                    margin-bottom: 0;
+                }
             }
         }
     }

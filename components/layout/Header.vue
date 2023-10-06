@@ -741,6 +741,12 @@
 <style lang="scss">
     @import "../../assets/styles/variable";
 
+    .wrapper.announce {
+        nav {
+            top: 40px;
+        }
+    }
+
     #search-modal {
         .input-group-text {
             background: transparent;

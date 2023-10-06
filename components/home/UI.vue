@@ -26,8 +26,8 @@
                         <div class="card" @click="active = 2" :class="{active: active === 2}" data-aos="fade-left" data-aos-delay="50">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon rounded-5"><WrenchOutline /></span>
-                                    Built-in code editor
+                                    <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
+                                    Built-in editor to define flows, SQL queries and custom scripts
                                 </p>
                             </div>
                         </div>
@@ -35,15 +35,15 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
-                                    Declarative language editor
+                                    Simple declarative editor with live-updating DAG view
                                 </p>
                             </div>
                         </div>
                         <div class="card" @click="active = 4" :class="{active: active === 4}" data-aos="fade-left" data-aos-delay="150">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon rounded-5"><ChartTimelineVariant  /></span>
-                                    Execute and monitor directly from the interface 
+                                    <span class="card-icon rounded-5"><WrenchOutline /></span>
+                                    Polyglot orchestration for event-driven flows
                                 </p>
                             </div>
                         </div>
