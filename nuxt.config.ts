@@ -1,4 +1,4 @@
-import codeImport from 'remark-code-import';
+// import codeImport from 'remark-code-import';
 export default defineNuxtConfig({
   modules: [
       '@nuxt/devtools',
@@ -61,12 +61,12 @@ export default defineNuxtConfig({
       },
       markdown: {
           remarkPlugins: {
-              'remark-flexible-markers': {
-                  markerClassName: 'type-mark'
-              },
-              'remark-code-import': {
-                  instance: codeImport
-              },
+              // 'remark-flexible-markers': {
+              //     markerClassName: 'type-mark'
+              // },
+              // 'remark-code-import': {
+              //     instance: codeImport
+              // },
           }
       },
   },
