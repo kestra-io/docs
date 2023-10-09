@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Dario Radecic
   image: "dradecic"
-image: 
+image: /public/blogs/2023-10-09-kestra-surrealdb.jpg
 ---
 
 If you're entering the world of data engineering and data orchestration in 2023, boy do you have options. So many actually that it's overwhelming at times, especially when looking for a database vendor.
