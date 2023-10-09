@@ -15,7 +15,7 @@ Do you go with a traditional relational approach? How about storing documents? G
 
 Because of these reasons (any many more), we've developed a Kestra SurrealDB plugin that allows you to interact with the database in easy and convenient format.
 
-Today's article will give you a primer in SurrealDB - an innovative NewSQL multi-model cloud database suitable for just anything you can imagine, but also show you how to work with it in [Kestra](https://github.com/kestra-io/kestra).
+Today's article will give you a primer in SurrealDB - an innovative NewSQL multi-model cloud database suitable for just anything you can imagine, but also show you how to work with it in **[Kestra](https://github.com/kestra-io/kestra)**.
 Let's dig in!
 
 ---
