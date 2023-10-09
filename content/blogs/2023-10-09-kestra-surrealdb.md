@@ -13,43 +13,10 @@ If you're entering the world of data engineering and data orchestration in 2023,
 
 Do you go with a traditional relational approach? How about storing documents? Graphs would be nice too. Can you have all of that and more with a single database? Well, according to **[SurrealDB](https://surrealdb.com/)**, you absolutely can.
 
-A similar thought process goes into choosing an orchestration platform. There's one that stands out in particular, especially if you'll be working with SurrealDB. That's **[Kestra](https://github.com/kestra-io/kestra)** - an open-source declarative universal orchestration platform. It uses YAML instead of Python or JavaScript for data flow/pipeline code, which means the entire company can use it, regardless of their technical background.
+Because of these reasons (any many more), we've developed a Kestra SurrealDB plugin that allows you to interact with the database in easy and convenient format.
 
 Today's article will give you a primer in SurrealDB - an innovative NewSQL multi-model cloud database suitable for just anything you can imagine, but also show you how to work with it in Kestra.
 Let's dig in!
-
----
-
-## What is Kestra and How to Install It
-You can think of Kestra as an open-source declarative universal orchestration platform. Its goal is to make workflows accessible to all departments in the organization by removing what's difficult about orchestration - programming.
-
-Kestra uses a simple YAML specification for declarative definition. This means you're not limited to writing Python or JavaScript, so more people in your organization will be able to participate in the data pipeline creation process, including engineers from all kinds of domains.
-
-The platform also aims to solve the problem of **hyperspecialization**. There are countless specialized tools for things such as data orchestration, process orchestration, microservice orchestration, infrastructure automation, etc. It all leads to a thing called *organizational silos*. Kestra aims to eliminate that by offering a language-agnostic platform and API-first developer tools while also providing a rich UI for business users.
-
-You can read more about Kestra in our [introductory article](https://medium.com/geekculture/introducing-kestra-finally-a-viable-airflow-alternative-fa664fdc7a0d).
-
-
-### How to Install Kestra
-The easiest way to get started is by installing the [free version](https://github.com/kestra-io/kestra) of Kestra. They also offer an [enterprise edition](https://kestra.io/enterprise) that packs more features, but you won't need it to follow this article.
-
-One way to install it is via Docker. First, download the latest version of `docker-compose.yml` file by running the following command from the Terminal:
-
-```bash
-curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
-```
-
-Then, run the following to download the images and run Kestra locally:
-
-```bash
-docker-compose up --build
-```
-
-Kestra will now run on `localhost:8080`, as you can see from the following image:
-
-![Image 1 - Kestra UI](/blogs/2023-10-09-kestra-surrealdb/1.png)
-
-And that's it - you now have Kestra installed! Let's go over the basics of SurrealDB next before connecting the two.
 
 ---
 
@@ -80,7 +47,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh
 
 Yup, that's all you need to do - SurrealDB is now installed:
 
-![Image 2 - Installing SurrealDB](/blogs/2023-10-09-kestra-surrealdb/2.png)
+![Image 1 - Installing SurrealDB](/blogs/2023-10-09-kestra-surrealdb/2.png)
 
 It's a good idea to add it to PATH while you're here - the output shown in the previous image lists the command you have to run. Here's the one generated for me - but remember that yours will be different:
 
@@ -96,7 +63,7 @@ surreal version
 
 Provided you don't get an error (surreal not found), you're good to go:
 
-![Image 3 - Checking the database version](/blogs/2023-10-09-kestra-surrealdb/3.png)
+![Image 2 - Checking the database version](/blogs/2023-10-09-kestra-surrealdb/3.png)
 
 The database is now installed, but isn't running yet.
 
@@ -110,7 +77,7 @@ surreal start memory -A --auth --user root --pass root
 
 You'll see the following output in the Terminal:
 
-![Image 4 - Starting the database](/blogs/2023-10-09-kestra-surrealdb/4.png)
+![Image 3 - Starting the database](/blogs/2023-10-09-kestra-surrealdb/4.png)
 
 SurrealDB is now running locally, which means we should be able to connect to it.
 
@@ -127,11 +94,11 @@ A [dedicated desktop application](https://github.com/StarlaneStudios/Surrealist/
 
 Here's what you should see on the screen:
 
-![Image 5 - SurrealDB connection parameters](/blogs/2023-10-09-kestra-surrealdb/5.png)
+![Image 4 - SurrealDB connection parameters](/blogs/2023-10-09-kestra-surrealdb/5.png)
 
 Once you enter the connection parameters, hit the "Save details" button. You'll be redirected to the following screen:
 
-![Image 6 - Database connection established](/blogs/2023-10-09-kestra-surrealdb/6.png)
+![Image 5 - Database connection established](/blogs/2023-10-09-kestra-surrealdb/6.png)
 
 As soon as you see the pink "Send query" button, and not the gray "Connect" button, it means the database connection was established, and you're ready to proceed to the following section.
 
@@ -168,7 +135,7 @@ This will give an arbitrary ID to each record. If you want to control the ID val
 
 Anyway, run the `CREATE` statements individually, and here's what you will see:
 
-![Image 7 - Inserting records into SurrealDB](/blogs/2023-10-09-kestra-surrealdb/7.png)
+![Image 6 - Inserting records into SurrealDB](/blogs/2023-10-09-kestra-surrealdb/7.png)
 
 The records should now be inserted into the database, but how can we know for sure? Let's query it next.
 
@@ -181,7 +148,7 @@ SELECT * FROM employee;
 
 You can see both records listed in JSON format:
 
-![Image 8 - Retrieving data from SurrealDB](/blogs/2023-10-09-kestra-surrealdb/8.png)
+![Image 7 - Retrieving data from SurrealDB](/blogs/2023-10-09-kestra-surrealdb/8.png)
 
 You now know the bare minimum of SurrealDB, but just enough to explore how it works with Kestra. We'll go over two simple data flows next, and only then will we go over a more advanced example.
 
@@ -220,23 +187,23 @@ Long story short, we're running a simple `SELECT` statement and storing all of t
 
 Note how we're using host: `host.docker.internal` instead of the local database address. That's because we're running Kestra in a Docker container, and this is a workaround to allow it access to your computer's local host:
 
-![Image 9 - First Kestra/SurrealDB flow](/blogs/2023-10-09-kestra-surrealdb/9.png)
+![Image 8 - First Kestra/SurrealDB flow](/blogs/2023-10-09-kestra-surrealdb/9.png)
 
 Once your flow looks like ours, hit the "Save" button followed by "New execution".
 
 You'll be redirected to a flow run Gantt chart in which you'll hopefully see the single bar colored green (which means success):
 
-![Image 10 - Flow execution](/blogs/2023-10-09-kestra-surrealdb/10.png)
+![Image 9 - Flow execution](/blogs/2023-10-09-kestra-surrealdb/10.png)
 
 Remember how we specified `fetchType: STORE` in the flow code? What this means is that the records fetched from the SurrealDB will be accessible to you as a downloadable artifact.
 
 Head over to the "Outputs" section of the execution log, and you'll be able to both preview and download the file:
 
-![Image 11 - Downloadable result files](/blogs/2023-10-09-kestra-surrealdb/11.png)
+![Image 10 - Downloadable result files](/blogs/2023-10-09-kestra-surrealdb/11.png)
 
 This is what it contains:
 
-![Image 12 - File contents](/blogs/2023-10-09-kestra-surrealdb/12.png)
+![Image 11 - File contents](/blogs/2023-10-09-kestra-surrealdb/12.png)
 
 And that's your first Kestra and SurrealDB flow. Let's also see how to insert data.
 
@@ -278,15 +245,15 @@ taskDefaults:
 
 Here's what your flow code should look like:
 
-![Image 13 - Second Kestra/SurrealDB flow](/blogs/2023-10-09-kestra-surrealdb/13.png)
+![Image 12 - Second Kestra/SurrealDB flow](/blogs/2023-10-09-kestra-surrealdb/13.png)
 
 Run it once again - this time, you'll see two bars, each representing an individual task:
 
-![Image 14 - Flow execution](/blogs/2023-10-09-kestra-surrealdb/14.png)
+![Image 13 - Flow execution](/blogs/2023-10-09-kestra-surrealdb/14.png)
 
 The output artifact now has three records, since we've inserted a new one and fetched all of them:
 
-![Image 15 - Flow output file contents](/blogs/2023-10-09-kestra-surrealdb/15.png)
+![Image 14 - Flow output file contents](/blogs/2023-10-09-kestra-surrealdb/15.png)
 
 Up next, let's work with a couple of "advanced" SurrealDB features to show you exactly what this database is capable of.
 
@@ -384,11 +351,11 @@ taskDefaults:
 
 Let's run the flow to see what happens. We don't get any errors, indicated with the individual green bars:
 
-![Image 16 - Third flow execution chart](/blogs/2023-10-09-kestra-surrealdb/16.png)
+![Image 15 - Third flow execution chart](/blogs/2023-10-09-kestra-surrealdb/16.png)
 
 The downloadable file contains entries from both `employee` and `laptop`, as you can see from the following image:
 
-![Image 17 - Resulting file](/blogs/2023-10-09-kestra-surrealdb/17.png)
+![Image 16 - Resulting file](/blogs/2023-10-09-kestra-surrealdb/17.png)
 
 And that's how Kestra integrates with SurrealDB - let's wrap things up next.
 
