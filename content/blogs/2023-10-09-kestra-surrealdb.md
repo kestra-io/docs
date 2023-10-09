@@ -6,16 +6,16 @@ category: Solutions
 author:
   name: Dario Radecic
   image: "dradecic"
-image: /public/blogs/2023-10-09-kestra-surrealdb.jpg
+image: /blogs/2023-10-09-kestra-surrealdb.jpg
 ---
 
 If you're entering the world of data engineering and data orchestration in 2023, boy do you have options. So many actually that it's overwhelming at times, especially when looking for a database vendor.
 
-Do you go with a traditional relational approach? How about storing documents? Graphs would be nice too. Can you have all of that and more with a single database? Well, according to **[SurrealDB](https://surrealdb.com/)**, you absolutely can.
+Do you go with a traditional relational approach? How about storing documents? Graphs would be nice too. Can you have all of that and more with a single database? Well, according to **[SurrealDB](https://github.com/surrealdb/surrealdb)**, you absolutely can.
 
 Because of these reasons (any many more), we've developed a Kestra SurrealDB plugin that allows you to interact with the database in easy and convenient format.
 
-Today's article will give you a primer in SurrealDB - an innovative NewSQL multi-model cloud database suitable for just anything you can imagine, but also show you how to work with it in Kestra.
+Today's article will give you a primer in SurrealDB - an innovative NewSQL multi-model cloud database suitable for just anything you can imagine, but also show you how to work with it in [Kestra](https://github.com/kestra-io/kestra).
 Let's dig in!
 
 ---
