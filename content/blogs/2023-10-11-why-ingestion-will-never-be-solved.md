@@ -11,7 +11,7 @@ image: /blogs/2023-10-11-why-ingestion-will-never-be-solved.png
 
 If you ask a data engineer what is the most frustrating and error-prone part of their job, chances are they'll say _data ingestion_. Moving data from A to B is one of the most mundane and time-consuming tasks of any platform team.
 
-This post covers how [Fivetran](https://www.fivetran.com/), [Airbyte](https://airbyte.com/), [Singer](https://www.singer.io/), [dltHub](https://dlthub.com/), and [CloudQuery](https://www.cloudquery.io/) approached data integration. Even though we'd argue that this problem will never be fully solved by an integration vendor, there is a lot we can do to make the ingestion process more reliable, maintainable, and cost-effective. We'll link to relevant blueprint examples showing how you can orchestrate the ingestion process with [kestra](https://github.com/kestra-io/kestra). First, let's start by defining the problem.
+This post covers how [Fivetran](https://www.fivetran.com/), [Airbyte](https://airbyte.com/), [Singer](https://www.singer.io/), [dltHub](https://dlthub.com/), and [CloudQuery](https://www.cloudquery.io/) approached data integration. Even though we'd argue that this problem will never be fully solved by an integration vendor, there is a lot we can do to make the ingestion process more reliable, maintainable, and cost-effective. We'll link to relevant [blueprint](../docs/04.user-interface-guide/blueprints.md) examples showing how you can orchestrate the ingestion process with [kestra](https://github.com/kestra-io/kestra) — an event-driven open-source orchestrator. First, let's start by defining the problem.
 
 ---
 
