@@ -40,7 +40,7 @@ In the past, data engineers had to manage the entire process themselves. They we
 
 ## How vendors approached data ingestion
 
-Given that data integration is to a large degree a commodity task, it's reasonable to outsource it to a third party which can keep the connectors up-to-date. Many ingestion tools are trying to fill that gap, including [Fivetran](https://fivetran.com/), [Stitch](https://www.stitchdata.com/), [Matillion](https://www.matillion.com/), [Airbyte](https://airbyte.com/) and [CloudQuery](https://www.cloudquery.io/.
+Given that data integration is to a large degree a commodity task, it's reasonable to outsource it to a third party which can keep the connectors up-to-date. Many ingestion tools are trying to fill that gap, including [Fivetran](https://fivetran.com/), [Stitch](https://www.stitchdata.com/), [Matillion](https://www.matillion.com/), [Airbyte](https://airbyte.com/) and [CloudQuery](https://www.cloudquery.io/).
 
 ### No-code SaaS tools
 
