@@ -128,7 +128,7 @@ This brings us to [CloudQuery](https://www.cloudquery.io/) and [dltHub](https://
 
 ### CloudQuery
 
-[CloudQuery](https://github.com/cloudquery/cloudquery) is an open-source ELT framework for developers. CloudQuery syncs can be executed from the terminal independently of the platform. You can maintain source and destination configuration in individual YAML files, and run those connectors locally, on a remote server, Kubernetes, serverless function, or from [kestra](https://demo.kestra.io/ui/blueprints/community?q=cloudquery&page=1).
+[CloudQuery](https://github.com/cloudquery/cloudquery) is an open-source ELT framework for developers. Data ingestion syncs can be executed from the terminal independently of the platform. You can maintain source and destination configuration in individual YAML files, and run those connectors locally, on a remote server, Kubernetes, serverless function, or from [kestra](https://demo.kestra.io/ui/blueprints/community?q=cloudquery&page=1).
 
 We'll discuss CloudQuery in more detail in another blog post. For now, make sure to check out our [CloudQuery plugin](https://github.com/kestra-io/plugin-cloudquery) and [blueprints](https://demo.kestra.io/ui/blueprints/community?q=cloudquery&page=1).
 
