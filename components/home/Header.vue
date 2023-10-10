@@ -35,10 +35,11 @@
     import Console from "vue-material-design-icons/Console.vue"
     import PlayOutline from "vue-material-design-icons/PlayOutline.vue"
     import LightningBolt from "vue-material-design-icons/LightningBolt.vue"
-    import Companies from "../layout/Companies.vue";
-    import HeaderAnimation from './HeaderAnimation.vue';
     import PlayCircleOutline from 'vue-material-design-icons/PlayCircleOutline.vue'
+    import Companies from "~/components/layout/Companies.vue";
     import TextScroller from "~/components/layout/TextScroller.vue";
+    import HeaderAnimation from '~/components/home/HeaderAnimation.vue';
+
 
     export default {
         components: {Console, PlayOutline, LightningBolt, PlayCircleOutline, Companies, HeaderAnimation, TextScroller},

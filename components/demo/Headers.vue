@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import Companies from "../layout/Companies.vue";
+import Companies from "~/components/layout/Companies.vue";
 
 onMounted(() => {
     const script = document.createElement("script");
