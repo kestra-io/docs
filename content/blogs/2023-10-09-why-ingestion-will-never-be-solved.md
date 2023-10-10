@@ -11,7 +11,7 @@ image: /blogs/2023-10-09-why-ingestion-will-never-be-solved.png
 
 If you ask a data engineer what is the most frustrating and error-prone part of their job, chances are they'll say _data ingestion_. Moving data from A to B is one of the the most mundane and time-consuming tasks of any platform team.
 
-This post covers how various tools, including [Fivetran](https://www.fivetran.com/), [Airbyte](https://airbyte.com/), [Singer](https://www.singer.io/), [dltHub](https://dlthub.com/) and [CloudQuery](https://www.cloudquery.io/) approached data integration. Even though we'd argue that this problem will never be fully solved by an integration vendor, there is a lot we can do to make ingestion process more reliable, maintainable and cost effective. We'll link to relevant blueprint examples showing how you can orchestrate the ingestion process with [kestra](https://github.com/kestra-io/kestra). First, let's start by defining the problem.
+This post covers how [Fivetran](https://www.fivetran.com/), [Airbyte](https://airbyte.com/), [Singer](https://www.singer.io/), [dltHub](https://dlthub.com/) and [CloudQuery](https://www.cloudquery.io/) approached data integration. Even though we'd argue that this problem will never be fully solved by an integration vendor, there is a lot we can do to make ingestion process more reliable, maintainable and cost effective. We'll link to relevant blueprint examples showing how you can orchestrate the ingestion process with [kestra](https://github.com/kestra-io/kestra). First, let's start by defining the problem.
 
 ---
 
@@ -34,7 +34,7 @@ The maintenance requirements are high, and never-ending. Due to the proliferatio
 
 ## The rise of ELT
 
-In the past, data engineers had to manage the entire process themselves. They were building their own connectors and coordinated the ingestion process using orchestration tools such as Airflow (or [kestra](https://github.com/kestra-io/kestra)). However, writing custom connectors for every source system is expensive from the development and maintenance perspective. At the same time, syncing data from A to B is a **commodity task**. It's not a competitive advantage for most companies, as almost everyone expects the same outcome: move data from A to B in a reliable, repeatble, scalable and cost-effective way.
+In the past, data engineers had to manage the entire process themselves. They were building their own connectors and coordinated the ingestion process using orchestration tools such as Airflow (or [kestra](https://github.com/kestra-io/kestra)). However, writing custom connectors for every source system is expensive from the development and maintenance perspective. At the same time, syncing data from A to B is a **commodity task**. It's not a competitive advantage for most companies, as almost everyone expects the same outcome: move data from A to B in a reliable, scalable and cost-effective way.
 
 ---
 
@@ -61,7 +61,7 @@ To see how you can orchestrate Fivetran connectors with [kestra](https://github.
 
 ### Why no-code is often not enough
 
-Being optimized for business users, no-code connectors are opinionated and they typically don't allow much customization. If you want to implement a new connector, or change the behavior of an existing one (_e.g. add support for new API endpoints_), your options are limited to the support the vendor can offer. There are some exceptions, though. For instance, [Fivetran](https://www.fivetran.com/) allows building [custom connectors](https://interworks.com/blog/2023/02/06/fivetrans-custom-connector-in-aws-lambda/) using serverless functions such as AWS Lambda. Still, writing custom code is not the primary use case for this class of tools. For example, even though Fivetran offers an official Terraform provider, many authentication mechanisms are quite clunky to configure via code because the platform was optimized for connecting to other systems from the UI.
+Being optimized for business users, no-code connectors are opinionated and they typically don't allow much customization. If you want to implement a new connector, or change the behavior of an existing one (_e.g. add support for new API endpoints_), your options are limited to the support the vendor can offer. There are some exceptions, though. For instance, [Fivetran](https://www.fivetran.com/) allows building [custom connectors](https://interworks.com/blog/2023/02/06/fivetrans-custom-connector-in-aws-lambda/) using serverless functions such as AWS Lambda. Still, writing custom code is not the primary use case for this class of tools. Even though Fivetran offers an official Terraform provider, many authentication mechanisms are quite clunky to configure via code because the platform was optimized for connecting to other systems from the UI.
 
 If you're an engineer trying to version-control your data integration configuration alongside your code, the no-code approach might not be the best fit for you.
 
@@ -69,7 +69,7 @@ This is the niche that open-source tools such as [Singer](https://www.singer.io/
 
 ---
 
-## Open-source standards vs. open-source plugins
+## Open standards vs. open-source plugins
 
 When commercial no-code tools don't cut it, you'll likely "just" write a script. However, arbitrary ingestion scripts that don't adhere to any framework often lead to a lack of standardization and maintenance burden. There are two main approaches to solving this problem: open standards and open-source plugins.
 
