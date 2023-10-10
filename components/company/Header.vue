@@ -3,27 +3,24 @@
         <div class="hero container text-center">
             <img src="/icon.svg" class="kestra-logo" data-aos="zoom-in" />
             <p class="overline" data-aos="fade-left">About kestra</p>
-            <h1 data-aos="fade-right">Pioneering the Future of Data Orchestration and Automation</h1>
+            <h1 data-aos="fade-right">Building the Future of Orchestration and Automation</h1>
         </div>
-    </div>
-    <div class="team-image text-center">
-        <img class="img-fluid" src="/landing/company/team-image.png" alt="A picture of all Kestra's team members" data-aos="fade-right" />
     </div>
     <div class="container">
         <Section
-            title="The Genesis of Kestra"
+            title="About Kestra"
             subtitle="Our story"
             class="pt-3"
         >
             <div class="container text-center baseline-max-width" data-aos="fade-left">
                 <p>
-                    Our journey began with an inspiring vision: to design a data orchestration platform that would transcend the limitations of existing market solutions while offering an exceptional user experience.
+                    Kestra is an open-source, event-driven orchestrator that simplifies data operations and improves collaboration between engineers and business users. 
                 </p>
                 <p>
-                    As a team of professionals with a solid background in automation and workflow planning, we have constantly been driven by the ambition to push the boundaries of what is possible. We aspired to develop an open-source solution that would seamlessly adapt to projects of all sizes.
+                    By bringing Infrastructure as Code best practices to data pipelines, Kestra allows you to build reliable workflows and manage them with confidence.
                 </p>
                 <p>
-                    Guided by our passion for innovation and our determination to create an outstanding product, we have crafted our own tool - a platform that redefines data orchestration and automation, paving the way for a new era of possibilities and efficiency.
+                    Thanks to the declarative YAML interface for defining orchestration logic, everyone who benefits from analytics can participate in the data pipeline creation process. 
                 </p>
             </div>
         </Section>

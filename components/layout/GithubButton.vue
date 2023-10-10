@@ -1,16 +1,17 @@
 <template>
-    <a class="btn" href="https://github.com/kestra-io/kestra" target="_blank" role="button">
-        <span>
-            <Github/>
-            &nbsp;
+    <div class="btn-group mb-1 mn-sm-0 me-sm-2 github" :class="{'btn-group-sm' : small}">
+        <a class="btn btn-dark" :class="{'btn-sm' : small}" href="https://github.com/kestra-io/kestra" target="_blank">
+            <Github /> Star
+        </a>
+        <a class="btn btn-outline-dark " :class="{'btn-sm' : small}" href="https://github.com/kestra-io/kestra" target="_blank">
             <ClientOnly>
                 <template v-slot:fallback>
-                    <span class="placeholder" style="width: 60px"></span>
+                    <span class="placeholder" style="width: 39px"></span>
                 </template>
                 <LayoutGithubStargazer />
             </ClientOnly>
-        </span>
-    </a>
+        </a>
+    </div>
 </template>
 
 <script>
@@ -18,5 +19,45 @@
 
     export default {
         components: {Github},
+        props: {
+            small: {
+                type: Boolean,
+                default: false
+            }
+        }
     };
 </script>
+
+<style lang="scss" scoped>
+    .btn-group {
+
+        &.btn-group-sm {
+
+            .btn-sm {
+                padding: 0.25rem 0.5rem;
+            }
+        }
+
+        .btn {
+            border: 1px solid #333336;
+            color: var(--bs-white);
+        }
+
+        .btn-dark {
+            background: #333336;
+        }
+
+        .btn-outline-dark {
+            border-left: 0;
+            color: #333336;
+
+            .placeholder {
+                background: transparent;
+            }
+        }
+
+        .btn-outline-dark:hover {
+            background: transparent;
+        }
+    }
+</style>
