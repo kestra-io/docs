@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: /blogs/2023-10-09-why-ingestion-will-never-be-solved.png
+image: /blogs/2023-10-11-why-ingestion-will-never-be-solved.png
 ---
 
 If you ask a data engineer what is the most frustrating and error-prone part of their job, chances are they'll say _data ingestion_. Moving data from A to B is one of the most mundane and time-consuming tasks of any platform team.
@@ -120,7 +120,7 @@ Airbyte's monorepo allows it to centrally govern the connectors and ensure that 
 To see how you can orchestrate Airbyte connectors with [kestra](https://github.com/kestra-io/kestra), check our [Airbyte blueprints](https://demo.kestra.io/ui/blueprints/community?page=1&q=airbyte) and [the following Airbyte documentation page](https://docs.airbyte.com/operator-guides/using-kestra-plugin/).
 ::
 
-![airbyte_kestra.gif](https://docs.airbyte.com/assets/images/airbyte_kestra_1-1843d65a35bbe96c6cf4579175426fa7.gif)
+![airbyte_kestra](/blogs/2023-10-11-why-ingestion-will-never-be-solved/airbyte_kestra.gif)
 
 Another distinction compared to [Singer](https://www.singer.io/) is that Airbyte is primarily designed to be used from the UI, not via code. One solution is using the [Terraform provider](https://airbyte.com/blog/everything-as-code-for-data-infrastructure-with-airbyte-and-kestra-terraform-providers).
 
