@@ -154,7 +154,7 @@ blockquote.blockquote {
     }
 
     &:hover {
-        color: var(--bs-white);
+        color: var(--bs-white) !important;
         &::before {
             animation-duration: 1.5s;
         }
