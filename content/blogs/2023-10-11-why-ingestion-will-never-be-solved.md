@@ -1,7 +1,7 @@
 ---
 title: "Why data integration will never be fully solved, and what Fivetran, Airbyte, Singer, dlt and CloudQuery do about it"
 description: "Let's look at the challenges with data ingestion and discuss how Fivetran, Airbyte, Singer, dltHub and CloudQuery approached those challenges. Which of these tools is best for your use case? Find out in this post."
-date: 2023-10-12T11:00:00
+date: 2023-10-11T11:00:00
 category: Solutions
 author:
   name: Anna Geller
