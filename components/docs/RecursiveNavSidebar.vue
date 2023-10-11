@@ -195,7 +195,7 @@
 
             &.depth-1 {
                 a {
-                    padding-left: 0;
+                    padding-left: 0.25rem;
                     border-left: 0;
                 }
             }

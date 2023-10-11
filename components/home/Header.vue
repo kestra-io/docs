@@ -2,42 +2,21 @@
     <div class="main">
         <div class="hero container">
             <div class="text-block">
-                <p class="overline" data-aos="fade-left">OPEN SOURCE DECLARATIVE<br/>DATA ORCHESTRATION</p>
-                <h1 data-aos="fade-right">Automate <br />Everything <br class="desktop" />Everywhere <br />All at Once.</h1>
-                <ClientOnly>
-                    <a class="mobile video" href="https://www.youtube.com/watch?v=h-P0eK2xN58">
-                        <img src="/landing/home/video.png" alt="Kestra introduction video picture"/>
-                        <div class="play-button">
-                            <img src="/landing/home/play-button-bg.png" alt="Play button" />
-                            <PlayOutline />
-                        </div>
-                    </a>
-                </ClientOnly>
+                <h1 data-aos="fade-right"><text-scroller :texts="scrollingTexts" /><br />Everything Everywhere <br />All at Once.</h1>
+
                 <div class="buttons">
-                    <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-secondary me-2" data-aos="zoom-in">
-                        <Console /> Try the live demo
+                    <a href="#" class="btn btn-animated btn-dark-animated me-2 mb-2" data-aos="zoom-in" data-bs-toggle="modal" data-bs-target="#home-intro">
+                        <PlayCircleOutline /> Product Video
                     </a>
-                    <NuxtLink href="/docs" class="btn btn-primary">
+
+                    <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated mb-2" data-aos="zoom-in">
                         <LightningBolt /> Get started
                     </NuxtLink>
                 </div>
             </div>
-            <div class="desktop">
-                <ClientOnly>
-                    <HeaderAnimation class="animation"/>
-                </ClientOnly>
-            </div>
         </div>
 
-        <div class="container text-center">
-            <p class="companies-title" data-aos="zoom-in">
-                Loved & trusted by leading enterprises worldwide
-            </p>
-        </div>
-
-        <div class="container-fluid pt-4 pb-4">
-            <Companies />
-        </div>
+        <Companies class="mt-4 pb-4 companies" />
     </div>
     <div v-on="{ 'show.bs.modal': () => videoVisible = true, 'hidden.bs.modal': () => videoVisible = false }" class="modal modal-full fade" id="home-intro" tabindex="-1" aria-labelledby="home-intro" aria-hidden="true">
         <div class="modal-dialog">
@@ -56,15 +35,21 @@
     import Console from "vue-material-design-icons/Console.vue"
     import PlayOutline from "vue-material-design-icons/PlayOutline.vue"
     import LightningBolt from "vue-material-design-icons/LightningBolt.vue"
-    import GithubButton from "../layout/GithubButton.vue";
     import Companies from "../layout/Companies.vue";
     import HeaderAnimation from './HeaderAnimation.vue';
+    import PlayCircleOutline from 'vue-material-design-icons/PlayCircleOutline.vue'
+    import TextScroller from "~/components/layout/TextScroller.vue";
 
     export default {
-        components: {Console, PlayOutline, LightningBolt, GithubButton, Companies, HeaderAnimation},
+        components: {Console, PlayOutline, LightningBolt, PlayCircleOutline, Companies, HeaderAnimation, TextScroller},
         data() {
             return {
-                videoVisible: false
+                videoVisible: false,
+                scrollingTexts: [
+                    {text: "Orchestrate", color: "#C005EF"},
+                    {text: "Automate", color: "#5D48F5"},
+                    {text: "Schedule", color: "#7604E3"}
+                ]
             }
         }
     }
@@ -74,171 +59,39 @@
     @import "../../assets/styles/variable";
 
     .main {
-        background-size: 100% 100% !important;
-        background: url("/landing/home/header-bg.png") center no-repeat;
+        background: #111113 url("/landing/home/header-bg.png") no-repeat center center;
 
-        @include media-breakpoint-down(lg) {
-            background: url("/landing/home/header-bg-mob.png") center no-repeat;
+        .text-block {
+            margin: 5rem 0;
         }
 
-        > * {
-            z-index:2;
-            position: relative;
+        h1 {
+            color: var(--bs-white);
+            text-align: center;
+            max-width: 100%;
+            font-size: 36px;
+            font-weight: 600;
+
+
+            @include media-breakpoint-up(md) {
+                font-size: 56px;
+            }
+
+            @include media-breakpoint-up(lg) {
+                font-size: 76px;
+            }
+
+            :deep(span) {
+                color: #E500EA;
+            }
         }
 
-        color: var(--bs-white);
-        padding-top: 80px;
-        margin-top: -80px;
+        .buttons {
+            text-align: center;
+        }
 
-        .hero {
-            display: flex;
-            padding-top: calc(var(--spacer) * 6);
-            justify-content: center;
-            align-items: center;
-            max-width: none;
-
-            .text-block {
-                text-align: left;
-                display: flex;
-                flex-direction: column;
-                gap: $spacer;
-
-                @include media-breakpoint-down(lg) {
-                    text-align: center;
-                    align-items: center;
-                }
-
-                .overline {
-                    color: #E1C2FF;
-                    line-height: 1.875rem;
-                    margin-bottom: 0;
-
-                    &::after {
-                        content: "";
-                        position: relative;
-                        top: calc(var(--spacer) / 2);
-                        width: 15%;
-                        height: 3px;
-                        background: var(--bs-pink);
-                        display: block;
-                    }
-                }
-
-                .buttons {
-                    display: flex;
-                    flex-direction: column;
-                    gap: $spacer;
-                    width: 80%;
-
-                    a {
-                        margin: 0 !important;
-                    }
-
-                    @include media-breakpoint-down(lg) {
-                        gap: calc(0.5 * var(--spacer));
-                        width: 100%;
-                    }
-                }
-
-                h1 {
-                    font-size: 2.875rem;
-                }
-            }
-
-            .animation {
-                position: relative;
-                width: 50vw;
-
-                &::before {
-                    content: "";
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    border-radius: 50%;
-                    background: #7A00F4;
-                    mix-blend-mode: lighten;
-                    filter: blur(97px);
-                }
-            }
-
-            .video {
-                position: relative;
-                margin-bottom: $spacer;
-
-                .play-button {
-                    position: absolute;
-                    left: 50%;
-                    top: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 20%;
-
-                    * {
-                        display: block;
-                    }
-
-                    img {
-                        width: 100%;
-                    }
-
-                    span {
-                        color: white;
-                        position: absolute;
-                        // offsets the play button so it looks centered
-                        top: 48%;
-                        left: 55%;
-                        transform: translate(-50%, -50%);
-                        text-align: left;
-                        height: 40%;
-                        width: 40%;
-
-                        :deep(svg) {
-                            bottom: unset;
-                            height: 100%;
-                            width: 100%;
-                        }
-                    }
-                }
-
-                > img {
-                    width: 80vw;
-                    border-radius: 2.5690073% / 4.3147884%;
-                    box-shadow: 0 0 14.263729095458984px 0 rgba(139, 22, 202, 0.30),
-                    0 14.263729095458984px 32.09339141845703px 0 rgba(139, 22, 202, 0.29),
-                    0 57.9463996887207px 57.9463996887207px 0 rgba(139, 22, 202, 0.26),
-                    0 130.15652465820312px 77.55902862548828px 0 rgba(139, 22, 202, 0.15),
-                    0 230.8941192626953px 92.71424102783203px 0 rgba(139, 22, 202, 0.04),
-                    0 361.0506286621094px 100.73758697509766px 0 rgba(139, 22, 202, 0.01);
-                }
-            }
-
-            @include media-breakpoint-down(lg) {
-                flex-direction: column;
-
-                .text-block {
-                    width: 80vw;
-
-                    p.overline {
-                        margin: 0 auto;
-                        font-size: $font-size-sm;
-                        line-height: 1.25rem;
-
-                        &::after {
-                            display: none !important;
-                        }
-                    }
-
-                    h1 {
-                        font-size: 1.625rem;
-                        line-height: 1.5;
-                        font-weight: 700;
-
-                        .dot {
-                            font-size: 2.7rem;
-                            line-height: 0;
-                        }
-                    }
-                }
-            }
+        .companies {
+            border-top: 1px solid rgba(255, 255, 255, 0.10);
         }
 
         .companies-title {
@@ -257,8 +110,15 @@
             }
         }
 
-        .overline {
-            color: #BAE6FE;
+        @include media-breakpoint-down(lg) {
+            .hero {
+                padding-top: 6rem;
+                padding-bottom: 2rem;
+
+                .text-block {
+                    margin-bottom: 0;
+                }
+            }
         }
     }
 </style>

@@ -67,3 +67,13 @@ kestra:
       indices:
         index.number_of_replicas: 0
 ```
+
+## `kestra.indexer`
+Indexer send data from Kafka to Elasticsearch using Bulk Request. You can control the batch size and frequency to reduce the load on ElasticSearch. This will delay some information on the UI raising that values, example:
+
+```yaml
+kestra:
+  indexer:
+    batch-size: 500 # (default value, any integer > 0)
+    batch-duration: PT1S # (default value, any duration)
+```

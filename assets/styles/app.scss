@@ -123,6 +123,105 @@ blockquote.blockquote {
     }
 }
 
+@keyframes rotate {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+.btn-animated {
+    --border-size: 1px;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    border: 0;
+    color: var(--bs-white);
+
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: -2;
+        left: -50%;
+        top: -300%;
+        width: 200%;
+        height: 700%;
+        animation: rotate 6s linear infinite;
+    }
+
+
+    &:active {
+        color: var(--bs-white) !important;
+    }
+
+    &:hover {
+        color: var(--bs-white) !important;
+        &::before {
+            animation-duration: 1.5s;
+        }
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        left: 1px;
+        top: 1px;
+        width: calc(100% - 2px);
+        height: calc(100% - 2px);
+        background: #0A0113;
+        border-radius: $border-radius;
+        transition: background-color 0.2s ease;
+    }
+}
+
+
+.btn-dark-animated {
+    &::before {
+        background: conic-gradient(#B010FB,
+            #DE97FF 10%,
+            #A227DB,
+            transparent 50%,
+            #A610EC);
+    }
+
+    &::after {
+        background: #0A0113;
+    }
+
+    &:hover {
+        filter: drop-shadow(16px 39px 17px rgba(149, 22, 208, 0.01)) drop-shadow(9px 22px 14px rgba(149, 22, 208, 0.05)) drop-shadow(4px 10px 11px rgba(149, 22, 208, 0.09)) drop-shadow(1px 2px 6px rgba(149, 22, 208, 0.1));
+
+        &::after {
+            background: #230542;
+        }
+    }
+}
+
+.btn-purple-animated {
+    &::before {
+        background: conic-gradient(#B010FB,
+            #DE97FF 10%,
+            #A227DB,
+            transparent 50%,
+            #A610EC);
+    }
+
+    &::after {
+        background: #4B0AAA;
+    }
+
+    &:hover {
+        box-shadow: 1px 2px 4px 0px rgba(101, 24, 216, 0.29), 3px 6px 7px 0px rgba(101, 24, 216, 0.26), 7px 14px 10px 0px rgba(101, 24, 216, 0.15), 13px 25px 11px 0px rgba(101, 24, 216, 0.04), 20px 40px 12px 0px rgba(101, 24, 216, 0.01);
+
+        &::after {
+            background: #650DE4;
+        }
+    }
+}
+
+
+
+
 // component
 .hero {
     padding-top: calc($spacer * 8);
