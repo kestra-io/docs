@@ -116,6 +116,8 @@ The connectors are maintained in a [monorepo](https://github.com/airbytehq/airby
 
 Airbyte's monorepo allows it to centrally govern the connectors and ensure that they follow standards and are kept up-to-date. One downside of this approach is that the connectors are tied to the platform — it's not possible to run Airbyte connectors independently. Also, installing Airbyte requires cloning a fairly large repository. You can't pick and choose only the plugins that you need (as [kestra](https://github.com/kestra-io/kestra) allows that) — in Airbyte, you install the product with all connectors baked in, which has its pros and cons.
 
+**How does Airbyte monetize?** [Airbyte Cloud](https://airbyte.com/solutions/airbyte-cloud) is a managed ELT platform in the Cloud. Apart from that, Airbyte offers a self-managed Enterprise plan as well as [Powered by Airbyte](https://airbyte.com/solutions/powered-by-airbyte) solution.
+
 ::alert{type="info"}
 To see how you can orchestrate Airbyte connectors with [kestra](https://github.com/kestra-io/kestra), check our [Airbyte blueprints](https://demo.kestra.io/ui/blueprints/community?page=1&q=airbyte) and [the following Airbyte documentation page](https://docs.airbyte.com/operator-guides/using-kestra-plugin/).
 ::
@@ -132,7 +134,7 @@ This brings us to [CloudQuery](https://www.cloudquery.io/) and [dltHub](https://
 
 We'll discuss CloudQuery in more detail in another blog post. For now, make sure to check out our [CloudQuery plugin](https://github.com/kestra-io/plugin-cloudquery) and [blueprints](https://demo.kestra.io/ui/blueprints/community?q=cloudquery&page=1).
 
-How does CloudQuery monetize? CloudQuery offers [premium connectors](https://www.cloudquery.io/integrations) for more advanced integrations, and there's also a plan for a [managed service](https://www.cloudquery.io/register-for-cloud) for running CloudQuery connectors in the cloud.
+**How does CloudQuery monetize?** CloudQuery offers [premium connectors](https://www.cloudquery.io/integrations) for more advanced integrations, and there's also a plan for a [managed service](https://www.cloudquery.io/register-for-cloud) for running CloudQuery connectors in the cloud.
 
 
 ### dltHub
@@ -141,7 +143,7 @@ How does CloudQuery monetize? CloudQuery offers [premium connectors](https://www
 
 One of the main selling points of dlt is that it's a lightweight Python-based framework, allowing you to create new connectors with automatic schema inference and schema evolution. You can transform your data along the way e.g. add a pseudomization step before loading data to the target destination. And there are custom decorators to configure incremental and merge loads in Python.
 
-How does dltHub monetize? dlt plans to offer an [integration hub](https://dlthub.com/) that might resemble a connector marketplace and a managed service for data integration. The monetization model looks similar to the one of CloudQuery, but it's too early to tell how the two products will compare commercially.
+**How does dltHub monetize?** dlt plans to offer an [integration hub](https://dlthub.com/) that might resemble a connector marketplace and a managed service for data integration. The monetization model looks similar to the one of CloudQuery, but it's too early to tell how the two products will compare commercially.
 
 ::alert{type="info"}
 To see end-to-end examples of orchestrating dlt data ingestion with Kestra, check our [dltHub blueprints](https://demo.kestra.io/ui/blueprints/community?q=dlt&page=1).
