@@ -1,7 +1,7 @@
 ---
 title: "Why data integration will never be fully solved, and what Fivetran, Airbyte, Singer, dlt and CloudQuery do about it"
 description: "Let's look at the challenges with data ingestion and discuss how Fivetran, Airbyte, Singer, dltHub and CloudQuery approached those challenges. Which of these tools is best for your use case? Find out in this post."
-date: 2023-10-11T11:00:00
+date: 2023-10-11T11:30:00
 category: Solutions
 author:
   name: Anna Geller
@@ -81,7 +81,7 @@ When commercial no-code tools don't cut it, you'll likely "just" write a script.
 To see how you can orchestrate Singer with [kestra](https://github.com/kestra-io/kestra), check the following [blueprint example](https://demo.kestra.io/ui/blueprints/community/70) and the [Singer plugin documentation](https://kestra.io/plugins/plugin-singer).
 ::
 
-A typical [Singer](https://www.singer.io/) project consists of **Taps**, **Targets**, and a **JSON-based communication format** between them. Many connectors have been written using that specification. However, they were often developed by consulting firms in one-off projects, shifting the responsibility for long-term maintenance and continuous development to the end user. As a result, the quality of those connectors varies greatly, and many claim that some Singer connectors are not production-ready.
+A typical [Singer](https://www.singer.io/) project consists of **taps**, **targets**, and a **JSON-based communication format** between them. Many connectors have been written using that specification. However, they were often developed by consulting firms in one-off projects, shifting the responsibility for long-term maintenance and continuous development to the end user. As a result, the quality of those connectors varies greatly, and many claim that some Singer connectors are not production-ready.
 
 Especially after Stitch was [acquired](https://www.talend.com/about-us/press-releases/talend-acquires-stitch-a-leader-in-self-service-cloud-data-integration/) by Talend, there was no central entity governing the quality of connectors, leading to eroding trust in the data community.
 
