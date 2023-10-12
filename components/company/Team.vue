@@ -43,18 +43,6 @@
                 </div>
                 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/mguibert.png" alt="Martin Guibert Picture"/>
-                    <div>
-                        <div class="team-name">Martin Guibert</div>
-                        <div class="team-title font-small">Full Stack Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/martin-guibert-850b2129/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/moadibfr" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/qsinig.png" alt="Quentin Sinig Picture"/>
                     <div>
                         <div class="team-name">Quentin Sinig</div>
@@ -67,17 +55,6 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/mproset.png" alt="Martin Roset Picture"/>
-                    <div>
-                        <div class="team-name">Martin-Pierre Roset</div>
-                        <div class="team-title font-small">Lead Growth & Marketing</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/martin-pierre-roset/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://twitter.com/martin_roset" target="_blank" class="me-2"><twitter /></a>
-                    </span>
-                </div>
-                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/lmathieu.png" alt="Loïc Mathieu Picture"/>
                     <div>
                         <div class="team-name">Loïc Mathieu</div>
@@ -87,6 +64,42 @@
                         <a href="https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144/" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/loicmathieu" target="_blank" class="me-2"><github /></a>
                         <a href="https://twitter.com/loicmathieu" target="_blank" class="me-2"><twitter /></a>
+                    </span>
+                </div>
+
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/ycoornaert.png" alt="Yann Coornaert Picture"/>
+                    <div>
+                        <div class="team-name">Yann Coornaert</div>
+                        <div class="team-title font-small">Software Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/yannc/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/Skraye" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>
+
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/bmulier.png" alt="Brian Mulier Picture"/>
+                    <div>
+                        <div class="team-name">Brian Mulier</div>
+                        <div class="team-title font-small">Software Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/brian-mulier-326869150/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/brian-mulier-p" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>
+
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/mguibert.png" alt="Martin Guibert Picture"/>
+                    <div>
+                        <div class="team-name">Martin Guibert</div>
+                        <div class="team-title font-small">Full Stack Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/martin-guibert-850b2129/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/moadibfr" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>
 
@@ -104,18 +117,6 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/ycoornaert.png" alt="Yann Coornaert Picture"/>
-                    <div>
-                        <div class="team-name">Yann Coornaert</div>
-                        <div class="team-title font-small">Software Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/yannc/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/Skraye" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/bpimpaud.png" alt="Benoît Pimpaud Picture"/>
                     <div>
                         <div class="team-name">Benoît Pimpaud</div>
@@ -127,17 +128,19 @@
                         <a href="https://twitter.com/Ben8t" target="_blank" class="me-2"><twitter /></a>
                     </span>
                 </div>
+
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/bmulier.png" alt="Brian Mulier Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/mproset.png" alt="Martin Roset Picture"/>
                     <div>
-                        <div class="team-name">Brian Mulier</div>
-                        <div class="team-title font-small">Software Engineer</div>
+                        <div class="team-name">Martin-Pierre Roset</div>
+                        <div class="team-title font-small">Lead Growth & Marketing</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/brian-mulier-326869150/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/brian-mulier-p" target="_blank" class="me-2"><github /></a>
+                        <a href="https://www.linkedin.com/in/martin-pierre-roset/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://twitter.com/martin_roset" target="_blank" class="me-2"><twitter /></a>
                     </span>
                 </div>
+                
             </div>
         </Section>
     </div>
