@@ -1,6 +1,6 @@
 ---
-title: "From cron Jobs to Event Driven Moderns Scheduling features, Nativagiting the World of Scheduling"
-description: "Learn more about the scheduling landscape and the tools providing a more modern approach with event-driven, and API-based scheduling options"
+title: "DollarU, OpCon, Control-M, Kestra, what you need to know to select the right scheduling platform "
+description: "Learn more about the scheduling landscape and the tools providing a more modern approach options"
 date: 2023-10-12T17:00:00
 category: Solutions
 author:
@@ -8,7 +8,7 @@ author:
   image: "mproset"
 
 ---
-Gone are the days of rudimentary cron jobs; with microservices, Big Data, and cloud-based solutions, job scheduling and automation process needs to be more robust, flexible, and integrated.
+Gone are the days of rudimentary cron jobs; with microservices, Big Data, and cloud-based solutions, job scheduling needs to be more robust, flexible, and integrated.
 
 Historically, job scheduling was a straightforward process with cron jobs handling basic scheduling tasks. However as distributed systems have grown more complex, the limitations of these tools have become evident. Some automation and scheduling platforms are adequate for simpler, monolithic architectures, but they haven't evolved significantly to address the modern challenges of:
 
@@ -17,27 +17,25 @@ Historically, job scheduling was a straightforward process with cron jobs handli
 - Real-time monitoring
 - Fault tolerance
 - Cross-platform compatibility
-- Event Driven Patterns
 
 To help you navigate through this, we'll be exploring a selection of tools in the field. From legacy platforms to next-gen solutions like **[Kestra](https://github.com/kestra-io/kestra)**.
 
 ## Dollar Universe Workload Automation
 
-[Dollar Universe Workload Automation](https://www.broadcom.com/products/software/automation/dollar-universe), a product of Broadcom, is an enterprise-scale automation and scheduling platform designed to manage complex workflows and optimize business processes. The tool provides robust solutions to ensure automation across different platforms, including Unix, Windows, and iSeries.
+[Dollar Universe Workload Automation](https://www.broadcom.com/products/software/automation/dollar-universe), a product of Broadcom, is an enterprise-scale scheduling platform designed to manage complex workflows and optimize business processes. The tool provides robust solutions to ensure scheduling across different platforms, including Unix, Windows, and iSeries.
 
-### The API Ecosystem: How It Works
+### The API Ecosystem
 
-The tool comes with a set of APIs that are designed to facilitate integrations across a variety of enterprise-level applications. These APIs are developed to function in tandem with both SOAP and RESTful web services. The APIs provide the hooks necessary for linking tasks across multiple platforms and business applications, enabling the development of end-to-end automated workflows.
+The tool comes with a set of APIs that are designed to facilitate integrations across a variety of enterprise-level applications. These APIs are developed to function in tandem with both SOAP and RESTful web services. The APIs provide the hooks necessary for linking tasks across multiple platforms and business applications.  
 
-### Automation Inside the Tool
-
-It employs a pretty neat resource allocation and job sequencing to ensure optimal utilization of resources. The event-driven automation allows the scheduler to respond to external events such as file changes, database updates, and system failures.
+**How it Works**  
+It employs a pretty neat resource allocation and job sequencing to ensure optimal utilization of resources. It allows the scheduler to respond to external events such as file changes, database updates, and system failures.
 
 ### Limitations: Areas for Improvement
 
-there are areas where it shows its age, particularly when compared to more modern scheduling and automation platforms:
+there are areas where it shows its age, particularly when compared to more modern scheduling platforms:
 
-**Legacy Systems Focus:** The tool is proficient at managing automation in traditional monolithic environments. However, when it comes to cloud-native or microservices architectures, it falls short. This could be a potential bottleneck for organizations looking to migrate to more modern stacks.
+**Legacy Systems Focus:** The tool is proficient at managing schedules in traditional monolithic environments. However, when it comes to cloud-native or microservices architectures, it falls short. This could be a potential bottleneck for organizations looking to migrate to more modern stacks.
 
 **Inflexibility in Dynamic Scaling**: Although Dollar Universe offers a range of scalability features, they are optimized for more static, pre-defined enterprise environments. In contrast, the modern expectation is for platforms that can adapt to dynamic, cloud-based infrastructures, dynamically allocating or deallocating resources as required.
 
@@ -49,17 +47,17 @@ there are areas where it shows its age, particularly when compared to more moder
 
 ### Core Automation Features
 
-**Self-Service Automation**: Users can build, initiate, and manage workflows without any specialized training. This promotes a democratization of automation, placing the power to automate daily tasks in the hands of end-users.
+**Self-Service scheduler**: Users can build, initiate, and manage workflows without any specialized training.
 
 **Disaster Recovery:** OpCon includes robust disaster recovery features, offering automated failover mechanisms to ensure minimal service disruption. This is particularly beneficial for mission-critical applications that require high availability.
 
 ### API Integration Layer
 
-Similar to Dollar Universe, OpCon also incorporates an extensive API framework. However, it goes a step further by offering native integrations with popular third-party applications like ServiceNow, Salesforce, and more. Its API framework allows for both inbound and outbound integrations, thus providing a more flexible automation layer that can cater to complex operational requirements.
+Similar to Dollar Universe, OpCon also incorporates an extensive API framework. However, it goes a step further by offering native integrations with popular third-party applications like ServiceNow, Salesforce, and more. Its API framework allows for both inbound and outbound integrations.
 
 The API set supports both RESTful and SOAP web services. These APIs can facilitate everything from simple task initiation to complex, multi-step workflows involving various departments and systems.
 
-### Automation
+### How it works
 
 OpCon employs a strategy of conditional logic in its scheduling, which allows workflows to adapt based on real-world events. It also supports multiple types of job triggers, including time-based, file-based, and database change-based.
 
@@ -71,7 +69,7 @@ Despite its powerful feature set, OpCon is not without its shortcomings:
 
 **No Native Support for Modern DevOps Practices:** As a tool that’s been around for a while, OpCon lacks out-of-the-box support for modern DevOps practices like containerization and Infrastructure as Code (IaC), which are becoming industry standards.
 
-While OpCon offers a feature-rich and flexible automation and scheduling solution, it still leans towards traditional IT environments and could benefit from updates to better support modern DevOps practices and cloud-native applications.
+While OpCon offers a feature-rich and flexible scheduling solution, it still leans towards traditional IT environments and could benefit from updates to better support modern DevOps practices and cloud-native applications.
 
 ## Control-M
 
@@ -91,9 +89,9 @@ While OpCon offers a feature-rich and flexible automation and scheduling solutio
 
 Control-M offers the ability to execute a specific task within a flow. If a task fails, you don't have to rerun the entire operation; you can simply pinpoint and re-trigger the individual task.
 
-### How Automation Works in Control-M
+### How it works
 
-Control-M employs a centralized system for automation. Administrators can use a single interface to schedule, monitor, and manage jobs across different platforms. It supports condition-based job flows, meaning jobs can be set up to trigger based on successful or unsuccessful completion of preceding tasks.
+Administrators can use a single interface to schedule, monitor, and manage jobs across different platforms. It supports condition-based job flows, meaning jobs can be set up to trigger based on successful or unsuccessful completion of preceding tasks.
 
 ### Where Control-M Could Improve
 
@@ -173,68 +171,9 @@ triggers:
 
 ```
 
-## Event Trigger Pattern
-
-Scheduling via cron is nice, but sometimes you need more dynamic behaviors. Kestra supports different trigger patterns allowing to listen to external event. Here are some examples among others.
-
-### Listen to Kafka messages
-
-You can trigger a flow after new messages got introduced to a Kafka topic. Every minute (`PT1M`), we are looking if the `app_topic` Kafka topic has new messages. If so, it will trigger the flow. We can then process the corresponding data and create downstream tasks.
-
-```jsx
-triggers:
-  - id: listen_kafka
-    type: io.kestra.plugin.kafka.Trigger
-    topic: app_topic
-		interval: PT1M
-    properties:
-      bootstrap.servers: localhost:9092
-    serdeProperties:
-      schema.registry.url: http://localhost:8085
-    keyDeserializer: STRING
-```
-
-### Listen to FTP file events
-
-You can trigger a flow after a file hits a FTP server. For example the flow can listen to a specific folder (`./inputs/`) every second. When a file appears it move it to the `archive/` folder. We can use the corresponding file in our tasks by processing the `trigger.files` object exposed by our trigger.
-
-```jsx
-triggers:
-  - id: listen_ftp
-    type: io.kestra.plugin.fs.ftp.Trigger
-    host: host.docker.internal
-    port: "21"
-    username: "{{ secret('FTP_USER') }}"
-    password: "{{ secret('FTP_PASSWORD') }}"
-    from: "./input/"
-    interval: PT1S
-    action: MOVE
-    moveDirectory: "./archive/"
-```
-
-### Listen to AWS S3 file events
-
- You can trigger a flow by looking at new file uploaded to an S3 bucket. In the following example, we look every 5 minutes if a file event is emitted by S3. Whenever new files appears, it will trigger the flow. You can then process your S3 data and move to downstream tasks.
-
-```yaml
-
-  triggers:
-	  - id: watch
-	    type: io.kestra.plugin.aws.s3.Trigger
-	    accessKeyId: "<access-key>"
-	    secretKeyId: "<secret-key>"
-	    region: "eu-central-1"
-	    interval: "PT5M"
-	    bucket: "my-bucket"
-	    prefix: "sub-dir"
-	    action: MOVE
-	    moveTo: 
-	      key: archive
-```
-
 ### What's Next
 
-As we've seen, the right tool for your automation and scheduling needs depends on a variety of factors, from the scale and complexity of your tasks to the architecture of your system. While traditional tools like Dollar Universe and OpCon have strong features, by merging scheduling and event-driven approach, Kestra is multimodal and allows 100% flexibility in your workflow.
+As we've seen, the right tool for your scheduling needs depends on a variety of factors, from the scale and complexity of your tasks to the architecture of your system. While traditional tools like Dollar Universe and OpCon have strong features, Kestra is multimodal and allows 100% flexibility in your workflow.
 
 Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
 
