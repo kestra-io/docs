@@ -1,6 +1,18 @@
 <template>
     <div class="container">
-        <BlogsList v-if="slug === '/blogs/'" :blogs="page"/>
+        <BlogsList v-if="slug === '/blogs/'" :blogs="page" :external-news="externalNews"/>
+
+        <div v-else-if="slug === '/blogs/community'">
+            <div class="mt-5 row">
+                <DocsBreadcrumb :slug="slug" :page-list="[]"></DocsBreadcrumb>
+                <h2 data-aos="fade-left">Community’s News</h2>
+                <div class="row mt-5">
+                    <div v-for="news in externalNews" :key="news.id" class="col-lg-4 col-md-6 col-12">
+                        <BlogsBlogCard :blog="news" data-aos="zoom-in" />
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div v-else class="container bd-gutter bd-layout margin">
             <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
@@ -34,7 +46,7 @@
         </div>
 
         <div class="bottom">
-            <LayoutBlogs v-if="slug !== '/blogs/'" />
+            <LayoutBlogs v-if="slug !== '/blogs/' && slug !== '/blogs/community'" />
             <LayoutNewsletter />
         </div>
     </div>
@@ -46,20 +58,41 @@
 
     const route = useRoute()
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
-    let page;
-    if (slug === "/blogs/") {
-        const {data} = await useAsyncData(
-            `Blog-Page-List`,
-            () => queryContent("/blogs/").find()
-        );
+    const externalNews = ref()
+    const page = ref();
+    if (slug === "/blogs/" || slug === '/blogs/community') {
 
-        page = data;
+        if(slug === "/blogs/") {
+            const {data: pageData} = await useAsyncData(
+                `Blog-Page-List`,
+                () => queryContent("/blogs/").find()
+            );
+    
+            page.value = pageData.value;
+        }
+
+        const {data: externalNewsData} = await useAsyncData(`blog-external-news`, () => {
+            return $fetch(`https://api.kestra.io/v1/external-blogs${slug === '/blogs/' ? '?size=4' : ''}`)
+        });
+
+        externalNews.value = externalNewsData.value.results.map((data) => {
+            return {
+                id: data.id,
+                _path: data.link,
+                image: data.image,
+                category: data.media,
+                author: { name: data.author },
+                title: data.title,
+                date: data.publicationDate
+            }
+        })
 
         useHead({
             title: "Insights & News on Data Orchestration",
             description: "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
         })
-    } else {
+    }
+    else {
         const {data, error} = await useAsyncData(`Blog-Page-Item-${slug}`, () => {
             try {
                 return queryContent(slug).findOne();
@@ -82,6 +115,13 @@
     @import "../../assets/styles/variable";
     @import '../../assets/styles/docs.scss';
 
+    :deep(.slug) {
+        margin-left: 0;
+    }
+
+    :deep(.image) {
+        height: 192px;
+    }
 
     .bd-layout {
         display: block;
