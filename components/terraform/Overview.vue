@@ -1,7 +1,7 @@
 <template>
     <LayoutSection title="Overview" class="overview">
         <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="card h-100">
                     <div class="card-body text-center">
                         <img src="/terraform/overview/deploy-pattern.svg" alt="deploy-pattern svg">
@@ -10,7 +10,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="card h-100 d-flex">
                     <div class="card-body text-center">
                         <img src="/terraform/overview/hub.svg" alt="hub svg">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="card h-100 d-flex">
                     <div class="card-body text-center">
                         <img src="/terraform/overview/code-box-parentheses.svg" alt="code-box-parentheses svg">
@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="card h-100 d-flex">
                     <div class="card-body text-center">
                         <img src="/terraform/overview/api.svg" alt="api svg">
@@ -40,7 +40,9 @@
         </div>
         <div class="hero row justify-content-center align-items-center">
             <div class="col-12 col-md-6">
-                <img src="/terraform/overview/declarative-configurations-code.svg" class="w-100" alt="declarative configurations code svg">
+                <div class="configurations-img">
+                    <img src="/terraform/overview/declarative-configurations-code.svg" class="w-100" alt="declarative configurations code svg">
+                </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="row justify-content-center">
@@ -59,7 +61,9 @@
                 </div>
             </div>
             <div class="col-12 col-md-6">
-                <img src="/terraform/overview/modular-resource-management-code.svg" class="w-100" alt="modular resource management code svg">
+                <div class="resource-management-image">
+                    <img src="/terraform/overview/modular-resource-management-code.svg" class="w-100" alt="modular resource management code svg">
+                </div>
             </div>
             <div class="col-12 col-md-6">
                 <p class="mt-5 text-white">The inherent modularity in both, Terraform and Kestra, allows you to create reusable blocks of code. These can be shared across multiple teams or projects, contributing to maintainable operations.</p>
@@ -75,7 +79,7 @@
 }
 
 .card {
-    background-color: #110221;
+    background-color: $purple-33;
     color: white;
     box-shadow: none !important;
     
@@ -89,7 +93,7 @@
         p {
             font-size: $font-size-sm;
             line-height: 1.375rem;
-            color: #CFCEFF;
+            color: $purple-32;
         }
     }
 
@@ -100,7 +104,58 @@
 
     p {
         line-height: 1.5rem;
-        color: #CFCEFF;
+        color: $purple-32;
+    }
+
+    .configurations-img {
+        position: relative;
+        
+        > img {
+            position: relative;
+            z-index: 10;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            height: 291px;
+            width: 292px;
+            background: url('/terraform/configurations-right-bg-light.svg') no-repeat;
+            right: -7.5rem;
+            top: -8.25rem;
+            z-index: 1;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            height: 552px;
+            width: 1044px;
+            background: url('/terraform/configurations-left-bg-light.svg') no-repeat;
+            left: -15rem;
+            top: -6.25rem;
+            z-index: 1;
+        }
+    }
+
+    .resource-management-image {
+        position: relative;
+        
+        > img {
+            position: relative;
+            z-index: 10;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            height: 551px;
+            width: 974px;
+            background: url('/terraform/resource-management-bg-light.svg') no-repeat;
+            left: -18rem;
+            top: -6.25rem;
+            z-index: 1;
+        }
     }
 }
 

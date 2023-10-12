@@ -26,7 +26,7 @@
     
     .container {     
         position: relative;
-        background: #2A1940;
+        background: $purple-31;
         padding: calc($spacer * 2.375) calc($spacer * 2);
 
 

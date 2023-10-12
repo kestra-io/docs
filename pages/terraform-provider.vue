@@ -10,8 +10,9 @@
 </template>
 
 <style scoped lang="scss">
+@import "../assets/styles/variable";
 .main {
-    background-color: #0F011D;
+    background-color: $purple-34;
     color: white;
 }
 </style>
