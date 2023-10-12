@@ -1,5 +1,5 @@
 ---
-title: "From cron Jobs to Event Driven Moderns Schedulers, Nativagiting the World of Scheduling Platforms"
+title: "From cron Jobs to Event Driven Moderns Scheduling features, Nativagiting the World of Scheduling"
 description: "Learn more about the scheduling landscape and the tools providing a more modern approach with event driven, and API based scheduling options"
 date: 2023-10-12T17:00:00
 category: Solutions
