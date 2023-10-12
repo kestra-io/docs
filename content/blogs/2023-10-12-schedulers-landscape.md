@@ -19,7 +19,7 @@ Historically, job scheduling was a straightforward process with cron jobs handli
 - Cross-platform compatibility
 - Event Driven Patterns
 
-To help you navigate through this, we'll be exploring a selection of tools in the field. From legacy platforms to next-gen solutions like **[Kestra]**(https://github.com/kestra-io/kestra).
+To help you navigate through this, we'll be exploring a selection of tools in the field. From legacy platforms to next-gen solutions like **[Kestra](https://github.com/kestra-io/kestra)**.
 
 ## Dollar Universe Workload Automation
 
