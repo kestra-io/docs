@@ -1,6 +1,6 @@
 ---
 title: "From cron Jobs to Event Driven Moderns Scheduling features, Nativagiting the World of Scheduling"
-description: "Learn more about the scheduling landscape and the tools providing a more modern approach with event driven, and API based scheduling options"
+description: "Learn more about the scheduling landscape and the tools providing a more modern approach with event-driven, and API-based scheduling options"
 date: 2023-10-12T17:00:00
 category: Solutions
 author:
@@ -232,8 +232,9 @@ triggers:
 	      key: archive
 ```
 
-### 
+### What's Next
 
-As we've seen, the right tool for your automation and scheduling needs depends on a variety of factors, from the scale and complexity of your tasks to the architecture of your system. While traditional tools like Dollar Universe and OpCon have strong features, by merging scheduling and event driven approach, Kestra is multimodal and allow 100% flexibility in your workflow.
+As we've seen, the right tool for your automation and scheduling needs depends on a variety of factors, from the scale and complexity of your tasks to the architecture of your system. While traditional tools like Dollar Universe and OpCon have strong features, by merging scheduling and event-driven approach, Kestra is multimodal and allows 100% flexibility in your workflow.
 
-This currated list can be improved during the time don't hesitate to reach us on Slack or on our GitHub project to g
+Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
+
