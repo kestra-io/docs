@@ -1,18 +1,6 @@
 <template>
     <div class="container">
-        <BlogsList v-if="slug === '/blogs/'" :blogs="page" :external-news="externalNews"/>
-
-        <div v-else-if="slug === '/blogs/community'">
-            <div class="mt-5 row">
-                <DocsBreadcrumb :slug="slug" :page-list="[]"></DocsBreadcrumb>
-                <h2 data-aos="fade-left">Community’s News</h2>
-                <div class="row mt-5">
-                    <div v-for="news in externalNews" :key="news.id" class="col-lg-4 col-md-6 col-12">
-                        <BlogsBlogCard :blog="news" data-aos="zoom-in" />
-                    </div>
-                </div>
-            </div>
-        </div>
+        <BlogsList v-if="slug === '/blogs/' || slug === '/blogs/community'" :blogs="page" :external-news="externalNews"/>
 
         <div v-else class="container bd-gutter bd-layout margin">
             <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
@@ -59,7 +47,7 @@
     const route = useRoute()
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
     const externalNews = ref()
-    const page = ref();
+    const page = ref([]);
     if (slug === "/blogs/" || slug === '/blogs/community') {
 
         if(slug === "/blogs/") {
@@ -105,7 +93,7 @@
             throw error.value;
         }
 
-        page = data;
+        page.value = data.value;
 
         useContentHead(page)
     }
@@ -117,10 +105,6 @@
 
     :deep(.slug) {
         margin-left: 0;
-    }
-
-    :deep(.image) {
-        height: 192px;
     }
 
     .bd-layout {
