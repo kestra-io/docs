@@ -19,13 +19,14 @@
     @import "../../assets/styles/variable";
 
     .container {
-        background: $purple-8 url("/landing/dot2.svg") no-repeat bottom right;
+        background: $purple-8;
+        background-image:  url("/landing/dot2.svg");
+        background-repeat: no-repeat;
+        background-position: 70% 80%;
         color: var(--bs-black);
-        padding-left: calc($spacer * 4);
-        padding-right: calc($spacer * 4);
         margin-bottom: calc($spacer * 2);
-        border-radius: 10px;
-        row-gap: $font-size-base;
+        border-radius: 0.625rem;
+        row-gap: 1rem;
 
         :deep(p.baseline) {
             color: var(--bs-black);
