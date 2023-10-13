@@ -43,11 +43,11 @@ With [Kestra](https://github.com/kestra-io/kestra), they now have a full control
 
 Thanks to Kestra, they can orchestrate several critical pipelines such as:
 
-1. Fetch data from multiple sources: the club relies on different data providers to gather event, physical and scouting data. Thanks to Kestra, they can easily fetch them and orchestrate the whole ingestion pipeline into AWS S3 and a PostgreSQL server.
+1. **Fetch data from multiple sources**: the club relies on different data providers to gather event, physical and scouting data. Thanks to Kestra, they can easily fetch them and orchestrate the whole ingestion pipeline into AWS S3 and a PostgreSQL server.
 
-2. Manage bespoke KPIs: Kestra allows the club to manage KPIs creation for the club model, match analysis and player recruitment. They even scaled the whole system for usage in their B team which competes in MLS Next Pro. As Kestra is very versatile it can be easily used across different teams without huge work. Moreover, flow creation is easily templatizable as reusability is a core feature of Kestra.
+2. **Manage bespoke KPIs**: Kestra allows the club to manage KPIs creation for the club model, match analysis and player recruitment. They even scaled the whole system for usage in their B team which competes in MLS Next Pro. As Kestra is very versatile it can be easily used across different teams without huge work. Moreover, flow creation is easily templatizable as reusability is a core feature of Kestra.
 
-3. Enhance scouting process with machine learning models: data scientists have built internal machine learning models to supplement the scouting process, player list drafts and few other applications like player identifier mapping. Managing custom scripts and serving complex machine learning models is quite straightforward. Those projects rely on both Python and R codebases and as Kestra supports Docker containers, it was effortless to orchestrate polyglot usages.
+3. **Enhance scouting process with machine learning models**: data scientists have built internal machine learning models to supplement the scouting process, player list drafts and few other applications like player identifier mapping. Managing custom scripts and serving complex machine learning models is quite straightforward. Those projects rely on both Python and R codebases and as Kestra supports Docker containers, it was effortless to orchestrate polyglot usages.
 
 For deployment, they choose a straightforward AWS EC2 instance with PostgreSQL server, Shiny proxy to serve apps and private R or Python packages for everyday tasks.
 
