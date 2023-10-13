@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <BlogsList v-if="slug === '/blogs/'" :blogs="page"/>
+        <BlogsList v-if="slug === '/blogs/'" :blogs="page" :icons="icons"/>
 
         <div v-else class="container bd-gutter bd-layout margin">
             <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
