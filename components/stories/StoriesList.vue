@@ -1,37 +1,62 @@
 <template>
-    <div class="container my-5">
-        <p class="top-breadcrumb" data-aos="fade-right">
-            Solutions
-        </p>
-        <h2 data-aos="fade-left">Kestra at Work: Stories of Operational Efficiency and Transformation</h2>
-        <h5 data-aos="fade-right">Explore real-world applications of Kestra through our stories. Discover how companies around the world are transforming their workflows, automating processes, and managing business-critical applications with Kestra.</h5>
-        <div class="row mt-3">
-            <div class="col-12 col-md-4" v-for="story in stories" :key="story.id">
-                <StoriesCard :story="story" />
+    <div class="container mt-5">
+        <div class="bd-title">
+          <p class="top-breadcrumb" data-aos="fade-right">
+            stories
+          </p>
+          <h1 data-aos="fade-left" class="title"> Kestra Stories</h1>
+          <h5 data-aos="fade-left" class="description">Learn how we helped companies manage their critical operations.</h5>
+        </div>
+        <div class="row my-4">
+            <div class="col-12 col-md-4 mb-4" v-for="(story, index) in paginatedStories" :key="index">
+                <StoriesCard :story="story" :icons="icons"/>
             </div>
+        </div>
+        <div class="d-flex justify-content-between my-5">
+            <div class="items-per-page">
+                <select class="form-select" aria-label="Default select example" v-model="itemsPerPage">
+                    <option :value="10">10</option>
+                    <option :value="25">25</option>
+                    <option :value="50">50</option>
+                </select>
+            </div>
+            <CommonPagination :totalPages="totalPages"  @on-page-change="changePage" v-if="totalPages > 1" />
         </div>
     </div>
 </template>
 
 <script setup>
-const stories = ref([
-    {
-        id: 1,
-        title: 'Desiplayce',
-        description: 'Scaling Data Operations with Kestra'
+const props = defineProps({
+    stories: {
+        type: Array,
+        required: true
     },
-    {
-        id: 2,
-        title: 'Reglo',
-        description: 'Unified Control Plane and Simplified Orchestration with Kestra'
-    },
-    {
-        id: 3,
-        title: 'Leroy merlin',
-        description: 'Enabling datamesh architecture and 900% increase in data production with Kestra'
+    icons: {
+        type: Array,
+        required: true
     }
-])
+})
+const itemsPerPage = ref(25);
+const currentPage = ref(1);
+const totalPages = computed(()=>{
+    return Math.ceil(props.stories.length / itemsPerPage.value)
+    
+})
+const paginatedStories = computed(() => {
+    return props.stories.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value)
+})
+const changePage = (pageNo) => {
+    currentPage.value = pageNo
+    window.scrollTo(0, 0)
+}
 </script>
 
 <style scoped lang="scss">
+.title{
+    font-weight: 800;
+}
+.description{
+    font-weight: 400;
+    line-height: 1.375rem;
+}
 </style>

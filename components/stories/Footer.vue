@@ -1,62 +1,37 @@
 <template>
-    <div class="main text-center mb-5">
-        <div class="rounded-3">
-            <div>
-                <h3 data-aos="fade-right">Getting Started with Kestra</h3>
-                <div class="mt-4">
-                    <button class="btn btn-dark btn-lg me-3">Read the Documentation</button>
-                    <button class="btn btn-primary btn-lg">Try Kestra now</button>
-                </div>
-            </div>
+    <div class="container py-5 d-flex flex-column">
+        <h2 class="title text-center">Getting started with Kestra</h2>
+        <div class="text-center cta ">
+            <NuxtLink href="/docs" target="_blank" class="btn btn-dark me-2 mb-2" data-aos="zoom-in">
+                Read the Documentation
+            </NuxtLink>
+            <NuxtLink href="/docs/getting-started" class="btn btn-primary mb-2" data-aos="zoom-in">
+                Try Kestra Now
+            </NuxtLink>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 </script>
 
-<style scoped lang="scss">
-@import "../../assets/styles/variable";
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
 
-    .main {
-        > div {
-            position: relative;
-            background: $purple-8;
-            padding: calc($spacer * 3);
-            color: var(--bs-primary);
+    .container {
+        background: $purple-8 url("/landing/dot2.svg") no-repeat bottom right;
+        color: var(--bs-black);
+        padding-left: calc($spacer * 4);
+        padding-right: calc($spacer * 4);
+        margin-bottom: calc($spacer * 2);
+        border-radius: 10px;
+        row-gap: $font-size-base;
 
-            &:before {
-                content: "";
-                background: url("/landing/dot2.svg") no-repeat bottom left;
-                width: 329px;
-                height: 236px;
-                position: absolute;
-                right: 10rem;
-                bottom: 2rem;
-                z-index: 1;
-
-                @include media-breakpoint-down(lg) {
-                    background-position-x: right;
-                    right: 1rem;
-                }
-            }
-
-            > div {
-                position: relative;
-                z-index: 2;
-            }
+        :deep(p.baseline) {
+            color: var(--bs-black);
         }
-
-        h3 {
-            font-size: 2.188rem;
-            font-weight: 800;
-            color: $purple-24;
-        }
-
-        .btn {
-            @include media-breakpoint-down(md) {
-                margin-bottom: 1rem;
-            }
-        }
+    }
+    .title{
+        font-size: $font-size-2xl;
     }
 </style>

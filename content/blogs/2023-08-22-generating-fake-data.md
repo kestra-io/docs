@@ -75,7 +75,7 @@ Then with Kestra we schedule a Flow to generate those data every day.
 
 We first create a working directory to make every task accessing the same storage space. Then we start by cloning the shiny rocks GitHub repository and run the Python main program to generate data.
 
-Note the {{ schedule.date ?? now() | date("yyyy-MM-dd")}}:
+Note the {{ trigger.date ?? now() | date("yyyy-MM-dd")}}:
 - when running on schedule it will take the corresponding scheduled date
 - when running manually it will take the current date.
 
@@ -106,7 +106,7 @@ tasks:
         beforeCommands:
           - pip install -r dataset/produce/requirements.txt
         commands:
-          - python dataset/produce/main.py --date {{ schedule.date ?? now() | date("yyyy-MM-dd")}}
+          - python dataset/produce/main.py --date {{ trigger.date ?? now() | date("yyyy-MM-dd")}}
 
       - id: file_outputs
         type: io.kestra.core.tasks.storages.LocalFiles
@@ -116,7 +116,7 @@ tasks:
 
       - id: run_date
         type: io.kestra.core.tasks.debugs.Return
-        format: '{{ schedule.date ?? now() | date("yyyy-MM-dd")}}'
+        format: '{{ trigger.date ?? now() | date("yyyy-MM-dd")}}'
 
 
 triggers:
