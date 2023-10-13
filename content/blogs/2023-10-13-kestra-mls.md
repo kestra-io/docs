@@ -1,12 +1,12 @@
 ---
 title: "Efficient & Automated Football Analytics in MLS with Kestra"
-description: "Major League of Soccer clubs use Kestra to streamline their analytics initiative"
+description: "How a Major League of Soccer club use Kestra to power its analytics initiative"
 date: 2023-10-13T14:30:00
 category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: /blogs/2023-10-13-kestra-mls
+image: /blogs/2023-10-13-kestra-mls.jpg
 ---
 
 Taking data-driven decisions in sport is now a keystone to improve athlete performances and financial strategy. The [Major League Soccer](https://www.mlssoccer.com/) has seen a huge growth since years and many clubs didn’t wait to modernize their assets. They rely now on full football analytics teams to take important decisions regarding player performances, player transfers and finance.
@@ -50,6 +50,9 @@ Thanks to Kestra, they can orchestrate several critical pipelines such as:
 3. Enhance scouting process with machine learning models: data scientists have built internal machine learning models to supplement the scouting process, player list drafts and few other applications like player identifier mapping. Managing custom scripts and serving complex machine learning models is quite straightforward. Those projects rely on both Python and R codebases and as Kestra supports Docker containers, it was effortless to orchestrate polyglot usages.
 
 For deployment, they choose a straightforward AWS EC2 instance with PostgreSQL server, Shiny proxy to serve apps and private R or Python packages for everyday tasks.
+
+![infra schema](/blogs/2023-10-13-kestra-mls/mls-schema.png)
+
 
 ## Next Steps
 
