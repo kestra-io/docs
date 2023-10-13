@@ -1,7 +1,7 @@
 ---
-title: "Efficient & Automated Football Analytics in MLS with Kestra"
+title: "Efficient & Automated Football Data Analytics in MLS with Kestra"
 description: "How a Major League Soccer club use Kestra to power its analytics initiative"
-date: 2023-10-13T14:30:00
+date: 2023-10-13T16:30:00
 category: Solutions
 author:
   name: Benoit Pimpaud
@@ -9,7 +9,8 @@ author:
 image: /blogs/2023-10-13-kestra-mls.jpg
 ---
 
-Taking data-driven decisions in sport is now a keystone to improve athlete performances and financial strategy. The [Major League Soccer](https://www.mlssoccer.com/) has seen a huge growth since years and many clubs didn’t wait to modernize their assets. They rely now on full football analytics teams to take important decisions regarding player performances, player transfers and finance.
+In this blog post we will show how [Kestra](https://github.com/kestra-io/kestra) is used by professional football club to find the best talents and optimize game strategy.
+Indeed, taking data-driven decisions in sport is now a keystone to improve athlete performances and financial strategy. The [Major League Soccer](https://www.mlssoccer.com/) has seen a huge growth since years and many clubs didn’t wait to modernize their assets. They rely now on full football analytics teams to take important decisions regarding player performances, player transfers and finance.
 
 ## Football Analytics: What, Why & How?
 
