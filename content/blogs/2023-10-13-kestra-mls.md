@@ -1,6 +1,6 @@
 ---
 title: "Efficient & Automated Football Analytics in MLS with Kestra"
-description: "How a Major League of Soccer club use Kestra to power its analytics initiative"
+description: "How a Major League Soccer club use Kestra to power its analytics initiative"
 date: 2023-10-13T14:30:00
 category: Solutions
 author:
