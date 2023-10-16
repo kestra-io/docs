@@ -22,6 +22,16 @@
                         <li><h6 class="d-inline">Kestra:</h6> Kestra comes in as the orchestrator, ensuring seamless data flow between these components. It manages workflow dependencies, error handling, and scheduling, thus providing the robust backbone needed for their operations.</li>
                     </ul>
                 </div>
+
+                    <div class="d-flex flex-wrap gap-2 my-5 justify-content-center" v-if="icons">
+                        <div class="card" v-for="icon in icons" :key="icon.name">
+                            <div class="card-body">
+                                <div class="icon">
+                                    <CommonTaskIcon :cls="icon"/>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
                 <div class="mt-5">
                     <h1>The Challenge</h1>
                     <p>Displayce faced several significant hurdles in their journey:</p>
@@ -215,4 +225,9 @@
 p, ul > li {
     line-height: 1.5rem;
 }
+
+.icon {
+        width: 42px;
+        height: 42px;
+    }
 </style>
