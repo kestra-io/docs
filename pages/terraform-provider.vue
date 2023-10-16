@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="container">
-            <TerraformHeader />
+            <TerraformHeader/>
             <TerraformOverview />
             <TerraformUseCases />
             <TerraformFooter />

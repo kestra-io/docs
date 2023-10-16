@@ -1,5 +1,5 @@
 <template>
-    <div class="hero header row justify-content-center">
+    <div class="hero header row justify-content-center" data-aos="fade-right">
         <div class="col-12 col-md-12 col-lg-10">
             <div class="row">
                 <div class="col-12 col-md-6">
