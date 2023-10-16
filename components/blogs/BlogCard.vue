@@ -1,7 +1,7 @@
 <template>
     <div class="mb-5 mt-1" role="button">
         <NuxtLink class="text-dark" :href="blog._path">
-            <NuxtImg width="512" height="192" loading="lazy" format="webp" quality="80" densities="x1 x2" :alt="blog.image" :src="blog.image" class="w-100 rounded-3" />
+            <NuxtImg loading="lazy" format="webp" quality="80" densities="x1 x2" :alt="blog.image" :src="blog.image" class="card-image w-100 rounded-3" />
             <div class="mt-3">
                 <span class="small-text category">{{ blog.category }}</span>
                 <h6 class="mt-2">{{ blog.title }}</h6>
@@ -37,5 +37,9 @@
     span {
         color: var(--bs-primary);
         font-size: $font-size-sm;
+    }
+
+    .card-image {
+        height: 220px;
     }
 </style>
