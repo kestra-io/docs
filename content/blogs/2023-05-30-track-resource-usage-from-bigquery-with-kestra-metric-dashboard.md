@@ -29,7 +29,7 @@ tasks:
       SELECT 
         SUM(price) as sum_price 
       FROM sales.event_partitioned
-      WHERE date = '{{ schedule.date }}'
+      WHERE date = '{{ trigger.date }}'
 
 triggers:
   - id: schedule

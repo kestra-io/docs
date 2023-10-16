@@ -71,10 +71,6 @@ export default defineNuxtConfig({
       },
   },
 
-  image: {
-    domains: ['nuxtjs.org']
-  },
-
   router: {
       trailingSlash: false,
       options: {
