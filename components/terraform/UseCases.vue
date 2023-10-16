@@ -34,6 +34,6 @@
 @import "../../assets/styles/variable";
 p {
     line-height: 1.5rem;
-    color: #CFCEFF;
+    color: $purple-32;
 }
 </style>
