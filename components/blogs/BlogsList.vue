@@ -113,8 +113,8 @@
             line-height: 1.875rem;
         }
         .btn {
-            border: 1px solid #E5E4F7;
-            --bs-btn-bg: #ffff
+            border: 1px solid $purple-13;
+            --bs-btn-bg: #fff;
         }
     }
 

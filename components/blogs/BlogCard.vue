@@ -40,6 +40,6 @@
     }
 
     .card-image {
-        height: 220px;
+        max-height: 220px;
     }
 </style>
