@@ -65,7 +65,7 @@
                     <img src="/terraform/overview/modular-resource-management-code.svg" class="w-100" alt="modular resource management code svg">
                 </div>
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-6" data-aos="zoom-in">
                 <p class="mt-5 text-white">The inherent modularity in both, Terraform and Kestra, allows you to create reusable blocks of code. These can be shared across multiple teams or projects, contributing to maintainable operations.</p>
             </div>
         </div>
@@ -82,7 +82,7 @@
     background-color: $purple-33;
     color: white;
     box-shadow: none !important;
-    
+
     .card-body {
         padding: 2rem 1rem;
 
@@ -109,7 +109,7 @@
 
     .configurations-img {
         position: relative;
-        
+
         > img {
             position: relative;
             z-index: 10;
@@ -140,7 +140,7 @@
 
     .resource-management-image {
         position: relative;
-        
+
         > img {
             position: relative;
             z-index: 10;
