@@ -22,6 +22,16 @@
     definePageMeta({
         transparentHeader: true,
     })
+useHead({
+    meta:[
+      {name:'twitter:card',content:'summary-large-image'},
+      {name : 'twitter:site',content:'@kaestra_io'},
+      {name : 'twitter:title',content:"Kestra, Open Source Declarative Data Orchestration"},
+      {name:'twitter:description',content:"Use declarative language to build simpler, faster, scalable and flexible data pipelines"},
+      {name : 'twitter:image' ,content:"/landing/home/header-bg.png"},
+      {name : 'twitter:image:alt',content : "kaestra"}
+    ]
+  })
 </script>
 
 <style lang="scss" scoped>

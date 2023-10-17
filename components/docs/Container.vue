@@ -70,6 +70,17 @@
             .replace(/([A-Z])/g, '&#x200B;$1')
             .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
+    const {description,title} = page
+useHead({
+        meta:[
+            {name:'twitter:card',content:'summary-large-image'},
+            {name : 'twitter:site',content:'@kaestra_io'},
+            {name : 'twitter:title',content:title},
+            {name:'twitter:description',content:description},
+            {name : 'twitter:image' ,content:"/landing/home/header-bg.png"},
+            {name : 'twitter:image:alt',content : title}
+        ]
+    })
 </script>
 
 

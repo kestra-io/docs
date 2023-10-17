@@ -40,10 +40,9 @@
     </div>
 </template>
 
-<script setup>
+<script setup >
     import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
-
     const route = useRoute()
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
     const externalNews = ref()
@@ -74,7 +73,6 @@
                 date: data.publicationDate
             }
         })
-
         useHead({
             title: "Insights & News on Data Orchestration",
             description: "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
@@ -94,8 +92,18 @@
         }
 
         page.value = data.value;
-
         useContentHead(page)
+        const {title,description,image} = page.value
+        useHead({
+            meta:[
+                {name:'twitter:card',content:'summary-large-image'},
+                {name : 'twitter:site',content:'@kaestra_io'},
+                {name : 'twitter:title',content:title},
+                {name:'twitter:description',content:description},
+                {name : 'twitter:image' ,content:image},
+                {name : 'twitter:image:alt',content : title}
+            ]
+        })
     }
 </script>
 
@@ -110,4 +118,5 @@
     .bd-layout {
         display: block;
     }
+
 </style>

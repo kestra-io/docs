@@ -117,6 +117,17 @@
     export default {
         components: {CustomDetails, Newsletter},
     }
+
+useHead({
+    meta:[
+      {name:'twitter:card',content:'summary-large-image'},
+      {name : 'twitter:site',content:'@kaestra_io'},
+      {name : 'twitter:title',content:"Frequently Asked Questions"},
+      {name:'twitter:description',content:"Get responses on all your common questions about Kestra"},
+      {name : 'twitter:image' ,content:"/landing/home/header-bg.png"},
+      {name : 'twitter:image:alt',content : "FAQ"}
+    ]
+  })
 </script>
 
 
