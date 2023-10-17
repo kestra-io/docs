@@ -103,7 +103,7 @@ Lastly, the tool is prohibitively expensive. The price tag doesn't justify its c
 
 ### **Technical Overview: Scheduling Flows with Kestra**
 
-### Scheduling with Kestra?
+### Scheduling with Kestra
 
 [Kestra](https://github.com/kestra-io/kestra) lets you schedule your flows based on a simple cron expression, as well as based on complex scheduling conditions. It's useful when you want to run a flow at a regular cadence, e.g. daily or hourly.
 
