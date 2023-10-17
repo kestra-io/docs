@@ -70,8 +70,7 @@
             .replace(/([A-Z])/g, '&#x200B;$1')
             .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
-
-    const {description,title} = page
+    const {description,title} = page.value;
     useHead({
         meta:[
             {name:'twitter:card',content:'summary-large-image'},

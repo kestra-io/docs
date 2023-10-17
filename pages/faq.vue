@@ -110,13 +110,9 @@
     <Newsletter />
 </template>
 
-<script>
+<script setup>
     import CustomDetails from "../components/layout/CustomDetails.vue";
     import Newsletter from "../components/layout/Newsletter.vue";
-
-    export default {
-        components: {CustomDetails, Newsletter},
-    }
 
     useHead({
     meta:[
