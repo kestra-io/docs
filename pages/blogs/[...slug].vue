@@ -75,6 +75,17 @@
         page = data;
 
         useContentHead(page)
+        const {title,description,image} = page.value
+        useHead({
+            meta:[
+                {name:'twitter:card',content:'summary-large-image'},
+                {name : 'twitter:site',content:'@kaestra_io'},
+                {name : 'twitter:title',content:title},
+                {name:'twitter:description',content:description},
+                {name : 'twitter:image' ,content:image},
+                {name : 'twitter:image:alt',content : title}
+            ]
+        })
     }
 </script>
 
