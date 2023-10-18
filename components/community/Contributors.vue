@@ -21,7 +21,7 @@
 
 <script>
     import Section from '../../components/layout/Section.vue';
-    import axios from "axios";
+    import { kestraInstance } from "~/utils/api.js";
 
     export default {
         components: {Section},
@@ -31,14 +31,15 @@
                 contributorsRand: undefined
             };
         },
-        created() {
-            axios.get("https://api.kestra.io/v1/communities/github/contributors")
-                .then(response => {
-                    this.contributors = response.data;
-                    this.contributorsRand = this.contributors
-                        .sort(() => 0.5 - Math.random());
-                })
-        },
+        async created() {
+            try {
+                const { data } = await kestraInstance.get('/communities/github/contributors')
+                this.contributors = data
+                this.contributorsRand = this.contributors.sort(() => 0.5 - Math.random())
+            } catch (e) {
+                this.contributors = []
+            }
+        }
     }
 </script>
 
