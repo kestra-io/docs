@@ -1,7 +1,7 @@
 ---
 title: "DollarU, OpCon, Control-M vs. Kestra — how to choose the right scheduling platform"
 description: "How the scheduling landscape has evolved in the last decade? Learn more about the differences between traditional schedulers and tools, such as Kestra, providing a more modern approach to orchestration and scheduling."
-date: 2023-10-12T17:00:00
+date: 2023-10-17T17:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
@@ -171,7 +171,7 @@ triggers:
 
 ::alert{type="info"}
 The examples above show how Kestra allows you to keep the entire scheduling logic in code. For more examples of how Kestra brings Infrastructure as Code best practices to all workflows, check the [CI/CD guide](https://kestra.io/docs/developer-guide/cicd). See it in action by following the [getting started guide](https://kestra.io/docs/getting-started).
-:::
+::
 
 ### What's Next
 
