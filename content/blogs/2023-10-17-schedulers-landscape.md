@@ -6,6 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: "mproset"
+image: /blogs/2023-10-17-schedulers-landscape.jpg
 
 ---
 Gone are the days of rudimentary cron jobs. With the rise of microservices, big data, and cloud-native distributed technologies, job scheduling has evolved to meet the needs of modern engineering workflows.
