@@ -6,10 +6,10 @@
         </Head>
 
         <EnterpriseHeader />
+        <EnterpriseCustomers />
         <EnterpriseSecurity />
         <EnterpriseEditions />
         <EnterpriseContact />
-        <EnterpriseCustomers />
     </div>
 </template>
 
