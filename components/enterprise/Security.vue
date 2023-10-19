@@ -18,7 +18,7 @@
                     </ul>
                 </div>
                 <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/enterprise/security-3.svg" alt="A dashboard with success or fail task events">
+                    <img class="img-fluid" src="/landing/enterprise/security-1.svg" alt="A dashboard with success or fail task events">
                 </div>
             </div>
             <div class="row mb-5">
