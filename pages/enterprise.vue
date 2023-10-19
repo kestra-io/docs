@@ -6,13 +6,10 @@
         </Head>
 
         <EnterpriseHeader />
-        <EnterpriseCustomers />
-        <EnterpriseFeatures />
-        <EnterpriseScale />
-        <EnterpriseEditions />
         <EnterpriseSecurity />
+        <EnterpriseEditions />
         <EnterpriseContact />
-        <LayoutIntegrations />
+        <EnterpriseCustomers />
     </div>
 </template>
 
