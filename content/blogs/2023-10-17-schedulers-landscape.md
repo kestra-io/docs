@@ -21,6 +21,8 @@ Historically, job scheduling has often been approached with cron jobs. However, 
 
 Let's explore a selection of tools in the field, from legacy platforms to modern solutions such as **[Kestra](https://github.com/kestra-io/kestra)**, and discuss how they address those challenges.
 
+---
+
 ## Dollar Universe Workload Automation
 
 [Dollar Universe Workload Automation](https://www.broadcom.com/products/software/automation/dollar-universe), a product of Broadcom, is an enterprise-scale scheduling platform designed to manage complex workflows and optimize business processes. The tool provides robust solutions to ensure scheduling across different platforms, including Unix, Windows, and iSeries.
@@ -41,6 +43,8 @@ There are areas where the product shows its age, particularly when compared to m
 **Inflexibility in Dynamic Scaling**: Although Dollar Universe offers a range of scalability features, they are optimized for more static on-prem enterprise environments. In contrast, modern applications expect the platform to adapt to cloud-based infrastructure requirements, dynamically allocating or deallocating resources as needed.
 
 **Limited Real-Time Monitoring Capabilities**: While the tool does offer some form of real-time monitoring, it is not as comprehensive as newer platforms. For instance, it may not offer the depth of metrics or insights into the system's state, which could be crucial for complex, multi-layered workflows.
+
+---
 
 ## OpCon
 
@@ -72,6 +76,8 @@ Despite its powerful feature set, OpCon is not without its shortcomings:
 
 While OpCon offers a feature-rich and flexible scheduling solution, it still leans towards traditional IT environments and could benefit from updates to better support modern DevOps practices and cloud-native applications.
 
+---
+
 ## Control-M
 
 [Control-M](https://www.bmc.com/it-solutions/control-m-capabilities.html) is a workload automation software by BMC Software, aimed at integrating various automated processes across multiple platforms and applications. With roots stretching back to mainframe systems, Control-M has evolved to accommodate modern environments, including cloud-based and containerized applications.
@@ -102,7 +108,9 @@ Control-M, while strong in traditional scheduling, sometimes falls short in offe
 
 Lastly, the tool is prohibitively expensive. The price tag doesn't justify its capabilities compared to alternatives.
 
-### **Technical Overview: Scheduling Flows with Kestra**
+---
+
+## **Technical Overview: Scheduling Flows with Kestra**
 
 ### Scheduling with Kestra
 
@@ -174,7 +182,9 @@ triggers:
 The examples above show how Kestra allows you to keep the entire scheduling logic in code. For more examples of how Kestra brings Infrastructure as Code best practices to all workflows, check the [CI/CD guide](https://kestra.io/docs/developer-guide/cicd). See it in action by following the [getting started guide](https://kestra.io/docs/getting-started).
 ::
 
-### What's Next
+---
+
+## What's Next
 
 As we've seen, the right tool for your scheduling needs depends on a variety of factors, from the scale and complexity of your tasks to the architecture of your system. While traditional tools like Dollar Universe and OpCon have many useful features, Kestra provides more flexibility and brings Infrastructure as Code best practices to all scheduled and event-driven workflows.
 

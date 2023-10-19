@@ -7,7 +7,9 @@
                         <DocsBreadcrumb :slug="slug" :page-list="pagelist" />
                         <h1 class="text-white">{{ title }}</h1>
                         <p class="text-white fs-4">{{ metaDescription }}</p>
-                        <button class="btn btn-primary btn-lg">Book a demo</button>
+                        <NuxtLink href="/demo">
+                            <button class="btn btn-primary btn-lg">Book a demo</button>
+                        </NuxtLink>
                     </div>
                 </div>
             </div>
