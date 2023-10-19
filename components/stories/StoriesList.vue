@@ -8,13 +8,13 @@
           <h5 data-aos="fade-left" class="description">Learn how we helped companies manage their critical operations.</h5>
         </div>
         <div class="row my-4">
-            <div class="col-12 col-md-4 mb-4" v-for="(story, index) in paginatedStories" :key="index">
+            <div class="col-12 col-md-4 mb-4" v-for="(story, index) in stories" :key="index">
                 <StoriesCard :story="story" :icons="icons"/>
             </div>
         </div>
         <div class="d-flex justify-content-between my-5">
             <div class="items-per-page">
-                <select class="form-select" aria-label="Default select example" v-model="itemsPerPage">
+                <select class="form-select" aria-label="Default select example" v-model="itemsPerPage" @change="fetchPageData">
                     <option :value="10">10</option>
                     <option :value="25">25</option>
                     <option :value="50">50</option>
@@ -32,22 +32,27 @@ const props = defineProps({
         required: true
     },
     icons: {
-        type: Array,
+        type: Object,
         required: true
+    },
+    totalStories: {
+        type: Number,
+        default: 1
     }
 })
+const emits = defineEmits(['fetchPageData'])
 const itemsPerPage = ref(25);
 const currentPage = ref(1);
 const totalPages = computed(()=>{
-    return Math.ceil(props.stories.length / itemsPerPage.value)
-    
-})
-const paginatedStories = computed(() => {
-    return props.stories.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value)
+    return Math.ceil(props.totalStories / itemsPerPage.value)  
 })
 const changePage = (pageNo) => {
     currentPage.value = pageNo
     window.scrollTo(0, 0)
+    fetchPageData()
+}
+const fetchPageData = () => {
+    emits('fetchPageData', { currentPage: currentPage.value, itemsPerPage: itemsPerPage.value })
 }
 </script>
 

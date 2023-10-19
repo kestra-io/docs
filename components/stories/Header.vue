@@ -1,12 +1,12 @@
 <template>
     <div class="main">
-        <div class="row h-100">
+        <div class="row h-100" :style="{ 'background-image': `url(${heroImage})` }">
             <div class="col-12 col-md-6">
                 <div class="h-100 d-flex justify-content-end align-items-center">
                     <div class="container">
                         <DocsBreadcrumb :slug="slug" :page-list="pagelist" />
-                        <h1 class="text-white">{{ name }}</h1>
-                        <p class="text-white fs-4">{{ title }}</p>
+                        <h1 class="text-white">{{ title }}</h1>
+                        <p class="text-white fs-4">{{ metaDescription }}</p>
                         <button class="btn btn-primary btn-lg">Book a demo</button>
                     </div>
                 </div>
@@ -21,11 +21,15 @@ const props = defineProps({
         type: String,
         required: true
     },
-    name: {
+    title: {
         type: String,
         required: true
     },
-    title: {
+    metaDescription: {
+        type: String,
+        required: true
+    },
+    heroImage: {
         type: String,
         required: true
     }
@@ -45,7 +49,6 @@ const pagelist = ['/stories', props.slug]
     height: 640px;
 
     .row {
-        background-image: url('/stories/header/logo.svg');
         background-repeat: no-repeat;
         background-position: 80%;
 

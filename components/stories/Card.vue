@@ -1,14 +1,14 @@
 <template>
-    <NuxtLink :href="`/stories/${story.name.split(' ').join('-').toLowerCase()}`">
+    <NuxtLink :href="`/stories/${story.title.split(' ').join('-').toLowerCase()}`">
           <div class="card" data-aos="fade-right">
               <div class="card-body d-flex flex-column justify-content-between ">
                   <div>
-                      <NuxtImg loading="lazy" format="webp" quality="80" densities="x1 x2" :src="story.img" alt="Story_Img" class="card-img-top rounded-3" />
-                      <p class="card-name type mt-3 mb-2 text-pink">{{ story.name }}</p>
-                      <h4 class="card-title">{{ story.title }}</h4>
+                      <NuxtImg loading="lazy" format="webp" quality="80" densities="x1 x2" :src="story.featuredImage" :alt="`${story.title} image`" class="card-img-top rounded-3" />
+                      <p class="card-title mt-3 mb-2 text-pink">{{ story.title }}</p>
+                      <p class="card-meta-description">{{ story.description }}</p>
                       <div class="d-flex flex-wrap gap-3 my-3" v-if="icons">
-                          <div class="icon" v-for="icon in icons" :key="icon.name">
-                              <CommonTaskIcon :cls="icon"/>
+                          <div class="icon" v-for="task in story.tasks" :key="task">
+                              <CommonTaskIcon :cls="icons[task]"/>
                           </div>
                       </div>
                   </div>
@@ -19,14 +19,14 @@
           </div>
     </NuxtLink>
 </template>
-<script setup >
+<script setup>
 defineProps({
   story: {
     type: Object,
     required: true,
   },
   icons: {
-    type: Array,
+    type: Object,
     required: true,
 },
 });

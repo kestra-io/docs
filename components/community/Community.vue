@@ -74,13 +74,13 @@
 <script>
     import Section from '../../components/layout/Section.vue';
     import {CountTo} from 'vue3-count-to';
-    import axios from "axios";
     import SourceCommitLocal from "vue-material-design-icons/SourceCommitLocal.vue";
     import Star from "vue-material-design-icons/Star.vue";
     import DirectionsFork from "vue-material-design-icons/DirectionsFork.vue";
     import SourcePull from "vue-material-design-icons/SourcePull.vue";
     import BugOutline from "vue-material-design-icons/BugOutline.vue";
     import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue";
+    import {kestraInstance} from "~/utils/api.js";
 
     export default {
         components: {
@@ -99,16 +99,19 @@
                 contributors: undefined
             };
         },
-        created() {
-            axios.get("https://api.kestra.io/v1/communities/github/metrics")
-                .then(response => {
-                    this.metrics = response.data;
-                })
+        async created() {
+            try {
+                const [metrics, contributors] = await Promise.all([
+                    kestraInstance.get('/communities/github/metrics'),
+                    kestraInstance.get('/communities/github/contributors')
+                ])
+                this.metrics = metrics.data
+                this.contributors = contributors.data
 
-            axios.get("https://api.kestra.io/v1/communities/github/contributors")
-                .then(response => {
-                    this.contributors = response.data;
-                })
+            } catch (e) {
+                this.contributors = []
+                this.metrics = {}
+            }
         }
     }
 </script>
