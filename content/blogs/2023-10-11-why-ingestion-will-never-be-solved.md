@@ -122,7 +122,10 @@ Airbyte's monorepo allows it to centrally govern the connectors and ensure that 
 To see how you can orchestrate Airbyte connectors with [kestra](https://github.com/kestra-io/kestra), check our [Airbyte blueprints](https://demo.kestra.io/ui/blueprints/community?page=1&q=airbyte) and [the following Airbyte documentation page](https://docs.airbyte.com/operator-guides/using-kestra-plugin/).
 ::
 
-![airbyte_kestra](/blogs/2023-10-11-why-ingestion-will-never-be-solved/airbyte_kestra.gif)
+<video autoplay muted loop>
+  <source src="/blogs/2023-10-11-why-ingestion-will-never-be-solved/airbyte_kestra.mp4" type="video/mp4">
+</video>
+
 
 Another distinction compared to [Singer](https://www.singer.io/) is that Airbyte is primarily designed to be used from the UI, not via code. One solution is using the [Terraform provider](https://airbyte.com/blog/everything-as-code-for-data-infrastructure-with-airbyte-and-kestra-terraform-providers).
 
