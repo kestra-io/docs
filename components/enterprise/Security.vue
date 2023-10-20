@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="row mb-5">
-                <div class="col-md-6 order-1 order-md-0" data-aos="fade-left">
+                <div class="col-md-6 order-1 order-md-0" data-aos="fade-right">
                     <h3>Advanced Security and Access Control</h3>
                     <p>
                         Ensure that your data workflows and resources remain protected and compliant with industry standards.
@@ -32,12 +32,12 @@
                         <li><b>Audit logs:</b> Gain full visibility into all user activities on Kestra resources with detailed audit logs, empowering systems administrators and security teams to monitor actions, investigate breaches, and maintain compliance.</li>
                     </ul>
                 </div>
-                <div class="col-md-6 order-0 order-md-1" data-aos="fade-right">
+                <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
                     <img class="img-fluid" src="/landing/enterprise/security-3.svg" alt="A dashboard with success or fail task events">
                 </div>
             </div>
             <div class="row mb-5">
-                <div class="col-md-6" data-aos="fade-left">
+                <div class="col-md-6" data-aos="fade-right">
                     <img  class="img-fluid" src="/landing/enterprise/security-1.svg" alt="Stylized view of administrator settings with role-based view">
                 </div>
                 <div class="col-md-6">
