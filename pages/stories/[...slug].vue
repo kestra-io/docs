@@ -7,6 +7,15 @@
             <StoriesHeader :slug="slug" :title="story.title" :meta-description="story.metaDescription" :hero-image="story.heroImage" />
             <div class="container my-5">
                 <div v-html="content_1" />
+                <div class="d-flex flex-wrap gap-2 my-5 justify-content-center" v-if="icons">
+                    <div class="card" v-for="task in story.tasks" :key="task">
+                        <div class="card-body">
+                            <div class="icon">
+                                <CommonTaskIcon :cls="icons[task]"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div v-html="content_2" />
                 <LayoutSection title="Similar Kestra Stories">
                     <div class="row">
@@ -16,7 +25,6 @@
                     </div>
                 </LayoutSection>
             </div>
-
         </div>
         <StoriesFooter/>
     </div>
@@ -53,7 +61,6 @@ const storyName = slug.replace('/stories/', '').split('-').join(' ')
 
 if(slug != '/stories/') {
     story.value = stories.value.find(story => story.title.toLowerCase() === storyName)
-    console.log(story.value);
     const md = new MarkdownIt()
     content_1.value = md.render(story.value.content_1)
     content_2.value = md.render(story.value.content_2)
@@ -62,5 +69,9 @@ if(slug != '/stories/') {
 <style scoped lang="scss">
 p, ul > li {
     line-height: 1.5rem;
+}
+.icon {
+    width: 42px;
+    height: 42px;
 }
 </style>
