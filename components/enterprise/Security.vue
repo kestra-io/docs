@@ -5,7 +5,7 @@
             subtitle="Full Control and Compliance"
         >   
                 <div class="row mb-5">
-                <div class="col-md-6 order-1 order-md-0" data-aos="fade-left">
+                <div class="col-md-6 order-1 order-md-1" data-aos="fade-left">
                     <h3>Advanced Architecture Design</h3>
                     <p>
                         Elevate your system's resilience and efficiency with our Enterprise Edition's architectural design, built to support scalability and high availability.
@@ -15,7 +15,7 @@
                         <li><b>Worker groups:</b> Looking for targeted task execution and polling trigger evaluation on specialized compute instances? The Worker Groups is offering flexibility in system resources, operating system, backend access, and regional proximity.</li>
                     </ul>
                 </div>
-                <div class="col-md-6 order-0 order-md-1" data-aos="fade-right">
+                <div class="col-md-6 order-0 order-md-0" data-aos="fade-left">
                     <img class="img-fluid" src="/landing/enterprise/ee-4.svg" alt="High availability Schema">
                 </div>
             </div>
