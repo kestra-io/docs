@@ -34,7 +34,6 @@
         </div>
 
         <div class="bottom">
-            <LayoutBlogs v-if="slug !== '/blogs/' && slug !== '/blogs/community'" />
             <LayoutNewsletter />
         </div>
     </div>
@@ -48,6 +47,7 @@
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
     const externalNews = ref()
     const page = ref([]);
+
     const sort = (data)=>{
         data.sort((a,b)=>
             new Date(a.date)-new Date(b.date)

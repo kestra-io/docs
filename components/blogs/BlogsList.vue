@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="row mt-5">
-                    <div v-for="blog in blogsList" :key="blog._path" class="col-lg-6 col-md-6">
+                    <div v-for="blog in paginatedBlogs" :key="blog._path" class="col-lg-6 col-md-6">
                         <BlogsBlogCard :blog="blog" data-aos="zoom-in" />
                     </div>
                 </div>
@@ -40,6 +40,16 @@
                     </button>
                 </NuxtLink>
             </div>
+            <div class="d-flex justify-content-between my-5">
+            <div class="items-per-page">
+                <select class="form-select" aria-label="Default select example" v-model="itemsPerPage" @change="fetchPageData">
+                    <option :value="10">10</option>
+                    <option :value="25">25</option>
+                    <option :value="50">50</option>
+                </select>
+            </div>
+            <CommonPagination :totalPages="totalPages"  @on-page-change="changePage" v-if="totalPages > 1" />
+        </div>
         </div>
     </div>
 </template>
@@ -75,14 +85,23 @@
                     },
                 ],
                 slug: "",
-                pageList: []
+                pageList: [],
+                itemsPerPage : 25,
+                pageNo : 1,
             }
         },
         computed: {
             blogsList() {
                 const blogs = this.blogs.filter(e => e.category === this.filter || this.filter === 'All news')
                 return blogs.filter(e => e.category === this.filter || this.filter === 'All news').slice(0, blogs.length - 1).reverse();
+                
             },
+            totalPages(){
+                return Math.ceil(this.blogs.length / this.itemsPerPage)
+            },
+            paginatedBlogs() {
+                return this.blogs.slice((this.pageNo - 1) * this.itemsPerPage, this.pageNo * this.itemsPerPage)
+            }
         },
         created() {
             this.slug = "/blogs/" + (this.$route.params.slug instanceof Array ? this.$route.params.slug.join('/') : this.$route.params.slug);
@@ -96,9 +115,14 @@
             getHighlightBlog(filter) {
                 const blogs = this.blogs.filter(e => e.category === filter || filter === 'All news')
                 return blogs[blogs.length - 1];
+            },
+            
+            changePage(value){
+                this.pageNo = value
             }
         }
     }
+
 </script>
 
 <style lang="scss" scoped>
