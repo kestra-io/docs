@@ -67,7 +67,7 @@ import TooltipQuestion from "vue-material-design-icons/TooltipQuestion.vue";
 import HandWave from "vue-material-design-icons/HandWave.vue";
 import MessageAlert from "vue-material-design-icons/MessageAlert.vue";
 import Slack from "vue-material-design-icons/Slack.vue";
-import axios from "axios";
+import { kestraInstance } from "~/utils/api.js";
 
 export default {
     components: {Slack, Section, TooltipQuestion, HandWave, MessageAlert},
@@ -82,15 +82,20 @@ export default {
             online: undefined,
         }
     },
-    mounted() {
-        if (!window.sessionStorage.getItem("slack_member_count")) {
-            axios.get("https://api.kestra.io/v1/communities/slack")
-                .then(response => {
-                    window.sessionStorage.setItem("slack_member_count", response.data.total)
-                    this.online = response.data.total;
-                })
-        } else {
-            this.online = window.sessionStorage.getItem("slack_member_count");
+    async mounted() {
+        try {
+            const memberCount = window.sessionStorage.getItem("slack_member_count")
+
+            if (!memberCount) {
+                const { data: { total } } = await kestraInstance.get('/communities/slack')
+                window.sessionStorage.setItem("slack_member_count", total)
+                this.online = total
+            } else {
+                this.online = memberCount
+            }
+
+        } catch (e) {
+            this.online = 0
         }
     },
 

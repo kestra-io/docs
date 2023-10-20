@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                        <button type="submit" class="btn btn-dark">Subscribe</button>
                     </div>
                 </form>
 
