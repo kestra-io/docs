@@ -22,7 +22,7 @@
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 .header {
-    background: url('terraform/header/background.svg') no-repeat center;
+    background: url('/terraform/header/background.svg') no-repeat center;
 
     p {
         font-size: $font-size-xl;

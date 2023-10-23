@@ -75,7 +75,7 @@
 <!--                                </NuxtLink>-->
 <!--                            </li>-->
                             <li>
-                                <NuxtLink class="dropdown-item" href="/terraform-provider" @click="globalClick(true)">
+                                <NuxtLink class="dropdown-item" href="/use-cases/terraform-provider" @click="globalClick(true)">
                                     <Terraform/>
                                     <p>
                                         <span>Kestra's Terraform Provider</span><br/>
