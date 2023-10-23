@@ -79,7 +79,7 @@
                                     <Terraform/>
                                     <p>
                                         <span>Kestra's Terraform Provider</span><br/>
-                                        Seamless Infrastructure Management with Kestra's Terraform Provider
+                                        Manage and deploy Kestra workflows in your Terraform environment
                                     </p>
                                 </NuxtLink>
                             </li>
