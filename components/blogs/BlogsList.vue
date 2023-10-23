@@ -100,8 +100,8 @@
                 return Math.ceil(this.blogs.length / this.itemsPerPage)
             },
             paginatedBlogs() {
-                return this.blogs.slice((this.pageNo - 1) * this.itemsPerPage, this.pageNo * this.itemsPerPage)
-            }
+                return this.blogsList.slice((this.pageNo - 1) * this.itemsPerPage , this.pageNo * this.itemsPerPage )
+            }   
         },
         created() {
             this.slug = "/blogs/" + (this.$route.params.slug instanceof Array ? this.$route.params.slug.join('/') : this.$route.params.slug);
