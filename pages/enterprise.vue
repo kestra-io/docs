@@ -7,12 +7,9 @@
 
         <EnterpriseHeader />
         <EnterpriseCustomers />
-        <EnterpriseFeatures />
-        <EnterpriseScale />
-        <EnterpriseEditions />
         <EnterpriseSecurity />
+        <EnterpriseEditions />
         <EnterpriseContact />
-        <LayoutIntegrations />
     </div>
 </template>
 
