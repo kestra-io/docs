@@ -1,5 +1,5 @@
 ---
-title: 💻 API Guide
+title: Open Source API Guide
 rightBar: false
 editLink: false
 ---
