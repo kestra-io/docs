@@ -4,7 +4,7 @@
           <p class="top-breadcrumb" data-aos="fade-right">
             stories
           </p>
-          <h1 data-aos="fade-left" class="title"> Kestra Stories</h1>
+          <h1 data-aos="fade-left" class="title"> Customers Stories</h1>
           <h5 data-aos="fade-left" class="description">Learn how we helped companies manage their critical operations.</h5>
         </div>
         <div class="row my-4">
