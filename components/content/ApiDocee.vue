@@ -1,6 +1,6 @@
 <template>
     <rapi-doc
-        spec-url = "/kestra.yml"
+        spec-url = "/kestra-ee.yml"
         theme="light"
         render-style="view"
         show-header="false"
