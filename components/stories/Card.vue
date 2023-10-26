@@ -49,7 +49,7 @@ defineProps({
     }
 
     .icon {
-        border: 1px solid #E5E4F7;
+        border: 1px solid $white-2;
         padding: 0.313rem 0.625rem;
         width: 44px;
     }

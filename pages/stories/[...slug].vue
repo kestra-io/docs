@@ -62,7 +62,7 @@ const storyName = slug.replace('/stories/', '').split('-').join(' ')
 if(slug != '/stories/') {
     story.value = stories.value.find(story => story.title.toLowerCase() === storyName)
 
-    content_1.value =await markdownParser.parse("md",story.value.content_1,{})
+    content_1.value = await markdownParser.parse("md",story.value.content_1,{})
     content_2.value = await markdownParser.parse("md",story.value.content_2,{})
 }
 </script>
