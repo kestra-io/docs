@@ -9,7 +9,6 @@ cd build || exit
 # plugins
 echo -e "\e[42m Doc :\e[0m Core"
 docker pull ghcr.io/kestra-io/kestra-ee:develop-full
-docker pull kestra/kestra:develop-full
 docker run --rm --user=0 --name kestra-docs -i \
     -v "$(pwd)"/cores/docs:/app/docs \
     ghcr.io/kestra-io/kestra-ee:develop-full \
@@ -28,20 +27,14 @@ do
 done
 
 # api
-# EE
 docker create --rm --name kestra-ee --entrypoint=bash ghcr.io/kestra-io/kestra-ee:develop -c 'sleep 60'
 docker cp kestra-ee:/app/kestra-ee /tmp/kestra-ee.zip
 docker rm kestra-ee
 set +e
 unzip -p /tmp/kestra-ee.zip META-INF/swagger/kestra-ee.yml > ../public/kestra-ee.yml
+unzip -p /tmp/kestra-ee.zip META-INF/swagger/kestra.yml > ../public/kestra.yml
 set -e
-# OSS
-docker create --rm --name kestra --entrypoint=bash kestra/kestra:develop -c 'sleep 60'
-docker cp kestra:/app/kestra /tmp/kestra.zip
-docker rm kestra
-set +e
-unzip -p /tmp/kestra.zip META-INF/swagger/kestra.yml > ../public/kestra.yml
-set -e
+
 
 # terraform
 git clone https://github.com/kestra-io/terraform-provider-kestra
