@@ -18,6 +18,8 @@ A **Create** button allows creating a new user and managing his access to Kestra
 
 ![Kestra User Interface Home Page](/docs/user-interface-guide/18-EE-Users-Create.png)
 
+Users can be attached to Groups and/or Namespaces.
+
 ## Groups Page (EE)
 
 ::alert{type="warning"}
@@ -33,6 +35,9 @@ When clicking on a group id or on the eye icon, you can open the page of a group
 A **Create** button allows creating a new group and managing its access to Kestra.
 
 ![Kestra User Interface Home Page](/docs/user-interface-guide/20-EE-Groups-Access.png)
+
+
+A group is made of users. It can be useful to define specific group of people (mapping teams, users working on the same project, etc.).
 
 
 ## Roles Page (EE)
@@ -51,6 +56,11 @@ When clicking on a role id or on the eye icon, you can open the page of a role.
 A **Create** button allows creating a new role.
 
 ![Kestra User Interface Home Page](/docs/user-interface-guide/22-EE-Roles-Create.png)
+
+
+Roles allow to manage CRUD (CREATE, READ, UPDATE, DELETE) access to the different Kestra resources. They can be attached to Groups or Users.
+
+![Kestra Roles Crud](/docs/user-interface-guide/32-EE-Roles-CRUD.png)
 
 ## Triggers Page
 
