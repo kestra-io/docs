@@ -2,6 +2,8 @@ $primary: #8405FF;
 $secondary: #C182FF;
 
 $white: #fff;
+$white-1 : #E1E1E1;
+
 $gray-100: #f8f8fc;
 $gray-200: #f1f5fa;
 $gray-300: #eaf0f9;
@@ -12,6 +14,12 @@ $gray-700: #303e67;
 $gray-800: #2c3652;
 $gray-900: #1d2c48;
 $black: #26282D;
+$black-1 : #070708;
+$black-2 : #161617;
+$black-3 : #252526;
+$black-4 : #111113;
+$black-5 : #070708;
+
 
 $blue: #1761FD;
 $indigo: #8405FF;
@@ -58,7 +66,7 @@ $font-size-xs: $font-size-base * .75;
 $font-size-sm: $font-size-base * .875;
 $font-size-lg: $font-size-base * 1.25;
 $font-size-xl: $font-size-base * 1.375;
-
+$font-size-3xl : $font-size-base * 3.125;
 
 $h1-font-size: $font-size-base * 3.375;
 $h2-font-size: $font-size-base * 2.5;
