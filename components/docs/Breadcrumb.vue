@@ -2,7 +2,7 @@
     <div class="slug">
         <span :class="{first: index === 0}" v-for="(item, index) in breadcrumb()"
               :key="item">
-            <NuxtLink :href="breadcrumbLinkExist(item, index) ? breadcrumbLink(item, index) : ''">
+            <NuxtLink :href="breadcrumbLinkExist(item, index) ? breadcrumbLink(item, index) : ''" class="link">
                 {{ item.toUpperCase() }}
             </NuxtLink>
         </span>
