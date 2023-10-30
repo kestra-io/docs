@@ -64,7 +64,7 @@
         div.subtitle {
             text-align: center;
             margin: 0 auto calc($spacer / 2);
-
+            
             p {
                 font-size: $font-size-sm;
                 color: var(--bs-pink);

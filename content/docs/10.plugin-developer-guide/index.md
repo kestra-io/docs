@@ -3,8 +3,18 @@ title: 🧩 Plugin Developer Guide
 ---
 
 
-We provide a plugin template in order to quickly start the development of a new plugins.
-This template will create a project that will host a group of plugins, as we usually create multiple plugins for a technology/use case.
+If you want to create a new plugin, make sure to use the [plugin-template](https://github.com/kestra-io/plugin-template), as it comes prepackaged with everything you need for building your plugins. That template will create a project hosting a group of plugins, as we usually create multiple subplugins for a technology or use case. For example, while only one plugin exists AWS, there are multiple subplugins for specific AWS services.
+
+::alert{type="warning"}
+Note that plugin and subplugin **versions** must be aligned with your Kestra instance. You may encounter validation issues during flow creation (e.g. `Invalid bean` response with status 422) when some subplugins are on older Kestra version. In that case, you may want to update the file `plugin-yourplugin/gradle.properties` and set the `version` property to the correct Kestra snapshot e.g.:
+```
+version=0.13.0-SNAPSHOT
+kestraVersion=[0.13,)
+```
+
+Then rebuild and/or publish the plugin.
+::
+
 
 ## Requirements
 Kestra plugins development requirements are:

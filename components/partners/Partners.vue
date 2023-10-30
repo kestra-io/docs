@@ -77,6 +77,16 @@
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
+                        <img src="/partners/partners-logos/hanalytics.svg" class="card-img-top" alt="Converteo's logo">
+                        <div class="card-body">
+                            <p class="card-text">Consulting Partner</p>
+                            <h5 class="card-title">Hanalytics</h5>
+                            <a href="https://www.data-hanalytics.io/" target="_blank">Visit Hanalytics website <OpenInNew /></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <img src="/partners/partners-logos/ntico.svg" class="card-img-top" alt="Ntico's logo">
                         <div class="card-body">
                             <p class="card-text">Consulting Partner</p>

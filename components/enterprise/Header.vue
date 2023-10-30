@@ -6,7 +6,7 @@
                     <div>
                         <p data-aos="fade-left" class="overline">Enterprise Edition</p>
                         <h1 data-aos="fade-right">Kestra Enterprise to Scale Your Workflows<span class="dot">.</span></h1>
-                        <p data-aos="fade-left" class="baseline">Get full access to the Enterprise-only features and enjoy best in class support with custom SLAs to ensure that you have the help you need, whenever you need it</p>
+                        <p data-aos="fade-left" class="baseline">Made for organizations & professionals seeking to secure production workloads with high-security standards and enterprise support.</p>
                         <a href="https://kestra.io/demo" target="_blank" class="btn btn-lg btn-primary me-2 mb-2" data-aos="zoom-in">
                             Book a demo
                         </a>
