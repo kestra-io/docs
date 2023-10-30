@@ -37,7 +37,7 @@ A **Create** button allows creating a new group and managing its access to Kestr
 ![Kestra User Interface Home Page](/docs/user-interface-guide/20-EE-Groups-Access.png)
 
 
-A group is made of users. It can be useful to define specific group of people (mapping teams, users working on the same project, etc.).
+It's a collection of users who require the same set of permissions. It's useful to assign the same permissions to multiple users who belong to the same team or project. 
 
 
 ## Roles Page (EE)
