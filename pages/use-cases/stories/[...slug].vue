@@ -16,7 +16,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <ContentRendererMarkdown class="bd-markdown" :value="content_2"/>
                 <LayoutSection title="Similar Kestra Stories">
                     <div class="row">
@@ -59,7 +59,7 @@ icons.value = data.value
 
 const storyName = slug.replace('/stories/', '').split('-').join(' ')
 
-if(slug != '/stories/') {
+    if(slug != '/stories/') {
     story.value = stories.value.find(story => story.title.toLowerCase() === storyName)
 
     content_1.value = await markdownParser.parse("md",story.value.content_1,{})
@@ -67,7 +67,7 @@ if(slug != '/stories/') {
 }
 </script>
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+@import "../../../assets/styles/variable";
 p, ul > li {
     line-height: 1.5rem;
 }
@@ -80,7 +80,7 @@ p, ul > li {
     padding: 0 !important;
     font-weight: 800;
 }
-    
+
 .icon {
     width: 42px;
     height: 42px;

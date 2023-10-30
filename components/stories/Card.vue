@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="`/stories/${story.title.split(' ').join('-').toLowerCase()}`">
+    <NuxtLink :href="`/use-cases/stories/${story.title.split(' ').join('-').toLowerCase()}`">
           <div class="card" data-aos="fade-right">
               <div class="card-body d-flex flex-column justify-content-between ">
                   <div>
