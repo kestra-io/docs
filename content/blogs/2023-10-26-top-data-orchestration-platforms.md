@@ -55,6 +55,8 @@ This section walks you through the 5 most popular data orchestration tools and d
 
 When it comes to pricing, you'll be pleased to know **Airflow is completely free**. Of course, you'll need to manage the expense of running Airflow with its compute environment, and you'll need someone to set it up and manage it for you. The other option is to use a pay-as-you-go cloud-managed Airflow instance. You can find it on all major cloud providers (AWS, Azure, GCP), but the price will depend on so many factors, as it typically does with cloud environments.
 
+It's also worth mentioning that there are ways to run Airflow with **less or no overhead**. For example, you can consider [Astronomer](https://www.astronomer.io/), which is a managed Airflow service that allows you to orchestrate workflows in a cloud environment. It does all of the setting up and heavy lifting, and allows you to focus on writing and scheduling data flows. There's a similar option called [Cloud Composer](https://cloud.google.com/composer/docs/concepts/overview) which is worth checking out if you're using Google Cloud. It is basically another way to have a fully managed Airflow environment. Both are great, but the latter makes more sense if your company already uses GCP.
+
 Here's a couple of reasons you'll love using Airflow:
 - **Capable but minimalistic user interface** - Airflow is capable of doing much without making the UI look crowded. Its web UI is intuitive, allows you to monitor data flows in real-time, and gives you the option to store constants and security credentials, which means you won't need to hardcode them.
 - **Excellent ecosystem** - This tool has a wide array of pre-built connectors and plugins that simplify integration with almost any data source you can imagine. You can easily communicate with REST APIs, databases, cloud platforms, messaging systems, and much more.
@@ -64,7 +66,7 @@ Here's a couple of reasons you'll love using Airflow:
 
 That being said, Airflow isn't without its flaws. Here are some you might find annoying:
 - **Limited to Python** -  Writing workflows depends entirely on Python. Sure, this means you can use all data science libraries Python has to offer, but many companies don't want to be locked into a single programming language. This will pose a big problem if you need a more scalable language, or have a team of engineers that prefer a different technology.
-- **Deployment could be easier** - You'll need substantial DevOps skills to ensure Airflow is running smoothly. Further, Airflow doesn't work in a Windows environment, which might be an issue for you if you're testing it locally. Docker image is a way to go here.
+- **Deployment could be easier** - You'll need substantial DevOps skills to ensure Airflow is running smoothly. Further, Airflow doesn't work in a Windows environment, which might be an issue for you if you're testing it locally. Docker image is a way to go here. But, you can go with the managed route with Astronomer or Cloud Composer if you don't have a DevOps specialist.
 - **Scheduling isn't the best** - You can only use data schedulers and manual triggers for starting an Airflow task, which means you won't be able to trigger the same task twice if you don't double the tasks.
 - **Resource requirements** - Airflow can be resource-intensive in terms of memory and CPU usage. This might be a concern for you if you have limited computing resources and expect workflow complexity to grow in the future.
 
@@ -159,3 +161,7 @@ It's worth pointing out that a **one-size-fits-all solution doesn't exist**. Som
 If you decide to go with open-source orchestration tools, you have options. If you're a smaller Python-specific company, it makes sense to stick to what you know best and opt for Airflow or Prefect.
 
 In case you need both open-source and maximum flexibility, look no further than Kestra. It's the only language-agnostic orchestration platform and has a wide array of connectors. Further, the documentation and blueprints make it easier to learn when compared to other open-source alternatives.
+
+Keep in mind that we had a tough time limiting this article to only 5 data orchestration tools. There are other great production-ready solutions out there, such as [Dagster](https://dagster.io/) and [Google Cloud Functions](https://cloud.google.com/functions?hl=en), so make sure to check out these as well.
+
+Also, make sure to **stay tuned** to the [Kestra blog](https://kestra.io/blogs) for more up-to-date guides on orchestration, automation tools, trends in data management, and new features related to our Kestra orchestration platform.
