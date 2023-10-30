@@ -58,7 +58,7 @@ A **Create** button allows creating a new role.
 ![Kestra User Interface Home Page](/docs/user-interface-guide/22-EE-Roles-Create.png)
 
 
-Roles allow to manage CRUD (CREATE, READ, UPDATE, DELETE) access to the different Kestra resources. They can be attached to Groups or Users.
+Roles manage CRUD (CREATE, READ, UPDATE, DELETE) access to Kestra resources such as flows, executions, or secrets. They can be attached to groups or users.
 
 ![Kestra Roles Crud](/docs/user-interface-guide/32-EE-Roles-CRUD.png)
 
