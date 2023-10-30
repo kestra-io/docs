@@ -165,3 +165,5 @@ In case you need both open-source and maximum flexibility, look no further than 
 Keep in mind that we had a tough time limiting this article to only 5 data orchestration tools. There are other great production-ready solutions out there, such as [Dagster](https://dagster.io/) and [Google Cloud Functions](https://cloud.google.com/functions?hl=en), so make sure to check out these as well.
 
 Also, make sure to **stay tuned** to the [Kestra blog](https://kestra.io/blogs) for more up-to-date guides on orchestration, automation tools, trends in data management, and new features related to our Kestra orchestration platform.
+
+Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
