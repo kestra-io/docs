@@ -34,10 +34,12 @@
 import Companies from "~/components/layout/Companies.vue";
 
 onMounted(() => {
-    const script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
-    document.body.appendChild(script);
+    if (process.client) {
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
+        document.body.appendChild(script);
+    }
 })
 
 </script>
