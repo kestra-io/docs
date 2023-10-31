@@ -32,9 +32,8 @@ docker cp kestra-ee:/app/kestra-ee /tmp/kestra-ee.zip
 docker rm kestra-ee
 set +e
 unzip -p /tmp/kestra-ee.zip META-INF/swagger/kestra-ee.yml > ../public/kestra-ee.yml
-unzip -p /tmp/kestra.zip META-INF/swagger/kestra.yml > ../public/kestra.yml
+unzip -p /tmp/kestra-ee.zip META-INF/swagger/kestra.yml > ../public/kestra.yml
 set -e
-
 
 # terraform
 git clone https://github.com/kestra-io/terraform-provider-kestra
