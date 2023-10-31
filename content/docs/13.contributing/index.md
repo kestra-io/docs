@@ -19,7 +19,7 @@ The Kestra community loves plugins! Check out our [plugin developer guide](../10
 
 ## Contribute to code and docs
 
-Check out our [code of conduct](./01.code-of-conduct.md) to help you get started with contributing to the [orchestra](./02.kestra.md) and [docs](./03.docs.md) for Kestra.
+Check out our [code of conduct](./01.code-of-conduct.md) to help you get started with contributing to the [kestra](./02.kestra.md) and [docs](./03.docs.md) for Kestra.
 
 
 ## Write a blog post
