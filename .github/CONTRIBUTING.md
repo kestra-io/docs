@@ -7,7 +7,7 @@ to [hello@kestra.io](mailto:hello@kestra.io)
 
 ## I Want To Contribute
 
-> ### Legal Notice
+> ### Legal notice
 > When contributing to this project, you must agree that you have authored 100% of the content, that you have the necessary rights to the content and that the content you contribute may be provided under the project license.
 
 
@@ -27,7 +27,7 @@ If you would like to suggest a new feature, we ask that you please use our issue
 To see what has already been proposed by the community, you can look [here](https://github.com/kestra-io/docs/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement).
 Watch out for duplicates! If you are creating a new issue, please check existing open, or recently closed. Having a single voted for issue is far easier for us to prioritize.
 
-### Your First Code Contribution
+### Your first code contribution
 
 #### Requirements
 The following dependencies are required to build Kestra docs locally:
