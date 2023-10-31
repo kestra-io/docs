@@ -1,11 +1,11 @@
-## Code of Conduct
+## Code of conduct
 
 This project and everyone participating in it is governed by the
 [Kestra Code of Conduct](https://github.com/kestra-io/docs/blob/main/.github/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report unacceptable behavior
 to [hello@kestra.io](mailto:hello@kestra.io)
 
-## I Want To Contribute
+## I want to contribute
 
 > ### Legal notice
 > When contributing to this project, you must agree that you have authored 100% of the content, that you have the necessary rights to the content and that the content you contribute may be provided under the project license.
