@@ -6,14 +6,14 @@ category: Solutions
 author:
   name: Dario Radecic
   image: "dradecic"
-image: 
+image: /blogs/2023-10-31-kestra-weaviate.jpg
 ---
 
 It's been a year since ChatGPT, an advanced form of a large language model, has been released. And by the looks of it, AI is going only one way - forward. Many wonder how models like these can handle and process such huge volumes of data efficiently, and the answer is simple - **vector databases**. Well, among other things.
 
 Large language models rely on vector embeddings, which is a type of data that's perfectly suited for storing in vector databases. You can also store common data objects just like you would in document databases. The main benefit of a vector database is the fact you can scale virtually infinitely, provided you have the hardware prerequisites covered.
 
-One of the most popular vector database vendors is [Weaviate](https://weaviate.io/), and we're happy to introduce our new Kestra Weaviate plugin that allows you to interact with this vector database with a wide array of functionalities.
+One of the most popular vector database vendors is [Weaviate](https://weaviate.io/), and we're happy to introduce our new [Kestra Weaviate plugin](https://kestra.io/plugins/plugin-weaviate) that allows you to interact with this vector database with a wide array of functionalities.
 
 Today's article will briefly refresh your memory on vector databases, and show you hands-on how to use our new plugin to **create a schema, insert, and query records** stored in a Weaviate vector database.
 
@@ -57,7 +57,7 @@ This article assumes you've opted for the first option, as all Kestra flow code 
 
 
 ## Kestra and Weaviate: Getting Started
-This part of the article will show you how to get started working with Weavite from Kestra. It's assumed you have both Kestra and a Weaviate cluster up and running.
+This part of the article will show you how to get started working with Weavite from [Kestra](https://github.com/kestra-io/kestra). It's assumed you have both Kestra and a Weaviate cluster up and running.
 
 We'll show you a couple of basic examples of creating a schema for storing movies, inserting a couple of records, and querying them - all from Kestra flows with built-in plugins.
 
