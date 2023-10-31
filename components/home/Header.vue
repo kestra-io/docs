@@ -36,12 +36,11 @@
     import PlayOutline from "vue-material-design-icons/PlayOutline.vue"
     import LightningBolt from "vue-material-design-icons/LightningBolt.vue"
     import Companies from "../layout/Companies.vue";
-    import HeaderAnimation from './HeaderAnimation.vue';
     import PlayCircleOutline from 'vue-material-design-icons/PlayCircleOutline.vue'
     import TextScroller from "~/components/layout/TextScroller.vue";
 
     export default {
-        components: {Console, PlayOutline, LightningBolt, PlayCircleOutline, Companies, HeaderAnimation, TextScroller},
+        components: {Console, PlayOutline, LightningBolt, PlayCircleOutline, Companies, TextScroller},
         data() {
             return {
                 videoVisible: false,
