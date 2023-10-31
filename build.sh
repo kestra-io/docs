@@ -35,7 +35,6 @@ unzip -p /tmp/kestra-ee.zip META-INF/swagger/kestra-ee.yml > ../public/kestra-ee
 unzip -p /tmp/kestra-ee.zip META-INF/swagger/kestra.yml > ../public/kestra.yml
 set -e
 
-
 # terraform
 git clone https://github.com/kestra-io/terraform-provider-kestra
 cd terraform-provider-kestra/docs/
