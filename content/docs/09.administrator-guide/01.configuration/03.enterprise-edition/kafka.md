@@ -6,7 +6,7 @@ title: Kafka configuration
 
 ## `kestra.kafka.client.properties`
 
-The most important thing is configuring how Kestra connects to the Kafka cluster.
+The most important configuration step is defining how Kestra should connect to the Kafka cluster.
 
 Here is a minimal configuration example:
 
