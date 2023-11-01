@@ -118,7 +118,7 @@ If you've entered Weaviate credentials correctly, you'll see a success message. 
 
 ![Image 5 - Weaviate console query](/blogs/2023-10-31-kestra-weaviate/5.png)
 
-There are no records available to show, but the fact that you didn't get an error means the schema was created successfully!
+The output validates that the schema has been created successfully. Next, let's insert some data.
 
 
 ### How to Insert Records into a Weaviate Vector Database
