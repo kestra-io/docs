@@ -114,9 +114,7 @@ You can now once again click on the "Execute" button to start the flow:
 
 ![Image 4 - Flow execution](/blogs/2023-10-31-kestra-weaviate/4.png)
 
-If you've entered Weavite credentials correctly, you'll see a success message. There's no output showing you the newly created schema, but we can turn to WCS for that.
-
-For example, you can run the following query to get all data from the `Movie` schema:
+If you've entered Weaviate credentials correctly, you'll see a success message. To validate the outcome,  go to the Weaviate console and run the following query to get all data from the `Movie` schema:
 
 ![Image 5 - Weaviate console query](/blogs/2023-10-31-kestra-weaviate/5.png)
 
