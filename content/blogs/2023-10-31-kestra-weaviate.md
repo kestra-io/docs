@@ -236,6 +236,6 @@ Weaviate is one example of a well-implemented vector database, so we at Kestra w
 
 This article showed you how to do the most common operations on simple data objects, but you can do so much more for actual machine learning use cases. We recommend you go over their [example use cases and demos](https://weaviate.io/developers/weaviate/more-resources/example-use-cases) list to see what's possible and build end-to-end LLM-powered workflows using Kestra.
 
-Make sure to **stay tuned** to the [Kestra blog](https://kestra.io/blogs) for more up-to-date guides on orchestration, automation tools, trends in data management, and new features and plugins in our platform.
+Subscribe to our newsletter below for more guides on modern orchestration, automation, and trends in data management, as well as new features in our platform.
 
 Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
