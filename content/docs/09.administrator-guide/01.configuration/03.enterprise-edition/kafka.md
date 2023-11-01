@@ -36,7 +36,6 @@ kestra:
         ssl.keystore.type: "PKCS12"
         ssl.truststore.location: "/etc/ssl/private/truststore.jks"
         ssl.truststore.password: "<your-password>"
-
   queue:
     type: kafka
 ```
@@ -49,6 +48,12 @@ By default, Kestra automatically creates all the needed topics. You can change t
 
 - `kestra.kafka.defaults.topic.partitions`: (default 16)
 - `kestra.kafka.defaults.topic.replication-factor`: (default 1)
+
+The number of topic's partitions limits the number of concurrently processing server instances consuming that particular topic. For example, using 16 partitions for every topic limits the effective number of instances to 16 executor servers, 16 worker servers, etc.
+
+::alert{type="warning"}
+For the optimal value of the replication factor consult the actual configuration of the target Kafka cluster. Generally, for high availability the value should match the number of Kafka brokers in the cluster. For example, a cluster consisting of 3 nodes should use replication factor of 3.
+::
 
 ## `kestra.kafka.defaults.[consumer|producer|stream].properties`
 
