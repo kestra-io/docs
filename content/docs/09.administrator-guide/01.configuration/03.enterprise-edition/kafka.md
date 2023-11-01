@@ -52,7 +52,7 @@ By default, Kestra automatically creates all the needed topics. You can change t
 The number of topic's partitions limits the number of concurrently processing server instances consuming that particular topic. For example, using 16 partitions for every topic limits the effective number of instances to 16 executor servers, 16 worker servers, etc.
 
 ::alert{type="warning"}
-For the optimal value of the replication factor consult the actual configuration of the target Kafka cluster. Generally, for high availability the value should match the number of Kafka brokers in the cluster. For example, a cluster consisting of 3 nodes should use replication factor of 3.
+For the optimal value of the replication factor, validate the actual configuration of the target Kafka cluster. Generally, for high availability, the value should match the number of Kafka brokers in the cluster. For example, a cluster consisting of 3 nodes should use the replication factor of 3.
 ::
 
 ## `kestra.kafka.defaults.[consumer|producer|stream].properties`
