@@ -225,7 +225,7 @@ Here's what you'll see after clicking on the *Preview* button:
 
 ![Image 12 - Output preview](/blogs/2023-10-31-kestra-weaviate/12.png)
 
-And that's how easy it is to query a Weavite vector database from Kestra. Let's make a brief recap next.
+And that's how easy it is to query a Weaviate vector database from Kestra. Next, let's do a brief recap.
 
 ---
 
