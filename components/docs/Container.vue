@@ -73,12 +73,12 @@
     const {description, title} = page.value;
     useHead({
         meta: [
-            {name: 'twitter:card', content: 'summary-large-image'},
-            {name: 'twitter:site', content: '@kaestra_io'},
-            {name: 'twitter:title', content: title},
-            {name: 'twitter:description', content: description},
-            {name: 'twitter:image', content: "/landing/home/header-bg.png"},
-            {name: 'twitter:image:alt', content: title}
+            { name: 'twitter:card', content: 'summary-large-image' },
+            { name: 'twitter:site', content: '@kaestra_io' },
+            { name: 'twitter:title', content: title },
+            { name: 'twitter:description', content: description },
+            { name: 'twitter:image', content: "https://kestra.io/landing/home/header-bg.png" },
+            { name: 'twitter:image:alt', content: title }
         ]
     })
 </script>

@@ -4,7 +4,7 @@
         <StoriesList v-if="slug === '/stories/'" :stories="stories" :icons="icons" :total-stories="totalStories" @fetch-page-data="fetchStories" />
 
         <div v-else>
-            <StoriesHeader :slug="slug" :title="story.title" :meta-description="story.metaDescription" :hero-image="story.heroImage" />
+            <StoriesHeader :slug="slug" :title="story.metaTitle" :meta-description="story.metaDescription" :hero-image="story.heroImage" />
             <div class="container ">
                 <ContentRendererMarkdown class="bd-markdown" :value="content_1"/>
                 <div class="d-flex flex-wrap gap-2 my-5 justify-content-center" v-if="icons">
@@ -64,6 +64,22 @@ const storyName = slug.replace('/stories/', '').split('-').join(' ')
 
     content_1.value = await markdownParser.parse("md",story.value.content_1,{})
     content_2.value = await markdownParser.parse("md",story.value.content_2,{})
+    useHead({
+        meta: [
+            { name: 'twitter:card', content: 'summary-large-image' },
+            { name: 'twitter:site', content: '@kaestra_io' },
+            { name: 'twitter:title', content: story.value.metaTitle },
+            {
+                name: 'twitter:description',
+                content: story.value.metaDescription
+            },
+            { name: 'twitter:image', content: story.value.heroImage },
+            {
+                name: 'twitter:image:alt',
+                content: story.value.title
+            }
+        ]
+    })
 }
 </script>
 <style scoped lang="scss">

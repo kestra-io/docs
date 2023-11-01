@@ -20,15 +20,15 @@
 <script setup>
     useHead({
         meta: [
-            {name: 'twitter:card', content: 'summary-large-image'},
-            {name: 'twitter:site', content: '@kaestra_io'},
-            {name: 'twitter:title', content: "about-us"},
+            { name: 'twitter:card', content: 'summary-large-image' },
+            { name: 'twitter:site', content: '@kaestra_io' },
+            { name: 'twitter:title', content: "about-us" },
             {
                 name: 'twitter:description',
                 content: "Discover the team and values behind our mission to empower data-driven organizations worldwide"
             },
-            {name: 'twitter:image', content: "/landing/company/header.svg"},
-            {name: 'twitter:image:alt', content: "About-Us"}
+            { name: 'twitter:image', content: "https://kestra.io/landing/company/header.svg" },
+            { name: 'twitter:image:alt', content: "About-Us" }
         ]
     })
 
