@@ -64,7 +64,7 @@ We'll show you a couple of basic examples of creating a schema for storing movie
 ### Creating a Weaviate Schema
 Think of a Weavite schema as a data structure for storing objects of the same type. In the context of movies, each movie has a name, description, and category. There are other properties, sure, but let's stick with these today.
 
-We'll leverage Kestra's `inputs` to store default values for the Weaviate cluster URL and API key. These are the values you can obtain in the WCS console right after you create a cluster.
+We'll leverage Kestra's `inputs` to store default values for the Weaviate cluster URL and API key. These are the values you can obtain in the Weaviate Cloud Services (WCS) console right after you create a cluster.
 
 As for the `tasks`, we only need one. The new `io.kestra.plugin.weaviate.SchemaCreate` is responsible for creating a new Schema in the Weaviate vector database. The schema's name is specified by the `className` property, and the structure of the schema (attributes) is provided to `fields` in a key-value pair like syntax.
 
