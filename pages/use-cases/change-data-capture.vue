@@ -50,7 +50,7 @@
                         img: '/landing/usecases/cdc/feature-1.svg',
                         imgAlt: 'Diagram illustrating Kestra\'s Change Data Capture process, with PostgreSQL for databases, Apache Kafka for streaming data, and Apache Spark for analytics processing',
                         content: 'Streamlined Data Detection and Distribution: Kestra actively listens for changes in your chosen databases, such as PostgreSQL, detecting new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes, including analytics processing performed by tools like Apache Spark, have access to the latest data without delay.<br /><br />' +
-                            '<strong>Data Detection and Distribution:</strong> Listen for changes in your chosen databases, such as PostgreSQL, detect new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes, including analytics processing performed by tools like Apache Spark, have access to the latest data without delay.<br />' + 
+                            '<strong>Data Detection and Distribution:</strong> Listen for changes in your chosen databases, such as PostgreSQL, detect new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes, including analytics processing performed by tools like Apache Spark, have access to the latest data without delay.<br />'
                            
                     },
                     {
@@ -64,7 +64,7 @@
                         img: '/landing/usecases/cdc/feature-3.svg',
                         imgAlt: 'Illustration showing Kestra\'s event-driven triggers that initiate workflows automatically upon data changes, such as inserting a new customer record into the PostgreSQL database',
                         content: 'Kestra\'s event-driven triggers initiate workflows automatically as data changes occur, eliminating manual intervention and reducing data inconsistency risks.<br /><br />' +
-                        '<strong>Automated Workflows </strong>:Kestra CDC workflows are fully automated, with the capability to initiate and manage workflows that respond to data events, API calls or or schedule. This automation extends to data processing, enabling immediate ingestion, transformation, and delivery to data warehouses and analytical platforms, maintaining the integrity and relevance of your data landscape.',
+                        '<strong>Automated Workflows </strong>:Kestra CDC workflows are fully automated, with the capability to initiate and manage workflows that respond to data events, API calls or or schedule. This automation extends to data processing, enabling immediate ingestion, transformation, and delivery to data warehouses and analytical platforms, maintaining the integrity and relevance of your data landscape.'
                     },
                     {
                         title: 'Integration with Existing Infrastructure',
