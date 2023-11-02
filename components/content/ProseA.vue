@@ -51,7 +51,7 @@
             link = link.replace(/\/$/, '')
         }
 
-        link = link.replace(/\d+\./g,'')
+        link = link.replace(/(\/).\d+\./g,'')
         link = link.replace(/\.md/g,'')
 
         link = link.replace(config.public.siteUrl, '')
