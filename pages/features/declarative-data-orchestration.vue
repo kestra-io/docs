@@ -15,16 +15,17 @@
 </template>
 
 <script setup>
+    const { origin } = useRequestURL()
     useHead({
         meta: [
             { name: 'twitter:card', content: 'summary-large-image' },
-            { name: 'twitter:site', content: '@kaestra_io' },
+            { name: 'twitter:site', content: '@kestra_io' },
             { name: 'twitter:title', content: "Declarative Data Orchestration with Kestra" },
             {
                 name: 'twitter:description',
                 content: "Simplified Data Workflow Creation and Execution with YAML"
             },
-            { name: 'twitter:image', content: "https://kestra.io//landing/features/declarative/header-bg.svg" },
+            { name: 'twitter:image', content: `${origin}/landing/features/declarative/header-bg.svg` },
             { name: 'twitter:image:alt', content: "Declarative Data Orchestration with Kestra" }
         ]
     })

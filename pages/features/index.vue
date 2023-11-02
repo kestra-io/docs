@@ -18,16 +18,17 @@
 </template>
 
 <script setup>
+    const { origin } = useRequestURL()
     useHead({
         meta: [
             { name: 'twitter:card', content: 'summary-large-image' },
-            { name: 'twitter:site', content: '@kaestra_io' },
+            { name: 'twitter:site', content: '@kestra_io' },
             { name: 'twitter:title', content: "Powerful Features for Reliable Data Workflows" },
             {
                 name: 'twitter:description',
                 content: "Create and Deploy all kinds Data Pipelines with Ease and Speed with Kestra |  Your All-in-One Solution for Orchestrating Workflows"
             },
-            { name: 'twitter:image', content: "https://kestra.io/landing/features/header.png" },
+            { name: 'twitter:image', content: `${origin}/landing/features/header.png` },
             { name: 'twitter:image:alt', content: "features" }
         ]
     })

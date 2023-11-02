@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="row h-100" :style="{ 'background-image': `url(${heroImage})` }">
-            <div class="col-12 col-md-7">
+            <div class="col-12 col-md-6">
                 <div class="h-100 d-flex justify-content-end align-items-center">
                     <div class="container">
                         <DocsBreadcrumb :slug="slug" :page-list="pagelist" class="top-breadcrumb top-heading"/>
@@ -56,7 +56,7 @@ const pagelist = ['/stories', props.slug]
         background-position: 80%;
 
         .container {
-            max-width: 700px;
+            max-width: 500px;
         }
     }
 }
