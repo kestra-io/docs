@@ -78,15 +78,16 @@ jobs:
 
 ### Terraform Provider
 
-You can use the `kestra_namespace_files` resource in the official [Kestra Terraform Provider](../11.terraform/index.md) to synchronize files from a specific directory with a given namespace. 
+You can use the `kestra_namespace_file` resource from the official [Kestra Terraform Provider](../11.terraform/index.md) to deploy all your custom script files from a specific directory to a given Kestra namespace. 
 
-Here is a simple example showing how you can deploy a local Python script named `hello.py` to the `prod` namespace:
+Here is a simple example showing how you can synchronize an entire directory of scripts from the directory `src` with the `prod` namespace using Terraform:
 
 ```terraform
-resource "kestra_namespace_file" "withsource" {
-  namespace        = "prod"
-  local_path       = "./scripts/hello.py"
-  destination_path = "scripts/hello.py"
+resource "kestra_namespace_file" "prod_scripts" {
+  for_each  = fileset(path.module, "src/*")
+  namespace = "prod"
+  path      = each.value
+  content   = file(each.value)
 }
 ```
 
