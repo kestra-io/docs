@@ -9,11 +9,11 @@ author:
 image: /blogs/
 ---
 
-In the last few months, we often saw the comparison of Kestra with Terraform for how we allow our users to manage their workflows.
+In recent months, we've frequently compared Kestra and Terraform for how they empower users in managing workflows.
 
 Terraform has had a transformative impact on DevOps, setting the standard for Infrastructure as Code (IaC). Kestra is stepping up to bring a similar level of rigor and standardization to the field of orchestration and automation.
 
-This blog post will delve into how Kestra offers to Software Engineers and data engineers a similar set of capabilities that Terraform provides for DevOps.
+This blog post will delve into how Kestra offers to Software Engineers and Data Engineers a similar set of capabilities that Terraform provides for DevOps.
 
 ## Declarative Language
 
@@ -33,7 +33,7 @@ By defining workflows in a YAML-based configuration file, Kestra abstracts away 
 ### What it Changed
 Before declarative languages, most infrastructure setups were done imperatively, requiring you to provide step-by-step instructions, which were error-prone and hard to manage at scale. With declarative languages, the abstraction level is higher, making infrastructure management more accessible, less error-prone, and quicker to deploy.
 
-Kestra embodies this same philosophy for your workflow orchestration. It transitions from Python-centric logic, which can be hard to deploy and interpret, to a more streamlined and accessible YAML-based system that benefits both human readability and machine parsing.
+Kestra embodies this same philosophy for your workflow orchestration. It transitions from Python-centric logic, which can be hard to deploy and maintain, to a more streamlined and accessible YAML-based system that benefits both human readability and machine parsing.
 
 ---
 
