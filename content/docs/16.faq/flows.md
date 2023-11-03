@@ -87,7 +87,7 @@ curl -X POST http://localhost:8080/api/v1/executions/trigger/dev/hello-world -F 
 
 ### Python SDK
 
-You can also launch a flow using the [kestra pip package](../05.developer-guide/12.python-sdk.md). This is useful when you want to trigger a flow execution from a Python application or service.
+You can also launch a flow using the [kestra pip package](https://github.com/kestra-io/libs). This is useful when you want to trigger a flow execution from a Python application or service.
 
 First, install the package:
 
