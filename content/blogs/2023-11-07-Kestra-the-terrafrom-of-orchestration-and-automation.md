@@ -6,7 +6,7 @@ category: Company News
 author:
   name: Martin-Pierre Roset
   image: "mproset"
-image: /blogs/
+image: /blogs/2023-11-07-Kestra-the-terrafrom-of-orchestration-and-automation.jpg
 ---
 
 Many people have recently been comparing Kestra to Terraform, as both tools provide a declarative DSL to manage and automate workflows.
