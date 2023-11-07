@@ -4,7 +4,7 @@ title: Namespace Files
 
 ## What are Namespace Files
 
-Namespace Files are files tied to a given namespace. You can think of Namespace Files as equivalent of a project in your local IDE or a copy of your Git repository. Namespace Files can hold Python modules, R or Node.js scripts, SQL queries, configuration files, and many more. You can synchronize your Git repository with a specific namespace to orchestrate dbt projects, Terraform or Ansible infrastructure, or any other project that contains code and configuration files. 
+Namespace Files are files tied to a given namespace. You can think of Namespace Files as equivalent of a project in your local IDE or a copy of your Git repository. Namespace Files can hold Python modules, R or Node.js scripts, SQL queries, configuration files, and many more. You can synchronize your Git repository with a specific namespace to orchestrate dbt projects, Terraform or Ansible infrastructure, or any other project that contains code and configuration files.
 
 ---
 
@@ -78,7 +78,7 @@ jobs:
 
 ### Terraform Provider
 
-You can use the `kestra_namespace_file` resource from the official [Kestra Terraform Provider](../11.terraform/index.md) to deploy all your custom script files from a specific directory to a given Kestra namespace. 
+You can use the `kestra_namespace_file` resource from the official [Kestra Terraform Provider](../11.terraform/index.md) to deploy all your custom script files from a specific directory to a given Kestra namespace.
 
 Here is a simple example showing how you can synchronize an entire directory of scripts from the directory `src` with the `prod` namespace using Terraform:
 
@@ -91,13 +91,21 @@ resource "kestra_namespace_file" "prod_scripts" {
 }
 ```
 
+### CLI
+
+You can also use the Kestra CLI to deploy all your custom script files from a specific directory to a given Kestra namespace. Here is a simple example showing how you can synchronize an entire directory of local scripts with the `prod` namespace using the Kestra CLI:
+
+```bash
+./kestra namespace files update prod /Users/anna/gh/KESTRA_REPOS/scripts --server=http://localhost:8080 --user=rick:password
+```
+
 ---
 
 ## How to use Namespace Files in your flows
 
-There are multiple ways to use Namespace Files in your flows. You can use the `read()` function to read the content of a file as a string, or you can simply point to the file path in the supported tasks. 
+There are multiple ways to use Namespace Files in your flows. You can use the `read()` function to read the content of a file as a string, or you can point to the file path in the supported tasks.
 
-Usually, pointing to a file location, rather than reading the file's content, is required when you want to use a file as an input to a CLI command, e.g., `io.kestra.plugin.scripts.python.Commands` or `io.kestra.plugin.scripts.node.Commands`. In all other cases, the `read()` function can be used to read the content of a file as a string e.g. in Query tasks or Script tasks.
+Usually, pointing to a file location, rather than reading the file's content, is required when you want to use a file as an input to a CLI command, e.g. in a `Commands` task such as `io.kestra.plugin.scripts.python.Commands` or `io.kestra.plugin.scripts.node.Commands`. In all other cases, the `read()` function can be used to read the content of a file as a string e.g. in `Query` or `Script` tasks.
 
 You can also use the `io.kestra.core.tasks.flows.WorkingDirectory` task to read namespace files there and then use them in child tasks that require reading the file path in CLI commands e.g. `python scipts/hello.py`.
 

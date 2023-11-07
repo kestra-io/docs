@@ -45,6 +45,10 @@ Alternatively, you can add a **[Flow trigger](../05.developer-guide/08.triggers/
 
 Lastly, you can use the **[Webhook trigger](../05.developer-guide/08.triggers/03.webhook.md)** to automatically launch a flow execution when a given HTTP request is received. You can leverage the `{{ trigger.body }}` variable to access the request body and the `{{ trigger.headers }}` variable to access the request headers in your flow.
 
+To launch a flow and send data to the flow's execution context from an external system using a webhook, you can send a POST request to the Kestra API using the following URL: `http://<kestra-host>:<kestra-port>/api/v1/executions/webhook/<namespace>/<flow-id>/<webhook-key>`. Here is an example: `http://localhost:8080/api/v1/executions/webhook/dev/hello-world/secretWebhookKey42`.
+
+You can also pass inputs to the flow using the `inputs` query parameter.
+
 ### API calls
 
 You can trigger a flow execution by calling the [API](../12.api-guide/index.md) directly. This is useful when you want to trigger a flow execution from another application or service.
@@ -101,5 +105,88 @@ Then, you can trigger a flow execution by calling the `execute()` method. Here i
 from kestra import Flow
 flow = Flow()
 flow.execute('dev', 'hello-world', {'greeting': 'hello from Python'})
+```
+
+
+---
+
+## How to batch-process data in parallel at scale? Use the `ForEachItem` task!
+
+The `ForEachItem` task allows you to iterate over a list of items and run a subflow for each item, or for each batch containing multiple items. This is useful when you want to process a large list of items in parallel, e.g. to process millions of records from a database table or an API payload.
+
+The `ForEachItem` task is a **[Flowable](../02.tutorial/05.flowable.md)** task, which means that it can be used to define the flow logic and control the execution of the flow.
+
+Syntax:
+
+```yaml
+  - id: each
+    type: io.kestra.core.tasks.flows.ForEachItem
+    items: "{{ inputs.file }}" # could be also an output variable {{ outputs.extract.uri }}
+    inputs:
+      file: "{{ taskrun.items }}" # items of the batch
+    batch:
+      rows: 4
+      bytes: 1024
+      partitions: 2
+    namespace: dev
+    flowId: subflow
+    revision: 1 # optional (default: latest)
+    wait: true # wait for the subflow execution
+    transmitFailed: true # fail the task run if the subflow execution fails
+    labels: # optional labels to pass to the subflow to be executed
+      key: value
+```
+
+### Full end to end example
+
+Subflow:
+
+```yaml
+id: subflow
+namespace: qa
+
+inputs:
+  - name: items
+    type: STRING
+
+tasks:
+  - id: for_each_item
+    type: io.kestra.plugin.scripts.shell.Commands
+    runner: PROCESS
+    commands:
+      - cat "{{ inputs.items }}"
+
+  - id: read
+    type: io.kestra.core.tasks.log.Log
+    message: "{{ read(inputs.items) }}"
+```
+
+Flow that uses the `ForEachItem` task to iterate over a list of items and run the `subflow` for a batch of 10 items at a time:
+
+```yaml
+id: each_parent
+namespace: qa
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    sql: |
+      INSTALL httpfs;
+      LOAD httpfs;
+      SELECT *
+      FROM read_csv_auto('https://raw.githubusercontent.com/kestra-io/datasets/main/csv/orders.csv', header=True);
+    store: true
+
+  - id: each
+    type: io.kestra.core.tasks.flows.ForEachItem
+    items: "{{ outputs.extract.uri }}"
+    batch:
+      rows: 10
+    namespace: qa
+    flowId: subflow
+    wait: true
+    transmitFailed: true
+    inputs:
+      items: "{{taskrun.items}}"
 ```
 
