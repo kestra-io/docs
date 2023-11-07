@@ -18,7 +18,7 @@
     const { origin } = useRequestURL()
     useHead({
         meta: [
-            { name: 'twitter:card', content: 'summary-large-image' },
+            { name: 'twitter:card', content: 'summary_large_image' },
             { name: 'twitter:site', content: '@kestra_io' },
             { name: 'twitter:title', content: "Join a Thrilling Community of Data Enthusiasts" },
             {
