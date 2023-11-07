@@ -143,8 +143,14 @@ The above flow will download a JSON file via an HTTP Request, read its content a
 
 ### The `json` filter
 
-Let's say you have a JSON object stored in a variable named `myvar`. You can use the `json` filter to convert that variable to a JSON object. For example, the following Pebble expression will convert the string `{"foo": [666, 1, 2]}` to a JSON object and then return the first value of the `foo` key, which is `42`:
+You can use the `json` filter to convert any variable to a JSON string. You can think of it as a reverse process to what the `json()` function does.
+
+The example below shows how you can convert a list of numbers to a JSON string `'[1, 2, 3]'` using the `| json` filter:
 
 ```yaml
-{{ '{"foo": [42, 43, 44]}' | json.foo[0] }}
+{{ [1, 2, 3] | json }}
 ```
+
+::alert{type="info"}
+You typically would never used the `| json` filter in combination with the `read()` function. Anytime you need to read a file's content and then convert it to a JSON object, use a combination of the `read()` function and the `json()` function instead.
+::
