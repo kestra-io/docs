@@ -1,7 +1,13 @@
 <template>
     <div class="main">
-        
-        <StoriesList v-if="slug === '/stories/'" :stories="stories" :icons="icons" :total-stories="totalStories" @fetch-page-data="fetchStories" />
+        <div v-if="slug === '/stories/'">
+            <Head>
+                <Title>Kestra's Customers Stories</Title>
+                <Meta name="description"
+                    content="Learn how we helped companies manage their critical operations."/>
+            </Head>
+            <StoriesList :stories="stories" :icons="icons" :total-stories="totalStories" @fetch-page-data="fetchStories" />
+        </div>
         
         <div v-else>
 
