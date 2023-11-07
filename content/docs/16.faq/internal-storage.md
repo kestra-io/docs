@@ -101,3 +101,50 @@ tasks:
 
 The same syntax applies to SQL queries, configuration files, and many more. Check the [Namespace Files](../05.developer-guide/namespace-files.md) documentation for more details.
 
+---
+
+## How to read a file from the internal storage as a JSON object?
+
+There is a [Pebble function](https://kestra.io/docs/developer-guide/variables/function/json) called `{{ json(myvar) }}` and a [Pebble transformation filter](https://kestra.io/docs/developer-guide/variables/filter/json) that you can apply using `{{ myvar | json }}`.
+
+### The `json()` function
+
+The function is used to convert a string to a JSON object. For example, the following Pebble expression will convert the string `{"foo": [666, 1, 2]}` to a JSON object and then return the first value of the `foo` key, which is `42`:
+
+```yaml
+{{ json('{"foo": [42, 43, 44]}').foo[0] }}
+```
+
+You can use the `read()` function to read the content of a file as a string and then apply the `json()` function to convert it to a JSON object. Afterwards, you can read the value of a specific key in that JSON object. For example, the following Pebble expression will read the content of a file named `my.json` and then return the value of the `foo` key, which is `42`:
+
+```yaml
+id: extract_json
+namespace: dev
+tasks:
+  - id: extract
+    type: io.kestra.plugin.fs.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/json/app_events.json
+
+  - id: read_as_string
+    type: io.kestra.core.tasks.log.Log
+    message: "{{ read(outputs.extract.uri) }}"
+
+  - id: read_as_json
+    type: io.kestra.core.tasks.log.Log
+    message: "{{ json(read(outputs.extract.uri)) }}"
+
+  - id: parse_json_elements
+    type: io.kestra.core.tasks.log.Log
+    message: "{{ json(read(outputs.extract.uri)) | jq('map(.detail | fromjson | .message)') | first }}"
+```
+
+The above flow will download a JSON file via an HTTP Request, read its content as a string, convert it to a JSON object, and then in another task, it will parse the JSON object and return the value of a nested key.
+
+
+### The `json` filter
+
+Let's say you have a JSON object stored in a variable named `myvar`. You can use the `json` filter to convert that variable to a JSON object. For example, the following Pebble expression will convert the string `{"foo": [666, 1, 2]}` to a JSON object and then return the first value of the `foo` key, which is `42`:
+
+```yaml
+{{ '{"foo": [42, 43, 44]}' | json.foo[0] }}
+```
