@@ -1,12 +1,12 @@
 ---
 title: "Kestra and Python: How to Run and Integrate Complex Scripts into Your Flows"
 description: "Learn two recommended and scalable ways of including long and complex Python scripts into your Kestra flows."
-date: 2023-11-06T12:00:00
+date: 2023-11-09T12:00:00
 category: Solutions
 author:
   name: Dario Radecic
   image: "dradecic"
-image:
+image: /blogs/2023-11-09-advanced-python-scripts.jpg
 ---
 
 When it comes to data orchestration platforms and Airflow alternatives, [Kestra](https://github.com/kestra-io/kestra) is a one-stop shop that allows you to integrate scripts from various programming languages, such as Python.
@@ -28,11 +28,11 @@ In a nutshell, it will scrape a website and organize the results in a Pandas Dat
 
 It has books organized into categories, as you can see from the following image:
 
-![Image 1 - Books to scrape website](/blogs/2023-11-03-advanced-python-scripts/1.png)
+![Image 1 - Books to scrape website](/blogs/2023-11-09-advanced-python-scripts/1.png)
 
 Clicking on an individual book opens up a whole new world of things to scrape:
 
-![Image 2 - Individual book](/blogs/2023-11-03-advanced-python-scripts/2.png)
+![Image 2 - Individual book](/blogs/2023-11-09-advanced-python-scripts/2.png)
 
 And that's just what we'll do. Since this isn't a web scraping article, we'll only provide a high-level overview of the scraping logic. We have a file named `scraper.py` which implements the following functions:
 - `get_books()` - It accepts a list of topics and then iterates over them, constructs n URL, and uses the `BeautifulSoup` Python package to scrape the website. Once scraped, it extracts properties such as book title, link, thumbnail link, rating, price, and availability. Some of the properties might be missing, and we've taken that into account. Finally, books are organized into a Pandas DataFrame and returned to the user.
@@ -147,13 +147,13 @@ You can run the `scraper.py` file from CMD/Terminal, depending on the operating 
 
 Here's what we got printed to the console:
 
-![Image 3 - Running the Python script](/blogs/2023-11-03-advanced-python-scripts/3.png)
+![Image 3 - Running the Python script](/blogs/2023-11-09-advanced-python-scripts/3.png)
 
 The script has scraped 81 books in 3 seconds, and supposedly saved the results into a CSV file.
 
 You'll see this file in the same place where your Python script is located:
 
-![Image 4 - Output file](/blogs/2023-11-03-advanced-python-scripts/4.png)
+![Image 4 - Output file](/blogs/2023-11-09-advanced-python-scripts/4.png)
 
 It looks like everything worked, so let's bring this logic to Kestra next.
 
@@ -176,7 +176,7 @@ lxml==4.9.3
 
 Now create a new GitHub repository and copy both files to it. You should end up with something like this:
 
-![Image 5 - Contents of a GitHub repo](/blogs/2023-11-03-advanced-python-scripts/5.png)
+![Image 5 - Contents of a GitHub repo](/blogs/2023-11-09-advanced-python-scripts/5.png)
 
 And that's it! You're now ready to create a new Kestra flow.
 
@@ -213,28 +213,28 @@ tasks:
 
 And here's what your editor's content should look like:
 
-![Image 6 - Contents of the Kestra editor](/blogs/2023-11-03-advanced-python-scripts/6.png)
+![Image 6 - Contents of the Kestra editor](/blogs/2023-11-09-advanced-python-scripts/6.png)
 
 You can run it, and this time you'll see three green bars. The additional bar in the middle represents the task of cloning the GitHub repo:
 
-![Image 7 - Running the Kestra flow](/blogs/2023-11-03-advanced-python-scripts/7.png)
+![Image 7 - Running the Kestra flow](/blogs/2023-11-09-advanced-python-scripts/7.png)
 
 You can further inspect the contents of the `Logs` tab. It will show you the same success message seen in the previous section, while we were testing the script locally:
 
-![Image 8 - Kestra flow logs](/blogs/2023-11-03-advanced-python-scripts/8.png)
+![Image 8 - Kestra flow logs](/blogs/2023-11-09-advanced-python-scripts/8.png)
 
 The biggest benefit of running Python script this way is that you or anyone else from your team can **modify the Python code** on the fly, without the need to do any modification on Kestra's end. Let's see that in action next.
 
 ### What Happens If You Change the Python Code?
 To demonstrate, we've decided to add a couple more book categories to the Python file. Nothing fancy or groundbreaking, but you should end up with a couple of more scraped books:
 
-![Image 9 - Modified Python code](/blogs/2023-11-03-advanced-python-scripts/9.png)
+![Image 9 - Modified Python code](/blogs/2023-11-09-advanced-python-scripts/9.png)
 
 The best part is that you can now simply re-run the Kestra flow and leave the flow YAML file identical to what it was.
 
 As you can see, the Python script has now **scraped a total of 141 books instead of 81**, which means Kestra was able to detect the change on a Python script stored on GitHub:
 
-![Image 10 - Reruning the Kestra flow](/blogs/2023-11-03-advanced-python-scripts/10.png)
+![Image 10 - Reruning the Kestra flow](/blogs/2023-11-09-advanced-python-scripts/10.png)
 
 If you ask us, that's the true power of separating code logic from data flows - scalability.
 
@@ -246,11 +246,11 @@ The latest release of Kestra brings some interesting new features, one of them b
 
 To start using it, click on the `Editor` tab in the sidebar navigation, and choose your namespace from the dropdown menu:
 
-![Image 11 - Kestra editor tab](/blogs/2023-11-03-advanced-python-scripts/11.png)
+![Image 11 - Kestra editor tab](/blogs/2023-11-09-advanced-python-scripts/11.png)
 
 After a couple of seconds of initializations, you'll be presented with a familiar-looking interface - well, at least if you've used [Visual Studio Code](https://levelup.gitconnected.com/kestra-visual-studio-code-extension-your-favourite-data-orchestration-platform-just-got-better-ba87c35fe678) before:
 
-![Image 12 - Contents of the embedded VSCode editor](/blogs/2023-11-03-advanced-python-scripts/12.png)
+![Image 12 - Contents of the embedded VSCode editor](/blogs/2023-11-09-advanced-python-scripts/12.png)
 
 The contents of the `_flows` folder are a topic to discuss some other time, so leave it untouched. Everything you do Python-wise will have to be stored in a new folder named, let's say `scripts`. 
 
@@ -262,7 +262,7 @@ To start, create a new folder `scripts` inside the root directory, and create a 
 
 Once the Python file is opened, paste the contents of our web scraping script. Here's what it should look like:
 
-![Image 13 - Adding the script file](/blogs/2023-11-03-advanced-python-scripts/13.png)
+![Image 13 - Adding the script file](/blogs/2023-11-09-advanced-python-scripts/13.png)
 
 And that's it! Just make sure the Python file is saved, and you're ready to use it in your workflows.
 
@@ -293,15 +293,15 @@ tasks:
 
 Your YAML flow file now looks extra tidy:
 
-![Image 14 - Using Python script in a Kestra flow](/blogs/2023-11-03-advanced-python-scripts/14.png)
+![Image 14 - Using Python script in a Kestra flow](/blogs/2023-11-09-advanced-python-scripts/14.png)
 
 As before, save the flow and run it by clicking on the purple "Execute" button. You'll see the following in the `Gantt` view:
 
-![Image 15 - Running the flow](/blogs/2023-11-03-advanced-python-scripts/15.png)
+![Image 15 - Running the flow](/blogs/2023-11-09-advanced-python-scripts/15.png)
 
 **So, why are the bars orange?** The answer is simple - we got a warning message while installing Python libraries saying pip commands shouldn't be run by the root user: 
 
-![Image 16 - Examining the logs](/blogs/2023-11-03-advanced-python-scripts/16.png)
+![Image 16 - Examining the logs](/blogs/2023-11-09-advanced-python-scripts/16.png)
 
 It's a warning you can safely ignore. It doesn't affect the runtime in any way.
 
