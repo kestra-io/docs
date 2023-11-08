@@ -20,7 +20,7 @@ In this blog we will detail where each tool shines and when they can fit togethe
 
 Airbyte or Fivetran simplify the process of moving data from source systems to desired destinations. It comes with many connectors such as databases, APIs or file systems.
 
-Thanks to Airbyte Cloud, Airbyte Terraform provider or the Airbyte CLI, it’s easy to use it whatever the stack you have. Whatever practice strategies you use. With more than 300 pre-built connectors, Airbyte’s catalog is the largest in the industry - supported by an open-source community.
+Thanks to Airbyte Cloud, Airbyte Terraform provider, or the Airbyte CLI, it's easy to use whatever stack you have. With more than 300 pre-built connectors, Airbyte's catalog is the largest in the industry and is supported by an open-source community.
 It’s quite the same story with Fivetran but without self-hosted options.
 
 ## Kestra: the universal orchestrator
