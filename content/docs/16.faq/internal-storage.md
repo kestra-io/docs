@@ -154,13 +154,3 @@ The example below shows how you can convert a list of numbers to a JSON string `
 ::alert{type="info"}
 You typically would never used the `| json` filter in combination with the `read()` function. Anytime you need to read a file's content and then convert it to a JSON object, use a combination of the `read()` function and the `json()` function instead.
 ::
-
----
-
-## How to escape some block in a Pebble syntax to ensure that it won't be parsed?
-
-To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../05.developer-guide/03.variables/06.tag/raw.md). For example, the following Pebble expression will return the string `{{ myvar }}` instead of the value of the `myvar` variable:
-
-```yaml
-{% raw %}{{ myvar }}{% endraw %}
-```
