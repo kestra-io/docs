@@ -36,7 +36,7 @@ Hence, it can be used for data ingestion from databases, APIs, file systems, clo
 
 As we see, the two tools cover one central aspect of data management: ingesting data from one place to another. There are still cases where you will prefer to use one or the other.
 
-### When it’s better to use Airbyte/Fivetran over Kestra
+### When it’s better to use Airbyte or Fivetran over Kestra
 Airbyte and Fivetran are built to move data from source to destination - by design. At the moment of writing, they have more connectors in that sense than Kestra, especially when it comes to business-facing tools like Airtable, Notion, Amplitude, Salesforce, etc.
 
 While you can connect to those tools with Kestra through API calls, Airbyte and Fivetran make things easier with better abstraction and unified semantics.
