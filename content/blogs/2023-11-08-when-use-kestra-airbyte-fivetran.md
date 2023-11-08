@@ -47,7 +47,7 @@ Having a proper tool, designed for such a process, makes things easier to manage
 You can still orchestrate your Airbyte or Fivetran syncs with Kestra and so connect the downstream workflows such as running dbt, running some Python scripts or any job waiting for syncs to finish. Airbyte and Fivetran runs are automated by Kestra, which is the overall control plane dealing with dependencies of your different systems.
 
 
-### When it’s better to use Kestra over Airbyte/Fivetran
+### When it’s better to use Kestra over Airbyte or Fivetran
 In choosing between Kestra, Airbyte, and Fivetran, context is key. Running Airbyte locally requires the maintenance of multiple containers, leading to infrastructure overhead, while Airbyte Cloud and Fivetran involve recurring costs for their cloud-based services.
 
 For scenarios with a limited number of sources to integrate, Kestra offers a streamlined and potentially more cost-effective solution. Its minimalist approach can be particularly advantageous for those seeking to simplify their stack.
