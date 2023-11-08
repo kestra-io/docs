@@ -29,7 +29,7 @@ Kestra is an universal open-source orchestrator. It aims to empower a wide range
 
 It comes with more than 300 plugins, allowing users to connect every part of their stack to any tool.
 
-Hence, it can be used for data ingestion from databases, API, file systems, cloud providers, etc
+Hence, it can be used for data ingestion from databases, APIs, file systems, cloud providers, etc.
 
 
 ## Is it better to use Kestra or Airbyte/Fivetran for data ingestion?
