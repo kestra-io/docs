@@ -27,7 +27,7 @@ It’s quite the same story with Fivetran but without self-hosted options.
 
 Kestra is an universal open-source orchestrator. It aims to empower a wide range of users, from software developers to data engineers, by simplifying their automation and orchestration needs. It’s the go-to solution for organizations seeking simple and powerful orchestration solutions for any kind of process & data automation usage.
 
-It comes with more than 300 plugins, allowing users to connect to every part of their stack. To any tool.
+It comes with more than 300 plugins, allowing users to connect every part of their stack to any tool.
 
 Hence, it can be used for data ingestion from databases, API, file systems, cloud providers, etc
 
