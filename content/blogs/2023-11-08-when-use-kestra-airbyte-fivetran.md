@@ -10,13 +10,13 @@ image: /blogs/2023-11-08-when-use-kestra-airbyte-fivetran.jpg
 ---
 
 As the data stack is maturing, it’s good to ask ourselves what are the overlaps of the tools we have at hand.
-At Kestra we often hear this question: “is it better to use Airbyte/Fivetran or Kestra for data source ingestion?”
+At Kestra we often hear this question: “is it better to use Airbyte, Fivetran or Kestra for data source ingestion?”
 
 It’s a very good question. Airbyte and Fivetran are designed to move data from source to destination, and Kestra also has similar features.
 
 In this blog we will detail where each tool shines and when they can fit together.
 
-## Airbyte/Fivetran: moving data from source to destination
+## Airbyte & Fivetran: moving data from source to destination
 
 Airbyte or Fivetran simplify the process of moving data from source systems to desired destinations. It comes with many connectors such as databases, APIs or file systems.
 
@@ -32,7 +32,7 @@ It comes with more than 300 plugins, allowing users to connect every part of the
 Hence, it can be used for data ingestion from databases, APIs, file systems, cloud providers, etc.
 
 
-## Is it better to use Kestra or Airbyte/Fivetran for data ingestion?
+## Is it better to use Kestra, Airbyte or Fivetran for data ingestion?
 
 As we see, the two tools cover one central aspect of data management: ingesting data from one place to another. There are still cases where you will prefer to use one or the other.
 
