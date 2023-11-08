@@ -1,5 +1,5 @@
 ---
-title: "When to choose Airbyte/Fivetran or Kestra for data ingestion ?"
+title: "When to choose Airbyte, Fivetran, or Kestra for data ingestion"
 description: "Learn whenever it's best to use Kestra, Airbyte or Fivetran for data ingestion, or when it's good to use a mix of them"
 date: 2023-11-08T08:00:00
 category: Solutions
