@@ -91,10 +91,10 @@ Kestra echoes this modular philosophy. With features like blueprints and subflow
 
 Both Kestra and Terraform are designed with scalability at their core, enabling organizations to expand their operations smoothly and efficiently.
 
-**Scalability in Terraform**
+### Scalability in Terraform
 Terraform approaches scalability with infrastructure as code (IaC), which allows the automatic provisioning and management of a large number of resources across various cloud providers. The state management in Terraform is designed to handle large infrastructures with hundreds or even thousands of resources, efficiently tracking the state of each element. Additionally, Terraform's backend system can be configured to use remote state backends like AWS S3 with locking mechanisms like DynamoDB, enabling multiple team members to work collaboratively and securely on large infrastructures without conflict or overlap.
 
-**Scalability in Kestra**
+### Scalability in Kestra
 Kestra is engineered to facilitate the scaling of workflow orchestration. It is capable of handling an increase in workload by enabling the distribution of tasks across multiple nodes. The event-driven architecture of Kestra ensures that as workflows become more complex or increase in number, the system can scale out horizontally. This means additional instances can be added to manage the load, and the distributed nature of Kestra means that workflows can run concurrently, efficiently using available resources.
 
 Moreover, Kestra's API-first approach allows seamless integration with external systems and scalability across an organization's infrastructure. The declarative nature of the tool, combined with its ability to orchestrate and schedule workflows defined in YAML, allows for clear and concise workflow definitions that can be versioned and scaled along with the applications they support. 
