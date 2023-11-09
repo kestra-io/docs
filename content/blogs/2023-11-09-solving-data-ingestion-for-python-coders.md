@@ -6,8 +6,8 @@ category: Solutions
 author:
   name: Adrian Brudaru
   image: "abrudaru"
-image: /blogs/2023-11-09-solving-data-ingestion-for-python-coders.jpg
-canonicalUrl: "https://dlthub.com/docs/blog/solving-data-ingestion-python"
+image: /blogs/2023-11-09-solving-data-ingestion-for-python-coders.png
+<link rel="canonical" href="https://dlthub.com/docs/blog/solving-data-ingestion-python"/>
 ---
 
 > This article as been written by Adrian Brudaru, Data Engineer and founder of dltHub as a response to our blog post about [Data Integration](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved)
@@ -110,3 +110,7 @@ dlt, as a pipeline-building dev tool designed for Python users, aims to bridge t
 
 The journey toward solving data ingestion challenges is not just possible; it's promising, and it's one that data professionals together with dlt are uniquely equipped to undertake.
 
+> You can follow dltHub on [GitHub](https://github.com/dlt-hub/dlt), or join them on [Slack](https://join.slack.com/t/dlthub-community/shared_invite/zt-1n5193dbq-rCBmJ6p~ckpSFK4hCF2dYA) for discussion and help.
+
+---
+Join the [Slack community](https://kestra.io/slack) of Kestra if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
