@@ -7,7 +7,7 @@ author:
   name: Adrian Brudaru
   image: "abrudaru"
 image: /blogs/2023-11-09-solving-data-ingestion-for-python-coders.png
-<link rel="canonical" href="https://dlthub.com/docs/blog/solving-data-ingestion-python"/>
+
 ---
 
 > This article as been written by Adrian Brudaru, Data Engineer and founder of dltHub as a response to our blog post about [Data Integration](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved)
