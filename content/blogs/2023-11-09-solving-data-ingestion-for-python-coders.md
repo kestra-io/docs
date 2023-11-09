@@ -10,7 +10,7 @@ image: /blogs/2023-11-09-solving-data-ingestion-for-python-coders.png
 
 ---
 
-> This article as been written by Adrian Brudaru, Data Engineer and founder of dltHub as a response to our blog post about [Data Integration](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved)
+> This article has been written by Adrian Brudaru, Data Engineer and founder of dltHub as a response to our blog post about [Data Integration](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved)
 
 In a recent [article](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved), Anna Geller, product manager at Kestra, highlighted why data ingestion will never be solved. In her article, she described the many obstacles around data ingestion, and detailed how various companies and open-source tools approached this problem.
 
