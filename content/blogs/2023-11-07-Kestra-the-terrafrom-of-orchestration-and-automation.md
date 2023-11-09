@@ -15,6 +15,7 @@ Terraform has had a transformative impact on DevOps, setting the standard for In
 
 This blog post will delve into how Kestra compares to Terraform in offering declarative workflow semantics and syntax.
 
+
 ## Declarative Language
 
 Like Terraform, which uses its HashiCorp Configuration Language (HCL) for declarative infrastructure management, Kestra employs a declarative YAML-based approach to define workflows.
@@ -37,6 +38,7 @@ Before declarative languages, most infrastructure setups were done imperatively,
 
 Kestra embodies the same philosophy for workflow orchestration. It transitions from Python-centric logic, which can be hard to deploy and maintain, to a more accessible API-first system that exposes a human-readable YAML syntax.
 
+
 ## Cloud-Agnostic and Language-Agnostic
 
 ### **Terraform's Cloud-Agnostic Approach**
@@ -46,6 +48,7 @@ Terraform's provider plugins enable the tool to support a multitude of cloud ser
 ### **Kestra’s Language-Agnostic Flexibility**
 
 While Kestra uses YAML for workflow definitions, it offers the freedom to use any programming language for scripting tasks within those workflows. This language-agnostic capability allows developers to leverage their existing skills, whether it be in Python, R, Julia, or other languages.
+
 
 ## Event-Driven Philosophy in Kestra and Terraform
 
@@ -71,6 +74,7 @@ At the core, both Terraform and Kestra represent a move towards automating respo
 - **Consistency**: The behavior in response to specific events is predictable and version-controlled.
 - **Flexibility**: An event-driven model can adapt to a wide variety of use cases and integrates easily with other tools and systems.
 
+
 ## Modularity and Reusability
 
 Terraform's design is centered around modular constructs—modules—that allow for the compartmentalization of complex resources into reusable components. This modular design is further enhanced by a plugin system, empowering users to scale and customize their setups to meet varied project demands. These modules, coupled with Terraform's resource blocks, are engineered for high reusability, allowing customization and parameterization to suit differing scenarios, streamlining the management of multiple environments.
@@ -89,6 +93,7 @@ Kestra is engineered to facilitate the scaling of workflow orchestration. It is 
 
 Moreover, Kestra's API-first approach allows seamless integration with external systems and scalability across an organization's infrastructure. The declarative nature of the tool, combined with its ability to orchestrate and schedule workflows defined in YAML, allows for clear and concise workflow definitions that can be versioned and scaled along with the applications they support. 
 
+
 ## Conclusion: Kestra and Terraform - Complementary Tools for Modern Infrastructure
 
 Kestra's orchestration solutions align closely with the principles that have guided Terraform's infrastructure management. Both tools are designed with the intent to simplify, modularize, and make the workflow and infrastructure processes scalable and reusable.
@@ -97,7 +102,7 @@ Kestra's orchestration solutions align closely with the principles that have gui
 
 Kestra Terraform provider allows you to manage all Kestra resources as code, just like you manage infrastructure. This "everything as code" approach not only streamlines workflow creation and deployment but also leverages Terraform's strengths in version control, collaboration, and auditing for your orchestration needs.
 
-By combining these tools, you create a system managed entirely via code that's not only highly efficient but also scalable so that you can benefit from the modern infrastructure. Check our [documentation] (https://kestra.io/docs/developer-guide/cicd/terraform) to learn how to manage all Kestra resources with Terraform. 
+By combining these tools, you create a system managed entirely via code that's not only highly efficient but also scalable so that you can benefit from the modern infrastructure. Check our [documentation](https://kestra.io/docs/developer-guide/cicd/terraform) to learn how to manage all Kestra resources with Terraform. 
 
 Additionally, our recently launched [Terraform plugin](https://kestra.io/plugins/plugin-terraform) allows you to orchestrate Infrastructure as Code by executing Terraform CLI commands directly from Kestra. Yes, you read that right — you can manage Kestra with Terraform, and you can also orchestrate Terraform with Kestra. 
 
