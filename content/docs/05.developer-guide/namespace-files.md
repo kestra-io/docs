@@ -74,7 +74,15 @@ jobs:
           resource: namespace_files
           namespace: prod
           directory: ./scripts
+          server: https://demo.kestra.io/
+          user: your_username
+          password: ${{secrets.KESTRA_PASSWORD}}
 ```
+
+::alert{type="info"}
+When creating a service account role for the GitHub Action in the [Enterprise Edition](https://kestra.io/enterprise), you need to grant the `FLOW` permission to the Role.
+::
+
 
 ### Terraform Provider
 
