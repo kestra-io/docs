@@ -19,37 +19,42 @@ This blog post will delve into how Kestra compares to Terraform in offering decl
 
 Like Terraform, which uses its HashiCorp Configuration Language (HCL) for declarative infrastructure management, Kestra employs a declarative YAML-based approach to define workflows.
 
-**How it Works**
-This declarative approach means that you specify the 'what'—the end state you desire—rather than the 'how'—the steps to reach that state. For example, in Terraform you might specify that you want an AWS EC2 instance and a VPC but don't specify that the VPC needs to be created first; Terraform figures it out for you.
+### **How it Works**
+
+This declarative approach means that you specify the *what*—the end state you desire—rather than the *how*—the steps to reach that state. For example, in Terraform you might specify that you want an AWS EC2 instance and a VPC but don't specify that the VPC needs to be created first; Terraform figures it out for you.
 
 By defining workflows in a YAML-based configuration file, Kestra abstracts away the complexities of procedural code, thereby making it easier to create, understand, and maintain workflows. This also allows for simpler version control, streamlined debugging, and easier collaboration among team members.
 
-**What it Allows**
+### **What it Allows**
 
-1. **Abstraction**: Easier to write and understand.
-2. **Portability**: Changes without changing the core logic.
-3. **Scalability**: Easier to manage complex architectures.
+- **Abstraction**: Easier to write and understand.
+- **Portability**: Workflow changes without changing the core logic.
+- **Scalability**: More straightforward management of complex architectures.
 
-**What it Changed**
+### **What it Changed**
+
 Before declarative languages, most infrastructure setups were done imperatively, requiring you to provide step-by-step instructions, which were error-prone and hard to manage at scale. With declarative languages, the abstraction level is higher, making infrastructure management more accessible, less error-prone, and quicker to deploy.
 
 Kestra embodies the same philosophy for workflow orchestration. It transitions from Python-centric logic, which can be hard to deploy and maintain, to a more accessible API-first system that exposes a human-readable YAML syntax.
 
-
 ## Cloud-Agnostic and Language-Agnostic
 
-**Terraform's Cloud-Agnostic Approach**
+### **Terraform's Cloud-Agnostic Approach**
+
 Terraform's provider plugins enable the tool to support a multitude of cloud service providers. This cloud-agnostic approach allows organizations to manage a diverse array of cloud resources, catering to multi-cloud strategies and reducing the risk of vendor lock-in.
 
-**Kestra’s Language-Agnostic Flexibility**
+### **Kestra’s Language-Agnostic Flexibility**
+
 While Kestra uses YAML for workflow definitions, it offers the freedom to use any programming language for scripting tasks within those workflows. This language-agnostic capability allows developers to leverage their existing skills, whether it be in Python, R, Julia, or other languages.
 
 ## Event-Driven Philosophy in Kestra and Terraform
 
-**How Events Drive Terraform**
+### **How Events Drive Terraform**
+
 Even if Terraform is not commonly seen as an event-driven tool, its operations often align with event-driven paradigms when integrated into a broader architecture. In Terraform's operational mechanics, the internal dependency resolution acts like a micro-event-driven system. Resources await the "completion event" of their dependencies before they begin provisioning.
 
-**Kestra's Native Event-Driven Nature**
+### **Kestra's Native Event-Driven Nature**
+
 Kestra is built from the ground up to be an event-driven orchestration tool. Kestra can automatically initiate workflows based on:
 
 - **Data Changes**: Reacting to changes in data stores or data states.
@@ -58,7 +63,8 @@ Kestra is built from the ground up to be an event-driven orchestration tool. Kes
 
 Moreover, Kestra gives you control and visibility to manage complex workflows that can conditionally branch or loop, offering robust capabilities to handle complex event scenarios, whether they are scheduled, manual, or API-driven.
 
-**Philosophical Synergy**
+### **Philosophical Synergy**
+
 At the core, both Terraform and Kestra represent a move towards automating responses to events, ranging from changes in code repositories to shifts in data or other external triggers. This enables:
 
 - **Efficiency**: Automated reactions to events minimize manual interventions.
@@ -95,6 +101,8 @@ By combining these tools, you create a system managed entirely via code that's n
 
 Additionally, our recently launched [Terraform plugin](https://kestra.io/plugins/plugin-terraform) allows you to orchestrate Infrastructure as Code by executing Terraform CLI commands directly from Kestra. Yes, you read that right — you can manage Kestra with Terraform, and you can also orchestrate Terraform with Kestra. 
 
-To see how Kestra and Terraform can work together for your orchestration needs, check our [Terraform Provider page](https://kestra.io/use-cases/terraform-provider).
+>To see how Kestra and Terraform can work together for your orchestration needs, check our [Terraform Provider page](https://kestra.io/use-cases/terraform-provider).
 
+
+--- 
 Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
