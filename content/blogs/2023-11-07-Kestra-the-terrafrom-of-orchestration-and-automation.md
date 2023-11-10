@@ -107,7 +107,7 @@ Moreover, Kestra's API-first approach allows seamless integration with external 
 
 &nbsp;  
 
-## Conclusion: Kestra and Terraform - Complementary Tools for Modern Infrastructure
+## Complementary Tools for Modern Infrastructure
 
 Kestra's orchestration solutions align closely with the principles that have guided Terraform's infrastructure management. Both tools are designed with the intent to simplify, modularize, and make the workflow and infrastructure processes scalable and reusable.
 
