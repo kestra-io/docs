@@ -19,6 +19,8 @@ This blog post will delve into how Kestra compares to Terraform in offering decl
 
 ## Declarative Language
 
+![declarative](/blogs/2023-11-07-Kestra-the-terrafrom-of-orchestration-and-automation/declarative.png)
+
 Like Terraform, which uses its HashiCorp Configuration Language (HCL) for declarative infrastructure management, Kestra employs a declarative YAML-based approach to define workflows.
 
 ### How it Works
@@ -42,6 +44,8 @@ Kestra embodies the same philosophy for workflow orchestration. It transitions f
 &nbsp;  
 
 ## Cloud-Agnostic and Language-Agnostic
+
+![agnostic](/blogs/2023-11-07-Kestra-the-terrafrom-of-orchestration-and-automation/agnostic.png)
 
 ### Terraform's Cloud-Agnostic Approach
 
@@ -88,6 +92,8 @@ Kestra echoes this modular philosophy. With features like blueprints and subflow
 &nbsp;  
 
 ## Scalability
+
+![scalable](/blogs/2023-11-07-Kestra-the-terrafrom-of-orchestration-and-automation/scalable.png)
 
 Both Kestra and Terraform are designed with scalability at their core, enabling organizations to expand their operations smoothly and efficiently.
 
