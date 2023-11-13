@@ -69,11 +69,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: deploy-scripts-to-prod
-        uses: kestra-io/deploy-action@develop
+        uses: kestra-io/deploy-action@master
         with:
           resource: namespace_files
           namespace: prod
-          directory: ./scripts
+          directory: ./scripts # directory in the Git repository
+          to: ./scripts # remote directory in the namespace
           server: https://demo.kestra.io/
           user: your_username
           password: ${{secrets.KESTRA_PASSWORD}}
@@ -99,13 +100,55 @@ resource "kestra_namespace_file" "prod_scripts" {
 }
 ```
 
-### CLI
+### Deploy Namespace Files from Git via CLI
 
 You can also use the Kestra CLI to deploy all your custom script files from a specific directory to a given Kestra namespace. Here is a simple example showing how you can synchronize an entire directory of local scripts with the `prod` namespace using the Kestra CLI:
 
 ```bash
 ./kestra namespace files update prod /Users/anna/gh/KESTRA_REPOS/scripts --server=http://localhost:8080 --user=rick:password
 ```
+
+In fact, you can even use that command directly in a flow. You can attach a schedule or a webhook trigger to automatically execute that flow anytime you push/merge changes to your Git repository, or on a regular schedule.
+
+Here is an example of a flow that synchronizes an entire directory of local scripts with the `prod` namespace:
+
+```yaml
+id: ci
+namespace: prod
+
+variables:
+  host: http://host.docker.internal:28080/
+
+tasks:
+  - id: deploy
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+      - id: clone
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/kestra-io/scripts
+        branch: main
+
+      - id: deploy_files
+        type: io.kestra.plugin.scripts.shell.Commands
+        warningOnStdErr: false
+        runner: PROCESS
+        commands:
+          - /app/kestra namespace files update prod . . --server={{vars.host}}
+```
+
+Note that the two dots in the command `/app/kestra namespace files update prod . .` indicate that we want to sync an entire directory of files cloned from the Git repository to the root directory of the `prod` namespace. If you wanted to e.g. sync that repository to the `scripts` directory, you would use the following command: `/app/kestra namespace files update prod . scripts`. The syntax of that command follows the structure:
+
+```bash
+/app/kestra namespace files update <namespace> <local_directory> <remote_directory>
+```
+
+To reproduce that flow, start Kestra using the following command:
+
+```bash
+docker run --pull=always --rm -it -p 28080:8080  kestra/kestra:develop-full  server local
+```
+
+Then, open the Kestra UI at http://localhost:28080 and create a new flow with the content above. Once you execute the flow, you should see the entire directory from the `scripts` repository being synchronized with the `prod` namespace.
 
 ---
 
