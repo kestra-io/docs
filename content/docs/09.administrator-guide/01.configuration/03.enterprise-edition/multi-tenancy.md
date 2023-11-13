@@ -10,6 +10,8 @@ This section dives into how you can configure multi-tenancy in your Kestra insta
 
 Set it to `true` to enable multi-tenancy. By default, multi-tenancy is disabled.
 
+If you enable multi-tenancy in a Kestra instance with existing resources (flow, namespace, execution), you must use the `kestra auths users sync-access` command to synchronize the existing accesses to the default tenant (see above).
+
 ### `kestra.ee.tenants.default-tenant`
 
 The **default tenant** is a tenant without an identifier (aka the null tenant). It exists for backward compatibility when multi-tenancy is enabled in an existing Kestra instance. If you disable the default tenant in a Kestra instance that already has flows and executions, you will no longer be able to access them.
