@@ -9,12 +9,53 @@ In Kestra, it's used for variable operations and passing metadata between tasks.
 
 ## How to reading outputs & inputs ?
 
-👉 very simple tasks with outputs linked from one to the other
-👉 using inputs
+### Read inputs
 
-## How to parse date ?
+When using `inputs` property in a Flow, you can access the corresponding values just by using `inputs` variable in your tasks.
+
+```yaml
+id: input_string
+namespace: demo.kestra
+
+inputs:
+  - name: name
+    type: STRING
+
+tasks:
+  - id: say_hello
+    type: io.kestra.core.tasks.log.Log
+    message: "Hello 👋, my name is {{ inputs.name }}"
+```
+
+### Read task ouputs
+
+Most of Kestra tasks expose outputs value. You can access those outputs in other tasks by using `outputs.<task_name>.<output_name>`. Every task outputs are in each task documentation.
+
+In the example below we use the `value` outputs of the `io.kestra.core.tasks.debugs.Return` task in the downstream task.
+
+```yaml
+id: input_string
+namespace: demo.kestra
+
+inputs:
+  - name: name
+    type: STRING
+
+tasks:
+  - id: say_hello
+    type: io.kestra.core.tasks.debugs.Return
+    format: "Hello 👋, my name is {{ inputs.name }}"
 
 
+  - id: can_you_repeat
+    type: io.kestra.core.tasks.log.Log
+    message: '{{ outputs.say_hello.value }}'
+```
+
+## How to format date ?
+
+Pebble can be very useful to make small transformation on the fly - without the need to use Python or some dedicated programming language. 
+For instance, we can use the `date` function to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'``
 
 ### Coalesce operator for trigger or manual execution
 
