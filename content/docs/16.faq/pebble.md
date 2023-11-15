@@ -57,6 +57,8 @@ tasks:
 Pebble can be very useful to make small transformation on the fly - without the need to use Python or some dedicated programming language. 
 For instance, we can use the `date` function to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'``
 
+You can find more documentation on the `date` function [in this documentation](../05.developer-guide/03.variables/03.filter/date.md)
+
 ### Coalesce operator for trigger or manual execution
 
 Most of the time, a flow will be triggered automatically. Either on schedule or based on external events. It’s common to use the date of the execution to process the corresponding data and make the flow dependent on time. 
@@ -80,6 +82,35 @@ triggers:
 ```
 
 ## How to parse objects & list ?
+
+Sometimes outputs are nested objects or list. To parse those elements, you will need to use `jq` most of the time.
+
+jq is like sed for JSON data - you can use it to slice and filter and map and transform structured data with the same ease that sed, awk, grep and friends let you play with text.
+
+For example, giving the following flow data
+
+```
+id: test-object
+namespace: dev
+
+
+inputs:
+  - name: data
+    type: JSON
+    defaults: '{"value": [1, 2, 3]}'
+
+tasks:
+  - id: hello
+    type: io.kestra.core.tasks.log.Log
+    message: "{{ inputs.data }}"
+```
+
+The expression `{{ inputs.data.value }}` will return the list `[1, 2, 3]`
+
+The expression `{{ inputs.data.value | jq(".[1]") | first }}` will return `2`. `jq(".[1]")` access the second value of the list and return an array with one element, we then use `first` to access the value itself.
+
+You can play with the [Eval Expression](../04.user-interface-guide/04-executions.md) button in the outputs tab of a Flow execution. It's really helpful to troubleshoot more complex object parsing.
+
 
 ## How to use conditions
 
