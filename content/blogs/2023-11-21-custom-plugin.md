@@ -62,9 +62,9 @@ Alternatively, you could build custom Python scripts (especially using the [embe
 
 ## Conclusion
 
-In software development, the creation of reusable components is crucial. Kestra's design enables users to easily construct their own modules and abstract custom logic.
+The creation of reusable components is crucial in software development. Kestra's design enables users to easily construct their own modules and abstract custom logic.
 
-Whether a team is proficient in Java, prefers working exclusively with Python, or uses any other language, Kestra facilitates the creation of modular components via custom plugins and subflows, and allows end-users to interact with them using YAML syntax.
+Teams, whether proficient in Java, preferring exclusive work with Python, or utilizing any other language, can utilize Kestra to actively create custom plugins and subflows and interact with these components using YAML syntax.
 
 If you're interested in developing your own plugin, make sure to check [this documentation](https://kestra.io/docs/plugin-developer-guide). We would love to hear from you and learn about your use case, so don’t hesitate to share your ideas or questions in the [Slack community](http://kestra.io/slack).
 
