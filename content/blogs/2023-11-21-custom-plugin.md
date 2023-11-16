@@ -25,8 +25,7 @@ The company has a homegrown data quality platform in place that effectively cent
 
 Meanwhile, some teams have opted to use Soda for conducting analytics tests on Big Query tables. This decision however requires the aggregation of these test metrics into the internal data quality platform, which serves as the hub for all consolidated data. 
 
-In order to seamlessly integrate Soda tests into this data quality platform, the team made the strategic choice to enhance the existing Kestra plugins.
-Indeed, Kestra already supports the Soda plugin to run tests through the Soda Python library. It also supports consuming and producing messages from Kafka Topic, which the data quality platform relies on to communicate with external services. And finally, it covers anything related to API calls with the HTTP plugin.
+In order to seamlessly integrate Soda tests into this data quality platform, the team decided to build a custom plugin. Even though Kestra already provides a Soda plugin to run tests through the Soda Python library, they needed support for consuming and producing Kafka messages, which their data quality platform relies on to communicate with external services. On top of that, their custom plugin covers functionality to interact with their internal APIs via HTTP.
 
 
 Creating such a meta-plugin proves to be highly advantageous, especially when dealing with specific try-catch patterns, establishing communication with APIs, and constructing a comprehensive abstraction layer on top of it all.
