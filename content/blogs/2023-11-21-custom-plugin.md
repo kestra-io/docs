@@ -19,7 +19,7 @@ Every Kestra task is part of some plugin.
 
 This post will dive into one of our customer's dedicated plugins. They combined [Soda tests](https://www.soda.io/) with their homegrown data quality platform into a dedicated plugin.
 
-## Plugin Composition : Soda, Kafka and HTTP
+## Plugin combining Soda, Kafka and HTTP requests
 
 The company has a homegrown data quality platform in place that effectively centralizes all data metrics at the broader corporation level.
 
