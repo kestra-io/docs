@@ -17,7 +17,7 @@ But what if you need a dedicated plugin with your custom logic arising from busi
 
 Every Kestra task is part of some plugin.
 
-In this blog post we will dive into one of our customer plugin creations. They combined [Soda tests](https://www.soda.io/) with their homemade data quality platform that uses queue messaging. We will see that even there, Kestra offers many ways to integrate your custom logic into a dedicated component.
+This post will dive into one of our customer's dedicated plugins. They combined [Soda tests](https://www.soda.io/) with their homegrown data quality platform into a dedicated plugin.
 
 ## Plugin Composition : Soda, Kafka and HTTP
 
