@@ -33,25 +33,19 @@ Creating such a meta-plugin proves to be highly advantageous, especially when de
 
 ## From YAML to Java
 
-Developers took the smarty way to create this integrated plugin. As Kestra already has all the components to make it work, they first build a Kestra Flow allowing them to run Soda tests and sending corresponding metrics to Kafka topics.
-
-The result can be seen as follows: a Kestra flow made of different tasks, each of one dealing with its specific feature.
+The development team chose a stepwise approach to create this integrated plugin. Since Kestra already includes the necessary components, they initially developed a Kestra Flow. This Flow enabled them to execute Soda tests and send the resulting metrics to Kafka topics. The outcome was a Kestra flow composed of various tasks, with each task addressing a specific functionality.
 
 ![example flow kafka soda](/blogs/2023-11-21-custom-plugin/soda_kafka.jpg)
 
-This served as a first draft: It’s very easy to use YAML to describe such a pipeline. It’s fast and makes the development feedback loop very short.
+This initial version proved that YAML's simplicity accelerates development and shortens the feedback loop.
 
-Here the team had two solutions: either templatize the Flow by using inputs and outputs - cooking then a subflow (a flow that can be called by another flow). Or translating every command into proper Java methods.
+Faced with a decision, the team considered two options: they could either template the Flow by incorporating inputs and outputs to create a subflow (a flow callable by another flow), or they could convert each command into Java methods.
 
-They choose the second option. Why ?
+They opted for the latter. The rationale was that handling custom logic, numerous API calls, and managing messages and topics in queue systems is complex. Implementing try-catch patterns, business rules, or fallback methods in a programming language like Java is often more sustainable in the long run. It enhances the maintainability and extensibility of the integration.
 
-Dealing with custom logics, many API calls, managing messages and topics in queue systems is not straightforward. Using a proper programming language to implement try-catch patterns, business rules or fallback methods is sometimes preferable in the long-term. It eases the maintainability and the extensibility of the integration.
-
-Moreover, once the Flow was made in YAML it was very easy to translate it to Java. Just take a look at the underlying Java code and you can grasp how one can make the transition from Java to YAML.
+Once the Flow was designed in YAML, converting it to Java was straightforward, as you can see in the image below.
 
 ![java to yaml](/blogs/2023-11-21-custom-plugin/java_to_yaml.png)
-
-YAML is very good for abstraction. Like a well written complicated mathematical equation that can express clearly and tersely what English couldn’t, YAML brings a semantic clarity that simplifies the process of creating pipelines.
 
 ## Build components depending of the context
 
