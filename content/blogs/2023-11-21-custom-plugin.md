@@ -9,7 +9,7 @@ author:
 image: /blogs/2023-11-21-custom-plugin.jpg
 ---
 
-Kestra is powerful in many ways: you can get started in a few seconds, you can create flows and dependencies easily all from the UI, you can integrate it with your CI/CD pipelines, etc.
+Kestra is powerful in many ways: you can get started in a few minutes, build robust workflows, and manage everything as code and from the UI.
 
 But what about customization? What if you need custom plugins with your own embedded logics arising from business needs?
 
