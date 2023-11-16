@@ -109,10 +109,40 @@ The expression `{{ inputs.data.value }}` will return the list `[1, 2, 3]`
 
 The expression `{{ inputs.data.value | jq(".[1]") | first }}` will return `2`. `jq(".[1]")` access the second value of the list and return an array with one element, we then use `first` to access the value itself.
 
+> Note: we could have used `{{ inputs | jq(".data.value[1]") | first }}`, jq allows to parse any object in Kestra context.
+
 You can play with the [Eval Expression](../04.user-interface-guide/04-executions.md) button in the outputs tab of a Flow execution. It's really helpful to troubleshoot more complex object parsing.
 
 
-## How to use conditions
+## How to use conditions ?
+
+In some tasks like the If or Switch tasks, you will need to provide some conditions. You can use the Pebble syntax to use previous task outputs in those conditions:
+
+```yaml
+id: test-object
+namespace: dev
+
+
+inputs:
+  - name: data
+    type: JSON
+    defaults: '{"value": [1, 2, 3]}'
+
+tasks:
+
+  - id: if
+    type: io.kestra.core.tasks.flows.If
+    condition: '{{ inputs.data.value | jq(".[2]") | first == 3}}'
+    then:
+      - id: when_true
+        type: io.kestra.core.tasks.log.Log
+        message: 'Condition was true'
+    else:
+      - id: when_false
+        type: io.kestra.core.tasks.log.Log
+        message: 'Condition was false'
+```
+
 
 ## How to access sibling objects ?
 
