@@ -11,7 +11,7 @@ image: /blogs/2023-11-21-custom-plugin.jpg
 
 Kestra is powerful in many ways: you can get started in a few minutes, build robust workflows, and manage everything as code and from the UI.
 
-But what about customization? What if you need custom plugins with your own embedded logics arising from business needs?
+But what if you need a dedicated plugin with your custom logic arising from business needs?
 
 Here again you're not lost: [Kestra](https://github.com/kestra-io/kestra) is composable by design!
 
