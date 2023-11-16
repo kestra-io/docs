@@ -1,6 +1,6 @@
 ---
 title: "Overriding a Kestra Plugin for Custom Requirements: Why & How?"
-description: "Building components and reusable software with Kestra"
+description: "Building reusable components with Kestra"
 date: 2023-11-21T08:00:00
 category: Solutions
 author:
