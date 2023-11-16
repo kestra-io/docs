@@ -47,25 +47,25 @@ Once the Flow was designed in YAML, converting it to Java was straightforward, a
 
 ![java to yaml](/blogs/2023-11-21-custom-plugin/java_to_yaml.png)
 
-## Build components depending of the context
+## Building components 
 
-They are two interesting things here happening:
+There are two notable approaches here:
 
-1. You can start by building a component directly from YAML. Creating a subflow that can be called whenever you want with specific parameters (inputs)
-2. You can write a plugin in Java, letting the end-user work with a proper YAML semantic.
+1. You can begin by constructing a component directly using YAML. This involves creating a subflow that can be invoked with specific parameters (inputs) whenever needed.
+2. Alternatively, you can develop a plugin in Java, which allows the end-user to utilize proper YAML semantics.
 
-Depending on the context and the developer background, we can see that creating components in Kestra - reusable pieces of software - is very easy.
+Choosing one or the other depends on the situation and the developer's expertise. Both provide straightforward ways to create custom modular components in your workflows.
 
-We could also imagine a team only using Python and building subflows calling custom scripts with specific parameters. By creating a Subflow, the team can abstract the whole logic and expose only a few YAML parameters to run the underlying script.
+Alternatively, you could build custom Python scripts (especially using the [embedded VS Code Editor](https://kestra.io/docs/developer-guide/namespace-files)) and use them to build parametrized workflows. By designing a subflow with a Python script task, the team can encapsulate the business logic and expose only a few YAML parameters to execute the underlying script.
 
 ![flow subflow](/blogs/2023-11-21-custom-plugin/flow_subflow.jpg)
 
 ## Conclusion
- 
-Creating reusable components is key in any software development. Thanks to Kestra design, users can create their own building blocks and abstract custom logics easily.
 
-Whether a team is fluent in Java or only wants to work with Python or any language, Kestra offers ways to create templates (subflow) and let the end-user work with YAML syntax.
+In software development, the creation of reusable components is crucial. Kestra's design enables users to easily construct their own modules and abstract custom logic.
 
-Checkout [this documentation](https://kestra.io/docs/plugin-developer-guide) if you want to start creating your own plugin. We would love to hear from you and learn about your use case, so don’t hesitate to share your ideas on the [Slack community](http://kestra.io/slack).
+Whether a team is proficient in Java, prefers working exclusively with Python, or uses any other language, Kestra facilitates the creation of modular components via custom plugins and subflows, and allows end-users to interact with them using YAML syntax.
+
+If you're interested in developing your own plugin, make sure to check [this documentation](https://kestra.io/docs/plugin-developer-guide). We would love to hear from you and learn about your use case, so don’t hesitate to share your ideas or questions in the [Slack community](http://kestra.io/slack).
 
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository and give us a star](https://github.com/kestra-io/kestra) if you like the project.
