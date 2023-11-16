@@ -13,7 +13,7 @@ Kestra is powerful in many ways: you can get started in a few minutes, build rob
 
 But what if you need a dedicated plugin with your custom logic arising from business needs?
 
-Here again you're not lost: [Kestra](https://github.com/kestra-io/kestra) is composable by design!
+[Kestra](https://github.com/kestra-io/kestra) provides an extensible plugin architecture to help with that.
 
 Kestra is built on the concept plugins. Every task you use in Kestra is part of a plugin.
 
