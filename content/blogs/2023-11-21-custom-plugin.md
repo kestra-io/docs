@@ -29,7 +29,6 @@ In order to seamlessly integrate Soda tests into this data quality platform, the
 
 
 Creating such a meta-plugin proves to be highly advantageous, especially when dealing with specific try-catch patterns, establishing communication with APIs, and constructing a comprehensive abstraction layer on top of it.
-With all the necessary components in place, the team was well-prepared to craft a fully-integrated solution.
 
 
 ## From YAML to Java
