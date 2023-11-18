@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-md-6 p-5 order-0 order-md-1" data-aos="fade-left">
                     <p class="overline">Step 2</p>
-                    <h3>Integrate with your existing data stack</h3>
+                    <h3>Integrate with your existing stack</h3>
                     <p>Kestra integrates with a wide variety of data sources and tools, so you can easily connect your workflows to your existing data stack. This includes support for popular databases, file formats, APIs, and more.</p>
                 </div>
             </div>
