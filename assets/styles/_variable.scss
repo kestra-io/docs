@@ -2,6 +2,7 @@ $primary: #8405FF;
 $secondary: #C182FF;
 
 $white: #fff;
+$white-1 : #E1E1E1;
 $white-2: #E5E4F7;
 
 $gray-100: #f8f8fc;
@@ -13,7 +14,15 @@ $gray-600: #7081b9;
 $gray-700: #303e67;
 $gray-800: #2c3652;
 $gray-900: #1d2c48;
+
 $black: #26282D;
+$black-1 : #070708;
+$black-2 : #161617;
+$black-3 : #252526;
+$black-4 : #111113;
+$black-5 : #070708;
+$black-6 : #3D3D3F;
+$black-7 : #0D0D0C;
 
 $blue: #1761FD;
 $indigo: #8405FF;
@@ -26,6 +35,7 @@ $green: #03DABA;
 $teal: #03D87F;
 $cyan: #60C5FE;
 $light-cyan: #E6F6F6;
+
 
 $primary: $primary;
 $secondary: $secondary;
@@ -61,6 +71,8 @@ $font-size-sm: $font-size-base * .875;
 $font-size-lg: $font-size-base * 1.25;
 $font-size-xl: $font-size-base * 1.375;
 $font-size-2xl : $font-size-base * 2.188;
+$font-size-3xl : $font-size-base * 3.125;
+
 
 
 $h1-font-size: $font-size-base * 3.375;
