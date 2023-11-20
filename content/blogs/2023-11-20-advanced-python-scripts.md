@@ -11,11 +11,11 @@ image: /blogs/2023-11-20-advanced-python-scripts.jpg
 
 [Kestra](https://github.com/kestra-io/kestra) is, by design, language-agnostic, offering the flexibility to write scripts in your preferred language. We recognize that Python is among the most widely used languages.
 
-However, Kestra employs a declarative language for creating flows, and embedding large Python scripts directly into YAML files may not always be ideal. This approach works well for simpler scripts, but for more complex Python scripts, a cleaner solution is needed.
+Kestra employs a declarative language for creating flows, and it allows you to write your script directly in your workflow. This approach works well for simple scripts, but for more complex Python scripts, you can leverage two Kestra features:
 
-One way around is to **store your scripts on GitHub**. Kestra can then download and run these scripts, allowing you to modify them on the fly without needing to adjust the actual flow.
+- You can **store your scripts on GitHub**. Kestra can then download and run these scripts, allowing you to modify them on the fly without needing to adjust the actual flow.
 
-Alternatively, **Kestra's new code editor** enables you to write and execute Python scripts directly from the Kestra UI.
+- You can use **Kestra's new code editor** that enables you to write and execute Python scripts directly from the Kestra UI.
 
 Today, we'll explore both methods in detail. But first, let's develop a complex Python script to demonstrate its functionality.
 
@@ -313,9 +313,9 @@ And that's two ways to run complex and lengthy Python scripts in your Kestra flo
 ---
 
 ## Summing up Complex Python Scripts in Kestra
-In a nutshell, **don't ever write more than a few lines of Python code into a Kestra YAML file**. You won't get syntax highlighting or code completion, and your YAML file will get unnecessarily long and messy.
 
-You have two excellent alternatives you'll be thankful for in the long run - **GitHub** and the new **built-in editor**.
+
+You have two excellent way to manage your scripts with Kestra: **GitHub** and the new **built-in editor**.
 
 The prior assumes you're hosting your script files in a GitHub repo. That way, you'll make your flow YAML files shorter and easier to read, and you or your team will be able to make changes to the scripts without needing to change anything on Kestra's end.
 
