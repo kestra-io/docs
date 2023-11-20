@@ -17,10 +17,12 @@ One way around is to **store your scripts on GitHub**. Kestra can then download 
 
 Alternatively, **Kestra's new code editor** enables you to write and execute Python scripts directly from the Kestra UI.
 
-Today, we'll explore both methods in detail. But first, let's develop a Python script to demonstrate its functionality.
+Today, we'll explore both methods in detail. But first, let's develop a complex Python script to demonstrate its functionality.
+
 ---
 
 ## Writing a Long Python Script for Web Scraping
+
 So, what will our "complex" Python script do? 
 
 In a nutshell, it will scrape a website and organize the results in a Pandas DataFrame. We'll leverage a website that was designed for beginners to learn web scraping - [Books to Scrape](http://books.toscrape.com/).
