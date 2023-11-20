@@ -3,17 +3,20 @@ export default {
         title: "Kestra for Retail and Consuming goods",
         description:
             "From data pipelines to complex integrations, Kestra empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales as you grow",
-
+        image: "/landing/usecases/mds/intro.svg",
         cta: [
             {
-                text: 'Book a demo'
+                text: 'Book a demo',
+                href: '',
+                style: ''
             },
             {
-               text: 'Get started'
+               text: 'Get started',
+                href: '',
+                style: ''
             }
         ]
     },
-
     solutions: {
         title: "Use Cases in Retail",
         items: [
@@ -44,13 +47,26 @@ export default {
             },
         ],
     },
-    operations: {
+    leroy: {
+        description: 'Leroy Merlin France transformed data infrastructure by adopting' +
+            ' Kestra, enabling a data mesh architecture and achieving a remarkable 900% boost in productivity. ' +
+            'The shift empowered hundreds of data practitioners to create high-quality, scalable analytics, fundamentally ' +
+            'changing how data is managed and valued across the organization.',
+        cta: [
+            {
+                text: 'Read the story',
+                href: '',
+                style: ''
+            }
+        ]
+    },
+    ops: {
         title: "End-To-End Solution for Managing Complex Retail Operations",
         description:
             "Powers your business-critical retail applications, streamlines inventory, optimizes supply chain and much more. By breaking own organizational silos. Kestra fosters a collaborative environment for better operational efficiency.",
         items: [
             {
-                "title": "YAML-Based Worflows",
+                "title": "YAML-Based Workflows",
                 "text": "Build, maintain and scale, your workflows with Kestra's YAML-based interface.",
                 "icon": ""
             },
@@ -66,24 +82,24 @@ export default {
             },
             {
                 "title": "Event-Driven Orchestration",
-                "text": "",
+                "text": "Kestra's event-driven capabilities ensure that your retail operations react in real time.",
                 "icon": ""
             },
             {
                 "title": "Developer Centric Platform",
-                "text": "",
+                "text": "API-first design with robust, scalable, cloud-native architecture makes Kestra the go-to platform for software engineers in the retail industry.",
                 "icon": ""
             },
             {
                 "title": "User-Friendly Interface",
-                "text": "",
+                "text": "Engineered to be intuitive for both developers and business professionals. Kestra facilitates quick and efficient workflow development.",
                 "icon": ""
             }
         ]
     },
     plugins: {
         title: "Connect your Entire Stack With Plugins",
-        icons: [
+        items: [
             {
                 name: 'Fivetran',
                 icon: '',
@@ -129,9 +145,12 @@ export default {
                 icon: '',
             }
         ],
-        cta: 'See all plugins'
+        cta: {
+            text: 'See all plugins',
+            href: ''
+        }
     },
-    getStarted: {
+    footer: {
         "title": "Getting Started",
         "cta": [
             {
