@@ -9,15 +9,15 @@ author:
 image: /blogs/2023-11-20-advanced-python-scripts.jpg
 ---
 
-[Kestra](https://github.com/kestra-io/kestra) is, by design, language-agnostic, offering the flexibility to write scripts in your preferred language. We recognize that Python is among the most widely used languages.
+[Kestra](https://github.com/kestra-io/kestra) is, by design, language-agnostic, offering the flexibility to write scripts in your preferred language.
 
-Kestra employs a declarative language for creating flows, and it allows you to write your script directly in your workflow. This approach works well for simple scripts, but for more complex Python scripts, you can leverage two Kestra features:
+Kestra employs a declarative language for creating flows, and it allows you to write your script directly in your workflow thanks to our `script Tasks` . This approach works well for simple scripts, but for more complex scripts, you can leverage two Kestra features:
 
 - You can **store your scripts on GitHub**. Kestra can then download and run these scripts, allowing you to modify them on the fly without needing to adjust the actual flow.
 
-- You can use **Kestra's new code editor** that enables you to write and execute Python scripts directly from the Kestra UI.
+- You can use **Kestra's new code editor** that enables you to write and execute your scripts directly from the Kestra UI.
 
-Today, we'll explore both methods in detail. But first, let's develop a complex Python script to demonstrate its functionality.
+Today, we'll explore both methods in detail. But first, let's develop a large Python script to demonstrate its functionality.
 
 ---
 
