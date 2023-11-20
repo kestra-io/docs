@@ -1,7 +1,7 @@
 ---
 title: "Kestra and Python: How to Run and Integrate Complex Scripts into Your Flows"
 description: "Learn two recommended and scalable ways of including long and complex Python scripts into your Kestra flows."
-date: 2023-11-09T12:00:00
+date: 2023-11-20T12:00:00
 category: Solutions
 author:
   name: Dario Radecic
@@ -9,22 +9,21 @@ author:
 image: /blogs/2023-11-09-advanced-python-scripts.jpg
 ---
 
-When it comes to data orchestration platforms and Airflow alternatives, [Kestra](https://github.com/kestra-io/kestra) is a one-stop shop that allows you to integrate scripts from various programming languages, such as Python.
+[Kestra](https://github.com/kestra-io/kestra) is, by design, language-agnostic, offering the flexibility to write scripts in your preferred language. We recognize that Python is among the most widely used languages.
 
-The thing is, Python scripts with several hundreds of lines of code are messy in themselves. Things go nuclear when you paste that code into a YAML file, which is a data serialization language Kestra uses to organize flows.
+However, Kestra employs a declarative language for creating flows, and embedding large Python scripts directly into YAML files may not always be ideal. This approach works well for simpler scripts, but for more complex Python scripts, a cleaner solution is needed.
 
-One way around it is to **store your scripts on GitHub** and use a bit of Kestra magic to download the repo and run the scripts. This also has the added benefit of being able to change the script on the fly, and not having to do a thing with the actual flow.
+One way around is to **store your scripts on GitHub**. Kestra can then download and run these scripts, allowing you to modify them on the fly without needing to adjust the actual flow.
 
-The alternative way is to use **Kestra's new code editor**, which allows you to write and use Python scripts straight from the Kestra UI.
+Alternatively, **Kestra's new code editor** enables you to write and execute Python scripts directly from the Kestra UI.
 
-Today you'll learn all about both of these examples. But first, let's write one long-ish Python script to see what it does.
-
+Today, we'll explore both methods in detail. But first, let's develop a Python script to demonstrate its functionality.
 ---
 
 ## Writing a Long Python Script for Web Scraping
 So, what will our "complex" Python script do? 
 
-In a nutshell, it will scrape a website and organize the results in a Pandas DataFrame. We know, scraping isn't ethical or even legal sometimes, and that's why we'll leverage a website that was designed for beginners to learn web scraping - [Books to Scrape](http://books.toscrape.com/).
+In a nutshell, it will scrape a website and organize the results in a Pandas DataFrame. We'll leverage a website that was designed for beginners to learn web scraping - [Books to Scrape](http://books.toscrape.com/).
 
 It has books organized into categories, as you can see from the following image:
 
@@ -242,7 +241,6 @@ Up next, you'll learn how to run Python scripts using our new code editor.
 
 
 ## Approach #2 - Writing the Script with Kestra Editor
-The latest release of Kestra brings some interesting new features, one of them being the built-in code editor.
 
 To start using it, click on the `Editor` tab in the sidebar navigation, and choose your namespace from the dropdown menu:
 
