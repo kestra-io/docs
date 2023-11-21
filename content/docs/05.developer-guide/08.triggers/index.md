@@ -25,17 +25,6 @@ Note that the above-mentioned **templated variables** are only available when th
 Also, note that **you don't need an extra task to consume** the file or message from the event. Kestra downloads those automatically to the **internal storage** and makes those available in your flow using `{{ trigger.uri }}` variable. Therefore, you don't need any additional task to e.g. consume a message from the SQS queue or to download a file from S3 when using those event triggers. The trigger already consumes and downloads those, making them directly available for further processing. Check the documentation of a specific trigger and [Blueprints](../04.user-interface-guide/blueprints.md) with the **Trigger** tag for more details and examples.
 ::
 
----
-
-
-
----
----
-TODO redo this section
-
-
-
-
 
 Triggers restrict parallel execution for a given trigger ID to one active run. For instance, if an Execution from a flow with a `Schedule` trigger with ID `hourly` is still in a `Running` state, another one will not be started. However, you can still trigger the same flow manually (from the UI or API), and the scheduled Executions will not be affected.
 
