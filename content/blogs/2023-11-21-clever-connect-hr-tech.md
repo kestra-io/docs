@@ -1,6 +1,6 @@
 ---
-title: "CleverConnect: Helping 350 Millions People Find a Fulfilling Job with Kestra by 2030"
-description: "How an HR tech company use Kestra as the backbone of their platform"
+title: "CleverConnect: Using Kestra to Help 350 Million People Find a Fulfilling Job by 2030"
+description: "How the HR company uses Kestra as the backbone of their platform."
 date: 2023-11-21T09:00:00
 category: Solutions
 author:
@@ -9,8 +9,7 @@ author:
 image: /blogs/2023-11-21-clever-connect-hr-tech.jpg
 ---
 
-In this case study, delve into how [CleverConnect](https://cleverconnect.com/), a human resources tech company, leverages Kestra's capabilities to create an integration platform. With a database of over 10 million candidates and partnerships with 2,500 companies across Europe, CleverConnect has developed an AI-driven, integrated solution for job-boards, career sites, CRMs, and other HR tools. 
-By using [Kestra](https://github.com/kestra-io/kestra), they've been able to construct a platform specifically tailored for automating the creation of connectors, streamlining the recruitment process and enhancing the overall experience.
+This case study delves into how [CleverConnect](https://cleverconnect.com/), a human resources tech company, leverages Kestra's capabilities to create an integration platform. With a database of over 10 million candidates and partnerships with 2,500 companies across Europe, CleverConnect has developed an AI-driven, integrated solution for job boards, career sites, CRMs, and other HR tools. Using [Kestra](https://github.com/kestra-io/kestra), they've constructed a platform specifically tailored for automating the creation of connectors, streamlining the recruitment process, and enhancing the overall experience.
 
 ## CleverConnect’s Journey Towards Efficiency
 
@@ -28,9 +27,9 @@ CleverConnect required a new integration hub —a solution that could accelerate
 
 CleverConnect created this new platform, built on top of Kestra. As Kestra is API by design, CleverConnect takes advantage of this feature to use it as their orchestration system to scrape, parse and connect HR data with their products. Kestra is used as the backbone to schedule and automate workflow executions.
 
-This platform allows to generate Kestra flows through a low code interface that mostly consist of three parts:
+This platform allows to generate Kestra flows through a low code interface that mostly consists of three parts:
 
-* Inbound Connectors: allow to validate and connect with partners API sources. Using flow inputs property and custom plugins to streamline development and scrape the API. Users are guided during connector edition thanks to Kestra semantics allowing type enforcement and default values.
+* Inbound Connectors: allow to validate and connect with partners API sources. Using flow inputs property and custom plugins to streamline development and scrape the API. Users are guided during the connector edition thanks to Kestra semantics allowing type enforcement and default values.
 
 * Transformer Connectors: to apply custom rules like adding or removing values, mapping fields, filtering data, etc.
 
@@ -63,6 +62,6 @@ The development workflow is streamlined by using [GitLab CI/CD](../docs/develope
 
 ## Conclusion
 
-Kestra has become a critical asset for CleverConnect, enabling them to accelerate their development processes and manage an ever-growing number of connectors. The platform's versatility, rapid development capabilities, and robust API have played a critical role in CleverConnect's ongoing mission to change the recruitment industry. With Kestra by their side, CleverConnect is well on its way to achieving its ambitious goals: Helping by 2030 more than 350 million people to find a fulfilling job.
+Kestra has become a critical asset for CleverConnect, enabling them to accelerate their development processes and manage an ever-growing number of connectors. The platform's versatility, rapid development capabilities, and robust API have played a critical role in CleverConnect's ongoing mission to change the recruitment industry. With Kestra by their side, CleverConnect is well on its way to achieving its ambitious goal by 2030: to help over 350 million people find a fulfilling job.
 
 Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
