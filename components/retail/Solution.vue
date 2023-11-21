@@ -164,14 +164,12 @@
     &::before {
       content: "";
       position: absolute;
-      height: 266.493px;
-      width: 170.248px;
+      width: 228px;
+      height: 565px;
       background: url("/retail/solution/light-mask.svg") no-repeat;
       bottom: 200px;
-      left: -150px;
+      left: 0;
       z-index: -1;
-      background: linear-gradient(180deg, rgba(98, 24, 255, 0.00) 0%, #6117FF 100%);
-        filter: blur(100px);
     }
   }
   .title {

@@ -1,8 +1,7 @@
 <template>
-    <div class="d-flex justify-content-center container footer py-4 my-5">
-        <div class="col-12 col-md-7">
-            <div class="container text-center  rounded">
-                <div>
+    <div class="d-flex justify-content-center container my-5">
+        <div class="col-12 col-md-7 py-4 footer">
+                <div class=" text-center rounded">
                     <h3 data-aos="fade-right" class="mb-3">Getting Started</h3>
                     <div class="d-flex gap-2  flex-wrap justify-content-center align-items-center">
                         <NuxtLink href="/docs">
@@ -13,16 +12,28 @@
                         </NuxtLink>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </template>
 <style scoped lang="scss">
  @import "../../assets/styles/variable";
-.footer{
+
+.container{
     background-color: $black-2;
-    
-    border: 1px solid $black-3;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+    &::before {
+        content: "";
+        position: absolute;
+        width: 262px;
+        height: 170px;
+        background: url("/retail/light-mask2.svg") ;
+        right: 0px;
+        top: 0px;
+        z-index: 1;
+  }
 }
 .btn-dark{
     --bs-btn-bg: $black-4 ;
