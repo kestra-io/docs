@@ -7,9 +7,9 @@
                         <p data-aos="fade-left" class="overline">Careers</p>
                         <h1 data-aos="fade-right">Become a Kestra Member</h1>
                         <p class="baseline" data-aos="fade-left" >Join our amazing team and drive innovation in a collaborative workspace</p>
-                        <a href="#positions" class="btn btn-lg btn-primary" data-aos="zoom-in">
+                        <NuxtLink :href="(route.fullPath === '/careers' ? '' : '/careers') + '#positions'" class="btn btn-lg btn-primary" data-aos="zoom-in">
                             Open positions
-                        </a>
+                        </NuxtLink>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -30,4 +30,5 @@
     }
 </style>
 <script setup lang="ts">
+    const route = useRoute()
 </script>
