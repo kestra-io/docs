@@ -11,14 +11,14 @@ image:
 
 If you want to build scalable, reliable, and fault-tolerant applications/APIs in 2023 and beyond, queues might be just what you're looking for. They provide you with a stupidly simple mechanism for **building large-scale and distributed applications**. With the rise of cloud computing in recent years, it makes sense to provision and maintain your queues in cloud environments - using [Amazon Simple Queue Service (SQS)](https://aws.amazon.com/sqs/), for example.
 
-But that's not the only practical implementation of queues, of course. You can also use them with [Kestra](https://github.com/kestra-io/kestra), our orchestration platform, to push and read messages directly from your flows. This way, you can publish messages to SQS that has one or multiple consumers attached to it, or, your Kestra flow can serve as consumers itself - it's up to you and your specific needs.
+But that's not the only practical implementation of queues, of course. You can also use them with [Kestra](https://github.com/kestra-io/kestra), our orchestration platform, to trigger a flow execution when a new message is added to the queue. You can also push and read messages directly from your flows. This way, you can publish messages to SQS that has one or multiple consumers attached to it, or, your Kestra flow can serve as consumers itself - it's up to you and your specific needs.
 
-Today's article will refresh your memory on the importance of queues in modern-day applications and will give you practical examples of **how to connect an AWS SQS queue to Kestra** - both for pushing and processing messages.
+Today's article will refresh your memory on the importance of queues in modern-day applications and will give you practical examples of **how to connect an AWS SQS queue to Kestra** - for pushing and processing messages, and also triggering a flow execution when a new message arrives.
 
 ---
 
 ## The Role of Message Queues in Modern Applications and APIs
-Imagine you've created a machine learning model that automatically **detects fraud based on credit card transactions**, are are now using it on a large scale in your company. You've probably written the whole thing in Python, and exposed the logic as a REST API with libraries like Flask, Django, or FastAPI:
+Imagine you've created a machine learning model that automatically **detects fraud based on credit card transactions**, are are now using it on a large scale in your company. The technology you've used for the job is irrelevant, but you've likely decided to expose the predictive functionality as a REST API. Here's what the architecture of your app might look like:
 
 ![Image 1 - Architecture example 1](/blogs/2023-11-15-kestra-sqs/1.png)
 
@@ -30,14 +30,14 @@ What you should do instead is to **split your application into multiple services
 
 ![Image 2 - Architecture example 2](/blogs/2023-11-15-kestra-sqs/2.png)
 
-In practice, this means your Python API will be a separate service and will have a single task of accepting requests. As soon as a new request is captured, its content is added (or *enqueued*) to a queue. In other words, this part serves as a producer. This queue has one or multiple Python services attached to it on the other end, and their task is to take the messages from a queue (*dequeue*) and process them individually, usually in parallel if you have multiple services, or consumers at this end.
+In practice, this means your API Gateway will be a separate service and will have a single task of accepting requests. As soon as a new request is captured, its content is added (or *enqueued*) to a queue. In other words, this part serves as a producer. This queue has one or multiple worker services attached to it on the other end, and their task is to take the messages from a queue (*dequeue*) and process them individually, usually in parallel if you have multiple services, or consumers at this end.
 
 **So, why is this approach better?** Here's a couple of reasons:
-- **Improved scalability** - Message queues like SQS make scaling possible. In the context of your application, the source Python API will always be available since its only task is to forward requests, and all of the tasks from a queue will be processed eventually since multiple worker services are attached to it and are processing messages in parallel. If the processing is slow, simply scale the worker portion horizontally and/or increase the compute capacity of individual worker nodes.
+- **Improved scalability** - Message queues like SQS make scaling possible. In the context of your application, the API Gateway will always be available since its only task is to forward requests, and all of the tasks from a queue will be processed eventually since multiple worker services are attached to it and are processing messages in parallel. If the processing is slow, simply scale the worker portion horizontally and/or increase the compute capacity of individual worker nodes.
 - **Increased reliability and fault tolerance** - Your app won't fail if flooded with many requests at once, since the portion of the app that handles requests does only that, and leaves processing to other services. Further, if the worker nodes fail or are unavailable, the messages will remain in a queue. They will be processed as soon as worker nodes are up and running again.
 - **Asynchronous and parallel processing** - The processing task happens as a background process, or asynchronously, and can also be parallelized by attaching multiple worker services to the same queue. Win-win!
 - **Load balancing** - Message queues like SQS provide a form of load balancing by default, meaning they'll distribute tasks evenly across multiple worker nodes. This is essential with high workload applications, as it allows you to scale the number of workers up or down as needed.
-- **Service decoupling** - A queue like SQS will allow you to separate your services (as shown in Image 2), and result in better architectural design. In short, the producer (Python API) is separated from the consumers (workers) and ensures changes in one part of the system, such as changing your machine learning model will have minimal or no impact on other parts of the system.
+- **Service decoupling** - A queue like SQS will allow you to separate your services (as shown in Image 2), and result in better architectural design. In short, the producer (API Gateway) is separated from the consumers (workers) and ensures changes in one part of the system, such as changing your machine learning model will have minimal or no impact on other parts of the system.
 
 There are more reasons why a queue-based architecture is simply superior, but we're certain you get the point by now.
 
@@ -67,18 +67,66 @@ Now, all of these are potentially **sensitive values**, so you don't want to har
 
 **Note:** [Kestra Enterprise](https://kestra.io/enterprise) users can add and modify secret keys directly from the Kestra UI.
 
-Assuming you've done that, let's continue by creating a Kestra flow that communicates with SQS.
+Let's continue by exploring Kestra SQS integration options.
 
 
 
 ## Kestra SQS in Action: Practical Examples
-This section will walk you through two practical examples of how to use SQS with Kestra. You'll first see how to push messages to a queue, imitating a content producer, and then we'll go over reading those messages from Kestra (content consumer).
+This section will walk you through three practical examples of how to use SQS with Kestra. You'll first learn about the most widely used integration - **SQS trigger**, and then you'll see how to manually push messages to a queue, and also how to read them.
+
+### Example 1: Trigger a Kestra Flow when Message is Added to a Queue
+The most common way to work with SQS from Kestra is via the *set-it-and-forget-it* method. This means you'll create a flow that is *triggered* each time a new message is added to the queue. The flow will run automatically, so if you're satisfied with the data processing logic it implements, you won't have to touch it ever again.
+
+To keep things simple, we'll just log the URI of the incoming SQS message.
+
+But first, you need to establish a connection to SQS. You'll have to specify the values for the AWS access key, AWS secret key, AWS region, and the queue URL. All of these were added to environment variables in the previous section, meaning you can access them with `"{{ secret('<VARIABLE-NAME>') }}"`. Add all of them to a new trigger of type `io.kestra.plugin.aws.sqs.Trigger`:
+
+```yaml
+id: sqs-trigger
+namespace: dev
+
+tasks:
+  - id: hello
+    type: io.kestra.core.tasks.log.Log
+    message: "{{ trigger.uri }}"
+
+triggers:
+  - id: sqs
+    type: io.kestra.plugin.aws.sqs.Trigger
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"
+    region: "{{ secret('AWS_REGION') }}"
+    queueUrl: "{{ secret('SQS_URL') }}"
+    maxRecords: 1
+```
+
+The `maxRecords` property set to 1 means one execution of everything specified under `tasks` will process exactly 1 SQS message.
+
+**There's no need to run this flow - just save it**. To test things out, we'll go over to AWS and send a new message to the queue manually:
+
+![Image 5 - Manually sending message to a queue](/blogs/2023-11-15-kestra-sqs/5.png)
+
+The `io.kestra.core.tasks.log.Log` plugin included in our flow logic was set to log the trigger URI. You can access all Kestra logs under "Logs" in the navigation menu:
+
+![Image 6 - Kestra logs](/blogs/2023-11-15-kestra-sqs/6.png)
+
+As you can see, the URI of the processed SQS message was logged successfully.
+
+You can click on the `executionId` value of this log to further inspect everything that happened behind the scenes: 
+
+![Image 7 - Execution details](/blogs/2023-11-15-kestra-sqs/7.png)
+
+And to finally verify the message you sent manually was retrieved by Kestra, you can preview or download the file at the logged URI. Here's what it contains:
+
+![Image 8 - Flow execution Gantt view](/blogs/2023-11-15-kestra-sqs/8.png)
+
+If you want a set-it-and-forget-it way of processing SQS messages with Kestra, this is the only approach you'll need. But if you want a bit more manual control, make sure to read the two upcoming examples.
 
 
-### Example 1: Push Messages to AWS SQS
-First, let's push a couple of messages to our queue. To establish a connection, you'll need to specify the values for the AWS access key, AWS secret key, AWS region, and the queue URL. All of these were added to environment variables in the previous section, meaning you can access them with `"{{ secret('<VARIABLE-NAME>') }}"`.
+### Example 2: Push Messages to AWS SQS
+In this example, you'll write a Kestra flow that manually pushes a message to SQS.
 
-The flow you're about to see will **publish two messages to SQS**, so it's a good practice to create `taskDefaults` for `io.kestra.plugin.aws.sqs.Publish`. This will ensure we don't have to repeat ourselves and also will allow us to change credentials in one place.
+It's a good practice to create `taskDefaults` for `io.kestra.plugin.aws.sqs.Publish`. This will ensure we don't have to repeat ourselves and also will allow us to change credentials in one place.
 
 The `io.kestra.plugin.aws.sqs.Publish` plugin also accepts `from` parameter, which further expects one or more `data` values to be submitted to the queue. You can read more about message formatting on our [official documentation](https://kestra.io/plugins/plugin-aws/tasks/sqs/io.kestra.plugin.aws.sqs.publish).
 
@@ -117,17 +165,13 @@ taskDefaults:
       queueUrl: "{{ secret('SQS_URL') }}"
 ```
 
-This is what your editor should look like:
-
-![Image 5 - Kestra editor contents](/blogs/2023-11-15-kestra-sqs/5.png)
-
 You can **run the flow** by clicking on the "Execute" button in the top right corner. You'll see the following Gantt view immediately afterward:
 
-![Image 6 - Flow execution Gantt view](/blogs/2023-11-15-kestra-sqs/6.png)
+![Image 9 - Flow execution Gantt view](/blogs/2023-11-15-kestra-sqs/9.png)
 
 The good thing about SQS is that it allows us to **see how many messages are currently in the queue**, straight from the AWS site:
 
-![Image 7 - Flow execution Gantt view](/blogs/2023-11-15-kestra-sqs/7.png)
+![Image 10 - Flow execution Gantt view](/blogs/2023-11-15-kestra-sqs/10.png)
 
 Long story short, it's safe to assume the messages were successfully published from Kestra to SQS.
 
@@ -135,10 +179,10 @@ Let's see how to read them next.
 
 
 
-### Example 2: Process Messages from AWS SQS
-We've used the `io.kestra.plugin.aws.sqs.Publish` plugin to send messages to SQS, so can you guess the name of the plugin used to do the opposite? If you've guessed `io.kestra.plugin.aws.sqs.Consume`, you're absolutely right!
+### Example 3: Process Messages from AWS SQS
+In addition to writing an automated trigger, as shown in Example #1, you can also read and process queue messages manually with the `io.kestra.plugin.aws.sqs.Consume` plugin.
 
-This plugin requires you to set either the `maxDuration` or `maxRecords` parameter. Since we already know there are 2 messages in a queue, we'll use the latter, just for convenience. Once again, the credentials will be stored in `taskDefaults` for this specific plugin.
+It requires you to set either the `maxDuration` or `maxRecords` parameter. Since we already know there are 2 messages in a queue, we'll use the latter, just for convenience. Once again, the credentials will be stored in `taskDefaults` for this specific plugin.
 
 There's not much to it - the plugin is straightforward to use, but there are a couple of [extra parameters available](https://kestra.io/plugins/plugin-aws/tasks/sqs/io.kestra.plugin.aws.sqs.consume) if you want to dig deeper:
 
@@ -161,28 +205,24 @@ taskDefaults:
       queueUrl: "{{ secret('SQS_URL') }}"
 ```
 
-This is what your flow editor should look like:
-
-![Image 8 - Kestra editor contents](/blogs/2023-11-15-kestra-sqs/8.png)
-
 As earlier, running the task will redirect you to a flow execution Gantt view:
 
-![Image 9 - Flow execution Gantt view](/blogs/2023-11-15-kestra-sqs/9.png)
+![Image 11 - Flow execution Gantt view](/blogs/2023-11-15-kestra-sqs/11.png)
 
 All the good stuff is stored in the *Outputs* tab. Click on it to continue:
 
-![Image 10 - Outputs tab](/blogs/2023-11-15-kestra-sqs/10.png)
+![Image 12 - Outputs tab](/blogs/2023-11-15-kestra-sqs/12.png)
 
 You can download the consumed SQS messages locally to verify they are the ones submitted by the previous task:
 
-![Image 11 - Consumed messages](/blogs/2023-11-15-kestra-sqs/11.png)
+![Image 13 - Consumed messages](/blogs/2023-11-15-kestra-sqs/13.png)
 
 And that's pretty much all there is to the Kestra SQS integration. You can publish and consume messages, and that's actually all you need. Let's wrap things up next.
 
 
 ---
 ## Summing up Kestra and AWS SQS
-Today you got a 10000-foot overview of message queues and why they're essential in modern and scalable applications/APIs. You've also seen how to work with Amazon Simple Queue Service (SQS) directly from Kestra, which allows you to both send messages to the queue and read them thanks to our specific plugins.
+Today you got a 10000-foot overview of message queues and why they're essential in modern and scalable applications/APIs. You've also seen how to work with Amazon Simple Queue Service (SQS) directly from Kestra, which allows you to send messages to the queue and read them thanks to our specific plugins. By far the most common use case of this integration is to create an automated trigger flow, as shown in Example #1. This will be enough for 90% of users.
 
 To recap, queues are life savers when you want to scale your applications, and SQS is among the best queues available right now. Kestra integration allows you to integrate SQS into your new and existing workflows, which is yet another practical worth exploring.
 
