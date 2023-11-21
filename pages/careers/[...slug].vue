@@ -8,8 +8,8 @@
 
         <CareersHeader/>
         <template v-if="slug === '/careers/'">
-            <CareersPerks/>
             <CareersPositions/>
+            <CareersPerks/>
         </template>
         <div v-else class="container bd-gutter mt-3 my-md-4 bd-layout">
             <article class="bd-main order-1">
