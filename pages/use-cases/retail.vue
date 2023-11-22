@@ -5,7 +5,7 @@
     </Head>
     <div class="main">
         <UseCaseCard :cta="header.cta" :description="header.description" />
-        <Line class="py-5" />
+        <Line style='padding: 4rem 0 4rem 0' />
         <UseCasesExamples :items="solutions.items" />
         <UseCaseLeroyMerlin
             :alt="leroy.alt"
