@@ -26,7 +26,7 @@
 </template>
 <script>
 export default {
-    name: "UseCaseCard",
+    name: "UseCaseHeaderCard",
 
     props: {
         icon: {
@@ -42,6 +42,10 @@ export default {
             type: Array,
             required: true,
         },
+        descrClass: {
+            type: String,
+            required: false
+        }
     },
 };
 </script>
