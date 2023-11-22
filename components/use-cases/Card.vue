@@ -46,5 +46,7 @@ export default {
     p {
         font-size: $font-size-xl;
     }
+    padding-top: 8rem;
+    padding-bottom: 0;
 }
 </style>
