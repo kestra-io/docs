@@ -46,11 +46,7 @@ export default {
         cta: {
             type: Array,
             required: true,
-        },
-        descrClass: {
-            type: String,
-            required: false,
-        },
+        }
     },
 };
 </script>

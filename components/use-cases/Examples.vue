@@ -46,10 +46,6 @@ export default {
     .card-body {
         padding: 2rem 1rem;
 
-        h6 {
-            line-height: 1.875rem;
-        }
-
         p {
             font-size: $font-size-sm;
             line-height: 1.375rem;

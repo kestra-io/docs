@@ -9,23 +9,19 @@
         <UseCaseLeroyMerlin
             :cta="leroy.cta"
             :description="leroy.description"
-            :icon='leroy.icon'
-            :alt='leroy.alt'
-            descr-class="fs-6"
+            :icon="leroy.icon"
+            :alt="leroy.alt"
         />
-
         <UseCaseRetailOps
             :items="ops.items"
             :description="ops.description"
             :header="ops.title"
         />
-
         <UseCasePlugins
             :title="plugins.title"
             :plugins="plugins.items"
             :cta="plugins.cta"
         />
-
         <UseCaseFooter class="mb-5" :cta="footer.cta" :title="footer.title" />
     </div>
 </template>

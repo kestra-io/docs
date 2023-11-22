@@ -14,7 +14,7 @@
         </div>
         <div v-if="cta.text">
             <NuxtLink :href="cta.href" class="btn btn-primary">
-                <!-- Update style -->
+                <!--TODO Update style -->
                 {{ cta.text }}
             </NuxtLink>
         </div>
