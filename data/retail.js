@@ -3,17 +3,16 @@ export default {
         title: "Kestra for Retail and Consuming goods",
         description:
             "From data pipelines to complex integrations, Kestra empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales as you grow",
-        image: "/landing/usecases/mds/intro.svg",
         cta: [
             {
                 text: 'Book a demo',
                 href: '',
-                style: ''
+                style: 'btn btn-primary btn-lg' // #TODO: add the correct button style
             },
             {
                text: 'Get started',
                 href: '',
-                style: ''
+                style: 'btn-animated btn-purple-animated btn btn-secondary btn-lg'
             }
         ]
     },
@@ -23,31 +22,33 @@ export default {
             {
                 title: "Automated Inventory Management",
                 text: "Eliminate manual tracking to use Kestra to automate your inventory management system.",
-                icon: "",
+                icon: "", // #TODO: add the correct icon
             },
             {
                 title: "Enhance Customer Experience",
                 text: "Use Kestra to collect, analyze, and use customer feedback. Automate the delivery of personalized promotions and recommendations based on customer data.",
-                icon: "",
+                icon: "", // #TODO: add the correct icon
             },
             {
                 title: "Compliance and Reporting",
                 text: "Automate the reporting processes, ensuring that all data compiles with retail standards and regulations. Ideal for generating automated end-of-day sales reports, inventory counts, and more.",
-                icon: "",
+                icon: "", // #TODO: add the correct icon
             },
             {
                 title: "Report Automation for Supply Chain",
                 text: "Automate supplier evaluation and order placement, ensuring a smooth and efficient supply chain operation.",
-                icon: "",
+                icon: "", // #TODO: add the correct icon
             },
             {
                 title: "Streamlined Data Management",
                 text: "Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency.",
-                icon: "",
+                icon: "", // #TODO: add the correct icon
             },
         ],
     },
     leroy: {
+        icon: "", // #TODO: add the correct icon
+        alt: 'Leroy',
         description: 'Leroy Merlin France transformed data infrastructure by adopting' +
             ' Kestra, enabling a data mesh architecture and achieving a remarkable 900% boost in productivity. ' +
             'The shift empowered hundreds of data practitioners to create high-quality, scalable analytics, fundamentally ' +
@@ -55,8 +56,8 @@ export default {
         cta: [
             {
                 text: 'Read the story',
-                href: '',
-                style: ''
+                href: '', //#TODO: update story link
+                style: 'btn-animated btn-purple-animated btn btn-secondary btn-lg' //#TODO: update style
             }
         ]
     },
@@ -68,32 +69,32 @@ export default {
             {
                 "title": "YAML-Based Workflows",
                 "text": "Build, maintain and scale, your workflows with Kestra's YAML-based interface.",
-                "icon": ""
+                "icon": "/terraform/overview/deploy-pattern.svg" // #TODO: add the correct icon
             },
             {
                 "title": "Full CI/CD Integration",
                 "text": "From Terraform to GitHub Actions, Kestra provides complete control over deployment and resource management.",
-                "icon": ""
+                "icon": "/terraform/overview/deploy-pattern.svg" // #TODO: add the correct icon
             },
             {
                 "title": "Language Agnostic",
                 "text": "Kestra's language-agnostic capabilities let you integrate various languages. Customize workflows to align with your unique retail business logic.",
-                "icon": ""
+                "icon": "/terraform/overview/deploy-pattern.svg" // #TODO: add the correct icon
             },
             {
                 "title": "Event-Driven Orchestration",
                 "text": "Kestra's event-driven capabilities ensure that your retail operations react in real time.",
-                "icon": ""
+                "icon": "/terraform/overview/deploy-pattern.svg" // #TODO: add the correct icon
             },
             {
                 "title": "Developer Centric Platform",
                 "text": "API-first design with robust, scalable, cloud-native architecture makes Kestra the go-to platform for software engineers in the retail industry.",
-                "icon": ""
+                "icon": "/terraform/overview/deploy-pattern.svg" // #TODO: add the correct icon
             },
             {
                 "title": "User-Friendly Interface",
                 "text": "Engineered to be intuitive for both developers and business professionals. Kestra facilitates quick and efficient workflow development.",
-                "icon": ""
+                "icon": "/terraform/overview/deploy-pattern.svg" // #TODO: add the correct icon
             }
         ]
     },
@@ -102,62 +103,78 @@ export default {
         items: [
             {
                 name: 'Fivetran',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             },
             {
                 name: 'Snowflake',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             },
             {
                 name: 'AWS',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             },
             {
                 name: 'databricks',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             },
             {
                 name: 'Azure',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             },
             {
                 name: 'dbt',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             },
             {
                 name: 'Airbyte',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             },
             {
                 name: 'Docker',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             },
             {
                 name: 'Terraform',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             },
             {
                 name: 'Google Cloud',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             },
             {
                 name: 'Github',
-                icon: '',
+                icon: '', // #TODO: add the correct icon,
+                href: ''
             }
         ],
         cta: {
             text: 'See all plugins',
-            href: ''
+            href: '' // #TODO: add the correct link
         }
     },
     footer: {
         "title": "Getting Started",
         "cta": [
             {
-                text: "Read the docs"
+                text: "Read the docs",
+                href: '',
+                style: '', // #TODO: add style
             },
             {
-                text: "Get started"
+                text: "Get started",
+                href: '',
+                style: 'btn-animated btn-purple-animated'
+
             }
         ]
     }
