@@ -35,7 +35,7 @@ export default {
         cta: {
             type: Array,
             required: true,
-        }
+        },
     },
 };
 </script>

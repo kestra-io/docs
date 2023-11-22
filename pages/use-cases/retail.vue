@@ -5,7 +5,7 @@
     </Head>
     <div class="main">
         <UseCaseCard :cta="header.cta" :description="header.description" />
-        <Line class='py-5'/>
+        <Line class="py-5" />
         <UseCasesExamples :items="solutions.items" />
         <UseCaseLeroyMerlin
             :alt="leroy.alt"
@@ -23,7 +23,7 @@
             :plugins="plugins.items"
             :title="plugins.title"
         />
-        <Line class='py-5'/>
+        <Line class="py-5" />
         <UseCaseFooter class="mb-5" :cta="footer.cta" :title="footer.title" />
     </div>
 </template>
@@ -36,7 +36,7 @@ import UseCasePlugins from "~/components/use-cases/Plugins.vue";
 import UseCaseRetailOps from "~/components/use-cases/RetailOps.vue";
 import UseCaseLeroyMerlin from "~/components/use-cases/LeroyMerlin.vue";
 import UseCaseExamples from "~/components/use-cases/Examples.vue";
-import Line from '~/components/use-cases/Line.vue'
+import Line from "~/components/use-cases/Line.vue";
 
 export default {
     name: "Retail",

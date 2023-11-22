@@ -1,16 +1,12 @@
 <template>
-    <div class='container' >
+    <div class="container">
         <hr />
     </div>
-
 </template>
 <script>
 export default {
-    name: "Line"
-}
-
+    name: "Line",
+};
 </script>
 
-<style scoped lang='scss'>
-
-</style>
+<style scoped lang="scss"></style>
