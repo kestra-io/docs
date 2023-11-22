@@ -1,16 +1,24 @@
 <template>
-    <div>
-        <h1>{{ title }}</h1>
-        <div>
-            <img v-for='plugin in plugins' :src='plugin.icon' :alt='plugin.name'/>
+    <div class="d-flex flex-column align-items-center my-5">
+        <h2 data-aos="fade-left" class="text-center card-title">
+            Connect Your Entire Stack <br />
+            with Plugins
+        </h2>
+        <!-- TODO: Add gradient to 'Entire Stack' -->
+        <div class="d-flex justify-content-center flex-wrap plugins my-4">
+            <img
+                v-for="plugin in plugins"
+                :src="plugin.icon"
+                :alt="plugin.name"
+            />
         </div>
-        <div v-if='cta.text'>
-            <NuxtLink :href='cta.href'>
+        <div v-if="cta.text">
+            <NuxtLink :href="cta.href" class="btn btn-primary">
+                <!-- Update style -->
                 {{ cta.text }}
             </NuxtLink>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -20,21 +28,24 @@ export default {
         plugins: {
             type: Array,
             default: () => [],
-            required: true
+            required: true,
         },
         title: {
             type: String,
-            required: true
+            required: true,
         },
         cta: {
             type: Object,
             required: false,
-            default: () => ({})
-        }
-    }
-}
-
+            default: () => ({}),
+        },
+    },
+};
 </script>
-<style scoped lang='scss'>
+<style scoped lang="scss">
+@import "../../assets/styles/variable";
 
+.plugins {
+    max-width: $container-max-width;
+}
 </style>

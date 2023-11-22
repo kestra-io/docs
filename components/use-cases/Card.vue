@@ -1,25 +1,19 @@
 <template>
-    <div class="hero header row justify-content-center" data-aos="fade-right">
-        <div class="col-12 col-md-12 col-lg-10">
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <slot name='header'></slot>
-                    <p>
-                        {{ description }}
-                    </p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <template v-if="cta.length" v-for="action in cta">
-                            <NuxtLink :href="action.href">
-                                <button
-                                    class="btn btn-lg"
-                                    :class="action.style"
-                                >
-                                    {{ action.text }}
-                                </button>
-                            </NuxtLink>
-                        </template>
-                    </div>
-                </div>
+    <div class="container hero header" data-aos="fade-right">
+        <div class="row">
+            <h1>Orchestrate Your <br />Retail Ecosystem <br />with Kestra</h1>
+            <!-- TODO: Add gradient to 'Retail Ecosystem' -->
+            <p>
+                {{ description }}
+            </p>
+            <div class="d-flex flex-wrap gap-2">
+                <template v-if="cta.length" v-for="action in cta">
+                    <NuxtLink :href="action.href">
+                        <button class="btn btn-lg" :class="action.style">
+                            {{ action.text }}
+                        </button>
+                    </NuxtLink>
+                </template>
             </div>
         </div>
     </div>
@@ -44,17 +38,17 @@ export default {
         },
         descrClass: {
             type: String,
-            required: false
-        }
+            required: false,
+        },
     },
 };
 </script>
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 .header {
+    //# TODO: background: url('') no-repeat center;
     p {
         font-size: $font-size-xl;
     }
 }
 </style>
-<script setup lang="ts"></script>

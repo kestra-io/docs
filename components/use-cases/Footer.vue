@@ -1,52 +1,52 @@
 <template>
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-7">
-            <div class="container text-center mb-5 rounded">
-                <div>
-                    <h3 data-aos="fade-right">Getting Started</h3>
-                    <div
-                        class="d-flex gap-2 flex-wrap justify-content-center align-items-center"
-                    >
-                        <NuxtLink href="/docs/terraform">
-                            <button class="btn btn-primary">
-                                Read the docs
+    <div class="container justify-content-center">
+        <div class="text-center rounded content">
+            <div>
+                <h3 data-aos="fade-right">{{ title }}</h3>
+                <div
+                    class="d-flex gap-2 flex-wrap justify-content-center align-items-center"
+                >
+                    <template v-for="action in cta">
+                        <NuxtLink :href="action.link">
+                            <button
+                                class="btn btn-primary"
+                                :class="action.style"
+                            >
+                                {{ action.text }}
                             </button>
                         </NuxtLink>
-                        <NuxtLink href="/docs/terraform">
-                            <button class="btn btn-primary">
-                                Get Started
-                            </button>
-                        </NuxtLink>
-
-                    </div>
+                    </template>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
+<script>
+export default {
+    name: "UseCaseFooter",
+
+    props: {
+        title: {
+            type: String,
+            required: true,
+        },
+        cta: {
+            type: Array,
+            required: true,
+        },
+    },
+};
+</script>
+
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 
-.container {
-    position: relative;
-    background: $purple-31;
-    padding: calc($spacer * 2.375) calc($spacer * 2);
-
-    > div {
-        h6 {
-            font-weight: normal;
-            line-height: 1.625rem;
-        }
-    }
-
+.content {
+    background: $purple-31; // TODO: add correct background gradient
+    padding: calc($spacer * 2.375) calc($spacer * 3);
     border: double 1px transparent;
     background-origin: border-box;
     background-clip: padding-box, border-box;
 }
 </style>
-<script>
-export default {
-    name: "UseCaseFooter",
-};
-</script>

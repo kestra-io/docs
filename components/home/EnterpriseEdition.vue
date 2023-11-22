@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 p-5">
-                    <h2 data-aos="fade-left">Take Kestra to the next level with the Enterprise Edition</h2>
+                    <h2 data-aos="fade-left">``Take Kestra to the next level with the Enterprise Edition</h2>
                     <ul class="mb-5" data-aos="fade-right">
                         <li>SSO/OIDC Authentication</li>
                         <li>Role-Based Access Control</li>
