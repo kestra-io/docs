@@ -1,9 +1,9 @@
 <template>
     <div>
         <Head>
-            <Title>Join Us and Shape the Future of Data Orchestration</Title>
+            <Title>Join Us and Shape the Future of Orchestration Software</Title>
             <Meta name="description"
-                  content="Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of data orchestration"/>
+                  content="Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of orchestration software"/>
         </Head>
 
         <CareersHeader/>
@@ -32,10 +32,10 @@
             meta: [
                 { name: 'twitter:card', content: 'summary-large-image' },
                 { name: 'twitter:site', content: '@kestra_io' },
-                { name: 'twitter:title', content: "Join Us and Shape the Future of Data Orchestration" },
+                { name: 'twitter:title', content: "Join Us and Shape the Future of Orchestration Software" },
                 {
                     name: 'twitter:description',
-                    content: "Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of data orchestration"
+                    content: "Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of orchestration software"
                 },
                 { name: 'twitter:image', content: `${origin}/landing/careers/header.svg` },
                 {

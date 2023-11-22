@@ -5,8 +5,8 @@
                 <div class="col-md-6 align-items-center d-flex">
                     <div>
                         <p data-aos="fade-left" class="overline">Careers</p>
-                        <h1 data-aos="fade-right">Become a Kestra Member</h1>
-                        <p class="baseline" data-aos="fade-left" >Join our amazing team and drive innovation in a collaborative workspace</p>
+                        <h1 data-aos="fade-right">Join our Team</h1>
+                        <p class="baseline" data-aos="fade-left" >Join our team and drive innovation in a collaborative environment</p>
                         <NuxtLink :href="(route.fullPath === '/careers' ? '' : '/careers') + '#positions'" class="btn btn-lg btn-primary" data-aos="zoom-in">
                             Open positions
                         </NuxtLink>
