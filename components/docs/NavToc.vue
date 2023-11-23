@@ -64,7 +64,6 @@
     import Twitter from "vue-material-design-icons/Twitter.vue";
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
-    import BlogsNewsLetter from './NewsLetter.vue'
 </script>
 
 <script>
@@ -115,7 +114,7 @@
     @import "../../assets/styles/variable";
 
     .bd-toc {
-        border-left: 1px solid $black-3;
+        border-left: 1px solid $gray-600;
         transition: all ease 0.2s;
         transform: translateX(0);
         @include media-breakpoint-up(lg) {
@@ -230,11 +229,12 @@
     }
     #nav-toc ul li:last-child{
         padding-bottom: 1rem;
-        border-bottom : 1px solid $black-3
+        border-bottom : 1px solid $gray-600
     }
-    .social ul li a {
+    .social ul  li  a {
         line-height: 1.5rem;
         font-weight: 300;
         font-size: $font-size-sm;
     }
+
 </style>

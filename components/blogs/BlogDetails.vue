@@ -63,7 +63,7 @@
         color: var(--bs-gray-600)
     }
     .author{
-        border-top: 1px solid $black-3;
-        border-bottom:1px solid $black-3;
+        border-top: 1px solid $gray-600;
+        border-bottom:1px solid $gray-600;
     }
 </style>

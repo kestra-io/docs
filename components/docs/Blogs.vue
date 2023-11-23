@@ -54,7 +54,7 @@
     @import "../../assets/styles/variable";
     
     .container{
-        border-top: 1px solid $black-3;
+        border-top: 1px solid $gray-600;
     }
     :deep(.main){
         padding-top: 2rem !important;
