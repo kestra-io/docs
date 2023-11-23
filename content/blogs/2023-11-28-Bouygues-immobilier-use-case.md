@@ -5,7 +5,7 @@ date: 2023-11-28T09:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
-  image: "mroset"
+  image: "mproset"
 image: /blogs/
 ---
 
@@ -15,7 +15,7 @@ One of the key innovations at Valorissimo is its digital platform, tailored to m
 
 In a strategic move to further enhance its marketing agility and sales efficiency, Valorissimo partnered with Hanalytics to develop a modern data stack. This collaboration not only led to the personalization of their marketing automation campaigns but also remarkably doubled their conversion rates. The introduction of this modern data stack, built with a suite of specialized tools, is a huge evolution in their operational capabilities, ensuring Valorissimo stays at the forefront of the real estate investment sector.
 
-In managing Valorissimo's modern data infrastructure, [Kestra]() plays a key role. Chosen by [Hanalytics](https://www.data-hanalytics.io/) for its efficiency and reliability, Kestra orchestrates all the tasks across those platforms. Kestra’s function is essential in automating processes and ensuring data consistency, which is critical for the effectiveness of Valorissimo's data-driven marketing and sales strategies.
+In managing Valorissimo's modern data infrastructure, [Kestra](https://github.com/kestra-io/kestra) plays a key role. Chosen by [Hanalytics](https://www.data-hanalytics.io/) for its efficiency and reliability, Kestra orchestrates all the tasks across those platforms. Kestra’s function is essential in automating processes and ensuring data consistency, which is critical for the effectiveness of Valorissimo's data-driven marketing and sales strategies.
 
 ## Understanding Valorissimo’s Data Ecosystem
 
@@ -27,15 +27,15 @@ In managing Valorissimo's modern data infrastructure, [Kestra]() plays a key rol
 4. **Elementary Data**: Ensures data quality and integrity, critical for effective decision-making based on reliable data.
 5. **Hightouch**: As a reverse ETL tool, it integrates processed data back into visualization tools and CRM systems.
 6. **Looker Studio**: Converts processed data into interactive reports and dashboards, aiding in strategic planning and performance monitoring.
-7. **Google Sheets**: Utilized for dynamic reporting.
+7. **Google Sheets**: Used for dynamic reporting.
 8. **HubSpot**: Integrates with the data stack to enhance marketing automation and lead management.
-9. **Slack**: Provides real-time alerts, ensuring prompt response to data-driven insights.
+9. **Slack**: Provides real-time alerts, and notification at flow execution or updated dashboards.
 
 <br>
 
 ## Workflow Integration: From Collection to Application
 
-Valorissimo’s data workflow is a carefully orchestrated process. It starts with data collection from GA4 and Azure, funneled into BigQuery via Airbyte for centralized storage. The transformation by dbt Core and the quality checks by Elementary Data ensure that the data is both refined and reliable. Hightouch then plays its part by syncing this curated data back into business applications, closing the loop from collection to application. Looker Studio’s role in visualizing this data brings a tangible element to the entire process, offering insights that drive strategic decisions.
+Valorissimo’s data workflow is a carefully orchestrated process. It starts with data collection from GA4 and Azure, funneled into BigQuery via Airbyte for centralized storage. The transformation by dbt Core and the quality checks by Elementary Data ensure that the data is both refined and reliable. Hightouch further enhances this process by syncing the refined data back into business applications; Looker Studio, which visualizes the data to inform strategic decisions. The data pushed from for Hightouch to Hubspot allow automated marketing processes, thereby closing the loop from data collection to marketing initiatives.
 
 <br>
 
