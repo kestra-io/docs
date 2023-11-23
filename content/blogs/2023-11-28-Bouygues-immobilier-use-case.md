@@ -9,11 +9,11 @@ author:
 image: /blogs/
 ---
 
-Bouygues Immobilier startup, Valorissimo, with over two decades of experience in the real estate sector, stands out as a historic company in the industry. They have developed a unique methodology over the years to assist real estate professionals in selling their programs. This expertise encompasses a broad understanding of the market, which has been instrumental in their success.
+Bouygues Immobilier platform, Valorissimo, with over two decades of experience in the real estate sector, stands out as a historic company in the industry. They have developed a unique methodology over the years to assist real estate professionals in selling their programs. This expertise encompasses a broad understanding of the market, which has been instrumental in their success.
 
-One of the key innovations at Valorissimo is its digital platform, tailored to meet specific needs in the sales processes of the real estate investment sector. Their marketplace facilitates connections between real estate developers and investors.
+One of the key innovations at Valorissimo is the digital platform they have created, tailored to meet specific needs in the sales processes of the real estate investment sector. Their marketplace facilitates connections between real estate developers and investors.
 
-In a strategic move to further enhance its marketing agility and sales efficiency, Valorissimo partnered with Hanalytics to develop a modern data stack. This collaboration not only led to the personalization of their marketing automation campaigns but also remarkably doubled their conversion rates. The introduction of this modern data stack, built with a suite of specialized tools, is a huge evolution in their operational capabilities, ensuring Valorissimo stays at the forefront of the real estate investment sector.
+In a strategic move to further enhance the marketing agility and sales efficiency, Valorissimo partnered with Hanalytics to develop a modern data stack. This collaboration not only led to the personalization of their marketing automation campaigns but also remarkably doubled their conversion rates. The introduction of this modern data stack, built with a suite of specialized tools, is a huge evolution in their operational capabilities, ensuring Valorissimo stays at the forefront of the real estate investment sector.
 
 In managing Valorissimo's modern data infrastructure, [Kestra](https://github.com/kestra-io/kestra) plays a key role. Chosen by [Hanalytics](https://www.data-hanalytics.io/) for its efficiency and reliability, Kestra orchestrates all the tasks across those platforms. Kestra’s function is essential in automating processes and ensuring data consistency, which is critical for the effectiveness of Valorissimo's data-driven marketing and sales strategies.
 
@@ -46,7 +46,7 @@ The entire workflow is orchestrated by Kestra, which manages the sequence and de
 Here is a breakdown of each of the workflow Hanalytics have created with Kestra to manage the data stack of Valorissimo:
 
 **Airbyte Ingestion Workflow**
-Kestra orchestrates the ingestion of data using Airbyte, automating the process of importing data from Azure and Google Analytics. This ensures efficient and consistent data flow into their BigQuery, used as Valorissimo's Data Lake.
+Kestra orchestrates the ingestion of data using Airbyte, automating the process of importing data from Azure and Google Analytics. This ensures efficient and consistent data flow into BigQuery, used as Valorissimo's Data Lake.
 
 <br>
 
