@@ -1,5 +1,5 @@
 ---
-title: "Bouygues Immobilier platform, Valorissimo Constructing a Modern Data Stack with Hanalytics and Kestra
+title: "Bouygues Immobilier platform, Valorissimo Constructing a Modern Data Stack with Hanalytics and Kestra"
 description: "Discover how Hanalytics, developped a modern data stack orchestrated with Kestra for Bouygues Immobilier platform, Valorissimo "
 date: 2023-11-28T09:00:00
 category: Solutions
