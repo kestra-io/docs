@@ -1,6 +1,6 @@
 ---
-title: "Bouygues Immobilier platform, Valorrisimo Constructing a Modern Data Stack with Hanalytics and Kestra
-description: "Discover how Hanalytics, developped a modern data stack orchestrated with Kestra for Bouygues Immobilier platform, Valorrisimo "
+title: "Bouygues Immobilier platform, Valorissimo Constructing a Modern Data Stack with Hanalytics and Kestra
+description: "Discover how Hanalytics, developped a modern data stack orchestrated with Kestra for Bouygues Immobilier platform, Valorissimo "
 date: 2023-11-28T09:00:00
 category: Solutions
 author:
@@ -17,9 +17,9 @@ In a strategic move to further enhance its marketing agility and sales efficienc
 
 In managing Valorissimo's modern data infrastructure, [Kestra]() plays a key role. Chosen by [Hanalytics](https://www.data-hanalytics.io/) for its efficiency and reliability, Kestra orchestrates all the tasks across those platforms. Kestra’s function is essential in automating processes and ensuring data consistency, which is critical for the effectiveness of Valorissimo's data-driven marketing and sales strategies.
 
-## Understanding Valorrisimo’s Data Ecosystem
+## Understanding Valorissimo’s Data Ecosystem
 
-[Valorrisimo](https://partenaires.valorissimo.com/)’s data strategy is a multi-faceted approach involving several key technologies, each serving a specific purpose in the overall data lifecycle:
+[Valorissimo](https://partenaires.valorissimo.com/)’s data strategy is a multi-faceted approach involving several key technologies, each serving a specific purpose in the overall data lifecycle:
 
 1. **Airbyte**: For ingesting data from Azure and Google Analytics, it captures essential information from business units and platform users.
 2. **BigQuery**: Serves as the central data warehouse, organizing and storing large volumes of data for subsequent processing and analysis.
@@ -33,7 +33,7 @@ In managing Valorissimo's modern data infrastructure, [Kestra]() plays a key rol
 
 ## Workflow Integration: From Collection to Application**
 
-Valorrisimo’s data workflow is a carefully orchestrated process. It starts with data collection from GA4 and Azure, funneled into BigQuery via Airbyte for centralized storage. The transformation by dbt Core and the quality checks by Elementary Data ensure that the data is both refined and reliable. Hightouch then plays its part by syncing this curated data back into business applications, closing the loop from collection to application. Looker Studio’s role in visualizing this data brings a tangible element to the entire process, offering insights that drive strategic decisions.
+Valorissimo’s data workflow is a carefully orchestrated process. It starts with data collection from GA4 and Azure, funneled into BigQuery via Airbyte for centralized storage. The transformation by dbt Core and the quality checks by Elementary Data ensure that the data is both refined and reliable. Hightouch then plays its part by syncing this curated data back into business applications, closing the loop from collection to application. Looker Studio’s role in visualizing this data brings a tangible element to the entire process, offering insights that drive strategic decisions.
 
 <br>
 
