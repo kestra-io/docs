@@ -3,7 +3,7 @@
         <Section
             title="Our open positions"
             subtitle="It's a Match"
-            baseline="We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, find a job you love, say goodbye to imposter syndrome, and apply."
+            baseline="We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, find a job you love."
         >
             <ul class="list-unstyled">
                 <li data-aos="fade-left" v-for="doc in pageData">
