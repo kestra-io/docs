@@ -3,7 +3,7 @@
         <span :class="{first: index === 0}" v-for="(item, index) in breadcrumb()"
               :key="item">
             <NuxtLink :href="breadcrumbLinkExist(item, index) ? breadcrumbLink(item, index) : ''" class="link">
-                {{ item.toUpperCase() }}
+                {{ item }}
             </NuxtLink>
         </span>
     </div>
@@ -47,8 +47,7 @@
         font-size: $font-size-sm;
         color: $primary;
         font-family: var(--bs-font-monospace);
-        margin-bottom: calc($spacer / 3);
-        font-weight: bold;
+        font-weight: 600;
 
         @include media-breakpoint-down(lg) {
             a {
@@ -57,7 +56,7 @@
         }
 
         @include media-breakpoint-up(xxl) {
-            margin-left: 3.5rem;
+            margin-left: 7.2rem;
         }
 
         @include media-breakpoint-down(sm) {
