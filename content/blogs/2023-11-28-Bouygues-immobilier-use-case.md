@@ -1,5 +1,5 @@
 ---
-title: "Bouygues Immobilier platform, Valorissimo Constructing a Modern Data Stack with Hanalytics and Kestra"
+title: "Bouygues Immobilier Platform, Valorissimo Constructing a Modern Data Stack with Hanalytics and Kestra"
 description: "Discover how Hanalytics, developped a modern data stack orchestrated with Kestra for Bouygues Immobilier platform, Valorissimo "
 date: 2023-11-28T09:00:00
 category: Solutions
@@ -31,7 +31,9 @@ In managing Valorissimo's modern data infrastructure, [Kestra]() plays a key rol
 8. **HubSpot**: Integrates with the data stack to enhance marketing automation and lead management.
 9. **Slack**: Provides real-time alerts, ensuring prompt response to data-driven insights.
 
-## Workflow Integration: From Collection to Application**
+<br>
+
+## Workflow Integration: From Collection to Application
 
 Valorissimo’s data workflow is a carefully orchestrated process. It starts with data collection from GA4 and Azure, funneled into BigQuery via Airbyte for centralized storage. The transformation by dbt Core and the quality checks by Elementary Data ensure that the data is both refined and reliable. Hightouch then plays its part by syncing this curated data back into business applications, closing the loop from collection to application. Looker Studio’s role in visualizing this data brings a tangible element to the entire process, offering insights that drive strategic decisions.
 
@@ -60,6 +62,8 @@ Kestra further manages the Hightouch workflow, once the data quality is passed a
 
 **Dependency Management**
 A critical aspect of Kestra’s functionality within Valorissimo’s data ecosystem is its ability to manage dependencies between these diverse workflows. This ensures that each step is precisely timed and executed, maintaining a reliable and effective data processing pipeline.
+
+<br>
 
 ## Going Further with Hanalytics
 
