@@ -43,7 +43,7 @@ Valorissimo’s data workflow is a carefully orchestrated process. It starts wit
 
 The entire workflow is orchestrated by Kestra, which manages the sequence and dependencies of these processes. By ensuring that each step is executed only after the successful completion of the previous one, Kestra maintains a smooth and efficient flow of data. This orchestration is critical in avoiding bottlenecks and ensuring the timeliness and reliability of data-driven insights.
 
-Here is a breakdown of each of the workflow Hanalytic have created with Kestra to manage the data stack of Valorissimo:
+Here is a breakdown of each of the workflow Hanalytics have created with Kestra to manage the data stack of Valorissimo:
 
 **Airbyte Ingestion Workflow**
 Kestra orchestrates the ingestion of data using Airbyte, automating the process of importing data from Azure and Google Analytics. This ensures efficient and consistent data flow into their BigQuery, used as Valorissimo's Data Lake.
@@ -51,7 +51,7 @@ Kestra orchestrates the ingestion of data using Airbyte, automating the process 
 <br>
 
 **Data Transformation and Quality Workflow**
-Through Kestra, dbt Core is triggered for data transformation. Concurrently, Elementary Data integrates into this workflow for  data quality checks. For this task, Hanalytic is using a custom Python Script, that launch Elementary directly from the Kestra workflow, all by a CI/CD process.
+Through Kestra, dbt Core is triggered for data transformation. Concurrently, Elementary Data integrates into this workflow for  data quality checks. For this task, Hanalytics is using a custom Python Script, that launch Elementary directly from the Kestra workflow, all by a CI/CD process.
 
 <br>
 
