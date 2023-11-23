@@ -1,7 +1,7 @@
 <template>
-    <div class="blog-details mb-5">
+    <div class="blog-details mb-4">
         <p>
-            <span class="category">
+            <span class="category ">
                 {{ blog.category }}
             </span>
             <br/>
@@ -9,9 +9,10 @@
                 {{ date }}
             </span>
         </p>
-
-        <NuxtImg loading="lazy" format="webp" densities="x1 x2" width="68" class="rounded-circle mt-5" :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name"/><br />
-        <strong>{{ blog.author.name }}</strong>
+        <div class="py-3 author">
+            <NuxtImg loading="lazy" format="webp" densities="x1 x2" width="68" class="rounded-circle" :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name"/><br />
+            <strong>{{ blog.author.name }}</strong>
+        </div>
 
     </div>
 </template>
@@ -60,5 +61,9 @@
 
     .date {
         color: var(--bs-gray-600)
+    }
+    .author{
+        border-top: 1px solid $black-3;
+        border-bottom:1px solid $black-3;
     }
 </style>

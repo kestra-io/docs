@@ -37,6 +37,14 @@
             color: var(--bs-primary);
             font-size: $font-size-sm;
         }
+        h3{
+            font-weight: 300;
+            line-height: 2.375rem;
+        }
+        p{
+            line-height: 1.625rem;
+            margin-bottom: 0.75rem;
+        }
     }
 
 
