@@ -51,7 +51,7 @@ Kestra orchestrates the ingestion of data using Airbyte, automating the process 
 <br>
 
 **Data Transformation and Quality Workflow**
-Through Kestra, dbt Core is triggered for data transformation. Concurrently, Elementary Data integrates into this workflow for  data quality checks. For this task, Hanalytics is using a custom Python Script, that launch Elementary directly from the Kestra workflow, all by a CI/CD process.
+Through Kestra, dbt Core is triggered for data transformation. Concurrently, Elementary integrates into this workflow for  data quality checks. For this task, Hanalytics is using a custom Python Script, that launch Elementary directly from the Kestra workflow, all by a CI/CD process.
 
 <br>
 
