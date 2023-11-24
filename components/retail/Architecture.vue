@@ -67,8 +67,8 @@ p {
 }
 h4 {
   font-weight: 300;
-  line-height: 46px;
-  font-size: 30px;
+  line-height: 2.875rem;
+  font-size: $font-size-sm;
   z-index: 10;
 }
 .line{

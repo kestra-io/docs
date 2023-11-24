@@ -1,5 +1,5 @@
 <template>
-  <section class="container mt-5 text-center">
+  <section class="container mt-5 ">
     <h3 class="mb-5 title">
       Use Cases in <span class="title-animated">Retail</span>
     </h3>
@@ -10,7 +10,7 @@
             <img
               src="/retail/useCases/Icon_useCase1.svg"
               alt="Automated Inventory svg"
-              class="icon mb-2"
+              class=" mb-2"
             />
             <h6 class="card-heading">Automated Inventory Management</h6>
             <p class="card-para">
@@ -117,27 +117,24 @@ h3 {
 }
 
 .card {
-    z-index: 99;
+  z-index: 99;
   background-color: $black-2;
   color: $white;
   box-shadow: none !important;
   &-body {
-    padding: 64px 32px 32px 32px;
+    padding: 4rem 2rem 2rem 4rem;
   }
   &-heading {
     font-size: $font-size-xl;
     font-weight: 300;
-    line-height: 32px;
+    line-height: 2rem;
   }
   &-para {
     font-size: $font-size-sm;
     font-weight: 400;
-    line-height: 22px;
+    line-height: 1.375rem;
     color: $white-1;
   }
-}
-.icon {
-  width: 42px;
 }
 .line {
   height: 1px;

@@ -143,7 +143,7 @@
     font-size: $h6-font-size;
     font-weight: 400;
     color: $white-1;
-    line-height: 26px;
+    line-height: 1.625rem;
   }
   .card {
     z-index:10;
@@ -151,7 +151,7 @@
     color: $white;
     background-color: $black-2;
     box-shadow: none;
-    padding: 0px 70px;
+    padding: 0px 4.375;
     &-heading {
       font-size: $font-size-xl;
       font-weight: 300;
