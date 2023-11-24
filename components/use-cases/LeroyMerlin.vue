@@ -60,11 +60,6 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 
-.header {
-    margin-top: 4rem;
-    margin-bottom: 4rem;
-}
-
 .subtitle {
     font-size: $font-size-base;
 }

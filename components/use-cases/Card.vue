@@ -6,7 +6,6 @@
                     Orchestrate Your <br /><span>Retail Ecosystem</span>
                     <br />with Kestra
                 </h1>
-
                 <p class="description fw-light pb-4">
                     {{ content.description }}
                 </p>

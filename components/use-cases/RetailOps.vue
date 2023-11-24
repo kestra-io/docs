@@ -5,7 +5,6 @@
             <span>Complex</span> Retail Operations
         </h1>
         <p class="description fw-light">{{ content.description }}</p>
-
         <div class="row m-0 content my-4">
             <template v-for="item in content.items">
                 <div class="col-md-6 my-4">
