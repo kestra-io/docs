@@ -39,9 +39,7 @@
     span {
         color: var(--bs-primary);
         font-size: $font-size-sm;
-
     }
-
     .card-image {
         object-fit: cover;
         aspect-ratio: 16/9;
