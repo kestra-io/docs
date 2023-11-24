@@ -33,7 +33,7 @@
 .heading {
   max-width: 700px;
   .title {
-    line-height: 58px;
+    line-height: 3.625rem;
     text-align: center;
     font-weight: 300 !important;
     margin-bottom: 0;
@@ -53,7 +53,7 @@
   font-size: $font-size-base !important;
   max-width: $baseline-max-width;
   margin: $spacer auto 0;
-  line-height: 24px;
+  line-height: 1.5rem;
   font-weight: 400;
   font-size: $h6-font-size;
 }

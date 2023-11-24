@@ -29,8 +29,8 @@
     .container {
         background-image: url('/landing/features/scheduling/masking.svg');
         color: var(--bs-white);
-        padding-top: 80px;
-        margin-top: -80px;
+        padding-top: 5rem;
+        margin-top: -5rem;
     }
     .baseline{
         font-weight: 300;

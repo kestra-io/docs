@@ -102,19 +102,19 @@ h3 {
     box-shadow: none !important;
 
     &-body {
-        padding: 64px 32px 32px 32px;
+        padding: 4rem 2rem 2rem 2rem;
     }
 
     &-heading {
         font-size: $font-size-xl;
         font-weight: 300;
-        line-height: 32px;
+        line-height: 2rem;
     }
 
     &-para {
         font-size: $font-size-sm;
         font-weight: 400;
-        line-height: 22px;
+        line-height: 1.375;
         color: $white-1;
     }
 }
