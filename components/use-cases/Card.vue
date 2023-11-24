@@ -23,7 +23,7 @@
                     </template>
                 </div>
             </div>
-            <div class="col-lg-6" data-aos="zoom-in">
+            <div class="col-lg-6 image" data-aos="zoom-in">
                 <img
                     class="zoom img-fluid"
                     :src="content.image.href"
@@ -82,5 +82,8 @@ export default {
     --bs-btn-bg: $black-4;
     --bs-btn-hover-bg: $black-4;
     border: 1px solid $black-6;
+}
+.image {
+    margin-top: -176px;
 }
 </style>
