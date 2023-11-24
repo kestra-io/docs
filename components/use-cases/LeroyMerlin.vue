@@ -74,7 +74,11 @@ export default {
         left: 256px;
         z-index: 1;
         filter: blur(100px);
-        background: linear-gradient(180deg, rgba(24, 172, 255, 0.00) 0%, #17FF58 100%);
+        background: linear-gradient(
+            180deg,
+            rgba(24, 172, 255, 0) 0%,
+            #17ff58 100%
+        );
     }
 }
 .title {
@@ -84,9 +88,9 @@ export default {
 .description {
     font-size: $font-size-lg;
 }
-.btn-dark{
-    --bs-btn-bg: $black-4 ;
-    --bs-btn-hover-bg : $black-4;
+.btn-dark {
+    --bs-btn-bg: $black-4;
+    --bs-btn-hover-bg: $black-4;
     border: 1px solid $black-6;
 }
 </style>

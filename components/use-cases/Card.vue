@@ -10,12 +10,12 @@
                 <p class="description fw-light">
                     {{ content.description }}
                 </p>
-                <div class="d-flex flex-wrap gap-2 ">
+                <div class="d-flex flex-wrap gap-2">
                     <template
                         v-if="content.cta.length"
                         v-for="action in content.cta"
                     >
-                        <NuxtLink :href="action.href" :target='action.target'>
+                        <NuxtLink :href="action.href" :target="action.target">
                             <button class="btn" :class="action.style">
                                 {{ action.text }}
                             </button>
@@ -78,9 +78,9 @@ export default {
 .description {
     padding-bottom: 2rem;
 }
-.btn-dark{
-    --bs-btn-bg: $black-4 ;
-    --bs-btn-hover-bg : $black-4;
+.btn-dark {
+    --bs-btn-bg: $black-4;
+    --bs-btn-hover-bg: $black-4;
     border: 1px solid $black-6;
 }
 </style>

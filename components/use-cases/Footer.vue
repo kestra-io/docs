@@ -8,10 +8,7 @@
                 >
                     <template v-for="action in content.cta">
                         <NuxtLink :href="action.href">
-                            <button
-                                class="btn"
-                                :class="action.style"
-                            >
+                            <button class="btn" :class="action.style">
                                 {{ action.text }}
                             </button>
                         </NuxtLink>
@@ -31,10 +28,10 @@ export default {
             type: Object,
             required: true,
             default: () => ({
-                title: '',
-                cta: []
-            })
-        }
+                title: "",
+                cta: [],
+            }),
+        },
     },
 };
 </script>
@@ -42,7 +39,7 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 
-.content{
+.content {
     background-color: $black-2;
     padding: calc($spacer * 2.375) calc($spacer * 1);
     border-radius: 8px;
@@ -54,15 +51,15 @@ export default {
         position: absolute;
         width: 262px;
         height: 170px;
-        background: url("/retail/light-mask2.svg") ;
-        right: 0px;
-        top: 0px;
+        background: url("/retail/light-mask2.svg");
+        right: 0;
+        top: 0;
         z-index: 1;
     }
 }
-.btn-dark{
-    --bs-btn-bg: $black-4 ;
-    --bs-btn-hover-bg : $black-4;
+.btn-dark {
+    --bs-btn-bg: $black-4;
+    --bs-btn-hover-bg: $black-4;
     border: 1px solid $black-6;
 }
 .title {

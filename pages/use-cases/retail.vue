@@ -7,11 +7,11 @@
         <RetailCard :content="header" />
         <Line style="padding: 4rem 0 4rem 0" />
         <UseCasesExamples :items="solutions.items" />
-        <Line class='mt-5'/>
-        <LeroyMerlin :content='leroy' />
+        <Line class="mt-5" />
+        <LeroyMerlin :content="leroy" />
         <Line />
-        <RetailOps :content='ops' />
-        <Plugins :content='plugins' />
+        <RetailOps :content="ops" />
+        <Plugins :content="plugins" />
         <Line class="mb-5" />
         <Footer class="mb-5" :content="footer" />
     </div>
@@ -54,5 +54,4 @@ export default {
     color: $white;
     font-weight: 300;
 }
-
 </style>

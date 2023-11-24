@@ -4,14 +4,17 @@
             Connect Your <span>Entire Stack</span> <br />
             with Plugins
         </h1>
-        <div data-aos="fade-right" class="d-flex justify-content-center flex-wrap plugins my-4 gap-4">
+        <div
+            data-aos="fade-right"
+            class="d-flex justify-content-center flex-wrap plugins my-4 gap-4"
+        >
             <img
                 v-for="plugin in content.items"
                 :src="plugin.icon"
                 :alt="plugin.name"
             />
         </div>
-        <div class='mt-5'>
+        <div class="mt-5">
             <NuxtLink :href="content.cta.href" class="btn btn-dark">
                 {{ content.cta.text }}
             </NuxtLink>
@@ -28,11 +31,10 @@ export default {
             required: true,
             default: () => ({
                 items: [],
-                title: '',
+                title: "",
                 cta: {},
-
-            })
-        }
+            }),
+        },
     },
 };
 </script>
@@ -46,17 +48,17 @@ export default {
     font-size: $h1-font-size;
     span {
         background: var(
-                --Text_gradient,
-                linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
+            --Text_gradient,
+            linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
         );
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 }
-.btn-dark{
-    --bs-btn-bg: $black-4 ;
-    --bs-btn-hover-bg : $black-4;
+.btn-dark {
+    --bs-btn-bg: $black-4;
+    --bs-btn-hover-bg: $black-4;
     border: 1px solid $black-6;
 }
 .container {
