@@ -2,7 +2,9 @@
     <div class="container justify-content-center">
         <div class="text-center rounded content">
             <div>
-                <h1 class="title" data-aos="fade-right">{{ content.title }}</h1>
+                <h1 class="title fw-light" data-aos="fade-right">
+                    {{ content.title }}
+                </h1>
                 <div
                     class="d-flex gap-2 flex-wrap justify-content-center align-items-center mt-4"
                 >
@@ -57,13 +59,14 @@ export default {
         z-index: 1;
     }
 }
+
 .btn-dark {
     --bs-btn-bg: $black-4;
     --bs-btn-hover-bg: $black-4;
     border: 1px solid $black-6;
 }
+
 .title {
-    font-weight: 300;
     font-size: $h3-font-size;
 }
 </style>

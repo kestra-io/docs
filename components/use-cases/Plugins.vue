@@ -44,23 +44,26 @@ export default {
 .plugins {
     max-width: $container-max-width;
 }
+
 .title {
     font-size: $font-size-3xl;
     span {
         background: var(
             --Text_gradient,
-            linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
+            linear-gradient(90deg, #e151f7 2%, #5c47f5 65%)
         );
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 }
+
 .btn-dark {
     --bs-btn-bg: $black-4;
     --bs-btn-hover-bg: $black-4;
     border: 1px solid $black-6;
 }
+
 .container {
     background: #111113 url("/retail/header-mask.svg") center;
 }

@@ -64,9 +64,11 @@ export default {
     margin-top: 4rem;
     margin-bottom: 4rem;
 }
+
 .subtitle {
     font-size: $font-size-base;
 }
+
 .base-container {
     position: relative;
     &::after {
@@ -85,13 +87,16 @@ export default {
         );
     }
 }
+
 .title {
     background: url("/retail/header-mask.svg") no-repeat center;
     font-size: $h3-font-size;
 }
+
 .description {
-    font-size: $font-size-lg;
+    font-size: $h6-font-size;
 }
+
 .btn-dark {
     --bs-btn-bg: $black-4;
     --bs-btn-hover-bg: $black-4;

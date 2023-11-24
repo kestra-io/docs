@@ -1,10 +1,10 @@
 <template>
     <div class="container mt-5">
-        <h1 data-aos="fade-right" class="title text-center card-title mb-3">
+        <h1 data-aos="fade-right" class="title text-center mb-3">
             End-To-End Solution for Managing <br />
             <span>Complex</span> Retail Operations
         </h1>
-        <p class="description">{{ content.description }}</p>
+        <p class="description fw-light">{{ content.description }}</p>
 
         <div class="row m-0 content my-4">
             <template v-for="item in content.items">
@@ -14,7 +14,7 @@
                             <img :src="item.icon" :alt="item.title" />
                         </div>
                         <div>
-                            <h4 class="card-title mb-2">{{ item.title }}</h4>
+                            <h4 class="fw-light mb-2">{{ item.title }}</h4>
                             <p>{{ item.text }}</p>
                         </div>
                     </div>
@@ -83,6 +83,7 @@ export default {
         filter: blur(100px);
     }
 }
+
 .content {
     background: $black-2;
     padding: calc($spacer * 2.375) calc($spacer * 3);
@@ -100,21 +101,19 @@ export default {
         border-radius: 8px;
     }
 }
+
 .title {
     font-weight: 300;
     font-size: $font-size-3xl;
     span {
         background: var(
             --Text_gradient,
-            linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
+            linear-gradient(90deg, #e151f7 2%, #5c47f5 65%)
         );
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-}
-.card-title {
-    font-weight: 300;
 }
 
 .icon {

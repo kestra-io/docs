@@ -68,12 +68,13 @@ export default {
         line-height: 2rem;
     }
 }
+
 .title {
     font-size: $font-size-3xl;
     span {
         background: var(
             --Text_gradient,
-            linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
+            linear-gradient(90deg, #e151f7 2%, #5c47f5 65%)
         );
         background-clip: text;
         -webkit-background-clip: text;

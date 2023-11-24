@@ -7,7 +7,7 @@
                     <br />with Kestra
                 </h1>
 
-                <p class="description fw-light">
+                <p class="description fw-light pb-4">
                     {{ content.description }}
                 </p>
                 <div class="d-flex flex-wrap gap-2">
@@ -68,26 +68,29 @@ export default {
     span {
         background: var(
             --Text_gradient,
-            linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
+            linear-gradient(90deg, #e151f7 2%, #5c47f5 65%)
         );
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 }
+
 .description {
     padding-bottom: 2rem;
 }
+
 .btn-dark {
     --bs-btn-bg: $black-4;
     --bs-btn-hover-bg: $black-4;
     border: 1px solid $black-6;
 }
+
 .image {
     margin-top: -176px;
 
     @include media-breakpoint-down(lg) {
-       margin-top: 0
+        margin-top: 0;
     }
 }
 </style>
