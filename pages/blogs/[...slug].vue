@@ -136,17 +136,20 @@
     }
     h2{
         line-height: 3.25rem;
+        font-weight: 600;
     }
     .para{
         line-height: 1.375rem ;
         font-size: $font-size-sm ;
         margin-bottom: $font-size-xs;
+        font-weight: 600;
     }
     :deep(p){
-        line-height: 1.75rem;
+        line-height: 1.75rem;   
     }
     :deep(h2){
         font-size: 1.75rem;
         line-height: 2.735rem;
+        font-weight: 600;
     }
 </style>
