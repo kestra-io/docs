@@ -88,12 +88,12 @@
     max-width: 1500px;
     .title{
         font-size: $h3-font-size;
-        font-weight: 300;
+        font-weight: 600;
         line-height: 3.25rem;
     }
 }
 :deep(p){
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.75rem;
 }
 :deep(p > a){
