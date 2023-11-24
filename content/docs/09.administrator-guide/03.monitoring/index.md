@@ -4,9 +4,9 @@ title: Alerting & Monitoring
 
 ## Alerting
 
-Failure alerts are non-negotiable. When a production workflow fails, you should get notified about it as soon as possible. To implement failure alerting, you can leverage Kestra's built in notification tasks, including: 
-- [Slack](../../../plugins/plugin-notifications/tasks/slack/io.kestra.plugin.notifications.slack.slackexecution.md) 
-- [Microsoft Teams](../../../plugins/plugin-notifications/tasks/teams/io.kestra.plugin.notifications.teams.teamsexecution.md) 
+Failure alerts are non-negotiable. When a production workflow fails, you should get notified about it as soon as possible. To implement failure alerting, you can leverage Kestra's built in notification tasks, including:
+- [Slack](../../../plugins/plugin-notifications/tasks/slack/io.kestra.plugin.notifications.slack.slackexecution.md)
+- [Microsoft Teams](../../../plugins/plugin-notifications/tasks/teams/io.kestra.plugin.notifications.teams.teamsexecution.md)
 - [Email](../../../plugins/plugin-notifications/tasks/mail/io.kestra.plugin.notifications.mail.mailexecution.md)
 
 
@@ -34,9 +34,9 @@ errors:
       }
 ```
 
-However, this can lead to some boilerplate code if you start copy-pasting this `errors` configuration to multiple flows. 
+However, this can lead to some boilerplate code if you start copy-pasting this `errors` configuration to multiple flows.
 
-To implement a centralized namespace-level alerting, we instead recommend a dedicated monitoring workflow with a notification task and a [Flow trigger](../../05.developer-guide/08.triggers/02.flow.md). Below is an example workflow that automatically sends a Slack alert as soon as any flow in a namespace `prod` fails or finishes with warnings. 
+To implement a centralized namespace-level alerting, we instead recommend a dedicated monitoring workflow with a notification task and a [Flow trigger](../../05.developer-guide/08.triggers/02.flow.md). Below is an example workflow that automatically sends a Slack alert as soon as any flow in a namespace `prod` fails or finishes with warnings.
 
 ```yaml
 id: failureAlertToSlack
@@ -67,7 +67,7 @@ Adding this single flow will ensure that you receive a Slack alert on any flow f
 ![alert notification](/docs/administrator-guide/alert-notification.png)
 
 
-## Monitoring 
+## Monitoring
 
 By default, Kestra exposes a monitoring endpoint on port 8081. You can change this port using the `endpoints.all.port` property in the [configuration options](../01.configuration/index.md).
 
@@ -97,7 +97,7 @@ This monitoring endpoint provides invaluable information for troubleshooting and
       "status": "UP",
       "details": {
         "services": {
-          
+
         }
       }
     },
@@ -188,7 +188,7 @@ We'd love to see what dashboards you will build. Feel free to share a screenshot
 
 ## Kestra endpoints
 
-Kestra exposes internal endpoints on the management port (8081 by default) to provide status corresponding to the [server type](../../08.architecture.md#the-kestra-server-components):
+Kestra exposes internal endpoints on the management port (8081 by default) to provide status corresponding to the [server type](../../01.architecture.md#the-kestra-server-components):
 
 * `/worker`: will expose all currently running tasks on this worker.
 * `/scheduler`: will expose all currently scheduled flows on this scheduler with the next date.

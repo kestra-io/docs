@@ -22,7 +22,7 @@ Following trigger properties can be set.
 |`type`| The Java FQCN of the trigger.                                                                                  |
 |`description`| The description of the trigger, more details [here](../01.flow.md#document-your-flow).                  |
 |`disabled`| Set it to `true` to disable execution of the trigger.                                                      |
-|`workerGroup.key`| To execute this trigger on a specific [Worker Group (EE)](../../08.architecture.md#worker-group-ee).|
+|`workerGroup.key`| To execute this trigger on a specific [Worker Group (EE)](../../01.architecture.md#worker-group-ee).|
 
 ---
 
@@ -88,4 +88,4 @@ triggers:
     sql: "SELECT * FROM my_table"
 ```
 
-Polling triggers can be evaluated on a specific [Worker Group (EE)](../08.architecture.md#worker-group-ee), thanks to the `workerGroup.key` property.
+Polling triggers can be evaluated on a specific [Worker Group (EE)](../01.architecture.md#worker-group-ee), thanks to the `workerGroup.key` property.

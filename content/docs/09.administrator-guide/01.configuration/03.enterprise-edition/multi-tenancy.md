@@ -2,7 +2,7 @@
 title: Multi-tenancy configuration
 ---
 
-This section dives into how you can configure multi-tenancy in your Kestra instance. For a high-level overview, check the multi-tenancy section of the [Architecture documentation](../../../08.architecture.md#multi-tenancy).
+This section dives into how you can configure multi-tenancy in your Kestra instance. For a high-level overview, check the multi-tenancy section of the [Architecture documentation](../../../01.architecture.md#multi-tenancy).
 
 ## Configuring multi-tenancy
 
@@ -28,7 +28,7 @@ The tenant can be created in multiple ways:
 1. From the UI
 2. From an [API call](../../../12.api-guide/api-ee-guide.md#post-/api/v1/tenants)
 3. From the [Kestra Terraform provider](https://kestra.io/docs/terraform/resources/tenant)
-4. From a [kestra CLI](https://kestra.io/docs/administrator-guide/servers) command. 
+4. From a [kestra CLI](https://kestra.io/docs/administrator-guide/servers) command.
 
 In all cases, an **Admin** role is created with admin rights on the new tenant. The authenticated user or the user passed to the command will have this Admin role on the new tenant.
 
