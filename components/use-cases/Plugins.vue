@@ -45,7 +45,7 @@ export default {
     max-width: $container-max-width;
 }
 .title {
-    font-size: $h1-font-size;
+    font-size: $font-size-3xl;
     span {
         background: var(
             --Text_gradient,

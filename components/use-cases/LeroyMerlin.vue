@@ -1,6 +1,6 @@
 <template>
     <div class="base-container">
-        <div class="container hero header" data-aos="fade-right">
+        <div class="container header" data-aos="fade-right">
             <div class="row">
                 <div class="col-md-6">
                     <div>
@@ -59,6 +59,11 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
+
+.header {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+}
 .subtitle {
     font-size: $font-size-base;
 }

@@ -5,7 +5,7 @@
     </Head>
     <div class="main">
         <RetailCard :content="header" />
-        <Line style="padding: 4rem 0 4rem 0" />
+        <Line style="padding: 3rem 0 3rem 0" />
         <UseCasesExamples :items="solutions.items" />
         <Line class="mt-5" />
         <LeroyMerlin :content="leroy" />

@@ -59,7 +59,7 @@ export default {
             subtitle: "Customer Success",
         },
         alt: "Leroy",
-        title: "Leroy Merlin France enabling data mesh architecture and 900% increase in productivity with Kestra",
+        title: "Leroy Merlin France enabling data mesh architecture and 900% increase in productivity with Kestra:",
         description:
             "Leroy Merlin France transformed data infrastructure by adopting" +
             " Kestra, enabling a data mesh architecture and achieving a remarkable 900% boost in productivity. " +
