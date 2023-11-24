@@ -69,7 +69,6 @@ export default {
         position: absolute;
         height: 272px;
         width: 176px;
-        background: url("/retail/grey-mask.svg") no-repeat;
         top: 48px;
         left: 256px;
         z-index: 1;
