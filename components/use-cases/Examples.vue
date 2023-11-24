@@ -1,20 +1,26 @@
 <template>
     <div class="container example">
-        <h1 data-aos="fade-left" class="title text-center mb-5">
+        <h1 data-aos="fade-left" class="title text-center mb-5 fw-light">
             Use Cases in <span>Retail</span>
         </h1>
         <div class="row card-group card-centered no-shadow mb-2">
             <template v-for="(item, index) in items">
                 <div class="col-md-4 mb-4">
-                    <div class="card" :class="index === 1 && 'mask' " data-aos="zoom-in">
+                    <div
+                        class="card"
+                        :class="index === 1 && 'mask'"
+                        data-aos="zoom-in"
+                    >
                         <div class="card-body">
                             <img
                                 :src="item.icon"
                                 :alt="item.title"
                                 class="icon mb-2"
                             />
-                            <h4 class="card-title">{{ item.title }}</h4>
-                            <p class="card-text">{{ item.text }}</p>
+                            <h4 class="card-title fw-light">
+                                {{ item.title }}
+                            </h4>
+                            <p class="card-text fw-light">{{ item.text }}</p>
                         </div>
                     </div>
                 </div>
@@ -59,12 +65,10 @@ export default {
     }
     &-title {
         font-size: $font-size-xl !important;
-        font-weight: 300;
         line-height: 2rem;
     }
 }
 .title {
-    font-weight: 300;
     font-size: $h1-font-size;
     span {
         background: var(
@@ -76,22 +80,22 @@ export default {
         -webkit-text-fill-color: transparent;
     }
 }
-.icon {
-    width: 3rem;
-}
 
-.mask{
+.mask {
     &::after {
         content: "";
         position: absolute;
-        height: 266.493px;
-        width: 170.248px;
-        bottom: -70px;
-        right: -100px;
-        background: linear-gradient(180deg, rgba(98, 24, 255, 0.00) 0%, #6117FF 100%);
+        height: 272px;
+        width: 176px;
+        bottom: -80px;
+        right: -96px;
+        background: linear-gradient(
+            180deg,
+            rgba(98, 24, 255, 0) 0%,
+            #6117ff 100%
+        );
         filter: blur(100px);
         z-index: -1;
     }
 }
-
 </style>

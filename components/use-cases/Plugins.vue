@@ -1,6 +1,6 @@
 <template>
     <div class="container d-flex flex-column align-items-center my-5">
-        <h1 data-aos="fade-left" class="title text-center card-title">
+        <h1 data-aos="fade-left" class="title text-center card-title fw-light">
             Connect Your <span>Entire Stack</span> <br />
             with Plugins
         </h1>
@@ -43,7 +43,6 @@ export default {
     max-width: $container-max-width;
 }
 .title {
-    font-weight: 300;
     font-size: $h1-font-size;
     span {
         background: var(

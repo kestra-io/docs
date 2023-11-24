@@ -2,12 +2,12 @@
     <div class="container hero header" data-aos="fade-right">
         <div class="row">
             <div class="col-md-6">
-                <h1 class="title">
+                <h1 class="title fw-light">
                     Orchestrate Your <br /><span>Retail Ecosystem</span>
                     <br />with Kestra
                 </h1>
 
-                <p class="description">
+                <p class="description fw-light">
                     {{ content.description }}
                 </p>
                 <div class="d-flex flex-wrap gap-2 ">
@@ -15,7 +15,7 @@
                         v-if="content.cta.length"
                         v-for="action in content.cta"
                     >
-                        <NuxtLink :href="action.href">
+                        <NuxtLink :href="action.href" :target='action.target'>
                             <button class="btn" :class="action.style">
                                 {{ action.text }}
                             </button>
@@ -54,11 +54,6 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
-.hero {
-    p {
-        font-weight: 300;
-    }
-}
 .header {
     background: url("/assets/retail/header-mask.svg") no-repeat center;
     p {
@@ -68,13 +63,7 @@ export default {
     padding-bottom: 0;
 }
 
-.baseline {
-    font-weight: 300;
-    font-size: $font-size-xl;
-}
-
 .title {
-    font-weight: 300;
     font-size: $h1-font-size;
     span {
         background: var(
@@ -87,7 +76,6 @@ export default {
     }
 }
 .description {
-    font-weight: 300;
     padding-bottom: 2rem;
 }
 .btn-dark{

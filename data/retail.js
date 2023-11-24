@@ -8,13 +8,13 @@ export default {
         cta: [
             {
                 text: "Book a demo",
-                href: "",
-                style: "btn btn-dark", // #TODO: add the correct button style
+                href: "/demo",
+                style: "btn btn-dark"
             },
             {
                 text: "Get started",
-                href: "",
-                style: "btn-animated btn-purple-animated btn",
+                href: "/docs",
+                style: "btn-animated btn-purple-animated btn"
             },
         ],
         image: {
@@ -174,7 +174,7 @@ export default {
         ],
         cta: {
             text: "See all plugins",
-            href: "",
+            href: "/plugins",
         },
     },
     footer: {
@@ -182,12 +182,12 @@ export default {
         cta: [
             {
                 text: "Read the docs",
-                href: "",
+                href: "/docs",
                 style: "btn-dark",
             },
             {
                 text: "Get started",
-                href: "",
+                href: "/docs/getting-started",
                 style: "btn-animated btn-purple-animated",
             },
         ],

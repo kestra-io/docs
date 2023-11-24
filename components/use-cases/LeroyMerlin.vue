@@ -1,5 +1,5 @@
 <template>
-    <div class="leroy-container">
+    <div class="base-container">
         <div class="container hero header" data-aos="fade-right">
             <div class="row">
                 <div class="col-md-6">
@@ -7,12 +7,12 @@
                         <img :src="content.logo.href" :alt="content.logo.alt" />
                         <p class="my-3 subtitle">{{ content.logo.subtitle }}</p>
                     </div>
-                    <h4 class="title leroy-title">
+                    <h4 class="title fw-light">
                         Leroy Merlin France enabling data <br />mesh
                         architecture and 900% <br />
                         increase in productivity with Kestra:<br />
                     </h4>
-                    <p class="description my-4">
+                    <p class="description my-4 fw-light">
                         {{ content.description }}
                     </p>
                     <div class="d-flex flex-wrap gap-2">
@@ -62,7 +62,7 @@ export default {
 .subtitle {
     font-size: $font-size-base;
 }
-.leroy-container {
+.base-container {
     position: relative;
     &::after {
         content: "";
@@ -77,17 +77,11 @@ export default {
         background: linear-gradient(180deg, rgba(24, 172, 255, 0.00) 0%, #17FF58 100%);
     }
 }
-.leroy-merlin {
-    background: #0d0d0c;
-    background: url("/retail/grey-mask.svg") no-repeat;
-}
-.leroy-title {
+.title {
     background: url("/assets/retail/header-mask.svg") no-repeat center;
     font-size: $h3-font-size;
-    font-weight: 300;
 }
 .description {
-    font-weight: 300;
     font-size: $font-size-lg;
 }
 .btn-dark{
