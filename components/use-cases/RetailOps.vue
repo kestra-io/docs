@@ -1,15 +1,14 @@
 <template>
     <div class="container mt-5">
-        <h2 data-aos="fade-right" class="text-center card-title mb-3">
+        <h1 data-aos="fade-right" class="title text-center card-title mb-3">
             End-To-End Solution for Managing <br />
-            Complex Retail Operations
-        </h2>
-        <!-- TODO: Add gradient to 'Complex' -->
-        <p class="description">{{ description }}</p>
+            <span>Complex</span> Retail Operations
+        </h1>
+        <p class="description">{{ content.description }}</p>
 
         <div class="row m-0 content my-4">
-            <template v-for="item in items">
-                <div class="col-md-6">
+            <template v-for="item in content.items">
+                <div class="col-md-6 my-4">
                     <div class="d-flex">
                         <div class="icon">
                             <img :src="item.icon" :alt="item.title" />
@@ -27,19 +26,16 @@
 
 <script>
 export default {
-    name: "UseCaseRetailOps",
+    name: "RetailOps",
     props: {
-        header: {
-            type: String,
+        content: {
+            type: Object,
             required: true,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
-        items: {
-            type: Array,
-            required: true,
+            default: () => ({
+                header: "",
+                description: "",
+                items: [],
+            }),
         },
     },
 };
@@ -53,9 +49,16 @@ export default {
     font-size: $font-size-lg;
     max-width: $container-max-width;
     margin: $spacer auto 0;
+    font-weight: 300;
 }
+
 .container {
     position: relative;
+    z-index: 99;
+
+    .heading {
+        max-width: 800px;
+    }
 
     > div {
         h6 {
@@ -64,16 +67,59 @@ export default {
         }
     }
 
-    border: double 1px transparent;
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
+    &::after {
+        content: "";
+        position: absolute;
+        height: 266.493px;
+        width: 170.248px;
+        background: url("/retail/solutions/light-mask.svg") no-repeat;
+        bottom: -70px;
+        right: -100px;
+        z-index: -1;
+        background: linear-gradient(
+            180deg,
+            rgba(98, 24, 255, 0) 0%,
+            #6117ff 100%
+        );
+        filter: blur(100px);
+    }
 }
 .content {
-    background: $purple-31; // Add correct color gradient
+    background: $black-2;
     padding: calc($spacer * 2.375) calc($spacer * 3);
+    border-radius: 8px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 228px;
+        height: 480px;
+        background: url("/retail/solutions/light-mask.svg") no-repeat;
+        bottom: 0;
+        left: 14px;
+        z-index: 1;
+        border-radius: 8px;
+    }
 }
+.title {
+    font-weight: 300;
+    font-size: $h1-font-size;
+    span {
+        background: var(
+            --Text_gradient,
+            linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+.card-title {
+    font-weight: 300;
+}
+
 .icon {
+    margin-right: 1rem;
     height: 100px;
-    width: 100px;
 }
 </style>

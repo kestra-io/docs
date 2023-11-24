@@ -1,17 +1,18 @@
 <template>
     <div class="container example">
-        <h2 data-aos="fade-left" class="text-center mb-5">
-            Use Cases in Retail
-        </h2>
-        <!-- TODO: Add gradient to 'Retail' -->
+        <h1 data-aos="fade-left" class="title text-center mb-5">
+            Use Cases in <span>Retail</span>
+        </h1>
         <div class="row card-group card-centered no-shadow mb-2">
-            <template v-for="item in items">
+            <template v-for="(item, index) in items">
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
+                    <div class="card" :class="index === 1 && 'mask' " data-aos="zoom-in">
                         <div class="card-body">
-                            <span class="card-icon">
-                                <component :is="item.icon" />
-                            </span>
+                            <img
+                                :src="item.icon"
+                                :alt="item.title"
+                                class="icon mb-2"
+                            />
                             <h4 class="card-title">{{ item.title }}</h4>
                             <p class="card-text">{{ item.text }}</p>
                         </div>
@@ -24,7 +25,7 @@
 
 <script>
 export default {
-    name: "UseCasesExamples",
+    name: "Examples",
 
     props: {
         items: {
@@ -38,22 +39,59 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 
+.container {
+    background: #111113 url("/assets/retail/header-mask.svg") center;
+}
+
 .card {
-    background-color: $purple-33;
+    background: $black-2;
     color: white;
     box-shadow: none !important;
 
     .card-body {
-        padding: 2rem 1rem;
+        padding: 3rem 2rem 3rem 2rem;
+        background: $black-2;
 
         p {
             font-size: $font-size-sm;
             line-height: 1.375rem;
-            color: $purple-32;
         }
     }
+    &-title {
+        font-size: $font-size-xl !important;
+        font-weight: 300;
+        line-height: 2rem;
+    }
 }
-.example {
-    background: url("/terraform/overview/background.svg") no-repeat 0 -4%;
+.title {
+    font-weight: 300;
+    font-size: $h1-font-size;
+    span {
+        background: var(
+            --Text_gradient,
+            linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 }
+.icon {
+    width: 3rem;
+}
+
+.mask{
+    &::after {
+        content: "";
+        position: absolute;
+        height: 266.493px;
+        width: 170.248px;
+        bottom: -70px;
+        right: -100px;
+        background: linear-gradient(180deg, rgba(98, 24, 255, 0.00) 0%, #6117FF 100%);
+        filter: blur(100px);
+        z-index: -1;
+    }
+}
+
 </style>

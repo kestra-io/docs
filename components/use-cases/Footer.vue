@@ -2,14 +2,14 @@
     <div class="container justify-content-center">
         <div class="text-center rounded content">
             <div>
-                <h3 data-aos="fade-right">{{ title }}</h3>
+                <h1 class="title" data-aos="fade-right">{{ content.title }}</h1>
                 <div
-                    class="d-flex gap-2 flex-wrap justify-content-center align-items-center"
+                    class="d-flex gap-2 flex-wrap justify-content-center align-items-center mt-4"
                 >
-                    <template v-for="action in cta">
+                    <template v-for="action in content.cta">
                         <NuxtLink :href="action.link">
                             <button
-                                class="btn btn-primary"
+                                class="btn"
                                 :class="action.style"
                             >
                                 {{ action.text }}
@@ -24,17 +24,17 @@
 
 <script>
 export default {
-    name: "UseCaseFooter",
+    name: "Footer",
 
     props: {
-        title: {
-            type: String,
+        content: {
+            type: Object,
             required: true,
-        },
-        cta: {
-            type: Array,
-            required: true,
-        },
+            default: () => ({
+                title: '',
+                cta: []
+            })
+        }
     },
 };
 </script>
@@ -42,11 +42,31 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 
-.content {
-    background: $purple-31; // TODO: add correct background gradient
-    padding: calc($spacer * 2.375) calc($spacer * 3);
-    border: double 1px transparent;
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
+.content{
+    background-color: $black-2;
+    padding: calc($spacer * 2.375) calc($spacer * 1);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+    &::before {
+        content: "";
+        position: absolute;
+        width: 262px;
+        height: 170px;
+        background: url("/retail/light-mask2.svg") ;
+        right: 0px;
+        top: 0px;
+        z-index: 1;
+    }
+}
+.btn-dark{
+    --bs-btn-bg: $black-4 ;
+    --bs-btn-hover-bg : $black-4;
+    border: 1px solid $black-6;
+}
+.title {
+    font-weight: 300;
+    font-size: $h3-font-size;
 }
 </style>
