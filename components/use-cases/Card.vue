@@ -55,7 +55,7 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 .header {
-    background: url("/assets/retail/header-mask.svg") no-repeat center;
+    background: url("/retail/header-mask.svg") no-repeat center;
     p {
         font-size: $font-size-xl;
     }

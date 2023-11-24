@@ -46,7 +46,7 @@ export default {
 @import "../../assets/styles/variable";
 
 .container {
-    background: #111113 url("/assets/retail/header-mask.svg") center;
+    background: #111113 url("/retail/header-mask.svg") center;
 }
 
 .card {

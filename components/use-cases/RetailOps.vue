@@ -72,7 +72,6 @@ export default {
         position: absolute;
         height: 266.493px;
         width: 170.248px;
-        background: url("/retail/solutions/light-mask.svg") no-repeat;
         bottom: -70px;
         right: -100px;
         z-index: -1;

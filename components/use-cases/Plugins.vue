@@ -62,6 +62,6 @@ export default {
     border: 1px solid $black-6;
 }
 .container {
-    background: #111113 url("/assets/retail/header-mask.svg") center;
+    background: #111113 url("/retail/header-mask.svg") center;
 }
 </style>

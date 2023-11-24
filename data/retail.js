@@ -158,7 +158,7 @@ export default {
             },
             {
                 name: "Terraform",
-                icon: "/retail/plugins/teraform.svg",
+                icon: "/retail/plugins/terraform.svg",
                 href: "",
             },
             {

@@ -81,7 +81,7 @@ export default {
     }
 }
 .title {
-    background: url("/assets/retail/header-mask.svg") no-repeat center;
+    background: url("/retail/header-mask.svg") no-repeat center;
     font-size: $h3-font-size;
 }
 .description {
