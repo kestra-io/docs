@@ -85,5 +85,9 @@ export default {
 }
 .image {
     margin-top: -176px;
+
+    @include media-breakpoint-down(lg) {
+       margin-top: 0
+    }
 }
 </style>
