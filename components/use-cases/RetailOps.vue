@@ -55,17 +55,6 @@ export default {
     position: relative;
     z-index: 1;
 
-    .heading {
-        max-width: 800px;
-    }
-
-    > div {
-        h6 {
-            font-weight: normal;
-            line-height: 1.625rem;
-        }
-    }
-
     &::after {
         content: "";
         position: absolute;
