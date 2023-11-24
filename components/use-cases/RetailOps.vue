@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5">
+    <div class="container">
         <h1 data-aos="fade-right" class="title text-center mb-3">
             End-To-End Solution for Managing <br />
             <span>Complex</span> Retail Operations
@@ -54,7 +54,7 @@ export default {
 
 .container {
     position: relative;
-    z-index: 99;
+    z-index: 1;
 
     .heading {
         max-width: 800px;

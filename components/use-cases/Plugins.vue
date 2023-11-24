@@ -1,12 +1,12 @@
 <template>
-    <div class="container d-flex flex-column align-items-center my-5">
+    <div class="container d-flex flex-column align-items-center">
         <h1 data-aos="fade-left" class="title text-center card-title fw-light">
             Connect Your <span>Entire Stack</span> <br />
             with Plugins
         </h1>
         <div
             data-aos="fade-right"
-            class="d-flex justify-content-center flex-wrap plugins my-4 gap-4"
+            class="d-flex justify-content-center flex-wrap plugins gap-4 my-5"
         >
             <img
                 v-for="plugin in content.items"
@@ -14,7 +14,7 @@
                 :alt="plugin.name"
             />
         </div>
-        <div class="mt-5">
+        <div>
             <NuxtLink :href="content.cta.href" class="btn btn-dark">
                 {{ content.cta.text }}
             </NuxtLink>
@@ -66,5 +66,6 @@ export default {
 
 .container {
     background: #111113 url("/retail/header-mask.svg") center;
+    margin-top: 4rem;
 }
 </style>

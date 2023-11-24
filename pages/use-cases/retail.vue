@@ -5,15 +5,15 @@
     </Head>
     <div class="main">
         <RetailCard :content="header" />
-        <Line style="padding: 3rem 0 3rem 0" />
+        <Line class='line-margin'/>
         <UseCasesExamples :items="solutions.items" />
-        <Line class="mt-5" />
+        <Line class='line-margin'/>
         <LeroyMerlin :content="leroy" />
-        <Line />
+        <Line class='line-margin'/>
         <RetailOps :content="ops" />
         <Plugins :content="plugins" />
-        <Line class="mb-5" />
-        <Footer class="mb-5" :content="footer" />
+        <Line class='line-margin'/>
+        <Footer :content="footer" />
     </div>
 </template>
 
@@ -53,5 +53,10 @@ export default {
     background-color: #111113;
     color: $white;
     font-weight: 300;
+}
+
+.line-margin {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
 }
 </style>

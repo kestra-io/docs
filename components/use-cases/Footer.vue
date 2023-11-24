@@ -41,6 +41,10 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 
+.container {
+    margin-bottom: 4rem;
+}
+
 .content {
     background-color: $black-2;
     padding: calc($spacer * 2.375) calc($spacer * 1);
