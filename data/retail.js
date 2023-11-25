@@ -148,7 +148,7 @@ export default {
             },
             {
                 name: "Airbyte",
-                icon: "/retail/plugins/Airbyte.svg",
+                icon: "/retail/plugins/airbyte.svg",
                 href: "",
             },
             {
