@@ -2,6 +2,8 @@
 title: ☁️ Kestra Cloud and Enterprise
 ---
 
-This section provides an overview of the available Kestra editions, including the Open-Source Edition, the Enterprise Edition (self hosted in your own infrastructure), and Kestra Cloud (a fully managed version of Kestra hosted by the Kestra team).
+This section provides an overview of the available Kestra editions, including:
+- [Enterprise Edition](01.enterprise.md) — self hosted version of Kestra deployed to your infrastructure
+- [Kestra Cloud](02.cloud.md) — a fully managed version of Kestra hosted by the Kestra team in the cloud.
 
 <ChildTableOfContents :max="1" />
