@@ -84,32 +84,32 @@ export default {
             {
                 title: "YAML-Based Workflows",
                 text: "Build, maintain and scale, your workflows with Kestra's YAML-based interface.",
-                icon: "/retail/solutions/icon1.svg",
+                icon: "/retail/solutions/Icon1.svg",
             },
             {
                 title: "Full CI/CD Integration",
                 text: "From Terraform to GitHub Actions, Kestra provides complete control over deployment and resource management.",
-                icon: "/retail/solutions/icon2.svg",
+                icon: "/retail/solutions/Icon2.svg",
             },
             {
                 title: "Language Agnostic",
                 text: "Kestra's language-agnostic capabilities let you integrate various languages. Customize workflows to align with your unique retail business logic.",
-                icon: "/retail/solutions/icon3.svg",
+                icon: "/retail/solutions/Icon3.svg",
             },
             {
                 title: "Event-Driven Orchestration",
                 text: "Kestra's event-driven capabilities ensure that your retail operations react in real time.",
-                icon: "/retail/solutions/icon4.svg",
+                icon: "/retail/solutions/Icon4.svg",
             },
             {
                 title: "Developer Centric Platform",
                 text: "API-first design with robust, scalable, cloud-native architecture makes Kestra the go-to platform for software engineers in the retail industry.",
-                icon: "/retail/solutions/icon5.svg",
+                icon: "/retail/solutions/Icon5.svg",
             },
             {
                 title: "User-Friendly Interface",
                 text: "Engineered to be intuitive for both developers and business professionals. Kestra facilitates quick and efficient workflow development.",
-                icon: "/retail/solutions/icon6.svg",
+                icon: "/retail/solutions/Icon6.svg",
             },
         ],
     },
