@@ -9,12 +9,12 @@ export default {
             {
                 text: "Book a demo",
                 href: "/demo",
-                style: "btn btn-dark"
+                style: "btn btn-dark",
             },
             {
                 text: "Get started",
                 href: "/docs",
-                style: "btn-animated btn-purple-animated btn"
+                style: "btn-animated btn-purple-animated btn",
             },
         ],
         image: {
@@ -119,57 +119,46 @@ export default {
             {
                 name: "Fivetran",
                 icon: "/retail/plugins/fivetran.svg",
-                href: "",
             },
             {
                 name: "Snowflake",
                 icon: "/retail/plugins/snowflake.svg",
-                href: "",
             },
             {
                 name: "AWS",
                 icon: "/retail/plugins/aws.svg",
-                href: "",
             },
             {
                 name: "databricks",
                 icon: "/retail/plugins/databricks.svg",
-                href: "",
             },
             {
                 name: "Azure",
                 icon: "/retail/plugins/azure.svg",
-                href: "",
             },
             {
                 name: "dbt",
                 icon: "/retail/plugins/dbt.svg",
-                href: "",
             },
             {
                 name: "Airbyte",
                 icon: "/retail/plugins/airbyte.svg",
-                href: "",
             },
             {
                 name: "Docker",
                 icon: "/retail/plugins/docker.svg",
-                href: "",
             },
             {
                 name: "Terraform",
                 icon: "/retail/plugins/terraform.svg",
-                href: "",
             },
             {
                 name: "Google Cloud",
                 icon: "/retail/plugins/cloud.svg",
-                href: "",
             },
             {
                 name: "Github",
                 icon: "/retail/plugins/github.svg",
-                href: "",
             },
         ],
         cta: {

@@ -38,6 +38,7 @@
         </div>
     </div>
 </template>
+
 <script>
 export default {
     name: "LeroyMerlin",
@@ -57,6 +58,7 @@ export default {
     },
 };
 </script>
+
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 

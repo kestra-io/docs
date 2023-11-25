@@ -25,6 +25,7 @@
 <script>
 import Section from "~/components/layout/Section.vue";
 import useCases from "~/data/use-cases.js";
+
 export default {
     components: { Section },
     data: () => ({
