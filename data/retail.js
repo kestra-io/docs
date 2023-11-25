@@ -178,7 +178,7 @@ export default {
         },
     },
     footer: {
-        title: "Get Started",
+        title: "Getting Started",
         cta: [
             {
                 text: "Read the docs",
