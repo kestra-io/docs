@@ -28,22 +28,22 @@ export default {
             {
                 title: "Automated Inventory Management",
                 text: "Eliminate manual tracking to use Kestra to automate your inventory management system.",
-                icon: "/retail/use-cases/Icon_useCase5.svg",
+                icon: "/retail/use-cases/Icon_useCase1.svg",
             },
             {
                 title: "Enhanced Customer Experience",
                 text: "Use Kestra to collect, analyze, and use customer feedback. Automate the delivery of personalized promotions and recommendations based on customer data.",
-                icon: "/retail/use-cases/Icon_useCase5.svg",
+                icon: "/retail/use-cases/Icon_useCase2.svg",
             },
             {
                 title: "Compliance and Reporting",
                 text: "Automate the reporting processes, ensuring that all data compiles with retail standards and regulations. Ideal for generating automated end-of-day sales reports, inventory counts, and more.",
-                icon: "/retail/use-cases/Icon_useCase5.svg",
+                icon: "/retail/use-cases/Icon_useCase3.svg",
             },
             {
                 title: "Report Automation for Supply Chain",
                 text: "Automate supplier evaluation and order placement, ensuring a smooth and efficient supply chain operation.",
-                icon: "/retail/use-cases/Icon_useCase5.svg",
+                icon: "/retail/use-cases/Icon_useCase4.svg",
             },
             {
                 title: "Streamlined Data Management",
