@@ -10,7 +10,7 @@ image: /blogs/2023-11-27-yaml-crashcourse.png
 ---
 
 
-YAML is a data serialization language, known for its **human-readable format**. This format has been widely adopted in software development, DevOps, and cloud infrastructure.
+YAML is a data serialization language known for its **human-readable format**. This format has been widely adopted in software development, DevOps, and cloud infrastructure.
 
 YAML is extensively used in Kubernetes, Kustomize, GitHub Actions, Docker Compose, OpenAPI, AWS CloudFormation, Serverless Framework, GitLab CI, TravisCI, CircleCI, Ansible, Argo, Azure DevOps, and many more.
 
@@ -22,7 +22,7 @@ Given the versatility and popularity of this configuration language, knowing how
 
 ## YAML Syntax Basics
 
-The fundamental structure of YAML consists of **key-value pairs**, which can be **scalars** (_single values_), **lists**, or other nested key-value pairs.
+The fundamental structure of YAML consists of **key-value pairs**, which can be **scalars** (_single values_), **lists**, or other **nested key-value pairs**.
 
 YAML is **case-sensitive** and relies on **indentation** to structure data into hierarchies, either for **nested lists or maps** (dictionaries).
 
@@ -53,7 +53,7 @@ YAML uses Python-style indentation to structure key-value pairs into arbitrarily
 
 The indentation is always **two spaces** rather than tabs for portability reasons. This is a deliberate design choice to avoid issues with different tab sizes on different systems. Therefore, **two whitespaces** (_literal `space` characters_) are used **instead of tabs** for indentation.
 
-For example, the following YAML snippet defining which [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files) should be included or excluded in a [Python script task](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands) has two levels of indentation — one for the `namespaceFiles` property, and another for the `include` and `exclude` child properties:
+For example, the following YAML snippet defining which [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files) should be included or excluded in a [Python script task](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands) has two levels of indentation — one for the `namespaceFiles` property and another for the `include` and `exclude` child properties:
 
 ```yaml
 id: namespace_files
@@ -76,7 +76,7 @@ tasks:
 
 ### Comments
 
-YAML supports single-line comments, initiated with `#`, which are ignored by the parser.
+YAML supports single-line comments initiated with `#`, which are ignored by the parser.
 
 ```yaml
 # This is a comment in my flow
@@ -88,7 +88,7 @@ namespace: development
 
 ### Scalars and their Data Types
 
-Scalars are single unquoted values, which can represent various data types including `string`, `timestamp`, `boolean`, `int`, or `float`, as well as `null` values. ISO-formatted date and datetime literals are parsed as `timestamp` data type. Even `scientific` notation, as well as `Hexadecimal` and `Octal` notation formats are supported in YAML.
+Scalars are single unquoted values which can represent various data types, including `string`, `timestamp`, `boolean`, `int`, or `float`, as well as `null` values. ISO-formatted date and datetime literals are parsed as `timestamp` data types. Scientific, hexadecimal, and octal notation formats are also natively supported in YAML.
 
 Note how the example below deliberately uses both `camelCase` and `snake_case` formats to demonstrate that YAML supports both.
 
@@ -123,7 +123,7 @@ song:
 
 ### Boolean Values
 
-YAML supports `true`, `false`, `yes`, `no`, `on`, `off` as boolean values. In contrast to many programming languages, YAML does not support `1` or `0` as boolean values. If you use `1` or `0`, YAML parser in Kestra will interpret both as `false`.
+YAML supports `true`, `false`, `yes`, `no`, `on`, and `off` as boolean values. In contrast to many programming languages, YAML does not interpret `1` or `0` as boolean values. If you use `1` or `0`, the YAML parser in Kestra will interpret both as `false`.
 
 You can try it out using the following flow:
 
@@ -157,7 +157,7 @@ tagged_float: !!float -42.2
 tagged_datetime: !!timestamp 2024-04-24T02:42:00+02:00
 ```
 
-Since Kestra natively supports strongly-typed inputs and task properties, **usually you don't need to use these data type tags**. However, if you use it, Kestra will correctly parse the value as the specified data type.
+Since Kestra natively supports strongly typed inputs and task properties, **usually you don't need to use these data type tags**. However, if you use it, Kestra will correctly parse the value as the specified data type.
 
 Here is an example you can use to validate how Kestra parses various data types:
 
@@ -244,10 +244,10 @@ In practice, you'll rarely see quoted keys — most applications standardize on 
 Kestra doesn't use spaces or special characters in keys. Instead, we follow the `camelCase` convention without spaces or special characters in keys.
 ::
 
-String values can contain spaces but special characters incl. `:`, `?`, `[`, `]`, `{`, `}`, `,`, `&`, `*`, `#`, `!`, `|`, `>`, `'`, `"`, `%`, `@`, `` ` `` are reserved and must be quoted.
+String values can contain spaces, but special characters, incl. `:`, `?`, `[`, `]`, `{`, `}`, `,`, `&`, `*`, `#`, `!`, `|`, `>`, `'`, `"`, `%`, `@`, `` ` `` are reserved and must be quoted.
 
 ::alert{type="info"}
-Usually, scalar values are parsed by YAML into matching `int`, `float`, `string`, `timestamp`, `null` or `boolean` data types. If you put those in **quotes**, they will be parsed as `strings` instead:
+Usually, scalar values are parsed by YAML into the matching `int`, `float`, `string`, `timestamp`, `null`, or `boolean` data types. If you put those in **quotes**, they will be parsed as `strings` instead:
 
 ```yaml
 string_value_with_int_nr: "42"
@@ -396,7 +396,7 @@ triggers:
 
 In this example:
 - The flow has a unique `id` within a `namespace`. Both are simple **scalar** values.
-- The `labels` are optional and can be used to add metadata to the flow, useful to filter executions. Note how the `labels` are defined as a **map** with `key: value` pairs.
+- The `labels` are optional and can be used to add metadata to the flow, which is useful to filter executions. Note how the `labels` are defined as a **map** with `key: value` pairs.
 - The `inputs` is a **list of strongly-typed variables** that can be used in the flow. Each input has a `name`, `type`, and `defaults` child properties.
 - The `tasks` property is a **list of tasks**, each with its `id` and `type`. The tasks will be executed in the order they are defined in the list.
 - The first task prints a `message` with a template variable `{{ inputs.user }}` and has a **multi-line** `description` property for an arbitrarily long markdown description to document the task.
@@ -412,7 +412,7 @@ When writing YAML, especially for complex Kestra workflows, make sure to follow 
 
 First, ensure **consistent indentation**. Remember that **two spaces** are used for indentation rather than tabs.
 
-Next, use **comments** sparingly. Comments can clarify the purpose of various sections or tasks, but when they are overused, the flow may become less readable. Consider using the `description` property to add a markdown description to your Kestra flows, tasks or triggers. This is a better alternative to comments because it allows **multi-line markdown strings** which are **rendered in the UI**.
+Next, use **comments** sparingly. Comments can clarify the purpose of various sections or tasks, but when they are overused, the flow may become less readable. Consider using the `description` property to add a markdown description to your Kestra flows, tasks or triggers. This is a better alternative to comments because it allows **multi-line markdown strings**, which are **rendered in the UI**.
 
 Finally, **validate YAML syntax** before using it in production. This will help you catch syntax errors and avoid runtime issues. Kestra ⚡️ **automatically performs syntax validation** ⚡️ when you use the built-in editor or Kestra's VS Code extension. Kestra **highlights syntax errors** live as you type, and displays **warnings** when using deprecated properties.
 
@@ -420,7 +420,7 @@ Finally, **validate YAML syntax** before using it in production. This will help 
 
 ## Next Steps
 
-YAML is a versatile, language-agnostic and user-friendly format for configuring applications, including Kestra flows. In just a couple of minutes, anyone in your organization can learn the basics of YAML syntax and [start building workflows](https://kestra.io/docs/getting-started/) directly from the embedded editor in the Kestra UI.
+YAML is a versatile, language-agnostic, and user-friendly format for configuring applications, including Kestra flows. In just a couple of minutes, anyone in your organization can learn the basics of YAML syntax and [start building workflows](https://kestra.io/docs/getting-started/) directly from the embedded editor in the Kestra UI.
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
