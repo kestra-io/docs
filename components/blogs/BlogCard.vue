@@ -32,7 +32,6 @@
     h6 {
         font-size: $font-size-base;
         line-height: 24px;
-        font-weight: 300;
         color: var(--bs-black)
     }
 

@@ -38,7 +38,6 @@
             font-size: $font-size-sm;
         }
         h3{
-            font-weight: 300;
             line-height: 2.375rem;
         }
         p{

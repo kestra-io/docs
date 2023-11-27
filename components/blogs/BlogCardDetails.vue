@@ -1,5 +1,5 @@
 <template>
-    <p>{{ name }}  {{ timesAgo(date) }} - 5 min reading</p>
+    <p>{{ name }} - {{ timesAgo(date) }}</p>
 </template>
 
 <script>
