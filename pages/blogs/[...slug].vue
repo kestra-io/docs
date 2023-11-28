@@ -35,7 +35,7 @@
             </article>
             <div class="bottom">
                 <DocsBlogs title="More contents"/>
-                <DocsNewsLetter/>
+                <LayoutNewsletter/>
             </div>
         </div>
 

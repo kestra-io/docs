@@ -54,7 +54,7 @@
     @import "../../assets/styles/variable";
     
     .container{
-        border-top: 1px solid $gray-600;
+        border-top: 1px solid $gray-300;
     }
     :deep(.main){
         padding-top: 2rem !important;
@@ -70,7 +70,6 @@
             font-size: $font-size-sm;
             color: $primary;
         }
-
         .author {
             font-size: $font-size-sm;
             color: $gray-500;
