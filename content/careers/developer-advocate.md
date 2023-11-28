@@ -1,6 +1,6 @@
 ---
 title: "Developer Advocate"
-type: Engineering
+type: Product
 ---
 
 # Developer Advocate
@@ -9,25 +9,25 @@ We are looking for a Developer Advocate who loves to educate and engage with dev
 
 ## What you will do:
 
-- **Content:** Create and deliver engaging content, such as, but not limited to, blog posts, technical content, presentations, live streams, etc.
-- **Advocate:** While still representing as a thought leader in different communities, you will still advocate for Kestra’s community internally, and promote Kestra externally
-- **Communities:** Attend, speak at, and sponsor in-person and/or virtual events at various developer communities. Be a thought leader in the #DevRel space
-- **Fun:** Create fun and engaging content for various social media platforms. Whether it’s writing, video creation and technical or soft skills to educate developers
-- **Community:** Actively engaging with developers on various social media platforms (ie: Twitter, Slack, LinkedIn, GitHub Discussions, Reddit, StackOverflow, etc)
+- **Content:** Create and deliver engaging content, such as blog posts, technical product documentation, presentations, live streams, YouTube videos, etc.
+- **Advocacy:** Advocate for Kestra products and Kestra users internally and externally
+- **Events:** Attend, speak at, and sponsor in-person and/or virtual events across various developer communities. Be, or become, a thought leader in the software engineering and workflow orchestration domains.
+- **Education:** Create fun and engaging content to teach our users and help them be successful with our products.
+- **Community Building:** Actively engage with developers across various platforms including Slack, GitHub, LinkedIn, Twitter, Reddit, or StackOverflow.
 
 ## What we’re looking for:
 
-- 2+ years experience as a Developer Advocate, or similar activities
-- Some experience in at least two programming languages or frameworks (JS, TS, Java, Python, …)
-- Native US/UK with excellent spoken and written English
-- You love to teach developers how to build cool stuff
+- 2+ years experience as a Developer Advocate, or a related role.
+- Experience in at least two programming languages or frameworks (JS, TS, Java, Python, R, SQL, …)
+- Excellent spoken and written English
+- You love to teach developers how to solve problems with technology
 - Entrepreneurial mindset
-- Ability to work with a diverse company (and team) located globally, working across different time zones
-- Ability to take the initiative and work independently
+- Ability to work with a diverse, globally distributed team working across different time zones
+- Ability to take the initiative and work independently.
 
 ## Bonus points:
 
-- Professional prior experience as a Data Engineer with extensive knowledge of the big data ecosystem, key technologies (especially Python, Kafka, Flink, Spark, data lakes and warehouses)
+- Prior experience as a Technical Writer, Software or Data Engineer with extensive knowledge of the engineering and data ecosystem, including cloud-native technologies leveraged by Kestra (incl. Docker, Kubernetes, Helm, Terraform, AWS, GCP, Azure, Postgres, Kafka, Elasticsearch, data lakes and data warehouses)
 - Experience building demo apps and producing developer-centric content
-- Experience speaking at community events and participating in online forums
-- Experience growing and nurturing open source community projects
+- Experience speaking at community events and participating in online communities
+- Experience contributing to and collaborating with open source projects.
