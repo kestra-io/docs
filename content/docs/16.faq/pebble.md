@@ -29,7 +29,7 @@ tasks:
 
 ### Read task ouputs
 
-Most of Kestra tasks expose outputs value. You can access those outputs in other tasks by using `outputs.<task_name>.<output_name>`. Every task outputs are in each task documentation.
+Most of Kestra tasks expose outputs values. You can access those outputs in other tasks by using `outputs.<task_name>.<output_name>`. Every task outputs are in each task documentation.
 
 In the example below we use the `value` outputs of the `io.kestra.core.tasks.debugs.Return` task in the downstream task.
 
@@ -55,7 +55,7 @@ tasks:
 ## How to format date ?
 
 Pebble can be very useful to make small transformation on the fly - without the need to use Python or some dedicated programming language. 
-For instance, we can use the `date` function to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'``
+For instance, we can use the `date` function to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
 
 You can find more documentation on the `date` function [in this documentation](../05.developer-guide/03.variables/03.filter/date.md)
 
@@ -142,17 +142,4 @@ tasks:
         type: io.kestra.core.tasks.log.Log
         message: 'Condition was false'
 ```
-
-
-## How to access sibling objects ?
-
-
-
-
-Parse objects and lists
-👉 parse an object
-👉 give data to ForEach type tasks
-👉
-Siblings & Conditions
-👉 using siblings element between ForEachParallel and an upstream task
 
