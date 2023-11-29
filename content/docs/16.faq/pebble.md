@@ -85,9 +85,9 @@ triggers:
 
 ## How to parse objects & list ?
 
-Sometimes outputs are nested objects or list. To parse those elements, you will need to use `jq` most of the time.
+Sometimes outputs are made of nested objects or list. To parse those elements, you will need to use `jq` most of the time.
 
-jq is like sed for JSON data - you can use it to slice and filter and map and transform structured data with the same ease that sed, awk, grep and friends let you play with text.
+jq is like sed for JSON data - you can use it to slice, filter, map and transform structured data with the same ease that sed, awk, grep and similar commands let you play with text.
 
 For example, giving the following flow data
 
@@ -109,7 +109,9 @@ tasks:
 
 The expression `{{ inputs.data.value }}` will return the list `[1, 2, 3]`
 
-The expression `{{ inputs.data.value | jq(".[1]") | first }}` will return `2`. `jq(".[1]")` access the second value of the list and return an array with one element, we then use `first` to access the value itself.
+The expression `{{ inputs.data.value | jq(".[1]") | first }}` will return `2`.
+
+`jq(".[1]")` access the second value of the list and return an array with one element, we then use `first` to access the value itself.
 
 > Note: we could have used `{{ inputs | jq(".data.value[1]") | first }}`, jq allows to parse any object in Kestra context.
 
