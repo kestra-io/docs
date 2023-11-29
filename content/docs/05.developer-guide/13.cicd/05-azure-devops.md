@@ -60,17 +60,22 @@ stages:
               environmentServiceNameAWS: 'aws_s3'
 ```
 
-a. The pipeline is triggered whenever the main branch is updated (so when we merge a PR into main the pipeline would run)
-b. We choose a pool created beforehand. Here is the [official Azure DevOps documentation to create and manage agent pools](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml,browser)
-c. We use the Terraform extension to install, validate and apply Terraform resources. You can install the Terraform extension task by navigating to the Organization Settings > Extensions and then browse the marketplace to install Terraform extension.
+- The pipeline is triggered whenever the main branch is updated (so when we merge a PR into main the pipeline would run)
+ 
+- We choose a pool created beforehand. Here is the [official Azure DevOps documentation to create and manage agent pools](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml,browser)
+
+- We use the Terraform extension to install, validate and apply Terraform resources. You can install the Terraform extension task by navigating to the Organization Settings > Extensions and then browse the marketplace to install Terraform extension.
 
 ![image-terraform](/docs/developer-guide/ci-cd/az-devops-image-terraform.png)
 
-The first task is to use the TerraformInstaller@1 to install Terraform when the pipeline runs. Then we use the TerraformTaskV4@4 three times:
+The first task is to use the `TerraformInstaller@1` to install Terraform when the pipeline runs. Then we use the `TerraformTaskV4@4`` three times:
 
-1. run the init command. As you can see in our code snippet, we use an AWS S3 bucket for Terraform backend but you can use either Azure RM backend, AWS or GCP.
-2. run the validate command, checking whether a configuration is syntactically valid and internally consistent.
-3. run the apply command to executes the actions proposed in the Terraform plan
+1. run the `init`` command. As you can see in our code snippet, we use an AWS S3 bucket for Terraform backend but you can use either Azure RM backend, AWS or GCP.
+
+2. run the `validate`` command, checking whether a configuration is syntactically valid and internally consistent.
+
+3. run the `apply`` command to executes the actions proposed in the Terraform plan
+
 
 ![image-green-pipeline](/docs/developer-guide/ci-cd/az-devops-image-green-pipleine.png)
 
