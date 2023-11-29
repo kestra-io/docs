@@ -1,6 +1,5 @@
 <template>
     <div class="mt-5 mb-2">
-        <DocsBreadcrumb :slug="slug" :page-list="pageList" />
         <div v-if="slug === '/blogs/community'">
             <h2 data-aos="fade-left">Community’s News</h2>
             <div class="row mt-5">
@@ -111,6 +110,7 @@
 
         .heading {
             line-height: 1.875rem;
+            font-weight: 100;
         }
         .btn {
             border: 1px solid $purple-13;
@@ -128,5 +128,14 @@
             border-bottom: 2px solid $primary;
         }
 
+    }
+    h1{
+        font-size:$font-size-4xl;
+        font-weight: 100;
+        line-height: 2.75rem;
+        margin-bottom: 2rem;
+    }
+    h4{
+        margin-bottom: 2rem;
     }
 </style>
