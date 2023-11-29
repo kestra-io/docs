@@ -62,9 +62,11 @@ You can find more documentation on the `date` function [in this documentation](.
 ### Coalesce operator for trigger or manual execution
 
 Most of the time, a flow will be triggered automatically. Either on schedule or based on external events. It’s common to use the date of the execution to process the corresponding data and make the flow dependent on time. 
+
 With Pebble you can use the `trigger.date` to get the date of the executed trigger.
 Still, sometimes you want to manually execute a flow. Then the `trigger.date` variable won’t work anymore. For this you can use the `execution.startDate` variable that returns the execution start date.
-Using the coalesce operator `??`, it’s easy to make both behavior work without overhead.
+
+It’s easy to make both behavior work without overhead using the coalesce operator `??`
 
 ```yaml
 id: pebble-date-trigger
