@@ -1,12 +1,12 @@
 ---
 title: YAML Pitfalls and Why None of Them Apply to Kestra
 description: YAML is a popular configuration language for declarative orchestration in Kubernetes and CI/CD tools. However, it has also been criticized for its potential for errors. In this blog post, we'll explore the most common pitfalls associated with YAML and explain why none of them apply to Kestra.
-date: 2023-12-05T13:00:00
+date: 2023-12-01T13:00:00
 category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: /blogs/2023-12-05-yaml-pitfalls.png
+image: /blogs/2023-12-01-yaml-pitfalls.png
 ---
 
 ## Understanding where the YAML criticism comes from
@@ -54,13 +54,13 @@ The most common complaints about YAML are related to **indentation**. Similarly 
 
 As long as your workflow syntax passes validation made by Kestra's API, the indentation doesn't matter. The image below demonstrates how the flow passes validation even though the list elements are over-indented.
 
-![validation-pass](/blogs/2023-12-05-yaml-pitfalls/validation-pass.png)
+![validation-pass](/blogs/2023-12-01-yaml-pitfalls/validation-pass.png)
 
 The validation passes because indentation is consistent. That's enough for Kestra to understand the structure of the flow, even if it's not properly formatted.
 
 However, in another example shown below, you can see that the indentation is inconsistent - the first and the second tasks have different indentation levels. As a result, the flow fails validation and can't be saved.
 
-![validation-fail](/blogs/2023-12-05-yaml-pitfalls/validation-fail.png)
+![validation-fail](/blogs/2023-12-01-yaml-pitfalls/validation-fail.png)
 
 Thanks to the built-in syntax validation, **Kestra's API doesn't allow you to save an invalid flow**. There are no surprises at runtime because the flow is validated during its creation, i.e. at build time. This constrained (yet robust) approach offers an advantage over more flexible (yet more fragile) Python scripts, where indentation errors can lead to unexpected behavior at runtime.
 
