@@ -91,7 +91,7 @@ Kestra encourages small, modular and reusable components, and it provides multip
  In short, Kestra encourages modular, decoupled components built on top of a simple orchestration syntax defined in YAML.
 
 ::alert{type="info"}
-**TL;DR:** If you follow engineering best practices and modularize your logic into smaller, reusable components, YAML scales well to large configurations. Kestra provides multiple ways to split a flow into smaller building blocks that can be referenced in the same way as functions in a programming language.
+**TL;DR:** If you follow engineering best practices and modularize your logic into smaller, reusable components, Kestra flows built with YAML scale well to support large and complex workloads. Kestra provides multiple ways to split any workflow into smaller building blocks that can be referenced in the same way as functions in a programming language.
 ::
 
 ---
@@ -117,4 +117,6 @@ Kestra also provides `DEBUG` and `TRACE` log levels, which can be used for debug
 ## Next steps
 The critique of YAML, while often valid, represents a scenario-specific viewpoint and should not be generalized to dismiss YAML’s utility in a wider context. Like any tool or language, YAML has its strengths and weaknesses, and its suitability varies depending on the context. Understanding these nuances is critical to making informed decisions about using YAML in your own work rather than relying on a one-size-fits-all judgment.
 
-In the context of Kestra, we are confident that to enable language-agnostic declarative orchestration, we cannot rely on a single programming language. Enabling a company-wide orchestration platform requires a language that is easy to learn and that can be simultaneously used by engineers across different tech stacks and domain experts with no programming experience. As with anything in engineering, YAML has its limitations. However, we've solved all of them through our robust APIs, and we would love to hear your feedback on how we can make it even better — just reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](https://kestra.io/slack).
+In the context of Kestra, we are confident that to enable language-agnostic declarative orchestration, we cannot rely on a single programming language. Enabling a company-wide orchestration platform requires a language that is easy to learn and that can be simultaneously used by engineers across different tech stacks and domain experts with no programming experience. Kestra has solved all YAML pitfalls mentioned in this post through our robust APIs and validation mechanisms built into the framework.
+
+We would love to hear your feedback on how we can make it even better — reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](https://kestra.io/slack).
