@@ -115,9 +115,10 @@ Kestra also provides `DEBUG` and `TRACE` log levels, which can be used for debug
 ---
 
 ## Next steps
-The critique of YAML, while often valid, represents a scenario-specific viewpoint and should not be generalized to dismiss YAML’s utility in a wider context. Like any tool or language, YAML has its strengths and weaknesses, and its suitability varies depending on the context. Understanding these nuances is critical to making informed decisions about using YAML in your own work rather than relying on a one-size-fits-all judgment.
 
-In the context of Kestra, we are confident that to enable language-agnostic declarative orchestration, we cannot rely on a single programming language. Enabling a company-wide orchestration platform requires a language that is easy to learn and that can be simultaneously used by engineers across different tech stacks and domain experts with no programming experience. Kestra has solved all YAML pitfalls mentioned in this post through our robust APIs and validation mechanisms built into the framework, and the YAML support across modern IDEs allowed us to build a user-friendly DSL for writing and debugging YAML-based orchestration logic with all productivity features you'd expect from a full-fledged programming language.
+The complaints about YAML, while often valid, represent scenario-specific viewpoints and should not be generalized to dismiss YAML's overall utility. Like any tool or language, YAML has its strengths and weaknesses, and its suitability varies depending on the context.
+
+In the context of Kestra, we are confident that in order to enable language-agnostic declarative orchestration, we can't rely on a single programming language. Enabling a company-wide orchestration platform requires a language that is easy to learn and that can be simultaneously used by engineers across different tech stacks and domain experts with no programming experience. Kestra has solved all YAML pitfalls mentioned in this post through our robust APIs and validation mechanisms built into the framework, and the YAML support across modern IDEs allowed us to create a user-friendly DSL for writing and debugging YAML-based orchestration logic with all productivity features you'd expect from a full-fledged programming language.
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
