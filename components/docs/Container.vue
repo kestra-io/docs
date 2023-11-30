@@ -6,7 +6,7 @@
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="props.slug" :pageList="pageList"/>
-                    <h1 v-html="transformTitle(page.title)" class="py-0 title "></h1>
+                    <h1 v-html="transformTitle(page.title)"></h1>
                 </div>
 
                 <NavToc :page="page"/>
@@ -42,6 +42,7 @@
             required: true
         },
     })
+
     const {data: page, error} = await useAsyncData(`Container-${hash(props.slug)}`, () => {
         try {
             return queryContent(props.slug).findOne();
@@ -82,35 +83,6 @@
         ]
     })
 </script>
-<style lang="scss" scoped >
-@import "../../assets/styles/variable";
-.container{
-    max-width: 1500px;
-    .title{
-        font-size: $h3-font-size;
-        font-weight: 600;
-        line-height: 3.25rem;
-    }
-}
-:deep(p){
-    font-weight: 400;
-    line-height: 1.75rem;
-}
-:deep(p > a){
-    text-decoration: underline;
-}
-:deep(h2 > a){
-    font-size: 1.5rem;
-    font-weight: 600;
-    line-height: 2.375;
-    margin: 0px;
-}
-:deep(h3 > a ){
-    font-size: 1.5rem;
-    font-weight: 600;
-    line-height: 2.375;
-}
-</style>
 
 
 

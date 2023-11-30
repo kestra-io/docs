@@ -120,7 +120,7 @@
                     @include border-radius(var(--bs-border-radius));
                 }
             }
-            
+
             @include media-breakpoint-up(lg) {
                 display: block !important; // stylelint-disable-line declaration-no-important
             }
