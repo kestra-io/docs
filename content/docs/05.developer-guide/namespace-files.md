@@ -95,7 +95,7 @@ Here is a simple example showing how you can synchronize an entire directory of 
 resource "kestra_namespace_file" "prod_scripts" {
   for_each  = fileset(path.module, "src/*")
   namespace = "prod"
-  filename   = each.value
+  filename   = "/${each.value}"
   content   = file(each.value)
 }
 ```
