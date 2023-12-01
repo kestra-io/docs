@@ -111,7 +111,7 @@ The expression `{{ inputs.data.value }}` will return the list `[1, 2, 3]`
 
 The expression `{{ inputs.data.value | jq(".[1]") | first }}` will return `2`.
 
-`jq(".[1]")` access the second value of the list and return an array with one element, we then use `first` to access the value itself.
+`jq(".[1]")` accesses the second value of the list and returns an array with one element. We then use `first` to access the value itself.
 
 > Note: we could have used `{{ inputs | jq(".data.value[1]") | first }}`, jq allows to parse any object in Kestra context.
 
