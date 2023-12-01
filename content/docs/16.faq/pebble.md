@@ -7,7 +7,7 @@ Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/)
 
 In Kestra, it's used for variable operations and passing metadata between tasks.
 
-## How to read outputs & inputs using Pebble
+## How to read outputs & inputs using Pebble?
 
 ### Read inputs
 
@@ -52,7 +52,7 @@ tasks:
     message: '{{ outputs.say_hello.value }}'
 ```
 
-## How to format a date in Pebble
+## How to format a date in Pebble?
 
 Pebble can be very useful to make small transformation on the fly - without the need to use Python or some dedicated programming language. 
 For instance, we can use the `date` function to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
@@ -83,7 +83,7 @@ triggers:
     cron: "* * * * *"
 ```
 
-## How to parse objects & list ?
+## How to parse objects & list?
 
 Sometimes outputs are made of nested objects or list. To parse those elements, you will need to use `jq` most of the time.
 
@@ -118,7 +118,7 @@ The expression `{{ inputs.data.value | jq(".[1]") | first }}` will return `2`.
 You can troubleshoot complex Pebble expressions using the [Eval Expression](../04.user-interface-guide/04-executions.md) button in the outputs tab of a Flow execution. It's helpful to validate how complex objects will be parsed.
 
 
-## How to use conditions in Pebble
+## How to use conditions in Pebble?
 
 In some tasks, such as the `If` or `Switch` tasks, you will need to provide some conditions. You can use the Pebble syntax to use previous task outputs within those conditions:
 
