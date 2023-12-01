@@ -85,11 +85,9 @@ triggers:
 
 ## How to parse objects & list?
 
-Sometimes outputs are made of nested objects or list. To parse those elements, you will need to use `jq` most of the time.
+Sometimes, outputs return nested objects or lists. To parse those elements, you may leverage `jq`. You can use jQuery to slice, filter, map, and transform structured data with the same ease that `sed`, `awk`, `grep`, and similar Linux commands let you manipulate strings.
 
-jq is like sed for JSON data - you can use it to slice, filter, map and transform structured data with the same ease that sed, awk, grep and similar commands let you play with text.
-
-For example, giving the following flow data
+Consider the following flow:
 
 ```yaml
 id: test-object
