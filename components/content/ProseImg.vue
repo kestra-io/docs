@@ -52,9 +52,3 @@
         return "zoom " + props.class
     })
 </script>
-
-<style lang="scss" scoped>
-    .bd-content img {
-        width: 100%;
-    }
-</style>
