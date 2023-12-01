@@ -7,7 +7,7 @@ Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/)
 
 In Kestra, it's used for variable operations and passing metadata between tasks.
 
-## How to reading outputs & inputs ?
+## How to read outputs & inputs using Pebble
 
 ### Read inputs
 
