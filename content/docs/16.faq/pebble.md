@@ -29,7 +29,7 @@ tasks:
 
 ### Read task ouputs
 
-Most of Kestra tasks expose outputs values. You can access those outputs in other tasks by using `outputs.<task_name>.<output_name>`. Every task outputs can be found the corresponding task documentation.
+Most of Kestra's tasks expose output values. You can access those outputs in other tasks by using `outputs.<task_name>.<output_name>`. Every task output can be found in the corresponding task documentation.
 
 In the example below we use the `value` outputs of the `io.kestra.core.tasks.debugs.Return` task in the downstream task.
 
