@@ -2,7 +2,7 @@
 title: Pebble FAQ
 ---
 
-## What's Pebble ?
+## What is Pebble and why do we use it at Kestra?
 Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/) and similar to the [Python Jinja Template Engine](https://palletsprojects.com/p/jinja/) syntax.
 
 In Kestra, it's used for variable operations and passing metadata between tasks.
