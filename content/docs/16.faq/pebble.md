@@ -66,7 +66,7 @@ Most of the time, a flow will be triggered automatically. Either on schedule or 
 With Pebble you can use the `trigger.date` to get the date of the executed trigger.
 Still, sometimes you want to manually execute a flow. Then the `trigger.date` variable won’t work anymore. For this you can use the `execution.startDate` variable that returns the execution start date.
 
-It’s easy to make both behavior work without overhead using the coalesce operator `??`
+To support both use cases, use the coalesce operator `??`. The example below shows how to apply it in a flow.
 
 ```yaml
 id: pebble-date-trigger
