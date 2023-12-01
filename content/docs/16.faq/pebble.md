@@ -91,7 +91,7 @@ jq is like sed for JSON data - you can use it to slice, filter, map and transfor
 
 For example, giving the following flow data
 
-```
+```yaml
 id: test-object
 namespace: dev
 
