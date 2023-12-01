@@ -118,7 +118,7 @@ The expression `{{ inputs.data.value | jq(".[1]") | first }}` will return `2`.
 You can play with the [Eval Expression](../04.user-interface-guide/04-executions.md) button in the outputs tab of a Flow execution. It's really helpful to troubleshoot more complex object parsing.
 
 
-## How to use conditions ?
+## How to use conditions in Pebble
 
 In some tasks like the If or Switch tasks, you will need to provide some conditions. You can use the Pebble syntax to use previous task outputs in those conditions:
 
