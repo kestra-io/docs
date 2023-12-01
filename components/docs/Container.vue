@@ -110,6 +110,9 @@
     font-weight: 600;
     line-height: 2.375;
 }
+:deep(img){
+    width: 100%;
+}
 </style>
 
 
