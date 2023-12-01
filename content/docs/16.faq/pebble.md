@@ -120,7 +120,7 @@ You can troubleshoot complex Pebble expressions using the [Eval Expression](../0
 
 ## How to use conditions in Pebble
 
-In some tasks like the If or Switch tasks, you will need to provide some conditions. You can use the Pebble syntax to use previous task outputs in those conditions:
+In some tasks, such as the `If` or `Switch` tasks, you will need to provide some conditions. You can use the Pebble syntax to use previous task outputs within those conditions:
 
 ```yaml
 id: test-object
