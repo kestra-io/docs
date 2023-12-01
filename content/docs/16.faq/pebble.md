@@ -31,7 +31,7 @@ tasks:
 
 Most of Kestra's tasks expose output values. You can access those outputs in other tasks by using `outputs.<task_name>.<output_name>`. Every task output can be found in the corresponding task documentation.
 
-In the example below we use the `value` outputs of the `io.kestra.core.tasks.debugs.Return` task in the downstream task.
+In the example below, we use the `value` outputs of the `io.kestra.core.tasks.debugs.Return` task in the downstream task.
 
 ```yaml
 id: input_string
