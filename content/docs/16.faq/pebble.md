@@ -115,7 +115,7 @@ The expression `{{ inputs.data.value | jq(".[1]") | first }}` will return `2`.
 
 > Note: we could have used `{{ inputs | jq(".data.value[1]") | first }}`, jq allows to parse any object in Kestra context.
 
-You can play with the [Eval Expression](../04.user-interface-guide/04-executions.md) button in the outputs tab of a Flow execution. It's really helpful to troubleshoot more complex object parsing.
+You can troubleshoot complex Pebble expressions using the [Eval Expression](../04.user-interface-guide/04-executions.md) button in the outputs tab of a Flow execution. It's helpful to validate how complex objects will be parsed.
 
 
 ## How to use conditions in Pebble
