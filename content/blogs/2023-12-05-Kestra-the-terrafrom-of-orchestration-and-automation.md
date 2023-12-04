@@ -1,12 +1,12 @@
 ---
 title: "Kestra: The Terraform of Automation and Orchestration"
 description: Many people have recently been describing Kestra as Terraform for data pipelines. This post will elaborate on that aspect in terms of our approach towards workflow management and orchestration. While we want to offer Software and Data Engineers the same transformative impact as Terraform had on the world of infrastructure management, there are some differences in how we see the Everything as Code paradigm being applied to the world of workflow automation.
-date: 2023-11-03T11:00:00
+date: 2023-12-05T08:00:00
 category: Company News
 author:
-  name: Martin-Pierre Roset
-  image: "mproset"
-image: /blogs/2023-11-07-Kestra-the-terrafrom-of-orchestration-and-automation.jpg
+  name: Emmannuel Darras
+  image: "Edarras"
+image: /blogs/2023-12-05-Kestra-the-terrafrom-of-orchestration-and-automation.jpg
 ---
 
 Many people have recently been comparing Kestra to Terraform, as both tools provide a declarative DSL to manage and automate workflows.
@@ -19,7 +19,7 @@ This blog post will delve into how Kestra compares to Terraform in offering decl
 
 ## Declarative Language
 
-![declarative](/blogs/2023-11-07-Kestra-the-terrafrom-of-orchestration-and-automation/declarative.png)
+![declarative](/blogs/2023-12-05-Kestra-the-terrafrom-of-orchestration-and-automation/declarative.png)
 
 Like Terraform, which uses its HashiCorp Configuration Language (HCL) for declarative infrastructure management, Kestra employs a declarative YAML-based approach to define workflows.
 
@@ -45,7 +45,7 @@ Kestra embodies the same philosophy for workflow orchestration. It transitions f
 
 ## Cloud-Agnostic and Language-Agnostic
 
-![agnostic](/blogs/2023-11-07-Kestra-the-terrafrom-of-orchestration-and-automation/agnostic.png)
+![agnostic](/blogs/2023-12-05-Kestra-the-terrafrom-of-orchestration-and-automation/agnostic.png)
 
 ### Terraform's Cloud-Agnostic Approach
 
@@ -93,7 +93,7 @@ Kestra echoes this modular philosophy. With features like blueprints and subflow
 
 ## Scalability
 
-![scalable](/blogs/2023-11-07-Kestra-the-terrafrom-of-orchestration-and-automation/scalable.png)
+![scalable](/blogs/2023-12-05-Kestra-the-terrafrom-of-orchestration-and-automation/scalable.png)
 
 Both Kestra and Terraform are designed with scalability at their core, enabling organizations to expand their operations smoothly and efficiently.
 
