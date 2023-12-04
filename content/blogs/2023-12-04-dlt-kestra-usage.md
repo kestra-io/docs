@@ -1,5 +1,5 @@
 ---
-title: "From Inbox to Insights: AI-enhanced email analysis with dlt and Kestra"
+title: From Inbox to Insights AI-Enhanced Email Analysis with dlt and Kestra
 description: Learn how to leverage dltHub and Kestra for refining email analysis and data workflows 
 date: 2023-12-04T13:00:00
 category: Solutions
