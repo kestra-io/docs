@@ -45,7 +45,7 @@ const pagelist = ['/stories', props.slug]
 @import "../../assets/styles/variable";
 
 .main {
-    background-color: $purple-35;
+    background-color: $indigo-1;
     background-image: url('/stories/header/dots.svg');
     background-repeat: no-repeat;
     background-position: center;

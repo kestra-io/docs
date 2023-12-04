@@ -2,7 +2,7 @@
     <div class="container bd-gutter bd-layout margin">
         <NavSideBar :type="type" v-if="pageList" :page-list="pageList"/>
 
-        <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
+        <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false , 'docs' : isDoc}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="props.slug" :pageList="pageList"/>
@@ -42,6 +42,7 @@
             required: true
         },
     })
+    const isDoc = computed(()=> props.type === 'docs')
     const {data: page, error} = await useAsyncData(`Container-${hash(props.slug)}`, () => {
         try {
             return queryContent(props.slug).findOne();
@@ -110,7 +111,12 @@
     font-weight: 600;
     line-height: 2.375;
 }
-</style>
 
+
+.docs :deep(img){
+    width: 100%;
+}
+</style>
+ 
 
 
