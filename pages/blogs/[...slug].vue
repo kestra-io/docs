@@ -107,6 +107,9 @@
                 { name: 'twitter:description', content: description },
                 { name: 'twitter:image', content: `${origin + image}` },
                 { name: 'twitter:image:alt', content: title }
+            ],
+            link : [
+                { rel : 'canonical', href : origin + route.path }
             ]
         })
     }
@@ -122,7 +125,6 @@
     .img{
         min-width: 100%;
     }
-
     .bd-layout {
         display: block;
     }
