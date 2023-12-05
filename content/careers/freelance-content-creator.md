@@ -1,5 +1,5 @@
 ---
-title: "Content Creator - Freelance Contract"
+title: "Content Creator Freelance Contract"
 type: Product
 ---
 
