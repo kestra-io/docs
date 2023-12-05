@@ -8,6 +8,11 @@ author:
   image: "achinbat"
 image: /blogs/2023-12-04-dlt-kestra-usage.png
 ---
+<head>
+
+<link rel="canonical" href="https://dlthub.com/docs/blog/dlt-kestra-demo-blog"/> 
+
+</head>
 
 ## THE PROBLEM
 
