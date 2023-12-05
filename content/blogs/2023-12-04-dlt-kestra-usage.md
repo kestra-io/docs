@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anuun Chinbat
   image: "achinbat"
-image: /blogs/2023-12-04-dlt-kestra-usage.png
+image: /blogs/2023-12-04-dlt-kestra-usage.jpg
 ---
 <head>
 
@@ -50,7 +50,7 @@ Wanna jump to the [GitHub repo](https://github.com/dlt-hub/dlt-kestra-demo)?
 
 To lay it all out clearly: Everything's automated in **`Kestra`**, with hassle-free data loading thanks to **`dlt`**, and the analytical thinking handled by OpenAI. Here's a diagram to help you understand the general outline of the entire process. 
 
-![overview](/blogs/2023-12-04-dlt-kestra-usage.png)
+![overview](/blogs/2023-12-04-dlt-kestra-usage.jpg)
 
 Now, let's delve into specific parts of the implementation.
 
