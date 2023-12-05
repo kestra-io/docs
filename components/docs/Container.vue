@@ -18,7 +18,7 @@
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
                     />
-                    <PrevNext :base-path="`/${type}`"/>
+                    <PrevNext v-if="prevNext" :base-path="`/${type}`"/>
                 </div>
             </ContentRenderer>
         </article>
@@ -40,6 +40,11 @@
         type: {
             type: String,
             required: true
+        },
+        prevNext: {
+            type: Boolean,
+            required: false,
+            default: true
         },
     })
     const isDoc = computed(()=> props.type === 'docs')
