@@ -5,7 +5,7 @@ date: 2023-12-05T08:00:00
 category: Company News
 author:
   name: Emmanuel Darras
-  image: "Edarras"
+  image: "edarras"
 image: /blogs/2023-12-05-Kestra-the-terrafrom-of-orchestration-and-automation.jpg
 ---
 
