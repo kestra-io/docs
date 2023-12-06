@@ -1,21 +1,21 @@
 <template>
     <div>
         <Head>
-          <Title>Harness Change Data Capture for Efficient Data Processing and Analysis</Title>
+          <Title>Enhanced Data Insights with Change Data Capture</Title>
           <Meta name="description" content="Boost Data Synchronization and Streamlined Processing with Kestra's CDC Capabilities" />
         </Head>
 
         <SolutionsDetailHeader
-            title="Harness Change Data Capture for Efficient Data Processing and Analysis"
-            subtitle="Boost Data Synchronization and Streamlined Processing with Kestra's CDC Capabilities"
+            title="Efficient Change Data Capture for Agile Enterprises"
+            subtitle="Build CDC pipeline with Kestra for data synchronization, and ressources optimization to ensure your data analytics platforms reflect the most current information."
             detail-title="What is Change Data Capture ?"
             detail-content="Change Data Capture (CDC) tracks and captures data source alterations for efficient processing and analysis. Kestra's CDC features allow businesses to synchronize and manage data effectively, maintaining updated data warehouses and analytics platforms with minimized resource use."
             image="/landing/usecases/cdc/intro.svg"
         />
         <SolutionsDetailMain
-            title="Efficient Data Analysis through Change Data Capture"
+            title="Simplify CDC with Kestra"
             subtitle="Streamlined Data Analysis for Financial Institutions"
-            baseline="Financial institutions require up-to-date information from multiple sources like transactional databases, customer profiles, and market data feeds for informed decision-making. Synchronizing their data warehouse and analytics systems with these sources is crucial."
+            baseline="Kestra makes CDC implementation straightforward, enabling your team to monitor data changes across your systems with ease. Configure workflows to automatically transform and aggregate data, keeping your datasets accurate and analytics reliable without manual intervention."
             :items="mainContent"
         />
         <SolutionsDetailEmpower
@@ -46,11 +46,12 @@
             return {
                 mainContent: [
                     {
-                        title: 'CDC Implementation for Seamless Data Synchronization',
+                        title: 'Real Time Data Replication',
                         img: '/landing/usecases/cdc/feature-1.svg',
                         imgAlt: 'Diagram illustrating Kestra\'s Change Data Capture process, with PostgreSQL for databases, Apache Kafka for streaming data, and Apache Spark for analytics processing',
-                        content: 'Utilizing Kestra\'s Change Data Capture capabilities, financial institutions can detect and capture data source changes promptly.<br /><br />' +
-                            '<strong>For example:</strong> the institution uses PostgreSQL for transactional databases, Apache Kafka for streaming data, and Apache Spark for analytics processing. Kestra\'s CDC capabilities help detect changes in the PostgreSQL database and publish the changes to Kafka topics. Apache Spark then consumes the Kafka messages, processes the data, and updates the data warehouse and analytics platforms.'
+                        content: '<strong>Streamlined Data Detection and Distribution</strong>: Kestra actively listens for changes in your chosen databases, such as PostgreSQL, detecting new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes have access to the latest data without delay.<br /><br />' +
+                            '<strong>Data Detection and Distribution:</strong> Listen for changes in your chosen databases, such as PostgreSQL, detect new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes, including analytics processing performed by tools like Apache Spark, have access to the latest data without delay.<br />'
+                           
                     },
                     {
                         title: 'Workflow Configuration and Management with Kestra',
@@ -63,13 +64,13 @@
                         img: '/landing/usecases/cdc/feature-3.svg',
                         imgAlt: 'Illustration showing Kestra\'s event-driven triggers that initiate workflows automatically upon data changes, such as inserting a new customer record into the PostgreSQL database',
                         content: 'Kestra\'s event-driven triggers initiate workflows automatically as data changes occur, eliminating manual intervention and reducing data inconsistency risks.<br /><br />' +
-                            '<strong>For example:</strong> when a new customer record is inserted into the PostgreSQL database, Kestra detects the insert operation and automatically triggers a corresponding workflow. This workflow processes the new data and updates the data warehouse and analytics systems accordingly.'
+                        '<strong>Automated Workflows </strong>: Kestra CDC workflows are fully automated, with the capability to initiate and manage workflows that respond to file detection or scheduled events, API calls, or webhooks. This automation extends to data processing, enabling immediate ingestion, transformation, and delivery to data warehouses and analytical platforms, maintaining the integrity and relevance of your data landscape.'
                     },
                     {
                         title: 'Integration with Existing Infrastructure',
                         img: '/landing/usecases/cdc/feature-4.svg',
                         imgAlt: 'Image depicting Kestra\'s extensive integration capabilities, with logos of AWS, Fivetran, and Airbyte',
-                        content: 'With Kestra\'s extensive integration capabilities, the financial institution can seamlessly connect its existing infrastructure and third-party tools, allowing for effortless data synchronization across various systems.',
+                        content: 'Kestra\'s advanced integration capabilities enable connectivity across your entire stack and third-party applications, ensuring streamlined data synchronization throughout your entire ecosystem."',
                     },
                 ],
                 features: [
@@ -79,12 +80,12 @@
                         icon: shallowRef(LightbulbOutline)
                     },
                     {
-                        title: 'Seamless Integration with Data Sources',
+                        title: 'Integration with Data Sources',
                         text: 'Integrates with various data sources, databases, and platforms, allowing you to track changes across your entire data ecosystem.',
                         icon: shallowRef(FolderTextOutline)
                     },
                     {
-                        title: 'Scalable and Efficient Processing',
+                        title: 'Scalable Processing',
                         text: 'Kestra is designed to handle high data volumes and can scale to meet your growing data needs.',
                         icon: shallowRef(DeveloperBoard)
                     },
