@@ -167,7 +167,7 @@
 
             a {
                 color: var(--bs-body-color);
-                font-size: $font-size-base;
+                font-size: $font-size-sm;
                 border-left: 2px solid var(--bs-gray-200);
                 padding: calc($spacer / 2);
                 display: flex;

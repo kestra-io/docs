@@ -55,7 +55,7 @@
                             <h5>Company</h5>
                             <ul class="list-unstyled">
                                 <li class="mb-2"><NuxtLink href="/about-us">About us</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/careers">Careers</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/careers">Careers <span class="badge text-bg-danger">Hiring!</span></NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/contact-us">Contact us</NuxtLink></li>
                             </ul>
                         </div>

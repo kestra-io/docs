@@ -49,7 +49,7 @@
                                 <li data-aos="fade-left" data-aos-delay="300"><span>Secrets Manager Integration</span></li>
                                 <li data-aos="fade-left" data-aos-delay="350"><span>Organization Credentials Store</span></li>
                                 <li data-aos="fade-left" data-aos-delay="400"><span>Organization Blueprints</span></li>
-                                <li data-aos="fade-left" data-aos-delay="450"><span>Multi-Tenancy (soon)</span></li>
+                                <li data-aos="fade-left" data-aos-delay="450"><span>Multi-Tenancy</span></li>
                                 <li data-aos="fade-left" data-aos-delay="500"><span>Enterprise Support with Guaranteed SLAs</span></li>
                                 <li data-aos="fade-left" data-aos-delay="550"><span>Customer Onboarding & Training</span></li>
                             </ul>

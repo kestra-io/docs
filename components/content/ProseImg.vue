@@ -1,12 +1,23 @@
 <template>
     <span class="text-center d-block">
-        <NuxtImg :src="refinedSrc" :alt="alt" :width="width" :height="height" :class="classWithZoom" loading="lazy" format="webp" quality="80" densities="x1 x2" />
+        <NuxtImg
+            :src="refinedSrc"
+            :alt="alt"
+            :width="width"
+            :height="height"
+            :class="classWithZoom"
+            loading="lazy"
+            format="webp"
+            quality="80"
+            densities="x1 x2"
+        />
     </span>
 </template>
 
 <script setup lang="ts">
     import { withBase } from 'ufo'
     import { useRuntimeConfig, computed } from '#imports'
+
     const props = defineProps({
         src: {
             type: String,
@@ -29,6 +40,7 @@
             default: ''
         }
     })
+
     const refinedSrc = computed(() => {
         if (props.src?.startsWith('/') && !props.src.startsWith('//')) {
             return withBase(props.src, useRuntimeConfig().app.baseURL)

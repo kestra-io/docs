@@ -4,7 +4,7 @@
             <Section
                 class="dark"
                 subtitle="All-Inclusive Dashboard"
-                title="Empower Your Team with a Comprehensive, User-Friendly Orchestration Interface"
+                title="Empower Your Team with a Comprehensive, User-Friendly Orchestration Platform"
             >
                 <div class="row mb-5">
                     <div class="col-lg-8">
