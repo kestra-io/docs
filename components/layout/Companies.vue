@@ -52,7 +52,7 @@
                     "hcl",
                     "huawei",
                     "leroymerlin",
-                    "ntico",
+                    "bouygues-immobilier",
                     "tencent",
                     "facily",
                     "airpazz",

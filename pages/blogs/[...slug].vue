@@ -7,38 +7,38 @@
             <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
                 <ContentRenderer :value="page">
                     <div class="bd-title">
-                        <p class="top-breadcrumb" data-aos="fade-right">
-                            <NuxtLink href="/blogs">Blog</NuxtLink>
+                        <p data-aos="fade-right" class="para">
+                            <NuxtLink to="/">Home</NuxtLink>  / 
+                            <NuxtLink to="/blogs">Blog</NuxtLink>
                         </p>
-                        <h1 data-aos="fade-left">{{ page.title }}</h1>
+                        <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
                     </div>
-
                     <NavToc data-aos="fade-zoom" :page="page">
                         <template #header>
                             <BlogDetails :blog="page"/>
                         </template>
                     </NavToc>
-
                     <div class="bd-content">
                         <NuxtImg loading="lazy" format="webp" quality="80" densities="x1 x2" data-aos="fade-right"
-                                 class="mb-5 rounded-3 " :alt="page.title" :src="page.image" fit="inside"/>
-
-                        <ContentRendererMarkdown
-                            data-aos="fade-zoom"
-                            class="bd-markdown"
-                            :value="page"
-                            data-bs-spy="scroll"
-                            data-bs-target="#nav-toc"
-                        />
+                                 class="mb-2 rounded-3 img" :alt="page.title" :src="page.image" fit="cover"/>
+                                 <ClientOnly>
+                                     <ContentRendererMarkdown
+                                         data-aos="fade-zoom"
+                                         class="bd-markdown"
+                                         :value="page"
+                                         data-bs-spy="scroll"
+                                         data-bs-target="#nav-toc"
+                                     />
+                                 </ClientOnly>
                     </div>
                 </ContentRenderer>
             </article>
+            <div class="bottom">
+                <DocsBlogs title="More contents"/>
+                <LayoutNewsletter/>
+            </div>
         </div>
 
-        <div class="bottom">
-            <LayoutBlogs v-if="slug !== '/blogs/' && slug !== '/blogs/community'"/>
-            <LayoutNewsletter/>
-        </div>
     </div>
 </template>
 
@@ -119,8 +119,36 @@
     :deep(.slug) {
         margin-left: 0;
     }
+    .img{
+        min-width: 100%;
+    }
 
     .bd-layout {
         display: block;
+    }
+    .bd-main{
+        row-gap: 0px;
+        column-gap: 4rem;
+    }
+    .bd-content{
+        min-width: 100%;
+    }
+    h2{
+        line-height: 3.25rem;
+        font-weight: 600;
+    }
+    .para{
+        line-height: 1.375rem ;
+        font-size: $font-size-sm ;
+        margin-bottom: $font-size-xs;
+        font-weight: 600;
+    }
+    :deep(p){
+        line-height: 1.75rem;   
+    }
+    :deep(h2){
+        font-size: 1.75rem;
+        line-height: 2.735rem;
+        font-weight: 600;
     }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <DocContainer type="plugins" :slug="slug" />
+    <DocContainer :prevNext="false" type="plugins" :slug="slug" />
 </template>
 
 <script setup>

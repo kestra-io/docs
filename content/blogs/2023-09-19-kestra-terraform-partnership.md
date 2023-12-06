@@ -8,6 +8,7 @@ author:
   image: "mproset"
 image: /blogs/2023-09-19-kestra-terraform-partnership.jpg
 ---
+
 We're thrilled to announce a technology partnership with [Terraform](https://www.terraform.io/) by HashiCorp. We share a common vision of simplifying deployment patterns by relying on Infrastructure as Code. We are excited to further extend the Everything-as-Code paradigm to your mission-critical operational and analytical workflows.
 
 >“Integrating Kestra with Terraform enables atomics deployments and a cohesive approach to automating your workflows along their needed resources. It's not just about tooling; it's about  streamlining operations in a way that is aligned with core DevOps principles.”

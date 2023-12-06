@@ -8,6 +8,7 @@ author:
   image: "qsinig"
 image: /blogs/2023-05-31-beginner-guide-kestra.jpg
 ---
+
 This guide was written by a non-technical user **for** non-technical users. Being familiar with a terminal is a plus and not mandatory.
 
 After completing this tutorial, you'll be able to:
