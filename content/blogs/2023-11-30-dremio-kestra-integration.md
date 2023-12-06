@@ -15,7 +15,7 @@ Recently, we've released the [Dremio](https://kestra.io/plugins/plugin-jdbc-drem
 
 ## What is Dremio
 
-[Dremio](https://github.com/kestra-io/kestra) is a data lakehouse platform that simplifies big data analytics. It allows you to directly access data from various sources, such as Postgres, S3 and Azure Data Lake, without needing to copy or move the data. Its key features include a fast query engine, a semantic layer to help manage and share data, a catalog for [Iceberg tables](https://kestra.io/blogs/2023-08-05-iceberg-for-aws-users), and [reflections](https://www.dremio.com/resources/tutorials/getting-started-with-reflections/) — a market-leading query acceleration technology that delivers sub-second query response times. Designed to work with SQL and common BI tools, Dremio provides self-service analytics and data management for BI workloads with the best price performance and lowest cost.
+[Dremio](https://github.com/kestra-io/kestra) is a data lakehouse platform that simplifies big data analytics. It allows you to directly access data from various sources, such as Postgres, S3 and Azure Data Lake Storage, without needing to copy or move the data. Its key features include a fast query engine, a semantic layer to help manage and share data, a catalog for [Iceberg tables](https://kestra.io/blogs/2023-08-05-iceberg-for-aws-users), and [reflections](https://www.dremio.com/resources/tutorials/getting-started-with-reflections/) — a market-leading query acceleration technology that delivers sub-second query response times. Designed to work with SQL and common BI tools, Dremio provides self-service analytics and data management for BI workloads with the best price performance and lowest cost.
 
 
 ---
