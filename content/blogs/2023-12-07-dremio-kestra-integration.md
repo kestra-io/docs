@@ -9,6 +9,8 @@ author:
 image: /blogs/2023-12-07-dremio-kestra-integration.png
 ---
 
+
+
 Recently, we've released the [Dremio](https://kestra.io/plugins/plugin-jdbc-dremio/) and [Arrow Flight SQL](https://kestra.io/plugins/plugin-jdbc-arrow-flight/) plugins, which allow you to automate [Dremio](https://www.dremio.com/) data workflows with [Kestra](https://github.com/kestra-io/kestra). This post will dive into how you can leverage Dremio, [dbt](https://github.com/dbt-labs/dbt-core), Python and Kestra to orchestrate processes built on top of a data lakehouse.
 
 ---
@@ -24,12 +26,16 @@ Recently, we've released the [Dremio](https://kestra.io/plugins/plugin-jdbc-drem
 
 Kestra is a universal orchestration platform for business-critical operations. It allows you to automate data workflows across multiple systems, including Dremio. It's designed to reliably manage complex workflows, be it event-driven pipelines, scheduled batch data transformations, or API-driven automations. Kestra is built with a modular architecture that allows you to easily extend its functionality with plugins, including among others [dbt](https://kestra.io/plugins/plugin-dbt/tasks/cli/io.kestra.plugin.dbt.cli.dbtcli), [Python](https://kestra.io/plugins/plugin-script-python), [Dremio](https://kestra.io/plugins/plugin-jdbc-dremio) and the [Arrow Flight SQL](https://kestra.io/plugins/plugin-jdbc-arrow-flight) plugins. These plugins allow you to execute custom scripts and SQL queries, trigger actions based on data changes, and much more.
 
+---
+
 ### Dremio Plugin
 
 With the Dremio plugin, you can interact with Dremio data sources via JDBC. This plugin includes:
 
 - **Trigger**: trigger workflows based on conditions in the Dremio database. For example, you can execute a workflow when there is an anomaly in the data, or when certain KPIs fall outside of an expected range.
 - **Task**: run SQL queries against Dremio databases to fetch data for downstream processing in Python, R, or other languages supported by Kestra.
+
+---
 
 ### Arrow Flight SQL Plugin
 
@@ -44,6 +50,8 @@ For broader compatibility with databases using Apache Arrow, Kestra offers the A
 
 Let's look at a practical application of Kestra and Dremio for data lakehouse orchestration. The workflow involves data transformation with dbt, then fetching transformed data from a Dremio lakehouse using SQL, and finally processing it with Polars in a Python task.
 
+---
+
 ### Prerequisites
 
 - **Kestra Setup**: start Kestra — by default, it includes all plugins that you need to follow this tutorial. See the [Getting Started](https://kestra.io/docs/developer-guide/plugins) documentation for more installation details.
@@ -51,6 +59,7 @@ Let's look at a practical application of Kestra and Dremio for data lakehouse or
 - **Dremio Token**: create a Personal Access Token (PAT) in your Dremio account. To do that, go to your Dremio account settings and then to the section "Personal Access Token". From here, you can create the token, copy it and store it as a [Kestra secret](https://kestra.io/docs/developer-guide/secrets) to avoid exposing it directly in your flow code. Check the [Dremio documentation](https://docs.dremio.com/cloud/security/authentication/personal-access-token#creating-a-pat) for more details.
 - **Dremio Project ID**: you can find the project ID in your Dremio URL. For example, if your Dremio URL is `https://app.dremio.cloud/sonar/ead79cc0-9e93-4d50-b364-77639a56d4a6`, then your project ID is the last string `ead79cc0-9e93-4d50-b364-77639a56d4a6`.
 
+---
 
 ### Workflow Breakdown
 
@@ -72,8 +81,10 @@ Let's look at a practical application of Kestra and Dremio for data lakehouse or
    - This DataFrame is then available for further analysis or reporting.
 
 
-![dremio_topology](/blogs/2023-12-07-dremio-kestra-integration/dremio-architecture.png)
 
+![dremio architecture](/blogs/2023-12-07-dremio-kestra-integration/dremio-architecture.png)
+
+---
 
 ### Workflow Code
 
@@ -143,6 +154,8 @@ tasks:
 ```
 
 This flow clones a Git repository with [dbt code](https://github.com/dbt-labs/jaffle_shop), and runs dbt models and tests. Then, it fetches that transformed data from Dremio and passes the query results to a downstream Python task that further transforms fetched data using [Polars](https://www.pola.rs).
+
+
 
 ![dremio_topology](/blogs/2023-12-07-dremio-kestra-integration/dremio_topology.png)
 
