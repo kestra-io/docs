@@ -1,12 +1,12 @@
 ---
 title: "Data lakehouse orchestration with Kestra, Dremio, dbt and Python"
 description: "Recently, we've released the Dremio and Arrow Flight SQL plugins for Kestra, which allow you to seamlessly integrate Dremio with Kestra workflows. This blog post will dive into how you can leverage Dremio, dbt, Python, and Kestra to orchestrate workflows built on top of a data lakehouse."
-date: 2023-11-30T13:00:00
+date: 2023-12-07T15:30:00
 category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: /blogs/2023-11-30-dremio-kestra-integration.png
+image: /blogs/2023-12-07-dremio-kestra-integration.png
 ---
 
 Recently, we've released the [Dremio](https://kestra.io/plugins/plugin-jdbc-dremio/) and [Arrow Flight SQL](https://kestra.io/plugins/plugin-jdbc-arrow-flight/) plugins, which allow you to automate [Dremio](https://www.dremio.com/) data workflows with [Kestra](https://github.com/kestra-io/kestra). This post will dive into how you can leverage Dremio, [dbt](https://github.com/dbt-labs/dbt-core), Python and Kestra to orchestrate processes built on top of a data lakehouse.
@@ -72,7 +72,7 @@ Let's look at a practical application of Kestra and Dremio for data lakehouse or
    - This DataFrame is then available for further analysis or reporting.
 
 
-![dremio_topology](/blogs/2023-11-30-dremio-kestra-integration/dremio_topology.png)
+![dremio_topology](/blogs/2023-12-07-dremio-kestra-integration/dremio-architecture.png)
 
 
 ### Workflow Code
@@ -143,6 +143,9 @@ tasks:
 ```
 
 This flow clones a Git repository with [dbt code](https://github.com/dbt-labs/jaffle_shop), and runs dbt models and tests. Then, it fetches that transformed data from Dremio and passes the query results to a downstream Python task that further transforms fetched data using [Polars](https://www.pola.rs).
+
+![dremio_topology](/blogs/2023-12-07-dremio-kestra-integration/dremio_topology.png)
+
 
 ---
 
