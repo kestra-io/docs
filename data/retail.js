@@ -67,7 +67,7 @@ export default {
             "changing how data is managed and valued across the organization.",
         cta: {
             text: "Read the story",
-            href: "", //#TODO: update story link
+            href: "/blogs/2023-08-16-datamesh",
             style: "btn-dark",
         },
 

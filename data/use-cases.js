@@ -25,7 +25,7 @@ export default {
         },
         {
             link: "/use-cases/retail",
-            img: "/landing/usecases/mds/intro.svg", // #TODO update landing img
+            img: "/landing/usecases/mds/intro.svg",
             title: "Kestra for Retail and Consuming goods",
             description:
                 "Manage End-To-End Solutions for Complex Retail Operations",
