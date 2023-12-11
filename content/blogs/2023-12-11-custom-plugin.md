@@ -1,12 +1,12 @@
 ---
 title: "Overriding a Kestra Plugin for Custom Requirements: Why & How?"
 description: "Building reusable components with Kestra"
-date: 2023-11-21T08:00:00
+date: 2023-12-11T08:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: /blogs/2023-11-21-custom-plugin.jpg
+image: /blogs/2023-12-11-custom-plugin.jpg
 ---
 
 Kestra is powerful in many ways: you can get started in a few minutes, build robust workflows, and manage everything as code and from the UI.
@@ -35,7 +35,7 @@ Creating such a meta-plugin proves to be highly advantageous, especially when de
 
 The development team chose a stepwise approach to create this integrated plugin. Since Kestra already includes the necessary components, they initially developed a Kestra Flow. This Flow enabled them to execute Soda tests and send the resulting metrics to Kafka topics. The outcome was a Kestra flow composed of various tasks, with each task addressing a specific functionality.
 
-![example flow kafka soda](/blogs/2023-11-21-custom-plugin/soda_kafka.jpg)
+![example flow kafka soda](/blogs/2023-12-11-custom-plugin/soda_kafka.jpg)
 
 This initial version proved that YAML's simplicity accelerates development and shortens the feedback loop.
 
@@ -45,7 +45,7 @@ They opted for the latter. The rationale was that handling custom logic, numerou
 
 Once the Flow was designed in YAML, converting it to Java was straightforward, as you can see in the image below.
 
-![java to yaml](/blogs/2023-11-21-custom-plugin/java_to_yaml.png)
+![java to yaml](/blogs/2023-12-11-custom-plugin/java_to_yaml.png)
 
 ## Building components 
 
@@ -58,7 +58,7 @@ Choosing one or the other depends on the situation and the developer's expertise
 
 Alternatively, you could build custom Python scripts (especially using the [embedded VS Code Editor](https://kestra.io/docs/developer-guide/namespace-files)) and use them to build parametrized workflows. By designing a subflow with a Python script task, the team can encapsulate the business logic and expose only a few YAML parameters to execute the underlying script.
 
-![flow subflow](/blogs/2023-11-21-custom-plugin/flow_subflow.jpg)
+![flow subflow](/blogs/2023-12-11-custom-plugin/flow_subflow.jpg)
 
 ## Conclusion
 
