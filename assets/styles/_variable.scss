@@ -63,6 +63,7 @@ $font-size-sm: $font-size-base * .875;
 $font-size-lg: $font-size-base * 1.25;
 $font-size-xl: $font-size-base * 1.375;
 $font-size-2xl : $font-size-base * 2.188;
+$font-size-3xl : $font-size-base * 3;
 $font-size-4xl : $font-size-base * 3.75;
 
 
@@ -144,10 +145,21 @@ $purple-33: #110221;
 $purple-34: #10051F;
 $purple-35 : #736BCD;
 
+
+$black: #26282D;
+$black-1 : #070708;
+$black-2 : #161617;
+$black-3 : #252526;
+$black-4 : #111113;
+$black-5 : #070708;
+$black-6 : #3D3D3F;
+$black-7 : #0D0D0C;
+
 $enable-reduced-motion: false;
 $min-contrast-ratio: 2.5;
 
 $baseline-max-width: 730px;
+$container-max-width: 760px;
 
 // bootstrap
 @import "bootstrap/scss/functions";
