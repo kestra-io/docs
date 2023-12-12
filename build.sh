@@ -16,16 +16,6 @@ docker run --rm --user=0 --name kestra-docs -i \
     --core \
     /app/docs/md
 
-for DOC in $(find . -type d -name md); do
-    cp -r "${DOC}"/* ../content/plugins
-done
-
-for file in $(find ../content/plugins -name 'README.md')
-do
-    sed -i 's/.html)/.md)/' $file
-    mv $file $(echo "$file" | sed -r 's|README.md|index.md|g')
-done
-
 # api
 docker create --rm --name kestra-ee --entrypoint=bash ghcr.io/kestra-io/kestra-ee:develop -c 'sleep 60'
 docker cp kestra-ee:/app/kestra-ee /tmp/kestra-ee.zip
