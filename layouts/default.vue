@@ -4,7 +4,7 @@
         <LayoutAnnounce v-if="topBanner !== 'ok'" />
         <div class="wrapper" :class="{'announce': topBanner !== 'ok'}">
             <LayoutHeader />
-            <main >
+            <main>
                 <slot />
             </main>
             <LayoutFooter />
