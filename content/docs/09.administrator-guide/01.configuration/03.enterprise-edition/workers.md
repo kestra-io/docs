@@ -24,14 +24,26 @@ kestra:
 This is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can be useful to protect Kestra configuration files for example.
 
 ### `kestra.ee.java-security.authorized-class-prefix`
-This is a list of classes that can access the file system or create threads.
-Most of the plugins will never need access to the file system (except on temporary directories created and isolated for each task and whitelisted by default). Here you can set a list of prefixes (namespace) classes that will be allowed. All others will be refused.
+This is a list of classes that can create threads. Here you can set a list of prefixes (namespace) classes that will be allowed. All others will be refused.
 
 For example, [GCP plugins](../../../../plugins/plugin-gcp/index.md) will need to create a thread in order to reach the GCP api. Since this whole plugin is deemed safe, you can whitelist it.
 
+### `kestra.ee.java-security.forbidden-class-prefix`
+```yaml
+kestra:
+  ee:
+    java-security:
+      enabled: true
+      forbidden-class-prefix:
+        - io.kestra.plugin.scripts
+```
+
+This is a list of classes that can't create any threads. Others plugins will be authorized.
+
 ::alert{type="warning"}
-Currently, all the Kestra official plugins are safe to be whitelisted **except** [all scripts plugins](../../../../plugins/plugin-script-groovy/index.md) since they allow custom code to be created that can be read and written on the file system. These must not be added to the `authorized-class-prefix`
+Currently, all the Kestra official plugins are safe to be whitelisted **except** [all scripts plugins](../../../../plugins/plugin-script-groovy/index.md) since they allow custom code to be created that can be read and written on the file system. These must not be added to the `forbidden-class-prefix`
 ::
+
 
 ## Scripting isolation
 For [Bash tasks](../../../../plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.md) and other script tasks in the core, we advise you to force `DOCKER` isolation and to configure global cluster [taskDefaults](../05.others.md#kestratasksdefaults):

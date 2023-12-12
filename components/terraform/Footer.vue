@@ -1,19 +1,21 @@
 <template>
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-7">
-            <div class="container text-center mb-5 rounded">
-                <div>
-                    <h3 data-aos="fade-right">Getting Started</h3>
-                    <h6 class="mt-3" data-aos="zoom-in">
-                        <p>Integration between Kestra and Terraform is simple. Add the Kestra provider to your Terraform configuration file to get started.</p>
-                    </h6>
-                    <div class="d-flex gap-2 flex-wrap justify-content-center align-items-center">
-                        <NuxtLink href="https://www.youtube.com/watch?v=tiHa3zucS_Q&list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr&ab_channel=Kestra">
-                            <button class="btn btn-light">YouTube playlist</button>
-                        </NuxtLink>
-                        <NuxtLink href="/docs/terraform">
-                            <button class="btn btn-primary">Documentation</button>
-                        </NuxtLink>
+    <div class="mx-3 mx-sm-0">
+        <div class="row justify-content-center ">
+            <div class="col-12 col-md-7">
+                <div class="container text-center mb-5 rounded">
+                    <div>
+                        <h3 data-aos="fade-right">Getting Started</h3>
+                        <h6 class="mt-3" data-aos="zoom-in">
+                            <p>Integration between Kestra and Terraform is simple. Add the Kestra provider to your Terraform configuration file to get started.</p>
+                        </h6>
+                        <div class="d-flex gap-2 flex-wrap justify-content-center align-items-center">
+                            <NuxtLink href="https://www.youtube.com/watch?v=tiHa3zucS_Q&list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr&ab_channel=Kestra">
+                                <button class="btn btn-light">YouTube playlist</button>
+                            </NuxtLink>
+                            <NuxtLink href="/docs/terraform">
+                                <button class="btn btn-primary">Documentation</button>
+                            </NuxtLink>
+                        </div>
                     </div>
                 </div>
             </div>
