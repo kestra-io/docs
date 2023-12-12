@@ -8,6 +8,7 @@ author:
   image: "mproset"
 image: /blogs/2023-09-25-kestra-snowflake-partnership.jpg
 ---
+
 We're excited to announce that we are now registered partners with Snowflake, one of the most trusted names in cloud data warehousing. This strategic alliance between [Kestra](https://github.com/kestra-io/kestra) and [Snowflake](https://www.snowflake.com/en/) aims to empower organizations to seamlessly manage, orchestrate, and optimize their workflows.
 
 ## Why This Partnership Matters
