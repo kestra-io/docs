@@ -4,13 +4,13 @@
       <div class="col-12 col-md-5 workflow-image mask" data-aos="fade-left">
         <img
           src="/landing/features/scheduling/workflow/workflow_1.svg"
-          class="w-100 "
           alt="Centralized Control"
+          class="w-100 px-2 px-lg-4"
         />
       </div>
 
       <div class="col-12 col-md-5">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center px-2 px-md-3">
           <div class="col-12 col-md-9" data-aos="fade-right">
             <h3 class="title my-4">Centralized Control</h3>
             <p class="para">
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="col-12 col-md-5">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center px-2 px-md-3">
           <div class="col-12 col-md-9" data-aos="fade-left">
             <h3 class="title">Event-Driven Workflows Without Spaghetti Code</h3>
             <p class="para">
@@ -43,19 +43,19 @@
       <div class="col-12 col-md-5 workflow-image" data-aos="fade-right">
         <img
           src="/landing/features/scheduling/workflow/workflow_2.svg"
-          class="w-100"
           alt="Event Driven"
+          class="w-100 px-2 px-lg-4"
         />
       </div>
       <div class="col-12 col-md-5 workflow-image mask-1" data-aos="fade-left">
         <img
           src="/landing/features/scheduling/workflow/workflow_3.svg"
-          class="w-100"
           alt="Everything as code"
+          class="w-100 px-2 px-lg-4"
         />
       </div>
       <div class="col-12 col-md-5">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center px-2 px-md-3">
           <div class="col-12 col-md-9" data-aos="fade-right">
             <h3 class="title">Everything as Code</h3>
             <p class="para">
@@ -70,6 +70,9 @@
 </template>
 <style scoped lang="scss">
 @import "../../../assets/styles/variable";
+.row{
+  --bs-gutter-x:0rem !important;
+}
 p {
   line-height: 1.5rem;
 }
@@ -168,6 +171,11 @@ p {
     background: linear-gradient(180deg, rgba(98, 24, 255, 0.00) 0%, #6117FF 100%);
     filter: blur(70px);
     
+  }
+}
+@include media-breakpoint-down(lg) {
+  .title{
+    font-size: $h3-font-size !important;
   }
 }
 </style>
