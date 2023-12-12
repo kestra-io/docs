@@ -13,14 +13,13 @@
           Build, Schedule, and Automate
           <span class="title-animate">All Your Workflows</span>
         </h2>
-        <p class="para">
+        <p class="para mb-5">
           Kestra simplifies your scheduling and automation tasks through its
           declarative language, making workflow management straightforward.
           Build to meet the high standards of software engineers, it's designed
           to be user-friendly for both engineers and business stakeholders.
         </p>
       </div>
-      <div class="line mt-5" />
     </div>
   </div>
 </template>
@@ -29,6 +28,9 @@
 
 .feature {
   background-color: $black-5;
+}
+.container{
+  border-bottom: 1px solid $black-3;
 }
 .heading {
   max-width: 700px;

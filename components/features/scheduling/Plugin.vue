@@ -1,6 +1,5 @@
 <template>
-  <div class="container">
-    <div class="line mb-5" />
+  <div class="container plugin py-5">
     <div class="row">
       <div class="col-lg-6" data-aos="zoom-in">
         <img
@@ -27,13 +26,16 @@
             >
         </div>
       </div>
-      <div class="line mt-5" />
     </div>
   </div>
 </template>
 <style scoped lang="scss">
 @import "../../../assets/styles/variable";
 
+.plugin{
+  border-top: 1px solid $black-3;
+  border-bottom: 1px solid $black-3;
+}
 .heading {
   max-width: 400px;
 }

@@ -78,7 +78,7 @@ p {
   font-size: $h2-font-size !important;
 }
 .para {
-  font-weight: 400 !important;
+  font-weight: 300 !important;
 }
 .section {
   padding: calc($spacer * 4) 0;
@@ -154,6 +154,19 @@ p {
     z-index: 1;
     background: linear-gradient(180deg, rgba(98, 24, 255, 0.00) 0%, #6117FF 100%);
     filter: blur(100px);
+    
+  }
+  &::before {
+    position: absolute;
+    content: "";
+    width: 113.62px;
+    height: 189.44px;
+    background: url("/landing/features/scheduling/workflow/mask-2.svg") no-repeat;
+    right: 0px;
+    bottom: 0px;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(98, 24, 255, 0.00) 0%, #6117FF 100%);
+    filter: blur(70px);
     
   }
 }
