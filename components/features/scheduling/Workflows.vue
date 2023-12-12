@@ -33,9 +33,6 @@
               Google Cloud Storage, or even the outcomes of SQL queries, Kestra
               offers a versatile set of triggers to meet all your automation
               needs.
-              <NuxtLink href="#" class="text-decoration-underline link-offset-2"
-                >Learn more</NuxtLink
-              >
             </p>
           </div>
         </div>

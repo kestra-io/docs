@@ -10,7 +10,7 @@
                             <NuxtLink href="/demo" class="btn btn-dark mt-2 me-3" data-aos="zoom-in">
                                 Book a demo
                             </NuxtLink>
-                            <NuxtLink href="/docs"  class="btn btn-animated btn-purple-animated mt-2" data-aos="zoom-in">
+                            <NuxtLink href="https://github.com/kestra-io/kestra"  class="btn btn-animated btn-purple-animated mt-2" data-aos="zoom-in">
                                 Get started!
                             </NuxtLink>
                         </div>
