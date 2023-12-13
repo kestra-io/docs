@@ -23,7 +23,7 @@
                 <div class="d-flex flex-wrap gap-2 my-5 justify-content-center" v-if="icons">
                     <div class="card" v-for="task in story.tasks" :key="task">
                         <div class="card-body">
-                            <div class="icon">
+                            <div class="icon" data-bs-toggle="tooltip" data-bs-placement="top" :title="task">
                                 <CommonTaskIcon :cls="icons[task]"/>
                             </div>
                         </div>
@@ -45,6 +45,7 @@
 </template>
 <script setup>
 import markdownParser from '@nuxt/content/transformers/markdown';
+const { $bootstrap } = useNuxtApp()
 const route = useRoute()
 const slug = "/stories/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
 const stories = ref([])
@@ -54,6 +55,12 @@ const content_1 = ref('')
 const content_2 = ref('')
 const icons = ref({})
 
+onMounted(() => {
+    if (process.client) {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        [...tooltipTriggerList].map(tooltipTriggerEl => new $bootstrap.Tooltip(tooltipTriggerEl))
+    }
+})
 
 const fetchStories = async ({ currentPage, itemsPerPage }) => {
     const { data } = await useAsyncData('stories', () => {

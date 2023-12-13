@@ -1,8 +1,8 @@
 <template>
-    <div class="hero header row justify-content-center" data-aos="fade-right">
-        <div class="col-12 col-md-12 col-lg-10">
-            <div class="row">
-                <div class="col-12 col-md-6">
+    <div class="container-fluid container">
+        <div class="hero hero-sm mx-2 sm-mx-0">
+            <div class="row" data-aos="fade-right">
+                <div class="col-12 col-md-8 col-lg-6">
                     <h1>Kestra Terraform Provider: Deploy All Your Workflows <br/> in a CI/CD Process</h1>
                     <p>Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations.</p>
                     <div class="d-flex flex-wrap gap-2">
@@ -21,12 +21,22 @@
 
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
-.header {
-    background: url('/terraform/header/background.svg') no-repeat center;
+.container-fluid {
+    background: url('/terraform/header/background.svg') no-repeat right;
+    h1{
+        font-size: $h2-font-size !important;
+        font-weight: 900  !important;
+    }
 
     p {
         font-size: $font-size-xl;
     }
+    @include media-breakpoint-up(sm) {
+        h1{
+            font-size:$h1-font-size !important ;
+        }
+    }
+
 
 }
 </style>

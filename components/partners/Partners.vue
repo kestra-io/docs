@@ -87,6 +87,16 @@
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
+                        <img src="/partners/partners-logos/davidson.svg" class="card-img-top" alt="Davidson's logo">
+                        <div class="card-body">
+                            <p class="card-text">Consulting Partner</p>
+                            <h5 class="card-title">Davidson</h5>
+                            <a href="https://www.davidson.group/" target="_blank">Visit Davidson website <OpenInNew /></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <img src="/partners/partners-logos/ntico.svg" class="card-img-top" alt="Ntico's logo">
                         <div class="card-body">
                             <p class="card-text">Consulting Partner</p>
