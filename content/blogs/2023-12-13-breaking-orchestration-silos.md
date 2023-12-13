@@ -60,7 +60,7 @@ To solve silos without creating new ones, we meet users where they are. We ask t
 
 - **Kestra's Versatile Platform:** Kestra harmonizes user needs with the efficiency of orchestration. It allows for the creation of data pipelines through both a user-friendly UI and as code, offering the best of both worlds.
 
-- **Empowering Users with Choices:** Users can leverage Kestra's VS Code extension for autocompletion and validation or disable the built-in code editor in production for CI/CD-led deployments. The UI, far from being an afterthought, is treated as a firt class citized for creating and managing pipelines.
+- **Empowering Users with Choices:** Users can leverage Kestra's VS Code extension for autocompletion and validation or disable the built-in code editor in production for CI/CD-led deployments. The UI, far from being an afterthought, is treated as a firt class citizen for creating and managing pipelines.
 
 All data pipelines, created via UI, generate human-readable YAML configuration files, which are organized into namespaces and automatically versioned, just as you would with Git. 
 
@@ -78,7 +78,7 @@ And thanks to the open-source contributions, the list of supported plugins keeps
 
 ## What's Next
 
-We can't solve complexity by adding more complexity.Instead, we should favor tools that meet users where they are and adapt to your evolving needs.
+We can't solve complexity by adding more complexity. Instead, we should favor tools that meet users where they are and adapt to your evolving needs.
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
