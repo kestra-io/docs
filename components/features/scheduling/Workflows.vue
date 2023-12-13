@@ -1,11 +1,11 @@
 <template>
   <LayoutSection class="mb-5">
     <div class="row justify-content-center align-items-center">
-      <div class="col-12 col-md-5 workflow-image mask" data-aos="fade-left">
+      <div class="col-12 col-md-5 workflow-image mask text-center" data-aos="fade-left">
         <img
           src="/landing/features/scheduling/workflow/workflow_1.svg"
           alt="Centralized Control"
-          class="w-100 px-2 px-lg-4"
+          class="mw-100"
         />
       </div>
 
@@ -37,18 +37,18 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-5 workflow-image" data-aos="fade-right">
+      <div class="col-12 col-md-5 workflow-image text-center" data-aos="fade-right">
         <img
           src="/landing/features/scheduling/workflow/workflow_2.svg"
           alt="Event Driven"
-          class="w-100 px-2 px-lg-4"
+          class="mw-100"
         />
       </div>
-      <div class="col-12 col-md-5 workflow-image mask-1" data-aos="fade-left">
+      <div class="col-12 col-md-5 workflow-image mask-1 text-center" data-aos="fade-left">
         <img
           src="/landing/features/scheduling/workflow/workflow_3.svg"
           alt="Everything as code"
-          class="w-100 px-2 px-lg-4"
+          class="mw-100"
         />
       </div>
       <div class="col-12 col-md-5">
@@ -129,8 +129,8 @@ p {
     height: 266.49px;
     width: 170px;
     background: url("/landing/features/scheduling/light-mask.svg") no-repeat;
-    left: 0;
-    top: -100px;
+    left:0;
+    top: -150px;
     z-index: 1;
     background: linear-gradient(
       (180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%)
@@ -149,7 +149,7 @@ p {
     height: 266.49px;
     width: 170px;
     background: url("/landing/features/scheduling/workflow/mask-1.svg") no-repeat;
-    left: -100px;
+    left: 0px;
     top: -150px;
     z-index: 1;
     background: linear-gradient(180deg, rgba(98, 24, 255, 0.00) 0%, #6117FF 100%);
