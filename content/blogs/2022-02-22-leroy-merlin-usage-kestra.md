@@ -68,9 +68,11 @@ But **it failed at Leroy Merlin**. First, the implementation by Google: Google C
 Even when we persevered with it, the performance level was not there; Airflow failed on the first project; the **duration of the flow was twenty times longer** than the same flow with Stambia, and the analysis showed that this duration would increase over time and would not scale to the number of DAGs and executions wanted.
 
 
-::: warning Decision
+::alert{type="warning"}
+**Decision**
+
 By this time, Terraform and BigQuery had demonstrated their strengths and, Airflow, custom transfer and load tools had been rejected. Leroy Merlin needed to find another option, and no solution had presented itself.
-:::
+::
 
 ## Kestra to the Rescue
 ![Kestra user interface](/blogs/2022-02-22-leroy-merlin-usage-kestra/ui.png)
@@ -136,11 +138,13 @@ Also, as there was a rich UI, the deployment process was really easy at the begi
 
 Subsequently, Leroy Merlin started using Terraform in order to deploy every cloud resource; they also deploy Kestra resources using [terraform providers](../docs/11.terraform/index.md). They were able to reach a full DataOps lifecycle, all deployment is atomic with a git push and a strong CI/CD applying resources from terraform.
 
-::: success Reach a fast time to market
+::alert{type="success"}
+**Reach a fast time to market**
+
 Before this DataOps lifecycle was implemented, the deployment involved a number of teams: a transfer team that moved the files between systems, an orchestration team which triggered the job after the transfer, a data team that would develop the loading of the data in addition to a manual operation in order to create a resource on the data warehouse. All these operations needed to synchronize with the internal ticket that was now in service.
 
 Thanks to Kestra, they moved **to full autonomy** and **reduced the time to market** from **days to only a few hours**
-:::
+::
 
 ### Go Production
 ![Kestra user interface](/blogs/2022-02-22-leroy-merlin-usage-kestra/architecture.jpg)

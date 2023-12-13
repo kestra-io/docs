@@ -1,6 +1,6 @@
 ---
 title: From Inbox to Insights AI-Enhanced Email Analysis with dlt and Kestra
-description: Learn how to leverage dltHub and Kestra for refining email analysis and data workflows 
+description: Learn how to leverage dltHub and Kestra for refining email analysis and data workflows
 date: 2023-12-04T13:00:00
 category: Solutions
 author:
@@ -10,7 +10,7 @@ image: /blogs/2023-12-04-dlt-kestra-usage.jpg
 ---
 <head>
 
-<link rel="canonical" href="https://dlthub.com/docs/blog/dlt-kestra-demo-blog"/> 
+<link rel="canonical" href="https://dlthub.com/docs/blog/dlt-kestra-demo-blog"/>
 
 </head>
 
@@ -40,15 +40,15 @@ Just so you're aware:
 - **[`Kestra`](https://github.com/kestra-io/kestra)** is an open-source automation tool that makes both scheduled and event-driven workflows easy.
 - **[`dlt`](https://github.com/dlt-hub/dlt)** is an open-source library that you can add to your Python scripts to load data from various and often messy data sources into well-structured, live datasets.
 
-:::tip
+::alert{type="info"}
 Wanna jump to the [GitHub repo](https://github.com/dlt-hub/dlt-kestra-demo)?
-:::
+::
 
 ---
 
 ## HOW IT WORKS
 
-To lay it all out clearly: Everything's automated in **`Kestra`**, with hassle-free data loading thanks to **`dlt`**, and the analytical thinking handled by OpenAI. Here's a diagram to help you understand the general outline of the entire process. 
+To lay it all out clearly: Everything's automated in **`Kestra`**, with hassle-free data loading thanks to **`dlt`**, and the analytical thinking handled by OpenAI. Here's a diagram to help you understand the general outline of the entire process.
 
 ![overview](/blogs/2023-12-04-dlt-kestra-usage.jpg)
 
@@ -61,14 +61,14 @@ Once you’ve opened [http://localhost:8080/](http://localhost:8080/) in your br
 
 ![Kestra](/blogs/2023-12-04-dlt-kestra-usage/1.png)
 
-Now, all you need to do is [create your flows](https://github.com/dlt-hub/dlt-kestra-demo/blob/main/README.md) and execute them. 
+Now, all you need to do is [create your flows](https://github.com/dlt-hub/dlt-kestra-demo/blob/main/README.md) and execute them.
 
 The great thing about **`Kestra`** is its ease of use - it's UI-based, declarative, and language-agnostic. Unless you're using a task like a [Python script](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.script), you don't even need to know how to code.
 
 
-:::tip 
+::alert{type="info"}
 If you're already considering ways to use **`Kestra`** for your projects, consult their [documentation](https://kestra.io/docs) and the [plugin](https://kestra.io/plugins) pages for further insights.
-:::
+::
 
 ### The data loading part
 
@@ -102,9 +102,9 @@ In this setup ☝️, **`dlt`** loads all email data into the table “my_inbox�
 
 ![bigquery_my_inbox](https://storage.googleapis.com/dlt-blog-images/dlt_kestra_bigquery_my_inbox.png)
 
-:::tip
+::alert{type="info"}
 This implementation doesn't handle email attachments, but if you need to analyze, for instance, invoice PDFs from your inbox, you can read about how to automate this with **`dlt`** [here](/blogs/2023-12-04-dlt-kestra-usage/2.png).
-:::
+::
 
 ### The AI part
 
@@ -122,9 +122,9 @@ In my [subflow](https://github.com/dlt-hub/dlt-kestra-demo/blob/main/subflow.yml
   messages: [{"role": "system", "content": "You are a tool that summarizes emails."}]
 ```
 
-:::info
+::info
 **`Kestra`** also includes Slack, as well as BigQuery plugins, which I used in my flows. Additionally, there is a wide variety of [other plugins](https://kestra.io/plugins) available.
-:::
+::
 
 ### The automation part
 
