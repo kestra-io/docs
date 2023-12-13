@@ -75,7 +75,6 @@
 
 <script>
     import Section from '../layout/Section.vue';
-    import axios from "axios";
     import {CountTo} from 'vue3-count-to';
     import SourceCommitLocal from "vue-material-design-icons/SourceCommitLocal.vue";
     import Star from "vue-material-design-icons/Star.vue";
@@ -83,6 +82,7 @@
     import SourcePull from "vue-material-design-icons/SourcePull.vue";
     import BugOutline from "vue-material-design-icons/BugOutline.vue";
     import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue";
+    import {kestraInstance} from "~/utils/api.js";
 
     export default {
         components: {
@@ -104,18 +104,21 @@
             };
         },
 
-        created() {
-            axios.get("https://api.kestra.io/v1/communities/github/contributors")
-                .then(response => {
-                    this.contributors = response.data;
-                    this.contributorsRand = this.contributors.sort(() => 0.5 - Math.random()).slice(0, 20)
-                })
+        async created() {
+            try {
+                const [metrics, contributors] = await Promise.all([
+                    kestraInstance.get('/communities/github/metrics'),
+                    kestraInstance.get('/communities/github/contributors')
+                ])
+                this.metrics = metrics.data
+                this.contributors = contributors.data
 
-            axios.get("https://api.kestra.io/v1/communities/github/metrics")
-                .then(response => {
-                    this.metrics = response.data;
-                })
+            } catch (e) {
+                this.contributors = []
+                this.metrics = {}
+            }
         },
+
         methods: {
             contributorsPartition(i) {
                 return this.contributorsRand

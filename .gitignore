@@ -26,7 +26,7 @@ content/docs/11.terraform/**/*
 
 ## Nuxt
 node_modules
-*.log*
+*.log
 .nuxt
 .nitro
 .cache

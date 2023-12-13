@@ -65,12 +65,30 @@
                                     </p>
                                 </NuxtLink>
                             </li>
+<!--                            <li>-->
+<!--                                <NuxtLink class="dropdown-item" href="/use-cases/ci-cd" @click="globalClick(true)">-->
+<!--                                    <Github/>-->
+<!--                                    <p>-->
+<!--                                        <span>CI/CD for Kestra Workflows</span><br/>-->
+<!--                                        Treat your workflow as code and embrace CI/CD practices-->
+<!--                                    </p>-->
+<!--                                </NuxtLink>-->
+<!--                            </li>-->
                             <li>
-                                <NuxtLink class="dropdown-item" href="/use-cases/ci-cd" @click="globalClick(true)">
-                                    <Github/>
+                                <NuxtLink class="dropdown-item" href="/use-cases/terraform-provider" @click="globalClick(true)">
+                                    <Terraform/>
                                     <p>
-                                        <span>CI/CD for Kestra Workflows</span><br/>
-                                        Treat your workflow as code and embrace CI/CD practices
+                                        <span>Kestra's Terraform Provider</span><br/>
+                                        Manage and deploy Kestra workflows in your Terraform environment
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
+                                    <BookOpenVariant/>
+                                    <p>
+                                        <span>Customers stories</span><br/>
+                                        Learn how Kestra helped companies manage their critical operations
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -265,10 +283,12 @@
     import FileCodeOutline from "vue-material-design-icons/FileCodeOutline.vue"
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
     import Github from "vue-material-design-icons/Github.vue"
+    import Terraform from "vue-material-design-icons/Terraform.vue"
     import Slack from "vue-material-design-icons/Slack.vue"
     import Reload from "vue-material-design-icons/Reload.vue"
     import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
     import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
+    import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
 </script>
 
 <script>

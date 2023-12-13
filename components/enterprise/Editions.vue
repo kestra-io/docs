@@ -1,6 +1,9 @@
 <template>
     <div class="container">
-        <Section>
+        <Section
+        title="Unlock exclusive features with the Enterprise Edition"
+            subtitle="Advanced Solutions for Your Organization">
+            
             <div class="row card-group mb-4">
                 <div class="col-12 col-md-6 d-md-flex justify-content-md-end">
                     <div class="card col-lg-9 col-xl-7">
@@ -14,14 +17,14 @@
                             </div>
                             <ul>
                                 <li data-aos="fade-right"><span>Free usage under Apache 2.0 license</span></li>
-                                <li data-aos="fade-right" data-aos-delay="50"><span>Self-hosted</span></li>
-                                <li data-aos="fade-right" data-aos-delay="100"><span>Community Blueprints</span></li>
-                                <li data-aos="fade-right" data-aos-delay="150"><span>Community Plugins</span></li>
-                                <li data-aos="fade-right" data-aos-delay="200"><span>Basic Auth for a Single User</span></li>
-                                <li data-aos="fade-right" data-aos-delay="250"><span>Basic Namespace Configuration</span></li>
-                                <li data-aos="fade-right" data-aos-delay="300"><span>Basic Workflow Management</span></li>
-                                <li data-aos="fade-right" data-aos-delay="350"><span>Basic Secrets Management via Environment Variables</span></li>
-                                <li data-aos="fade-right" data-aos-delay="400"><span>Onboarding via Online Documentation</span></li>
+                                <li data-aos="fade-right" data-aos-delay="50"><span>Flexible & Decoupled Architecture</span></li>
+                                <li data-aos="fade-right" data-aos-delay="100"><span>Scalable Executions</span></li>
+                                <li data-aos="fade-right" data-aos-delay="150"><span>Basic Authentification</span></li>
+                                <li data-aos="fade-right" data-aos-delay="200"><span>Basic Role Management</span></li>
+                                <li data-aos="fade-right" data-aos-delay="250"><span>Secrets Management via Environment Variables</span></li>
+                                <li data-aos="fade-right" data-aos-delay="300"><span>Flow Credentials Store</span></li>
+                                <li data-aos="fade-right" data-aos-delay="350"><span>Community Blueprints</span></li>
+                                <li data-aos="fade-right" data-aos-delay="400"><span>Single Tenancy</span></li>
                                 <li data-aos="fade-right" data-aos-delay="450"><span>Community Support</span></li>
                             </ul>
                         </div>
@@ -39,17 +42,16 @@
                             </div>
                             <ul>
                                 <li data-aos="fade-left"><span><strong>All features from the Open-Source Edition and More</strong></span></li>
-                                <li data-aos="fade-left" data-aos-delay="50"><span>Self-hosted</span></li>
-                                <li data-aos="fade-left" data-aos-delay="100"><span>Community and Organization Blueprints</span></li>
-                                <li data-aos="fade-left" data-aos-delay="150"><span>Community and Custom Plugins</span></li>
-                                <li data-aos="fade-left" data-aos-delay="200"><span>Enterprise-Grade Auth with SSO and RBAC</span></li>
-                                <li data-aos="fade-left" data-aos-delay="250"><span>Secure Namespace Configuration</span></li>
-                                <li data-aos="fade-left" data-aos-delay="300"><span>Workflow Management with Audit Logs for Every Action</span></li>
-                                <li data-aos="fade-left" data-aos-delay="350"><span>Encrypted Namespace-level Secrets and Secrets Manager Integration</span></li>
-                                <li data-aos="fade-left" data-aos-delay="400"><span>Personalized Onboarding & Training</span></li>
-                                <li data-aos="fade-left" data-aos-delay="450"><span>Enterprise Support with SLAs</span></li>
-                                <li data-aos="fade-left" data-aos-delay="500"><span>Worker Security Isolation</span></li>
-                                <li data-aos="fade-left" data-aos-delay="550"><span>High Availability and Fault Tolerance</span></li>
+                                <li data-aos="fade-left" data-aos-delay="100"><span>High Availability with no Single Point of Failure Architecture</span></li>
+                                <li data-aos="fade-left" data-aos-delay="150"><span>Worker Groups</span></li>
+                                <li data-aos="fade-left" data-aos-delay="200"><span>Single Sign-On (SSO)</span></li>
+                                <li data-aos="fade-left" data-aos-delay="250"><span>Role-Based Access Control (RBAC)</span></li>
+                                <li data-aos="fade-left" data-aos-delay="300"><span>Secrets Manager Integration</span></li>
+                                <li data-aos="fade-left" data-aos-delay="350"><span>Organization Credentials Store</span></li>
+                                <li data-aos="fade-left" data-aos-delay="400"><span>Organization Blueprints</span></li>
+                                <li data-aos="fade-left" data-aos-delay="450"><span>Multi-Tenancy</span></li>
+                                <li data-aos="fade-left" data-aos-delay="500"><span>Enterprise Support with Guaranteed SLAs</span></li>
+                                <li data-aos="fade-left" data-aos-delay="550"><span>Customer Onboarding & Training</span></li>
                             </ul>
                         </div>
                     </div>
@@ -74,7 +76,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><NuxtLink href="/features/declarative-data-orchestration">Low Code (YAML-based)</NuxtLink></td>
+                                    <td><NuxtLink href="/features/declarative-data-orchestration">Declarative Flow Editor (YAML-based)</NuxtLink></td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
@@ -139,6 +141,26 @@
                                     <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
+                                    <td>User Interface and Experience</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Rich User Interface</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Built-in Plugin Ecosystem</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Extended API</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr class="table-section">
                                     <td>Connectivity and Integration</td>
                                     <td></td>
                                     <td></td>
@@ -149,17 +171,22 @@
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Integration with Terraform and CI/CD Pipelines</td>
+                                    <td>Official Terraform Provider</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Kafka Integration</td>
-                                    <td></td>
+                                    <td>Official Support for Gitlab CI/CD, Github Actions</td>
+                                    <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Elasticsearch Integration</td>
+                                    <td>Community Blueprints</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Organization Blueprints</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
@@ -167,11 +194,6 @@
                                     <td>Security and Authentication</td>
                                     <td></td>
                                     <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Audit Logs</td>
-                                    <td></td>
-                                    <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>OIDC/SSO Authentication</td>
@@ -184,12 +206,17 @@
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Secure Namespace Configuration</td>
+                                    <td>Audit Logs</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
                                     <td>Secret Managers Integration</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Secure Namespace Configuration</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
@@ -213,24 +240,9 @@
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
-                                <tr class="table-section">
-                                    <td>User Interface and Experience</td>
+                                <tr>
+                                    <td>Worker Groups</td>
                                     <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Rich User Interface</td>
-                                    <td><Check /></td>
-                                    <td><Check /></td>
-                                </tr>
-                                <tr>
-                                    <td>Built-in Plugin Ecosystem</td>
-                                    <td><Check /></td>
-                                    <td><Check /></td>
-                                </tr>
-                                <tr>
-                                    <td>Extended API</td>
-                                    <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
@@ -245,6 +257,16 @@
                                 </tr>
                                 <tr>
                                     <td>Enterprise Support with SLAs</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Onboarding</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Training</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>

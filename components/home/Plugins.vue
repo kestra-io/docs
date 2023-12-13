@@ -41,7 +41,7 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: #10051F url("/landing/home/plugins/background.svg") no-repeat bottom right;
+        background: $purple-34 url("/landing/home/plugins/background.svg") no-repeat bottom right;
         color: var(--bs-white);
         padding: 0;
 

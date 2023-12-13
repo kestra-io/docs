@@ -1,7 +1,7 @@
 <template>
     <div class="container rounded-3">
         <Section
-            title="Ready to bring your data orchestration to the next level?"
+            title="Ready to bring your orchestration to the next level?"
         >
         <div class="text-center cta">
                 <a href="https://kestra.io/demo" target="_blank" class="btn btn-primary me-2 mb-2" data-aos="zoom-in">
