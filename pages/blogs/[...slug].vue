@@ -97,7 +97,7 @@
         page.value = data.value;
 
         useContentHead(page)
-        const {title, description, image} = page.value
+        const {title,author,description,image,date} = page.value
         const { origin } = useRequestURL()
         useHead({
             meta: [
@@ -107,8 +107,26 @@
                 { name: 'twitter:description', content: description },
                 { name: 'twitter:image', content: `${origin + image}` },
                 { name: 'twitter:image:alt', content: title }
-            ]
-        })
+            ],
+            script : [{
+                    innerHTML : JSON.stringify({
+                        "@context" : "http://schema.org",
+                        "@type" : "BlogPosting",
+                        "mainEntityofPage" : {
+                            "@type" : "Webpage",
+                            "@id" : slug,
+                        },
+                        "headline": title, 
+                        "image": [image ], 
+                        "datePublished": date, 
+                        "author": { "@type": "Person", "name": `${author.name}` }, 
+                        "publisher": { "@type": "Organization", "name": "Kestra", "logo": { "@type": "ImageObject", "url": "https://kestra.io/logo.svg" } },
+                        "description": description,
+
+                    }),
+                    type  : "application/ld+json"
+                }]
+            })
     }
 </script>
 
