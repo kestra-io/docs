@@ -1,7 +1,13 @@
 <template>
     <div class="main">
-        
-        <StoriesList v-if="slug === '/stories/'" :stories="stories" :icons="icons" :total-stories="totalStories" @fetch-page-data="fetchStories" />
+        <div v-if="slug === '/stories/'">
+            <Head>
+                <Title>Kestra's Customers Stories</Title>
+                <Meta name="description"
+                    content="Learn how we helped companies manage their critical operations."/>
+            </Head>
+            <StoriesList :stories="stories" :icons="icons" :total-stories="totalStories" @fetch-page-data="fetchStories" />
+        </div>
         
         <div v-else>
 
@@ -81,7 +87,7 @@ const storyName = slug.replace('/stories/', '').split('-').join(' ')
     content_2.value = await markdownParser.parse("md",story.value.content_2,{})
     useHead({
         meta: [
-            { name: 'twitter:card', content: 'summary-large-image' },
+            { name: 'twitter:card', content: 'summary_large_image' },
             { name: 'twitter:site', content: '@kestra_io' },
             { name: 'twitter:title', content: story.value.metaTitle },
             {
