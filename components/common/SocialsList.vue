@@ -85,7 +85,6 @@ nav {
 }
 .social ul li a {
   line-height: 1.5rem;
-  font-weight: 300;
   font-size: $font-size-sm;
 }
 

@@ -24,7 +24,7 @@
                                  <ClientOnly>
                                      <ContentRendererMarkdown
                                          data-aos="fade-zoom"
-                                         class="bd-markdown"
+                                         class="bd-markdown mt-4"
                                          :value="page"
                                          data-bs-spy="scroll"
                                          data-bs-target="#nav-toc"
@@ -154,6 +154,7 @@
     h2{
         line-height: 3.25rem;
         font-weight: 600;
+        font-size: 2.375rem !important;
     }
     .para{
         line-height: 1.375rem ;

@@ -193,7 +193,6 @@
     #nav-toc ul li a {
         border-left: none;
         line-height: 1.188rem;
-        font-weight: 300 ;
         padding-bottom: 1rem;
         font-size: $font-size-sm;
     }
