@@ -93,7 +93,7 @@
 .container{
     max-width: 1500px;
     .title{
-        font-size: $h3-font-size;
+        font-size: 2.375rem;
         font-weight: 600;
         line-height: 3.25rem;
     }
