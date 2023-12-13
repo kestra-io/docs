@@ -129,13 +129,8 @@ p {
     height: 266.49px;
     width: 170px;
     background: url("/landing/features/scheduling/light-mask.svg") no-repeat;
-<<<<<<< HEAD
     left:0;
     top: -150px;
-=======
-    left: 0;
-    top: -100px;
->>>>>>> fb9f1af8e7b794e63350d2e92707d517ac9b2c5c
     z-index: 1;
     background: linear-gradient(
       (180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%)
@@ -154,11 +149,7 @@ p {
     height: 266.49px;
     width: 170px;
     background: url("/landing/features/scheduling/workflow/mask-1.svg") no-repeat;
-<<<<<<< HEAD
     left: 0px;
-=======
-    left: -100px;
->>>>>>> fb9f1af8e7b794e63350d2e92707d517ac9b2c5c
     top: -150px;
     z-index: 1;
     background: linear-gradient(180deg, rgba(98, 24, 255, 0.00) 0%, #6117FF 100%);
