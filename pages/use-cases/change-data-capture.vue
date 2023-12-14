@@ -49,9 +49,7 @@
                         title: 'Real Time Data Replication',
                         img: '/landing/usecases/cdc/feature-1.svg',
                         imgAlt: 'Diagram illustrating Kestra\'s Change Data Capture process, with PostgreSQL for databases, Apache Kafka for streaming data, and Apache Spark for analytics processing',
-                        content: '<strong>Streamlined Data Detection and Distribution</strong>: Kestra actively listens for changes in your chosen databases, such as PostgreSQL, detecting new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes have access to the latest data without delay.<br /><br />' +
-                            '<strong>Data Detection and Distribution:</strong> Listen for changes in your chosen databases, such as PostgreSQL, detect new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes, including analytics processing performed by tools like Apache Spark, have access to the latest data without delay.<br />'
-                           
+                        content:'<strong>Data Detection and Distribution:</strong> Listen for changes in your chosen databases, such as PostgreSQL, detect new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes, including analytics processing performed by tools like Apache Spark, have access to the latest data without delay.<br />' 
                     },
                     {
                         title: 'Workflow Configuration and Management with Kestra',
