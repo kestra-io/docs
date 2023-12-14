@@ -4,7 +4,7 @@
             <div class="row card-group mb-2">
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
-                        <img src="/partners/partners-logos/terraform.svg" class="card-img-top" alt="Terraform's Logo">
+                        <img src="/partners/partners-logos/terraform.svg" class="card-img-top" alt="terraform's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
                             <h5 class="card-title">Terraform</h5>
@@ -20,18 +20,29 @@
                             <h5 class="card-title">Snowflake</h5>
                             <a href="https://snowflake.com/" target="_blank">Visit Snowflake website <OpenInNew /></a>
                         </div>
-                        
-                        <div class="col-12 col-md-4 col-lg-4 mb-4">
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 mb-4">
+                    <div class="card" data-aos="zoom-in">
+                        <img src="/partners/partners-logos/motherduck.svg" class="card-img-top" alt="Mother Duck's Logo">
+                        <div class="card-body">
+                            <p class="card-text">Technology Partner</p>
+                            <h5 class="card-title">MotherDuck</h5>
+                            <a href="https://motherduck.com/" target="_blank">Visit MotherDuck website <OpenInNew /></a>
+                        </div>
+                    </div>>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <img src="/partners/partners-logos/dremio.svg" class="card-img-top" alt="Dremio's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
                             <h5 class="card-title">Dremio</h5>
-                            <a href="https://dremio.com/" target="_blank">Visit Dremio website <OpenInNew /></a>
+                            <a href="https://www.dremio.com/" target="_blank">Visit Dremio website <OpenInNew /></a>
                         </div>
                     </div>
                 </div>
-                        <div class="col-12 col-md-4 col-lg-4 mb-4">
+                <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <img src="/partners/partners-logos/airbyte.svg" class="card-img-top" alt="Airbyte's Logo">
                         <div class="card-body">
@@ -41,7 +52,6 @@
                         </div>
                     </div>
                 </div>
-                    </div>>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
                         <img src="/partners/partners-logos/dlthub.svg" class="card-img-top" alt="dlthub's Logo">
@@ -49,17 +59,6 @@
                             <p class="card-text">Technology Partner</p>
                             <h5 class="card-title">dlthub</h5>
                             <a href="https://dlthub.com/" target="_blank">Visit dlthub website <OpenInNew /></a>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                <div class="col-12 col-md-4 col-lg-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <img src="/partners/partners-logos/motherduck.svg" class="card-img-top" alt="snoflake's Logo">
-                        <div class="card-body">
-                            <p class="card-text">Technology Partner</p>
-                            <h5 class="card-title">MotherDuck</h5>
-                            <a href="https://motherduck.com/" target="_blank">Visit MotherDuck website <OpenInNew /></a>
                         </div>
                     </div>
                 </div>
