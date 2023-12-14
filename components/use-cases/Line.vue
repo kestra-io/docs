@@ -9,3 +9,9 @@ export default {
     name: "Line",
 };
 </script>
+
+<style scoped lang='scss'>
+ hr {
+     margin: 0;
+ }
+</style>
