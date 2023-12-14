@@ -1,7 +1,7 @@
 ---
 title: "How to Solve Complex Orchestration Problems Without Adding Complexity"
 description: "Orchestration problems always start simple, but then they grow into unmaintainable systems with workflow and data silos. How to avoid it? Find out in this post."
-date: 2023-12-13T15:30:00
+date: 2023-12-14T11:30:00
 category: Solutions
 author:
   name: Anna Geller
