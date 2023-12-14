@@ -95,7 +95,7 @@ export default {
         },
     },
     process: {
-        icon: '/write-for-kestra/dotted-arrow-down.svg',
+        icon: '/shared/dotted-arrow-down.svg',
         title: "The Process: ",
         items: [
             {
@@ -132,11 +132,11 @@ export default {
         items: [
             {
                 title: "Compensation",
-                description: "Feel free to share your published work with your personal and professional networks.",
+                description: "Enter compensation text.",
             },
             {
                 title: "Cross-Posting",
-                description: "Feel free to share your published work with your personal and professional networks.",
+                description: "Enter cross-posting text.",
             },
         ],
     },
