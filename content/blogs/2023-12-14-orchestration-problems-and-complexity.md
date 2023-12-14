@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: /blogs/2023-12-14-breaking-orchestration-silos.png
+image: /blogs/2023-12-14-orchestration-problems-and-complexity.png
 ---
 
 Orchestration is a critical requirement for any organization that wants to automate and scale its operations. Many teams start with simple scripts deployed with serverless functions only to realize that such approach doesn't scale as new use cases emerge.
@@ -23,7 +23,7 @@ Orchestration typically starts with a simple objective: schedule data workflows,
 
 As more systems and services get integrated, your evolving use cases outgrow the capabilities of your initial orchestration solution. As a result, your organization adopts new specialized tools to meet these needs. These tools often have their own embedded orchestration capabilities. This leads to the formation of silos, as each tool, while effective in its domain, contributes to the growing complexity and fragmentation. Observability, dependency management and troubleshooting become increasingly difficult, making your system nearly impossible to maintain and understand over time.
 
-![Complexity](/blogs/2023-12-14-breaking-orchestration-silos/complexity.gif)
+![Complexity](/blogs/2023-12-14-orchestration-problems-and-complexity/complexity.gif)
 
 
 ## How to Solve Complexity Without Adding Complexity
@@ -38,7 +38,7 @@ Kestra allows users to work in their preferred environment, whether it's coding 
 
 Kestra UI offers an embedded Visual Studio code editor allowing you to seamlessly orchestrate business logic written in any language without the pain of packaging and deploying code. The embedded editor helps you write workflow code that follows best practices thanks to autocompletion, code autoformating, built-in documentation, verified blueprint examples and continuous syntax validation powered by Kestra's [open-source VS Code extension](https://marketplace.visualstudio.com/items?itemName=kestra-io.kestra).
 
-![code](/blogs/2023-12-14-breaking-orchestration-silos/editor.png)
+![code](/blogs/2023-12-14-orchestration-problems-and-complexity/editor.png)
 
 For business users, Kestra offers UI forms allowing to build workflows without requiring a programming experience. These UI-created pipelines generate human-readable YAML configuration files, organized into namespaces and automatically versioned, just as you would do that with Git.
 
@@ -60,7 +60,7 @@ To meet users where they are and remove the need for new silos, Kestra integrate
 
 Thanks to the open-source contributions, the list of supported plugins keeps growing with every new release. You can check the [list of supported plugins](https://kestra.io/plugins/) to see if your favorite tool is already supported. If not, you can [build your own](https://kestra.io/docs/plugin-developer-guide) in minutes.
 
-![ui](/blogs/2023-12-14-breaking-orchestration-silos/ui.png)
+![ui](/blogs/2023-12-14-orchestration-problems-and-complexity/ui.png)
 
 
 ## Next Steps
