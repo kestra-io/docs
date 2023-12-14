@@ -6,7 +6,7 @@
     <div class="main">
         <RetailCard :content="header" />
         <Line class="line-margin" />
-        <UseCasesExamples :items="solutions.items" />
+        <UseCasesExamples :content="solutions" />
         <Line class="line-margin" />
         <LeroyMerlin :content="leroy" />
         <Line class="line-margin" />
