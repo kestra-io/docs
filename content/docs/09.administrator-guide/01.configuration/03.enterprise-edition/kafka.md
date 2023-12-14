@@ -5,10 +5,11 @@ title: Kafka configuration
 **Kafka is an [Enterprise Edition](/enterprise) functionality.**
 
 ## `kestra.kafka.client.properties`
-The most important thing is configuring how Kestra connects to the Kafka cluster.
 
+The most important configuration step is defining how Kestra should connect to the Kafka cluster.
 
 Here is a minimal configuration example:
+
 ```yaml
 kestra:
   kafka:
@@ -19,8 +20,8 @@ kestra:
     type: kafka
 ```
 
-
 Here is another example with SSL configuration:
+
 ```yaml
 kestra:
   kafka:
@@ -35,18 +36,24 @@ kestra:
         ssl.keystore.type: "PKCS12"
         ssl.truststore.location: "/etc/ssl/private/truststore.jks"
         ssl.truststore.password: "<your-password>"
-
   queue:
     type: kafka
 ```
 
-
 `kestra.kafka.client.properties` allows passing any standard Kafka properties. More details can be found [on the Kafka Documentation](https://kafka.apache.org/documentation/).
 
 ## `kestra.kafka.defaults.topic`
+
 By default, Kestra automatically creates all the needed topics. You can change the partition count and replication factor of these topics:
+
 - `kestra.kafka.defaults.topic.partitions`: (default 16)
 - `kestra.kafka.defaults.topic.replication-factor`: (default 1)
+
+The number of topic's partitions limits the number of concurrently processing server instances consuming that particular topic. For example, using 16 partitions for every topic limits the effective number of instances to 16 executor servers, 16 worker servers, etc.
+
+::alert{type="warning"}
+For the optimal value of the replication factor, validate the actual configuration of the target Kafka cluster. Generally, for high availability, the value should match the number of Kafka brokers in the cluster. For example, a cluster consisting of 3 nodes should use the replication factor of 3.
+::
 
 ## `kestra.kafka.defaults.[consumer|producer|stream].properties`
 
@@ -80,8 +87,8 @@ kestra:
           state.dir: "/tmp/kafka-streams"
 ```
 
-
 ## `kestra.kafka.defaults.topics`
+
 All the topics used by Kestra are declared with the default name and properties.
 You can change the default values:
 
@@ -91,6 +98,7 @@ You can change the default values:
 You can see default configuration on this [file](https://github.com/kestra-io/kestra/blob/develop/cli/src/main/resources/application.yml).
 
 ## `kestra.kafka.defaults.consumer-prefix`
+
 This configuration allows changing the consumer-group prefix. By default, the prefix will be `kestra`.
 
 For example, if you want to share a common Kafka cluster for multiple instances of Kestra, you must configure a different prefix for each instance like this:
@@ -103,6 +111,7 @@ kestra:
 ```
 
 ## `kestra.kafka.defaults.topic-prefix`
+
 This configuration allows changing the topic name prefix. By default, the prefix will be `kestra_`.
 
 For example, if you want to share a common Kafka cluster for multiple instances of Kestra, add a different prefix for each instance like this:
@@ -115,6 +124,7 @@ kestra:
 ```
 
 ## `kestra.kafka.client.loggers`
+
 This configuration allows enabling logging for all messages processed by the Kafka cluster. Use it to debug all the messages consumed or produced on the Kafka cluster.
 
 ::alert{type="warning"}

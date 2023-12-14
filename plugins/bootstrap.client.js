@@ -1,4 +1,4 @@
-import {Collapse, Dropdown, Modal, ScrollSpy} from "bootstrap";
+import {Collapse, Dropdown, Modal, ScrollSpy, Tooltip} from "bootstrap";
 
 export default defineNuxtPlugin((nuxtApp) => {
 
@@ -9,7 +9,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     return ({
         provide: {
             bootstrap: {
-                Collapse, Dropdown, Modal, ScrollSpy
+                Collapse, Dropdown, Modal, ScrollSpy, Tooltip
             },
         },
     });

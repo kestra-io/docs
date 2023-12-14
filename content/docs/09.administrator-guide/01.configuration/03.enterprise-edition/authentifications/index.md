@@ -24,8 +24,10 @@ micronaut:
 
 This secret must be the same on all your webserver instances and will be used to encode the JWT cookie of Kestra.
 
-::: tip JWT configuration
+::alert{type="info"}
+**JWT configuration**
+
 It is possible to change the JWT cookie behavior using [Micronaut Cookie Token Reader](https://micronaut-projects.github.io/micronaut-security/latest/guide/#io.micronaut.security.token.jwt.cookie.JwtCookieConfigurationProperties) configuration. For example, it is possible to define its maximum lifetime as `micronaut.security.token.jwt.cookie.cookie-max-age: P2D`.
-:::
+::
 
 <ChildTableOfContents />

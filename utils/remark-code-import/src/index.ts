@@ -1,6 +1,5 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { EOL } from 'node:os';
 import { visit } from 'unist-util-visit';
 import stripIndent from 'strip-indent';
 import type { Code, Parent } from 'mdast';
@@ -21,7 +20,7 @@ function extractLines(
   toLine: number | undefined,
   preserveTrailingNewline: boolean = false
 ) {
-  const lines = content.split(EOL);
+  const lines = content.split("\n");
   const start = fromLine || 1;
   let end;
   if (!hasDash) {
@@ -44,7 +43,7 @@ function codeImport(options: CodeImportOptions = {}) {
   }
 
   return (tree: any, file: VFile) => {
-    const codes: [Code, number | null, Parent][] = [];
+    const codes: [Code, number | undefined | null, Parent][] = [];
 
     if (file) {
       visit(tree, 'code', (node, index, parent) => {

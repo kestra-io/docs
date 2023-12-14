@@ -84,6 +84,15 @@
                                 </NuxtLink>
                             </li>
                             <li>
+                                <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
+                                    <BookOpenVariant/>
+                                    <p>
+                                        <span>Customers stories</span><br/>
+                                        Learn how Kestra helped companies manage their critical operations
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
                                 <NuxtLink class="dropdown-item" href="/use-cases/modern-data-stack" @click="globalClick(true)">
                                     <AxisArrow/>
                                     <p>
@@ -279,6 +288,7 @@
     import Reload from "vue-material-design-icons/Reload.vue"
     import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
     import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
+    import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
 </script>
 
 <script>

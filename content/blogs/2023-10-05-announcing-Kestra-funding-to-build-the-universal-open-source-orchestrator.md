@@ -17,9 +17,7 @@ Through a seamless UI and IDE access, all workflows — from those orchestrating
 
 ## Trusted by Companies of All Sizes
 
-Since its inception, Kestra has experienced significant traction as an open-source project, thriving with a vibrant community of users and contributors. Thousands of companies, from startups to large enterprises, including **Huawei**, **Leroy Merlin**, **Acxiom**, **Tencent**, **Gorgias**, **Sophia Genetics**, and **Decathlon**, are already orchestrating their **business-critical workloads** with Kestra.
-
-![clients](/blogs/2023-10-05-announcing-Kestra-funding-to-build-the-universal-open-source-orchestrator/clients.png)
+Since its inception, Kestra has experienced significant traction as an open-source project, thriving with a vibrant community of users and contributors. Thousands of companies, from startups to large enterprises, including **Huawei**, **Leroy Merlin**, **Tencent**, **Gorgias**, **Sophia Genetics**, and **Decathlon**, are already orchestrating their **business-critical workloads** with Kestra.
 
 ## Breaking Down the Orchestration Silos
 

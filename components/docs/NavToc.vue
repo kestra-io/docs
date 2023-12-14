@@ -19,7 +19,6 @@
             <div class="collapse bd-toc-collapse" id="tocContents">
                 <slot name="header"></slot>
                 <strong class="d-none d-lg-block h6 my-2 ms-3">Table of Contents</strong>
-                <hr class="d-none d-lg-block my-2 ms-3">
                 <nav id="nav-toc">
                     <ul>
                         <template v-for="item in generated" >
@@ -33,38 +32,12 @@
         </template>
 
         <div class="d-none d-lg-block mt-4">
-            <strong class="h6 my-2 ms-3">Contribute</strong>
-            <hr class="my-2 ms-3">
-            <div>
-                <nav>
-                    <ul>
-                        <li v-if="page.editLink !== false">
-                            <a :href="editLink" target="_blank"><Github /> Edit this page</a>
-                        </li>
-                        <li>
-                            <a href="https://kestra.io/slack" target="_blank"><Slack /> Join us on Slack</a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/kestra-io/kestra" target="_blank"><Github /> GitHub</a>
-                        </li>
-                        <li>
-                            <a href="https://twitter.com/kestra_io" target="_blank"><twitter /> Twitter</a>
-                        </li>
-                        <li>
-                            <a href="https://www.linkedin.com/company/kestra" target="_blank"><linkedin /> LinkedIn</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <CommonSocialsList :page="page" />
         </div>
-    </div>
+    </div> 
 </template>
 
 <script setup>
-    import Slack from "vue-material-design-icons/Slack.vue";
-    import Github from "vue-material-design-icons/Github.vue";
-    import Linkedin from "vue-material-design-icons/Linkedin.vue";
-    import Twitter from "vue-material-design-icons/Twitter.vue";
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 </script>
@@ -83,9 +56,6 @@
             }
         },
         computed: {
-            editLink() {
-                return `https://github.com/kestra-io/kestra.io/edit/main/content/${this.page._file}`;
-            },
             generated() {
                 const recursive = (links) => {
                     const result = [];
@@ -117,6 +87,7 @@
     @import "../../assets/styles/variable";
 
     .bd-toc {
+        border-left: 1px solid $gray-300;
         transition: all ease 0.2s;
         transform: translateX(0);
         @include media-breakpoint-up(lg) {
@@ -124,8 +95,6 @@
             top: 5rem;
             right: 0;
             z-index: 2;
-            height: subtract(100vh, 7rem);
-            overflow-y: auto;
         }
 
         > .btn.d-lg-none {
@@ -137,16 +106,14 @@
         }
 
         nav {
-            @include font-size(.875rem);
-
+            @include font-size($font-size-xs);
+            line-height: 1.188rem;
             ul {
                 padding-left: .75rem;
                 margin-bottom: 0;
                 list-style: none;
-
                 li {
                     a {
-                        border-left: .125rem solid var(--bs-gray-200);
                         padding-left: 0.75rem;
 
                         @for $i from 2 through 6 {
@@ -159,7 +126,7 @@
                         &.active {
                             color: var(--bs-primary);
                             font-weight: 500;
-                            border-left-color: var(--bs-primary);
+                            border-left: 1px solid $purple-35;
                         }
                     }
                 }
@@ -180,6 +147,9 @@
 
         .h6 {
             color: var(--bs-gray-700);
+            font-size: $font-size-sm;
+            line-height: 1.875rem;
+            font-weight: 600;
         }
 
         hr {
@@ -222,5 +192,13 @@
 
     #nav-toc ul li a {
         border-left: none;
+        line-height: 1.188rem;
+        padding-bottom: 1rem;
+        font-size: $font-size-sm;
     }
+    #nav-toc ul li:last-child{
+        padding-bottom: 1rem;
+        border-bottom : 1px solid $gray-300
+    }
+
 </style>
