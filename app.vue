@@ -21,3 +21,15 @@
         }
     })
 </script>
+
+<style lang='scss'>
+.text-gradient {
+    background: var(
+            --Text_gradient,
+            linear-gradient(90deg, #e151f7 2%, #5c47f5 65%)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+</style>
