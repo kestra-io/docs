@@ -14,6 +14,7 @@ You can configure the authentication to AWS Cloud in multiple ways:
 ```yaml
 kestra:
   secret:
+    type: aws-secret-manager
     aws-secret-manager:
       accessKeyId: "test"
       secretKeyId: "test"

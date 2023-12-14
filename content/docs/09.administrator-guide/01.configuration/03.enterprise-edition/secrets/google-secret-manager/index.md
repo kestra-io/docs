@@ -13,6 +13,7 @@ You can authenticate the Secrets Manager with Google Cloud in multiple ways:
 ```yaml
 kestra:
   secret:
+    type: azure-key-vault
     google-secret-manager:
       project: kestra-unit-test
       serviceAccount: 'JSON content of the service account'
