@@ -93,18 +93,6 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/rldorado.jpg" alt="Rafael López Dorado Picture"/>
-                    <div>
-                        <div class="team-name">Rafael López Dorado</div>
-                        <div class="team-title font-small">Senior Front-End Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/rldorado/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/rldorado" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/ncallens.png"
                          alt="Nicolas Callens Picture"/>
                     <div>
