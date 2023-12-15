@@ -5,7 +5,10 @@
             class="title fw-light pb-3"
             v-html="content.title"
         ></h3>
-        <div v-for="(item, index) in content.items">
+        <div
+            v-for="(item, index) in content.items"
+            data-aos="fade-right"
+        >
             <div class="card process-card">
                 <div class="row p-3">
                     <div>
@@ -63,7 +66,7 @@ export default {
 
 .item-number {
     font-size: $font-size-3xl;
-    color: #5e904e;
+    color: #5e904e; // #TODO update color
 }
 
 .item {

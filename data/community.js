@@ -9,12 +9,12 @@ export default {
         cta: [
             {
                 text: "Submit a Draft",
-                href: "/docs",
+                href: "/docs", // #TODO update link
                 style: "btn-animated btn-purple-animated btn",
             },
         ],
         image: {
-            href: "/retail/header.svg",
+            href: "/retail/header.svg", // #TODO: update image
             alt: "Header",
         },
     },
@@ -28,21 +28,21 @@ export default {
                 text:
                     "Writing sharpens your ability to convey complex technical ideas clearly and effectively. If " +
                     "your draft shows promise, our team will guide you to refine it, making your message more impactful.",
-                icon: "/retail/use-cases/Icon_useCase1.svg",
+                icon: "/retail/use-cases/Icon_useCase1.svg", // #TODO: update icon
             },
             {
                 title: "Gain Recognition",
                 text:
                     "We value our contributors and promote their articles across our social media channels and " +
                     "newsletter, offering you a platform to reach a broad audience in the tech community.",
-                icon: "/retail/use-cases/Icon_useCase1.svg",
+                icon: "/retail/use-cases/Icon_useCase2.svg", // #TODO: update icon
             },
             {
                 title: "Get Compensated",
                 text:
                     "Your expertise is precious, and we believe in rewarding our contributors. We offer competitive " +
                     "compensation for original articles, videos and tutorials.",
-                icon: "/retail/use-cases/Icon_useCase1.svg",
+                icon: "/retail/use-cases/Icon_useCase3.svg", // #TODO: update icon
             },
         ],
     },
@@ -95,7 +95,7 @@ export default {
         },
     },
     process: {
-        icon: '/shared/dotted-arrow-down.svg',
+        icon: '/shared/dotted-arrow-down.svg', // #TODO: update icon
         title: "The Process: ",
         items: [
             {
@@ -145,12 +145,13 @@ export default {
         cta: [
             {
                 text: "Join Us on Slack",
-                href: "/docs",
+                href: "/slack",
                 style: "btn-dark",
+                target: "_blank"
             },
             {
                 text: "Submit a draft",
-                href: "/docs/getting-started",
+                href: "/docs", // #TODO: add correct link
                 style: "btn-animated btn-purple-animated",
             },
         ],

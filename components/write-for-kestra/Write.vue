@@ -17,7 +17,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="cta card">
+            <div class="cta card" data-aos="fade-right">
                 <div class='row align-items-center'>
                     <div class='col-lg-9 col-md-12'>
                         <h5>{{content.cta.title}}</h5>
