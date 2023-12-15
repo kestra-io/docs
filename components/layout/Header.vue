@@ -158,6 +158,15 @@
                                 </NuxtLink>
                             </li>
                             <li>
+                                <NuxtLink class="dropdown-item" href="/write-for-us" @click="globalClick(true)">
+                                    <AccountEdit/>
+                                    <p>
+                                        <span>Write For Us</span><br/>
+                                        Start Writing for the Kestra Community and earn perks
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
                                 <NuxtLink class="dropdown-item" href="/faq" @click="globalClick(true)">
                                     <AccountGroup/>
                                     <p>
@@ -289,6 +298,7 @@
     import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
     import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
     import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
+    import AccountEdit from "vue-material-design-icons/AccountEdit.vue"
 </script>
 
 <script>
