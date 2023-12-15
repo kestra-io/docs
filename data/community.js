@@ -19,7 +19,7 @@ export default {
         },
     },
     drafts: {
-        tag: "Why Submit a <span class='text-gradient'>Draft</span>?",
+        tag: "Why Submit a <span class='text-gradient'>Draft</span> ?",
         title: "Why Submit a Draft",
         cardGroup: "text-start",
         items: [
@@ -89,7 +89,7 @@ export default {
                 "plus.",
             action: {
                 text: "Apply",
-                href: "/docs",
+                href: "/docs", // #TODO update link
                 style: "btn-animated btn-purple-animated btn",
             },
         },
