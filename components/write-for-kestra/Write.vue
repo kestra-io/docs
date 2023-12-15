@@ -3,7 +3,7 @@
         <div class="container base-container position-relative">
             <h1
                 data-aos="fade-left"
-                class="title-sm title pt-5 fw-light"
+                class="title-sm title fw-light"
                 v-html="content.tag"
             ></h1>
             <p class='my-4'>
@@ -66,6 +66,7 @@ export default {
 
 .title-sm {
     font-size: $h2-font-size;
+    padding-top: 4rem;
 }
 
 .content {
