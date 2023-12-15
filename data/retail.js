@@ -21,7 +21,7 @@ export default {
         image: {
             href: "/retail/header.svg",
             alt: "Header",
-        }
+        },
     },
     solutions: {
         title: "Use Cases in Retail",

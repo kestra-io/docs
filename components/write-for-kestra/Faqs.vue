@@ -6,9 +6,9 @@
             v-html="content.title"
         ></h3>
         <div v-for="item in content.items">
-            <CustomDetails :title="item.title" class='card'>
+            <CustomDetails :title="item.title" class="card">
                 <p>
-                  {{ item.description}}
+                    {{ item.description }}
                 </p>
             </CustomDetails>
         </div>

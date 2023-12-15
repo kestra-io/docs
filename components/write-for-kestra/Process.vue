@@ -5,10 +5,7 @@
             class="title fw-light pb-3"
             v-html="content.title"
         ></h3>
-        <div
-            v-for="(item, index) in content.items"
-            data-aos="fade-right"
-        >
+        <div v-for="(item, index) in content.items" data-aos="fade-right">
             <div class="card process-card">
                 <div class="row p-3">
                     <div>

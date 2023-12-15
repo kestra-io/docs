@@ -49,7 +49,7 @@ export default {
     write: {
         tag: "What is the Write for <span class='text-gradient'>Kestra Program ?</span>",
         title: "What is the Write for the Kestra Program ?",
-        titleClass: 'title-sm',
+        titleClass: "title-sm",
         description:
             "Kestra, at its core, is a platform that empowers tech professionals with advanced orchestration " +
             "and scheduling solutions. We're seeking writers who can share practical insights, showcase new trends, and " +
@@ -95,7 +95,7 @@ export default {
         },
     },
     process: {
-        icon: '/shared/dotted-arrow-down.svg', // #TODO: update icon
+        icon: "/shared/dotted-arrow-down.svg", // #TODO: update icon
         title: "The Process: ",
         items: [
             {
@@ -147,7 +147,7 @@ export default {
                 text: "Join Us on Slack",
                 href: "/slack",
                 style: "btn-dark",
-                target: "_blank"
+                target: "_blank",
             },
             {
                 text: "Submit a draft",

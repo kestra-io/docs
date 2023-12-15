@@ -6,34 +6,40 @@
                 class="title-sm title fw-light"
                 v-html="content.tag"
             ></h1>
-            <p class='my-4'>
+            <p class="my-4">
                 {{ content.description }}
             </p>
             <div class="interests mb-4">
                 <h5>{{ content.interests.title }}</h5>
                 <ul>
                     <li v-for="item in content.interests.items">
-                        <span class='item-title'>{{ item.title }}:</span> {{ item.description }}
+                        <span class="item-title">{{ item.title }}:</span>
+                        {{ item.description }}
                     </li>
                 </ul>
             </div>
             <div class="cta card" data-aos="fade-right">
-                <div class='row align-items-center'>
-                    <div class='col-lg-9 col-md-12'>
-                        <h5>{{content.cta.title}}</h5>
-                        <p>{{ content.cta.description}}</p>
+                <div class="row align-items-center">
+                    <div class="col-lg-9 col-md-12">
+                        <h5>{{ content.cta.title }}</h5>
+                        <p>{{ content.cta.description }}</p>
                     </div>
-                    <div class='w-auto'>
+                    <div class="w-auto">
                         <NuxtLink :href="content.cta.action.href">
-                            <button class="btn" :class="content.cta.action.style">
-                                <span class='mx-4'>{{ content.cta.action.text }}</span>
+                            <button
+                                class="btn"
+                                :class="content.cta.action.style"
+                            >
+                                <span class="mx-4">{{
+                                    content.cta.action.text
+                                }}</span>
                             </button>
                         </NuxtLink>
                     </div>
                 </div>
             </div>
         </div>
-        <Line class='divider'/>
+        <Line class="divider" />
     </div>
 </template>
 
@@ -44,7 +50,7 @@ export default {
     name: "Write",
 
     components: {
-        Line
+        Line,
     },
 
     props: {
@@ -56,7 +62,7 @@ export default {
                 description: "",
                 interests: {},
             }),
-        }
+        },
     },
 };
 </script>

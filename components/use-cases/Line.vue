@@ -10,8 +10,8 @@ export default {
 };
 </script>
 
-<style scoped lang='scss'>
- hr {
-     margin: 0;
- }
+<style scoped lang="scss">
+hr {
+    margin: 0;
+}
 </style>
