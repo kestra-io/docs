@@ -26,9 +26,9 @@ import Footer from "~/components/use-cases/Footer.vue";
 import Line from "~/components/use-cases/Line.vue";
 import HeaderCard from "~/components/use-cases/Card.vue";
 
-import Faqs from "~/components/write-for-kestra/Faqs.vue";
-import Process from "~/components/write-for-kestra/Process.vue";
-import Write from "~/components/write-for-kestra/Write.vue";
+import Faqs from "~/components/write-for-us/Faqs.vue";
+import Process from "~/components/write-for-us/Process.vue";
+import Write from "~/components/write-for-us/Write.vue";
 
 const data = { ...community };
 </script>
