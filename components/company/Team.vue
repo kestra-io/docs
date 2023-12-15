@@ -97,7 +97,7 @@
                          alt="Nicolas Callens Picture"/>
                     <div>
                         <div class="team-name">Nicolas Callens</div>
-                        <div class="team-title font-small">Lead product designer</div>
+                        <div class="team-title font-small">Lead Product Designer</div>
                     </div>
                     <span>
                         <a href="https://www.linkedin.com/in/todobai/" target="_blank" class="me-2"><linkedin /></a>
