@@ -75,7 +75,7 @@ export default {
                 {
                     title: "External Content",
                     description:
-                        "Do you want to share more about your usage of Kestra on your blog, on Medium, or of " +
+                        "Do you want to share more about your usage of Kestra on your blog, on Medium, or any of " +
                         "your current content platforms? We empower you to share your content across all your favorite " +
                         "platforms!",
                 },
