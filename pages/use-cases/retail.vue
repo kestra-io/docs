@@ -5,14 +5,14 @@
     </Head>
     <div class="main">
         <RetailCard :content="header" />
-        <Line class="line-margin" />
+        <Line />
         <UseCasesExamples :content="solutions" />
-        <Line class="line-margin" />
+        <Line />
         <LeroyMerlin :content="leroy" />
-        <Line class="line-margin" />
+        <Line />
         <RetailOps :content="ops" />
         <Plugins :content="plugins" />
-        <Line class="line-margin" />
+        <Line />
         <Footer :content="footer" />
     </div>
 </template>
@@ -54,10 +54,5 @@ export default {
     background-color: #111113;
     color: $white;
     font-weight: 300;
-}
-
-.line-margin {
-    margin-top: 5rem;
-    margin-bottom: 5rem;
 }
 </style>

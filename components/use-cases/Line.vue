@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container line-margin">
         <hr />
     </div>
 </template>
@@ -13,5 +13,10 @@ export default {
 <style scoped lang="scss">
 hr {
     margin: 0;
+}
+
+.line-margin {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
 }
 </style>

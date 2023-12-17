@@ -6,13 +6,14 @@
         </Head>
         <div>
             <HeaderCard :content="data.header" />
-            <Line class="line-margin" />
+            <Line />
             <Examples :content="data.drafts" />
-            <Line class='line-margin mb-0' />
+            <Line class="mb-0" />
             <Write :content="data.write" />
-            <Process :content='data.process'/>
-            <Faqs :content='data.faqs' />
-            <Line class='line-margin'/>
+            <Line class="mt-0 mb-0" />
+            <Process :content="data.process" />
+            <Faqs :content="data.faqs" />
+            <Line />
             <Footer :content="data.footer" />
         </div>
     </div>
@@ -46,5 +47,4 @@ const data = { ...community };
     margin-top: 5rem;
     margin-bottom: 5rem;
 }
-
 </style>

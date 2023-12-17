@@ -39,7 +39,6 @@
                 </div>
             </div>
         </div>
-        <Line class="divider" />
     </div>
 </template>
 
@@ -77,6 +76,7 @@ export default {
 
 .content {
     background: $black-1;
+    padding-bottom: 5rem;
 }
 
 .base-container {
@@ -87,14 +87,11 @@ export default {
 .item-title {
     font-weight: 400;
 }
+
 .cta {
     background-color: $black-2;
     color: white;
     padding: 2rem 0 2rem 2rem;
     box-shadow: none;
-}
-
-.divider {
-    margin-top: 4rem;
 }
 </style>
