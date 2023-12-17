@@ -43,8 +43,8 @@ const data = { ...community };
 }
 
 .line-margin {
-    margin-top: 4rem;
-    margin-bottom: 4rem;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
 }
 
 </style>
