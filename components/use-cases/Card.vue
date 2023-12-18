@@ -85,7 +85,7 @@ export default {
     }
 
     &-community {
-      margin-top: -64px;
+      margin-top: -80px;
     }
     @include media-breakpoint-down(lg) {
         margin-top: 0;

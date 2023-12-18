@@ -1,5 +1,5 @@
 <template>
-    <div class="container line-margin">
+    <div class="container divider">
         <hr />
     </div>
 </template>
@@ -15,8 +15,13 @@ hr {
     margin: 0;
 }
 
-.line-margin {
+.divider {
     margin-top: 5rem;
     margin-bottom: 5rem;
+
+    &-md{
+        margin-top: 4rem;
+        margin-bottom: 4rem;
+    }
 }
 </style>
