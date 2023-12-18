@@ -132,11 +132,13 @@ export default {
         items: [
             {
                 title: "Compensation",
-                description: "Enter compensation text.",
+                description: "Original articles are compensated at a competitive rate (exact amount to be specified), " +
+                    "payable upon publication.",
             },
             {
                 title: "Cross-Posting",
-                description: "Enter cross-posting text.",
+                description: "You can cross-post your article on other platforms, provided a canonical link to the " +
+                    "Kestra site is included.",
             },
         ],
     },
