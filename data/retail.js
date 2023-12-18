@@ -21,6 +21,7 @@ export default {
         image: {
             href: "/retail/header.svg",
             alt: "Header",
+            style: 'image-retail'
         },
     },
     solutions: {

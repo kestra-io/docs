@@ -19,7 +19,7 @@
                     </template>
                 </div>
             </div>
-            <div class="col-lg-6 image" data-aos="zoom-in">
+            <div class="col-lg-6 image" :class='content.image.style' data-aos="zoom-in">
                 <img
                     class="zoom img-fluid"
                     :src="content.image.href"
@@ -80,8 +80,13 @@ export default {
 }
 
 .image {
-    margin-top: -176px;
+    &-retail {
+        margin-top: -176px;
+    }
 
+    &-community {
+      margin-top: -64px;
+    }
     @include media-breakpoint-down(lg) {
         margin-top: 0;
     }

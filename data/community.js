@@ -14,8 +14,9 @@ export default {
             },
         ],
         image: {
-            href: "/retail/header.svg", // #TODO: update image
+            href: "/write-for-us/hero.svg",
             alt: "Header",
+            style: "image-community"
         },
     },
     drafts: {
@@ -28,21 +29,21 @@ export default {
                 text:
                     "Writing sharpens your ability to convey complex technical ideas clearly and effectively. If " +
                     "your draft shows promise, our team will guide you to refine it, making your message more impactful.",
-                icon: "/retail/use-cases/Icon_useCase1.svg", // #TODO: update icon
+                icon: "/shared/head-dots-horizontal-outline.svg",
             },
             {
                 title: "Gain Recognition",
                 text:
                     "We value our contributors and promote their articles across our social media channels and " +
                     "newsletter, offering you a platform to reach a broad audience in the tech community.",
-                icon: "/retail/use-cases/Icon_useCase2.svg", // #TODO: update icon
+                icon: "/shared/face-recognition.svg",
             },
             {
                 title: "Get Compensated",
                 text:
                     "Your expertise is precious, and we believe in rewarding our contributors. We offer competitive " +
                     "compensation for original articles, videos and tutorials.",
-                icon: "/retail/use-cases/Icon_useCase3.svg", // #TODO: update icon
+                icon: "/shared/currency-usd.svg",
             },
         ],
     },
@@ -89,13 +90,13 @@ export default {
                 "plus.",
             action: {
                 text: "Apply",
-                href: "/docs", // #TODO update link
+                href: "/docs",
                 style: "btn-animated btn-purple-animated btn",
             },
         },
     },
     process: {
-        icon: "/shared/dotted-arrow-down.svg", // #TODO: update icon
+        icon: "/shared/dotted-arrow-down.svg",
         title: "The Process: ",
         items: [
             {
