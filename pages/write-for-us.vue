@@ -6,7 +6,7 @@
         </Head>
         <div>
             <HeaderCard :content="data.header" />
-            <Line class='divider-md'/>
+            <Line class="divider-md" />
             <Examples :content="data.drafts" />
             <Line class="mb-0" />
             <Write :content="data.write" />

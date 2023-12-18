@@ -20,7 +20,9 @@ import CustomDetails from "~/components/layout/CustomDetails.vue";
 
 export default {
     name: "Faqs",
+
     components: { CustomDetails },
+
     props: {
         content: {
             type: Object,
@@ -41,9 +43,9 @@ export default {
 }
 
 .card {
-    background: #252526;
+    background: $black-3;
     box-shadow: none;
     color: white;
-    border: 1px solid #252526;
+    border: 1px solid $black-3;
 }
 </style>

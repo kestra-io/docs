@@ -18,7 +18,7 @@
                     </li>
                 </ul>
             </div>
-            <Participation :cta='content.cta' />
+            <Participation :cta="content.cta" />
         </div>
     </div>
 </template>
@@ -26,14 +26,14 @@
 <script>
 import Line from "~/components/use-cases/Line.vue";
 
-import Participation from "~/components/write-for-us/Participation.vue"
+import Participation from "~/components/write-for-us/Participation.vue";
 
 export default {
     name: "Write",
 
     components: {
         Line,
-        Participation
+        Participation,
     },
 
     props: {

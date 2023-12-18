@@ -19,7 +19,7 @@ hr {
     margin-top: 5rem;
     margin-bottom: 5rem;
 
-    &-md{
+    &-md {
         margin-top: 4rem;
         margin-bottom: 4rem;
     }

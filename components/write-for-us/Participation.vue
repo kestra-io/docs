@@ -1,21 +1,3 @@
-<script>
-export default {
-    name: "Participation",
-
-    props: {
-        cta: {
-            type: Object,
-            required: true,
-            default: () => ({
-                title: "",
-                description: "",
-                action: {},
-            }),
-        },
-    },
-};
-</script>
-
 <template>
     <div class="cta card" data-aos="fade-right">
         <div class="row align-items-center">
@@ -35,5 +17,23 @@ export default {
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    name: "Participation",
+
+    props: {
+        cta: {
+            type: Object,
+            required: true,
+            default: () => ({
+                title: "",
+                description: "",
+                action: {},
+            }),
+        },
+    },
+};
+</script>
 
 <style scoped lang="scss"></style>

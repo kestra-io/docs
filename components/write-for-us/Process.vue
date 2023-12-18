@@ -14,7 +14,9 @@ import CardGroup from "~/components/write-for-us/CardGroup.vue";
 
 export default {
     name: "Process",
+
     components: { CardGroup },
+
     props: {
         content: {
             type: Object,
@@ -34,6 +36,4 @@ export default {
 .base-container {
     width: $width-800;
 }
-
-
 </style>

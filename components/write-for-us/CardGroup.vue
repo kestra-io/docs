@@ -54,7 +54,7 @@ export default {
 
 .item-number {
     font-size: $font-size-3xl;
-    color: #5e904e; // #TODO update color
+    color: $green-1;
 }
 
 .item {
