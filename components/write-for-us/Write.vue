@@ -18,26 +18,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="cta card" data-aos="fade-right">
-                <div class="row align-items-center">
-                    <div class="col-lg-9 col-md-12">
-                        <h5>{{ content.cta.title }}</h5>
-                        <p>{{ content.cta.description }}</p>
-                    </div>
-                    <div class="w-auto">
-                        <NuxtLink :href="content.cta.action.href">
-                            <button
-                                class="btn"
-                                :class="content.cta.action.style"
-                            >
-                                <span class="mx-4">{{
-                                    content.cta.action.text
-                                }}</span>
-                            </button>
-                        </NuxtLink>
-                    </div>
-                </div>
-            </div>
+            <Participation :cta='content.cta' />
         </div>
     </div>
 </template>
@@ -45,11 +26,14 @@
 <script>
 import Line from "~/components/use-cases/Line.vue";
 
+import Participation from "~/components/write-for-us/Participation.vue"
+
 export default {
     name: "Write",
 
     components: {
         Line,
+        Participation
     },
 
     props: {

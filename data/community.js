@@ -1,3 +1,5 @@
+const href = "https://share-eu1.hsforms.com/1HWgyBQh8RP6pEZVFW51rOAg7f8j"
+
 export default {
     header: {
         tag: '<span class="text-gradient">Write</span> for the Kestra <br /> Community',
@@ -9,8 +11,9 @@ export default {
         cta: [
             {
                 text: "Submit a Draft",
-                href: "/docs", // #TODO update link
+                href,
                 style: "btn-animated btn-purple-animated btn",
+                target: "_blank"
             },
         ],
         image: {
@@ -90,8 +93,9 @@ export default {
                 "plus.",
             action: {
                 text: "Apply",
-                href: "/docs",
+                href,
                 style: "btn-animated btn-purple-animated btn",
+                target: "_blank"
             },
         },
     },
@@ -154,8 +158,9 @@ export default {
             },
             {
                 text: "Submit a draft",
-                href: "/docs", // #TODO: add correct link
+                href,
                 style: "btn-animated btn-purple-animated",
+                target: "_blank"
             },
         ],
     },
