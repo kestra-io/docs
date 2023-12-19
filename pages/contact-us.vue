@@ -7,7 +7,6 @@
         </Head>
 
         <ContactHeader/>
-        <CommunitySlack/>
     </div>
 </template>
 <script setup>
