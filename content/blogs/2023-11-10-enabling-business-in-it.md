@@ -1,6 +1,6 @@
 ---
-title: "Enabling Business Users in a Centralized IT Environment"
-description: "It's time to have tools that are both suitable for business users and the IT department"
+title: "Enabling Business Users in a Centralized Environment"
+description: "It's time to have tools that are both suitable for business users and engineers"
 date: 2023-11-10T08:00:00
 category: Solutions
 author:
@@ -31,7 +31,7 @@ In the name of digital agility, businesses often encourage their teams to solve 
 
 ### Understanding the Implications of Empowerment and Shadow IT
 
-Empowerment through technology allows business users to act swiftly, addressing their operational challenges without waiting for IT department interventions. For example, a sales team might use a low-code platform to quickly build a customer tracking system tailored to their specific needs, bypassing lengthy IT development queues.
+Empowerment through technology allows business users to act swiftly, addressing their operational challenges without waiting for engineers interventions. For example, a sales team might use a low-code platform to quickly build a customer tracking system tailored to their specific needs, bypassing lengthy developpers queues.
 
 The downside to this approach arises when such systems are deployed without IT oversight, potentially resulting in security gaps, data inconsistencies, and regulatory noncompliance. These risks are particularly pronounced when sensitive data is involved or when these systems need to integrate with established enterprise IT infrastructure.
 
@@ -41,7 +41,7 @@ To achieve the right equilibrium, organizations can adopt several measures:
 
 1. **Approved Technology Lists**: Organizations can create a list of approved technologies that meet their security and compliance standards.
 2. **Regular Sync-Ups**: Establish channels for regular communication between IT and business units to ensure that new tools align with the broader IT framework and company policies.
-3. **Transparent Oversight**: Integrate systems that track and manage the applications and tools being used across the company, ensuring that the IT department has a clear view of the technology landscape.
+3. **Transparent Oversight**: Integrate systems that track and manage the applications and tools being used across the company, ensuring that the owners has a clear view of the technology landscape.
 4. **Focused Education**: Offer training for business users that covers the critical aspects of IT policy, data handling, security, and compliance to minimize uninformed risks.
 
 The future points towards a cooperative IT framework that places the IT department in a guiding role, helping to navigate the complexities of technology choices while empowering business users to contribute to technological solutions. This collaborative environment should offer platforms and guidelines that enable users to innovate within a secure and compliant structure.
@@ -78,6 +78,14 @@ That’s why a  shift is required—one that advocates for the centralization of
 2. **Centralized Oversight**: All user-created workflows and tools should be visible to IT, ensuring governance, security, and alignment with broader business goals.
 3. **Collaborative Ecosystem**: The tools must promote collaboration between business and IT, allowing for co-creation and shared understanding.
 
-## Kestra: Harmonizing Business and IT
+## Kestra: Harmonizing Business and Engineers
 
-At Kestra we are advocating and doing our best to bring every user on a centralized platform from Data Engineers, to Software Engineers and even business users. We are extending the spirit of the data mesh to operational workflows, allowing business users to own their processes within a controlled environment. By using a YAML-based configuration, it strikes a balance between accessibility for business users and the robustness required by IT teams.
+We provide solutions that simplify complex orchestration challenges without burdening your system with additional layers of complexity. Our platform is uniquely designed to cater equally to the needs of both business users and  engineers, ensuring a harmonious and efficient operational environment.
+
+Kestra strikes the perfect balance, offering the simplicity and flexibility essential for modern businesses. We empower users, from business analysts to engineers, ensuring that everyone can contribute effectively within a unified system.
+
+Interested in learning more about how Kestra is addressing complex orchestration challenges with ease and efficiency? Read our blog post on [How to Solve Complex Orchestration Problems Without Adding Complexity](https://kestra.io/blogs/2023-12-14-orchestration-problems-and-complexity)
+
+If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+
+If you like the project, give us a [⭐️ GitHub star](https://github.com/kestra-io/kestra) and join [🫶 the community](https://kestra.io/slack).
