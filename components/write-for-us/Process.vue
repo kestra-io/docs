@@ -34,6 +34,6 @@ export default {
 @import "../../assets/styles/variable";
 
 .base-container {
-    width: $width-800;
+    max-width: $width-800;
 }
 </style>

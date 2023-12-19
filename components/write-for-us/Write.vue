@@ -64,7 +64,7 @@ export default {
 }
 
 .base-container {
-    width: $width-800;
+    max-width: $width-800;
     line-height: 1.75rem;
 }
 
