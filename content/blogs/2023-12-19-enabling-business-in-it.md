@@ -5,7 +5,7 @@ date: 2023-12-19T08:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
-  image: "mroset"
+  image: "mproset"
 image: /blogs/2023-12-19-enabling-business-in-it.jpg
 ---
 
