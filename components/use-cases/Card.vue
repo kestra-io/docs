@@ -64,7 +64,7 @@ export default {
     padding-top: 8rem;
     padding-bottom: 0;
     @include media-breakpoint-down(sm) {
-        padding-top: 4rem;
+        padding-top: $rem-4;
     }
 }
 
@@ -77,7 +77,7 @@ export default {
 }
 
 .description {
-    padding-bottom: 2rem;
+    padding-bottom: $rem-2;
 }
 
 .btn-dark {
@@ -88,11 +88,11 @@ export default {
 
 .image {
     &-retail {
-        margin-top: -176px;
+        margin-top: -$rem-11;
     }
 
     &-community {
-        margin-top: -80px;
+        margin-top: -$rem-5;
     }
     @include media-breakpoint-down(lg) {
         margin-top: 0;

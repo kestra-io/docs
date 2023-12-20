@@ -55,12 +55,12 @@ export default {
 
 .title-sm {
     font-size: $h2-font-size;
-    padding-top: 4rem;
+    padding-top: $rem-4;
 }
 
 .content {
     background: $black-1;
-    padding-bottom: 5rem;
+    padding-bottom: $rem-5;
 }
 
 .base-container {
@@ -75,7 +75,7 @@ export default {
 .cta {
     background-color: $black-2;
     color: white;
-    padding: 2rem 0 2rem 2rem;
+    padding: $rem-2 0 $rem-2 $rem-2;
     box-shadow: none;
 }
 </style>

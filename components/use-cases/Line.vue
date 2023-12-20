@@ -11,17 +11,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "../../assets/styles/variable";
+
 hr {
     margin: 0;
 }
 
 .divider {
-    margin-top: 5rem;
-    margin-bottom: 5rem;
+    margin-top: $rem-5;
+    margin-bottom: $rem-5;
 
     &-md {
-        margin-top: 4rem;
-        margin-bottom: 4rem;
+        margin-top: $rem-4;
+        margin-bottom: $rem-4;
     }
 }
 </style>

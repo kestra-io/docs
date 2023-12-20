@@ -51,7 +51,7 @@ export default {
 @import "../../assets/styles/variable";
 
 .main {
-    background-color: #111113;
+    background-color: $black-4;
     color: $white;
     font-weight: 300;
 }

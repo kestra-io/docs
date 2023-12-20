@@ -38,13 +38,8 @@ const data = { ...community };
 @import "../assets/styles/variable";
 
 .main {
-    background-color: #111113;
+    background-color: $black-4;
     color: $white;
     font-weight: 300;
-}
-
-.line-margin {
-    margin-top: 5rem;
-    margin-bottom: 5rem;
 }
 </style>
