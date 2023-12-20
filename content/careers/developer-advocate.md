@@ -20,6 +20,7 @@ We are looking for a Developer Advocate who loves to educate and engage with dev
 - 2+ years experience as a Developer Advocate, or a related role.
 - Experience in at least two programming languages or frameworks (JS, TS, Java, Python, R, SQL, …)
 - Excellent spoken and written English
+- Experience working on a full remote company.
 - You love to teach developers how to solve problems with technology
 - Entrepreneurial mindset
 - Ability to work with a diverse, globally distributed team working across different time zones

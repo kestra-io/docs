@@ -41,6 +41,7 @@ We are searching for someone:
 - Comfortable working on distributed systems, databases, networking, storage, and multi-tenant services, and Unix/Linux environments.
 - Familiarity with Linux fundamentals and Bash scripting.
 - Fluent in speaking and writing English.
+- Experience working on a full remote company.
 - Track record of learning new technologies and concepts quickly.
 - Ability to work both autonomously and collaboratively, as needed.
 - Strong written and verbal communications skills.

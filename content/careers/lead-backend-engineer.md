@@ -42,6 +42,7 @@ We are searching for someone:
 - Interest in the data space and a passion for delivering great products and building tools that empower end users to do more.
 - Track record of quickly learning new technologies and concepts.
 - Fluent in speaking and writing English.
+- Experience working on a full remote company.
 - Ability to work both autonomously and collaboratively, as needed.
 - Strong written and verbal communication skills.
 
