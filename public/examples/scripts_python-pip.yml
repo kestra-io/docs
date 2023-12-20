@@ -1,26 +1,34 @@
-id: python-pip
-namespace: io.kestra.demo
+id: python_pip
+namespace: dev
 
-description:
-  This flow will install the pip package, and use the Python Kestra library to generate outputs and metrics.
+description: This flow will install the pip package in a Docker container, and use kestra's Python library to generate outputs (number of downloads of the Kestra Docker image) and metrics (duration of the script).
 
 tasks:
-  - id: "python"
-    type: "io.kestra.core.tasks.scripts.Python"
-    inputFiles:
-      main.py: |
-        from kestra import Kestra
-        import requests
-        import time
+  - id: outputs_metrics
+    type: io.kestra.plugin.scripts.python.Script
+    beforeCommands:
+      - pip install requests kestra
+    docker:
+      image: python:slim
+    warningOnStdErr: false
+    script: |
+      from kestra import Kestra
+      import requests
+      import time
 
-        start = time.perf_counter()
-        response = requests.get('https://google.com')
-        end = time.perf_counter()
+      start = time.perf_counter()
 
-        Kestra.outputs({'status': response.status_code, 'text': response.text})
-        Kestra.timer('duration', end - start)
-    requirements:
-      - requests
-    dockerOptions:
-      image: python
-    runner: DOCKER
+      def get_docker_image_downloads(image_name: str = "kestra/kestra"):
+          """Queries the Docker Hub API to get the number of downloads for a specific Docker image."""
+          url = f"https://hub.docker.com/v2/repositories/{image_name}/"
+          response = requests.get(url)
+          data = response.json()
+
+          downloads = data.get('pull_count', 'Not available')
+          return downloads
+
+      downloads = get_docker_image_downloads()
+      end = time.perf_counter()
+
+      Kestra.outputs({'downloads': downloads})
+      Kestra.timer('duration', end - start)

@@ -11,32 +11,38 @@ tasks:
     concurrent: 3
     tasks:
       - id: t1
-        type: io.kestra.core.tasks.scripts.Bash
+        type: io.kestra.plugin.scripts.shell.Commands
+        runner: PROCESS
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t2
-        type: io.kestra.core.tasks.scripts.Bash
+        type: io.kestra.plugin.scripts.shell.Commands
+        runner: PROCESS
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t3
-        type: io.kestra.core.tasks.scripts.Bash
+        type: io.kestra.plugin.scripts.shell.Commands
+        runner: PROCESS
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t4
-        type: io.kestra.core.tasks.scripts.Bash
+        type: io.kestra.plugin.scripts.shell.Commands
+        runner: PROCESS
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t5
-        type: io.kestra.core.tasks.scripts.Bash
+        type: io.kestra.plugin.scripts.shell.Commands
+        runner: PROCESS
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t6
-        type: io.kestra.core.tasks.scripts.Bash
+        type: io.kestra.plugin.scripts.shell.Commands
+        runner: PROCESS
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
