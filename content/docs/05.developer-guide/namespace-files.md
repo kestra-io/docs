@@ -50,6 +50,13 @@ The `read` function allows you to read any file from the namespace as a string. 
 
 The `Execute` button allows you to run your flow directly from the Code Editor. Click on the `Execute` button to run your flow. You should then see the Execution being created in a new browser tab and once you navigate to the `Logs` tab, you should see a friendly message ``Hello from the Editor!`` in the logs.
 
+::alert{type="warning"}
+Note that if you use the [Brave browser](https://brave.com/), you may need to disable the Brave Shields to make the Editor work as expected. Specifically, to view the task documentation, you need to set the `Block cookies` option to `Disabled` in the Shields settings: `brave://settings/shields`. 
+
+![Brave cookies](/docs/developer-guide/namespace-files/brave.png)
+
+::
+
 
 ### GitHub Actions CI/CD
 
