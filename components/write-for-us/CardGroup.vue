@@ -65,10 +65,6 @@ export default {
     font-size: $font-size-2xl;
 }
 .icon {
-    height: 50px;
-}
-
-.arrow {
-    padding-left: 2.25rem;
+    height: $rem-4;
 }
 </style>

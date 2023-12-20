@@ -61,7 +61,7 @@ export default {
     p {
         font-size: $font-size-xl;
     }
-    padding-top: 8rem;
+    padding-top: $rem-8;
     padding-bottom: 0;
     @include media-breakpoint-down(sm) {
         padding-top: $rem-4;
