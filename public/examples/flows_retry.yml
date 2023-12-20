@@ -5,7 +5,8 @@ description:
 
 tasks:
 - id: failed
-  type: io.kestra.core.tasks.scripts.Bash
+  type: io.kestra.plugin.scripts.shell.Commands
+  runner: PROCESS
   commands:
   - 'if [ "{{taskrun.attemptsCount}}" -eq 4 ]; then exit 0; else exit 1; fi'
   retry:
@@ -17,5 +18,5 @@ tasks:
 
 errors:
   - id: never-happen
-    type: io.kestra.core.tasks.debugs.Echo
+    type: io.kestra.core.tasks.debugs.Return
     format: Never happened {{task.id}}

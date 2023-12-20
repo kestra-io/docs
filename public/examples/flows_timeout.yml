@@ -1,16 +1,16 @@
 id: timeout
-namespace: io.kestra.demo
-description:
-  This flow will always fail because of a timeout.
+namespace: dev
+description: This flow will always fail because of a timeout.
 
 tasks:
 - id: failed
-  type: io.kestra.core.tasks.scripts.Bash
+  type: io.kestra.plugin.scripts.shell.Commands
+  runner: PROCESS
   commands:
-  - 'sleep 10'
+    - sleep 10
   timeout: PT5S
 
 errors:
   - id: happen
-    type: io.kestra.core.tasks.debugs.Echo
+    type: io.kestra.core.tasks.debugs.Return
     format: This flow has failed

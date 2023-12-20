@@ -9,7 +9,8 @@ tasks:
     type: io.kestra.core.tasks.flows.Pause
     tasks:
       - id: wait-manual
-        type: io.kestra.core.tasks.scripts.Bash
+        type: io.kestra.plugin.scripts.shell.Commands
+        runner: PROCESS
         commands:
           - echo "trigger {{task.id}} after manual restart"
 

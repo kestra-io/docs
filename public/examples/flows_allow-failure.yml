@@ -1,26 +1,19 @@
-id: allow-failure
-namespace: io.kestra.demo
+id: allow_failure
+namespace: dev
 
-description: |
-  This flow will allow a failure of a task and will continue, passing the execution as `WARNING`.
+description: This flow will allow a failure of a task (imagine a flaky unit test) and will continue processing the last task, leaving the execution in a `WARNING` state.
 
 tasks:
-  - id: allow-failure
-    type: io.kestra.core.tasks.flows.AllowFailure
-    tasks:
-      - id: seq
-        type: io.kestra.core.tasks.flows.Sequential
-        tasks:
-          - id: log1
-            type: io.kestra.core.tasks.debugs.Return
-            format: "{{task.id}} > {{taskrun.startDate}}"
-          - id: ko
-            type: io.kestra.core.tasks.scripts.Bash
-            commands:
-              - 'exit 1'
-          - id: log2
-            type: io.kestra.core.tasks.debugs.Return
-            format: "{{task.id}} > {{taskrun.startDate}}"
+  - id: first
+    type: io.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{taskrun.startDate}}"
+
+  - id: allow_failure
+    type: io.kestra.plugin.scripts.shell.Commands
+    runner: PROCESS
+    allowFailure: true
+    commands:
+      - exit 1
 
   - id: last
     type: io.kestra.core.tasks.debugs.Return

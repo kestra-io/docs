@@ -1,13 +1,13 @@
-id: trigger-flow
-namespace: io.kestra.demo
-description: Flow that is triggered based on the execution of another flow.
+id: trigger_flow
+namespace: dev
+description: Trigger a flow once another flow is finished successfully
 
 inputs:
   - name: from-parent
     type: STRING
 
 tasks:
-  - id: only-listener
+  - id: print_input
     type: io.kestra.core.tasks.debugs.Return
     format: "childs: {{inputs['from-parent']}}"
 

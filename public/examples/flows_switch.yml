@@ -30,7 +30,8 @@ tasks:
           type: io.kestra.core.tasks.flows.Sequential
           tasks:
             - id: failed
-              type: io.kestra.core.tasks.scripts.Bash
+              type: io.kestra.plugin.scripts.shell.Commands
+              runner: PROCESS
               commands:
                 - 'exit 1'
           errors:

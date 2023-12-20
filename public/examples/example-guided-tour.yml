@@ -1,53 +1,64 @@
-# Flow declaration with a mandatory unique identifier, a namespace, and an optional description.
-# Flow identifier are unique inside a namespace.
-id: kestra-tour
-namespace: io.kestra.demo
-description: Kestra guided tour
-
+# Flow declaration with a mandatory unique ID, a namespace, and an optional description.
+# Flow ID must be unique within a namespace.
+id: welcome
+namespace: company.team
+description: Welcome to Kestra!
 
 # Flow inputs: each input has a name, a type, and an optional default value.
 inputs:
-  # We define one input of name 'csvUrl' with as default value the URL of the test data file.
-  # This test data is from the France Open Data portal and contains french electricity consumptions in CSV.
-  - name: csvUrl
+  # We define one input of name 'user' with a default value 'Kestra user'
+  - name: user
     type: STRING
-    defaults: https://gist.githubusercontent.com/tchiotludo/2b7f28f4f507074e60150aedb028e074/raw/6b6348c4f912e79e3ffccaf944fd019bf51cba30/conso-elec-gaz-annuelle-par-naf-agregee-region.csv
-
+    defaults: Kestra user
 
 # List of tasks that will be executed one after the other.
 # Each task must have an identifier unique for the flow and a type.
-# Depending on the type of the task, you may have to pass additional attributes.
+# Check the task documentation for a full list of attributes.
 tasks:
-  # This is one of the simplest task: it echos a message in the log, like the 'echo' command.
-  # The message is passed thanks to the 'format' attribute.
-  - id: log
-    type: io.kestra.core.tasks.debugs.Echo
-    format: The flow starts
+    # This task logs a message to the terminal.
+    # The message is passed using the 'format' attribute.
+    # We use Pebble expressions defined with curly brackets to access the input variables.
+  - id: hello
+    type: io.kestra.core.tasks.log.Log
+    message: Hey there, {{ inputs.user }}!
 
-  # This task will download the CSV, it will be sent to Kestra's internal storage and available from the task output.
-  - id: downloadData
-    type: io.kestra.plugin.fs.http.Download
-    # Here we use a variable from an input: '{{' and '}}' are separator of a Pebble expression in which we can access variables.
-    # All inputs are available from the 'inputs' variable using there name.
-    uri: "{{inputs.csvUrl}}"
+    # This task extracts data from an API.
+  - id: api
+    type: io.kestra.plugin.fs.http.Request
+    uri: https://dummyjson.com/products
 
-  # This task will analyze the CSV data using a Python script with the Pandas library.
-  - id: analyzeData
-    type: io.kestra.core.tasks.scripts.Python
+    # This task runs a Python script.
+  - id: python
+    type: io.kestra.plugin.scripts.python.Script
+    docker:
+      image: python:slim
+    beforeCommands:
+      - pip install polars
+    warningOnStdErr: false
+    script: |
+      import polars as pl
+      data = {{outputs.api.body | jq('.products') | first}}
+      df = pl.from_dicts(data)
+      df.glimpse()
+      df.select(["brand", "price"]).write_csv("{{outputDir}}/products.csv")
+
+    # Run a DuckDB query.
+  - id: sqlQuery
+    type: io.kestra.plugin.jdbc.duckdb.Query
     inputFiles:
-      # Here we define a file named 'data.csv' that will be available in the Python task working directory.
-      # This file is fetched from the internal storage by using the 'uri' output of the 'downloadData' task.
-      data.csv: "{{outputs.downloadData.uri}}"
-      # 'main.py' is the Python script that will be executed.
-      # It uses Pandas to read the CSV file, compute the sum of the 'conso' column, 
-      # and set it as task output thanks to the Kestra Python library.
-      main.py: |
-        import pandas as pd
-        from kestra import Kestra
-        data = pd.read_csv("data.csv", sep=";")
-        data.info()
-        sumOfConsumption = data['conso'].sum()
-        Kestra.outputs({'sumOfConsumption': int(sumOfConsumption)})
-    # As the script require the Pandas library, we must list it in the requirements.
-    requirements:
-      - pandas
+      in.csv: "{{ outputs.python.outputFiles['products.csv'] }}"
+    sql: |
+      SELECT brand, round(avg(price), 2) as avg_price
+      FROM read_csv_auto('{{workingDir}}/in.csv', header=True)
+      GROUP BY brand
+      ORDER BY avg_price DESC;
+    store: true
+
+ # To run the flow in an automated fashion, add one or more 'triggers'.
+triggers:
+  # Here we use the 'Schedule' trigger to run the flow every minute.
+  - id: everyMinute
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "*/1 * * * *"
+    inputs:
+      name: Kestra pro user
