@@ -16,7 +16,7 @@ The importance of data pipeline management and orchestration in today's data lan
 
 ### Breaking Down Debezium's Architecture ###
 
-![debezium architecture](/blogs/2022-03-14-kestra-0.4.0/executor-cpu-before.png)
+![debezium architecture](/blogs/2022-04-05-debezium-without-kafka-connect/debezium-architecture.png)
 
 Debezium is an open-source platform developed by Red Hat that stands out in the [Change Data Capture (CDC)](https://en.wikipedia.org/wiki/Change_data_capture) field. It tracks and records row-level changes in your databases, enabling connected applications to respond in real time. Debezium's strength lies in ensuring exactly-once delivery of all changes in the precise order they were made. Furthermore, Debezium's ability to monitor changes in data from multiple sources and various types of databases makes it a highly adaptable tool in data pipeline management.
 
@@ -38,7 +38,7 @@ For example, from [Amazon MSK connect](https://docs.aws.amazon.com/msk/latest/de
 > Each MCU represents 1 vCPU of compute and 4 GiB of memory.
 
 
-![MSK connect pricing on aws](/blogs/2022-03-14-kestra-0.4.0/msk.png)
+![MSK connect pricing on aws](/blogs/2022-04-05-debezium-without-kafka-connect/msk.png)
 
 This lead to $160 for 1 source and 1 destination per month.
 
