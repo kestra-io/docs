@@ -88,11 +88,11 @@ export default {
 
 .image {
     &-retail {
-        margin-top: -$rem-11;
+        margin-top: -176px;
     }
 
     &-community {
-        margin-top: -$rem-5;
+        margin-top: -80px;
     }
     @include media-breakpoint-down(lg) {
         margin-top: 0;
