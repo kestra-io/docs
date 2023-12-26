@@ -98,7 +98,6 @@
                     subMenu: subMenu
                 }
             });
-            console.log('menuList', menuList);
             return { menuList };
         },
         computed: {
