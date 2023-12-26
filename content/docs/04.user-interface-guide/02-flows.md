@@ -2,9 +2,9 @@
 title: Flows Page
 ---
 
-On the **Flows** page, you will see a list of flows. 
+On the **Flows** page, you will see a list of flows.
 
-When clicking on a flow id or on the eye icon, you can open the page of a flow.
+By clicking on a flow id or on the eye icon, you can open the page of a flow.
 
 ![Kestra User Interface Flows Page](/docs/user-interface-guide/04-Flows.png)
 
