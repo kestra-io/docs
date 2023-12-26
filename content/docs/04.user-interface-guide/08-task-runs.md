@@ -6,7 +6,7 @@ title: Task Runs Page (EE)
 This is an [Enterprise Edition](https://kestra.io/enterprise) feature only available when using the **Elasticsearch** repository.
 ::
 
-On the **Task Runs** page, you will see a list of task runs and some charts. 
+On the **Task Runs** page, you will see the list of task runs and some charts.
 
 This page only exists when using the Elasticsearch repository, as it requires a full-text search engine.
 
