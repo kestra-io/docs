@@ -16,7 +16,7 @@
     "pages:build-deploy": "npm run pages:build && npm run pages:deploy"
   },
   "dependencies": {
-    "@amplitude/analytics-browser": "^2.3.5",
+    "@amplitude/analytics-browser": "^2.3.8",
     "aos": "^2.3.4",
     "axios": "^1.4.0",
     "bootstrap": "5.3.2",
