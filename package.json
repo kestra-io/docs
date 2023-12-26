@@ -31,7 +31,7 @@
   "devDependencies": {
     "@nuxt/content": "2.7.2",
     "@nuxt/devtools": "^0.7.4",
-    "@nuxt/image": "^1.0.0-rc.2",
+    "@nuxt/image": "^1.1.0",
     "flexsearch": "^0.7.31",
     "highlight-words-core": "^1.2.2",
     "nuxt": "3.7.1",
