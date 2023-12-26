@@ -38,22 +38,22 @@ Once you are on the Blueprints page, you can:
 This is an [Enterprise Edition](https://kestra.io/enterprise) feature.
 ::
 
-Apart from Community Blueprints, you can also create custom Blueprints available only to your organization. You can use them to share, centralize, and document commonly used workflows in your team.  
+Apart from Community Blueprints, you can also create custom Blueprints available only to your organization. You can use them to share, centralize, and document commonly used workflows in your team.
 
 You can think of Organization Blueprints as your company's internal App Store, offering a wide range of integrations and validated workflow patterns tailored to your needs.
 
 ### How to create a new Organization Blueprint
 
-From the left navigation menu, go to Blueprints. Then, select the Organization Blueprints tab. Click on "Create".
+From the left navigation menu, go to **Blueprints**. Then, select the **Organization Blueprints** tab. Click on "Create".
 
 ![Organization Blueprints](/docs/user-interface-guide/blueprint-org.png)
 
-Add a title, description, and the contents of the flow. You can add as many tags as you want. Then click on the "Create" button. 
+Add a title, description, and the contents of the flow. You can add as many tags as you want. Then click on the "Create" button.
 
 ![New Organization Blueprint](/docs/user-interface-guide/blueprint-org-2.png)
 
-You can edit the Blueprint anytime, for example, to add new tasks or expand the documentation. 
+You can edit the Blueprint anytime, for example, to add new tasks or expand the documentation.
 
-This feature significantly helps code reusability and facilitates collaboration within a team because sharing your code and documentation is finally painless. 
+This feature significantly helps code reusability and facilitates collaboration within a team because sharing your code and documentation is finally painless.
 
-Once you reach a certain scale with many internal Blueprints, the search and filtering by tags will ensure that your Blueprints remain easy to find. 
+Once you reach a certain scale with many internal Blueprints, the search and filtering by tags will ensure that your Blueprints remain easy to find.
