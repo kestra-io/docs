@@ -1,5 +1,5 @@
 <template>
-    <PluginContainer :slug="slug" />
+    <PluginContainer :prevNext="false" type="plugins" :slug="slug" />
 </template>
 
 <script setup>

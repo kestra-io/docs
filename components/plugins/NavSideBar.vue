@@ -42,18 +42,15 @@
             ChevronUp,
             Menu
         },
-        props: {
-            plugins: {
-                type: Array,
-                required: true,
-            },
-        },
         data: () => ({
             showMenu: [],
         }),
         async setup(props) {
             const subMenuItemNames = ['tasks', 'triggers', 'conditions', 'controllers', 'storages', 'secrets', 'guides']
 
+            const { data } = await useAsyncData('plugins', () => {
+                return $fetch(`https://api.kestra.io/v1/plugins`)
+            });
             const getSubPageList = (page, subMenuItem) => {
                 return buildSubMenuHierarchy(subMenuItem, page);
             };
@@ -83,8 +80,7 @@
                     }
                 });
             };
-
-            const menuList = props.plugins.map(page => {
+            const menuList = data.value.map(page => {
                 let subMenu = subMenuItemNames.map(subMenuItemName => {
                     if (page[subMenuItemName].length > 0) {
                         return {
@@ -102,6 +98,7 @@
                     subMenu: subMenu
                 }
             });
+            console.log('menuList', menuList);
             return { menuList };
         },
         computed: {
