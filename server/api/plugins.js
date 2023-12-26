@@ -28,7 +28,8 @@ export default defineEventHandler(async (event) => {
 
     } catch (error) {
         return {
-            error: 'Failed to fetch or parse data',
+            message: 'Failed to fetch or parse data',
+            error: error,
         };
     }
 });
