@@ -35,7 +35,7 @@
     "flexsearch": "^0.7.31",
     "highlight-words-core": "^1.2.2",
     "nuxt": "3.7.1",
-    "nuxt-gtag": "^1.1.0",
+    "nuxt-gtag": "^1.1.2",
     "nuxt-multi-cache": "^3.0.1",
     "nuxt-simple-sitemap": "^3.1.4",
     "remark-code-import": "file:./utils/remark-code-import",
