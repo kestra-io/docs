@@ -18,7 +18,7 @@ If you want to load a given local directory of flows to be loaded into Kestra (e
 ./kestra server standalone -f /path/to/flows
 ```
 
-That path should point to a directory containing YAML files with the flow definition. These files will be loaded to the kestra repository at startup. Kestra will make sure to add flows to the right namespace, as declared in the flow YAML definition.
+That path should point to a directory containing YAML files with the flow definition. These files will be loaded to the Kestra repository at startup. Kestra will make sure to add flows to the right namespace, as declared in the flow YAML definition.
 
 For more information about the Kestra server CLI, check the [Administrator Guide](../09.administrator-guide/04.servers.md) section.
 
