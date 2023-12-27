@@ -252,23 +252,45 @@
                             <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search"/>
                         </div>
                     </div>
-                    <div class="search-result p-3" v-if="searchValue" @mouseover="onSearchMouseOver" @mouseout="onSearchMouseOut">
-                        <div v-for="(result, index) in searchResults">
-                            <a :href="result.slug" :class="{'active': index === selectedIndex && !searchOver}">
-                                <div class="slug">
-                                    <span :class="{first: index === 0}"  v-for="(item, index) in breadcrumb(result.slug)" :key="item" >{{ item }}</span>
-                                </div>
-                                <div class="result rounded-3">
-                                    <div>
-                                        <h5>{{ result.title }}</h5>
-                                        <p v-if="result.content.length > 0" v-html="result.content[0]" class="search-result-extract"/>
+                    <div class="d-flex">
+                        <div class="search-result p-3 w-50">
+                            <div v-for="(result, index) in searchResults" @mouseover="() => onItemMouseOver(result, index)">
+                                <div :class="{'active': index === selectedIndex}">
+                                    <div class="result rounded-3">
+                                        <div class="w-100">
+                                            <span class="slug">{{result.type.charAt(0).toUpperCase() + result.type.slice(1).toLowerCase()}}</span>
+                                            <h5>{{ result.title }}</h5>
+                                            <div class="slug">
+                                                <span :class="{first: index === 0}"
+                                                      v-for="(item, index) in breadcrumb(result.url)" :key="item">{{ item }}</span>
+                                            </div>
+                                        </div>
+                                        <ArrowRight/>
                                     </div>
-                                    <ArrowRight />
                                 </div>
-                            </a>
+                            </div>
+                            <div v-if="searchResults && searchResults.length === 0" class="alert alert-warning mb-0"
+                                 role="alert">
+                                No results found for the current search
+                            </div>
                         </div>
-                        <div v-if="searchValue && searchResults && searchResults.length === 0" class="alert alert-warning mb-0" role="alert">
-                            No results found for the current search
+                        <div class="search-result p-3 w-50">
+                            <div class="result rounded-3" v-if="selectedItem">
+                                <div>
+                                    <span class="slug">{{selectedItem.type.charAt(0).toUpperCase() + selectedItem.type.slice(1).toLowerCase()}}</span>
+                                    <h5>{{ selectedItem.title }}</h5>
+                                    <p v-if="selectedItem.highlight.length > 0" v-html="selectedItem.highlight" class="search-result-extract"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="facets">
+                        <div class="facet" :class="{'facet-active': selectedFacet === ''}" @click="() => selectFacet('')">
+                            <span>All</span>
+                        </div>
+                        <div class="facet" v-for="(result, key, index) in searchFacets" @click="() => selectFacet(key)" :class="{'facet-active': selectedFacet === key}" :key="index">
+                            <span>{{key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()}}</span>
+                            <span class="total">{{ result }}</span>
                         </div>
                     </div>
                 </div>
@@ -303,6 +325,7 @@
 
 <script>
     import axios from "axios";
+    import {kestraInstance} from "~/utils/api.js";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
     import GithubButton from "../layout/GithubButton.vue";
 
@@ -313,14 +336,16 @@
         },
         data() {
             return {
-                searchResults: undefined,
+                searchResults: [],
+                searchFacets: {},
+                selectedFacet: undefined,
                 transparentHeader: false,
                 transparentClass: false,
                 isOpen: false,
                 cancelToken: undefined,
                 selectedIndex: 0,
-                searchValue: undefined,
-                searchOver: false
+                selectedItem: null,
+                searchValue: undefined
             }
         },
         collapse: undefined,
@@ -364,20 +389,38 @@
             focusSearch() {
                 document.querySelector('#search-input').focus();
             },
-            search(query) {
-                this.searchValue = query;
-                this.selectedIndex = 0;
+            search(value = '') {
+                this.searchValue = value;
 
-                return axios.get("/api/search", {
-                    params: {
-                        query: query
-                    },
-                    cancelToken: this.cancelToken.token
-                }).then(response => {
-                    this.searchResults = response.data;
-
-                    return response.data;
+                return kestraInstance.get(`/search?q=${value}&type=${this.selectedFacet || ''}`).then(response => {
+                    if (response?.data?.results && response.data.results.length) {
+                      this.searchResults = response.data.results;
+                      this.searchFacets = response.data.facets;
+                      this.selectedIndex = 0;
+                      this.selectedItem = response.data.results[0];
+                    } else {
+                      this.resetData();
+                    }
+                }).catch(() => {
+                    this.resetData();
                 })
+            },
+            resetData() {
+                this.selectedIndex = null;
+                this.selectedItem = null;
+                this.selectedFacet = undefined;
+                this.searchResults = [];
+                this.searchFacets = {};
+            },
+            onItemMouseOver(item, index) {
+                this.selectedIndex = index;
+                this.selectedItem = item;
+            },
+            selectFacet(facet) {
+                if (this.selectedFacet !== facet) {
+                  this.selectedFacet = facet;
+                  this.search(this.searchValue)
+                }
             },
             breadcrumb(slug) {
                 return [...new Set(slug.split("/")
@@ -402,12 +445,6 @@
 
                 element.classList.remove('show');
                 element.nextElementSibling.classList.remove('show');
-            },
-            onSearchMouseOver(event) {
-                this.searchOver = true;
-            },
-            onSearchMouseOut(event) {
-                this.searchOver = false;
             },
             handleScroll() {
                 if (this.transparentHeader) {
@@ -456,6 +493,8 @@
                     if (this.$refs.navbar.classList.contains("open")) {
                         this.collapse.hide();
                         this.isOpen = false;
+                    } else {
+                        this.search();
                     }
                 } else {
                     this.collapse.toggle();
@@ -742,7 +781,7 @@
                     background: #200149;
                 }
 
-                .navbar-collapse ul.navbar-nav li .dropdown-menu .dropdown-item  {
+                .navbar-collapse ul.navbar-nav li .dropdown-menu .dropdown-item {
                     color: var(--bs-white);
                     --bs-dropdown-link-hover-bg: #{rgba($gray-100, 5%)};
                     --bs-dropdown-link-active-bg: #{rgba($gray-100, 5%)};
@@ -808,16 +847,67 @@
         }
 
         .modal-body {
+            background: var(--bs-white);
+            border: 1px solid var(--bs-border-color);
+            border-radius: $border-radius-lg;
             padding: 0;
+
+            .facets {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .facet {
+                    display: flex;
+                    align-items: center;
+                    padding: 5px;
+                    gap: 5px;
+                    cursor: pointer;
+                    border-top: 1px solid transparent;
+
+                    &:hover {
+                        border-top: 1px solid $white-1;
+                    }
+
+                    span {
+                        font-size: .875rem;
+                        line-height: 1.25rem;
+                        text-transform: capitalize;
+                    }
+
+                    .total {
+                        color: $black-6;
+                        font-size: .75rem;
+                        line-height: 1rem;
+                    }
+
+                    &-active, &-active:hover {
+                        border-top: 1px solid $purple-27;
+                    }
+                }
+            }
         }
 
         .search-result {
             overflow: auto;
-            max-height: 93vh;
-            background: var(--bs-white);
-            border: 1px solid var(--bs-border-color);
-            border-bottom-left-radius: $border-radius-lg;
-            border-bottom-right-radius: $border-radius-lg;
+            max-height: 80vh;
+
+            &::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: $gray-200;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: $black-6;
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: $black-3;
+            }
 
             .slug {
                 white-space: nowrap;
@@ -857,8 +947,10 @@
                 background: var(--bs-gray-100);
                 transition: background-color 0.2s ease;
                 padding: 1.25rem ;
-                margin-bottom: calc($spacer * 1.5);
+                margin-bottom: calc($spacer * 0.5);
                 display: flex;
+                cursor: pointer;
+
                 > div {
                     flex-grow: 1;
 
