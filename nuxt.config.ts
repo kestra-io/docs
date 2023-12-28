@@ -98,6 +98,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
       public: {
           siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
+          apiUrl: process.env.NUXT_PUBLIC_API_URL || 'https://api.kestra.io/v1',
       }
   },
 
