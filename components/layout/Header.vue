@@ -255,7 +255,7 @@
                     <div class="d-flex">
                         <div class="search-result p-3 w-50">
                             <div v-for="(result, index) in searchResults" @mouseover="() => onItemMouseOver(result, index)">
-                                <div :class="{'active': index === selectedIndex}">
+                                <a :href="result.url" :class="{'active': index === selectedIndex}">
                                     <div class="result rounded-3">
                                         <div class="w-100">
                                             <span class="slug">{{result.type.charAt(0).toUpperCase() + result.type.slice(1).toLowerCase()}}</span>
@@ -267,7 +267,7 @@
                                         </div>
                                         <ArrowRight/>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                             <div v-if="searchResults && searchResults.length === 0" class="alert alert-warning mb-0"
                                  role="alert">
@@ -279,7 +279,7 @@
                                 <div>
                                     <span class="slug">{{selectedItem.type.charAt(0).toUpperCase() + selectedItem.type.slice(1).toLowerCase()}}</span>
                                     <h5>{{ selectedItem.title }}</h5>
-                                    <p v-if="selectedItem.highlight.length > 0" v-html="selectedItem.highlight" class="search-result-extract"/>
+                                    <p v-if="selectedItem.highlight?.length > 0" v-html="selectedItem.highlight" class="search-result-extract"/>
                                 </div>
                             </div>
                         </div>
@@ -391,8 +391,12 @@
             },
             search(value = '') {
                 this.searchValue = value;
-
-                return kestraInstance.get(`/search?q=${value}&type=${this.selectedFacet || ''}`).then(response => {
+                return axios.get('/api/search', {
+                  params: {
+                    q: value,
+                    type: this.selectedFacet || '',
+                  },
+                }).then(response => {
                     if (response?.data?.results && response.data.results.length) {
                       this.searchResults = response.data.results;
                       this.searchFacets = response.data.facets;

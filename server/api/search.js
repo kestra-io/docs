@@ -1,106 +1,38 @@
 import url from 'node:url';
-import pkg from 'flexsearch/dist/flexsearch.bundle.js';
-const { Document } = pkg;
 import {findAll} from "highlight-words-core";
-import {serverQueryContent, parseContent} from '#content/server'
-
-function renderToText(node) {
-    if (node.type === "text") {
-        return node.value + "\n";
-    }
-
-    return `${node.children?.map(renderToText).join("") || ""}\n`;
-}
-
-let collection = undefined;
-let index = undefined;
 
 export default defineEventHandler(async(event) => {
     const requestUrl = new url.URL("http://localhost" + event.node.req.url);
-    const search = requestUrl.searchParams.get("query");
-    const limit = requestUrl.searchParams.get("limit") || 20;
-
-    if (!collection) {
-        collection = Object
-            .fromEntries((await serverQueryContent(event, '/').find())
-                .map(value => {
-                    const key = value._path;
-
-                    try {
-                        return [
-                            key,
-                            {
-                                slug: key,
-                                title: value.title,
-                                content: renderToText(value.body)
-                            }
-                        ]
-                    } catch (e) {
-                        return null;
-                    }
+    const q = requestUrl.searchParams.get("q");
+    const type = requestUrl.searchParams.get("type") || '';
+    try {
+        let searchResult = await $fetch(`https://api.kestra.io/v1/search?q=${q}&type=${type}`);
+        if (q) {
+            searchResult.results = searchResult.results.map(value => {
+                const content = value.highlight;
+                const summary = findAll({
+                    searchWords: q.split(" "),
+                    textToHighlight: content
                 })
-            );
+                    .map(chunk => {
+                        const {end, highlight, start} = chunk;
+                        const highlighted = content.substring(start, end);
+                        if (highlight) {
+                            return content.replaceAll(highlighted,`<mark>${highlighted}</mark>`);
+                        }
+                    })
+                    .filter(value => value)
+
+                return {
+                    url: value.url,
+                    title: value.title,
+                    type: value.type,
+                    highlight: summary,
+                };
+            });
+        }
+        return searchResult
+    } catch (error) {
+        throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
     }
-
-    if (!index) {
-        index = new Document({
-            language: "en",
-            charset: "latin:simple",
-            tokenize: 'forward',
-            document: {
-                id: "slug",
-                index: ["title", "content"]
-            }
-        });
-
-        Object
-            .values(collection)
-            .forEach((value) => index.add(value));
-    }
-
-    const around = 50;
-
-    return [...new Set(index
-        .search([
-            {
-                field: 'title',
-                query: search,
-                limit: limit,
-                boost: 10,
-            },
-            {
-                field: 'content',
-                query: search,
-                limit: limit,
-            },
-        ])
-        .flatMap(value => {
-            return value.result;
-        }))]
-        .map(value => collection[value])
-        .map(value => {
-            const content = value.content;
-
-            const summary = findAll({
-                searchWords: search.split(" "),
-                textToHighlight: content
-            })
-                .map(chunk => {
-                    const {end, highlight, start} = chunk;
-                    const startText = start > around ? "..." : "";
-                    const endText = content.length - end > around ? "..." : "";
-                    const text = content.substring(start - around, end + around);
-                    const highlighted = content.substring(start, end);
-                    if (highlight) {
-                        return startText + text.replaceAll(highlighted,`<mark>${highlighted}</mark>`) + endText;
-                    }
-                })
-                .filter(value => value)
-
-            return {
-                slug: value.slug,
-                title: value.title,
-                content: summary,
-            };
-        })
 })
