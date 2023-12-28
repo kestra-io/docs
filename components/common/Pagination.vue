@@ -1,12 +1,12 @@
 <template>
     <nav aria-label="Page navigation">
-        <ul class="pagination">
+        <ul class="pagination mb-0">
             <li class="page-item" @click="changePage({ direction: 'previous' })" role="button">
-                <span class="page-link text-dark fw-bold" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
+                <span class="page-link text-dark fw-bold arrow-button" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
             </li>
-            <li v-for="n in pages" :key="n" :role="n != '...' ? 'button' : ''" class="page-item" :class="{ 'active': (currentPage == n && n != '...'), 'disabled': n == '...' }" @click="changePage({ pageNo: n })"><span class="page-link text-dark fw-bold">{{ n }}</span></li>
+            <li v-for="n in pages" :key="n" :role="n != '...' ? 'button' : ''" class="page-item" :class="{ 'active': (currentPage == n && n != '...'), 'disabled': n == '...' }" @click="changePage({ pageNo: n })"><span class="page-list-item page-link text-dark fw-bold">{{ n }}</span></li>
             <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
-                <span class="page-link text-dark fw-bold"><ChevronRight /></span>
+                <span class="page-link text-dark fw-bold arrow-button"><ChevronRight /></span>
             </li>
         </ul>
     </nav>
@@ -84,6 +84,45 @@ export default {
     }
     .active span {
         background-color: white !important;
+    }
+
+    .page-list-item {
+        border-radius: 4px;
+        border: 1px solid $purple-13;
+        padding: 8px 16px;
+        color: $black;
+        text-align: center;
+        font-family: $font-family-sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 22px;
+
+        &:hover {
+            color: $white !important;
+        }
+    }
+
+    .active {
+        .page-list-item {
+            border-color: $primary;
+            color: $primary !important;
+        }
+    }
+
+    .arrow-button {
+        padding: 1px 8px;
+        font-size: 24px;
+
+        &:hover {
+            background-color: $primary;
+            color: $white !important;
+        }
+
+        &:focus {
+            box-shadow: none;
+            background-color: $white;
+        }
     }
 }
 </style>

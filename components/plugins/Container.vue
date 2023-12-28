@@ -1,11 +1,14 @@
 <template>
     <div class="container bd-gutter bd-layout margin">
-        <NavSideBar />
-        <article class="bd-main order-1 plugins" v-if="content" :class="{'full': content.rightBar === false}">
+        <NavSideBar :plugins="plugins" />
+        <div class="container" v-if="slug === '/plugins/'">
+            <PluginsLists :plugins="plugins" :categories="categories" />
+        </div>
+        <article v-else class="bd-main order-1 plugins" v-if="content" :class="{'full': content.rightBar === false}">
             <ContentRenderer :value="content">
                 <div class="bd-title">
                     <Breadcrumb :slug="props.slug" />
-                    <h1 v-html="transformTitle(content.title)" class="py-0 title "></h1>
+                    <h1 class="py-0 title ">{{content.title}}</h1>
                 </div>
 
                 <NavToc :page="content"/>
@@ -26,8 +29,11 @@
     import Breadcrumb from "./Breadcrumb.vue";
     import NavToc from "./NavToc.vue";
     import {hash} from "ohash";
+    import { kestraInstance } from "~/utils/api.js";
 
     let content = ref();
+    let categories = ref([]);
+    let plugins = ref([]);
 
     const props = defineProps({
         slug: {
@@ -35,6 +41,20 @@
             required: true
         },
     });
+
+    const { data: pluginsData } = await useAsyncData('plugins', () => {
+        return kestraInstance.get(`/plugins`);
+    });
+
+    plugins.value = pluginsData.value.data;
+
+    if(props.slug === '/plugins/') {
+        const { data: categoriesData } = await useAsyncData('plugin-categories', () => {
+            return kestraInstance.get(`/plugins/categories`);
+        });
+
+        categories.value = categoriesData.value.data;
+    }
 
     const parts = props.slug.split('/');
     const pageName = parts[parts.length - 1];
@@ -61,11 +81,6 @@
 
     useContentHead(content);
 
-    const transformTitle = (text) => {
-        return text
-            .replace(/([A-Z])/g, '&#x200B;$1')
-            .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
-    };
     const description = content.value?.description || '';
     const title = content.value?.title || '';
     const { origin } = useRequestURL()
