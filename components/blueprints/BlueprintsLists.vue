@@ -28,9 +28,9 @@
         <div class="d-flex justify-content-between">
             <div class="items-per-page">
                 <select class="form-select" aria-label="Default select example" v-model="itemsPerPage">
-                    <option :value="10">10</option>
-                    <option :value="25">25</option>
-                    <option :value="50">50</option>
+                    <option :value="12">12</option>
+                    <option :value="24">24</option>
+                    <option :value="48">48</option>
                 </select>
             </div>
             <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
@@ -44,7 +44,7 @@
 
 <script setup>
 const currentPage = ref(1)
-const itemsPerPage = ref(25)
+const itemsPerPage = ref(24)
 const blueprints = ref([])
 const activeTag = ref({ name: 'All tags' })
 const tags = ref([])

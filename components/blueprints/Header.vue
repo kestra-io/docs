@@ -46,7 +46,7 @@
     <div class="plugins-icons d-flex justify-content-center gap-3" v-if="page.includedTasks && page.includedTasks.length">
         <div class="plugin-icon card" v-for="icon in page.includedTasks" :key="icon">
             <span class="icon">
-                <BlueprintsTaskIcon :cls="icons[icon]" />
+                <CommonTaskIcon :cls="icons[icon]" />
             </span>
             <span v-if="icons[icon]">{{ icons[icon].name }}</span>
         </div>
@@ -101,7 +101,15 @@
     @include media-breakpoint-up(xxl) {
         margin-left: 0;
     }
+
 }
+
+:deep(.bd-markdown) {
+    .code-block {
+        margin-bottom: 0 !important;
+    }
+}
+
 .container-fluid {
   background: $purple-17;
   padding-bottom: calc($spacer * 2.5);

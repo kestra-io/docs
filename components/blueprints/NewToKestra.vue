@@ -1,5 +1,5 @@
 <template>
-<div class="container text-center mb-5 mt-5">
+<div class="container text-center mb-5">
     <div class="rounded-3">
         <div>
             <h3 data-aos="fade-right">New to Kestra?</h3>

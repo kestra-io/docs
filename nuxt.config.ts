@@ -1,6 +1,3 @@
-import codeImport from 'remark-code-import';
-import remarkFlexibleMarkers from "remark-flexible-markers";
-
 export default defineNuxtConfig({
   modules: [
       '@nuxt/devtools',
@@ -65,10 +62,8 @@ export default defineNuxtConfig({
           remarkPlugins: {
               'remark-flexible-markers': {
                   markerClassName: 'type-mark',
-                  instance: remarkFlexibleMarkers
               },
               'remark-code-import': {
-                  instance: codeImport
               },
           }
       },

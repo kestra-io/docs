@@ -1,13 +1,5 @@
-import {parseContent} from '#content/server';
+import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 import url from "node:url";
-import remarkCodeImport from "remark-code-import";
-import remarkFlexibleMarkers from "remark-flexible-markers";
-
-// need to explicit import every remark plugins
-if (false) {
-    console.assert(remarkCodeImport !== undefined, "remark-code-import failed to load");
-    console.assert(remarkFlexibleMarkers !== undefined, "remark-flexible-markers failed to load");
-}
 
 export default defineEventHandler(async (event) => {
     let relatedBlueprints = []
@@ -25,12 +17,12 @@ export default defineEventHandler(async (event) => {
             }
         }
         const flowMd = '```yaml\n' + pageData.flow + '\n```';
-        flowAsMd = await parseContent(`virtual:flow.md`, flowMd);
+        flowAsMd = await parseMarkdown(flowMd);
     }
 
     const graphData = await $fetch(`https://api.kestra.io/v1/blueprints/${query}/graph`)
 
-    const descriptionAsMd = await parseContent(`virtual:description.md`, pageData.description);
+    const descriptionAsMd = await parseMarkdown(pageData.description);
 
     return {
         page: pageData,
