@@ -29,7 +29,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div v-if="activeTab == 'topology'">
-                            <BlueprintsTopology :flow-graph="graph" :source="page.flow" :id="page.id" :icons="icons" />
+                            <BlueprintsTopology :flow-graph="graph" :source="page.flow" :id="page.id" />
                         </div>
                         <div v-else>
                             <ContentRendererMarkdown
@@ -45,10 +45,7 @@
     </div>
     <div class="plugins-icons d-flex justify-content-center gap-3" v-if="page.includedTasks && page.includedTasks.length">
         <div class="plugin-icon card" v-for="icon in page.includedTasks" :key="icon">
-            <span class="icon">
-                <CommonTaskIcon :cls="icons[icon]" />
-            </span>
-            <span v-if="icons[icon]">{{ icons[icon].name }}</span>
+            <CommonTaskIcon :cls="icon" />
         </div>
     </div>
 </div>
@@ -62,10 +59,6 @@
         },
         slug: {
             type: String,
-            required: true
-        },
-        icons: {
-            type: Object,
             required: true
         },
         graph: {
@@ -142,9 +135,9 @@
     font-weight: bold;
     font-size: $font-size-sm;
 
-    .icon {
-        width: 30px;
-        height: 37px;
+    :deep(.icon-wrapper) {
+        width: 45px;
+        height: 45px;
     }
   }
 }

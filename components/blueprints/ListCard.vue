@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="`/blueprints/${blueprint.id}`">
+    <NuxtLink :href="`/blueprints/${blueprint.id}-${slugify(blueprint.title)}`">
         <div class="card">
             <div class="card-body d-flex flex-column justify-content-between gap-3">
                 <div>
@@ -10,9 +10,9 @@
                         {{ blueprint.title.length > 150 ? blueprint.title.substring(0, 150) + '...' : blueprint.title }}
                     </h6>
                 </div>
-                <div class="d-flex flex-wrap gap-3" v-if="icons">
+                <div class="d-flex flex-wrap gap-3">
                     <div class="icon" v-for="n in blueprint.includedTasks" :key="n">
-                        <CommonTaskIcon :cls="icons[n]" v-if="icons[n]"/>
+                        <CommonTaskIcon :cls="n" />
                     </div>
                 </div>
             </div>
@@ -20,16 +20,16 @@
     </NuxtLink>
 </template>
 
+<script setup>
+    import {slugify} from "~/utils/url.js";
+</script>
+
 <script>
     export default {
         props: {
             blueprint: {
                 type: Object,
                 required: true
-            },
-            icons: {
-                type: Object,
-                default: undefined
             },
             tags: {
                 type: Array,

@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id" data-aos="zoom-in">
-            <BlueprintsListCard :blueprint="blueprint" :icons="icons" :tags="tags" />
+            <BlueprintsListCard :blueprint="blueprint" :tags="tags" />
         </div>
         <div class="d-flex justify-content-between">
             <div class="items-per-page">
@@ -48,7 +48,7 @@ const itemsPerPage = ref(24)
 const blueprints = ref([])
 const activeTag = ref({ name: 'All tags' })
 const tags = ref([])
-const props = defineProps(["icons","tags"])
+const props = defineProps(["tags"])
 const totalPages = ref(0)
 const totalBlueprints = ref(0)
 const searchQuery = ref('')

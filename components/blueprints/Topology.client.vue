@@ -4,10 +4,14 @@
         :flow-graph="flowGraph"
         :id="id"
         :source="source"
-        :icons="icons"
         :enable-subflow-interaction="false"
+        :icon-component="TaskIcon"
     />
 </template>
+
+<script setup>
+    import TaskIcon from "../common/TaskIcon.vue";
+</script>
 
 <script>
     import {Topology} from '@kestra-io/ui-libs'
@@ -28,10 +32,6 @@
                 type: String,
                 required: true
             },
-            icons: {
-                type: Object,
-                default: undefined
-            }
         }
     }
 </script>
