@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.3.5",
-    "@kestra-io/ui-libs": "^0.0.32",
+    "@kestra-io/ui-libs": "^0.0.33",
     "@nuxtjs/mdc": "^0.3.0",
     "@vue-flow/background": "^1.2.0",
     "@vue-flow/controls": "1.0.6",
