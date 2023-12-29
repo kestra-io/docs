@@ -22,8 +22,8 @@
                 <input type="text" class="form-control form-control-lg" id="search-input" placeholder="Search blueprints" v-model="searchQuery">
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id">
-            <BlueprintsBlueprintCard :blueprint="blueprint" :icons="icons" data-aos="zoom-in" :tags="tags" />
+        <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id" data-aos="zoom-in">
+            <BlueprintsListCard :blueprint="blueprint" :icons="icons" :tags="tags" />
         </div>
         <div class="d-flex justify-content-between">
             <div class="items-per-page">

@@ -8,8 +8,8 @@
         <div v-else>
             <BlueprintsHeader :page="page" :graph="graph" :slug="slug" :icons="icons" :flow="flowAsMd"/>
             <div class="container">
-                <BlueprintsAbout :page="page" :description="descriptionAsMd" />
-                <BlueprintsRelatedBlueprints
+                <BlueprintsDetail :page="page" :description="descriptionAsMd"/>
+                <BlueprintsRelated
                     v-if="relatedBlueprints.length > 0"
                     :related-blueprints="relatedBlueprints"
                     :icons="icons"

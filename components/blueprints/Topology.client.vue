@@ -1,7 +1,12 @@
 <template>
-    <div>
-        <Topology class="topology-root" :flow-graph="flowGraph" :id="id" :source="source" :icons="icons" :enable-subflow-interaction="false"/>
-    </div>
+    <Topology
+        class="topology-root"
+        :flow-graph="flowGraph"
+        :id="id"
+        :source="source"
+        :icons="icons"
+        :enable-subflow-interaction="false"
+    />
 </template>
 
 <script>
