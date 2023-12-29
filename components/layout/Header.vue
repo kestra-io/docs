@@ -228,7 +228,7 @@
                             </span>
                         </NuxtLink>
 
-                        <a @click="globalClick(true)" href="#" class="d-block d-sm-none d-sm-inline-block mb-1 mn-sm-0 btn btn-info btn-sm" ref="search-button" data-bs-toggle="modal" data-bs-target="#search-modal">
+                        <a @click="globalClick(true)" href="#" class="d-block d-sm-none d-sm-inline-block mb-1 mn-sm-0 btn btn-info btn-sm" id="header-search-button" data-bs-toggle="modal" data-bs-target="#search-modal">
                             <Magnify/> Search
                         </a>
 
@@ -241,62 +241,6 @@
         </div>
     </nav>
 
-    <div v-on="{ 'shown.bs.modal': focusSearch }" class="modal modal-lg fade" id="search-modal" tabindex="-1" aria-labelledby="search-modal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="col-12">
-                        <label class="visually-hidden" for="search-input">Search</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><Magnify/></span>
-                            <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search"/>
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <div class="search-result p-3 w-50">
-                            <div v-for="(result, index) in searchResults" @mouseover="() => onItemMouseOver(result, index)">
-                                <a :href="result.url" :class="{'active': index === selectedIndex}">
-                                    <div class="result rounded-3">
-                                        <div class="w-100">
-                                            <span class="slug">{{result.type.charAt(0).toUpperCase() + result.type.slice(1).toLowerCase()}}</span>
-                                            <h5>{{ result.title }}</h5>
-                                            <div class="slug">
-                                                <span :class="{first: index === 0}"
-                                                      v-for="(item, index) in breadcrumb(result.url)" :key="item">{{ item }}</span>
-                                            </div>
-                                        </div>
-                                        <ArrowRight/>
-                                    </div>
-                                </a>
-                            </div>
-                            <div v-if="searchResults && searchResults.length === 0" class="alert alert-warning mb-0"
-                                 role="alert">
-                                No results found for the current search
-                            </div>
-                        </div>
-                        <div class="search-result p-3 w-50">
-                            <div class="result rounded-3" v-if="selectedItem">
-                                <div>
-                                    <span class="slug">{{selectedItem.type.charAt(0).toUpperCase() + selectedItem.type.slice(1).toLowerCase()}}</span>
-                                    <h5>{{ selectedItem.title }}</h5>
-                                    <p v-if="selectedItem.highlight?.length > 0" v-html="selectedItem.highlight" class="search-result-extract"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="facets">
-                        <div class="facet" :class="{'facet-active': selectedFacet === ''}" @click="() => selectFacet('')">
-                            <span>All</span>
-                        </div>
-                        <div class="facet" v-for="(result, key, index) in searchFacets" @click="() => selectFacet(key)" :class="{'facet-active': selectedFacet === key}" :key="index">
-                            <span>{{key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()}}</span>
-                            <span class="total">{{ result }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </template>
 
 <script setup>
@@ -324,8 +268,6 @@
 </script>
 
 <script>
-    import axios from "axios";
-    import {kestraInstance} from "~/utils/api.js";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
     import GithubButton from "../layout/GithubButton.vue";
 
@@ -336,16 +278,10 @@
         },
         data() {
             return {
-                searchResults: [],
-                searchFacets: {},
-                selectedFacet: undefined,
                 transparentHeader: false,
                 transparentClass: false,
                 isOpen: false,
-                cancelToken: undefined,
-                selectedIndex: 0,
-                selectedItem: null,
-                searchValue: undefined
+
             }
         },
         collapse: undefined,
@@ -356,7 +292,6 @@
 
             if (process.client) {
                 window.addEventListener('scroll', this.handleScroll);
-                window.addEventListener('keydown', this.handleKeyboard);
             }
 
             if (process.client) {
@@ -365,7 +300,6 @@
                 })
             }
 
-            this.cancelToken = axios.CancelToken.source();
         },
         watch: {
             $route(to) {
@@ -381,56 +315,10 @@
         unmounted() {
             if (process.client) {
                 window.removeEventListener('scroll', this.handleScroll);
-                window.removeEventListener('keydown', this.handleKeyboard);
                 document.documentElement.style.removeProperty("--top-bar-height");
             }
         },
         methods: {
-            focusSearch() {
-                document.querySelector('#search-input').focus();
-            },
-            search(value = '') {
-                this.searchValue = value;
-                return axios.get('/api/search', {
-                  params: {
-                    q: value,
-                    type: this.selectedFacet || '',
-                  },
-                }).then(response => {
-                    if (response?.data?.results && response.data.results.length) {
-                      this.searchResults = response.data.results;
-                      this.searchFacets = response.data.facets;
-                      this.selectedIndex = 0;
-                      this.selectedItem = response.data.results[0];
-                    } else {
-                      this.resetData();
-                    }
-                }).catch(() => {
-                    this.resetData();
-                })
-            },
-            resetData() {
-                this.selectedIndex = null;
-                this.selectedItem = null;
-                this.selectedFacet = undefined;
-                this.searchResults = [];
-                this.searchFacets = {};
-            },
-            onItemMouseOver(item, index) {
-                this.selectedIndex = index;
-                this.selectedItem = item;
-            },
-            selectFacet(facet) {
-                if (this.selectedFacet !== facet) {
-                  this.selectedFacet = facet;
-                  this.search(this.searchValue)
-                }
-            },
-            breadcrumb(slug) {
-                return [...new Set(slug.split("/")
-                    .filter(r => r !== ""))
-                ]
-            },
             mouseElement(element) {
                 if (element.classList.contains("nav-link")) {
                     return element;
@@ -459,46 +347,12 @@
                     }
                 }
             },
-            handleKeyboard(e) {
-                if (e.key === "k" && e.ctrlKey) {
-                    e.preventDefault(); // present "Save Page" from getting triggered.
 
-                    this.$refs["search-button"].click();
-                }
-
-                if (e.key === "ArrowUp") {
-                    this.selectedIndex = this.selectedIndex <= 1 ? 0 : this.selectedIndex-1;
-                    this.handleSearchScroll();
-                }
-
-                if (e.key === "ArrowDown" && this.searchResults) {
-                    this.selectedIndex = this.selectedIndex >= this.searchResults.length - 1 ? this.searchResults.length - 1 : this.selectedIndex+1;
-                    this.handleSearchScroll();
-                }
-
-                if (e.key === "Enter" && this.searchResults && this.searchResults[this.selectedIndex]) {
-                    document.querySelector(".search-result .active").click();
-                }
-            },
-            handleSearchScroll() {
-                let active = document.querySelector(".search-result .active");
-                let container = document.querySelector(".search-result");
-
-                if (active) {
-                    if ((active.offsetTop + active.offsetHeight) >= container.offsetHeight) {
-                        container.scrollTop = active.offsetTop;
-                    } else if (active.offsetTop < container.offsetHeight) {
-                        container.scrollTop = 0;
-                    }
-                }
-            },
             globalClick(close) {
                 if (close) {
                     if (this.$refs.navbar.classList.contains("open")) {
                         this.collapse.hide();
                         this.isOpen = false;
-                    } else {
-                        this.search();
                     }
                 } else {
                     this.collapse.toggle();
@@ -823,176 +677,6 @@
     .wrapper.announce {
         nav {
             top: 40px;
-        }
-    }
-
-    #search-modal {
-        .input-group-text {
-            background: transparent;
-            font-size: 1.25rem;
-            border-bottom-left-radius: 0;
-            background: var(--bs-white);
-            border-top-left-radius: $border-radius-lg;
-        }
-
-        .form-control {
-            border-left: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        .form-control:focus {
-            box-shadow: none;
-            border-color: var(--bs-border-color);
-        }
-
-        .modal-content {
-            background: none;
-            border: 0;
-        }
-
-        .modal-body {
-            background: var(--bs-white);
-            border: 1px solid var(--bs-border-color);
-            border-radius: $border-radius-lg;
-            padding: 0;
-
-            .facets {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-
-                .facet {
-                    display: flex;
-                    align-items: center;
-                    padding: 5px;
-                    gap: 5px;
-                    cursor: pointer;
-                    border-top: 1px solid transparent;
-
-                    &:hover {
-                        border-top: 1px solid $white-1;
-                    }
-
-                    span {
-                        font-size: .875rem;
-                        line-height: 1.25rem;
-                        text-transform: capitalize;
-                    }
-
-                    .total {
-                        color: $black-6;
-                        font-size: .75rem;
-                        line-height: 1rem;
-                    }
-
-                    &-active, &-active:hover {
-                        border-top: 1px solid $purple-27;
-                    }
-                }
-            }
-        }
-
-        .search-result {
-            overflow: auto;
-            max-height: 80vh;
-
-            &::-webkit-scrollbar {
-                width: 8px;
-            }
-
-            &::-webkit-scrollbar-track {
-                background: $gray-200;
-            }
-
-            &::-webkit-scrollbar-thumb {
-                background: $black-6;
-                border-radius: 4px;
-            }
-
-            &::-webkit-scrollbar-thumb:hover {
-                background: $black-3;
-            }
-
-            .slug {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                width: 100%;
-                font-size: $font-size-xs;
-                color: var(--bs-gray-600);
-                margin-bottom: calc($spacer / 3);
-
-                span {
-                    margin-left: 0.25rem;
-
-                    &:before {
-                        content: '/';
-                        margin-right: 0.25rem;
-
-                    }
-
-                    &:first-child {
-                        &:before {
-                            display: none;
-                        }
-                    }
-
-                    &.first {
-                        font-weight: bold;
-                    }
-                }
-
-                .breadcrumb-item + .breadcrumb-item::before {
-                    color: $pink;
-                }
-            }
-
-            .result {
-                background: var(--bs-gray-100);
-                transition: background-color 0.2s ease;
-                padding: 1.25rem ;
-                margin-bottom: calc($spacer * 0.5);
-                display: flex;
-                cursor: pointer;
-
-                > div {
-                    flex-grow: 1;
-
-                    h5 {
-                        font-size: $font-size-lg;
-                        font-weight: bold;
-                        margin-bottom: 0;
-                        color: var(--bs-dark);
-                    }
-
-                    p {
-                        color: var(--bs-gray-600);
-                        font-size: $font-size-sm;
-                        margin-bottom: 0;
-                    }
-                }
-
-
-                span.material-design-icon {
-                    font-size: 1rem;
-                    opacity: 0;
-                    transition: opacity 0.2s ease;
-                }
-
-                mark {
-                    background-color: transparent;
-                    padding: 0;
-                    color: $primary;
-                }
-            }
-
-            .active .result, .result:hover {
-                background: var(--bs-gray-200);
-
-                span.material-design-icon {
-                    opacity: 1;
-                }
-            }
         }
     }
 </style>

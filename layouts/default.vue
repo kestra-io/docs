@@ -1,6 +1,7 @@
 <template>
     <div>
         <NuxtLoadingIndicator />
+        <LayoutSearch />
         <LayoutAnnounce v-if="topBanner !== 'ok'" />
         <div class="wrapper" :class="{'announce': topBanner !== 'ok'}">
             <LayoutHeader />
