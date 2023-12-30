@@ -17,7 +17,7 @@
                     <div class="row" v-if="searchResults && searchResults.length > 0" >
                         <div class="search-result p-3 col-12 col-md-6">
                             <div v-for="(result, index) in searchResults" @mouseover="() => onItemMouseOver(result, index)">
-                                <NuxtLink :href="result.url" :class="{'active': index === selectedIndex}">
+                                <NuxtLink :href="result.url" :class="{'active': index === selectedIndex}" @click="close">
                                     <div class="result rounded-3">
                                         <div class="w-100">
                                             <h5>
@@ -189,7 +189,6 @@
 
                 if (e.key === "Enter" && this.searchResults && this.searchResults[this.selectedIndex]) {
                     document.querySelector(".search-result .active").click();
-                    this.close();
                 }
             },
             handleSearchScroll() {
