@@ -9,6 +9,7 @@ export default {
     data() {
         return {
             idx: 0,
+            intervalId: null,
         };
     },
     computed: {
@@ -38,7 +39,12 @@ export default {
         },
     },
     mounted() {
-        setInterval(this.handleTextChange, 1500);
+        this.intervalId = setInterval(this.handleTextChange, 1500);
+    },
+    beforeDestroy() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
     },
 };
 </script>
