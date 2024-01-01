@@ -17,7 +17,7 @@
         </button>
     </div>
     <div class="row my-5">
-        <div class="row mb-4 justify-content-center">
+        <div class="row mb-4 justify-content-center" data-aos="zoom-in">
             <div class="col-12 col-md-6 col-lg-4">
                 <input type="text" class="form-control form-control-lg" id="search-input" placeholder="Search blueprints" v-model="searchQuery">
             </div>
