@@ -68,6 +68,7 @@
                     <div class="facets">
                         <div class="facet" :class="{'facet-active': selectedFacet === undefined}" @click="() => selectFacet(undefined)">
                             <span>All</span>
+                            <span class="badge rounded-pill bg-primary">{{ allSum }}</span>
                         </div>
                         <div class="facet" v-for="(result, key, index) in searchFacets" @click="() => selectFacet(key)" :class="{'facet-active': selectedFacet === key}" :key="index">
                             <span>{{key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()}}</span>
@@ -115,6 +116,13 @@
                 document.documentElement.style.removeProperty("--top-bar-height");
             }
         },
+        computed: {
+            allSum() {
+                return Object.values(this.searchFacets).reduce((accumulator, currentValue) => {
+                    return accumulator + currentValue
+                }, 0);
+            },
+        },
         methods: {
             focusSearch() {
                 document.querySelector('#search-input').focus();
@@ -136,20 +144,40 @@
                 }).then(response => {
                     if (response?.data?.results && response.data.results.length) {
                         this.searchResults = response.data.results;
-                        this.searchFacets = response.data.facets;
                         this.selectedIndex = 0;
                         this.selectedItem = response.data.results[0];
                     } else {
                         this.resetData();
                     }
+
+                    if (response?.data.facets) {
+                        this.searchFacets = this.sortFacet(response.data.facets);
+                    }
                 }).catch(() => {
                     this.resetData();
                 })
             },
+            sortFacet(facets) {
+                const result = new Map(Object.entries(facets)
+                    .sort((a, b) => {
+                        return this.sortFacetIndex(a[0]) - this.sortFacetIndex(b[0]);
+                    }));
+
+                return Object.fromEntries(result.entries());
+            },
+            sortFacetIndex(value) {
+                const index = [
+                    "PLUGINS",
+                    "DOCS",
+                    "BLOGS",
+                    "JOBS"
+                ].indexOf(value);
+
+                return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+            },
             resetData() {
                 this.selectedIndex = null;
                 this.selectedItem = null;
-                this.selectedFacet = undefined;
                 this.searchResults = [];
                 this.searchFacets = {};
             },
@@ -187,6 +215,14 @@
                     this.handleSearchScroll();
                 }
 
+                if (e.key === "ArrowLeft" && this.searchFacets) {
+                    this.handleFacetsKeys(false);
+                }
+
+                if (e.key === "ArrowRight" && this.searchFacets) {
+                    this.handleFacetsKeys(true);
+                }
+
                 if (e.key === "Enter" && this.searchResults && this.searchResults[this.selectedIndex]) {
                     document.querySelector(".search-result .active").click();
                 }
@@ -202,6 +238,31 @@
                         container.scrollTop = 0;
                     }
                 }
+            },
+            handleFacetsKeys(isRight) {
+                const keys = Object.keys(this.searchFacets);
+
+                let selected = keys.indexOf(this.selectedFacet);
+
+                if (isRight) {
+                    selected = selected + 1;
+                    if (selected > keys.length) {
+                        selected = -1;
+                    }
+                } else {
+                    selected = selected - 1;
+                    if (selected  === -2) {
+                        selected = keys.length - 1;
+                    }
+                }
+
+                if (selected === -1) {
+                    this.selectedFacet = undefined;
+                } else {
+                    this.selectedFacet = keys[selected];
+                }
+
+                this.search(this.searchValue);
             },
             iconByType(type) {
                 switch (type) {
