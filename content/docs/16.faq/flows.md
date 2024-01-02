@@ -41,7 +41,7 @@ You can add a **[Schedule trigger](../05.developer-guide/08.triggers/01.schedule
 
 Alternatively, you can add a **[Flow trigger](../05.developer-guide/08.triggers/02.flow.md)** to automatically launch a flow execution when another flow execution is completed. This pattern is particularly helpful when you want to:
 - Implement a centralized namespace-level error handling strategy, e.g. to send a notification when any flow execution fails in a production namespace. Check the [Alerting & Monitoring](../09.administrator-guide/03.monitoring/index.md) section for more details.
-- Decouple your flows by following an event-driven pattern, in a backwards direction (_backwards because the flow is triggered by the completion of another flow; this is in contrast to the [subflow pattern](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.flow), where a parent flow starts the execution of child flows and waits for the completion of each of them_).
+- Decouple your flows by following an event-driven pattern, in a backwards direction (_backwards because the flow is triggered by the completion of another flow; this is in contrast to the [subflow pattern](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.subflow), where a parent flow starts the execution of child flows and waits for the completion of each of them_).
 
 Lastly, you can use the **[Webhook trigger](../05.developer-guide/08.triggers/03.webhook.md)** to automatically launch a flow execution when a given HTTP request is received. You can leverage the `{{ trigger.body }}` variable to access the request body and the `{{ trigger.headers }}` variable to access the request headers in your flow.
 
