@@ -92,7 +92,7 @@ To migrate from a template to a subflow, you can create a flow that is a 1:1 cop
 In our example, we can create a new flow called `mytemplate` in a namespace `dev`. This flow will be invoked from a parent flow as a subflow.
 
 Then, to create a child flow (a subflow), you only need to change the following values in the `templatedFlow`:
-- Change the `io.kestra.core.tasks.flows.Template` task type to `io.kestra.core.tasks.flows.Flow`
+- Change the `io.kestra.core.tasks.flows.Template` task type to `io.kestra.core.tasks.flows.Subflow`
 - Change the `templateId` to `flowId`.
 
 See the example below showing how you can invoke a subflow from a parent flow:
@@ -102,7 +102,7 @@ id: parentFlow
 namespace: dev
 tasks:
   - id: subflow
-    type: io.kestra.core.tasks.flows.Flow
+    type: io.kestra.core.tasks.flows.Subflow
     namespace: dev
     flowId: mytemplate
 ```
@@ -119,7 +119,7 @@ tasks:
     message: first task
 
   - id: subflow
-    type: io.kestra.core.tasks.flows.Flow
+    type: io.kestra.core.tasks.flows.Subflow
     namespace: dev
     flowId: mytemplate
 
@@ -140,7 +140,7 @@ tasks:
     message: first task
 
   - id: subflow
-    type: io.kestra.core.tasks.flows.Flow
+    type: io.kestra.core.tasks.flows.Subflow
     namespace: dev
     flowId: mytemplate
     inputs:

@@ -24,7 +24,7 @@ On the left menu, you will have access to all the functionalities provided by th
 
 The [Kestra Enterprise Edition](/enterprise) comes with additional functionalities provided by the Kestra UI:
 
-- [Task Runs](./08-task-runs.md): The **Task Runs** page contains a dashboard of flow task runs.
+- [Task Runs](./08-task-runs.md): The **Task Runs** page contains a dashboard of task runs.
 - [Namespaces](./09-namespaces.md): The **Namespace** page allows setting specific configurations at the namespace level and enforcing authentication and role-based access control per namespace.
 - [Users](./10-users.md): The **Users** page allows the management of Kestra users.
 - [Groups](./11-groups.md): The **Groups** page allows the management of Kestra user groups.
