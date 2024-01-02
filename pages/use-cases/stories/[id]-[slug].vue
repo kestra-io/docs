@@ -40,16 +40,13 @@
     </div>
 </template>
 <script setup>
-    import markdownParser from '@nuxt/content/transformers/markdown';
+    import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 
     const route = useRoute()
     const slug = (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
-    const stories = ref([])
     const story = ref({})
     const content1 = ref('')
     const content2 = ref('')
-
-    const id = slug.split("-")[0];
 
     const {data} = await useAsyncData('stories', () => {
         return $fetch(`https://api.kestra.io/v1/customer-stories/${route.params.id}`)
@@ -61,8 +58,8 @@
 
     story.value = data.value;
 
-    content1.value = await markdownParser.parse("md", story.value.content_1, {});
-    content2.value = await markdownParser.parse("md", story.value.content_2, {});
+    content1.value = await parseMarkdown(story.value.content_1, {});
+    content2.value = await parseMarkdown(story.value.content_2, {});
 
     useHead({
         meta: [

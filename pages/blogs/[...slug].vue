@@ -7,8 +7,8 @@
             <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
                 <ContentRenderer :value="page">
                     <div class="bd-title">
-                        <p data-aos="fade-right" class="para">
-                            <NuxtLink to="/">Home</NuxtLink>  / 
+                        <p class="top-breadcrumb" data-aos="fade-right">
+                            <NuxtLink to="/">Home</NuxtLink>  /
                             <NuxtLink to="/blogs">Blog</NuxtLink>
                         </p>
                         <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
@@ -122,10 +122,10 @@
                             "@type" : "Webpage",
                             "@id" : slug,
                         },
-                        "headline": title, 
-                        "image": [image ], 
-                        "datePublished": date, 
-                        "author": { "@type": "Person", "name": `${author.name}` }, 
+                        "headline": title,
+                        "image": [image ],
+                        "datePublished": date,
+                        "author": { "@type": "Person", "name": `${author.name}` },
                         "publisher": { "@type": "Organization", "name": "Kestra", "logo": { "@type": "ImageObject", "url": "https://kestra.io/logo.svg" } },
                         "description": description,
 
@@ -157,6 +157,9 @@
     .bd-content{
         min-width: 100%;
     }
+    .top-breadcrumb {
+        margin: 0;
+    }
     h2{
         line-height: 3.25rem;
         font-weight: 600;
@@ -169,7 +172,7 @@
         font-weight: 600;
     }
     :deep(p){
-        line-height: 1.75rem;   
+        line-height: 1.75rem;
     }
     :deep(h2){
         font-size: 1.75rem;

@@ -3,7 +3,11 @@
     <div class="container-fluid pt-5">
         <div class="container">
             <div class="header">
-                <DocsBreadcrumb :slug="slug" :page-list="['/blueprints']" />
+                <p class="top-breadcrumb" data-aos="fade-right">
+                    <NuxtLink to="/">Home</NuxtLink> /
+                    <NuxtLink to="/">Solutions</NuxtLink> /
+                    <NuxtLink to="/blueprints">Blueprints</NuxtLink>
+                </p>
                 <div class="row">
                     <div class="col-12 col-md-9">
                         <h2>{{ page.title }}</h2>
@@ -19,17 +23,17 @@
                     </div>
                 </div>
                 <ul class="nav nav-tabs">
-                    <li class="nav-item" @click="setTab('topology')" role="button">
-                        <span class="nav-link" :class="{ 'active': activeTab == 'topology' }" aria-current="page">Topology</span>
+                    <li class="nav-item" @click="setTab('topology')">
+                        <span class="nav-link" :class="{ 'active': activeTab === 'topology' }" aria-current="page">Topology</span>
                     </li>
-                    <li class="nav-item" @click="setTab('source-code')" role="button">
-                        <span class="nav-link" :class="{ 'active': activeTab == 'source-code' }">Source Code</span>
+                    <li class="nav-item" @click="setTab('source-code')">
+                        <span class="nav-link" :class="{ 'active': activeTab === 'source-code' }">Source Code</span>
                     </li>
                 </ul>
                 <div class="pt-3">
                     <div class="card">
                         <div class="card-body">
-                            <div v-if="activeTab == 'topology'">
+                            <div v-if="activeTab === 'topology'">
                                 <BlueprintsTopology :flow-graph="graph" :source="page.flow" :id="page.id" />
                             </div>
                             <div v-else>
