@@ -34,7 +34,7 @@
         <div class="d-none d-lg-block mt-4">
             <CommonSocialsList :page="page" />
         </div>
-    </div> 
+    </div>
 </template>
 
 <script setup>
@@ -87,7 +87,6 @@
     @import "../../assets/styles/variable";
 
     .bd-toc {
-        border-left: 1px solid $gray-300;
         transition: all ease 0.2s;
         transform: translateX(0);
         @include media-breakpoint-up(lg) {
@@ -106,14 +105,14 @@
         }
 
         nav {
-            @include font-size($font-size-xs);
-            line-height: 1.188rem;
+            @include font-size(.875rem);
             ul {
                 padding-left: .75rem;
                 margin-bottom: 0;
                 list-style: none;
                 li {
                     a {
+                        border-left: .125rem solid var(--bs-gray-200);
                         padding-left: 0.75rem;
 
                         @for $i from 2 through 6 {
@@ -126,7 +125,7 @@
                         &.active {
                             color: var(--bs-primary);
                             font-weight: 500;
-                            border-left: 1px solid $purple-35;
+                            border-left-color: var(--bs-primary);
                         }
                     }
                 }
@@ -189,16 +188,4 @@
             display: block !important; // stylelint-disable-line declaration-no-important
         }
     }
-
-    #nav-toc ul li a {
-        border-left: none;
-        line-height: 1.188rem;
-        padding-bottom: 1rem;
-        font-size: $font-size-sm;
-    }
-    #nav-toc ul li:last-child{
-        padding-bottom: 1rem;
-        border-bottom : 1px solid $gray-300
-    }
-
 </style>
