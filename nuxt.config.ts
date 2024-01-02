@@ -1,4 +1,3 @@
-import codeImport from 'remark-code-import';
 export default defineNuxtConfig({
   modules: [
       '@nuxt/devtools',
@@ -62,10 +61,9 @@ export default defineNuxtConfig({
       markdown: {
           remarkPlugins: {
               'remark-flexible-markers': {
-                  markerClassName: 'type-mark'
+                  markerClassName: 'type-mark',
               },
               'remark-code-import': {
-                  instance: codeImport
               },
           }
       },
@@ -88,6 +86,19 @@ export default defineNuxtConfig({
               return tag === "rapi-doc";
           }
       }
+  },
+
+  vite: {
+      optimizeDeps: {
+          include: [
+            "humanize-duration",
+            "lodash",
+            "dagre"
+          ],
+          exclude: [
+              '* > @kestra-io/ui-libs'
+          ]
+      },
   },
 
   gtag: {
