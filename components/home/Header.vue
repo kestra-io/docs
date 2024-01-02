@@ -87,7 +87,7 @@ export default {
             scrollingTexts: [
                 { text: "Orchestrate", color: "#E500EA" },
                 { text: "Automate", color: "#4281FF" },
-                { text: "Simplify", color: "#9D40FB" },
+                { text: "Schedule", color: "#9D40FB" },
             ],
         };
     },
