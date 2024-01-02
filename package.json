@@ -47,8 +47,6 @@
     "@nuxt/image": "^1.1.0",
     "@nuxtjs/mdc": "^0.3.0",
     "@types/node": "^20.10.6",
-    "flexsearch": "^0.7.31",
-    "highlight-words-core": "^1.2.2",
     "nuxt": "^3.9.0",
     "nuxt-gtag": "^1.1.2",
     "nuxt-multi-cache": "^3.0.1",

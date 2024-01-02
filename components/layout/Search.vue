@@ -294,6 +294,16 @@
     @import "../../assets/styles/variable";
 
     #search-modal {
+        .modal-dialog {
+            @include media-breakpoint-down(lg) {
+                max-width: 90%;
+            }
+        }
+
+        .modal-content {
+            max-height: 96vh;
+        }
+
         .input-group-text {
             background: transparent !important;
             font-size: 1.25rem;
@@ -338,7 +348,6 @@
             border-radius: $border-radius-lg;
             padding: 0;
 
-
             .search, .facets {
                 color: var(--bs-black);
 
@@ -371,12 +380,13 @@
         }
 
         .search-result, .search-detail {
-            overflow: auto;
-            max-height: 90vh;
-
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: calc(100vh - 175px);
 
             &::-webkit-scrollbar {
                 width: 4px;
+                height: 4px;
             }
 
             &::-webkit-scrollbar-track {
