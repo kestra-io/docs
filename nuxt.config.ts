@@ -64,6 +64,7 @@ export default defineNuxtConfig({
                   markerClassName: 'type-mark',
               },
               'remark-code-import': {
+                  rootDir: process.cwd()
               },
           }
       },
@@ -99,6 +100,11 @@ export default defineNuxtConfig({
               '* > @kestra-io/ui-libs'
           ]
       },
+      resolve: {
+          alias: {
+              'node:path': 'path-browserify'
+          }
+      }
   },
 
   gtag: {
