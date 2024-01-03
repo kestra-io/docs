@@ -21,22 +21,24 @@
 
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
+
 .container-fluid {
-    background: url('/terraform/header/background.svg') no-repeat right;
-    h1{
+    h1 {
         font-size: $h2-font-size !important;
-        font-weight: 900  !important;
+        font-weight: 900 !important;
     }
 
     p {
         font-size: $font-size-xl;
     }
+
     @include media-breakpoint-up(sm) {
-        h1{
-            font-size:$h1-font-size !important ;
+        h1 {
+            font-size: $h1-font-size !important;
         }
     }
 
-
-}
-</style>
+    @include media-breakpoint-up(md) {
+        background: url('/terraform/header/background.svg') no-repeat right;
+    }
+}</style>

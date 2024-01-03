@@ -54,6 +54,9 @@ const pagelist = ['/stories', props.slug]
     .row {
         background-repeat: no-repeat;
         background-position: 80%;
+        @include media-breakpoint-down(md){
+            background-image: none !important; 
+        }
 
         .container {
             max-width: 500px;

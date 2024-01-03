@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="hero container">
             <div class="row">
-                <div class="col-md-7 align-items-center d-flex">
+                <div class="col-md-7 align-items-center d-flex order-1 order-md-0">
                     <div>
                         <p  data-aos="fade-left" class="overline">Community</p>
                         <h1 data-aos="fade-right">Connect, Collaborate, and Empower Your Data Journey</h1>
@@ -12,7 +12,7 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5 order-0 order-md-1">
                     <img src="/landing/community/header.svg" class="img-fluid" alt="Illustration of diverse people around Kestra's logo, symbolizing Kestra's thriving community"  data-aos="zoom-in"/>
                 </div>
             </div>

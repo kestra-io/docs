@@ -15,7 +15,7 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="col-md-6 ">
+                <div class="col-md-6">
                     <img class="img-fluid" src="/landing/ee/background.svg" alt="Illustration of Kestra's logo with a dark background" data-aos="zoom-in"/>
                 </div>
             </div>
@@ -27,12 +27,17 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
+
+       // background: url('/landing/ee/background.svg') no-repeat right;
         background: $purple-7;
         color: var(--bs-white);
         overflow: hidden;
 
         .img-fluid {
             max-height: 100%;
+              @include media-breakpoint-down(md) {
+                display: none;
+              }
         }
         .baseline {
             font-size: 1.15rem;
