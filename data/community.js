@@ -100,7 +100,7 @@ export default {
         },
     },
     process: {
-        icon: "/shared/dotted-arrow-down.svg",
+        icon: "/shared/arrow-down.svg",
         title: "The Process: ",
         items: [
             {

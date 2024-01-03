@@ -67,4 +67,7 @@ export default {
 .icon {
     height: $rem-4;
 }
+.arrow {
+    padding-left: 2.75rem
+}
 </style>
