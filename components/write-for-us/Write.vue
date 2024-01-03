@@ -1,6 +1,6 @@
 <template>
-    <div class="content">
-        <div class="container base-container position-relative">
+    <div class="content position-relative">
+        <div class="container base-container">
             <h1
                 data-aos="fade-left"
                 class="title-sm title fw-light"
