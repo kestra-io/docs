@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" v-else>
+        <div class="row content justify-between" v-else>
             <div class="col-12 col-md-8">
                 <h1 data-aos="fade-left title">All things Kestra</h1>
                 <h4 data-aos="fade-right" class="fw-normal">
@@ -238,5 +238,12 @@ h4 {
 .nav {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.content {
+    justify-content: space-between;
+    @include media-breakpoint-up(md) {
+        margin-right: $rem-1;
+    }
 }
 </style>
