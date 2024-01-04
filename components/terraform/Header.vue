@@ -15,8 +15,8 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="order-0 order-md-1 d-flex d-md-none img-container">
-                    <img class="img-fluid" src='/terraform/header/background.svg'
+                <div class="order-0 order-md-1 d-flex d-md-none">
+                    <img class="img-container img-fluid" src='/terraform/header/background.svg'
                         alt="terraform logo with a dark background" data-aos="zoom-in" />
                 </div>
             </div>
@@ -48,13 +48,12 @@
             font-size: $h1-font-size !important;
         }
     }
-
     .img-container {
         position: relative;
-        transform: scale(1.6);
+        transform: scale(1.3);
         margin-bottom: 50px;
-        left: -290px;
-        transform-origin: 30% 20%;
+        left: 20px;
+        transform-origin: 40% 30%;
     }
 }
 </style>
