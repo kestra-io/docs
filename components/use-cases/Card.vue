@@ -2,10 +2,7 @@
     <div class="container hero header" data-aos="fade-right">
         <div class="row">
             <div class="col-md-6">
-                <h1 class="title fw-light">
-                    Orchestrate Your <br /><span>Retail Ecosystem</span>
-                    <br />with Kestra
-                </h1>
+                <h1 class="title fw-light" v-html="content.tag"></h1>
                 <p class="description fw-light pb-4">
                     {{ content.description }}
                 </p>
@@ -22,7 +19,11 @@
                     </template>
                 </div>
             </div>
-            <div class="col-lg-6 image" data-aos="zoom-in">
+            <div
+                class="col-lg-6 image"
+                :class="content.image.style"
+                data-aos="zoom-in"
+            >
                 <img
                     class="zoom img-fluid"
                     :src="content.image.href"
@@ -60,25 +61,23 @@ export default {
     p {
         font-size: $font-size-xl;
     }
-    padding-top: 8rem;
+    padding-top: $rem-8;
     padding-bottom: 0;
+    @include media-breakpoint-down(sm) {
+        padding-top: $rem-4;
+    }
 }
 
 .title {
     font-size: $h1-font-size;
-    span {
-        background: var(
-            --Text_gradient,
-            linear-gradient(90deg, #e151f7 2%, #5c47f5 65%)
-        );
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+}
+
+.title-sm {
+    font-size: $h2-font-size;
 }
 
 .description {
-    padding-bottom: 2rem;
+    padding-bottom: $rem-2;
 }
 
 .btn-dark {
@@ -88,8 +87,13 @@ export default {
 }
 
 .image {
-    margin-top: -176px;
+    &-retail {
+        margin-top: -176px;
+    }
 
+    &-community {
+        margin-top: -80px;
+    }
     @include media-breakpoint-down(lg) {
         margin-top: 0;
     }
