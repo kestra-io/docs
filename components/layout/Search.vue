@@ -92,6 +92,7 @@
     import TextBoxOutline from "vue-material-design-icons/TextBoxOutline.vue";
     import BullhornOutline from "vue-material-design-icons/BullhornOutline.vue";
     import PowerPlugOutline from "vue-material-design-icons/PowerPlugOutline.vue";
+    import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
 
     export default {
         data() {
@@ -169,6 +170,7 @@
                 const index = [
                     "PLUGINS",
                     "DOCS",
+                    "BLUEPRINTS",
                     "BLOGS",
                     "JOBS"
                 ].indexOf(value);
@@ -272,6 +274,8 @@
                         return PostOutline;
                     case "PLUGINS":
                         return PowerPlugOutline;
+                    case "BLUEPRINTS":
+                        return ContentCopy;
                     default:
                         return TextBoxOutline;
 
