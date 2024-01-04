@@ -9,7 +9,7 @@
                     class="d-flex gap-2 flex-wrap justify-content-center align-items-center mt-4"
                 >
                     <template v-for="action in content.cta">
-                        <NuxtLink :href="action.href">
+                        <NuxtLink :href="action.href" :target="action.target">
                             <button class="btn" :class="action.style">
                                 {{ action.text }}
                             </button>

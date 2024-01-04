@@ -1,6 +1,7 @@
 export default {
     header: {
         title: "Kestra for Retail and Consuming goods",
+        tag: 'Orchestrate Your <br /><span class="text-gradient">Retail Ecosystem</span><br />with Kestra',
         description:
             "From data pipelines to complex integrations, " +
             "Kestra empowers retail businesses with an event-driven," +
@@ -20,10 +21,12 @@ export default {
         image: {
             href: "/retail/header.svg",
             alt: "Header",
+            style: 'image-retail'
         },
     },
     solutions: {
         title: "Use Cases in Retail",
+        tag: "Use Cases in <span class='text-gradient'>Retail</span>",
         items: [
             {
                 title: "Automated Inventory Management",

@@ -1,10 +1,15 @@
 <template>
     <div class="container example">
-        <h1 data-aos="fade-left" class="title text-center mb-5 fw-light">
-            Use Cases in <span>Retail</span>
-        </h1>
-        <div class="row card-group card-centered no-shadow mb-2">
-            <template v-for="(item, index) in items">
+        <h1
+            data-aos="fade-left"
+            class="title text-center mb-5 fw-light"
+            v-html="content.tag"
+        ></h1>
+        <div
+            class="row card-group card-centered no-shadow mb-2"
+            :class="content.cardGroup"
+        >
+            <template v-for="(item, index) in content.items">
                 <div class="col-md-4 mb-4">
                     <div
                         class="card"
@@ -34,9 +39,14 @@ export default {
     name: "Examples",
 
     props: {
-        items: {
-            type: Array,
+        content: {
+            type: Object,
             required: true,
+            default: () => ({
+                tag: "",
+                items: [],
+                icon: "",
+            }),
         },
     },
 };
