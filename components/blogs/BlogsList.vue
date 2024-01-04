@@ -230,4 +230,13 @@ h1 {
 h4 {
     margin-bottom: 2rem;
 }
+
+.nav::-webkit-scrollbar {
+    display: none;
+}
+
+.nav {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 </style>
