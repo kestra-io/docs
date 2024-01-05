@@ -17,7 +17,9 @@
                 type: String,
                 required: true
             },
-
+            pageList: {
+                type: Array,
+            }
         },
         methods: {
             breadcrumb() {
@@ -29,7 +31,7 @@
                 return "/" + this.breadcrumb().slice(0, index + 1).join("/")
             },
             breadcrumbLinkExist(item, index) {
-                return true;
+                return this.pageList?.includes(this.breadcrumbLink(item, index))
             }
         }
     }
