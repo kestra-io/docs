@@ -1,7 +1,7 @@
 <template>
     <div ref="container" class="container">
         <div ref="companies" class="companies">
-            <template v-for="(img, index) in companies">
+            <template v-for="(img, index) in companies" :key="index">
                 <img
                     data-aos="fade-up"
                     :class="{'inverted': inverted}"
@@ -111,7 +111,7 @@
                 margin: auto;
 
                 &.scrolling {
-                    animation: auto-scroll 30s infinite linear;
+                    animation: auto-scroll 10s infinite linear;
                 }
             }
         }
