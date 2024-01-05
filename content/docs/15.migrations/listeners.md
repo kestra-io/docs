@@ -2,7 +2,7 @@
 title: Deprecation of Listeners
 ---
 
-[Listeners](../05.developer-guide/13.listeners.md) are marked as deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../05.developer-guide/08.triggers/02.flow.md) instead. 
+[Listeners](../05.developer-guide/13.listeners.md) are marked as deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../05.developer-guide/08.triggers/02.flow.md) instead.
 
 ---
 
@@ -21,6 +21,32 @@ kestra:
   listeners:
     enabled: true
 ```
+
+Then, make sure to also add the following task defaults to your configuration to ensure that your conditions are working properly after the upgrade to any version after 0.12.0:
+
+```yaml
+kestra:
+  tasks:
+    defaults:
+    - type: io.kestra.core.models.conditions.types.DateTimeBetweenCondition
+      values:
+        date: "{{ now() }}"
+    - type: io.kestra.core.models.conditions.types.DayWeekCondition
+      values:
+        date: "{{ now(format="iso_local_date") }}"
+    - type: io.kestra.core.models.conditions.types.DayWeekInMonthCondition
+      values:
+        date: "{{ now(format="iso_local_date") }}"
+    - type: io.kestra.core.models.conditions.types.TimeBetweenCondition
+      values:
+        date: "{{ now(format='iso_offset_time') }}"
+    - type: io.kestra.core.models.conditions.types.WeekendCondition
+      values:
+        date: "{{ now(format='iso_local_date') }}"
+```
+
+Due to listeners' deprecation, we changed the default behavior of various `io.kestra.core.models.conditions`-type conditions to use the `{{trigger.date}}` as default value for the `date` property instead of using `"{{ now(format='iso_local_date') }}"`. To ensure that your conditions are working properly after the upgrade to any version after 0.12.0, you need to add the above task defaults to your Kestra configuration.
+
 
 ---
 
@@ -54,7 +80,7 @@ listeners:
           - WARNING
 ```
 
-This flow will fail and the listener tasks will be triggered anytime the flow reaches the specified execution status condition — here, the `FAILED` status. 
+This flow will fail and the listener tasks will be triggered anytime the flow reaches the specified execution status condition — here, the `FAILED` status.
 
 The next section shows how you can accomplish the same using Flow triggers.
 
@@ -62,7 +88,7 @@ The next section shows how you can accomplish the same using Flow triggers.
 
 ## Flow trigger ✅
 
-To migrate from a listener to a Flow trigger, create a new flow. Add a trigger of type `io.kestra.core.models.triggers.types.Flow` and move the condition e.g. `ExecutionStatusCondition` to the trigger conditions. Finally, move the list of tasks from listeners to `tasks` in the flow. 
+To migrate from a listener to a Flow trigger, create a new flow. Add a trigger of type `io.kestra.core.models.triggers.types.Flow` and move the condition e.g. `ExecutionStatusCondition` to the trigger conditions. Finally, move the list of tasks from listeners to `tasks` in the flow.
 
 The example below will explain it better than words:
 
