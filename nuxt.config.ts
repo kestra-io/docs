@@ -138,6 +138,7 @@ export default defineNuxtConfig({
       '/company/company/about-us.html': {redirect: '/about-us'},
       '/community.html': {redirect: '/community'},
       '/slack': {redirect: 'https://api.kestra.io/v1/communities/slack/redirect'},
+      '/api/events/**': { proxy: 'https://eu.posthog.com/**' },
   },
 
   build: {

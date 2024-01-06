@@ -2,10 +2,16 @@ import 'vanilla-cookieconsent'
 import posthog from 'posthog-js'
 
 export default defineNuxtPlugin(nuxtApp => {
-    let isProd = process.env.NODE_ENV === "production";
+    let isProd = process.env.NODE_ENV === "production" || true;
 
     if (isProd) {
-        posthog.init('phc_8lNe3YuQj9gyJcCJOGy4RwMCUFzHQ7siGPr8aeodhxR', {api_host: 'https://eu.posthog.com'})
+        posthog.init(
+            'phc_8lNe3YuQj9gyJcCJOGy4RwMCUFzHQ7siGPr8aeodhxR',
+            {
+                api_host: '/api/events',
+                ui_host: 'https://eu.posthog.com',
+            }
+        )
     }
 
     nuxtApp.hook('page:finish', () => {
