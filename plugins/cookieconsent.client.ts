@@ -2,33 +2,31 @@ import 'vanilla-cookieconsent'
 import posthog from 'posthog-js'
 
 export default defineNuxtPlugin(nuxtApp => {
-    let isProd = process.env.NODE_ENV === "production" || true;
-
-    if (isProd) {
-        posthog.init(
-            'phc_8lNe3YuQj9gyJcCJOGy4RwMCUFzHQ7siGPr8aeodhxR',
-            {
-                api_host: '/api/events',
-                ui_host: 'https://eu.posthog.com',
-            }
-        )
-    }
+    let isProd = process.env.NODE_ENV === "production";
+    const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
 
     nuxtApp.hook('page:finish', () => {
         const {grantConsent} = useGtag()
 
         const enabledAnalytics = () => {
-            grantConsent();
-            posthog.capture('$pageview');
+            posthog.init(
+                isProd ? 'phc_8lNe3YuQj9gyJcCJOGy4RwMCUFzHQ7siGPr8aeodhxR' : 'phc_yhgr3gbIyqI0yoPfOUT1ZE6ETVmWHlc6SPbeyPBrFjX',
+                {
+                    api_host: '/api/events',
+                    ui_host: 'https://eu.posthog.com',
+                }
+            )
         };
 
-        const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
+        const enabledMarketing = () => {
+            cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
+        };
 
         const cookieConsent = window.initCookieConsent()
 
-        if (!isEurope && isProd) {
+        if (!isEurope) {
             enabledAnalytics();
-            cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
+            enabledMarketing();
 
             return;
         }
@@ -46,14 +44,14 @@ export default defineNuxtPlugin(nuxtApp => {
             page_scripts: true,
             force_consent: true,
             onAccept: () => {
-                if (isProd) {
-                    if (cookieConsent.allowedCategory('analytics')) {
-                        enabledAnalytics();
-                    }
+                grantConsent();
 
-                    if (cookieConsent.allowedCategory('marketing')) {
-                        cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
-                    }
+                if (cookieConsent.allowedCategory('analytics')) {
+                    enabledAnalytics();
+                }
+
+                if (cookieConsent.allowedCategory('marketing')) {
+                    enabledMarketing();
                 }
             },
 
