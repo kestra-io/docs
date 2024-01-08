@@ -2,7 +2,7 @@
     <div class="slug">
         <span :class="{first: index === 0}" v-for="(item, index) in breadcrumb()"
               :key="item">
-            <NuxtLink :href="breadcrumbLinkExist(item, index) ? breadcrumbLink(item, index) : ''" class="link">
+            <NuxtLink :href="breadcrumbLinkExist(item) ? breadcrumbLink(item, index) : ''" class="link">
                 {{ item }}
             </NuxtLink>
         </span>
@@ -17,8 +17,10 @@
                 type: String,
                 required: true
             },
-
         },
+        data: () => ({
+            subMenuItemNames: ['tasks', 'triggers', 'conditions', 'controllers', 'storages', 'secrets', 'guides']
+        }),
         methods: {
             breadcrumb() {
                 return [...new Set(this.slug.split("/")
@@ -28,8 +30,8 @@
             breadcrumbLink(item, index) {
                 return "/" + this.breadcrumb().slice(0, index + 1).join("/")
             },
-            breadcrumbLinkExist(item, index) {
-                return true;
+            breadcrumbLinkExist(item) {
+                return !this.subMenuItemNames.includes(item);
             }
         }
     }

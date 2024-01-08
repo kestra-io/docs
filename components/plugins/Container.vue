@@ -29,7 +29,6 @@
     import Breadcrumb from "./Breadcrumb.vue";
     import NavToc from "./NavToc.vue";
     import {hash} from "ohash";
-    import { kestraInstance } from "~/utils/api.js";
 
     let content = ref();
     let categories = ref([]);
@@ -42,18 +41,21 @@
         },
     });
 
-    const { data: pluginsData } = await useAsyncData('plugins', () => {
-        return kestraInstance.get(`/plugins`);
+    const { data: pluginsData } = await useAsyncData('plugins', async () => {
+        return await $fetch(`https://api.kestra.io/v1/plugins`);
     });
 
-    plugins.value = pluginsData.value.data;
+    if (pluginsData?.value) {
+        plugins.value = pluginsData.value;
+    }
 
     if(props.slug === '/plugins/') {
-        const { data: categoriesData } = await useAsyncData('plugin-categories', () => {
-            return kestraInstance.get(`/plugins/categories`);
+        const { data: categoriesData } = await useAsyncData(`plugin-categories`, async () => {
+            return await $fetch(`https://api.kestra.io/v1/plugins/categories`);
         });
-
-        categories.value = categoriesData.value.data;
+        if (categoriesData?.value) {
+            categories.value = categoriesData.value;
+        }
     }
 
     const parts = props.slug.split('/');

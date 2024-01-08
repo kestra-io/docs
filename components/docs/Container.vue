@@ -6,7 +6,7 @@
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="props.slug" :pageList="pageList"/>
-                    <h1 v-html="transformTitle(page.title)" class="py-0 title "></h1>
+                    <h1 class="py-0 title ">{{page.title}}</h1>
                 </div>
 
                 <NavToc :page="page"/>
@@ -70,11 +70,6 @@
 
     useContentHead(page)
 
-    const transformTitle = (text) => {
-        return text
-            .replace(/([A-Z])/g, '&#x200B;$1')
-            .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
-    }
     const {description, title} = page.value;
     const { origin } = useRequestURL()
     useHead({
@@ -122,6 +117,6 @@
     width: 100%;
 }
 </style>
- 
+
 
 
