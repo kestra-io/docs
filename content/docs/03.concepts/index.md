@@ -15,10 +15,10 @@ Understanding key concepts is crucial for harnessing the full potential of any t
 
 [**Task Run**](./execution.md#task-run): A task run denotes the execution of an individual task within a flow.
 
-[**Expressions**](./expression.md): Kestra allows you to utilize variables and process them using the [integrated Pebble language](../03.concepts/expression/01.index.md). Variables enable dynamic values, configurations, or computed results to be passed between tasks within a flow.
-
 [**Internal Storage**](./internal-storage): Kestra provides an internal storage mechanism that facilitates the storage of files of arbitrary sizes within a dedicated storage area.
+
+[**Expressions**](./expression.md): Kestra allows you to utilize variables and process them using the [integrated Pebble language](../03.concepts/expression/01.index.md). Variables enable dynamic values, configurations, or computed results to be passed between tasks within a flow.
 
 For more detailed explanations on these core concepts, please refer to the following pages:
 
-<ChildTableOfContents />
+<ChildTableOfContents :max="2" />
