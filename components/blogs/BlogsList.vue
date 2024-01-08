@@ -45,7 +45,7 @@
                         </button>
                     </li>
                 </ul>
-                <div class="tab-content" id="myTabContent" ref='tab-content'>
+                <div class="tab-content" id="myTabContent">
                     <div
                         v-for="cat in categories"
                         :key="cat.name"
