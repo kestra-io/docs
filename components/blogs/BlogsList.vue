@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-5 mb-2">
+    <div class="mt-5 mb-2" ref='blogs'>
         <div v-if="slug === '/blogs/community'">
             <h2 data-aos="fade-left">Community’s News</h2>
             <div class="row mt-5">
@@ -45,7 +45,7 @@
                         </button>
                     </li>
                 </ul>
-                <div class="tab-content" id="myTabContent">
+                <div class="tab-content" id="myTabContent" ref='tab-content'>
                     <div
                         v-for="cat in categories"
                         :key="cat.name"
@@ -63,8 +63,9 @@
                 </div>
                 <div class="row mt-5">
                     <div
-                        v-for="blog in paginatedBlogs"
+                        v-for="(blog, index) in paginatedBlogs"
                         :key="blog._path"
+                        :ref="`blog-${index}`"
                         class="col-lg-6 col-md-6"
                     >
                         <BlogsBlogCard :blog="blog" data-aos="zoom-in" />
@@ -163,6 +164,20 @@ export default {
             );
         },
     },
+    watch: {
+        itemsPerPage(value, prev) {
+            if (value !== prev) {
+                if (value > prev) {
+                    this.scrollToView({ el: prev });
+                } else this.scrollToView({ ref: "blogs" });
+            }
+        },
+        pageNo(value, prev) {
+            if (value !== prev) {
+                this.scrollToView({ ref: "blogs" });
+            }
+        },
+    },
     created() {
         this.slug =
             "/blogs/" +
@@ -189,6 +204,14 @@ export default {
 
         changePage(value) {
             this.pageNo = value;
+        },
+
+        scrollToView({ el, ref }) {
+            this.$nextTick(() => {
+                const element = this.$refs[ref || `blog-${el}`];
+                console.log({ element });
+                element.scrollIntoView({ behavior: "smooth" });
+            });
         },
     },
 };
