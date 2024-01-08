@@ -28,11 +28,11 @@ Sentry has a [zero-dollar plan for devs](https://sentry.io/pricing/) (no credit 
 
 ![sentry plan](/blogs/2024-01-08-sentry-plugin/sentry_dev_plan.png)
 
-**When Sentry receives an issue, it appears in the Issues dashboard**
+When Sentry receives an issue, it appears in the Issues dashboard:
 
 ![sentry dashboard](/blogs/2024-01-08-sentry-plugin/sentry_dashboard_issues_good_inset.png)
 
-**and, with the default configuration, an email alert is sent to the account used during registration:**
+and, with the default configuration, an email alert is sent to the account used during registration:
 
 ![sentry gmail](/blogs/2024-01-08-sentry-plugin/sentry_gmail_issues_good.png)
 
