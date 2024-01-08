@@ -10,7 +10,7 @@ Failure alerts are non-negotiable. When a production workflow fails, you should 
 - [Email](../../../plugins/plugin-notifications/tasks/mail/io.kestra.plugin.notifications.mail.mailexecution.md)
 
 
-Technically, you can add custom failure alerts to each flow separately using the [`errors` tasks](../../02.tutorial/06.errors.md):
+Technically, you can add custom failure alerts to each flow separately using the [`errors` tasks](../../01.tutorial/06.errors.md):
 
 ```yaml
 id: onFailureAlert
@@ -192,7 +192,7 @@ You can leverage Kestra's internal metrics to configure custom alerts. Each metr
 
 Kestra metrics use the prefix `kestra`. This prefix can be changed using the `kestra.metrics.prefix` property in the [configuration options](../01.configuration/05.others.md#metrics-configuration).
 
-Each task type can expose [custom metrics](../../03.concepts/02.executions.md#metrics) that will be also exposed on Prometheus.
+Each task type can expose [custom metrics](../../03.concepts/execution.md#metrics) that will be also exposed on Prometheus.
 
 #### Worker
 
@@ -252,7 +252,7 @@ We'd love to see what dashboards you will build. Feel free to share a screenshot
 
 ## Kestra endpoints
 
-Kestra exposes internal endpoints on the management port (8081 by default) to provide status corresponding to the [server type](../../01.architecture.md#the-kestra-server-components):
+Kestra exposes internal endpoints on the management port (8081 by default) to provide status corresponding to the [server type](../../02.architecture/index.md#the-kestra-server-components):
 
 * `/worker`: will expose all currently running tasks on this worker.
 * `/scheduler`: will expose all currently scheduled flows on this scheduler with the next date.

@@ -114,7 +114,7 @@ flow.execute('dev', 'hello-world', {'greeting': 'hello from Python'})
 
 The `ForEachItem` task allows you to iterate over a list of items and run a subflow for each item, or for each batch containing multiple items. This is useful when you want to process a large list of items in parallel, e.g. to process millions of records from a database table or an API payload.
 
-The `ForEachItem` task is a **[Flowable](../02.tutorial/05.flowable.md)** task, which means that it can be used to define the flow logic and control the execution of the flow.
+The `ForEachItem` task is a **[Flowable](../01.tutorial/05.flowable.md)** task, which means that it can be used to define the flow logic and control the execution of the flow.
 
 Syntax:
 

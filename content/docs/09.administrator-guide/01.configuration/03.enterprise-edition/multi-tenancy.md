@@ -2,7 +2,7 @@
 title: Multi-tenancy configuration
 ---
 
-This section dives into how you can configure multi-tenancy in your Kestra instance. For a high-level overview, check the multi-tenancy section of the [Architecture documentation](../../../01.architecture.md#multi-tenancy) or the [Tenants page](../../../08.kestra-editions/03.tenants.md).
+This section dives into how you can configure multi-tenancy in your Kestra instance. For a high-level overview, check the multi-tenancy section of the [Architecture documentation](../../../03.concepts/multi-tenancy.md) or the [Tenants page](../../../08.kestra-editions/03.tenants.md).
 
 ## Enabling multi-tenancy
 

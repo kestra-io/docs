@@ -22,13 +22,13 @@ Following trigger properties can be set.
 |`type`| The Java FQDN of the trigger.                                                                        |
 |`description`| The description of the trigger, more details [here](../01.flow.md#document-your-flow).               |
 |`disabled`| Set it to `true` to disable execution of the trigger.                                                |
-|`workerGroup.key`| To execute this trigger on a specific [Worker Group (EE)](../../01.architecture.md#worker-group-ee). |
+|`workerGroup.key`| To execute this trigger on a specific [Worker Group (EE)](../../03.concepts/worker-group.md). |
 
 ---
 
 ## Trigger variables
 
-Triggers allow you to access trigger metadata through [Variables](../05.developer-guide/03.variables/01.index.md) e.g. `{{ trigger.date }}` to access the current date of the [Schedule trigger](https://kestra.io/plugins/core/triggers/io.kestra.core.models.triggers.types.schedule), `{{ trigger.uri }}` to access the file or message from any file detection or message arrival event, as well as `{{ trigger.rows }}` for all Query triggers e.g. the [PostgreSQL Query](https://kestra.io/plugins/plugin-jdbc-postgres/triggers/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
+Triggers allow you to access trigger metadata through [Variables](../03.concepts/expression/01.index.md) e.g. `{{ trigger.date }}` to access the current date of the [Schedule trigger](https://kestra.io/plugins/core/triggers/io.kestra.core.models.triggers.types.schedule), `{{ trigger.uri }}` to access the file or message from any file detection or message arrival event, as well as `{{ trigger.rows }}` for all Query triggers e.g. the [PostgreSQL Query](https://kestra.io/plugins/plugin-jdbc-postgres/triggers/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
 
 ::alert{type="warning"}
 Note that the above-mentioned **templated variables** are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
@@ -88,4 +88,4 @@ triggers:
     sql: "SELECT * FROM my_table"
 ```
 
-Polling triggers can be evaluated on a specific [Worker Group (EE)](../01.architecture.md#worker-group-ee), thanks to the `workerGroup.key` property.
+Polling triggers can be evaluated on a specific [Worker Group (EE)](../03.concepts/worker-group.md), thanks to the `workerGroup.key` property.

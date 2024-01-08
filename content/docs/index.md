@@ -16,7 +16,7 @@ In just a few lines of code, you can [create a flow](./05.developer-guide/01.flo
 
 **Real-time & event-driven**: Kestra is built with real-time use cases in mind. You can create flows, run them, and see all their logs in real-time. Kestra can be used along with Kafka to process a large number of events at any scale.
 
-**Scalable architecture as a foundation**: Kestra's [architecture](./01.architecture.md) is built with proven and time-tested technologies. The [Enterprise Edition](/enterprise) can handle millions of executions per second without breaking a sweat, thanks to a backend built on top of Kafka and Elasticsearch.
+**Scalable architecture as a foundation**: Kestra's [architecture](./02.architecture/index.md) is built with proven and time-tested technologies. The [Enterprise Edition](/enterprise) can handle millions of executions per second without breaking a sweat, thanks to a backend built on top of Kafka and Elasticsearch.
 
 **API-first design**: Every action in Kestra is API-driven. In contrast to Python-based workflows that heavily rely on client-side implementation in a single language, Kestra's workflow definition is a config that gets sent as a payload to an API call.
 - You define in a YAML config **which tasks** do you want to orchestrate, and **how**, and that config is sent to Kestra's backend via an API call.

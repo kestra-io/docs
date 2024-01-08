@@ -14,7 +14,7 @@ Return the first defined variables or throw an exception if no variables are def
 
 Evaluate a handlebars expression at runtime based on the whole context.
 
-Mostly useful for [Lookup in current child's tasks tree](../02.basic-usage.md#parents-with-flowable-task) and dynamic tasks.
+Mostly useful for [Lookup in current child's tasks tree](../02b.using-expressions.md#parents-with-flowable-task) and dynamic tasks.
 
 
 ```handlebars
@@ -25,7 +25,7 @@ Mostly useful for [Lookup in current child's tasks tree](../02.basic-usage.md#pa
 
 First defined evaluates a handlebars expression at runtime based on the whole context or throws an exception if no variables are defined.
 
-Mostly useful for [Lookup in current child's tasks tree](../02.basic-usage.md#parents-with-flowable-task) and dynamic tasks.
+Mostly useful for [Lookup in current child's tasks tree](../02b.using-expressions.md#parents-with-flowable-task) and dynamic tasks.
 
 
 ```handlebars
@@ -40,7 +40,7 @@ Mostly useful for [Lookup in current child's tasks tree](../02.basic-usage.md#pa
 * get on `object` type map, the key at `key`
 * get on `object` type array, the index at `key`
 
-Mostly useful for [Lookup in current child's tasks tree](../02.basic-usage.md#parents-with-flowable-task) and dynamic tasks.
+Mostly useful for [Lookup in current child's tasks tree](../02b.using-expressions.md#parents-with-flowable-task) and dynamic tasks.
 
 ```handlebars
 {{ get outputs 'first' }}
