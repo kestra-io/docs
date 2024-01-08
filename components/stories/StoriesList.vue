@@ -2,14 +2,14 @@
     <div class="container mt-5">
         <div class="bd-title">
           <p class="top-breadcrumb" data-aos="fade-right">
-            stories
+            Stories
           </p>
           <h1 data-aos="fade-left" class="title"> Customers Stories</h1>
           <h5 data-aos="fade-left" class="description">Learn how we helped companies manage their critical operations.</h5>
         </div>
         <div class="row my-4">
             <div class="col-12 col-md-4 mb-4" v-for="(story, index) in stories" :key="index">
-                <StoriesCard :story="story" :icons="icons"/>
+                <StoriesCard :story="story" />
             </div>
         </div>
         <div class="d-flex justify-content-between my-5">
@@ -31,10 +31,6 @@ const props = defineProps({
         type: Array,
         required: true
     },
-    icons: {
-        type: Object,
-        required: true
-    },
     totalStories: {
         type: Number,
         default: 1
@@ -44,7 +40,7 @@ const emits = defineEmits(['fetchPageData'])
 const itemsPerPage = ref(25);
 const currentPage = ref(1);
 const totalPages = computed(()=>{
-    return Math.ceil(props.totalStories / itemsPerPage.value)  
+    return Math.ceil(props.totalStories / itemsPerPage.value)
 })
 const changePage = (pageNo) => {
     currentPage.value = pageNo

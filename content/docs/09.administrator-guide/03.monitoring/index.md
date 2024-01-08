@@ -66,6 +66,70 @@ Adding this single flow will ensure that you receive a Slack alert on any flow f
 
 ![alert notification](/docs/administrator-guide/alert-notification.png)
 
+::alert{type="warning"}
+Note that if you want this alert to be sent on failure across multiple namespaces, you will need to add an ``OrCondition`` to the ``conditions`` list. See the example below:
+```yaml
+id: alert
+namespace: system
+
+tasks:
+  - id: send
+    type: io.kestra.plugin.notifications.slack.SlackExecution
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    channel: "#general"
+    executionId: "{{trigger.executionId}}"
+
+triggers:
+  - id: listen
+    type: io.kestra.core.models.triggers.types.Flow
+    conditions:
+      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+        in:
+          - FAILED
+          - WARNING
+      - type: io.kestra.core.models.conditions.types.OrCondition
+        conditions:
+          - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
+            namespace: product
+            prefix: true
+          - type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            flowId: cleanup
+            namespace: system
+```
+::
+
+The example above is correct. However, if you instead list the conditions without the ``OrCondition``, no alerts would be sent as kestra would try to match all criteria and there would be no overlap between the two conditions (they would cancel each other out). See the example below:
+
+```yaml
+id: bad_example
+namespace: system
+description: This example will not work
+
+tasks:
+  - id: send
+    type: io.kestra.plugin.notifications.slack.SlackExecution
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    channel: "#general"
+    executionId: "{{trigger.executionId}}"
+
+triggers:
+  - id: listen
+    type: io.kestra.core.models.triggers.types.Flow
+    conditions:
+      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+        in:
+          - FAILED
+          - WARNING
+      - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
+        namespace: product
+        prefix: true
+      - type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+        flowId: cleanup
+        namespace: system
+```
+
+Here, there's no overlap between the two conditions. The first condition will only match executions in the `product` namespace, while the second condition will only match executions from the `cleanup` flow in the `system` namespace. If you want to match executions from the `cleanup` flow in the `system` namespace **or** any execution in the `product` namespace, make sure to add the ``OrCondition``.
+
 
 ## Monitoring
 

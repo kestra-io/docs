@@ -2,7 +2,7 @@
 title: Triggers & schedule
 ---
 
-Kestra supports both **scheduled** and **external events**.
+Kestra supports both **scheduled** and **external** events.
 
 Kestra core provides three types of triggers:
 
@@ -16,13 +16,13 @@ Many other triggers are available from the plugins, such as triggers based on fi
 
 Following trigger properties can be set.
 
-| Field | Description                                                                                                   |
-| ----- |---------------------------------------------------------------------------------------------------------------|
-|`id`| The flow identifier, must be unique inside a flow.                                                               |
-|`type`| The Java FQCN of the trigger.                                                                                  |
-|`description`| The description of the trigger, more details [here](../01.flow.md#document-your-flow).                  |
-|`disabled`| Set it to `true` to disable execution of the trigger.                                                      |
-|`workerGroup.key`| To execute this trigger on a specific [Worker Group (EE)](../../01.architecture.md#worker-group-ee).|
+| Field | Description                                                                                          |
+| ----- |------------------------------------------------------------------------------------------------------|
+|`id`| The flow identifier, must be unique inside a flow.                                                   |
+|`type`| The Java FQDN of the trigger.                                                                        |
+|`description`| The description of the trigger, more details [here](../01.flow.md#document-your-flow).               |
+|`disabled`| Set it to `true` to disable execution of the trigger.                                                |
+|`workerGroup.key`| To execute this trigger on a specific [Worker Group (EE)](../../01.architecture.md#worker-group-ee). |
 
 ---
 
@@ -67,7 +67,7 @@ Kestra provides polling triggers for a wide variety of external systems: databas
 
 Polling triggers will poll the external system at a fixed interval defined by the `interval` property, the triggered flow will have the outputs of the polling trigger available on the `trigger` variable.
 
-For example, the following flow will be triggered when rows are available on the `my_table` PostgreSQL table, and when triggered, it will delete the rows (to avoid processing them again on the next pol) and log them.
+For example, the following flow will be triggered when rows are available on the `my_table` PostgreSQL table, and when triggered, it will delete the rows (to avoid processing them again on the next poll) and log them.
 
 ```yaml
 id: jdbc-trigger

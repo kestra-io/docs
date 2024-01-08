@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="hero container">
             <div class="row">
-                <div class="col-md-6 align-items-center d-flex">
+                <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
                     <div>
                         <p data-aos="fade-left" class="overline">Enterprise Edition</p>
                         <h1 data-aos="fade-right">Kestra Enterprise to Scale Your Workflows<span class="dot">.</span></h1>
@@ -15,7 +15,7 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="col-md-6 ">
+                <div class="col-md-6 order-0 order-md-1">
                     <img class="img-fluid" src="/landing/ee/background.svg" alt="Illustration of Kestra's logo with a dark background" data-aos="zoom-in"/>
                 </div>
             </div>
@@ -47,7 +47,6 @@
                 }
 
                 & > :last-child {
-                    position: absolute;
                     z-index: 0;
                     margin: 0 auto;
                     top: 0;

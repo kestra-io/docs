@@ -110,6 +110,15 @@
                                     </p>
                                 </NuxtLink>
                             </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/blueprints" @click="globalClick(true)">
+                                    <Ballot/>
+                                    <p>
+                                        <span>Blueprints</span><br/>
+                                        Explore blueprints to kick-start your next flow
+                                    </p>
+                                </NuxtLink>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -219,7 +228,7 @@
                             </span>
                         </NuxtLink>
 
-                        <a @click="globalClick(true)" href="#" class="d-block d-sm-none d-sm-inline-block mb-1 mn-sm-0 btn btn-info btn-sm" ref="search-button" data-bs-toggle="modal" data-bs-target="#search-modal">
+                        <a @click="globalClick(true)" href="#" class="d-block d-sm-none d-sm-inline-block mb-1 mn-sm-0 btn btn-info btn-sm" id="header-search-button" data-bs-toggle="modal" data-bs-target="#search-modal">
                             <Magnify/> Search
                         </a>
 
@@ -232,40 +241,6 @@
         </div>
     </nav>
 
-    <div v-on="{ 'shown.bs.modal': focusSearch }" class="modal modal-lg fade" id="search-modal" tabindex="-1" aria-labelledby="search-modal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="col-12">
-                        <label class="visually-hidden" for="search-input">Search</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><Magnify/></span>
-                            <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search"/>
-                        </div>
-                    </div>
-                    <div class="search-result p-3" v-if="searchValue" @mouseover="onSearchMouseOver" @mouseout="onSearchMouseOut">
-                        <div v-for="(result, index) in searchResults">
-                            <a :href="result.slug" :class="{'active': index === selectedIndex && !searchOver}">
-                                <div class="slug">
-                                    <span :class="{first: index === 0}"  v-for="(item, index) in breadcrumb(result.slug)" :key="item" >{{ item }}</span>
-                                </div>
-                                <div class="result rounded-3">
-                                    <div>
-                                        <h5>{{ result.title }}</h5>
-                                        <p v-if="result.content.length > 0" v-html="result.content[0]" class="search-result-extract"/>
-                                    </div>
-                                    <ArrowRight />
-                                </div>
-                            </a>
-                        </div>
-                        <div v-if="searchValue && searchResults && searchResults.length === 0" class="alert alert-warning mb-0" role="alert">
-                            No results found for the current search
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </template>
 
 <script setup>
@@ -286,13 +261,13 @@
     import Terraform from "vue-material-design-icons/Terraform.vue"
     import Slack from "vue-material-design-icons/Slack.vue"
     import Reload from "vue-material-design-icons/Reload.vue"
+    import Ballot from "vue-material-design-icons/Ballot.vue"
     import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
     import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
     import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
 </script>
 
 <script>
-    import axios from "axios";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
     import GithubButton from "../layout/GithubButton.vue";
 
@@ -303,14 +278,10 @@
         },
         data() {
             return {
-                searchResults: undefined,
                 transparentHeader: false,
                 transparentClass: false,
                 isOpen: false,
-                cancelToken: undefined,
-                selectedIndex: 0,
-                searchValue: undefined,
-                searchOver: false
+
             }
         },
         collapse: undefined,
@@ -321,7 +292,6 @@
 
             if (process.client) {
                 window.addEventListener('scroll', this.handleScroll);
-                window.addEventListener('keydown', this.handleKeyboard);
             }
 
             if (process.client) {
@@ -330,7 +300,6 @@
                 })
             }
 
-            this.cancelToken = axios.CancelToken.source();
         },
         watch: {
             $route(to) {
@@ -346,34 +315,10 @@
         unmounted() {
             if (process.client) {
                 window.removeEventListener('scroll', this.handleScroll);
-                window.removeEventListener('keydown', this.handleKeyboard);
                 document.documentElement.style.removeProperty("--top-bar-height");
             }
         },
         methods: {
-            focusSearch() {
-                document.querySelector('#search-input').focus();
-            },
-            search(query) {
-                this.searchValue = query;
-                this.selectedIndex = 0;
-
-                return axios.get("/api/search", {
-                    params: {
-                        query: query
-                    },
-                    cancelToken: this.cancelToken.token
-                }).then(response => {
-                    this.searchResults = response.data;
-
-                    return response.data;
-                })
-            },
-            breadcrumb(slug) {
-                return [...new Set(slug.split("/")
-                    .filter(r => r !== ""))
-                ]
-            },
             mouseElement(element) {
                 if (element.classList.contains("nav-link")) {
                     return element;
@@ -393,12 +338,6 @@
                 element.classList.remove('show');
                 element.nextElementSibling.classList.remove('show');
             },
-            onSearchMouseOver(event) {
-                this.searchOver = true;
-            },
-            onSearchMouseOut(event) {
-                this.searchOver = false;
-            },
             handleScroll() {
                 if (this.transparentHeader) {
                     if (window.scrollY > 30) {
@@ -408,39 +347,7 @@
                     }
                 }
             },
-            handleKeyboard(e) {
-                if (e.key === "k" && e.ctrlKey) {
-                    e.preventDefault(); // present "Save Page" from getting triggered.
 
-                    this.$refs["search-button"].click();
-                }
-
-                if (e.key === "ArrowUp") {
-                    this.selectedIndex = this.selectedIndex <= 1 ? 0 : this.selectedIndex-1;
-                    this.handleSearchScroll();
-                }
-
-                if (e.key === "ArrowDown" && this.searchResults) {
-                    this.selectedIndex = this.selectedIndex >= this.searchResults.length - 1 ? this.searchResults.length - 1 : this.selectedIndex+1;
-                    this.handleSearchScroll();
-                }
-
-                if (e.key === "Enter" && this.searchResults && this.searchResults[this.selectedIndex]) {
-                    document.querySelector(".search-result .active").click();
-                }
-            },
-            handleSearchScroll() {
-                let active = document.querySelector(".search-result .active");
-                let container = document.querySelector(".search-result");
-
-                if (active) {
-                    if ((active.offsetTop + active.offsetHeight) >= container.offsetHeight) {
-                        container.scrollTop = active.offsetTop;
-                    } else if (active.offsetTop < container.offsetHeight) {
-                        container.scrollTop = 0;
-                    }
-                }
-            },
             globalClick(close) {
                 if (close) {
                     if (this.$refs.navbar.classList.contains("open")) {
@@ -732,7 +639,7 @@
                     background: #200149;
                 }
 
-                .navbar-collapse ul.navbar-nav li .dropdown-menu .dropdown-item  {
+                .navbar-collapse ul.navbar-nav li .dropdown-menu .dropdown-item {
                     color: var(--bs-white);
                     --bs-dropdown-link-hover-bg: #{rgba($gray-100, 5%)};
                     --bs-dropdown-link-active-bg: #{rgba($gray-100, 5%)};
@@ -770,123 +677,6 @@
     .wrapper.announce {
         nav {
             top: 40px;
-        }
-    }
-
-    #search-modal {
-        .input-group-text {
-            background: transparent;
-            font-size: 1.25rem;
-            border-bottom-left-radius: 0;
-            background: var(--bs-white);
-            border-top-left-radius: $border-radius-lg;
-        }
-
-        .form-control {
-            border-left: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        .form-control:focus {
-            box-shadow: none;
-            border-color: var(--bs-border-color);
-        }
-
-        .modal-content {
-            background: none;
-            border: 0;
-        }
-
-        .modal-body {
-            padding: 0;
-        }
-
-        .search-result {
-            overflow: auto;
-            max-height: 93vh;
-            background: var(--bs-white);
-            border: 1px solid var(--bs-border-color);
-            border-bottom-left-radius: $border-radius-lg;
-            border-bottom-right-radius: $border-radius-lg;
-
-            .slug {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                width: 100%;
-                font-size: $font-size-xs;
-                color: var(--bs-gray-600);
-                margin-bottom: calc($spacer / 3);
-
-                span {
-                    margin-left: 0.25rem;
-
-                    &:before {
-                        content: '/';
-                        margin-right: 0.25rem;
-
-                    }
-
-                    &:first-child {
-                        &:before {
-                            display: none;
-                        }
-                    }
-
-                    &.first {
-                        font-weight: bold;
-                    }
-                }
-
-                .breadcrumb-item + .breadcrumb-item::before {
-                    color: $pink;
-                }
-            }
-
-            .result {
-                background: var(--bs-gray-100);
-                transition: background-color 0.2s ease;
-                padding: 1.25rem ;
-                margin-bottom: calc($spacer * 1.5);
-                display: flex;
-                > div {
-                    flex-grow: 1;
-
-                    h5 {
-                        font-size: $font-size-lg;
-                        font-weight: bold;
-                        margin-bottom: 0;
-                        color: var(--bs-dark);
-                    }
-
-                    p {
-                        color: var(--bs-gray-600);
-                        font-size: $font-size-sm;
-                        margin-bottom: 0;
-                    }
-                }
-
-
-                span.material-design-icon {
-                    font-size: 1rem;
-                    opacity: 0;
-                    transition: opacity 0.2s ease;
-                }
-
-                mark {
-                    background-color: transparent;
-                    padding: 0;
-                    color: $primary;
-                }
-            }
-
-            .active .result, .result:hover {
-                background: var(--bs-gray-200);
-
-                span.material-design-icon {
-                    opacity: 1;
-                }
-            }
         }
     }
 </style>
