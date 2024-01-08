@@ -1,7 +1,7 @@
 <template>
     <div ref="container" class="container">
         <div ref="companies" class="companies">
-            <template v-for="(img, index) in companies">
+            <template v-for="(img, index) in companies" :key="index">
                 <img
                     data-aos="fade-up"
                     :class="{'inverted': inverted}"
@@ -87,13 +87,16 @@
 
     @keyframes auto-scroll {
         0% {
-            margin-left: 0;
+            -webkit-transform: translateX(0);
+            transform: translateX(0);
         }
         50% {
-            margin-left: -25%;
+            -webkit-transform: translateX(calc(-250px * 7));
+            transform: translateX(calc(-250px * 7));
         }
         100% {
-            margin-left: 0;
+            -webkit-transform: translateX(0);
+            transform: translateX(0);
         }
     }
 
@@ -101,8 +104,10 @@
         .container {
             width: fit-content;
             max-width: unset;
-
+            
             .companies {
+                width: calc(250px * 14);
+                position: relative;
                 display: flex;
                 flex-wrap: nowrap;
                 overflow-x: auto;
