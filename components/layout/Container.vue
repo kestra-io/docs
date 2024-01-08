@@ -33,85 +33,11 @@
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
     import NavToc from "~/components/docs/NavToc.vue";
     import {hash} from "ohash";
-    import {fetchContentNavigation, useAsyncData} from "#imports";
-    import { kestraInstance } from "~/utils/api.js";
+    import {kestraInstance} from "~/utils/api.js";
 
-    let plugins;
-    let categories;
+    const generateSubMenu = (baseUrl, group, items) => generateSubMenuWithGroupProvider(baseUrl, () => group, items);
 
-    const props = defineProps({
-        type: {
-            type: String,
-            required: true
-        },
-        prevNext: {
-            type: Boolean,
-            required: false,
-            default: true
-        },
-    })
-
-    const isDoc = computed(() => props.type === 'docs');
-
-    const route = useRoute()
-    const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
-    let page;
-    watch(slug, () => {
-        fetchPageContent();
-    });
-
-    await fetchPageContent();
-
-    const {navigation, pageList} = await fetchNavigation();
-
-    useContentHead(page);
-
-    async function fetchPageContent() {
-        if (slug.value === '/plugins/') {
-            const {data: pluginsData} = await useAsyncData('plugins', () => {
-                return kestraInstance.get(`/plugins`);
-            });
-            plugins = ref(pluginsData.value.data);
-
-            const {data: categoriesData} = await useAsyncData('plugin-categories', () => {
-                return kestraInstance.get(`/plugins/categories`);
-            });
-
-            categories = ref(categoriesData.value.data);
-        }
-
-        const parts = slug.value.split('/');
-        const pageName = parts[parts.length - 1];
-        if (props.type === 'plugins' && pageName) {
-            const {data: pluginInformation} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
-                if (parts.length === 3) {
-                    return $fetch(`/api/plugins?page=${pageName}&type=plugin`)
-                } else {
-                    return $fetch(`/api/plugins?page=${pageName}&type=definitions`)
-                }
-            });
-            page = pluginInformation.value.descriptionAsMd;
-        } else {
-            const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
-                try {
-                    return queryContent(slug.value).findOne();
-                } catch (error) {
-                    throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
-                }
-            });
-            page = data.value;
-
-            if (error && error.value) {
-                throw error.value;
-            }
-        }
-    }
-
-    function generateSubMenu(baseUrl, group, items) {
-        return generateSubMenuWithGroupProvider(baseUrl, () => group, items);
-    }
-
-    function generateSubMenuWithGroupProvider(baseUrl, groupProviderFromItem, items) {
+    const generateSubMenuWithGroupProvider = (baseUrl, groupProviderFromItem, items) => {
         let itemsBySubmenu = items.reduce((m, item) => {
             const subMenuSplitter = item.lastIndexOf(".");
             if (subMenuSplitter === -1) {
@@ -147,11 +73,11 @@
         });
     }
 
-    function capitalize(string) {
+    const capitalize = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    function recursivePages(item) {
+    const recursivePages = (item) => {
         const paths = [];
         if (item.isPage ?? true) {
             paths.push(item._path);
@@ -165,14 +91,14 @@
         return paths;
     }
 
-    async function fetchNavigation() {
+    const fetchNavigation = async () => {
         const queryBuilder = queryContent('/' + props.type + '/').without("body");
 
         let navigationFetch;
         if (props.type === "plugins") {
             const categories = ['tasks', 'triggers', 'conditions', 'controllers', 'storages', 'secrets', 'guides'];
             navigationFetch = await useAsyncData(
-                'plugins',
+                'plugins-nav',
                 () => $fetch(`https://api.kestra.io/v1/plugins`),
                 {
                     transform: plugins => {
@@ -265,6 +191,71 @@
             .replace(/([A-Z])/g, '&#x200B;$1')
             .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
     }
+
+    let plugins;
+    let categories;
+
+    const props = defineProps({
+        type: {
+            type: String,
+            required: true
+        },
+        prevNext: {
+            type: Boolean,
+            required: false,
+            default: true
+        },
+    })
+
+    const isDoc = computed(() => props.type === 'docs');
+
+    const route = useRoute()
+    const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
+    let page;
+
+    if (slug.value === '/plugins/') {
+        const {data: pluginsData} = await useAsyncData('plugins', async () => {
+            return (await kestraInstance.get(`/plugins`)).data;
+        });
+        plugins = ref(pluginsData.value);
+
+        const {data: categoriesData} = await useAsyncData('plugin-categories', async () => {
+            return (await kestraInstance.get(`/plugins/categories`)).data;
+        });
+
+        categories = ref(categoriesData.value);
+    }
+
+    const parts = slug.value.split('/');
+    const pageName = parts[parts.length - 1];
+    if (props.type === 'plugins' && pageName) {
+        const {data: pluginInformation} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
+            if (parts.length === 3) {
+                return $fetch(`/api/plugins?page=${pageName}&type=plugin`)
+            } else {
+                return $fetch(`/api/plugins?page=${pageName}&type=definitions`)
+            }
+        });
+        page = pluginInformation.value.descriptionAsMd;
+    } else {
+        const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
+            try {
+                return queryContent(slug.value).findOne();
+            } catch (error) {
+                throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
+            }
+        });
+        page = data.value;
+
+        if (error && error.value) {
+            throw error.value;
+        }
+    }
+
+    const {navigation, pageList} = await fetchNavigation();
+
+    useContentHead(page);
+
     const {description, title} = page;
     const { origin } = useRequestURL()
     useHead({
@@ -312,6 +303,3 @@
     width: 100%;
 }
 </style>
-
-
-
