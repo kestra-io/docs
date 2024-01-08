@@ -5,14 +5,14 @@
     </Head>
     <div class="main">
         <RetailCard :content="header" />
-        <Line class="line-margin" />
-        <UseCasesExamples :items="solutions.items" />
-        <Line class="line-margin" />
+        <Line />
+        <UseCasesExamples :content="solutions" />
+        <Line />
         <LeroyMerlin :content="leroy" />
-        <Line class="line-margin" />
+        <Line />
         <RetailOps :content="ops" />
         <Plugins :content="plugins" />
-        <Line class="line-margin" />
+        <Line />
         <Footer :content="footer" />
     </div>
 </template>
@@ -51,13 +51,8 @@ export default {
 @import "../../assets/styles/variable";
 
 .main {
-    background-color: #111113;
+    background-color: $black-4;
     color: $white;
     font-weight: 300;
-}
-
-.line-margin {
-    margin-top: 4rem;
-    margin-bottom: 4rem;
 }
 </style>

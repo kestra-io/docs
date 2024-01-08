@@ -14,7 +14,7 @@
             </button>
         </div>
         <div class="row my-4" data-aos="fade-right">
-            <div class="col-12 search-input position-relative" v-click-outside="handleClickOutside">
+            <div class="col-12 search-input position-relative">
                 <input type="text" class="form-control form-control-lg" placeholder="Search across +400 of plugins" v-model="searchQuery" @focus="handleFocus">
                 <Magnify class="search-icon" />
                 <div class="search-list" v-if="searchMenu">

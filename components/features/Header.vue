@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="hero container">
             <div class="row">
-                <div class="col-md-6 align-items-center d-flex">
+                <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
                     <div>
                         <h1 data-aos="fade-right">Fast, Scalable, and Declarative Data Management</h1>
                         <p class="baseline" data-aos="fade-left">Create and Deploy all kinds of Data Pipelines with Ease and Speed with Kestra: Your All-in-One Solution for Orchestrating Workflows</p>
@@ -16,7 +16,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6" data-aos="zoom-in">
+                <div class="col-md-6 order-0 order-md-1 mt-3" data-aos="zoom-in">
                     <img class="zoom img-fluid" src="/landing/features/header.png" alt="A screenshot of the user interface of Kestra's application"/>
                 </div>
             </div>

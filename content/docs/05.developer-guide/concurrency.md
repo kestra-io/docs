@@ -8,7 +8,7 @@ You can treat that concurrency as a global concurrency limit for that specific f
 
 For example, if you set the concurrency `limit` to 2, then only two executions of that flow will be allowed to run at the same time. If you try to trigger a third execution, it will be, by default, queued until one of the two running executions is completed.
 
-It's also possible to CANCEL or FAIL an execution if the concurrency limit is reached. You can customize that behavior by setting the `behavior`, which is an Enum-type property with three possible values: `QUEUE`, `CANCEL` or `FAIL`. When using the `CANCEL` or `FAIL` behavior, the third execution's state will be immediately set to `CANCELLED` or `FAILED` status without running any task.
+It's also possible to CANCEL or FAIL an execution if the concurrency limit is reached. You can customize that behavior by setting the `behavior`, which is an Enum-type property with three possible values: `QUEUE`, `CANCEL` or `FAIL`. When `concurrency` is set to 2, and using the `CANCEL` or `FAIL` behavior, the third execution's state will be immediately set to `CANCELLED` or `FAILED` status respectively without running any task.
 
 Here is an example flow that uses the `concurrency` property to limit the number of concurrent executions to 2. The `bash` task will sleep for 10 seconds, so you can trigger multiple executions of that flow and see how the `concurrency` property behaves.
 

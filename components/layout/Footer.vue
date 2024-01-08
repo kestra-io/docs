@@ -37,6 +37,7 @@
                             <ul class="list-unstyled">
                                 <li class="mb-2"><NuxtLink href="/community">Community Overview</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/blogs">Blog</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/write-for-us">Write for Us</NuxtLink></li>
                                 <li class="mb-2"><a href="https://kestra.io/slack" target="_blank">Slack</a></li>
                                 <li class="mb-2"><a href="https://github.com/kestra-io" target="_blank">Github</a></li>
                             </ul>

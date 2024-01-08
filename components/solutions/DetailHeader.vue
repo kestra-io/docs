@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="hero hero-sm container">
             <div class="row">
-                <div class="col-lg-6 align-items-center d-flex">
+                <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
                     <div>
                         <h1 data-aos="fade-right">{{ title }}</h1>
                         <p data-aos="fade-left" class="baseline">{{ subtitle }}</p>
@@ -11,7 +11,7 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 order-0 order-lg-1">
                     <img class="mt-5 mt-md-0" data-aos="zoom-in" :src="image" :alt="title" />
                 </div>
             </div>

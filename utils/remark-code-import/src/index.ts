@@ -43,7 +43,7 @@ function codeImport(options: CodeImportOptions = {}) {
   }
 
   return (tree: any, file: VFile) => {
-    const codes: [Code, number | undefined | null, Parent][] = [];
+    const codes: [Code, number | undefined | null | undefined, Parent][] = [];
 
     if (file) {
       visit(tree, 'code', (node, index, parent) => {

@@ -25,4 +25,4 @@ kestra:
 Google Cloud project ID that Kestra will use.
 
 ### `kestra.secret.google-secret-manager.prefix`
-Optional. All key handled by kestra will be prefixed with this. Can be useful to share the same secret manager between Kestra instances.
+Optional. All key handled by Kestra will be prefixed with this. Can be useful to share the same secret manager between Kestra instances.

@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="row h-100" :style="{ 'background-image': `url(${heroImage})` }">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-6 order-1 order-md-0">
                 <div class="h-100 d-flex justify-content-end align-items-center">
                     <div class="container">
                         <DocsBreadcrumb :slug="slug" :page-list="pagelist" class="top-breadcrumb top-heading"/>
@@ -14,8 +14,11 @@
                     </div>
                 </div>
             </div>
+            <div class="order-0 order-md-1 d-flex d-md-none">
+                <img :src="heroImage" class="img-fluid" alt="stories logo with a dark background" data-aos="zoom-in"/>
+            </div>
         </div>
-    </div>
+    </div> 
 </template>
 
 <script setup>
@@ -50,10 +53,16 @@ const pagelist = ['/stories', props.slug]
     background-repeat: no-repeat;
     background-position: center;
     height: 640px;
+    @include media-breakpoint-down(md){
+        height: 720px;
+    }
 
     .row {
         background-repeat: no-repeat;
         background-position: 80%;
+        @include media-breakpoint-down(md){
+            background-image: none !important; 
+        }
 
         .container {
             max-width: 500px;

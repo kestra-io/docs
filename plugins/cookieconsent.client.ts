@@ -1,17 +1,32 @@
 import 'vanilla-cookieconsent'
+import posthog from 'posthog-js'
 
 export default defineNuxtPlugin(nuxtApp => {
+    let isProd = process.env.NODE_ENV === "production";
+    const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
 
     nuxtApp.hook('page:finish', () => {
         const {grantConsent} = useGtag()
 
-        const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
+        const enabledAnalytics = () => {
+            posthog.init(
+                isProd ? 'phc_8lNe3YuQj9gyJcCJOGy4RwMCUFzHQ7siGPr8aeodhxR' : 'phc_yhgr3gbIyqI0yoPfOUT1ZE6ETVmWHlc6SPbeyPBrFjX',
+                {
+                    api_host: '/api/events',
+                    ui_host: 'https://eu.posthog.com',
+                }
+            )
+        };
+
+        const enabledMarketing = () => {
+            cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
+        };
 
         const cookieConsent = window.initCookieConsent()
 
         if (!isEurope) {
-            grantConsent();
-            cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
+            enabledAnalytics();
+            enabledMarketing();
 
             return;
         }
@@ -29,11 +44,14 @@ export default defineNuxtPlugin(nuxtApp => {
             page_scripts: true,
             force_consent: true,
             onAccept: () => {
-                if(cookieConsent.allowedCategory('analytics')) {
-                    grantConsent();
-                    if (cookieConsent.allowedCategory('marketing')) {
-                        cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
-                    }
+                grantConsent();
+
+                if (cookieConsent.allowedCategory('analytics')) {
+                    enabledAnalytics();
+                }
+
+                if (cookieConsent.allowedCategory('marketing')) {
+                    enabledMarketing();
                 }
             },
 

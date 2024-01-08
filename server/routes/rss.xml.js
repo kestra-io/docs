@@ -1,5 +1,5 @@
 import { serverQueryContent } from '#content/server'
-import RSS from 'rss'
+import RSS from "rss"
 
 const SITE_URL = "https://kestra.io"
 
@@ -24,6 +24,6 @@ export default defineEventHandler(async (event) => {
     }
     const feedString = feed.xml({ indent: true })
 
-    event.res.setHeader('content-type', 'text/xml')
-    event.res.end(feedString)
+    event.node.res.setHeader('content-type', 'text/xml')
+    event.node.res.end(feedString)
 })

@@ -28,4 +28,4 @@ Name of the Azure Key Vault to use.
 Optionally you can provide the full Azure Key Vault url instead of its name.
 
 ### `kestra.secret.azure-key-vault.prefix`
-Optional. All key handled by kestra will be prefixed with this. Can be useful to share the same secret manager between Kestra instances.
+Optional. All key handled by Kestra will be prefixed with this. Can be useful to share the same secret manager between Kestra instances.

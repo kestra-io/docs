@@ -1,4 +1,3 @@
-import codeImport from 'remark-code-import';
 export default defineNuxtConfig({
   modules: [
       '@nuxt/devtools',
@@ -62,10 +61,10 @@ export default defineNuxtConfig({
       markdown: {
           remarkPlugins: {
               'remark-flexible-markers': {
-                  markerClassName: 'type-mark'
+                  markerClassName: 'type-mark',
               },
               'remark-code-import': {
-                  instance: codeImport
+                  rootDir: process.cwd()
               },
           }
       },
@@ -86,6 +85,24 @@ export default defineNuxtConfig({
       compilerOptions: {
           isCustomElement: (tag) => {
               return tag === "rapi-doc";
+          }
+      }
+  },
+
+  vite: {
+      optimizeDeps: {
+          include: [
+            "humanize-duration",
+            "lodash",
+            "dagre"
+          ],
+          exclude: [
+              '* > @kestra-io/ui-libs'
+          ]
+      },
+      resolve: {
+          alias: {
+              'node:path': 'path-browserify'
           }
       }
   },
@@ -122,6 +139,7 @@ export default defineNuxtConfig({
       '/company/company/about-us.html': {redirect: '/about-us'},
       '/community.html': {redirect: '/community'},
       '/slack': {redirect: 'https://api.kestra.io/v1/communities/slack/redirect'},
+      '/api/events/**': { proxy: 'https://eu.posthog.com/**' },
   },
 
   build: {
