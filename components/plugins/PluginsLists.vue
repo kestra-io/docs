@@ -83,7 +83,7 @@
     const router = useRouter();
 
     if(props.categories) {
-        categories.value = ['All Categories' , ...props.categories];
+        categories.value = ['All Categories', ...props.categories];
     }
 
     const setActiveCategory = (category) => {

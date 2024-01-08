@@ -1,11 +1,13 @@
 <template>
     <div class="container bd-gutter bd-layout margin">
-        <NavSideBar :type="type" :navigation="navigation" />
-
-        <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false , 'docs' : isDoc}">
+        <NavSideBar v-if="navigation" :type="type" :navigation="navigation" />
+        <div class="container" v-if="slug === '/plugins/'">
+            <PluginsLists :plugins="plugins" :categories="categories" />
+        </div>
+        <article v-else-if="page" class="bd-main order-1" :class="{'full': page.rightBar === false , 'docs' : isDoc}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
-                    <Breadcrumb :slug="props.slug" :pageList="pageList"/>
+                    <Breadcrumb :slug="slug" :pageList="pageList"/>
                     <h1 v-html="transformTitle(page.title)" class="py-0 title "></h1>
                 </div>
 
@@ -32,12 +34,12 @@
     import NavToc from "~/components/docs/NavToc.vue";
     import {hash} from "ohash";
     import {fetchContentNavigation, useAsyncData} from "#imports";
+    import { kestraInstance } from "~/utils/api.js";
+
+    let plugins;
+    let categories;
 
     const props = defineProps({
-        slug: {
-            type: String,
-            required: true
-        },
         type: {
             type: String,
             required: true
@@ -48,20 +50,40 @@
             default: true
         },
     })
-    const isDoc = computed(() => props.type === 'docs')
 
-    let page = await fetchPageContent();
+    const isDoc = computed(() => props.type === 'docs');
+
+    const route = useRoute()
+    const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
+    let page;
+    watch(slug, () => {
+        fetchPageContent();
+    });
+
+    await fetchPageContent();
 
     const {navigation, pageList} = await fetchNavigation();
 
-    useContentHead(page)
+    useContentHead(page);
 
     async function fetchPageContent() {
-        let page;
-        const parts = props.slug.split('/');
+        if (slug.value === '/plugins/') {
+            const {data: pluginsData} = await useAsyncData('plugins', () => {
+                return kestraInstance.get(`/plugins`);
+            });
+            plugins = ref(pluginsData.value.data);
+
+            const {data: categoriesData} = await useAsyncData('plugin-categories', () => {
+                return kestraInstance.get(`/plugins/categories`);
+            });
+
+            categories = ref(categoriesData.value.data);
+        }
+
+        const parts = slug.value.split('/');
         const pageName = parts[parts.length - 1];
         if (props.type === 'plugins' && pageName) {
-            const {data: pluginInformation} = await useAsyncData(`Container-${hash(props.slug)}`, () => {
+            const {data: pluginInformation} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
                 if (parts.length === 3) {
                     return $fetch(`/api/plugins?page=${pageName}&type=plugin`)
                 } else {
@@ -70,9 +92,9 @@
             });
             page = pluginInformation.value.descriptionAsMd;
         } else {
-            const {data, error} = await useAsyncData(`Container-${hash(props.slug)}`, () => {
+            const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
                 try {
-                    return queryContent(props.slug).findOne();
+                    return queryContent(slug.value).findOne();
                 } catch (error) {
                     throw createError({statusCode: 404, message: error.toString(), data: error, fatal: true})
                 }
@@ -83,7 +105,6 @@
                 throw error.value;
             }
         }
-        return page;
     }
 
     function generateSubMenu(baseUrl, group, items) {
@@ -278,7 +299,7 @@
     font-size: 1.5rem;
     font-weight: 600;
     line-height: 2.375;
-    margin: 0px;
+    margin: 0;
 }
 :deep(h3 > a ){
     font-size: 1.5rem;

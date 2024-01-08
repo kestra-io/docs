@@ -55,7 +55,7 @@
                 return this.$route.path
             },
             items() {
-                return this.navigation[0].children
+                return this.navigation?.[0]?.children ?? []
             }
         },
     });
