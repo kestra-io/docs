@@ -116,7 +116,7 @@
                 margin: auto;
 
                 &.scrolling {
-                    animation: auto-scroll 15s infinite linear;
+                    animation: auto-scroll 30s infinite linear;
                 }
             }
         }
