@@ -13,7 +13,7 @@
                 <div class="col-12 col-md-6 align-items-center d-flex">
                     <div class="card">
                         <div class="card-body">
-                            <div class="meetings-iframe-container" data-src="https://meetings-eu1.hubspot.com/quentin-sinig/meeting-link-demo?embed=true"></div>
+                            <div class="meetings-iframe-container" data-src="https://meetings-eu1.hubspot.com/meetings/david76"></div>
                         </div>
                     </div>
                 </div>
