@@ -9,15 +9,15 @@ author:
 image:
 ---
 
-The goal of observability is to provide answers to one question: is everything working as expected, and if not, why not? Everything from data quality to workflow bottlenecks to user experience to CICD pipelines can and should be observable by logs, metrics and traces (the three pillars). And, as they say, absence of evidence is not evidence of absence, so success must be just as observable as failure.
+The goal of observability is to provide answers to one question: is everything working as expected, and if not, why not? Everything from data quality to workflow bottlenecks to user experience to CICD pipelines can and should be observable by logs, metrics, and traces (the three pillars). And, as they say, absence of evidence is not evidence of absence, so success must be just as observable as failure.
 
-Kestra make it easy to create, execute and monitor the progress of workflows and individual tasks in real-time, troubleshoot failure by replaying failed tasks or doing a full-text search of the workflow execution logs. This article will focus on integrating Sentry.io observability solutions with your workflows.
+Kestra makes it easy to create, execute, and monitor the progress of workflows and individual tasks in real-time, troubleshoot failure by replaying failed tasks, or doing a full-text search of the workflow execution logs. This article will focus on integrating Sentry.io observability solutions with your workflows.
 
 **What’s in this article?**
 
 Kestra has two tasks and two blueprints to help you monitor workflow executions (success, failure and everything in between), and I will explain how to use each. Both tasks allow you to send issues - Sentry’s name for the information sent to their API:
 
-- **Sentry Alert**: A free form task to use any way you want
+- **Sentry Alert**: A free-form task to use any way you want
 - **Sentry Execution**: A task that is triggered depending on Flow execution events, e.g. when a flow execution fails.
 
 Each one of these tasks is described in detail below, and at the end of the article, you’ll find one production-quality example of each task.
@@ -48,9 +48,9 @@ Each project has its own DSN, which can be found by clicking on **Settings**, th
 
 ![sentry menu](/blogs/2024-01-08-sentry-plugin/sentry_project_menu_client_keys.png)
 
-That will take you to this screen where you can copy the DSN.
+That will take you to this screen, where you can copy the DSN.
 
-**N.B. A DSN is all anyone needs to send traffic to your account and you are responsible for the cost of the traffic, so guard this as carefully as you would any API Key or password.**
+**N.B. A DSN is all anyone needs to send traffic to your account, and you are responsible for the cost of the traffic, so guard this as carefully as you would any API Key or password.**
 
 **For more on working with secrets in Kestra, see our [Managing Secrets](https://kestra.io/docs/developer-guide/secrets) guide.**
 
@@ -98,7 +98,7 @@ If you do want to use the payload property, then making use of it provides a num
 
 **Minimal payload example:**
 
-```json
+```yaml
 payload: |
       {
           "message": "Kestra Monthly Data Purge FAIL",
@@ -139,11 +139,11 @@ The **message** JSON property will become the label or title of the issue.
 
 `"message": "Kestra Task"`
 
-This value is used by Sentry to group like issues:
+Sentry uses this value to group similar issues:
 
 ![sentry issues](/blogs/2024-01-08-sentry-plugin/sentry_alert_task.png)
 
-The culprit JSON property is used to define the module or code section related to this issue:
+The `culprit` JSON property is used to define the module or code section related to this issue:
 
 It appears under the label in the Sentry dashboard.
 
@@ -161,7 +161,7 @@ The reminder of the payload should be sent as in the above example.
 
 ### Extra
 
-Sentry provides the **extra** property where you can add values as needed.  Extra can be whatever you want, and will appear in the issue details page in the **Additional Data** section.
+Sentry provides the **extra** property where you can add values as needed. That property will appear on the issue details page in the **Additional Data** section.
 
 **Example:**
 
@@ -191,7 +191,7 @@ Will produce:
 
 http://localhost:8090/ui/executions/sentry_article/sentry_info_task/1TFBhMb71oc30cvfActPxp/logs
 
-And finally, when you execute the flow, click on the Gantt line item and Kestra will show you the JSON that was sent to Sentry:**
+Finally, after you executed the flow, navigate to the logs from the Logs or Gantt tabs, and Kestra will show you the JSON that was sent to Sentry:**
 
 ![sentry produce](/blogs/2024-01-08-sentry-plugin/kestra_just_send_log_link_json.png)
 
@@ -247,7 +247,7 @@ triggers:
 This task demonstrates a really cool feature of Kestra: triggers that trigger other triggers. Let me explain.
 
 
-If you have just one flow with some non-zero likelihood of failure - you add a SentryAlert like the examples above. But what do you do when you have 10 or 20 flows? You definitely do not want to have to maintain 20 individual SentryAlert tasks. **That’s when you use the SentryExecution task because it can triggered by any other flow.**
+If you have just one flow with some non-zero likelihood of failure - you add a `SentryAlert` like the examples above. But what do you do when you have 10 or 20 flows? You definitely do not want to have to maintain 20 individual `SentryAlert` tasks. **That’s when you use the `SentryExecution` task because any other flow can trigger it.**
 
 
 Let’s imagine three flows, **foo**, **bar** and **baz** all related to your company’s payroll; you need to know if any one of these falls over. Each one of these three flows has the same namespace: **payroll**.
@@ -293,19 +293,19 @@ triggers:
         prefix: false
 ```
 
-In the YAML above, the `ExecutionStatusCondition` says that any time the execution status is either `FAILED` or `WARNING`, 
-and the `ExecutionNamespaceCondition` says that if the flow namespace matches payroll exactly, then the `send_alert` task will be executed.  
+In the YAML above, the `ExecutionStatusCondition` says that any time the execution status is either `FAILED` or `WARNING`, and the `ExecutionNamespaceCondition` says that if the flow namespace matches payroll exactly, then the `send_alert` task will be executed.  
 
-In pseudo code, the entire flow might read like this:
+In pseudo-code, the entire flow might read like this:
 
-Execute send_alert task
+Execute `send_alert` task
   When the flow execution status is equal to FAILED or WARNING
-  And the flow namespace equals payroll exactly.
+  And the flow namespace equals `payroll`.
 
-There’s also a handy variation, using prefix: true. In pseudo code, it would read like this:
+There’s also a handy variation using the `prefix: true`. In pseudo-code, it would read like this:
+
   Execute send_alert task
   When the flow execution status is equal to FAILED or WARNING
-  And the flow namespace startsWith payroll in lower case
+  And the flow namespace starts with `payroll` in lowercase
 
 ## SentryExecution Example & Result
 
@@ -394,7 +394,7 @@ triggers:
 
 Per the [online documentation](https://kestra.io/docs/concepts/executions), there are nine possible states for any execution:
 
-However, not all are available or make sense to use with the `ExecutionStatusCondition task`.  His task could be executed by the PAUSED state when someone manually pauses the task execution. The most common for states are FAILED and WARNING.
+However, not all are available or make sense with the `ExecutionStatusCondition` task. This task could be executed by the PAUSED state when someone manually pauses the task execution. The most common for states are FAILED and WARNING.
 
 - `CREATED`: The Execution or Task Run is waiting to be processed. This state usually means that the Execution is in a queue and has yet to be started.
 - `RUNNING`: The Execution or Task Run is currently running.
@@ -412,8 +412,9 @@ However, not all are available or make sense to use with the `ExecutionStatusCon
 
 Finally, let’s look at a production quality example using **SentryAlert** and **SentryExecution**.
 
-### SentryAlert Production Example
-The flow below is a production quality example using the SentryAlert task to send an issue when the get_files task throws an error. This example uses secrets, variable and taskDefaults for the db connection values and the Sentry DSN.
+### `SentryAlert` Production Example
+
+The flow below is a production-quality example using the `SentryAlert` task to send an issue when the `get_files` task throws an error. This example uses `secrets`, `variables`, and `taskDefaults` for the DB connection values and the Sentry DSN.
 
 ```yaml
 id: gen_postgresql_error_sentry_alert
@@ -471,11 +472,11 @@ taskDefaults:
       password: "{{ secret('PG_PWD') }}"
       url: jdbc:postgresql://{{vars.db_host}}:5432/{{ vars.db_name}}
      
-disabled: false
 ```
 
-### SentryExecution Production Example
-The flow below is a production quality example using the SentryExecution task. It uses the same postgresql query task as in the example above to generate the failure condition.
+### `SentryExecution` Production Example
+
+The flow below is a production quality example using the `SentryExecution` task. It uses the same Postgres query task as in the example above to generate the failure condition.
 
 First, the flow that will fail:
 
@@ -539,11 +540,11 @@ triggers:
         prefix: false
 ```
 
-## Summing up Kestra and Sentry.io Integration
+## Summing up Kestra and Sentry Integration
 
-After you’ve tried the examples above in your own environment, you’ll see how easy it is for business or technical users to add Sentry.io monitoring and alerting. From dev to production, whatever the size of your shop, Kestra and Sentry makes it easy not just to create issues from workflows, successes or failures, but tracking them throughout any of your issues’ lifecycle stages. Together, Kestra and Sentry are fully capable of delivering enterprise class workflow automation and end-to-end observability. 
+After you’ve tried the examples above in your own environment, you’ll see how easy it is for business or technical users to add Sentry.io monitoring and alerting. From dev to production, whatever the size of your shop, Kestra and Sentry help create issues from workflows, successes or failures, but tracking them throughout any of your issues’ lifecycle stages. Together, Kestra and Sentry are fully capable of delivering enterprise-grade workflow automation and end-to-end observability. 
 
-Kestra provides dashboards and metrics directly in the User Interface, as well as a number of other monitoring solutions that you can read about here: [Alerting & Monitoring](https://kestra.io/docs/administrator-guide/monitoring) or in our [Notification Blueprints](https://kestra.io/blueprints?page=1&size=24&tags=17).
+Kestra provides dashboards and metrics directly in the UI, as well as a number of other monitoring solutions that you can read about here: [Alerting & Monitoring](https://kestra.io/docs/administrator-guide/monitoring) or in our [Notification Blueprints](https://kestra.io/blueprints?page=1&size=24&tags=17).
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
