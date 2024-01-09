@@ -16,11 +16,10 @@
                     <RecursiveNavSidebar
                         :parent-slug="'/' + type"
                         :type="type"
-                        :items="navigation[0].children"
+                        :items="items"
                         :depth-level="1"
                         :active-slug="activeSlug"
-                        :open="true"
-                        :page-list="pageList"/>
+                        :open="true" />
                 </nav>
             </div>
         </div>
@@ -34,8 +33,6 @@
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import Menu from "vue-material-design-icons/Menu.vue"
     import RecursiveNavSidebar from "./RecursiveNavSidebar.vue";
-    import {fetchContentNavigation, useAsyncData} from "#imports";
-    import {hash} from "ohash";
 
     export default defineComponent({
         components: {
@@ -49,38 +46,17 @@
                 type: String,
                 required: true
             },
-            pageList: {
-                type: Array,
-                required: true
+            navigation: {
+                type: Object,
             },
-        },
-        async setup(props) {
-            const queryBuilder = queryContent('/' + props.type + '/').without("body");
-
-            const {data: navigation} = await useAsyncData(
-                `NavSideBar-${hash(props.type)}`,
-                () => fetchContentNavigation(queryBuilder)
-            );
-
-            if (props.type === "plugins") {
-                navigation.value[0].children.sort((a, b) => {
-                    const nameA = a.title.toLowerCase(),
-                        nameB = b.title.toLowerCase();
-
-                    if (nameA === "core" || nameB === "core") {
-                        return 1;
-                    }
-
-                    return nameA === nameB ? 0 : nameA < nameB ? -1 : 1;
-                });
-            }
-
-            return {navigation};
         },
         computed: {
             activeSlug() {
                 return this.$route.path
             },
+            items() {
+                return this.navigation?.[0]?.children ?? []
+            }
         },
     });
 </script>
@@ -121,7 +97,7 @@
                     @include border-radius(var(--bs-border-radius));
                 }
             }
-            
+
             @include media-breakpoint-up(lg) {
                 display: block !important; // stylelint-disable-line declaration-no-important
             }

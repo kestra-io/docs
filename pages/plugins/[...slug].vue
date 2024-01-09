@@ -1,12 +1,9 @@
 <template>
-    <DocContainer :prevNext="false" type="plugins" :slug="slug" />
+    <PluginContainer :prevNext="false" type="plugins" />
 </template>
 
 <script setup>
-    import DocContainer from "~/components/docs/Container.vue";
-
-    const route = useRoute()
-    const slug = "/plugins/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
+    import PluginContainer from "~/components/layout/Container.vue";
 </script>
 
 <style lang="scss" scoped>

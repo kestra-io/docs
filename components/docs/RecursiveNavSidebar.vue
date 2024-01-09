@@ -1,7 +1,7 @@
 <template>
     <div
-        :id="parentSlug.replaceAll('/', '_')"
-        :data-bs-parent="'#'+parentSlug.replaceAll('/', '_')"
+        :id="pathToId(parentSlug)"
+        :data-bs-parent="'#'+pathToId(parentSlug)"
         class="accordion-collapse"
         :class="activeSlug.includes(parentSlug) ? 'collapse show' : 'collapse'"
     >
@@ -31,7 +31,7 @@
                         :class="getClass(item, depthLevel, true)"
                         class="disabled"
                         @click="toggle(item._path, isPage(item))" data-bs-toggle="collapse"
-                        :data-bs-target="'#'+item._path.replaceAll('/', '_')"
+                        :data-bs-target="'#'+pathToId(item._path)"
                     >
                             {{ item.emoji }}
                             {{ item.title }}
@@ -41,14 +41,14 @@
                             v-if="isShow(item._path)"
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
-                            :data-bs-target="'#'+item._path.replaceAll('/', '_')"
+                            :data-bs-target="'#'+pathToId(item._path)"
                             role="button"
                         />
                         <chevron-down
                             v-else
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
-                            :data-bs-target="'#'+item._path.replaceAll('/', '_')"
+                            :data-bs-target="'#'+pathToId(item._path)"
                             role="button"
                         />
                     </template>
@@ -60,7 +60,6 @@
                     :active-slug="activeSlug"
                     :open="isShow(item._path)"
                     :parent-slug="item._path"
-                    :page-list="pageList.filter(e => e.startsWith(item._path))"
                 />
             </ul>
         </template>
@@ -98,10 +97,6 @@
                 type: String,
                 required: true
             },
-            pageList: {
-                type: Array,
-                required: true
-            },
             type: {
                 type: String,
                 required: false
@@ -114,6 +109,9 @@
             showMenu: [],
         }),
         methods: {
+            pathToId(path) {
+                return path.replaceAll(/[/.]/g, '_')
+            },
             filterChildren(item) {
                 return (item.children || []).filter(r => item._path !== r._path);
             },
@@ -128,7 +126,7 @@
                 return this.showMenu.some(path => path.startsWith(item))
             },
             isPage(item) {
-                return this.pageList.includes(item._path)
+                return item.isPage ?? true;
             },
             getClass(item, depthLevel, disabled) {
                 return {

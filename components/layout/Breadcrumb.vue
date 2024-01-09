@@ -19,7 +19,6 @@
             },
             pageList: {
                 type: Array,
-                required: true
             }
         },
         methods: {
@@ -32,7 +31,7 @@
                 return "/" + this.breadcrumb().slice(0, index + 1).join("/")
             },
             breadcrumbLinkExist(item, index) {
-                return this.pageList.includes(this.breadcrumbLink(item, index))
+                return this.pageList?.includes(this.breadcrumbLink(item, index))
             }
         }
     }
