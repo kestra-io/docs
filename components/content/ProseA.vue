@@ -1,6 +1,6 @@
 <template>
     <NuxtLink :href="link" :target="target">
-        <slot/>
+        <slot />
     </NuxtLink>
 </template>
 
@@ -25,36 +25,37 @@
 
 
     // if path is relative
-    if (link.match(/(\.+\/)+/)) {
-        const {data: page} = await useAsyncData(
-            `ProseA-${hash(route.path)}`,
-            () => queryContent(route.path).only("_file").findOne()
-        );
-
+    if (link.match(/^\.+\//)) {
+        const NON_NUXT_CONTENT_RESOLVED_PATHS = ["/plugins/"];
         const routePath = route.path.replace(/\/$/, '')
-        const absolutePath = config.public.siteUrl + routePath;
-        if (link.match(/(\.\.\/){2,}/) && page.value._file.includes('index.md')) {
-            link = link.replace('../', '')
-        } else if (link.match(/(\.\.\/){1}/) && page.value._file.includes('index.md')) {
-            link = link.replace('../', '')
+        let absolutePath = config.public.siteUrl + routePath;
+        let page;
+        // We only fetch the page if it's resolved through Nuxt Content
+        if (!NON_NUXT_CONTENT_RESOLVED_PATHS.some(p => route.path.includes(p))) {
+            page = (await useAsyncData(
+                `ProseA-${hash(route.path)}`,
+                () => queryContent(route.path).only("_file").findOne()
+            )).data;
         }
 
-        if (link.startsWith('./') && !page.value._file.includes('index.md')) {
-            link = (new URL(link, absolutePath).toString());
-        } else if (link.startsWith('./')) {
-            link = absolutePath + link.replace('./', '/')
-        } else {
-            link = (new URL(link, absolutePath).toString())
+        // If we are on an index page, we want to resolve relative paths starting from our current route
+        if (page?.value?._file?.includes('index.md')) {
+            absolutePath = absolutePath + "/";
         }
+
+        // If absolute path has a trailing slash, it will resolve link relatively to current route (in a folder-like manner), else it will resolve starting from parent route
+        link = new URL(link, absolutePath).toString();
 
         if (link.endsWith('/')) {
             link = link.replace(/\/$/, '')
         }
 
-        link = link.replace(/(\/).\d+\./g,'')
-        link = link.replace(/\.md/g,'')
+        // Allow numeration in markdown files while getting rid of it in the resolved path
+        link = link.replace(/(\/).\d+\./g, '')
+        // Md extension should not be present in URL, Nuxt will automatically resolve the file based on the route
+        link = link.replace(/\.md/g, '')
 
+        // Will end up with absolute paths without host URLs
         link = link.replace(config.public.siteUrl, '')
     }
-
 </script>
