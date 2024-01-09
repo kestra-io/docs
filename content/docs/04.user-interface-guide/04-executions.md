@@ -15,7 +15,7 @@ An **Execution** page will allow access to the details of a flow execution, incl
 
 ### Gantt Tab
 
-The Gantt tab allows to see each task's durations. From this interface, you can replay a specific task, see task source code, change task status, or look at task [metrics](../03.concepts/02.executions.md#metrics) and [outputs](../03.concepts/02.executions.md#outputs).
+The Gantt tab allows to see each task's durations. From this interface, you can replay a specific task, see task source code, change task status, or look at task [metrics](../03.concepts/execution.md#metrics) and [outputs](../03.concepts/execution.md#outputs).
 
 ![Kestra User Interface Execution Gantt Tab](/docs/user-interface-guide/27-Executions-Gantt.png)
 
@@ -35,13 +35,13 @@ The Outputs tab in an execution page allows to see each task's outputs.
 
 ![Kestra User Interface Execution Outputs Tab](/docs/user-interface-guide/25-Executions-Outputs.png)
 
-The "Eval Expression" box allows to evaluate [expressions](../05.developer-guide/03.variables/01.index.md) on those task outputs. It's a great way to debug your flows.
+The "Eval Expression" box allows to evaluate [expressions](../03.concepts/expression/01.index.md) on those task outputs. It's a great way to debug your flows.
 
 > Note: You have to select one task to be able to use the "Eval Expression" button.
 
 ![Kestra User Interface Execution Outputs Eval Expression](/docs/user-interface-guide/26-Executions-Outputs-Eval-Expression.png)
 
-For example, you can use the "Eval Expression" feature to deep-dive into your tasks' outputs and play directly with [variable operations](../05.developer-guide/03.variables/02.basic-usage.md).
+For example, you can use the "Eval Expression" feature to deep-dive into your tasks' outputs and play directly with [variable operations](../03.concepts/expression/02.basic-usage.md).
 
 ### Metrics Tab
 

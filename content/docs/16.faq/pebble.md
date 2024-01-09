@@ -54,14 +54,14 @@ tasks:
 
 ## How to format a date in Pebble?
 
-Pebble can be very useful to make small transformation on the fly - without the need to use Python or some dedicated programming language. 
+Pebble can be very useful to make small transformation on the fly - without the need to use Python or some dedicated programming language.
 For instance, we can use the `date` function to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
 
-You can find more documentation on the `date` function [in the Variables section of the Developer Guide](../05.developer-guide/03.variables/03.filter/date.md)
+You can find more documentation on the `date` function on the [Expressions page](../03.concepts/expression/03.filter/date.md)
 
 ### Coalesce operator for trigger or manual execution
 
-Most of the time, a flow will be triggered automatically. Either on schedule or based on external events. It’s common to use the date of the execution to process the corresponding data and make the flow dependent on time. 
+Most of the time, a flow will be triggered automatically. Either on schedule or based on external events. It’s common to use the date of the execution to process the corresponding data and make the flow dependent on time.
 
 With Pebble you can use the `trigger.date` to get the date of the executed trigger.
 Still, sometimes you want to manually execute a flow. Then the `trigger.date` variable won’t work anymore. For this you can use the `execution.startDate` variable that returns the execution start date.

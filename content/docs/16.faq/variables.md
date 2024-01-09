@@ -4,7 +4,7 @@ title: Variables FAQ
 
 ## How to escape some block in a Pebble syntax to ensure that it won't be parsed?
 
-To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../05.developer-guide/03.variables/06.tag/raw.md). For example, the following Pebble expression will return the string `{{ myvar }}` instead of the value of the `myvar` variable:
+To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../03.concepts/expression/06.tag/raw.md). For example, the following Pebble expression will return the string `{{ myvar }}` instead of the value of the `myvar` variable:
 
 ```yaml
 {% raw %}{{ myvar }}{% endraw %}
@@ -15,11 +15,11 @@ To ensure that a block of code won't be parsed by Pebble, you can use the `{% ra
 
 ## In which order are inputs and variables resolved?
 
-[Variables](../05.developer-guide/03.variables/01.index.md) are rendered recursively, meaning that if a variable contains another variable, the inner variable will be resolved first.
-
-[Inputs](../05.developer-guide/04.inputs.md) are resolved first, even before the execution starts. In fact, if you try to create a flow with an invalid input value, the execution will not be created.
+[Inputs](../03.concepts/inputs.md) are resolved first, even before the execution starts. In fact, if you try to create a flow with an invalid input value, the execution will not be created.
 
 Therefore, you can use inputs within variables, but you can't use variables or Pebble expressions within inputs.
+
+[Variables](../03.concepts/expression/01.index.md) are rendered recursively, meaning that if a variable contains another variable, the inner variable will be resolved first.
 
 When it comes to triggers, they are handled similarly to inputs as they are known before the execution starts (they trigger the execution). This means that you can't use inputs (unless they have `defaults` attached) or variables within triggers, but you can use trigger variables within `variables`.
 
@@ -114,7 +114,7 @@ triggers:
 
 ## Can I transform variables with Pebble expressions?
 
-Yes. Kestra uses [Pebble Templates](https://pebbletemplates.io/) along with the execution context to render **dynamic properties**. This means that you can use Pebble expressions (such as [filters](../05.developer-guide/03.variables/03.filter/index.md), [functions](../05.developer-guide/03.variables/04.function/index.md), and [operators](../05.developer-guide/03.variables/05.operator/index.md)) to transform [inputs](../05.developer-guide/04.inputs.md) and [variables](../05.developer-guide/03.variables/01.index.md).
+Yes. Kestra uses [Pebble Templates](https://pebbletemplates.io/) along with the execution context to render **dynamic properties**. This means that you can use Pebble expressions (such as [filters](../03.concepts/expression/03.filter/index.md), [functions](../03.concepts/expression/04.function/index.md), and [operators](../03.concepts/expression/05.operator/index.md)) to transform [inputs](../03.concepts/inputs.md) and [variables](../03.concepts/expression/01.index.md).
 
 The example below illustrates how to use variables and Pebble expressions to transform string values in dynamic task properties:
 

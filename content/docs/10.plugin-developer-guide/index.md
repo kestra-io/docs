@@ -7,6 +7,7 @@ If you want to create a new plugin, make sure to use the [plugin-template](https
 
 ::alert{type="warning"}
 Note that plugin and subplugin **versions** must be aligned with your Kestra instance. You may encounter validation issues during flow creation (e.g. `Invalid bean` response with status 422) when some subplugins are on older Kestra version. In that case, you may want to update the file `plugin-yourplugin/gradle.properties` and set the `version` property to the correct Kestra snapshot e.g.:
+
 ```
 version=0.13.0-SNAPSHOT
 kestraVersion=[0.13,)

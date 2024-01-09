@@ -96,7 +96,7 @@ triggers:
     key: "yourSecretKey1234"
 ```
 
-While you can trigger that deployment pipeline manually using Kestra UI or API (*i.e. just like any other Kestra flow*), it's better to combine that with a `push` event emitted by your Git repository. The above flow leverages the [Webhook trigger](../08.triggers/03.webhook.md) so that your CI/CD flow runs as soon as you push changes to your Git branch.
+While you can trigger that deployment pipeline manually using Kestra UI or API (*i.e. just like any other Kestra flow*), it's better to combine that with a `push` event emitted by your Git repository. The above flow leverages the [Webhook trigger](../../03.concepts/triggers/webhook-trigger.md) so that your CI/CD flow runs as soon as you push changes to your Git branch.
 
 To configure the webhook for your GitHub repository, go to **Settings**, and then select **Webhooks**. The URL in your browser should look as follows:
 

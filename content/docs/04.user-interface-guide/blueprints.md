@@ -16,9 +16,9 @@ Community Blueprints are particularly helpful when you're getting started with a
 
 ### Where to find Blueprints
 
-Blueprints are accessible from two places in the UI: 
+Blueprints are accessible from two places in the UI:
 
-1. The left navigation sidebar 
+1. The left navigation sidebar
 2. A dedicated tab in the code editor named "Source and blueprints", showing your source code and Blueprints side by side.
 
 ![Blueprint UI](/docs/user-interface-guide/blueprints2.png)

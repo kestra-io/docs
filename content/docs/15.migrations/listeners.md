@@ -2,7 +2,7 @@
 title: Deprecation of Listeners
 ---
 
-[Listeners](../05.developer-guide/13.listeners.md) are marked as deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../05.developer-guide/08.triggers/02.flow.md) instead.
+[Listeners](../03.concepts/listeners.md) are marked as deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../03.concepts/triggers/flow-trigger.md) instead.
 
 ---
 
@@ -10,8 +10,8 @@ title: Deprecation of Listeners
 
 1. The listener is a **redundant** concept. Flow triggers allow you to do all that listeners can accomplish and more. The only difference between listeners and triggers is that listeners are defined inline within the same flow code and are, therefore, more tightly coupled with the flow. In contrast, a Flow trigger is defined in a separate independent flow that can simultaneously listen to the condition of multiple flows that satisfy specific `conditions`. This gives you more flexibility.
 2. It is an extra concept that you, as a user, would need to learn even though you may not have to if you already know Flow triggers.
-3. It's a hard-to-grasp concept — listeners can launch tasks *outside* of the flow, i.e., tasks that will not be considered part of the flow but are defined *within* it. Additionally, the results of listeners will not change the execution status of the flow, so having them defined within the flow has caused some confusion in the past.
-4. Currently, listeners are mainly used to send failure (or success) notifications, and Kestra already has two concepts allowing you to do that: `triggers` and `errors`. Having **three** choices for such a standard use case has led to confusion about when to use which of them.
+3. It's a hard-to-grasp concept — listeners can launch tasks *outside* of the flow, i.e., tasks that will not be considered part of the flow but are defined *within* it. Additionally, the results of listeners will not change the execution status of the flow, so having them defined within the flow has caused some confusion in the past.
+4. Currently, listeners are mainly used to send failure (or success) notifications, and Kestra already has two concepts allowing you to do that: `triggers` and `errors`. Having **three** choices for such a standard use case has led to confusion about when to use which of them.
 
 
 If you are using listeners and you are not ready to migrate to Flow triggers yet, add the following Kestra configuration option to still be able to use listeners:

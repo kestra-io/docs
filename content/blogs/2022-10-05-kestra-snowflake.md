@@ -26,7 +26,7 @@ The platform enables organizations to avoid large-scale licensing costs commonly
 
 Data warehouse workloads are typically part of a larger technological stack. To streamline operations, orchestration, and scheduling of data pipelines are crucial. This is where Kestra comes into play.
 
-Kestra is designed to orchestrate and schedule scalable data workflows, thereby enhancing DataOps teams' productivity. It can construct, operate, manage, and monitor a [variety of complex workflows](../docs/02.tutorial/05.flowable.md) sequentially or in parallel.
+Kestra is designed to orchestrate and schedule scalable data workflows, thereby enhancing DataOps teams' productivity. It can construct, operate, manage, and monitor a [variety of complex workflows](../docs/01.tutorial/05.flowable.md) sequentially or in parallel.
 
 Kestra can execute workflows based on event-based, time-based, and API-based scheduling, giving complete control.
 Snowflake already offers many cost optimization processes like data compression and auto-scaling. However, Kestra makes it simpler to [download](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Download.md), [upload](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Upload.md), and [query](../plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.Query.md) data by integrating with Snowflake's storage and compute resources.
@@ -141,5 +141,5 @@ Kestra provides flexibility and control to data teams, it can orchestrate any ki
 Kestra's Snowflake plugin makes data warehousing simple even for non-developers thanks to YAML. Your Snowflake storage pipeline can accommodates raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the [ELT pipeline](./2022-04-27-etl-vs-elt.md). Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. 
+Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

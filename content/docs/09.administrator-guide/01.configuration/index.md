@@ -38,6 +38,7 @@ The following queue types are available:
 - Kafka that must be used with the Elasticsearch repository. Those are **only available inside the Enterprise Edition**.
 
 To enable the PostgreSQL database queue, you need to add the following to your configuration files:
+
 ```yaml
 kestra:
   queue:
@@ -58,6 +59,7 @@ The following repository types are available:
 - Elasticsearch that must be used with the Kafka queue. Those are **only available inside the Enterprise Edition**.
 
 To enable the PostgreSQL database repository, you need to add the following to your configuration files:
+
 ```yaml
 kestra:
   repository:
@@ -69,8 +71,8 @@ Details about the database configuration can be found [here](./01.databases.md) 
 
 ## Other Kestra configuration
 
-Other Kestra configuration options can be found [here](./05.others.md).
+Other Kestra configuration options can be found [here](./04.others.md).
 
 ## Micronaut configuration
 
-As Kestra is a Java-based application built with Micronaut, you can configure any Micronaut configuration options. More details [here](./04.micronaut.md).
+As Kestra is a Java-based application built with Micronaut, you can configure any Micronaut configuration options. More details [here](./06.micronaut.md).

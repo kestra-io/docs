@@ -16,9 +16,9 @@ You can click on the **+** icon at the right of a namespace to create it.
 
 After creating a namespace, you can configure it:
 
-- The **Variables** tab allows setting [variables](../05.developer-guide/03.variables/01.index.md#namespace-variables-ee) scoped to a namespace.
+- The **Variables** tab allows setting [variables](../03.concepts/expression/01.index.md#namespace-variables-ee) scoped to a namespace.
 - The **Task defaults** tab allows setting task default scoped to a namespace.
-- The **Secrets** tab allows setting secrets accessible via the [secret function](../05.developer-guide/03.variables/04.function/secret.md).
+- The **Secrets** tab allows setting secrets accessible via the [secret function](../03.concepts/expression/04.function/secret.md).
 - The **Groups**, **Roles**, and **Access** tabs allow managing role-based access control.
 - The **Service accounts** tab allows managing service accounts to access Kestra as a service, and not as an end user.
 - The **Audit Logs** tab allows access to the audit logs of the namespace.
