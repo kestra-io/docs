@@ -2,7 +2,7 @@
 title: Deprecation of Templates
 ---
 
-Templates are marked as deprecated and disabled by default starting from the 0.11.0 release. Please use subflows instead. You can re-enable them with this [configuration](../09.administrator-guide/01.configuration/05.others.md).
+Templates are marked as deprecated and disabled by default starting from the 0.11.0 release. Please use subflows instead. You can re-enable them with this [configuration](../09.administrator-guide/01.configuration/04.others.md).
 
 
 ## Why templates are deprecated

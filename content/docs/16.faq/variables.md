@@ -15,11 +15,11 @@ To ensure that a block of code won't be parsed by Pebble, you can use the `{% ra
 
 ## In which order are inputs and variables resolved?
 
-[Variables](../03.concepts/expression/01.index.md) are rendered recursively, meaning that if a variable contains another variable, the inner variable will be resolved first.
-
 [Inputs](../03.concepts/inputs.md) are resolved first, even before the execution starts. In fact, if you try to create a flow with an invalid input value, the execution will not be created.
 
 Therefore, you can use inputs within variables, but you can't use variables or Pebble expressions within inputs.
+
+[Variables](../03.concepts/expression/01.index.md) are rendered recursively, meaning that if a variable contains another variable, the inner variable will be resolved first.
 
 When it comes to triggers, they are handled similarly to inputs as they are known before the execution starts (they trigger the execution). This means that you can't use inputs (unless they have `defaults` attached) or variables within triggers, but you can use trigger variables within `variables`.
 

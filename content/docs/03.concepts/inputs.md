@@ -182,7 +182,7 @@ inputs:
     required: true
 ```
 
-You can use the value of the input `my-string` inside dynamic task properties with `{{ inputs['my-string'] }}`. See [variables basic usage](./expression/02.basic-usage.md).
+You can use the value of the input `my-string` inside dynamic task properties with `{{ inputs['my-string'] }}`. See more in the [using expressions](./expression/02b.using-expressions.md) section.
 
 
 ## Set input values at flow execution

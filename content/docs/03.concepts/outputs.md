@@ -26,23 +26,22 @@ tasks:
 
 In the example above, the first task produces an output based on the task property `format`. This output attribute is then used in the second task `message` property.
 
-The `use-output` task uses the templating system `{{ outputs['produce-output'].value }}` to reference the previous task output attribute. If you're not familiar with the syntax used here, please read [variables basic usage](./expression/02.basic-usage.md).
+The expression `{{ outputs['produce-output'].value }}` references the previous task output attribute. You can read more about the expression syntax on the [Using Expressions](./expression/02b.using-expressions.md) page.
 
 ::alert{type="info"}
-In the example above, the **Return** task produces an output attributes `value`. Every task produces different output attributes. You can look at each task outputs documentation or use the **Outputs** tab of the **Executions** page to know about specific task output attributes.
+In the example above, the **Return** task produces an output attribute `value`. Every task produces different output attributes. You can look at each task outputs documentation or use the **Outputs** tab of the **Executions** page to find out about specific task output attributes.
 ::
 
 ## Storage variables
 
-Each task can store data in Kestra's internal storage. If an output attribute is stored in the internal storage, the attribute will contain a URI that points to a file in the internal storage.
+Each task can store data in Kestra's internal storage. If an output attribute is stored in internal storage, the attribute will contain a URI that points to a file in the internal storage. This output attribute could be used by other tasks to access the stored data.
 
-This output attribute could be used by other tasks to access the stored data, Kestra will automatically make it accessible.
-
-The following example store the result of a BigQuery query in the internal storage, then access it in the `write-to-csv` task:
+The following example stores the query results in internal storage, then accesses it in the `write-to-csv` task:
 
 ```yaml
+id: output-sample
+namespace: dev
 tasks:
-
   - id: output-from-query
     type: io.kestra.plugin.gcp.bigquery.Query
     sql: |
@@ -57,9 +56,9 @@ tasks:
     from: "{{outputs['output-from-query'].uri}}"
 ```
 
-## Dynamic variables (Each loop)
+## Dynamic variables (Each tasks)
 
-#### Current taskrun value
+### Current taskrun value
 
 In dynamic flows (using "Each" loops for example), variables will be passed to task dynamically. You can access the current taskrun value with `{{ taskrun.value }}` like this:
 
@@ -74,7 +73,7 @@ tasks:
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
 ```
 
-#### Loop over object
+### Loop over object
 
 On loop, the `value` is always a JSON string, so the `{{ taskrun.value }}` is the current element as JSON string. If you want to access properties, you need to use the [json function](./expression/04.function/json.md) to have a proper object and to access each property easily.
 
@@ -119,7 +118,7 @@ tasks:
 
 The `outputs.sub.s1.value` variable reaches the `value` of the `sub` task of the `s1` iteration.
 
-#### Previous task lookup
+### Previous task lookup
 
 It is also possible to locate a specific dynamic task by its `value`:
 
@@ -139,7 +138,7 @@ tasks:
 
 It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` in  `[VALUE]` is called the subscript notation; it enables using special chars like space or '-' in task identifiers or output attributes.
 
-#### Lookup in sibling tasks
+### Lookup in sibling tasks
 
 Sometimes, it can be useful to access previous outputs on the current task tree, what is called sibling tasks.
 

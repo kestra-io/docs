@@ -57,7 +57,7 @@ tasks:
 Pebble can be very useful to make small transformation on the fly - without the need to use Python or some dedicated programming language.
 For instance, we can use the `date` function to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
 
-You can find more documentation on the `date` function [in the Variables section of the Developer Guide](../03.concepts/expression/03.filter/date.md)
+You can find more documentation on the `date` function on the [Expressions page](../03.concepts/expression/03.filter/date.md)
 
 ### Coalesce operator for trigger or manual execution
 

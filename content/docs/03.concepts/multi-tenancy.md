@@ -11,7 +11,7 @@ Multi-tenancy is available only in the **[Enterprise Edition](/enterprise)**.
 Multi-tenancy allows you to manage **multiple environments** (e.g., dev, staging, prod) in a single Kestra instance. You can also use it to **separate resources** between business units, teams, or customers.
 
 ## How does multi-tenancy work in Kestra
-By default, multi-tenancy is disabled. See the [multi-tenancy section](./09.administrator-guide/01.configuration/03.enterprise-edition/multi-tenancy.md) of the Administrator Guide on how to configure it.
+By default, multi-tenancy is disabled. See the [multi-tenancy section](../09.administrator-guide/01.configuration/03.enterprise-edition/multi-tenancy.md) of the Administrator Guide on how to configure it.
 
 When multi-tenancy is enabled, all resources (such as flows, triggers, executions, RBAC, and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
 
@@ -22,6 +22,6 @@ Multi-tenancy functionality is not visible to end-users from the UI except for t
 ![Tenants selection dropdown](/docs/architecture/tenants-select.png "Tenants selection dropdown")
 
 The API URLs will also change to include the tenant identifier.
-For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/flows/products` when multi-tenancy is not enabled, and becomes `/api/v1/production/flows/products` for the `production` tenant when multi-tenancy is enabled. You can check the [Enterprise Edition API Guide](./12.api-guide/api-ee-guide.md) for more information.
+For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/flows/products` when multi-tenancy is not enabled, and becomes `/api/v1/production/flows/products` for the `production` tenant when multi-tenancy is enabled. You can check the [Enterprise Edition API Guide](../12.api-guide/api-ee-guide.md) for more information.
 
 Tenants must be created upfront, and a user needs to be granted access to use a specific tenant.

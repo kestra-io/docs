@@ -2,7 +2,7 @@
 title: Deprecation of core Script tasks
 ---
 
-Previously, there was scripting tasks inside the core plugin (the plugin that offers core task and is always included inside any Kestra distribution). Since the introduction of the new [Script tasks](https://kestra.io/docs/developer-guide/scripts) in dedicated plugins, the old core scripting tasks have been deprecated and moved out of the core plugin.
+Previously, there was scripting tasks inside the core plugin (the plugin that offers core task and is always included inside any Kestra distribution). Since the introduction of the new [Script tasks](../05.developer-guide/03.scripts.md) in dedicated plugins, the old core scripting tasks have been deprecated and moved out of the core plugin.
 
 If you use one of these tasks, you should migrate to the new one that offers improved scripting capabilities and runs by default in a separate Docker container.
 
