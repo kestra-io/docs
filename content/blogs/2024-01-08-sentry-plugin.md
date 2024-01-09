@@ -4,9 +4,9 @@ description: "Learn how to integrate Sentry.io alerting and observability soluti
 date: 2024-01-08T08:00:00
 category: Solutions
 author:
-  name: Kevin Flemming
-  image: "mproset"
-image:
+  name: Kevin Fleming
+  image: "kfleming"
+image: /blogs/2024-01-08-sentry-plugin.jpg
 ---
 
 The goal of observability is to provide answers to one question: is everything working as expected, and if not, why not? Everything from data quality to workflow bottlenecks to user experience to CICD pipelines can and should be observable by logs, metrics, and traces (the three pillars). And, as they say, absence of evidence is not evidence of absence, so success must be just as observable as failure.
