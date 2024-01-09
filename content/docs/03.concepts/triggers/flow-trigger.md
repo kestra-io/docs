@@ -73,9 +73,9 @@ triggers:
 
 Check the [Flow trigger](../../../plugins/core/triggers/io.kestra.core.models.triggers.types.Flow.md) documentation for the list of all properties.
 
-## Variables
+## Expressions
 
-When another flow triggers the flow, some context variables will be injected to allow flow customization.
+When another flow triggers the flow, you'll additionally see the following execution context expressions:
 
 | Parameter | Description |
 | ---------- | ----------- |
