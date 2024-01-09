@@ -477,6 +477,7 @@ export default {
             gap: 10px;
             padding: 0 1rem;
             font-size: $font-size-sm;
+            width: 96%;
 
             .facet {
                 display: flex;
