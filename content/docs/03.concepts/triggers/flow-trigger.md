@@ -2,7 +2,6 @@
 title: Flow trigger
 ---
 
-
 ```yaml
 type: "io.kestra.core.models.triggers.types.Flow"
 ```
