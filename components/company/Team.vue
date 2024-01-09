@@ -56,6 +56,30 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/fhussonnois.jpg" alt="Quentin Sinig Picture"/>
+                    <div>
+                        <div class="team-name">Florian Hussonnois</div>
+                        <div class="team-title font-small">Lead Software Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/florian-hussonnois/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/fhussonnois" target="_blank" class="me-2"><github /></a>
+                        <a href="https://twitter.com/fhussonnois" target="_blank" class="me-2"><twitter /></a>
+                    </span>
+                </div>
+
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/dkhan.jpg" alt="Quentin Sinig Picture"/>
+                    <div>
+                        <div class="team-name">David Khan</div>
+                        <div class="team-title font-small">Sales Leader</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/david-khan-40399419/" target="_blank" class="me-2"><linkedin /></a>
+                    </span>
+                </div>
+
+                <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/lmathieu.png" alt="Loïc Mathieu Picture"/>
                     <div>
                         <div class="team-name">Loïc Mathieu</div>
