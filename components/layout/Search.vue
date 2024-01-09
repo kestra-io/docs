@@ -498,10 +498,9 @@ export default {
                     border-top: 4px solid var(--bs-primary);
                 }
             }
-        }
-
-        .facets::-webkit-scrollbar {
-            display: none;
+            &::-webkit-scrollbar {
+                display: none;
+            }
         }
     }
 
