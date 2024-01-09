@@ -2,19 +2,17 @@
 title: Flow
 ---
 
-A flow is a container for `tasks`, their `inputs`, `outputs`, handling of `errors` and overall orchestration logic. It defines the **order** in which tasks are executed and **how** they are executed, e.g. **sequentially**, i**n parallel**, based on upstream task dependencies and their state, etc.
+A flow is a container for `tasks`, their `inputs`, `outputs`, handling of `errors` and overall orchestration logic. It defines the **order** in which tasks are executed and **how** they are executed, e.g. **sequentially**, **in parallel**, based on upstream task dependencies and their state, etc.
 
-**Flows** are used to implement your workload. They define all the tasks you want to perform and the order in which they will be run.
+You can define a flow declaratively using a [YAML](https://en.wikipedia.org/wiki/YAML) file.
 
-You define a flow using the declarative model called [YAML](https://en.wikipedia.org/wiki/YAML).
+A flow must have an identifier (`id`), a `namespace`, and a list of [`tasks`](tasks.md).
 
-A flow must have an identifier (`id`), a `namespace`, and a list of [`tasks`](./02.tasks.md).
-
-A flow can also have [`inputs`](./inputs.md), [error handlers](./07.errors-handling.md) under the property `errors`, and [`triggers`](./triggers/index.md).
+A flow can also have [`inputs`](inputs.md), [error handlers](errors.md), and [`triggers`](triggers/index.md).
 
 ## Flow sample
 
-Here is a sample flow definition. It uses tasks available in Kestra core for testing purposes.
+Here is a sample flow definition. It uses tasks available in Kestra core for testing purposes, such as the `Return` or `Log` tasks, and demonstrates how to use `labels`, `inputs`, `variables`, `triggers` and various `descriptions`.
 
 ```yaml
 id: hello-world
@@ -51,7 +49,7 @@ taskDefaults:
 
 ### Task defaults
 
-You can also define `taskDefaults` in your flow. This is a list of default task properties that will be applied to each task of a certain type inside your flow. The `taskDefaults` property can be handy to avoid repeating the same values when leveraging the same task multiple times.
+You can also define `taskDefaults` in your flow. This is a list of default task properties that will be applied to each task of a certain type inside your flow. The [taskDefaults](task-defaults.md) property can be handy to avoid repeating the same values when leveraging the same task multiple times.
 
 ### Variables
 
