@@ -42,7 +42,7 @@ In Kestra, we orchestrate your workflows using **Flowable Tasks**. These tasks d
 
 Flowable Tasks are used for branching, grouping, doing tasks in parallel, etc...
 
-Flowable Tasks use context [variables](./expression/01.index.md) to define the next tasks to run. For example, you can use the [outputs](./05.outputs.md) of a previous task in a `Switch` task to decide which task to run next.
+Flowable Tasks use context [variables](./expression/01.index.md) to define the next tasks to run. For example, you can use the [outputs](./outputs.md) of a previous task in a `Switch` task to decide which task to run next.
 
 ### Sequential
 
@@ -68,7 +68,7 @@ tasks:
 ```
 
 ::alert{type="info"}
-You can access the output of a sibling task with `{{outputs.sibling.value}}`, see [Lookup in sibling tasks](./05.outputs.md#lookup-in-sibling-tasks)
+You can access the output of a sibling task with `{{outputs.sibling.value}}`, see [Lookup in sibling tasks](./outputs.md#lookup-in-sibling-tasks)
 ::
 
 ::next-link
@@ -213,7 +213,7 @@ tasks:
 ```
 
 ::alert{type="info"}
-You can access the output of a sibling task with `{{outputs.sibling[taskrun.value].value}}`, see [Lookup in sibling tasks](./05.outputs.md#lookup-in-sibling-tasks)
+You can access the output of a sibling task with `{{outputs.sibling[taskrun.value].value}}`, see [Lookup in sibling tasks](./outputs.md#lookup-in-sibling-tasks)
 ::
 
 
@@ -281,7 +281,7 @@ Syntax:
 ```
 
 This will execute the subflow `dev.subflow` for each batch of items.
-To pass the batch of items to a subflow, you can use [inputs](../04.inputs.md). The example above uses an input of `FILE` type called `file` that takes the URI of an internal storage file containing the batch of items.
+To pass the batch of items to a subflow, you can use [inputs](../inputs.md). The example above uses an input of `FILE` type called `file` that takes the URI of an internal storage file containing the batch of items.
 
 ::next-link
 [ForEachItem Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.ForEachItem.md)
@@ -444,7 +444,7 @@ tasks:
 
 This task will trigger another flow. This allows you to decouple the first flow from the second and monitor each flow individually.
 
-You can pass flow [outputs](./05.outputs.md) as [inputs](./04.inputs.md) for the triggered subflow (those must be declared in the subflow).
+You can pass flow [outputs](./outputs.md) as [inputs](./inputs.md) for the triggered subflow (those must be declared in the subflow).
 
 ```yaml
 id: subflow
@@ -591,7 +591,7 @@ For this: go to the **Gantt** tab of the **Execution** page, click on the task, 
 
 ### Template
 
-[Templates](./09.templates.md) are lists of tasks that can be shared between flows. You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
+[Templates](./templates.md) are lists of tasks that can be shared between flows. You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
 
 The following example uses the Template task to use a template.
 

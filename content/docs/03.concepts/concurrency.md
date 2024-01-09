@@ -1,5 +1,5 @@
 ---
-title: Flow-level concurrency control
+title: Concurrency limits
 ---
 
 The flow-level `concurrency` property allows you to control the number of concurrent executions of a given flow. You can limit the number of concurrent executions of a given flow by setting the `limit` key.
