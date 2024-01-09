@@ -631,8 +631,8 @@ export default {
             }
         }
     }
-}
-.search-results {
-    margin-left: 2px;
+    .search-results {
+        margin-left: 2px;
+    }
 }
 </style>
