@@ -136,7 +136,7 @@
                 this.cancelToken = axios.CancelToken.source();
 
                 this.searchValue = value;
-                return axios.get('https://api.kestra.io/v1/search', {
+                return axios.get(`${this.$config.public.apiUrl}/search`, {
                     params: {
                         q: value,
                         type: this.selectedFacet || '',
@@ -496,7 +496,7 @@
 
                 font-size: 80%;
                 padding: 1rem;
-                max-wdith: 100%;
+                max-width: 100%;
 
                 p {
                     white-space: pre;

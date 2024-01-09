@@ -14,7 +14,8 @@
 </template>
 
 <script setup>
+    const config = useRuntimeConfig();
     const {data: tags} = await useAsyncData('blueprints-tags', () => {
-        return $fetch('https://api.kestra.io/v1/blueprints/tags')
+        return $fetch(`${config.public.apiUrl}/blueprints/tags`)
     })
 </script>
