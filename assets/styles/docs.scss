@@ -142,6 +142,12 @@ $bd-gutter-x: 3rem;
     grid-area: toc;
 }
 
+.docs {
+    .bd-toc {
+        grid-area: sidebar;
+    }
+}
+
 
 @media (min-width: 700px) {
     .bd-content, .bd-main h1 {

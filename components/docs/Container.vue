@@ -1,5 +1,5 @@
 <template>
-    <div class="container bd-gutter bd-layout margin">
+    <div class="container bd-gutter bd-layout margin docs">
         <NavSideBar :type="type" v-if="pageList" :page-list="pageList"/>
 
         <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false , 'docs' : isDoc}">
@@ -8,8 +8,6 @@
                     <Breadcrumb :slug="props.slug" :pageList="pageList"/>
                     <h1 v-html="transformTitle(page.title)" class="py-0 title "></h1>
                 </div>
-
-                <NavToc :page="page"/>
 
                 <div class="bd-content">
                     <ContentRendererMarkdown
@@ -22,6 +20,8 @@
                 </div>
             </ContentRenderer>
         </article>
+
+        <NavToc :page="page"/>
     </div>
 </template>
 
@@ -122,6 +122,6 @@
     width: 100%;
 }
 </style>
- 
+
 
 
