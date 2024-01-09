@@ -1,5 +1,13 @@
 <template>
-    <div class="container" >
+    <div class="container">
+        <Head>
+            <Title>Kestra Blueprints Library</Title>
+            <Meta
+                name="description"
+                content="Get started with our library of workflows ready to use"
+            />
+        </Head>
+
         <BlueprintsLists :tags="tags"/>
         <BlueprintsNewToKestra />
     </div>

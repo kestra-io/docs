@@ -1,5 +1,13 @@
 <template>
     <div>
+        <Head>
+            <Title>{{ page.title }}</Title>
+            <Meta
+                name="description"
+                :content="descriptionAsMd?.value?.data?.description"
+            />
+        </Head>
+
         <BlueprintsHeader :page="page" :graph="graph" :slug="slug" :icons="icons" :flow="flowAsMd"/>
         <div class="container">
             <BlueprintsDetail :page="page" :description="descriptionAsMd"/>
@@ -22,6 +30,7 @@
     const relatedBlueprints = ref([])
     const graph = ref({})
     const descriptionAsMd = ref("")
+    const description = ref({})
     const flowAsMd = ref("")
 
     const {data: tags} = await useAsyncData('blueprints-tags', () => {
@@ -37,4 +46,16 @@
     graph.value = blueprintInformations.value.graph
     descriptionAsMd.value = blueprintInformations.value.descriptionAsMd
     flowAsMd.value = blueprintInformations.value.flowAsMd
+
+    useHead({
+        meta: [
+            {name: 'twitter:card', content: 'summary_large_image'},
+            {name: 'twitter:site', content: '@kestra_io'},
+            {name: 'twitter:title', content: page.value},
+            {
+                name: 'twitter:description',
+                content: descriptionAsMd?.value?.data?.description
+            },
+        ]
+    })
 </script>
