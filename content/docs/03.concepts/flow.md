@@ -50,10 +50,6 @@ taskDefaults:
       level: ERROR
 ```
 
-### Labels
-
-You can add arbitrary `labels` to your flows to sort them on multiple dimensions. When you execute such flow, the labels will be propagated to the created execution. It is also possible to override and define new labels at flow execution start.
-
 ### Task Defaults
 
 You can also define `taskDefaults` inside your flow. This is a list of default task properties that will be applied to each task of a certain type inside your flow. Task defaults can be handy to avoid repeating the same value for a task property in case the same task type is used multiple times in the same flow.
@@ -71,25 +67,25 @@ The most important part of a flow is the list of tasks that will be run sequenti
 
 The following flow properties can be set.
 
-| Field | Description                                                                                                                                                                                  |
-| ---------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`id`| The flow identifier, must be unique inside a namespace.                                                                                                                                      |
-|`namespace`| Each flow lives in one [namespace](./namespace.md), this is useful for flow organization and is mandatory.                                                                                   |
-|`revision`| The flow version, handled internally by Kestra, and incremented for each modification. You should not manually set it.                                                                       |
-|`description`| The description of the flow, more details [here](#document-your-flow).                                                                                                                       |
-|`labels`| The list of labels which are string key/value pairs.                                                                                                                                         |
-|`inputs`| The list of inputs, more details [here](./inputs.md).                                                                                                                                        |
-|`variables`| The list of variables (such as api key, table name, URL, etc) that can be reached inside tasks with `{{ vars.name }}`.                                                                       |
-|`tasks`| The list of tasks, all tasks will be run sequentially.                                                                                                                                       |
-|`errors`| The list of error tasks, all listed tasks will be run sequentially only if there is an error on the current execution. More details [here](./07.errors-handling.md).                         |
-|`listeners`| The list of listeners, more details [here](./listeners.md).                                                                                                                                  |
+| Field | Description                                                                                                                                                                               |
+| ---------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`id`| The flow identifier, must be unique inside a namespace.                                                                                                                                   |
+|`namespace`| Each flow lives in one [namespace](./namespace.md), this is useful for flow organization and is mandatory.                                                                                |
+|`revision`| The flow version, handled internally by Kestra, and incremented for each modification. You should not manually set it.                                                                    |
+|`description`| The description of the flow, more details [here](#document-your-flow).                                                                                                                    |
+|`labels`| The list of [labels](labels.md) which are string key/value pairs.                                                                                                                         |
+|`inputs`| The list of inputs, more details [here](./inputs.md).                                                                                                                                     |
+|`variables`| The list of variables (such as api key, table name, URL, etc) that can be reached inside tasks with `{{ vars.name }}`.                                                                    |
+|`tasks`| The list of tasks, all tasks will be run sequentially.                                                                                                                                    |
+|`errors`| The list of error tasks, all listed tasks will be run sequentially only if there is an error on the current execution. More details [here](./07.errors-handling.md).                      |
+|`listeners`| The list of listeners, more details [here](./listeners.md).                                                                                                                               |
 |`triggers`| The list of triggers which are external events (such as date schedule or message presence in a broker, for example) that will launch this flow, more details [here](./triggers/index.md). |
-|[`taskDefaults`](#taskdefaults)| The list of default task values, this avoid repeating the same properties on each tasks.                                                                                                     |
-|`taskDefaults.[].type`| The task type is a full qualified Java class name.                                                                                                                                           |
-|`taskDefaults.[].forced`| If set to `forced: true`, the taskDefault will take precedence over properties defined in the task (default `false`).                                                                        |
-|`taskDefaults.[].values.xxx`| The task property that you want to be set as default.                                                                                                                                        |
-|`disabled`| Set it to `true` to disable execution of the flow.                                                                                                                                           |
-|[`concurrency`](./concurrency.md)| Use it to define flow-level concurrency control. By default, flow execution concurrency is not limited                                                                                       |
+|[`taskDefaults`](#taskdefaults)| The list of default task values, this avoid repeating the same properties on each tasks.                                                                                                  |
+|`taskDefaults.[].type`| The task type is a full qualified Java class name.                                                                                                                                        |
+|`taskDefaults.[].forced`| If set to `forced: true`, the taskDefault will take precedence over properties defined in the task (default `false`).                                                                     |
+|`taskDefaults.[].values.xxx`| The task property that you want to be set as default.                                                                                                                                     |
+|`disabled`| Set it to `true` to disable execution of the flow.                                                                                                                                        |
+|[`concurrency`](./concurrency.md)| Use it to define flow-level concurrency control. By default, flow execution concurrency is not limited                                                                                    |
 
 
 ### `taskDefaults`
@@ -200,7 +196,7 @@ By default, Kestra only includes a few Runnable Tasks. However, many of them are
 
 ### Flowable Task
 
-[Flowable Tasks](../05.developer-guide/02.tasks.md#flowable-tasks) only handle flow logic (branching, grouping, parallel processing, etc.) and start new tasks. For example, the [Switch task](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch.md) decides the next task to run based on some inputs.
+[Flowable Tasks](../03.concepts/flowable-tasks.md) only handle flow logic (branching, grouping, parallel processing, etc.) and start new tasks. For example, the [Switch task](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch.md) decides the next task to run based on some inputs.
 
 A Flowable Task is handled by [Executors](../03.concepts/executor.md) and can be called very often. Because of that, these tasks cannot include intensive computations, unlike Runnable Tasks. Most of the common Flowable Tasks are available in the default Kestra installation.
 
