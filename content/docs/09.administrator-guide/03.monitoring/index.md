@@ -36,7 +36,7 @@ errors:
 
 However, this can lead to some boilerplate code if you start copy-pasting this `errors` configuration to multiple flows.
 
-To implement a centralized namespace-level alerting, we instead recommend a dedicated monitoring workflow with a notification task and a [Flow trigger](../../05.developer-guide/08.triggers/02.flow.md). Below is an example workflow that automatically sends a Slack alert as soon as any flow in a namespace `prod` fails or finishes with warnings.
+To implement a centralized namespace-level alerting, we instead recommend a dedicated monitoring workflow with a notification task and a [Flow trigger](../../03.concepts/triggers/flow-trigger.md). Below is an example workflow that automatically sends a Slack alert as soon as any flow in a namespace `prod` fails or finishes with warnings.
 
 ```yaml
 id: failureAlertToSlack

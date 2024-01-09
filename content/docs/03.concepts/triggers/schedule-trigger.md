@@ -1,5 +1,5 @@
 ---
-title: Schedule
+title: Schedule trigger
 ---
 
 ```yaml
@@ -45,24 +45,13 @@ You can use this expression to make your **manual execution work**: `{{ trigger.
 
 
 ## Backfill
-Kestra will optionally handle schedule backfills. The concept of a backfill is the replay of a missed schedule because a flow was created after it should have been scheduled.
 
-Backfills will perform all the schedules between the defined and current dates and will start after the normal schedule.
-
-> A schedule with a backfill.
-
-```yaml
-triggers:
-  - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
-    cron: "*/15 * * * *"
-    backfill:
-      start: 2020-06-25T14:00:00Z
-```
+Kestra will optionally handle schedule [backfills](../backfill.md).
 
 
-## Variables
-When the flow is scheduled, some context variables are injected to allow flow customization (such as filename, where clause in SQL query, etc.).
+## Trigger expressions
+
+When the flow is scheduled, some context expressions are injected to allow flow customization (such as filename, where clause in SQL query, etc.).
 
 | Parameter                | Description                        |
 |--------------------------|------------------------------------|
@@ -70,7 +59,9 @@ When the flow is scheduled, some context variables are injected to allow flow cu
 | `{{ trigger.next }}`     | the date of the next schedule.     |
 | `{{ trigger.previous }}` | the date of the previous schedule. |
 
+
 ## Schedule Conditions
+
 When the `cron` is not sufficient to determine the date you want to schedule your flow, you can use `scheduleConditions` to add some additional conditions, (for example, only the first day of the month, only the weekend, ...).
 You **must** use the `{{ trigger.date }}` expression on the property `date` of the current schedule.
 This condition will be evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` will reflect the date **with** the conditions applied.

@@ -24,11 +24,11 @@ In just a few lines of code, you can [create a flow](./03.concepts/flow.md) dire
 
 **Portability**: Kestra's workflows are programming-language agnostic. Your tasks can be written in Python, R, Node.js, Julia, Rust, Bash or Powershell. You can also extend the platform via custom plugins, triggers and tasks.
 
-**Declarative & imperative**: We believe that declarativeness is a spectrum and you decide about the degree of how declarative or imperative you want your workflows to be. You can write as simple or as [complex](./05.developer-guide/02.tasks.md#flowable-tasks) workflows as you wish.
+**Declarative & imperative**: We believe that declarativeness is a spectrum and you decide about the degree of how declarative or imperative you want your workflows to be. You can write as simple or as [complex](./03.concepts/tasks.md#flowable-tasks) workflows as you wish.
 
 **Separation of orchestration and business logic**: Mixing the two can result in a complicated data platform that ties you to a specific platform. Kestra can orchestrate business logic written in any language or platform without you having to make ANY modifications to your code. No Python decorators are required, and no need to worry about breaking your orchestration system due to misaligned Python package dependencies.
 
-**Extensible**: Kestra is built on top of a plugins ecosystem. You can use an existing plugin from our [plugin library](../plugins/index.md) or build your [own](./10.plugin-developer-guide/index.md). You don't even need to know much of Java to build your own plugin — as long as your custom script can be packaged into a Docker container, you can use it similarly to [script plugins](https://github.com/kestra-io/plugin-scripts).
+**Extensible**: Kestra is built on top of a plugins ecosystem. You can use an existing plugin from our [plugin library](../plugins/index.md) or build your [own](./10.plugin-developer-guide/index.md). You don't even need to know much of Java to build your own plugin — as long as your custom script can be packaged into a Docker container, you can use it similarly to [script plugins](./05.developer-guide/03.scripts.md).
 
 **Cloud-native**: Built with the cloud in mind, Kestra uses cloud-native technologies and allows you to [deploy your server anywhere](./09.administrator-guide/02.deployment/index.md).
 

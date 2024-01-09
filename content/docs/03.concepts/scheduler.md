@@ -2,7 +2,7 @@
 title: Scheduler
 ---
 
-The **Scheduler** will handle most of the [Triggers](./05.developer-guide/08.triggers/index.md) except the [Flow Triggers](./05.developer-guide/08.triggers/02.flow.md) which are handled by the Executor. It will continuously watch all the triggers and, if all conditions are met, will start an execution of the flow (submit the flow to the Executor).
+The **Scheduler** will handle most of the [Triggers](./03.concepts/triggers/index.md) except the [Flow Triggers](./03.concepts/triggers/flow-trigger.md) which are handled by the Executor. It will continuously watch all the triggers and, if all conditions are met, will start an execution of the flow (submit the flow to the Executor).
 
 In the case of polling triggers, the Scheduler will decide (based on the configured evaluation interval) whether to execute the flow. If the polling trigger conditions are met, the Scheduler will send the execution, along with the trigger metadata, to the Worker for execution.
 

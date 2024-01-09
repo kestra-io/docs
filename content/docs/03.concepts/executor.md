@@ -6,7 +6,7 @@ The **Executor** handles all executions and [flowable tasks](./05.developer-guid
 
 The Executor also handles special execution cases:
 - [Listeners](./03.concepts/listeners.md)
-- [Flow Triggers](./05.developer-guide/08.triggers/02.flow.md)
+- [Flow Triggers](./03.concepts/triggers/flow-trigger.md)
 - [Templates](./05.developer-guide/03.concepts/templates.md)
 
 You can scale Executors as necessary, but as no heavy computations are done in the Executor, this server component only requires little resources (unless you have a very high rate of executions).

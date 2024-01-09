@@ -12,7 +12,7 @@ You define a flow using the declarative model called [YAML](https://en.wikipedia
 
 A flow must have an identifier (`id`), a `namespace`, and a list of [`tasks`](./02.tasks.md).
 
-A flow can also have [`inputs`](./inputs.md), [error handlers](./07.errors-handling.md) under the property `errors`, and [`triggers`](./08.triggers/index.md).
+A flow can also have [`inputs`](./inputs.md), [error handlers](./07.errors-handling.md) under the property `errors`, and [`triggers`](./triggers/index.md).
 
 ## Flow sample
 
@@ -59,6 +59,7 @@ You can add arbitrary `labels` to your flows to sort them on multiple dimensions
 You can also define `taskDefaults` inside your flow. This is a list of default task properties that will be applied to each task of a certain type inside your flow. Task defaults can be handy to avoid repeating the same value for a task property in case the same task type is used multiple times in the same flow.
 
 ### Variables
+
 You can set flow variables that will be accessible by each task using `{{ vars.key }}`. Flow `variables` is a map of key/value pairs.
 
 ### List of tasks
@@ -73,22 +74,22 @@ The following flow properties can be set.
 | Field | Description                                                                                                                                                                                  |
 | ---------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |`id`| The flow identifier, must be unique inside a namespace.                                                                                                                                      |
-|`namespace`| Each flow lives in one namespace, this is useful for flow organization and is mandatory.                                                                                                     |
+|`namespace`| Each flow lives in one [namespace](./namespace.md), this is useful for flow organization and is mandatory.                                                                                   |
 |`revision`| The flow version, handled internally by Kestra, and incremented for each modification. You should not manually set it.                                                                       |
 |`description`| The description of the flow, more details [here](#document-your-flow).                                                                                                                       |
 |`labels`| The list of labels which are string key/value pairs.                                                                                                                                         |
-|`inputs`| The list of inputs, more details [here](./inputs.md).                                                                                                                                     |
+|`inputs`| The list of inputs, more details [here](./inputs.md).                                                                                                                                        |
 |`variables`| The list of variables (such as api key, table name, URL, etc) that can be reached inside tasks with `{{ vars.name }}`.                                                                       |
 |`tasks`| The list of tasks, all tasks will be run sequentially.                                                                                                                                       |
 |`errors`| The list of error tasks, all listed tasks will be run sequentially only if there is an error on the current execution. More details [here](./07.errors-handling.md).                         |
-|`listeners`| The list of listeners, more details [here](./listeners.md).                                                                                                                               |
-|`triggers`| The list of triggers which are external events (such as date schedule or message presence in a broker, for example) that will launch this flow, more details [here](./08.triggers/index.md). |
+|`listeners`| The list of listeners, more details [here](./listeners.md).                                                                                                                                  |
+|`triggers`| The list of triggers which are external events (such as date schedule or message presence in a broker, for example) that will launch this flow, more details [here](./triggers/index.md). |
 |[`taskDefaults`](#taskdefaults)| The list of default task values, this avoid repeating the same properties on each tasks.                                                                                                     |
 |`taskDefaults.[].type`| The task type is a full qualified Java class name.                                                                                                                                           |
 |`taskDefaults.[].forced`| If set to `forced: true`, the taskDefault will take precedence over properties defined in the task (default `false`).                                                                        |
 |`taskDefaults.[].values.xxx`| The task property that you want to be set as default.                                                                                                                                        |
 |`disabled`| Set it to `true` to disable execution of the flow.                                                                                                                                           |
-|[`concurrency`](./concurrency.md)| Use it to define flow-level concurrency control. By default, flow execution concurrency is not limited |
+|[`concurrency`](./concurrency.md)| Use it to define flow-level concurrency control. By default, flow execution concurrency is not limited                                                                                       |
 
 
 ### `taskDefaults`
@@ -163,7 +164,7 @@ You can add a `description` property on:
 - [Flows](./01.flow.md)
 - [Tasks](./02.tasks.md)
 - [Listeners](./listeners.md)
-- [Triggers](./08.triggers/index.md)
+- [Triggers](./triggers/index.md)
 
 All markdown descriptions will be rendered in the UI.
 
@@ -204,24 +205,6 @@ By default, Kestra only includes a few Runnable Tasks. However, many of them are
 A Flowable Task is handled by [Executors](../03.concepts/executor.md) and can be called very often. Because of that, these tasks cannot include intensive computations, unlike Runnable Tasks. Most of the common Flowable Tasks are available in the default Kestra installation.
 
 
-## Namespace
-
-You can think of a namespace as a **folder for your flows**.
-
-- Similar to folders on your file system, namespaces can be used to organize flows into logical categories.
-- And as filesystems, namespaces can be indefinitely nested.
-Using the dot `.` symbol, you can add hierarchical structure to your flow organization.
-This allows to separate not only environments, but also projects, teams and departments.
-
-This way, your **product, engineering, marketing, finance, and data teams** can all use the same Kestra instance, while keeping their flows organized and separated. They all can have their own namespaces that belong to a parent namespace indicating the **development** or **production** environment.
-
-A namespace is like a folder for flows. A namespace is composed of words and letters separated by `.`. The hierarchy depth for namespaces is unlimited. Here are some examples of namespaces:
-- `projectOne`
-- `com.projectTwo`
-- `test.projectThree.folder`
-
-Namespaces are hierarchical, which means that for our previous example, the `test.projectThree.folder` namespace is inside the `test.projectThree` namespace.
-
 ## Labels
 
 Labels are key-value pairs that you can add to flows. Labels are used to **organize** flows and can be used to **filter executions** of any given flow from the UI.
@@ -257,7 +240,7 @@ You can access old revisions inside the **Revisions** tab of the **Flows** page.
 
 ## Triggers
 
-[Triggers](../05.developer-guide/08.triggers/index.md) are a way to start a flow from external events. For example, a trigger might initiate a flow at a scheduled time or based on external events (webhooks, file creation, message in a broker, etc.).
+[Triggers](../03.concepts/triggers/index.md) are a way to start a flow from external events. For example, a trigger might initiate a flow at a scheduled time or based on external events (webhooks, file creation, message in a broker, etc.).
 
 
 ## Listeners (deprecated)
