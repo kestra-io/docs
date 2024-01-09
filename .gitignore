@@ -36,3 +36,6 @@ dist
 .obsidian/**/*
 package-lock.json
 .vercel
+
+## Cloudflare
+.wrangler

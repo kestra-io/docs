@@ -1,3 +1,4 @@
+const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 export default defineNuxtConfig({
   modules: [
       '@nuxt/devtools',
@@ -115,6 +116,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
       public: {
           siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
+          apiUrl: process.env.NUXT_PUBLIC_API_URL || DEFAULT_KESTRA_API_URL,
       }
   },
 
@@ -137,7 +139,7 @@ export default defineNuxtConfig({
       '/company/careers.html': {redirect: '/careers'},
       '/company/company/about-us.html': {redirect: '/about-us'},
       '/community.html': {redirect: '/community'},
-      '/slack': {redirect: 'https://api.kestra.io/v1/communities/slack/redirect'},
+      '/slack': {redirect: `${DEFAULT_KESTRA_API_URL}/communities/slack/redirect`},
       '/api/events/**': { proxy: 'https://eu.posthog.com/**' },
   },
 

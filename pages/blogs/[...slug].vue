@@ -50,6 +50,7 @@
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
     const externalNews = ref()
     const page = ref([]);
+    const config = useRuntimeConfig();
 
     const sort = (data)=>{
         data.sort((a,b)=>
@@ -68,7 +69,7 @@
         }
 
         const {data: externalNewsData} = await useAsyncData(`blog-external-news`, () => {
-            return $fetch(`https://api.kestra.io/v1/external-blogs${slug === '/blogs/' ? '?size=4' : ''}`)
+            return $fetch(`${config.public.apiUrl}/external-blogs${slug === '/blogs/' ? '?size=4' : ''}`)
         });
 
         externalNews.value = externalNewsData.value.results.map((data) => {

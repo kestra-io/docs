@@ -24,6 +24,7 @@
 
 <script setup>
     const route = useRoute()
+    const config = useRuntimeConfig();
     const slug = ref("/blueprints/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug));
     const page = ref()
     const icons = ref()
@@ -34,7 +35,7 @@
     const flowAsMd = ref("")
 
     const {data: tags} = await useAsyncData('blueprints-tags', () => {
-        return $fetch('https://api.kestra.io/v1/blueprints/tags')
+        return $fetch(`${config.public.apiUrl}/blueprints/tags`)
     })
 
     const {data: blueprintInformations} = await useAsyncData('blueprints-informations', () => {

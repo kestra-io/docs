@@ -43,13 +43,14 @@
     import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 
     const route = useRoute()
+    const config = useRuntimeConfig();
     const slug = (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
     const story = ref({})
     const content1 = ref('')
     const content2 = ref('')
 
     const {data} = await useAsyncData('stories', () => {
-        return $fetch(`https://api.kestra.io/v1/customer-stories/${route.params.id}`)
+        return $fetch(`${config.public.apiUrl}/customer-stories/${route.params.id}`)
     })
 
     if (data.value === null) {
@@ -79,7 +80,7 @@
     })
 
     const {data: related} = await useAsyncData('related-stories', () => {
-        return $fetch(`https://api.kestra.io/v1/customer-stories?size=3`)
+        return $fetch(`${config.public.apiUrl}/customer-stories?size=3`)
     })
 
 </script>

@@ -54,6 +54,7 @@ const totalBlueprints = ref(0)
 const searchQuery = ref('')
 const route = useRoute()
 const router = useRouter()
+const config = useRuntimeConfig()
 
 if(props.tags) {
     tags.value = [{ name: 'All tags' }, ...props.tags]
@@ -69,7 +70,7 @@ if(route.query.tags) activeTag.value = tags.value.find(f => f.id == route.query.
 if(route.query.q) searchQuery.value = route.query.q
 
 const { data: blueprintsData } = await useAsyncData('blueprints', () => {
-    return $fetch(`https://api.kestra.io/v1/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeTag.value.id}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
+    return $fetch(`${config.public.apiUrl}/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeTag.value.id}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
 })
 
 const setBlueprints = (allBlueprints, total) => {
@@ -94,7 +95,7 @@ watch([currentPage, itemsPerPage, activeTag, searchQuery], ([pageVal, itemVal, t
     }
     timer = setTimeout(async () => {
 
-        const { data } = await useFetch(`https://api.kestra.io/v1/blueprints?page=${(itemVal != oldItemVal) || (tagVal != oldTagVal) ? 1 : pageVal}&size=${itemVal}${Object.keys(tagVal).length && tagVal.name != 'All tags' ? `&tags=${tagVal.id}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
+        const { data } = await useFetch(`${config.public.apiUrl}/blueprints?page=${(itemVal != oldItemVal) || (tagVal != oldTagVal) ? 1 : pageVal}&size=${itemVal}${Object.keys(tagVal).length && tagVal.name != 'All tags' ? `&tags=${tagVal.id}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
         setBlueprints(data.value.results, data.value.total)
 
         function getQuery() {

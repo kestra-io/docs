@@ -12,12 +12,13 @@
 </template>
 <script setup>
     const route = useRoute()
+    const config = useRuntimeConfig();
     const stories = ref([])
     const totalStories = ref(0)
 
     const fetchStories = async ({currentPage, itemsPerPage}) => {
         const {data} = await useAsyncData('stories', () => {
-            return $fetch(`https://api.kestra.io/v1/customer-stories?page=${currentPage}&size=${itemsPerPage}`)
+            return $fetch(`${config.public.apiUrl}/customer-stories?page=${currentPage}&size=${itemsPerPage}`)
         })
         stories.value = data.value.results
         totalStories.value = data.value.total
