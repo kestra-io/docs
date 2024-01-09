@@ -7,7 +7,9 @@ export default defineNuxtConfig({
       'nuxt-simple-sitemap',
       'nuxt-multi-cache'
   ],
-
+  sitemap: {
+    sources: ['/api/sitemap'],
+  },
   app: {
       baseURL: "/",
       // pageTransition: {name: 'page', mode: 'out-in'}
