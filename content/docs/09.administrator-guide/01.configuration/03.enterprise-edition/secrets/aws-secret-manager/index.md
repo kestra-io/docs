@@ -7,8 +7,8 @@ With this integration, Namespace Secrets will be stored in [AWS Secret Manager](
 ## Authentication
 
 You can configure the authentication to AWS Cloud in multiple ways:
-- Using `accessKeyId` and `secretKeyId` properties
-- Adding `sessionToken`,  `accessKeyId` and `secretKeyId` properties
+- Using `accessKeyId`, `secretKeyId` and `region` properties
+- Adding `sessionToken`,  alongside `accessKeyId`, `secretKeyId` and `region` properties
 - If the above properties are not set, Kestra will use the default AWS authentication, in the same way as AWS CLI handles it (i.e. trying to use the AWS CLI profile or the default environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION`)
 
 ```yaml
@@ -19,12 +19,11 @@ kestra:
       accessKeyId: "test"
       secretKeyId: "test"
       sessionToken: "token"
+      region: "region"
 ```
 
 ## Additional configuration
 
-### `kestra.secret.aws-secret-manager.region`
-The AWS region to be used by the Secrets Manager
 
 ### `kestra.secret.aws-secret-manager.prefix`
 Optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra will prefix all Secret keys using that prefix. The main purpose of a prefix is to share the same secret manager between multiple Kestra instances.
