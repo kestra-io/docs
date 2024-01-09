@@ -4,7 +4,7 @@
             <Title>{{ page.title }}</Title>
             <Meta
                 name="description"
-                :content="descriptionAsMd?.value?.data?.description"
+                :content="description.value"
             />
         </Head>
 
@@ -30,7 +30,7 @@
     const relatedBlueprints = ref([])
     const graph = ref({})
     const descriptionAsMd = ref("")
-    const description = ref({})
+    const description = ref()
     const flowAsMd = ref("")
 
     const {data: tags} = await useAsyncData('blueprints-tags', () => {
@@ -46,6 +46,7 @@
     graph.value = blueprintInformations.value.graph
     descriptionAsMd.value = blueprintInformations.value.descriptionAsMd
     flowAsMd.value = blueprintInformations.value.flowAsMd
+    description.value = blueprintInformations.value.metaDescription || descriptionAsMd?.value?.data?.description;
 
     useHead({
         meta: [
@@ -54,7 +55,7 @@
             {name: 'twitter:title', content: page.value},
             {
                 name: 'twitter:description',
-                content: descriptionAsMd?.value?.data?.description
+                content: description.value
             },
         ]
     })
