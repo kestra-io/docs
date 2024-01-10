@@ -4,7 +4,7 @@
             <li class="page-item" @click="changePage({ direction: 'previous' })" role="button">
                 <span class="page-link text-dark fw-bold arrow-button" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
             </li>
-            <li v-for="n in pages" :key="n" :role="n != '...' ? 'button' : ''" class="page-item" :class="{ 'active': (currentPage == n && n != '...'), 'disabled': n == '...' }" @click="changePage({ pageNo: n })"><span class="page-list-item page-link text-dark fw-bold">{{ n }}</span></li>
+            <li v-for="n in pages" :key="n" :role="n === morePagesPlaceholder ? '' : 'button'" class="page-item" :class="{ 'active': currentPage === n, 'disabled': n === morePagesPlaceholder }" @click="changePage({ pageNo: n })"><span class="page-list-item page-link text-dark fw-bold">{{ n }}</span></li>
             <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
                 <span class="page-link text-dark fw-bold arrow-button"><ChevronRight /></span>
             </li>
@@ -15,11 +15,13 @@
 <script>
 import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+
 export default {
     components: { ChevronLeft, ChevronRight },
     data() {
         return {
-            currentPage: 1
+            currentPage: 1,
+            morePagesPlaceholder: "..."
         }
     },
     props: {
@@ -35,13 +37,13 @@ export default {
     },
     methods: {
         changePage(event) {
-            if(event.direction && event.direction == 'previous' && this.currentPage > 1) {
+            if(event.direction && event.direction === 'previous' && this.currentPage > 1) {
                 this.currentPage--
             }
-            else if(event.direction && event.direction == 'next' && this.currentPage < this.totalPages) {
+            else if(event.direction && event.direction === 'next' && this.currentPage < this.totalPages) {
                 this.currentPage++
             }
-            else if(event.pageNo) {
+            else if(event.pageNo && event.pageNo !== this.morePagesPlaceholder) {
                 this.currentPage = event.pageNo
             }
         },
@@ -49,10 +51,10 @@ export default {
             let pages = [];
             for (let i = 1; i <= last_page; i++) {
                 let offset = 1;
-                if (i == 1 || (current_page - offset <= i && current_page + offset >= i) || i == current_page || i == last_page) {
+                if (i === 1 || (current_page - offset <= i && current_page + offset >= i) || i === current_page || i === last_page) {
                     pages.push(i);
-                } else if (i == current_page - (offset + 1) || i == current_page + (offset + 1)) {
-                    pages.push('...');
+                } else if (i === current_page - (offset + 1) || i === current_page + (offset + 1)) {
+                    pages.push(this.morePagesPlaceholder);
                 }
             }
             return pages;
