@@ -363,7 +363,11 @@
                 gap: 10px;
                 padding: 0 1rem;
                 font-size: $font-size-sm;
-                width: 96%;
+
+                @include media-breakpoint-down(md) {
+                    width: 97%;
+                }
+
 
                 .facet {
                     display: flex;
