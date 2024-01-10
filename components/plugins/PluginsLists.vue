@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 mb-3" v-for="plugin in plugins" :key="plugin.id">
+            <div class="col-lg-3 col-md-4 mb-3" v-for="plugin in plugins" :key="plugin.id">
                 <PluginsPluginCard :plugin="plugin" />
             </div>
             <div class="d-flex justify-content-between pagination-container">
@@ -69,7 +69,7 @@
     import {findAll} from "highlight-words-core";
 
     const currentPage = ref(1);
-    const itemsPerPage = ref(15);
+    const itemsPerPage = ref(20);
     const plugins = ref([]);
     const activeCategory = ref('All Categories');
     const categories = ref([]);
