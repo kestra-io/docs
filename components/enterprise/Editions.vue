@@ -24,7 +24,7 @@
                                 <li data-aos="fade-right" data-aos-delay="300"><span>Embedded documentation</span></li>
                                 <li data-aos="fade-right" data-aos-delay="350"><span>Live-updating topology view</span></li>
                                 <li data-aos="fade-right" data-aos-delay="400"><span>Git integration</span></li>
-                                <li data-aos="fade-right" data-aos-delay="450"><span>CI/CD with Terraform, GitHub Actions, GitLab, Azure DevOps and more</span></li>
+                                <li data-aos="fade-right" data-aos-delay="450"><span>CI/CD with Terraform, GitHub Actions, GitLab & Azure DevOps</span></li>
                                 <li data-aos="fade-right" data-aos-delay="500"><span>Basic authentification</span></li>
                                 <li data-aos="fade-right" data-aos-delay="550"><span>Community blueprints</span></li>
                                 <li data-aos="fade-right" data-aos-delay="600"><span>Community support</span></li>
@@ -128,6 +128,11 @@
                                 </tr>
                                 <tr>
                                     <td>Concurrency limits</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Human-in-the-loop orchestration with pauses for manual approval</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
