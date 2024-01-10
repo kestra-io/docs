@@ -8,7 +8,7 @@
                     <Breadcrumb :slug="props.slug" :pageList="pageList"/>
                     <h1 v-html="transformTitle(page.title)" class="py-0 title "></h1>
                 </div>
-
+                <NavToc :page="page"/>
                 <div class="bd-content">
                     <ContentRendererMarkdown
                         class="bd-markdown"

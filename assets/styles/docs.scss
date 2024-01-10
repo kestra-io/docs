@@ -145,6 +145,26 @@ $bd-gutter-x: 3rem;
 .docs {
     .bd-toc {
         grid-area: sidebar;
+
+        @media (max-width: 992px) {
+            display: none;
+        }
+    }
+    .bd-content {
+        @media (max-width: 1110px) and (min-width: 992px) {
+            max-width: 88%;
+            margin: 0;
+        }
+    }
+    .bd-main {
+        .bd-toc {
+            display: none !important;
+
+            @media (max-width: 992px) {
+                display: block !important;
+                grid-area: toc !important;
+            }
+        }
     }
 }
 
