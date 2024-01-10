@@ -1,6 +1,6 @@
 <template>
     <div v-on="{ 'shown.bs.modal': focusSearch }" class="modal modal-xl fade" id="search-modal" tabindex="-1" ref="modal" aria-labelledby="search-modal" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
                 <div class="modal-body row">
                     <div class="search">
@@ -14,7 +14,7 @@
                          role="alert">
                         No results found for the current search
                     </div>
-                    <div class="row" v-if="searchResults && searchResults.length > 0" >
+                    <div class="row search-results" v-if="searchResults && searchResults.length > 0" >
                         <div class="search-result p-3 col-12 col-md-6">
                             <div v-for="(result, index) in searchResults" @mouseover="() => onItemMouseOver(result, index)">
                                 <NuxtLink :href="result.url" :class="{'active': index === selectedIndex}" @click="close">
@@ -65,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="facets">
+                    <div class="facets overflow-x-auto overflow-y-hidden">
                         <div class="facet" :class="{'facet-active': selectedFacet === undefined}" @click="() => selectFacet(undefined)">
                             <span>All</span>
                             <span class="badge rounded-pill bg-primary">{{ allSum }}</span>
@@ -363,6 +363,7 @@
                 gap: 10px;
                 padding: 0 1rem;
                 font-size: $font-size-sm;
+                width: 96%;
 
                 .facet {
                     display: flex;
@@ -371,6 +372,8 @@
                     gap: 5px;
                     cursor: pointer;
                     border-top: 4px solid transparent;
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
 
                     &:hover {
                         border-top: 4px solid var(--bs-gray-500);
@@ -379,6 +382,9 @@
                     &-active, &-active:hover {
                         border-top: 4px solid var(--bs-primary);
                     }
+                }
+                &::-webkit-scrollbar {
+                    display: none;
                 }
             }
         }
@@ -496,7 +502,7 @@
 
                 font-size: 80%;
                 padding: 1rem;
-                max-wdith: 100%;
+                max-width: 100%;
 
                 p {
                     white-space: pre;
@@ -507,6 +513,9 @@
                     color: $primary;
                 }
             }
+        }
+        .search-results {
+            margin-left: 2px;
         }
     }
 </style>
