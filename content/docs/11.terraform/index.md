@@ -1,5 +1,5 @@
 ---
-title: ⚡️ Terraform integration
+title: Terraform integration
 ---
 
 

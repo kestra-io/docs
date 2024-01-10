@@ -1,5 +1,5 @@
 ---
-title: 📚 Tutorial
+title: Tutorial
 ---
 
 Kestra is an open-source orchestrator designed to bring Infrastructure as Code (IaC) best practices to all workflows — from those orchestrating mission-critical applications, IT operations, business processes, and data pipelines, to simple Zapier-style automations.

@@ -1,5 +1,5 @@
 ---
-title: 🤝 Contributing
+title: Contributing
 ---
 
 You can contribute to Kestra in many ways depending on your skills and interests.
