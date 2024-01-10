@@ -12,7 +12,7 @@ A task run is a task that has been executed. A task run has associated data like
 
 ## Attempts
 
-Each task run can have one or more attempts. Most task runs will have only one attempt, but you can configure [retries](../05.developer-guide/07.errors-handling.md#retries) for a task.
+Each task run can have one or more attempts. Most task runs will have only one attempt, but you can configure [retries](retries.md) for a task.
 If retries have been configured, a task failure will generate new attempts until the retry `maxAttempt` or `maxDuration` threshold is hit.
 
 
