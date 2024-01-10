@@ -3,8 +3,8 @@ export default defineNuxtConfig({
       '@nuxt/devtools',
       '@nuxt/content',
       '@nuxt/image',
+      '@nuxtjs/sitemap',
       'nuxt-gtag',
-      'nuxt-simple-sitemap',
       'nuxt-multi-cache'
   ],
   sitemap: {

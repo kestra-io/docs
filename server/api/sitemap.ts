@@ -1,5 +1,5 @@
 import {slugify} from "~/utils/url.js";
-import type {SitemapUrlInput} from "nuxt-simple-sitemap/dist/runtime/types";
+import type {SitemapUrlInput} from "@nuxtjs/sitemap/dist/runtime/types";
 
 export default defineSitemapEventHandler(async () => {
     type SitemapsToGenerate = { rootUrl: string, apiUrl: string };
