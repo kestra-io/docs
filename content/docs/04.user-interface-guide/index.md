@@ -1,5 +1,5 @@
 ---
-title: 📊 User Interface Guide
+title: User Interface Guide
 ---
 
 Kestra comes with a rich web user interface located by default on port 8080.

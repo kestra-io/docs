@@ -11,7 +11,7 @@
                 <li class="depth-1">
                     <NuxtLink href="/docs" class="bold" :class="activeSlug === '/docs' || activeSlug === '/docs/' ? 'active' : ''"
                     >
-                            👋 Welcome to Kestra
+                            Welcome to Kestra
                     </NuxtLink>
                 </li>
             </ul>

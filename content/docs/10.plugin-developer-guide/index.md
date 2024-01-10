@@ -1,5 +1,5 @@
 ---
-title: 🧩 Plugin Developer Guide
+title: Plugin Developer Guide
 ---
 
 

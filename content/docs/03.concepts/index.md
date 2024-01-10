@@ -1,5 +1,5 @@
 ---
-title: 💡 Concepts
+title: Concepts
 ---
 
 Understanding key concepts is crucial for harnessing the full potential of any tool. In this section, we will explore the fundamental concepts of Kestra, enabling you to automate your processes efficiently. For detailed information on each concept, please refer to the corresponding pages.

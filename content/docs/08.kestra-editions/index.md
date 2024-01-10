@@ -1,5 +1,5 @@
 ---
-title: ☁️ Kestra Cloud and Enterprise
+title: Kestra Cloud and Enterprise
 ---
 
 This section provides an overview of the available Kestra editions, including:

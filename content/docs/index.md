@@ -1,5 +1,5 @@
 ---
-title: 📓 Welcome to Kestra
+title: Welcome to Kestra
 ---
 
 Kestra is a universal open-source orchestrator that makes both **scheduled** and **event-driven workflows** easy. By bringing Infrastructure as Code best practices to data, process, and microservice orchestration, you can build reliable workflows and manage them with confidence.

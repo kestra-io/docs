@@ -1,5 +1,5 @@
 ---
-title: 🔎 Flow examples
+title: Flow examples
 ---
 
 The example from Kestra's guided tour is a good starting point; it is available when running Kestra for the first time and can see here: [Example guided tour](./example-guided-tour.md).
