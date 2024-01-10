@@ -99,7 +99,7 @@
             overflow-y: auto;
             overflow-x: hidden;
             padding-right: calc($spacer / 4);
-    min-width: 250px;
+            min-width: 250px;
         }
 
 
