@@ -26,20 +26,23 @@ export default defineSitemapEventHandler(async (e) => {
     };
 
     const fetchAllPages = async () => {
-        const allData = [];
-
-        for (const url of urls) {
+        const promises = urls.map(async url => {
             let page = 1;
             let result;
 
+            const data = [];
+
             do {
                 result = await fetchDataForPage(url, page);
-                allData.push(...result.data);
+                data.push(...result.data);
                 page++;
             } while (page <= result.totalPages);
-        }
 
-        return allData;
+            return data;
+        });
+
+        const allData = await Promise.all(promises);
+        return [].concat(...allData);
     };
 
     return await fetchAllPages();
