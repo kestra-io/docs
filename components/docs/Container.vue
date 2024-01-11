@@ -8,7 +8,7 @@
                     <Breadcrumb :slug="props.slug" :pageList="pageList"/>
                     <h1 v-html="transformTitle(page.title)" class="py-0 title "></h1>
                 </div>
-                <NavToc :page="page"/>
+                <NavToc :page="page" class="d-block d-lg-none"/>
                 <div class="bd-content">
                     <ContentRendererMarkdown
                         class="bd-markdown"
@@ -20,8 +20,7 @@
                 </div>
             </ContentRenderer>
         </article>
-
-        <NavToc :page="page"/>
+        <NavToc :page="page" class="d-none d-lg-block"/>
     </div>
 </template>
 
@@ -29,7 +28,7 @@
     import PrevNext from "./PrevNext.vue";
     import NavSideBar from "./NavSideBar.vue";
     import Breadcrumb from "./Breadcrumb.vue";
-    import NavToc from "./NavToc.vue";
+    import NavToc from "../layout/NavToc.vue";
     import {hash} from "ohash";
 
     const props = defineProps({

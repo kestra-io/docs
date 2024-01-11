@@ -1,5 +1,5 @@
 <template>
-    <div id="nav-toc-global" class="bd-toc scroller mb-4">
+    <div id="nav-toc-global" class="bd-toc mb-4">
 
         <template v-if="generated.length > 0">
             <button
@@ -94,7 +94,6 @@
             top: 5rem;
             left: 100%;
             z-index: 2;
-            display: block !important;
             height: calc(100vh - 6rem);
             overflow-y: auto;
             overflow-x: hidden;

@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-    import NavToc from "~/components/docs/NavToc.vue";
+    import NavToc from "~/components/layout/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
 
     const route = useRoute()
