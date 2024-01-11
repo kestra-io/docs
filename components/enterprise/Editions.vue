@@ -2,8 +2,8 @@
     <div class="container">
         <Section
         title="Unlock exclusive features with the Enterprise Edition"
-            subtitle="Advanced Solutions for Your Organization">
-            
+            subtitle="Advanced Functionality for Your Organization">
+
             <div class="row card-group mb-4">
                 <div class="col-12 col-md-6 d-md-flex justify-content-md-end">
                     <div class="card col-lg-9 col-xl-7">
@@ -16,16 +16,18 @@
                                 </NuxtLink>
                             </div>
                             <ul>
-                                <li data-aos="fade-right"><span>Free usage under Apache 2.0 license</span></li>
-                                <li data-aos="fade-right" data-aos-delay="50"><span>Flexible & Decoupled Architecture</span></li>
-                                <li data-aos="fade-right" data-aos-delay="100"><span>Scalable Executions</span></li>
-                                <li data-aos="fade-right" data-aos-delay="150"><span>Basic Authentification</span></li>
-                                <li data-aos="fade-right" data-aos-delay="200"><span>Basic Role Management</span></li>
-                                <li data-aos="fade-right" data-aos-delay="250"><span>Secrets Management via Environment Variables</span></li>
-                                <li data-aos="fade-right" data-aos-delay="300"><span>Flow Credentials Store</span></li>
-                                <li data-aos="fade-right" data-aos-delay="350"><span>Community Blueprints</span></li>
-                                <li data-aos="fade-right" data-aos-delay="400"><span>Single Tenancy</span></li>
-                                <li data-aos="fade-right" data-aos-delay="450"><span>Community Support</span></li>
+                                <li data-aos="fade-right"><span>Apache 2.0 license</span></li>
+                                <li data-aos="fade-right" data-aos-delay="100"><span>Powerful orchestration engine</span></li>
+                                <li data-aos="fade-right" data-aos-delay="150"><span>Declarative workflows as code and from the UI</span></li>
+                                <li data-aos="fade-right" data-aos-delay="200"><span>Event-driven automations</span></li>
+                                <li data-aos="fade-right" data-aos-delay="250"><span>Embedded Visual Studio code editor</span></li>
+                                <li data-aos="fade-right" data-aos-delay="300"><span>Embedded documentation</span></li>
+                                <li data-aos="fade-right" data-aos-delay="350"><span>Live-updating topology view</span></li>
+                                <li data-aos="fade-right" data-aos-delay="400"><span>Git integration</span></li>
+                                <li data-aos="fade-right" data-aos-delay="450"><span>CI/CD with Terraform, GitHub Actions, GitLab & Azure DevOps</span></li>
+                                <li data-aos="fade-right" data-aos-delay="500"><span>Basic authentification</span></li>
+                                <li data-aos="fade-right" data-aos-delay="550"><span>Community blueprints</span></li>
+                                <li data-aos="fade-right" data-aos-delay="600"><span>Community support</span></li>
                             </ul>
                         </div>
                     </div>
@@ -41,17 +43,21 @@
                                 </NuxtLink>
                             </div>
                             <ul>
-                                <li data-aos="fade-left"><span><strong>All features from the Open-Source Edition and More</strong></span></li>
-                                <li data-aos="fade-left" data-aos-delay="100"><span>High Availability with no Single Point of Failure Architecture</span></li>
-                                <li data-aos="fade-left" data-aos-delay="150"><span>Worker Groups</span></li>
-                                <li data-aos="fade-left" data-aos-delay="200"><span>Single Sign-On (SSO)</span></li>
-                                <li data-aos="fade-left" data-aos-delay="250"><span>Role-Based Access Control (RBAC)</span></li>
-                                <li data-aos="fade-left" data-aos-delay="300"><span>Secrets Manager Integration</span></li>
-                                <li data-aos="fade-left" data-aos-delay="350"><span>Organization Credentials Store</span></li>
-                                <li data-aos="fade-left" data-aos-delay="400"><span>Organization Blueprints</span></li>
-                                <li data-aos="fade-left" data-aos-delay="450"><span>Multi-Tenancy</span></li>
-                                <li data-aos="fade-left" data-aos-delay="500"><span>Enterprise Support with Guaranteed SLAs</span></li>
-                                <li data-aos="fade-left" data-aos-delay="550"><span>Customer Onboarding & Training</span></li>
+                                <li data-aos="fade-left"><span><strong>All features from the Open-Source Edition and more</strong></span></li>
+                                <li data-aos="fade-left" data-aos-delay="100"><span>Scalable architecture with High-Availability</span></li>
+                                <li data-aos="fade-left" data-aos-delay="150"><span>Multi-tenancy</span></li>
+                                <li data-aos="fade-left" data-aos-delay="200"><span>Worker groups supporting distributed workers</span></li>
+                                <li data-aos="fade-left" data-aos-delay="250"><span>Custom secrets backend (AWS Secret Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, Hashicorp Vault)</span></li>
+                                <li data-aos="fade-left" data-aos-delay="300"><span>Audit logs</span></li>
+                                <li data-aos="fade-left" data-aos-delay="350"><span>Single Sign-On (SSO)</span></li>
+                                <li data-aos="fade-left" data-aos-delay="400"><span>Role-Based Access Control (RBAC)</span></li>
+                                <li data-aos="fade-left" data-aos-delay="450"><span>Custom blueprints</span></li>
+                                <li data-aos="fade-left" data-aos-delay="500"><span>Namespace-level management</span></li>
+                                <li data-aos="fade-left" data-aos-delay="550"><span>Secure credential store</span></li>
+                                <li data-aos="fade-left" data-aos-delay="600"><span>Built-in variable store</span></li>
+                                <li data-aos="fade-left" data-aos-delay="650"><span>Centralized governance over task configuration</span></li>
+                                <li data-aos="fade-left" data-aos-delay="700"><span>Enterprise support with guaranteed SLAs</span></li>
+                                <li data-aos="fade-left" data-aos-delay="750"><span>Onboarding & training</span></li>
                             </ul>
                         </div>
                     </div>
@@ -67,7 +73,7 @@
                             <table>
                                 <tr>
                                     <th>Features</th>
-                                    <th>Open source</th>
+                                    <th>Open-source</th>
                                     <th>Enterprise</th>
                                 </tr>
                                 <tr class="table-section">
@@ -76,32 +82,37 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><NuxtLink href="/features/declarative-data-orchestration">Declarative Flow Editor (YAML-based)</NuxtLink></td>
+                                    <td><NuxtLink href="/features/declarative-data-orchestration">Embedded code editor</NuxtLink></td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Extensibility (Custom Plugins)</td>
+                                    <td>Open-source plugins</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Connectivity to Popular Data Sources</td>
+                                    <td>Custom plugins</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Versioning</td>
+                                    <td>Code versioning & Git integration</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Data Validation</td>
+                                    <td>Autocompletion and syntax validation</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Debugging</td>
+                                    <td>Live-updating topology view</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Dependency management between tasks, subflows and flow event triggers</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
@@ -111,53 +122,123 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>Orchestration Engine (Sequential, Parallel)</td>
+                                    <td>Advanced orchestration engine (sequential and parallel task processing, ditributed mapping)</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Flexible Scheduling System (Time-based, Event-based)</td>
+                                    <td>Concurrency limits</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Large Data Processing</td>
+                                    <td>Human-in-the-loop orchestration with pauses for manual approval</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Error Handling and Retry Mechanisms</td>
+                                    <td>Flexible scheduling system (Cron, interval-based and custom conditions)</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Notifications</td>
+                                    <td>Event-driven data processing</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Performance Monitoring and Optimization</td>
+                                    <td>Event-driven data processing at scale (high throughput)</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Custom error handling and on-failure behavior</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Automated retries and restarts</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Automated notifications on success or failure</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Custom internal storage backend</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Workflow monitoring, observability & performance optimization</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
-                                    <td>User Interface and Experience</td>
+                                    <td>User Interface</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>Rich User Interface</td>
+                                    <td>Fine-grained visibility into workflow execution states</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Built-in Plugin Ecosystem</td>
+                                    <td>Dashboard about the status of your workflow executions across the instance</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Extended API</td>
+                                    <td>Embedded code editor enabling fast feedback loops without deployment overhead</td>
                                     <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Input validation on manual workflow executions from the UI</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Embedded task and trigger documentation</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Embedded blueprints with example usage</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Custom blueprints showing company-wide usage patterns</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Full-text search across task runs</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Centralized user & permission management from the UI</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Governance over code revision history (who updated the workflow and when)</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Namespace-level management for secrets, variables and task confiiguration</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Support to seamlessly switch between environments from the same UI via tenants</td>
+                                    <td></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
@@ -166,37 +247,52 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>API and Webhook Support</td>
+                                    <td>API-first design: everything can be automated via an API call</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Official Terraform Provider</td>
+                                    <td>Webhook triggers</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Official Support for Gitlab CI/CD, Github Actions</td>
+                                    <td>Webhook triggers at scale capable of handling millions of events</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Official Terraform provider for provisioning flows and namespace files</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Community Blueprints</td>
+                                    <td>Official Terraform provider to provision all resources incl. users and secrets management</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Official support for Github Actions, GitLab, Azure DevOps and more CI/CD providers</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Organization Blueprints</td>
+                                    <td>Community blueprints</td>
+                                    <td><Check /></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Custom blueprints representing company-wide usage patterns</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
-                                    <td>Security and Authentication</td>
+                                    <td>Security and authentication</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>OIDC/SSO Authentication</td>
+                                    <td>OIDC/SSO authentication</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
@@ -206,57 +302,72 @@
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Audit Logs</td>
+                                    <td>Audit logs</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Secret Managers Integration</td>
+                                    <td>Custom secrets backends (AWS Secret Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, Hashicorp Vault)</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Secure Namespace Configuration</td>
+                                    <td>Namespace-level credential store</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Worker Security Isolation</td>
+                                    <td>Namespace-level variable store</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Namespace-level task configuration</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Namespace-level permissions</td>
+                                    <td></td>
+                                    <td><Check /></td>
+                                </tr>
+                                <tr>
+                                    <td>Worker security isolation</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
-                                    <td>Deployment and Scaling</td>
+                                    <td>Deployment and hosting</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>Self Hosted Deployment</td>
+                                    <td>Self-hosted deployment</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>High Availability with No Single Point of Failure</td>
+                                    <td>High-Availability with No Single Point of Failure</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Worker Groups</td>
+                                    <td>Worker groups supporting distributed workers</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr class="table-section">
-                                    <td>Support & Services</td>
+                                    <td>Support & custom development services</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>Community Support</td>
+                                    <td>Community support</td>
                                     <td><Check /></td>
                                     <td><Check /></td>
                                 </tr>
                                 <tr>
-                                    <td>Enterprise Support with SLAs</td>
+                                    <td>Enterprise support with SLAs</td>
                                     <td></td>
                                     <td><Check /></td>
                                 </tr>
