@@ -23,11 +23,10 @@
                                 <li data-aos="fade-right" data-aos-delay="250"><span>Embedded Visual Studio code editor</span></li>
                                 <li data-aos="fade-right" data-aos-delay="300"><span>Embedded documentation</span></li>
                                 <li data-aos="fade-right" data-aos-delay="350"><span>Live-updating topology view</span></li>
-                                <li data-aos="fade-right" data-aos-delay="400"><span>Git integration</span></li>
-                                <li data-aos="fade-right" data-aos-delay="450"><span>CI/CD with Terraform, GitHub Actions, GitLab & Azure DevOps</span></li>
+                                <li data-aos="fade-right" data-aos-delay="400"><span>Access to 400+ plugins</span></li>
+                                <li data-aos="fade-right" data-aos-delay="450"><span>Git & CI/CD integrations</span></li>
                                 <li data-aos="fade-right" data-aos-delay="500"><span>Basic authentification</span></li>
-                                <li data-aos="fade-right" data-aos-delay="550"><span>Community blueprints</span></li>
-                                <li data-aos="fade-right" data-aos-delay="600"><span>Community support</span></li>
+                                <li data-aos="fade-right" data-aos-delay="550"><span>Community support</span></li>
                             </ul>
                         </div>
                     </div>
