@@ -1,5 +1,6 @@
 import 'vanilla-cookieconsent'
 import posthog from 'posthog-js'
+import axios from "axios";
 
 export default defineNuxtPlugin(nuxtApp => {
     let isProd = process.env.NODE_ENV === "production";
@@ -8,15 +9,28 @@ export default defineNuxtPlugin(nuxtApp => {
     nuxtApp.hook('page:finish', () => {
         const {grantConsent} = useGtag()
 
-        const enabledAnalytics = () => {
+        const enabledAnalytics = async () => {
+            const response = await axios.get('https://api.kestra.io/v1/config')
+
             posthog.init(
-                isProd ? 'phc_8lNe3YuQj9gyJcCJOGy4RwMCUFzHQ7siGPr8aeodhxR' : 'phc_yhgr3gbIyqI0yoPfOUT1ZE6ETVmWHlc6SPbeyPBrFjX',
+                response.data.posthog.token,
                 {
-                    api_host: '/api/events',
+                    api_host: response.data.posthog.apiHost,
                     ui_host: 'https://eu.posthog.com',
+                    capture_pageview: false,
+                    autocapture: false
                 }
             )
+
+            posthog.register_once({
+                'from': 'SITE',
+            })
+
+            if (!posthog.get_property("__alias")) {
+                posthog.alias(response.data.id);
+            }
         };
+
 
         const enabledMarketing = () => {
             cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
