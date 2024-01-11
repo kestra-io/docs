@@ -67,9 +67,10 @@
     .bd-sidebar {
         @include media-breakpoint-up(lg) {
             position: sticky;
-            top: 5rem;
+            top: 7rem;
             display: block !important;
-            height: subtract(100vh, 6rem);
+            height: fit-content;
+            max-height: subtract(100vh, 9rem);
             padding-left: .25rem;
             margin-left: -.25rem;
             overflow-y: auto;
