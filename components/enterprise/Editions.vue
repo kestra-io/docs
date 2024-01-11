@@ -52,10 +52,10 @@
                                 <li data-aos="fade-left" data-aos-delay="350"><span>Single Sign-On (SSO)</span></li>
                                 <li data-aos="fade-left" data-aos-delay="400"><span>Role-Based Access Control (RBAC)</span></li>
                                 <li data-aos="fade-left" data-aos-delay="450"><span>Custom blueprints</span></li>
-                                <li data-aos="fade-left" data-aos-delay="500"><span>Namespace-level credential store</span></li>
-                                <li data-aos="fade-left" data-aos-delay="550"><span>Namespace-level variable store</span></li>
-                                <li data-aos="fade-left" data-aos-delay="600"><span>Namespace-level task configuration</span></li>
-                                <li data-aos="fade-left" data-aos-delay="650"><span>Namespace-level permissions</span></li>
+                                <li data-aos="fade-left" data-aos-delay="500"><span>Namespace-level management</span></li>
+                                <li data-aos="fade-left" data-aos-delay="550"><span>Secure credential store</span></li>
+                                <li data-aos="fade-left" data-aos-delay="600"><span>Built-in variable store</span></li>
+                                <li data-aos="fade-left" data-aos-delay="650"><span>Centralized governance over task configuration</span></li>
                                 <li data-aos="fade-left" data-aos-delay="700"><span>Enterprise support with guaranteed SLAs</span></li>
                                 <li data-aos="fade-left" data-aos-delay="750"><span>Onboarding & training</span></li>
                             </ul>
