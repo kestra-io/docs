@@ -1,171 +1,184 @@
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 export default defineNuxtConfig({
-  modules: [
-      '@nuxt/devtools',
-      '@nuxt/content',
-      '@nuxt/image',
-      '@nuxtjs/sitemap',
-      'nuxt-gtag',
-      'nuxt-multi-cache'
-  ],
-  sitemap: {
-      sitemaps: {
-          default: {
-              includeAppSources: true,
-              sources: ['/api/sitemap']
-          },
-          plugins: {
-              sources: ['/api/sitemap']
-          }
-      },
-  },
-  app: {
-      baseURL: "/",
-      // pageTransition: {name: 'page', mode: 'out-in'}
-      head: {
-          link: [
-              {rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png'},
-              {rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png'},
-              {rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png'},
-              {rel: 'manifest', href: '/site.webmanifest'},
-              {rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#2c0059'},
-              {name: 'msapplication-TileColor', content: '#2c0059'},
-              {rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml', title: 'Sitemap'},
-              {rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml', title: 'Blog Articles RSS'}
-          ],
-          meta: [
-              {name: 'msapplication-TileColor', content: '#2c0059'},
-              {name: 'theme-color', content: '#2c0059'},
-              {property: 'og:image', content:'/og-image.png'}
-          ],
-          script: [
-              {src: 'https://js-eu1.hsforms.net/forms/embed/v2.js'}
-          ],
-      }
-  },
+    modules: [
+        '@nuxt/devtools',
+        '@nuxt/content',
+        '@nuxt/image',
+        '@nuxtjs/sitemap',
+        'nuxt-gtag',
+        'nuxt-multi-cache'
+    ],
+    sitemap: {
+        sitemaps: {
+            default: {
+                includeAppSources: true,
+                sources: ['/api/sitemap']
+            },
+            plugins: {
+                sources: ['/api/sitemap']
+            }
+        },
+    },
+    app: {
+        baseURL: "/",
+        // pageTransition: {name: 'page', mode: 'out-in'}
+        head: {
+            link: [
+                {rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png'},
+                {rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png'},
+                {rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png'},
+                {rel: 'manifest', href: '/site.webmanifest'},
+                {rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#2c0059'},
+                {name: 'msapplication-TileColor', content: '#2c0059'},
+                {rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml', title: 'Sitemap'},
+                {rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml', title: 'Blog Articles RSS'}
+            ],
+            meta: [
+                {name: 'msapplication-TileColor', content: '#2c0059'},
+                {name: 'theme-color', content: '#2c0059'},
+                {property: 'og:image', content: '/og-image.png'}
+            ],
+            script: [
+                {src: 'https://js-eu1.hsforms.net/forms/embed/v2.js'}
+            ],
+        }
+    },
 
-  css: [
-      '@/assets/styles/vendor.scss',
-      '@/assets/styles/app.scss'
-  ],
+    css: [
+        '@/assets/styles/vendor.scss',
+        '@/assets/styles/app.scss'
+    ],
 
-  content: {
-      documentDriven: false,
-      highlight: {
-          // preload: [
-          //     'bash',
-          //     'yaml',
-          //     'sql',
-          //     'java',
-          //     'dockerfile',
-          //     'hcl',
-          //     'python',
-          //     'twig',
-          //     'groovy',
-          //     'json5',
-          // ],
-          theme: 'github-dark'
-      },
-      navigation: {
-          fields: ["_file"]
-      },
-      markdown: {
-          remarkPlugins: {
-              'remark-flexible-markers': {
-                  markerClassName: 'type-mark',
-              },
-              'remark-code-import': {
-                  rootDir: process.cwd()
-              },
-          }
-      },
-  },
+    content: {
+        documentDriven: false,
+        highlight: {
+            // preload: [
+            //     'bash',
+            //     'yaml',
+            //     'sql',
+            //     'java',
+            //     'dockerfile',
+            //     'hcl',
+            //     'python',
+            //     'twig',
+            //     'groovy',
+            //     'json5',
+            // ],
+            theme: 'github-dark'
+        },
+        navigation: {
+            fields: ["_file"]
+        },
+        markdown: {
+            remarkPlugins: {
+                'remark-flexible-markers': {
+                    markerClassName: 'type-mark',
+                },
+                'remark-code-import': {
+                    rootDir: process.cwd()
+                },
+            }
+        },
+    },
 
-  router: {
-      trailingSlash: false,
-      options: {
-          strict: true
-      }
-  },
+    router: {
+        trailingSlash: false,
+        options: {
+            strict: true
+        }
+    },
 
-  devServer: {
-      port: 3001
-  },
+    devServer: {
+        port: 3001
+    },
 
-  vue: {
-      compilerOptions: {
-          isCustomElement: (tag) => {
-              return tag === "rapi-doc";
-          }
-      }
-  },
+    vue: {
+        compilerOptions: {
+            isCustomElement: (tag) => {
+                return tag === "rapi-doc";
+            }
+        }
+    },
 
-  vite: {
-      optimizeDeps: {
-          include: [
-            "humanize-duration",
-            "lodash",
-            "dagre"
-          ],
-          exclude: [
-              '* > @kestra-io/ui-libs'
-          ]
-      },
-      resolve: {
-          alias: {
-              'node:path': 'path-browserify'
-          }
-      }
-  },
+    vite: {
+        optimizeDeps: {
+            include: [
+                "humanize-duration",
+                "lodash",
+                "dagre"
+            ],
+            exclude: [
+                '* > @kestra-io/ui-libs'
+            ]
+        },
+        resolve: {
+            alias: {
+                'node:path': 'path-browserify'
+            }
+        }
+    },
 
-  gtag: {
-      id: 'G-EYVNS03HHR',
-      initialConsent: false
-  },
+    gtag: {
+        id: 'G-EYVNS03HHR',
+        initialConsent: false
+    },
 
-  runtimeConfig: {
-      public: {
-          siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
-          apiUrl: process.env.NUXT_PUBLIC_API_URL || DEFAULT_KESTRA_API_URL,
-      }
-  },
+    runtimeConfig: {
+        public: {
+            siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
+            apiUrl: process.env.NUXT_PUBLIC_API_URL || DEFAULT_KESTRA_API_URL,
+        }
+    },
 
-  // if using nuxt generate
-  nitro: {
-      compressPublicAssets: true,
-      prerender: {
-          routes: ['/rss.xml'],
-      },
-  },
+    // if using nuxt generate
+    nitro: {
+        prerender: {
+            routes: ['/rss.xml'],
+        },
+    },
 
-  routeRules: {
-      // 2023-04-17 : defines old site redirects
-      '/features/usages.html': {redirect: '/use-cases'},
-      '/features/features.html': {redirect: '/features'},
-      '/features/enterprise.html': {redirect: '/enterprise'},
-      '/company/privacy-policy.html': {redirect: '/privacy-policy'},
-      '/company/cookie-policy.html': {redirect: '/cookie-policy'},
-      '/company/contact.html': {redirect: '/contact-us'},
-      '/company/careers.html': {redirect: '/careers'},
-      '/company/company/about-us.html': {redirect: '/about-us'},
-      '/community.html': {redirect: '/community'},
-      '/slack': {redirect: `${DEFAULT_KESTRA_API_URL}/communities/slack/redirect`},
-      '/api/events/**': { proxy: 'https://eu.posthog.com/**' },
-  },
+    routeRules: {
+        '/slack': {redirect: `${DEFAULT_KESTRA_API_URL}/communities/slack/redirect`},
+        '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
 
-  build: {
-      transpile: ['vue3-count-to']
-  },
+        // 2023-04-17 : defines old site redirects
+        '/features/usages.html': {redirect: '/use-cases/stories//use-cases'},
+        '/features/features.html': {redirect: '/use-cases/stories//features'},
+        '/features/enterprise.html': {redirect: '/use-cases/stories//enterprise'},
+        '/company/privacy-policy.html': {redirect: '/use-cases/stories//privacy-policy'},
+        '/company/cookie-policy.html': {redirect: '/use-cases/stories//cookie-policy'},
+        '/company/contact.html': {redirect: '/use-cases/stories//contact-us'},
+        '/company/careers.html': {redirect: '/use-cases/stories//careers'},
+        '/company/company/about-us.html': {redirect: '/use-cases/stories//about-us'},
+        '/community.html': {redirect: '/use-cases/stories//community'},
 
-  multiCache: {
-      data: {
-          enabled: true,
-      }
-  },
+        // use case with id
+        '/use-cases/stories/reglo': {redirect: '/use-cases/stories/1-reglo'},
+        '/use-cases/stories/displayce': {redirect: '/use-cases/stories/2-displayce'},
+        '/use-cases/stories/leroy-merlin-france': {redirect: '/use-cases/stories/3-leroy-merlin-france'},
+        '/use-cases/stories/cleverconnect': {redirect: '/use-cases/stories/4-cleverconnect'},
+        '/use-cases/stories/loxcia-by-ntico': {redirect: '/use-cases/stories/5-loxcia-by-ntico'},
+        '/use-cases/stories/htch': {redirect: '/use-cases/stories/6-htch'},
+        '/use-cases/stories/gorgias': {redirect: '/use-cases/stories/7-gorgias'},
+        '/use-cases/stories/sophia-genetics': {redirect: '/use-cases/stories/8-sophia-genetics'},
+        '/use-cases/stories/orlando-city-sc': {redirect: '/use-cases/stories/9-orlando-city-sc'},
+        '/use-cases/stories/copines-de-voyage': {redirect: '/use-cases/stories/10-copines-de-voyage'},
+        '/use-cases/stories/valorissimo': {redirect: '/use-cases/stories/11-valorissimo'},
+    },
 
-  devtools: {
-    timeline: {
-      enabled: true
+    build: {
+        transpile: ['vue3-count-to']
+    },
+
+    multiCache: {
+        data: {
+            enabled: true,
+        }
+    },
+
+    devtools: {
+        timeline: {
+            enabled: true
+        }
     }
-  }
 })
