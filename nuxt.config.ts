@@ -9,7 +9,15 @@ export default defineNuxtConfig({
       'nuxt-multi-cache'
   ],
   sitemap: {
-    sources: ['/api/sitemap'],
+      sitemaps: {
+          default: {
+              includeAppSources: true,
+              sources: ['/api/sitemap']
+          },
+          plugins: {
+              sources: ['/api/sitemap']
+          }
+      },
   },
   app: {
       baseURL: "/",

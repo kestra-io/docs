@@ -1,12 +1,13 @@
 import {slugify} from "~/utils/url.js";
+import {recursivePages} from "~/utils/navigation";
 import type {SitemapUrlInput} from "@nuxtjs/sitemap/dist/runtime/types";
 
-export default defineSitemapEventHandler(async () => {
-    type SitemapsToGenerate = { rootUrl: string, apiUrl: string };
+const generateDefaultSitemap = async () => {
+    type SitemapsToGenerate = { rootUrl: string, apiUrl: string, sitemap?: string };
     const sitemapsToGenerate: Array<SitemapsToGenerate> = [
         {
             rootUrl: '/blueprints/',
-            apiUrl: 'https://api.kestra.io/v1/blueprints'
+            apiUrl: 'https://api.kestra.io/v1/blueprints',
         },
         {
             rootUrl: '/use-cases/stories/',
@@ -23,6 +24,7 @@ export default defineSitemapEventHandler(async () => {
             totalPages: Math.ceil(response.total / pageSize),
             data: response.results.map(page => asSitemapUrl({
                 loc: `${sitemapInput.rootUrl}${page.id}-${slugify(page.title)}`,
+                _sitemap: sitemapInput.sitemap ?? 'default'
             }))
         };
     };
@@ -43,4 +45,25 @@ export default defineSitemapEventHandler(async () => {
     });
 
     return (await Promise.all(promises)).flat();
+}
+
+const generatePluginsSitemap = async () => {
+    type NavigationElement = { isPage?: boolean, children: NavigationElement[] };
+    const pluginsNav = await $fetch<[NavigationElement]>('/api/plugins?type=navigation');
+    return (recursivePages(pluginsNav[0]) as string[])
+        // already included in nuxt-generated sitemap (due to having an index file)
+        .filter(path => !path.endsWith('/plugins'))
+        .map(path => asSitemapUrl({
+            loc: path,
+            _sitemap: 'plugins'
+        }));
+}
+
+export default defineSitemapEventHandler(async () => {
+    let defaultSitemap = await generateDefaultSitemap();
+    let pluginSitemap = await generatePluginsSitemap();
+    return [
+        ...defaultSitemap,
+        ...pluginSitemap
+    ];
 });
