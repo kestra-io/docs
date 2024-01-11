@@ -91,7 +91,9 @@
         transform: translateX(0);
         @include media-breakpoint-up(lg) {
             position: sticky;
-            top: 5rem;
+            top: 7rem;
+            height: fit-content;
+            max-height: subtract(100vh, 9rem);
             right: 0;
             z-index: 2;
         }

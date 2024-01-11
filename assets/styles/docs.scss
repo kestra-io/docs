@@ -10,6 +10,7 @@ $bd-gutter-x: 3rem;
 
     &.margin {
         margin-top: 2rem;
+        margin-bottom: 2rem;
     }
 
     @include media-breakpoint-up(lg) {
@@ -19,6 +20,7 @@ $bd-gutter-x: 3rem;
         gap: $grid-gutter-width;
         &.margin {
             margin-top: 4.5rem;
+            margin-bottom: 4.5rem;
         }
     }
 
@@ -34,7 +36,6 @@ $bd-gutter-x: 3rem;
 }
 
 .bd-main {
-    margin-bottom: 90px;
     grid-area: main;
 
     h1 {
