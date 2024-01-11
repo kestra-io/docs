@@ -39,3 +39,17 @@ export function prevNext(navigation, path) {
     }
     return {prev, next};
 }
+
+export const recursivePages = (item) => {
+    const paths = [];
+    if (item.isPage ?? true) {
+        paths.push(item._path);
+    }
+    if (item.children) {
+        paths.push(...(item.children.flatMap(child => {
+            return recursivePages(child);
+        })));
+    }
+
+    return paths;
+}
