@@ -141,6 +141,7 @@ export default defineNuxtConfig({
         '/docs/troubleshooting': {redirect: '/docs/faq/troubleshooting'},
         '/docs/developer-guide/best-practice': {redirect: '/docs/developer-guide/best-practices'},
         '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
+        '/doc': {redirect: {to: '/docs', statusCode: 301}},
     },
 
     build: {
