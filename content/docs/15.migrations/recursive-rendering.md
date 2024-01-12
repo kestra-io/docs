@@ -129,10 +129,6 @@ tasks:
     format: "{{ render(namespace.myvar) }}"
 ```
 
-To make it easy to remember:
-
-![flextape_render.jpeg](flextape_render.jpeg)
-
 ### String concatenation
 
 Let's look at another example that will demonstrate how the `render()` function works with string concatenation.
