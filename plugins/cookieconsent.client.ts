@@ -10,7 +10,7 @@ export default defineNuxtPlugin(nuxtApp => {
         const {grantConsent} = useGtag()
 
         const enabledAnalytics = async () => {
-            const response = await axios.get('https://api.kestra.io/v1/config')
+            const response = await axios.get('https://api.kestra.io/v1/config', {withCredentials: true})
 
             posthog.init(
                 response.data.posthog.token,
