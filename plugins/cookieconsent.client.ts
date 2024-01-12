@@ -29,6 +29,8 @@ export default defineNuxtPlugin(nuxtApp => {
             if (!posthog.get_property("__alias")) {
                 posthog.alias(response.data.id);
             }
+
+            posthog.capture('$pageview');
         };
 
 
