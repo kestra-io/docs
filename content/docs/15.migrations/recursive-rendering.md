@@ -75,7 +75,7 @@ triggers:
     cron: "* * * * *"
 ```
 
-Here, the task `parse_date` will print the expression without rendering it, so the printed output will not be a date but just a string of that variable:
+Here, the task `parse_date` will print the expression without recursively rendering it, so the printed output will be a string of that variable rather than a parsed date:
 
 ```shell
 {{ trigger.date ?? execution.startDate | date('yyyy-MM-dd') }}
@@ -149,34 +149,34 @@ inputs:
 variables:
   day_of_week: "{{ trigger.date ?? inputs.date | date('EEEE') }}"
   full_date: "{{ vars.day_of_week }}, the {{ trigger.date ?? inputs.date | date('yyyy-MM-dd') }}"
-  full_date_tilde: "{{ vars.day_of_week ~ ', the ' ~ (trigger.date ?? inputs.date | date('yyyy-MM-dd')) }}"
-  greeting_tilde: "{{'Hello, ' ~ inputs.user ~ ' on ' ~ vars.full_date }}"
+  full_date_concat: "{{ vars.day_of_week ~ ', the ' ~ (trigger.date ?? inputs.date | date('yyyy-MM-dd')) }}"
+  greeting_concat: "{{'Hello, ' ~ inputs.user ~ ' on ' ~ vars.full_date }}"
   greeting_brackets: "Hello, {{ inputs.user }} on {{ vars.full_date }}"
 
 tasks:
   - id: not-rendered
     type: io.kestra.core.tasks.log.Log
     message: |
-     Tilde: {{ vars.greeting_tilde }}
+     Concat: {{ vars.greeting_concat }}
      Brackets: {{ vars.greeting_brackets }}
      Full date: {{ vars.full_date }}
-     Full date tilde: {{ vars.full_date_tilde }}
+     Full date concat: {{ vars.full_date_concat }}
 
   - id: rendered-recursively
     type: io.kestra.core.tasks.log.Log
     message: |
-     Tilde: {{ render(vars.greeting_tilde) }}
+     Concat: {{ render(vars.greeting_concat) }}
      Brackets: {{ render(vars.greeting_brackets) }}
      Full date: {{ render(vars.full_date) }}
-     Full date tilde: {{ render(vars.full_date_tilde) }}
+     Full date concat: {{ render(vars.full_date_concat) }}
 
   - id: rendered-once
     type: io.kestra.core.tasks.log.Log
     message: |
-     Tilde: {{ render(vars.greeting_tilde, recursive=false) }}
+     Concat: {{ render(vars.greeting_concat, recursive=false) }}
      Brackets: {{ render(vars.greeting_brackets, recursive=false) }}
      Full date: {{ render(vars.full_date, recursive=false) }}
-     Full date tilde: {{ render(vars.full_date_tilde, recursive=false) }}
+     Full date concat: {{ render(vars.full_date_concat, recursive=false) }}
 
 triggers:
   - id: schedule
@@ -184,30 +184,30 @@ triggers:
     cron: "* * * * *"
 ```
 
-Here are some things to note about this flow:
-- the ``??`` syntax is a [null-coalescing operator](https://kestra.io/docs/concepts/expression/operator/null-coalescing) that returns the first non-null value in the expression. For example, if `trigger.date` is null, the expression will return `inputs.date`.
-- the `~` tilde sign is a [string concatenation operator](https://kestra.io/docs/concepts/expression/operator/concat) that combines multiple strings into one.
+Note that:
+- the ``??`` syntax within `"{{ trigger.date ?? inputs.date | date('EEEE') }}"` is a [null-coalescing operator](https://kestra.io/docs/concepts/expression/operator/null-coalescing) that returns the first non-null value in the expression. For example, if `trigger.date` is null, the expression will return `inputs.date`.
+- the `~` sign is a [string concatenation operator](https://kestra.io/docs/concepts/expression/operator/concat) that combines two strings into one.
 
 When you run this flow, you should see the following output in the logs:
 
 ```shell
-INFO Tilde: {{'Hello, ' ~ inputs.user ~ ' on ' ~ vars.full_date }}
+INFO Concat: {{'Hello, ' ~ inputs.user ~ ' on ' ~ vars.full_date }}
 Brackets: Hello, {{ inputs.user }} on {{ vars.full_date }}
 Full date: {{ vars.day_of_week }}, the {{ trigger.date ?? inputs.date | date('yyyy-MM-dd') }}
-Full date tilde: {{ vars.day_of_week ~ ', the ' ~ (trigger.date ?? inputs.date | date('yyyy-MM-dd')) }}
+Full date concat: {{ vars.day_of_week ~ ', the ' ~ (trigger.date ?? inputs.date | date('yyyy-MM-dd')) }}
 
-INFO Tilde: Hello, Rick on Saturday, the 2024-02-24
+INFO Concat: Hello, Rick on Saturday, the 2024-02-24
 Brackets: Hello, Rick on Saturday, the 2024-02-24
 Full date: Saturday, the 2024-02-24
-Full date tilde: Saturday, the 2024-02-24
+Full date concat: Saturday, the 2024-02-24
 
-INFO Tilde: Hello, Rick on {{ vars.day_of_week }}, the {{ trigger.date ?? inputs.date | date('yyyy-MM-dd') }}
+INFO Concat: Hello, Rick on {{ vars.day_of_week }}, the {{ trigger.date ?? inputs.date | date('yyyy-MM-dd') }}
 Brackets: Hello, Rick on {{ vars.day_of_week }}, the {{ trigger.date ?? inputs.date | date('yyyy-MM-dd') }}
 Full date: {{ trigger.date ?? inputs.date | date('EEEE') }}, the 2024-02-24
-Full date tilde: {{ trigger.date ?? inputs.date | date('EEEE') }}, the 2024-02-24
+Full date concat: {{ trigger.date ?? inputs.date | date('EEEE') }}, the 2024-02-24
 ```
 
-You may notice that both the ``vars.greeting_tilde`` and ``vars.greeting_brackets`` lead to **the same output**, even though the first one uses the `~` tilde sign for string concatenation within a single Pebble expression `{{ }}`, and the second one uses one string with multiple `{{ }}` expressions to concatenates the strings. Both are fully supported and you can decide which one to use based on your preference.
+You may notice that both the ``vars.greeting_concat`` and ``vars.greeting_brackets`` lead to **the same output**, even though the first one uses the `~` sign for string concatenation within a single Pebble expression `{{ }}`, and the second one uses one string with multiple `{{ }}` expressions to concatenate the strings. Both are fully supported and you can decide which one to use based on your preference.
 
 
 ### Webhook trigger: using `render()` with the `recursive=false` flag
