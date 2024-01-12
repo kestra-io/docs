@@ -219,7 +219,7 @@ Imagine you use a GitHub webhook as a trigger in order to automate deployments a
 ```json
 {
     "pull_request": {
-        "html_url": "https://github.com/kestra-io/kestra/issues/2740",
+        "html_url": "https://github.com/kestra-io/kestra/pull/2834",
         "body": "This PR replaces the ${{ env.GITHUB_TOKEN }} with a more secure ${{ secrets.GITHUB_TOKEN }}."
     }
 }
@@ -227,7 +227,7 @@ Imagine you use a GitHub webhook as a trigger in order to automate deployments a
 
 The pull request body contains templated variables `${{ env.MYENV }}` and `${{ secrets.GITHUB_TOKEN }}`, which are not meant to be rendered by Kestra, but by GitHub Actions. Processing this webhook payload with recursive rendering would result in an error, as those variables are not defined in the flow execution context.
 
-In order to process that webhook's payload and render its elements such as the `pull_request.body` without recursively rendering its content, you can leverage the `render()` function with the `recursive=false` flag:
+In order to retrieve elements such as the `pull_request.body` from that webhook's payload without recursively rendering its content, you can leverage the `render()` function with the `recursive=false` flag:
 
 ```yaml
 id: pebble_in_webhook
@@ -236,21 +236,21 @@ namespace: qa
 inputs:
   - name: github_url
     type: STRING
-    defaults: https://github.com/kestra-io/kestra/issues/2740
+    defaults: https://github.com/kestra-io/kestra/pull/2834
 
   - name: body
     type: JSON
     defaults: |
       {
         "pull_request": {
-            "html_url": "https://github.com/kestra-io/kestra/issues/2740",
+            "html_url": "https://github.com/kestra-io/kestra/pull/2834",
             "body": "This PR replaces the ${{ env.GITHUB_TOKEN }} with a more secure ${{ secrets.GITHUB_TOKEN }}"
         }
       }
 
 variables:
-  github_url: "{{ trigger.body.pull_request.html_url ?? trigger.body.issue.html_url ?? inputs.github_url }}"
   body: "{{ trigger.body.pull_request.body ?? trigger.body.issue.body ?? inputs.body }}"
+  github_url: "{{ trigger.body.pull_request.html_url ?? trigger.body.issue.html_url ?? inputs.github_url }}"
 
 tasks:
   - id: render_once
@@ -272,7 +272,7 @@ triggers:
     key: test1234
 ```
 
-Only the `render_once` task is relevant, as it will render the pull request's `body` without recursively rendering its content. The flow includes a `recursive` and `non-recursive` configuration for easy comparison.
+Only the `render_once` task is relevant for this use case, as it will render the pull request's `body` without recursively rendering its content. The flow includes a `recursive` and `non-recursive` configuration for easy comparison.
 - The `not-recursive` task will print the `{{ trigger.body.pull_request.body ?? trigger.body.issue.body ?? inputs.body }}` expression as a string without rendering it.
 - The `recursive` task will fail, as it will try to render the webhook's payload containing templating that cannot be parsed by kestra.
 
@@ -280,7 +280,7 @@ Here is how you can call that flow via curl:
 
 ```shell
 curl -i -X POST -H "Content-Type: application/json" \
-  -d '{ "pull_request": {"html_url": "https://github.com/kestra-io/kestra/issues/2740", "body": "This PR replaces the ${{ env.GITHUB_TOKEN }} with a more secure ${{ secrets.GITHUB_TOKEN }}"} }' \
+  -d '{ "pull_request": {"html_url": "https://github.com/kestra-io/kestra/pull/2834", "body": "This PR replaces the ${{ env.GITHUB_TOKEN }} with a more secure ${{ secrets.GITHUB_TOKEN }}"} }' \
   http://localhost:8080/api/v1/executions/webhook/qa/pebble_in_webhook/test1234
 ```
 
@@ -288,7 +288,7 @@ On an instance with multi-tenancy enabled, make sure to also pass the tenant ID 
 
 ```shell
 curl -i -X POST -H "Content-Type: application/json" \
-  -d '{ "pull_request": {"html_url": "https://github.com/kestra-io/kestra/issues/2740"}, "body": "This PR replaces the ${{ env.GITHUB_TOKEN }} with a more secure ${{ secrets.GITHUB_TOKEN }}"} }' \
+  -d '{ "pull_request": {"html_url": "https://github.com/kestra-io/kestra/pull/2834"}, "body": "This PR replaces the ${{ env.GITHUB_TOKEN }} with a more secure ${{ secrets.GITHUB_TOKEN }}"} }' \
   http://localhost:8080/api/v1/your_tenant/executions/webhook/qa/pebble_in_webhook/test1234
 ```
 
@@ -305,11 +305,11 @@ ERROR Missing variable: 'env' on 'This PR replaces the ${{ env.GITHUB_TOKEN }} w
 
 ## Migrating a 0.13.0 flow to the new rendering behavior in 0.14.0
 
-As you've seen in the previous examples, simply wrapping the Pebble expression in the `render()` function will allow you to easily migrate your existing flows to the kestra version 0.14.0. However, if you have many flows that use the previous recursive rendering behavior, you may perform that migration later. We've added a configuration variable that allows you to keep the previous recursive rendering behavior to give you more time to migrate your flows.
+As you've seen in the previous examples, simply wrapping the Pebble expression in the `render()` function will allow you to easily migrate your existing flows to the kestra version 0.14.0. However, if you have many flows that use the previous recursive rendering behavior, you may perform that migration later. We've added a boolean configuration variable called `recursive-rendering` that allows you to keep the previous recursive rendering behavior and gives you more time to migrate your flows.
 
 ## How to keep the previous behavior
 
-If you need more time to migrate your flows, you can keep the previous behavior by adding the following configuration:
+To keep the previous (recursive) behavior, add the following configuration:
 
 ```yaml
 kestra:
