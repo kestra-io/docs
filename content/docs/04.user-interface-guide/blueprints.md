@@ -32,7 +32,7 @@ Once you are on the Blueprints page, you can:
 - **Filter** by a tag, e.g., filter for Docker, to see various ways to run containers in your flow. Or filter for Notifications to see several options for configuring alerts on success or failure.
 
 
-## Organization Blueprints
+## Custom Blueprints
 
 ::alert{type="warning"}
 This is an [Enterprise Edition](https://kestra.io/enterprise) feature.
@@ -40,17 +40,17 @@ This is an [Enterprise Edition](https://kestra.io/enterprise) feature.
 
 Apart from Community Blueprints, you can also create custom Blueprints available only to your organization. You can use them to share, centralize, and document commonly used workflows in your team.
 
-You can think of Organization Blueprints as your company's internal App Store, offering a wide range of integrations and validated workflow patterns tailored to your needs.
+You can think of Custom Blueprints as your team's internal App Store, offering a wide range of integrations and validated workflow patterns tailored to your needs.
 
-### How to create a new Organization Blueprint
+### How to create a new Custom Blueprint
 
-From the left navigation menu, go to **Blueprints**. Then, select the **Organization Blueprints** tab. Click on "Create".
+From the left navigation menu, go to **Blueprints**. Then, select the **Custom Blueprints** tab. Click on "Create".
 
-![Organization Blueprints](/docs/user-interface-guide/blueprint-org.png)
+![Custom Blueprints](/docs/user-interface-guide/custom-blueprints.png)
 
 Add a title, description, and the contents of the flow. You can add as many tags as you want. Then click on the "Create" button.
 
-![New Organization Blueprint](/docs/user-interface-guide/blueprint-org-2.png)
+![New Custom Blueprint](/docs/user-interface-guide/blueprint-org-2.png)
 
 You can edit the Blueprint anytime, for example, to add new tasks or expand the documentation.
 
