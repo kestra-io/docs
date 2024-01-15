@@ -12,7 +12,7 @@ You can authenticate the Secrets Manager with Azure Cloud in multiple ways:
 ```yaml
 kestra:
   secret:
-    type: google-secret-manager
+    type: azure-secret-manager
     azure-key-vault:
       clientSecret:
         tenantId: "id"
