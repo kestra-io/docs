@@ -34,7 +34,10 @@
         if (!NON_NUXT_CONTENT_RESOLVED_PATHS.some(p => route.path.includes(p))) {
             page = (await useAsyncData(
                 `ProseA-${hash(route.path)}`,
-                () => queryContent(route.path).only("_file").findOne()
+                () => queryContent(route.path).only("_file").findOne(),
+                {
+                    dedupe: "defer"
+                }
             )).data;
         }
 
