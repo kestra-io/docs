@@ -51,6 +51,7 @@
                     "fortinet",
                     "hcl",
                     "huawei",
+                    "clever-cloud",
                     "leroymerlin",
                     "bouygues-immobilier",
                     "tencent",
