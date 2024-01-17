@@ -1,5 +1,5 @@
 import {slugify} from "~/utils/url.js";
-import {recursivePages} from "~/utils/navigation";
+import {recursivePages} from "~/utils/navigation.js";
 import type {SitemapUrlInput} from "@nuxtjs/sitemap/dist/runtime/types";
 
 const generateDefaultSitemap = async () => {

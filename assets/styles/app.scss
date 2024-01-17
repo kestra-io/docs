@@ -9,6 +9,7 @@ body {
     min-width: 320px;
     min-height: 100%;
     position: relative;
+    background-color: $black-4;
 }
 
 :root {
@@ -280,7 +281,6 @@ blockquote.blockquote {
 
 .card {
     border-radius: $border-radius-lg;
-    box-shadow: $box-shadow;
 }
 
 .card-group {
@@ -291,7 +291,6 @@ blockquote.blockquote {
     .card {
         height: 100%;
         border-radius: $border-radius-lg;
-        box-shadow: $box-shadow;
     }
 
     &.card-centered {
@@ -324,6 +323,189 @@ blockquote.blockquote {
 
     &.no-shadow {
         background: none;
+    }
+}
+
+.main {
+    background: var(--Kestra-io-Token-color-background-primary, #111113) !important;
+}
+
+.features {
+    .card {
+        border-radius: 8px;
+        border: 1px solid var(--Kestra-io-Token-Color-border-secondary, #252526);
+        background: var(--Kestra-io-Token-color-background-secondary, #161617);
+        color: var(--Kestra-io-Token-color-white, #FFF);
+        padding: 64px 32px;
+
+        .card-icon {
+            float: none;
+            border-radius: 8px;
+            border: 1px solid var(--Border_dark, #B010FB);
+            background: var(--Kestra-io-Token-color-background-primary, #111113);
+        }
+    }
+}
+
+.dashboard {
+    .card {
+        border: 1px solid var(--Kestra-io-Token-Color-border-primary, #3D3D3F) !important;
+        background: var(--Kestra-io-Token-color-background-secondary, #161617) !important;
+
+        .card-body {
+
+            p {
+                display: flex;
+                align-items: center;
+            }
+
+            .card-icon {
+                width: 40px;
+                min-width: 40px;
+                height: 40px;
+                min-height: 40px;
+                background: var(--Kestra-io-Neutral-Gray400, #252526);
+                font-size: 24px !important;
+
+                .material-design-icon {
+                    margin-top: -6px;
+                    width: 24px;
+                    height: 24px;
+
+                    svg path {
+                        fill: #8405FF;
+                    }
+                }
+            }
+        }
+    }
+
+    .active {
+        border: 1px solid var(--Border_dark, #B010FB) !important;
+        background: var(--Kestra-io-Neutral-Gray100, #111113) !important;
+
+        .card-icon {
+            background: var(--primary-color-primary, #8405FF) !important;
+
+            .material-design-icon svg path {
+                fill: var(--Kestra-io-Token-color-white, #FFF) !important;
+            }
+        }
+    }
+}
+
+.how {
+    .subtitle {
+        margin: 0 !important;
+
+        p {
+            text-align: left !important;
+        }
+    }
+
+    .item {
+        h3 {
+            color: #FFF;
+            font-family: $font-family-sans-serif;
+            font-size: 49px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 54px;
+        }
+
+        p {
+            color: #DEE0E4;
+            font-family: $font-family-sans-serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 26px;
+        }
+
+    }
+
+    .workflow {
+        &-1, &-2, &-3, &-4, &-5 {
+            h3 {
+                position: relative;
+            }
+        }
+
+        &-1 {
+            margin-top: 115px;
+            h3:before {
+                content: url("../../public/landing/home/connection-line-1.svg");
+                position: absolute;
+                top: -220px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        &-2 {
+             margin-top: 158px;
+             h3:before {
+                 content: url("../../public/landing/home/connection-line-2.svg");
+                 position: absolute;
+                 top: -446px;
+                 left: -22%;
+                 transform: translateX(-50%);
+             }
+        }
+
+        &-3 {
+            margin-top: 122px;
+            h3:before {
+                content: url("../../public/landing/home/connection-line-3.svg");
+                position: absolute;
+                top: -426px;
+                left: 30%;
+            }
+        }
+
+        &-4 {
+             margin-top: 96px;
+             h3:before {
+                 content: url("../../public/landing/home/connection-line-4.svg");
+                 position: absolute;
+                 top: -629px;
+                 left: -26%;
+                 transform: translateX(-50%);
+             }
+        }
+
+        &-5 {
+            margin-top: 186px;
+            h3:before {
+                content: url("../../public/landing/home/connection-line-5.svg");
+                position: absolute;
+                top: -321px;
+                left: 26%;
+            }
+        }
+    }
+
+    &-footer {
+        border-radius: 8px;
+        border: 1px solid var(--Kestra-io-Token-Color-border-primary, #3D3D3F);
+        background: var(--Kestra-io-Token-color-background-secondary, #161617);
+        padding: 32px;
+
+        p {
+            color: #FFF !important;
+            text-align: center;
+            font-family: $font-family-sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+        }
+    }
+}
+
+.features, .dashboard, .how {
+    section {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.10);
     }
 }
 

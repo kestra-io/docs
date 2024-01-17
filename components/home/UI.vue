@@ -1,10 +1,10 @@
 <template>
     <div class="main">
-        <div class="container">
+        <div class="dashboard container">
             <Section
                 class="dark"
-                subtitle="All-Inclusive Dashboard"
-                title="Empower Your Team with a Comprehensive, User-Friendly Orchestration Platform"
+                subtitle-before="All-Inclusive"
+                subtitle="Dashboard"
             >
                 <div class="row mb-5">
                     <div class="col-lg-8">
@@ -18,8 +18,8 @@
                         <div class="card" @click="active = 1" :class="{active: active === 1}" data-aos="fade-left">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon rounded-5"><ViewDashboardVariantOutline /></span>
-                                    Complete and comprehensive Dashboard
+                                    <span class="card-icon rounded-5"><WrenchOutline /></span>
+                                    Built-in code editor
                                 </p>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
-                                    Built-in editor to define flows, SQL queries and custom scripts
+                                    Execute and monitor directly from the interface
                                 </p>
                             </div>
                         </div>
@@ -35,15 +35,15 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
-                                    Simple declarative editor with live-updating DAG view
+                                    Declarative language editor
                                 </p>
                             </div>
                         </div>
                         <div class="card" @click="active = 4" :class="{active: active === 4}" data-aos="fade-left" data-aos-delay="150">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon rounded-5"><WrenchOutline /></span>
-                                    Polyglot orchestration for event-driven flows
+                                    <span class="card-icon rounded-5"><ViewDashboard /></span>
+                                    Complete and comprehensive dashboard
                                 </p>
                             </div>
                         </div>
@@ -64,10 +64,10 @@
     import WrenchOutline from "vue-material-design-icons/WrenchOutline.vue";
     import ChartTimelineVariant from "vue-material-design-icons/ChartTimelineVariant.vue";
     import ApplicationBracketsOutline from "vue-material-design-icons/ApplicationBracketsOutline.vue";
-    import ViewDashboardVariantOutline from "vue-material-design-icons/ViewDashboardVariantOutline.vue";
+    import ViewDashboard from "vue-material-design-icons/ViewDashboard.vue";
 
     export default {
-        components: {Section, WrenchOutline, ChartTimelineVariant, ApplicationBracketsOutline, ViewDashboardVariantOutline},
+        components: {Section, WrenchOutline, ChartTimelineVariant, ApplicationBracketsOutline, ViewDashboard},
         data() {
             return {
                 active: 1,

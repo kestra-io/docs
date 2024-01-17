@@ -1,10 +1,9 @@
 <template>
-    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{transparent: transparentClass, open: isOpen}">
+    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{open: isOpen}">
         <div class="container-xl">
             <NuxtLink class="navbar-brand" href="/" @click="logoClick">
                 <img class="icon" src="/icon.svg" alt="Kestra, Open source declarative data orchestration" />
-                <img v-if="transparentClass" src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
-                <img v-else src="/logo.svg" alt="Kestra, Open source declarative data orchestration" />
+                <img src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
             </NuxtLink>
 
             <button class="navbar-toggler" @click="globalClick(false)" type="button" aria-controls="main-header" aria-expanded="false" aria-label="Toggle navigation">
@@ -232,6 +231,10 @@
                             <Magnify/> Search
                         </a>
 
+                        <a @click="globalClick(true)" href="#" class="btn d-sm-inline-block icon-button" title="Dark">
+                            <WeatherNight/>
+                        </a>
+
                         <a @click="globalClick(true)" href="#" class="btn btn-sm d-none d-sm-inline-block icon-button" data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
                             <Magnify/>
                         </a>
@@ -245,6 +248,7 @@
 
 <script setup>
     import Email from "vue-material-design-icons/Email.vue";
+    import WeatherNight from "vue-material-design-icons/WeatherNight.vue";
     import FeatureSearch from "vue-material-design-icons/FeatureSearch.vue"
     import Security from "vue-material-design-icons/Security.vue"
     import AccountGroup from "vue-material-design-icons/AccountGroup.vue"
@@ -376,8 +380,7 @@
     @import "../../assets/styles/variable";
 
     nav {
-        background: var(--bs-white);
-        box-shadow: $box-shadow;
+        background: $black-4;
         transition: all ease 0.2s;
         transform: translateY(0);
         max-height: 100%;
@@ -405,8 +408,8 @@
             }
         }
 
-        a.nav-link, button.navbar-toggler, &.btn.search {
-            color: var(--bs-black);
+        a.nav-link, button.navbar-toggler, &.btn.search, .nav-item a {
+            color: var(--gray-white, #FFF) !important;
             box-shadow: none !important;
         }
 

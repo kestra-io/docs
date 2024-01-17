@@ -15,7 +15,7 @@
                         data-bs-toggle="modal"
                         data-bs-target="#home-intro"
                     >
-                        <PlayCircleOutline /> Product Video
+                        Watch video
                     </a>
 
                     <NuxtLink
@@ -23,7 +23,7 @@
                         class="btn btn-animated btn-purple-animated mb-2"
                         data-aos="zoom-in"
                     >
-                        <LightningBolt /> Get started
+                        Get started
                     </NuxtLink>
                 </div>
             </div>
@@ -66,8 +66,6 @@
 <script>
 import Console from "vue-material-design-icons/Console.vue";
 import PlayOutline from "vue-material-design-icons/PlayOutline.vue";
-import LightningBolt from "vue-material-design-icons/LightningBolt.vue";
-import PlayCircleOutline from "vue-material-design-icons/PlayCircleOutline.vue";
 
 import Companies from "~/components/layout/Companies.vue";
 import TextScroller from "~/components/layout/TextScroller.vue";
@@ -76,8 +74,6 @@ export default {
     components: {
         Console,
         PlayOutline,
-        LightningBolt,
-        PlayCircleOutline,
         Companies,
         TextScroller,
     },
