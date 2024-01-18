@@ -38,7 +38,7 @@
                                 <h3 class="card-title" data-aos="fade-right">Enterprise Edition</h3>
                                 <p class="pricing custom" data-aos="fade-left">Custom</p>
                                 <NuxtLink href="/demo" class="btn btn-primary" data-aos="zoom-in">
-                                    Let's Talk
+                                    Talk to Us
                                 </NuxtLink>
                             </div>
                             <ul>

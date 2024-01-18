@@ -8,7 +8,7 @@
                         <h1 data-aos="fade-right">Kestra Enterprise to Scale Your Workflows<span class="dot">.</span></h1>
                         <p data-aos="fade-left" class="baseline">Made for organizations & professionals seeking to secure production workloads with high-security standards and enterprise support.</p>
                         <a href="https://kestra.io/demo" target="_blank" class="btn btn-lg btn-primary me-2 mb-2" data-aos="zoom-in">
-                            Let's talk
+                            Talk to Us
                         </a>
                     </div>
                 </div>
