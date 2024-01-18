@@ -5,11 +5,8 @@
         >
         <div class="text-center cta">
                 <a href="https://kestra.io/demo" target="_blank" class="btn btn-primary me-2 mb-2" data-aos="zoom-in">
-                    <Console /> Book a demo
+                    <Console /> Lets Talk
                 </a>
-                <NuxtLink href="/contact-us" class="btn btn-secondary mb-2" data-aos="zoom-in">
-                    <Email /> Contact us
-                </NuxtLink>
             </div>
         </Section>
     </div>
