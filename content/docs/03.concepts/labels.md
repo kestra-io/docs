@@ -30,7 +30,7 @@ When you execute a flow with labels, the labels will be propagated to the create
 
 ## Set execution labels when executing a flow from the UI
 
-When executing flows manually from the UI, you can override and define new labels at flow execution start:
+When executing flows manually from the UI, you can override and define new labels at flow execution start by expanding the "Advanced configuration" section:
 
 ::div
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XwOQtqdZGZE?si=2jA71fRTDBkBF76P" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -41,9 +41,9 @@ When executing flows manually from the UI, you can override and define new label
 
 In kestra 0.14.0, we've introduced the ability to set execution labels from a dedicated [Labels task](https://kestra.io/plugins/core/tasks/executions/io.kestra.core.tasks.executions.labels). This task provides a dynamic way to label your flows, helping with observability, debugging, and monitoring of failures.
 
-By using this task, you can set custom execution labels to be based on flow inputs, task outputs, or any other dynamic data within the workflow. There are two ways to set labels in this task:
+By using this task, you can set custom execution labels based on flow inputs, task outputs, or any other dynamic data within the workflow. There are two ways to set labels in this task:
 
-1. **Using a Map (Key-Value Pairs)**: ideal when the `key` is static and the `value` is dynamic. The key is the label name, and the value is a dynamic property derived from the flow inputs or task outputs. In the example below, the task `update_labels` override the default label `song` with the output of the `get` task, and adds a new label `artist`.
+1. **Using a Map (Key-Value Pairs)**: ideal when the `key` is static and the `value` is dynamic. The key is the label name, and the value is a dynamic label value that might be derived from the flow inputs or task outputs. In the example below, the task `update_labels` overrides the default label `song` with the output of the `get` task, and adds a new label called `artist`.
 
 ```yaml
 id: labels_override
@@ -98,7 +98,7 @@ tasks:
 
 ### Overriding flow labels at runtime
 
-You can set default labels at the flow level and override them based on the outputs of tasks. This approach is useful for changing labels dynamically during execution based on the results of specific tasks.
+You can set default labels at the flow level and override them at runtime. This approach is useful for overriding label values dynamically during execution based on the results of specific tasks.
 
 The example below shows how to override the default label `song` with the output of the `get` task:
 
@@ -129,7 +129,6 @@ In this example, the default label `song` is overridden by the output of the `ge
 Labels provide a simple and effective way to organize and filter flows and their executions. Here are some of the benefits of using labels:
 
 - **Observability**: labels set during execution provide help in monitoring and troubleshooting.
-- **Filtering**: labels make it easier to find specific executions; you can use it to track ML experiments, track responses from external APIs, or label flows based on runtime-specific inputs.
-- **Organization**: labels help organize and manage workflow executions at scale, especially in complex environments and large-scale deployments. You can create custom dashboards based on labels to monitor specific executions.
+- **Filtering**: labels make it easier to find specific executions; you can use it to track ML experiments, track responses from external APIs, or label executions based on runtime-specific flow inputs.
+- **Organization**: labels help organize and manage workflow executions at scale, especially in complex environments and large-scale deployments. You can create custom dashboards based on labels to monitor specific executions, e.g. http://localhost:8080/ui/executions?labels=team:finance. You can use that pattern to build custom dashboards for specific teams, projects, flow maintainers or environments.
 
-For more examples, visit the [Execution Labels task documentation](https://kestra.io/plugins/core/tasks/executions/io.kestra.core.tasks.executions.labels).
