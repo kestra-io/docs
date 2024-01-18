@@ -106,7 +106,7 @@ import Section from '../layout/Section.vue';
         background-color: $black-2 !important;
         box-shadow: none;
         border-radius: 8px;
-        border: 1px solid var(--Text_gradient, #E151F7);
+        border: 1px solid var(--Text_gradient, #d920f5);
         background: var(--Kestra-io-Token-color-background-secondary, #161617);
     }
 
@@ -197,18 +197,15 @@ import Section from '../layout/Section.vue';
     }
 
     .title {
-        font-weight: 300;
-        font-size: $font-size-3xl;
+        font-weight: 600;
+        font-size: $font-size-4xl;
         line-height: 3.75rem;
-
+        
         &-animated {
             background: linear-gradient(90deg, #E151F7 57.52%, #5C47F5 92.48%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: 300;
-            font-size: $font-size-3xl;
-            line-height: 3.75rem;
         }
     }
 

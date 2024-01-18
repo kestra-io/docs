@@ -5,10 +5,10 @@
                 <h1 data-aos="fade-left" class="text-white title">Frequently Asked Questions</h1>
             </div>
             <CustomDetails class="que text-white" title="Is it easy to upgrade from Open Source edition to Kestra Enterprise?">
-                <p class="ans">Yet to answer</p>
+                <p class="ans">As easy as it takes to add the license key to the configuration file and restart your server!</p>
             </CustomDetails>
             <CustomDetails class="que text-white" title="Does the Enterprise Edition comes with Enterprise Support and SLAs?">
-                <p class="ans">yet to answer</p>
+                <p class="ans">Yes! In addition to all the feature sets, we’re providing access to an exclusive customer portal, end-to-end customer onboarding, and guaranteed response time on support requests! Everything operates in a full Customer Success Framework.</p>
             </CustomDetails>
 
             <CustomDetails class="que text-white" title="Is Kestra Enterprise made for small teams?">
