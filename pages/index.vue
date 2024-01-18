@@ -11,8 +11,8 @@
         <HomeUI/>
         <HomeHow/>
         <HomePlugins/>
-        <HomeTestimonials/>
         <HomeEnterpriseEdition/>
+        <HomeTestimonials/>
         <HomeOpenSource/>
         <LayoutBlogs title="What’s new in Kestra?"/>
         <LayoutNewsletter/>

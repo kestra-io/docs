@@ -25,7 +25,13 @@ $black-5 : #070708;
 $black-6 : #3D3D3F;
 $black-7 : #0D0D0C;
 $black-8 : #8B8B8D;
-
+// Define dark color classes
+@each $number in 1, 2, 3, 4, 5, 6, 7, 8 {
+    $color: map-get((1: $black-1, 2: $black-2, 3: $black-3, 4: $black-4, 5: $black-5, 6: $black-6, 7: $black-7, 8: $black-8), $number);
+    .bg-dark-#{$number} {
+        background-color: $color;
+    }
+}
 $green: #03DABA;
 $green-1: #BFE1B0;
 

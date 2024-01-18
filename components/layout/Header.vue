@@ -231,10 +231,6 @@
                             <Magnify/> Search
                         </a>
 
-                        <a @click="globalClick(true)" href="#" class="btn d-sm-inline-block icon-button" title="Dark">
-                            <WeatherNight/>
-                        </a>
-
                         <a @click="globalClick(true)" href="#" class="btn btn-sm d-none d-sm-inline-block icon-button" data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
                             <Magnify/>
                         </a>
@@ -248,7 +244,6 @@
 
 <script setup>
     import Email from "vue-material-design-icons/Email.vue";
-    import WeatherNight from "vue-material-design-icons/WeatherNight.vue";
     import FeatureSearch from "vue-material-design-icons/FeatureSearch.vue"
     import Security from "vue-material-design-icons/Security.vue"
     import AccountGroup from "vue-material-design-icons/AccountGroup.vue"
@@ -447,8 +442,8 @@
                         }
 
                         &.show, &:hover {
-                            color: $primary;
-                            background: var(--bs-gray-100);
+                            color: $primary !important;
+                            background: $black-6;
                         }
                     }
 
@@ -475,12 +470,12 @@
 
 
                     .dropdown-menu {
-                        --bs-dropdown-link-hover-bg: var(--bs-gray-100);
-                        --bs-dropdown-link-active-bg: var(--bs-gray-100);
+                        --bs-dropdown-link-hover-bg: $black-4;
+                        --bs-dropdown-link-active-bg: $black-4;
                         padding: 1rem;
-                        box-shadow: $box-shadow;
                         border-radius: $border-radius-lg;
                         border: 1px solid var(--bs-border-color);
+                        background: $black-2;
 
                         @include media-breakpoint-down(lg) {
                             display: block;
@@ -550,7 +545,7 @@
                             }
 
                             p {
-                                color: var(--bs-black);
+                                color: var(--bs-white);
                                 font-size: var(--bs-font-size-sm);
                                 margin-bottom: 0;
 
@@ -597,13 +592,14 @@
 
         &:not(.transparent) {
             :deep(.github .btn-dark) {
-                background-color: var(--bs-gray-200);
-                border-color: var(--bs-border-color);
-                color: var(--bs-body-color);
+                border-color: #333336;
+                background: #333336;
+                color: #F0F0FF;
             }
 
             :deep(.github .btn-outline-dark) {
-                border-color: var(--bs-border-color);
+                border-color: #333336;
+                color: #F0F0FF;
             }
         }
 

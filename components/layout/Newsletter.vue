@@ -92,20 +92,9 @@
     .container {
         > div {
             position: relative;
-            background: $purple-8;
+            background: $black-2;
             padding: calc($spacer * 3);
-            color: var(--bs-primary);
-
-            &:before {
-                content: "";
-                background: url("/landing/dot2.svg") no-repeat bottom right;
-                width: 329px;
-                height: 236px;
-                position: absolute;
-                right: 1rem;
-                bottom: 1rem;
-                z-index: 1;
-            }
+            color: $purple-35;
 
             > div {
                 position: relative;
@@ -114,7 +103,20 @@
         }
 
         input {
-            border-radius: $border-radius;
+            border: 1px solid #242427;
+            background: $black-4;
+            color: $white-1;
+            font-size: 15px;
+            padding: 13px;
+
+            &::placeholder {
+                color: $white-1;
+            }
+        }
+
+        .btn-dark {
+            border: 1px solid #414145;
+            background: $black-4;
         }
 
         .btn-lg {
@@ -128,7 +130,7 @@
             font-weight: 800;
 
             span {
-                color: var(--bs-black);
+                color: $body-tertiary-color;
             }
         }
 

@@ -81,17 +81,284 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import "../../assets/styles/variable";
 
-    .last-words {
-        color: #343434;
-        font-size: large;
-        text-align: center;
+    .how {
+        section {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+        }
+        .subtitle {
+            margin: 0 !important;
 
-        @include media-breakpoint-up(xl) {
-            padding-left: 12rem;
-            padding-right: 12rem;
+            p {
+                text-align: left !important;
+            }
+        }
+
+        .item {
+            h3 {
+                color: $white;
+                font-family: $font-family-sans-serif;
+                font-size: 49px;
+                font-style: normal;
+                font-weight: 300;
+                line-height: 54px;
+            }
+
+            p {
+                color: #DEE0E4;
+                font-family: $font-family-sans-serif;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 26px;
+            }
+
+        }
+
+        .workflow {
+            &-1, &-2, &-3, &-4, &-5 {
+                h3 {
+                    position: relative;
+                }
+                @include media-breakpoint-down(md) {
+                    margin-top: 0 !important;
+
+                    h3:before {
+                        display: none !important;
+                    }
+                }
+            }
+
+            &-1 {
+                margin-top: 115px;
+                h3:before {
+                    background: url("../../public/landing/home/connection-line-1.svg");
+                    width: 217px;
+                    height: 220px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    content: "";
+                    position: absolute;
+                    top: -220px;
+                    left: 50%;
+                    transform: translateX(-50%);
+
+                    @include media-breakpoint-down(lg) {
+                        left: 80%;
+                    }
+                }
+            }
+
+            &-2 {
+                margin-top: 158px;
+
+                @include media-breakpoint-down(xxl) {
+                    margin-top: 217px;
+                }
+
+                @include media-breakpoint-down(xl) {
+                    margin-top: 286px;
+                }
+
+                @include media-breakpoint-down(lg) {
+                    margin-top: 177px;
+                }
+
+                h3:before {
+                    background: url("../../public/landing/home/connection-line-2.svg");
+                    width: 691px;
+                    height: 447px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    content: "";
+                    position: absolute;
+                    top: -446px;
+                    left: -22%;
+                    transform: translateX(-50%);
+
+                    @include media-breakpoint-down(xxl) {
+                        left: -18%;
+                    }
+
+                    @include media-breakpoint-down(xl) {
+                        left: -9%;
+                    }
+
+                    @include media-breakpoint-down(lg) {
+                        top: -285px;
+                        left: -10%;
+                        width: 445px;
+                    }
+                }
+            }
+
+            &-3 {
+                margin-top: 122px;
+
+                @include media-breakpoint-down(xxl) {
+                    margin-top: 146px;
+                }
+                h3:before {
+                    background: url("../../public/landing/home/connection-line-3.svg");
+                    width: 683px;
+                    height: 433px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    content: "";
+                    position: absolute;
+                    top: -426px;
+                    left: 30%;
+
+                    @include media-breakpoint-down(xl) {
+                        width: 510px;
+                        top: -319px;
+                    }
+
+                    @include media-breakpoint-down(lg) {
+                        width: 415px;
+                        top: -260px;
+                    }
+                }
+            }
+
+            &-4 {
+                margin-top: 96px;
+
+                @include media-breakpoint-down(lg) {
+                    margin-top: 270px;
+                }
+                h3:before {
+                    background: url("../../public/landing/home/connection-line-4.svg");
+                    width: 639px;
+                    height: 595px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    content: "";
+                    position: absolute;
+                    top: -629px;
+                    left: -26%;
+                    transform: translateX(-50%);
+
+                    @include media-breakpoint-down(xxl) {
+                        width: 510px;
+                        top: -467px;
+                        left: -30%;
+                    }
+
+                    @include media-breakpoint-down(xl) {
+                        width: 410px;
+                        top: -375px;
+                        left: -36%;
+                    }
+
+                    @include media-breakpoint-down(lg) {
+                        left: -23%;
+                    }
+                }
+            }
+
+            &-5 {
+                margin-top: 186px;
+
+                @include media-breakpoint-down(xxl) {
+                    margin-top: 145px;
+                }
+
+                @include media-breakpoint-down(xl) {
+                    margin-top: 109px;
+                }
+
+                h3:before {
+                    background: url("../../public/landing/home/connection-line-5.svg");
+                    width: 669px;
+                    height: 332px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    content: "";
+                    position: absolute;
+                    top: -321px;
+                    left: 26%;
+
+                    @include media-breakpoint-down(xxl) {
+                        width: 530px;
+                        top: -254px;
+                        left: 30%;
+                    }
+
+                    @include media-breakpoint-down(xl) {
+                        width: 460px;
+                        top: -221px;
+                        left: 22%;
+                    }
+                }
+            }
+        }
+
+        &-footer {
+            border-radius: 8px;
+            border: 1px solid $black-6;
+            background: $black-2;
+            padding: 32px;
+            position: relative;
+            margin-top: 188px;
+
+            @include media-breakpoint-down(md) {
+                margin-top: 0 !important;
+            }
+
+            &:before {
+                background: url("../../public/landing/home/connection-line-6.svg");
+                width: 568px;
+                height: 479px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                content: "";
+                position: absolute;
+                top: -487px;
+                left: 15.5%;
+
+                @include media-breakpoint-down(xxl) {
+                    width: 495px;
+                    top: -425px;
+                }
+
+                @include media-breakpoint-down(xl) {
+                    width: 323px;
+                    top: -277px;
+                }
+
+                @include media-breakpoint-down(lg) {
+                    width: 290px;
+                    top: -252px;
+                }
+
+                @include media-breakpoint-down(md) {
+                    display: none;
+                }
+            }
+
+            p {
+                color: $white !important;
+                text-align: center;
+                font-family: $font-family-sans-serif;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 24px;
+            }
+        }
+
+        .last-words {
+            color: #343434;
+            font-size: large;
+            text-align: center;
+
+            @include media-breakpoint-up(xl) {
+                padding-left: 12rem;
+                padding-right: 12rem;
+            }
         }
     }
 

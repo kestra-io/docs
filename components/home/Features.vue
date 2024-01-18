@@ -1,5 +1,5 @@
 <template>
-    <div class="features container">
+    <div class="container">
         <Section subtitle="Simplicity scales, complexity" subtitle-after="Fails">
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
@@ -86,3 +86,26 @@
         components: {Section}
     }
 </script>
+
+<style scoped lang="scss">
+    @import "../../assets/styles/variable";
+    .container {
+        section {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+        }
+        .card {
+            border-radius: 8px;
+            border: 1px solid $black-3;
+            background: $black-2;
+            color: $white;
+            padding: 64px 32px;
+
+            .card-icon {
+                float: none;
+                border-radius: 8px;
+                border: 1px solid #B010FB;
+                background: $black-4;
+            }
+        }
+    }
+</style>

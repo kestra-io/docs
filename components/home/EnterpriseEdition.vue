@@ -1,22 +1,14 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid bg-dark-4">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 p-5">
-                    <h2 data-aos="fade-left">Take Kestra to the next level with the Enterprise Edition</h2>
-                    <ul class="mb-5" data-aos="fade-right">
-                        <li>SSO/OIDC Authentication</li>
-                        <li>Role-Based Access Control</li>
-                        <li>Secret Manager Integration</li>
-                        <li>High Availability</li>
-                        <li>Best in Class Support</li>
-                        <li>And More...</li>
-                    </ul>
-
-                    <NuxtLink href="/enterprise" class="btn btn-primary me-2" data-aos="zoom-in">Learn more</NuxtLink>
-                    <NuxtLink href="/contact-us" class="btn btn-dark" data-aos="zoom-in">Contact us</NuxtLink>
-                </div>
-                <div class="col-md-6">
+                <div class="p-5">
+                    <h2>Take Kestra to the next level with the <span>Enterprise Edition</span></h2>
+                    <p class="description">Ensure scalability and high availability with managed Kafka and Elasticsearch integrated into the Enterprise Edition to eliminate single point of failure.</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <NuxtLink href="/enterprise" class="btn btn-dark me-2" data-aos="zoom-in">Learn more</NuxtLink>
+                        <NuxtLink href="/contact-us" class="btn btn-primary" data-aos="zoom-in">Book a demo</NuxtLink>
+                    </div>
                 </div>
             </div>
 
@@ -37,33 +29,47 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: $purple-7;
         color: var(--bs-white);
-        padding: 5rem 0;
+
+        .container {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 5rem 0;
+        }
 
         .row {
-            background: url("/landing/ee/background.svg") no-repeat right center;
+            h2 {
+                color: var(--bs-white);
+                text-align: center;
+                font-family: $font-family-sans-serif;
+                font-size: 50px;
+                font-style: normal;
+                font-weight: 300;
+                line-height: 50px;
+                margin-bottom: calc($spacer * 2);
+                padding: 0 21%;
 
-            @include media-breakpoint-down(md) {
-                background: url("/landing/ee/background.svg") no-repeat left center;
-            }
-
-            div:first-child {
-                padding: calc($spacer * 9);
-
-                h2 {
-                    margin-bottom: calc($spacer * 2);
+                span {
+                    background: linear-gradient(90deg, #E151F7 38.91%, #5C47F5 91.17%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
                 }
             }
 
-            .col-md-6 {
-                @include media-breakpoint-down(md) {
-                    padding: 0;
-                }
+            .description {
+                padding: 0 21%;
+                color: var(--bs-white);
+                text-align: center;
+                font-family: $font-family-sans-serif;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 26px;
             }
 
             .btn-dark {
-                background-color: rgba($white, 10%);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: $black-4;
             }
         }
     }
