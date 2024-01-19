@@ -187,7 +187,6 @@ import Section from '../layout/Section.vue';
         z-index: 10;
         position: relative;
 
-
         &::after {
             content: "";
             position: absolute;

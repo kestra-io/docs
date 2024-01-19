@@ -14,7 +14,7 @@
                 <tr :class="item.isOpenSource || item.isEnterprise ? '' : 't-r-heading'" v-for="item in tableData"
                     :key="item.id">
                     <td class="ps-5 t-border-data"
-                        :class="item.isOpenSource || item.isEnterprise ? '' : 't-r-heading-text t-border-data-title'">{{
+                        :class="item.isEnterprise || item.isOpenSource ? '' : 't-r-heading-text t-border-data-title'">{{
                             item.title }}</td>
                     <td class="tick t-border-data" :class="item.isOpenSource ? '' : 't-border-data-title'">{{
                         item.isOpenSource ? "✓" : "" }}</td>
@@ -422,7 +422,9 @@ const tableData = ref([
 }
 
 .t-r-heading-text {
-    color: $black-9;
+   color: $body-tertiary-color;
+   font-weight: 600;
+   line-height: 24px;
 }
 
 .t-head {
@@ -432,7 +434,7 @@ const tableData = ref([
 .t-head-body {
     tr {
         td {
-            font-weight: 400;
+          
             font-size: $font-size-mdsm;
             padding: 1.3rem 2.5rem;
         }
