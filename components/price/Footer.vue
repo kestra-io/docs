@@ -5,7 +5,7 @@
                 <h3 data-aos="fade-right" class="mb-3 text-white title">Ready to Get Started with Kestra?</h3>
                 <div class="d-flex flex-wrap justify-content-center align-items-center">
                     <NuxtLink href="https://kestra.io/demo">
-                        <button class="btn btn-animated btn-purple-animated mx-2 mt-2">Book a Demo</button>
+                        <button class="btn btn-animated btn-purple-animated mx-2 mt-2">Talk to Us</button>
                     </NuxtLink>
                 </div>
             </div>
