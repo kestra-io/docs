@@ -105,16 +105,35 @@ import Section from '../layout/Section.vue';
     .card-Demo {
         background-color: $black-2 !important;
         box-shadow: none;
-        border-radius: 8px;
-        border: 1px solid var(--Text_gradient, #d920f5);
         background: var(--Kestra-io-Token-color-background-secondary, #161617);
-    }
 
+        position: relative;
+        $border: 1px;
+        background: #000;
+        background-clip: padding-box;
+        border: solid $border transparent;
+        border-radius: 8px;
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            margin: -$border;
+            border-radius: inherit;
+            background: linear-gradient(to right, #E151F7, #5C47F5);
+        }
+
+    }
 
     .card {
         background-color: $black-2 !important;
         border: 1px solid $black-3 !important;
         box-shadow: none;
+
     }
 
     .card-title {
@@ -172,10 +191,10 @@ import Section from '../layout/Section.vue';
         &::after {
             content: "";
             position: absolute;
-            background: url('/public/backgroundblur.svg');
-            top: -17%;
-            right: 30%;
+            top: -5%;
+            right: 34%;
             width: 694.541px;
+            background: linear-gradient(145deg, rgba(98, 24, 255, 0.00) 37.5%, #7D17FF 79.5%);
             filter: blur(100px);
             height: 382.203px;
             z-index: 0;
@@ -200,7 +219,7 @@ import Section from '../layout/Section.vue';
         font-weight: 600;
         font-size: $font-size-4xl;
         line-height: 3.75rem;
-        
+
         &-animated {
             background: linear-gradient(90deg, #E151F7 57.52%, #5C47F5 92.48%);
             background-clip: text;
@@ -213,5 +232,4 @@ import Section from '../layout/Section.vue';
         font-size: $font-size-xl;
         font-weight: 300;
     }
-}
-</style>
+}</style>
