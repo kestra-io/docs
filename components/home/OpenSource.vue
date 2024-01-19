@@ -1,17 +1,17 @@
 <template>
     <div class="main join-community">
-<!--        <div v-if="contributors && false" class="contributors left">-->
-<!--            <template v-for="contributor in contributorsPartition(0)">-->
-<!--                <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">-->
-<!--                    <img-->
-<!--                        :src="contributor.avatar"-->
-<!--                        class="img-fluid avatar avatar-small rounded-circle"-->
-<!--                        :width="contributor.size"-->
-<!--                        alt=""-->
-<!--                    />-->
-<!--                </a>-->
-<!--            </template>-->
-<!--        </div>-->
+        <div v-if="contributors && false" class="contributors left">
+            <template v-for="contributor in contributorsPartition(0)">
+                <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
+                    <img
+                        :src="contributor.avatar"
+                        class="img-fluid avatar avatar-small rounded-circle"
+                        :width="contributor.size"
+                        alt=""
+                    />
+                </a>
+            </template>
+        </div>
         <div class="container container-min">
             <Section
                 subtitle="Join the community"
