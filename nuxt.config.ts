@@ -6,7 +6,8 @@ export default defineNuxtConfig({
         '@nuxt/image',
         '@nuxtjs/sitemap',
         'nuxt-gtag',
-        'nuxt-multi-cache'
+        'nuxt-multi-cache',
+        'vue3-carousel-nuxt'
     ],
     sitemap: {
         sitemaps: {

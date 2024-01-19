@@ -2,7 +2,8 @@
     <div class="container-fluid bg-dark-4">
         <div class="container">
             <div class="row">
-                <div class="p-5">
+                <div class="p-5 d-flex flex-column align-items-center gap-3">
+                    <img class="levels" src="/landing/ee/levels.svg" alt="levels" />
                     <h2>Take Kestra to the next level with the <span>Enterprise Edition</span></h2>
                     <p class="description">Ensure scalability and high availability with managed Kafka and Elasticsearch integrated into the Enterprise Edition to eliminate single point of failure.</p>
                     <div class="d-flex align-items-center justify-content-center">
@@ -32,6 +33,8 @@
         color: var(--bs-white);
 
         .container {
+            background: url("/landing/ee/background.svg") no-repeat center;
+            background-size: 50%;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 5rem 0;
         }
@@ -45,7 +48,6 @@
                 font-style: normal;
                 font-weight: 300;
                 line-height: 50px;
-                margin-bottom: calc($spacer * 2);
                 padding: 0 21%;
 
                 span {
@@ -65,6 +67,12 @@
                 font-style: normal;
                 font-weight: 400;
                 line-height: 26px;
+            }
+
+            @include media-breakpoint-down(lg) {
+                h2, .description {
+                    padding: 0;
+                }
             }
 
             .btn-dark {

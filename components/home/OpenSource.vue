@@ -49,7 +49,7 @@
                     </div>
                 </div>
 
-                <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3">
+                <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3 px-4">
                     <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-dark" data-aos="zoom-in">Give a star</a>
                     <a href="https://kestra.io/slack" target="_blank" class="btn btn-primary" data-aos="zoom-in">Join the Community</a>
                     <a href="#" target="_blank" class="btn btn-dark" data-aos="zoom-in">Contributer</a>
