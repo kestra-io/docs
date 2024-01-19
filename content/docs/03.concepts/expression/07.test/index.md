@@ -2,6 +2,6 @@
 title: Tests
 ---
 
-## List of built-in tests:
+## List of built-in tests
 
 <ChildTableOfContents :max="1" />

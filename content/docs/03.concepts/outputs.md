@@ -13,8 +13,9 @@ You can use outputs everywhere [variables](./expression/01.index.md) are allowed
 Here is how to use the output of the `produce-output` task in the `use-output` task. Here we use the [Return](../../plugins/core/tasks/debugs/io.kestra.core.tasks.debugs.Return.md) task that have one output attribute named `value`.
 
 ```yaml
+id: task_outputs_example
+namespace: dev
 tasks:
-
   - id: produce-output
     type: io.kestra.core.tasks.debugs.Return
     format: my output {{ execution.id }}
@@ -142,9 +143,9 @@ It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` i
 
 Sometimes, it can be useful to access previous outputs on the current task tree, what is called sibling tasks.
 
-If the task tree is static, for example when using the [Sequential](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.md) task, you can use the `{{outputs.sibling.value}}` notation where `sibling`is the identifier of the sibling task.
+If the task tree is static, for example when using the [Sequential](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Sequential.md) task, you can use the `{{ outputs.sibling.value }}` notation where `sibling`is the identifier of the sibling task.
 
-If the task tree is dynamic, for example when using the [EachSequential](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task, you need to use `sibling[taskrun.value]` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the EachSequential task.
+If the task tree is dynamic, for example when using the [EachSequential](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task, you need to use `{{ sibling[taskrun.value] }}` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the EachSequential task.
 
 For example:
 ```yaml
