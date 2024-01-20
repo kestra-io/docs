@@ -20,7 +20,7 @@ kestra:
         clientSecret: "secret"
 ```
 
-## Others configurations
+## Other configurations
 ### `kestra.secret.azure-key-vault.vaultName`
 Name of the Azure Key Vault to use.
 

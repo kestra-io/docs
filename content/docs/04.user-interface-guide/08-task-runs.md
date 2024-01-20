@@ -3,7 +3,7 @@ title: Task Runs Page (EE)
 ---
 
 ::alert{type="warning"}
-This is an [Enterprise Edition](https://kestra.io/enterprise) feature only available when using the **Elasticsearch** repository.
+This feature requires a [commercial license](https://kestra.io/pricing) and backend with the **Elasticsearch** repository.
 ::
 
 On the **Task Runs** page, you will see the list of task runs and some charts.

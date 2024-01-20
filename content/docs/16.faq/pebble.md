@@ -35,7 +35,7 @@ In the example below, we use the `value` outputs of the `io.kestra.core.tasks.de
 
 ```yaml
 id: input_string
-namespace: demo.kestra
+namespace: dev
 
 inputs:
   - name: name
@@ -69,10 +69,10 @@ Still, sometimes you want to manually execute a flow. Then the `trigger.date` va
 To support both use cases, use the coalesce operator `??`. The example below shows how to apply it in a flow.
 
 ```yaml
-id: pebble-date-trigger
-namespace: demo.kestra.pebble
-tasks:
+id: pebble_date_trigger
+namespace: dev
 
+tasks:
   - id: return_date
     type: io.kestra.core.tasks.debugs.Return
     format: '{{ trigger.date ?? execution.startDate | date("yyyy-MM-dd")}}'
@@ -90,9 +90,8 @@ Sometimes, outputs return nested objects or lists. To parse those elements, you 
 Consider the following flow:
 
 ```yaml
-id: test-object
+id: object_example
 namespace: dev
-
 
 inputs:
   - name: data
@@ -123,7 +122,6 @@ In some tasks, such as the `If` or `Switch` tasks, you will need to provide some
 ```yaml
 id: test-object
 namespace: dev
-
 
 inputs:
   - name: data

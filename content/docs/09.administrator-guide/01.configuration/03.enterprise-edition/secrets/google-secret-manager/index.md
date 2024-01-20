@@ -19,7 +19,7 @@ kestra:
       serviceAccount: 'JSON content of the service account'
 ```
 
-## Others configurations
+## Other configurations
 
 ### `kestra.secret.google-secret-manager.project`
 Google Cloud project ID that Kestra will use.
