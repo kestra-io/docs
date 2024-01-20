@@ -2,15 +2,15 @@
 title: Outputs
 ---
 
-A flow can produce outputs when processing tasks. Outputs are stored in the execution flow context and can be used by all the tasks executed after the one that produces the output.
+A workflow execution can generate **outputs** when processing tasks. Outputs are stored in the execution flow context and can be used by all downstream tasks.
 
-Outputs can have multiple attributes; please refer to the documentation of each task to see their output attributes.
+Outputs can have multiple attributes — make sure to check the documentation of each task to see their output attributes.
 
-You can use outputs everywhere [variables](./expression/01.index.md) are allowed.
+You can retrieve outputs in all [dynamic properties](./task-properties.md#dynamic-vs-static-task-properties).
 
 ## Using outputs
 
-Here is how to use the output of the `produce-output` task in the `use-output` task. Here we use the [Return](../../plugins/core/tasks/debugs/io.kestra.core.tasks.debugs.Return.md) task that have one output attribute named `value`.
+Here is how to use the output of the `produce-output` task in the `use-output` task. Here we use the [Return](../../plugins/core/tasks/debugs/io.kestra.core.tasks.debugs.Return.md) task that has one output attribute named `value`.
 
 ```yaml
 id: task_outputs_example
@@ -64,6 +64,8 @@ tasks:
 In dynamic flows (using "Each" loops for example), variables will be passed to task dynamically. You can access the current taskrun value with `{{ taskrun.value }}` like this:
 
 ```yaml
+id: taskrun_value_example
+namespace: dev
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
@@ -74,11 +76,13 @@ tasks:
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
 ```
 
-### Loop over object
+### Loop over a list of JSON objects
 
 On loop, the `value` is always a JSON string, so the `{{ taskrun.value }}` is the current element as JSON string. If you want to access properties, you need to use the [json function](./expression/04.function/json.md) to have a proper object and to access each property easily.
 
 ```yaml
+id: loop_sequentially_over_list
+namespace: dev
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
@@ -101,17 +105,18 @@ For example, **EachSequential** and **EachParallel** produce other tasks dynamic
 It is possible to reach each iteration output of dynamic tasks by using the following syntax:
 
 ```yaml
-id: output-sample
-namespace: io.kestra.tests
+id: output_sample
+namespace: dev
 
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
+    value: ["s1", "s2", "s3"]
     tasks:
       - id: sub
         type: io.kestra.core.tasks.debugs.Return
         format: "{{ task.id }} > {{ taskrun.value }} > {{ taskrun.startDate }}"
-    value: ["s1", "s2", "s3"]
+
   - id: use
     type: io.kestra.core.tasks.debugs.Return
     format: "Previous task produced output: {{ outputs.sub.s1.value }}"
@@ -124,14 +129,18 @@ The `outputs.sub.s1.value` variable reaches the `value` of the `sub` task of the
 It is also possible to locate a specific dynamic task by its `value`:
 
 ```yaml
+id: dynamic_looping
+namespace: dev
+
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
+    value: ["value 1", "value 2", "value 3"]
     tasks:
       - id: inner
         type: io.kestra.core.tasks.debugs.Return
         format: "{{ task.id }}"
-    value: ["value 1", "value 2", "value 3"]
+
   - id: end
     type: io.kestra.core.tasks.debugs.Return
     format: "{{ task.id }} > {{ outputs.inner['value 1'].value }}"
@@ -148,21 +157,27 @@ If the task tree is static, for example when using the [Sequential](../../plugin
 If the task tree is dynamic, for example when using the [EachSequential](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) task, you need to use `{{ sibling[taskrun.value] }}` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the EachSequential task.
 
 For example:
+
 ```yaml
+id: loop_with_sibling_tasks
+namespace: dev
+
 tasks:
   - id: each
     type: io.kestra.core.tasks.flows.EachSequential
+    value: ["value 1", "value 2", "value 3"]
     tasks:
       - id: first
         type: io.kestra.core.tasks.debugs.Return
-        format: "{{task.id}}"
+        format: "{{ task.id }}"
+
       - id: second
         type: io.kestra.core.tasks.debugs.Return
         format: "{{ outputs.first[taskrun.value].value }}"
-    value: ["value 1", "value 2", "value 3"]
+
   - id: end
     type: io.kestra.core.tasks.debugs.Return
-    format: "{{task.id}} > {{outputs.second['value 1'].value}}"
+    format: "{{ task.id }} > {{ outputs.second['value 1'].value }}"
 ```
 
 When there are multiple levels of [EachSequential](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md) tasks, you can use the `parents` variable to access the `taskrun.value` of the parent of the current EachSequential. For example, for two levels of EachSequential you can use `outputs.sibling[parents[0].taskrun.value][taskrun.value].value`.

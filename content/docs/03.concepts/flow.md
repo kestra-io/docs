@@ -53,40 +53,19 @@ You can also define `taskDefaults` in your flow. This is a list of default task 
 
 ### Variables
 
-You can set flow variables that will be accessible by each task using `{{ vars.key }}`. Flow `variables` is a map of key/value pairs.
+You can set [flow variables](variables.md) that will be accessible by each task using `{{ vars.key }}`. Flow `variables` is a map of key/value pairs.
 
 ### List of tasks
 
 The most important part of a flow is the list of tasks that will be run sequentially when the flow is executed.
 
-
-## Document your flow
-
-You can add documentation to flows, tasks, etc... to explain the goal of the current element.
-
-For this, Kestra allows adding a `description` property where you can write documentation of the current element.
-The description must be written using the [Markdown](https://en.wikipedia.org/wiki/Markdown) syntax.
-
-You can add a `description` property on:
-- [Flows](./01.flow.md)
-- [Tasks](./02.tasks.md)
-- [Listeners](./listeners.md)
-- [Triggers](./triggers/index.md)
-
-All markdown descriptions will be rendered in the UI.
-
-![description](/docs/developer-guide/flow/description.png)
-
-
-## Enable or Disable a Flow
+## Disable a low
 
 By default, all flows are active and will execute whether or not a trigger has been set.
 
-You have the option to disable a Flow, which is particularly useful when you wish to prevent its execution.
+You have the option to [disable a Flow](disabled.md), which is particularly useful when you want to temporarily stop a Flow from executing e.g. when troubleshooting a failure.
 
-Enabling a previously disabled Flow will prompt it to execute any missed triggers from the period when it was disabled.
-
-![enable disable flow](/docs/developer-guide/flow/enable-disable-flow.jpg)
+![enable disable flow](/docs/concepts/disable_flow.jpg)
 
 
 ## Task

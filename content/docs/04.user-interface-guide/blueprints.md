@@ -34,8 +34,8 @@ Once you are on the Blueprints page, you can:
 
 ## Custom Blueprints
 
-::alert{type="warning"}
-This is an [Enterprise Edition](https://kestra.io/enterprise) feature.
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
 ::
 
 Apart from Community Blueprints, you can also create custom Blueprints available only to your organization. You can use them to share, centralize, and document commonly used workflows in your team.
