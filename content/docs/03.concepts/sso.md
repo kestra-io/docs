@@ -71,9 +71,9 @@ micronaut:
 2. Select `Microsoft Entra ID`.
 3. Navigate to `App registrations`.
 4. Click on `New registration` and provide the necessary details:
-   - Enter a name for your application.
-   - Set "Supported account types" (e.g., "Default Directory only - Single tenant").
-   - Under "Redirect URI", select "Web" and enter `https://{{ url }}/oauth/callback/microsoft` (make sure to use `https` and the actual URL of your webserver).
+- Enter a name for your application.
+- Set "Supported account types" (e.g., "Default Directory only - Single tenant").
+- Under "Redirect URI", select "Web" and enter `https://{{ url }}/oauth/callback/microsoft` (make sure to use `https` and the actual URL of your webserver).
 
 ### Generate Client Secret
 
