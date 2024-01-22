@@ -113,11 +113,13 @@ export default {
 @import "../../assets/styles/variable";
 
 .main {
-    background: #111113 url("/landing/home/header-bg.png") no-repeat center
-        center;
-
     .text-block {
         margin: 5rem 0;
+    }
+
+    .hero {
+        background: $black-4 url("/landing/home/header-bg.png") no-repeat center
+        center;
     }
 
     h1 {
