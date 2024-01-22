@@ -4,7 +4,7 @@
             subtitle="Language-Agnostic Workflows"
             subtitle-after="At Any Scale"
         >
-            <div class="item workflow-1 row mb-5">
+            <div class="item workflow-1 row pb-5">
                 <div class="col-md-6 p-5" data-aos="fade-right">
                     <h3>Define your workflows</h3>
                     <p>
@@ -12,13 +12,13 @@
                     </p>
                 </div>
                 <div class="col-md-6" data-aos="fade-right">
-                    <img class="img-fluid" src="/landing/home/how-1.svg" alt="How to define a flow example" />
+                    <img class="img-fluid" src="/landing/how/how-1.svg" alt="How to define a flow example" />
                 </div>
             </div>
 
             <div class="item workflow-2 row mb-5">
                 <div class="col-md-6 order-1 order-md-0" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/home/how-2.svg" alt="Integration with all data stacks" />
+                    <img class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
                 </div>
                 <div class="col-md-6 p-5 order-0 order-md-1" data-aos="fade-left">
                     <h3>Integrate with your stack</h3>
@@ -32,13 +32,13 @@
                     <p>Configure your workflows to run on a schedule, in response to event-based triggers, via webhooks, or through APIs.</p>
                 </div>
                 <div class="col-md-6" data-aos="fade-right">
-                    <img class="img-fluid" src="/landing/home/how-3.svg" alt="How to schedule example" />
+                    <img class="img-fluid" src="/landing/how/how-3.svg" alt="How to schedule example" />
                 </div>
             </div>
 
-            <div class="item workflow-4 row mb-5">
+            <div class="item workflow-4 row pb-5">
                 <div class="col-md-6 order-1 order-md-0" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/home/how-4.svg" alt="How to execute a flow example" />
+                    <img class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
                 </div>
                 <div class="col-md-6 p-5 order-0 order-md-1" data-aos="fade-left">
                     <h3>Execute your workflows</h3>
@@ -54,7 +54,7 @@
                     <p>Track the performance of your workflows, identify bottlenecks, and optimize them for speed and efficiency.</p>
                 </div>
                 <div class="col-md-6 row mb-5" data-aos="fade-right">
-                    <img class="img-fluid" src="/landing/home/how-5.svg" alt="Visualization of Kestra monitoring" />
+                    <img class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
                 </div>
             </div>
 
@@ -132,9 +132,12 @@
             }
 
             &-1 {
-                margin-top: 115px;
+                padding-top: 115px;
+                background: url("/landing/how/bg-1.svg") no-repeat right;
+                background-size: 50%;
+
                 h3:before {
-                    background: url("../../public/landing/home/connection-line-1.svg");
+                    background: url("../../public/landing/how/connection-line-1.svg");
                     width: 217px;
                     height: 220px;
                     background-size: contain;
@@ -152,22 +155,22 @@
             }
 
             &-2 {
-                margin-top: 158px;
+                margin-top: 100px;
 
                 @include media-breakpoint-down(xxl) {
-                    margin-top: 217px;
+                    margin-top: 175px;
                 }
 
                 @include media-breakpoint-down(xl) {
-                    margin-top: 286px;
+                    margin-top: 245px;
                 }
 
                 @include media-breakpoint-down(lg) {
-                    margin-top: 177px;
+                    margin-top: 130px;
                 }
 
                 h3:before {
-                    background: url("../../public/landing/home/connection-line-2.svg");
+                    background: url("../../public/landing/how/connection-line-2.svg");
                     width: 691px;
                     height: 447px;
                     background-size: contain;
@@ -201,7 +204,7 @@
                     margin-top: 146px;
                 }
                 h3:before {
-                    background: url("../../public/landing/home/connection-line-3.svg");
+                    background: url("../../public/landing/how/connection-line-3.svg");
                     width: 683px;
                     height: 433px;
                     background-size: contain;
@@ -224,13 +227,15 @@
             }
 
             &-4 {
-                margin-top: 96px;
+                padding-top: 96px;
+                background: url("/landing/how/bg-4.svg") no-repeat left;
+                background-size: 45%;
 
                 @include media-breakpoint-down(lg) {
-                    margin-top: 270px;
+                    padding-top: 270px;
                 }
                 h3:before {
-                    background: url("../../public/landing/home/connection-line-4.svg");
+                    background: url("../../public/landing/how/connection-line-4.svg");
                     width: 639px;
                     height: 595px;
                     background-size: contain;
@@ -260,18 +265,20 @@
             }
 
             &-5 {
-                margin-top: 186px;
+                padding-top: 186px;
+                background: url("/landing/how/bg-5.svg") no-repeat right;
+                background-size: 64%;
 
                 @include media-breakpoint-down(xxl) {
-                    margin-top: 145px;
+                    padding-top: 145px;
                 }
 
                 @include media-breakpoint-down(xl) {
-                    margin-top: 109px;
+                    padding-top: 109px;
                 }
 
                 h3:before {
-                    background: url("../../public/landing/home/connection-line-5.svg");
+                    background: url("../../public/landing/how/connection-line-5.svg");
                     width: 669px;
                     height: 332px;
                     background-size: contain;
@@ -309,7 +316,7 @@
             }
 
             &:before {
-                background: url("../../public/landing/home/connection-line-6.svg");
+                background: url("../../public/landing/how/connection-line-6.svg");
                 width: 568px;
                 height: 479px;
                 background-size: contain;

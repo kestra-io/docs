@@ -98,6 +98,8 @@
 <style lang="scss">
     @import "../../assets/styles/variable";
     .features {
+        background: url("/landing/features/bg.svg") no-repeat center;
+        background-size: 100% 100%;
         section {
             border-bottom: 1px solid rgba(255, 255, 255, 0.10);
             padding-top: 0;

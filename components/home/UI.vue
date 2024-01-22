@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <div class="main bg-dark-4">
         <div class="container">
             <Section
                 class="dark"
@@ -80,7 +80,6 @@
     @import "../../assets/styles/variable";
 
     .main {
-        background: $purple-7;
         color: var(--bs-white);
 
         section {
