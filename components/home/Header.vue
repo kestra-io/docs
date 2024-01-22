@@ -29,24 +29,26 @@
             </div>
         </div>
 
-        <Companies class="mt-4 pb-4 companies" />
+        <div class="companies-background">
+            <Companies class="mt-4 pb-4 companies" />
 
-        <div class="activity-list container bg-dark-2 d-flex align-items-center justify-content-between">
-            <div>
-                <p class="count">+60 Million</p>
-                <p class="description">workflows executed</p>
-            </div>
-            <div>
-                <p class="count">+15,000</p>
-                <p class="description">active users</p>
-            </div>
-            <div>
-                <p class="count">+90,000</p>
-                <p class="description">Installations</p>
-            </div>
-            <div>
-                <p class="count">+200</p>
-                <p class="description">Contributors</p>
+            <div class="activity-list container bg-dark-2 d-flex align-items-center justify-content-between">
+                <div>
+                    <p class="count">+60 Million</p>
+                    <p class="description">workflows executed</p>
+                </div>
+                <div>
+                    <p class="count">+15,000</p>
+                    <p class="description">active users</p>
+                </div>
+                <div>
+                    <p class="count">+90,000</p>
+                    <p class="description">Installations</p>
+                </div>
+                <div>
+                    <p class="count">+200</p>
+                    <p class="description">Contributors</p>
+                </div>
             </div>
         </div>
     </div>
@@ -176,6 +178,12 @@ export default {
                 margin-bottom: 0;
             }
         }
+    }
+
+    .companies-background {
+        background: url("/landing/home/container-bg.svg") no-repeat center;
+        background-size: 100% 100%;
+        padding-bottom: 4rem;
     }
 
     .activity-list {

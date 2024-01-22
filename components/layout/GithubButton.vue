@@ -41,17 +41,17 @@
         }
 
         .btn {
-            border: 1px solid $black-9;
+            border: 1px solid $black-5;
             color: var(--bs-white);
         }
 
         .btn-dark {
-            background: $black-9;
+            background: $black-5;
         }
 
         .btn-outline-dark {
             border-left: 0;
-            color: $black-9;
+            color: $black-5;
 
             .placeholder {
                 background: transparent;

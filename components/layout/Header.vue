@@ -620,13 +620,13 @@ export default {
 
         &:not(.transparent) {
             :deep(.github .btn-dark) {
-                border-color: $black-9;
-                background: $black-9;
+                border-color: $black-5;
+                background: $black-5;
                 color: $white-6;
             }
 
             :deep(.github .btn-outline-dark) {
-                border-color: $black-9;
+                border-color: $black-5;
                 color: $white-6;
             }
         }
