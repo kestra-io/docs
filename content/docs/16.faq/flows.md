@@ -187,6 +187,6 @@ tasks:
     wait: true
     transmitFailed: true
     inputs:
-      items: "{{taskrun.items}}"
+      items: "{{ taskrun.items }}"
 ```
 

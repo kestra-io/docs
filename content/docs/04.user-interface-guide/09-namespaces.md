@@ -2,8 +2,8 @@
 title: Namespace Page (EE)
 ---
 
-::alert{type="warning"}
-This is an [Enterprise Edition](https://kestra.io/enterprise) feature.
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
 ::
 
 When first accessing the **Namespace** page, you will see the list of all Kestra flow namespaces (including parents, as namespaces are hierarchical like a directory tree), but you will not be able to configure a namespace before creating it.

@@ -83,6 +83,7 @@ This establishes retries with a random delay within minimum and maximum limits.
 ![replay_restart.png](/docs/developer-guide/failure/replay_restart.png)
 
 ### Restart vs. Replay
+
 While **Restart** will rerun failed tasks within the current Execution (*i.e., without creating a new execution*), a **Replay** would result in a completely new run with a different Execution ID than the initial run.
 
 ![replay.png](/docs/developer-guide/failure/replay.png)

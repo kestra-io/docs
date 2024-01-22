@@ -49,7 +49,7 @@ kestra:
         secret-id: your-secret-id
 ```
 
-## Others configurations
+## Other configurations
 
 ### `kestra.secret.vault.address`
 The fully qualified address with scheme and port to your Vault instance.

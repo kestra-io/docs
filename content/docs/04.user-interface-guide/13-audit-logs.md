@@ -2,8 +2,8 @@
 title: Audit Logs Page (EE)
 ---
 
-::alert{type="warning"}
-This is an [Enterprise Edition](https://kestra.io/enterprise) feature.
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
 ::
 
 On the **Audit Logs** page, you will have access to all Kestra audit logs.

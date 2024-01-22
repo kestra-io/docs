@@ -52,7 +52,7 @@ tasks:
     type: io.kestra.plugin.scripts.shell.Commands
     runner: PROCESS
     commands:
-      - cat "{{outputs.subflow_call.outputs.some_output}}"
+      - cat "{{ outputs.subflow_call.outputs.some_output }}"
 ```
 
 The `outputs` map task IDs to their outputs. In this case, we are accessing the `outputs.some_output` output of the `subflow_call` task.
