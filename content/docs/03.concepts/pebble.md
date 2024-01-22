@@ -1,15 +1,12 @@
 ---
-title: Pebble FAQ
+title: Pebble Templating Engine
 ---
 
-## What is Pebble and why do we use it at Kestra?
-Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/) and similar to the [Python Jinja Template Engine](https://palletsprojects.com/p/jinja/) syntax.
 
-In Kestra, it's used for variable operations and passing metadata between tasks.
+Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/) and similar to the [Python Jinja Template Engine](https://palletsprojects.com/p/jinja/) syntax. Kestra uses it to dynamically render variables, inputs and outputs within the execution context.
 
-## How to read outputs & inputs using Pebble?
 
-### Read inputs
+## Reading inputs
 
 When using `inputs` property in a Flow, you can access the corresponding values just by using `inputs` variable in your tasks.
 
@@ -27,7 +24,7 @@ tasks:
     message: "Hello 👋, my name is {{ inputs.name }}"
 ```
 
-### Read task ouputs
+## Reading task ouputs
 
 Most of Kestra's tasks expose output values. You can access those outputs in other tasks by using `outputs.<task_name>.<output_name>`. Every task output can be found in the corresponding task documentation.
 
@@ -52,14 +49,14 @@ tasks:
     message: '{{ outputs.say_hello.value }}'
 ```
 
-## How to format a date in Pebble?
+## Date formatting
 
 Pebble can be very useful to make small transformation on the fly - without the need to use Python or some dedicated programming language.
 For instance, we can use the `date` function to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
 
 You can find more documentation on the `date` function on the [Expressions page](../03.concepts/expression/03.filter/date.md)
 
-### Coalesce operator for trigger or manual execution
+## Coalesce operator to conditionally use trigger or execution date
 
 Most of the time, a flow will be triggered automatically. Either on schedule or based on external events. It’s common to use the date of the execution to process the corresponding data and make the flow dependent on time.
 
@@ -83,7 +80,7 @@ triggers:
     cron: "* * * * *"
 ```
 
-## How to parse objects & list?
+## Parsing objects & lists using jq
 
 Sometimes, outputs return nested objects or lists. To parse those elements, you may leverage `jq`. You can use jQuery to slice, filter, map, and transform structured data with the same ease that `sed`, `awk`, `grep`, and similar Linux commands let you manipulate strings.
 
@@ -115,7 +112,7 @@ The expression `{{ inputs.data.value | jq(".[1]") | first }}` will return `2`.
 You can troubleshoot complex Pebble expressions using the [Eval Expression](../04.user-interface-guide/04-executions.md) button in the outputs tab of a Flow execution. It's helpful to validate how complex objects will be parsed.
 
 
-## How to use conditions in Pebble?
+## Using conditions in Pebble
 
 In some tasks, such as the `If` or `Switch` tasks, you will need to provide some conditions. You can use the Pebble syntax to use previous task outputs within those conditions:
 
