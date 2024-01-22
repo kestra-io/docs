@@ -120,6 +120,7 @@ export default {
     .hero {
         background: $black-4 url("/landing/home/header-bg.png") no-repeat center
         center;
+        background-size: 100%;
     }
 
     h1 {
