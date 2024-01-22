@@ -53,7 +53,7 @@
         meta: [
             {name: 'twitter:card', content: 'summary_large_image'},
             {name: 'twitter:site', content: '@kestra_io'},
-            {name: 'twitter:title', content: page.value},
+            {name: 'twitter:title', content: page.value.title},
             {
                 name: 'twitter:description',
                 content: description.value

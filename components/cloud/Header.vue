@@ -89,7 +89,7 @@
     }
 
     .desc {
-        color: $black-8;
+        color: $white-3;
         line-height: 1.375rem;
         font-size: $font-size-sm
     }

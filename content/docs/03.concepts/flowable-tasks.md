@@ -14,7 +14,7 @@ This task processes tasks one after another sequentially. It is used to group ta
 
 ```yaml
 id: sequential
-namespace: io.kestra.tests
+namespace: dev
 
 tasks:
   - id: sequential
@@ -23,9 +23,11 @@ tasks:
       - id: 1st
         type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.startDate}}"
+
       - id: 2nd
         type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.id}}"
+
   - id: last
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
@@ -46,7 +48,7 @@ This task processes tasks in parallel. It makes it convenient to process many ta
 
 ```yaml
 id: parallel
-namespace: io.kestra.tests
+namespace: dev
 
 tasks:
   - id: parallel
@@ -55,9 +57,11 @@ tasks:
       - id: 1st
         type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.startDate}}"
+
       - id: 2nd
         type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.id}}"
+
   - id: last
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
@@ -79,7 +83,7 @@ In the following example, an input will be used to decide which task to run next
 
 ```yaml
 id: switch
-namespace: io.kestra.tests
+namespace: dev
 
 inputs:
   - name: string
@@ -124,7 +128,7 @@ In the following example, an input will be used to decide which task to run next
 
 ```yaml
 id: if-condition
-namespace: io.kestra.tests
+namespace: dev
 
 inputs:
   - name: param
@@ -157,8 +161,8 @@ Each subtask will run after the others sequentially.
 In the following example, the variable is static, but it can be generated from a previous task output and starts an arbitrary number of subtasks.
 
 ```yaml
-id: each
-namespace: io.kestra.tests
+id: each_example
+namespace: dev
 
 tasks:
   - id: each
@@ -168,9 +172,11 @@ tasks:
       - id: 1st
         type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
+
       - id: 2nd
         type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
+
   - id: last
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
@@ -187,11 +193,11 @@ You can access the output of a sibling task with `{{outputs.sibling[taskrun.valu
 
 ### EachParallel
 
-This task is the same as EachSequential, but each subtask will run in parallel.
+This task is the same as `EachSequential`, but each subtask will run in parallel.
 
 ```yaml
 id: each-parallel
-namespace: io.kestra.tests
+namespace: dev
 
 tasks:
   - id: 1_each
@@ -203,11 +209,13 @@ tasks:
         commands:
           - 'echo "{{task.id}} > $(date +"%T.%N")"'
           - 'sleep 1'
+          -
       - id: 1-2
         type: io.kestra.core.tasks.scripts.Bash
         commands:
           - 'echo "{{task.id}} > $(date +"%T.%N")"'
           - 'sleep 1'
+          -
   - id: 2_end
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
@@ -252,13 +260,267 @@ To pass the batch of items to a subflow, you can use [inputs](../inputs.md). The
 ::
 
 
+### AllowFailure
+
+This task will allow child tasks to fail.
+If any child task fails:
+- The AllowFailure failed task will be marked as status `WARNING`.
+- All children's tasks inside the AllowFailure will be stopped immediately.
+- The Execution will continue for all others tasks.
+- At the end, the execution as a whole will also be marked as status `WARNING`.
+
+In the following example:
+- `allow-failure` will be labelled as `WARNING`.
+- `ko` will be labelled as `FAILED`.
+- `next` will not be run.
+- `end` will be run and labelled `SUCCESS`.
+
+```yaml
+id: each
+namespace: dev
+
+tasks:
+  - id: allow-failure
+    type: io.kestra.core.tasks.flows.AllowFailure
+    tasks:
+      - id: ko
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - 'exit 1'
+      - id: next
+        type: io.kestra.core.tasks.debugs.Return
+        format: "{{task.id}} > {{taskrun.startDate}}"
+  - id: end
+    type: io.kestra.core.tasks.debugs.Return
+    format: "{{task.id}} > {{taskrun.startDate}}"
+```
+
+::next-link
+[AllowFailure Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.AllowFailure.md)
+::
+
+### Fail
+
+This task will fail the flow; it can be used with or without conditions.
+
+Without conditions, it can be used, for example, to fail on some switch value.
+
+```yaml
+id: fail-on-switch
+namespace: dev
+
+inputs:
+  - name: param
+    type: STRING
+    required: true
+
+tasks:
+  - id: switch
+    type: io.kestra.core.tasks.flows.Switch
+    value: "{{inputs.param}}"
+    cases:
+      case1:
+        - id: case1
+          type: io.kestra.core.tasks.log.Log
+          message: Case 1
+      case2:
+        - id: case2
+          type: io.kestra.core.tasks.log.Log
+          message: Case 2
+      notexist:
+        - id: fail
+          type: io.kestra.core.tasks.executions.Fail
+      default:
+        - id: default
+          type: io.kestra.core.tasks.log.Log
+          message: default
+```
+
+With conditions, it can be used, for example, to validate inputs.
+
+```yaml
+id: fail-on-condition
+namespace: dev
+
+inputs:
+  - name: param
+    type: STRING
+    required: true
+
+tasks:
+  - id: before
+    type: io.kestra.core.tasks.log.Log
+    message: "I'm before the fail on condition"
+  - id: fail
+    type: io.kestra.core.tasks.executions.Fail
+    condition: "{{inputs.param == 'fail'}}"
+  - id: after
+    type: io.kestra.core.tasks.log.Log
+    message: "I'm after the fail on condition"
+```
+
+
+::next-link
+[Fail Task documentation](../../plugins/core/tasks/executions/io.kestra.core.tasks.executions.Fail.md)
+::
+
+
+### Subflow
+
+This task will trigger another flow. This allows you to decouple the first flow from the second and monitor each flow individually.
+
+You can pass flow [outputs](./outputs.md) as [inputs](./inputs.md) for the triggered subflow (those must be declared in the subflow).
+
+```yaml
+id: subflow
+namespace: dev
+
+tasks:
+  - id: "subflow"
+    type: io.kestra.core.tasks.flows.Subflow
+    namespace: dev
+    flowId: my-subflow
+    inputs:
+      file: "{{ inputs.myFile }}"
+      store: 12
+```
+
+::next-link
+[Subflow Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Subflow.md)
+::
+
+
+### Worker
+
+The `Worker` task is deprecated in favor of the`WorkingDirectory` task. The next section explains how you can use the`WorkingDirectory` task in order to allow multiple tasks to share a file system during the flow's Execution.
+
+### WorkingDirectory
+
+By default, Kestra will launch each task in a new working directory, possibly on different workers if multiple ones exist.
+
+The example below will run all tasks nested under the `WorkingDirectory` task sequentially. All those tasks will be executed in the same working directory, allowing the reuse of the previous tasks' output files in the downstream tasks. In order to share a working directory, all tasks nested under the `WorkingDirectory` task will be launched on the same worker.
+
+This task can be particularly useful for compute-intensive file system operations.
+
+```yaml
+id: working-dir
+namespace: dev
+
+tasks:
+  - id: working-dir
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+      - id: first
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - 'echo "{{ taskrun.id }}" > {{ workingDir }}/stay.txt'
+      - id: second
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - |
+            echo '::{"outputs": {"stay":"'$(cat {{ workingDir }}/stay.txt)'"}}::'
+```
+
+This task can also cache files inside the working directory, for example, to cache script dependencies like the `node_modules` of a node `Script` task.
+
+```yaml
+id: node-with-cache
+namespace: dev
+
+tasks:
+  - id: working-dir
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    cache:
+      patterns:
+        - node_modules/**
+      ttl: PT1H
+    tasks:
+    - id: script
+      type: io.kestra.plugin.scripts.node.Script
+      beforeCommands:
+        - npm install colors
+      script: |
+        const colors = require("colors");
+        console.log(colors.red("Hello"));
+```
+
+This task can also fetch files from [namespace files][namespace files](./namespace-files.md) and make them available to all child tasks.
+
+```yaml
+id: node-with-cache
+namespace: dev
+
+tasks:
+  - id: working-dir
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    namespaceFiles:
+      enabled: true
+      include:
+      - dir1/*.*
+      exclude:
+      - dir2/*.*
+    tasks:
+    - id: shell
+      type: io.kestra.plugin.scripts.shell.Commands
+      commands:
+      - cat dir1/file1.txt
+```
+
+::next-link
+[WorkingDirectory Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.WorkingDirectory.md)
+::
+
+
+### Pause
+
+Kestra flows a ran until the end of all tasks, but sometimes, you need to:
+- Add a manual validation before continuing the execution.
+- Wait for some duration before continuing the execution.
+
+For this, you can use the Pause task.
+
+On the following example, the `validation` will pause until a manual modification of the task step, and the `wait` will wait for 5 minutes.
+
+```yaml
+id: pause
+namespace: dev
+
+tasks:
+  - id: validation
+    type: io.kestra.core.tasks.flows.Pause
+    tasks:
+      - id: ok
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - 'echo "started after manual validation"'
+  - id: wait
+    type: io.kestra.core.tasks.flows.Pause
+    delay: PT5M
+    tasks:
+      - id: waited
+        type: io.kestra.core.tasks.scripts.Bash
+        commands:
+          - 'echo "start after 5 minutes"'
+```
+
+::alert{type="info"}
+A Pause task without delay will wait indefinitely until the task state is changed to **Running**.
+For this: go to the **Gantt** tab of the **Execution** page, click on the task, select **Change status** on the contextual menu and select **Mark as RUNNING** on the form. This will make the task run until its end.
+::
+
+
+::next-link
+[Pause Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Pause.md)
+::
+
+
 ### DAG
 
 This task allows defining dependencies between tasks by creating a directed acyclic graph (DAG). Instead of an explicit DAG structure, this task allows you to only define upstream dependencies for each task using the `dependsOn` property. This way, you can set dependencies more implicitly for each task, and Kestra will figure out the overall flow structure.
 
 ```yaml
 id: "dag"
-namespace: "io.kestra.tests"
+namespace: "dev"
 tasks:
   - id: dag
     description: "my task"
@@ -299,261 +561,8 @@ tasks:
 [Dag Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Dag.md)
 ::
 
-### AllowFailure
 
-This task will allow child tasks to fail.
-If any child task fails:
-- The AllowFailure failed task will be marked as status `WARNING`.
-- All children's tasks inside the AllowFailure will be stopped immediately.
-- The Execution will continue for all others tasks.
-- At the end, the execution as a whole will also be marked as status `WARNING`.
-
-In the following example:
-- `allow-failure` will be labelled as `WARNING`.
-- `ko` will be labelled as `FAILED`.
-- `next` will not be run.
-- `end` will be run and labelled `SUCCESS`.
-
-```yaml
-id: each
-namespace: io.kestra.tests
-
-tasks:
-  - id: allow-failure
-    type: io.kestra.core.tasks.flows.AllowFailure
-    tasks:
-      - id: ko
-        type: io.kestra.core.tasks.scripts.Bash
-        commands:
-          - 'exit 1'
-      - id: next
-        type: io.kestra.core.tasks.debugs.Return
-        format: "{{task.id}} > {{taskrun.startDate}}"
-  - id: end
-    type: io.kestra.core.tasks.debugs.Return
-    format: "{{task.id}} > {{taskrun.startDate}}"
-```
-
-::next-link
-[AllowFailure Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.AllowFailure.md)
-::
-
-### Fail
-
-This task will fail the flow; it can be used with or without conditions.
-
-Without conditions, it can be used, for example, to fail on some switch value.
-
-```yaml
-id: fail-on-switch
-namespace: io.kestra.tests
-
-inputs:
-  - name: param
-    type: STRING
-    required: true
-
-tasks:
-  - id: switch
-    type: io.kestra.core.tasks.flows.Switch
-    value: "{{inputs.param}}"
-    cases:
-      case1:
-        - id: case1
-          type: io.kestra.core.tasks.log.Log
-          message: Case 1
-      case2:
-        - id: case2
-          type: io.kestra.core.tasks.log.Log
-          message: Case 2
-      notexist:
-        - id: fail
-          type: io.kestra.core.tasks.executions.Fail
-      default:
-        - id: default
-          type: io.kestra.core.tasks.log.Log
-          message: default
-```
-
-With conditions, it can be used, for example, to validate inputs.
-
-```yaml
-id: fail-on-condition
-namespace: io.kestra.tests
-
-inputs:
-  - name: param
-    type: STRING
-    required: true
-
-tasks:
-  - id: before
-    type: io.kestra.core.tasks.log.Log
-    message: "I'm before the fail on condition"
-  - id: fail
-    type: io.kestra.core.tasks.executions.Fail
-    condition: "{{inputs.param == 'fail'}}"
-  - id: after
-    type: io.kestra.core.tasks.log.Log
-    message: "I'm after the fail on condition"
-```
-
-
-::next-link
-[Fail Task documentation](../../plugins/core/tasks/executions/io.kestra.core.tasks.executions.Fail.md)
-::
-
-
-### Subflow
-
-This task will trigger another flow. This allows you to decouple the first flow from the second and monitor each flow individually.
-
-You can pass flow [outputs](./outputs.md) as [inputs](./inputs.md) for the triggered subflow (those must be declared in the subflow).
-
-```yaml
-id: subflow
-namespace: io.kestra.tests
-
-tasks:
-  - id: "subflow"
-    type: io.kestra.core.tasks.flows.Subflow
-    namespace: io.kestra.tests
-    flowId: my-subflow
-    inputs:
-      file: "{{ inputs.myFile }}"
-      store: 12
-```
-
-::next-link
-[Subflow Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Subflow.md)
-::
-
-
-### Worker
-
-The `Worker` task is deprecated in favor of the`WorkingDirectory` task. The next section explains how you can use the`WorkingDirectory` task in order to allow multiple tasks to share a file system during the flow's Execution.
-
-### WorkingDirectory
-
-By default, Kestra will launch each task in a new working directory, possibly on different workers if multiple ones exist.
-
-The example below will run all tasks nested under the `WorkingDirectory` task sequentially. All those tasks will be executed in the same working directory, allowing the reuse of the previous tasks' output files in the downstream tasks. In order to share a working directory, all tasks nested under the `WorkingDirectory` task will be launched on the same worker.
-
-This task can be particularly useful for compute-intensive file system operations.
-
-```yaml
-id: working-dir
-namespace: io.kestra.tests
-
-tasks:
-  - id: working-dir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
-    tasks:
-      - id: first
-        type: io.kestra.core.tasks.scripts.Bash
-        commands:
-          - 'echo "{{ taskrun.id }}" > {{ workingDir }}/stay.txt'
-      - id: second
-        type: io.kestra.core.tasks.scripts.Bash
-        commands:
-          - |
-            echo '::{"outputs": {"stay":"'$(cat {{ workingDir }}/stay.txt)'"}}::'
-```
-
-This task can also cache files inside the working directory, for example, to cache script dependencies like the `node_modules` of a node `Script` task.
-
-```yaml
-id: node-with-cache
-namespace: io.kestra.tests
-
-tasks:
-  - id: working-dir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
-    cache:
-      patterns:
-        - node_modules/**
-      ttl: PT1H
-    tasks:
-    - id: script
-      type: io.kestra.plugin.scripts.node.Script
-      beforeCommands:
-        - npm install colors
-      script: |
-        const colors = require("colors");
-        console.log(colors.red("Hello"));
-```
-
-This task can also fetch files from [namespace files][namespace files](./namespace-files.md) and make them available to all child tasks.
-
-```yaml
-id: node-with-cache
-namespace: io.kestra.tests
-
-tasks:
-  - id: working-dir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
-    namespaceFiles:
-      enabled: true
-      include:
-      - dir1/*.*
-      exclude:
-      - dir2/*.*
-    tasks:
-    - id: shell
-      type: io.kestra.plugin.scripts.shell.Commands
-      commands:
-      - cat dir1/file1.txt
-```
-
-::next-link
-[WorkingDirectory Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.WorkingDirectory.md)
-::
-
-
-### Pause
-
-Kestra flows a ran until the end of all tasks, but sometimes, you need to:
-- Add a manual validation before continuing the execution.
-- Wait for some duration before continuing the execution.
-
-For this, you can use the Pause task.
-
-On the following example, the `validation` will pause until a manual modification of the task step, and the `wait` will wait for 5 minutes.
-
-```yaml
-id: pause
-namespace: io.kestra.tests
-
-tasks:
-  - id: validation
-    type: io.kestra.core.tasks.flows.Pause
-    tasks:
-      - id: ok
-        type: io.kestra.core.tasks.scripts.Bash
-        commands:
-          - 'echo "started after manual validation"'
-  - id: wait
-    type: io.kestra.core.tasks.flows.Pause
-    delay: PT5M
-    tasks:
-      - id: waited
-        type: io.kestra.core.tasks.scripts.Bash
-        commands:
-          - 'echo "start after 5 minutes"'
-```
-
-::alert{type="info"}
-A Pause task without delay will wait indefinitely until the task state is changed to **Running**.
-For this: go to the **Gantt** tab of the **Execution** page, click on the task, select **Change status** on the contextual menu and select **Mark as RUNNING** on the form. This will make the task run until its end.
-::
-
-
-::next-link
-[Pause Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Pause.md)
-::
-
-
-### Template
+### Template (deprecated)
 
 [Templates](./templates.md) are lists of tasks that can be shared between flows. You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
 
@@ -561,16 +570,11 @@ The following example uses the Template task to use a template.
 
 ```yaml
 id: template
-namespace: io.kestra.tests
+namespace: dev
 
 tasks:
   - id: template
     type: io.kestra.core.tasks.flows.Template
-    namespace: io.kestra.tests
+    namespace: dev
     templateId: template
 ```
-
-
-::next-link
-[Template Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template.md)
-::

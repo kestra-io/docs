@@ -4,8 +4,8 @@ title: Administration Page
 
 ## Users Page (EE)
 
-::alert{type="warning"}
-This is an [Enterprise Edition](https://kestra.io/enterprise) feature.
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
 ::
 
 On the **Users** page, you will see the list of users.
@@ -22,8 +22,8 @@ Users can be attached to Groups and/or Namespaces.
 
 ## Groups Page (EE)
 
-::alert{type="warning"}
-This is an [Enterprise Edition](https://kestra.io/enterprise) feature.
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
 ::
 
 On the **Groups** page, you will see the list of groups.
@@ -43,8 +43,8 @@ It's a collection of users who require the same set of permissions. It's useful 
 ## Roles Page (EE)
 
 
-::alert{type="warning"}
-This is an [Enterprise Edition](https://kestra.io/enterprise) feature.
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
 ::
 
 On the **Roles** page, you will see the list of roles.

@@ -22,7 +22,7 @@ Below is a flow sample that will include a template:
 
 ```yaml
 id: with-template
-namespace: io.kestra.tests
+namespace: dev
 
 inputs:
   - name: store
@@ -32,7 +32,7 @@ inputs:
 tasks:
   - id: render-template
     type: io.kestra.core.tasks.flows.Template
-    namespace: io.kestra.tests
+    namespace: dev
     templateId: template-example
     args:
       renamedStore: "{{ inputs.store }}"
@@ -42,7 +42,7 @@ If the template is defined like this:
 
 ```yaml
 id: template-example
-namespace: io.kestra.tests
+namespace: dev
 
 tasks:
   - id: task-defined-by-template
@@ -54,7 +54,7 @@ It will produce a flow similar to this one:
 
 ```yaml
 id: with-template
-namespace: io.kestra.tests
+namespace: dev
 
 tasks:
   - id: render-template
