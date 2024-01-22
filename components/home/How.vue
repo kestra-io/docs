@@ -124,6 +124,7 @@
                 }
                 @include media-breakpoint-down(md) {
                     margin-top: 0 !important;
+                    padding-top: 0 !important;
 
                     h3:before {
                         display: none !important;
