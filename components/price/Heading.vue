@@ -9,7 +9,7 @@
             </div>
         </div>
         <!-- cards  -->
-        <Section>
+        <Section class="pt-0">
             <div class="row card-group mb-4">
                 <div class="col-12 col-md-6 z-3 d-md-flex justify-content-md-end">
                     <div class="card text-white col-lg-9 col-xl-8">
