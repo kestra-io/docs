@@ -37,7 +37,7 @@ If you would add the environment variable to the `kestra` container section in a
 
 ```yaml
   kestra:
-    image: kestra/kestra:develop-full
+    image: kestra/kestra:latest-full
     environment:
       SECRET_MYPASSWORD: cGFzc3dvcmQ=
 ```
@@ -97,7 +97,7 @@ Then, in your Docker Compose file, you can replace:
 
 ```yaml
   kestra:
-    image: kestra/kestra:develop-full
+    image: kestra/kestra:latest-full
     env_file:
       - .env
 ```
@@ -106,7 +106,7 @@ with the encoded version of the file:
 
 ```yaml
   kestra:
-    image: kestra/kestra:develop-full
+    image: kestra/kestra:latest-full
     env_file:
       - .env_encoded
 ```
