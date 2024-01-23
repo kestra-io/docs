@@ -146,7 +146,7 @@ import Section from '../layout/Section.vue';
     .pricing {
         color: #B9B9BA;
         font-weight: 400;
-        font-size: $font-size-mdsm;
+        font-size: $font-size-md;
         line-height: 2rem;
     }
 

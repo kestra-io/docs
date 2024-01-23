@@ -66,7 +66,7 @@ export default {
 }
 
 .container {
-    background: #111113 url("/retail/header-mask.svg") center;
+    background: $black-4 url("/retail/header-mask.svg") center;
     margin-top: 4rem;
 }
 </style>

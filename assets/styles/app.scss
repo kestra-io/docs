@@ -9,6 +9,7 @@ body {
     min-width: 320px;
     min-height: 100%;
     position: relative;
+    background-color: $black-4;
 }
 
 :root {
@@ -264,7 +265,7 @@ blockquote.blockquote {
     }
 
     .btn-secondary {
-        background-color: rgba(#FFF, 10%);
+        background-color: rgba($white, 10%);
     }
 
     .dot {
@@ -280,7 +281,6 @@ blockquote.blockquote {
 
 .card {
     border-radius: $border-radius-lg;
-    box-shadow: $box-shadow;
 }
 
 .card-group {
@@ -291,7 +291,6 @@ blockquote.blockquote {
     .card {
         height: 100%;
         border-radius: $border-radius-lg;
-        box-shadow: $box-shadow;
     }
 
     &.card-centered {
