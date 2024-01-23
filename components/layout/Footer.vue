@@ -1,13 +1,13 @@
 
 <template>
-    <footer>
+    <footer class="bg-dark-4">
         <div class="container py-4 py-md-5 px-4 px-md-3">
             <div class="row">
                 <div class="col-lg-3 mb-3">
                     <NuxtLink href="/">
                         <img src="/logo-white.svg" height="60" alt="Kestra's logo">
                     </NuxtLink>
-                    <p class="mt-2">Open Source Declarative Data Orchestration </p>
+                    <p class="mt-2">Open Source Declarative Data Orchestration</p>
                     <Socials class="mt-4 socials" />
                 </div>
                 <div class="col-lg-9 mb-3">
@@ -99,7 +99,6 @@
 
     footer {
         position: relative;
-        background-color: $purple-24;
         font-size: var(--bs-font-size-sm);
 
         h5, a, p{
@@ -111,16 +110,6 @@
             text-transform: uppercase;
             font-weight: bold;
             font-family: var(--bs-font-monospace);
-        }
-
-        &:before {
-            z-index: 1;
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            content: '';
-            background: url("../../assets/styles/layout/footer-halo.svg") no-repeat bottom left;
         }
 
         .container {
