@@ -46,6 +46,17 @@
     .card-body {
         padding: 0;
 
+        .card-title {
+            font-weight: 300;
+            font-size: $font-size-xl;
+        }
+
+        .card-text {
+            color: $white-1;
+            font-size: $font-size-sm;
+            font-weight: 400;
+        }
+
         .card-icon {
             float: none;
             border-radius: 8px;
@@ -55,7 +66,7 @@
             &:before {
                 content: '';
                 position: absolute;
-                top: 0; right: 0; bottom: 0; left: 0;
+                top: -0.5px; right: 0; bottom: 0; left: 0;
                 z-index: -1;
                 margin: -1px;
                 border-radius: inherit;
@@ -83,10 +94,10 @@
             }
         }
     }
+}
 
-    .number-card .card-icon {
-        width: 60px;
-        height: 60px;
-    }
+.number-card .card-icon {
+    width: 60px;
+    height: 60px;
 }
 </style>

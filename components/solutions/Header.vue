@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="align-items-center col-md-12 d-flex justify-content-center order-1 order-md-0">
                     <div class="text-center d-flex flex-column gap-3">
-                        <p data-aos="fade-left" class="overline">Use Cases</p>
+                        <p data-aos="fade-left" class="title">Use Cases</p>
                         <p data-aos="fade-left" class="baseline">Harness your data, unlock valuable insights, and drive informed decision-making</p>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                 font-weight: 300;
                 margin: 0;
 
-                &.overline {
+                &.title {
                     font-size: $font-size-4xl;
                     line-height: 3.375rem;
                 }

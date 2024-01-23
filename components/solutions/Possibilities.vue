@@ -102,8 +102,7 @@
     }
 
     .container {
-        background: url("/landing/possibilities/bg.svg") no-repeat center;
-        background-size: 100% 100%;
+        background: url("/landing/possibilities/bg.svg") no-repeat 24% 30%;
         .row {
             padding-bottom: $spacer;
             @include media-breakpoint-up(md) {
