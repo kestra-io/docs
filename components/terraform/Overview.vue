@@ -48,7 +48,7 @@
                 <div class="col-12 col-md-6">
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-7 px-5 px-md-0" data-aos="fade-right">
-                            <h3>Declarative Configuration</h3>
+                            <h3 class="mb-3">Declarative Configuration</h3>
                             <p>Terraform uses its HashiCorp Configuration Language (HCL), while Kestra flows are defined in YAML. This alignment in declarative interfaces ensures not only a smooth transition but also makes it easy to use both technologies together.</p>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                 <div class="col-12 col-md-6">
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-7 px-5 px-md-0" data-aos="fade-left">
-                            <h3>Modularity in the Infrastructure Management</h3>
+                            <h3 class="mb-3">Modularity in the Infrastructure Management</h3>
                             <p>Kestra's Terraform provider is designed to easily manage all resources using Terraform. This includes, among others, flows, namespace, and user management, as well as secrets. Check the list of available resources in our <NuxtLink href="/docs/terraform" class="text-decoration-underline link-offset-2">documentation.</NuxtLink></p>
                         </div>
                     </div>
@@ -78,6 +78,13 @@
 @import "../../assets/styles/variable";
 .overview {
     background: url('/terraform/overview/background.svg') no-repeat 0 -4%;
+
+    :deep(section) {
+        h2 {
+            font-size: 3.125rem;
+            font-weight: 300;
+        }
+    }
 }
 
 .card {
@@ -106,7 +113,17 @@
 
     p {
         line-height: 1.5rem;
-        color: $purple-32;
+        color: $white;
+        font-size: $font-size-md;
+
+        a {
+            color: $purple;
+        }
+    }
+
+    h3 {
+        font-size: $h2-font-size;
+        font-weight: 300;
     }
 
     .configurations-img {
