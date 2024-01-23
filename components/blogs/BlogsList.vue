@@ -209,7 +209,6 @@ export default {
         scrollToView({ el, ref }) {
             this.$nextTick(() => {
                 const element = this.$refs[ref || `blog-${el}`];
-                console.log({ element });
                 element.scrollIntoView({ behavior: "smooth" });
             });
         },
