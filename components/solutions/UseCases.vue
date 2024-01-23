@@ -1,18 +1,23 @@
 <template>
-    <div class="container mb-5">
-        <Section :title="title" :subtitle="subtitle">
+    <div class="container use-cases mb-5">
+        <Section
+            :subtitle="subtitle"
+            :subtitle-after="subtitleAfter"
+        >
             <div class="row">
                 <div
                     v-for="_case in cases"
                     class="col-md-4"
                     data-aos="fade-right"
                 >
-                    <NuxtLink :href="_case.link">
-                        <img
-                            class="img-fluid"
-                            :src="_case.img"
-                            :alt="_case.title"
-                        />
+                    <NuxtLink :href="_case.link" class="d-flex flex-column gap-2">
+                        <div class="img-block bg-dark-2">
+                            <img
+                                class="img-fluid"
+                                :src="_case.img"
+                                :alt="_case.title"
+                            />
+                        </div>
                         <h4 class="title">{{ _case.title }}</h4>
                         <p>{{ _case.description }}</p>
                     </NuxtLink>
@@ -34,32 +39,42 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../../assets/styles/variable";
 
-.container .row > div {
-    position: relative;
+.use-cases {
+    section .subtitle {
+        max-width: 900px;
+    }
+
+    .container .row > div {
+        position: relative;
+    }
+
     h4 {
-        font-weight: bold;
-        color: var(--bs-black);
-    }
-
-    img {
-        width: 100%;
-        margin-bottom: 1rem;
-        background: $light-cyan;
-        border-radius: $border-radius;
-        padding: calc($spacer / 2);
-    }
-
-    .badge {
-        position: absolute;
-        top: 0.625rem;
-        right: 1.5rem;
+        font-size: $h5-font-size;
+        font-weight: 700;
     }
 
     p {
-        color: var(--bs-gray-900);
+        font-size: $font-size-md;
+        font-weight: 400;
+    }
+
+    h4, p {
+        color: $white;
+        font-family: $font-family-sans-serif;
+        font-style: normal;
+        margin: 0;
+    }
+
+    .img-block {
+        border-radius: 8px;
+        border: 1.091px solid $black-3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 192.01px;
     }
 }
 </style>

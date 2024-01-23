@@ -67,8 +67,8 @@ export default defineComponent({
 
 .container {
     text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.10);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    border-top: $container-border;
+    border-bottom: $container-border;
 
     .companies {
 

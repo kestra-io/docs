@@ -153,9 +153,12 @@
 <style lang="scss">
     @import "../../assets/styles/variable";
     .testimonials {
-        .subtitle, .subtitle p {
-            margin: 0 !important;
-            text-align: left !important;
+        section {
+            .subtitle, .subtitle p {
+                margin: 0 !important;
+                text-align: left !important;
+                max-width: 575px;
+            }
         }
 
         .carousel--item {

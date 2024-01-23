@@ -3,63 +3,54 @@
         <Section subtitle="Simplicity scales, complexity" subtitle-after="Fails">
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><CalculatorVariant /></span>
-                            <h4 class="card-title">Embedded Visual Studio Code editor IDE</h4>
-                            <p class="card-text">Decide, based on your use case, how declarative or imperative you want your workflows to be. Write your business logic in any language from the integrated Visual Studio Code editor IDE, and orchestrate it declaratively in minutes.</p>
-                        </div>
-                    </div>
+                    <Card
+                        :icon="CalculatorVariant"
+                        title="Embedded Visual Studio Code editor IDE"
+                        description="Decide, based on your use case, how declarative or imperative you want your workflows to be. Write your business logic in any language from the integrated Visual Studio Code editor IDE, and orchestrate it declaratively in minutes."
+                    />
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><Lan /></span>
-                            <h4 class="card-title">Scalable event-driven multitenant architecture</h4>
-                            <p class="card-text">Kestra's architecture is built on top of proven and time-tested technologies, including Postgres, Kafka and Elasticsearch, to enable scheduled and event-driven workflow patterns at any scale with tenant-level isolation.</p>
-                        </div>
-                    </div>
+                    <Card
+                        :icon="Lan"
+                        title="Scalable event-driven multitenant architecture"
+                        description="Kestra's architecture is built on top of proven and time-tested technologies, including Postgres, Kafka and Elasticsearch, to enable scheduled and event-driven workflow patterns at any scale with tenant-level isolation."
+                    />
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><Hubspot /></span>
-                            <h4 class="card-title">Run anywhere, code in any language</h4>
-                            <p class="card-text">Integrate with any cloud, programming language, source system, database or data tool, and build your own plugins and blueprints to eliminate boilerplate code and automate repetitive tasks.</p>
-                        </div>
-                    </div>
+                    <Card
+                        :icon="Hubspot"
+                        title="Run anywhere, code in any language"
+                        description="Integrate with any cloud, programming language, source system, database or data tool, and build your own plugins and blueprints to eliminate boilerplate code and automate repetitive tasks."
+                    />
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><LightningBolt /></span>
-                            <h4 class="card-title">Fast development cycles, simple deployment patterns</h4>
-                            <p class="card-text">Create flows in a simple <NuxtLink href="/features/declarative-data-orchestration">declarative YAML config</NuxtLink> directly from the UI with autocompletion, syntax validation and built-in documentation. Or use our official VS Code extension to integrate your workflows with Git and CI/CD systems.</p>
-                        </div>
-                    </div>
+                    <Card
+                        :icon="LightningBolt"
+                        title="Fast development cycles, simple deployment patterns"
+                    >
+                        <template v-slot:descriptionHtml>
+                            Create flows in a simple <NuxtLink href="/features/declarative-data-orchestration">declarative YAML config</NuxtLink> directly from the UI with autocompletion, syntax validation and built-in documentation. Or use our official VS Code extension to integrate your workflows with Git and CI/CD systems.
+                        </template>
+                    </Card>
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><RefreshAuto /></span>
-                            <h4 class="card-title">API-first design with a rich plugin ecosystem</h4>
-                            <p class="card-text">Because every action in Kestra is API-driven, there are no limits to what you can automate, from changing flow and task configuration using internal tools to triggering, adding, or modifying workflows in any way you can imagine.</p>
-                        </div>
-                    </div>
+                    <Card
+                        :icon="RefreshAuto"
+                        title="API-first design with a rich plugin ecosystem"
+                        description="Because every action in Kestra is API-driven, there are no limits to what you can automate, from changing flow and task configuration using internal tools to triggering, adding, or modifying workflows in any way you can imagine."
+                    />
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><ImageFilterDrama /></span>
-                            <h4 class="card-title">Deploy anywhere with no single point of failure</h4>
-                            <p class="card-text">Scale your data platform from a few executions to millions without hassle. You can deploy Kestra on-prem and cloud using Docker, our official Helm chart, Terraform provider, or a manual installation using a single binary file.</p>
-                        </div>
-                    </div>
+                    <Card
+                        :icon="ImageFilterDrama"
+                        title="Deploy anywhere with no single point of failure"
+                        description="Scale your data platform from a few executions to millions without hassle. You can deploy Kestra on-prem and cloud using Docker, our official Helm chart, Terraform provider, or a manual installation using a single binary file."
+                    />
                 </div>
             </div>
 
@@ -89,9 +80,10 @@
 
 <script>
     import Section from '../layout/Section.vue';
+    import Card from '../card/Card.vue';
 
     export default {
-        components: {Section}
+        components: {Section, Card}
     }
 </script>
 
@@ -101,29 +93,11 @@
         background: url("/landing/features/bg.svg") no-repeat center;
         background-size: 100% 100%;
         section {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+            border-bottom: $container-border;
             padding-top: 0;
-        }
-        .card {
-            border-radius: 8px;
-            border: 1px solid $black-3;
-            background: $black-2;
-            color: $white;
-            padding: 64px 32px;
 
-            .card-icon {
-                float: none;
-                border-radius: 8px;
-                border: 1px solid #B010FB;
-                background: $black-4;
-
-                .material-design-icon {
-                    filter: drop-shadow(2px 4px 4px rgba(186, 53, 249, 0.25));
-
-                    svg path {
-                        fill: url(#featureiconsgradient);
-                    }
-                }
+            .subtitle {
+                max-width: 576px;
             }
         }
     }

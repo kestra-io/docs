@@ -1,5 +1,5 @@
 <template>
-    <div class="main bg-dark-4">
+    <div class="main-ui bg-dark-4">
         <div class="container">
             <Section
                 class="dark"
@@ -76,14 +76,18 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import "../../assets/styles/variable";
 
-    .main {
+    .main-ui {
         color: var(--bs-white);
 
         section {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+            border-bottom: $container-border;
+
+            .subtitle {
+                max-width: 530px;
+            }
         }
 
         .active {

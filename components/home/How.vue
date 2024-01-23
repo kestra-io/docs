@@ -86,13 +86,15 @@
 
     .how {
         section {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-        }
-        .subtitle {
-            margin: 0 !important;
+            border-bottom: $container-border;
 
-            p {
-                text-align: left !important;
+            .subtitle {
+                margin: 0 !important;
+                max-width: 590px;
+
+                p {
+                    text-align: left !important;
+                }
             }
         }
 
