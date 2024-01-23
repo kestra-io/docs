@@ -98,7 +98,7 @@ You can use the `kestra_namespace_file` resource from the official [Kestra Terra
 
 Here is a simple example showing how you can synchronize an entire directory of scripts from the directory `src` with the `prod` namespace using Terraform:
 
-```terraform
+```hcl
 resource "kestra_namespace_file" "prod_scripts" {
   for_each  = fileset(path.module, "src/**")
   namespace = "prod"

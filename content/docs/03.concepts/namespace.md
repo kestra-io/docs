@@ -2,20 +2,35 @@
 title: Namespace
 ---
 
-A namespace is a logical grouping of flows. It allows you to logically isolate resources beyond the tenant-level isolation and provides fine-grained access-control to secrets, variables and task configuration. Namespaces are particularly useful for environments with many users, teams, projects and applications.
+A namespace is a logical grouping of flows. You can think of a namespace as a **folder for your flows**. Similar to folders on your file system, namespaces can be used to organize flows into logical categories. And as filesystems, namespaces can be indefinitely nested.
 
-You can think of a namespace as a **folder for your flows**.
+## Hierarchical structure when using nested namespaces
 
-- Similar to folders on your file system, namespaces can be used to organize flows into logical categories.
-- And as filesystems, namespaces can be indefinitely nested.
-Using the dot `.` symbol, you can add hierarchical structure to your flow organization.
-This allows to separate not only environments, but also projects, teams and departments.
+Using the dot `.` symbol, you can add hierarchical structure to your namespaces which allows to logically separate environments, projects, teams and departments. This way, your product, engineering, marketing, finance, and data teams can all use the same Kestra instance, while keeping their flows organized and separated. Various stakeholders can have their own namespaces that belong to a parent namespace grouping them by environment, project, or team.
 
-This way, your **product, engineering, marketing, finance, and data teams** can all use the same Kestra instance, while keeping their flows organized and separated. They all can have their own namespaces that belong to a parent namespace indicating the **development** or **production** environment.
+## Namespace name
+A namespace name can be built from alphanumerical characters, optionally separated by `.`. The hierarchy depth for namespaces is unlimited. Here are some examples of namespaces:
+- `project_one`
+- `company.project_two`
+- `company.team.project_three`
 
-A namespace is like a folder for flows. A namespace is composed of words and letters separated by `.`. The hierarchy depth for namespaces is unlimited. Here are some examples of namespaces:
-- `projectOne`
-- `com.projectTwo`
-- `test.projectThree.folder`
+## Using namespaces to organize flows and files
 
-Namespaces are hierarchical, which means that for our previous example, the `test.projectThree.folder` namespace is inside the `test.projectThree` namespace.
+When you create a flow, you can assign a namespace to it:
+
+```yaml
+id: hello_world
+namespace: marketing
+tasks:
+  - id: log_task
+    type: io.kestra.core.tasks.log.Log
+    message: hi from {{ flow.namespace }}
+```
+
+Here, the flow is assigned to the `marketing` namespace. This assignment of a namespace to a flow already provides a benefit of improved organization and filtering:
+
+![namespace_mgmt_1](/docs/concepts/namespace_1.png)
+
+Additionally, you can organize your code on a namespace-level using the embedded VS Code editor and [Namespace Files](../05.developer-guide/namespace-files.md), with the option to [sync those files from Git](../05.developer-guide/15.git.md):
+
+![namespace_mgmt_2](/docs/concepts/namespace_2.png)
