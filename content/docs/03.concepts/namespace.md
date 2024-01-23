@@ -2,6 +2,8 @@
 title: Namespace
 ---
 
+A namespace is a logical grouping of flows. It allows you to logically isolate resources beyond the tenant-level isolation and provides fine-grained access-control to secrets, variables and task configuration. Namespaces are particularly useful for environments with many users, teams, projects and applications.
+
 You can think of a namespace as a **folder for your flows**.
 
 - Similar to folders on your file system, namespaces can be used to organize flows into logical categories.
