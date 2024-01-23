@@ -1,5 +1,5 @@
 <template>
-    <div class="how container">
+    <div class="container">
         <Section
             subtitle="Language-Agnostic Workflows"
             subtitle-after="At Any Scale"
@@ -81,11 +81,11 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .how {
-        section {
+    .container {
+        :deep(section) {
             border-bottom: $container-border;
 
             .subtitle {

@@ -1,5 +1,5 @@
 <template>
-    <div class="container bg-dark-2 community">
+    <div class="container bg-dark-3">
         <Section
             subtitle="New to Kestra?"
             :animation="animation"
@@ -35,19 +35,19 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .community {
+    .container {
         padding-left: calc($spacer * 1);
         padding-right: calc($spacer * 1);
         margin-top: calc($spacer * 5.625);
         border-radius: 8px;
         border: $block-border;
-        background: url("/landing/community/bg.svg") no-repeat right;
+        background: $black-2 url("/landing/community/bg.svg") no-repeat right;
         background-size: 20% 100%;
 
-        section {
+        :deep(section) {
             .subtitle {
                 color: $white;
             }

@@ -1,5 +1,5 @@
 <template>
-    <div class="container testimonials bg-dark-4">
+    <div class="container bg-dark-4">
         <Section
             subtitle-before="Loved"
             subtitle="by the open-source community"
@@ -150,10 +150,10 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "../../assets/styles/variable";
-    .testimonials {
-        section {
+    .container {
+        :deep(section) {
             .subtitle, .subtitle p {
                 margin: 0 !important;
                 text-align: left !important;

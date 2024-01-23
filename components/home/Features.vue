@@ -1,5 +1,5 @@
 <template>
-    <div class="container features">
+    <div class="container">
         <Section subtitle="Simplicity scales, complexity" subtitle-after="Fails">
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
@@ -87,12 +87,12 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "../../assets/styles/variable";
-    .features {
+    .container {
         background: url("/landing/features/bg.svg") no-repeat center;
         background-size: 100% 100%;
-        section {
+        :deep(section) {
             border-bottom: $container-border;
             padding-top: 0;
 

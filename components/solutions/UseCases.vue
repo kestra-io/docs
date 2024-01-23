@@ -1,5 +1,5 @@
 <template>
-    <div class="container use-cases mb-5">
+    <div class="container mb-5">
         <Section
             :subtitle="subtitle"
             :subtitle-after="subtitleAfter"
@@ -39,15 +39,17 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../../assets/styles/variable";
 
-.use-cases {
-    section .subtitle {
-        max-width: 70%;
+.container {
+    :deep(section) {
+        .subtitle {
+            max-width: 70%;
+        }
     }
 
-    .container .row > div {
+    .row > div {
         position: relative;
     }
 

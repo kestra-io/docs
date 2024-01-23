@@ -1,5 +1,5 @@
 <template>
-    <div class="main-ui bg-dark-4">
+    <div class="bg-dark-4">
         <div class="container">
             <Section
                 class="dark"
@@ -76,13 +76,13 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .main-ui {
+    .container {
         color: var(--bs-white);
 
-        section {
+        :deep(section) {
             border-bottom: $container-border;
 
             .subtitle {
