@@ -1,12 +1,9 @@
 <template>
-    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top"
-        :class="{ transparent: transparentClass, open: isOpen }">
+    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{open: isOpen}">
         <div class="container-xl">
             <NuxtLink class="navbar-brand" href="/" @click="logoClick">
                 <img class="icon" src="/icon.svg" alt="Kestra, Open source declarative data orchestration" />
-                <img v-if="transparentClass" src="/logo-white.svg"
-                    alt="Kestra, Open source declarative data orchestration" />
-                <img v-else src="/logo.svg" alt="Kestra, Open source declarative data orchestration" />
+                <img src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
             </NuxtLink>
 
             <button class="navbar-toggler" @click="globalClick(false)" type="button" aria-controls="main-header"
@@ -400,12 +397,11 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
 
-nav {
-    background: var(--bs-white);
-    box-shadow: $box-shadow;
-    transition: all ease 0.2s;
-    transform: translateY(0);
-    max-height: 100%;
+    nav {
+        background: $black-4;
+        transition: all ease 0.2s;
+        transform: translateY(0);
+        max-height: 100%;
 
     .navbar-brand {
         img:not(.icon) {
@@ -430,12 +426,10 @@ nav {
         }
     }
 
-    a.nav-link,
-    button.navbar-toggler,
-    &.btn.search {
-        color: var(--bs-black);
-        box-shadow: none !important;
-    }
+        a.nav-link, button.navbar-toggler, &.btn.search, .nav-item a {
+            color: var(--gray-white, #FFF) !important;
+            box-shadow: none !important;
+        }
 
     .navbar-toggler {
         border: 0;
@@ -470,12 +464,11 @@ nav {
                         display: none;
                     }
 
-                    &.show,
-                    &:hover {
-                        color: $black-9 !important;
-                        background: var(--bs-gray-100);
+                        &.show, &:hover {
+                            color: $primary !important;
+                            background: $black-6;
+                        }
                     }
-                }
 
                 @include media-breakpoint-down(lg) {
                     .chevron-down-icon {
@@ -499,13 +492,13 @@ nav {
                 }
 
 
-                .dropdown-menu {
-                    --bs-dropdown-link-hover-bg: var(--bs-gray-100);
-                    --bs-dropdown-link-active-bg: var(--bs-gray-100);
-                    padding: 1rem;
-                    box-shadow: $box-shadow;
-                    border-radius: $border-radius-lg;
-                    border: 1px solid var(--bs-border-color);
+                    .dropdown-menu {
+                        --bs-dropdown-link-hover-bg: $black-4;
+                        --bs-dropdown-link-active-bg: $black-4;
+                        padding: 1rem;
+                        border-radius: $border-radius-lg;
+                        border: 1px solid var(--bs-border-color);
+                        background: $black-2;
 
                     @include media-breakpoint-down(lg) {
                         display: block;
@@ -578,10 +571,10 @@ nav {
                             }
                         }
 
-                        p {
-                            color: var(--bs-black);
-                            font-size: var(--bs-font-size-sm);
-                            margin-bottom: 0;
+                            p {
+                                color: var(--bs-white);
+                                font-size: var(--bs-font-size-sm);
+                                margin-bottom: 0;
 
                             span {
                                 display: inline-block;
@@ -609,7 +602,7 @@ nav {
                     font-size: 1.5rem;
 
                     &:hover {
-                        color: $black-9 !important;
+                        color: $purple-36 !important;
                     }
                 }
             }
@@ -625,20 +618,21 @@ nav {
         font-size: 12px !important;
     }
 
-    &:not(.transparent) {
-        :deep(.github .btn-dark) {
-            background-color: var(--bs-gray-200);
-            border-color: var(--bs-border-color);
-            color: var(--bs-body-color);
-        }
+        &:not(.transparent) {
+            :deep(.github .btn-dark) {
+                border-color: $black-5;
+                background: $black-5;
+                color: $white-6;
+            }
 
-        :deep(.github .btn-outline-dark) {
-            border-color: var(--bs-border-color);
+            :deep(.github .btn-outline-dark) {
+                border-color: $black-5;
+                color: $white-6;
+            }
         }
-    }
 
     .btn:hover {
-        color: $black-9;
+        color: $purple-36;
     }
 
     &.transparent {

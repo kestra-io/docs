@@ -17,20 +17,30 @@
                 </form>
 
                 <p class="mt-3" data-aos="zoom-in">Stay up to date with the latest features and changes to Kestra</p>
-                <Socials class="mt-4 mb-0 socials" data-aos="zoom-in" />
+                <div class="d-flex align-items-center justify-content-center gap-3 socials">
+                    <a href="https://twitter.com/kestra_io" class="d-flex align-items-center social-item gap-1" title="Twitter" target="_blank">
+                        <twitter />
+                        <p class="m-0">Twitter</p>
+                    </a>
+                    <a href="https://www.youtube.com/@kestra-io" class="d-flex align-items-center social-item gap-1" title="YouTube" target="_blank">
+                        <youtube />
+                        <p class="m-0">Youtube</p>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import Socials from "./Socials.vue";
+    import Twitter from "vue-material-design-icons/Twitter.vue";
+    import Youtube from "vue-material-design-icons/Youtube.vue";
     import axios from "axios";
 
     const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/433b234f-f3c6-431c-898a-ef699e5525fa";
 
     export default {
-        components: {Socials},
+        components: {Twitter, Youtube},
         data() {
             return {
                 valid: undefined,
@@ -89,22 +99,14 @@
     @import "../../assets/styles/variable";
 
     .container {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: $rem-5;
+
         > div {
             position: relative;
-            background: $purple-8;
+            background: $black-2;
             padding: calc($spacer * 3);
-            color: var(--bs-primary);
-
-            &:before {
-                content: "";
-                background: url("/landing/dot2.svg") no-repeat bottom right;
-                width: 329px;
-                height: 236px;
-                position: absolute;
-                right: 1rem;
-                bottom: 1rem;
-                z-index: 1;
-            }
+            color: $purple-35;
 
             > div {
                 position: relative;
@@ -113,7 +115,20 @@
         }
 
         input {
-            border-radius: $border-radius;
+            border: 1px solid #242427;
+            background: $black-4;
+            color: $white-1;
+            font-size: 15px;
+            padding: 13px;
+
+            &::placeholder {
+                color: $white-1;
+            }
+        }
+
+        .btn-dark {
+            border: 1px solid #414145;
+            background: $black-4;
         }
 
         .btn-lg {
@@ -127,12 +142,24 @@
             font-weight: 800;
 
             span {
-                color: var(--bs-black);
+                color: $body-tertiary-color;
             }
         }
 
         .socials {
-            font-size: calc($font-size-base * 2);
+            .social-item {
+                color: $white-4;
+                .material-design-icon {
+                    font-size: $font-size-xl;
+                    height: $btn-font-size-lg;
+                }
+
+                p {
+                    color: $white-4;
+                    font-family: $font-family-sans-serif;
+                    font-size: $font-size-base;
+                }
+            }
         }
 
         @include media-breakpoint-down(sm) {

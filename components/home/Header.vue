@@ -15,7 +15,7 @@
                         data-bs-toggle="modal"
                         data-bs-target="#home-intro"
                     >
-                        <PlayCircleOutline /> Product Video
+                        Watch video
                     </a>
 
                     <NuxtLink
@@ -23,13 +23,34 @@
                         class="btn btn-animated btn-purple-animated mb-2"
                         data-aos="zoom-in"
                     >
-                        <LightningBolt /> Get started
+                        Get started
                     </NuxtLink>
                 </div>
             </div>
         </div>
 
-        <Companies class="mt-4 pb-4 companies" />
+        <div class="companies-background">
+            <Companies class="mt-4 pb-4 companies" />
+
+            <div class="activity-list container bg-dark-2 d-flex align-items-center justify-content-between">
+                <div>
+                    <p class="count">+60 Million</p>
+                    <p class="description">workflows executed</p>
+                </div>
+                <div>
+                    <p class="count">+15,000</p>
+                    <p class="description">active users</p>
+                </div>
+                <div>
+                    <p class="count">+90,000</p>
+                    <p class="description">Installations</p>
+                </div>
+                <div>
+                    <p class="count">+200</p>
+                    <p class="description">Contributors</p>
+                </div>
+            </div>
+        </div>
     </div>
     <div
         v-on="{
@@ -66,8 +87,6 @@
 <script>
 import Console from "vue-material-design-icons/Console.vue";
 import PlayOutline from "vue-material-design-icons/PlayOutline.vue";
-import LightningBolt from "vue-material-design-icons/LightningBolt.vue";
-import PlayCircleOutline from "vue-material-design-icons/PlayCircleOutline.vue";
 
 import Companies from "~/components/layout/Companies.vue";
 import TextScroller from "~/components/layout/TextScroller.vue";
@@ -76,8 +95,6 @@ export default {
     components: {
         Console,
         PlayOutline,
-        LightningBolt,
-        PlayCircleOutline,
         Companies,
         TextScroller,
     },
@@ -98,11 +115,14 @@ export default {
 @import "../../assets/styles/variable";
 
 .main {
-    background: #111113 url("/landing/home/header-bg.png") no-repeat center
-        center;
-
     .text-block {
         margin: 5rem 0;
+    }
+
+    .hero {
+        background: $black-4 url("/landing/home/header-bg.png") no-repeat center
+        center;
+        background-size: 100%;
     }
 
     h1 {
@@ -157,6 +177,63 @@ export default {
             .text-block {
                 margin-bottom: 0;
             }
+        }
+    }
+
+    .companies-background {
+        background: url("/landing/home/container-bg.svg") no-repeat center;
+        background-size: 100% 100%;
+        padding-bottom: 4rem;
+    }
+
+    .activity-list {
+        border-radius: 8px;
+        border: 0.829px solid $black-6;
+        padding: 34px 122.5px;
+        background: url("/landing/home/bg.svg") no-repeat center;
+        background-size: 100% 100%;
+        text-align: center;
+        font-family: $font-family-sans-serif;
+        text-transform: uppercase;
+
+        p {
+            margin: 0;
+        }
+
+        .count {
+            color: $white;
+            font-size: 48.087px;
+            font-weight: 100;
+            line-height: 46px;
+        }
+
+        .description {
+            color: rgba(255, 255, 255, 0.70);
+            font-size: 11.607px;
+            font-weight: 500;
+        }
+
+        @include media-breakpoint-down(xl) {
+            padding: 30px 64px;
+        }
+
+        @include media-breakpoint-down(lg) {
+            padding: 30px 44px;
+            .count {
+                font-size: 30px;
+                line-height: 30px;
+            }
+
+            .description {
+                font-size: 9px;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            max-width: 330px;
+            flex-wrap: wrap;
+            justify-content: center !important;
+            gap: 25px;
         }
     }
 }
