@@ -1,10 +1,10 @@
 <template>
-    <div class="main">
+    <div class="main bg-dark-4">
         <div class="container">
             <Section
                 class="dark"
-                subtitle="All-Inclusive Dashboard"
-                title="Empower Your Team with a Comprehensive, User-Friendly Orchestration Platform"
+                subtitle-before="All-Inclusive"
+                subtitle="Dashboard"
             >
                 <div class="row mb-5">
                     <div class="col-lg-8">
@@ -18,8 +18,8 @@
                         <div class="card" @click="active = 1" :class="{active: active === 1}" data-aos="fade-left">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon rounded-5"><ViewDashboardVariantOutline /></span>
-                                    Complete and comprehensive Dashboard
+                                    <span class="card-icon rounded-5"><WrenchOutline /></span>
+                                    Built-in code editor
                                 </p>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
-                                    Built-in editor to define flows, SQL queries and custom scripts
+                                    Execute and monitor directly from the interface
                                 </p>
                             </div>
                         </div>
@@ -35,15 +35,15 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
-                                    Simple declarative editor with live-updating DAG view
+                                    Declarative language editor
                                 </p>
                             </div>
                         </div>
                         <div class="card" @click="active = 4" :class="{active: active === 4}" data-aos="fade-left" data-aos-delay="150">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    <span class="card-icon rounded-5"><WrenchOutline /></span>
-                                    Polyglot orchestration for event-driven flows
+                                    <span class="card-icon rounded-5"><ViewDashboard /></span>
+                                    Complete and comprehensive dashboard
                                 </p>
                             </div>
                         </div>
@@ -64,10 +64,10 @@
     import WrenchOutline from "vue-material-design-icons/WrenchOutline.vue";
     import ChartTimelineVariant from "vue-material-design-icons/ChartTimelineVariant.vue";
     import ApplicationBracketsOutline from "vue-material-design-icons/ApplicationBracketsOutline.vue";
-    import ViewDashboardVariantOutline from "vue-material-design-icons/ViewDashboardVariantOutline.vue";
+    import ViewDashboard from "vue-material-design-icons/ViewDashboard.vue";
 
     export default {
-        components: {Section, WrenchOutline, ChartTimelineVariant, ApplicationBracketsOutline, ViewDashboardVariantOutline},
+        components: {Section, WrenchOutline, ChartTimelineVariant, ApplicationBracketsOutline, ViewDashboard},
         data() {
             return {
                 active: 1,
@@ -80,32 +80,70 @@
     @import "../../assets/styles/variable";
 
     .main {
-        background: $purple-7;
         color: var(--bs-white);
+
+        section {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
+        .active {
+            border: 1px solid #B010FB !important;
+            background: $black-4 !important;
+
+            .card-icon {
+                background: $primary !important;
+
+                .material-design-icon svg path {
+                    fill: $white !important;
+                }
+            }
+        }
 
         .card {
             background: $purple-10;
             box-shadow: $purple-9 !important;
             color: var(--bs-white);
-            border: 1px solid $purple-11;
             margin-bottom: $spacer;
             cursor: pointer;
             transition: all ease 0.2s;
+            border: 1px solid $black-6;
+            background: $black-2;
 
             p {
                 font-size: $font-size-lg;
             }
 
-            .card-icon {
-                margin-bottom: 0;
-                font-size: 2.25rem;
+
+
+            .card-body {
+                p {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .card-icon {
+                    margin-bottom: 0;
+                    width: 40px;
+                    min-width: 40px;
+                    height: 40px;
+                    min-height: 40px;
+                    background: $black-3;
+                    font-size: 24px !important;
+
+                    .material-design-icon {
+                        margin-top: -6px;
+                        width: 24px;
+                        height: 24px;
+
+                        svg path {
+                            fill: #8405FF;
+                        }
+                    }
+                }
             }
 
-            &:hover, &.active {
-                background: $purple-28;
-                p {
-                    font-weight: bold;
-                }
+            &:hover {
+                background: $black-4 !important;
             }
         }
     }

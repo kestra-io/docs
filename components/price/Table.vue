@@ -434,15 +434,15 @@ const tableData = ref([
 .t-head-body {
     tr {
         td {
-          
-            font-size: $font-size-mdsm;
+
+            font-size: $font-size-md;
             padding: 1.3rem 2.5rem;
         }
     }
 }
 
 .t-head-title {
-    font-size: $font-size-mdsm;
+    font-size: $font-size-md;
     font-weight: 700;
     line-height: 1.5rem;
     padding: 1.375rem 2.9rem;

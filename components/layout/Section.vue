@@ -1,7 +1,11 @@
 <template>
     <section>
         <div class="subtitle" :data-aos="animationType('fade-right')" v-if="subtitle">
-            <p>{{ subtitle }}</p>
+            <p>
+                <span v-if="subtitleBefore">{{subtitleBefore}}</span>
+                {{ subtitle }}
+                <span v-if="subtitleAfter">{{subtitleAfter}}</span>
+            </p>
         </div>
         <h2 :data-aos="animationType('fade-left')">{{ title }}</h2>
         <p v-if="baseline" class="baseline" :data-aos="animationType('fade-right')">
@@ -22,6 +26,14 @@
                 required: false,
             },
             subtitle: {
+                type: String,
+                required: false,
+            },
+            subtitleBefore: {
+                type: String,
+                required: false,
+            },
+            subtitleAfter: {
                 type: String,
                 required: false,
             },
@@ -62,17 +74,25 @@
         }
 
         div.subtitle {
+            max-width: 576px;
             text-align: center;
             margin: 0 auto calc($spacer / 2);
-            
+
             p {
-                font-size: $font-size-sm;
-                color: var(--bs-pink);
-                font-weight: 800;
-                text-transform: uppercase;
-                border-bottom: 2px solid var(--bs-pink);
-                font-family: var(--bs-font-monospace);
-                display: inline;
+                color: var(--Kestra-io-Token-color-white, #FFF);
+                text-align: center;
+                font-family: $font-family-sans-serif;
+                font-size: 50px;
+                font-style: normal;
+                font-weight: 300;
+                line-height: 50px;
+
+                span {
+                    background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
             }
         }
 
