@@ -44,7 +44,7 @@ export default {
 
 .use-cases {
     section .subtitle {
-        max-width: 900px;
+        max-width: 70%;
     }
 
     .container .row > div {
@@ -70,7 +70,7 @@ export default {
 
     .img-block {
         border-radius: 8px;
-        border: 1.091px solid $black-3;
+        border: $block-border;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -86,7 +86,7 @@
             border-bottom: $container-border;
 
             .subtitle {
-                max-width: 530px;
+                max-width: 40%;
             }
         }
 

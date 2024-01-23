@@ -38,7 +38,7 @@
 
 .card {
     border-radius: 8px;
-    border: 1px solid $black-3;
+    border: $block-border;
     color: $white;
     padding: 64px 32px 28px;
     height: 100%;

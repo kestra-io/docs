@@ -157,7 +157,7 @@
             .subtitle, .subtitle p {
                 margin: 0 !important;
                 text-align: left !important;
-                max-width: 575px;
+                max-width: 60%;
             }
         }
 

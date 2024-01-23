@@ -90,7 +90,7 @@
 
             .subtitle {
                 margin: 0 !important;
-                max-width: 590px;
+                max-width: 52%;
 
                 p {
                     text-align: left !important;

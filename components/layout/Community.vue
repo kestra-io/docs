@@ -43,7 +43,7 @@
         padding-right: calc($spacer * 1);
         margin-top: calc($spacer * 5.625);
         border-radius: 8px;
-        border: 1px solid $black-3;
+        border: $block-border;
         background: url("/landing/community/bg.svg") no-repeat right;
         background-size: 20% 100%;
 

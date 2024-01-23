@@ -97,7 +97,7 @@
             padding-top: 0;
 
             .subtitle {
-                max-width: 576px;
+                max-width: 48%;
             }
         }
     }

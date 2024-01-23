@@ -46,6 +46,6 @@ export default {
     background: $black-3;
     box-shadow: none;
     color: white;
-    border: 1px solid $black-3;
+    border: $block-border;
 }
 </style>

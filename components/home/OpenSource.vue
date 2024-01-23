@@ -135,7 +135,7 @@
 
         section {
             border-radius: 8px;
-            border: 1px solid $black-3;
+            border: $block-border;
             background: $black-2;
 
             .main {
