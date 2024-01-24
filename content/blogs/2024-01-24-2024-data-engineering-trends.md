@@ -1,6 +1,6 @@
 ---
 title: "2024 Data Engineering Trends"
-description: "Trends we see and the impact of AI on the data tooling and data job market"
+description: "Data engineering trends we see gaining popularity in 2024 and the impact of AI on data tooling and data job market"
 date: 2024-01-24T16:00:00
 category: Solutions
 author:
@@ -17,7 +17,7 @@ The tech industry in 2024 is under pressure to optimize resources. Technology an
 
 ### The Impact of AI on Layoffs vs. Economic Factors
 
-The growing capabilities of LLMs are reshaping the job market, and the data space is no exception. While it’s difficult to estimate to what extent AI progress has contributed to the growing waves of tech layoffs, many companies are cutting costs in some established lines of business and reallocating that budget toward AI development. Dropbox reduced its headcount by 16% last year and reallocated those resources toward hiring AI specialists in order to “stay competitive”.
+The growing capabilities of LLMs are reshaping the job market, and the data space is no exception. While it’s difficult to estimate to what extent AI progress has contributed to the growing waves of tech layoffs, many companies are cutting costs in their established lines of business and reallocating that budget toward AI development. Dropbox reduced its headcount by 16% last year and reallocated those resources toward hiring AI specialists in order to [“stay competitive”](https://blog.dropbox.com/topics/company/a-message-from-drew).
 
 Economic factors such as a slowdown in VC funding and some (late) post-pandemic adjustments also play a role in the headcount decisions.
 
@@ -63,11 +63,11 @@ Budget constraints are making data lakehouses attractive compared to cloud data 
 
 ## Commercial vs. Open Source Battles among LLMs and Data Tools
 
-While open-source LLMs continue to improve and gain popularity, more mature AI applications are being built on top of platforms such as OpenAI, largely for compliance reasons. Both open-source and commercial LLMs are estimated to continue to grow in demand in 2024. Open-source LLMs are improving at a rapid pace, and commercial LLMs are becoming more affordable — partially as a result of the increased competition from open-source alternatives.
+While open-source LLMs continue to improve and gain popularity, more mature AI applications are being built on top of platforms such as OpenAI, largely for compliance reasons. Both open-source and commercial LLMs are estimated to continue to grow in demand in 2024. Open-source LLMs are improving at a rapid pace, and commercial LLMs are becoming more affordable — partially as a result of the increased competition from open-source alternatives.
 
 Data tools face similar challenges of balancing open-source and commercial offerings. Tools like [Snowplow](https://snowplow.io/blog/introducing-snowplow-limited-use-license/) and [Terraform](https://www.hashicorp.com/blog/hashicorp-adopts-business-source-license) adjusted their licenses and operating models to focus on serving enterprise clients and generating revenue.
 
-In short, the highly competitive landscape is forcing many commercial open-source companies to change their licenses, pivot or rebrand towards AI, or get acquired. This trend will also likely continue in 2024.
+In short, the highly competitive landscape in 2024 is forcing many commercial open-source companies to change their licenses, [pivot](https://meltano.com/blog/were-bringing-powerful-data-engineering-capabilities-to-software-teams-with-arch/) or [rebrand](https://about.gitlab.com/) towards AI, [get acquired](https://ponder.io/), or [shut down](https://github.com/orchest/orchest).
 
 ## Event-Driven Systems Become the Norm in Data Engineering in 2024
 
