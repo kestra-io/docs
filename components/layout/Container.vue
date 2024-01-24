@@ -17,7 +17,7 @@
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
                     />
-                    <PrevNext v-if="prevNext" :base-path="`/${type}`"/>
+                    <PrevNext v-if="prevNext" :navigation="navigation" />
                 </div>
             </ContentRenderer>
         </article>
@@ -33,12 +33,12 @@
     import {recursivePages} from "~/utils/navigation.js";
 
     const fetchNavigation = async () => {
-        const queryBuilder = queryContent('/' + props.type + '/').without("body");
-
         let navigationFetch;
         if (props.type === "plugins") {
             navigationFetch = await useFetch(`/api/plugins?type=navigation`);
         } else {
+            const queryBuilder = queryContent('/' + props.type + '/');
+
             navigationFetch = await useAsyncData(
                 `NavSideBar-${hash(props.type)}`,
                 () => fetchContentNavigation(queryBuilder)

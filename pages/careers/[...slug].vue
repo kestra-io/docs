@@ -74,8 +74,6 @@
         })
 
         title.value = data.value.title;
-
-        console.log(data)
     }
 
 </script>
