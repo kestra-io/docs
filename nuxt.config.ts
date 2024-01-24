@@ -25,22 +25,22 @@ export default defineNuxtConfig({
         // pageTransition: {name: 'page', mode: 'out-in'}
         head: {
             link: [
-                {rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png'},
-                {rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png'},
-                {rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png'},
-                {rel: 'manifest', href: '/site.webmanifest'},
-                {rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#2c0059'},
-                {name: 'msapplication-TileColor', content: '#2c0059'},
-                {rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml', title: 'Sitemap'},
-                {rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml', title: 'Blog Articles RSS'}
+                { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+                { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+                { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+                { rel: 'manifest', href: '/site.webmanifest' },
+                { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#2c0059' },
+                { name: 'msapplication-TileColor', content: '#2c0059' },
+                { rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml', title: 'Sitemap' },
+                { rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml', title: 'Blog Articles RSS' }
             ],
             meta: [
-                {name: 'msapplication-TileColor', content: '#2c0059'},
-                {name: 'theme-color', content: '#2c0059'},
-                {property: 'og:image', content: '/og-image.png'}
+                { name: 'msapplication-TileColor', content: '#2c0059' },
+                { name: 'theme-color', content: '#2c0059' },
+                { property: 'og:image', content: '/og-image.png' }
             ],
             script: [
-                {src: 'https://js-eu1.hsforms.net/forms/embed/v2.js'}
+                { src: 'https://js-eu1.hsforms.net/forms/embed/v2.js' }
             ],
         }
     },
@@ -66,6 +66,9 @@ export default defineNuxtConfig({
             //     'json5',
             // ],
             theme: 'github-dark'
+        },
+        navigation: {
+            fields: ["_file", "_id"]
         },
         markdown: {
             remarkPlugins: {
@@ -136,12 +139,12 @@ export default defineNuxtConfig({
     },
 
     routeRules: {
-        '/slack': {redirect: `${DEFAULT_KESTRA_API_URL}/communities/slack/redirect`},
-        '/docs/api-guide': {redirect: '/docs/api-reference'},
-        '/docs/plugin-library': {redirect: '/docs/getting-started/plugins'},
-        '/docs/troubleshooting': {redirect: '/docs/faq/troubleshooting'},
-        '/docs/developer-guide/best-practice': {redirect: '/docs/developer-guide/best-practices'},
-        '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
+        '/slack': { redirect: `${DEFAULT_KESTRA_API_URL}/communities/slack/redirect` },
+        '/docs/api-guide': { redirect: '/docs/api-reference' },
+        '/docs/plugin-library': { redirect: '/docs/getting-started/plugins' },
+        '/docs/troubleshooting': { redirect: '/docs/faq/troubleshooting' },
+        '/docs/developer-guide/best-practice': { redirect: '/docs/developer-guide/best-practices' },
+        '/api/events/**': { proxy: 'https://eu.posthog.com/**' },
     },
 
     build: {

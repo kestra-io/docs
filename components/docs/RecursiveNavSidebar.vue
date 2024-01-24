@@ -127,6 +127,10 @@
                 return this.showMenu.some(path => path.startsWith(item))
             },
             isPage(item) {
+                if (this.type === 'docs') {
+                    return item._id !== undefined;
+                }
+
                 return item.isPage ?? true;
             },
             getClass(item, depthLevel, disabled) {
