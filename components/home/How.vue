@@ -58,14 +58,14 @@
                 </div>
             </div>
 
-            <div class="text-center how-footer">
+            <div class="text-center footer">
                 <p class="last-words" data-aos="fade-left">
                     By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
                 </p>
                 <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated me-2" data-aos="zoom-in">
                     Get started
                 </NuxtLink>
-                <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-dark-animated me-2" data-aos="zoom-in">
+                <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn btn-dark me-2" data-aos="zoom-in">
                     Live demo
                 </a>
             </div>
@@ -91,6 +91,10 @@
             .subtitle {
                 margin: 0 !important;
                 max-width: 52%;
+
+                @include media-breakpoint-down(lg) {
+                    max-width: 100%;
+                }
 
                 p {
                     text-align: left !important;
@@ -306,7 +310,7 @@
             }
         }
 
-        &-footer {
+        .footer {
             border-radius: 8px;
             border: 1px solid $black-6;
             background: $black-2;
@@ -357,6 +361,11 @@
                 font-style: normal;
                 font-weight: 400;
                 line-height: 24px;
+            }
+
+            .btn-dark {
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: $black-4;
             }
         }
 

@@ -46,6 +46,10 @@ export default {
     :deep(section) {
         .subtitle {
             max-width: 70%;
+
+            @include media-breakpoint-down(lg) {
+                max-width: 100%;
+            }
         }
     }
 

@@ -158,6 +158,10 @@
                 margin: 0 !important;
                 text-align: left !important;
                 max-width: 60%;
+
+                @include media-breakpoint-down(lg) {
+                    max-width: 100%;
+                }
             }
         }
 

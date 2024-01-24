@@ -87,6 +87,10 @@
 
             .subtitle {
                 max-width: 40%;
+
+                @include media-breakpoint-down(lg) {
+                    max-width: 100%;
+                }
             }
         }
 
