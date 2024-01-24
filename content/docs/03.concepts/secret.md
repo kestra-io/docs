@@ -70,8 +70,10 @@ MYPASSWORD=password
 GITHUB_ACCESS_TOKEN=mypat
 AWS_ACCESS_KEY_ID=myawsaccesskey
 AWS_SECRET_ACCESS_KEY=myawssecretaccesskey
+
 ```
 
+Make sure to keep the last line empty, otherwise the bash script below won't encode the last secret AWS_SECRET_ACCESS_KEY correctly.
 
 Using the bash script shown below, you can:
 1. Encode all values using base64-encoding
