@@ -10,6 +10,8 @@ export default defineNuxtPlugin(nuxtApp => {
         const {grantConsent} = useGtag()
 
         const enabledAnalytics = async () => {
+            grantConsent();
+
             const response = await axios.get('https://api.kestra.io/v1/config', {withCredentials: true})
 
             posthog.init(
@@ -60,8 +62,6 @@ export default defineNuxtPlugin(nuxtApp => {
             page_scripts: true,
             force_consent: true,
             onAccept: () => {
-                grantConsent();
-
                 if (cookieConsent.allowedCategory('analytics')) {
                     enabledAnalytics();
                 }
