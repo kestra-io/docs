@@ -8,11 +8,11 @@
                     <p class="description mt-3">Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating
                         the need for separate configurations.</p>
                     <div class="d-flex flex-wrap gap-2">
-                        <NuxtLink href="https://github.com/kestra-io/kestra">
-                            <button class="btn btn-animated btn-dark-animated btn-lg">Get Started</button>
-                        </NuxtLink>
                         <NuxtLink href="/docs/terraform">
-                            <button class="btn btn-animated btn-purple-animated btn-lg">Read the docs</button>
+                            <button class="btn btn-dark btn-lg bg-dark-4"> Read the docs</button>
+                        </NuxtLink>
+                        <NuxtLink href="https://github.com/kestra-io/kestra">
+                            <button class="btn btn-animated btn-purple-animated btn-lg">Get Started</button>
                         </NuxtLink>
                     </div>
                 </div>
@@ -67,6 +67,10 @@
         margin-bottom: 50px;
         left: 20px;
         transform-origin: 40% 30%;
+    }
+
+    .btn-dark {
+        border: 1px solid rgba(255, 255, 255, 0.12);
     }
 }
 </style>
