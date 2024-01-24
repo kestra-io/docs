@@ -3,6 +3,7 @@
         <Section
             :title="title"
             :subtitle="subtitle"
+            :subtitle-after="subtitleAfter"
             class="with-shadow"
         >
             <div class="row card-group card-centered no-shadow mb-2">
@@ -35,6 +36,10 @@
                 required: false,
             },
             subtitle: {
+                type: String,
+                required: false,
+            },
+            subtitleAfter: {
                 type: String,
                 required: false,
             },
