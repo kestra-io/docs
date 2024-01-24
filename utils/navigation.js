@@ -28,14 +28,14 @@ export function prevNext(navigation, path) {
         }
     };
 
-    recursiveFetch(navigation.value[0]);
+    recursiveFetch(navigation[0]);
 
     if(!found){
         // we're at a section's root
         prev = undefined;
-        next = navigation.value[0].children[0];
+        next = navigation[0].children[0];
     }else if(prev === null) {
-        prev = navigation.value[0];
+        prev = navigation[0];
     }
     return {prev, next};
 }
