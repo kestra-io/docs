@@ -27,15 +27,16 @@
                 currentPage = route.path;
             }
 
-            const queryBuilder = queryContent(currentPage);
+            currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
+
+            const queryBuilder = queryContent(currentPage)
 
             const {data: navigation} = await useAsyncData(
                 `ChildTableOfContents-${hash(currentPage)}`,
                 () => fetchContentNavigation(queryBuilder),
             );
 
-            const routePath = route.path.endsWith("/") ? route.path.slice(0, -1) : route.path;
-            const dir = (navDirFromPath(routePath, navigation.value) || [])
+            const dir = (navDirFromPath(currentPage, navigation.value) || [])
                 .filter(value => value._path !== currentPage)
 
             return {dir, max};
