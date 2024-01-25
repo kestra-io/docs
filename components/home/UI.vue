@@ -1,5 +1,5 @@
 <template>
-    <div class="main bg-dark-4">
+    <div class="bg-dark-4">
         <div class="container">
             <Section
                 class="dark"
@@ -79,11 +79,19 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .main {
+    .container {
         color: var(--bs-white);
 
-        section {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+        :deep(section) {
+            border-bottom: $container-border;
+
+            .subtitle {
+                max-width: 40%;
+
+                @include media-breakpoint-down(lg) {
+                    max-width: 100%;
+                }
+            }
         }
 
         .active {
