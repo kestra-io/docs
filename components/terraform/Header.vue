@@ -31,6 +31,7 @@
 .container-fluid {
     background: url('/terraform/header/bg.svg') no-repeat center !important;
     background-size: 100% 100% !important;
+    border-bottom: $block-border;
 
     @include media-breakpoint-down(md) {
         background-image: none !important;

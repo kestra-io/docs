@@ -29,6 +29,7 @@
     .container {
         position: relative;
         padding: calc($spacer * 2.375) calc($spacer * 2);
+        border: $block-border;
 
         > div {
             h3 {

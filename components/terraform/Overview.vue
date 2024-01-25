@@ -3,40 +3,36 @@
         <LayoutSection title="Overview" class="container">
             <div class="row mx-4 mx-sm-0">
                 <div class="col-12 col-md-6 col-lg-3 mb-4">
-                    <div class="card h-100" data-aos="fade-right">
-                        <div class="card-body text-center">
-                            <img src="/terraform/overview/deploy-pattern.svg" alt="deploy-pattern svg">
-                            <h6>Simplified Deployment</h6>
-                            <p>You can manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations.</p>
-                        </div>
-                    </div>
+                    <Card
+                        img="/terraform/overview/deploy-pattern.svg"
+                        img-alt="deploy-pattern svg"
+                        title="Simplified Deployment"
+                        description="You can manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations."
+                    />
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 mb-4">
-                    <div class="card h-100" data-aos="fade-right">
-                        <div class="card-body text-center">
-                            <img src="/terraform/overview/hub.svg" alt="hub svg">
-                            <h6>Centralized Management</h6>
-                            <p>The Terraform Provider allows you to manage your Kestra resources in code, along with other infrastructure components, all from a single platform.</p>
-                        </div>
-                    </div>
+                    <Card
+                        img="/terraform/overview/hub.svg"
+                        img-alt="hub svg"
+                        title="Centralized Management"
+                        description="The Terraform Provider allows you to manage your Kestra resources in code, along with other infrastructure components, all from a single platform."
+                    />
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 mb-4">
-                    <div class="card h-100" data-aos="fade-right">
-                        <div class="card-body text-center">
-                            <img src="/terraform/overview/code-box-parentheses.svg" alt="code-box-parentheses svg">
-                            <h6>Infrastructure as Code</h6>
-                            <p>By using Terraform, you benefit from the Infrastructure as Code (IaC) best practices, making it easier to version control, collaborate, and maintain your Kestra configurations.</p>
-                        </div>
-                    </div>
+                    <Card
+                        img="/terraform/overview/code-box-parentheses.svg"
+                        img-alt="code-box-parentheses svg"
+                        title="Infrastructure as Code"
+                        description="By using Terraform, you benefit from the Infrastructure as Code (IaC) best practices, making it easier to version control, collaborate, and maintain your Kestra configurations."
+                    />
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 mb-4">
-                    <div class="card h-100" data-aos="fade-right">
-                        <div class="card-body text-center">
-                            <img src="/terraform/overview/api.svg" alt="api svg">
-                            <h6>API-First Approach</h6>
-                            <p>The provider is built on top of Kestra's API, allowing you to programmatically manage all resources, from workflows, namespaces, and secrets, to user management.</p>
-                        </div>
-                    </div>
+                    <Card
+                        img="/terraform/overview/api.svg"
+                        img-alt="api svg"
+                        title="API-First Approach"
+                        description="The provider is built on top of Kestra's API, allowing you to programmatically manage all resources, from workflows, namespaces, and secrets, to user management."
+                    />
                 </div>
             </div>
             <div class="hero row justify-content-center align-items-center">
@@ -73,39 +69,25 @@
         </LayoutSection>
     </div>
 </template>
+<script>
+    import Card from '../card/Card.vue';
 
+    export default {
+        components: {Card}
+    }
+</script>
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 .overview {
     background: url('/terraform/overview/background.svg') no-repeat 0 -4%;
 
     :deep(section) {
+        border-bottom: $block-border;
         h2 {
             font-size: 3.125rem;
             font-weight: 300;
         }
     }
-}
-
-.card {
-    background-color: $purple-33;
-    color: white;
-    box-shadow: none !important;
-
-    .card-body {
-        padding: 2rem 1rem;
-
-        h6 {
-            line-height: 1.875rem;
-        }
-
-        p {
-            font-size: $font-size-sm;
-            line-height: 1.375rem;
-            color: $purple-32;
-        }
-    }
-
 }
 
 .hero {
