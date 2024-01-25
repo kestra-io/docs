@@ -30,7 +30,7 @@
         color: var(--bs-white);
         padding-top: 5rem;
         margin-top: -5rem;
-        border-bottom: 1px solid $black-3;
+        border-bottom: $block-border;
     }
     .baseline{
         font-weight: 300;
@@ -50,7 +50,7 @@
     }
     .btn-dark{
     --bs-btn-bg: $black-4 ;
-    --bs-btn-hover-bg : $black-4; 
+    --bs-btn-hover-bg : $black-4;
     border: 1px solid $black-6;
 }
 .line{

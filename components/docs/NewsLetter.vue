@@ -86,7 +86,7 @@
             position: relative;
             background: $purple-8;
             color: var(--bs-primary);
-            border: 1px solid $black-3;
+            border: $block-border;
             border-radius: 8px;
         input {
             border-radius: $border-radius;
