@@ -8,4 +8,6 @@ In just a few lines of code, you can [create a flow](./03.concepts/flow.md) dire
 
 Check out the different methods for installing Kestra in your preferred environment.
 
-<ChildTableOfContents :max="1" />
+::ChildCard
+{"pageUrl":"/docs/installation/"}
+::
