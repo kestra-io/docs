@@ -67,9 +67,6 @@ export default defineNuxtConfig({
             // ],
             theme: 'github-dark'
         },
-        navigation: {
-            fields: ["_file", "_id"]
-        },
         markdown: {
             remarkPlugins: {
                 'remark-flexible-markers': {

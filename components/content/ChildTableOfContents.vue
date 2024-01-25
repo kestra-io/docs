@@ -27,7 +27,9 @@
                 currentPage = route.path;
             }
 
-            const queryBuilder = queryContent(currentPage);
+            currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
+
+            const queryBuilder = queryContent(currentPage)
 
             const {data: navigation} = await useAsyncData(
                 `ChildTableOfContents-${hash(currentPage)}`,
