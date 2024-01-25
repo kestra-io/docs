@@ -19,12 +19,12 @@
  @import "../../../assets/styles/variable";
 .btn-dark{
     --bs-btn-bg: $black-4 ;
-    --bs-btn-hover-bg : $black-4; 
+    --bs-btn-hover-bg : $black-4;
     border: 1px solid $black-6;
 }
 .container{
     background-color: $black-2;
-    border: 1px solid $black-3;
+    border: $block-border;
     border-radius: 8px;
     position: relative;
     z-index: 10;

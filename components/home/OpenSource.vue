@@ -1,5 +1,5 @@
 <template>
-    <div class="main join-community">
+    <div class="main">
         <div v-if="contributors && false" class="contributors left">
             <template v-for="contributor in contributorsPartition(0)">
                 <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
@@ -127,15 +127,15 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "../../assets/styles/variable";
-    .join-community {
+    .main {
         position: relative;
         display: flex;
 
-        section {
+        :deep(section) {
             border-radius: 8px;
-            border: 1px solid $black-3;
+            border: $block-border;
             background: $black-2;
 
             .main {

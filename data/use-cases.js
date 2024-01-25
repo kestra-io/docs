@@ -1,6 +1,6 @@
 export default {
-    title: "Dive deeper into our use cases",
-    subtitle: "Uncover the Depth of Kestra's Capabilities",
+    subtitle: "Uncover the Depth of Kestra's",
+    subtitleAfter: "Capabilities",
     cases: [
         {
             link: "/use-cases/change-data-capture",
@@ -22,13 +22,6 @@ export default {
             title: "CI/CD for your Kestra Workflows",
             description:
                 "Embrace software engineering practices for versioning, deploying, and maintaining data workflows",
-        },
-        {
-            link: "/use-cases/retail",
-            img: "/landing/usecases/mds/intro.svg",
-            title: "Kestra for Retail and Consuming goods",
-            description:
-                "Manage End-To-End Solutions for Complex Retail Operations",
         },
     ],
 };

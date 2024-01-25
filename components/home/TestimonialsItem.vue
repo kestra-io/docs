@@ -28,9 +28,9 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
     .card {
-        border: 1px solid $black-3;
-        height: 259px;
-        max-height: 259px;
+        border: $block-border;
+        height: 295px;
+        max-height: 295px;
         .card-body {
             padding: $rem-2;
             text-align: left;

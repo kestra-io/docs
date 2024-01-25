@@ -461,13 +461,13 @@ const tableData = ref([
 }
 
 .t-border-data-title {
-    border: 1px solid $black-3;
+    border: $block-border;
     border-bottom: none;
 
 }
 
 .t-border-data-title-thead {
-    border: 1px solid $black-3;
+    border: $block-border;
     border-top: none;
 
 
