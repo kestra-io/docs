@@ -133,6 +133,17 @@ $bd-gutter-x: 3rem;
             }
         }
     }
+
+
+    .card {
+        h4 {
+            padding-top: 0;
+        }
+
+        .card-icon {
+            background: none
+        }
+    }
 }
 
 .bd-intro {
