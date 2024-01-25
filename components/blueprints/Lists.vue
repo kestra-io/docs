@@ -1,10 +1,15 @@
 <template>
 <div class="mt-5">
-    <p class="top-breadcrumb" data-aos="fade-right">
-        Solutions
-    </p>
-    <h1 data-aos="fade-left">Blueprints</h1>
-    <h5 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h5>
+    <div class="header-container">
+        <div class="header container d-flex flex-column align-items-center gap-3">
+            <h1 data-aos="fade-left">Blueprints</h1>
+            <h4 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h4>
+            <div class="col-12 search-input position-relative">
+                <input type="text" class="form-control form-control-lg" placeholder="Search across +300 of blueprints" v-model="searchQuery">
+                <Magnify class="search-icon" />
+            </div>
+        </div>
+    </div>
     <div class="grid gap-3 mt-5" data-aos="fade-left">
         <button
             v-for="tag in tags"
@@ -17,17 +22,12 @@
         </button>
     </div>
     <div class="row my-5">
-        <div class="row mb-4 justify-content-center" data-aos="zoom-in">
-            <div class="col-12 col-md-6 col-lg-4">
-                <input type="text" class="form-control form-control-lg" id="search-input" placeholder="Search blueprints" v-model="searchQuery">
-            </div>
-        </div>
         <div class="col-lg-4 col-md-6 mb-4" v-for="blueprint in blueprints" :key="blueprint.id" data-aos="zoom-in">
             <BlueprintsListCard :blueprint="blueprint" :tags="tags" />
         </div>
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between pagination-container">
             <div class="items-per-page">
-                <select class="form-select" aria-label="Default select example" v-model="itemsPerPage">
+                <select class="form-select bg-dark-2" aria-label="Default select example" v-model="itemsPerPage">
                     <option :value="12">12</option>
                     <option :value="24">24</option>
                     <option :value="48">48</option>
@@ -43,6 +43,8 @@
 </template>
 
 <script setup>
+import Magnify from "vue-material-design-icons/Magnify.vue"
+
 const currentPage = ref(1)
 const itemsPerPage = ref(24)
 const blueprints = ref([])
@@ -122,38 +124,97 @@ watch([currentPage, itemsPerPage, activeTag, searchQuery], ([pageVal, itemVal, t
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
-h5 {
-    font-weight: normal;
-}
-.form-control {
-    background: url('/search.svg') no-repeat 13px;
-    padding-left: 2.5rem;
-}
-.total-pages {
-    font-size: $font-size-xs;
-}
+    .header-container {
+        background: url("/landing/plugins/bg.svg") no-repeat top;
+        .header {
+            padding-bottom: calc($spacer * 4.125);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
 
-.top-breadcrumb {
-    &:after {
-        width: 13px;
+            h1, h4 {
+                color: $white;
+                text-align: center;
+                font-weight: 300;
+                margin-bottom: 0;
+            }
+
+            h1 {
+                font-size: $font-size-4xl;
+            }
+
+            h4 {
+                font-size: $font-size-xl;
+            }
+
+            .search-input {
+                max-width: 21rem;
+
+                input {
+                    border-radius: 4px;
+                    border: 1px solid #404559;
+                    background-color: #1C1E27;
+
+                    &, &::placeholder {
+                        color: $white;
+                        font-size: $font-size-md;
+                        font-weight: 400;
+                    }
+                }
+
+                .search-icon {
+                    position: absolute;
+                    top: calc($spacer * 0.563);;
+                    left: calc($spacer * 1.125);
+                    font-size: calc($spacer * 1.125);
+                    color: $white;
+                }
+            }
+        }
+
     }
-}
+    .form-control {
+        padding-left: 2.5rem;
 
-.rounded-button {
-    border-radius: 0.25rem;
-    padding: calc($spacer / 2) calc($spacer / 1);
-    margin-right: calc($spacer / 2);
-    background-color: var(--bs-white);
-    border: 0.063rem solid #E5E4F7;
-    font-weight: bold;
-    font-size: $font-size-sm;
-    line-height: 1.375rem;
+        &:focus {
+            border-color: var(--bs-border-color);
+            box-shadow: none;
+        }
+    }
+    .total-pages {
+        font-size: $font-size-sm;
+        color: $white;
+        text-align: center;
+        font-family: $font-family-sans-serif;
+        font-weight: 400;
+        line-height: 22px;
+    }
 
-    &.active {
-        background-color: var(--bs-primary);
+    .rounded-button {
+        border-radius: 0.25rem;
         color: var(--bs-white);
+        padding: calc($spacer / 2) calc($spacer / 1);
+        margin-right: calc($spacer / 2);
+        background-color: $black-2;
+        border: 0.063rem solid $black-3;
+        font-weight: bold;
+        font-size: $font-size-sm;
+        line-height: 1.375rem;
+
+        &.active {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
     }
-}
+
+    .pagination-container .form-select {
+        border-radius: 4px;
+        border: $block-border;
+        color: $white;
+        text-align: center;
+        font-family: $font-family-sans-serif;
+        font-size: $font-size-sm;
+        font-style: normal;
+        font-weight: 700;
+    }
 </style>
