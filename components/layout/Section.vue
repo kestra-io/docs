@@ -74,7 +74,6 @@
         }
 
         div.subtitle {
-            max-width: 576px;
             text-align: center;
             margin: 0 auto calc($spacer / 2);
 
@@ -116,10 +115,12 @@
         }
 
         p.baseline {
+            color: $white;
             text-align: center;
             font-size: $font-size-xl;
             max-width: $baseline-max-width;
             margin: $spacer auto 0;
+            font-weight: 400;
         }
 
         :deep(p.overline) {

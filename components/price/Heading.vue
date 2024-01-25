@@ -131,7 +131,7 @@ import Section from '../layout/Section.vue';
 
     .card {
         background-color: $black-2 !important;
-        border: 1px solid $black-3 !important;
+        border: $block-border !important;
         box-shadow: none;
 
     }
