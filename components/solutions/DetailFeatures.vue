@@ -4,20 +4,15 @@
             :title="title"
             :subtitle="subtitle"
             :subtitle-after="subtitleAfter"
-            class="with-shadow"
         >
-            <div class="row card-group card-centered no-shadow mb-2">
+            <div class="row no-shadow mb-2">
                 <template v-for="item in items">
-                    <div class="col-md-4 mb-4">
-                        <div class="card" data-aos="zoom-in">
-                            <div class="card-body">
-                                    <span class="card-icon">
-                                        <component :is="item.icon" />
-                                    </span>
-                                <h4 class="card-title">{{ item.title }}</h4>
-                                <p class="card-text">{{ item.text }}</p>
-                            </div>
-                        </div>
+                    <div class="col-12 col-md-6 col-lg-3 mb-4">
+                        <Card
+                            :icon="item.icon"
+                            :title="item.title"
+                            :description="item.text"
+                        />
                     </div>
                 </template>
             </div>
@@ -27,9 +22,10 @@
 
 <script>
     import Section from '../layout/Section.vue';
+    import Card from '../../components/card/Card.vue';
 
     export default {
-        components: {Section},
+        components: {Section, Card},
         props: {
             title: {
                 type: String,

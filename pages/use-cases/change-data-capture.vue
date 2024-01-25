@@ -9,7 +9,7 @@
             title="Efficient"
             titleAfter="Change Data Capture"
             subtitle="Build CDC pipeline with Kestra for data synchronization, and ressources optimization to ensure your data analytics platforms reflect the most current information."
-            image="/landing/usecases/cdc/intro.svg"
+            image="/landing/usecases/cdc/intro-bg.svg"
         />
         <SolutionsDetailContent
             title="What is Change Data Capture ?"

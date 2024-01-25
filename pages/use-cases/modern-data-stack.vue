@@ -9,7 +9,7 @@
             title="Integrate Kestra in the"
             titleAfter="Modern Data Stack"
             subtitle="Enhance Data Orchestration and Analytics by Integrating Kestra with Leading Data Tools"
-            image="/landing/usecases/mds/intro.svg"
+            image="/landing/usecases/mds/intro-bg.svg"
         />
         <SolutionsDetailContent
             title="What is Modern Data Stack?"

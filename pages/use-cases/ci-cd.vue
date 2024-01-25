@@ -9,7 +9,7 @@
             title="for your Kestra Workflows"
             titleBefore="CI/CD"
             subtitle="Embrace software engineering practices for versioning, deploying, and maintaining data workflows"
-            image="/landing/usecases/cicd/intro.svg"
+            image="/landing/usecases/cicd/intro-bg.svg"
         />
         <SolutionsDetailContent
             title="What is CI/CD?"

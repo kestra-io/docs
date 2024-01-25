@@ -32,6 +32,7 @@
         padding-right: calc($spacer * 4);
         margin-bottom: calc($spacer * 2);
         border-radius: 8px;
+        border: $block-border;
 
         :deep(section) {
             padding-left: calc($rem-9 * 2);

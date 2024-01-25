@@ -33,8 +33,8 @@
 @import "../../../assets/styles/variable";
 
 .plugin{
-  border-top: 1px solid $black-3;
-  border-bottom: 1px solid $black-3;
+  border-top: $block-border;
+  border-bottom: $block-border;
 }
 .heading {
   max-width: 400px;
