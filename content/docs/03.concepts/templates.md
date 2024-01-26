@@ -16,7 +16,7 @@ All tasks in a template will be executed sequentially; you can provide the same 
 Templates can have arguments passed via the `args` property.
 
 ::next-link
-[Template Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Template.md)
+[Template Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.template)
 ::
 
 ## Example

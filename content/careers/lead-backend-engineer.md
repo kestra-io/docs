@@ -29,7 +29,7 @@ We are searching for someone:
 - **Infrastructure:** Docker, Kubernetes, Terraform (we also built our own providers)
 - **Cloud:** GCP, AWS, Azure
 - **Project:** GitHub (repository, actions, issues)
-- You will work with many technologies; look at [our plugins list](../../plugins/index.md)
+- You will work with many technologies; look at [our plugins list](..//plugins/)
 
 ## What we're looking for:
 

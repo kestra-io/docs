@@ -68,16 +68,15 @@ You **must** use the `{{ trigger.date }}` expression on the property `date` of t
 This condition will be evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` will reflect the date **with** the conditions applied.
 
 The list of core conditions that can be used are:
-<ChildTableOfContents page-url="/plugins/core/conditions/" />
 
- - [DateTimeBetweenCondition](../../../plugins/core/conditions/io.kestra.core.models.conditions.types.DateTimeBetweenCondition.md)
- - [DayWeekCondition](../../../plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekCondition.md)
- - [DayWeekInMonthCondition](../../../plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekInMonthCondition.md)
- - [NotCondition](../../../plugins/core/conditions/io.kestra.core.models.conditions.types.NotCondition.md)
- - [OrCondition](../../../plugins/core/conditions/io.kestra.core.models.conditions.types.OrCondition.md)
- - [WeekendCondition](../../../plugins/core/conditions/io.kestra.core.models.conditions.types.WeekendCondition.md)
- - [DayWeekInMonthCondition](../../../plugins/core/conditions/io.kestra.core.models.conditions.types.DayWeekInMonthCondition.md)
+ - [DateTimeBetweenCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.datetimebetweencondition)
+ - [DayWeekCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.dayweekcondition)
+ - [DayWeekInMonthCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.dayweekinmonthcondition)
+ - [NotCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.notcondition)
+ - [OrCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.orcondition)
+ - [WeekendCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.weekendcondition)
+ - [DayWeekInMonthCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.dayweekinmonthcondition)
 
 ## Properties and Outputs
 
-Check the [Schedule task](../../../plugins/core/triggers/io.kestra.core.models.triggers.types.Schedule.md) documentation for the list of the task properties and outputs.
+Check the [Schedule task](/plugins/core/triggers/io.kestra.core.models.triggers.types.schedule) documentation for the list of the task properties and outputs.

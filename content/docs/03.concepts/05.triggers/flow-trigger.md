@@ -42,7 +42,7 @@ triggers:
           - SUCCESS
 ```
 
-> This flow will be triggered after the successful execution of both flows `flow-a` and `flow-b` during the current day. When the conditions are met, the counter is reset and can be re-triggered during the same day. See [MultipleCondition](../../../plugins/core/conditions/io.kestra.core.models.conditions.types.MultipleCondition.md) for more details
+> This flow will be triggered after the successful execution of both flows `flow-a` and `flow-b` during the current day. When the conditions are met, the counter is reset and can be re-triggered during the same day. See [MultipleCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.multiplecondition) for more details
 ```yaml
 id: trigger-multiplecondition-listener
 namespace: io.kestra.tests
@@ -74,7 +74,7 @@ triggers:
 
 ## Properties and Outputs
 
-Check the [Flow trigger](../../../plugins/core/triggers/io.kestra.core.models.triggers.types.Flow.md) documentation for the list of all properties.
+Check the [Flow trigger](/plugins/core/triggers/io.kestra.core.models.triggers.types.flow) documentation for the list of all properties.
 
 ## Expressions
 

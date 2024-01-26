@@ -11,4 +11,4 @@ Tasks have properties specific to the type of the task; check each task's docume
 
 Most available tasks are Runnable Tasks except special ones that are [Flowable Tasks](flowable-tasks.md); those are explained later on this page.
 
-By default, Kestra only includes a few Runnable Tasks. However, many of them are available as [plugins](../../plugins/index.md), and if you use our default Docker image, plenty of them will already be included.
+By default, Kestra only includes a few Runnable Tasks. However, many of them are available as [plugins](..//plugins/), and if you use our default Docker image, plenty of them will already be included.

@@ -77,7 +77,7 @@ One of Kestra's most important abilities is to use all outputs from previous tas
 ### Without dynamic tasks (Each)
 This is the simplest and most common way to use outputs in the next task. In order to fetch a variable, just use `{{ outputs.ID.NAME }}` where:
 * `ID` is the task id
-* `NAME` is the name of the output. Each task type can have any outputs that are documented on the part outputs of their docs. For example, [Bash task](../../../../plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.md#outputs) can have `{{ outputs.ID.exitCode }}`, `{{ outputs.ID.outputFiles }}`, `{{ outputs.ID.stdErrLineCount }}`, etc...
+* `NAME` is the name of the output. Each task type can have any outputs that are documented on the part outputs of their docs. For example, [Bash task](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash#outputs) can have `{{ outputs.ID.exitCode }}`, `{{ outputs.ID.outputFiles }}`, `{{ outputs.ID.stdErrLineCount }}`, etc...
 
 ### With dynamic tasks (Each)
 This option is more complicated since Kestra will change the way the outputs are generated, since there can be multiple tasks with the same id, you will need to use `{{ outputs.ID.VALUE.NAME }}`.

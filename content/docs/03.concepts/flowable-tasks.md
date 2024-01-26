@@ -41,7 +41,7 @@ You can access the output of a sibling task with `{{outputs.sibling.value}}`, se
 ::
 
 ::next-link
-[Sequential Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md)
+[Sequential Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.eachsequential)
 ::
 
 
@@ -75,7 +75,7 @@ You cannot access the output of a sibling task as tasks will be run in parallel.
 ::
 
 ::next-link
-[Parallel Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Parallel.md)
+[Parallel Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.parallel)
 ::
 
 ### Switch
@@ -117,7 +117,7 @@ tasks:
 ```
 
 ::next-link
-[Switch Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Switch.md)
+[Switch Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.switch)
 ::
 
 
@@ -152,7 +152,7 @@ tasks:
 ```
 
 ::next-link
-[If Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.If.md)
+[If Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.if)
 ::
 
 
@@ -191,7 +191,7 @@ You can access the output of a sibling task with `{{outputs.sibling[taskrun.valu
 
 
 ::next-link
-[EachSequential Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachSequential.md)
+[EachSequential Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.eachsequential)
 ::
 
 ### EachParallel
@@ -228,7 +228,7 @@ You cannot access the output of a sibling task as tasks will be run in parallel.
 ::
 
 ::next-link
-[EachParallel Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.EachParallel.md)
+[EachParallel Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.eachparallel)
 ::
 
 
@@ -256,10 +256,10 @@ Syntax:
 ```
 
 This will execute the subflow `dev.subflow` for each batch of items.
-To pass the batch of items to a subflow, you can use [inputs](../inputs.md). The example above uses an input of `FILE` type called `file` that takes the URI of an internal storage file containing the batch of items.
+To pass the batch of items to a subflow, you can use [inputs](./inputs.md). The example above uses an input of `FILE` type called `file` that takes the URI of an internal storage file containing the batch of items.
 
 ::next-link
-[ForEachItem Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.ForEachItem.md)
+[ForEachItem Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.foreachitem)
 ::
 
 
@@ -299,7 +299,7 @@ tasks:
 ```
 
 ::next-link
-[AllowFailure Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.AllowFailure.md)
+[AllowFailure Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.allowfailure)
 ::
 
 ### Fail
@@ -364,7 +364,7 @@ tasks:
 
 
 ::next-link
-[Fail Task documentation](../../plugins/core/tasks/executions/io.kestra.core.tasks.executions.Fail.md)
+[Fail Task documentation](/plugins/core/tasks/executions/io.kestra.core.tasks.executions.fail)
 ::
 
 
@@ -389,7 +389,7 @@ tasks:
 ```
 
 ::next-link
-[Subflow Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Subflow.md)
+[Subflow Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.subflow)
 ::
 
 
@@ -447,7 +447,7 @@ tasks:
         console.log(colors.red("Hello"));
 ```
 
-This task can also fetch files from [namespace files][namespace files](./namespace-files.md) and make them available to all child tasks.
+This task can also fetch files from [namespace files][namespace files](../05.developer-guide/namespace-files.md) and make them available to all child tasks.
 
 ```yaml
 id: node-with-cache
@@ -470,7 +470,7 @@ tasks:
 ```
 
 ::next-link
-[WorkingDirectory Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.WorkingDirectory.md)
+[WorkingDirectory Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.workingdirectory)
 ::
 
 
@@ -513,7 +513,7 @@ For this: go to the **Gantt** tab of the **Execution** page, click on the task, 
 
 
 ::next-link
-[Pause Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Pause.md)
+[Pause Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.pause)
 ::
 
 
@@ -561,7 +561,7 @@ tasks:
 ```
 
 ::next-link
-[Dag Task documentation](../../plugins/core/tasks/flows/io.kestra.core.tasks.flows.Dag.md)
+[Dag Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.dag)
 ::
 
 

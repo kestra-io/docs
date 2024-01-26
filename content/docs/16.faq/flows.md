@@ -6,7 +6,7 @@ title: Flows FAQ
 
 Flows are stored in a serialized format directly **in the Kestra backend database**.
 
-The easiest way to add new flows is to add them directly from the [Kestra UI](../04.user-interface-guide/index.md). You can also use the [CI/CD](../05.developer-guide/13.cicd/index.md) to add flows automatically after a pull request is merged to a given Git branch.
+The easiest way to add new flows is to add them directly from the [Kestra UI](../00.getting-started/07.ui.md). You can also use the [CI/CD](../05.developer-guide/13.cicd/index.md) to add flows automatically after a pull request is merged to a given Git branch.
 
 To see how flows are represented in a file structure, you can leverage the `_flows` directory in the [Namespace Files](../05.developer-guide/namespace-files.md) editor.
 
@@ -33,7 +33,7 @@ There are multiple ways to trigger a flow.
 
 ### The `Execute` button in the UI
 
-You can trigger a flow manually from the [Kestra UI](../04.user-interface-guide/index.md).
+You can trigger a flow manually from the [Kestra UI](../00.getting-started/07.ui.md).
 
 ### Triggers
 

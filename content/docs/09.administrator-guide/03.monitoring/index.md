@@ -5,9 +5,9 @@ title: Alerting & Monitoring
 ## Alerting
 
 Failure alerts are non-negotiable. When a production workflow fails, you should get notified about it as soon as possible. To implement failure alerting, you can leverage Kestra's built in notification tasks, including:
-- [Slack](../../../plugins/plugin-notifications/tasks/slack/io.kestra.plugin.notifications.slack.slackexecution.md)
-- [Microsoft Teams](../../../plugins/plugin-notifications/tasks/teams/io.kestra.plugin.notifications.teams.teamsexecution.md)
-- [Email](../../../plugins/plugin-notifications/tasks/mail/io.kestra.plugin.notifications.mail.mailexecution.md)
+- [Slack](/plugins/plugin-notifications/tasks/slack/io.kestra.plugin.notifications.slack.slackexecution)
+- [Microsoft Teams](/plugins/plugin-notifications/tasks/teams/io.kestra.plugin.notifications.teams.teamsexecution)
+- [Email](/plugins/plugin-notifications/tasks/mail/io.kestra.plugin.notifications.mail.mailexecution)
 
 
 Technically, you can add custom failure alerts to each flow separately using the [`errors` tasks](../../03.concepts/errors.md):

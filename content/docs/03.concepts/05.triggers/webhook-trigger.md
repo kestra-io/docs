@@ -25,4 +25,4 @@ triggers:
 
 ## Properties and Outputs
 
-Check the [Webhook task](../../../plugins/core/triggers/io.kestra.core.models.triggers.types.Webhook.md) documentation for the list of the task properties and outputs.
+Check the [Webhook task](/plugins/core/triggers/io.kestra.core.models.triggers.types.webhook) documentation for the list of the task properties and outputs.
