@@ -137,30 +137,6 @@ export default defineNuxtConfig({
     routeRules: {
         '/slack': {redirect: `${DEFAULT_KESTRA_API_URL}/communities/slack/redirect`},
         '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
-
-        // 2023-04-17 : defines old site redirects
-        '/features/usages.html': {redirect: '/use-cases/stories//use-cases'},
-        '/features/features.html': {redirect: '/use-cases/stories//features'},
-        '/features/enterprise.html': {redirect: '/use-cases/stories//enterprise'},
-        '/company/privacy-policy.html': {redirect: '/use-cases/stories//privacy-policy'},
-        '/company/cookie-policy.html': {redirect: '/use-cases/stories//cookie-policy'},
-        '/company/contact.html': {redirect: '/use-cases/stories//contact-us'},
-        '/company/careers.html': {redirect: '/use-cases/stories//careers'},
-        '/company/company/about-us.html': {redirect: '/use-cases/stories//about-us'},
-        '/community.html': {redirect: '/use-cases/stories//community'},
-
-        // use case with id
-        '/use-cases/stories/reglo': {redirect: '/use-cases/stories/1-reglo'},
-        '/use-cases/stories/displayce': {redirect: '/use-cases/stories/2-displayce'},
-        '/use-cases/stories/leroy-merlin-france': {redirect: '/use-cases/stories/3-leroy-merlin-france'},
-        '/use-cases/stories/cleverconnect': {redirect: '/use-cases/stories/4-cleverconnect'},
-        '/use-cases/stories/loxcia-by-ntico': {redirect: '/use-cases/stories/5-loxcia-by-ntico'},
-        '/use-cases/stories/htch': {redirect: '/use-cases/stories/6-htch'},
-        '/use-cases/stories/gorgias': {redirect: '/use-cases/stories/7-gorgias'},
-        '/use-cases/stories/sophia-genetics': {redirect: '/use-cases/stories/8-sophia-genetics'},
-        '/use-cases/stories/orlando-city-sc': {redirect: '/use-cases/stories/9-orlando-city-sc'},
-        '/use-cases/stories/copines-de-voyage': {redirect: '/use-cases/stories/10-copines-de-voyage'},
-        '/use-cases/stories/valorissimo': {redirect: '/use-cases/stories/11-valorissimo'},
     },
 
     build: {
