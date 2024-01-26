@@ -1,7 +1,7 @@
 ---
 title: Blueprints
+icon: /docs/icons/concepts.svg
 ---
-
 
 Blueprints is a curated, organized, and searchable catalog of ready-to-use examples designed to help you kickstart your workflow. Each Blueprint combines code and documentation and can be assigned several tags for organization and discoverability.
 

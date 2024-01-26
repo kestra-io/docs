@@ -2,7 +2,7 @@
 title: Multi-tenancy configuration
 ---
 
-This section dives into how you can configure multi-tenancy in your Kestra instance. For a high-level overview, check the multi-tenancy section of the [Architecture documentation](../../../03.concepts/multi-tenancy.md) or the [Tenants page](../../../08.kestra-editions/03.tenants.md).
+This section dives into how you can configure multi-tenancy in your Kestra instance. For a high-level overview, check the multi-tenancy section of the [Architecture documentation](../../../03.concepts/multi-tenancy.md) or the [Tenants page](../../../07.enterprise/03.tenants.md).
 
 ## Enabling multi-tenancy
 
@@ -26,11 +26,11 @@ In order to create tenants, a user must have the **CREATE** permission on the **
 
 The tenant can be created in multiple ways:
 1. From the UI
-2. From an [API call](../../../12.api-guide/api-ee-guide.md#post-/api/v1/tenants)
+2. From an [API call](../../../12.api-reference/api-ee-guide.md#post-/api/v1/tenants)
 3. From the [Kestra Terraform provider](https://kestra.io/docs/terraform/resources/tenant)
 4. From a [kestra CLI](https://kestra.io/docs/administrator-guide/servers) command.
 
-In all cases, a [Tenant Admin Role](../../../08.kestra-editions/rbac/02.admins.md) is created with tenant-level admin rights. The authenticated user or the user passed to the command will have this Tenant Admin Role on the new tenant.
+In all cases, a [Tenant Admin Role](../../../07.enterprise/rbac/02.admins.md) is created with tenant-level admin rights. The authenticated user or the user passed to the command will have this Tenant Admin Role on the new tenant.
 
 ### From the UI
 
@@ -40,7 +40,7 @@ Fill in the form and click **Save**.
 
 ![Create tenant](/docs/administrator-guide/configuration/enterprise-edition/tenant-create.png "Create tenant")
 
-The user that creates the tenant will get a [Tenant Admin Role](../../../08.kestra-editions/rbac/02.admins.md) assigned to it. You may need to refresh the UI to see updated [Roles](../../../08.kestra-editions/rbac/01.roles.md).
+The user that creates the tenant will get a [Tenant Admin Role](../../../07.enterprise/rbac/02.admins.md) assigned to it. You may need to refresh the UI to see updated [Roles](../../../07.enterprise/rbac/01.roles.md).
 
 ## From the Kestra CLI
 

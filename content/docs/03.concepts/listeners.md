@@ -1,5 +1,6 @@
 ---
 title: Listeners (deprecated)
+icon: /docs/icons/migrations.svg
 ---
 
 ::alert{type="warning"}

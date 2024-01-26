@@ -1,8 +1,9 @@
 ---
 title: Disabled flag
+icon: /docs/icons/concepts.svg
 ---
 
-The `disabled` flag is a boolean property that allows you to disable a flow, task or trigger.
+The `disabled` flag is a boolean property that allows you to skip a flow, task or trigger.
 
 ## Disabled flow
 

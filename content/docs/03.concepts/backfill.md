@@ -1,17 +1,17 @@
 ---
 title: Backfill
+icon: /docs/icons/concepts.svg
 ---
-The concept of a backfill is the replay of a missed schedule because a flow was created after it should have been scheduled.
 
-Backfills will perform all the schedules between the defined and current dates and will start after the normal schedule.
+Backfills are replays of missed schedule intervals between a defined start and end date.
 
-> A schedule with a backfill.
+The example below will backfill hourly executions between `2024-02-24T14:00:00Z` and today.
 
 ```yaml
 triggers:
   - id: schedule
     type: io.kestra.core.models.triggers.types.Schedule
-    cron: "*/15 * * * *"
+    cron: "* */1 * * *"
     backfill:
       start: 2024-02-24T14:00:00Z
 ```

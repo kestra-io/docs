@@ -1,9 +1,9 @@
 ---
-title: Install Kestra 
+title: Installation
+icon: /docs/icons/installation.svg
 ---
 
-You can install Kestra using different methods. Select the one that best suits your environment.
+You can install Kestra using different methods. Select one that matches your preferred environment.
 
 ::ChildCard
-{"pageUrl":"/docs/installation/"}
 ::

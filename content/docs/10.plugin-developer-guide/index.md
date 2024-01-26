@@ -45,6 +45,9 @@ A project typically hosts multiple plugins. We call a project a group of plugins
 
 
 ## Develop a new plugins
-In order to customize your plugin to your need, you can follow these guides:
 
-<ChildTableOfContents :max="1" />
+The guides below will help you develop your plugin.
+
+::ChildCard
+{"pageUrl":"/docs/plugin-developer-guide/"}
+::

@@ -1,12 +1,15 @@
 ---
 title: Templates (deprecated)
+icon: /docs/icons/migrations.svg
 ---
+
+Templates are lists of tasks that can be shared between flows.
 
 ::alert{type="warning"}
 ⚠️ Templates are deprecated. Please use subflows instead of templates. See the [Migrations section](../15.migrations/templates.md) explaining how you can migrate from templates to subflows.
 ::
 
-Templates are lists of tasks that can be shared between flows. You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
+You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
 
 All tasks in a template will be executed sequentially; you can provide the same tasks that are found in a *standard* flow, including an *errors* branch.
 

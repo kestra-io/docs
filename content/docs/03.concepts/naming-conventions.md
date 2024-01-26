@@ -1,5 +1,6 @@
 ---
 title: Naming conventions
+icon: /docs/icons/concepts.svg
 ---
 
 To keep your flows and tasks organized, it's useful to adopt a consistent naming convention. This page describes some common conventions.

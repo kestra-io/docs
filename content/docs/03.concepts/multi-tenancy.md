@@ -1,5 +1,6 @@
 ---
 title: Multi-tenancy
+icon: /docs/icons/architecture.svg
 ---
 
 ## What is multi-tenancy
@@ -22,6 +23,6 @@ Multi-tenancy functionality is not visible to end-users from the UI except for t
 ![Tenants selection dropdown](/docs/architecture/tenants-select.png "Tenants selection dropdown")
 
 The API URLs will also change to include the tenant identifier.
-For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/flows/products` when multi-tenancy is not enabled, and becomes `/api/v1/production/flows/products` for the `production` tenant when multi-tenancy is enabled. You can check the [Enterprise Edition API Guide](../12.api-guide/api-ee-guide.md) for more information.
+For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/flows/products` when multi-tenancy is not enabled, and becomes `/api/v1/production/flows/products` for the `production` tenant when multi-tenancy is enabled. You can check the [Enterprise Edition API Guide](../12.api-reference/api-ee-guide.md) for more information.
 
 Tenants must be created upfront, and a user needs to be granted access to use a specific tenant.

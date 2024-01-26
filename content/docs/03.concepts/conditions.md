@@ -1,13 +1,11 @@
 ---
 title: Conditions
+icon: /docs/icons/concepts.svg
 ---
 
-Conditions are used in [Triggers](./triggers/index.md) and [Listeners](./listeners.md) to limit the cases for which a task run or a flow execution is triggered.
+Conditions are specific criteria or events that determine when a specific [Triggers](05.triggers/index.md) should create a new [Execution](04.execution.md). Usually, they limit the scope of a trigger to a specific set of cases.
 
-For example:
-* you can restrict a listener to only a specified status,
-* you can restrict a trigger to a specific namespace prefix.
-* ...
+For example, you can restrict a Flow trigger to a specific namespace prefix or execution status, and you can restrict a Schedule trigger to a specific time of the week or month.
 
 You can pass a list of conditions; in this case, all the conditions must match to enable the current action.
 

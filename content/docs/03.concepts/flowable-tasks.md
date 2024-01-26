@@ -1,12 +1,15 @@
 ---
 title: Flowable Tasks
+icon: /docs/icons/concepts.svg
 ---
 
-Kestra orchestrates your flows using **Flowable Tasks**. These tasks do not perform any heavy computation. Instead, they control the orchestration behavior, allowing you to implement more advanced workflow patterns.
+[Flowable tasks](../03.concepts/flowable-tasks.md) control the orchestration logic — run tasks or subflows in parallel, create loops and conditional branching.
 
-Flowable Tasks are used for branching, grouping, doing tasks in parallel, etc...
+Flowable Tasks don't run heavy operations — those are handled by [Workers](worker.md).
 
-Flowable Tasks use context [variables](./expression/01.index.md) to define the next tasks to run. For example, you can use the [outputs](./outputs.md) of a previous task in a `Switch` task to decide which task to run next.
+Flowable Tasks are used for branching, grouping, running tasks in parallel, and more.
+
+Flowable Tasks use [expressions](06.expressions/01.index.md) from the execution context to define the next tasks to run. For example, you can use the [outputs](./outputs.md) of a previous task in a `Switch` task to decide which task to run next.
 
 ### Sequential
 

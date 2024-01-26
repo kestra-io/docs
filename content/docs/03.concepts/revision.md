@@ -1,5 +1,6 @@
 ---
 title: Revision
+icon: /docs/icons/concepts.svg
 ---
 
 Flows are versioned by default. Whenever you make any changes to your flows, a new revision is created. This allows you to rollback to a previous version of your flow if needed.

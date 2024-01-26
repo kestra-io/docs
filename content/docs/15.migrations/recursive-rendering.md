@@ -34,7 +34,7 @@ triggers:
     cron: "*/1 * * * *"
 ```
 
-Check the [`render()` function's documentation](../03.concepts/expression/04.function/render.md) for more details about how to use that function and when to use it.
+Check the [`render()` function's documentation](../03.concepts/06.expressions/04.function/render.md) for more details about how to use that function and when to use it.
 
 ---
 

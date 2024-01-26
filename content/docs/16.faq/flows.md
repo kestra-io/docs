@@ -37,13 +37,13 @@ You can trigger a flow manually from the [Kestra UI](../04.user-interface-guide/
 
 ### Triggers
 
-You can add a **[Schedule trigger](../03.concepts/triggers/schedule-trigger)** to automatically launch a flow execution at a regular time interval.
+You can add a **[Schedule trigger](../03.concepts/05.triggers/schedule-trigger)** to automatically launch a flow execution at a regular time interval.
 
-Alternatively, you can add a **[Flow trigger](../03.concepts/triggers/flow-trigger.md)** to automatically launch a flow execution when another flow execution is completed. This pattern is particularly helpful when you want to:
+Alternatively, you can add a **[Flow trigger](../03.concepts/05.triggers/flow-trigger.md)** to automatically launch a flow execution when another flow execution is completed. This pattern is particularly helpful when you want to:
 - Implement a centralized namespace-level error handling strategy, e.g. to send a notification when any flow execution fails in a production namespace. Check the [Alerting & Monitoring](../09.administrator-guide/03.monitoring/index.md) section for more details.
 - Decouple your flows by following an event-driven pattern, in a backwards direction (_backwards because the flow is triggered by the completion of another flow; this is in contrast to the [subflow pattern](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.subflow), where a parent flow starts the execution of child flows and waits for the completion of each of them_).
 
-Lastly, you can use the **[Webhook trigger](../03.concepts/triggers/03.webhook.md)** to automatically launch a flow execution when a given HTTP request is received. You can leverage the `{{ trigger.body }}` variable to access the request body and the `{{ trigger.headers }}` variable to access the request headers in your flow.
+Lastly, you can use the **[Webhook trigger](../03.concepts/05.triggers/03.webhook.md)** to automatically launch a flow execution when a given HTTP request is received. You can leverage the `{{ trigger.body }}` variable to access the request body and the `{{ trigger.headers }}` variable to access the request headers in your flow.
 
 To launch a flow and send data to the flow's execution context from an external system using a webhook, you can send a POST request to the Kestra API using the following URL: `http://<kestra-host>:<kestra-port>/api/v1/executions/webhook/<namespace>/<flow-id>/<webhook-key>`. Here is an example: `http://localhost:8080/api/v1/executions/webhook/dev/hello-world/secretWebhookKey42`.
 
@@ -51,7 +51,7 @@ You can also pass inputs to the flow using the `inputs` query parameter.
 
 ### API calls
 
-You can trigger a flow execution by calling the [API](../12.api-guide/index.md) directly. This is useful when you want to trigger a flow execution from another application or service.
+You can trigger a flow execution by calling the [API](../12.api-reference/index.md) directly. This is useful when you want to trigger a flow execution from another application or service.
 
 Let's use the following flow as example:
 

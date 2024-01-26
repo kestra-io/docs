@@ -1,8 +1,11 @@
 ---
 title: Worker
+icon: /docs/icons/architecture.svg
 ---
 
-All tasks and polling triggers are executed by a **Worker**. A Worker receives and processes tasks from the Executor and polling triggers from the Scheduler. Given that tasks and polling triggers can be virtually anything (heavy computations, simple API calls, etc.), the Worker is essentially a Thread Pool where you can configure the number of threads you need.
+Worker is a server component that handles all tasks and polling triggers.
+
+A Worker receives and processes tasks from the Executor and polling triggers from the Scheduler. Given that tasks and polling triggers can be virtually anything (heavy computations, simple API calls, etc.), the Worker is essentially a Thread Pool where you can configure the number of threads you need.
 
 You can scale Workers as necessary and have many instances on multiple servers, each with its own Thread Pool.
 

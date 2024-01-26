@@ -1,8 +1,11 @@
 ---
 title: Scheduler
+icon: /docs/icons/architecture.svg
 ---
 
-The **Scheduler** will handle most of the [Triggers](triggers/index.md) except the [Flow Triggers](triggers/flow-trigger.md) which are handled by the Executor. It will continuously watch all the triggers and, if all conditions are met, will start an execution of the flow (submit the flow to the Executor).
+Scheduler is a server component responsible for processing all [triggers](05.triggers/index.md) except for the Flow Triggers (managed by the executor).
+
+It continuously watches all the triggers and, if all conditions are met, will start an execution of the flow (submit the flow to the Executor).
 
 In the case of polling triggers, the Scheduler will decide (based on the configured evaluation interval) whether to execute the flow. If the polling trigger conditions are met, the Scheduler will send the execution, along with the trigger metadata, to the Worker for execution.
 

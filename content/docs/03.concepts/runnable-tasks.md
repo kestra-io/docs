@@ -1,8 +1,9 @@
 ---
 title: Runnable Tasks
+icon: /docs/icons/concepts.svg
 ---
 
-Runnable tasks handle computational work in the flow. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by [workers](worker.md).
+Runnable tasks are data processing tasks incl. file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are processed by [workers](worker.md).
 
 Each task must have an identifier (id) and a type. The type is the task's Java Fully Qualified Class Name (FQCN).
 
