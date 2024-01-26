@@ -97,6 +97,10 @@
                 margin-bottom: 0;
                 font-size: $font-size-4xl;
 
+                @include media-breakpoint-down(sm) {
+                    font-size: 1.875rem !important;
+                }
+
                 span {
                     background: linear-gradient(90deg, #E151F7 58.97%, #5C47F5 85.36%);
                     background-clip: text;
