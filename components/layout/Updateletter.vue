@@ -91,6 +91,8 @@
             padding: calc($spacer * 2.25);
             border-radius: 0.5rem;
             border: $block-border;
+            background: url("/landing/faq/newsletter-bg.svg") no-repeat top;
+            background-size: 100%;
 
             > div {
                 position: relative;
