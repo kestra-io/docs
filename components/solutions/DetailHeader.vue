@@ -78,5 +78,9 @@
         p {
             font-size: $font-size-xl;
         }
+
+        img {
+            width: 100%;
+        }
     }
 </style>
