@@ -43,7 +43,6 @@
         },
 
         render(ctx) {
-            const slots = useSlots();
             const {dir, max} = ctx;
 
             const renderLink = (link) => h(NuxtLink, {to: link._path}, () => link.title);
@@ -68,7 +67,7 @@
 
             const defaultNode = (data) => renderLinks(data, 0);
 
-            return slots?.default ? slots.default({dir, ...this.$attrs}) : defaultNode(dir);
+            return this.$slots?.default ? this.$slots.default({dir, ...this.$attrs}) : defaultNode(dir);
         }
     });
 </script>
