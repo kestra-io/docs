@@ -1,5 +1,6 @@
 ---
 title: Azure DevOps
+icon: /docs/icons/dev.svg
 ---
 
 ## Setup an Azure DevOps Pipeline
@@ -47,12 +48,12 @@ stages:
               backendServiceAWS: 'aws_s3'
               backendAWSBucketName: 'eu-north-1'
               backendAWSKey: 'kestra-tf'
-              
+
           - task: TerraformTaskV4@4
             inputs:
               provider: 'aws'
               command: 'validate'
-              
+
           - task: TerraformTaskV4@4
             inputs:
               provider: 'aws'
@@ -61,7 +62,7 @@ stages:
 ```
 
 - The pipeline is triggered whenever the `main` branch is updated, so when you merge a PR into the `main` branch, the pipeline will run
- 
+
 - Choose a pool created beforehand. Check the [official Azure DevOps documentation](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml,browser) to create and manage agent pools
 
 - Use the Terraform extension to install, validate, and apply Terraform resources. You can install the Terraform extension task by navigating to the Organization Settings > Extensions and then browse the marketplace to install the Terraform extension.

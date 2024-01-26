@@ -164,3 +164,20 @@ You can look at both a flow with a template task and a flow with a subflow task 
 
 If you still have questions about migrating from templates to subflows, reach out via our [Community Slack](https://kestra.io/slack).
 
+
+
+
+::alert{type="warning"}
+⚠️ Templates are deprecated. Please use subflows instead of templates. See the [Migrations section](../15.migrations/templates.md) explaining how you can migrate from templates to subflows.
+::
+
+
+On the **Templates** page, you will see a list of templates.
+
+When clicking on a template id or on the eye icon, you can open the page of a template.
+
+![Kestra User Interface Templates Page](/docs/user-interface-guide/06-Templates.png)
+
+A **Template** page will allow template edition via a YAML editor.
+
+![Kestra User Interface Template Page](/docs/user-interface-guide/07-Templates-Template.png)

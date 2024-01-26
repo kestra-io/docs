@@ -1,5 +1,6 @@
 ---
 title: Namespace Files
+icon: /docs/icons/dev.svg
 ---
 
 ## What are Namespace Files
