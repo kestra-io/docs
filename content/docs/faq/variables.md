@@ -15,7 +15,7 @@ To ensure that a block of code won't be parsed by Pebble, you can use the `{% ra
 
 ## In which order are inputs and variables resolved?
 
-[Inputs](../07.concepts/inputs.md) are resolved first, even before the execution starts. In fact, if you try to create a flow with an invalid input value, the execution will not be created.
+[Inputs](../06.workflow-components/06.inputs.md) are resolved first, even before the execution starts. In fact, if you try to create a flow with an invalid input value, the execution will not be created.
 
 Therefore, you can use inputs within variables, but you can't use variables or Pebble expressions within inputs.
 
@@ -114,7 +114,7 @@ triggers:
 
 ## Can I transform variables with Pebble expressions?
 
-Yes. Kestra uses [Pebble Templates](https://pebbletemplates.io/) along with the execution context to render **dynamic properties**. This means that you can use Pebble expressions (such as [filters](../07.concepts/06.expressions/03.filter/index.md), [functions](../07.concepts/06.expressions/04.function/index.md), and [operators](../07.concepts/06.expressions/05.operator/index.md)) to transform [inputs](../07.concepts/inputs.md) and [variables](../07.concepts/06.expressions/01.index.md).
+Yes. Kestra uses [Pebble Templates](https://pebbletemplates.io/) along with the execution context to render **dynamic properties**. This means that you can use Pebble expressions (such as [filters](../07.concepts/06.expressions/03.filter/index.md), [functions](../07.concepts/06.expressions/04.function/index.md), and [operators](../07.concepts/06.expressions/05.operator/index.md)) to transform [inputs](../06.workflow-components/06.inputs.md) and [variables](../07.concepts/06.expressions/01.index.md).
 
 The example below illustrates how to use variables and Pebble expressions to transform string values in dynamic task properties:
 

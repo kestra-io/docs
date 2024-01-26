@@ -26,7 +26,7 @@ In order to create tenants, a user must have the **CREATE** permission on the **
 
 The tenant can be created in multiple ways:
 1. From the UI
-2. From an [API call](../../../11.api-reference/api-ee-guide.md#post-/api/v1/tenants)
+2. From an [API call](../../../11.api-reference/enterprise.md#post-/api/v1/tenants)
 3. From the [Kestra Terraform provider](https://kestra.io/docs/terraform/resources/tenant)
 4. From a [kestra CLI](https://kestra.io/docs/administrator-guide/servers) command.
 

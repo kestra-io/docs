@@ -2,8 +2,8 @@
 title: Developer Guide
 ---
 
-Here, you will find the necessary information to develop flows for Kestra.
+Develop Python, R, Shell, PowerShell, Julia, Ruby or Node.js scripts and integrate them with Git and CI/CD.
 
-More information:
+::ChildCard
+::
 
-<ChildTableOfContents :max="1" />

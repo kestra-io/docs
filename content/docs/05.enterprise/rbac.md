@@ -7,7 +7,7 @@ Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to man
 
 The image below shows the relationship between Users, Groups, Service Accounts, Roles, and Bindings (visible on the Access page in the UI).
 
-![bindings](/docs/bindings.png)
+![bindings](/docs/enterprise/rbac.png)
 
 
 ## Roles and Bindings

@@ -25,7 +25,7 @@ As a front-end engineer at Kestra, you'll work on developing:
 - **Infrastructure:** Docker, Kubernetes, Terraform (we also built our own providers)
 - **Cloud:** GCP, AWS, Azure
 - **Project:** GitHub (repository, actions, issues)
-- You will work with many technologies; look at [our plugins list](..//plugins/)
+- You will work with many technologies; look at [our plugins list](https://kestra.io/plugins)
 
 ## What we're looking for:
 - 7+ years of software engineering experience in Frontend (Vue.js, react, sass, webpack, vite, …)

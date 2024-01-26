@@ -64,7 +64,7 @@ This architecture is designed to provide enhanced scalability, high availability
    - **External Services**: APIs or services that Workers might interact with during task processing.
 
 ### Scalability with Kafka and Elasticsearch
-Kafka's messaging backend allows handling large volumes of data with the ability to scale out as needed. You can run multiple (_horizontally scaled_) instances of services such as Workers, Schedulers, Webservers and Executors to distribute load and maintain system performance as demands increase. Elasticsearch contributes to scalability by providing a robust, horizontally scalable UI backend that can efficiently search across large amounts of data.
+Kafka's messaging backend allows handling large volumes of data with the ability to scale out as needed. You can run multiple (_horizontally scaled_) instances of services such as Workers, Schedulers, Webservers and Executors to distribute load and maintain system performance as demand increases. Elasticsearch contributes to scalability by providing a robust, horizontally scalable UI backend that can efficiently search across large amounts of data.
 
 ---
 
