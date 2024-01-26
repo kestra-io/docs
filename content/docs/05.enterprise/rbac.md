@@ -3,7 +3,7 @@ title: Role-Based Access Control (RBAC)
 icon: /docs/icons/admin.svg
 ---
 
-Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to manage access to workflows and resources by assigning [Roles](01.roles.md) to [Users, Groups and Service Accounts](03.users.md) through the **Access page**.
+Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to manage access to workflows and resources by assigning Roles to Users, Groups and Service Accounts through the **Access page**.
 
 The image below shows the relationship between Users, Groups, Service Accounts, Roles, and Bindings (visible on the Access page in the UI).
 
@@ -25,7 +25,7 @@ In short, Roles encapsulate permission boundaries that can be attached to users,
 
 A Permission is a resource that can be accessed by a user or group. The following permissions are currently supported: `FLOWS`, `BLUEPRINTS`, `TEMPLATES`, `NAMESPACES`, `EXECUTIONS`, `USERS`, `GROUPS`, `ROLES`, `BINDINGS`, `AUDITLOGS`, `SECRETS`, `IMPERSONATE`, `SETTINGS`, `WORKERS`, `SUPERADMIN`.
 
-Note that the `SUPERADMIN` permission is a special permission that is only granted to a [Super Admin](02.admins.md#super-admin). This permission grants access to manage tenants within a Kestra Enterprise instance.
+Note that the `SUPERADMIN` permission is a special permission that is only granted to a Super Admin. This permission grants access to manage tenants within a Kestra Enterprise instance.
 
 
 ### Actions
@@ -47,7 +47,7 @@ You can create additional Roles with custom permissions.
 
 Kestra doesn't have a concept of an admin user. Instead, it has a **Super Admin** and a tenant-scoped **Admin** roles, which can be assigned to any User, Service Account or Group. This allows you to grant multiple users with admin permissions if needed, and you can revoke those admin permissions at any time without having to delete the user.
 
-The Admin role has full access to all resources in a specific tenant. This includes managing users, service accounts, groups, roles, and their tenant-level permissions. By default, Kestra assigns the Admin Role to the user who created a tenant (unless the tenant was created by a user with a [Super Admin Role](02.admins.md#super-admin)).
+The Admin role has full access to all resources in a specific tenant. This includes managing users, service accounts, groups, roles, and their tenant-level permissions. By default, Kestra assigns the Admin Role to the user who created a tenant (unless the tenant was created by a user with a Super Admin Role).
 
 ::alert{type="warning"}
 Note that Admin is **NOT a User**, but a **Role**. This means that there can be multiple users with that permission, and that role can be revoked from a user at any time.
@@ -98,7 +98,7 @@ When a User with Super Admin Role creates a new tenant, they aren't automaticall
 Super Admin is a powerful Role that allows you to troubleshoot any tenant issues without having to be an Admin in that tenant. Use that role sparingly and only for use cases that require it, such as creating a new tenant, troubleshooting tenant issues, or helping a user with a problem.
 
 ::alert{type="info"}
-Except for the `Super Admin`, all Roles are always tied to one and only one [tenant ID](../03.tenants.md). We currently don’t provide any cross-tenant RBAC permissions. However, when configuring permissions using [our Terraform provider](https://registry.terraform.io/providers/kestra-io/kestra/latest), you can add modules to reuse the same configuration across tenants to achieve the same effect without duplicating the configuration.
+Except for the `Super Admin`, all Roles are always tied to one and only one [tenant ID](03.tenants.md). We currently don’t provide any cross-tenant RBAC permissions. However, when configuring permissions using [our Terraform provider](https://registry.terraform.io/providers/kestra-io/kestra/latest), you can add modules to reuse the same configuration across tenants to achieve the same effect without duplicating the configuration.
 ::
 
 The main difference between an **Admin** and a **Super Admin** roles is that the **Instance Admin** also has the `SUPERADMIN` permission. This extra permission grants access to create, manage or delete tenants.

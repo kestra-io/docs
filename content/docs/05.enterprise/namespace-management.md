@@ -9,13 +9,13 @@ This page shows how you can govern secrets, variables and task defaults on a nam
 This feature requires a [commercial license](https://kestra.io/pricing).
 ::
 
-Kestra is a [multi-tenant](multi-tenancy.md) platform. Each tenant can have multiple namespaces, and each namespace provides additional isolation and security.
+Kestra is a [multi-tenant](03.tenants.md) platform. Each tenant can have multiple namespaces, and each namespace provides additional isolation and security.
 
 Namespaces provide:
 - a logical isolation of resources on top of the instance- or tenant-level isolation
 - fine-grained access-control to secrets, variables and task configuration.
 
-Namespaces are particularly useful in environments with many [users](/rbac/03.users.md), teams, projects and applications.
+Namespaces are particularly useful in environments with many users, teams, projects and applications.
 
 ## The benefits of namespace management
 
@@ -41,11 +41,11 @@ You can filter only for existing namespaces, and once you are ready to turn a pl
 ## Namespace-level features: secrets, variables and task defaults
 
 Once you create a namespace, you can centrally govern the following:
-- [namespace-level secrets](secret.md)
-- [namespace-level variables](variables.md)
-- [namespace-level task defaults](task-defaults.md).
+- [namespace-level secrets](../07.concepts/secret.md)
+- [namespace-level variables](../06.workflow-components/05.variables.md)
+- [namespace-level task defaults](../06.workflow-components/09.task-defaults.md).
 
-Since Kestra supports [everything as code and from the UI](https://youtu.be/dU3p6Jf5fMw?si=bqNWS1e3_if-mePS), you can manage namespaces from the UI or programmatically (e.g. via our [Terraform provider](../11.terraform/resources/namespace.md)).
+Since Kestra supports [everything as code and from the UI](https://youtu.be/dU3p6Jf5fMw?si=bqNWS1e3_if-mePS), you can manage namespaces from the UI or programmatically (e.g. via our [Terraform provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)).
 
 
 ## Creating a namespace from the UI
@@ -63,7 +63,7 @@ The video below shows how you can create a namespace from the Kestra UI. After c
 
 Let's now reproduce everything from the above video using Kestra's Terraform provider so that you know how to perform the same steps both from the UI and programmatically.
 
-To create a namespace from Terraform, use the [kestra_namespace](../11.terraform/resources/namespace.md) resource.
+To create a namespace from Terraform, use the [kestra_namespace](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs) resource.
 
 First, configure your Terraform backend and add Kestra as a required provider:
 
@@ -139,7 +139,7 @@ resource "kestra_namespace" "marketing" {
 
 ### Adding Secrets to a Namespace using Terraform
 
-To programmatically add secrets to your namespace via [Terraform](../11.terraform/resources/namespace.md), you can use the [kestra_namespace_secret](../11.terraform/resources/namespace-secret.md) resource. Here is an example of adding multiple secrets to the `marketing` namespace:
+To programmatically add secrets to your namespace via [Terraform](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs), you can use the [kestra_namespace_secret](https://kestra.io/docs/terraform/resources/namespace_secret) resource. Here is an example of adding multiple secrets to the `marketing` namespace:
 
 ```hcl
 resource "kestra_namespace_secret" "github_token" {
