@@ -3,8 +3,8 @@
         <Section
             title="Ready to take your data department to the next level ?"
         >
-        <div class="text-center cta">
-            <NuxtLink href="/contact-us" target="_blank" class="btn btn-dark me-2" data-aos="zoom-in">
+        <div class="text-center cta d-flex align-items-center justify-content-center flex-wrap gap-3">
+            <NuxtLink href="/contact-us" target="_blank" class="btn btn-dark" data-aos="zoom-in">
                 Contact us
             </NuxtLink>
             <NuxtLink href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">

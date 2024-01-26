@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 order-0 order-lg-1">
-                    <img class="mt-5 mt-md-0" data-aos="zoom-in" :src="image" :alt="title" />
+                    <img class="mt-md-0" data-aos="zoom-in" :src="image" :alt="title" />
                 </div>
             </div>
         </div>
@@ -81,6 +81,12 @@
 
         img {
             width: 100%;
+        }
+
+        @include media-breakpoint-down(lg) {
+            .hero-sm {
+                padding: 0 !important;
+            }
         }
     }
 </style>
