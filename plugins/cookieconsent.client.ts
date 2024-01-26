@@ -37,7 +37,7 @@ export default defineNuxtPlugin(nuxtApp => {
 
 
         const enabledMarketing = () => {
-            cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js');
+            cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js', () => {}, [{name: "defer", value: "defer"}]);
         };
 
         const cookieConsent = window.initCookieConsent()
