@@ -1,13 +1,15 @@
 ---
 title: Secrets Manager
+icon: /docs/icons/admin.svg
 ---
+
+Kestra integrates with various secret managers to provide secure storage and handling of sensitive data.
 
 ::alert{type="info"}
 This feature requires a [commercial license](https://kestra.io/pricing).
 ::
 
-
-Kestra integrates with various secret managers to provide secure storage and handling of sensitive data. Secrets are persisted externally, accessed by workers at runtime, and stored only in memory.
+Kestra respects your privacy. Therefore, Secrets are persisted externally in a backend of your choice. They are accessed by workers at runtime and stored only in memory.
 
 You can add, modify or delete secrets from the Secrets tab of any given namespace in the Kestra UI, or programmatically via [Terraform](../11.terraform/resources/namespace_secret.md).
 

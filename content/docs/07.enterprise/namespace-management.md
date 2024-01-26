@@ -1,6 +1,9 @@
 ---
 title: Namespace management
+icon: /docs/icons/admin.svg
 ---
+
+This page shows how you can govern secrets, variables and task defaults on a namespace level.
 
 ::alert{type="info"}
 This feature requires a [commercial license](https://kestra.io/pricing).

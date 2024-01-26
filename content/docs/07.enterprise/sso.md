@@ -1,6 +1,9 @@
 ---
 title: Single Sign-On (SSO)
+icon: /docs/icons/admin.svg
 ---
+
+Learn how you can enable SSO in your Kestra Enterprise instance.
 
 ::alert{type="info"}
 This feature requires a [commercial license](https://kestra.io/pricing).

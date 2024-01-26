@@ -1,6 +1,9 @@
 ---
 title: Audit logs
+icon: /docs/icons/admin.svg
 ---
+
+Explore how you can use Audit Logs to govern activities in your Kestra instance.
 
 ::alert{type="info"}
 This feature requires a [commercial license](https://kestra.io/pricing).
