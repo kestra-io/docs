@@ -3,13 +3,12 @@ title: Multi-tenancy
 icon: /docs/icons/architecture.svg
 ---
 
+Multi-tenancy allows you to manage **multiple environments** (e.g., dev, staging, prod) in a single Kestra instance.
+
 ## What is multi-tenancy
-Multi-tenancy is a software architecture in which a single instance of software serves multiple tenants. You can think of it as running multiple virtual instances in a single physical instance.
+Multi-tenancy is a software architecture in which a single instance of software serves multiple tenants. You can think of it as running multiple virtual instances in a single physical instance. You can use multi-tenancy to **separate resources** between business units, teams, or customers.
 
 This feature requires a [commercial license](https://kestra.io/pricing).
-
-## Benefits of multi-tenancy
-Multi-tenancy allows you to manage **multiple environments** (e.g., dev, staging, prod) in a single Kestra instance. You can also use it to **separate resources** between business units, teams, or customers.
 
 ## How does multi-tenancy work in Kestra
 By default, multi-tenancy is disabled. See the [multi-tenancy section](../10.administrator-guide/01.configuration/03.enterprise-edition/multi-tenancy.md) of the Administrator Guide on how to configure it.
