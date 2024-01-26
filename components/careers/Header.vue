@@ -1,21 +1,11 @@
 <template>
-    <div class="container-fluid">
-        <div class="hero hero-sm container">
-            <div class="row">
-                <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
-                    <div>
-                        <p data-aos="fade-left" class="overline">Careers</p>
-                        <h1 data-aos="fade-right">Join our Team</h1>
-                        <p class="baseline" data-aos="fade-left" >Join our team and drive innovation in a collaborative environment</p>
-                        <NuxtLink :href="(route.fullPath === '/careers' ? '' : '/careers') + '#positions'" class="btn btn-lg btn-primary" data-aos="zoom-in">
-                            Open positions
-                        </NuxtLink>
-                    </div>
-                </div>
-                <div class="col-md-6 order-0 order-md-1">
-                    <img class="img-fluid" src="/landing/careers/header.svg" alt="A square with circles inside with emojis in It representing Kestra's inclusive and dynamic workplace culture" data-aos="zoom-in" />
-                </div>
-            </div>
+    <div class="header-container">
+        <div class="header container d-flex flex-column align-items-center gap-3">
+            <h1 data-aos="fade-left">Join our <span>Team</span></h1>
+            <h4 data-aos="fade-right">Join our team and drive innovation in a collaborative environment</h4>
+            <NuxtLink :href="(route.fullPath === '/careers' ? '' : '/careers') + '#positions'" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                Open positions
+            </NuxtLink>
         </div>
     </div>
 </template>
@@ -23,10 +13,36 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .container-fluid {
-        background: $light-cyan;
-        padding-top: 80px;
-        margin-top: -80px;
+    .header-container {
+        margin-top: $rem-6;
+        background: url("/landing/careers/bg.svg") no-repeat top;
+        .header {
+            padding-bottom: calc($spacer * 4.125);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+
+            h1, h4 {
+                color: $white;
+                text-align: center;
+                font-weight: 300;
+                margin-bottom: 0;
+            }
+
+            h1 {
+                font-size: $font-size-4xl;
+
+                span {
+                    background: linear-gradient(90deg, #E151F7 58.97%, #5C47F5 85.36%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+
+            h4 {
+                font-size: $font-size-xl;
+            }
+        }
+
     }
 </style>
 <script setup lang="ts">
