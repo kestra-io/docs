@@ -74,16 +74,24 @@
     const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
     let page;
 
-    const parts = slug.value.split('/');
-    const pageName = parts[parts.length - 1].replace(/.md$/, "");
-    if (props.type === 'plugins' && pageName) {
-        const {data: pluginInformation} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
-            if (parts.length === 3) {
-                return $fetch(`/api/plugins?page=${pageName}&type=plugin`)
-            } else {
-                return $fetch(`/api/plugins?page=${pageName}&type=definitions`)
-            }
+
+    if (props.type === 'plugins') {
+        const parts = slug.value.split('/');
+        let pageUrl;
+        if (parts.length > 3) {
+            pageUrl = `/api/plugins?page=${parts[parts.length - 1].replace(/.md$/, "")}&type=definitions`
+        } else {
+            pageUrl = `/api/plugins?page=${parts[2]}&type=plugin`
+        }
+
+        const {data: pluginInformation, error} = await useAsyncData(`Container-${hash(pageUrl)}`, () => {
+            return $fetch(pageUrl)
         });
+
+        if (pluginInformation?.value?.error) {
+            throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
+        }
+
         page = pluginInformation.value;
     } else {
         const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
