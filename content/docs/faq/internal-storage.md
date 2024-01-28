@@ -99,7 +99,7 @@ tasks:
     script: "{{ read('scripts/hello.py') }}"
 ```
 
-The same syntax applies to SQL queries, configuration files, and many more. Check the [Namespace Files](../08.developer-guide/namespace-files.md) documentation for more details.
+The same syntax applies to SQL queries, configuration files, and many more. Check the [Namespace Files](../08.developer-guide/03.namespace-files.md) documentation for more details.
 
 ---
 

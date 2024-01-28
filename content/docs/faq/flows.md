@@ -8,7 +8,7 @@ Flows are stored in a serialized format directly **in the Kestra backend databas
 
 The easiest way to add new flows is to add them directly from the Kestra UI. You can also use the Git Sync pattern or CI/CD integration to add flows automatically after a pull request is merged to a given Git branch.
 
-To see how flows are represented in a file structure, you can leverage the `_flows` directory in the [Namespace Files](../08.developer-guide/namespace-files.md) editor.
+To see how flows are represented in a file structure, you can leverage the `_flows` directory in the [Namespace Files](../08.developer-guide/03.namespace-files.md) editor.
 
 ### How to load flows at server startup?
 
