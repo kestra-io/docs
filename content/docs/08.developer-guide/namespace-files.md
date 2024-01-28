@@ -3,6 +3,8 @@ title: Namespace Files
 icon: /docs/icons/dev.svg
 ---
 
+This page covers the concept of Namespace Files and how to use them in your flows.
+
 ## What are Namespace Files
 
 Namespace Files are files tied to a given namespace. You can think of Namespace Files as equivalent of a project in your local IDE or a copy of your Git repository. Namespace Files can hold Python modules, R or Node.js scripts, SQL queries, configuration files, and many more. You can synchronize your Git repository with a specific namespace to orchestrate dbt projects, Terraform or Ansible infrastructure, or any other project that contains code and configuration files.

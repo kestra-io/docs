@@ -2,6 +2,8 @@
 title: Create a CI/CD pipeline
 ---
 
+Kestra provides several ways to create a CI/CD pipeline for your flows. This section explains how to automate the validation and deployment of your workflows using CI/CD.
+
 ## Introduction
 
 Manual deployments can be challenging. CI/CD pipelines are a great way to automate the validation and deployment of your workflows. This section explains several ways of creating a CI/CD pipeline for your Kestra resources.

@@ -3,7 +3,9 @@ title: Executor
 icon: /docs/icons/architecture.svg
 ---
 
-The **Executor** handles all executions and flowable tasks. The only goal of the Executor is to receive created executions and look for the next tasks to run. This server component doesnot handle any heavy computation.
+The **Executor** processes all executions and flowable tasks.
+
+The primary goal of the Executor is to receive created executions and look for the next tasks to run. This server component doesn't perform any heavy computation.
 
 The Executor also handles special execution cases:
 - Flow Triggers

@@ -3,6 +3,8 @@ title: Azure DevOps
 icon: /docs/icons/dev.svg
 ---
 
+This page describes how to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
+
 ## Setup an Azure DevOps Pipeline
 
 1. To create an Azure Devops Pipeline, first connect to your code repository. You can choose from several providers such as GitHub, Azure Repos Git or Bitbucket.

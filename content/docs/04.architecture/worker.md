@@ -3,7 +3,7 @@ title: Worker
 icon: /docs/icons/architecture.svg
 ---
 
-Worker is a server component that handles all tasks and polling triggers.
+Worker is a server component that processes all runnable tasks and polling triggers.
 
 A Worker receives and processes tasks from the Executor and polling triggers from the Scheduler. Given that tasks and polling triggers can be virtually anything (heavy computations, simple API calls, etc.), the Worker is essentially a Thread Pool where you can configure the number of threads you need.
 
