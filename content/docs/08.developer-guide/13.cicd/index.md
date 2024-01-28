@@ -216,3 +216,8 @@ terraform validate # validates the configuration incl. the syntax of your flows
 terraform apply -auto-approve # deploys your flows - can be used in a CI/CD process
 ```
 
+## Dive into each option
+
+The following sections provide more details on each of the options listed above.
+
+<ChildTableOfContents />
