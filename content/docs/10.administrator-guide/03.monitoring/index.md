@@ -10,7 +10,7 @@ Failure alerts are non-negotiable. When a production workflow fails, you should 
 - [Email](/plugins/plugin-notifications/tasks/mail/io.kestra.plugin.notifications.mail.mailexecution)
 
 
-Technically, you can add custom failure alerts to each flow separately using the [`errors` tasks](../../07.concepts/errors.md):
+Technically, you can add custom failure alerts to each flow separately using the `errors` tasks:
 
 ```yaml
 id: onFailureAlert

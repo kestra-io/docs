@@ -57,7 +57,7 @@ Now, let's delve into specific parts of the implementation.
 ### The environment:
 
 >💡 The two flows in Kestra are set up in a very straightforward and intuitive manner. Simply follow the Prerequisites and Setup guidelines in the [repo](https://github.com/dlt-hub/dlt-kestra-demo). It should take no more than 15 minutes.
-Once you’ve opened [http://localhost:8080/](http://localhost:8080/) in your browser, this is what you’ll see on your screen:
+Once you’ve opened http://localhost:8080/ in your browser, this is what you’ll see on your screen:
 
 ![Kestra](/blogs/2023-12-04-dlt-kestra-usage/1.png)
 

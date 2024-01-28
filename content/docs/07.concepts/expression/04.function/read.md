@@ -3,7 +3,7 @@ title: read
 ---
 
 Read an internal storage file and return its content as a string. This function accepts one of the following:
-1. A path to a [namespace file](../../../05.developer-guide/namespace-files.md) e.g. `{{ read('myscript.py') }}`
+1. A path to a Namespace File e.g. `{{ read('myscript.py') }}`
 2. An internal storage URI e.g. `{{ read(inputs.myfile) }}` or `{{ read(outputs.extract.uri) }}`.
 
 Reading namespace files is restricted to **files in the same namespace** as the flow using this function.

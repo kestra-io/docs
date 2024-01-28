@@ -20,5 +20,4 @@ Following is a list of other examples that can be downloaded:
 - [Trigger flow](./trigger-flow.md): Flow that is triggered based on the execution of another flow.
 - [Webhook](./webhook.md): Example flow for a webhook trigger.
 - [Bash with files](./bash-with-files.md): This flow shows how to pass files between tasks.
-- [Bash docker with files](./bash-docker-with-files.md): This flow will use the `alpine` Docker image, install a package and decompress a file passed as input. It will also export the file size as metrics and the `mimeType` of the file as outputs.
 - [Python Pip](./python-pip.md): This flow will install the pip package, and use the Python Kestra library to generate outputs and metrics.

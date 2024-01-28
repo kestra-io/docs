@@ -30,7 +30,7 @@ The tenant can be created in multiple ways:
 3. From the [Kestra Terraform provider](https://kestra.io/docs/terraform/resources/tenant)
 4. From a [kestra CLI](https://kestra.io/docs/administrator-guide/servers) command.
 
-In all cases, a [Tenant Admin Role](../../../05.enterprise/rbac/02.admins.md) is created with tenant-level admin rights. The authenticated user or the user passed to the command will have this Tenant Admin Role on the new tenant.
+In all cases, a Tenant Admin Role is created with tenant-level admin rights. The authenticated user or the user passed to the command will have this Tenant Admin Role on the new tenant.
 
 ### From the UI
 

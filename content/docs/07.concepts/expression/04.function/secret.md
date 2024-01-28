@@ -29,5 +29,3 @@ The above example will:
 1. retrieve the secret `GITHUB_ACCESS_TOKEN` from an environment variable `SECRET_GITHUB_ACCESS_TOKEN`
 2. base64-decode it at runtime.
 
-See the [Secrets section](../../secret.md) in the Developer Guide for more details.
-
