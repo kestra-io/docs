@@ -1,7 +1,11 @@
 ---
 title: Recursive rendering of Pebble expressions
+icon: /docs/icons/migrations.svg
 ---
 
+Since the release 0.14.0, kestra's templating engine has changed the default rendering behavior to **not recursive**.
+
+## Why the change?
 Before the release 0.14, kestra's templating engine has been rendering all expressions **recursively**. While recursive rendering enabled many flexible usage patterns, it also opened up the door to some unintended behavior. For example, if you wanted to parse JSON elements of a webhook payload that contained a templated string from other applications (such as GitHub Actions or dbt core), the recursive rendering would attempt to parse those expressions, resulting in an error.
 
 The release 0.14.0 has changed the default rendering behavior to **not recursive** and introduced a new `render()` function that gives you more control over which expressions should be rendered and how.

@@ -1,6 +1,9 @@
 ---
 title: Deprecation of core Script tasks
+icon: /docs/icons/migrations.svg
 ---
+
+Script tasks included in the core plugin have been deprecated in 0.11.0 and moved to dedicated plugins.
 
 Previously, there was scripting tasks inside the core plugin (the plugin that offers core task and is always included inside any Kestra distribution). Since the introduction of the new [Script tasks](../08.developer-guide/03.scripts.md) in dedicated plugins, the old core scripting tasks have been deprecated and moved out of the core plugin.
 
