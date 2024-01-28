@@ -3,7 +3,7 @@ title: Conditions
 icon: /docs/icons/concepts.svg
 ---
 
-Conditions are specific criteria or events that determine when a specific Triggers should create a new Execution. Usually, they limit the scope of a trigger to a specific set of cases.
+Conditions are specific criteria or events that determine when a specific triggers should create a new execution. Usually, they limit the scope of a trigger to a specific set of cases.
 
 For example, you can restrict a Flow trigger to a specific namespace prefix or execution status, and you can restrict a Schedule trigger to a specific time of the week or month.
 

@@ -15,7 +15,7 @@ We'll then dive into `parallel` task execution, error handling, as well as custo
 
 
 ::next-link
-[Let's start with Fundamentals](./01.fundamentals.md)
+[Fundamentals: build a "Hello World" flow](./01.fundamentals.md)
 ::
 
 ::ChildCard

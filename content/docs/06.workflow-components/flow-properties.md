@@ -3,7 +3,7 @@ title: Flow properties
 icon: /docs/icons/concepts.svg
 ---
 
-This section covers the required and optional properties of a flow.
+This section summarizes all required and optional properties of a flow.
 
 ## Required properties
 
