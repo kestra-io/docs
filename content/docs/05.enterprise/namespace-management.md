@@ -41,7 +41,7 @@ You can filter only for existing namespaces, and once you are ready to turn a pl
 ## Namespace-level features: secrets, variables and task defaults
 
 Once you create a namespace, you can centrally govern the following:
-- [namespace-level secrets](../07.concepts/04.secret)
+- [namespace-level secrets](../07.concepts/04.secret.md)
 - [namespace-level variables](../06.workflow-components/05.variables.md)
 - [namespace-level task defaults](../06.workflow-components/09.task-defaults.md).
 
