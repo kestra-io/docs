@@ -136,6 +136,7 @@ export default defineNuxtConfig({
 
     routeRules: {
         '/slack': {redirect: `${DEFAULT_KESTRA_API_URL}/communities/slack/redirect`},
+        '/docs/terraform': {redirect: '/docs/getting-started/terraform'},
         '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
     },
 
