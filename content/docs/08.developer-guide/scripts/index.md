@@ -3,7 +3,7 @@ title: Python, R, Node.js and Shell Scripts
 icon: /docs/icons/dev.svg
 ---
 
-The previous sections in the Developer Guide covered [Flows](../06.workflow-components/02.flow.md) and [Tasks](../07.concepts/tasks.md). This section covers script tasks.
+The previous sections in the Developer Guide covered [Flows](../../06.workflow-components/02.flow.md) and [Tasks](../07.concepts/tasks.md). This section covers script tasks.
 
 Script tasks allow you to orchestrate custom business logic written in `Python`, `R`, `Node.js`, `Powershell` and `Shell` scripts. By default, all these tasks run in individual Docker containers. You can optionally run those scripts in a local process or run them on a remote [worker group](../07.concepts/worker-group.md).
 
@@ -314,7 +314,7 @@ Head over to the [Secrets](../07.concepts/04.secret) section to learn more about
 
 ### runner: PROCESS
 
-The `PROCESS` runner is useful if your Kestra instance is running [locally without Docker](../10.administrator-guide/02.deployment/03.manual.md) and you want to access your local files and environments, for example, to take advantage of locally configured Conda virtual environments.
+The `PROCESS` runner is useful if your Kestra instance is running [locally without Docker](../../10.administrator-guide/02.deployment/03.manual.md) and you want to access your local files and environments, for example, to take advantage of locally configured Conda virtual environments.
 
 ```yaml
 id: localPythonScript
@@ -367,7 +367,7 @@ Build the image:
 docker build -t kestra-python:latest .
 ```
 
-Then, use that image in your `docker-compose.yml` file, as shown in the [Getting started](../01.getting-started/index.md) guide.
+Then, use that image in your `docker-compose.yml` file, as shown in the [Getting started](../../01.getting-started/index.md) guide.
 
 ```yaml
   kestra:
@@ -389,7 +389,7 @@ tasks:
       import requests
 ```
 
-See the [Docker Deployments](../10.administrator-guide/02.deployment/01.docker.md) guide for more details on managing custom Kestra container images.
+See the [Docker Deployments](../../10.administrator-guide/02.deployment/01.docker.md) guide for more details on managing custom Kestra container images.
 
 ---
 

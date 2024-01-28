@@ -11,7 +11,7 @@ This feature requires a [commercial license](https://kestra.io/pricing).
 
 Kestra respects your privacy. Therefore, Secrets are persisted externally in a backend of your choice. They are accessed by workers at runtime and stored only in memory.
 
-You can add, modify or delete secrets from the Secrets tab of any given namespace in the Kestra UI, or programmatically via [Terraform](../11.terraform/resources/namespace_secret.md).
+You can add, modify or delete secrets from the Secrets tab of any given namespace in the Kestra UI, or programmatically via [Terraform](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/namespace_secret).
 
 ## AWS Secret Manager Configuration
 
