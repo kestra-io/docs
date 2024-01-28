@@ -4,7 +4,7 @@ title: Variables FAQ
 
 ## How to escape some block in a Pebble syntax to ensure that it won't be parsed?
 
-To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../07.concepts/expression/06.tag/raw.md). For example, the following Pebble expression will return the string `{{ myvar }}` instead of the value of the `myvar` variable:
+To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../07.concepts/expression/06.tag.md#raw). For example, the following Pebble expression will return the string `{{ myvar }}` instead of the value of the `myvar` variable:
 
 ```yaml
 {% raw %}{{ myvar }}{% endraw %}
@@ -114,7 +114,7 @@ triggers:
 
 ## Can I transform variables with Pebble expressions?
 
-Yes. Kestra uses [Pebble Templates](https://pebbletemplates.io/) along with the execution context to render **dynamic properties**. This means that you can use Pebble expressions (such as [filters](../07.concepts/expression/03.filter/index.md), [functions](../07.concepts/expression/04.function/index.md), and [operators](../07.concepts/expression/05.operator/index.md)) to transform [inputs](../06.workflow-components/06.inputs.md) and [variables](../06.workflow-components/05.variables.md).
+Yes. Kestra uses [Pebble Templates](https://pebbletemplates.io/) along with the execution context to render **dynamic properties**. This means that you can use Pebble expressions (such as [filters](../../../../../_obsidian/sync/__wip/03.filter/index.md), [functions](../../../../../_obsidian/sync/__wip/04.function/index.md), and [operators](../../../../../_obsidian/sync/__wip/05.operator/index.md)) to transform [inputs](../06.workflow-components/06.inputs.md) and [variables](../06.workflow-components/05.variables.md).
 
 The example below illustrates how to use variables and Pebble expressions to transform string values in dynamic task properties:
 
