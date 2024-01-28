@@ -3,6 +3,10 @@ title: Webhook
 icon: /docs/icons/concepts.svg
 ---
 
+Webhook trigger generates a unique URL that you can use to automatically create new executions based on events in another application such as GitHub or Amazon EventBridge.
+
+In order to use that URL, you have to add a secret `key` that will secure your webhook URL.
+
 ```yaml
 type: "io.kestra.core.models.triggers.types.Webhook"
 ```

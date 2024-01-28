@@ -3,6 +3,8 @@ title: Schedule trigger
 icon: /docs/icons/concepts.svg
 ---
 
+The Schedule trigger generates new executions on a regular cadence based on a Cron expression or custom scheduling conditions.
+
 ```yaml
 type: "io.kestra.core.models.triggers.types.Schedule"
 ```

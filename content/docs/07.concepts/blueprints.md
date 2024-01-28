@@ -47,8 +47,6 @@ You can think of Custom Blueprints as your team's internal App Store, offering a
 
 From the left navigation menu, go to **Blueprints**. Then, select the **Custom Blueprints** tab. Click on "Create".
 
-![Custom Blueprints](/docs/user-interface-guide/custom-blueprints.png)
-
 Add a title, description, and the contents of the flow. You can add as many tags as you want. Then click on the "Create" button.
 
 ![New Custom Blueprint](/docs/user-interface-guide/blueprint-org-2.png)

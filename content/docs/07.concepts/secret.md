@@ -3,7 +3,9 @@ title: Secret
 icon: /docs/icons/concepts.svg
 ---
 
-Secret is a mechanism that allows you to securely store sensitive information, such as passwords and API keys, and retrieve them in a flow using `"{{ secret('API_TOKEN'') }}"`. You can leverage your existing secrets manager as a secrets backend.
+Secret is a mechanism that allows you to securely store sensitive information, such as passwords and API keys, and retrieve them in your flows.
+
+To retrieve secrets in a flow, use the `secret()` function, e.g. `"{{ secret('API_TOKEN'') }}"`. You can leverage your existing secrets manager as a secrets backend.
 
 Your flows often need to interact with external systems. To do that, they need to programmatically authenticate using passwords or API keys.  Secrets help you securely store such variables and avoid hard-coding sensitive information within your workflow code.
 
