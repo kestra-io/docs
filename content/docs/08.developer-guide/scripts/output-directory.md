@@ -3,7 +3,7 @@ title: Output directory
 icon: /docs/icons/dev.svg
 ---
 
-If you want to generate files in your script to make them available for download and use in downstream tasks, you can leverage either the `outputFiles` property or the `outputDir` [expression](../03.concepts/expression/01.index.md).
+If you want to generate files in your script to make them available for download and use in downstream tasks, you can leverage either the `outputFiles` property or the `outputDir` expression.
 
 ## Generating outputs from a script task using `outputFiles`
 
