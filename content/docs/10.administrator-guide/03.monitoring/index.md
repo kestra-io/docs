@@ -36,7 +36,7 @@ errors:
 
 However, this can lead to some boilerplate code if you start copy-pasting this `errors` configuration to multiple flows.
 
-To implement a centralized namespace-level alerting, we instead recommend a dedicated monitoring workflow with a notification task and a [Flow trigger](../../07.concepts/05.triggers/flow-trigger.md). Below is an example workflow that automatically sends a Slack alert as soon as any flow in a namespace `prod` fails or finishes with warnings.
+To implement a centralized namespace-level alerting, we instead recommend a dedicated monitoring workflow with a notification task and a Flow trigger. Below is an example workflow that automatically sends a Slack alert as soon as any flow in a namespace `prod` fails or finishes with warnings.
 
 ```yaml
 id: failureAlertToSlack
@@ -192,7 +192,7 @@ You can leverage Kestra's internal metrics to configure custom alerts. Each metr
 
 Kestra metrics use the prefix `kestra`. This prefix can be changed using the `kestra.metrics.prefix` property in the [configuration options](../01.configuration/04.others.md#metrics-configuration).
 
-Each task type can expose [custom metrics](../../07.concepts/execution.md#metrics) that will be also exposed on Prometheus.
+Each task type can expose custom metrics that will be also exposed on Prometheus.
 
 #### Worker
 

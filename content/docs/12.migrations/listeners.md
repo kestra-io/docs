@@ -2,7 +2,7 @@
 title: Deprecation of Listeners
 ---
 
-[Listeners](../07.concepts/listeners.md) are marked as deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../07.concepts/05.triggers/flow-trigger.md) instead.
+Listeners are deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../06.workflow-components/05.triggers/flow-trigger.md) instead.
 
 ---
 

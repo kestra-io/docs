@@ -4,8 +4,8 @@ title: Authentication
 
 Kestra provides two authentication methods:
 
-- [Basic Auth](./auths/basic.md): enabled by default
-- [OpenID Connect (OIDC)](./auths/oidc.md)
+- Basic Auth: enabled by default
+- OpenID Connect (OIDC)
 
 First, you need to configure the JWT token security. To do that, generate a secret that is at least 256 bits and add it to your kestra configuration as follows:
 
@@ -35,7 +35,7 @@ The default installation comes with no users defined. To create an administrator
 ./kestra-ee auths users create --admin --username=<admin-username> --password=<admin-password> --tenant=<tenant-id>
 ```
 
-If you don't have [multi-tenancy](multi-tenancy.md) enabled, you can omit the `--tenant` parameter.
+If you don't have [multi-tenancy](./multi-tenancy.md) enabled, you can omit the `--tenant` parameter.
 
 ## OpenID Connect (OIDC)
 
@@ -59,5 +59,5 @@ More information can be found in the [Micronaut OIDC configuration](https://micr
 
 ## Single Sign-On (SSO) with Google, Microsoft, and others
 
-Check the [Single Sign-On documentation](../../../07.concepts/sso.md) for more details on how to configure SSO with Google, Microsoft, and others.
+Check the [Single Sign-On documentation](../../../05.enterprise/sso.md) for more details on how to configure SSO with Google, Microsoft, and others.
 

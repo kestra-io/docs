@@ -4,7 +4,7 @@ title: Worker Isolation configuration
 
 ## Java security
 
-By default, Kestra uses a [shared worker](../../../07.concepts/worker.md) to handle workloads. This is fine for most use cases, but when you are using a shared Kestra instance between multiple teams, since the worker shares the same file system, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy/tasks/io.kestra.plugin.scripts.groovy.eval), [Jython](/plugins/plugin-script-jython/tasks/io.kestra.plugin.scripts.jython.eval), etc...
+By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases, but when you are using a shared Kestra instance between multiple teams, since the worker shares the same file system, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy/tasks/io.kestra.plugin.scripts.groovy.eval), [Jython](/plugins/plugin-script-jython/tasks/io.kestra.plugin.scripts.jython.eval), etc...
 
 You can use the following to opt-in to real isolation of file systems using advanced Kestra EE Java security:
 
@@ -46,7 +46,7 @@ Currently, all the Kestra official plugins are safe to be whitelisted **except**
 
 
 ## Scripting isolation
-For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) and other script tasks in the core, we advise you to force `DOCKER` isolation and to configure global cluster [taskDefaults](../05.others.md#kestratasksdefaults):
+For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) and other script tasks in the core, we advise you to force `DOCKER` isolation and to configure global cluster `taskDefaults`:
 
 ```yaml
 kestra:

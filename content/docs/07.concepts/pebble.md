@@ -55,7 +55,7 @@ tasks:
 Pebble can be very useful to make small transformation on the fly - without the need to use Python or some dedicated programming language.
 For instance, we can use the `date` function to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
 
-You can find more documentation on the `date` function on the [Expressions page](06.expressions/03.filter/date.md)
+You can find more documentation on the `date` function on the [Expressions page](../expressions/03.filter/date.md)
 
 ## Coalesce operator to conditionally use trigger or execution date
 
@@ -110,7 +110,7 @@ The expression `{{ inputs.data.value | jq(".[1]") | first }}` will return `2`.
 
 > Note: we could have used `{{ inputs | jq(".data.value[1]") | first }}`, jq allows to parse any object in Kestra context.
 
-You can troubleshoot complex Pebble expressions using the [Eval Expression](../01.getting-started/07.ui.md) button in the outputs tab of a Flow execution. It's helpful to validate how complex objects will be parsed.
+You can troubleshoot complex Pebble expressions using the Render Expression button in the outputs tab of a Flow execution page in the UI. It's helpful to validate how complex objects will be parsed.
 
 
 ## Using conditions in Pebble

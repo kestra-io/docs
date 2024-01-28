@@ -8,11 +8,11 @@ You can document your flows, inputs, outputs, tasks and triggers by adding a des
 The `description` property is a string that supports [Markdown](https://en.wikipedia.org/wiki/Markdown) syntax.
 
 You can add a `description` property on:
-- [Flows](flow.md)
-- [Inputs](inputs.md)
-- [Outputs](outputs.md)
-- [Tasks](tasks.md)
-- [Triggers](05.triggers/index.md)
+- Flows
+- Inputs
+- Outputs
+- Tasks
+- Triggers
 
 All markdown descriptions will be rendered in the UI.
 

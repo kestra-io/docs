@@ -47,7 +47,7 @@ You can use this expression to make your **manual execution work**: `{{ trigger.
 
 ## Backfill
 
-Kestra will optionally handle schedule [backfills](../backfill.md).
+Kestra will optionally handle schedule [backfills](./backfill.md).
 
 
 ## Trigger expressions

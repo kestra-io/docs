@@ -9,7 +9,7 @@ This page shows how you can govern secrets, variables and task defaults on a nam
 This feature requires a [commercial license](https://kestra.io/pricing).
 ::
 
-Kestra is a [multi-tenant](03.tenants.md) platform. Each tenant can have multiple namespaces, and each namespace provides additional isolation and security.
+Kestra is a [multi-tenant](./03.tenants.md) platform. Each tenant can have multiple namespaces, and each namespace provides additional isolation and security.
 
 Namespaces provide:
 - a logical isolation of resources on top of the instance- or tenant-level isolation

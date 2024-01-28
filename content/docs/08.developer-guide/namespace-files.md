@@ -47,7 +47,7 @@ tasks:
     script: "{{ read('scripts/hello.py') }}"
 ```
 
-The `read` function allows you to read any file from the namespace as a string. You can also execute your flows directly from the Code Editor by clicking on the Execute button. See the [How to use Namespace Files in your flows](#how-to-use-namespace-files-in-your-flows) section for more details.
+The `read` function allows you to read any file from the namespace as a string. You can also execute your flows directly from the Code Editor by clicking on the Execute button.
 
 The `Execute` button allows you to run your flow directly from the Code Editor. Click on the `Execute` button to run your flow. You should then see the Execution being created in a new browser tab and once you navigate to the `Logs` tab, you should see a friendly message ``Hello from the Editor!`` in the logs.
 
@@ -95,7 +95,7 @@ When creating a service account role for the GitHub Action in the [Enterprise Ed
 
 ### Terraform Provider
 
-You can use the `kestra_namespace_file` resource from the official [Kestra Terraform Provider](../11.terraform/index.md) to deploy all your custom script files from a specific directory to a given Kestra namespace.
+You can use the `kestra_namespace_file` resource from the official [Kestra Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs) to deploy all your custom script files from a specific directory to a given Kestra namespace.
 
 Here is a simple example showing how you can synchronize an entire directory of scripts from the directory `src` with the `prod` namespace using Terraform:
 

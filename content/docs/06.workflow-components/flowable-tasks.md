@@ -3,13 +3,13 @@ title: Flowable Tasks
 icon: /docs/icons/concepts.svg
 ---
 
-[Flowable tasks](../07.concepts/flowable-tasks.md) control the orchestration logic — run tasks or subflows in parallel, create loops and conditional branching.
+Flowable tasks control the orchestration logic — run tasks or subflows in parallel, create loops and conditional branching.
 
-Flowable Tasks don't run heavy operations — those are handled by [Workers](worker.md).
+Flowable Tasks don't run heavy operations — those are handled by workers.
 
 Flowable Tasks are used for branching, grouping, running tasks in parallel, and more.
 
-Flowable Tasks use [expressions](06.expressions/01.index.md) from the execution context to define the next tasks to run. For example, you can use the [outputs](./outputs.md) of a previous task in a `Switch` task to decide which task to run next.
+Flowable Tasks use [expressions](../expressions/01.index.md) from the execution context to define the next tasks to run. For example, you can use the outputs of a previous task in a `Switch` task to decide which task to run next.
 
 ### Sequential
 
@@ -37,7 +37,7 @@ tasks:
 ```
 
 ::alert{type="info"}
-You can access the output of a sibling task with `{{outputs.sibling.value}}`, see [Lookup in sibling tasks](./outputs.md#lookup-in-sibling-tasks)
+You can access the output of a sibling task using the syntax `{{outputs.sibling.value}}`.
 ::
 
 ::next-link
@@ -186,7 +186,7 @@ tasks:
 ```
 
 ::alert{type="info"}
-You can access the output of a sibling task with `{{outputs.sibling[taskrun.value].value}}`, see [Lookup in sibling tasks](./outputs.md#lookup-in-sibling-tasks)
+You can access the output of a sibling task using the syntax `{{outputs.sibling[taskrun.value].value}}`.
 ::
 
 
@@ -256,7 +256,7 @@ Syntax:
 ```
 
 This will execute the subflow `dev.subflow` for each batch of items.
-To pass the batch of items to a subflow, you can use [inputs](./inputs.md). The example above uses an input of `FILE` type called `file` that takes the URI of an internal storage file containing the batch of items.
+To pass the batch of items to a subflow, you can use inputs. The example above uses an input of `FILE` type called `file` that takes the URI of an internal storage file containing the batch of items.
 
 ::next-link
 [ForEachItem Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.foreachitem)
@@ -372,7 +372,7 @@ tasks:
 
 This task will trigger another flow. This allows you to decouple the first flow from the second and monitor each flow individually.
 
-You can pass flow [outputs](./outputs.md) as [inputs](./inputs.md) for the triggered subflow (those must be declared in the subflow).
+You can pass flow outputs as inputs to the triggered subflow (those must be declared in the subflow).
 
 ```yaml
 id: subflow

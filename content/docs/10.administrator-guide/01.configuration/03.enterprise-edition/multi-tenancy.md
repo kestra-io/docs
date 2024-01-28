@@ -2,7 +2,7 @@
 title: Multi-tenancy configuration
 ---
 
-This section dives into how you can configure multi-tenancy in your Kestra instance. For a high-level overview, check the multi-tenancy section of the [Architecture documentation](../../../07.concepts/multi-tenancy.md) or the [Tenants page](../../../05.enterprise/03.tenants.md).
+This section dives into how you can configure multi-tenancy in your Kestra instance.
 
 ## Enabling multi-tenancy
 
@@ -40,7 +40,7 @@ Fill in the form and click **Save**.
 
 ![Create tenant](/docs/administrator-guide/configuration/enterprise-edition/tenant-create.png "Create tenant")
 
-The user that creates the tenant will get a [Tenant Admin Role](../../../05.enterprise/rbac/02.admins.md) assigned to it. You may need to refresh the UI to see updated [Roles](../../../05.enterprise/rbac/01.roles.md).
+The user that creates the tenant will get a Tenant Admin Role assigned to it. You may need to refresh the UI to see updated Roles.
 
 ## From the Kestra CLI
 

@@ -10,7 +10,7 @@ To keep your flows and tasks organized, it's useful to adopt a consistent naming
 Kestra doesn't _enforce_ any naming convention. For example, if you want to use the URL-style naming including hyphens, Kestra supports that. However, keep in mind that IDs for flows, tasks, inputs, outputs and triggers must match the `"^[a-zA-Z0-9][a-zA-Z0-9_-]*"` regex pattern. This means that:
 
 - you can't use any special characters except for hyphens ``-`` and underscores ``_``
-- when using hyphens, you need to follow the format `"{{ outputs.task_id[your-custom-value].attribute }}"` when referencing that ID in [output expressions](outputs.md); the square brackets `[]` in  `[your-custom-value]` is called the subscript notation and it enables using special characters such as spaces or hyphens in task identifiers or output attributes.
+- when using hyphens, you need to follow the format `"{{ outputs.task_id[your-custom-value].attribute }}"` when referencing that ID in output expressions; the square brackets `[]` in  `[your-custom-value]` is called the subscript notation and it enables using special characters such as spaces or hyphens in task identifiers or output attributes.
 
 We recommend using the snake case or camel case conventions shown below, as they allow you to avoid the subscript notation and make your flows easier to read.
 

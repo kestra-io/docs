@@ -5,7 +5,7 @@ title: Debugging techniques
 Without any order, here are debugging techniques that administrators can use to understand their issues:
 
 ## Enable verbose log
-Kestra had some [management endpoints](./index.md#others-micronaut-default-endpoint) including one that allows changing logging verbosity at run time.
+Kestra had some [management endpoints](./index.md#other-micronaut-default-endpoints) including one that allows changing logging verbosity at run time.
 
 Inside the container (or in local if standalone jar is used), send this command to enable very verbose logging:
 

@@ -164,32 +164,15 @@ You can look at both a flow with a template task and a flow with a subflow task 
 
 If you still have questions about migrating from templates to subflows, reach out via our [Community Slack](https://kestra.io/slack).
 
-
-
-
-::alert{type="warning"}
-⚠️ Templates are deprecated. Please use subflows instead of templates. See the [Migrations section](/templates.md) explaining how you can migrate from templates to subflows.
-::
-
-
-On the **Templates** page, you will see a list of templates.
-
-When clicking on a template id or on the eye icon, you can open the page of a template.
-
-![Kestra User Interface Templates Page](/docs/user-interface-guide/06-Templates.png)
-
-A **Template** page will allow template edition via a YAML editor.
-
-![Kestra User Interface Template Page](/docs/user-interface-guide/07-Templates-Template.png)
-
 ---
 
-
-Templates are lists of tasks that can be shared between flows.
+## Documentation of the deprecated feature
 
 ::alert{type="warning"}
-⚠️ Templates are deprecated. Please use subflows instead of templates. See the [Migrations section](/templates.md) explaining how you can migrate from templates to subflows.
+⚠️ Templates are deprecated. Please use subflows instead of templates.
 ::
+
+Templates are lists of tasks that can be shared between flows.
 
 You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
 
@@ -201,7 +184,7 @@ Templates can have arguments passed via the `args` property.
 [Template Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.template)
 ::
 
-## Example
+### Example
 
 Below is a flow sample that will include a template:
 
@@ -255,3 +238,14 @@ All the tasks within the template will be *copied* at runtime.
 ::alert{type="warning"}
 From the template, you can access all the variables defined on the context executions. However, this is highly discouraged. The best will be to use the `args` property to rename variables from the global context to the template local one.
 ::
+
+### Templates UI
+On the **Templates** page, you will see a list of templates.
+
+When clicking on a template id or on the eye icon, you can open the page of a template.
+
+![Kestra User Interface Templates Page](/docs/user-interface-guide/06-Templates.png)
+
+A **Template** page will allow template edition via a YAML editor.
+
+![Kestra User Interface Template Page](/docs/user-interface-guide/07-Templates-Template.png)
