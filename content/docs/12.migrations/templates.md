@@ -10,7 +10,7 @@ If you still rely on templates, you can re-enable them in your [configuration](.
 
 ## Why templates are deprecated
 
-1. Subflows are more powerful — subflows provide the same functionality as templates while simultaneously being more flexible than templates. For instance,  `inputs` are not allowed in a template because a template is only a list of tasks that get copied to another flow that references it. In contrast, when invoking a subflow, you can parametrize it with custom parameters. This way, subflows allow you to define workflow logic once and invoke it in other flows with custom parameters.
+1. Subflows are more powerful — subflows provide the same functionality as templates while simultaneously being more flexible than templates. For instance, `inputs` are not allowed in a template because a template is only a list of tasks that get copied to another flow that references it. In contrast, when invoking a subflow, you can parametrize it with custom parameters. This way, subflows allow you to define workflow logic once and invoke it in other flows with custom parameters.
 2. Subflows are more transparently reflected in the topology view and don't require copying tasks.
 
 
@@ -21,7 +21,6 @@ kestra:
   templates:
     enabled: true
 ```
-
 
 ---
 
@@ -84,7 +83,7 @@ tasks:
     message: last task
 ```
 
-This example shows that templates are pretty restrictive — you can only invoke them as-is. You cannot set custom input values, and there is no link from this flow to the template. In contrast, subflows can be parametrized, and you can navigate to the subflow in the topology view. From the 0.11.0 release, you can also expand and collapse a subflow (child flow) to inspect the available tasks directly from the parent flow.
+This example shows that templates are quite restrictive — you can only invoke them as-is. You cannot set custom input values, and there is no link from this flow to the template. In contrast, subflows can be parametrized, and you can navigate to the subflow in the topology view. From the 0.11.0 release, you can also expand and collapse a subflow (child flow) to inspect the available tasks directly from the parent flow.
 
 ---
 
@@ -171,21 +170,11 @@ If you still have questions about migrating from templates to subflows, reach ou
 
 ## Documentation of the deprecated feature
 
-::alert{type="warning"}
-⚠️ Templates are deprecated. Please use subflows instead of templates.
-::
-
-Templates are lists of tasks that can be shared between flows.
-
-You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
+Templates are lists of tasks that can be shared between flows. You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
 
 All tasks in a template will be executed sequentially; you can provide the same tasks that are found in a *standard* flow, including an *errors* branch.
 
-Templates can have arguments passed via the `args` property.
-
-::next-link
-[Template Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.template)
-::
+Templates can have arguments passed via the `args` property — see the [Template Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.template).
 
 ### Example
 
@@ -209,7 +198,7 @@ tasks:
       renamedStore: "{{ inputs.store }}"
 ```
 
-If the template is defined like this:
+If the template is defined like so:
 
 ```yaml
 id: template-example
@@ -221,7 +210,7 @@ tasks:
     format: "{{ parent.outputs.args.renamedStore }}"
 ```
 
-It will produce a flow similar to this one:
+It will result in a flow similar to the following:
 
 ```yaml
 id: with-template
@@ -236,19 +225,18 @@ tasks:
         format: "{{ inputs.store }}"
 ```
 
-All the tasks within the template will be *copied* at runtime.
+All tasks from the template will be *copied* at runtime.
 
 ::alert{type="warning"}
-From the template, you can access all the variables defined on the context executions. However, this is highly discouraged. The best will be to use the `args` property to rename variables from the global context to the template local one.
+From the template, you can access all execution context variables. However, this is discouraged. The best is to use the `args` property to rename variables from the global context to the template's local one.
 ::
 
 ### Templates UI
-On the **Templates** page, you will see a list of templates.
 
-When clicking on a template id or on the eye icon, you can open the page of a template.
+If enabled, you can inspect Templates on the **Templates** page.
 
 ![Kestra User Interface Templates Page](/docs/user-interface-guide/06-Templates.png)
 
-A **Template** page will allow template edition via a YAML editor.
+A **Template** page allows to edit the template via a YAML editor.
 
 ![Kestra User Interface Template Page](/docs/user-interface-guide/07-Templates-Template.png)
