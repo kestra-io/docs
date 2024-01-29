@@ -1,6 +1,6 @@
 ---
 title: Descriptions
-icon: /docs/icons/concepts.svg
+icon: /docs/icons/components.svg
 ---
 
 You can document your flows, inputs, outputs, tasks and triggers by adding a description property.

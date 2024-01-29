@@ -1,6 +1,6 @@
 ---
 title: Schedule trigger
-icon: /docs/icons/concepts.svg
+icon: /docs/icons/components.svg
 ---
 
 The Schedule trigger generates new executions on a regular cadence based on a Cron expression or custom scheduling conditions.

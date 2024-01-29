@@ -1,6 +1,6 @@
 ---
 title: Backfill
-icon: /docs/icons/concepts.svg
+icon: /docs/icons/components.svg
 ---
 
 Backfills are replays of missed schedule intervals between a defined start and end date.

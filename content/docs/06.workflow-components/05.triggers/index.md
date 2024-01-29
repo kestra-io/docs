@@ -1,6 +1,6 @@
 ---
 title: Triggers & schedule
-icon: /docs/icons/concepts.svg
+icon: /docs/icons/components.svg
 ---
 
 Trigger is a mechanism that automates the execution of a flow. Triggers can be scheduled, event-based or webhook-based.

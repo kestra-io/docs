@@ -1,6 +1,6 @@
 ---
 title: Conditions
-icon: /docs/icons/concepts.svg
+icon: /docs/icons/components.svg
 ---
 
 Conditions are specific criteria or events that determine when a specific triggers should create a new execution. Usually, they limit the scope of a trigger to a specific set of cases.

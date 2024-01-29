@@ -1,6 +1,9 @@
 ---
 title: Flows FAQ
+icon: /docs/icons/faq.svg
 ---
+
+Common questions about flows.
 
 ## Where does kestra store flows?
 

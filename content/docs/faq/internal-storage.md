@@ -1,6 +1,9 @@
 ---
 title: Internal Storage FAQ
+icon: /docs/icons/faq.svg
 ---
+
+Common questions about the internal storage.
 
 ## How to read a file from the internal storage as a string?
 

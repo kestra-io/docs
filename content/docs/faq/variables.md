@@ -1,6 +1,9 @@
 ---
 title: Variables FAQ
+icon: /docs/icons/faq.svg
 ---
+
+Common questions about variables.
 
 ## How to escape some block in a Pebble syntax to ensure that it won't be parsed?
 

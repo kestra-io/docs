@@ -1,6 +1,6 @@
 ---
 title: Flow properties
-icon: /docs/icons/concepts.svg
+icon: /docs/icons/components.svg
 ---
 
 This section summarizes all required and optional properties of a flow.
