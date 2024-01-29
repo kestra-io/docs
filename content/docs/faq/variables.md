@@ -114,7 +114,7 @@ triggers:
 
 ## Can I transform variables with Pebble expressions?
 
-Yes. Kestra uses [Pebble Templates](https://pebbletemplates.io/) along with the execution context to render **dynamic properties**. This means that you can use Pebble expressions (such as [filters](../../../../../_obsidian/sync/__wip/03.filter/index.md), [functions](../../../../../_obsidian/sync/__wip/04.function/index.md), and [operators](../../../../../_obsidian/sync/__wip/05.operator/index.md)) to transform [inputs](../06.workflow-components/06.inputs.md) and [variables](../06.workflow-components/05.variables.md).
+Yes. Kestra uses [Pebble Templates](https://pebbletemplates.io/) along with the execution context to render **dynamic properties**. This means that you can use Pebble expressions (such as filters, functions, and operators to transform [inputs](../06.workflow-components/06.inputs.md) and [variables](../06.workflow-components/05.variables.md).
 
 The example below illustrates how to use variables and Pebble expressions to transform string values in dynamic task properties:
 
