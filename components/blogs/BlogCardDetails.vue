@@ -27,7 +27,8 @@
     @import "../../assets/styles/variable";
 
     p {
-        color: var(--bs-gray-600);
+        color: $black-8;
         font-size: $font-size-sm;
+        font-weight: 400;
     }
 </style>
