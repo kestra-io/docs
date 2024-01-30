@@ -7,7 +7,7 @@
                 <h3>
                     {{ blog.title }}
                 </h3>
-                <p>{{ blog.description }}</p>
+                <p class="text">{{ blog.description }}</p>
                 <BlogCardDetails :name="blog.author.name" :date="blog.date"/>
             </div>
         </NuxtLink>
@@ -34,13 +34,20 @@
 
     .description {
         span {
-            color: var(--bs-primary);
+            color: $purple-36;
             font-size: $font-size-sm;
+            font-weight: 400;
         }
-        h3{
+        h3 {
+            color: $white;
+            font-size: $h3-font-size;
+            font-weight: 300;
             line-height: 2.375rem;
         }
-        p{
+        .text {
+            color: $white-1;
+            font-size: $h6-font-size;
+            font-weight: 400;
             line-height: 1.625rem;
             margin-bottom: 0.75rem;
         }

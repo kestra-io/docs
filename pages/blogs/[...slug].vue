@@ -182,8 +182,8 @@
         font-size: 2.375rem !important;
     }
     .para{
-        line-height: 1.375rem ;
-        font-size: $font-size-sm ;
+        line-height: 1.375rem;
+        font-size: $font-size-sm;
         margin-bottom: $font-size-xs;
         font-weight: 600;
     }
