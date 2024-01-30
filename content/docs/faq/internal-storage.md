@@ -108,7 +108,7 @@ The same syntax applies to SQL queries, configuration files, and many more. Chec
 
 ## How to read a file from the internal storage as a JSON object?
 
-There is a [Pebble function](https://kestra.io/docs/developer-guide/variables/function/json) called `{{ json(myvar) }}` and a [Pebble transformation filter](https://kestra.io/docs/developer-guide/variables/filter/json) that you can apply using `{{ myvar | json }}`.
+There is a [Pebble function](../07.concepts/expression/04.function.md#json) called `{{ json(myvar) }}` and a [Pebble transformation filter](../07.concepts/expression/03.filter/json.md) that you can apply using `{{ myvar | json }}`.
 
 ### The `json()` function
 
