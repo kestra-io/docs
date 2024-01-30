@@ -7,9 +7,8 @@
             <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
                 <ContentRenderer :value="page">
                     <div class="bd-title">
-                        <p class="top-breadcrumb" data-aos="fade-right">
-                            <NuxtLink to="/">Home</NuxtLink>  /
-                            <NuxtLink to="/blogs">Blog</NuxtLink>
+                        <p class="d-flex breadcrumb" data-aos="fade-right">
+                            <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
                         </p>
                         <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
                     </div>
@@ -19,23 +18,32 @@
                         </template>
                     </NavToc>
                     <div class="bd-content">
-                        <NuxtImg loading="lazy" format="webp" quality="80" densities="x1 x2" data-aos="fade-right"
-                                 class="mb-2 rounded-3 img" :alt="page.title" :src="page.image" fit="cover"/>
-                                 <ClientOnly>
-                                     <ContentRendererMarkdown
-                                         data-aos="fade-zoom"
-                                         class="bd-markdown mt-4"
-                                         :value="page"
-                                         data-bs-spy="scroll"
-                                         data-bs-target="#nav-toc"
-                                     />
-                                 </ClientOnly>
+                        <NuxtImg
+                            loading="lazy"
+                            format="webp"
+                            quality="80"
+                            densities="x1 x2"
+                            data-aos="fade-right"
+                            class="mb-2 rounded-3 img"
+                            :alt="page.title"
+                            :src="page.image"
+                            fit="cover"
+                        />
+                        <ClientOnly>
+                            <ContentRendererMarkdown
+                                data-aos="fade-zoom"
+                                class="bd-markdown mt-4"
+                                :value="page"
+                                data-bs-spy="scroll"
+                                data-bs-target="#nav-toc"
+                            />
+                        </ClientOnly>
                     </div>
                 </ContentRenderer>
             </article>
             <div class="bottom">
                 <DocsBlogs title="More contents"/>
-                <LayoutNewsletter/>
+                <Updateletter/>
             </div>
         </div>
 
@@ -45,6 +53,7 @@
 <script setup>
     import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
+    import Updateletter from "~/components/layout/Updateletter.vue";
 
     const route = useRoute()
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
@@ -155,10 +164,19 @@
     .bd-content{
         max-width: 100%;
     }
-    .top-breadcrumb {
+    .breadcrumb {
         margin: 0;
+        gap: 0.25rem;
+        color: #CDD5EF;
+
+        a {
+            color: #CDD5EF;
+            font-size: $font-size-sm;
+            font-weight: 400;
+        }
     }
     h2{
+        color: $white;
         line-height: 3.25rem;
         font-weight: 600;
         font-size: 2.375rem !important;
@@ -169,12 +187,43 @@
         margin-bottom: $font-size-xs;
         font-weight: 600;
     }
-    :deep(p){
-        line-height: 1.75rem;
-    }
-    :deep(h2){
-        font-size: 1.75rem;
-        line-height: 2.735rem;
-        font-weight: 600;
+    :deep(.bd-markdown){
+        p, li {
+            color: $white;
+            line-height: 1.75rem;
+            font-size: $font-size-md;
+            font-weight: 300;
+
+            a {
+                color: $purple-36;
+            }
+        }
+        h2, h2 a {
+            color: $white;
+            font-size: 1.75rem;
+            line-height: 2.735rem;
+            font-weight: 300;
+        }
+
+        h3 a {
+            color: $white;
+        }
+
+        code {
+            border: $block-border;
+            background-color: $black-2;
+            color: $purple-36;
+        }
+
+        .code-block, .doc-alert {
+            background-color: $black-2;
+            code {
+                border: 0;
+            }
+        }
+
+        .doc-alert {
+            border: $block-border;
+        }
     }
 </style>

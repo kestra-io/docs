@@ -31,7 +31,7 @@
             </div>
         </template>
 
-        <div class="d-none d-lg-block mt-4">
+        <div class="d-none d-lg-block pt-4 bd-social-list">
             <CommonSocialsList :page="page" />
         </div>
     </div>
@@ -188,6 +188,25 @@
 
         @include media-breakpoint-up(lg) {
             display: block !important; // stylelint-disable-line declaration-no-important
+        }
+    }
+
+    .bd-social-list, .bd-toc-collapse {
+        border-left: $block-border;
+
+        ul, :deep(ul) {
+            padding-left: 0 !important;
+            li {
+                a {
+                    border-left: 0 !important;
+                    padding-left: 1.5rem !important;
+
+                    &:hover {
+                        color: $purple-36 !important;
+                        border-left: 1px solid $purple-36 !important;
+                    }
+                }
+            }
         }
     }
 </style>
