@@ -2,12 +2,12 @@
     <div v-on="{ 'shown.bs.modal': focusSearch }" class="modal modal-xl fade" id="search-modal" tabindex="-1" ref="modal" aria-labelledby="search-modal" aria-hidden="true">
         <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
-                <div class="modal-body row">
+                <div class="modal-body row bg-dark-4">
                     <div class="search">
                         <label class="visually-hidden" for="search-input">Search</label>
                         <div class="input-group">
                             <span class="input-group-text"><Magnify/></span>
-                            <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search"/>
+                            <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search Kestra.io"/>
                         </div>
                     </div>
                     <div v-if="searchResults && searchResults.length === 0" class="alert alert-warning mb-0"
@@ -15,14 +15,13 @@
                         No results found for the current search
                     </div>
                     <div class="row search-results" v-if="searchResults && searchResults.length > 0" >
-                        <div class="search-result p-3 col-12 col-md-6">
+                        <div class="search-result col-12 col-md-6">
                             <div v-for="(result, index) in searchResults" @mouseover="() => onItemMouseOver(result, index)">
                                 <NuxtLink :href="result.url" :class="{'active': index === selectedIndex}" @click="close">
-                                    <div class="result rounded-3">
+                                    <div class="result">
                                         <div class="w-100">
+                                            <span class="type">{{result.type.charAt(0).toUpperCase() + result.type.slice(1).toLowerCase()}}</span>
                                             <h5>
-                                                <CommonTaskIcon v-if="result.cls" :cls="result.cls" />
-                                                <component class="icon-wrapper" v-else :is="iconByType(result.type)" />
                                                 {{ result.title }}
                                             </h5>
                                             <div class="slug">
@@ -32,21 +31,18 @@
                                                         {{ item }}
                                                 </span>
                                             </div>
-                                            <span class="badge bg-light">{{result.type.charAt(0).toUpperCase() + result.type.slice(1).toLowerCase()}}</span>
                                         </div>
-                                        <ArrowRight class="arrow" />
                                     </div>
                                 </NuxtLink>
                             </div>
                         </div>
-                        <div class="search-detail p-3 col-6 d-none d-md-flex">
+                        <div class="search-detail bg-dark-2 p-3 col-6 d-none d-md-flex">
                             <div class="rounded-3 w-100" v-if="selectedItem">
                                 <div>
-                                    <h4>
-                                        <CommonTaskIcon v-if="selectedItem.cls" :cls="selectedItem.cls" />
-                                        <component class="icon-wrapper" v-else :is="iconByType(selectedItem.type)" />
+                                    <span class="type">{{selectedItem.type.charAt(0).toUpperCase() + selectedItem.type.slice(1).toLowerCase()}}</span>
+                                    <h5>
                                         {{ selectedItem.title }}
-                                    </h4>
+                                    </h5>
                                     <div class="slug">
                                         <span
                                             :class="{first: index === 0}"
@@ -54,7 +50,6 @@
                                                 {{ item }}
                                         </span>
                                     </div>
-                                    <span class="badge bg-info">{{selectedItem.type.charAt(0).toUpperCase() + selectedItem.type.slice(1).toLowerCase()}}</span>
                                     <p
                                         v-for="(highlight, index) in selectedItem.highlights"
                                         :key="index"
@@ -82,7 +77,6 @@
 </template>
 
 <script setup>
-    import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
     import Magnify from "vue-material-design-icons/Magnify.vue";
 </script>
 
@@ -309,22 +303,29 @@
         }
 
         .input-group-text {
-            background: transparent !important;
+            background: transparent;
             font-size: 1.25rem;
             border-bottom-left-radius: 0;
-            background: var(--bs-white);
             border-top-left-radius: $border-radius-lg;
+            border: none;
+            color: $white-3;
         }
 
         .form-control {
             border-left: 0;
             background: transparent !important;
             border-bottom-right-radius: 0;
+            border: none;
+
+            &, &::placeholder {
+                color: $white-3;
+                font-size: $font-size-md;
+                font-weight: 400;
+            }
         }
 
         .form-control:focus {
             box-shadow: none;
-            border-color: var(--bs-border-color);
         }
 
         .modal-content {
@@ -347,13 +348,12 @@
         }
 
         .modal-body {
-            background: var(--bs-gray-300);
-            border: 1px solid var(--bs-border-color);
+            border: 1px solid $black-6;
             border-radius: $border-radius-lg;
             padding: 0;
 
             .search, .facets {
-                color: var(--bs-black);
+                color: $white-3;
 
             }
 
@@ -363,6 +363,7 @@
                 gap: 10px;
                 padding: 0 1rem;
                 font-size: $font-size-sm;
+                border-top: 1px solid $black-6;
 
                 @include media-breakpoint-down(md) {
                     width: 97%;
@@ -375,16 +376,13 @@
                     padding: 0.5rem 1rem;
                     gap: 5px;
                     cursor: pointer;
-                    border-top: 4px solid transparent;
+                    border-top: 1px solid transparent;
+                    color: $purple-35;
                     -ms-overflow-style: none;
                     scrollbar-width: none;
 
-                    &:hover {
-                        border-top: 4px solid var(--bs-gray-500);
-                    }
-
-                    &-active, &-active:hover {
-                        border-top: 4px solid var(--bs-primary);
+                    &-active {
+                        border-top: 1px solid $purple-35;
                     }
                 }
                 &::-webkit-scrollbar {
@@ -404,16 +402,30 @@
             }
 
             &::-webkit-scrollbar-track {
-                background: var(--bs-gray-300);
+                background: transparent;
             }
 
             &::-webkit-scrollbar-thumb {
-                background: var(--bs-gray-400);
-                border-radius: 4px;
+                background: #4B0AAA;
             }
 
             &::-webkit-scrollbar-thumb:hover {
-                background: var(--bs-gray-500);
+                background: #370883;
+            }
+
+            .type {
+                color: $white-3;
+                font-size: $font-size-sm;
+                font-weight: 400;
+                line-height: 14px;
+            }
+
+            h5 {
+                color: $white;
+                font-size: $font-size-sm;
+                font-weight: 700;
+                line-height: 22px;
+                margin-bottom: 0;
             }
 
             .slug {
@@ -426,7 +438,11 @@
                 margin-bottom: calc($spacer / 3);
 
                 span {
-                    margin-left: 0.25rem;
+                    color: $black-8;
+                    font-size: 0.688rem;
+                    font-weight: 400;
+                    margin-right: 0.25rem;
+                    line-height: 14px;
 
                     &:before {
                         content: '/';
@@ -439,10 +455,6 @@
                             display: none;
                         }
                     }
-
-                    &.first {
-                        font-weight: bold;
-                    }
                 }
 
                 .breadcrumb-item + .breadcrumb-item::before {
@@ -452,32 +464,18 @@
         }
 
         .search-result {
-            background: var(--bs-white);
-            border-top-right-radius: $border-radius-lg;
-            border-bottom-right-radius: $border-radius-lg;
+            border-right: 1px solid $black-6;
+            padding: 0 !important;
+
             .result {
-                background: var(--bs-gray-100);
                 transition: background-color 0.2s ease;
-                padding: 1.25rem ;
-                margin-bottom: calc($spacer * 0.5);
+                padding: 1rem ;
                 display: flex;
                 cursor: pointer;
+                border-bottom: 1px solid $black-6;
 
                 > div {
                     flex-grow: 1;
-
-                    h5 {
-                        font-size: $font-size-lg;
-                        font-weight: bold;
-                        margin-bottom: 0;
-                        color: var(--bs-dark);
-                    }
-
-                    p {
-                        color: var(--bs-gray-600);
-                        font-size: $font-size-sm;
-                        margin-bottom: 0;
-                    }
                 }
 
                 span.material-design-icon.arrow {
@@ -488,24 +486,15 @@
             }
 
             .active .result, .result:hover {
-                background: var(--bs-gray-200);
-
-                span.material-design-icon.arrow {
-                    opacity: 1;
-                }
+                background: $black-3;
             }
         }
 
         .search-detail {
             .extract {
-                overflow: auto;
                 margin-top: 1rem;
-                background: var(--bs-gray-100);
-                border-radius: $border-radius-lg;
                 font-family: var(--bs-font-monospace);
-
                 font-size: 80%;
-                padding: 1rem;
                 max-width: 100%;
 
                 p {
@@ -514,12 +503,18 @@
                 }
 
                 mark {
-                    color: $primary;
+                    background-color: transparent;
+                    color: $white;
+                    font-family: $font-family-sans-serif;
+                    font-size: $font-size-xs;
+                    font-weight: 400;
                 }
             }
         }
         .search-results {
-            margin-left: 2px;
+            border-top: 1px solid $black-6;
+            margin-left: 0;
+            padding: 0;
         }
     }
 </style>
