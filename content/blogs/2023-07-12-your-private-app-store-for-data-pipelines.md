@@ -37,7 +37,7 @@ All blueprints are validated and documented so that they *just work*. You can ea
 
 ## Getting Started with Blueprints
 
-First, start Kestra locally by downloading the [docker-compose file](https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml) and running `docker compose up -d`. Then [navigate to the UI](http://localhost:8080/).
+First, start Kestra locally by downloading the [docker-compose file](https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml) and running `docker compose up -d`. Then navigate to the UI: http://localhost:8080/.
 
 Blueprints are accessible from two places in the UI:
 

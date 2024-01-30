@@ -91,7 +91,7 @@ They also moved with great speed to develop a Kestra plugin to help simplify the
 - applied some qualities with rejection of records based on business rules (upper/lower bound, validate key with referential, deduplication, etc.)
 - loaded the data in ODS (Operational Data Store) — meaning the image of the data from the incoming system
 
-The transfer of the data was in HTTPS directly to the Kestra API in order to free any dependencies. The operational system used most frequently was a simple `curl` [command](../docs/05.developer-guide/04.inputs.md#set-inputs-with-curl) in order to trigger ingestion or develop a simple HTTP client reaching the Kestra API.
+The transfer of the data was in HTTPS directly to the Kestra API in order to free any dependencies. The operational system used most frequently was a simple `curl` [command](../docs/08.developer-guide/04.inputs.md#set-inputs-with-curl) in order to trigger ingestion or develop a simple HTTP client reaching the Kestra API.
 
 This single task handled all the complexities of loading data — it would create ten to twenty tasks:
 ```yaml
@@ -151,7 +151,7 @@ Thanks to Kestra, they moved **to full autonomy** and **reduced the time to mark
 
 After a few months, **Kestra was confirmed** and was deployed to a production environment in May of 2020. They also decided to move to the Enterprise Edition of Kestra in August 2020 as they needed to have fine-grained security, role-based access control and single sign-on.
 
-The usage grew exponentially over the coming months, and the kinds of usage are becoming increasingly varied: (starting flows based on [file detection from buckets](../plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.Trigger.md), syncing data warehouses directly from operation [postgres database](../plugins/plugin-jdbc-postgres/tasks/l/io.kestra.plugin.jdbc.postgresql.CopyOut.md), developing a simple python program to [fetch APIs from a partner](../plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Python.md), starting long-running data science processes [over Kubernetes](../plugins/plugin-kubernetes/tasks/io.kestra.plugin.kubernetes.PodCreate.md), [fetching data from Google Drive](../plugins/plugin-googleworkspace/tasks/sheets/io.kestra.plugin.googleworkspace.sheets.Read.md) and writing results back to [Google Sheets](../plugins/plugin-googleworkspace/tasks/drive/io.kestra.plugin.googleworkspace.drive.Create.md), and so on.).
+The usage grew exponentially over the coming months, and the kinds of usage are becoming increasingly varied: (starting flows based on [file detection from buckets](/plugins/plugin-gcp/triggers/gcs/io.kestra.plugin.gcp.gcs.trigger), syncing data warehouses directly from operation [postgres database](/plugins/plugin-jdbc-postgres/tasks/l/io.kestra.plugin.jdbc.postgresql.copyout), developing a simple python program to [fetch APIs from a partner](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.python), starting long-running data science processes [over Kubernetes](/plugins/plugin-kubernetes/tasks/io.kestra.plugin.kubernetes.podcreate), [fetching data from Google Drive](/plugins/plugin-googleworkspace/tasks/sheets/io.kestra.plugin.googleworkspace.sheets.read) and writing results back to [Google Sheets](/plugins/plugin-googleworkspace/tasks/drive/io.kestra.plugin.googleworkspace.drive.create), and so on.).
 
 Here are some numbers that show the current usage for January 2022 ( for production environment only):
 - **4 clusters** one for every environment

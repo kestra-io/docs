@@ -26,7 +26,7 @@ To start using Airbyte, you only need a workstation with Docker and a terminal. 
 ```bash
 git clone https://github.com/airbytehq/airbyte.git
 cd airbyte
-./run-ab-platform.sh 
+./run-ab-platform.sh
 ```
 
 
@@ -64,7 +64,7 @@ First, download Kestra's [Docker Compose file](https://raw.githubusercontent.com
 curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
 ```
 
-Then, run `docker compose up -d` and [navigate to the UI](http://localhost:8080/). You can start [building your first flows](https://kestra.io/docs/getting-started) using the integrated code editor in the UI.
+Then, run `docker compose up -d` and navigate to the UI under `http://localhost:8080/`. You can start [building your first flows](https://kestra.io/docs/getting-started) using the integrated code editor in the UI.
 
 The UI ships with Blueprints, which provide ready-to-use flow examples. For instance, you can use [the following Blueprint](https://demo.kestra.io/ui/blueprints/community/30) that combines all steps needed to orchestrate Airbyte, dbt, and Kestra:
 
@@ -88,7 +88,7 @@ tasks:
       - id: sample-data
         type: io.kestra.plugin.airbyte.connections.Sync
         connectionId: 71291950-ccc1-4875-91b7-e801376c549e
-      
+
       - id: charizard
         type: io.kestra.plugin.airbyte.connections.Sync
         connectionId: 9bb96539-73e7-4b9a-9937-6ce861b49cb9

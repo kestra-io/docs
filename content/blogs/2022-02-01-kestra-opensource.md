@@ -59,7 +59,7 @@ The open source license is not limited and allows you to install and run it as y
 
 
 ## Kestra Plugins are also Open Source!
-When implementing the deep integration of the tools and databases you are using, the connectors (what we call “plugins”) can present the biggest challenge. Most orchestrators (even proprietary and licensed based) only talk bash or cmd. You have to manage all of your needs with simple commands, often requiring you to use another tool in order to have access to the underlying resource (such as Talend). With Kestra, we want to have a deep integration with your tools and let [bash](../plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.Bash.md) deal solely with edge cases a plugin can't cover.
+When implementing the deep integration of the tools and databases you are using, the connectors (what we call “plugins”) can present the biggest challenge. Most orchestrators (even proprietary and licensed based) only talk bash or cmd. You have to manage all of your needs with simple commands, often requiring you to use another tool in order to have access to the underlying resource (such as Talend). With Kestra, we want to have a deep integration with your tools and let [bash](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) deal solely with edge cases a plugin can't cover.
 
 An example for a query to Google BigQuery:
 
@@ -87,7 +87,7 @@ jq -r '.name' /tmp/query.json
 
 Kestra avoids the rigmarole of installing the software on the system, handling dependencies and conflicts, dealing with Python, etc. — just install a plugin (a simple jar) and speak directly with your database.
 
-We have a [number of plugins](../plugins/index.md) and the process of [developing your own](../docs/10.plugin-developer-guide/index.md) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/contact-us) if you require help or support).
+We have a [number of plugins](/plugins/) and the process of [developing your own](../docs/09.plugin-developer-guide/index.md) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/contact-us) if you require help or support).
 
 ## First Public Release *and* Production Ready!
 First public release doesn't mean that Kestra is not production ready. In fact, it has been **used in production since August 2020 at Leroy Merlin** — take a deeper look at the [case study](../blogs/2022-02-22-leroy-merlin-usage-kestra.md) if you want more detail. Here are some figures to give a picture of Kestra’s credentials:
