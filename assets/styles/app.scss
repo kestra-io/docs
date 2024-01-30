@@ -349,6 +349,11 @@ blockquote.blockquote {
         justify-content: center;
         margin-bottom: $spacer;
 
+        img {
+            width: 90% !important;
+            height: 90% !important;
+        }
+
         .material-design-icon {
             margin-top: -10px;
         }
