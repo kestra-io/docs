@@ -8,7 +8,7 @@
                         <div class="card" data-aos="fade-right">
                             <NuxtLink class="text-dark" :href="blog._path">
                                 <NuxtImg loading="lazy" format="webp" quality="80" densities="x1 x2" :src="blog.image" class="card-img-top rounded-3" :alt="blog.image" />
-                                <div class="card-body">
+                                <div class="card-body d-flex flex-column">
                                     <p class="type mt-1 mb-0">{{ blog.category }}</p>
                                     <h6 class="card-title mb-0">{{ blog.title }}</h6>
                                     <p class="author ">
@@ -52,31 +52,50 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
-    
+
     .container{
-        border-top: 1px solid $gray-300;
+        border-top: $block-border;
     }
-    :deep(.main){
-        padding-top: 2rem !important;
+    :deep(section){
+        .main {
+            padding-top: 2rem !important;
+        }
+
+        h2 {
+            color: $white;
+            font-size: 3.125rem;
+            font-weight: 300;
+        }
     }
     .card {
         height: 100%;
         box-shadow: none;
-    }
+        background-color: transparent;
 
-    .card-body {
-        padding: 0px;
-        .type {
-            font-size: $font-size-sm;
-            color: $primary;
+        .card-img-top {
+            border: $block-border;
         }
-        .author {
-            font-size: $font-size-sm;
-            color: $gray-500;
-            margin-bottom: 0;
+
+        .card-body {
+            padding: 0;
+            gap: 0.25rem;
+            .type {
+                font-size: $font-size-sm;
+                color: #CDD5EF;
+                font-weight: 400;
+            }
+
+            .card-title{
+                color: $white;
+                font-size: $font-size-md;
+                font-weight: 300;
+                line-height: 1.5rem;
+            }
+            .author {
+                color: $white-1;
+                font-size: $font-size-sm;
+                font-weight: 400;
+            }
         }
-    }
-    .card-title{
-        line-height: 1.5rem;
     }
 </style>

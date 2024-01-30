@@ -9,7 +9,7 @@
         <CareersHeader/>
         <CareersPerks/>
         <CareersPositions/>
-        <LayoutCommunity/>
+        <CareersCommunity/>
     </div>
 </template>
 
