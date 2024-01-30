@@ -7,7 +7,7 @@ Webserver serves the APIs and the User Interface (UI).
 
 The **Webserver** offers two main modules in the same component:
 - **API**: All the [APIs](../11.api-reference/index.md) that allow triggering executions for any system, and interacting with Kestra.
-- **UI**: The [User Interface](../01.getting-started/13.ui.md) (UI) is also served by the Webserver.
+- **UI**: The [User Interface](../01.getting-started/14.ui.md) (UI) is also served by the Webserver.
 
 The Webserver interacts mostly with the Repository to deliver a rich API/UI. It also interacts with the Queue to trigger new executions, follow executions in real-time, etc.
 
