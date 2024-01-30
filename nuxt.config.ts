@@ -140,6 +140,7 @@ export default defineNuxtConfig({
         '/docs/api-guide': { redirect: '/docs/api-reference' },
         '/docs/plugin-library': { redirect: '/docs/getting-started/plugins' },
         '/docs/troubleshooting': { redirect: '/docs/faq/troubleshooting' },
+        '/docs/developer-guide/best-practice': { redirect: '/docs/developer-guide/best-practices' },
         '/api/events/**': { proxy: 'https://eu.posthog.com/**' },
     },
 
