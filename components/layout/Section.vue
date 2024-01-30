@@ -86,6 +86,10 @@
                 font-weight: 300;
                 line-height: 50px;
 
+                @include media-breakpoint-down(sm) {
+                    font-size: 1.875rem !important;
+                }
+
                 span {
                     background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
                     background-clip: text;
@@ -99,7 +103,7 @@
         &.dark {
             div.subtitle {
                 p {
-                    color: var(--bs-white);
+                    color: $white;
                 }
             }
         }
@@ -121,6 +125,11 @@
             max-width: $baseline-max-width;
             margin: $spacer auto 0;
             font-weight: 400;
+
+
+            @include media-breakpoint-down(sm) {
+                font-size: $h6-font-size !important;
+            }
         }
 
         :deep(p.overline) {
