@@ -48,7 +48,7 @@ The `--no-delete` flag is used to preserve existing flows already stored within 
 The CLI provides several options to customize your validation and deployment process. CLI options you should be aware of include:
 
 * `--local`: performs the validation locally using the client. By default, Kestra validates flows server-side (a remote API call to your Kestra webserver/standalone server).
-* `--server`: allows you to specify the remote Kestra webserver/standalone server URL. The default URL is [http://localhost:8080](http://localhost:8080).
+* `--server`: allows you to specify the remote Kestra webserver/standalone server URL. The default URL is http://localhost:8080.
 
 
 For all available CLI options on both `flow validate` and `flow namespace update` commands, use the `-h` or `--help` flag:

@@ -1,9 +1,11 @@
 ---
 title: Blueprints
+icon: /docs/icons/concepts.svg
 ---
 
+Blueprints is a curated, organized, and searchable catalog of ready-to-use examples designed to help you kickstart your workflow.
 
-Blueprints is a curated, organized, and searchable catalog of ready-to-use examples designed to help you kickstart your workflow. Each Blueprint combines code and documentation and can be assigned several tags for organization and discoverability.
+Each Blueprint combines code and documentation and can be assigned several tags for organization and discoverability.
 
 All Blueprints are validated and documented. You can easily customize and integrate them into your new or existing flows with a single click on the "Use" button.
 
@@ -46,8 +48,6 @@ You can think of Custom Blueprints as your team's internal App Store, offering a
 ### How to create a new Custom Blueprint
 
 From the left navigation menu, go to **Blueprints**. Then, select the **Custom Blueprints** tab. Click on "Create".
-
-![Custom Blueprints](/docs/user-interface-guide/custom-blueprints.png)
 
 Add a title, description, and the contents of the flow. You can add as many tags as you want. Then click on the "Create" button.
 
