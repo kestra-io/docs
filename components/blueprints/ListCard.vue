@@ -1,17 +1,17 @@
 <template>
     <NuxtLink :href="`/blueprints/${blueprint.id}-${slugify(blueprint.title)}`">
-        <div class="card">
+        <div class="card bg-dark-2">
             <div class="card-body d-flex flex-column justify-content-between gap-3">
                 <div>
                     <div class="card-text">
                         <p class="title">{{ tagsList }}</p>
                     </div>
-                    <h6 v-if="blueprint.title">
+                    <h6 class="description" v-if="blueprint.title">
                         {{ blueprint.title.length > 150 ? blueprint.title.substring(0, 150) + '...' : blueprint.title }}
                     </h6>
                 </div>
                 <div class="d-flex flex-wrap gap-3">
-                    <div class="icon" v-for="n in blueprint.includedTasks" :key="n">
+                    <div class="icon bg-dark-4" v-for="n in blueprint.includedTasks" :key="n">
                         <CommonTaskIcon :cls="n" />
                     </div>
                 </div>
@@ -51,6 +51,8 @@
     @import "../../assets/styles/variable";
 
     .card {
+        border-radius: 8px;
+        border: $block-border;
         height: 100%;
 
         .card-body {
@@ -64,21 +66,22 @@
         }
 
         .title {
+            color: $white-1;
+            font-family: $font-family-monospace;
             font-size: $font-size-xs;
-            color: var(--bs-pink);
             font-weight: 700;
             text-transform: uppercase;
-            font-family: var(--bs-font-monospace);
-            line-height: 1.375rem;
         }
 
         .description {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            color: $white;
+            font-size: $h6-font-size;
+            font-weight: 700;
         }
 
-        .description::-webkit-scrollbar {
-            display: none;
+        .icon {
+            border-radius: 4px;
+            border: 1px solid $black-6 !important;
         }
     }
 </style>
