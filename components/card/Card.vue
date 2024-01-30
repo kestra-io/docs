@@ -2,6 +2,9 @@
     <div class="card bg-dark-2" :class="number ? 'number-card' : ''" data-aos="zoom-in">
         <div class="card-body">
             <span v-if="icon" class="card-icon"><component :is="icon" /></span>
+            <span v-if="img" class="card-icon">
+                <img :src="img" :alt="imgAlt">
+            </span>
             <span v-if="number" class="card-icon">
                 <p class="number">{{number}}</p>
             </span>
@@ -19,6 +22,12 @@
 
         props: {
             icon: {
+                default: undefined,
+            },
+            img: {
+                default: undefined,
+            },
+            imgAlt: {
                 default: undefined,
             },
             title: {
