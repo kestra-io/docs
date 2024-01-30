@@ -9,10 +9,10 @@
                 {{ date }}
             </span>
         </p>
-        <div class="py-3 author">
-            <NuxtImg loading="lazy" format="webp" densities="x1 x2" width="68" class="rounded-circle"
+        <div class="py-3 author d-flex align-items-center gap-3">
+            <NuxtImg loading="lazy" format="webp" densities="x1 x2" width="48" class="rounded-circle"
                 :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name" /><br />
-            <strong>{{ blog.author.name }}</strong>
+            <p>{{ blog.author.name }}</p>
         </div>
 
     </div>
@@ -40,29 +40,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
-.blog-details {
-    margin-left: 1rem !important;
-}
-
-p {
-    font-size: $font-size-sm;
-
-    .category {
-        color: var(--bs-primary);
+    .blog-details {
+        margin-left: 1rem !important;
     }
-}
 
-img {
-    max-width: 68px;
-}
+    p {
+        font-size: $font-size-sm;
 
-.date {
-    color: var(--bs-gray-600)
-}
+        .category, .date {
+            color: $purple;
+            font-size: $font-size-sm;
+            font-weight: 100;
+        }
 
-.author {
-    border-top: 1px solid $gray-300;
-    border-bottom: 1px solid $gray-300;
-}</style>
+        .date {
+            color: $white;
+        }
+    }
+
+    img {
+        max-width: 68px;
+    }
+
+    .author {
+        border-top: $block-border;
+        border-bottom: $block-border;
+
+        p {
+            color: $white;
+            font-size: $font-size-md;
+            font-weight: 100;
+            margin: 0;
+        }
+    }
+</style>

@@ -465,8 +465,7 @@ export default {
                     }
 
                         &.show, &:hover {
-                            color: $primary !important;
-                            background: $black-6;
+                            color: $purple-36 !important;
                         }
                     }
 
@@ -497,7 +496,7 @@ export default {
                         --bs-dropdown-link-active-bg: $black-4;
                         padding: 1rem;
                         border-radius: $border-radius-lg;
-                        border: 1px solid var(--bs-border-color);
+                        border: 1px solid $black-6;
                         background: $black-2;
 
                     @include media-breakpoint-down(lg) {
@@ -526,28 +525,34 @@ export default {
                             margin-bottom: 0;
                         }
 
-                        .material-design-icon,
-                        span {
-                            color: $purple-12;
+                        .material-design-icon {
+                            color: $black-8;
+                        }
+
+                        p {
+                            color: $black-8 !important;
+                            font-size: 0.813rem;
+                            font-weight: 300;
+                            margin-bottom: 0;
+
+                            span {
+                                display: inline-block;
+                                color: $white !important;
+                                font-size: $font-size-sm;
+                                font-weight: 600;
+                            }
+
+                            mark {
+                                padding-left: 0;
+                                padding-right: 0;
+                            }
                         }
 
                         &:hover {
+                            background-color: $black-3;
 
-                            .material-design-icon,
-                            span {
-                                color: $primary;
-                            }
-
-                            p span {
-                                &:after {
-                                    content: '→';
-                                    font-weight: bold;
-                                    font-family: var(--bs-font-monospace);
-                                    position: absolute;
-                                    font-size: 26px;
-                                    top: -8px;
-                                    right: -25px;
-                                }
+                            .material-design-icon, span, p {
+                                color: $white !important;
                             }
                         }
 
@@ -568,21 +573,6 @@ export default {
 
                             >.material-design-icon__svg {
                                 bottom: 0.125rem;
-                            }
-                        }
-
-                            p {
-                                color: var(--bs-white);
-                                font-size: var(--bs-font-size-sm);
-                                margin-bottom: 0;
-
-                            span {
-                                display: inline-block;
-                            }
-
-                            mark {
-                                padding-left: 0;
-                                padding-right: 0;
                             }
                         }
                     }
