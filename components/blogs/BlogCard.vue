@@ -30,17 +30,19 @@
     @import "../../assets/styles/variable";
 
     h6 {
-        font-size: $font-size-base;
-        line-height: 24px;
-        color: var(--bs-black)
+        color: $white;
+        font-size: $font-size-md;
+        font-weight: 300;
     }
 
     span {
-        color: var(--bs-primary);
+        color: #CDD5EF;
         font-size: $font-size-sm;
+        font-weight: 400;
     }
     .card-image {
         object-fit: cover;
         aspect-ratio: 16/9;
+        border: 1.091px solid $black-3;
     }
 </style>
