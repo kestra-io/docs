@@ -1,17 +1,11 @@
 <template>
-    <div class="container">
+    <div class="container bg-dark-2">
         <Section
-            title="Join our Team"
+            subtitle="Join Our Team and Contribute to the Future of Data Orchestration"
         >
-            <div class=" d-flex justify-content-center">
-                <p class="text-center mb-5 baseline-max-width" data-aos="fade-right">
-                    We are always on the lookout for passionate and talented individuals. If you are excited about the prospect of working on cutting-edge technology and shaping the future of orchestration, we would love to hear from you ❤️
-                </p>
-            </div>
-
             <div class="text-center cta">
-                <NuxtLink href="/careers" target="_blank" class="btn btn-primary me-2" data-aos="zoom-in">
-                    Join us
+                <NuxtLink href="/careers" target="_blank" class="btn btn-animated btn-purple-animated me-2" data-aos="zoom-in">
+                    Get started
                 </NuxtLink>
             </div>
         </Section>
@@ -30,19 +24,41 @@
     @import "../../assets/styles/variable";
 
     .container {
-        text-align: center;
-        background: $purple-8 no-repeat bottom right;
-        background-size: contain;
-        color: var(--bs-black);
-        padding-left: calc($spacer * 4);
-        padding-right: calc($spacer * 4);
-        margin-bottom: calc($spacer * 2);
-        margin-top: calc($spacer * -2);
-        border-radius: 10px;
+        border-radius: 8px;
+        border: $block-border;
+        position: relative;
 
+        &::before {
+            content: "";
+            position: absolute;
+            width: 262px;
+            height: 170px;
+            background: url("/landing/features/scheduling/light-mask2.svg");
+            right: 0px;
+            top: 0px;
+            z-index: 1;
+        }
 
-        :deep(p.baseline) {
-            color: var(--bs-black);
+        :deep(section) {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+
+            .subtitle {
+                max-width: 46%;
+
+                @include media-breakpoint-down(xl) {
+                    max-width: 100%;
+                }
+
+                p {
+                    font-size: $h3-font-size;
+                    font-weight: 100;
+                }
+            }
+
+            .main {
+                padding-top: 0;
+            }
         }
     }
 </style>
