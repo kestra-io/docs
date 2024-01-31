@@ -1,5 +1,5 @@
 <template>
-    <div class="container bg-dark-3">
+    <div class="container bg-dark-2">
         <Section
             subtitle="Getting Started"
             baseline="Start building with Kestra — Automate Everything Everywhere All at Once."
