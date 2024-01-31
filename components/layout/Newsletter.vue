@@ -127,11 +127,6 @@
             }
         }
 
-        .btn-dark {
-            border: 1px solid #414145;
-            background: $black-4;
-        }
-
         .btn-lg {
             background: $purple-24;
             padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);

@@ -176,6 +176,15 @@ blockquote.blockquote {
     }
 }
 
+.btn-dark {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: $black-4;
+
+    &:hover {
+        background-color: $black-2;
+        border-color: rgba(255, 255, 255, 0.12);
+    }
+}
 
 .btn-dark-animated {
     &::before {

@@ -1,16 +1,14 @@
 <template>
-    <div class="container">
+    <div class="container bg-dark-3">
         <Section
-            title="Getting started with Kestra"
+            subtitle="Getting Started"
+            baseline="Start building with Kestra — Automate Everything Everywhere All at Once."
         >
-        <p class="text-center" data-aos="fade-right">
-            Start building with Kestra — Automate Everything Everywhere All at Once.
-        </p>
-        <div class="text-center cta mt-5">
-                <NuxtLink href="/docs" target="_blank" class="btn btn-primary me-2 mb-2" data-aos="zoom-in">
+            <div class="d-flex gap-2 flex-wrap justify-content-center align-items-center">
+                <NuxtLink class="btn btn-dark me-2" target="_blank" href="/docs">
                     Read the docs
                 </NuxtLink>
-                <NuxtLink href="/docs/getting-started" class="btn btn-secondary mb-2" data-aos="zoom-in">
+                <NuxtLink class="btn btn-animated btn-purple-animated" href="/docs/getting-started">
                     Get started
                 </NuxtLink>
             </div>
@@ -30,15 +28,32 @@
     @import "../../assets/styles/variable";
 
     .container {
-        background: $purple-8 url("/landing/dot2.svg") no-repeat bottom right;
-        color: var(--bs-black);
-        padding-left: calc($spacer * 4);
-        padding-right: calc($spacer * 4);
-        margin-bottom: calc($spacer * 2);
-        border-radius: 10px;
+        padding-left: calc($spacer * 1);
+        padding-right: calc($spacer * 1);
+        margin-top: calc($spacer * 5.625);
+        border-radius: 8px;
+        border: $block-border;
+        background: $black-2 url("/landing/plugins/footer-bg.svg") no-repeat right;
+        background-size: 20% 100%;
 
-        :deep(p.baseline) {
-            color: var(--bs-black);
+        :deep(section) {
+            padding: 2rem 0;
+            .subtitle p {
+                color: $white;
+                font-size: $h3-font-size;
+                font-weight: 100;
+                margin-bottom: 0;
+            }
+
+            .baseline {
+                color: $white;
+                font-size: $h6-font-size;
+                font-weight: 300;
+            }
+
+            .main {
+                padding-top: calc($spacer * 1) !important;
+            }
         }
     }
 </style>

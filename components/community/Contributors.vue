@@ -1,17 +1,17 @@
 <template>
     <div class="container">
         <Section
-            title="Our contributors"
-            subtitle="Orchestrate Success Together"
+            subtitle="Our contributors"
         >
-            <div v-if="contributors" class="contributors">
+            <div v-if="contributors" class="contributors d-flex flex-wrap">
                 <template v-for="(contributor) in contributorsRand">
-                    <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark" data-aos="zoom-in" >
+                    <a :href="'https://github.com/' + contributor.name" target="_blank" class="d-flex flex-column gap-3 align-items-center" data-aos="zoom-in" >
                         <img
                             class="rounded-circle"
                             :src="contributor.avatar"
-                            :alt="contributor.username"
+                            :alt="contributor.name"
                         />
+                        <p>{{contributor.name}}</p>
                     </a>
                 </template>
             </div>
@@ -46,17 +46,35 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
+    :deep(section) {
+        padding-bottom: 0;
+    }
+
     .contributors {
         height: 100%;
         max-height: 100%;
         overflow: hidden;
         text-align: center;
         padding: $spacer;
+        column-gap: 2rem;
+        row-gap: 4rem;
 
-        img {
-            margin-right: $spacer;
-            margin-bottom: $spacer;
-            width: 90px;
+        a {
+            width: fit-content;
+            img {
+                width: 90px;
+            }
+
+            p {
+                max-width: 90px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: $purple-35;
+                font-size: $font-size-md;
+                font-weight: 400;
+            }
+
         }
     }
 </style>
