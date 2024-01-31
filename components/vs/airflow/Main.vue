@@ -43,21 +43,13 @@
                 <p>Kestra's design aims to be user-friendly, not just for developers and engineers but also for business stakeholders. The user interface allows SQL-savvy users to modify queries or parameters directly from the UI, enabling them to contribute without needing to delve into the codebase.</p>
                 <p>In contrast, Airflow only supports writing workflows in Python without the possibility of building them from the UI in collaboration with business stakeholders.</p>
             </div>
+
+            <div>
+                <h2>Modern Data Stack Integration</h2>
+                <p>Kestra's flexible plugin ecosystem enables seamless integration with a wide range of popular data tools. All workflow components are also exposed via REST APIs, allowing third-party systems to interact with Kestra.</p>
+                <p>In contrast, modifying workflow components in Airflow always requires redeploying code.</p>
+            </div>
         </Section>
-
-<!--        <Section class="modern mb-5">-->
-<!--            <div class="row">-->
-<!--                <div class="col-lg-6 col-sm-12 text-center" data-aos="fade-left">-->
-<!--                    <img class="zoom img-fluid" src="/landing/vs/airflow/modern-data-stack.png" width="375" alt="Kestra plugins"/>-->
-<!--                </div>-->
-<!--                <div class="col-lg-6 col-sm-12 pe-5 mt-5 mt-lg-0" data-aos="fade-right">-->
-<!--                    <h3>Modern Data Stack Integration</h3>-->
-<!--                    <p>Kestra's flexible plugin ecosystem enables seamless integration with a wide range of popular data tools. All workflow components are also exposed via REST APIs, allowing third-party systems to interact with Kestra</p>-->
-<!--                    <p>In contrast, modifying workflow components in Airflow always requires redeploying code.</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </Section>-->
-
         <div class="table-responsive mb-5">
             <table class="table table-bordered mb-0">
                 <thead>
