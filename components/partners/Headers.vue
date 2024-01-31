@@ -8,8 +8,8 @@
         </div>
         <div class="description position-absolute start-50 translate-middle text-center w-50">
             <h2>Kestra Partner <br><span>Ecosystem</span></h2>
-            <span>Whether you are building something new, upgrading a legacy stack, or re-platforming, you can trust Kestra and our partner ecosystem to make that journey a success.</span><br>
-            <a href="#form" class="btn btn-primary mt-4">Become a partner</a>
+            <span class="text">Whether you are building something new, upgrading a legacy stack, or re-platforming, you can trust Kestra and our partner ecosystem to make that journey a success.</span><br>
+            <a href="#form" class="btn btn-animated btn-purple-animated mt-4">Become a partner</a>
         </div>
     </div>
 </template>
@@ -18,19 +18,58 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: $purple-17;
-        padding-bottom: 3rem;
+        padding-bottom: 8rem;
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 6rem;
+        }
 
         .logo {
-            top: 245px;
+            top: 21.438rem;
         }
 
         .description {
-            top: 75%;
-        }
+            top: 74%;
 
-        h2 span {
-            font-weight: 100;
+            h2 {
+                color: $white;
+                font-size: $font-size-4xl;
+                font-weight: 300;
+                margin-bottom: 1rem;
+
+                span {
+                    background: linear-gradient(90deg, #E151F7 35.49%, #5C47F5 65.98%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+
+            .text {
+                color: $white;
+                font-size: $font-size-xl;
+                font-weight: 300;
+            }
+
+            @include media-breakpoint-down(xl) {
+                h2 {
+                    font-size: $font-size-3xl;
+                }
+
+                .text {
+                    font-size: $font-size-lg;
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                h2 {
+                    font-size: $font-size-2xl;
+                }
+
+                .text {
+                    font-size: $font-size-sm;
+                }
+            }
         }
     }
 </style>

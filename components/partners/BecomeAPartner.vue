@@ -4,7 +4,7 @@
         <div class="hero hero-sm container">
             <div class="row justify-content-center mb-4">
                 <div class="col-md-10 col-lg-7 text-center">
-                    <h3 data-aos="fade-left">Become a Partner</h3>
+                    <h3 data-aos="fade-left">Become a <span>Partner</span></h3>
                     <p>If you are interested in becoming a Kestra partner, please  contact us with any questions.</p>
                 </div>
             </div>
@@ -50,6 +50,23 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: $purple-13;
+        h3 {
+            color: $white;
+            font-size: $font-size-4xl;
+            font-weight: 300;
+
+            span {
+                background: linear-gradient(90deg, #E151F7 54.91%, #5C47F5 66.79%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+
+        p {
+            color: $white;
+            font-size: $font-size-xl;
+            font-weight: 300;
+        }
     }
 </style>

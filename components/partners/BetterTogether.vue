@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <Section
-            title="What our Partners Love About Kestra"
-            subtitle="Reasons to integrate with Kestra"
+            subtitle="Reasons to integrate with"
+            subtitle-after="Kestra"
         >
             <div class="row">
                 <div class="col-md-4 testimonials-item">
@@ -70,42 +70,12 @@ export default {
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
+    .container {
+        border-top: $block-border;
+    }
+
     .row {
         align-items: center;
         justify-content: center;
-    }
-
-    :deep(.card-body) {
-        padding: calc($spacer * 2);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        min-height: 420px;
-
-        &:before {
-            content: "“";
-            font-size: 10rem;
-            color: var(--bs-primary);
-            position: absolute;
-            margin-top: -3.5rem;
-            margin-left: -0.5rem;
-        }
-
-        p {
-            margin-top: calc($spacer * 3.5);
-        }
-
-        .footer {
-            img {
-                border-radius: 50%;
-                float: left;
-                margin-right: $spacer;
-            }
-
-            span {
-                font-size: $font-size-sm;
-                float: left;
-            }
-        }
     }
 </style>
