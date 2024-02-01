@@ -153,9 +153,6 @@
     :deep(.slug) {
         margin-left: 0;
     }
-    .img{
-        min-width: 100%;
-    }
 
     .bd-layout {
         display: block;
@@ -165,7 +162,7 @@
         column-gap: 4rem;
     }
     .bd-content{
-        min-width: 100%;
+        max-width: 100%;
     }
     .breadcrumb {
         margin: 0;
