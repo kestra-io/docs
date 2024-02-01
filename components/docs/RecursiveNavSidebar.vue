@@ -164,9 +164,9 @@
             }
 
             a {
-                color: var(--bs-body-color);
+                color: $white-1;
                 font-size: $font-size-sm;
-                border-left: 2px solid var(--bs-gray-200);
+                border-left: 1px solid var(--bs-gray-200);
                 padding: calc($spacer / 2);
                 display: flex;
                 width: 100%;
@@ -175,14 +175,9 @@
                     font-weight: 600;
                 }
 
-                &:hover {
-                    border-left: 2px solid var(--bs-primary);
-                    color: var(--bs-primary);
-                }
-
-                &.active {
-                    color: var(--bs-primary);
-                    border-left: 2px solid var(--bs-primary);
+                &:hover, &.active {
+                    border-left: 1px solid $purple;
+                    color: $purple;
                 }
 
                 &.disabled {
