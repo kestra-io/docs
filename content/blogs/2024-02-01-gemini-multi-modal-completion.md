@@ -98,6 +98,8 @@ This is the generated text for the description of the video, the video was a scr
 
 ![Gemini task outputs for a multimodal completion with a video](/blogs/2024-02-01-gemini-multi-modal-completion/video-completion-output.png)
 
+## Security Safety with Gemini Model
+
 Gemini has security safety included, and it works for all type of content.
 
 For example, if you ask Gemini to describe a photo of an identity card, the answer will be blocked for a safety reason and the task ends in WARNING.
@@ -109,6 +111,12 @@ You can see in the outputs that the safety category `HARM_CATEGORY_DANGEROUS_CON
 ## Conclusion ##
 
 Now that you saw how to leverage Vertex AI Gemini model with Kestra, you can play with it and integrate it to others workflows!
+
+Check out others tasks related to Generative AI that we support with Kestra: 
+
+- **CustomJob**: To start Vertex AI Custom Jobs
+- **ChatCompletion**: For Chat completion
+- **TextCompletion**: For Text completion
 
 For more information, you can have a look at the [Google Quickstarts for Generative AI](https://cloud.google.com/vertex-ai/docs/generative-ai/start/quickstarts/api-quickstart) and the documentation of the TestCompletion and ChatCompletion tasks. 
 
