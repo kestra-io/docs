@@ -182,7 +182,6 @@
 
                 &.disabled {
                     cursor: pointer;
-                    color: var(--bs-gray-500);
                 }
             }
 
