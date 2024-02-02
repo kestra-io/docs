@@ -37,14 +37,14 @@
                             {{ item.title }}
                     </NuxtLink>
                     <template v-if="filterChildren(item).length > 0">
-                        <chevron-up
+                        <chevron-down
                             v-if="isShow(item._path)"
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
                             :data-bs-target="'#'+pathToId(item._path)"
                             role="button"
                         />
-                        <chevron-down
+                        <chevron-right
                             v-else
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
@@ -68,13 +68,13 @@
 
 <script>
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
+    import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
     export default {
         name: "RecursiveNavSidebar",
         components: {
             ChevronDown,
-            ChevronUp
+            ChevronRight
         },
         props: {
             items: {
@@ -150,8 +150,9 @@
             .accordion-button {
                 width: 16px;
 
-                .material-design-icon > .material-design-icon__svg {
+                .material-design-icon__svg {
                     bottom: 0;
+                    color: #646465;
                 }
             }
 
@@ -166,17 +167,14 @@
             a {
                 color: $white-1;
                 font-size: $font-size-sm;
-                border-left: 1px solid var(--bs-gray-200);
                 padding: calc($spacer / 2);
                 display: flex;
-                width: 100%;
 
                 &.active {
                     font-weight: 600;
                 }
 
                 &:hover, &.active {
-                    border-left: 1px solid $purple;
                     color: $purple;
                 }
 
