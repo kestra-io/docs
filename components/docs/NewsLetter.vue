@@ -62,7 +62,6 @@
                     axios.post(hubSpotUrl, formData)
                         .then((response) => {
                             if (response.status !== 200) {
-                                console.log(response.data)
                                 this.message = response.data.message;
                                 this.valid = false;
                             } else {

@@ -430,7 +430,7 @@ We've extended the existing Singer plugin to support the following new taps:
 
 ### MotherDuck integration
 
-The DuckDB plugin [now supports MotherDuck](https://github.com/kestra-io/plugin-jdbc/pull/144). [All DuckDB blueprints](http://localhost:8080/ui/blueprints?page=1&selectedTag=35) now also work with [MotherDuck](https://motherduck.com/) as long as you provide the MotherDuck service token and database name in your JDBC URL.
+The DuckDB plugin [now supports MotherDuck](https://github.com/kestra-io/plugin-jdbc/pull/144). All DuckDB blueprints now also work with [MotherDuck](https://motherduck.com/) as long as you provide the MotherDuck service token and database name in your JDBC URL.
 
 We recommend storing the MotherDuck service token as a Kestra [Secret](https://kestra.io/docs/developer-guide/secrets). Below is an example pointing the Query task to the MotherDuck database named `my_db` and referencing the token stored as `MOTHERDUCK_TOKEN` secret:
 

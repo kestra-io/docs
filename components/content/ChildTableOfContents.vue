@@ -27,22 +27,22 @@
                 currentPage = route.path;
             }
 
-            const queryBuilder = queryContent(currentPage).without("body");
+            currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
+
+            const queryBuilder = queryContent(currentPage)
 
             const {data: navigation} = await useAsyncData(
                 `ChildTableOfContents-${hash(currentPage)}`,
                 () => fetchContentNavigation(queryBuilder),
             );
 
-            const routePath = route.path.endsWith("/") ? route.path.slice(0, -1) : route.path;
-            const dir = (navDirFromPath(routePath, navigation.value) || [])
+            const dir = (navDirFromPath(currentPage, navigation.value) || [])
                 .filter(value => value._path !== currentPage)
 
             return {dir, max};
         },
 
         render(ctx) {
-            const slots = useSlots();
             const {dir, max} = ctx;
 
             const renderLink = (link) => h(NuxtLink, {to: link._path}, () => link.title);
@@ -67,7 +67,7 @@
 
             const defaultNode = (data) => renderLinks(data, 0);
 
-            return slots?.default ? slots.default({dir, ...this.$attrs}) : defaultNode(dir);
+            return this.$slots?.default ? this.$slots.default({dir, ...this.$attrs}) : defaultNode(dir);
         }
     });
 </script>

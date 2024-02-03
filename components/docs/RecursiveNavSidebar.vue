@@ -60,6 +60,7 @@
                     :active-slug="activeSlug"
                     :open="isShow(item._path)"
                     :parent-slug="item._path"
+                    :type="type"
                 />
             </ul>
         </template>
@@ -129,10 +130,12 @@
                 return item.isPage ?? true;
             },
             getClass(item, depthLevel, disabled) {
+                let s = (this.activeSlug + '/').startsWith(item._path + '/');
+
                 return {
                     bold: depthLevel === 1,
-                    active: this.activeSlug.startsWith(item._path),
-                    disabled: this.activeSlug.startsWith(item._path) && disabled
+                    active: s,
+                    disabled: s && disabled
                 }
             }
         }

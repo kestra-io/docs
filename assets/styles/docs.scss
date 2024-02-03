@@ -31,7 +31,7 @@ $bd-gutter-x: 3rem;
 }
 
 .bd-content, .bd-main > div.bd-title > h1 {
-    max-width: 700px;
+    width: 700px;
     margin: 0 auto;
 }
 
@@ -133,6 +133,17 @@ $bd-gutter-x: 3rem;
             }
         }
     }
+
+
+    .card {
+        h4 {
+            padding-top: 0;
+        }
+
+        .card-icon {
+            background: none
+        }
+    }
 }
 
 .bd-intro {
@@ -146,7 +157,7 @@ $bd-gutter-x: 3rem;
 
 @media (min-width: 700px) {
     .bd-content, .bd-main h1 {
-        width: 700px;
+        max-width: 700px;
     }
 }
 

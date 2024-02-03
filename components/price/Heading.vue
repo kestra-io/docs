@@ -32,7 +32,7 @@
                                         editor</span></li>
                                 <li data-aos="fade-right" data-aos-delay="200"><span>Embedded documentation</span></li>
                                 <li data-aos="fade-right" data-aos-delay="250"><span>Live-updating topology view</span></li>
-                                <li data-aos="fade-right" data-aos-delay="300"><span>Acess to 400+ plugins</span></li>
+                                <li data-aos="fade-right" data-aos-delay="300"><span>Access to 400+ plugins</span></li>
                                 <li data-aos="fade-right" data-aos-delay="350"><span>Git & CI/CD integrations</span></li>
                                 <li data-aos="fade-right" data-aos-delay="400"><span>Basic authentication</span></li>
                                 <li data-aos="fade-right" data-aos-delay="450"><span>Community support</span></li>

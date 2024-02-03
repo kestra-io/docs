@@ -45,23 +45,17 @@ const {navDirFromPath} = useContentHelpers()
         components: {ArrowLeft, ArrowRight},
         async setup(props) {
             const route = useRoute();
-            const queryBuilder = queryContent(props.basePath);
 
-            const {data: navigation} = await useAsyncData(
-                `PrevNext-${hash(props.basePath)}`,
-                () => fetchContentNavigation(queryBuilder)
-            );
+            const {prev, next} = prevNext(props.navigation, route.path);
 
-            const {prev, next} = prevNext(navigation, route.path);
-
-            return {navigation, prev, next};
+            return {prev, next};
         },
         props: {
-            basePath:  {type: String, default: '/'}
+            navigation: {type: Object, required: true}
         },
         methods: {
             directory(link) {
-                const nav = navDirFromPath(link._path, this.navigation.value || [])
+                const nav = navDirFromPath(link._path, this.navigation || [])
 
                 if (nav && nav[0]) {
                     return nav[0]._path

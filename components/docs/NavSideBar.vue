@@ -19,7 +19,8 @@
                         :items="items"
                         :depth-level="1"
                         :active-slug="activeSlug"
-                        :open="true" />
+                        :open="true"
+                    />
                 </nav>
             </div>
         </div>

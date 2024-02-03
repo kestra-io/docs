@@ -65,7 +65,7 @@ tasks:
         beforeCommands:
           - pip install requests
         warningOnStdErr: false
-        script: | 
+        script: |
           import requests
           import json
 
@@ -74,12 +74,12 @@ tasks:
 
           with open("output.json", "w") as output_file:
               json.dump(data, output_file)
-          
+
       - id: myresult
         type: io.kestra.core.tasks.storages.LocalFiles
         outputs:
           - output.json
-  
+
   - id: getFileContent
     type: io.kestra.plugin.scripts.shell.Script
     script: cat {{outputs.myresult.uris['output.json']}}
@@ -115,12 +115,12 @@ tasks:
         commands:
           - python python-scripts/etl_script.py
           - python python-scripts/generate_orders.py
-      
+
       - id: output
         type: io.kestra.core.tasks.storages.LocalFiles
         outputs:
           - orders.csv
-```      
+```
 
 ## Execution Labels
 
@@ -216,7 +216,7 @@ kestra:
       enabled: false
       username: admin
       password: *******
-```    
+```
 
 ## Secret Function
 
@@ -231,9 +231,9 @@ tasks:
   - id: secret
     type: io.kestra.core.tasks.debugs.Return
     format: "{{ secret('SLACK_WEBHOOK_KEY') }}"
-```    
+```
 
-Even though the environment variable name is prefixed with `SECRET_`, you only need to reference the key without a prefix in your flow. For more information, check the detailed [Managing Secrets](../docs/05.developer-guide/10.secrets.md) guide.
+Even though the environment variable name is prefixed with `SECRET_`, you only need to reference the key without a prefix in your flow. For more information, check the detailed [Managing Secrets](../docs/08.developer-guide/10.secrets.md) guide.
 
 
 ## Improved Polling Triggers
@@ -256,10 +256,10 @@ namespace: dev
 tasks:
   - id: hello
     type: io.kestra.plugin.spark.PythonSubmit
-    message: this task will be picked up by a worker started with key spark 
+    message: this task will be picked up by a worker started with key spark
     workerGroup:
       key: spark
-```      
+```
 
 You can start a new worker from a CLI using the command `kestra server worker --worker-group=workerGroupKey --server=your_ee_host --user=your_ee_auth`, which points the worker to your Kestra Enterprise server.
 
@@ -270,7 +270,7 @@ Keep in mind that **worker groups are entirely optional**. Use them only for com
 
 ## New Plugin to interact with OpenAI
 
-The [new OpenAI plugin](https://kestra.io/plugins/plugin-openai) allows you to interact with the OpenAI platform from a simple declarative interface in Kestra. It comes with two tasks: 
+The [new OpenAI plugin](https://kestra.io/plugins/plugin-openai) allows you to interact with the OpenAI platform from a simple declarative interface in Kestra. It comes with two tasks:
 1. Chat completion: to get a response from an LLM given a prompt
 2. Image generation: to create an image based on a natural language prompt.
 
@@ -278,7 +278,7 @@ The [new OpenAI plugin](https://kestra.io/plugins/plugin-openai) allows you to i
 
 ## Further Enhancements
 
-Further enhancements added as part of this release include: 
+Further enhancements added as part of this release include:
 - The ability to filter all dashboards with precision up to the minute by changing the date filter granularity
 - Enhancements to the guided onboarding tour
 - Logs pagination and customization — his helps with performance and allows you to configure how you want logs to be displayed in your Kestra UI settings.
@@ -290,9 +290,9 @@ Further enhancements added as part of this release include:
 
 ## Next steps
 
-This post covered new features and enhancements added in Kestra 0.10.0 release. We are looking forward to seeing how you use those new features. Your input and feedback help us prioritize future enhancements. 
+This post covered new features and enhancements added in Kestra 0.10.0 release. We are looking forward to seeing how you use those new features. Your input and feedback help us prioritize future enhancements.
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). 
+If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).
 
