@@ -19,7 +19,7 @@
     "@kestra-io/ui-libs": "^0.0.36",
     "@popperjs/core": "^2.11.8",
     "@vue-flow/background": "^1.2.0",
-    "@vue-flow/controls": "1.0.6",
+    "@vue-flow/controls": "1.1.0",
     "@vue-flow/core": "1.14.3",
     "aos": "^2.3.4",
     "axios": "^1.6.6",
