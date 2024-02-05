@@ -7,7 +7,7 @@
                         <h1 data-aos="fade-right">The differences between Kestra and Airflow</h1>
                         <p class="baseline" data-aos="fade-left">How to Choose the Right Orchestration Platform</p>
                         <div class="cta">
-                            <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary mx-2 mt-2" data-aos="zoom-in">
+                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-aos="zoom-in">
                                 Get started with Kestra
                             </NuxtLink>
                         </div>
@@ -31,11 +31,26 @@
     @import "../../../assets/styles/variable";
 
     .container-fluid {
-        background: #090311 url("/landing/vs/airflow/header-bg.svg") no-repeat bottom center;
+        background: url("/landing/vs/airflow/header-bg.svg") no-repeat center;
         background-size: cover;
         color: var(--bs-white);
         padding-top: 80px;
         margin-top: -80px;
+
+        .container {
+            border-bottom: $block-border;
+
+            h1, .baseline {
+                color: $white;
+                font-weight: 300;
+                padding: 0;
+                margin-bottom: 1rem;
+            }
+
+            .baseline {
+                font-size: $font-size-xl;
+            }
+        }
     }
 </style>
 
