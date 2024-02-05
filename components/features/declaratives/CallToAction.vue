@@ -1,14 +1,14 @@
 <template>
     <div class="container">
         <Section
-            title="Getting Started with Kestra's Declarative Orchestrator"
+            subtitle="Getting Started with  Declarative Orchestration"
         >
-            <div class="text-center cta">
-                <p data-aos="fade-left">
-                    Kickstart your journey with Kestra's declarative data orchestrator and unlock the full potential of your data.
-                </p>
-                <NuxtLink href="/docs/getting-started" class="btn btn-primary mt-3 mb-2" data-aos="zoom-in">
-                    Get Started with Kestra
+            <div class="d-flex justify-content-center gap-3">
+                <NuxtLink href="/docs" class="btn btn-dark bg-dark-4" data-aos="zoom-in">
+                    Read the docs
+                </NuxtLink>
+                <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                    Get started
                 </NuxtLink>
             </div>
         </Section>
@@ -38,21 +38,31 @@
     @import "../../../assets/styles/variable";
 
     .container {
-        background: $purple-8 url("/landing/dot2.svg") no-repeat bottom right;
-        color: var(--bs-black);
-        padding-left: calc($spacer * 4);
-        padding-right: calc($spacer * 4);
-        margin-bottom: calc($spacer * 2);
-        margin-top: calc($spacer * 2);
-        border-radius: 10px;
+        border-radius: 8px;
+        border: $block-border;
+        background: $black-2 url("/landing/community/bg.svg") no-repeat right;
+        background-size: 20% 100%;
 
-        section {
-            max-width: 600px;
-            margin: 0 auto;
+        :deep(section) {
+            padding: 2rem 0;
+            .subtitle {
+                color: $white;
+                font-size: $h3-font-size;
+                font-weight: 100;
+                max-width: 70%;
+
+                @include media-breakpoint-down(lg) {
+                    max-width: 100%;
+                }
+            }
+
+            .main {
+                padding-top: 0;
+            }
         }
 
-        :deep(p.baseline) {
-            color: var(--bs-black);
+        .btn-dark {
+            border: 1px solid $black-6;
         }
     }
 </style>
