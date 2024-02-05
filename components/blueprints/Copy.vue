@@ -7,7 +7,7 @@
         data-bs-placement="top"
         title="Copied!"
     >
-        <button class="btn bg-white" @click="copySourceCode">Copy source code</button>
+        <button class="btn" @click="copySourceCode">Copy source code</button>
     </div>
 </template>
 <script setup>
@@ -50,3 +50,17 @@
         }
     };
 </script>
+<style scoped lang="scss">
+    @import "../../assets/styles/variable";
+
+    button {
+        background-color: transparent;
+        border: 1px solid #3D3D3F;
+        color: $white;
+
+        &:hover {
+            background-color: #3D3D3F;
+            color: $white;
+        }
+    }
+</style>

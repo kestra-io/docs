@@ -16,7 +16,7 @@
             </CustomDetails>
         </div>
     </div>
-    
+
 </template>
 
 <script setup>
@@ -30,7 +30,7 @@ import CustomDetails from "../components/layout/CustomDetails.vue";
 .que{
     background-color: $black-2;
     box-shadow: none;
-    border: 1px solid $black-3;
+    border: $block-border;
     line-height: 1.625rem !important;
     font-weight: 700;
     font-size: $font-size-lg;

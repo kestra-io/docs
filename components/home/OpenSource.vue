@@ -13,53 +13,46 @@
             </template>
         </div>
         <div class="container container-min">
-
             <Section
-                title="Join the Open Source Community"
-                subtitle="Community"
-                baseline="Kestra empowers you to customize and extend your data orchestration with plugins and features that can be deployed anywhere. Join our Open Source community and help us shape the best orchestration and scheduling platform on the market."
+                subtitle="Join the community"
             >
                 <div class="metrics">
                     <div class="counter-box text-center">
-                        <Star title="" />
-                        <h6>Stars</h6>
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.stars : 0" :duration="4000"></CountTo>
                         </h5>
+                        <p>Stars</p>
                     </div>
                     <div class="counter-box text-center">
-                        <DirectionsFork title="" />
-                        <h6>Forks</h6>
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.forks : 0" :duration="4000"></CountTo>
                         </h5>
+                        <p>Forks</p>
                     </div>
                     <div class="counter-box text-center">
-                        <BugOutline title="" />
-                        <h6>Issues</h6>
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.issues : 0" :duration="4000"></CountTo>
                         </h5>
+                        <p>Issues</p>
                     </div>
                     <div class="counter-box text-center">
-                        <SourcePull title="" />
-                        <h6>Pull Requests</h6>
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo>
                         </h5>
+                        <p>Pull Requests</p>
                     </div>
                     <div class="counter-box text-center">
-                        <AccountGroupOutline title="" />
-                        <h6>Contributors</h6>
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="contributors ? contributors.length : 0" :duration="4000"></CountTo>
                         </h5>
+                        <p>Contributors</p>
                     </div>
                 </div>
 
-                <div class="text-center mt-5">
-                    <a href="https://kestra.io/slack" target="_blank" class="btn btn-primary me-2" data-aos="zoom-in">Join our slack</a>
-                    <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-dark" data-aos="zoom-in">Give us a ⭐</a>
+                <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3 px-4">
+                    <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-dark" data-aos="zoom-in">Give a star</a>
+                    <a href="https://kestra.io/slack" target="_blank" class="btn btn-primary" data-aos="zoom-in">Join the Community</a>
+                    <a href="#" target="_blank" class="btn btn-dark" data-aos="zoom-in">Contributer</a>
                 </div>
             </Section>
         </div>
@@ -136,11 +129,19 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
-
     .main {
-        background: #FBF7F7;
         position: relative;
         display: flex;
+
+        :deep(section) {
+            border-radius: 8px;
+            border: $block-border;
+            background: $black-2;
+
+            .main {
+                background-color: $black-2 !important;
+            }
+        }
 
         .contributors {
             height: 100%;
@@ -160,56 +161,45 @@
                 }
             }
         }
-    }
 
-    .metrics {
-        padding-left: calc($spacer * 2);
-        padding-right: calc($spacer * 2);
-        margin: 0 auto;
-        max-width: 750px;
-        display: flex;
-        justify-content: center;
-        gap: $spacer calc($spacer * 2);
-        flex-flow: row wrap;
-
-        > div {
-            width: 100px;
+        .metrics {
+            padding-left: calc($spacer * 2);
+            padding-right: calc($spacer * 2);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: $spacer calc($spacer * 2);
+            flex-flow: row wrap;
         }
-    }
 
-    .container {
-        flex-grow: 1;
+        .container {
+            flex-grow: 1;
 
-        .counter-box {
-            color: $primary;
-
-            .material-design-icon {
-                background: var(--bs-white);
-                border-radius: var(--bs-border-radius-lg);
-                box-shadow: 0px 1.20763px 2.41527px rgba(0, 0, 0, 0.07);
-                font-size: 200%;
-                width: 3rem;
-                height: 3rem;
+            .counter-box {
                 text-align: center;
-                align-items: center;
-                justify-content: center;
-
-                :deep(svg) {
-                    bottom: 0.250em;
+                font-family: $font-family-sans-serif;
+                font-style: normal;
+                h5 {
+                    color: $white !important;
+                    font-size: 58px;
+                    font-weight: 700;
+                    line-height: 22px;
                 }
-            }
 
-            h5 {
-                color: var(--bs-black);
-            }
-
-            h6 {
-                color: $primary;
-                font-size: $font-size-sm;
-                &:after {
-                    display: none;
+                p {
+                    color: #ABABB2;
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 65px;
+                    text-transform: uppercase;
                 }
             }
         }
+
+        .btn-dark {
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            background: $black-4 !important;
+        }
+
     }
 </style>

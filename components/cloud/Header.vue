@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid bg-dark-4">
         <div class="pt-5 d-flex flex-column justify-content-center">
             <div class="text-center header text-white mx-auto mt-4">
                 <h1 class="fw-light">
@@ -60,9 +60,6 @@
 }
 
 .container-fluid {
-
-    background-color: #111113;
-
     h1{
         font-size:$font-size-4xl !important;
         line-height: $font-size-4xl

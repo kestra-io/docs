@@ -27,10 +27,10 @@
 @import "../../../assets/styles/variable";
 
 .feature {
-  background-color: $black-5;
+  background-color: $black-1;
 }
 .container{
-  border-bottom: 1px solid $black-3;
+  border-bottom: $block-border;
 }
 .heading {
   max-width: 700px;

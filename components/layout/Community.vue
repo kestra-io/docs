@@ -1,19 +1,16 @@
 <template>
-    <div class="container">
+    <div class="container bg-dark-2">
         <Section
-            title="Join our community"
+            subtitle="New to Kestra?"
             :animation="animation"
         >
             <div class="text-center cta">
                 <p :data-aos="animationType('fade-left')">
-                    Want to chat with the team or talk with other Kestra's enthusiasts?
+                    Use blueprints to kickstart your first workflows.
                 </p>
-                <a href="https://kestra.io/slack" target="_blank" class="btn btn-primary me-2 mb-2" :data-aos="animationType('zoom-in')">
-                    Join our slack
+                <a href="https://kestra.io/slack" target="_blank" class="btn btn-animated btn-purple-animated me-2 mb-2" :data-aos="animationType('zoom-in')">
+                    Get started with Kestra
                 </a>
-                <NuxtLink href="/community" class="btn btn-secondary mb-2" :data-aos="animationType('zoom-in')">
-                    Contribute
-                </NuxtLink>
             </div>
         </Section>
     </div>
@@ -42,16 +39,26 @@
     @import "../../assets/styles/variable";
 
     .container {
-        background: $purple-8 url("/landing/dot2.svg") no-repeat bottom right;
-        color: var(--bs-black);
-        padding-left: calc($spacer * 4);
-        padding-right: calc($spacer * 4);
-        margin-bottom: calc($spacer * 2);
-        margin-top: calc($spacer * 2);
-        border-radius: 10px;
+        padding-left: calc($spacer * 1);
+        padding-right: calc($spacer * 1);
+        margin-top: calc($spacer * 5.625);
+        border-radius: 8px;
+        border: $block-border;
+        background: $black-2 url("/landing/community/bg.svg") no-repeat right;
+        background-size: 20% 100%;
 
-        :deep(p.baseline) {
-            color: var(--bs-black);
+        :deep(section) {
+            .subtitle {
+                color: $white;
+            }
+            .main {
+                padding-top: calc($spacer * 1) !important;
+
+                p {
+                    margin-bottom: calc($spacer * 1);
+                    color: $white;
+                }
+            }
         }
     }
 </style>

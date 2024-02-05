@@ -1,39 +1,70 @@
 <template>
-    <div class="container">
-        <Section
-            title="What people say about us"
-            subtitle="They love Kestra"
-        >
-            <div class="row">
-                <div class="col-md-4">
-                    <TestimonialsItem :item="testimonialData[0]" data-aos="fade-left" />
-                    <TestimonialsItem :item="testimonialData[1]" data-aos="fade-left" />
-                    <TestimonialsItem :item="testimonialData[2]" data-aos="fade-left" />
-                </div>
-                <div class="col-md-4">
-                    <TestimonialsItem :item="testimonialData[4]" data-aos="zoom-in" />
-                    <TestimonialsItem :item="testimonialData[5]" data-aos="zoom-in" />
-                    <TestimonialsItem :item="testimonialData[6]" data-aos="zoom-in" />
-                </div>
-                <div class="col-md-4">
-                    <TestimonialsItem :item="testimonialData[7]" data-aos="fade-right" />
-                    <TestimonialsItem :item="testimonialData[8]" data-aos="fade-right" />
-                    <TestimonialsItem :item="testimonialData[9]" data-aos="fade-right" />
-                </div>
-            </div>
-
-        </Section>
+    <div class="container-fluid">
+        <div class="container">
+            <Section
+                subtitle-before="Loved"
+                subtitle="by the open-source community"
+            >
+                <Carousel v-bind="settings" :breakpoints="breakpoints">
+                    <Slide v-for="slide in testimonialData" :key="slide">
+                        <div class="carousel--item">
+                            <TestimonialsItem :item="slide" />
+                        </div>
+                    </Slide>
+                    <template #addons>
+                        <navigation>
+                            <template #next>
+                                <div class="carousel-control carousel-control-next">
+                                    <ArrowRight />
+                                </div>
+                            </template>
+                            <template #prev>
+                                <div class="carousel-control carousel-control-prev">
+                                    <ArrowLeft />
+                                </div>
+                            </template>
+                        </navigation>
+                    </template>
+                </Carousel>
+            </Section>
+        </div>
     </div>
 </template>
 
 <script>
     import Section from '../layout/Section.vue';
     import TestimonialsItem from './TestimonialsItem.vue';
-
+    import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue";
+    import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
+    import 'vue3-carousel/dist/carousel.css'
+    import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
     export default {
-        components: {Section, TestimonialsItem},
+        components: {
+            Section,
+            TestimonialsItem,
+            ArrowLeft,
+            ArrowRight,
+            Carousel,
+            Slide,
+            Pagination,
+            Navigation,
+        },
         data() {
             return {
+                settings: {
+                    itemsToShow: 1,
+                    snapAlign: 'center',
+                },
+                breakpoints: {
+                    768: {
+                        itemsToShow: 2,
+                        snapAlign: 'start',
+                    },
+                    1024: {
+                        itemsToShow: 3,
+                        snapAlign: 'start',
+                    },
+                },
                 testimonialData: [
                     {
                         profile: "/landing/home/testimonials/julien.jpeg",
@@ -123,40 +154,63 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
-
-    .row {
-        align-items: center;
-        justify-content: center;
+    .container-fluid {
+        background: url("/demo/bg-mask.svg") no-repeat bottom;
+        padding-top: 8rem;
     }
+    .container {
+        :deep(section) {
+            .subtitle, .subtitle p {
+                margin: 0 !important;
+                text-align: left !important;
+                max-width: 60%;
 
-    :deep(.card-body) {
-        padding: calc($spacer * 2);
-
-        &:before {
-            content: "“";
-            font-size: 10rem;
-            color: var(--bs-primary);
-            position: absolute;
-            margin-top: -3.5rem;
-            margin-left: -0.5rem;
-        }
-
-        p {
-            margin-top: calc($spacer * 3.5);
-        }
-
-        .footer {
-            img {
-                border-radius: 50%;
-                float: left;
-                margin-right: $spacer;
-            }
-
-            span {
-                font-size: $font-size-sm;
-                float: left;
+                @include media-breakpoint-down(lg) {
+                    max-width: 100%;
+                }
             }
         }
 
+        .carousel--item {
+            padding: 0 8px;
+        }
+
+        .carousel-control {
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            background: $black;
+            margin: auto;
+
+            &-prev {
+                left: -60px;
+            }
+
+            &-next {
+                right: -60px;
+            }
+
+            @include media-breakpoint-down(xxl) {
+                &-prev {
+                    left: -26px;
+                }
+
+                &-next {
+                    right: -26px;
+                }
+
+            }
+
+            .material-design-icon {
+                font-size: $font-size-xl;
+                color: $white;
+                height: 18px;
+            }
+        }
+
+        .row {
+            align-items: center;
+            justify-content: center;
+        }
     }
 </style>

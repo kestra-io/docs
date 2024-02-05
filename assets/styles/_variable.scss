@@ -1,10 +1,15 @@
 $primary: #8405FF;
+$primary: #8405FF;
+$primary-1: #4B0AAA;
 $secondary: #C182FF;
 
 $white: #fff;
 $white-1 : #E1E1E1;
 $white-2: #E5E4F7;
 $white-3:  #B9B9BA;
+$white-4: #CCC6D2;
+$white-5: #7C7C7C;
+$white-6: #F0F0FF;
 
 $gray-100: #f8f8fc;
 $gray-200: #f1f5fa;
@@ -21,11 +26,17 @@ $black-1 : #070708;
 $black-2 : #161617;
 $black-3 : #252526;
 $black-4 : #111113;
-$black-5 : #070708;
+$black-5 : #333336;
 $black-6 : #3D3D3F;
 $black-7 : #0D0D0C;
 $black-8 : #8B8B8D;
-
+// Define dark color classes
+@each $number in 1, 2, 3, 4, 5, 6, 7, 8 {
+    $color: map-get((1: $black-1, 2: $black-2, 3: $black-3, 4: $black-4, 5: $black-5, 6: $black-6, 7: $black-7, 8: $black-8), $number);
+    .bg-dark-#{$number} {
+        background-color: $color;
+    }
+}
 $green: #03DABA;
 $green-1: #BFE1B0;
 
@@ -72,7 +83,7 @@ $font-family-monospace: "Source Code Pro", monospace;
 $font-size-base: 1rem;
 $font-size-xs: $font-size-base * .75;
 $font-size-sm: $font-size-base * .875;
-$font-size-mdsm : $font-size-base * 1;
+$font-size-md : $font-size-base * 1;
 $font-size-lg: $font-size-base * 1.25;
 $font-size-xl: $font-size-base * 1.375;
 $font-size-2xl : $font-size-base * 2.188;
@@ -103,6 +114,8 @@ $grid-gutter-width: 1.75rem;
 $border-radius: .25rem;
 $border-radius-sm: .125rem;
 $border-radius-lg: .5rem;
+$container-border: 1px solid rgba(255, 255, 255, 0.10);
+$block-border: 1px solid $black-3;
 
 //margin
 $popper-margin: .2rem;
@@ -157,18 +170,7 @@ $purple-32: #CFCEFF;
 $purple-33: #110221;
 $purple-34: #10051F;
 $purple-35 : #736BCD;
-
-
-$black: #26282D;
-$black-1 : #070708;
-$black-2 : #161617;
-$black-3 : #252526;
-$black-4 : #111113;
-$black-5 : #070708;
-$black-6 : #3D3D3F;
-$black-7 : #0D0D0C;
-$black-8 : #1D1D1E;
-$black-9 : #9CA1DE;
+$purple-36 : #9CA1DE;
 
 $enable-reduced-motion: false;
 $min-contrast-ratio: 2.5;

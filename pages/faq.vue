@@ -4,14 +4,12 @@
         <Meta name="description" content="Get responses on all your common questions about Kestra"/>
     </Head>
     <div>
-        <div class="container mb-5">
-            <div class="mt-5">
-                <p class="top-breadcrumb" data-aos="fade-right">
-                    FAQ
-                </p>
+        <div class="header-container">
+            <div class="header container">
                 <h1 data-aos="fade-left">Frequently Asked Questions</h1>
             </div>
-
+        </div>
+        <div class="container mb-5">
             <h2 data-aos="zoom-in" class="mt-5">General Questions</h2>
             <CustomDetails title="What is Kestra?">
                 <p>Kestra is an open-source orchestrator designed to bring Infrastructure as Code (IaC) best practices
@@ -178,12 +176,12 @@
             </CustomDetails>
         </div>
     </div>
-    <Newsletter/>
+    <Updateletter/>
 </template>
 
 <script setup>
     import CustomDetails from "../components/layout/CustomDetails.vue";
-    import Newsletter from "../components/layout/Newsletter.vue";
+    import Updateletter from "../components/layout/Updateletter.vue";
 
     const { origin } = useRequestURL()
     useHead({
@@ -200,8 +198,66 @@
 
 
 <style scoped lang="scss">
+    @import "../assets/styles/variable";
+
+    .header-container {
+        padding-top: 6rem;
+        background: url("/landing/careers/bg.svg") no-repeat bottom;
+        margin-bottom: 3.125rem;
+        .header {
+            padding-bottom: calc($spacer * 4.125);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+
+            h1 {
+                color: $white;
+                text-align: center;
+                font-weight: 300;
+                margin-bottom: 0;
+                font-size: $font-size-4xl;
+
+                @include media-breakpoint-down(sm) {
+                    font-size: 1.875rem !important;
+                }
+
+                span {
+                    background: linear-gradient(90deg, #E151F7 58.97%, #5C47F5 85.36%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+        }
+
+    }
 
     h2 {
-        margin-top: 2rem;
+        margin: 2.5rem 0;
+        color: $white;
+        font-size: $h2-font-size;
+        font-weight: 300;
+    }
+
+    :deep(details) {
+        box-shadow: none;
+        border: $block-border;
+        background-color: $black-2;
+
+        summary h3 {
+            color: $white;
+            font-size: $h6-font-size;
+            font-weight: 700;
+        }
+
+        span {
+            color: $white;
+        }
+
+        div {
+            border-left-color: $purple-35;
+
+            p {
+                color: $white;
+            }
+        }
     }
 </style>
