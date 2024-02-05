@@ -60,6 +60,7 @@
                     :active-slug="activeSlug"
                     :open="isShow(item._path)"
                     :parent-slug="item._path"
+                    :disabled-pages="disabledPages"
                     :type="type"
                 />
             </ul>
@@ -98,6 +99,10 @@
                 type: String,
                 required: true
             },
+            disabledPages: {
+                type: Array,
+                required: false
+            },
             type: {
                 type: String,
                 required: false
@@ -127,6 +132,9 @@
                 return this.showMenu.some(path => path.startsWith(item))
             },
             isPage(item) {
+                if (this.disabledPages) {
+                    return !this.disabledPages.includes(item._path)
+                }
                 return item.isPage ?? true;
             },
             getClass(item, depthLevel, disabled) {
