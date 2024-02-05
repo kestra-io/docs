@@ -195,11 +195,5 @@
                 }
             }
         }
-
-        .btn-dark {
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            background: $black-4 !important;
-        }
-
     }
 </style>
