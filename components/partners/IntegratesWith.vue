@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid bg-dark-2">
         <div class="text-center pt-5" data-aos="zoom-in">
             <div>
                 <img
@@ -8,7 +8,7 @@
                 />
             </div>
             <div class="my-3">
-                <h2>Kestra's Integrations Ecosystem</h2>
+                <h2>Kestra Integrates with:</h2>
             </div>
             <div>
                 <img src="/partners/integrate-with-logos/aws.svg" alt="AWS logo" />
@@ -17,7 +17,7 @@
                 <img src="/partners/integrate-with-logos/airbyte.svg" alt="Airbyte logo" />
                 <img src="/partners/integrate-with-logos/snowflake.svg" alt="snowflake logo" />
                 <img src="/partners/integrate-with-logos/fivetran.svg" alt="fivetran logo" />
-                <div class="py-3"><p class="and-more fw-bold">And more...</p></div>
+                <div class="py-3"><p class="and-more">And more...</p></div>
             </div>
         </div>
     </div>
@@ -27,12 +27,15 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .container-fluid {
-        background: $purple-17;
+    h2 {
+        color: $white;
+        font-size: $h2-font-size;
+        font-weight: 300;
     }
 
     .and-more {
-        color: $purple-18;
-        font-size: $font-size-lg;
+        color: $white-1;
+        font-size: 1.75rem;
+        font-weight: 100;
     }
 </style>
