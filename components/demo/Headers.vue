@@ -2,29 +2,18 @@
   <div class="container-fluid">
         <div class="hero container">
             <div class="row">
-                <div class="col-12 col-md-5 position-relative">
-                    <img class="img-fluid" src="/demo/background.svg" alt="Illustration of Kestra's logo with a dark background" data-aos="zoom-in"/>
-                    <div class="schedule-demo position-absolute">
-                        <div class="subtitle">SCHEDULE A DEMO</div>
-                        <h1>Ready to See Kestra in Action?</h1>
+                <div class="col-12 col-md-5 d-flex align-items-center">
+                    <div class="schedule-demo">
+                        <h1>Ready to See Kestra in <span>Action</span>?</h1>
                         <p class="description">Connect with one of our Product Specialist to get the best out of our product and its value proposition</p>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 align-items-center d-flex">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="meetings-iframe-container" data-src="https://meetings-eu1.hubspot.com/meetings/david76?embed=true"></div>
-                        </div>
-                    </div>
+                    <div class="meetings-iframe-container" data-src="https://meetings-eu1.hubspot.com/meetings/david76?embed=true"></div>
                 </div>
             </div>
         </div>
-        <div class="container text-center">
-            <p class="companies-title" data-aos="zoom-in">
-                Loved & trusted by leading enterprises worldwide
-            </p>
-        </div>
-        <div class="container-fluid pt-4 pb-4">
+        <div class="container pt-3 pb-5 companies-block">
             <Companies />
         </div>
     </div>
@@ -47,68 +36,41 @@ onMounted(() => {
 <style scoped lang="scss">
 @import "../../assets/styles/variable";
 .container-fluid {
-    background: $purple-16;
     color: var(--bs-white);
     overflow: hidden;
 
     .hero {
         padding-top: 4rem !important;
-        .card {
-            box-shadow: none !important;
-            width: 100%;
-        }
+        padding-bottom: 0;
         .schedule-demo {
-            top: 50%;
-            left: 10%;
-            right: 10%;
+            color: $white;
 
             h1 {
-                padding-bottom: 0 !important;
-                line-height: 4rem;
-            }
-            div.subtitle {
-                font-size: $font-size-xl;
-                color: var(--bs-pink);
-                font-weight: 700;
-                text-transform: uppercase;
-                font-family: var(--bs-font-monospace);
-                display: inline;
-                line-height: 1.875rem;
+                margin-bottom: 16px;
+                font-size: $font-size-4xl;
+                font-weight: 300;
+
+                span {
+                    background: var(--Text_gradient, linear-gradient(90deg, #E151F7 2.16%, #5C47F5 65.09%));
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
             }
             p.description {
-                line-height: 2rem;
                 font-size: $font-size-xl;
-                width: 85%;
+                font-weight: 300;
             }
         }
 
-        .img-fluid {
-            max-height: 100%;
-            max-width: 100%;
+        .meetings-iframe-container {
+            width: 100%;
         }
     }
 
-    .companies-title {
-        position: relative;
-
-        &:after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: calc(-1 * var(--spacer));
-            transform: translateX(-50%);
-            display: inline-block;
-            height: 2px;
-            width: 51px;
-            background: var(--bs-pink);
-        }
-    }
-
-    @include media-breakpoint-down(lg) {
-        .schedule-demo {
-           position: relative !important;
-           inset: 0 !important;
-        }
+    .companies-block {
+        border-top: $block-border;
+        border-bottom: $block-border;
     }
 }
 </style>
