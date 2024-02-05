@@ -116,6 +116,7 @@
                     a {
                         border-left: .125rem solid var(--bs-gray-200);
                         padding-left: 0.75rem;
+                        color: $white-1;
 
                         @for $i from 2 through 6 {
                             &.depth-#{$i} {
@@ -125,9 +126,9 @@
 
                         &:hover,
                         &.active {
-                            color: var(--bs-primary);
+                            color: $purple;
                             font-weight: 500;
-                            border-left-color: var(--bs-primary);
+                            border-left-color: $purple;
                         }
                     }
                 }
@@ -147,7 +148,7 @@
         }
 
         .h6 {
-            color: var(--bs-gray-700);
+            color: $white-1;
             font-size: $font-size-sm;
             line-height: 1.875rem;
             font-weight: 600;
