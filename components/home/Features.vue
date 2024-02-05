@@ -59,14 +59,6 @@
             </div>
         </Section>
     </div>
-    <svg width="0" height="0">
-        <defs>
-            <linearGradient id="featureiconsgradient" x1="4.99595" y1="6.83411" x2="31.2214" y2="33.0161" gradientUnits="userSpaceOnUse">
-                <stop offset="0.015625" stop-color="#F2D5FF"/>
-                <stop offset="1" stop-color="#CB5AFF"/>
-            </linearGradient>
-        </defs>
-    </svg>
 </template>
 
 <script setup>

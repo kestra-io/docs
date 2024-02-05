@@ -231,10 +231,6 @@ export default {
         line-height: 1.875rem;
         font-weight: 100;
     }
-    .btn-dark {
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: $black-4;
-    }
 }
 
 .nav-tabs {
