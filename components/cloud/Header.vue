@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid bg-dark-4">
+    <div class="container-fluid">
         <div class="pt-5 d-flex flex-column justify-content-center">
             <div class="text-center header text-white mx-auto mt-4">
                 <h1 class="fw-light">
@@ -12,40 +12,34 @@
 
             <div class="container">
                 <div class="col-12 col-md-8 col-lg-5 form-container mx-auto pt-3 pb-5">
-                    <form class="py-4 form-horizontal position-relative mx-auto px-3 px-sm-5">
-                        <div class="d-flex flex-column form-group required">
-                            <label class="text-white fw-lighter form-label mb-1" for="email">
-                                Email
-                            </label>
-                            <input type="email" id="email" class="input text-white p-2" required />
-                        </div>
-                        <div class="d-flex my-2 para fw-normal">
-                            <label for="checked1" role="button" class="text-md fw-lighter mb-0">
-                                <input role="button" type="checkbox" id="checked1" name="condition"
-                                    class="custom-control-input me-2 form-check-input lh-base" />
-                                I agree to receive other communications from Kestra
-                            </label>
-                        </div>
-                        <p class="desc fw-normal my-4">
-                            You can unsubscribe from these communications at any
-                            time. For more information on how to unsubscribe, our
-                            privacy practices, and how we are commited to protecting
-                            and respecting your privacy, please review our Privacy
-                            Policy. By clicking submit below, you consent to allow
-                            kestra to store and process the personal information
-                            submitted above to provide you the content requested.
-                        </p>
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary">
-                                Submit
-                            </button>
-                        </div>
-                    </form>
+                    <div id="hubspotForm" data-aos="zoom-in" />
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<script>
+    export default {
+        mounted() {
+            if (process.client) {
+                if (window.hbspt) {
+                    window.hbspt.forms.create({
+                        region: "eu1",
+                        portalId: "27220195",
+                        formId: "fbce3efa-1f99-4ab9-928c-26167aa51424",
+                        target: "#hubspotForm",
+                        onFormSubmit: function($form) {
+                            if (window.dataLayer) {
+                                window.dataLayer.push({'event': 'cloud_form'});
+                            }
+                        },
+                    })
+                }
+            }
+        },
+    }
+</script>
 
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
@@ -60,6 +54,9 @@
 }
 
 .container-fluid {
+
+    background-color: #111113;
+
     h1{
         font-size:$font-size-4xl !important;
         line-height: $font-size-4xl
@@ -98,12 +95,12 @@
 
     .form-container {
         z-index: 10;
-    }
-
-    .form-horizontal {
         background-color: $black-2;
         border-style: solid;
         border-color: #252526;
+        padding: 1rem;
+        padding-bottom: 0rem;
+        margin-bottom: 3rem;
 
         &::after {
             content: "";
