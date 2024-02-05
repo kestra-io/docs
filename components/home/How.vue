@@ -362,11 +362,6 @@
                 font-weight: 400;
                 line-height: 24px;
             }
-
-            .btn-dark {
-                border: 1px solid rgba(255, 255, 255, 0.12);
-                background: $black-4;
-            }
         }
 
         .last-words {
