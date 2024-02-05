@@ -98,6 +98,12 @@ export default {
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
+    :deep(section) {
+        .baseline {
+            font-size: $h6-font-size !important;
+        }
+    }
+
     .container {
         border-bottom: $block-border;
     }
