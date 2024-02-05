@@ -5,40 +5,28 @@
             <ul>
                 <li v-if="page.editLink !== false && editLink">
                     <a :href="editLink" target="_blank">
-                        <Github />
-                        Edit this page</a>
+                        <Github/>Edit this page
+                    </a>
                 </li>
                 <li>
-                    <a
-                        href="https://kestra.io/slack" target="_blank"
-                    >
-                        <Slack />
-                        Join us on Slack</a
-                    >
+                    <a href="https://kestra.io/slack" target="_blank">
+                        <Slack/>Join us on Slack
+                    </a>
                 </li>
                 <li>
-                    <a
-                        href="https://github.com/kestra-io/kestra" target="_blank"
-                    >
-                        <Github />
-                        GitHub</a
-                    >
+                    <a href="https://github.com/kestra-io/kestra" target="_blank">
+                        <Github/>GitHub
+                    </a>
                 </li>
                 <li>
-                    <a
-                        href="https://twitter.com/kestra_io" target="_blank"
-                    >
-                        <twitter />
-                        Twitter</a
-                    >
+                    <a href="https://twitter.com/kestra_io" target="_blank">
+                        <twitter/>Twitter
+                    </a>
                 </li>
                 <li>
-                    <a
-                        href="https://www.linkedin.com/company/kestra" target="_blank"
-                    >
-                        <linkedin />
-                        LinkedIn</a
-                    >
+                    <a href="https://www.linkedin.com/company/kestra" target="_blank">
+                        <linkedin/>LinkedIn
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -79,6 +67,7 @@
             li {
                 a {
                     padding-left: 0.75rem;
+                    color: $white-1 !important;
 
                     @for $i from 2 through 6 {
                         &.depth-#{$i} {
@@ -98,7 +87,7 @@
     }
 
     .h6 {
-        color: var(--bs-gray-700);
+        color: $white-1;
         font-size: $font-size-sm;
         line-height: 1.875rem;
         font-weight: 600;
