@@ -12,8 +12,8 @@
         <CompanyLaunch/>
         <CompanyValue/>
         <CompanyTeam/>
-        <CompanyJoin/>
         <CompanyPress/>
+        <CompanyJoin/>
     </div>
 </template>
 

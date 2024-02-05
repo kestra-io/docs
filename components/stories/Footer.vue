@@ -3,10 +3,10 @@
         <h2 class="title text-center">Getting started with Kestra</h2>
         <div class="text-center cta ">
             <NuxtLink href="/docs" target="_blank" class="btn btn-dark me-2 mb-2" data-aos="zoom-in">
-                Read the Documentation
+                Read the docs
             </NuxtLink>
-            <NuxtLink href="/docs/getting-started" class="btn btn-primary mb-2" data-aos="zoom-in">
-                Try Kestra Now
+            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated mb-2" data-aos="zoom-in">
+                Get started
             </NuxtLink>
         </div>
     </div>
@@ -19,20 +19,19 @@
     @import "../../assets/styles/variable";
 
     .container {
-        background: $purple-8;
-        background-image:  url("/landing/dot2.svg");
-        background-repeat: no-repeat;
-        background-position: 70% 80%;
-        color: var(--bs-black);
+        background: $black-2 url("/landing/plugins/footer-bg.svg") no-repeat right;
+        background-size: 20% 100%;
         margin-bottom: calc($spacer * 2);
-        border-radius: 0.625rem;
+        border: $block-border;
+        border-radius: 0.5rem;
         row-gap: 1rem;
+        color: $white;
 
-        :deep(p.baseline) {
-            color: var(--bs-black);
+        .title{
+            color: $white;
+            font-size: $h3-font-size;
+            font-weight: 100;
+            margin-bottom: 0;
         }
-    }
-    .title{
-        font-size: $font-size-2xl;
     }
 </style>

@@ -6,15 +6,18 @@
         </Head>
 
         <SolutionsDetailHeader
-            title="Efficient Change Data Capture for Agile Enterprises"
+            title="Efficient"
+            titleAfter="Change Data Capture"
             subtitle="Build CDC pipeline with Kestra for data synchronization, and ressources optimization to ensure your data analytics platforms reflect the most current information."
-            detail-title="What is Change Data Capture ?"
-            detail-content="Change Data Capture (CDC) tracks and captures data source alterations for efficient processing and analysis. Kestra's CDC features allow businesses to synchronize and manage data effectively, maintaining updated data warehouses and analytics platforms with minimized resource use."
-            image="/landing/usecases/cdc/intro.svg"
+            image="/landing/usecases/cdc/intro-bg.svg"
+        />
+        <SolutionsDetailContent
+            title="What is Change Data Capture ?"
+            subtitle="Change Data Capture (CDC) tracks and captures data source alterations for efficient processing and analysis. Kestra's CDC features allow businesses to synchronize and manage data effectively, maintaining updated data warehouses and analytics platforms with minimized resource use."
         />
         <SolutionsDetailMain
-            title="Simplify CDC with Kestra"
-            subtitle="Streamlined Data Analysis for Financial Institutions"
+            subtitle="Data Analysis for Financial Institutions"
+            subtitleBefore="Streamlined"
             baseline="Kestra makes CDC implementation straightforward, enabling your team to monitor data changes across your systems with ease. Configure workflows to automatically transform and aggregate data, keeping your datasets accurate and analytics reliable without manual intervention."
             :items="mainContent"
         />
@@ -23,8 +26,8 @@
             subtitle="Kestra's Change Data Capture capabilities enhance data management by enabling efficient data synchronization and processing. With Kestra's event-driven triggers, visual pipeline editor, and extensive integrations, businesses can maintain up-to-date data across their systems, leading to timely insights and better decision-making. Experience the benefits of Kestra's CDC solution and transform your data management processes today."
         />
         <SolutionsDetailFeatures
-            title="Leveraging Kestra's Features"
-            subtitle="Key Features"
+            subtitle="Key"
+            subtitleAfter="Features"
             :items="features"
         />
         <SolutionsDetailNext />
@@ -49,7 +52,7 @@
                         title: 'Real Time Data Replication',
                         img: '/landing/usecases/cdc/feature-1.svg',
                         imgAlt: 'Diagram illustrating Kestra\'s Change Data Capture process, with PostgreSQL for databases, Apache Kafka for streaming data, and Apache Spark for analytics processing',
-                        content:'<strong>Data Detection and Distribution:</strong> Listen for changes in your chosen databases, such as PostgreSQL, detect new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes, including analytics processing performed by tools like Apache Spark, have access to the latest data without delay.<br />' 
+                        content:'<strong>Data Detection and Distribution:</strong> Listen for changes in your chosen databases, such as PostgreSQL, detect new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes, including analytics processing performed by tools like Apache Spark, have access to the latest data without delay.<br />'
                     },
                     {
                         title: 'Workflow Configuration and Management with Kestra',

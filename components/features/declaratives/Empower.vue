@@ -48,3 +48,23 @@
         components: {Section}
     }
 </script>
+
+<style scoped lang="scss">
+    @import "../../../assets/styles/variable";
+    .container {
+        h3 {
+            color: $white;
+            font-weight: 300;
+        }
+
+        ul li {
+            color: $white-1;
+            font-size: $font-size-md;
+            font-weight: 300;
+
+            strong {
+                font-weight: 600;
+            }
+        }
+    }
+</style>

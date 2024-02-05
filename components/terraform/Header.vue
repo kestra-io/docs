@@ -3,15 +3,16 @@
         <div class="hero hero-sm mx-2 sm-mx-0">
             <div class="row" data-aos="fade-right">
                 <div class="col-12 col-md-8 col-lg-6 order-1 order-md-0">
-                    <h1>Kestra Terraform Provider: Deploy All Your Workflows <br /> in a CI/CD Process</h1>
-                    <p>Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating
+                    <p class="subtitle">Kestra Terraform Provider:  </p>
+                    <h1>Deploy All Your Workflows With our Terraform Provider</h1>
+                    <p class="description mt-3">Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating
                         the need for separate configurations.</p>
                     <div class="d-flex flex-wrap gap-2">
-                        <NuxtLink href="https://github.com/kestra-io/kestra">
-                            <button class="btn btn-primary btn-lg">Get Started</button>
-                        </NuxtLink>
                         <NuxtLink href="/docs/terraform">
-                            <button class="btn-animated btn-purple-animated btn btn-secondary btn-lg">Read the docs</button>
+                            <button class="btn btn-dark btn-lg"> Read the docs</button>
+                        </NuxtLink>
+                        <NuxtLink href="https://github.com/kestra-io/kestra">
+                            <button class="btn btn-animated btn-purple-animated btn-lg">Get Started</button>
                         </NuxtLink>
                     </div>
                 </div>
@@ -28,19 +29,32 @@
 @import "../../assets/styles/variable";
 
 .container-fluid {
-    background: url('/terraform/header/background.svg') no-repeat right !important;
+    background: url('/terraform/header/bg.svg') no-repeat center !important;
+    background-size: 100% 100% !important;
+    border-bottom: $block-border;
 
     @include media-breakpoint-down(md) {
         background-image: none !important;
     }
 
-    h1 {
-        font-size: $h2-font-size !important;
-        font-weight: 900 !important;
+    h1, .subtitle {
+        margin: 0;
+        padding: 0;
     }
 
-    p {
+    h1 {
+        font-size: $h1-font-size !important;
+        font-weight: 300 !important;
+    }
+
+    .subtitle {
+        font-size: 1.875rem;
+        font-weight: 100;
+    }
+
+    .description {
         font-size: $font-size-xl;
+        font-weight: 300;
     }
 
     @include media-breakpoint-up(sm) {

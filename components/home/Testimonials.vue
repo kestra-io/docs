@@ -1,31 +1,33 @@
 <template>
-    <div class="container bg-dark-4">
-        <Section
-            subtitle-before="Loved"
-            subtitle="by the open-source community"
-        >
-            <Carousel v-bind="settings" :breakpoints="breakpoints">
-                <Slide v-for="slide in testimonialData" :key="slide">
-                    <div class="carousel--item">
-                        <TestimonialsItem :item="slide" />
-                    </div>
-                </Slide>
-                <template #addons>
-                    <navigation>
-                        <template #next>
-                            <div class="carousel-control carousel-control-next">
-                                <ArrowRight />
-                            </div>
-                        </template>
-                        <template #prev>
-                            <div class="carousel-control carousel-control-prev">
-                                <ArrowLeft />
-                            </div>
-                        </template>
-                    </navigation>
-                </template>
-            </Carousel>
-        </Section>
+    <div class="container-fluid">
+        <div class="container">
+            <Section
+                subtitle-before="Loved"
+                subtitle="by the open-source community"
+            >
+                <Carousel v-bind="settings" :breakpoints="breakpoints">
+                    <Slide v-for="slide in testimonialData" :key="slide">
+                        <div class="carousel--item">
+                            <TestimonialsItem :item="slide" />
+                        </div>
+                    </Slide>
+                    <template #addons>
+                        <navigation>
+                            <template #next>
+                                <div class="carousel-control carousel-control-next">
+                                    <ArrowRight />
+                                </div>
+                            </template>
+                            <template #prev>
+                                <div class="carousel-control carousel-control-prev">
+                                    <ArrowLeft />
+                                </div>
+                            </template>
+                        </navigation>
+                    </template>
+                </Carousel>
+            </Section>
+        </div>
     </div>
 </template>
 
@@ -152,6 +154,10 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
+    .container-fluid {
+        background: url("/demo/bg-mask.svg") no-repeat bottom;
+        padding-top: 8rem;
+    }
     .container {
         :deep(section) {
             .subtitle, .subtitle p {
@@ -205,37 +211,6 @@
         .row {
             align-items: center;
             justify-content: center;
-        }
-
-        :deep(.card-body) {
-            padding: calc($spacer * 2);
-
-            &:before {
-                content: "“";
-                font-size: 10rem;
-                color: var(--bs-primary);
-                position: absolute;
-                margin-top: -3.5rem;
-                margin-left: -0.5rem;
-            }
-
-            p {
-                margin-top: calc($spacer * 3.5);
-            }
-
-            .footer {
-                img {
-                    border-radius: 50%;
-                    float: left;
-                    margin-right: $spacer;
-                }
-
-                span {
-                    font-size: $font-size-sm;
-                    float: left;
-                }
-            }
-
         }
     }
 </style>

@@ -7,9 +7,9 @@
     </div>
     <div v-else class="container">
         <Section
-            subtitle="Orchestrate success"
-            subtitle-after="together"
-            baseline="Join the slack to share ideas and best practices, get help with technical questions, and discuss Kestra with other developers (and even the founders)."
+            subtitle="Orchestrate Success"
+            subtitle-after="Together"
+            baseline="Join the slack to share ideas and best practices, get help with technical questions, and discuss Kestra with other developers."
         >
             <div class="row card-group no-shadow mb-2">
                 <div class="col-md-4 mb-4">
@@ -44,14 +44,16 @@
         </Section>
     </div>
 </template>
+
 <script setup>
     import TooltipQuestion from "vue-material-design-icons/TooltipQuestion.vue";
     import HandWave from "vue-material-design-icons/HandWave.vue";
     import MessageAlert from "vue-material-design-icons/MessageAlert.vue";
 </script>
+
 <script>
 import Section from '../../components/layout/Section.vue';
-import Card from '../../components/card/Card.vue';
+import Card from '../card/Card.vue';
 import Slack from "vue-material-design-icons/Slack.vue";
 import { kestraInstance } from "~/utils/api.js";
 
@@ -100,6 +102,10 @@ export default {
         .baseline {
             font-size: $h6-font-size !important;
         }
+    }
+
+    .container {
+        border-bottom: $block-border;
     }
 
     span.online {

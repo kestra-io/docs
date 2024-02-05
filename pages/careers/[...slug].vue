@@ -6,7 +6,11 @@
                   content="Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of orchestration software"/>
         </Head>
 
-        <CareersHeader/>
+        <div class="header-container">
+            <div class="header container d-flex flex-column align-items-center gap-3">
+                <h1 data-aos="fade-left">Developer Advocate</h1>
+            </div>
+        </div>
         <template v-if="slug === '/careers/'">
             <CareersPositions/>
             <CareersPerks/>
@@ -75,3 +79,36 @@
     }
 
 </script>
+
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+
+    .header-container {
+        padding-top: 6rem;
+        background: url("/landing/careers/bg.svg") no-repeat bottom;
+        .header {
+            padding-bottom: calc($spacer * 4.125);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+
+            h1 {
+                color: $white;
+                text-align: center;
+                font-weight: 300;
+                margin-bottom: 0;
+                font-size: $font-size-4xl;
+
+                @include media-breakpoint-down(sm) {
+                    font-size: 1.875rem !important;
+                }
+
+                span {
+                    background: linear-gradient(90deg, #E151F7 58.97%, #5C47F5 85.36%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+        }
+
+    }
+</style>
