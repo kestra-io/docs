@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <Section
-            title="Meet the team"
-            subtitle="The Backbone of Kestra"
+            subtitle="Meet the"
+            subtitle-after="team"
         >
             <div class="justify-content-center d-flex flex-wrap">
                 <div class="team-card" data-aos="zoom-in">
@@ -173,6 +173,12 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
+    :deep(section) {
+        .subtitle p {
+            margin-bottom: 0;
+        }
+    }
+
     .container {
         .row {
             padding-bottom: calc($spacer * 2);
@@ -180,8 +186,9 @@
     }
 
     .team-name {
-        font-weight: bold;
+        color: $white;
         font-size: $font-size-lg;
+        font-weight: 700;
     }
 
     img {
@@ -189,7 +196,9 @@
     }
 
     .team-title {
-        color: var(--bs-gray-700);
+        color: $white-3;
+        font-size: $font-size-md;
+        font-weight: 400;
     }
 
     .team-card {
@@ -204,12 +213,12 @@
 
             a {
                 :deep(.material-design-icon) {
-                    color: var(--bs-gray-600)
+                    color: $white-3;
                 }
 
                 &:hover {
                     :deep(.material-design-icon) {
-                        color: var(--bs-primary);
+                        color: $purple-36;
                     }
 
                 }

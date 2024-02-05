@@ -1,7 +1,8 @@
 <template>
     <div class="container-fluid">
         <Section
-            title="The Public Launch and Beyond"
+            subtitle="The Public"
+            subtitle-after="Launch and Beyond"
         >
             <div class="justify-content-center d-flex">
                 <div>
@@ -16,7 +17,7 @@
         </Section>
 
         <div class="container-fluid pb-5">
-            <Companies :inverted="true" />
+            <Companies />
         </div>
     </div>
 </template>
@@ -34,32 +35,19 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: $purple-29;
-
-        .companies-title {
-            position: relative;
-
-            &:after {
-                content: '';
-                position: absolute;
-                left: 50%;
-                top: 2.5rem;
-                display: inline-block;
-                height: 2px;
-                width: 51px;
-                background: var(--bs-pink);
+        :deep(section) {
+            .main {
+                padding-top: 0;
             }
         }
-    }
 
-    .hero {
-        h2 {
-            font-size: 2.5rem;
+        p {
+            color: $white;
+            margin-bottom: 0;
         }
-    }
 
-    .container {
-        padding-top: 80px;
-        margin-top: -70px;
+        .container-fluid {
+            border-bottom: $block-border;
+        }
     }
 </style>
