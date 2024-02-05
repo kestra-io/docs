@@ -19,6 +19,7 @@
                         :items="items"
                         :depth-level="1"
                         :active-slug="activeSlug"
+                        :disabled-pages="disabledPages"
                         :open="true"
                     />
                 </nav>
@@ -50,6 +51,15 @@
             navigation: {
                 type: Object,
             },
+        },
+        data() {
+          return {
+              disabledPages: [
+                  '/docs/terraform/data-sources',
+                  '/docs/terraform/guides',
+                  '/docs/terraform/resources'
+              ]
+          }
         },
         computed: {
             activeSlug() {
