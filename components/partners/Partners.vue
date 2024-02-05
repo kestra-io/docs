@@ -1,6 +1,9 @@
 <template>
     <div class="container">
-        <Section title="Technology Partners">
+        <Section
+            subtitle-before="Technology"
+            subtitle="Partners"
+        >
             <div class="row card-group mb-2">
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
@@ -64,16 +67,19 @@
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card text-center" data-aos="zoom-in">
-                        <img src="/partners/badge-partner.svg" class="card-img-top" alt="Technology Partner" height="118" width="118">
+                        <img src="/partners/partners-logos/badge-partner.svg" class="card-img-top" alt="Technology Partner" height="118" width="118">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Want to join our Partner Program?</h5>
-                            <a href="#form" class="btn btn-primary">Become a Partner</a>
+                            <a href="#form" class="btn btn-animated btn-purple-animated">Become a Partner</a>
                         </div>
                     </div>
                 </div>
             </div>
         </Section>
-        <Section title="Consulting Partners">
+        <Section
+            subtitle-before="Consulting"
+            subtitle="Partners"
+        >
             <div class="row card-group mb-2">
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
@@ -117,10 +123,10 @@
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card text-center" data-aos="zoom-in">
-                        <img src="/partners/badge-partner.svg" class="card-img-top" alt="Badge_Kestra_Technology_Partner" height="118" width="118">
+                        <img src="/partners/partners-logos/badge-partner.svg" class="card-img-top" alt="Badge_Kestra_Technology_Partner" height="118" width="118">
                         <div class="card-body">
                             <h5 class="card-title mb-3">Want to join our Partner Program?</h5>
-                            <a href="#form" class="btn btn-primary">Become a Partner</a>
+                            <a href="#form" class="btn btn-animated btn-purple-animated">Become a Partner</a>
                         </div>
                     </div>
                 </div>
@@ -137,12 +143,25 @@
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
 
+    .container {
+        border-top: $block-border;
+    }
+
+    :deep(section) {
+        border-bottom: $block-border;
+    }
+
     .card-group {
-        background: none !important;
         justify-content: start;
 
         .card {
-            padding: 2rem;
+            padding: 1rem;
+            border: $block-border;
+            background-color: $black-2;
+
+            .card-body {
+                padding: 0;
+            }
 
             .coming-soon {
                 background: $purple-18;
@@ -152,16 +171,30 @@
             }
 
             .card-text {
-                font-size: $font-size-sm;
-                color: var(--bs-pink);
-                font-weight: 800;
+                color: $purple-36;
+                font-family: $font-family-monospace;
+                font-size: $font-size-xs;
+                font-weight: 700;
                 text-transform: uppercase;
-                font-family: var(--bs-font-monospace);
-                display: inline;
+                margin-bottom: 0;
             }
 
             .card-title {
-                margin: 1rem 0;
+                margin: 0.5rem 0;
+                color: $white;
+                font-size: $h6-font-size;
+                font-weight: 700;
+            }
+
+            a {
+                color: $purple-35;
+                font-size: $font-size-sm;
+                font-weight: 400;
+                vertical-align: middle;
+
+                &.btn {
+                    color: $white;
+                }
             }
         }
     }
