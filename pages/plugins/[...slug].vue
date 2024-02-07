@@ -10,4 +10,8 @@
     .container {
         overflow: visible;
     }
+
+    :deep(.bd-markdown > h2 > a > span ) {
+        display: inline !important;
+    }
 </style>
