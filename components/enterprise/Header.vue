@@ -1,14 +1,16 @@
 <template>
     <div class="container-fluid">
-        <div class="hero container">
+        <div class="container">
             <div class="row">
                 <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
                     <div>
-                        <p data-aos="fade-left" class="overline">Enterprise Edition</p>
-                        <h1 data-aos="fade-right">Kestra Enterprise to Scale Your Workflows<span class="dot">.</span></h1>
+                        <h1 data-aos="fade-right"><span class="dot">Kestra Enterprise</span> to Scale Your Workflows.</h1>
                         <p data-aos="fade-left" class="baseline">Made for organizations & professionals seeking to secure production workloads with high-security standards and enterprise support.</p>
-                        <a href="https://kestra.io/demo" target="_blank" class="btn btn-lg btn-primary me-2 mb-2" data-aos="zoom-in">
-                            Talk to Us
+                        <a href="https://kestra.io/demo" target="_blank" class="btn btn-dark bg-dark-4 me-3" data-aos="zoom-in">
+                            Contact Us
+                        </a>
+                        <a href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-purple-animated me-2" data-aos="zoom-in">
+                            Talk to Sales
                         </a>
                     </div>
                 </div>
@@ -24,15 +26,36 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: $purple-7;
         color: var(--bs-white);
+        background: url("/landing/ee/background-mask.svg") no-repeat center;
+        background-size: 100% 100%;
+        border-bottom: $block-border;
         overflow: hidden;
+
+        h1 {
+            font-size: $font-size-4xl;
+            font-weight: 300;
+            margin-bottom: 16px;
+            padding: 0;
+
+            span {
+                background: linear-gradient(90deg, #E151F7 0.45%, #5C47F5 43.61%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
 
         .img-fluid {
             max-height: 100%;
         }
         .baseline {
-            font-size: 1.15rem;
+            font-size: $font-size-xl;
+            font-weight: 300;
+        }
+
+        .btn-dark {
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         @include media-breakpoint-down(md) {
@@ -52,5 +75,3 @@
         }
     }
 </style>
-<script setup lang="ts">
-</script>
