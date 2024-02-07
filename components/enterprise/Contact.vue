@@ -1,21 +1,19 @@
 <template>
     <div class="container rounded-3">
         <Section
-            title="Ready to bring your orchestration to the next level?"
+            title="Getting Started"
         >
-        <div class="text-center cta">
-                <a href="https://kestra.io/demo" target="_blank" class="btn btn-primary me-2 mb-2" data-aos="zoom-in">
-                    <Console /> Talk to Us
+            <div class="text-center cta">
+                <a href="https://kestra.io/demo" target="_blank" class="btn btn-dark bg-dark-4 me-3" data-aos="zoom-in">
+                    Contact Us
+                </a>
+                <a href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                    Talk to Sales
                 </a>
             </div>
         </Section>
     </div>
 </template>
-
-<script setup>
-    import Console from "vue-material-design-icons/Console.vue"
-    import Email from "vue-material-design-icons/Email.vue"
-</script>
 
 <script>
     import Section from '../layout/Section.vue';
@@ -29,14 +27,28 @@
     @import "../../assets/styles/variable";
 
     .container {
-        background: $purple-8 url("/landing/dot2.svg") no-repeat bottom right;
-        color: var(--bs-black);
+        color: $white;
         padding-left: calc($spacer * 4);
         padding-right: calc($spacer * 4);
         margin-bottom: calc($spacer * 2);
 
         :deep(p.baseline) {
-            color: var(--bs-black);
+            color: $white;
+        }
+
+        :deep(section) {
+            background-color: $black-2;
+            border-radius: 8px;
+            border: $block-border;
+            padding: 2rem 0;
+
+            .main {
+                padding-top: 1rem;
+            }
+        }
+
+        .btn-dark {
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
     }
 </style>
