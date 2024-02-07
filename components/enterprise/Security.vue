@@ -1,10 +1,10 @@
 <template>
     <div class="container">
         <Section
-            title="Enterprise-Grade Reliability, Security and Team Productivity"
-            subtitle="Full Control and Compliance"
-        >   
-                <div class="row mb-5">
+            subtitle="Control and Compliance"
+            subtitle-before="Full"
+        >
+            <div class="row mb-5">
                 <div class="col-md-6 order-1 order-md-1" data-aos="fade-left">
                     <h3>Advanced Architecture Design</h3>
                     <p>
@@ -63,3 +63,26 @@
         components: {Section}
     }
 </script>
+<style scoped lang="scss">
+    @import "../../assets/styles/variable";
+    .container {
+        border-top: $block-border;
+        border-bottom: $block-border;
+
+        h3 {
+            color: $white;
+            font-size: $h2-font-size;
+            font-weight: 300;
+        }
+        p, ul {
+            color: $white-1;
+            font-size: $font-size-md;
+            font-weight: 300;
+
+            b {
+                color: $white;
+                font-weight: 600;
+            }
+        }
+    }
+</style>
