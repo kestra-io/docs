@@ -5,8 +5,8 @@
             <h4 data-aos="fade-left">Learn how we helped companies manage their critical operations.</h4>
         </div>
     </div>
-    <div class="container">
-        <div class="row my-4">
+    <div class="list-container container px-md-0 pt-5">
+        <div class="row mb-4">
             <div class="col-12 col-md-4 mb-4" v-for="(story, index) in stories" :key="index">
                 <StoriesCard :story="story" />
             </div>
@@ -53,8 +53,11 @@ const fetchPageData = () => {
 
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
+    .list-container {
+        background: url("/landing/usecases/stories/content-bg.svg") no-repeat top;
+    }
     .header-container {
-        background: url("/landing/plugins/bg.svg") no-repeat top;
+        background: url("/landing/usecases/header-bg.svg") no-repeat bottom;
         .header {
             padding-bottom: calc($spacer * 4.125);
             border-bottom: 1px solid rgba(255, 255, 255, 0.10);

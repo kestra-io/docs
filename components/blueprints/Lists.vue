@@ -34,7 +34,11 @@
                 </select>
             </div>
             <div class="d-flex align-items-baseline" v-if="totalBlueprints > itemsPerPage">
-                <BlueprintsPagination :total-pages="totalPages" @on-page-change="changePage" />
+                <CommonPagination
+                    :totalPages="totalPages"
+                    @on-page-change="changePage"
+                    v-if="totalPages > 1"
+                />
                 <span class="total-pages">Total {{ totalBlueprints }}</span>
             </div>
         </div>

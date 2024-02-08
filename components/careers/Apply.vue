@@ -46,16 +46,25 @@
     @import "../../assets/styles/variable";
 
     .container {
-        background: $purple-8 url("/landing/dot2.svg") no-repeat bottom right;
-        color: var(--bs-black);
-        padding-left: calc($spacer * 4);
-        padding-right: calc($spacer * 4);
-        margin-bottom: calc($spacer * 2);
-        margin-top: calc($spacer * 2);
-        border-radius: 10px;
+        padding-left: calc($spacer * 1);
+        padding-right: calc($spacer * 1);
+        margin-top: calc($spacer * 5.625);
+        border-radius: 8px;
+        border: $block-border;
+        background: $black-2 url("/landing/careers/footer-bg.svg") no-repeat right;
+        background-size: 20% 100%;
 
         :deep(p.baseline) {
             color: var(--bs-black);
+        }
+        :deep(p) {
+            color: $white;
+        }
+        :deep(h2) {
+            color: $white;
+            font-size: $h3-font-size;
+            font-weight: 100;
+            margin-bottom: 0;
         }
     }
 </style>
