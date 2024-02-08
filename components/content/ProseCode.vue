@@ -92,7 +92,7 @@
     @import "../../assets/styles/_variable.scss";
 
     .code-block {
-        background-color: $purple-20;
+        background-color: $black-2;
         padding: 1.25rem 1.5rem;
         border-radius: var(--bs-border-radius-lg);
         color: var(--bs-white);

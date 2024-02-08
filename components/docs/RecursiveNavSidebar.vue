@@ -152,7 +152,7 @@
 
                 .material-design-icon__svg {
                     bottom: 0;
-                    color: #646465;
+                    color: $black-10;
                 }
             }
 

@@ -662,7 +662,7 @@
             tr.table-section {
                 font-weight: bold;
                 td {
-                    background-color: #1D1D1E;
+                    background-color: $black-9;
                 }
             }
         }
