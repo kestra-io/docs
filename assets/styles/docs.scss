@@ -37,20 +37,32 @@ $bd-gutter-x: 3rem;
 
 .bd-main {
     grid-area: main;
+    p {
+        color: $white;
+    }
 
+    li {
+        color: $white;
+    }
     h1 {
         padding-bottom: 1.5rem;
         font-size: $h2-font-size;
+        color: $white;
+        font-weight: 300;
     }
 
     h2 {
         padding-top: 1.5rem;
         font-size: $h3-font-size;
+        color: $white;
+        font-weight: 300;
     }
 
     h3 {
         padding-top: 1.25rem;
         font-size: $h4-font-size;
+        color: $white;
+        font-weight: 300;
     }
 
     h4 {
