@@ -417,8 +417,8 @@ const tableData = ref([
 }
 
 .t-r-heading {
-    padding: 1.375rem 2.9rem;
-    background-color: $black-8;
+    background-color: #252526;
+    padding: 1.375rem 2.9rem
 }
 
 .t-r-heading-text {
@@ -434,8 +434,7 @@ const tableData = ref([
 .t-head-body {
     tr {
         td {
-
-            font-size: $font-size-md;
+            font-size: $font-size-base;
             padding: 1.3rem 2.5rem;
         }
     }
@@ -446,6 +445,7 @@ const tableData = ref([
     font-weight: 700;
     line-height: 1.5rem;
     padding: 1.375rem 2.9rem;
+    background-color: $black-2;
 }
 
 .tick {
@@ -454,23 +454,18 @@ const tableData = ref([
 }
 
 .t-border-data {
-    border: 1px solid $black-8;
-    border-bottom: none;
-
-
+    border: 1px solid #1d1d1e;
+    border-bottom: none
 }
 
 .t-border-data-title {
-    border: $block-border;
-    border-bottom: none;
-
+    border: 1px solid #252526;
+    border-bottom: none
 }
 
 .t-border-data-title-thead {
-    border: $block-border;
-    border-top: none;
-
-
+    border: 1px solid #252526;
+    border-top: none
 }
 
 .t-desc {
@@ -478,8 +473,28 @@ const tableData = ref([
 }
 
 .table {
-    background-color: $black-2 !important;
+    background-color: #161617!important;
     border-radius: 8px;
+
+    border: none;
+    tr:first-child td {
+        border-top: none;
+    }
+    tr:last-child td {
+        border-bottom: none;
+    }
+    tr td:first-child {
+        border-left: none;
+    }
+    tr td:last-child {
+        border-right: none;
+    }
+    tr th:first-child {
+        border-left: none;
+    }
+    tr th:last-child {
+        border-right: none;
+    }
 }
 
 .table-dark {

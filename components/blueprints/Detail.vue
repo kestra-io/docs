@@ -38,7 +38,7 @@ export default {
         margin: 0 auto calc($spacer / 2);
 
         p {
-            color: $purple-35;
+            color: $purple-36;
             font-family: $font-family-monospace;
             font-size: $font-size-xl;
             font-weight: 700;
@@ -47,15 +47,5 @@ export default {
         }
     }
 
-    :deep(.bd-markdown) {
-        p {
-            color: $white;
-            font-size: $font-size-sm;
-            font-weight: 400;
-        }
 
-        a, code {
-            color: $purple-35;
-        }
-    }
 </style>

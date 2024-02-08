@@ -123,10 +123,10 @@
 
     table {
         margin-top: 5.625rem;
-        border: 1px solid #1D1D1E;
+        border: 1px solid $black-9;
 
         thead {
-            border-bottom: 1px solid #1D1D1E;
+            border-bottom: 1px solid $black-9;
         }
 
         th {

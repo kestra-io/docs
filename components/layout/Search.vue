@@ -8,66 +8,73 @@
                         <div class="input-group">
                             <span class="input-group-text"><Magnify/></span>
                             <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search Kestra.io"/>
+                            <div class="align-items-center d-flex input-group-append">
+                                <span class="esc">ESC</span>
+                            </div>
                         </div>
                     </div>
-                    <div v-if="searchResults && searchResults.length === 0" class="alert alert-warning mb-0"
-                         role="alert">
-                        No results found for the current search
-                    </div>
-                    <div class="row search-results" v-if="searchResults && searchResults.length > 0" >
-                        <div class="search-result col-12 col-md-6">
-                            <div v-for="(result, index) in searchResults" @mouseover="() => onItemMouseOver(result, index)">
-                                <NuxtLink :href="result.url" :class="{'active': index === selectedIndex}" @click="close">
-                                    <div class="result">
-                                        <div class="w-100">
-                                            <span class="type">{{result.type.charAt(0).toUpperCase() + result.type.slice(1).toLowerCase()}}</span>
-                                            <h5>
-                                                {{ result.title }}
-                                            </h5>
-                                            <div class="slug">
+                    <div v-if="!loading">
+                        <div class="row" v-if="searchResults && searchResults.length === 0">
+                            <div class="col-12 not-found-content d-flex flex-column justify-content-center bg-dark-2">
+                                <img src="/search/emoticon-dead-icon.svg" alt="emoticon icon" class="mx-auto"/>
+                                <p class="text-center mt-3">No results found for the current search</p>
+                            </div>
+                        </div>
+                        <div class="row search-results" v-else>
+                            <div class="search-result col-12 col-md-6">
+                                <div v-for="(result, index) in searchResults" @mouseover="() => onItemMouseOver(result, index)">
+                                    <NuxtLink :href="result.url" :class="{'active': index === selectedIndex}" @click="close">
+                                        <div class="result">
+                                            <div class="w-100">
+                                                <span class="type">{{result.type.charAt(0).toUpperCase() + result.type.slice(1).toLowerCase()}}</span>
+                                                <h5>
+                                                    {{ result.title }}
+                                                </h5>
+                                                <div class="slug">
                                                 <span
                                                     :class="{first: index === 0}"
                                                     v-for="(item, index) in breadcrumb(result.url)" :key="item">
                                                         {{ item }}
                                                 </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </NuxtLink>
+                                    </NuxtLink>
+                                </div>
                             </div>
-                        </div>
-                        <div class="search-detail bg-dark-2 p-3 col-6 d-none d-md-flex">
-                            <div class="rounded-3 w-100" v-if="selectedItem">
-                                <div>
-                                    <span class="type">{{selectedItem.type.charAt(0).toUpperCase() + selectedItem.type.slice(1).toLowerCase()}}</span>
-                                    <h5>
-                                        {{ selectedItem.title }}
-                                    </h5>
-                                    <div class="slug">
+                            <div class="search-detail bg-dark-2 p-3 col-6 d-none d-md-flex">
+                                <div class="rounded-3 w-100" v-if="selectedItem">
+                                    <div>
+                                        <span class="type">{{selectedItem.type.charAt(0).toUpperCase() + selectedItem.type.slice(1).toLowerCase()}}</span>
+                                        <h5>
+                                            {{ selectedItem.title }}
+                                        </h5>
+                                        <div class="slug">
                                         <span
                                             :class="{first: index === 0}"
                                             v-for="(item, index) in breadcrumb(selectedItem.url)" :key="item">
                                                 {{ item }}
                                         </span>
+                                        </div>
+                                        <p
+                                            v-for="(highlight, index) in selectedItem.highlights"
+                                            :key="index"
+                                            v-html="highlight"
+                                            class="extract"
+                                        />
                                     </div>
-                                    <p
-                                        v-for="(highlight, index) in selectedItem.highlights"
-                                        :key="index"
-                                        v-html="highlight"
-                                        class="extract"
-                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="facets overflow-x-auto overflow-y-hidden">
+                    <div class="facets overflow-x-auto overflow-y-hidden bg-dark-2 p-0" v-if="allSum > 0">
                         <div class="facet" :class="{'facet-active': selectedFacet === undefined}" @click="() => selectFacet(undefined)">
                             <span>All</span>
-                            <span class="badge rounded-pill bg-primary">{{ allSum }}</span>
+                            <span>({{ allSum }})</span>
                         </div>
                         <div class="facet" v-for="(result, key, index) in searchFacets" @click="() => selectFacet(key)" :class="{'facet-active': selectedFacet === key}" :key="index">
                             <span>{{key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()}}</span>
-                            <span class="badge rounded-pill bg-primary">{{ result }}</span>
+                            <span>({{ result }})</span>
                         </div>
                     </div>
                 </div>
@@ -78,6 +85,7 @@
 
 <script setup>
     import Magnify from "vue-material-design-icons/Magnify.vue";
+    import EmoticonDeadOutline from "vue-material-design-icons/EmoticonDeadOutline.vue";
 </script>
 
 <script>
@@ -98,6 +106,7 @@
                 selectedItem: null,
                 searchValue: undefined,
                 cancelToken: undefined,
+                loading: true,
             }
         },
         created() {
@@ -141,6 +150,7 @@
                         this.searchResults = response.data.results;
                         this.selectedIndex = 0;
                         this.selectedItem = response.data.results[0];
+                        this.loading = false;
                     } else {
                         this.resetData();
                     }
@@ -298,17 +308,33 @@
             }
         }
 
+        .not-found-content {
+            color: $white;
+            padding: 3.125rem 0;
+            border-top: 1px solid #3D3D3F;
+            img {
+                width: 1.5rem;
+            }
+        }
+
         .modal-content {
             max-height: 96vh;
         }
 
-        .input-group-text {
-            background: transparent;
-            font-size: 1.25rem;
-            border-bottom-left-radius: 0;
-            border-top-left-radius: $border-radius-lg;
-            border: none;
-            color: $white-3;
+        .search {
+            .input-group-text {
+                background: transparent;
+                font-size: 1.25rem;
+                border-bottom-left-radius: 0;
+                border-top-left-radius: $border-radius-lg;
+                border: none;
+                color: $white-3;
+            }
+
+            .esc {
+                color: $black-10;
+                font-size: 0.563rem;
+            }
         }
 
         .form-control {
@@ -377,12 +403,13 @@
                     gap: 5px;
                     cursor: pointer;
                     border-top: 1px solid transparent;
-                    color: $purple-35;
+                    color: $white;
                     -ms-overflow-style: none;
                     scrollbar-width: none;
 
                     &-active {
-                        border-top: 1px solid $purple-35;
+                        border-top: 1px solid $purple-36;
+                        color: $purple-36;
                     }
                 }
                 &::-webkit-scrollbar {
@@ -513,8 +540,6 @@
         }
         .search-results {
             border-top: 1px solid $black-6;
-            margin-left: 0;
-            padding: 0;
         }
     }
 </style>
