@@ -1,7 +1,7 @@
 <template>
     <NuxtLink :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`">
-        <div class="card bg-dark-2" data-aos="fade-right">
-            <div class="card-body d-flex flex-column justify-content-between ">
+        <div class="card" data-aos="fade-right">
+            <div class="card-body p-0 d-flex flex-column justify-content-between ">
                 <div>
                     <NuxtImg
                         loading="lazy"
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <span class="author">
-                      Read the Story <img src="/stories/icons/arrow_right_alt.svg" alt="right icons" />
+                      Read the story <img src="/stories/icons/arrow_right_alt.svg" alt="right icons" />
                   </span>
             </div>
         </div>
@@ -45,10 +45,8 @@
     .card {
         height: 100%;
         border-radius: 8px;
-        border: $block-border;
-
+        background-color: transparent;
         .card-body {
-            padding: $rem-2;
 
             .card-img-top {
                 border-radius: 4px;
@@ -57,7 +55,7 @@
 
             .author {
                 font-size: $font-size-sm;
-                color: $purple-35;
+                color: $purple-36;
                 margin-bottom: 0;
                 font-weight: 400;
             }
@@ -73,8 +71,8 @@
         &-title {
             color: #C6C1D9;
             font-family: $font-family-monospace;
-            font-size: $font-size-xs;
-            font-weight: 700;
+            font-size: $font-size-xl;
+            font-weight: 600;
             line-height: calc($spacer * 1.75);
             text-transform: uppercase;
         }
@@ -83,7 +81,7 @@
             color: $white;
             font-family: $font-family-sans-serif;
             font-size: $h6-font-size;
-            font-weight: 700;
+            font-weight: 400;
             line-height: calc($spacer * 1.625);
         }
     }

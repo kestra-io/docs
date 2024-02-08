@@ -1,24 +1,24 @@
 <template>
     <div class="main">
-        <div class="row h-100" :style="{ 'background-image': `url(${heroImage})` }">
-            <div class="col-12 col-md-6 order-1 order-md-0">
-                <div class="h-100 d-flex justify-content-end align-items-center">
-                    <div class="container">
-                        <DocsBreadcrumb :slug="slug" :page-list="pagelist" class="top-breadcrumb top-heading"/>
-                        
-                        <h1 class="text-white">{{ title }}</h1>
-                        <p class="text-white fs-4">{{ metaDescription }}</p>
-                        <NuxtLink href="/demo">
-                            <button class="btn btn-primary btn-lg">Book a demo</button>
-                        </NuxtLink>
+        <div class="container h-100">
+            <div class="row h-100" :style="{ 'background-image': `url(${heroImage})` }">
+                <div class="col-12 col-md-6 order-1 order-md-0">
+                    <div class="h-100 d-flex justify-content-end align-items-center">
+                        <div class="container">
+                            <h1 class="text-white">{{ title }}</h1>
+                            <p class="text-white fs-4">{{ metaDescription }}</p>
+                            <NuxtLink href="/demo">
+                                <button class="btn btn-animated btn-purple-animated mb-2 aos-init aos-animate">Book a demo</button>
+                            </NuxtLink>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="order-0 order-md-1 d-flex d-md-none">
-                <img :src="heroImage" class="img-fluid" alt="stories logo with a dark background" data-aos="zoom-in"/>
+                <div class="order-0 order-md-1 d-flex d-md-none">
+                    <img :src="heroImage" class="img-fluid" alt="stories logo with a dark background" data-aos="zoom-in"/>
+                </div>
             </div>
         </div>
-    </div> 
+    </div>
 </template>
 
 <script setup>
@@ -48,11 +48,25 @@ const pagelist = ['/stories', props.slug]
 @import "../../assets/styles/variable";
 
 .main {
-    background-color: $indigo-1;
+    background-color: $black-4;
     background-image: url('/stories/header/dots.svg');
     background-repeat: no-repeat;
     background-position: center;
-    height: 640px;
+    height: 650px;
+
+    &>.container {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    h1 {
+        font-size: $font-size-4xl;
+        font-weight: 300;
+    }
+
+    p {
+        font-weight: 300;
+    }
+
     @include media-breakpoint-down(md){
         height: 720px;
     }
@@ -61,7 +75,7 @@ const pagelist = ['/stories', props.slug]
         background-repeat: no-repeat;
         background-position: 80%;
         @include media-breakpoint-down(md){
-            background-image: none !important; 
+            background-image: none !important;
         }
 
         .container {
