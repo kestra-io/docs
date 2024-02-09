@@ -224,3 +224,7 @@ Service Account is not a User, but a collection of Permissions and an OAuth toke
 Becuase they can be assumed by multiple users or groups, and because some user may be later granted a higher permission; in the same way, some user may initially be an Admin but then their permission may be revoked. The Admin Roles enables all these patterns in a flexible way.
 
 You can think of Users as **authentication** mechanism (who you are), and Roles as **authorization** mechanism (what you are allowed to do). Decoupling authentication from authorization allows you to grant permissions to multiple users or groups at once by attaching a single Role to a Group.
+
+**Why I cannot edit an existing Binding?**
+
+You cannot edit an existing Binding because it's an immutable object. Instead, you can delete the existing Binding and create a new one for the same User, Service Account or Group, but with different Roles and/or namespaces. This is a safety feature to prevent accidental changes to existing permissions.

@@ -45,16 +45,16 @@
 The official Kestra documentation can be found under [kestra.io/docs](https://kestra.io/docs).
 
 
-## Local development of the Kestra UI
+## Local development of the Kestra Docs
 
-To run the UI locally, you must have Node.js and NPM installed. Then, run the following commands:
+To run the docs locally, you must have Node.js and NPM installed. Then, run the following commands:
 
 ```bash
 npm install
 npm run dev
 ```
 
-You can access the UI from http://localhost:8080/.
+You can access the docs at [localhost:3001](http://localhost:3001/).
 
 ## Troubleshooting tips
 
