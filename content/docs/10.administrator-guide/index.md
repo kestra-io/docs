@@ -6,15 +6,16 @@ Here, you will find the necessary information for deploying and configuring your
 
 ## Software requirements
 
-| Component         | Required version            | Note                              |
-|-------------------|-----------------------------|-----------------------------------|
-| **Java**          | 17-21                       | By default, using Eclipse Temurin |
-| **MySQL**         | x.y.z with exception 8.0.31 |                                   |
-| **PostgreSQL**    | 14-15.5                     |                                   |
-| **MinIO**         | x.y.z or newer              |                                   |
-| **Apache Kafka**  | x.y.z                       |                                   |
-| **Elasticsearch** | x.y.z up to a.b.c           | Alternatively OpenSearch          |
-| **OpenSearch**    | x.y.z or newer              | Alternatively Elasticsearch       |
+The table below lists the software requirements for Kestra i.e. the lowest versions of the software that Kestra is compatible with.
+
+| Component         | Required version        | Note                             |
+|-------------------|-------------------------|----------------------------------|
+| **Java**          | >= 17 && < 18           | Default 17 using Eclipse Temurin |
+| **MySQL**         | >=8 with exception 8.0.31 | Default 8.3.2                    |
+| **PostgreSQL**    | >=14 && <= 15           | Default 15.3.2                   |
+| **MinIO**         | >=8                     |                                  |
+| **Apache Kafka**  | >=3                     |                                  |
+| **Elasticsearch** | >=7                     | Alternatively OpenSearch >= 2    |
 
 
 ## Hardware requirements
