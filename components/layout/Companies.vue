@@ -105,7 +105,7 @@
         .container {
             width: fit-content;
             max-width: unset;
-            
+
             .companies {
                 width: calc(250px * 14);
                 position: relative;

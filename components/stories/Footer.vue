@@ -1,6 +1,7 @@
 <template>
     <div class="container py-5 d-flex flex-column">
         <h2 class="title text-center">Getting started with Kestra</h2>
+        <p class="sub-title text-center">Start building with Kestra — Automate Everything Everywhere All at Once.</p>
         <div class="text-center cta ">
             <NuxtLink href="/docs" target="_blank" class="btn btn-dark me-2 mb-2" data-aos="zoom-in">
                 Read the docs
@@ -33,9 +34,11 @@
             font-weight: 100;
             margin-bottom: 0;
         }
-        .btn-dark {
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: $black-4;
+        .sub-title {
+            color: $white;
+            font-size: $h6-font-size;
+            font-weight: 300;
+            margin-bottom: 0;
         }
     }
 </style>

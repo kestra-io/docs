@@ -15,6 +15,14 @@
             </p>
         </div>
     </div>
+    <svg width="0" height="0">
+        <defs>
+            <linearGradient id="featureiconsgradient" x1="4.99595" y1="6.83411" x2="31.2214" y2="33.0161" gradientUnits="userSpaceOnUse">
+                <stop offset="0.015625" stop-color="#F2D5FF"/>
+                <stop offset="1" stop-color="#CB5AFF"/>
+            </linearGradient>
+        </defs>
+    </svg>
 </template>
 <script>
     export default {
@@ -82,7 +90,7 @@
                 background: linear-gradient(90deg, rgba(176,16,251,1) 0%, rgba(222,151,255,1) 14%, rgba(162,39,219,1) 28%, rgba(255,255,255,0.4654236694677871) 50%, rgba(166,16,236,0.8435749299719888) 72%);
             }
 
-            .material-design-icon {
+            :deep(.material-design-icon) {
                 filter: drop-shadow(2px 4px 4px rgba(186, 53, 249, 0.25));
 
                 svg path {

@@ -44,7 +44,6 @@
         white-space: pre-wrap;
         width: 100%;
         font-size: $font-size-sm;
-        color: $primary;
         font-family: var(--bs-font-monospace);
         font-weight: 600;
         margin: 0 auto;
@@ -68,6 +67,7 @@
                 content: '>';
                 margin-right: 0.25rem;
                 margin-left: 0.25rem;
+                color: #CDD5EF !important;
             }
 
             &:first-child {
@@ -75,10 +75,11 @@
                     display: none;
                 }
             }
-        }
 
-        .breadcrumb-item + .breadcrumb-item::before {
-            color: $primary;
+            a {
+                color: #CDD5EF !important;
+
+            }
         }
     }
 </style>

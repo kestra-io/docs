@@ -7,53 +7,37 @@
     </div>
     <div v-else class="container">
         <Section
-            class="with-shadow"
-            title="Slack community"
-            subtitle="Orchestrate Success Together"
-            baseline="Join the slack to share ideas and best practices, get help with technical questions, and discuss Kestra with other developers (and even the founders)."
+            subtitle="Orchestrate Success"
+            subtitle-after="Together"
+            baseline="Join the slack to share ideas and best practices, get help with technical questions, and discuss Kestra with other developers."
         >
-            <div class="row card-group card-centered no-shadow mb-2">
+            <div class="row card-group no-shadow mb-2">
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="fade-left">
-                        <div class="card-body">
-                                <span class="card-icon">
-                                    <TooltipQuestion />
-                                </span>
-                            <h4 class="card-title">Ask a question</h4>
-                            <p class="card-text">Get stuck with the documentation? We're here to help!</p>
-                            <p class="channel">#help</p>
-                        </div>
-                    </div>
+                    <Card
+                        :icon="TooltipQuestion"
+                        title="Ask a question"
+                        description="Get stuck with the documentation? We're here to help!"
+                    />
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card" data-aos="fade-right">
-                        <div class="card-body">
-                                <span class="card-icon">
-                                    <HandWave />
-                                </span>
-                            <h4 class="card-title">Introduce yourself</h4>
-                            <p class="card-text">Welcome to the Kestra community! Let's introduce ourselves!</p>
-                            <p class="channel">#introductions</p>
-                        </div>
-                    </div>
+                    <Card
+                        :icon="HandWave"
+                        title="Introduce yourself"
+                        description="Welcome to the Kestra community! Let's introduce ourselves!"
+                    />
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="card"  data-aos="fade-left">
-                        <div class="card-body">
-                                <span class="card-icon">
-                                    <MessageAlert />
-                                </span>
-                            <h4 class="card-title">Share Feedback</h4>
-                            <p class="card-text">Discussions about the product, including your feedback, ideas, and dreams.</p>
-                            <p class="channel">#feedback-and-requests</p>
-                        </div>
-                    </div>
+                    <Card
+                        :icon="MessageAlert"
+                        title="Share Feedback"
+                        description="Discussions about the product, including your feedback, ideas, and dreams."
+                    />
                 </div>
             </div>
             <div class="text-center ">
-                <a href="https://kestra.io/slack" class="btn btn-primary me-2" target="_blank"  data-aos="zoom-in">
+                <a href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated me-2" target="_blank"  data-aos="zoom-in">
                     Join our slack
                 </a>
             </div>
@@ -61,16 +45,20 @@
     </div>
 </template>
 
+<script setup>
+    import TooltipQuestion from "vue-material-design-icons/TooltipQuestion.vue";
+    import HandWave from "vue-material-design-icons/HandWave.vue";
+    import MessageAlert from "vue-material-design-icons/MessageAlert.vue";
+</script>
+
 <script>
 import Section from '../../components/layout/Section.vue';
-import TooltipQuestion from "vue-material-design-icons/TooltipQuestion.vue";
-import HandWave from "vue-material-design-icons/HandWave.vue";
-import MessageAlert from "vue-material-design-icons/MessageAlert.vue";
+import Card from '../card/Card.vue';
 import Slack from "vue-material-design-icons/Slack.vue";
 import { kestraInstance } from "~/utils/api.js";
 
 export default {
-    components: {Slack, Section, TooltipQuestion, HandWave, MessageAlert},
+    components: {Slack, Section, Card},
     props: {
         widget: {
             type: Boolean,
@@ -108,11 +96,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
 
+    :deep(section) {
+        .baseline {
+            font-size: $h6-font-size !important;
+        }
+    }
 
-span.online {
-    font-weight: normal;
-    font-size: $font-size-xs;
-}
+    .container {
+        border-bottom: $block-border;
+    }
+
+    span.online {
+        font-weight: normal;
+        font-size: $font-size-xs;
+    }
 </style>
