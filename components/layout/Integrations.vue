@@ -1,59 +1,115 @@
 <template>
-    <div class="container-fluid bg-body-tertiary">
+    <div class="container-fluid">
+      <Section>
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6" data-aos="zoom-in">
-                    <img class="img-fluid mt-5 mt-kg-0" src="/landing/features/integration.svg" alt="Logos of tools that integrate with Kestra such as Snowflake, Airbyte, DBT or Fivetran and Kestra at the center of It"/>
-                </div>
-                <div class="col-lg-6 mb-5">
-                    <h2 data-aos="fade-left">Simple Integration</h2>
-                    <p class="mb-5" data-aos="fade-right">
-                        <b>Customize and extend</b> Kestra's integrations with custom plugins, tailored to your specifics needs. Integrate internal systems, third-party APIs, cloud services or databases using simple and scalable integrations.
-                    </p>
-
-                    <NuxtLink href="/plugins" class="btn btn-dark me-2 mb-2" data-aos="zoom-in">See open-source plugins</NuxtLink>
-                    <NuxtLink href="/docs/plugin-developer-guide" class="btn btn-primary mb-2" data-aos="zoom-in">Create a custom plugin</NuxtLink>
-                </div>
-            </div>
+          <div class="heading mx-auto">
+            <h2 class="title text-center">
+              <p>
+                Integrate with tools you already<span class="title-animate">
+                  know
+                </span>
+                and <span class="title-animate">love</span>
+              </p>
+            </h2>
+          </div>
+  
+          <div
+            data-aos="fade-right"
+            class="d-flex justify-content-center flex-wrap plugins gap-4 my-5"
+          >
+            <img
+              v-for="plugin in items"
+              :key="plugin.name"
+              :src="plugin.icon"
+              :alt="plugin.name"
+            />
+          </div>
         </div>
+      </Section>
     </div>
-</template>
-
-<script>
-    import Section from '../layout/Section.vue';
-
-    export default {
-        components: {Section}
+  </template>
+  
+  <script setup>
+  import Section from "../layout/Section.vue";
+  
+  const items = ref([
+    {
+      name: "Fivetran",
+      icon: "/retail/plugins/fivetran.svg",
+    },
+    {
+      name: "Snowflake",
+      icon: "/retail/plugins/snowflake.svg",
+    },
+    {
+      name: "AWS",
+      icon: "/retail/plugins/aws.svg",
+    },
+    {
+      name: "databricks",
+      icon: "/retail/plugins/databricks.svg",
+    },
+    {
+      name: "Azure",
+      icon: "/retail/plugins/azure.svg",
+    },
+    {
+      name: "dbt",
+      icon: "/retail/plugins/dbt.svg",
+    },
+    {
+      name: "Airbyte",
+      icon: "/retail/plugins/airbyte.svg",
+    },
+    {
+      name: "Docker",
+      icon: "/retail/plugins/docker.svg",
+    },
+    {
+      name: "Terraform",
+      icon: "/retail/plugins/terraform.svg",
+    },
+    {
+      name: "Google Cloud",
+      icon: "/retail/plugins/cloud.svg",
+    },
+    {
+      name: "Github",
+      icon: "/retail/plugins/github.svg",
+    },
+  ]);
+  </script>
+  
+  
+  <style lang="scss" scoped>
+  @import "../../assets/styles/variable";
+  
+  .container-fluid {
+    background-color: $black-1;
+  
+    .container {
+      background-image: url(/landing/features/mask.svg);
     }
-</script>
-
-
-<style lang="scss" scoped>
-    @import "../../assets/styles/variable";
-
-    .container-fluid {
-        background: $purple-7;
-        color: var(--bs-white);
-
-        .row {
-            div:nth-child(1) {
-                justify-content: center;
-                display: flex;
-            }
-
-            div:nth-child(2) {
-                @include media-breakpoint-up(lg) {
-                    padding: calc($spacer * 4) calc($spacer * 4) 0;
-                }
-
-                h2 {
-                    margin-bottom: calc($spacer * 2);
-                }
-
-                p {
-                    font-size: $font-size-lg;
-                }
-            }
+    .heading {
+      max-width: 550px;
+      font-size: $h2-font-size !important;
+      line-height: 4rem;
+      font-size: $font-size-3xl;
+  
+      .title {
+        line-height: 4rem;
+        text-align: center;
+        font-weight: 300 !important;
+        color: #ffffff;
+  
+        &-animate {
+          background: linear-gradient(90deg, #e151f7 24.82%, #5c47f5 76.81%);
+          background-clip: text;
+          font-weight: 400 !important;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
+      }
     }
-</style>
+  }
+  </style>

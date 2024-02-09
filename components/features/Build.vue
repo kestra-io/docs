@@ -1,139 +1,294 @@
 <template>
-    <div class="container">
-        <Section subtitle="Accelerate Development and Deployment" title="Build Faster, Ship Better">
-            <div class="row card-group card-centered mb-2">
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><CloudArrowUpOutline /></span>
-                            <h4 class="card-title">CI/CD Deployment</h4>
-                            <p class="card-text">Integrate Kestra into CI/CD pipelines to automate the deployment of workflows (Terraform, GitLab Actions, GitLab, Jenkins…).</p>
-                        </div>
-                    </div>
+    <div class="container-fluid">
+      <Section>
+        <div class="container">
+          <div class="heading mx-auto pb-4">
+            <h2 class="title text-center">
+              <span class="title-animate">Accelerate</span> Development and
+              Deployment
+            </h2>
+          </div>
+          <div class="row d-flex justify-content-center">
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">CI/CD Deployment</h6>
+                  <p class="card-para">
+                    Integrate Kestra into CI/CD pipelines to automate the
+                    deployment of workflows (Terraform, GitLab Actions, GitLab,
+                    Jenkins…).
+                  </p>
                 </div>
-
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><ViewDashboardVariantOutline /></span>
-                            <h4 class="card-title">Production made easy, no more production plan</h4>
-                            <p class="card-text">Kestra supports flow dependencies to define the execution order based on their interdependence.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><CalendarStartOutline /></span>
-                            <h4 class="card-title">Real-Time Events</h4>
-                            <p class="card-text">Flow execution based on events from the core or plugins, such as the result of other flows in real-time, detection of files from SFTP or Google Cloud Storage, or results of an SQL query.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><ClockStart /></span>
-                            <h4 class="card-title">Event-driven Triggers</h4>
-                            <p class="card-text">Endless possibilities to start a flow through API, using a webhook, waiting for a trigger, or simply starting directly from the Web UI.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><MonitorDashboard /></span>
-                            <h4 class="card-title">Monitoring</h4>
-                            <p class="card-text">Dashboards and metrics directly in the User Interface.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><RefreshAuto /></span>
-                            <h4 class="card-title">Error Handling</h4>
-                            <p class="card-text">Handle errors automatically and retry failed tasks.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><BellOutline /></span>
-                            <h4 class="card-title">Notifications</h4>
-                            <p class="card-text">Alerting configuration directly in the UI to alert when workflow tasks are completed, have errors or delays, or for any other important event.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><CalculatorVariantOutline /></span>
-                            <h4 class="card-title">Large Data Processing</h4>
-                            <p class="card-text">Massive data volume handling with high performance using partitioning and batch processing techniques.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><ViewStreamOutline /></span>
-                            <h4 class="card-title">Micro-Batch for Real-Time</h4>
-                            <p class="card-text">All the benefits of a real-time system without maintenance and complexity costs by collecting data at regular intervals and processing them in micro-batch.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><CloudOutline /></span>
-                            <h4 class="card-title">No single point of failure</h4>
-                            <p class="card-text">Horizontal and vertical scaling without worrying about resource allocation.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><OneUp /></span>
-                            <h4 class="card-title">Performance Gains</h4>
-                            <p class="card-text">Better performance with JVM (Java Virtual Machine) technology.</p>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-        </Section>
+  
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">
+                    Production made easy, no more production plan
+                  </h6>
+                  <p class="card-para">
+                    Kestra supports flow dependencies to define the execution
+                    order based on their interdependence.
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">Real-Time Events</h6>
+                  <p class="card-para">
+                    Flow execution based on events from the core or plugins, such
+                    as the result of other flows in real-time, detection of files
+                    from SFTP or Google Cloud Storage, or results of an SQL query.
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">Event-driven Triggers</h6>
+                  <p class="card-para">
+                    Endless possibilities to start a flow through API, using a
+                    webhook, waiting for a trigger, or simply starting directly
+                    from the Web UI.
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">Monitoring</h6>
+                  <p class="card-para">
+                    Dashboards and metrics directly in the User Interface.
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">Error Handling</h6>
+                  <p class="card-para">
+                    Handle errors automatically and retry failed tasks.
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">Notifications</h6>
+                  <p class="card-para">
+                    Alerting configuration directly in the UI to alert when
+                    workflow tasks are completed, have errors or delays, or for
+                    any other important event.
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">Large Data Processing</h6>
+                  <p class="card-para">
+                    Massive data volume handling with high performance using
+                    partitioning and batch processing techniques.
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">Micro-Batch for Real-Time</h6>
+                  <p class="card-para">
+                    All the benefits of a real-time system without maintenance and
+                    complexity costs by collecting data at regular intervals and
+                    processing them in micro-batch.
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">No single point of failure</h6>
+                  <p class="card-para">
+                    Horizontal and vertical scaling without worrying about
+                    resource allocation.
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+              <div class="card h-100" data-aos="fade-right">
+                <div class="card-body mx-2">
+                  <img
+                    src="/landing/features/Iconbkg.svg"
+                    alt="BackFill pattern svg"
+                    class="mb-2"
+                  />
+                  <h6 class="card-heading">Performance Gains</h6>
+                  <p class="card-para">
+                    Better performance with JVM (Java Virtual Machine) technology.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
     </div>
-</template>
-
-<script setup>
-    import CloudArrowUpOutline from "vue-material-design-icons/CloudArrowUpOutline.vue"
-    import ViewDashboardVariantOutline from "vue-material-design-icons/ViewDashboardVariantOutline.vue"
-    import CalendarStartOutline from "vue-material-design-icons/CalendarStartOutline.vue"
-    import ClockStart from "vue-material-design-icons/ClockStart.vue"
-    import MonitorDashboard from "vue-material-design-icons/MonitorDashboard.vue"
-    import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
-    import BellOutline from "vue-material-design-icons/BellOutline.vue"
-    import CalculatorVariantOutline from "vue-material-design-icons/CalculatorVariantOutline.vue"
-    import ViewStreamOutline from "vue-material-design-icons/ViewStreamOutline.vue"
-    import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
-    import OneUp from "vue-material-design-icons/OneUp.vue"
-</script>
-
-<script>
-    import Section from '../layout/Section.vue';
-
-    export default {
-        components: {Section}
+  </template>
+  
+  <script>
+  import Section from "../layout/Section.vue";
+  export default {
+    components: { Section },
+  };
+  </script>
+  
+  <style lang="scss" scoped>
+  @import "../../assets/styles/variable";
+  
+  .container-fluid {
+    background-color: $black-1;
+  }
+  
+  .container {
+    background-image: url(/landing/features/mask.svg);
+    position: relative;
+    z-index: 10;
+  
+    &::before {
+      content: "";
+      position: absolute;
+      width: 540px;
+      height: 400px;
+      background: linear-gradient(
+        140deg,
+        rgba(70, 24, 255, 0) -41.95%,
+        #7e1cfa 77.28%
+      );
+      filter: blur(130px);
+      left: 28.6rem;
+      top: 31rem;
+      z-index: 0;
     }
-</script>
+  }
+  
+  .highlight-underline {
+    text-decoration: underline;
+  }
+  
+  .card {
+    background-color: $black-2;
+    color: $body-tertiary-color;
+    z-index: 99;
+    box-shadow: none !important;
+    border: 1px solid #3d3d3f;
+  
+    &-body {
+      padding: 2.6rem 1.5rem 2rem 1.5rem;
+    }
+  
+    &-heading {
+      font-size: $h4-font-size;
+      font-weight: 300;
+      line-height: 2rem;
+    }
+  
+    &-para {
+      font-size: $font-size-sm;
+      font-weight: 400;
+      line-height: 1.3;
+      color: $white-1;
+    }
+  }
+  
+  .heading {
+    max-width: 550px;
+    font-size: $font-size-3xl !important;
+    line-height: 2.7rem;
+  
+    .title {
+      line-height: 4rem;
+      text-align: center;
+      font-weight: 300 !important;
+      color: #ffffff;
+  
+      &-animate {
+        background: linear-gradient(90deg, #e151f7 24.82%, #5c47f5 76.81%);
+        font-size: $font-size-3xl !important;
+        font-weight: 400 !important;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+  }
+  </style>
