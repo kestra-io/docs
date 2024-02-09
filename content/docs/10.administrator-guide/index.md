@@ -6,16 +6,16 @@ Here, you will find the necessary information for deploying and configuring your
 
 ## Software requirements
 
-The table below lists the software requirements for Kestra i.e. the lowest versions of the software that Kestra is compatible with.
+The table below lists the software requirements for Kestra.
 
-| Component         | Required version        | Note                             |
-|-------------------|-------------------------|----------------------------------|
-| **Java**          | >= 17 && < 18           | Default 17 using Eclipse Temurin |
+| Component         | Required version          | Note                             |
+|-------------------|---------------------------|----------------------------------|
+| **Java**          | >= 17 && < 18             | Default 17 using Eclipse Temurin |
 | **MySQL**         | >=8 with exception 8.0.31 | Default 8.3.2                    |
-| **PostgreSQL**    | >=14 && <= 15           | Default 15.3.2                   |
-| **MinIO**         | >=8                     |                                  |
-| **Apache Kafka**  | >=3                     |                                  |
-| **Elasticsearch** | >=7                     | Alternatively OpenSearch >= 2    |
+| **PostgreSQL**    | >=14 && <= 15             | Default 15.3.2                   |
+| **MinIO**         | >=8                       |                                  |
+| **Apache Kafka**  | >=3                       |                                  |
+| **Elasticsearch** | >=7                       | Alternatively OpenSearch >= 2    |
 
 
 ## Hardware requirements
@@ -26,6 +26,6 @@ If you need more guidance on how much memory and CPU to allocate to each archite
 
 ## Kestra configuration
 
-The pages provide information on how to configure Kestra for different environments and use cases.
+The pages below provide information on how to configure Kestra for different environments and use cases.
 
 <ChildTableOfContents />
