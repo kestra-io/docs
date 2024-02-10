@@ -1,9 +1,7 @@
 ---
 title: Pebble Templating Engine
-<<<<<<<< HEAD:content/docs/07.concepts/06.pebble.md
 icon: /docs/icons/concepts.svg
-========
->>>>>>>> cd5572b (Docs/namespace management (#814)):content/docs/06.workflow-components/pebble.md
+
 ---
 
 
