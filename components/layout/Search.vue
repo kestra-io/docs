@@ -541,6 +541,8 @@
         }
         .search-results {
             border-top: 1px solid $black-6;
+
+
         }
     }
 

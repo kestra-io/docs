@@ -231,4 +231,6 @@ import Section from '../layout/Section.vue';
         font-size: $font-size-xl;
         font-weight: 300;
     }
+
 }</style>
+
