@@ -236,10 +236,6 @@ export default {
     border-bottom: 1px solid $black-6;
 }
 
-.nav-tabs {
-    border-bottom: 1px solid $black-6;
-}
-
 .nav-item {
     .nav-link {
         color: $white;

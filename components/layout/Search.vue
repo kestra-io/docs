@@ -409,6 +409,11 @@
 
                     &-active {
                         border-top: 1px solid $purple-36;
+                        color: $purple-36;
+                    }
+                }
+                &::-webkit-scrollbar {
+                    display: none;
                 }
               
             }
@@ -536,8 +541,7 @@
         }
         .search-results {
             border-top: 1px solid $black-6;
-
         }
     }
-}
+
 </style>
