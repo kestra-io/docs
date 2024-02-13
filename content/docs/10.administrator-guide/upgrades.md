@@ -67,7 +67,7 @@ helm upgrade kestra kestra/kestra -f values.yaml
 
 ## Where can I find migration guides
 
-The [Migrations section](https://kestra.io/docs) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
+The [Migrations section](../12.migrations/index.md) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
 
 For all breaking changes, the migration guides are linked in the [release notes](https://github.com/kestra-io/kestra/releases).
 
