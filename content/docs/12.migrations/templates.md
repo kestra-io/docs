@@ -1,18 +1,17 @@
 ---
 title: Deprecation of Templates
 icon: /docs/icons/migrations.svg
+release: 0.11.0
 ---
 
 Since the release 0.11.0, Templates are deprecated and disabled by default. Please use subflows instead.
 
 If you still rely on templates, you can re-enable them in your [configuration](../10.administrator-guide/01.configuration/04.others.md).
 
-
 ## Why templates are deprecated
 
 1. Subflows are more powerful — subflows provide the same functionality as templates while simultaneously being more flexible than templates. For instance, `inputs` are not allowed in a template because a template is only a list of tasks that get copied to another flow that references it. In contrast, when invoking a subflow, you can parametrize it with custom parameters. This way, subflows allow you to define workflow logic once and invoke it in other flows with custom parameters.
 2. Subflows are more transparently reflected in the topology view and don't require copying tasks.
-
 
 If you are using templates and you are not ready to migrate to subflows yet, add the following Kestra configuration option to still be able to use them:
 
@@ -94,6 +93,7 @@ To migrate from a template to a subflow, you can create a flow that is a 1:1 cop
 In our example, we can create a new flow called `mytemplate` in a namespace `dev`. This flow will be invoked from a parent flow as a subflow.
 
 Then, to create a child flow (a subflow), you only need to change the following values in the `templatedFlow`:
+
 - Change the `io.kestra.core.tasks.flows.Template` task type to `io.kestra.core.tasks.flows.Subflow`
 - Change the `templateId` to `flowId`.
 
@@ -160,9 +160,7 @@ tasks:
 
 You can look at both a flow with a template task and a flow with a subflow task side by side to see the difference in syntax:
 
-
 ![template-vs-subflow](/docs/migrations/template-vs-subflow.png)
-
 
 If you still have questions about migrating from templates to subflows, reach out via our [Community Slack](https://kestra.io/slack).
 

@@ -1,6 +1,7 @@
 ---
 title: Deprecation of core Script tasks
 icon: /docs/icons/migrations.svg
+release: 0.11.0
 ---
 
 Script tasks included in the core plugin have been deprecated in 0.11.0 and moved to dedicated plugins.
