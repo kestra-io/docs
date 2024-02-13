@@ -132,9 +132,14 @@
                 return this.showMenu.some(path => path.startsWith(item))
             },
             isPage(item) {
+                if (item.isPage === false) {
+                    return false;
+                }
+
                 if (this.disabledPages) {
                     return !this.disabledPages.includes(item._path)
                 }
+
                 return item.isPage ?? true;
             },
             getClass(item, depthLevel, disabled) {
@@ -206,6 +211,7 @@
                 a {
                     padding-left: 0.25rem;
                     border-left: 0;
+                    color: var(--bs-body-color);
                 }
             }
 

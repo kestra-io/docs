@@ -22,7 +22,8 @@ function generateSubMenuWithGroupProvider(baseUrl, groupProviderFromItem, items)
         if (subMenuSplitter === -1) {
             m[item] = {
                 title: toNavTitle(item),
-                _path: `${baseUrl}/${groupProviderFromItem(item)}.${item}`
+                _path: `${baseUrl}/${groupProviderFromItem(item)}.${item}`,
+                isPage: true,
             }
         } else {
             let subMenuName = item.substring(0, subMenuSplitter);
@@ -133,6 +134,7 @@ export default defineEventHandler(async (event) => {
                 return {
                     title: toNavTitle(plugin.title),
                     _path: rootPluginUrl,
+                    isPage: false,
                     children
                 };
             }).sort((a, b) => {
@@ -151,6 +153,7 @@ export default defineEventHandler(async (event) => {
             return [{
                 title: "Plugins",
                 _path: "/plugins",
+                isPage: false,
                 children: sortedPluginsHierarchy
             }];
         }
