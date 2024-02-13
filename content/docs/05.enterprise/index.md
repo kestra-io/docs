@@ -1,10 +1,10 @@
 ---
-title: Kestra Cloud and Enterprise
+title: Kestra Enterprise
 ---
 
 This section provides an overview of the available Kestra editions, including:
 - [Enterprise Edition](./01.enterprise-edition.md) — enterprise-grade edition deployed to your private infrastructure
-- [Kestra Cloud](./02.cloud.md) — a fully managed version hosted by the Kestra team in the cloud.
+- [Kestra Cloud (Alpha)](./02.cloud.md) — a fully managed SaaS hosted by the Kestra team. Kestra Cloud is currently in private Alpha. If you are interested in trying it out, [sign up here](https://kestra.io/cloud).
 
 ::ChildCard
 ::

@@ -77,7 +77,7 @@ You can get notified about new releases in the following ways:
 1. Subscribe to notifications in the `#announcements` channel in the [Slack](https://kestra.io/slack) community.
 2. Follow us on [Twitter](https://twitter.com/kestra_io)
 3. Follow us on [LinkedIn](https://www.linkedin.com/company/kestra/)
-4. Subscribe to the [Kestra newsletter](https://kestra.io/blog)
+4. Subscribe to the [Kestra newsletter](https://kestra.io/blogs)
 5. Subscribe to Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
 
 ![release_notification_github](/docs/administrator-guide/release_notifications_github.png)
