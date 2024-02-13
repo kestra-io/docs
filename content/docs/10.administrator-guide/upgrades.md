@@ -12,6 +12,10 @@ You can find the release changelog on the main repository's [Releases](https://g
 
 Next to all bug fixes and enhancements, you can find a dedicated section called `Breaking Changes` in the release notes. This section lists changes that may require some adjustments in your code or Kestra configuration, along with links to the documentation showing how to migrate.
 
+::alert{type="warning"}
+⚠️ Note that `Breaking Changes` are **always** included as the last section of the [release notes](https://github.com/kestra-io/kestra/releases). Make sure to inspect that part of the release notes before upgrading to a new version.
+::
+
 ## How to stick to a specific Kestra version
 
 If you want to stick to a specific Kestra version, you can pin the [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) to a specific release. Here are some examples:
@@ -61,6 +65,12 @@ For more complex configurations that include multiple changes, consider using a 
 helm upgrade kestra kestra/kestra -f values.yaml
 ```
 
+## Where can I find migration guides
+
+The [Migrations section](https://kestra.io/docs) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
+
+For all breaking changes, the migration guides are linked in the [release notes](https://github.com/kestra-io/kestra/releases).
+
 ## How to stay informed about new releases
 
 You can get notified about new releases in the following ways:
@@ -74,7 +84,8 @@ You can get notified about new releases in the following ways:
 
 ## Getting help
 
-If you need help with the upgrade process:
-- please submit a Support Ticket (_if you are a [Kestra Enterprise](https://kestra.io/enterprise) customer_)
+If you have any questions about the upgrade process:
+- if you are a [Kestra Enterprise](https://kestra.io/enterprise) customer, please submit a [Support Ticket](https://support.kestra.io/)
 - reach out to us [via Slack](https://kestra.io/slack).
 
+We understand that upgrades can be difficult. If you need more help, [reach out to us](https://kestra.io/contact-us) and we'll help you with the migration based on your specific environment and use case.
