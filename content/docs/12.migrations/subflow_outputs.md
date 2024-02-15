@@ -1,10 +1,10 @@
 ---
-title: Deprecation of Subflow outputs
+title: Subflow outputs behavior
 icon: /docs/icons/migrations.svg
 release: 0.15.0
 ---
 
-The `outputs` property of a `Subflow` task in the parent flow is deprecated starting from the 0.15.0 release. Instead, you should use the new flow outputs to pass data between flows.
+The `outputs` property of a parent flow's `Subflow` task is deprecated. Instead, use flow `outputs` to pass data between flows.
 
 ## Subflow outputs behavior before Kestra 0.15.0
 
@@ -44,7 +44,7 @@ tasks:
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 
-You can see that the `outputs` property is used to define the output of the subflow and stored in the variable named `final` (_the keys are arbitrary_). This approach is not ideal, as **you need to know the internals of the subflow to access its outputs**. This is why this property is deprecated in Kestra 0.15.0.
+You can see that the `outputs` property is used to define the output of the subflow and stored in the variable named `final` (_the name of the keys are arbitrary_). This approach is not ideal, as **you need to know the internals of the subflow to access its outputs**. This is why this property is deprecated in Kestra 0.15.0.
 
 ### How to keep the old subflow outputs behavior
 
