@@ -183,7 +183,7 @@ id: with-template
 namespace: dev
 
 inputs:
-  - name: store
+  - id: store
     type: STRING
     required: true
 

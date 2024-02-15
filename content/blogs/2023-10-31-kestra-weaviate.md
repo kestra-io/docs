@@ -22,7 +22,7 @@ Today's article will briefly refresh your memory on vector databases, and show y
 ## 2 Minute Crash Course to Vector Databases
 We have relational databases to store data in tables, document databases to store, well, documents, and graph databases to store graphs. Why then do we need another type of database?
 
-The answer is simple - **modern AI problems require modern solutions**. 
+The answer is simple - **modern AI problems require modern solutions**.
 
 Vector databases are designed from the ground up to store vectors, all while providing the performance, scalability, and flexibility data scientists need to get most of this type of data. This type of database provides a fast and scalable way to query vector embeddings in order to discover similarities.
 
@@ -75,10 +75,10 @@ id: weaviate-create-schema
 namespace: dev
 
 inputs:
-  - name: weaviateClusterUrl
+  - id: weaviateClusterUrl
     type: STRING
     defaults: https://weaviate-cluster...
-  - name: weaviateApiKey
+  - id: weaviateApiKey
     type: STRING
     defaults: DDA4...
 
@@ -135,10 +135,10 @@ id: weaviate-insert
 namespace: dev
 
 inputs:
-  - name: weaviateClusterUrl
+  - id: weaviateClusterUrl
     type: STRING
     defaults: https://weaviate-cluster...
-  - name: weaviateApiKey
+  - id: weaviateApiKey
     type: STRING
     defaults: DDA4...
 
@@ -184,10 +184,10 @@ id: weaviate-get
 namespace: dev
 
 inputs:
-  - name: weaviateClusterUrl
+  - id: weaviateClusterUrl
     type: STRING
     defaults: https://weaviate-cluster...
-  - name: weaviateApiKey
+  - id: weaviateApiKey
     type: STRING
     defaults: DDA4...
 
@@ -232,7 +232,7 @@ And that's how easy it is to query a Weaviate vector database from Kestra. Next,
 ## Summing up Kestra and Weaviate Integration
 Vector databases are quickly becoming a must-know technology for a wide range of IT professionals - from software developers to data engineers and data scientists. Most modern applications have some AI features built in, which means a vector database is the most adequate place to store things such as embeddings for machine learning models.
 
-Weaviate is one example of a well-implemented vector database, so we at Kestra wanted to give you a **familiar-looking interface** for communicating with it. 
+Weaviate is one example of a well-implemented vector database, so we at Kestra wanted to give you a **familiar-looking interface** for communicating with it.
 
 This article showed you how to do the most common operations on simple data objects, but you can do so much more for actual machine learning use cases. We recommend you go over their [example use cases and demos](https://weaviate.io/developers/weaviate/more-resources/example-use-cases) list to see what's possible and build end-to-end LLM-powered workflows using Kestra.
 

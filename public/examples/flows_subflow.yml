@@ -4,7 +4,7 @@ namespace: io.kestra.demo
 description: This flow will launch a subflow passing parameters as `inputs`, wait until the end of the execution and gather the output of a task.
 
 inputs:
-  - name: string
+  - id: string
     type: STRING
 
 tasks:

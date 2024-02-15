@@ -37,7 +37,7 @@ id: upload_to_s3
 namespace: dev
 
 inputs:
-  - name: bucket
+  - id: bucket
     type: STRING
     defaults: declarative-data-orchestration
 
@@ -70,7 +70,7 @@ id: conditional_branching
 namespace: dev
 
 inputs:
-  - name: parameter
+  - id: parameter
     type: STRING
     required: false
 

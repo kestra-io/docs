@@ -6,7 +6,7 @@ description: |
   If no matching value, the `defaults` task is used.
 
 inputs:
-  - name: string
+  - id: string
     type: STRING
 
 tasks:

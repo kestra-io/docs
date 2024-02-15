@@ -65,7 +65,7 @@ id: hello-world
 namespace: dev
 
 inputs:
-  - name: greeting
+  - id: greeting
     type: STRING
     defaults: hey
 
@@ -109,7 +109,7 @@ id: hello-world
 namespace: dev
 
 inputs:
-  - name: greeting
+  - id: greeting
     type: STRING
     defaults: hey
 
@@ -200,7 +200,7 @@ id: subflow
 namespace: qa
 
 inputs:
-  - name: items
+  - id: items
     type: STRING
 
 tasks:

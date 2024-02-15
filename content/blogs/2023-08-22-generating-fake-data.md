@@ -30,7 +30,7 @@ Here is for example the mathematical function used to generate orders volume ove
 
 ![Function](/blogs/2023-08-22-generating-fake-data/function.png)
 
-To create those fake data, we lean on the Faker python library, supplemented by our custom provider. 
+To create those fake data, we lean on the Faker python library, supplemented by our custom provider.
 
 Our datasets include:
 - Orders: Like any order table, detailing user orders.
@@ -80,7 +80,7 @@ Note the {{ trigger.date ?? now() | date("yyyy-MM-dd")}}:
 - when running on schedule it will take the corresponding scheduled date
 - when running manually it will take the current date.
 
-We declare a scheduling trigger every day with a backfill property allowing us to run the Flow over several past dates. 
+We declare a scheduling trigger every day with a backfill property allowing us to run the Flow over several past dates.
 
 ```yaml
 id: produce_data
@@ -143,10 +143,10 @@ labels:
   tag: load
 
 inputs:
-  - name: orders_data
+  - id: orders_data
     type: URI
 
-  - name: order_date
+  - id: order_date
     type: DATE
 
 tasks:
@@ -159,7 +159,7 @@ tasks:
 
   - id: load
     type: io.kestra.plugin.gcp.bigquery.LoadFromGcs
-    from: 
+    from:
       - "{{ outputs.extract.uri }}"
     projectId: "kestra-dev"
     destinationTable: "shiny_rocks.orders"
@@ -215,12 +215,12 @@ tasks:
     spreadsheetId: "{{ vars.spreadsheet_id }}"
     store: true
     valueRender: FORMATTED_VALUE
-  
+
   - id: write_csv
     type: io.kestra.plugin.serdes.csv.CsvWriter
     description: Write CSV into Kestra internal storage
     from: "{{ outputs.read_gsheet.uris.marketing }}"
-  
+
   - id: load_biqquery
     type: io.kestra.plugin.gcp.bigquery.Load
     description: Load data into BigQuery
@@ -263,7 +263,7 @@ tasks:
 
       - id: profile
         type: io.kestra.core.tasks.storages.LocalFiles
-        inputs:          
+        inputs:
           profiles.yml: |
             shiny_rocks_dbt:
               outputs:
@@ -319,7 +319,7 @@ triggers:
             flowId: marketing_investments_to_bigquery
 ```
 
-## Orchestrating Analytics Initiative ## 
+## Orchestrating Analytics Initiative ##
 
 The marketing team wants to know how much their ad campaigns drive sales or not. They asked the data team for a daily report showing the ROI of each platform.
 
@@ -354,7 +354,7 @@ tasks:
       WHERE date = DATE_ADD("{{ trigger.date ?? now() | date(format='YYYY-MM-dd') }}", INTERVAL -3 DAY)
     store: true
 
-  
+
   - id: to_csv
     type: io.kestra.plugin.serdes.csv.CsvWriter
     from: "{{ outputs.get_data.uri }}"
@@ -382,7 +382,7 @@ tasks:
 
           data = pd.read_csv("data.csv")
           plot = (
-            ggplot(data) + 
+            ggplot(data) +
             geom_col(aes(x="platform", fill="platform", y="marketing_cost"))
           )
           ggsave(plot, "plot.png")
@@ -419,7 +419,7 @@ triggers:
 
 ## Conclusion ##
 
-For those who wish to dive deeper, we have made the entire [Shiny Rocks project available for your exploration and usage](https://github.com/kestra-io/shiny_rocks). 
+For those who wish to dive deeper, we have made the entire [Shiny Rocks project available for your exploration and usage](https://github.com/kestra-io/shiny_rocks).
 
 Feel free to access the data and use it as a base for your projects or demos. These "plausible" datasets can be invaluable for learning, testing, and showcasing various tools and concepts.
 You can also look at [our live demo](https://demo.kestra.io/ui/flows?namespace=shiny_rocks) where you could find all Flow showcased here running everyday in the shiny_rocks namespace.
