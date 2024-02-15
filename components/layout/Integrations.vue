@@ -85,7 +85,7 @@ const items = ref([
 @import "../../assets/styles/variable";
 
 .container-fluid {
-  background-color: $black-1;
+  background-color: $black-4;
 
   .container {
     background-image: url(/landing/features/mask.svg);

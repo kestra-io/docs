@@ -16,11 +16,12 @@
               <NuxtLink
                 href="https://demo.kestra.io/ui/login?auto"
                 target="_blank"
-                class="btn text-white mt-2 me-3"
+                class="btn text-white mt-2 me-3 btn-animated btn-dark-animated"
                 data-aos="zoom-in"
               >
                 Live demo
               </NuxtLink>
+
               <NuxtLink
                 href="/docs/getting-started"
                 class="btn btn-animated btn-purple-animated mt-2"

@@ -108,6 +108,8 @@ export default {
   line-height: 1.625rem !important;
   text-align: center;
   color: #fff;
+  padding-top: 18px;
+  padding-bottom: 13px;
   font-weight: 300;
 }
 
