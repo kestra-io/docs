@@ -9,10 +9,10 @@
                         the need for separate configurations.</p>
                     <div class="d-flex flex-wrap gap-2">
                         <NuxtLink href="/docs/terraform">
-                            <button class="btn btn-dark btn-lg"> Read the docs</button>
+                            <button class="btn btn-lg btn-animated btn-dark-animated btn-lg"> Read the docs</button>
                         </NuxtLink>
                         <NuxtLink href="https://github.com/kestra-io/kestra">
-                            <button class="btn btn-animated btn-purple-animated btn-lg">Get Started</button>
+                            <button class="btn btn-lg btn-animated btn-purple-animated btn-lg">Get Started</button>
                         </NuxtLink>
                     </div>
                 </div>

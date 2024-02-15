@@ -30,7 +30,13 @@
             subtitleAfter="Features"
             :items="features"
         />
-        <SolutionsDetailNext />
+        <LayoutFooterContact
+            title="Ready to take your data department to the next level ?"
+            darkButtonText="Contact us"
+            darkButtonHref="/contact-us"
+            purpleButtonText="Live demo"
+            purpleButtonHref="https://demo.kestra.io/ui/login?auto"
+        />
     </div>
 </template>
 

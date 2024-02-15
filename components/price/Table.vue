@@ -417,7 +417,7 @@ const tableData = ref([
 }
 
 .t-r-heading {
-    background-color: #252526;
+    background-color: $black-3;
     padding: 1.375rem 2.9rem
 }
 
@@ -459,12 +459,12 @@ const tableData = ref([
 }
 
 .t-border-data-title {
-    border: 1px solid #252526;
+    border: 1px solid $black-3;
     border-bottom: none
 }
 
 .t-border-data-title-thead {
-    border: 1px solid #252526;
+    border: 1px solid $black-3;
     border-top: none
 }
 
@@ -473,7 +473,7 @@ const tableData = ref([
 }
 
 .table {
-    background-color: #161617!important;
+    background-color: $black-2!important;
     border-radius: 8px;
 
     border: none;

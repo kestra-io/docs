@@ -8,7 +8,7 @@
                             <h1 class="text-white">{{ title }}</h1>
                             <p class="text-white fs-4">{{ metaDescription }}</p>
                             <NuxtLink href="/demo">
-                                <button class="btn btn-animated btn-purple-animated mb-2 aos-init aos-animate">Book a demo</button>
+                                <button class="btn btn-animated btn-purple-animated mb-2 aos-init aos-animate">Talk to Us</button>
                             </NuxtLink>
                         </div>
                     </div>

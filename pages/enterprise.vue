@@ -10,7 +10,12 @@
         <EnterpriseCustomers/>
         <EnterpriseSecurity/>
         <EnterpriseEditions/>
-        <EnterpriseContact/>
+        <LayoutFooterContact
+            darkButtonText="Contact Us"
+            darkButtonHref="https://kestra.io/demo"
+            purpleButtonText="Talk to Us"
+            purpleButtonHref="https://kestra.io/demo"
+        />
     </div>
 </template>
 

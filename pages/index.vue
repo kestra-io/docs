@@ -11,7 +11,6 @@
         <HomeUI/>
         <HomeHow/>
         <HomePlugins/>
-        <HomeEnterpriseEdition/>
         <HomeTestimonials/>
         <HomeOpenSource/>
         <LayoutBlogs title="Blog"/>

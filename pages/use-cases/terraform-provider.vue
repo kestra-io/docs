@@ -7,7 +7,13 @@
             <TerraformHeader/>
             <TerraformOverview />
             <TerraformUseCases />
-            <TerraformFooter />
+            <LayoutFooterContact
+                subtitle="Integration between Kestra and Terraform is simple. Add the Kestra provider to your Terraform configuration file to get started."
+                darkButtonText="YouTube playlist"
+                darkButtonHref="https://www.youtube.com/watch?v=tiHa3zucS_Q&list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr&ab_channel=Kestra"
+                purpleButtonText="Documentation"
+                purpleButtonHref="/docs/terraform"
+            />
     </div>
 </template>
 

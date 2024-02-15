@@ -81,10 +81,10 @@
                 color: var(--Kestra-io-Token-color-white, #FFF);
                 text-align: center;
                 font-family: $font-family-sans-serif;
-                font-size: 50px;
+                font-size: calc($font-size-base * 3.125);
                 font-style: normal;
                 font-weight: 300;
-                line-height: 50px;
+                line-height: calc($spacer * 3.125);
 
                 @include media-breakpoint-down(sm) {
                     font-size: 1.875rem !important;

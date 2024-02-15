@@ -36,9 +36,15 @@ $bd-gutter-x: 3rem;
 }
 
 .bd-main {
+
     grid-area: main;
+
     p {
         color: $white;
+
+        a {
+            color: $purple-35;
+        }
     }
 
     li {
@@ -46,21 +52,21 @@ $bd-gutter-x: 3rem;
     }
     h1 {
         padding-bottom: 1.5rem;
-        font-size: $h2-font-size;
+        font-size: callc($font-size-base * 3.125);
         color: $white;
         font-weight: 300;
     }
 
     h2 {
         padding-top: 1.5rem;
-        font-size: $h3-font-size;
+        font-size: $h2-font-size;
         color: $white;
         font-weight: 300;
     }
 
     h3 {
         padding-top: 1.25rem;
-        font-size: $h4-font-size;
+        font-size: callc($font-size-base * 1.875);
         color: $white;
         font-weight: 300;
     }

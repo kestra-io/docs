@@ -2,7 +2,7 @@
     <div class="container-fluid bg-dark-4">
         <div class="container">
             <div class="mb-5">
-                <h2 class="title">Integrate with tools you already <span>know</span> and <span>love</span></h2>
+                <h2 class="title">Integrate with over 400+ plugins you already <span>know</span> and <span>love</span></h2>
                 <div class="plugins d-flex align-items-center justify-content-center flex-wrap">
                     <img src="/landing/home/plugins/fivetran.svg" alt="fivetran">
                     <img src="/landing/home/plugins/snowflake.svg" alt="snowflake">
@@ -46,19 +46,20 @@
         padding: 0;
 
         .container {
-            padding: 64px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 0;
+            border-bottom: $block-border;
+            border-top: $block-border;
         }
 
         .title {
             color: var(--bs-white);
             text-align: center;
             font-family: $font-family-sans-serif;
-            font-size: 50px;
+            font-size: calc($font-size-base * 3.125);
             font-style: normal;
             font-weight: 300;
-            line-height: 64px;
-            padding: 0 24%;
+            line-height: 4rem;
+            padding: 0 20%;
 
             @include media-breakpoint-down(lg) {
                 padding: 0;
@@ -73,8 +74,8 @@
         }
 
         .plugins {
-            gap: 27px 64px;
-            margin: 90px 0;
+            gap: calc($spacer * 1.688) 4rem;
+            margin: calc($spacer * 5.625) 0;
         }
 
 

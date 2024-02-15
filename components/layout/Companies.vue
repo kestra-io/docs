@@ -1,5 +1,5 @@
 <template>
-    <div ref="container" class="container">
+    <div ref="container" class="container mb-4">
         <div ref="companies" class="companies">
             <template v-for="(img, index) in companies" :key="index">
                 <img
@@ -76,7 +76,7 @@
         .companies {
 
             img {
-                margin-right: calc($spacer * 2);
+                margin-right: calc($spacer * 2.649);
                 margin-top: calc($spacer * 2);
 
                 &.inverted {
@@ -115,6 +115,8 @@
                 overflow-y: hidden;
                 width: fit-content;
                 margin: auto;
+                margin-bottom: 1.5rem;
+
 
                 &.scrolling {
                     animation: auto-scroll 30s infinite linear;
