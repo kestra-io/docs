@@ -93,3 +93,72 @@ triggers:
 ```
 
 Polling triggers can be evaluated on a specific Worker Group (EE), thanks to the `workerGroup.key` property.
+
+## The ``stopAfter`` property
+
+Kestra 0.15 introduced a generic `stopAfter` property which is a list of states that will disable the trigger after the flow execution has reached one of the states in the list.
+
+This property is meant to be used primarily for a `Schedule` trigger and triggers that poll for conditions including the HTTP, JDBC, or File Detection triggers. However, you can use it with all triggers.
+
+::alert{type="info"}
+Note that we don't handle any automatic trigger reenabling logic. After a trigger has been disabled due to the `stopAfter` state condition, you can take some action based on it and manually reenable the trigger.
+::
+
+
+### Pause the schedule trigger after a failed execution
+
+The `stopAfter` property can be used to pause a schedule trigger after a failed execution. Here is an example of how to use it:
+
+```yaml
+id: business_critical_flow
+namespace: production
+
+tasks:
+ - id: important_task
+   type: io.kestra.core.tasks.log.Log
+   message: if this fails, we want to stop the flow from running until we fix it
+
+triggers:
+ - id: stopAfter
+   type: io.kestra.core.models.triggers.types.Schedule
+   cron: "0 9 * * *"
+   stopAfter:
+     - FAILED
+```
+
+The above flow will be triggered every day at 9:00 AM, but if it fails, the schedule will be paused so that you can manually reenable the trigger once the issue is fixed. This is useful for business-critical flows that should not continue running the next scheduled executions if a previous execution has failed.
+
+### Disable the HTTP trigger after the first successful execution
+
+The example below shows how to use the `stopAfter` property with the HTTP trigger condition. The use case is to poll an API endpoint and send a Slack alert if the price is below $110. If the condition is met, the trigger will be disabled so that you don't get alerted every 30 seconds about the same condition.
+
+```yaml
+id: http
+namespace: dev
+
+tasks:
+  - id: slack
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    payload: |
+      {
+        "channel": "#price-alerts",
+        "text": "The price is now: {{ json(trigger.body).price }}"
+      }
+
+triggers:
+  - id: http
+    type: io.kestra.plugin.fs.http.Trigger
+    uri: https://fakestoreapi.com/products/1
+    responseCondition: "{{ json(response.body).price <= 110 }}"
+    interval: PT30S
+    stopAfter:
+      - SUCCESS
+```
+
+Let's break down the above example:
+1. The HTTP trigger will poll the API endpoint every 30 seconds to check if the price of a product is below $110.
+2. If the condition is met, the Execution will be created
+3. Within that execution, the `slack` task will send a Slack message to the `#price-alerts` channel to notify about the price change
+4. After that execution finishes successfully, the `stopAfter` property condition is met — it will disable the trigger ensuring that you don't get alerted every 30 seconds about the same condition.
+
