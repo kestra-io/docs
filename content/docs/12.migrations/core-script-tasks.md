@@ -1,5 +1,5 @@
 ---
-title: Deprecation of core Script tasks
+title: Script tasks moved to dedicated plugins
 icon: /docs/icons/migrations.svg
 release: 0.11.0
 ---
