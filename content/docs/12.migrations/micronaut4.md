@@ -4,7 +4,7 @@ icon: /docs/icons/migrations.svg
 release: 0.15.0
 ---
 
-Since the release 0.15.0, Kestra has been migrated to Micronaut 4.3. This page explains how to make to your custom plugins compatible with this new version.
+Kestra 0.15.0 has been migrated to Micronaut 4.3 for improved security. This page explains how to make your custom plugins compatible with this new version.
 
 ## Micronaut 4 and Project Reactor
 
@@ -98,7 +98,9 @@ Our reactive stack has been migrated from the deprecated RxJava 2 to the Project
 
 If your plugin uses RxJava, make sure to migrate it to the Project Reactor.
 
-Replace the library `io.micronaut.rxjava2:micronaut-rxjava2` by `io.micronaut.reactor:micronaut-reactor`. Then, update your code to use the Project Reactor types:
+Replace the library `io.micronaut.rxjava2:micronaut-rxjava2` by `io.micronaut.reactor:micronaut-reactor`.
+
+Then, update your code to use the Project Reactor types:
 - `Flux` (instead of `Flowable`)
 - `Mono` (instead of `Single`).
 
