@@ -101,7 +101,7 @@ Super Admin is a powerful Role that allows you to troubleshoot any tenant issues
 Except for the `Super Admin`, all Roles are always tied to one and only one [tenant ID](./03.tenants.md). We currently don’t provide any cross-tenant RBAC permissions. However, when configuring permissions using [our Terraform provider](https://registry.terraform.io/providers/kestra-io/kestra/latest), you can add modules to reuse the same configuration across tenants to achieve the same effect without duplicating the configuration.
 ::
 
-The main difference between an **Admin** and a **Super Admin** roles is that the **Instance Admin** also has the `SUPERADMIN` permission. This extra permission grants access to create, manage or delete tenants.
+The main difference between an **Admin** and a **Super Admin** roles is that the **Super Admin** also has the `SUPERADMIN` permission. This extra permission grants access to create, manage or delete tenants.
 
 A User with a `Super Admin` Role can:
 - create/remove tenants
