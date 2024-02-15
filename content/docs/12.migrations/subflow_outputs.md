@@ -8,7 +8,7 @@ The `outputs` property of a `Subflow` task in the parent flow is deprecated star
 
 ## Subflow outputs behavior before Kestra 0.15.0
 
-If you are on Kestra 0.14.4 or earlier, passing data between subflows required using the `outputs` property of a `Subflow` task in the parent flow.
+If you are on Kestra 0.14.4 or earlier, passing data between subflows required using the `outputs` property within the parent flow's `Subflow` task.
 
 ### Example
 
@@ -24,7 +24,7 @@ tasks:
     format: this is a task output used as a final flow output
 ```
 
-To access this output in the same flow, you would use the syntax `{{ outputs.mytask.value }}`. However, if you want to access this output in a parent flow, you would need to define the output in the `outputs` property of the `Subflow` task in the parent flow as follows:
+To access this output in a different task within the same flow, you would use the syntax `{{outputs.mytask.value}}`. However, if you want to access this output in a parent flow, you would need to define the output in the `outputs` property within the parent flow's `Subflow` task as follows:
 
 ```yaml
 id: parent_flow
@@ -44,7 +44,7 @@ tasks:
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 
-You can see that the `outputs` property is used to define the output of the subflow and stored in the `final` attribute. This is how the parent flow can access the output of the subflow. This approach is not ideal, as **you need to know the internals of the subflow to access its outputs**. This is why this property is deprecated in Kestra 0.15.0.
+You can see that the `outputs` property is used to define the output of the subflow and stored in the variable named `final` (_the keys are arbitrary_). This approach is not ideal, as **you need to know the internals of the subflow to access its outputs**. This is why this property is deprecated in Kestra 0.15.0.
 
 ### How to keep the old subflow outputs behavior
 
@@ -71,7 +71,7 @@ Once the `outputs` configuration is set to `enabled: true`, you can use the old 
 ## Improved subflow outputs in Kestra 0.15.0
 
 ### Why the change?
-Kestra 0.15.0 introduced a concept of flow-level `outputs` to make it easier to pass data between flows. Until now, the parent flow had to know the internals of the subflow to access its outputs. This behavior was not ideal, as it made the parent flow dependent on the subflow's implementation, which can change over time, potentially breaking the parent flow. Also, it exposes all outputs from child flows (producers) to all parent flows (consumers), which may not always be desirable. Often you don't want to expose all outputs of a subflow to the parent flow.
+Kestra 0.15.0 introduced a concept of flow-level `outputs` to make it easier to pass data between flows. Until now, the parent flow had to know the internals of the subflow to access its outputs. This introduced a **tight coupling** as the parent flow was **dependent on the subflow's internal logic**, which can change over time, potentially breaking the parent flow. Also, it was **exposing all outputs** from child flows (producers) to all parent flows (consumers), which is not always desirable. Often you don't want to expose all outputs of a subflow to the parent flow.
 
 ### Benefits of the new subflow outputs
 Now, you have **more control** over what subflow outputs do you want to expose to other flows. The parent flow does not need to know the internals of the child flow — it can simply access the subflow outputs by key. This **more decoupled** approach means that the parent flow is less dependent on the subflow, and **the subflow can change its implementation without breaking the parent flow**.
