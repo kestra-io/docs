@@ -10,7 +10,12 @@
         <SolutionsPossibilities/>
         <SolutionsUseCases/>
         <HomeEnterpriseEdition/>
-        <LayoutCommunity/>
+        <LayoutFooterContact
+            title="New to Kestra?"
+            subtitle="Use blueprints to kickstart your first workflows."
+            purpleButtonText="Get started with Kestra"
+            purpleButtonHref="https://kestra.io/slack"
+        />
     </div>
 </template>
 

@@ -402,6 +402,13 @@ export default {
         transition: all ease 0.2s;
         transform: translateY(0);
         max-height: 100%;
+        @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+            & {
+                -webkit-backdrop-filter: blur(calc($spacer * 0.625));
+                backdrop-filter: blur(calc($spacer * 0.625));
+                background-color: rgb(17 17 19 / 65%);
+            }
+        }
 
     .navbar-brand {
         img:not(.icon) {

@@ -64,8 +64,21 @@
                 </div>
             </div>
             <div class="container text-center community-links mb-3">
-                <a href="https://github.com/kestra-io/kestra" data-aos="zoom-in" class="btn btn-dark mt-2 mx-2">Follow on GitHub</a>
-                <a href="https://github.com/kestra-io/kestra/issues" data-aos="zoom-in" class="btn btn-animated btn-purple-animated mt-2">Find Open Issues</a>
+                <NuxtLink
+                    href="https://github.com/kestra-io/kestra"
+                    data-aos="zoom-in"
+                    class="btn btn-animated btn-dark-animated mt-2 mx-2"
+                >
+                    Follow on GitHub
+                </NuxtLink>
+                <NuxtLink
+                    href="https://github.com/kestra-io/kestra/issues"
+                    data-aos="zoom-in"
+                    class="btn btn-animated btn-purple-animated
+                     mt-2"
+                >
+                    Find Open Issues
+                </NuxtLink>
             </div>
         </div>
     </div>
@@ -170,6 +183,17 @@
         }
     }
 
+    .images-contributors {
+        display: flex;
+        position: relative;
+        justify-content: flex-end;
+        min-height: calc($spacer * 4.135);;
+        img {
+            border-radius: 50%;
+            height: calc($spacer * 4.135);
+            position: absolute;
+        }
+    }
     .community {
         text-align: center;
         color: $white;

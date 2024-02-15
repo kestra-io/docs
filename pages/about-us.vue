@@ -13,7 +13,11 @@
         <CompanyValue/>
         <CompanyTeam/>
         <CompanyPress/>
-        <CompanyJoin/>
+        <LayoutFooterContact
+            title="Join Our Team and Contribute to the Future of Data Orchestration"
+            purpleButtonText="Get started"
+            purpleButtonHref="/careers"
+        />
     </div>
 </template>
 

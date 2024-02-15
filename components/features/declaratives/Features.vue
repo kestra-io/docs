@@ -86,6 +86,7 @@
 
     .container-fluid {
         position: relative;
+        background: $black-1;
 
         h2 {
             color: $white;
@@ -111,10 +112,10 @@
             content: "";
             width: 100%;
             height: 100%;
-            opacity: 0.3;
+            opacity: 1;
             position: absolute;
             top: 0;
-            background: url("/landing/shadow3.svg") no-repeat 100%;
+            background: url("/landing/shadow3.svg") no-repeat center;
 
             @include media-breakpoint-down(md) {
                 & {

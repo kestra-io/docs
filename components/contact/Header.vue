@@ -5,8 +5,10 @@
                 <h1 data-aos="fade-right">Contact <span>Us</span></h1>
                 <p class="baseline" data-aos="fade-left">If you have questions, inquiries, or feedback about Kestra, we're looking to hearing from you.</p>
             </div>
-            <div class="form-container bg-dark-2">
-                <div id="hubspotForm" data-aos="fade-left" />
+            <div class="row justify-content-center">
+                <div class="col-md-6 form-container bg-dark-2" >
+                    <div id="hubspotForm" data-aos="fade-left" />
+                </div>
             </div>
         </div>
     </div>

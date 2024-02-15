@@ -1,10 +1,8 @@
 <template>
     <div class="container">
-        <Section
-            subtitle="Uncover Kestra's"
-            subtitle-after="Versatility"
-            baseline="From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains. Dive into the wide array of use cases Kestra efficiently addresses."
-        >
+        <Section class="about">
+            <h2>Uncover Kestra's<span>Versatility</span></h2>
+            <p>From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains. Dive into the wide array of use cases Kestra efficiently addresses.</p>
 
             <div class="row">
                 <div class="col-md-4" data-aos="zoom-in">
@@ -93,7 +91,33 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
+    section.about {
+        padding: 2rem 0;
 
+        h2 {
+            color: $white;
+            font-weight: 300;
+            margin: 0 auto;
+            text-align: center;
+            margin-bottom: $spacer;
+
+            span {
+                background: linear-gradient(90deg, #E151F7 18.28%, #5C47F5 35.74%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+
+        p {
+            color: $white;
+            text-align: center;
+            font-size: $h6-font-size;
+            max-width: $baseline-max-width;
+            margin: 0 auto 4rem;
+            font-weight: 300;
+        }
+    }
     .main {
         background: $purple-7;
         color: var(--bs-white);

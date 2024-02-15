@@ -6,12 +6,12 @@
                     <div>
                         <h1 data-aos="fade-right"><span class="dot">Kestra Enterprise</span> to Scale Your Workflows.</h1>
                         <p data-aos="fade-left" class="baseline">Made for organizations & professionals seeking to secure production workloads with high-security standards and enterprise support.</p>
-                        <a href="https://kestra.io/demo" target="_blank" class="btn btn-dark bg-dark-4 me-3" data-aos="zoom-in">
+                        <NuxtLink href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
                             Contact Us
-                        </a>
-                        <a href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-purple-animated me-2" data-aos="zoom-in">
-                            Talk to Sales
-                        </a>
+                        </NuxtLink>
+                        <NuxtLink href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-purple-animated me-2" data-aos="zoom-in">
+                            Talk to Us
+                        </NuxtLink>
                     </div>
                 </div>
                 <div class="col-md-6 order-0 order-md-1">
@@ -29,49 +29,52 @@
         color: var(--bs-white);
         background: url("/landing/ee/background-mask.svg") no-repeat center;
         background-size: 100% 100%;
-        border-bottom: $block-border;
         overflow: hidden;
+        .container {
+            border-bottom: $block-border;
 
-        h1 {
-            font-size: $font-size-4xl;
-            font-weight: 300;
-            margin-bottom: 16px;
-            padding: 0;
+            h1 {
+                font-size: $font-size-4xl;
+                font-weight: 300;
+                margin-bottom: 2rem;
+                padding: 0;
 
-            span {
-                background: linear-gradient(90deg, #E151F7 0.45%, #5C47F5 43.61%);
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
+                span {
+                    background: linear-gradient(90deg, #E151F7 0.45%, #5C47F5 43.61%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+
+            .img-fluid {
+                max-height: 100%;
+            }
+            .baseline {
+                font-size: $font-size-xl;
+                font-weight: 300;
+            }
+
+            .btn-dark {
+                border: $btn-dark-border;
+            }
+
+            @include media-breakpoint-down(md) {
+                .row {
+                    position: relative;
+
+                    & > div:first-child {
+                        z-index: 1;
+                    }
+
+                    & > :last-child {
+                        z-index: 0;
+                        margin: 0 auto;
+                        top: 0;
+                    }
+                }
             }
         }
 
-        .img-fluid {
-            max-height: 100%;
-        }
-        .baseline {
-            font-size: $font-size-xl;
-            font-weight: 300;
-        }
-
-        .btn-dark {
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        @include media-breakpoint-down(md) {
-            .row {
-                position: relative;
-
-                & > div:first-child {
-                    z-index: 1;
-                }
-
-                & > :last-child {
-                    z-index: 0;
-                    margin: 0 auto;
-                    top: 0;
-                }
-            }
-        }
     }
 </style>

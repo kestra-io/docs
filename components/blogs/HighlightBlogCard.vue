@@ -1,7 +1,7 @@
 <template>
-    <div class="d-md-flex flex-row justify-content-between" role="button">
+    <div class="" role="button">
         <NuxtLink class="text-dark" :href="blog._path">
-            <NuxtImg width="512" loading="lazy" format="webp" quality="80" densities="x1 x2" class="col-md-12 rounded-3 img-fluid" :alt="blog.image" :src="blog.image" />
+            <NuxtImg width="512" loading="lazy" format="webp" quality="80" densities="x1 x2" class="col-md-12 rounded-3 img-fluid blog-image" :alt="blog.image" :src="blog.image" />
             <div class="description mt-4">
                 <span class="small-text category">{{ blog.category }}</span>
                 <h3>
@@ -31,6 +31,10 @@
 
 <style lang="scss" scoped>
     @import '../../assets/styles/_variable.scss';
+
+    .blog-image {
+        border: $block-border;
+    }
 
     .description {
         span {

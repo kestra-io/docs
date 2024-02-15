@@ -37,6 +37,7 @@
             h5 {
                 font-size: 3.125rem;
                 margin-bottom: $rem-1;
+                font-weight: 300;
             }
 
             span {
