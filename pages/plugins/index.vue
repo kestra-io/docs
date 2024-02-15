@@ -5,7 +5,13 @@
               content="Connect Kestra with tools you arlready know and love"/>
     </Head>
     <PluginsLists :plugins="plugins" :categories="categories" />
-    <PluginsFooter />
+    <LayoutFooterContact
+        title="Didn’t find the plugin you were looking for?"
+        darkButtonText="Ask on slack"
+        darkButtonHref="https://kestra.io/slack"
+        purpleButtonText="Create one"
+        purpleButtonHref="/docs/plugin-developer-guide"
+    />
 </template>
 
 <script setup>

@@ -9,7 +9,13 @@
         <CareersHeader/>
         <CareersPerks/>
         <CareersPositions/>
-        <CareersCommunity/>
+        <LayoutFooterContact
+            title="Join our community"
+            darkButtonText="Join our slack"
+            darkButtonHref="https://kestra.io/slack"
+            purpleButtonText="Contribute"
+            purpleButtonHref="/docs/plugin-developer-guide"
+        />
     </div>
 </template>
 

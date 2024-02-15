@@ -3,8 +3,9 @@
         <div class="container">
             <Section
                 subtitle-before="Loved"
-                subtitle="by the open-source community"
+                subtitle="by the"
             >
+                <p class="subtitle">open-source community</p>
                 <Carousel v-bind="settings" :breakpoints="breakpoints">
                     <Slide v-for="slide in testimonialData" :key="slide">
                         <div class="carousel--item">
@@ -157,18 +158,40 @@
     .container-fluid {
         background: url("/demo/bg-mask.svg") no-repeat bottom;
         padding-top: 8rem;
+
+        .subtitle {
+            color: var(--Kestra-io-Token-color-white, #FFF);
+            text-align: center;
+            font-family: $font-family-sans-serif;
+            font-size: calc($font-size-base * 3.125);
+            font-style: normal;
+            font-weight: 300;
+            line-height: calc($spacer * 3.125);
+
+            @include media-breakpoint-down(sm) {
+                font-size: calc($font-size-base * 1.875);
+                line-height: calc($spacer * 1.875);
+            }
+        }
     }
     .container {
         :deep(section) {
             .subtitle, .subtitle p {
                 margin: 0 !important;
                 text-align: left !important;
-                max-width: 60%;
 
-                @include media-breakpoint-down(lg) {
-                    max-width: 100%;
+                @include media-breakpoint-down(sm) {
+                    line-height: calc($spacer * 1.875);
                 }
             }
+
+            .main {
+                padding-top: 0;
+            }
+        }
+
+        .carousel {
+            margin-top: 3rem;
         }
 
         .carousel--item {

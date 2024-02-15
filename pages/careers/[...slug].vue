@@ -20,7 +20,12 @@
                 <ContentDoc />
             </article>
         </div>
-        <CareersApply :title="title"/>
+        <LayoutFooterContact
+            title="Join our team"
+            subtitle="Interested in joining us but not able to find what you are looking for? Let's talk anyway. Write to us at"
+            purpleButtonText="Apply for this job"
+            :purpleButtonHref="'mailto:jobs@kestra.io?subject=' + title "
+        />
     </div>
 </template>
 
@@ -80,6 +85,12 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
+
+    .container {
+        :deep(h2 > a) {
+            color: $white;
+        }
+    }
 
     .header-container {
         padding-top: 6rem;

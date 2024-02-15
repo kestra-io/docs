@@ -3,8 +3,6 @@ title: "Developer Advocate"
 type: Product
 ---
 
-# Developer Advocate
-
 We are looking for a Developer Advocate who loves to educate and engage with developers, and has a passion for open source communities.
 
 ## What you will do:

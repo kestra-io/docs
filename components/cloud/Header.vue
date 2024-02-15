@@ -71,7 +71,7 @@
     .input {
         background-color: $black-4;
         border: 1px;
-        border-style: #252526;
+        border-style: $black-3;
         border: none;
     }
 
@@ -94,7 +94,7 @@
         z-index: 10;
         background-color: $black-2;
         border-style: solid;
-        border-color: #252526;
+        border-color: $black-3;
         padding: 1rem;
         padding-bottom: 0rem;
         margin-bottom: 3rem;

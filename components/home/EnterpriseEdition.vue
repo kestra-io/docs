@@ -3,12 +3,12 @@
         <div class="container">
             <div class="row">
                 <div class="p-5 d-flex flex-column align-items-center gap-3">
-                    <img class="levels" src="/landing/ee/levels.svg" alt="levels" />
+                    <img class="levels" src="/landing/ee/level.svg" alt="levels" />
                     <h2>Take Kestra to the next level with the <span>Enterprise Edition</span></h2>
                     <p class="description">Ensure scalability and high availability with managed Kafka and Elasticsearch integrated into the Enterprise Edition to eliminate single point of failure.</p>
                     <div class="d-flex align-items-center justify-content-center">
-                        <NuxtLink href="/enterprise" class="btn btn-dark me-2" data-aos="zoom-in">Learn more</NuxtLink>
-                        <NuxtLink href="/contact-us" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Talk to Sales</NuxtLink>
+                        <NuxtLink href="/enterprise" class="btn btn-animated btn-dark-animated me-2" data-aos="zoom-in">Learn more</NuxtLink>
+                        <NuxtLink href="/contact-us" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Talk to Us</NuxtLink>
                     </div>
                 </div>
             </div>
@@ -33,9 +33,8 @@
         color: var(--bs-white);
 
         .container {
-            background: url("/landing/ee/background.svg") no-repeat center;
-            background-size: 50%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: url("/landing/ee/ee-background.svg") no-repeat center;
+            background-size: 100%;
             padding: 5rem 0;
         }
 
@@ -44,10 +43,10 @@
                 color: var(--bs-white);
                 text-align: center;
                 font-family: $font-family-sans-serif;
-                font-size: 50px;
+                font-size: calc($font-size-base * 3.125);
                 font-style: normal;
                 font-weight: 300;
-                line-height: 50px;
+                line-height: calc($spacer * 3.125);
                 padding: 0 21%;
 
                 span {
@@ -63,10 +62,10 @@
                 color: var(--bs-white);
                 text-align: center;
                 font-family: $font-family-sans-serif;
-                font-size: 18px;
+                font-size: $h6-font-size;
                 font-style: normal;
                 font-weight: 400;
-                line-height: 26px;
+                line-height: calc($spacer * 1.625);
             }
 
             @include media-breakpoint-down(lg) {

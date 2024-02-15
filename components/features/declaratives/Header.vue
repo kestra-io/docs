@@ -7,7 +7,7 @@
                         <h1 data-aos="fade-right"><span>Declarative</span> Orchestration with Kestra</h1>
                         <p class="baseline" data-aos="fade-left">Simplified Data Workflow Creation and Execution with YAML</p>
                         <div class="cta">
-                            <NuxtLink href="/docs/getting-started" class="btn btn-dark bg-dark-4 mx-2" data-aos="zoom-in">
+                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-dark-animated mx-2" data-aos="zoom-in">
                                 Get started
                             </NuxtLink>
                             <a href="/docs"  class="btn btn-animated btn-purple-animated mx-2" data-aos="zoom-in">
@@ -33,33 +33,37 @@
         color: var(--bs-white);
         padding-top: 80px;
         margin-top: -80px;
+        .container {
+            border-bottom: $block-border;
 
-        h1 {
-            color: $white;
-            font-size: $font-size-4xl;
-            font-weight: 300;
-            padding-bottom: 0;
-            margin-bottom: 16px;
+            h1 {
+                color: $white;
+                font-size: $font-size-4xl;
+                font-weight: 300;
+                padding-bottom: 0;
+                margin-bottom: 16px;
 
-            span {
-                background: linear-gradient(90deg, #E151F7 2.16%, #5C47F5 65.09%);
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
+                span {
+                    background: linear-gradient(90deg, #E151F7 2.16%, #5C47F5 65.09%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+
+            p {
+                color: $white;
+                font-size: $font-size-xl;
+                font-weight: 300;
+                margin-bottom: 2rem;
+                padding-bottom: 0;
+            }
+
+            .btn-dark {
+                border: 1px solid $black-6;
             }
         }
 
-        p {
-            color: $white;
-            font-size: $font-size-xl;
-            font-weight: 300;
-            margin-bottom: 16px;
-            padding-bottom: 0;
-        }
-
-        .btn-dark {
-            border: 1px solid $black-6;
-        }
     }
 </style>
 

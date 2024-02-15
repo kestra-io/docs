@@ -11,7 +11,7 @@
                         <div class="card-body p-5">
                             <h4 class="card-title" data-aos="fade-right">Open-Source Edition</h4>
                             <p class="type" data-aos="fade-left">Free</p>
-                            <NuxtLink href="/docs/getting-started" class="btn btn-dark bg-dark-4 w-100" data-aos="zoom-in">
+                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-dark-animated w-100" data-aos="zoom-in">
                                 Get started
                             </NuxtLink>
                             <ul>
@@ -595,7 +595,7 @@
         }
 
         .btn-dark {
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: $btn-dark-border;
         }
 
         .card-body {

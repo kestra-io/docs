@@ -14,7 +14,14 @@
             <Process :content="data.process" />
             <Faqs :content="data.faqs" />
             <Line />
-            <Footer :content="data.footer" />
+            <LayoutFooterContact
+                :title="data.footer.title"
+                :subtitle="data.footer.subtitle"
+                :darkButtonText="data.footer.cta[0].text"
+                :darkButtonHref="data.footer.cta[0].href"
+                :purpleButtonText="data.footer.cta[1].text"
+                :purpleButtonHref="data.footer.cta[1].href"
+            />
         </div>
     </div>
 </template>

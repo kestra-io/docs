@@ -49,10 +49,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="text-center">
-                    <a class="btn btn-primary" href="https://meetings-eu1.hubspot.com/meetings/david76" target="_blank" data-aos="zoom-in">Book a demo</a>
-                </div>
             </Section>
         </div>
     </div>

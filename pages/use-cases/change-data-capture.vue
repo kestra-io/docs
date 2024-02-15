@@ -30,7 +30,13 @@
             subtitleAfter="Features"
             :items="features"
         />
-        <SolutionsDetailNext />
+        <LayoutFooterContact
+            title="Ready to take your data department to the next level ?"
+            darkButtonText="Contact us"
+            darkButtonHref="/contact-us"
+            purpleButtonText="Live demo"
+            purpleButtonHref="https://demo.kestra.io/ui/login?auto"
+        />
     </div>
 </template>
 
@@ -110,3 +116,25 @@
         },
     }
 </script>
+
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+
+    :deep(section) {
+        .subtitle {
+            max-width: 68% !important;
+            margin: auto !important;
+
+            @include media-breakpoint-down(xxl) {
+                max-width: 100% !important;
+                margin: 0 !important;
+            }
+        }
+
+        .baseline {
+            font-size: $h6-font-size !important;
+            font-weight: 300 !important;
+        }
+    }
+
+</style>

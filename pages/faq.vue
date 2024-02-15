@@ -255,7 +255,9 @@
         div {
             border-left-color: $purple-35;
 
-            p {
+           ul > li,
+           ol > li,
+           p {
                 color: $white;
             }
         }

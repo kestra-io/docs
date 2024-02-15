@@ -25,7 +25,13 @@
         </div>
     </div>
 
-    <LayoutCommunity :animation="false" />
+    <LayoutFooterContact
+        title="New to Kestra?"
+        subtitle="Use blueprints to kickstart your first workflows."
+        purpleButtonText="Get started with Kestra"
+        purpleButtonHref="https://kestra.io/slack"
+        :animation="false"
+    />
 </template>
 
 <script>

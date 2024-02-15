@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="row content justify-content-between" v-else>
+        <div class="row content justify-content-around" v-else>
             <div class="col-12 col-md-8">
                 <h1 data-aos="fade-left title">All things Kestra</h1>
                 <h4 data-aos="fade-right" class="fw-normal">
@@ -219,6 +219,11 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
 
+
+::deep(main) {
+    position: absolute;
+}
+
 .right-side-bar {
     border: $block-border;
     height: fit-content;
@@ -294,6 +299,18 @@ h2 {
         font-size: $font-size-xl;
         font-weight: 400;
         margin-bottom: 2rem;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        height: 12.5rem;
+        width: 20%;
+        top: 3%;
+        left: 10%;
+        z-index: -147;
+        filter: blur(110px);
+        background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
     }
 }
 
