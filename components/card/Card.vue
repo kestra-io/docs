@@ -1,14 +1,16 @@
 <template>
     <div class="card bg-dark-2" :class="number ? 'number-card' : ''" data-aos="zoom-in">
         <div class="card-body">
-            <span v-if="icon" class="card-icon"><component :is="icon" /></span>
-            <span v-if="img" class="card-icon">
-                <img :src="img" :alt="imgAlt">
-            </span>
-            <span v-if="number" class="card-icon">
-                <p class="number">{{number}}</p>
-            </span>
-            <h4 v-if="title" class="card-title">{{title}}</h4>
+            <div class="d-flex gap-3">
+                <span v-if="icon" class="card-icon"><component :is="icon" /></span>
+                <span v-if="img" class="card-icon">
+                    <img :src="img" :alt="imgAlt">
+                </span>
+                <span v-if="number" class="card-icon">
+                    <p class="number">{{number}}</p>
+                </span>
+                <h4 v-if="title" class="card-title">{{title}}</h4>
+            </div>
             <p v-if="description" class="card-text">{{description}}</p>
             <p v-if="$slots.descriptionHtml" class="card-text">
                 <slot name="descriptionHtml"></slot>
@@ -57,11 +59,14 @@
     border-radius: 8px;
     border: $block-border;
     color: $white;
-    padding: 64px 32px 28px;
+    padding: 2rem;
     height: 100%;
 
     .card-body {
         padding: 0;
+        display: flex;
+        gap: 1rem;
+        flex-direction: column;
 
         .card-title {
             font-weight: 300;
@@ -79,6 +84,8 @@
             border-radius: 8px;
             background: $black-4;
             position: relative;
+            margin: 0;
+            width: calc($spacer * 3.75);
 
             &:before {
                 content: '';
@@ -111,10 +118,5 @@
             }
         }
     }
-}
-
-.number-card .card-icon {
-    width: 60px;
-    height: 60px;
 }
 </style>

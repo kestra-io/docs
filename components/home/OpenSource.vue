@@ -23,24 +23,28 @@
                         </h5>
                         <p>Stars</p>
                     </div>
+                    <div class="line-separator"></div>
                     <div class="counter-box text-center">
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.forks : 0" :duration="4000"></CountTo>
                         </h5>
                         <p>Forks</p>
                     </div>
+                    <div class="line-separator"></div>
                     <div class="counter-box text-center">
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.issues : 0" :duration="4000"></CountTo>
                         </h5>
                         <p>Issues</p>
                     </div>
+                    <div class="line-separator"></div>
                     <div class="counter-box text-center">
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo>
                         </h5>
                         <p>Pull Requests</p>
                     </div>
+                    <div class="line-separator"></div>
                     <div class="counter-box text-center">
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="contributors ? contributors.length : 0" :duration="4000"></CountTo>
@@ -50,9 +54,9 @@
                 </div>
 
                 <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3 px-4">
-                    <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-dark" data-aos="zoom-in">Give a star</a>
-                    <a href="https://kestra.io/slack" target="_blank" class="btn btn-primary" data-aos="zoom-in">Join the Community</a>
-                    <a href="#" target="_blank" class="btn btn-dark" data-aos="zoom-in">Contributer</a>
+                    <NuxtLink href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-animated btn-dark-animated btn-dark" data-aos="zoom-in">Give a star</NuxtLink>
+                    <NuxtLink href="https://kestra.io/slack" target="_blank" class="btn btn-animated btn-purple-animated btn-purple" data-aos="zoom-in">Join the Community</NuxtLink>
+                    <NuxtLink href="#" target="_blank" class="btn btn-animated btn-dark-animated btn-dark" data-aos="zoom-in">Contributer</NuxtLink>
                 </div>
             </Section>
         </div>
@@ -134,10 +138,14 @@
         display: flex;
 
         :deep(section) {
+            padding: 2rem 0;
             border-radius: 8px;
             border: $block-border;
             background: $black-2;
-
+            .subtitle {
+                font-weight: 400;
+                font-size: $font-size-sm;
+            }
             .main {
                 background-color: $black-2 !important;
             }
@@ -168,12 +176,17 @@
             margin: 0 auto;
             display: flex;
             justify-content: center;
-            gap: $spacer calc($spacer * 2);
+            gap: $spacer calc($spacer * 2.57);
             flex-flow: row wrap;
         }
 
         .container {
             flex-grow: 1;
+
+            .line-separator {
+                width: calc($spacer * 0.063);
+                background-color: #242427;
+            }
 
             .counter-box {
                 text-align: center;

@@ -95,7 +95,12 @@
         </div>
     </div>
 
-    <BottomCallToAction />
+    <LayoutFooterContact
+        title="Getting started"
+        subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+        darkButtonText="Read the docs"
+        purpleButtonText="Get started!"
+    />
 </template>
 
 
@@ -110,10 +115,9 @@
 
 <script>
     import Section from '../../layout/Section.vue';
-    import BottomCallToAction from '../../layout/BottomCallToAction.vue';
 
     export default {
-        components: {Section, BottomCallToAction}
+        components: {Section}
     }
 </script>
 

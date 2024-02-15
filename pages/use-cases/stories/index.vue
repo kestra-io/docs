@@ -6,8 +6,12 @@
                   content="Learn how we helped companies manage their critical operations." />
         </Head>
         <StoriesList :stories="stories" :total-stories="totalStories" @fetch-page-data="fetchStories" />
-
-        <StoriesFooter />
+        <LayoutFooterContact
+            title="Getting started with Kestra"
+            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+            darkButtonText="Read the docs"
+            purpleButtonText="Get started!"
+        />
     </div>
 </template>
 <script setup>

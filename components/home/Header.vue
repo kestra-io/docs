@@ -43,7 +43,7 @@
                 </div>
                 <div>
                     <p class="count">+90,000</p>
-                    <p class="description">Installations</p>
+                    <p class="description">INSTALLATIONS <span>for</span> DEPLOYMENTS</p>
                 </div>
                 <div>
                     <p class="count">+200</p>
@@ -211,6 +211,10 @@ export default {
             color: rgba(255, 255, 255, 0.70);
             font-size: 11.607px;
             font-weight: 500;
+
+            span {
+                text-transform: lowercase !important;
+            }
         }
 
         @include media-breakpoint-down(xl) {

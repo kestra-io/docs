@@ -31,7 +31,7 @@
     @import "../../../assets/styles/variable";
 
     .container-fluid {
-        background: url("/landing/vs/airflow/header-bg.svg") no-repeat center;
+        background: url("/landing/vs/header-bg.svg") no-repeat center;
         background-size: cover;
         color: var(--bs-white);
         padding-top: 80px;

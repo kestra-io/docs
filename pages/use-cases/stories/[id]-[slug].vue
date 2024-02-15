@@ -43,7 +43,12 @@
                 </div>
             </div>
         </div>
-        <StoriesFooter />
+        <LayoutFooterContact
+            title="Getting started with Kestra"
+            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+            darkButtonText="Read the docs"
+            purpleButtonText="Get started!"
+        />
     </div>
 </template>
 <script setup>

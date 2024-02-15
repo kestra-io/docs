@@ -177,7 +177,7 @@ blockquote.blockquote {
 }
 
 .btn-dark {
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: $btn-dark-border;
     background-color: $black-4;
 
     &:hover {
@@ -518,6 +518,14 @@ blockquote.blockquote {
         width: 51px;
         background: var(--bs-pink);
     }
+}
+
+.line-path-animation {
+    transition-duration: 1s;
+}
+
+.form-select {
+    --bs-form-select-bg-img: url("/landing/plugins/select-arrow.svg") !important;
 }
 
 @include media-breakpoint-down(lg) {

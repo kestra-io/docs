@@ -5,13 +5,13 @@
                 <h3 data-aos="fade-right"><span>Get Kestra updates</span> to your inbox</h3>
                 <div v-if="valid === true && message" class="alert alert-success" v-html="message" />
                 <div v-if="valid === false && message" class="alert alert-danger">{{ message }}</div>
-                <form class="row row-cols-lg-auto g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate data-aos="fade-left">
-                    <div class="col-12">
+                <form class="row g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate data-aos="fade-left">
+                    <div class="col-md-5 col-12">
                         <label class="visually-hidden" for="newsletter-email">Email</label>
                         <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" required>
                     </div>
 
-                    <div class="col-12">
+                    <div class="col-md-auto col-12">
                         <button type="submit" class="btn btn-dark">Subscribe</button>
                     </div>
                 </form>
@@ -107,7 +107,7 @@
             background: $black-2;
             padding: calc($spacer * 3);
             color: $purple-35;
-
+            border: $block-border;
             > div {
                 position: relative;
                 z-index: 2;

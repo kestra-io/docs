@@ -1,11 +1,11 @@
 <template>
     <div class="container bd-gutter bd-layout margin">
         <NavSideBar :type="type" :navigation="navigation"/>
-        <article class="bd-main order-1" :class="{'full': page.rightBar === false , 'docs' : isDoc}">
+        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="slug" :pageList="pageList"/>
-                    <h1 v-html="transformTitle(page.title)" class="py-0 title "></h1>
+                    <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title "></h1>
                 </div>
 
                 <NavToc :page="page"/>

@@ -6,6 +6,9 @@
         >
             <div class="item workflow-1 row pb-5">
                 <div class="col-md-6 p-5" data-aos="fade-right">
+                    <div class="connection-line-1">
+                        <HomeConnectionLine :lineN="1" :strokeDasharray="strokeDasharray1"/>
+                    </div>
                     <h3>Define your workflows</h3>
                     <p>
                         By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
@@ -21,6 +24,9 @@
                     <img class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
                 </div>
                 <div class="col-md-6 p-5 order-0 order-md-1" data-aos="fade-left">
+                    <div class="connection-line-2">
+                        <HomeConnectionLine :lineN="2" :strokeDasharray="strokeDasharray2"/>
+                    </div>
                     <h3>Integrate with your stack</h3>
                     <p>Kestra integrates with a wide variety of data sources and tools, so you can easily connect your workflows to your existing data stack. This includes support for popular databases, file formats, APIs, and more.</p>
                 </div>
@@ -28,6 +34,9 @@
 
             <div class="item workflow-3 row mb-5">
                 <div class="col-md-6 p-5" data-aos="fade-right">
+                    <div class="connection-line-3">
+                        <HomeConnectionLine :lineN="3" :strokeDasharray="strokeDasharray3"/>
+                    </div>
                     <h3>Schedule your workflows</h3>
                     <p>Configure your workflows to run on a schedule, in response to event-based triggers, via webhooks, or through APIs.</p>
                 </div>
@@ -41,6 +50,9 @@
                     <img class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
                 </div>
                 <div class="col-md-6 p-5 order-0 order-md-1" data-aos="fade-left">
+                    <div class="connection-line-4">
+                        <HomeConnectionLine :lineN="4" :strokeDasharray="strokeDasharray4"/>
+                    </div>
                     <h3>Execute your workflows</h3>
                     <p>
                         When a workflow is triggered, Kestra orchestrates the execution of each step, ensuring that data is processed correctly and dependencies are satisfied.
@@ -50,6 +62,9 @@
 
             <div class="item workflow-5 row mb-5">
                 <div class="col-md-6 p-5" data-aos="fade-right">
+                    <div class="connection-line-5">
+                        <HomeConnectionLine :lineN="5" :strokeDasharray="strokeDasharray5"/>
+                    </div>
                     <h3>Monitor and optimize your workflows</h3>
                     <p>Track the performance of your workflows, identify bottlenecks, and optimize them for speed and efficiency.</p>
                 </div>
@@ -57,17 +72,19 @@
                     <img class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
                 </div>
             </div>
-
             <div class="text-center footer">
+                <div class="connection-line-6">
+                    <HomeConnectionLine :lineN="6" :strokeDasharray="strokeDasharray6"/>
+                </div>
                 <p class="last-words" data-aos="fade-left">
                     By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
                 </p>
+                <NuxtLink href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-dark-animated me-2" data-aos="zoom-in">
+                    Live demo
+                </NuxtLink>
                 <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated me-2" data-aos="zoom-in">
                     Get started
                 </NuxtLink>
-                <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn btn-dark me-2" data-aos="zoom-in">
-                    Live demo
-                </a>
             </div>
         </Section>
     </div>
@@ -77,7 +94,52 @@
     import Section from '../layout/Section.vue';
 
     export default {
-        components: {Section}
+        components: {Section},
+        data() {
+            return {
+                strokeDasharray1: 1,
+                strokeDasharray2: 1,
+                strokeDasharray3: 1,
+                strokeDasharray4: 1,
+                strokeDasharray5: 1,
+                strokeDasharray6: 1,
+            };
+        },
+        methods: {
+            getConnectionLineOffset (lineN) {
+                const connectionLine  = document.querySelector(`.connection-line-${lineN}`);
+                const bodyRect = document.body.getBoundingClientRect();
+                const connectionLineOffsetTop =  connectionLine.getBoundingClientRect().top - bodyRect.top - 250;
+                const connectionLineOffsetBottom = connectionLineOffsetTop + connectionLine.offsetHeight - 30;
+                return { top: connectionLineOffsetTop, bottom: connectionLineOffsetBottom, lineN };
+            },
+            connectionLineAnimation ({ top, bottom, lineN }) {
+                console.log(top, bottom, lineN);
+                if (window.scrollY >= top && window.scrollY <= bottom && this[`strokeDasharray${lineN}`] >= 0 && this[`strokeDasharray${lineN}`] <= 1) {
+                    this[`strokeDasharray${lineN}`] = window.scrollY / 35000;
+                }else if (window.scrollY > bottom) {
+                    this[`strokeDasharray${lineN}`] = 0;
+                } else if (window.scrollY < top) {
+                    this[`strokeDasharray${lineN}`] = 1;
+                }
+            }
+        },
+        mounted() {
+            const connectionLine1 =  this.getConnectionLineOffset(1);
+            const connectionLine2 =  this.getConnectionLineOffset(2);
+            const connectionLine3 =  this.getConnectionLineOffset(3);
+            const connectionLine4 =  this.getConnectionLineOffset(4);
+            const connectionLine5 =  this.getConnectionLineOffset(5);
+            const connectionLine6 =  this.getConnectionLineOffset(6);
+            window.onscroll = () => {
+                this.connectionLineAnimation(connectionLine1);
+                this.connectionLineAnimation(connectionLine2);
+                this.connectionLineAnimation(connectionLine3);
+                this.connectionLineAnimation(connectionLine4);
+                this.connectionLineAnimation(connectionLine5);
+                this.connectionLineAnimation(connectionLine6);
+            }
+        }
     }
 </script>
 
@@ -106,25 +168,26 @@
             h3 {
                 color: $white;
                 font-family: $font-family-sans-serif;
-                font-size: 49px;
+                font-size: calc($font-size-base * 3.125);
                 font-style: normal;
                 font-weight: 300;
-                line-height: 54px;
+                line-height: calc($spacer * 3.375);
             }
 
             p {
                 color: #DEE0E4;
                 font-family: $font-family-sans-serif;
-                font-size: 18px;
+                font-size: $h6-font-size;
                 font-style: normal;
                 font-weight: 400;
-                line-height: 26px;
+                line-height: calc($spacer * 1.625);
             }
 
         }
 
         .workflow {
             &-1, &-2, &-3, &-4, &-5 {
+                position: relative;
                 h3 {
                     position: relative;
                 }
@@ -136,231 +199,271 @@
                         display: none !important;
                     }
                 }
+                .connection-line {
+                    &-1, &-2, &-3, &-4, &-5 {
+                        position: absolute;
+                    }
+
+                    &-1 {
+                        top: -37%;
+                        left: 27.5%;
+
+
+                        @include media-breakpoint-down(xxl) {
+                            top: -37%;
+                            left: 29%;
+                        }
+
+                        @include media-breakpoint-down(xl) {
+                            top: -54%;
+                            left: 12%;
+                        }
+
+                        @include media-breakpoint-down(lg) {
+                            top: -40%;
+                            left: 48%;
+                        }
+
+                        @include media-breakpoint-down(md) {
+                            display: none;
+                        }
+                    }
+                    &-2 {
+                        bottom: 460px;
+                        right: 65%;
+
+                        @include media-breakpoint-down(xxl) {
+                            left: -68%;
+                            bottom: 460px;
+                        }
+
+                        @include media-breakpoint-down(xl) {
+                            bottom: 369px;
+                            left: -84%;
+                        }
+
+                        @include media-breakpoint-down(lg) {
+                            top: -318px;
+                            left: -47%;
+                            :deep(svg) {
+                                width: 445px;
+                            }
+                        }
+
+                        @include media-breakpoint-down(md) {
+                            display: none;
+                        }
+                    }
+
+                    &-3 {
+                        top: -60%;
+                        left: 31%;
+
+                        @include media-breakpoint-down(xxl) {
+                            top: -67%;
+                            left: 30%;
+                            :deep(svg) {
+                                width: calc($spacer * 37.5);
+                            }
+                        }
+
+                        @include media-breakpoint-down(xl) {
+                            top: -68%;
+                            left: 53%;
+                            :deep(svg) {
+                                width: calc($spacer * 31.875);
+                            }
+
+                        }
+
+                        @include media-breakpoint-down(lg) {
+                            top: -77%;
+                            left: 50%;
+                            :deep(svg) {
+                                width: calc($spacer * 25.938);
+                            }
+                        }
+
+                        @include media-breakpoint-down(md) {
+                            display: none;
+                        }
+                    }
+
+                    &-4 {
+                        top: -200%;
+                        left: -66%;
+
+                        @include media-breakpoint-down(xxl) {
+                            top: -162%;
+                            left: -68%;
+                            :deep(svg) {
+                                width: calc($spacer * 31.875);
+                            }
+                        }
+
+                        @include media-breakpoint-down(xl) {
+                            top: -135%;
+                            left: -44.5%;
+                            :deep(svg) {
+                                width: 410px;
+                                width: calc($spacer * 25.625);
+                            }
+                        }
+
+                        @include media-breakpoint-down(lg) {
+                            left: -47%;
+                            top: -108%;
+                        }
+
+                        @include media-breakpoint-down(md) {
+                            display: none;
+                        }
+                    }
+
+                    &-5 {
+                        top: -57%;
+                        left: 27.5%;
+
+                        @include media-breakpoint-down(xxl) {
+                            top: -58%;
+                            left: 26.5%;
+                            :deep(svg) {
+                                width: calc($spacer * 33.125);
+                            }
+                        }
+
+                        @include media-breakpoint-down(xl) {
+                            top: -66%;
+                            left: 43.4%;
+                            :deep(svg) {
+                                width: calc($spacer * 28.75);
+                            }
+                        }
+
+                        @include media-breakpoint-down(lg) {
+                            top: -52%;
+                            left: 37%;
+                        }
+
+                        @include media-breakpoint-down(md) {
+                            display: none;
+                        }
+                    }
+                }
+
             }
 
             &-1 {
-                padding-top: 115px;
+                padding-top: calc($spacer * 7.188);
                 background: url("/landing/how/bg-1.svg") no-repeat right;
                 background-size: 50%;
-
-                h3:before {
-                    background: url("../../public/landing/how/connection-line-1.svg");
-                    width: 217px;
-                    height: 220px;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    content: "";
-                    position: absolute;
-                    top: -220px;
-                    left: 50%;
-                    transform: translateX(-50%);
-
-                    @include media-breakpoint-down(lg) {
-                        left: 80%;
-                    }
-                }
             }
 
             &-2 {
-                margin-top: 100px;
+                margin-top: calc($spacer * 6.25);
+
 
                 @include media-breakpoint-down(xxl) {
-                    margin-top: 175px;
+                    margin-top: calc($spacer * 10.938);
                 }
 
                 @include media-breakpoint-down(xl) {
-                    margin-top: 245px;
+                    margin-top: calc($spacer * 15.313);
                 }
 
                 @include media-breakpoint-down(lg) {
-                    margin-top: 130px;
-                }
-
-                h3:before {
-                    background: url("../../public/landing/how/connection-line-2.svg");
-                    width: 691px;
-                    height: 447px;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    content: "";
-                    position: absolute;
-                    top: -446px;
-                    left: -22%;
-                    transform: translateX(-50%);
-
-                    @include media-breakpoint-down(xxl) {
-                        left: -18%;
-                    }
-
-                    @include media-breakpoint-down(xl) {
-                        left: -9%;
-                    }
-
-                    @include media-breakpoint-down(lg) {
-                        top: -285px;
-                        left: -10%;
-                        width: 445px;
-                    }
+                    margin-top: calc($spacer * 8.125);
                 }
             }
 
             &-3 {
-                margin-top: 122px;
-
+                margin-top: calc($spacer * 7.625);
                 @include media-breakpoint-down(xxl) {
-                    margin-top: 146px;
-                }
-                h3:before {
-                    background: url("../../public/landing/how/connection-line-3.svg");
-                    width: 683px;
-                    height: 433px;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    content: "";
-                    position: absolute;
-                    top: -426px;
-                    left: 30%;
-
-                    @include media-breakpoint-down(xl) {
-                        width: 510px;
-                        top: -319px;
-                    }
-
-                    @include media-breakpoint-down(lg) {
-                        width: 415px;
-                        top: -260px;
-                    }
+                    margin-top: calc($spacer * 9.125);
                 }
             }
 
             &-4 {
-                padding-top: 96px;
+                padding-top: 6rem;
                 background: url("/landing/how/bg-4.svg") no-repeat left;
                 background-size: 45%;
 
                 @include media-breakpoint-down(lg) {
-                    padding-top: 270px;
-                }
-                h3:before {
-                    background: url("../../public/landing/how/connection-line-4.svg");
-                    width: 639px;
-                    height: 595px;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    content: "";
-                    position: absolute;
-                    top: -629px;
-                    left: -26%;
-                    transform: translateX(-50%);
-
-                    @include media-breakpoint-down(xxl) {
-                        width: 510px;
-                        top: -467px;
-                        left: -30%;
-                    }
-
-                    @include media-breakpoint-down(xl) {
-                        width: 410px;
-                        top: -375px;
-                        left: -36%;
-                    }
-
-                    @include media-breakpoint-down(lg) {
-                        left: -23%;
-                    }
+                    padding-top: calc($spacer * 16.875);
                 }
             }
 
             &-5 {
-                padding-top: 186px;
+                padding-top: calc($spacer * 11.625);
                 background: url("/landing/how/bg-5.svg") no-repeat right;
                 background-size: 64%;
 
                 @include media-breakpoint-down(xxl) {
-                    padding-top: 145px;
+                    padding-top: calc($spacer * 9.063);
                 }
 
                 @include media-breakpoint-down(xl) {
-                    padding-top: 109px;
+                    padding-top: calc($spacer * 6.813);
                 }
 
-                h3:before {
-                    background: url("../../public/landing/how/connection-line-5.svg");
-                    width: 669px;
-                    height: 332px;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    content: "";
-                    position: absolute;
-                    top: -321px;
-                    left: 26%;
-
-                    @include media-breakpoint-down(xxl) {
-                        width: 530px;
-                        top: -254px;
-                        left: 30%;
-                    }
-
-                    @include media-breakpoint-down(xl) {
-                        width: 460px;
-                        top: -221px;
-                        left: 22%;
-                    }
-                }
             }
         }
 
         .footer {
-            border-radius: 8px;
+            border-radius: calc($spacer * 0.5);
             border: 1px solid $black-6;
             background: $black-2;
-            padding: 32px;
+            padding: calc($spacer * 2);
             position: relative;
-            margin-top: 188px;
+            margin: calc($spacer * 11.75) auto 0;
+            width: 64%;
+            position: relative;
 
-            @include media-breakpoint-down(md) {
-                margin-top: 0 !important;
-            }
-
-            &:before {
-                background: url("../../public/landing/how/connection-line-6.svg");
-                width: 568px;
-                height: 479px;
-                background-size: contain;
-                background-repeat: no-repeat;
-                content: "";
+            .connection-line-6 {
                 position: absolute;
-                top: -487px;
-                left: 15.5%;
+                top: -266%;
+                left: -5.5%;
 
                 @include media-breakpoint-down(xxl) {
-                    width: 495px;
-                    top: -425px;
+                    top: -226%;
+                    left: -6.8%;
+                    :deep(svg) {
+                        width: calc($spacer * 24.688);
+                    }
                 }
 
                 @include media-breakpoint-down(xl) {
-                    width: 323px;
-                    top: -277px;
+                    top: -175%;
+                    left: 6.6%;
+                    :deep(svg) {
+                        width: calc($spacer * 15.625);
+                    }
                 }
 
                 @include media-breakpoint-down(lg) {
-                    width: 290px;
-                    top: -252px;
+                    top: -153%;
+                    left: 1.5%;
+                    :deep(svg) {
+                        width: calc($spacer * 12.875);
+                    }
                 }
 
                 @include media-breakpoint-down(md) {
                     display: none;
                 }
             }
+            @include media-breakpoint-down(md) {
+                margin-top: 0 !important;
+            }
 
             p {
                 color: $white !important;
                 text-align: center;
                 font-family: $font-family-sans-serif;
-                font-size: 16px;
+                font-size: $font-size-base;
                 font-style: normal;
                 font-weight: 400;
-                line-height: 24px;
+                line-height: calc($spacer * 1.5);
             }
         }
 
@@ -368,11 +471,6 @@
             color: #343434;
             font-size: large;
             text-align: center;
-
-            @include media-breakpoint-up(xl) {
-                padding-left: 12rem;
-                padding-right: 12rem;
-            }
         }
     }
 
