@@ -69,11 +69,11 @@
                     padding-left: 0.75rem;
                     color: $white-1 !important;
 
-                    @for $i from 2 through 6 {
-                        &.depth-#{$i} {
-                            padding-left: calc(0.75rem * ($i - 2) + 0.75rem);
-                        }
-                    }
+        @for $i from 2 through 6 {
+          &.depth-#{$i} {
+            padding-left: calc(0.75rem * ($i - 2) + 0.75rem);
+          }
+        }
 
                     &:hover,
                     &.active {
