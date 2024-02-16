@@ -86,6 +86,8 @@
             position: relative;
             margin: 0;
             width: calc($spacer * 3.75);
+            min-width: calc($spacer * 3.75);
+            height: calc($spacer * 3.75);
 
             &:before {
                 content: '';
