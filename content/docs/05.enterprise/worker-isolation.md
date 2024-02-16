@@ -1,5 +1,5 @@
 ---
-title: Worker Isolation Configuration
+title: Worker Isolation
 icon: /docs/icons/admin.svg
 ---
 
