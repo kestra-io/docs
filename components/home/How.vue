@@ -5,7 +5,7 @@
             subtitle-after="At Any Scale"
         >
             <div class="item workflow-1 row pb-5">
-                <div class="col-md-6 p-5" data-aos="fade-right">
+                <div class="col-md-6 p-5 position-relative">
                     <div class="connection-line-1">
                         <HomeConnectionLine :lineN="1" :strokeDasharray="strokeDasharray1"/>
                     </div>
@@ -14,16 +14,16 @@
                         By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
                     </p>
                 </div>
-                <div class="col-md-6" data-aos="fade-right">
+                <div class="col-md-6">
                     <img class="img-fluid" src="/landing/how/how-1.svg" alt="How to define a flow example" />
                 </div>
             </div>
 
             <div class="item workflow-2 row mb-5">
-                <div class="col-md-6 order-1 order-md-0" data-aos="fade-left">
+                <div class="col-md-6 order-1 order-md-0">
                     <img class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
                 </div>
-                <div class="col-md-6 p-5 order-0 order-md-1" data-aos="fade-left">
+                <div class="col-md-6 p-5 order-0 order-md-1 position-relative">
                     <div class="connection-line-2">
                         <HomeConnectionLine :lineN="2" :strokeDasharray="strokeDasharray2"/>
                     </div>
@@ -33,23 +33,23 @@
             </div>
 
             <div class="item workflow-3 row mb-5">
-                <div class="col-md-6 p-5" data-aos="fade-right">
+                <div class="col-md-6 p-5 position-relative">
                     <div class="connection-line-3">
                         <HomeConnectionLine :lineN="3" :strokeDasharray="strokeDasharray3"/>
                     </div>
                     <h3>Schedule your workflows</h3>
                     <p>Configure your workflows to run on a schedule, in response to event-based triggers, via webhooks, or through APIs.</p>
                 </div>
-                <div class="col-md-6" data-aos="fade-right">
+                <div class="col-md-6">
                     <img class="img-fluid" src="/landing/how/how-3.svg" alt="How to schedule example" />
                 </div>
             </div>
 
             <div class="item workflow-4 row pb-5">
-                <div class="col-md-6 order-1 order-md-0" data-aos="fade-left">
+                <div class="col-md-6 order-1 order-md-0">
                     <img class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
                 </div>
-                <div class="col-md-6 p-5 order-0 order-md-1" data-aos="fade-left">
+                <div class="col-md-6 p-5 order-0 order-md-1 position-relative">
                     <div class="connection-line-4">
                         <HomeConnectionLine :lineN="4" :strokeDasharray="strokeDasharray4"/>
                     </div>
@@ -61,22 +61,22 @@
             </div>
 
             <div class="item workflow-5 row mb-5">
-                <div class="col-md-6 p-5" data-aos="fade-right">
+                <div class="col-md-6 p-5 position-relative">
                     <div class="connection-line-5">
                         <HomeConnectionLine :lineN="5" :strokeDasharray="strokeDasharray5"/>
                     </div>
                     <h3>Monitor and optimize your workflows</h3>
                     <p>Track the performance of your workflows, identify bottlenecks, and optimize them for speed and efficiency.</p>
                 </div>
-                <div class="col-md-6 row mb-5" data-aos="fade-right">
+                <div class="col-md-6 row mb-5">
                     <img class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
                 </div>
             </div>
-            <div class="text-center footer">
+            <div class="text-center footer position-relative">
                 <div class="connection-line-6">
                     <HomeConnectionLine :lineN="6" :strokeDasharray="strokeDasharray6"/>
                 </div>
-                <p class="last-words" data-aos="fade-left">
+                <p class="last-words">
                     By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
                 </p>
                 <NuxtLink href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-dark-animated me-2" data-aos="zoom-in">
@@ -114,7 +114,6 @@
                 return { top: connectionLineOffsetTop, bottom: connectionLineOffsetBottom, lineN };
             },
             connectionLineAnimation ({ top, bottom, lineN }) {
-                console.log(top, bottom, lineN);
                 if (window.scrollY >= top && window.scrollY <= bottom && this[`strokeDasharray${lineN}`] >= 0 && this[`strokeDasharray${lineN}`] <= 1) {
                     this[`strokeDasharray${lineN}`] = window.scrollY / 35000;
                 }else if (window.scrollY > bottom) {
