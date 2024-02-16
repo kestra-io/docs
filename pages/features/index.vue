@@ -14,6 +14,8 @@
         <FeaturesBuild/>
         <FeaturesData/>
         <FeaturesEnterpriseEdition/>
+        <FeaturesFooter/>
+
     </div>
 </template>
 
