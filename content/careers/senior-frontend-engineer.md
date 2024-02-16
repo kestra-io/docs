@@ -3,8 +3,6 @@ title: "Senior Frontend Software Engineer"
 type: Engineering
 ---
 
-# Senior Frontend Software Engineer
-
 We are looking for a Senior Frontend Software Engineer skilled in Vue.js / Nuxt to help us provide the most reliable website and application. We care deeply about user experience and ease of use and put significant focus on top-notch UI and interactions.
 
 For this, we’re looking for engineers who care about products and like to work on features from ideation to release, enhance existing features, and come up with entirely new creative ways to make our users more productive.
