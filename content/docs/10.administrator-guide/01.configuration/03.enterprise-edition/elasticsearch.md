@@ -1,6 +1,9 @@
 ---
-title: Elasticsearch configuration
+title: Elasticsearch Configuration
+icon: /docs/icons/admin.svg
 ---
+
+Configure Kestra to use Elasticsearch as a repository and indexer.
 
 **Elasticsearch is an [Enterprise Edition](/enterprise) functionality.**
 

@@ -1,6 +1,9 @@
 ---
-title: Authentication
+title: Authentication Configuration
+icon: /docs/icons/admin.svg
 ---
+
+Configure the authentication for your Kestra instance.
 
 Kestra provides two authentication methods:
 

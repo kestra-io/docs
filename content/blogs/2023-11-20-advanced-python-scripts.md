@@ -60,14 +60,14 @@ def get_books(topic_list):
     # Inform the user that the scraping has started, and when it started
     start_time = datetime.datetime.now()
     print('Book Scraping in Progress... Time Started: {}'.format(datetime.datetime.strftime(start_time, '%d.%m.%Y %H:%M:%S')))
-    
-    # Iterate over every URL 
+
+    # Iterate over every URL
     for url in all_urls:
         # Fetch HTML from it
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'lxml')
-        
-        # Topic can be extracted from the URL itself 
+
+        # Topic can be extracted from the URL itself
         # I've also removed everything that isn't necessary - '_2' from 'travel_2' for example
         curr_topic = url.split('/')[-2].split('_')[0]
 
@@ -117,13 +117,13 @@ def get_books(topic_list):
                 'Link'         : book_link,
                 'Thumbnail'    : thumbnail_link
             }))
-          
+
     # Inform the user that scraping has finished and report how long it took
     end_time = datetime.datetime.now()
     duration = int((end_time - start_time).total_seconds())
     print('Scraping Finished!')
     print('\tIt took {} seconds to scrape {} books'.format(duration, len(all_books)))
-    
+
     # Return Pandas DataFrame representation of the list
     return pd.DataFrame(all_books)
 
@@ -200,7 +200,7 @@ tasks:
       type: io.kestra.plugin.git.Clone
       url: https://github.com/darioradecic/kestra-python
       branch: main
-    
+
     - id: pythonScript
       type: io.kestra.plugin.scripts.python.Commands
       warningOnStdErr: false
@@ -252,13 +252,13 @@ After a couple of seconds of initializations, you'll be presented with a familia
 
 ![Image 12 - Contents of the embedded VSCode editor](/blogs/2023-11-20-advanced-python-scripts/12.png)
 
-The contents of the `_flows` folder are a topic to discuss some other time, so leave it untouched. Everything you do Python-wise will have to be stored in a new folder named, let's say `scripts`. 
+The contents of the `_flows` folder are a topic to discuss some other time, so leave it untouched. Everything you do Python-wise will have to be stored in a new folder named, let's say `scripts`.
 
 Let's go through the process next.
 
 
 ### Writing the Python Script
-To start, create a new folder `scripts` inside the root directory, and create a Python file named `scraper.py` inside it.
+To start, create a new folder `scripts` in the root directory, and create a Python file named `scraper.py` in it.
 
 Once the Python file is opened, paste the contents of our web scraping script. Here's what it should look like:
 
@@ -286,7 +286,7 @@ tasks:
     tasks:
       - id: pythonScript
         type: io.kestra.plugin.scripts.python.Script
-        beforeCommands: 
+        beforeCommands:
           - pip install requests==2.26.0 pandas==2.0.3 beautifulsoup4==4.12.2 lxml==4.9.3
         script: "{{ read('scripts/scraper.py') }}"
 ```
@@ -299,7 +299,7 @@ As before, save the flow and run it by clicking on the purple "Execute" button. 
 
 ![Image 15 - Running the flow](/blogs/2023-11-20-advanced-python-scripts/15.png)
 
-**So, why are the bars orange?** The answer is simple - we got a warning message while installing Python libraries saying pip commands shouldn't be run by the root user: 
+**So, why are the bars orange?** The answer is simple - we got a warning message while installing Python libraries saying pip commands shouldn't be run by the root user:
 
 ![Image 16 - Examining the logs](/blogs/2023-11-20-advanced-python-scripts/16.png)
 

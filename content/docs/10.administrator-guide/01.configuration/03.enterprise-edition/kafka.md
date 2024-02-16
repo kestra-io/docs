@@ -1,6 +1,9 @@
 ---
-title: Kafka configuration
+title: Kafka Configuration
+icon: /docs/icons/admin.svg
 ---
+
+Configure Kestra Enterprise Edition to use Kafka as a queue.
 
 **Kafka is an [Enterprise Edition](/enterprise) functionality.**
 

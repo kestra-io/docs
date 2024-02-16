@@ -1,16 +1,16 @@
 ---
-title: Kestra behind a reverse proxy
+title: Reverse Proxy
+icon: /docs/icons/admin.svg
 ---
 
-If you want to host Kestra behind a reverse proxy, make sure to configure Kestra to use [Server Send Event (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) to display executions in real-time.
+This page describes how to host Kestra behind a reverse proxy.
+
+If you want to host Kestra behind a reverse proxy, make sure to use the [Server Send Event (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) to display executions in real-time.
 
 On some reverse proxies such as Nginx, you need to disable buffering to enable real-time updates.
 
----
+Here is a working configuration:
 
-## Nginx
-
-A working configuration is:
 ```nginx
 location / {
     proxy_pass  http://localhost:<kestra_port>;

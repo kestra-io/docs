@@ -1,6 +1,9 @@
 ---
-title: Worker Isolation configuration
+title: Worker Isolation Configuration
+icon: /docs/icons/admin.svg
 ---
+
+Learn how to configure worker isolation in Kestra.
 
 ## Java security
 

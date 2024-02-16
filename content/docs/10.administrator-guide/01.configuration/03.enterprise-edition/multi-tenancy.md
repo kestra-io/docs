@@ -1,8 +1,9 @@
 ---
-title: Multi-tenancy configuration
+title: Multi-tenancy Configuration
+icon: /docs/icons/admin.svg
 ---
 
-This section dives into how you can configure multi-tenancy in your Kestra instance.
+Dive into how you can enable multi-tenancy in your Kestra instance.
 
 ## Enabling multi-tenancy
 

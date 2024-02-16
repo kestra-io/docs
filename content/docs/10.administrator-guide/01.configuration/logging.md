@@ -1,10 +1,14 @@
 ---
-title: Logging
+title: Logging Configuration
+icon: /docs/icons/admin.svg
 ---
 
-You can change log behavior of Kestra changing this configuration parameters:
+Here you will find the necessary information for configuring the logging of your Kestra cluster.
 
-## Configure log Level
+You can change the log behavior in Kestra by adjusting the following configuration parameters:
+
+## Configure the log level
+
 ```yaml
 logger:
   levels:
@@ -23,6 +27,7 @@ logger:
 - `kestra.server.access-log.filters`: list of regexp to define which log to include, use `.*` to enable all logs (default `- ".*\\[Url: /api/.*"`).
 
 Here is the default values:
+
 ```yaml
 kestra:
   server:
@@ -35,9 +40,10 @@ kestra:
 ```
 
 ## Log Format
+
 We are using [Logback](https://logback.qos.ch/) to handle log. You change the format of the log format, and we provide some default and common one configuring a [logback configuration files](https://logback.qos.ch/manual/).
 
-For this, You need to create a logback configuration files and add a new `JAVA_OPS` env variables: `"-Dlogback.configurationFile=file:/path/to/your/configuration/logback.xml"`
+If you want to customize the log format, you can create a `logback.xml` file and add it to the classpath. Then, add a new `JAVA_OPS` environment variable: `"-Dlogback.configurationFile=file:/path/to/your/configuration/logback.xml"`
 
 We provide some predefined configuration, and some example of the `logback.xml` files:
 

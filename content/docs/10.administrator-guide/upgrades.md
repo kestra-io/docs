@@ -1,8 +1,9 @@
 ---
 title: Managing Upgrades
+icon: /docs/icons/admin.svg
 ---
 
-Kestra is a fast-evolving project, and we are continuously improving it. This section will guide you through the process of upgrading your Kestra installation.
+Kestra is a fast-evolving project. This section will guide you through the process of upgrading your Kestra installation.
 
 ## Where you can find the release changelog
 

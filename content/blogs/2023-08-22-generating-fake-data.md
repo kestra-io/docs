@@ -240,7 +240,7 @@ triggers:
     cron: "0 10 * * *
 ```
 
-When every data has been loaded into our data warehouse we trigger a dbt run to model our data. You can find the dbt project inside the shiny rocks [GitHub repository](https://github.com/kestra-io/shiny_rocks/tree/main/shiny_rocks_dbt). We use the SIM data model (Staging, Intermediate, Mart, also known as the Medallion architecture) as explained in [dbt documentation](https://docs.getdbt.com/guides/best-practices/how-we-structure/1-guide-overview#guide-structure-overview).
+When every data has been loaded into our data warehouse we trigger a dbt run to model our data. You can find the dbt project in the shiny rocks [GitHub repository](https://github.com/kestra-io/shiny_rocks/tree/main/shiny_rocks_dbt). We use the SIM data model (Staging, Intermediate, Mart, also known as the Medallion architecture) as explained in [dbt documentation](https://docs.getdbt.com/guides/best-practices/how-we-structure/1-guide-overview#guide-structure-overview).
 This Flow is triggered when the three upstream dependencies are in success on the last running day.
 
 ```yaml

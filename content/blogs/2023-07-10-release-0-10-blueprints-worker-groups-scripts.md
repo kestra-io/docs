@@ -200,7 +200,7 @@ tasks:
           - payments
 ```
 
-When comparing the workflow code and the topology view, you can see how the DAG task automatically designated the first three tasks to run in parallel because they have no upstream dependencies. The transformation task must wait for the successful completion of the dependent tasks, defined by referencing the upstream task IDs inside the `dependsOn` property.
+When comparing the workflow code and the topology view, you can see how the DAG task automatically designated the first three tasks to run in parallel because they have no upstream dependencies. The transformation task must wait for the successful completion of the dependent tasks, defined by referencing the upstream task IDs in the `dependsOn` property.
 
 
 ## Basic Authentication

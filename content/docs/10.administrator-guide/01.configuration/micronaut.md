@@ -1,6 +1,9 @@
 ---
-title: Micronaut configuration
+title: Micronaut Configuration
+icon: /docs/icons/admin.svg
 ---
+
+This page describes Micronaut configuration options for Kestra.
 
 As Kestra is a Java-based application built with Micronaut, you can configure any Micronaut configuration options.
 We will not explain all the possible configuration options, these are available [here](https://docs.micronaut.io/latest/guide/index.html). However, we will provide some tips on the most useful options:
@@ -14,8 +17,7 @@ micronaut:
 ```
 
 ## Configure SSL
-[This guide](https://guides.micronaut.io/latest/micronaut-security-x509-maven-groovy.html) will help you to configure SSL with Micronaut.
-A final working configuration would look like this (considering you would use environment variables injection for passwords):
+[This guide](https://guides.micronaut.io/latest/micronaut-security-x509-maven-groovy.html) will help you configure SSL with Micronaut. A final working configuration would look as follows (considering you would use environment variables injection for passwords):
 ```yaml
 micronaut:
   security:
@@ -53,7 +55,7 @@ micronaut:
 ```
 
 ## Changing base path
-If behind a reverse proxy, you can change the base path:
+If behind a reverse proxy, you can change the base path of the application with the following configuration:
 ```yaml
 micronaut:
   server:
@@ -62,7 +64,7 @@ micronaut:
 
 
 ## Changing host resolution
-If behind a reverse proxy,  you can change host resolution (http / https / domain name) providing the header sent by your reverse proxy:
+If behind a reverse proxy, you can change host resolution (http/https/domain name) providing the header sent by your reverse proxy:
 ```yaml
 micronaut:
   server:
