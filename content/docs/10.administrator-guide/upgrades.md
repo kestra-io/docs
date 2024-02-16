@@ -1,8 +1,9 @@
 ---
 title: Managing Upgrades
+icon: /docs/icons/admin.svg
 ---
 
-Kestra is a fast-evolving project, and we are continuously improving it. This section will guide you through the process of upgrading your Kestra installation.
+Kestra is a fast-evolving project. This section will guide you through the process of upgrading your Kestra installation.
 
 ## Where you can find the release changelog
 
@@ -27,9 +28,7 @@ If you want to stick to a specific Kestra version, you can pin the [Docker image
 
 Note that you can always create a custom image with your own plugins and package dependencies, as explained in the [Docker installation](../02.installation/02.docker.md).
 
-## How to migrate to a specific Kestra version
-
-### Standalone Installation
+## Migrating a Standalone Installation
 If you use a manual standalone installation with Java, you can download the Kestra binary for a specific version from the Assets menu of a specific [Release](https://github.com/kestra-io/kestra/releases) page. The image below shows how you can download the binary for the 0.14.1 release.
 
 ![download_kestra_binary](/docs/administrator-guide/download_kestra_binary.png)
@@ -40,7 +39,7 @@ Once you downloaded the binary, you can start kestra from that binary using the 
 ./kestra-VERSION server standalone
 ```
 
-### Installation with Docker
+## Migrating an installation with Docker
 
 If you use Docker, you can change the [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) to the desired version and restart the container(s) or Kubernetes pod(s).
 
@@ -49,7 +48,7 @@ If you use Docker, you can change the [Docker image tag](https://hub.docker.com/
 
 If you use Docker compose, adjust your Docker Compose file to use the desired [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) and run `docker-compose up -d` to restart the container(s).
 
-### Helm Chart
+## Migration in Kubernetes using Helm
 
 If you use Helm, adjust the [Helm chart `tag` value](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L4) to point the installation to the desired version. For example, you can run the following command to upgrade the installation to the desired version:
 
@@ -65,9 +64,26 @@ For more complex configurations that include multiple changes, consider using a 
 helm upgrade kestra kestra/kestra -f values.yaml
 ```
 
+## Rolling upgrades in Kubernetes
+
+Upgrading Kestra on a Kubernetes cluster depends on a deployment rollout strategy.
+
+Every service can be rolled out without any downtime except for a worker that needs a special attention.
+
+Each standard component during the rollout will create a pod with a new version (_keeping the old one running_). When the new pod is up and running (passing all health checks), Kubernetes will shutdown the previous one leading to a zero-downtime migration.
+
+Upgrading workers is more involved since workers handle data processing tasks which can range from a few seconds to many hours. You need to define the behavior for these tasks.
+
+By default, Kestra worker process will wait until the completion of all task runs before shutting down during a migration. However, you can overwrite that default behavior if you wish. Kestra [Helm charts](https://github.com/kestra-io/helm-charts/blob/1f9a97331ff0c160a32ceba3f255a58e01f5ff95/charts/kestra/values.yaml#L80) provide a configuration of a `terminationGracePeriodSeconds` (set to 60 seconds by default) that allows you to define the amount of time you want to wait before force-killing the worker.
+
+If the worker has no workers or is able to terminate all tasks before the grace period, it will be shutdown directly. If the pod is not able to finish the tasks affected before `terminationGracePeriodSeconds`, Kubernetes will kill the pod, leading to some tasks being resubmitted and handled by another worker.
+
+In Kestra, every worker that died unexpectedly will be detected by the executor, and all unfinished task runs will be resubmitted and will be picked up by a new worker. In case of rollout with `terminationGracePeriodSeconds`, we are in the case of unexpected failure and the task will also be resubmitted.
+
+
 ## Where can I find migration guides
 
-The [Migrations section](../12.migrations/index.md) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
+The [Migrations section](../10.migration-guide/index.md) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
 
 For all breaking changes, the migration guides are linked in the [release notes](https://github.com/kestra-io/kestra/releases).
 
@@ -81,6 +97,58 @@ You can get notified about new releases in the following ways:
 5. Subscribe to Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
 
 ![release_notification_github](/docs/administrator-guide/release_notifications_github.png)
+
+
+## Database Migrations
+
+There are two types of database migrations: automatic and manual.
+
+### Automatic database migration
+
+Kestra uses [Flyway](https://flywaydb.org/) to automatically perform database migrations when Kestra server is started. Flyway is a tool that allows version controlling changes to a database (such as Kestra's database) so that you can migrate it to a new version easily. Kestra stores the current version of the database in a table called `flyway_schema_history`. When Flyway runs, it compares the current version of the database with the version that it should be at. If the versions do not match, Flyway will run the necessary migrations to bring the database up to date. This process is automatic when Kestra server starts, therefore no manual intervention is required.
+
+### Manual database migration
+
+Sometimes a manual database migration is useful, especially when you have a large database and you want to perform the migration before upgrading Kestra to avoid a long downtime.
+
+For example, when migrating from Kestra v0.12.0 to v0.13.0, all indexes will be rebuilt due to addition of the multi-tenancy feature (the `tenant_id` column is added on almost every table). When using the JDBC runner with a large database, database migration can take multiple hours. In such use cases, we recommend performing the migration manually before starting Kestra by using the `kestra sys database migrate` command.
+
+This command should use the same configuration as configured on your Kestra instance. Depending on whether you deploy Kestra using Docker or Kubernetes, this command can be launched via a `docker exec` or a `kubectl exec` command.
+
+There are two ways to initiate the manual database migration:
+1. Keep Kestra running in an old version. Then, stop Kestra and launch the command on the new version.
+2. Start Kestra on the new version with automatic schema migration disabled via `flyway.datasources.postgres.enabled=false` (in case you're database is not postgres replace postgres with the type of your database) and launch the command: `kestra sys database migrate`.
+
+
+Here is an example of how to launch the command via a `docker exec` command:
+
+```bash
+docker exec your_container_id bash ./kestra sys database migrate --help
+```
+
+Here is the output of that `--help` command:
+
+```bash
+Usage: kestra sys database migrate [-hVv] [--internal-log] [-c=<config>]
+                                   [-l=<logLevel>] [-p=<pluginsPath>]
+Force database schema migration.
+Kestra uses Flyway to manage database schema evolution, this command will run
+Flyway then exit.
+  -c, --config=<config>   Path to a configuration file, default: /root/.
+                            kestra/config.yml)
+  -h, --help              Show this help message and exit.
+      --internal-log      Change also log level for internal log, default:
+                            false)
+  -l, --log-level=<logLevel>
+                          Change log level (values: TRACE, DEBUG, INFO, WARN,
+                            ERROR; default: INFO)
+  -p, --plugins=<pluginsPath>
+                          Path to plugins directory , default: ./plugins)
+  -v, --verbose           Change log level. Multiple -v options increase the
+                            verbosity.
+  -V, --version           Print version information and exit.
+```
+
 
 ## Getting help
 
