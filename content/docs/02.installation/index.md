@@ -1,5 +1,5 @@
 ---
-title: Installation
+title: Installation Guide
 icon: /docs/icons/installation.svg
 ---
 
