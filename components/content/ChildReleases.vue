@@ -39,6 +39,6 @@
 
     const {data: navigation} = await useAsyncData(
         `ChildReleases-${hash(currentPage)}`,
-        () => queryContent(`${currentPage}/`).where({ release: { $exists: true } }).sort({ release: 1 }).find()
+        () => queryContent(`${currentPage}/`).where({ release: { $exists: true } }).sort({ release: -1 }).find()
     );
 </script>
