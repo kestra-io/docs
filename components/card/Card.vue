@@ -29,7 +29,6 @@
 <script>
     export default {
         name: "Card",
-
         props: {
             icon: {
                 default: undefined,
