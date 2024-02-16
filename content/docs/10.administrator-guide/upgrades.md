@@ -28,9 +28,7 @@ If you want to stick to a specific Kestra version, you can pin the [Docker image
 
 Note that you can always create a custom image with your own plugins and package dependencies, as explained in the [Docker installation](../02.installation/02.docker.md).
 
-## How to migrate to a specific Kestra version
-
-### Standalone Installation
+## Migrating a Standalone Installation
 If you use a manual standalone installation with Java, you can download the Kestra binary for a specific version from the Assets menu of a specific [Release](https://github.com/kestra-io/kestra/releases) page. The image below shows how you can download the binary for the 0.14.1 release.
 
 ![download_kestra_binary](/docs/administrator-guide/download_kestra_binary.png)
@@ -41,7 +39,7 @@ Once you downloaded the binary, you can start kestra from that binary using the 
 ./kestra-VERSION server standalone
 ```
 
-### Installation with Docker
+## Migrating an installation with Docker
 
 If you use Docker, you can change the [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) to the desired version and restart the container(s) or Kubernetes pod(s).
 
@@ -50,7 +48,7 @@ If you use Docker, you can change the [Docker image tag](https://hub.docker.com/
 
 If you use Docker compose, adjust your Docker Compose file to use the desired [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) and run `docker-compose up -d` to restart the container(s).
 
-### Helm Chart
+## Migration in Kubernetes using Helm
 
 If you use Helm, adjust the [Helm chart `tag` value](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L4) to point the installation to the desired version. For example, you can run the following command to upgrade the installation to the desired version:
 
@@ -65,6 +63,23 @@ For more complex configurations that include multiple changes, consider using a 
 ```sh
 helm upgrade kestra kestra/kestra -f values.yaml
 ```
+
+## Rolling upgrades in Kubernetes
+
+Upgrading Kestra on a Kubernetes cluster depends on a deployment rollout strategy.
+
+Every service can be rolled out without any downtime except for a worker that needs a special attention.
+
+Each standard component during the rollout will create a pod with a new version (_keeping the old one running_). When the new pod is up and running (passing all health checks), Kubernetes will shutdown the previous one leading to a zero-downtime migration.
+
+Upgrading workers is more involved since workers handle data processing tasks which can range from a few seconds to many hours. You need to define the behavior for these tasks.
+
+By default, Kestra worker process will wait until the completion of all task runs before shutting down during a migration. However, you can overwrite that default behavior if you wish. Kestra [Helm charts](https://github.com/kestra-io/helm-charts/blob/1f9a97331ff0c160a32ceba3f255a58e01f5ff95/charts/kestra/values.yaml#L80) provide a configuration of a `terminationGracePeriodSeconds` (set to 60 seconds by default) that allows you to define the amount of time you want to wait before force-killing the worker.
+
+If the worker has no workers or is able to terminate all tasks before the grace period, it will be shutdown directly. If the pod is not able to finish the tasks affected before `terminationGracePeriodSeconds`, Kubernetes will kill the pod, leading to some tasks being resubmitted and handled by another worker.
+
+In Kestra, every worker that died unexpectedly will be detected by the executor, and all unfinished task runs will be resubmitted and will be picked up by a new worker. In case of rollout with `terminationGracePeriodSeconds`, we are in the case of unexpected failure and the task will also be resubmitted.
+
 
 ## Where can I find migration guides
 
