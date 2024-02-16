@@ -8,7 +8,7 @@
 
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
-                <h1 data-aos="fade-left">Developer Advocate</h1>
+                <h1 data-aos="fade-left">{{ title }}</h1>
             </div>
         </div>
         <template v-if="slug === '/careers/'">
@@ -65,7 +65,7 @@
         if (error && error.value) {
             throw error.value;
         }
-
+        console.log(data.value.title);
         useContentHead(data.value)
 
         useHead({
