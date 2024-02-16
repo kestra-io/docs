@@ -1,10 +1,18 @@
 ---
-title: Reverse Proxy
+title: URL Configuration
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how to host Kestra behind a reverse proxy.
+This page describes how you can configure the URL of your Kestra webserver.
 
+Some notification services require a URL configuration defined in order to add links from the alert message. Use a full URI here with a trailing `/` (without ui or api).
+
+```yaml
+kestra:
+  url: https://www.my-host.com/kestra/
+```
+
+## Reverse Proxy Configuration
 If you want to host Kestra behind a reverse proxy, make sure to use the [Server Send Event (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) to display executions in real-time.
 
 On some reverse proxies such as Nginx, you need to disable buffering to enable real-time updates.

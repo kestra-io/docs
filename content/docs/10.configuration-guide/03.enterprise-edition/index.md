@@ -1,6 +1,6 @@
 ---
-title: Kestra Enterprise Edition Configuration
-icon: /docs/icons/admin.svg
+title: Enterprise Edition Configuration
+icon: /docs/icons/kestra.svg
 ---
 
 This large section describes how to configure Kestra Enterprise Edition.

@@ -1,5 +1,5 @@
 ---
-title: Kestra Configuration
+title: Configuration Guide
 icon: /docs/icons/admin.svg
 ---
 

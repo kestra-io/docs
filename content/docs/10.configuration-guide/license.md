@@ -1,5 +1,5 @@
 ---
-title: License Configuration
+title: Enterprise License
 icon: /docs/icons/admin.svg
 ---
 
