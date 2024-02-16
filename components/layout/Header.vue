@@ -49,6 +49,16 @@
                                     </p>
                                 </NuxtLink>
                             </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/features/scheduling-and-automation"
+                                          @click="globalClick(true)">
+                                    <Sync />
+                                    <p>
+                                        <span>Automation Platform</span><br />
+                                        Automate all your workflows with Kestra
+                                    </p>
+                                </NuxtLink>
+                            </li>
                         </ul>
                     </li>
 
@@ -122,6 +132,15 @@
                                     <p>
                                         <span>Blueprints</span><br />
                                         Explore blueprints to kick-start your next flow
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/use-cases/retail" @click="globalClick(true)">
+                                    <BasketOutline />
+                                    <p>
+                                        <span>Kestra for Retail</span><br />
+                                        Orchestrate Your Retail Ecosystem
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -287,6 +306,8 @@ import Ballot from "vue-material-design-icons/Ballot.vue"
 import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
 import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
 import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
+import Sync from "vue-material-design-icons/Sync.vue"
+import BasketOutline from "vue-material-design-icons/BasketOutline.vue"
 </script>
 
 <script>
