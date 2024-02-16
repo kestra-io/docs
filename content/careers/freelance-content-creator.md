@@ -1,9 +1,7 @@
 ---
-title: "Content Creator Freelance Contract"
+title: "Freelance Content Creator "
 type: Product
 ---
-
-# Freelance Content Creator 
 
 ## Job Description
 

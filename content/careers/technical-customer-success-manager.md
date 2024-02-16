@@ -3,8 +3,6 @@ title: "Technical Customer Success Manager"
 type: product
 ---
 
-# Technical Customer Success Manager
-
 ## ❣️ Who are we?
 
 At Kestra Technologies, we take immense pride in being a community-driven company, embraced by a team of outstanding individuals. With over 3.000 organizations orchestrating their workflows with Kestra, we embody a collective presence that sets us apart.

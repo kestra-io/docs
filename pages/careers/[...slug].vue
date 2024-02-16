@@ -8,7 +8,7 @@
 
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
-                <h1 data-aos="fade-left">Developer Advocate</h1>
+                <h1 data-aos="fade-left">{{ title }}</h1>
             </div>
         </div>
         <template v-if="slug === '/careers/'">
