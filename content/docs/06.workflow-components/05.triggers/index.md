@@ -94,6 +94,52 @@ triggers:
 
 Polling triggers can be evaluated on a specific Worker Group (EE), thanks to the `workerGroup.key` property.
 
+## Unlocking, enabling and disabling triggers
+
+### Disabling a trigger in the source code
+If you want to temporarily disable a trigger, you could do so by setting the `disabled` property to `true`, as you can see in the example below:
+
+```yaml
+id: hello_world
+namespace: dev
+
+tasks:
+  - id: sleep
+    type: io.kestra.plugin.scripts.shell.Commands
+    runner: PROCESS
+    commands:
+      - sleep 30
+
+triggers:
+  - id: schedule
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "*/1 * * * *"
+    disabled: true
+```
+
+However, this approach requires changing the source code. A better approach is to use the `Enabled` toggle from the UI.
+
+### Disabling a trigger from the UI
+
+You can disable or re-enable a trigger from the UI. Here is how you can do it:
+1. Go to the `Flows` page and click on the flow you want to disable the trigger for.
+2. Go to the `Triggers` tab and click on the `Enabled` toggle next to the trigger you want to disable. You can re-enable it by clicking the toggle again.
+
+![triggers_flow](/docs/workflow-components/triggers_flow.png)
+
+If your trigger is locked due to an execution in progress, you can unlock it by clicking the `Unlock trigger` button.
+
+![trigger_unlock](/docs/workflow-components/trigger_unlock.png)
+
+The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a process is stuck due to infrastructure issues. Note that manually unlocking triggers may result in multiple concurrent (potentially duplicated) executions — use it with caution.
+
+### Toggle or unlock triggers from the Administation page
+
+You can also disable, re-enable, or unlock triggers from the Administration page. Here is how you can do it:
+
+![triggers_administration](/docs/workflow-components/triggers_administration.png)
+
+
 ## The ``stopAfter`` property
 
 Kestra 0.15 introduced a generic `stopAfter` property which is a list of states that will disable the trigger after the flow execution has reached one of the states in the list.
