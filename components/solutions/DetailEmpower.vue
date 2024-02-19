@@ -39,9 +39,9 @@
         border-radius: 8px;
         background: $black-2 url("/landing/usecases/cicd/empower-bg.svg") no-repeat;
 
-        @include media-breakpoint-down(xxl) {
-            padding-left: $rem-2;
-            padding-right: $rem-2;
+        @include media-breakpoint-down(md) {
+            padding-left: $rem-1;
+            padding-right: $rem-1;
         }
 
         .main {

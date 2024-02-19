@@ -2,49 +2,49 @@
     <div class="container">
         <Section subtitle="Perks & Benefits">
             <div class="row card-group mb-2">
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
                     <Card
                         :icon="MedalOutline"
                         title="Partner Badge"
                     />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
                     <Card
                         :icon="PlaylistStar"
                         title="Partner Directory Listing"
                     />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
                     <Card
                         :icon="Looks"
                         title="Marketing & Co-branding Materials"
                     />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
                     <Card
                         :icon="ToggleSwitchOutline"
                         title="Partner Enablement"
                     />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
                     <Card
                         :icon="ClockFast"
                         title="Priority Services Routing"
                     />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
                     <Card
                         :icon="GamepadOutline"
                         title="Sandbox Enterprise Edition"
                     />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
                     <Card
                         :icon="TimerSandEmpty"
                         title="Feature Early Access"
