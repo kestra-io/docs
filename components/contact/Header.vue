@@ -75,6 +75,10 @@
             margin-top: 2.625rem;
             border: $block-border;
             padding: 2rem 4rem;
+            @include media-breakpoint-down(sm) {
+                padding: 1rem 2rem;
+            }
+
         }
     }
 </style>

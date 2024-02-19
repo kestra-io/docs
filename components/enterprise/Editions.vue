@@ -8,7 +8,7 @@
             <div class="row card-group mb-4">
                 <div class="col-12 col-md-6 d-md-flex justify-content-md-end">
                     <div class="card bg-dark-2 col-lg-9 col-xl-7">
-                        <div class="card-body p-5">
+                        <div class="card-body p-3 p-sm-5">
                             <h4 class="card-title" data-aos="fade-right">Open-Source Edition</h4>
                             <p class="type" data-aos="fade-left">Free</p>
                             <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-dark-animated w-100" data-aos="zoom-in">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="card bg-dark-2 col-lg-9 col-xl-7 mt-3 mt-md-0">
-                        <div class="card-body p-5">
+                        <div class="card-body p-3 p-sm-5">
                             <h3 class="card-title" data-aos="fade-right">Enterprise Edition</h3>
                             <p class="type" data-aos="fade-left">Custom</p>
                             <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated w-100" data-aos="zoom-in">

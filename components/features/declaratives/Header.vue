@@ -6,11 +6,11 @@
                     <div>
                         <h1 data-aos="fade-right"><span>Declarative</span> Orchestration with Kestra</h1>
                         <p class="baseline" data-aos="fade-left">Simplified Data Workflow Creation and Execution with YAML</p>
-                        <div class="cta">
-                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-dark-animated mx-2" data-aos="zoom-in">
+                        <div class="cta d-flex gap-3">
+                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
                                 Get started
                             </NuxtLink>
-                            <a href="/docs"  class="btn btn-animated btn-purple-animated mx-2" data-aos="zoom-in">
+                            <a href="/docs"  class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Read the docs
                             </a>
                         </div>
