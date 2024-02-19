@@ -11,7 +11,7 @@
                 <NuxtLink
                     v-if="darkButtonText"
                     :href="darkButtonHref"
-                    class="btn btn-animated btn-dark-animated mt-2 me-3"
+                    class="btn btn-animated btn-dark-animated mt-2 me-sm-3 me-1"
                     target="_blank"
                     :data-aos="animationType('zoom-in')"
                 >
@@ -83,7 +83,10 @@
         background: $black-2 url("/landing/community/bg.svg") no-repeat right;
         background-size: 20% 100%;
         color: $white;
-
+        @include media-breakpoint-down(lg) {
+            padding-left: calc($spacer * 0.3);
+            padding-right: calc($spacer * 0.3);
+        }
         :deep(section) {
             padding: 2rem 0;
 

@@ -6,12 +6,14 @@
                     <div>
                         <h1 data-aos="fade-right"><span class="dot">Kestra Enterprise</span> to Scale Your Workflows.</h1>
                         <p data-aos="fade-left" class="baseline">Made for organizations & professionals seeking to secure production workloads with high-security standards and enterprise support.</p>
-                        <NuxtLink href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
-                            Contact Us
-                        </NuxtLink>
-                        <NuxtLink href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-purple-animated me-2" data-aos="zoom-in">
-                            Talk to Us
-                        </NuxtLink>
+                        <div class="d-flex gap-2 mb-2 mb-md-0">
+                            <NuxtLink href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                                Contact Us
+                            </NuxtLink>
+                            <NuxtLink href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                                Talk to Us
+                            </NuxtLink>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 order-0 order-md-1">

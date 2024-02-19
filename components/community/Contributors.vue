@@ -3,7 +3,7 @@
         <Section
             subtitle="Our contributors"
         >
-            <div v-if="contributors" class="contributors d-flex flex-wrap">
+            <div v-if="contributors" class="contributors d-flex flex-wrap justify-content-center">
                 <template v-for="(contributor) in contributorsRand">
                     <a :href="'https://github.com/' + contributor.name" target="_blank" class="d-flex flex-column gap-3 align-items-center" data-aos="zoom-in" >
                         <img

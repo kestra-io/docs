@@ -2,7 +2,7 @@
     <div class="container-fluid bg-dark-1">
         <div class="container">
             <div class="row">
-                <div class="p-5 d-flex flex-column align-items-center gap-3">
+                <div class="p-1 p-sm-5 d-flex flex-column align-items-center gap-3">
                     <img class="levels" src="/landing/ee/level.svg" alt="levels" />
                     <h2>Take Kestra to the next level with the <span>Enterprise Edition</span></h2>
                     <p class="description">Ensure scalability and high availability with managed Kafka and Elasticsearch integrated into the Enterprise Edition to eliminate single point of failure.</p>

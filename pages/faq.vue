@@ -241,11 +241,18 @@
         box-shadow: none;
         border: $block-border;
         background-color: $black-2;
+        @include media-breakpoint-down(sm) {
+            padding-left: calc($spacer * 0.2);
+            padding-right: calc($spacer * 0.2);
+        }
 
         summary h3 {
             color: $white;
             font-size: $h6-font-size;
             font-weight: 700;
+            @include media-breakpoint-down(sm) {
+                font-size: $font-size-md!important;
+            }
         }
 
         span {

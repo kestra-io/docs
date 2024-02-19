@@ -43,10 +43,14 @@
     }
 
     h1 {
-        font-size: $h1-font-size !important;
-        font-weight: 300 !important;
+        font-size: $h1-font-size;
+        font-weight: 300;
     }
-
+    @include media-breakpoint-down(sm) {
+        h1 {
+            font-size: 1.625rem !important;
+        }
+    }
     .subtitle {
         font-size: 1.875rem;
         font-weight: 100;
@@ -55,12 +59,6 @@
     .description {
         font-size: $font-size-xl;
         font-weight: 300;
-    }
-
-    @include media-breakpoint-up(sm) {
-        h1 {
-            font-size: $h1-font-size !important;
-        }
     }
     .img-container {
         position: relative;
