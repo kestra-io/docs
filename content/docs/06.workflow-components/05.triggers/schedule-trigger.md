@@ -85,17 +85,21 @@ Check the [Schedule task](/plugins/core/triggers/io.kestra.core.models.triggers.
 
 ## Recover Missed Schedules
 
-If a schedule is missed, Kestra will automatically recover it by default. This means that if the Kestra server is down, the missed schedules will be executed as soon as the server is back up. However, this behavior is not always desirable, e.g. during a planned maintenance window. In Kestra 0.15 and higher, this behavior can be disabled by setting the `recover-missed-schedules` configuration to `NONE`.
+If a schedule is missed, Kestra will automatically recover it by default. This means that if the Kestra server is down, the missed schedules will be executed as soon as the server is back up. However, this behavior is not always desirable, e.g. during a planned maintenance window. In Kestra 0.15 and higher, this behavior can be disabled by setting the `recoverMissedSchedules` configuration to `NONE`.
 
 Kestra 0.15 introduced a new configuration allowing you to choose whether you want to recover missed schedules or not:
 
 ```yaml
 kestra:
-  server:
-    recover-missed-schedules: ALL
+  plugins:
+    configurations:
+      - type: io.kestra.core.models.triggers.types.Schedule
+        values:
+          # available options: LAST | NONE | ALL -- default: ALL
+          recoverMissedSchedules: NONE
 ```
 
-The `recover-missed-schedules` configuration can be set to `ALL`, `NONE` or `LAST`:
+The `recoverMissedSchedules` configuration can be set to `ALL`, `NONE` or `LAST`:
 - `ALL`: Kestra will recover all missed schedules. This is the **default** value.
 - `NONE`: Kestra will not recover any missed schedules.
 - `LAST`: Kestra will recover only the last missed schedule for each flow.

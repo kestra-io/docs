@@ -1,11 +1,9 @@
 ---
 title: Flow best practices
-icon: /docs/icons/dev.svg
+icon: /docs/icons/best-practices.svg
 ---
 
-While Kestra allows you to create almost every kind of flow, some cases will not work very well or, worse, can break the Kestra application.
-This section will describe the best way to create efficient flows and patterns to avoid.
-
+This section describes how to design your workflows for optimal performance.
 
 ## Understanding what is an execution internally for Kestra
 The execution of a flow is an object that will contain:
