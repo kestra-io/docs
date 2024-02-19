@@ -36,11 +36,11 @@ function extractLines(
 }
 
 function codeImport(options: CodeImportOptions = {}) {
-  const rootDir = options.rootDir || process.cwd();
-
-  if (!path.isAbsolute(rootDir)) {
-    throw new Error(`"rootDir" has to be an absolute path`);
-  }
+  // const rootDir = options.rootDir || process.cwd();
+  //
+  // if (!path.isAbsolute(rootDir)) {
+  //   throw new Error(`"rootDir" has to be an absolute path`);
+  // }
 
   return (tree: any, file: VFile) => {
     const codes: [Code, number | undefined | null | undefined, Parent][] = [];

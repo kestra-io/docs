@@ -177,6 +177,9 @@
             display: flex;
             justify-content: center;
             gap: $spacer calc($spacer * 2.57);
+            @include media-breakpoint-down(xxl) {
+                gap: $spacer calc($spacer * 1.57);
+            }
             flex-flow: row wrap;
         }
 
@@ -186,6 +189,9 @@
             .line-separator {
                 width: calc($spacer * 0.063);
                 background-color: #242427;
+                @include media-breakpoint-down(xl) {
+                    display: none;
+                }
             }
 
             .counter-box {
@@ -196,14 +202,12 @@
                     color: $white !important;
                     font-size: 58px;
                     font-weight: 700;
-                    line-height: 22px;
                 }
 
                 p {
                     color: #ABABB2;
                     font-size: 14px;
                     font-weight: 500;
-                    line-height: 65px;
                     text-transform: uppercase;
                 }
             }

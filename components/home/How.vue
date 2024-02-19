@@ -5,7 +5,7 @@
             subtitle-after="At Any Scale"
         >
             <div class="item workflow-1 row pb-5">
-                <div class="col-md-6 p-5 position-relative">
+                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 position-relative">
                     <div class="connection-line-1">
                         <HomeConnectionLine :lineN="1" :strokeDasharray="strokeDasharray1"/>
                     </div>
@@ -23,7 +23,7 @@
                 <div class="col-md-6 order-1 order-md-0">
                     <img class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
                 </div>
-                <div class="col-md-6 p-5 order-0 order-md-1 position-relative">
+                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative">
                     <div class="connection-line-2">
                         <HomeConnectionLine :lineN="2" :strokeDasharray="strokeDasharray2"/>
                     </div>
@@ -32,8 +32,8 @@
                 </div>
             </div>
 
-            <div class="item workflow-3 row mb-5">
-                <div class="col-md-6 p-5 position-relative">
+            <div class="item workflow-3 row mb-s mb-2 mb-md-5">
+                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 position-relative">
                     <div class="connection-line-3">
                         <HomeConnectionLine :lineN="3" :strokeDasharray="strokeDasharray3"/>
                     </div>
@@ -49,7 +49,7 @@
                 <div class="col-md-6 order-1 order-md-0">
                     <img class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
                 </div>
-                <div class="col-md-6 p-5 order-0 order-md-1 position-relative">
+                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative">
                     <div class="connection-line-4">
                         <HomeConnectionLine :lineN="4" :strokeDasharray="strokeDasharray4"/>
                     </div>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="item workflow-5 row mb-5">
-                <div class="col-md-6 p-5 position-relative">
+                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 position-relative">
                     <div class="connection-line-5">
                         <HomeConnectionLine :lineN="5" :strokeDasharray="strokeDasharray5"/>
                     </div>
@@ -147,8 +147,6 @@
 
     .container {
         :deep(section) {
-            border-bottom: $container-border;
-
             .subtitle {
                 margin: 0 !important;
                 max-width: 52%;
@@ -171,6 +169,10 @@
                 font-style: normal;
                 font-weight: 300;
                 line-height: calc($spacer * 3.375);
+                @include media-breakpoint-down(sm) {
+                    font-size: calc($font-size-base * 1.625);
+                    line-height: calc($spacer * 2);
+                }
             }
 
             p {
@@ -452,7 +454,8 @@
                 }
             }
             @include media-breakpoint-down(md) {
-                margin-top: 0 !important;
+                margin: 0;
+                width: 100%;
             }
 
             p {
