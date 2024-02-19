@@ -79,12 +79,14 @@
                 <p class="last-words">
                     By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
                 </p>
-                <NuxtLink href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-dark-animated me-2" data-aos="zoom-in">
-                    Live demo
-                </NuxtLink>
-                <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated me-2" data-aos="zoom-in">
-                    Get started
-                </NuxtLink>
+                <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3">
+                    <NuxtLink href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                        Live demo
+                    </NuxtLink>
+                    <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                        Get started
+                    </NuxtLink>
+                </div>
             </div>
         </Section>
     </div>
@@ -419,7 +421,9 @@
             margin: calc($spacer * 11.75) auto 0;
             width: 64%;
             position: relative;
-
+            @include media-breakpoint-down(sm) {
+                padding: calc($spacer * 0.5);
+            }
             .connection-line-6 {
                 position: absolute;
                 top: -266%;

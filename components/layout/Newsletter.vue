@@ -108,6 +108,9 @@
             padding: calc($spacer * 3);
             color: $purple-35;
             border: $block-border;
+            @include media-breakpoint-down(md) {
+                padding: calc($spacer * 0.5);
+            }
             > div {
                 position: relative;
                 z-index: 2;
@@ -155,10 +158,6 @@
                     font-size: $font-size-base;
                 }
             }
-        }
-
-        @include media-breakpoint-down(sm) {
-            max-width: 80%
         }
     }
 
