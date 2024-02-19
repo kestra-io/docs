@@ -116,6 +116,9 @@
 
         div.main {
             padding-top: calc($spacer * 3);
+            @include media-breakpoint-down(sm) {
+                padding-top: calc($spacer * 1);
+            }
         }
 
         p.baseline {

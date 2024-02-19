@@ -60,6 +60,10 @@
             font-weight: 300;
             line-height: 4rem;
             padding: 0 20%;
+            @include media-breakpoint-down(sm) {
+                font-size: 1.875rem;
+                line-height: 2.563rem;
+            }
 
             @include media-breakpoint-down(lg) {
                 padding: 0;
@@ -76,6 +80,9 @@
         .plugins {
             gap: calc($spacer * 1.688) 4rem;
             margin: calc($spacer * 5.625) 0;
+            @include media-breakpoint-down(md) {
+                margin: calc($spacer * 3.625) 0;
+            }
         }
 
 

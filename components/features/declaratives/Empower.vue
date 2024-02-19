@@ -2,11 +2,11 @@
     <div class="container-fluid">
         <div class="pt-5 pb-5 mt-5 declarative">
             <div class="container pt-3">
-                <div class="row mb-5">
+                <div class="row mb-0 mb-sm-5">
                     <div class="col-md-6" data-aos="fade-right">
                         <img class="img-fluid" src="/landing/features/declarative/features_1.svg" alt="A YAML sample of code for declarative language and construction of Kestra's flows" />
                     </div>
-                    <div class="col-md-6 p-5" data-aos="fade-right">
+                    <div class="col-md-6 py-3 py-sm-5 px-2 px-sm-5" data-aos="fade-right">
                         <h3>Deep Dive into YAML's Features</h3>
                         <ul>
                             <li>
