@@ -51,7 +51,7 @@
     "@nuxtjs/mdc": "^0.3.2",
     "@nuxtjs/sitemap": "^5.0.5",
     "@types/node": "^20.11.6",
-    "nuxt": "^3.9.3",
+    "nuxt": "^3.10.2",
     "nuxt-gtag": "^1.1.2",
     "nuxt-multi-cache": "^3.0.1",
     "remark-code-import": "file:./utils/remark-code-import",
