@@ -158,7 +158,15 @@
     .container-fluid {
         background: url("/demo/bg-mask.svg") no-repeat bottom;
         padding-top: 8rem;
-
+        @include media-breakpoint-down(lg) {
+            padding-top: 4rem;
+        }
+        @include media-breakpoint-down(md) {
+            padding-top: 2rem;
+        }
+        @include media-breakpoint-down(sm) {
+            padding-top: 0;
+        }
         .subtitle {
             color: var(--Kestra-io-Token-color-white, #FFF);
             text-align: center;

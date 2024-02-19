@@ -55,6 +55,9 @@ $bd-gutter-x: 3rem;
         font-size: callc($font-size-base * 3.125);
         color: $white;
         font-weight: 300;
+        @include media-breakpoint-down(sm) {
+            font-size: callc($font-size-base * 2.125);
+        }
     }
 
     h2 {
@@ -62,11 +65,14 @@ $bd-gutter-x: 3rem;
         font-size: $h2-font-size;
         color: $white;
         font-weight: 300;
+        @include media-breakpoint-down(sm) {
+            font-size: callc($font-size-base * 1.875);
+        }
     }
 
     h3 {
         padding-top: 1.25rem;
-        font-size: callc($font-size-base * 1.875);
+        font-size: callc($font-size-base * 1.625);
         color: $white;
         font-weight: 300;
     }

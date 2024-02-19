@@ -43,6 +43,10 @@
   font-size: $font-size-3xl !important;
   font-weight: 300;
   margin-bottom: 0;
+  @include media-breakpoint-down(sm) {
+      font-size: calc($font-size-base * 1.625)!important;
+      line-height: calc($spacer * 2);
+  }
   &-animated {
     background: var(
       --Text_gradient,
