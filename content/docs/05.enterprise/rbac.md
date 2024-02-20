@@ -23,9 +23,7 @@ In short, Roles encapsulate permission boundaries that can be attached to users,
 
 ### Permissions
 
-A Permission is a resource that can be accessed by a user or group. The following permissions are currently supported: `FLOWS`, `BLUEPRINTS`, `TEMPLATES`, `NAMESPACES`, `EXECUTIONS`, `USERS`, `GROUPS`, `ROLES`, `BINDINGS`, `AUDITLOGS`, `SECRETS`, `IMPERSONATE`, `SETTINGS`, `WORKERS`, `SUPERADMIN`.
-
-Note that the `SUPERADMIN` permission is a special permission that is only granted to a Super Admin. This permission grants access to manage tenants within a Kestra Enterprise instance.
+A Permission is a resource that can be accessed by a user or group. The following permissions are currently supported: `FLOWS`, `BLUEPRINTS`, `TEMPLATES`, `NAMESPACES`, `EXECUTIONS`, `USERS`, `GROUPS`, `ROLES`, `BINDINGS`, `AUDITLOGS`, `SECRETS`, `IMPERSONATE`, `SETTINGS`, `WORKERS`.
 
 
 ### Actions
@@ -35,26 +33,27 @@ An Action is a specific operation that can be performed on a Permission. The cur
 
 ### Currently supported Roles
 
-Kestra currently supports the following roles by default:
-- **Admin**: this role has full access to **all resources in a specific tenant**.
-- **Super Admin**: this role has full access to all resources within the tenant from which it was granted to a User, Service Account or Group. On top of that, this role also has access to **manage tenants** within a Kestra Enterprise instance.
+Kestra currently supports only an **Admin** role by default. That role grants full access to **all resources in a specific tenant**.
 
-You can create additional Roles with custom permissions.
+Apart from that, you can create additional Roles with custom permissions.
+
+In the future, we plan to add more default roles, such as a **Viewer** role that would grant read-only access to all resources in a specific tenant.
+
 
 ---
 
 ## Admin
 
-Kestra doesn't have a concept of an admin user. Instead, it has a **Super Admin** and a tenant-scoped **Admin** roles, which can be assigned to any User, Service Account or Group. This allows you to grant multiple users with admin permissions if needed, and you can revoke those admin permissions at any time without having to delete the user.
+Kestra doesn't have a concept of an admin user (except for a Super Admin). Instead, it has a tenant-scoped predefined **Admin** roles, which can be assigned to any User, Service Account or Group. This allows you to grant admin permissions to multiple users, and you can revoke those admin permissions at any time without having to delete the user.
 
-The Admin role has full access to all resources in a specific tenant. This includes managing users, service accounts, groups, roles, and their tenant-level permissions. By default, Kestra assigns the Admin Role to the user who created a tenant (unless the tenant was created by a user with a Super Admin Role).
+The Admin role has full access to all resources in a specific tenant. This includes managing users, service accounts, groups, roles, and their tenant-level permissions. By default, Kestra assigns the Admin Role to the user who created a tenant (unless the tenant was created by a Super Admin).
 
 ::alert{type="warning"}
-Note that Admin is **NOT a User**, but a **Role**. This means that there can be multiple users with that permission, and that role can be revoked from a user at any time.
+Note that Admin is **NOT a User**, but a **Role**. However, the Super Admin is a user type with additional permissions to manage tenants and users across the instance.
 ::
 
 Users with an `Admin` role in a given tenant:
-- cannot see all workers in the Instance, you'd need the `Super Admin` role to see workers
+- cannot see all workers in the Instance, you'd need to be a `Super Admin` user to see workers
 - cannot directly change the password or email address of any User for privacy reasons; instead, they can only reset the password and send a mandatory reset-password request to the user
 - cannot see all Users existing in the instance for privacy reasons
 - can automatically send a **reset-password request** to any User, Service Account or Group in that tenant
@@ -88,6 +87,7 @@ kestra auths users create <username> <password> \
 ---
 
 ## Super Admin
+- **Super Admin**: this role has full access to all resources within the tenant from which it was granted to a User, Service Account or Group. On top of that, this role also has access to **manage tenants** within a Kestra Enterprise instance.
 
 A user with a Super Admin role has full access to all resources in a specific tenant from which it was created. Additionally, it has permissions to create or delete tenants, as well as centrally govern Roles, Groups, and Users on the instance level (i.e. across all tenants). Users with Super Admin Role can access executions, logs, audit logs, and other tenant information from any tenant if this is required for troubleshooting purposes or to help a user with a problem, e.g. if a user forgot their password, locked themselves out, etc.
 
@@ -142,7 +142,7 @@ Note that only a user with a `Super Admin` Role can grant a Role with `SUPERADMI
 
 ## Users, Groups and Service Accounts
 
-Users and Service Accounts are two different types of users that can access Kestra. Each `User` represents a **person**, while each `Service Account` represents an **application** that can access Kestra resources.
+Users and [Service Accounts](./service-accounts.md) are two different types of users that can access Kestra. Each `User` represents a **person**, while each `Service Account` represents an **application** that can access Kestra resources.
 
 Both `Users` and `Service Accounts` can be directly assigned one or more `Roles` defining their permission boundaries. `Users` and `Service Accounts` can also be assigned to `Groups`, and those `Groups` can be assigned one or more `Roles` as well. Groups are especially useful to provide the same permissions to multiple Users or Service Accounts at once by assigning a single Role to a Group.
 
@@ -173,7 +173,7 @@ Each User can be assigned one or more Roles, which define what resources the Use
 
 Note that Users and Groups don’t belong to namespaces, but their Roles can be limited to specific namespaces via Bindings (Access page).
 
-A `User` without `Admin` or `Super Admin` Role will not see the Administration and IAM views listing all Users, Groups, Service Accounts, Roles, and Bindings. They can change their own password, and adjust other settings such as theme, editor preferences, timezone, and a default namespace per tenant. The profiles bound to a tenant allow each user to save their preferences per tenant allowing configuring default preferences per environment.
+A `User` without `Admin` access will not see the Administration views listing all Users, Groups, Service Accounts, Roles, and Access. They can change their own password, and adjust other settings such as theme, editor preferences, timezone, and a default namespace per tenant. The profiles bound to a tenant allow each user to save their preferences per tenant allowing configuring default preferences per environment.
 
 
 #### Forgot password (initiated by the user)
@@ -189,42 +189,21 @@ Neither Admin nor Super Admin can change a user's password arbitrarily. However,
 2. Password rotation policy - e.g. a compliance policy requires all passwords to be rotated every 90 days
 3. Employee departure or customer churn - the admin can immediately reset their password and keep the user account to keep the audit logs, or delete the user account later.
 
----
-
-### Service Accounts
-
-A Service Account represents an **application** that can access Kestra. It is not tied to a specific person, and does not have personal information (such as first name, last name or email) attached to it. Instead, it only has an ID, an OAuth token and an optional expiration date for that token. The token is automatically generated by Kestra. The Service Account can be granted Roles with fine-grained Permissions bound to one or more specific namespace(s).
-
-Each Service Account can be attached to one or more Groups e.g. a group “Bots” that centrally governs programmatic access for CI/CD across multiple projects with just one Role. This is useful to manage programmatic access used by Terraform, GitHub Action, or other external applications, in one place by attaching a single Role to that Group.
-
-Speaking of CI/CD, note that currently Kestra supports authenticating with both Basic Authentication User, as well as with a Service Account's token:
-
-1. Use the `--token=mytoken` CLI property to allow authenticating with a service account token, e.g.:
-
-```
-./kestra namespace files update prod scripts . \
---server=https://demo.kestra.io --token yourtoken
-```
-
-2. Use the `--user user_email:password` flag to the CLI to allow authenticating with a Basic Authentication access, e.g.:
-
-```
-./kestra namespace files update prod scripts . \
---server=https://demo.kestra.io --user=rick.astely@kestra.io:password42
-```
 
 ## RBAC FAQ
 
 **Why a Service Account is not just one type of User?**
 
-Service Account is not a User, but a collection of Permissions and an OAuth token associated with it to allow an external application (such as Terraform or GitHub Actions) to assume programmatic access to Kestra resources. You can think of a Service Account as an application that is granted permissions to perform actions on behalf of a user.
+Service Account is not a User, but a collection of Permissions to allow an external application (such as Terraform or GitHub Actions) to assume programmatic access to Kestra resources. You can think of a Service Account as an application (a bot 🤖) that is granted permissions to perform actions on behalf of a user.
 
-**Why Admin and Super Admin are Roles rather than Users?**
+**Why Admin is a Role rather than User type?**
 
-Becuase they can be assumed by multiple users or groups, and because some user may be later granted a higher permission; in the same way, some user may initially be an Admin but then their permission may be revoked. The Admin Roles enables all these patterns in a flexible way.
+Admin role is a collection of permissions that can be assigned to Users, Service Accounts or Groups. This allows you to grant multiple users with admin permissions if needed, and you can revoke only specific admin permissions at any time without having to delete the user.
+
+Admin roles can be assumed by multiple users or groups, and some user may be later granted a lower or a higher permission boundary. In the same way, some user may initially be an Admin but then their permission may be revoked. The Admin role enables all these patterns in a flexible way.
 
 You can think of Users as **authentication** mechanism (who you are), and Roles as **authorization** mechanism (what you are allowed to do). Decoupling authentication from authorization allows you to grant permissions to multiple users or groups at once by attaching a single Role to a Group.
 
 **Why I cannot edit an existing Binding?**
 
-You cannot edit an existing Binding because it's an immutable object. Instead, you can delete the existing Binding and create a new one for the same User, Service Account or Group, but with different Roles and/or namespaces. This is a safety feature to prevent accidental changes to existing permissions.
+A Binding is an immutable object. If a Binding no longer reflects the desired permissions, you can delete the existing Binding and create a new one for the same User, Service Account or Group, but with different Roles and/or namespaces. This is a safety feature to prevent accidental changes to existing permissions.
