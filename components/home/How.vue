@@ -209,12 +209,12 @@
 
                     &-1 {
                         top: -37%;
-                        left: 27.5%;
+                        left: 30.5%;
 
 
                         @include media-breakpoint-down(xxl) {
-                            top: -37%;
-                            left: 29%;
+                            top: -39%;
+                            left: 16%;
                         }
 
                         @include media-breakpoint-down(xl) {
@@ -223,8 +223,8 @@
                         }
 
                         @include media-breakpoint-down(lg) {
-                            top: -40%;
-                            left: 48%;
+                            top: -50%;
+                            left: 40%;
                         }
 
                         @include media-breakpoint-down(md) {
@@ -232,24 +232,24 @@
                         }
                     }
                     &-2 {
-                        bottom: 460px;
-                        right: 65%;
+                        bottom: 91%;
+                        right: 63%;
 
                         @include media-breakpoint-down(xxl) {
-                            left: -68%;
-                            bottom: 460px;
+                            top: -78%;
+                            left: -81%;
                         }
 
                         @include media-breakpoint-down(xl) {
-                            bottom: 369px;
+                            top: -97%;
                             left: -84%;
                         }
 
                         @include media-breakpoint-down(lg) {
-                            top: -318px;
-                            left: -47%;
+                            top: -89%;
+                            left: -55%;
                             :deep(svg) {
-                                width: 445px;
+                                width: calc($spacer * 27.813);
                             }
                         }
 
@@ -280,7 +280,7 @@
                         }
 
                         @include media-breakpoint-down(lg) {
-                            top: -77%;
+                            top: -83%;
                             left: 50%;
                             :deep(svg) {
                                 width: calc($spacer * 25.938);
@@ -308,14 +308,13 @@
                             top: -135%;
                             left: -44.5%;
                             :deep(svg) {
-                                width: 410px;
                                 width: calc($spacer * 25.625);
                             }
                         }
 
                         @include media-breakpoint-down(lg) {
                             left: -47%;
-                            top: -108%;
+                            top: -159%;
                         }
 
                         @include media-breakpoint-down(md) {
@@ -344,7 +343,7 @@
                         }
 
                         @include media-breakpoint-down(lg) {
-                            top: -52%;
+                            top: -78%;
                             left: 37%;
                         }
 
@@ -426,28 +425,28 @@
             }
             .connection-line-6 {
                 position: absolute;
-                top: -266%;
-                left: -5.5%;
+                top: -223%;
+                left: -5%;
 
                 @include media-breakpoint-down(xxl) {
-                    top: -226%;
-                    left: -6.8%;
+                    top: -185%;
+                    left: -6.2%;
                     :deep(svg) {
                         width: calc($spacer * 24.688);
                     }
                 }
 
                 @include media-breakpoint-down(xl) {
-                    top: -175%;
-                    left: 6.6%;
+                    top: -154%;
+                    left: 7.2%;
                     :deep(svg) {
                         width: calc($spacer * 15.625);
                     }
                 }
 
                 @include media-breakpoint-down(lg) {
-                    top: -153%;
-                    left: 1.5%;
+                    top: -133%;
+                    left: 2%;
                     :deep(svg) {
                         width: calc($spacer * 12.875);
                     }
