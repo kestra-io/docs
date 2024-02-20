@@ -5,28 +5,30 @@
                 subtitle-before="Loved"
                 subtitle="by the"
             >
-                <p class="subtitle">open-source community</p>
-                <Carousel v-bind="settings" :breakpoints="breakpoints">
-                    <Slide v-for="slide in testimonialData" :key="slide">
-                        <div class="carousel--item">
-                            <TestimonialsItem :item="slide" />
-                        </div>
-                    </Slide>
-                    <template #addons>
-                        <navigation>
-                            <template #next>
-                                <div class="carousel-control carousel-control-next">
-                                    <ArrowRight />
-                                </div>
-                            </template>
-                            <template #prev>
-                                <div class="carousel-control carousel-control-prev">
-                                    <ArrowLeft />
-                                </div>
-                            </template>
-                        </navigation>
-                    </template>
-                </Carousel>
+                <p class="subtitle" data-aos="fade-right">open-source community</p>
+                <div  data-aos="fade-left">
+                    <Carousel v-bind="settings" :breakpoints="breakpoints">
+                        <Slide v-for="slide in testimonialData" :key="slide">
+                            <div class="carousel--item">
+                                <TestimonialsItem :item="slide" />
+                            </div>
+                        </Slide>
+                        <template #addons>
+                            <navigation>
+                                <template #next>
+                                    <div class="carousel-control carousel-control-next">
+                                        <ArrowRight />
+                                    </div>
+                                </template>
+                                <template #prev>
+                                    <div class="carousel-control carousel-control-prev">
+                                        <ArrowLeft />
+                                    </div>
+                                </template>
+                            </navigation>
+                        </template>
+                    </Carousel>
+                </div>
             </Section>
         </div>
     </div>
