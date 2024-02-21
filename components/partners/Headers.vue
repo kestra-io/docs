@@ -62,6 +62,7 @@
             }
 
             @include media-breakpoint-down(md) {
+                width: 80% !important;
                 h2 {
                     font-size: $font-size-2xl;
                 }

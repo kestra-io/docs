@@ -140,6 +140,23 @@
             span {
                 color: #7FBC85;
             }
+
+            @include media-breakpoint-down(xl) {
+                font-size: $font-size-sm;
+            }
+
+            @include media-breakpoint-down(lg) {
+                font-size: calc($font-size-base * 0.625);
+            }
+
+            @include media-breakpoint-down(md) {
+                font-size: $font-size-sm;
+            }
+
+            @include media-breakpoint-down(sm) {
+                font-size: calc($font-size-base * 0.563);
+                padding: 2rem 1rem;
+            }
         }
 
         .code-content, .code-header {

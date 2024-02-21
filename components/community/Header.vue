@@ -58,5 +58,11 @@
         p {
             font-size: $font-size-xl;
         }
+
+        .hero{
+            @include media-breakpoint-down(md) {
+                padding-top: 0;
+            }
+        }
     }
 </style>
