@@ -15,7 +15,7 @@
             title="What is CI/CD?"
             subtitle="CI/CD stands for Continuous Integration and Continuous Deployment, software engineering practices that involve regularly merging code changes (Continuous Integration) and automated deployment to production (Continuous Deployment). CI/CD practices make the development process more efficient, less error-prone, and better aligned with business needs."
         />
-        <SolutionsDetailMain
+        <LayoutDetailMainContent
             subtitle="Build your Workflows"
             subtitleAfter="as Code"
             baseline="Kestra allows building workflows as code. This approach facilitates seamless integration with existing CI/CD processes, Infrastructure as Code tools like Terraform, and version control systems like Git."

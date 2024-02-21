@@ -15,7 +15,7 @@
             title="What is Change Data Capture ?"
             subtitle="Change Data Capture (CDC) tracks and captures data source alterations for efficient processing and analysis. Kestra's CDC features allow businesses to synchronize and manage data effectively, maintaining updated data warehouses and analytics platforms with minimized resource use."
         />
-        <SolutionsDetailMain
+        <LayoutDetailMainContent
             subtitle="Data Analysis for Financial Institutions"
             subtitleBefore="Streamlined"
             baseline="Kestra makes CDC implementation straightforward, enabling your team to monitor data changes across your systems with ease. Configure workflows to automatically transform and aggregate data, keeping your datasets accurate and analytics reliable without manual intervention."
