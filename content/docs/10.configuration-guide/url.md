@@ -49,7 +49,7 @@ micronaut:
   http:
     services:
       api:
-        url:https://api.kestra.io
+        url: https://api.kestra.io
         proxy-type: http
         proxy-address: my.company.proxy.address:port
         proxy-username: "username"
