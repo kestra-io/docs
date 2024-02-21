@@ -49,6 +49,10 @@
                 line-height: calc($spacer * 3.125);
                 padding: 0 21%;
 
+                @include media-breakpoint-down(md) {
+                    line-height: calc($spacer * 1.625);
+                }
+
                 span {
                     background: linear-gradient(90deg, #E151F7 38.91%, #5C47F5 91.17%);
                     background-clip: text;

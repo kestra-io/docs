@@ -88,6 +88,7 @@
 
                 @include media-breakpoint-down(sm) {
                     font-size: 1.875rem !important;
+                    line-height: calc($spacer * 1.875);
                 }
 
                 span {

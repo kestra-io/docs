@@ -55,11 +55,19 @@
 @import "../../assets/styles/variable";
 
 .card {
-    border-radius: 8px;
+    border-radius: calc($spacer / 2);
     border: $block-border;
     color: $white;
     padding: 2rem;
     height: 100%;
+
+    @include media-breakpoint-down(lg) {
+        padding: 2rem 1rem;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 2rem;
+    }
 
     .card-body {
         padding: 0;

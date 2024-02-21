@@ -1,6 +1,6 @@
 <template>
         <div class="hero container mt-5">
-            <div class="row">
+            <div class="row header-content">
                 <div class="col-md-6 align-items-center d-flex">
                     <div>
                         <h1 data-aos="fade-right" class="title-1 title">Scheduling </h1>
@@ -28,9 +28,14 @@
     .container {
         background-image: url('/landing/features/scheduling/masking.svg');
         color: var(--bs-white);
-        padding-top: 5rem;
         margin-top: -5rem;
         border-bottom: $block-border;
+
+        .header-content {
+            @include media-breakpoint-down(md) {
+                flex-direction: column-reverse;
+            }
+        }
     }
     .baseline{
         font-weight: 300;
@@ -57,7 +62,11 @@
     height: 1px;
     background: $black-6;
 }
+
 .hero{
     padding-bottom: 0rem;
+    @include media-breakpoint-down(md) {
+        padding-top: 0;
+    }
 }
 </style>

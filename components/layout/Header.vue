@@ -427,7 +427,7 @@ export default {
             & {
                 -webkit-backdrop-filter: blur(calc($spacer * 0.625));
                 backdrop-filter: blur(calc($spacer * 0.625));
-                background-color: rgb(17 17 19 / 65%);
+                background-color: rgb(17 17 19);
             }
         }
 
