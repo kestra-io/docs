@@ -15,7 +15,7 @@
             title="What is Change Data Capture?"
             subtitle="Change Data Capture (CDC) tracks changes in your data sources and allows you to react to them in near real-time. Kestra's CDC capabilities enable businesses to keep your data warehouse in sync with your source systems to make informed decisions based on the latest data."
         />
-        <SolutionsDetailMain
+        <LayoutDetailMainContent
             subtitle="Data Integration for Your Organization"
             subtitleBefore="Streamlined"
             baseline="Kestra makes CDC implementation straightforward, enabling your team to monitor data changes across your systems with ease. Configure workflows to automatically transform and aggregate data, keeping your datasets accurate and analytics reliable without manual intervention."

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import Section from '../layout/Section.vue';
+    import Section from './Section.vue';
     export default {
         components: {Section},
         props: {
@@ -83,6 +83,24 @@
 
     p {
         font-size: $font-size-md;
+        :deep(ul) {
+            display: flex;
+            flex-direction: column;
+            gap: $spacer;
+            li {
+                color: $white;
+                font-weight: 400;
+                span {
+                    color: $white-1;
+                    font-weight: 300;
+
+                    a {
+                        color: $purple-35;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
     }
 
     .feature-img {
@@ -98,7 +116,7 @@
 
         &-left::before {
             background: url("/landing/usecases/cdc/feature-grow.svg") no-repeat left;
-            background-size: 40% 100%;
+            background-size: 35% 100%;
 
             @include media-breakpoint-down(lg) {
                 background-size: 60% 100%;
@@ -115,8 +133,8 @@
 
         &-right::before {
             background: url("/landing/usecases/cdc/feature-grow.svg") no-repeat right;
-            background-size: 38% 100%;
-            right: 9%;
+            background-size: 32% 100%;
+            right: 17%;
 
             @include media-breakpoint-down(lg) {
                 background-size: 60% 100%;
