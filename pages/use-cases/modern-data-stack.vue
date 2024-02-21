@@ -15,7 +15,7 @@
             title="What is the Modern Data Stack?"
             subtitle="The modern data stack combines powerful automation and integration capabilities. Organizations can establish scalable, reliable, and streamlined data workflows by leveraging robust automation capabilities and seamless integrations with tools like dbt, Snowflake, Airbyte, and others. This ecosystem empowers data-driven decision-making and facilitates the generation of actionable insights."
         />
-        <SolutionsDetailMain
+        <LayoutDetailMainContent
             subtitle="Leverage"
             subtitleAfter="Modern Data Stack"
             baseline="Discover how Kestra's automation capabilities and extensive integrations with popular data tools from the modern data stack empower organizations to manage data pipelines with confidence."

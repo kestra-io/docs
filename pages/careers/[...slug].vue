@@ -90,6 +90,10 @@
         :deep(h2 > a) {
             color: $white;
         }
+
+        :deep(li > a) {
+            color: $purple-35;
+        }
     }
 
     .header-container {
