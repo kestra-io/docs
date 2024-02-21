@@ -40,6 +40,9 @@
     font-weight: 300 !important;
     margin-bottom: 0;
     font-size: $font-size-3xl;
+    @include media-breakpoint-down(md) {
+        line-height: 1.625rem;
+    }
 
     &-animate {
       background: linear-gradient(90deg, #e151f7 24.82%, #5c47f5 76.81%);

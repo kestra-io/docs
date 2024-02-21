@@ -67,5 +67,11 @@
         left: 20px;
         transform-origin: 40% 30%;
     }
+
+    .hero{
+        @include media-breakpoint-down(md) {
+            padding-top: 0;
+        }
+    }
 }
 </style>

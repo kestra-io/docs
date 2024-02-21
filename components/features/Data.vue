@@ -1,13 +1,7 @@
 <template>
   <div class="container-fluid">
-    <Section>
+    <Section subtitle="Centralized Data Control for" subtitle-before="Improved Efficiency">
       <div class="container">
-        <div class="heading mx-auto pb-4">
-          <h2 class="title text-center">
-            Centralized Data Control for
-            <span class="title-animate">Improved Efficiency</span>
-          </h2>
-        </div>
         <div class="row d-flex justify-content-center">
           <div class="col-12 col-md-6 col-lg-3 mb-4">
             <div class="card h-100" data-aos="fade-right">
@@ -146,6 +140,17 @@ export default {
 
 .container-fluid {
   background-color: $black-4;
+
+    :deep(section) {
+        .subtitle {
+            max-width: calc($spacer * 37.5);
+            p > span {
+                background: linear-gradient(90deg, #e151f7 24.82%, #5c47f5 76.81%) !important;
+                background-clip: text !important;
+                -webkit-background-clip: text !important;
+            }
+        }
+    }
 }
 
 .container {
@@ -196,28 +201,6 @@ export default {
     font-weight: 400;
     line-height: 1.3;
     color: $white-1;
-  }
-}
-
-.heading {
-  max-width: 509px;
-  font-size: $font-size-3xl !important;
-  line-height: 2.7rem;
-
-  .title {
-    line-height: 4rem;
-    text-align: center;
-    font-weight: 300 !important;
-    color: #ffffff;
-
-    &-animate {
-      background: linear-gradient(90deg, #e151f7 24.82%, #5c47f5 76.81%);
-      font-size: $font-size-3xl !important;
-      font-weight: 400 !important;
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
   }
 }
 </style>

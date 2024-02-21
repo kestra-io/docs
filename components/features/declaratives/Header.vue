@@ -64,6 +64,13 @@
             }
         }
 
+        .hero{
+            padding-bottom: 0rem;
+            @include media-breakpoint-down(md) {
+                padding-top: 0;
+            }
+        }
+
     }
 </style>
 
