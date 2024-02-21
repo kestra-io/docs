@@ -334,3 +334,13 @@ https://0913-31-18-152-123.ngrok-free.app/slack/events
 ```
 
 The rest of the process is the same as with Modal. You can now adjust the flow `slack_events` referenced in the FastAPI code and start automationg various processes based on Slack events.
+
+## Other deployment options
+
+You can deploy that Slack app in many other ways including:
+- an on-prem VM
+- a serverless approach with [AWS Lambda](https://www.youtube.com/watch?v=rpVLOVeky6A), Google Cloud Functions, or Azure Functions
+- a containerized approach with AWS Fargate, Google Cloud Run, or Azure Container Instances
+- a Kubernetes deployment.
+
+And of course, you can use any other programming language and framework to build your Slack app. The only requirement is to forward the Slack events to your Kestra flow via the Webhook trigger.
