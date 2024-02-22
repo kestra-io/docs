@@ -1,7 +1,7 @@
 
 <template>
   <div class="container-fluid">
-    <Section subtitle="Workflow Design and Management" subtitle-before="Seamless">
+    <Section subtitle="API-First Workflows as Code" subtitle-before="Simple">
       <div class="container">
         <div class="row d-flex justify-content-center">
           <div class="col-12 col-md-6 col-lg-3 mb-4">

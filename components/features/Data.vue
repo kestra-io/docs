@@ -1,8 +1,11 @@
 <template>
   <div class="container-fluid">
-    <Section subtitle="Centralized Data Control for" subtitle-before="Improved Efficiency">
+    <Section subtitle="and Everything from the UI" subtitle-before="Everything as Code">
       <div class="container">
         <div class="row d-flex justify-content-center">
+
+
+
           <div class="col-12 col-md-6 col-lg-3 mb-4">
             <div class="card h-100" data-aos="fade-right">
               <div class="card-body mx-2">
@@ -11,11 +14,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Abstraction of Files</h6>
+                <h6 class="card-heading">Everything as Code</h6>
                 <p class="card-para">
-                  The internal Storage feature abstracts files, enabling each
-                  task to produce or consume files without needing to know the
-                  server's current location.
+                  Whether you build your workflows from a local IDE or from the UI, your entire workflow configuration is always managed as code and automatically versioned.
                 </p>
               </div>
             </div>
@@ -29,10 +30,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Stateless Servers</h6>
+                <h6 class="card-heading">Everything from the UI</h6>
                 <p class="card-para">
-                  Allows easy destruction, restart from scratch or restart a
-                  previous execution without any hassle.
+                  Create, edit and run your workflows from the integrated code editor in the UI, without having to set up local development environment or managing heavy worker processes.
                 </p>
               </div>
             </div>
@@ -46,10 +46,26 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Metadata Storage</h6>
+                <h6 class="card-heading">Built-in documentation</h6>
                 <p class="card-para">
-                  Metadata from the flow is stored on a database and Kestra's
-                  Internal Storage for transparent file systems.
+                 The built-in code editor includes a documentation for all tasks and triggers. An up-to-date description of properties, and hands-on examples are at your fingertips.
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+        <div class="col-12 col-md-6 col-lg-3 mb-4">
+            <div class="card h-100" data-aos="fade-right">
+              <div class="card-body mx-2">
+                <img
+                  src="/landing/features/Iconbkg.svg"
+                  alt="BackFill pattern svg"
+                  class="mb-2"
+                />
+                <h6 class="card-heading">Autocompletion</h6>
+                <p class="card-para">
+                  The embedded code editor provides syntax highlighting and autocompletion for all task and trigger properties, significantly improving your productivity.
                 </p>
               </div>
             </div>
@@ -63,10 +79,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Strongly Typed</h6>
+                <h6 class="card-heading">Syntax Validation</h6>
                 <p class="card-para">
-                  Ensure each piece of data is the right type and well-defined,
-                  a date must be a date, an int must be an int, and so on…
+                    The embedded code editor provides real-time syntax validation as you type, ensuring that your workflows are always valid. No more surprises at runtime — you can catch errors early on.
                 </p>
               </div>
             </div>
@@ -80,10 +95,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Amazon Ion Integration</h6>
+                <h6 class="card-heading">Strongly Typed Inputs and Outputs</h6>
                 <p class="card-para">
-                  Handles more types than JSON, to enable easy mixing of tasks
-                  usage without any pain.
+                  Declare data types for your inputs and outputs, and Kestra will enforce them, raising errors if the data doesn't match the expected types.
                 </p>
               </div>
             </div>
@@ -97,31 +111,15 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Communication Between Tasks</h6>
+                <h6 class="card-heading">Seamlessly pass data between tasks</h6>
                 <p class="card-para">
-                  Each task can easily communicate with all others, making it
-                  simple to mix tasks usage without any problems.
+                  Kestra's internal storage allows to easily pass data between tasks while maintaining data privacy.
                 </p>
               </div>
             </div>
           </div>
 
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Task Switch flexibility</h6>
-                <p class="card-para">
-                  All switch between tasks, such as BigQuery to MySQL or
-                  BigQuery to Redshift, without needing specific operators.
-                </p>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
     </Section>
