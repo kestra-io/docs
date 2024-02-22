@@ -2,11 +2,11 @@
     <div class="container">
         <Section
             subtitle="Control and Compliance"
-            subtitle-before="Full"
+            subtitle-before="Complete"
         >
             <div class="row mb-5">
                 <div class="col-md-6 order-1 order-md-1" data-aos="fade-left">
-                    <h3>Advanced Architecture Design</h3>
+                    <h3>Robust Architecture Built for Enterprise needs</h3>
                     <p>
                         Elevate your system's resilience and efficiency with our Enterprise Edition's architectural design, built to support scalability and high availability.
                     </p>
@@ -21,7 +21,7 @@
             </div>
             <div class="row mb-5">
                 <div class="col-md-6 order-1 order-md-0" data-aos="fade-right">
-                    <h3>Advanced Security and Access Control</h3>
+                    <h3>Advanced Security and Role-Based Access Control</h3>
                     <p>
                         Ensure that your data workflows and resources remain protected and compliant with industry standards.
                     </p>
@@ -29,7 +29,7 @@
                         <li><b>Secure Authentication:</b> Integrate with Single Sign-On (SSO) and enterprise-grade identity providers to manage user access and authenticate users efficiently and securely.</li>
                         <li><b>Role-Based Access Control:</b> Define custom roles and permissions for granular control over user access to workflows, tasks, and resources. Ensure that users only have access to the appropriate data and features.</li>
                         <li><b>Enterprise Secret Management:</b> Kestra's Enterprise Edition offers robust secret management, supporting integration with AWS Secret Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, and Vault, ensuring secure, in-memory access to secrets at runtime.</li>
-                        <li><b>Audit logs:</b> Gain full visibility into all user activities on Kestra resources with detailed audit logs, empowering systems administrators and security teams to monitor actions, investigate breaches, and maintain compliance.</li>
+                        <li><b>Audit logs:</b> Gain full visibility into all user activities on Kestra resources with detailed audit logs, empowering system administrators and security teams to monitor actions, investigate breaches, and maintain compliance.</li>
                     </ul>
                 </div>
                 <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">

@@ -1,8 +1,8 @@
 <template>
     <div>
         <Head>
-            <Title>Declarative Data Orchestration with Kestra</Title>
-            <Meta name="description" content="Simplified Data Workflow Creation and Execution with YAML" />
+            <Title>Declarative Orchestration with Kestra</Title>
+            <Meta name="description" content="Bring Infrastructure as Code Best Practices to All Workflows" />
         </Head>
 
         <Header />
