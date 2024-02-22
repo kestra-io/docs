@@ -13,9 +13,7 @@
                 />
                 <h6 class="card-heading">CI/CD Deployment</h6>
                 <p class="card-para">
-                  Integrate Kestra into CI/CD pipelines to automate the
-                  deployment of workflows (Terraform, GitLab Actions, GitLab,
-                  Jenkins…).
+                  Automate your Kestra deployments with CI/CD integrations for Terraform, GitHub Actions, GitLab, and BitBucket.
                 </p>
               </div>
             </div>
@@ -30,11 +28,10 @@
                   class="mb-2"
                 />
                 <h6 class="card-heading">
-                  Production made easy, no more production plan
+                  Worry-free Production Deployments
                 </h6>
                 <p class="card-para">
-                  Kestra supports flow dependencies to define the execution
-                  order based on their interdependence.
+                  Reliable deployments without package dependency conflicts. Script tasks are executed in Docker.
                 </p>
               </div>
             </div>
@@ -50,9 +47,7 @@
                 />
                 <h6 class="card-heading">Real-Time Events</h6>
                 <p class="card-para">
-                  Flow execution based on events from the core or plugins, such
-                  as the result of other flows in real-time, detection of files
-                  from SFTP or Google Cloud Storage, or results of an SQL query.
+                  Flow execution based on event triggers including file detection, message queues, completion of certain flows, or results of a SQL query or API call.
                 </p>
               </div>
             </div>
@@ -66,7 +61,7 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Event-driven Triggers</h6>
+                <h6 class="card-heading">API-first</h6>
                 <p class="card-para">
                   Endless possibilities to start a flow through API, using a
                   webhook, waiting for a trigger, or simply starting directly

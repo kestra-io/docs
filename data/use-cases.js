@@ -1,5 +1,5 @@
 export default {
-    subtitle: "Uncover the Depth of Kestra's",
+    subtitle: "Find Out More About Kestra's",
     subtitleAfter: "Capabilities",
     cases: [
         {
