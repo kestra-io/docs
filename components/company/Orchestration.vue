@@ -67,6 +67,7 @@
             height: 100%;
             width: 100%;
             background: url('/landing/company/img-mask.svg') no-repeat right;
+            background-size: cover;
             top: 0;
             right: 12%;
             z-index: 1;
@@ -78,6 +79,7 @@
             height: 100%;
             width: 100%;
             background: url('/landing/company/text-mask.svg') no-repeat center left;
+            background-size: cover;
             left: 16%;
             z-index: 2;
         }

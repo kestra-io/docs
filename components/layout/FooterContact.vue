@@ -1,7 +1,7 @@
 <template>
     <div class="container rounded-3">
         <Section :animation="animation">
-            <div class="text-center cta">
+            <div class="text-center cta px-5">
                 <p class="title" v-if="title" :data-aos="animationType('fade-left')">
                     {{title}}
                 </p>

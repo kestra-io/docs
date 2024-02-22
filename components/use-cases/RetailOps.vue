@@ -5,9 +5,9 @@
             <span>Complex</span> Retail Operations
         </h1>
         <p class="description fw-light">{{ content.description }}</p>
-        <div class="row m-0 content my-4">
+        <div class="row m-0 content my-2 my-md-4">
             <template v-for="item in content.items">
-                <div class="col-md-6 my-4">
+                <div class="col-md-6 my-2 my-md-4">
                     <div class="d-flex">
                         <div class="icon">
                             <img :src="item.icon" :alt="item.title" />
@@ -76,6 +76,18 @@ export default {
     background: $black-2;
     padding: calc($spacer * 2.375) calc($spacer * 3);
     border-radius: 8px;
+
+    @include media-breakpoint-down(lg) {
+      padding: calc($spacer * 1.375) calc($spacer * 2);
+    }
+
+    @include media-breakpoint-down(md) {
+      padding: calc($spacer * 0.375) $spacer;
+    }
+
+    @include media-breakpoint-down(sm) {
+      padding: 0;
+    }
 
     &::before {
         content: "";

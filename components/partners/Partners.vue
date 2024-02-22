@@ -148,7 +148,9 @@
     }
 
     :deep(section) {
+      @include media-breakpoint-up(md) {
         border-bottom: $block-border;
+      }
     }
 
     .card-group {

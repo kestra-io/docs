@@ -31,7 +31,7 @@
             </div>
             <div class="row mt-5">
                 <div class="col-12">
-                    <div class="row card-group card-centered no-shadow mb-2">
+                    <div class="row card-group no-shadow mb-2">
                         <div class="col-md-4 mb-4">
                             <Card
                                 :icon="CalculatorVariantOutline"

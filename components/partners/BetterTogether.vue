@@ -71,7 +71,9 @@ export default {
     @import "../../assets/styles/variable";
 
     .container {
-        border-top: $block-border;
+      @include media-breakpoint-up(md) {
+        border-bottom: $block-border;
+      }
     }
 
     .row {
