@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <Section subtitle="Development and Deployment" subtitle-before="Accelerate">
+    <Section subtitle="Development, Painless Deployment" subtitle-before="Fast">
       <div class="container">
         <div class="row d-flex justify-content-center">
           <div class="col-12 col-md-6 col-lg-3 mb-4">
