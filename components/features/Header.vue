@@ -36,7 +36,7 @@
           data-aos="zoom-in"
         >
           <img
-            class="zoom img-fluid headerimg"
+            class="img-fluid headerimg"
             src="/landing/features/header.svg"
             alt="A screenshot of the user interface of Kestra's application"
           />
