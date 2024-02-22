@@ -154,8 +154,8 @@
                         message: "I'm very impressed with what your team has here in Kestra. I started sharing it more and more at my company and I still need to work through a few things but have moved some of my automated jobs over from Apache NIFI to Kestra and it's working great. Also I tried Apache Airflow prior to learning about Kestra and wow, Kestra is wayyyy easier to work with because of everything being in the UI.",
                         name: "Jake Kruse",
                         link: "https://www.linkedin.com/in/jake-kruse-608471174/",
-                        designation: "Research AssistantResearch Assistant @ GeoDS Lab, Department of Geography · Full-time",
-                        alt: "Picture of Antoine testimony",
+                        designation: "Research Assistant @ GeoDS Lab",
+                        alt: "Picture of Jake testimony",
                     }
                 ],
             };
