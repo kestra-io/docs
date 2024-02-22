@@ -63,6 +63,45 @@ $danger: $red;
 $light: $gray-100;
 $dark: $gray-900;
 
+
+// purples
+$purple-1: #382369;
+$purple-2: #FBC7F4;
+$purple-3: #9580EE;
+$purple-4: linear-gradient(160.34deg, rgba(130, 0, 255, 0.12) 5.3%, rgba(130, 0, 255, 0) 75.43%), #201838;
+$purple-5: #362762;
+$purple-6: #6113BC;
+$purple-7: #1A1223;
+$purple-8: #EEEDFF;
+$purple-9: 0px 12.972px 39.7269px rgba(90, 0, 176, 0.1);
+$purple-10: #150E1C;
+$purple-11: #332C3B;
+$purple-12: #432A71;
+$purple-13: #e5e4f7;
+$purple-14: #8e20f9;
+$purple-15: #9237fb;
+$purple-16: #281A35;
+$purple-17: #F5F5FF;
+$purple-18: #7E719F;
+$purple-19: conic-gradient(from 90deg at 50% 50%, #BE79FF 0deg, #7136F6 360deg);
+$purple-20: #291E39;
+$purple-21: #A42DCD;
+$purple-22: #FCF7FE;
+$purple-23: #EDE8F3;
+$purple-24: #15023F;
+$purple-26: #DCCDEB;
+$purple-27: #8200FF;
+$purple-28: #2D313E;
+$purple-29: #F1F5FF;
+$purple-30: rgba(255, 255, 255, 0.1);
+$purple-35: #1B0229;
+$purple-31: #2A1940;
+$purple-32: #CFCEFF;
+$purple-33: #110221;
+$purple-34: #10051F;
+$purple-35: #736BCD;
+$purple-36: #9CA1DE;
+
 $theme-colors: (
     "primary": $primary,
     "secondary": $secondary,
@@ -104,6 +143,7 @@ $body-color: $black;
 $body-tertiary-color: #FFFFFF;
 $body-tertiary-bg: #785EEA;
 
+$link-color: $purple-35;
 $link-decoration: none;
 
 // button
@@ -136,44 +176,6 @@ $nav-pills-border-radius: 50rem;
 // accordiion
 $accordion-icon-color: $white;
 $accordion-icon-active-color: $white;
-
-// purples
-$purple-1: #382369;
-$purple-2: #FBC7F4;
-$purple-3: #9580EE;
-$purple-4: linear-gradient(160.34deg, rgba(130, 0, 255, 0.12) 5.3%, rgba(130, 0, 255, 0) 75.43%), #201838;
-$purple-5: #362762;
-$purple-6: #6113BC;
-$purple-7: #1A1223;
-$purple-8: #EEEDFF;
-$purple-9: 0px 12.972px 39.7269px rgba(90, 0, 176, 0.1);
-$purple-10: #150E1C;
-$purple-11: #332C3B;
-$purple-12: #432A71;
-$purple-13: #e5e4f7;
-$purple-14: #8e20f9;
-$purple-15: #9237fb;
-$purple-16: #281A35;
-$purple-17: #F5F5FF;
-$purple-18: #7E719F;
-$purple-19: conic-gradient(from 90deg at 50% 50%, #BE79FF 0deg, #7136F6 360deg);
-$purple-20: #291E39;
-$purple-21: #A42DCD;
-$purple-22: #FCF7FE;
-$purple-23: #EDE8F3;
-$purple-24: #15023F;
-$purple-26: #DCCDEB;
-$purple-27: #8200FF;
-$purple-28: #2D313E;
-$purple-29: #F1F5FF;
-$purple-30: rgba(255, 255, 255, 0.1);
-$purple-35: #1B0229;
-$purple-31: #2A1940;
-$purple-32: #CFCEFF;
-$purple-33: #110221;
-$purple-34: #10051F;
-$purple-35: #736BCD;
-$purple-36: #9CA1DE;
 
 $enable-reduced-motion: false;
 $min-contrast-ratio: 2.5;

@@ -162,7 +162,7 @@
     }
 
     .bd-main :deep(p > a), .bd-main :deep(ul a) {
-        color: $purple-35;
+        color: $link-color;
     }
 
     .container, :deep(h2 > a) {
@@ -186,12 +186,12 @@
     }
 
     :deep(li > mark) {
-        background-color: $purple-35;
+        background-color: $link-color;
     }
 
     :deep(.docs-prev-next a) {
         span {
-            color: $purple-35;
+            color: $link-color;
         }
 
         .directory {
@@ -201,7 +201,7 @@
 
     :deep(.btn) {
         span {
-            color: $purple-35;
+            color: $link-color;
         }
 
         &:hover {
@@ -219,7 +219,7 @@
             color: $white;
 
             a {
-                color: $purple-35;
+                color: $link-color;
             }
         }
     }
