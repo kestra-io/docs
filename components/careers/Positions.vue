@@ -3,7 +3,7 @@
         <Section
             subtitle="It's a"
             subtitle-after="Match"
-            baseline="We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, find a job you love."
+            baseline="We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, and find a job you love."
         >
             <ul class="list-unstyled d-flex flex-column gap-3">
                 <li data-aos="fade-left" v-for="doc in pageData">

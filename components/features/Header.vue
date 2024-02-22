@@ -8,8 +8,8 @@
               Fast, Scalable, and Declarative Orchestrator
             </h1>
             <p class="baseline" data-aos="fade-left">
-              Create and Deploy all kinds of Data Pipelines with Ease and Speed
-              with Kestra: Your All-in-One Solution for Orchestrating Workflows
+              Build all kinds of Workflows
+              with Kestra: Your All-in-One Solution for Orchestrating Business-Critical Applications
             </p>
 
             <div class="cta">
