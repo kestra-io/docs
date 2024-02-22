@@ -81,6 +81,11 @@ export default {
         align-items: center;
         justify-content: center;
         height: 192.01px;
+        padding: calc($spacer * 0.25);
+
+      .img-fluid {
+        height: 100%;
+      }
     }
 }
 </style>

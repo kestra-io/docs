@@ -4,7 +4,7 @@
             subtitle="Meet the"
             subtitle-after="team"
         >
-            <div class="justify-content-center d-flex flex-wrap">
+            <div class="justify-content-center row row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 px-md-5 px-sm-0 mx-md-5 mx-sm-0">
                 <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/edarras.png" alt="Emmanuel Darras Picture"/>
                     <div>
@@ -204,7 +204,7 @@
     .team-card {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        align-items: center;
         padding: 1rem;
 
 

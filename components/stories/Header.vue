@@ -1,96 +1,113 @@
 <template>
-    <div class="main">
-        <div class="container h-100">
-            <div class="row h-100" :style="{ 'background-image': `url(${heroImage})` }">
-                <div class="col-12 col-md-6 order-1 order-md-0">
-                    <div class="h-100 d-flex justify-content-end align-items-center">
-                        <div class="container">
-                            <h1 class="text-white">{{ title }}</h1>
-                            <p class="text-white fs-4">{{ metaDescription }}</p>
-                            <NuxtLink href="/demo">
-                                <button class="btn btn-animated btn-purple-animated mb-2 aos-init aos-animate">Talk to Us</button>
-                            </NuxtLink>
-                        </div>
-                    </div>
-                </div>
-                <div class="order-0 order-md-1 d-flex d-md-none">
-                    <img :src="heroImage" class="img-fluid" alt="stories logo with a dark background" data-aos="zoom-in"/>
-                </div>
+  <div class="container-fluid">
+    <div class="hero container">
+      <div class="row">
+        <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
+          <div class="text-white">
+            <h1 class="heading">{{ title }}</h1>
+            <p class="text-white baseline fs-4">{{ metaDescription }}</p>
+            <div class="cta">
+              <NuxtLink
+                  href="/docs/getting-started"
+                  class="btn text-white btn-animated btn-purple-animated mt-2"
+                  data-aos="zoom-in"
+              >
+                Talk to Us
+              </NuxtLink>
             </div>
+          </div>
         </div>
+        <div
+            class="col-md-6 order-0 order-md-1 mt-3 img-container"
+            data-aos="zoom-in"
+        >
+          <img
+              class="zoom img-fluid headerimg"
+              :src="heroImage"
+              alt="A screenshot of the user interface of Kestra's application"
+          />
+        </div>
+      </div>
+      <hr class="line" />
     </div>
+  </div>
 </template>
 
 <script setup>
-const props = defineProps({
+  const props = defineProps({
     slug: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     title: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     metaDescription: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     heroImage: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     }
-})
+  })
 
-const pagelist = ['/stories', props.slug]
+  const pagelist = ['/stories', props.slug]
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
+  @import "../../assets/styles/variable";
 
-.main {
-    background-color: $black-4;
-    background-image: url('/stories/header/dots.svg');
+  .container-fluid {
+    background: $black-4;
+    color: var(--bs-white);
+    padding-top: 80px;
+    margin-top: -80px;
+    background-image: url(/landing/features/mask.svg);
     background-repeat: no-repeat;
-    background-position: center;
-    height: 650px;
 
-    &>.container {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    .line {
+      background: rgba(255, 255, 255, 0.1) !important;
+      height: 1px !important;
     }
+  }
 
-    h1 {
-        font-size: $font-size-4xl;
-        font-weight: 300;
+  .heading {
+    font-size: $font-size-4xl;
+    font-weight: 300;
+    line-height: 3.7rem;
+    @include media-breakpoint-down(lg) {
+      line-height: calc($font-size-base * 1.625);;
     }
+  }
 
-    p {
-        font-weight: 300;
-    }
+  .baseline {
+    font-weight: 300;
+    line-height: 2rem;
+    font-size: $font-size-xl;
+  }
 
-    @include media-breakpoint-down(md){
-        height: 720px;
-    }
+  .btn {
+    border: 1px solid #3d3d3f !important;
+    background-color: $black-4 !important;
+  }
 
-    .row {
-        background-repeat: no-repeat;
-        background-position: 80%;
-        @include media-breakpoint-down(md){
-            background-image: none !important;
-        }
+  .headerimg {
+    transform: scale(1.3);
+    z-index: 50;
+  }
 
-        .container {
-            max-width: 500px;
-        }
-    }
-}
-.top-breadcrumb::after{
-width: 20px;
-}
-:deep(.slug) {
+  .hero {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  :deep(.slug) {
     margin-left: 0;
     color: $purple;
-}
-:deep(.link) {
+  }
+  :deep(.link) {
     color: $purple;
-}
+  }
 </style>

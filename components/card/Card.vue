@@ -1,7 +1,7 @@
 <template>
     <div class="card bg-dark-2" :class="number ? 'number-card' : ''" data-aos="zoom-in">
         <div class="card-body">
-            <div class="d-flex gap-3">
+            <div class="d-flex gap-3 title-block">
                 <span v-if="icon" class="card-icon"><component :is="icon" /></span>
                 <span v-if="img" class="card-icon">
                     <img :src="img" :alt="imgAlt">
@@ -74,6 +74,12 @@
         display: flex;
         gap: 1rem;
         flex-direction: column;
+
+        .title-block {
+          @include media-breakpoint-down(md) {
+            flex-wrap: nowrap;
+          }
+        }
 
         .card-title {
             font-weight: 300;
