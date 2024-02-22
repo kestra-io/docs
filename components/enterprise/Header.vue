@@ -5,7 +5,7 @@
                 <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
                     <div>
                         <h1 data-aos="fade-right"><span class="dot">Kestra Enterprise</span> to Scale Your Workflows.</h1>
-                        <p data-aos="fade-left" class="baseline">Made for organizations & professionals seeking to secure production workloads with high-security standards and enterprise support.</p>
+                        <p data-aos="fade-left" class="baseline">Designed for production workloads with high-security standards and Enterprise-grade governance.</p>
                         <div class="d-flex gap-2 mb-2 mb-md-0">
                             <NuxtLink href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
                                 Contact Us
