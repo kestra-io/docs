@@ -1,16 +1,13 @@
 <template>
     <div class="container-fluid">
         <Section
-            subtitle="The Public"
-            subtitle-after="Launch and Beyond"
+            subtitle="Trusted by Enterprises"
+            subtitle-after="Worldwide"
         >
             <div class="justify-content-center d-flex">
                 <div>
                     <p class="baseline-max-width text-center" data-aos="fade-left">
-                        We are excited to see how Kestra will transform the way organizations approach data orchestration and automation.
-                    </p>
-                    <p class="baseline-max-width text-center" data-aos="fade-left">
-                        We believe that Kestra's potential is limitless, and we are eager to explore new opportunities and partnerships as we move forward.
+                        We are grateful, humbled and excited to see how Kestra transforms the way organizations approach orchestration and automation. We are looking forward to the journey ahead and are committed to delivering the best orchestration platform to our enterprise customers, technology partners, and the open-source community.
                     </p>
                 </div>
             </div>

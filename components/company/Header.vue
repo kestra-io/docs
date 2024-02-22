@@ -8,17 +8,14 @@
     <div class="container">
         <Section
             subtitle="Our"
-            subtitle-after="Story"
+            subtitle-after="Mission"
         >
             <div class="container text-center baseline-max-width" data-aos="fade-left">
                 <p>
-                    Kestra is an open-source, event-driven orchestrator that simplifies data operations and improves collaboration between engineers and business users.
+                    Nowadays, companies need to grapple with tools that are either too complex, too rigid, or too specialized. From the steep learning curve of complex orchestration framework to the rigidness of no-code solutions and the siloed nature of specialized tools, businesses are left with fragmented systems, operational inefficiencies, and a lack of clarity and collaboration.
                 </p>
                 <p>
-                    By bringing Infrastructure as Code best practices to data pipelines, Kestra allows you to build reliable workflows and manage them with confidence.
-                </p>
-                <p>
-                    Thanks to the declarative YAML interface for defining orchestration logic, everyone who benefits from analytics can participate in the data pipeline creation process.
+                    Kestra is an open-source, event-driven orchestration platform that solves these challenges by <strong>simplifying</strong> orchestration, <strong>unifying</strong> disparate tools, improving <strong>alignment</strong> between engineers and business users, and bringing <strong>structure</strong> to business-critical operations so that you can build reliable workflows and manage them with confidence.
                 </p>
             </div>
         </Section>
