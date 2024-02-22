@@ -8,7 +8,7 @@
             Fails
             <p class="desc">
               Less time spent writing boilerplate orchestration code, more time
-              for what matters to your business
+              for what matters to your business.
             </p>
           </h2>
         </div>
@@ -23,8 +23,7 @@
                 />
                 <h6 class="card-heading">Deploy and Run Anywhere</h6>
                 <p class="card-para">
-                  From on-premise installations to cloud-based services,
-                  containers to clusters, Kestra can be deployed anywhere.
+                  From on-premise installations to cloud-based VMs and Kubernetes clusters, you can deploy both Kestra and individual workflows on any platform or machine.
                 </p>
               </div>
             </div>
@@ -37,10 +36,9 @@
                   alt="Tune-Based svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Seamless Integrations</h6>
+                <h6 class="card-heading">Code in Any Language</h6>
                 <p class="card-para">
-                  Connect to various data sources and cloud services like AWS,
-                  GCP, and Microsoft Azure.
+                  Write your business logic in any language. Kestra supports Java-based plugins as well as scripts written in Python, R, Julia, Ruby, Shell, Powershell and Node.js.
                 </p>
               </div>
             </div>
@@ -53,11 +51,9 @@
                   alt="Event-Driven svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Scale to Millions Executions</h6>
+                <h6 class="card-heading">Scale to Millions of Executions</h6>
                 <p class="card-para">
-                  Kestra has been built with leading cloud-native technologies
-                  and a strong architecture, enabling scaling to millions of
-                  executions without hassle.
+                  Kestra has been built on top of leading cloud-native technologies, enabling seamless scaling to millions of workflow executions.
                 </p>
               </div>
             </div>

@@ -12,15 +12,11 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Simple configuration</h6>
+                <h6 class="card-heading">Get started in minutes</h6>
                 <p class="card-para">
-                  Easily create, configure, and modify flows with
-                  <a
-                    href="https://kestra.io/features/declarative-data-orchestration"
-                    class="highlight-underline"
-                    >Kestra's YAML</a
-                  >
-                  format and user interface.
+                  Create and run your workflows from the embedded code editor using a simple,
+                  <a href="https://kestra.io/features/declarative-data-orchestration"
+                    class="highlight-underline">declarative configuration</a>.
                 </p>
               </div>
             </div>
@@ -115,10 +111,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Reusability</h6>
+                <h6 class="card-heading">Modularity</h6>
                 <p class="card-para">
-                  Define generic tasks and workflows that can be used in
-                  different contexts.
+                  Define your default task or plugin configuration, and use subflows to eliminate boilerplate code.
                 </p>
               </div>
             </div>
