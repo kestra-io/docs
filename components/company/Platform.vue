@@ -4,12 +4,12 @@
             <div class="row">
                 <div class="text-block col-md-6 d-flex align-items-center">
                     <div>
-                        <h2 data-aos="fade-left">Building a Platform for <span>Success</span></h2>
+                        <h2 data-aos="fade-left">Finally a Simple Orchestration Platform that <span>scales</span></h2>
                         <p class="mt-3" data-aos="fade-right">
-                            Today, our platform is operational, in production, and performing beyond expectations. Hundreds of internal users have experienced significant productivity gains since adopting Kestra, validating our efforts to create a truly revolutionary solution.
+                            Hundreds of organizations have already experienced significant productivity gains since adopting Kestra in their business-critical production workflows, validating the transformative power of our solution.
                         </p>
-                        <p data-aos="fade-right mt-3">
-                            We are incredibly proud of the impact that our platform has made, and we are inspired to continue our mission to redefine the data orchestration and automation landscape.
+                        <p data-aos="fade-right" class="mt-3">
+                            <a href="https://kestra.io/docs/getting-started">Get started</a> today and see how Kestra can help you build reliable workflows.
                         </p>
                     </div>
                 </div>
