@@ -26,7 +26,7 @@
                                     <FeatureSearch />
                                     <p>
                                         <span>Open Source</span><br />
-                                        Discover all the features of Kestra
+                                        Explore Kestra's Core Capabilities
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -35,7 +35,7 @@
                                     <Security />
                                     <p>
                                         <span>Enterprise Edition</span><br />
-                                        Security and High Availability for enterprise
+                                        Security and Governance for Enterprise Needs
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -45,7 +45,7 @@
                                     <FileCodeOutline />
                                     <p>
                                         <span>Declarative Orchestration</span><br />
-                                        Simplified data workflow creation and execution
+                                        Infrastructure as Code for All Workflows
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -55,7 +55,7 @@
                                     <Sync />
                                     <p>
                                         <span>Automation Platform</span><br />
-                                        Automate all your workflows with Kestra
+                                        Scheduling and Automation Made Easy
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -73,8 +73,8 @@
                                 <NuxtLink class="dropdown-item" href="/use-cases" @click="globalClick(true)">
                                     <ChartDonut />
                                     <p>
-                                        <span>Use cases</span><br />
-                                        Uncover a wide range of use cases
+                                        <span>Use Cases</span><br />
+                                        Explore a wide range of supported use cases
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -93,7 +93,7 @@
                                     <Terraform />
                                     <p>
                                         <span>Kestra's Terraform Provider</span><br />
-                                        Manage and deploy Kestra workflows in your Terraform environment
+                                        Deploy and manage all Kestra resources with Terraform
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -102,7 +102,7 @@
                                     <BookOpenVariant />
                                     <p>
                                         <span>Customers stories</span><br />
-                                        Learn how Kestra helped companies manage their critical operations
+                                        Learn how Enterprises orchestrate their business-critical workflows
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -140,7 +140,7 @@
                                     <BasketOutline />
                                     <p>
                                         <span>Kestra for Retail</span><br />
-                                        Orchestrate Your Retail Ecosystem
+                                        Automate and Orchestrate Your Retail Operations
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -188,7 +188,7 @@
                                     <Handshake />
                                     <p>
                                         <span>Partners</span><br />
-                                        Elevate your Kestra use through our partner ecosystem
+                                        Use our partner ecosystem to accelerate your Kesra adoption
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -197,7 +197,7 @@
                                     <AccountGroup />
                                     <p>
                                         <span>FAQ</span><br />
-                                        FAQ about the product and the company
+                                        Common questions about the product and the company
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -206,7 +206,7 @@
                                     <Domain />
                                     <p>
                                         <span>About us</span><br />
-                                        Discover our story and meet our team
+                                        Read about our story and meet our team
                                     </p>
                                 </NuxtLink>
                             </li>
