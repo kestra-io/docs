@@ -1,9 +1,9 @@
 ---
-title: "Senior Field Software Engineer"
+title: "Senior Field Engineer"
 type: GTM
 ---
 
-# Senior Field Software Engineer
+# Senior Field Engineer
 
 ## ❣️ Who are we?
 
