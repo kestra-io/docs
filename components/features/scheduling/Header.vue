@@ -5,7 +5,7 @@
                     <div>
                         <h1 data-aos="fade-right" class="title-1 title">Scheduling </h1>
                         <h1 data-aos="fade-right" class="title-2 title">and Automation</h1>
-                        <p class="baseline mb-0 pb-3" data-aos="fade-left">Automate all your workflows with Kestra</p>
+                        <p class="baseline mb-0 pb-3" data-aos="fade-left">Automate scheduled and event-driven workflows with Kestra</p>
                         <div class="cta">
                             <NuxtLink href="/demo" class="btn btn-dark mt-2 me-3" data-aos="zoom-in">
                                 Talk to Us
