@@ -49,9 +49,8 @@
             </li>
             <li class="py-4">
               <strong>Intuitive dependency management:</strong> Easily manage
-              task dependencies — defining proper execution order is as simple
-              as adding a list of tasks in the order you want them to be
-              executed.
+              task dependencies — defining the sequence of tasks is as simple
+              as listing them in the order you want them to run.
             </li>
             <li>
               <strong>Built-in documentation and blueprints:</strong> No need
@@ -70,16 +69,15 @@
           </h3>
           <ul class="card-detail">
             <li>
-              <strong>Time-based scheduling:</strong> Workflows run
+              <strong>Time-based scheduling:</strong> workflows run
               automatically at specific times, such as daily, weekly, or
               monthly without the need for manual intervention or inspecting
               crontabs.
             </li>
             <li class="pt-4">
-              <strong>Event-based orchestration:</strong> Automate workflow
-              executions based on real-time events. Trigger workflows to run
+              <strong>Event-based orchestration:</strong> automate your tasks based on real-time events. Trigger workflows to run
               automatically in response to events, such as the arrival of new
-              data in a database, file detection in your cloud storage bucket,
+              data in a database, file detection in your S3 bucket,
               new message in a message queue, or the completion of other
               workflows.
             </li>
@@ -98,16 +96,10 @@
           <h3 class="card-heading">Execute and Monitor in Real Time</h3>
           <ul class="card-detail">
             <li>
-              <strong>Real-time Workflow Monitoring:</strong> Progress
-              tracking of workflows and individual tasks in real-time.
-              Troubleshoot failure by replaying failed tasks or doing a
-              full-text search of the workflow execution logs.
+              <strong>Real-time Workflow Monitoring:</strong> track workflow execution state and the health of your platform in real-time. Troubleshoot failure by restarting failed workflow executions or run a full-text search on the workflow execution logs to identify the root cause.
             </li>
             <li class="pt-4">
-              <strong>Actionable Insights:</strong> you can build custom
-              dashboards to track workflow performance using built-in outputs
-              and metrics. Thanks to a standardized format that Kestra uses,
-              all your Kestra metrics can be visualized in Grafana or Kibana.
+              <strong>Actionable Insights:</strong> build custom dashboards to track workflow performance using built-in outputs and metrics. Thanks to a standardized format that Kestra uses, all your workflow metrics can be visualized in Grafana or Kibana.
             </li>
           </ul>
         </div>
@@ -160,16 +152,16 @@ export default {
 }
 
 .img-api{
-  transform: scale(1.4); 
+  transform: scale(1.4);
 }
 .img-execute{
-  transform: scale(0.9); 
+  transform: scale(0.9);
 }
 .img-event{
-  transform: scale(1.3); 
+  transform: scale(1.3);
 }
 .img-monitor{
-  transform: scale(0.9); 
+  transform: scale(0.9);
 }
 
 .highlight-underline {

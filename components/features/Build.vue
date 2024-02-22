@@ -113,9 +113,7 @@
                 />
                 <h6 class="card-heading">Notifications</h6>
                 <p class="card-para">
-                  Alerting configuration directly in the UI to alert when
-                  workflow tasks are completed, have errors or delays, or for
-                  any other important event.
+                  Easily configure alerts to get notified on workflow completion, delay or failure.
                 </p>
               </div>
             </div>
@@ -129,10 +127,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Large Data Processing</h6>
+                <h6 class="card-heading">Process Data at Scale</h6>
                 <p class="card-para">
-                  Massive data volume handling with high performance using
-                  partitioning and batch processing techniques.
+                  Use our distributed mapping capabilities to easily process large amounts of data at scale.
                 </p>
               </div>
             </div>
@@ -146,11 +143,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Micro-Batch for Real-Time</h6>
+                <h6 class="card-heading">Micro-Batch CDC</h6>
                 <p class="card-para">
-                  All the benefits of a real-time system without maintenance and
-                  complexity costs by collecting data at regular intervals and
-                  processing them in micro-batch.
+                    Capture changed data at regular intervals and process them in micro-batches, reducing the complexity and maintenance costs of real-time systems.
                 </p>
               </div>
             </div>
@@ -183,7 +178,7 @@
                 />
                 <h6 class="card-heading">Performance Gains</h6>
                 <p class="card-para">
-                  Better performance with JVM (Java Virtual Machine) technology.
+                  Use the benefits of JVM (Java Virtual Machine) technology for better performance and memory management.
                 </p>
               </div>
             </div>

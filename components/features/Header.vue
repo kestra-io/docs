@@ -5,11 +5,10 @@
         <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
           <div class="text-white">
             <h1 data-aos="fade-right" class="heading">
-              Fast, Scalable, and Declarative Orchestrator
+              Fast, Scalable, Declarative Orchestrator
             </h1>
             <p class="baseline" data-aos="fade-left">
-              Build all kinds of Workflows
-              with Kestra: Your All-in-One Solution for Orchestrating Business-Critical Applications
+              Build all kinds of Workflows with Kestra: Your All-in-One Solution for Orchestrating Business-Critical Applications
             </p>
 
             <div class="cta">
