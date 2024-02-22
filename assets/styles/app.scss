@@ -11,7 +11,9 @@ body {
     position: relative;
     background-color: $black-4;
 }
-
+.nuxt-loading-indicator {
+  background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%)!important;
+}
 :root {
     --spacer: #{$spacer};
     --#{$prefix}font-size-lg: #{$font-size-lg};

@@ -47,5 +47,12 @@ export default {
         }
     }
 
+  :deep(.bd-markdown) {
+      color: $white;
+
+      a {
+        color: $purple-36;
+      }
+  }
 
 </style>

@@ -61,19 +61,6 @@
             </div>
         </Section>
 
-        <Section class="modern mb-5">
-            <div class="row">
-                <div class="col-lg-6 col-sm-12 text-center" data-aos="fade-left">
-                    <img class="zoom img-fluid" src="/landing/vs/prefect/modern-data-stack.png" width="375" alt="Kestra plugins"/>
-                </div>
-                <div class="col-lg-6 col-sm-12 pe-5 mt-5 mt-lg-0" data-aos="fade-right">
-                    <h3>Modern Data Stack Integration</h3>
-                    <p>Kestra stands out thanks to its flexible and extensible plugin ecosystem. The REST API allows third-party systems to easily interact with Kestra, further broadening its applicability and making it easier to fit into diverse technology stacks.</p>
-                    <p>Prefect integrations require managing Python dependencies. This becomes difficult at scale due to package dependency conflicts and the need to manage complex container builds.</p>
-                </div>
-            </div>
-        </Section>
-
         <div class="table-responsive mb-5">
             <table class="table table-bordered mb-0">
                 <thead>

@@ -45,7 +45,7 @@
         h3 {
             color: $white;
             font-size: $h3-font-size;
-            font-weight: 300;
+            font-weight: 600;
             line-height: 2.375rem;
         }
         .text {

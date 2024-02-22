@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="container">
+        <div class="container img-container">
             <div class="get-in-touch">
                 <h1 data-aos="fade-right">Contact <span>Us</span></h1>
                 <p class="baseline" data-aos="fade-left">If you have questions, inquiries, or feedback about Kestra, we're looking to hearing from you.</p>
@@ -80,5 +80,32 @@
             }
 
         }
+    }
+
+    .img-container {
+      position: relative;
+      z-index: 10;
+
+      &::before,
+      &::after
+      {
+        content: "";
+        position: absolute;
+        width: calc($spacer * 12.5);
+        height: calc($spacer * 12.5);
+        background: linear-gradient(140deg, rgba(70, 24, 255, 0) -41.95%, #7e1cfa 77.28%);
+        filter: blur(100px);
+        z-index: -5;
+      }
+
+      &::before {
+        left: 21rem;
+        top: 10rem;
+      }
+
+      &::after {
+        right: 21rem;
+        bottom: 0;
+      }
     }
 </style>

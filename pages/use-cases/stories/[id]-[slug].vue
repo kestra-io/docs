@@ -123,6 +123,9 @@
         font-weight: 400;
         color: $white;
     }
+    :deep(a) {
+      color: $purple-35;
+    }
 
     .section-content {
         border-top: 1px solid rgba(255, 255, 255, 0.10);

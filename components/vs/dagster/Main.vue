@@ -55,18 +55,6 @@
             </div>
         </Section>
 
-        <Section class="modern mb-5">
-            <div class="row">
-                <div class="col-lg-6 col-sm-12 text-center" data-aos="fade-left">
-                    <img class="zoom img-fluid" src="/landing/vs/dagster/modern-data-stack.png" width="375" alt="Kestra plugins"/>
-                </div>
-                <div class="col-lg-6 col-sm-12 pe-5 mt-5 mt-lg-0" data-aos="fade-right">
-                    <h3>Integration</h3>
-                    <p>Kestra excels with its flexible and extensible plugin ecosystem. Its REST API allows seamless interaction with third-party systems. Dagster, being Python-dependent, can encounter issues related to package dependency conflicts.</p>
-                </div>
-            </div>
-        </Section>
-
         <div class="table-responsive mb-5">
     <table class="table table-bordered mb-0">
         <thead>
