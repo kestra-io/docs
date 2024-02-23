@@ -265,17 +265,17 @@
 
 
                         @include media-breakpoint-down(xxl) {
-                            top: -27%;
+                            top: -35%;
                             left: 16%;
                         }
 
                         @include media-breakpoint-down(xl) {
-                            top: -54%;
+                            top: -30%;;
                             left: 12%;
                         }
 
                         @include media-breakpoint-down(lg) {
-                            top: -50%;
+                            top: -35%;
                             left: 40%;
                         }
 
@@ -579,41 +579,10 @@
             overflow: hidden;
             border: 1px solid #3D3D3F;
             background: $black-2;
-            &::after {
-                content: '';
-                position: absolute;
-                z-index: -1;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                border-radius: 0 0 0.5rem 0.5rem;
-                transition: background-color 0.2s ease;
-            }
-
-            &::before {
-                background: conic-gradient(#B010FB,
-                    #DE97FF 10%,
-                    #A227DB,
-                    transparent 50%,
-                    #A610EC);
-            }
         }
 
         .code-header {
             padding: 0.75rem 1rem;
-
-            &::after {
-                content: '';
-                position: absolute;
-                z-index: -1;
-                left: 1px;
-                top: 1px;
-                width: calc(100% - 2px);
-                height: calc(100% - 2px);
-                border-radius: 0.5rem 0.5rem 0 0;
-                transition: background-color 0.2s ease;
-            }
         }
 
         .text-success {
