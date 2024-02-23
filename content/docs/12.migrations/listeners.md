@@ -1,6 +1,7 @@
 ---
 title: Deprecation of Listeners
 icon: /docs/icons/migrations.svg
+release: 0.12.0
 ---
 
 Listeners are deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../06.workflow-components/05.triggers/flow-trigger.md) instead.
@@ -11,7 +12,6 @@ Listeners are deprecated and disabled by default starting from the 0.12.0 releas
 2. It is an extra concept that you, as a user, would need to learn even though you may not have to if you already know Flow triggers.
 3. It's a hard-to-grasp concept — listeners can launch tasks *outside* of the flow, i.e., tasks that will not be considered part of the flow but are defined *within* it. Additionally, the results of listeners will not change the execution status of the flow, so having them defined within the flow has caused some confusion in the past.
 4. Currently, listeners are mainly used to send failure (or success) notifications, and Kestra already has two concepts allowing you to do that: `triggers` and `errors`. Having **three** choices for such a standard use case has led to confusion about when to use which of them.
-
 
 If you are using listeners and you are not ready to migrate to Flow triggers yet, add the following Kestra configuration option to still be able to use listeners:
 
@@ -45,7 +45,6 @@ kestra:
 ```
 
 Due to listeners' deprecation, we changed the default behavior of various `io.kestra.core.models.conditions`-type conditions to use the `{{trigger.date}}` as default value for the `date` property instead of using `"{{ now(format='iso_local_date') }}"`. To ensure that your conditions are working properly after the upgrade to any version after 0.12.0, you need to add the above task defaults to your Kestra configuration.
-
 
 ---
 
@@ -90,7 +89,6 @@ The next section shows how you can accomplish the same using Flow triggers.
 To migrate from a listener to a Flow trigger, create a new flow. Add a trigger of type `io.kestra.core.models.triggers.types.Flow` and move the condition e.g. `ExecutionStatusCondition` to the trigger conditions. Finally, move the list of tasks from listeners to `tasks` in the flow.
 
 The example below will explain it better than words:
-
 
 ```yaml
 id: alert_to_slack
@@ -140,7 +138,6 @@ Anytime you execute that `demo` flow, the Slack notification will be sent, thank
 
 You can look at both a flow with a listener and a flow with a Flow trigger side by side to see the syntax difference:
 
-
 ![listeners-vs-flow-triggers](/docs/migrations/listeners-vs-flow-triggers.png)
 
 If you still have questions about migrating from listeners to flow triggers, reach out via our [Community Slack](https://kestra.io/slack).
@@ -172,6 +169,7 @@ listeners:
 ### Properties
 
 **`conditions`**
+
 * **Type:** ==array==
 * **SubType:** ==Condition==
 * **Required:** ❌
@@ -179,6 +177,7 @@ listeners:
 > A list of Conditions that must be validated in order to execute the listener `tasks`. If you don't provide any conditions, the listeners will always be executed.
 
 **`tasks`**
+
 * **Type:** ==array==
 * **SubType:** ==Task==
 * **Required:** ❌
@@ -188,8 +187,8 @@ listeners:
 > You can use every tasks you need here, even Flowable.
 > All task `id` must be unique for the whole flow even for main `tasks` and `errors`.
 
-
 **`description`**
+
 * **Type:** ==string==
 * **Required:** ❌
 

@@ -142,3 +142,37 @@ kestra:
           key-regexp: .*parallel.* # optional: a regexp validating the key
           value-regexp: .*parallel.* # optional: a regexp validating the json full body
 ```
+
+## `kestra.kafka.stream.properties.state.dir`
+
+Kestra uses the Kafka Stream framework, this framework uses a local directory for state persistence.
+By default, the state directory is `/tmp/kafka-streams` and can be configured using the `kestra.kafka.stream.properties.state.dir` configuration property.
+
+This directory should not be purged while the application runs but can be purged between restarts. If persisted between restarts, the startup time could be improved as the state of the Kafka Stream will be recovered from the directory.
+
+It is advised to purge this directory before a Kestra update, if not, an error message may be displayed in the log that can be safely ignored.
+
+## Topic retention
+
+Each Kafka topic used by Kestra is configurable using the following configuration property:
+
+```yaml
+kestra:
+  kafka:
+    topics:
+      execution:
+        properties:
+          kafka.property: value
+```
+
+By default, except for topics where we need unlimited retention as they store referential data like flow or trigger definition, all topics are configured with a default retention of 7 days.
+
+For example, for the topic storing executions, you can configure the retention via this configuration property:
+
+```yaml
+  kafka:
+    topics:
+      execution:
+        properties:
+          retention.ms: "86400000"
+```

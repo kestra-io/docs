@@ -52,11 +52,11 @@ For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) 
 kestra:
   tasks:
     defaults:
-      - type: io.kestra.core.tasks.scripts.Bash
+      - type: io.kestra.plugin.scripts.shell.Commands
         forced: true
         values:
-          dockerOptions:
-            image: ubuntu
+          docker:
+            image: ubuntu:latest
           runner: DOCKER
 ```
 

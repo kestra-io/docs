@@ -138,6 +138,8 @@ export default defineNuxtConfig({
     routeRules: {
         '/slack': {redirect: `${DEFAULT_KESTRA_API_URL}/communities/slack/redirect`},
         '/docs/api-guide': {redirect: '/docs/api-reference'},
+        '/doc': {redirect: '/docs'},
+        '/blog': {redirect: '/blogs'},
         '/docs/plugin-library': {redirect: '/docs/getting-started/plugins'},
         '/docs/troubleshooting': {redirect: '/docs/faq/troubleshooting'},
         '/docs/developer-guide/best-practice': {redirect: '/docs/developer-guide/best-practices'},

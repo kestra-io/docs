@@ -34,11 +34,13 @@ At the time of writing, there is no syncing of a flows directory to Kestra. Howe
 
 There are multiple ways to trigger a flow.
 
-### The `Execute` button in the UI
+### From the UI
 
-You can trigger a flow manually from the Kestra UI.
+You can trigger a flow manually from the Kestra UI by clicking the `Execute` button on the flow's page. This is useful when you want to test a flow or run it on demand.
 
-### Triggers
+![execute_button](/docs/faq/execute_button.png)
+
+### Automatic Triggers
 
 You can add a **Schedule trigger** to automatically launch a flow execution at a regular time interval.
 
@@ -54,7 +56,7 @@ You can also pass inputs to the flow using the `inputs` query parameter.
 
 ### API calls
 
-You can trigger a flow execution by calling the [API](../11.api-reference/index.md) directly. This is useful when you want to trigger a flow execution from another application or service.
+You can trigger a flow execution by calling the [API](../11.api-reference/index.md) directly. This is useful when you want to start a flow execution from another application or service.
 
 Let's use the following flow as example:
 
@@ -65,32 +67,81 @@ namespace: dev
 inputs:
   - name: greeting
     type: STRING
-    defaults: hello
+    defaults: hey
 
 tasks:
   - id: hello
     type: io.kestra.core.tasks.log.Log
-    message: "{{ inputs.greeting }}, kestra team wishes you a great day!"
+    message: "{{ inputs.greeting }}"
+
+triggers:
+  - id: webhook
+    type: io.kestra.core.models.triggers.types.Webhook
+    key: test1234
 ```
 
-Assuming that you run Kestra locally, you can trigger a flow execution by calling the ``executions/trigger`` endpoint:
+Assuming that you run Kestra locally, you can trigger a flow execution by calling the ``/api/v1/executions/{namespace}/{flowId}`` endpoint:
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/executions/trigger/dev/hello-world
+curl -X POST http://localhost:8080/api/v1/executions/dev/hello-world
 ```
 
 The above command will trigger an execution of the latest revision of the `hello-world` flow from the `dev` namespace. If you want to trigger an execution for a specific revision, you can use the `revision` query parameter:
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/executions/trigger/dev/hello-world?revision=6
+curl -X POST http://localhost:8080/api/v1/executions/dev/hello-world?revision=2
 ```
 
-You can also trigger a flow execution with inputs by passing the `inputs` query parameter:
+You can also trigger a flow execution with inputs by adding the `inputs` as form data (the `-F` flag in the `curl` command):
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/executions/trigger/dev/hello-world -F greeting="hey there"
+curl -X POST http://localhost:8080/api/v1/executions/dev/hello-world -F greeting="hey there"
 ```
 
+### Webhook vs. API call
+
+As you can see in the example above, when sending a POST request to the `/api/v1/executions/{namespace}/{flowId}` endpoint, you can only send data to the flow's execution context using `inputs`. This can be a little bit limiting if you want to send arbitrary metadata based on some event happening in your application. To send arbitrary metadata to the flow's execution context, you can leverage the webhook trigger.
+
+Here is how you can adjust the above example to use the webhook trigger instead of an API call:
+
+```yaml
+id: hello-world
+namespace: dev
+
+inputs:
+  - name: greeting
+    type: STRING
+    defaults: hey
+
+tasks:
+  - id: hello
+    type: io.kestra.core.tasks.log.Log
+    message: "{{ trigger.body ?? inputs.greeting }}"
+
+triggers:
+  - id: webhook
+    type: io.kestra.core.models.triggers.types.Webhook
+    key: test1234
+```
+
+You can now send a POST request to the `/api/v1/executions/webhook/{namespace}/{flowId}/{webhookKey}` endpoint to trigger an execution and pass any metadata to the flow using the request body. In this example, the webhook URL would be `http://localhost:8080/api/v1/executions/webhook/dev/hello-world/test1234`.
+
+You can test the webhook trigger using a tool like Postman or cURL. Paste the webhook URL in the URL field and a [sample JSON payload](https://gist.github.com/anna-geller/df2532c0699e3ba4f572a88fbdf19a13) in the request body. Make sure to set:
+- the request method to POST
+- the request body type to raw and a JSON format.
+
+Finally, click the Send button to trigger the flow execution. You should get a response with the execution ID and status code 200 OK.
+
+![postman webhook](/docs/faq/postman.png)
+
+::alert{type="info"}
+⚡️ **When to use a webhook trigger vs. an API call to create an Execution?** To decide whether to use a webhook trigger or an API call to create an Execution, consider the following:
+- Use the **webhook trigger** when you want **to send arbitrary metadata** to the flow's execution context based on some event happening in your application.
+- Use the **webhook trigger** when you want to create new executions based on some **event** happening in an **external application**, such as a GitHub event (_e.g. a Pull Request is merged_) or a new record in a SaaS application, and you want to send the event metadata (header and body) to the flow to act on it.
+- Use an **API call** to create an Execution when you **don't need to send any payload** (apart from `inputs`) to the flow's execution context.
+::
+
+---
 
 ### Python SDK
 
@@ -113,7 +164,7 @@ flow.execute('dev', 'hello-world', {'greeting': 'hello from Python'})
 
 ---
 
-## How to batch-process data in parallel at scale? Use the `ForEachItem` task!
+## Use the `ForEachItem` task to iterate over a list of items
 
 The `ForEachItem` task allows you to iterate over a list of items and run a subflow for each item, or for each batch containing multiple items. This is useful when you want to process a large list of items in parallel, e.g. to process millions of records from a database table or an API payload.
 

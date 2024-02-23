@@ -10,8 +10,7 @@ For this, we’re looking for engineers who care about products and like to work
 
 ## What you will do:
 As a front-end engineer at Kestra, you'll work on developing:
-- The open-source projects backend
-- The open-source plugins
+- The open-source projects
 - The enterprise editions
 - The cloud data plane
 

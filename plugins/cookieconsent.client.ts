@@ -20,7 +20,8 @@ export default defineNuxtPlugin(nuxtApp => {
                     api_host: response.data.posthog.apiHost,
                     ui_host: 'https://eu.posthog.com',
                     capture_pageview: false,
-                    autocapture: false
+                    autocapture: false,
+                    disable_session_recording: true
                 }
             )
 
