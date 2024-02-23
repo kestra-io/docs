@@ -77,14 +77,14 @@
                     <HomeConnectionLine :lineN="6" :strokeDasharray="strokeDasharray6"/>
                 </div>
                 <p class="last-words">
-                    Kestra offers best-in-class workflow creation experience. Once you launch the Kestra UI, you can start building your first workflows in minutes without having to worry about packaging and deploying code.
+                    15,000+ engineers use Kestra to orchestrate their data stack. Be the next!
                 </p>
                 <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3">
-                    <NuxtLink href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
-                        Live demo
+                    <NuxtLink href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                        Get Started
                     </NuxtLink>
                     <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
-                        Get started
+                        Read the doc
                     </NuxtLink>
                 </div>
             </div>
