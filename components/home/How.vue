@@ -11,7 +11,7 @@
                     </div>
                     <h3>Define your workflows</h3>
                     <p>
-                        Kestra offers best-in-class workflow creation experience. Once you launch the Kestra UI, you can start building your first workflows in minutes without having to worry about packaging and deploying code.
+                        By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
                     </p>
                 </div>
                 <div class="col-md-6">
@@ -65,7 +65,7 @@
                         <HomeConnectionLine :lineN="2" :strokeDasharray="strokeDasharray2"/>
                     </div>
                     <h3>Integrate with your stack</h3>
-                    <p>Kestra integrates with a wide variety of data sources and tools, so you can easily connect your workflows to your existing data stack. This includes support for popular databases, file formats, message queues and APIs.</p>
+                    <p>Kestra integrates with a wide variety of data sources and tools, so you can easily connect your workflows to your existing data stack. This includes support for popular databases, file formats, APIs, and more.</p>
                 </div>
             </div>
 
@@ -114,14 +114,14 @@
                     <HomeConnectionLine :lineN="6" :strokeDasharray="strokeDasharray6"/>
                 </div>
                 <p class="last-words">
-                    15,000+ engineers use Kestra to orchestrate their data stack. Be the next!
+                    By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
                 </p>
                 <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3">
-                    <NuxtLink href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
-                        Get Started
+                    <NuxtLink href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                        Live demo
                     </NuxtLink>
                     <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
-                        Read the doc
+                        Get started
                     </NuxtLink>
                 </div>
             </div>
@@ -265,17 +265,17 @@
 
 
                         @include media-breakpoint-down(xxl) {
-                            top: -35%;
+                            top: -27%;
                             left: 16%;
                         }
 
                         @include media-breakpoint-down(xl) {
-                            top: -30%;;
+                            top: -54%;
                             left: 12%;
                         }
 
                         @include media-breakpoint-down(lg) {
-                            top: -35%;
+                            top: -50%;
                             left: 40%;
                         }
 
@@ -579,10 +579,41 @@
             overflow: hidden;
             border: 1px solid #3D3D3F;
             background: $black-2;
+            &::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0 0 0.5rem 0.5rem;
+                transition: background-color 0.2s ease;
+            }
+
+            &::before {
+                background: conic-gradient(#B010FB,
+                    #DE97FF 10%,
+                    #A227DB,
+                    transparent 50%,
+                    #A610EC);
+            }
         }
 
         .code-header {
             padding: 0.75rem 1rem;
+
+            &::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                left: 1px;
+                top: 1px;
+                width: calc(100% - 2px);
+                height: calc(100% - 2px);
+                border-radius: 0.5rem 0.5rem 0 0;
+                transition: background-color 0.2s ease;
+            }
         }
 
         .text-success {
