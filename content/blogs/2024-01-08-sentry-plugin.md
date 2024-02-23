@@ -327,7 +327,8 @@ tasks:
     type: io.kestra.core.tasks.log.Log
     message: This should have triggered the sentry_execution_example flow.
   - id: bash_will_fail
-    type: io.kestra.core.tasks.scripts.Bash
+    type: io.kestra.plugin.scripts.shell.Commands
+    runner: PROCESS
     commands:
     - "exit 1"
 ```

@@ -78,21 +78,30 @@ id: ci-cd
 namespace: prod
 tasks:
   - id: github-ci-cd
-    type: io.kestra.core.tasks.flows.Worker
+    type: io.kestra.core.tasks.flows.WorkingDirectory
     tasks:
       - id: clone-repository
         type: io.kestra.plugin.git.Clone
         url: https://github.com/anna-geller/kestra-ci-cd
         branch: main
+
       - id: validate-flows
-        type: io.kestra.core.tasks.scripts.Bash
+        type: io.kestra.plugin.scripts.shell.Commands
+        description: "Validate flows from Git before deploying them."
+        runner: PROCESS
+        warningOnStdErr: false
         commands:
           - /app/kestra flow validate flows/
+
       - id: deploy-flows
-        type: io.kestra.core.tasks.scripts.Bash
+        type: io.kestra.plugin.scripts.shell.Commands
+        description: "Deply flows to the Kestra namespace."
+        runner: PROCESS
+        warningOnStdErr: false
         commands:
           - /app/kestra flow namespace update prod flows/prod/
           - /app/kestra flow namespace update prod.marketing flows/prod.marketing/
+
 triggers:
   - id: github
     type: io.kestra.core.models.triggers.types.Webhook
