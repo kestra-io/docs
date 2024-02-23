@@ -29,7 +29,7 @@ triggers:
   - id: schedule
     type: io.kestra.core.models.triggers.types.Schedule
     cron: "0 11 * * 1"
-    scheduleConditions:
+    conditions:
       - type: io.kestra.core.models.conditions.types.DayWeekInMonthCondition
         date: "{{ trigger.date }}"
         dayOfWeek: "MONDAY"
@@ -65,7 +65,7 @@ When the flow is scheduled, some context expressions are injected to allow flow 
 
 ## Schedule Conditions
 
-When the `cron` is not sufficient to determine the date you want to schedule your flow, you can use `scheduleConditions` to add some additional conditions, (for example, only the first day of the month, only the weekend, ...).
+When the `cron` is not sufficient to determine the date you want to schedule your flow, you can use `conditions` to add some additional conditions, (for example, only the first day of the month, only the weekend, ...).
 You **must** use the `{{ trigger.date }}` expression on the property `date` of the current schedule.
 This condition will be evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` will reflect the date **with** the conditions applied.
 

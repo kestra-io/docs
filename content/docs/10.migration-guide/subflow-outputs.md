@@ -44,7 +44,7 @@ tasks:
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 
-You can see that the `outputs` property is used to define the output of the subflow and stored in the variable named `final` (_the name of the keys are arbitrary_). This approach is not ideal, as **you need to know the internals of the subflow to access its outputs**. This is why this property is deprecated in Kestra 0.15.0.
+You can see that the `outputs` property is used to define the output of the subflow and stored in the variable named `final` (_the name of the keys are arbitrary_). This approach is not ideal, as **you need to know the internals of the subflow to access its outputs**. Also, it's not clear to the consumer what type of data is being passed. This is why this property is deprecated in Kestra 0.15.0.
 
 ### How to keep the old subflow outputs behavior
 
@@ -93,10 +93,11 @@ tasks:
 
 outputs:
   - id: final
+    type: STRING
     value: "{{ outputs.mytask.value }}"
 ```
 
-You can see that outputs are defined as a list of key-value pairs. The `id` is the name of the output attribute (which must be unique within a flow), and the `value` is the value of the output. You can also add a description to the output, and in the future we want to add [type definitions](https://github.com/kestra-io/kestra/issues/3009) to the flow outputs.
+You can see that outputs are defined as a list of key-value pairs. The `id` is the name of the output attribute (which must be unique within a flow), and the `value` is the value of the output. The `type` lets you define the expected type of the output. You can also add a `description` to the output.
 
 You will see the output of the flow on the **Executions** page in the **Overview** tab.
 
