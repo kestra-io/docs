@@ -54,6 +54,11 @@
         }
     }
 
+    :deep(.node-wrapper.disabled) {
+        background-color: var(--bs-body-color);
+        opacity: 0.6;
+    }
+
     :deep(.vue-flow__controls) {
         border: $container-border !important;
     }
@@ -70,5 +75,13 @@
 
     :deep(.dot) {
         color: #9A8EB4 !important;
+    }
+
+    :deep(.icon) {
+        border: $container-border !important;
+    }
+
+    :deep(.bg-white) {
+        background-color: $black !important
     }
 </style>
