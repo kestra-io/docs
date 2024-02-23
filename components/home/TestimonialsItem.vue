@@ -29,8 +29,8 @@
     @import "../../assets/styles/variable";
     .card {
         border: $block-border;
-        height: 295px;
-        max-height: 295px;
+        height: 390px;
+        max-height: 390px;
         .card-body {
             padding: $rem-2;
             text-align: left;
@@ -41,8 +41,8 @@
             p {
                 overflow: hidden;
                 display: -webkit-box;
-                -webkit-line-clamp: 4;
-                line-clamp: 4;
+                -webkit-line-clamp: 10;
+                line-clamp: 10;
                 -webkit-box-orient: vertical;
             }
 
