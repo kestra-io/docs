@@ -19,7 +19,7 @@
                     frees you from being tied to a specific client implementation, allowing for greater flexibility and
                     easier integration with various tools and services.</p>
             </CustomDetails>
-            <CustomDetails title="What is a declarative Orchestrator?">
+            <CustomDetails title="What is a declarative orchestrator?">
                 <p>A declarative orchestrator is a system that allows you to define and manage complex workflows using a
                     high-level, descriptive language. Instead of specifying the exact steps and sequences to achieve a
                     specific outcome, a declarative orchestrator lets you define the desired end state and the system
@@ -30,7 +30,7 @@
                     workflows consist of tasks and triggers that represent various data processing operations, connected
                     by data dependencies and flow control structures.</p>
             </CustomDetails>
-            <CustomDetails title="What are the advantages of a Declarative Orchestrator?">
+            <CustomDetails title="What are the advantages of a declarative orchestrator?">
                 <p>By using a declarative approach, Kestra simplifies the development, maintenance, and scalability of
                     workflows. It allows you to focus on the high-level goals and objectives of your data workflows,
                     while Kestra takes care of executing the tasks and handling errors, retries, and parallelism.</p>
@@ -68,7 +68,7 @@
             <CustomDetails title="What languages are supported in Kestra flows?">
                 <p>Kestra flows are primarily defined in YAML, which provides a simple and human-readable syntax for
                     describing your data workflows. In addition to YAML, you can also use various scripting languages
-                    within your tasks, such as Python, JavaScript, or Bash, to perform custom operations and data
+                    within your tasks, such as Python, R, Node.js, Julia, Ruby, Shell, or PowerShell, to perform custom operations and data
                     transformations.</p>
                 <p>Furthermore, Kestra supports Docker, which enables you to execute tasks using any language, expanding
                     the range of possibilities for your workflows. This flexibility allows you to leverage the power of

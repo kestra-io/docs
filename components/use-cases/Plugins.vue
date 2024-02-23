@@ -4,7 +4,7 @@
             <div class="mb-5">
                 <h1 data-aos="fade-left" class="title text-center card-title fw-light">
                     Connect Your <span>Entire Stack</span> <br />
-                    with Plugins
+                    with Dedicated Plugins
                 </h1>
                 <LayoutPlugins />
             </div>
