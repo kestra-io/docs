@@ -1,9 +1,9 @@
 <template>
     <div>
         <Head>
-            <Title>Use cases & Usages for Modern Data Orchestration</Title>
+            <Title>Use cases for Modern Data Orchestration</Title>
             <Meta name="description"
-                  content="Harness your data, unlock valuable insights, and drive informed decision-making by leveraging Kestra's uses cases"/>
+                  content="Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform"/>
         </Head>
 
         <SolutionsHeader/>
@@ -28,7 +28,7 @@
             { name: 'twitter:title', content: "Use cases & Usages for Modern Data Orchestration" },
             {
                 name: 'twitter:description',
-                content: "Harness your data, unlock valuable insights, and drive informed decision-making by leveraging Kestra's uses cases"
+                content: "Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform"
             },
             { name: 'twitter:image', content: `${origin}/landing/company/ui.png` },
             { name: 'twitter:image:alt', content: "Picture of the user interface of Kestra on light mode" }

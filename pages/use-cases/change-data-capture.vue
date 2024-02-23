@@ -6,17 +6,17 @@
         </Head>
 
         <SolutionsDetailHeader
-            title="Efficient"
-            titleAfter="Change Data Capture"
-            subtitle="Build CDC pipeline with Kestra for data synchronization, and ressources optimization to ensure your data analytics platforms reflect the most current information."
+            title="Reliable"
+            titleAfter="Change Data Capture (CDC)"
+            subtitle="Build CDC pipelines with Kestra to ensure your data platform is always up-to-date with what's happening in your business."
             image="/landing/usecases/cdc/intro-bg.svg"
         />
         <SolutionsDetailContent
-            title="What is Change Data Capture ?"
-            subtitle="Change Data Capture (CDC) tracks and captures data source alterations for efficient processing and analysis. Kestra's CDC features allow businesses to synchronize and manage data effectively, maintaining updated data warehouses and analytics platforms with minimized resource use."
+            title="What is Change Data Capture?"
+            subtitle="Change Data Capture (CDC) tracks changes in your data sources and allows you to react to them in near real-time. Kestra's CDC capabilities enable businesses to keep your data warehouse in sync with your source systems to make informed decisions based on the latest data."
         />
         <SolutionsDetailMain
-            subtitle="Data Analysis for Financial Institutions"
+            subtitle="Data Integration for Your Organization"
             subtitleBefore="Streamlined"
             baseline="Kestra makes CDC implementation straightforward, enabling your team to monitor data changes across your systems with ease. Configure workflows to automatically transform and aggregate data, keeping your datasets accurate and analytics reliable without manual intervention."
             :items="mainContent"
@@ -31,7 +31,7 @@
             :items="features"
         />
         <LayoutFooterContact
-            title="Ready to take your data department to the next level ?"
+            title="Ready to take your data platform to the next level?"
             darkButtonText="Contact us"
             darkButtonHref="/contact-us"
             purpleButtonText="Live demo"
@@ -67,7 +67,7 @@
                         content: 'Kestra enables institutions to configure and manage CDC workflows with tasks such as data transformation, filtering, and aggregation, resulting in a consistent and up-to-date data view for accurate insights and decision-making.',
                     },
                     {
-                        title: 'Event-Driven Triggers for Automatic Workflow Initiation',
+                        title: 'Run Your Workflows Automatically based on Event Triggers',
                         img: '/landing/usecases/cdc/feature-3.svg',
                         imgAlt: 'Illustration showing Kestra\'s event-driven triggers that initiate workflows automatically upon data changes, such as inserting a new customer record into the PostgreSQL database',
                         content: 'Kestra\'s event-driven triggers initiate workflows automatically as data changes occur, eliminating manual intervention and reducing data inconsistency risks.<br /><br />' +
@@ -82,7 +82,7 @@
                 ],
                 features: [
                     {
-                        title: 'Efficient Data Capture',
+                        title: 'Simple Change Data Capture',
                         text: 'CDC allows you to track and capture data changes promptly, ensuring that your data pipelines remain current and provide you with accurate, actionable insights.',
                         icon: shallowRef(LightbulbOutline)
                     },
@@ -100,17 +100,7 @@
                         title: 'Reduced Data Latency',
                         text: 'Reduce data latency, ensuring that your data pipelines and analytics are always based on the latest information.',
                         icon: shallowRef(LightningBolt)
-                    },
-                    {
-                        title: 'Data Versioning',
-                        text: 'Allow you to track and manage historical versions of your data for auditing, analysis, and compliance purposes.',
-                        icon: shallowRef(TimerOutline)
-                    },
-                    {
-                        title: 'Delayed Data Capture',
-                        text: 'Configure time delays for capturing data changes for handling time-sensitive data or for mitigating the impact of temporary data inconsistencies.',
-                        icon: shallowRef(ImageMultiple)
-                    },
+                    }
                 ]
             }
         },

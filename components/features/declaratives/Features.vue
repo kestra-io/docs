@@ -46,22 +46,22 @@
                         <div class="col-md-4 mb-4">
                             <Card
                                 :icon="CalculatorVariantOutline"
-                                title="Improved Workflow Flexibility"
-                                description="Easily adapt workflows by updating YAML; Kestra adjusts execution automatically."
+                                title="Faster Development Cycles"
+                                description="Easily adapt workflows by updating your declarative configuration. No need for complex CI/CD pipelines."
                             />
                         </div>
                         <div class="col-md-4 mb-4">
                             <Card
                                 :icon="Lan"
                                 title="Reduced Complexity"
-                                description="Simplifies data pipelines by eliminating intricate code, enhancing maintainability."
+                                description="Simplifies your codebase by eliminating boilerplate code. No need to write code to deploy code — each Kestra flow includes everything it needs to run."
                             />
                         </div>
                         <div class="col-md-4 mb-4">
                             <Card
                                 :icon="GoogleCirclesExtended"
                                 title="Enhanced Collaboration"
-                                description="Easy-to-read workflows for both technical and non-technical team members."
+                                description="Build workflows that are easy to read and understand for both technical and non-technical team members."
                             />
                         </div>
                     </div>

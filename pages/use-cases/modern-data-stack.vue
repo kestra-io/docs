@@ -2,23 +2,23 @@
     <div>
         <Head>
           <Title>Integrate Kestra in the Modern Data Stack</Title>
-          <Meta name="description" content="Enhance Data Orchestration and Analytics by Integrating Kestra with Leading Data Tools" />
+          <Meta name="description" content="Orchestrate Your Data and Analytics Stack by Integrating Kestra with Leading Data Tools" />
         </Head>
 
         <SolutionsDetailHeader
             title="Integrate Kestra in the"
             titleAfter="Modern Data Stack"
-            subtitle="Enhance Data Orchestration and Analytics by Integrating Kestra with Leading Data Tools"
+            subtitle="Orchestrate Your Data and Analytics Stack by Integrating Kestra with Leading Data Tools"
             image="/landing/usecases/mds/intro-bg.svg"
         />
         <SolutionsDetailContent
-            title="What is Modern Data Stack?"
+            title="What is the Modern Data Stack?"
             subtitle="The modern data stack combines powerful automation and integration capabilities. Organizations can establish scalable, reliable, and streamlined data workflows by leveraging robust automation capabilities and seamless integrations with tools like dbt, Snowflake, Airbyte, and others. This ecosystem empowers data-driven decision-making and facilitates the generation of actionable insights."
         />
         <SolutionsDetailMain
             subtitle="Leverage"
             subtitleAfter="Modern Data Stack"
-            baseline="Discover how Kestra's automation capabilities and extensive integrations with popular data tools, from the modern data stack, empower organizations to manage data pipelines more efficiently."
+            baseline="Discover how Kestra's automation capabilities and extensive integrations with popular data tools from the modern data stack empower organizations to manage data pipelines with confidence."
             :items="mainContent"
         />
         <SolutionsDetailEmpower
@@ -31,7 +31,7 @@
             :items="features"
         />
         <LayoutFooterContact
-            title="Ready to take your data department to the next level ?"
+            title="Ready to take your data platform to the next level?"
             darkButtonText="Contact us"
             darkButtonHref="/contact-us"
             purpleButtonText="Live demo"

@@ -45,7 +45,7 @@
               <strong>Less time spent babysitting orchestration code:</strong>
               Seamlessly configure your tasks to run sequentially, in parallel
               or only based on a specific condition or presence of events
-              without having to navigate convoluted orchestration code bases.
+              without having to navigate convoluted orchestration codebases.
             </li>
             <li class="py-4">
               <strong>Intuitive dependency management:</strong> Easily manage

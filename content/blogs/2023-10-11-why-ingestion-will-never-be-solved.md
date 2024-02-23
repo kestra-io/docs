@@ -107,7 +107,7 @@ There are several significant differences between [Airbyte](https://airbyte.com/
 ### Airbyte
 
 [Airbyte](https://airbyte.com/) users can build [custom connectors](https://docs.airbyte.com/integrations/custom-connectors/) in many ways:
-1. With an [SDK for your preferred programming language](https://docs.airbyte.com/connector-development/cdk-python/) that autogenerates up to 75% of connector code based on provided API endpoints
+1. With an [SDK for your preferred programming language](https://docs.airbyte.com/connector-development/cdk-python/) that autogenerates up to 75% of connector code, based on provided API endpoints
 2. With a [low-code connector builder UI](https://docs.airbyte.com/connector-development/config-based/low-code-cdk-overview)
 3. Building a custom Docker image with connector code written in any language and adding the connector metadata from [the Airbyte UI](https://docs.airbyte.com/integrations/custom-connectors/#adding-your-connectors-in-the-ui).
 
