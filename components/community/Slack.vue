@@ -9,22 +9,22 @@
         <Section
             subtitle="Orchestrate Success"
             subtitle-after="Together"
-            baseline="Join the slack to share ideas and best practices, get help with technical questions, and discuss Kestra with other developers."
+            baseline="Join our Slack Community to share ideas and best practices, get help with technical questions, and discuss any concerns with other developers."
         >
             <div class="row card-group no-shadow mb-2">
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="TooltipQuestion"
                         title="Ask a question"
-                        description="Get stuck with the documentation? We're here to help!"
+                        description="Get stuck? The #help channel is here to support you."
                     />
                 </div>
 
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="HandWave"
-                        title="Introduce yourself"
-                        description="Welcome to the Kestra community! Let's introduce ourselves!"
+                        title="Say Hi"
+                        description="New to the community? Tell us about yourself and your Kestra use case in the #introductions channel."
                     />
                 </div>
 
@@ -32,7 +32,7 @@
                     <Card
                         :icon="MessageAlert"
                         title="Share Feedback"
-                        description="Discussions about the product, including your feedback, ideas, and dreams."
+                        description="Something you'd like to see improved? The #feedback-and-requests channel is a great place to share your thoughts."
                     />
                 </div>
             </div>

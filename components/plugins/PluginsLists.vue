@@ -57,7 +57,7 @@
     import Magnify from "vue-material-design-icons/Magnify.vue"
 
     const currentPage = ref(1);
-    const itemsPerPage = ref(20);
+    const itemsPerPage = ref(40);
     const plugins = ref([]);
     const activeCategory = ref('All Categories');
     const categories = ref([]);
@@ -81,19 +81,7 @@
     };
 
     const setPlugins = (allPlugins, total) => {
-        plugins.value = allPlugins.sort((a, b) => {
-            const nameA = a.title.toLowerCase(),
-                nameB = b.title.toLowerCase();
-
-            if (nameA === "core") {
-                return -1;
-            }
-            if (nameB === "core") {
-                return 1;
-            }
-
-            return nameA === nameB ? 0 : nameA < nameB ? -1 : 1;
-        });
+        plugins.value = allPlugins
         totalPlugins.value = total;
         totalPages.value = Math.ceil(total / itemsPerPage.value)
     };
@@ -106,7 +94,7 @@
         });
     };
 
-    if(props.plugins) {
+    if (props.plugins) {
         const startIndex = (currentPage.value - 1) * itemsPerPage.value;
         const endIndex = startIndex + itemsPerPage.value;
 

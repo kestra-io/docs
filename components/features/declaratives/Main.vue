@@ -1,56 +1,56 @@
 <template>
     <div class="container">
         <Section
-            subtitle="Build Your Flows in"
+            subtitle="Simple Workflow Definition in "
             subtitle-after="YAML"
-            baseline="YAML is a human-readable data serialization language designed for simplicity and ease of use. By using YAML to define declarative data workflows, Kestra offers numerous benefits:"
+            baseline="YAML is a popular data serialization language designed to be easy to read and write by both humans and machines. Using YAML to declaratively define workflows brings a number of benefits."
         >
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="Typewriter"
-                        title="Simplified Workflow Creation"
-                        description="YAML syntax allows more people in the organization to collaborate on data workflows."
+                        title="Simple Workflow Creation"
+                        description="YAML is easy to learn. The simple syntax allows more people in the organization to collaborate on building workflows together."
                     />
                 </div>
 
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="BugOutline"
-                        title="Reduced Maintenance Effort"
-                        description="Changes can be made directly within the YAML file, eliminating the need for CI/CD."
+                        title="Fewer Bugs in Production"
+                        description="Kestra's built-in syntax validation ensures that your YAML code is error-free before execution, reducing the risk of runtime errors in production."
                     />
                 </div>
 
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="Read"
-                        title="Enhanced Readability"
-                        description="YAML format works well with REST APIs while remaining human-readable and easy to understand."
+                        title="Easy to Read by Humans and Machines"
+                        description="YAML is a superset of JSON, therefore it works extraordinaly well with REST APIs, while remaining human-readable and easy to understand."
                     />
                 </div>
 
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="Git"
-                        title="Version Control"
-                        description="Track changes, collaborate on updates, and maintain a history of modifications."
+                        title="Simple Version Control"
+                        description="Since you describe your workflow in a single YAML configuration, it's easy to track changes over time, collaborate on pull request reviews, and roll back when needed."
                     />
                 </div>
 
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="Lan"
-                        title="Platform Agnostic"
-                        description="Easily switch between tools by swapping plugins in your workflow."
+                        title="Platform Independence"
+                        description="Due to separation of your orchestration logic from the business logic, you don't need any modifications to your existing code to orchestrate it with Kestra."
                     />
                 </div>
 
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="AlertCircleOutline"
-                        title="Reduced error rates"
-                        description="YAML workflow definition validates syntax during creation, ensuring correctness before execution."
+                        title="Reduced Maintenance Effort"
+                        description="Need to adjust your workflow? Just edit the YAML file. No need for redeploying code and complex code packaging in CI/CD."
                     />
                 </div>
             </div>

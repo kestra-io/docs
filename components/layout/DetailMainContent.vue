@@ -10,7 +10,7 @@
                 <div v-if="index % 2 !== 0" class="row feature-img-right position-relative py-4">
                     <div class="col-md-6 ps-2 ps-sm-5 pe-2 ps-sm-5 order-1 order-md-0 d-flex flex-column justify-content-center" data-aos="fade-left">
                         <h3>{{ item.title }}</h3>
-                        <p v-html="item.content" />
+                        <div class="content" v-html="item.content" />
                     </div>
                     <div class="col-md-6 order-0 order-md-1" data-aos="fade-right">
                         <img class="img-fluid" :src="item.img" :alt="item.imgAlt" />
@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-md-6 ps-2 ps-sm-5 pe-2 ps-sm-5 d-flex flex-column justify-content-center" data-aos="fade-left">
                         <h3>{{ item.title }}</h3>
-                        <p v-html="item.content" />
+                        <div class="content" v-html="item.content" />
                     </div>
                 </div>
             </template>
@@ -70,7 +70,7 @@
         }
     }
 
-    h3, p {
+    h3, div {
         color: $white;
         font-family: $font-family-sans-serif;
         font-weight: 300;
@@ -81,7 +81,7 @@
         margin-bottom: $rem-1;
     }
 
-    p {
+    .content {
         font-size: $font-size-md;
         :deep(ul) {
             display: flex;
@@ -95,8 +95,9 @@
                     font-weight: 300;
 
                     a {
-                        color: $purple-35;
+                        color: $purple;
                         text-decoration: underline;
+                        font-weight: 600;
                     }
                 }
             }

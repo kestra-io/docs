@@ -1,12 +1,15 @@
 <template>
     <div class="container-fluid hide-overflow">
         <div class="container pt-5 pb-5">
-            <div class="row ">
+            <div class="row">
                 <div class="col-md-6 d-flex flex-column justify-content-center">
                     <h2 data-aos="fade-left">Simple Yet <span>Powerful</span></h2>
                     <p data-aos="fade-right">
-                        Kestra's declarative data orchestrator simplifies data orchestration by using YAML (Yet Another Markup Language) to define workflows.
-                        This approach simplifies the creation, execution, and maintenance of data pipelines, making them accessible to both technical and non-technical team members.
+                        The declarative syntax in a YAML format significantly reduces the barrier to entry.
+                        You can onboard new team members quickly, and maintain your workflows with minimal effort.
+                        <br><br>
+                        In just a few lines of YAML configuration, anyone in your team can build their first scheduled workflow.
+                        With that first success, your team members can start automating more advanced use cases with confidence.
                     </p>
                 </div>
                 <div class="col-md-6">
@@ -15,16 +18,24 @@
                             <img src="/landing/3dot.svg" alt="code">
                         </div>
                         <div class="code-content">
-                            <span>id:</span> "each_parallel"<br />
-                            <span>type:</span> io.kestra.core.tasks.flows.EachParallel<br />
-                            <span>value:</span><br />
-                            <span>  -</span> value 1<br />
-                            <span>  -</span> value 2<br />
-                            <span>  -</span> value 3<br />
+                            <span>id:</span> hello_world<br />
+                            <span>namespace:</span> dev<br />
                             <span>tasks:</span><br />
-                            <span>  id:</span> each-value<br />
-                            <span>  type:</span> io.kestra.core.tasks.debugs.Return<br />
-                            <span>  format:</span> <span v-pre>"{{ taskrun.value }}"</span>
+                            <div style="margin-left: 20px;">
+                                <span>- id:</span> greeting<br />
+                                <div style="margin-left: 20px;">
+                                    <span>type:</span> io.kestra.core.tasks.log.Log<br />
+                                    <span>message:</span> Hello from a declarative workflow!<br />
+                                </div>
+                            </div>
+                            <span>triggers:</span><br />
+                            <div style="margin-left: 20px;">
+                                <span>- id:</span> schedule<br />
+                                <div style="margin-left: 20px;">
+                                    <span>type:</span> io.kestra.core.models.triggers.types.Schedule<br />
+                                    <span>cron:</span> "@hourly"
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -35,22 +46,22 @@
                         <div class="col-md-4 mb-4">
                             <Card
                                 :icon="CalculatorVariantOutline"
-                                title="Improved Workflow Flexibility"
-                                description="Easily adapt workflows by updating YAML; Kestra adjusts execution automatically."
+                                title="Faster Development Cycles"
+                                description="Easily adapt workflows by updating your declarative configuration. No need for complex CI/CD pipelines."
                             />
                         </div>
                         <div class="col-md-4 mb-4">
                             <Card
                                 :icon="Lan"
                                 title="Reduced Complexity"
-                                description="Simplifies data pipelines by eliminating intricate code, enhancing maintainability."
+                                description="Simplifies your codebase by eliminating boilerplate code. No need to write code to deploy code — each Kestra flow includes everything it needs to run."
                             />
                         </div>
                         <div class="col-md-4 mb-4">
                             <Card
                                 :icon="GoogleCirclesExtended"
                                 title="Enhanced Collaboration"
-                                description="Easy-to-read workflows for both technical and non-technical team members."
+                                description="Build workflows that are easy to read and understand for both technical and non-technical team members."
                             />
                         </div>
                     </div>

@@ -5,10 +5,10 @@
                 <div class="col-12 col-md-6" data-aos="zoom-in">
                     <h2><span>Elevating</span> Orchestration and Automation</h2>
                     <p>
-                        Our ambition is to provide a tool that enables all kinds of users to orchestrate and automate their data, workflows, and batches with unparalleled simplicity, autonomy, and high performance. From the first day of our journey, we have been driven by this goal, and we continue to challenge ourselves.
+                        We aim to offer a product that empowers everyone to manage and automate their data, workflows, and tasks in a simple and efficient way. Our focus has always been to provide a tool that is easy to use, scalable and high-performing.
                     </p>
                     <p>
-                        We have dedicated ourselves to the meticulous development of our open-source platform, ensuring that it meets the highest standards of performance and reliability but also empowers users to unlock new possibilities in data management and processing.
+                        By bringing Infrastructure as Code best practices to data, process, and microservice orchestration, Kestra makes both scheduled and event-driven workflows easy.
                     </p>
                 </div>
                 <div class="col-12 col-md-6 img-block d-flex align-items-center justify-content-center">

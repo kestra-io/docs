@@ -1,27 +1,27 @@
 <template>
     <div class="container">
         <Section class="about">
-            <h2>Uncover Kestra's<span>Versatility</span></h2>
-            <p>From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains. Dive into the wide array of use cases Kestra efficiently addresses.</p>
+            <h2>Orchestration <span>Simplified</span></h2>
+            <p>From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains.</p>
 
             <div class="row">
                 <div class="col-md-4" data-aos="zoom-in">
                     <Card
-                        title="Automate Your Data Pipelines"
+                        title="Data Pipelines"
                         description="Say goodbye to delays in your pipeline as Kestra initiates workflows based on specific times or events, such as data arrivals or file uploads."
                         number="01"
                     />
                 </div>
                 <div class="col-md-4" data-aos="zoom-in">
                     <Card
-                        title="Accelerate Machine Learning Model Deployment"
+                        title="Machine Learning Model Deployment"
                         description="Efficiently manage and deploy your machine learning models at scale with Kestra's microservice orchestration capabilities."
                         number="02"
                     />
                 </div>
                 <div class="col-md-4" data-aos="zoom-in">
                     <Card
-                        title="Optimize ETL Processes"
+                        title="ETL Processes"
                         description="Seamlessly move data between systems, prepare and clean it, and aggregate it into a consolidated data mart."
                         number="03"
                     />
@@ -31,14 +31,14 @@
             <div class="row">
                 <div class="col-md-4" data-aos="zoom-in">
                     <Card
-                        title="Scale Workload Management"
-                        description="Kestra takes care of scaling and processing the workload, reducing the burden on your application server."
+                        title="Event-Driven Automation at Scale"
+                        description="React to events happening in your business and automate your critical microservices and operations."
                         number="04"
                     />
                 </div>
                 <div class="col-md-4" data-aos="zoom-in">
                     <Card
-                        title="Real-time Data Processing with Change Data Capture"
+                        title="Real-Time Data Processing with Change Data Capture"
                         description="Automatically detect changes in data sources and trigger workflows to process those changes."
                         number="05"
                     />
@@ -55,22 +55,22 @@
             <div class="row">
                 <div class="col-md-4" data-aos="zoom-in">
                     <Card
-                        title="Efficient Data Scraping"
-                        description="Easily collect data from various sources and integrate it into your workflows."
+                        title="Data Ingestion and Integration"
+                        description="Easily collect data from various sources and integrate them into your workflows."
                         number="07"
                     />
                 </div>
                 <div class="col-md-4" data-aos="zoom-in">
                     <Card
                         title="Infrastructure Orchestration"
-                        description="Automate tasks such as provisioning, deployment, and monitoring, ensuring a smooth operation across your organization."
+                        description="Automate tasks such as provisioning, deployment, and monitoring of infrastructure resources."
                         number="08"
                     />
                 </div>
                 <div class="col-md-4" data-aos="zoom-in">
                     <Card
                         title="End-to-End Data Orchestration"
-                        description="Kestra empowers you to orchestrate data from ingestion to reporting, allowing you to manage the entire data lifecycle."
+                        description="Kestra empowers you to manage the entire data lifecycle from ingestion to reporting and automation."
                         number="09"
                     />
                 </div>

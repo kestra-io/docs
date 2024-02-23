@@ -1,9 +1,9 @@
 <template>
     <div class="container">
         <Section
-            subtitle="Committed to Your"
-            subtitle-after="Well-being"
-            baseline="Feeling your best allows you to do your best. We take care of the whole of you."
+            subtitle="Committed to"
+            subtitle-after="Excellence"
+            baseline="We take care of everything you need to help you grow and do the best work of your career."
         >
             <div class="row card-group no-shadow mb-2">
                 <div class="col-md-4 mb-4">

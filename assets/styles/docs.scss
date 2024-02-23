@@ -231,3 +231,45 @@ $bd-gutter-x: 3rem;
         margin-left: 1px;
     }
 }
+
+
+
+.bd-markdown {
+    p, li {
+        color: $white;
+        line-height: 1.75rem;
+        font-size: $font-size-md;
+        font-weight: 400;
+
+        a {
+            color: $purple-36;
+        }
+    }
+    h2, h2 a {
+        color: $white;
+        font-size: 1.75rem;
+        line-height: 2.735rem;
+        font-weight: 300;
+    }
+
+    h3 a {
+        color: $white;
+    }
+
+    code {
+        border: $block-border;
+        background-color: $black-2;
+        color: $purple-36;
+    }
+
+    .code-block, .doc-alert {
+        background-color: $black-2;
+        code {
+            border: 0;
+        }
+    }
+
+    .doc-alert {
+        border: $block-border;
+    }
+}

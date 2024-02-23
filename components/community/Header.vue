@@ -4,8 +4,8 @@
             <div class="row">
                 <div class="col-md-7 align-items-center d-flex order-1 order-md-0">
                     <div>
-                        <h1 data-aos="fade-right">Connect, Collaborate</h1>
-                        <p class="baseline" data-aos="fade-left">Connect with peers, exchange ideas and contribute to an amazing community!</p>
+                        <h1 data-aos="fade-right">Connect and Collaborate</h1>
+                        <p class="baseline" data-aos="fade-left">Connect with experts in the field, get support from the community, exchange ideas and contribute your code and feedback.</p>
                         <NuxtLink href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated" data-aos="zoom-in" target="_blank">
                             Join us on Slack
                         </NuxtLink>

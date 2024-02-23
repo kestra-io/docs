@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <Section subtitle="Development and Deployment" subtitle-before="Accelerate">
+    <Section subtitle="Development, Painless Deployment" subtitle-before="Fast">
       <div class="container">
         <div class="row d-flex justify-content-center">
           <div class="col-12 col-md-6 col-lg-3 mb-4">
@@ -13,9 +13,7 @@
                 />
                 <h6 class="card-heading">CI/CD Deployment</h6>
                 <p class="card-para">
-                  Integrate Kestra into CI/CD pipelines to automate the
-                  deployment of workflows (Terraform, GitLab Actions, GitLab,
-                  Jenkins…).
+                  Automate your Kestra deployments with CI/CD integrations for Terraform, GitHub Actions, GitLab, and BitBucket.
                 </p>
               </div>
             </div>
@@ -30,11 +28,10 @@
                   class="mb-2"
                 />
                 <h6 class="card-heading">
-                  Production made easy, no more production plan
+                  Worry-free Production Deployments
                 </h6>
                 <p class="card-para">
-                  Kestra supports flow dependencies to define the execution
-                  order based on their interdependence.
+                  Reliable deployments without package dependency conflicts. Script tasks are executed in Docker.
                 </p>
               </div>
             </div>
@@ -50,9 +47,7 @@
                 />
                 <h6 class="card-heading">Real-Time Events</h6>
                 <p class="card-para">
-                  Flow execution based on events from the core or plugins, such
-                  as the result of other flows in real-time, detection of files
-                  from SFTP or Google Cloud Storage, or results of an SQL query.
+                  Flow execution based on event triggers including file detection, message queues, completion of certain flows, or results of a SQL query or API call.
                 </p>
               </div>
             </div>
@@ -66,7 +61,7 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Event-driven Triggers</h6>
+                <h6 class="card-heading">API-first</h6>
                 <p class="card-para">
                   Endless possibilities to start a flow through API, using a
                   webhook, waiting for a trigger, or simply starting directly
@@ -118,9 +113,7 @@
                 />
                 <h6 class="card-heading">Notifications</h6>
                 <p class="card-para">
-                  Alerting configuration directly in the UI to alert when
-                  workflow tasks are completed, have errors or delays, or for
-                  any other important event.
+                  Easily configure alerts to get notified on workflow completion, delay or failure.
                 </p>
               </div>
             </div>
@@ -134,10 +127,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Large Data Processing</h6>
+                <h6 class="card-heading">Process Data at Scale</h6>
                 <p class="card-para">
-                  Massive data volume handling with high performance using
-                  partitioning and batch processing techniques.
+                  Use our distributed mapping capabilities to easily process large amounts of data at scale.
                 </p>
               </div>
             </div>
@@ -151,11 +143,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Micro-Batch for Real-Time</h6>
+                <h6 class="card-heading">Micro-Batch CDC</h6>
                 <p class="card-para">
-                  All the benefits of a real-time system without maintenance and
-                  complexity costs by collecting data at regular intervals and
-                  processing them in micro-batch.
+                    Capture changed data at regular intervals and process them in micro-batches, reducing the complexity and maintenance costs of real-time systems.
                 </p>
               </div>
             </div>
@@ -188,7 +178,7 @@
                 />
                 <h6 class="card-heading">Performance Gains</h6>
                 <p class="card-para">
-                  Better performance with JVM (Java Virtual Machine) technology.
+                  Use the benefits of JVM (Java Virtual Machine) technology for better performance and memory management.
                 </p>
               </div>
             </div>

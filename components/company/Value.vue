@@ -6,10 +6,7 @@
         >
             <div class="text-block row card-group card-centered no-shadow mb-2">
                 <p class="baseline-max-width" data-aos="fade-right">
-                    At Kestra, our values are at the core of everything we do. We believe that by adhering to these principles, we can create a platform that not only meets the needs of our users but also exceeds their expectations.
-                </p>
-                <p class="baseline-max-width mb-5" data-aos="fade-right">
-                    Innovation: We are driven by a passion for continuous improvement and a desire to challenge the status quo. We strive to develop new ideas and solutions that redefine the data orchestration landscape.
+                    At Kestra, our principles shape our actions. We focus on making a platform that not only meets our users' needs but also surpasses their expectations. We're committed to continuous learning and iteration. Our goal is to introduce innovative ideas and solutions that significantly simplify and improve orchestration for our users.
                 </p>
             </div>
 
@@ -17,24 +14,24 @@
                 <div class="col-md-3 mb-3">
                     <Card
                         :icon="QualityHigh"
-                        title="Quality"
-                        description="We are committed to delivering a platform that meets the highest standards of performance, reliability, and usability"
+                        title="High Quality Standards"
+                        description="We are committed to delivering a platform that meets the highest standards of performance, reliability, and usability."
                     />
                 </div>
 
                 <div class="col-md-3 mb-3">
                     <Card
                         :icon="AccountGroupOutline"
-                        title="Collaboration"
-                        description="We believe in the power of collaboration and the importance of fostering strong relationships with our users, partners, and team members"
+                        title="Team Work"
+                        description="We believe in the power of giving and receiving direct feedback, learning from it and fostering strong relationships with our users, partners, and team members."
                     />
                 </div>
 
                 <div class="col-md-3 mb-3">
                     <Card
                         :icon="EmoticonOutline"
-                        title="User-Centric"
-                        description="We are committed to incorporating user feedback and addressing their challenges as we continue to evolve Kestra"
+                        title="Customer Obsession"
+                        description="We listen to the feedback from our users and address their challenges at a rapid pace to continue building a product loved by our users."
                     />
                 </div>
 
@@ -42,7 +39,7 @@
                     <Card
                         :icon="Opacity"
                         title="Transparency"
-                        description="We value openness and honesty in all aspects of our work, from our development processes to our communications with users and partners"
+                        description="We value openness and honesty in all aspects of our work, from our development processes to our communications with users and partners."
                     />
                 </div>
             </div>

@@ -23,7 +23,7 @@
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Solutions</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><NuxtLink href="/use-cases">Usages</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/use-cases">Use Cases</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/use-cases/ci-cd">CI/CD for Kestra Workflows</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/use-cases/modern-data-stack">Modern Data Stack Integration</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/use-cases/change-data-capture">Change Data Capture</NuxtLink></li>

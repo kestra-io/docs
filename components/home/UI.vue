@@ -19,7 +19,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><WrenchOutline /></span>
-                                    Built-in code editor
+                                    Autocompletion and syntax validation
                                 </p>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
-                                    Execute and monitor directly from the interface
+                                    No setup required. Write code directly from the UI
                                 </p>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
-                                    Declarative language editor
+                                    Embedded Visual Studio Code editor
                                 </p>
                             </div>
                         </div>

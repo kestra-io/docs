@@ -13,7 +13,7 @@
           <h3 class="title heading ">
             Connect Your
             <span class="title-animated"> Entire Tech Stack</span>
-            with Plugins
+            with Dedicated Plugins
           </h3>
           <p class="para mt-3" data-aos="fade-right ">
             Integrate with your existing technology landscape using Kestra's

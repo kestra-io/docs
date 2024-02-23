@@ -1,8 +1,7 @@
 <template>
     <LayoutDetailMainContent
-        subtitle="Build your Workflows"
-        subtitleAfter="as Code"
-        baseline="Kestra allows building workflows as code. This approach facilitates seamless integration with existing CI/CD processes, Infrastructure as Code tools like Terraform, and version control systems like Git."
+        subtitle="Add New Workflows in Minutes."
+        subtitleAfter="No Ops Required."
         :items="mainContent"
     />
 </template>
@@ -24,27 +23,28 @@
                                 <li>
                                     Strong typing and autocompletion:
                                     <span>
-                                        iterate quickly when adding new flows, triggers and tasks.
-                                        If something is incorrect in your workflow definition, you
-                                        will know in advance thanks to the built-in syntax validation.
+                                        iterate quickly when adding new flows, triggers and tasks. If something
+                                        is incorrect in your workflow definition, you will know in
+                                        advance thanks to the built-in syntax validation.
                                     </span>
                                 </li>
                                 <li>
                                     Support for data-mesh:
                                     <span>
                                         thanks to the simple
-                                         <a href="https://kestra.io/demo" target="_blank" data-aos="zoom-in">
+                                         <a href="https://kestra.io/features/declarative-data-orchestration" target="_blank" data-aos="zoom-in">
                                             YAML interface.
                                          </a>
-                                        built-in documentation and blueprints, domain experts can build their own workflows, too.
+                                         built-in documentation and blueprints, domain experts can
+                                          build their own workflows, too.
                                     </span>
                                 </li>
                                 <li>
                                     Intuitive UI built not only for engineers:
                                     <span>
-                                        when you add workflows directly from the UI, the
-                                        live-updating topology view helps you see dependencies
-                                         between processes, systems and tasks.
+                                        when you add workflows directly from the UI, the live-updating
+                                        topology view helps you see dependencies between processes,
+                                        systems and tasks.
                                     </span>
                                 </li>
                             </ul>
@@ -59,23 +59,24 @@
                                 <li>
                                     Less time spent babysitting orchestration code:
                                     <span>
-                                        Seamlessly configure your tasks to run sequentially,
-                                        in parallel or only based on a specific condition or presence
-                                        of events without having to navigate convoluted orchestration code bases.
+                                        Seamlessly configure your tasks to run sequentially, in parallel
+                                        or only based on a specific condition or presence of events
+                                        without having to navigate convoluted orchestration codebases.
                                     </span>
                                 </li>
                                 <li>
                                     Intuitive dependency management:
                                     <span>
-                                        Easily manage task dependencies — defining proper execution order is as
-                                        simple as adding a list of tasks in the order you want them to be executed.
+                                        Easily manage task dependencies — defining the sequence of tasks is as simple
+                                        as listing them in the order you want them to run.
                                     </span>
                                 </li>
                                 <li>
                                     Built-in documentation and blueprints:
                                     <span>
-                                         No need to navigate bulky documentation to figure out the right task or trigger
-                                         properties — they are available right next to your code editor.
+                                      No need to navigate bulky documentation to figure out the right task or
+                                      trigger properties — they are available right next to your code
+                                      editor.
                                     </span>
                                 </li>
                             </ul>
@@ -90,16 +91,20 @@
                                 <li>
                                     Time-based scheduling:
                                     <span>
-                                       Workflows run automatically at specific times, such as daily, weekly,
-                                       or monthly without the need for manual intervention or inspecting crontabs.
+                                        workflows run
+                                        automatically at specific times, such as daily, weekly, or
+                                        monthly without the need for manual intervention or inspecting
+                                        crontabs.
                                     </span>
                                 </li>
                                 <li>
                                     Event-based orchestration:
                                     <span>
-                                        Automate workflow executions based on real-time events. Trigger workflows
-                                        to run automatically in response to events, such as the arrival of new data in a database,
-                                        file detection in your cloud storage bucket, new message in a message queue, or the completion of other workflows.
+                                        automate your tasks based on real-time events. Trigger workflows to run
+                                        automatically in response to events, such as the arrival of new
+                                        data in a database, file detection in your S3 bucket,
+                                        new message in a message queue, or the completion of other
+                                        workflows.
                                     </span>
                                 </li>
                             </ul>
@@ -114,17 +119,13 @@
                                 <li>
                                     Real-time Workflow Monitoring:
                                     <span>
-                                       Progress tracking of workflows and individual tasks in real-time.
-                                       Troubleshoot failure by replaying failed tasks or doing
-                                       a full-text search of the workflow execution logs.
+                                       track workflow execution state and the health of your platform in real-time. Troubleshoot failure by restarting failed workflow executions or run a full-text search on the workflow execution logs to identify the root cause.
                                     </span>
                                 </li>
                                 <li>
                                    Actionable Insights:
                                     <span>
-                                         you can build custom dashboards to track workflow performance using built-in
-                                         outputs and metrics. Thanks to a standardized format that Kestra uses,
-                                         all your Kestra metrics can be visualized in Grafana or Kibana.
+                                         build custom dashboards to track workflow performance using built-in outputs and metrics. Thanks to a standardized format that Kestra uses, all your workflow metrics can be visualized in Grafana or Kibana.
                                     </span>
                                 </li>
                             </ul>

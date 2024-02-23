@@ -1,7 +1,7 @@
 
 <template>
   <div class="container-fluid">
-    <Section subtitle="Workflow Design and Management" subtitle-before="Seamless">
+    <Section subtitle="API-First Workflows as Code" subtitle-before="Simple">
       <div class="container">
         <div class="row d-flex justify-content-center">
           <div class="col-12 col-md-6 col-lg-3 mb-4">
@@ -12,15 +12,11 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Simplicity</h6>
+                <h6 class="card-heading">Get started in minutes</h6>
                 <p class="card-para">
-                  Easily create, configure, and modify flows with
-                  <a
-                    href="https://kestra.io/features/declarative-data-orchestration"
-                    class="highlight-underline"
-                    >Kestra's YAML</a
-                  >
-                  format and user interface.
+                  Create and run your workflows from the embedded code editor using a simple,
+                  <a href="https://kestra.io/features/declarative-data-orchestration"
+                    class="highlight-underline">declarative configuration</a>.
                 </p>
               </div>
             </div>
@@ -34,10 +30,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Helpful</h6>
+                <h6 class="card-heading">Discover errors before it's too late</h6>
                 <p class="card-para">
-                  Error spotting directly in the editor before any runtime
-                  error.
+                  Kestra detects syntax errors while you type, helping you fix the issues before runtime.
                 </p>
               </div>
             </div>
@@ -51,10 +46,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Allow other programming languages</h6>
+                <h6 class="card-heading">Code in any language</h6>
                 <p class="card-para">
-                  Run any scripting language like Python, Bash, and Node.js
-                  using Kestra.
+                  Build your business logic in any language including Python, R, Julia, Shell, Powershell, and Node.js.
                 </p>
               </div>
             </div>
@@ -68,9 +62,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Use workflows as code</h6>
+                <h6 class="card-heading">Everything as code</h6>
                 <p class="card-para">
-                  Deploy workflows like software code for easier collaboration
+                  Deploy workflows as software for easier collaboration
                   and tracking of changes.
                 </p>
               </div>
@@ -85,9 +79,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">File processing capabilities</h6>
+                <h6 class="card-heading">File detection triggers</h6>
                 <p class="card-para">
-                  Files processing including CSV and JSON.
+                  Process new files as they come in using event-driven communication between applications.
                 </p>
               </div>
             </div>
@@ -103,8 +97,7 @@
                 />
                 <h6 class="card-heading">Versioning</h6>
                 <p class="card-para">
-                  Version workflows, tasks and data, rollback and execute a
-                  previous version track changes over time.
+                  All workflows are automatically versioned, allowing you to easily compare changes and roll back when needed.
                 </p>
               </div>
             </div>
@@ -118,10 +111,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">Reusability</h6>
+                <h6 class="card-heading">Modularity</h6>
                 <p class="card-para">
-                  Define generic tasks and workflows that can be used in
-                  different contexts.
+                  Define your default task or plugin configuration, and use subflows to eliminate boilerplate code.
                 </p>
               </div>
             </div>
@@ -137,8 +129,7 @@
                 />
                 <h6 class="card-heading">Data validation</h6>
                 <p class="card-para">
-                  Ensures incoming and outgoing data in the pipeline steps
-                  comply with schema and quality constraints.
+                  Guarantee that your incoming and outgoing data adheres to the schema and quality constraints.
                 </p>
               </div>
             </div>
@@ -152,10 +143,9 @@
                   alt="BackFill pattern svg"
                   class="mb-2"
                 />
-                <h6 class="card-heading">UI testing</h6>
+                <h6 class="card-heading">Create and run flows from the UI</h6>
                 <p class="card-para">
-                  Execution testing directly in the interface for fast Q&A
-                  before deployment.
+                  Use embedded code editor with autocompletion and built-in documentation for rapid iterations.
                 </p>
               </div>
             </div>
@@ -171,8 +161,7 @@
                 />
                 <h6 class="card-heading">Debugging</h6>
                 <p class="card-para">
-                  Advanced debugging tools directly in the flow editing
-                  interface for faster identification and troubleshooting.
+                  Troubleshoot any issues quickly by using the built-in syntax validation and live-updating topology view.
                 </p>
               </div>
             </div>
@@ -188,8 +177,7 @@
                 />
                 <h6 class="card-heading">No more deployment complexity</h6>
                 <p class="card-para">
-                  No need to create a dev environment to package and deploy an
-                  application, just work on the browser and use CI/CD.
+                  The embedded code editor, Git integration and CI/CD eliminate the need for packaging and deploying complex orchestration code.
                 </p>
               </div>
             </div>

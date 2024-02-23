@@ -31,7 +31,7 @@
             :items="features"
         />
         <LayoutFooterContact
-            title="Ready to take your data department to the next level ?"
+            title="Ready to take your data platform to the next level?"
             darkButtonText="Contact us"
             darkButtonHref="/contact-us"
             purpleButtonText="Live demo"

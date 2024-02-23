@@ -11,7 +11,7 @@
                     </div>
                     <h3>Define your workflows</h3>
                     <p>
-                        By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
+                        Kestra offers best-in-class workflow creation experience. Once you launch the Kestra UI, you can start building your first workflows in minutes without having to worry about packaging and deploying code.
                     </p>
                 </div>
                 <div class="col-md-6">
@@ -65,7 +65,7 @@
                         <HomeConnectionLine :lineN="2" :strokeDasharray="strokeDasharray2"/>
                     </div>
                     <h3>Integrate with your stack</h3>
-                    <p>Kestra integrates with a wide variety of data sources and tools, so you can easily connect your workflows to your existing data stack. This includes support for popular databases, file formats, APIs, and more.</p>
+                    <p>Kestra integrates with a wide variety of data sources and tools, so you can easily connect your workflows to your existing data stack. This includes support for popular databases, file formats, message queues and APIs.</p>
                 </div>
             </div>
 
@@ -114,14 +114,14 @@
                     <HomeConnectionLine :lineN="6" :strokeDasharray="strokeDasharray6"/>
                 </div>
                 <p class="last-words">
-                    By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
+                    15,000+ engineers use Kestra to orchestrate their data stack. Be the next!
                 </p>
                 <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3">
-                    <NuxtLink href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
-                        Live demo
+                    <NuxtLink href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                        Get Started
                     </NuxtLink>
                     <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
-                        Get started
+                        Read the doc
                     </NuxtLink>
                 </div>
             </div>

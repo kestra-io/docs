@@ -5,11 +5,10 @@
         <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
           <div class="text-white">
             <h1 data-aos="fade-right" class="heading">
-              Fast, Scalable, and Declarative Orchestrator
+              Fast, Scalable, Declarative Orchestrator
             </h1>
             <p class="baseline" data-aos="fade-left">
-              Create and Deploy all kinds of Data Pipelines with Ease and Speed
-              with Kestra: Your All-in-One Solution for Orchestrating Workflows
+              Build all kinds of Workflows with Kestra: Your All-in-One Solution for Orchestrating Business-Critical Applications
             </p>
 
             <div class="cta">
@@ -37,7 +36,7 @@
           data-aos="zoom-in"
         >
           <img
-            class="zoom img-fluid headerimg"
+            class="img-fluid headerimg"
             src="/landing/features/header.svg"
             alt="A screenshot of the user interface of Kestra's application"
           />
@@ -51,12 +50,15 @@
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
 
+.hero {
+    padding-bottom: 0;
+}
 .container-fluid {
   background: $black-4;
   color: var(--bs-white);
   padding-top: 80px;
   margin-top: -80px;
-  background-image: url(/landing/features/mask.svg);
+  background-image: url(/landing/features/mask.svg) no-repeat;
 
   .line {
     background: rgba(255, 255, 255, 0.1) !important;

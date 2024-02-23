@@ -103,7 +103,7 @@
                     },
                     {
                         profile: "/landing/home/testimonials/michael.jpeg",
-                        message: "I’ve spent a huge part of my career looking for a solution that handle huge data sets for semi-technicals users and Kestra is the first exciting thing I’ve seen in a long time.",
+                        message: "Kestra is the first exciting thing I’ve seen in a long time.I’ve spent a huge part of my career looking for a solution that handle huge data sets.",
                         name: "Michael Reynolds",
                         link: "https://www.linkedin.com/in/michael-reynolds-a0a32a28/",
                         designation: "Lead Research Engineer @ Two Six Labs",
@@ -111,7 +111,7 @@
                     },
                     {
                         profile: "/landing/home/testimonials/yohann.jpeg",
-                        message: "I enjoy the overall robustness of Kestra, which allows for processing data at scale in cloud environments and ensures the reproducibility of processes. Its strong observability, ease of development, and flexibility make it a versatile solution for managing data pipelines, including those in the field of genomics.",
+                        message: "I enjoy the overall robustness of Kestra, which allows for processing data at scale in cloud environments and ensures the reproducibility of processes.",
                         name: "Yohann Nédélec",
                         link: "https://www.linkedin.com/in/yohann-n%C3%A9d%C3%A9lec-9b367685/",
                         designation: "Tech Lead, Bioinformatician",
@@ -119,7 +119,7 @@
                     },
                     {
                         profile: "/landing/home/testimonials/samuelb.jpg",
-                        message: "I Love Kestra! It allows me to focus on the hard problems and the interesting part of my work without having to spend time on boring and repetitive tasks. Orchestrating and monitoring complex systems has never been easier thanks to the beautiful web interface. It takes the best of Airflow and Google Workflows in one simple and elegant solution. It scales and integrates itself easily in any ecosystem thanks to the plugins library.",
+                        message: "I Love Kestra! It allows me to focus on the hard problems and the interesting part of my work without having to spend time on boring and repetitive tasks.",
                         name: "Samuel Boisgontier",
                         link: "https://www.linkedin.com/in/samuelboisgontier/",
                         designation: "Data Engineer @ SFEIR",
@@ -143,11 +143,19 @@
                     },
                     {
                         profile: "/landing/home/testimonials/antoineb.jpg",
-                        message: "Kestra has been a keystone to design complex executions flows while enhancing our Infrastructure as Code best practices. It now empowers our ingestion with Airbyte, transformation with dbt and our HighTouch reverse-ETL jobs seamlessly!",
+                        message: "Kestra has been a keystone to design complex executions flows while enhancing our Infrastructure as Code best practices.",
                         name: "Antoine Balliet",
                         link: "https://www.linkedin.com/in/antoineballiet/",
                         designation: "Data & Analytics Engineer @ Gorgias",
                         alt: "Picture of Antoine testimony",
+                    },
+                    {
+                        profile: "/landing/home/testimonials/antoineb.jpg",
+                        message: "I'm very impressed with what your team has here in Kestra. I moved some of my automated jobs over from Apache NIFI to Kestra Kestra is wayyyy easier to work with because of everything being in the UI.",
+                        name: "Jake Kruse",
+                        link: "https://www.linkedin.com/in/jake-kruse-608471174/",
+                        designation: "Research Assistant @ GeoDS Lab",
+                        alt: "Picture of Jake testimony",
                     }
                 ],
             };
