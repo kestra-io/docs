@@ -32,13 +32,11 @@ pool:
   name: test-pool
 
 stages:
-
   - stage: tfvalidate
     jobs:
       - job: deploy
         continueOnError: false
         steps:
-
           - task: TerraformInstaller@1
             inputs:
               terraformVersion: 'latest'
