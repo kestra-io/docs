@@ -15,7 +15,44 @@
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <img class="img-fluid" src="/landing/how/how-1.svg" alt="How to define a flow example" />
+                    <div class="code">
+                        <div class="code-header">
+                            <img src="/landing/3dot-home.svg" alt="code">
+                        </div>
+                        <div class="code-content" ref="codeContainer">
+                            <button class="btn content-copy-icon p-0" ref="copyBtn" @click="copyCodeContext" data-toggle="tooltip"  data-placement="top" :title="copyCodeText">
+                                <img src="/landing/content_copy.svg" alt="content_copy">
+                            </button>
+                            <span>id:</span> api_python_sql
+                            <br />
+                            <span>namespace:</span> dev
+                            <br />
+                            <br />
+                            <span>tasks:</span><br/>
+                            <span>- id:</span> extract_from_api<br/>
+                            <span>type:</span> io.kestra.plugin.fs.http.Request<br/>
+                            <span>uri:</span> https://dummyjson.com/products<br/>
+                            <br/>
+                            <span>- id:</span> python_transform<br/>
+                            <span>type:</span> io.kestra.plugin.scripts.python.Script<br/>
+                            <span>docker:</span><br/>
+                            <span>image:</span> ghcr.io/kestra-io/pydata:latest <br/>
+                            <span>script:</span>|<br/>
+                            import polars as pl<br/>
+                            ...
+                            <br/>
+                            <br/>
+                            <span>- id:</span> load_sql<br/>
+                            <span>type:</span> io.kestra.plugin.gcp.bigquery.Load<br/>
+                            <span>from:</span> {{ output }}<br/>
+                            <span>destinationTable: </span>gcp_project.dataset.table<br/>
+                            <br/>
+                            <span>triggers:</span><br/>
+                            <span>- id:</span> daily<br/>
+                            <span>type:</span> io.kestra.core.models.triggers.types.Schedule<br/>
+                            <span>cron:</span> "@daily"<br/>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -105,6 +142,8 @@
                 strokeDasharray4: 1,
                 strokeDasharray5: 1,
                 strokeDasharray6: 1,
+                output: `"{{ outputs.python.outputFiles['products.csv'] }}"`,
+                copyCodeText: "Copy to clipboard"
             };
         },
         methods: {
@@ -123,7 +162,20 @@
                 } else if (window.scrollY < top) {
                     this[`strokeDasharray${lineN}`] = 1;
                 }
-            }
+            },
+           copyCodeContext () {
+              const codeToCopy = this.$refs.codeContainer.innerText;
+              const copyTextArea = document.createElement('textarea');
+              copyTextArea.value = codeToCopy;
+              document.body.appendChild(copyTextArea);
+              copyTextArea.select();
+              document.execCommand('copy');
+              document.body.removeChild(copyTextArea);
+              this.copyCodeText = "Copied!";
+              setTimeout(() => {
+                this.copyCodeText = "Copy to clipboard";
+              }, 1000);
+           }
         },
         mounted() {
             const connectionLine1 =  this.getConnectionLineOffset(1);
@@ -208,12 +260,12 @@
                     }
 
                     &-1 {
-                        top: -37%;
+                        top: -33%;
                         left: 30.5%;
 
 
                         @include media-breakpoint-down(xxl) {
-                            top: -39%;
+                            top: -27%;
                             left: 16%;
                         }
 
@@ -479,4 +531,93 @@
         }
     }
 
+    .code {
+        position: relative;
+        overflow: hidden;
+        border-radius: calc($spacer * 0.5);
+        border: 1px solid #3D3D3F;
+        .code-content {
+            padding: calc($spacer * 2);
+            font-family: var(--bs-font-monospace);
+            color: #F2AF7D;
+            white-space: pre;
+            font-size: calc($font-size-base * .625);
+
+            span {
+                color: #03DABA;
+            }
+
+            @include media-breakpoint-down(xl) {
+                font-size: $font-size-sm;
+            }
+
+            @include media-breakpoint-down(lg) {
+                font-size: calc($font-size-base * 0.625);
+            }
+
+            @include media-breakpoint-down(md) {
+                font-size: $font-size-sm;
+            }
+
+            @include media-breakpoint-down(sm) {
+                font-size: calc($font-size-base * 0.563);
+                padding: calc($spacer * 2) $spacer;
+            }
+
+            .content-copy-icon {
+                position: absolute;
+                top: calc($spacer * 1.25);
+                right: calc($spacer * 1.25);
+                cursor: pointer;
+            }
+        }
+
+        .code-content, .code-header {
+            --border-size: 1px;
+            position: relative;
+            z-index: 0;
+            overflow: hidden;
+            border: 1px solid #3D3D3F;
+            background: $black-2;
+            &::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0 0 0.5rem 0.5rem;
+                transition: background-color 0.2s ease;
+            }
+
+            &::before {
+                background: conic-gradient(#B010FB,
+                    #DE97FF 10%,
+                    #A227DB,
+                    transparent 50%,
+                    #A610EC);
+            }
+        }
+
+        .code-header {
+            padding: 0.75rem 1rem;
+
+            &::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                left: 1px;
+                top: 1px;
+                width: calc(100% - 2px);
+                height: calc(100% - 2px);
+                border-radius: 0.5rem 0.5rem 0 0;
+                transition: background-color 0.2s ease;
+            }
+        }
+
+        .text-success {
+            color: #2C3F3A !important;
+        }
+    }
 </style>
