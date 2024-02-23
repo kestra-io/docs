@@ -7,18 +7,18 @@
 </template>
 
 <script>
-  import Section from "~/components/layout/Section.vue";
+    import Section from "~/components/layout/Section.vue";
 
-  export default {
-    components: {Section},
-    data() {
-      return {
-        mainContent: [
-          {
-            title: 'API-first design with declarative workflow definition',
-            img: '/landing/features/declarative1.svg',
-            imgAlt: 'API-first design with declarative workflow definition',
-            content: `
+    export default {
+        components: {Section},
+        data() {
+            return {
+                mainContent: [
+                    {
+                        title: 'API-first design with declarative workflow definition',
+                        img: '/landing/features/declarative1.svg',
+                        imgAlt: 'API-first design with declarative workflow definition',
+                        content: `
                             <ul>
                                 <li>
                                     Strong typing and autocompletion:
@@ -49,12 +49,12 @@
                                 </li>
                             </ul>
                         `
-          },
-          {
-            title: 'Iterate faster without the overhead of CI/CD',
-            img: '/landing/features/execute.svg',
-            imgAlt: 'Iterate faster without the overhead of CI/CD',
-            content: `
+                    },
+                    {
+                        title: 'Iterate faster without the overhead of CI/CD',
+                        img: '/landing/features/execute.svg',
+                        imgAlt: 'Iterate faster without the overhead of CI/CD',
+                        content: `
                             <ul>
                                 <li>
                                     Less time spent babysitting orchestration code:
@@ -81,12 +81,12 @@
                                 </li>
                             </ul>
                         `
-          },
-          {
-            title: 'Flexible Event-Driven Workflow Execution',
-            img: '/landing/features/flowable.svg',
-            imgAlt: 'Flexible Event-Driven Workflow Execution',
-            content: `
+                    },
+                    {
+                        title: 'Flexible Event-Driven Workflow Execution',
+                        img: '/landing/features/flowable.svg',
+                        imgAlt: 'Flexible Event-Driven Workflow Execution',
+                        content: `
                             <ul>
                                 <li>
                                     Time-based scheduling:
@@ -109,12 +109,12 @@
                                 </li>
                             </ul>
                         `
-          },
-          {
-            title: 'Execute and Monitor in Real Time',
-            img: '/landing/features/monitor.svg',
-            imgAlt: 'Execute and Monitor',
-            content: `
+                    },
+                    {
+                        title: 'Execute and Monitor in Real Time',
+                        img: '/landing/features/monitor.svg',
+                        imgAlt: 'Execute and Monitor',
+                        content: `
                             <ul>
                                 <li>
                                     Real-time Workflow Monitoring:
@@ -130,11 +130,11 @@
                                 </li>
                             </ul>
                         `
-          },
-        ],
-      }
-    },
-  }
+                    },
+                ],
+            }
+        },
+    }
 </script>
 
 <style lang="scss" scoped>

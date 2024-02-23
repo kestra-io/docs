@@ -50,12 +50,15 @@
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
 
+.hero {
+    padding-bottom: 0;
+}
 .container-fluid {
   background: $black-4;
   color: var(--bs-white);
   padding-top: 80px;
   margin-top: -80px;
-  background-image: url(/landing/features/mask.svg);
+  background-image: url(/landing/features/mask.svg) no-repeat;
 
   .line {
     background: rgba(255, 255, 255, 0.1) !important;
