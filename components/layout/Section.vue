@@ -3,7 +3,7 @@
         <div class="subtitle" :data-aos="animationType('fade-right')" v-if="subtitle">
             <p>
                 <span v-if="subtitleBefore">{{subtitleBefore}}</span>
-                \n {{ subtitle }}
+                {{ subtitle }}
                 <span v-if="subtitleAfter">{{subtitleAfter}}</span>
             </p>
         </div>
