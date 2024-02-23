@@ -1,5 +1,5 @@
 ---
-title: "DollarU, OpCon, Control-M vs. Kestra — how to choose the right scheduling platform"
+title: "DollarU, Control-M, Kestra — how to choose the right scheduling platform"
 description: "How the scheduling landscape has evolved in the last decade? Learn more about the differences between traditional schedulers and tools, such as Kestra, providing a more modern approach to orchestration and scheduling."
 date: 2023-10-17T17:00:00
 category: Solutions
@@ -43,38 +43,6 @@ There are areas where the product shows its age, particularly when compared to m
 **Inflexibility in Dynamic Scaling**: Although Dollar Universe offers a range of scalability features, they are optimized for more static on-prem enterprise environments. In contrast, modern applications expect the platform to adapt to cloud-based infrastructure requirements, dynamically allocating or deallocating resources as needed.
 
 **Limited Real-Time Monitoring Capabilities**: While the tool does offer some form of real-time monitoring, it is not as comprehensive as newer platforms. For instance, it may not offer the depth of metrics or insights into the system's state, which could be crucial for complex, multi-layered workflows.
-
----
-
-## OpCon
-
-[OpCon](https://smatechnologies.com/products-opcon-automation), developed by SMA Technologies, is another industry veteran in the automation and scheduling sector. Engineered with a focus on both small businesses and large enterprises, OpCon aims to simplify complex operational workflows.
-
-### Core Automation Features
-
-**Self-Service scheduler**: Users can build, initiate, and manage workflows without any specialized training.
-
-**Disaster Recovery:** OpCon includes robust disaster recovery features, offering automated failover mechanisms to ensure minimal service disruption. This is particularly beneficial for mission-critical applications that require high availability.
-
-### API Integration Layer
-
-Similar to Dollar Universe, OpCon also incorporates an extensive API framework. However, it goes a step further by offering native integrations with popular third-party applications like ServiceNow, Salesforce, and more. Its API framework allows for both inbound and outbound integrations.
-
-The API set supports both RESTful and SOAP web services. These APIs can facilitate everything from simple task initiation to complex, multi-step workflows involving various departments and systems.
-
-### How it works
-
-OpCon employs a strategy of conditional logic in its scheduling, which allows workflows to adapt based on real-world events. It also supports multiple types of job triggers, including time-based, file-based, and database change-based.
-
-### Where It Falls Short
-
-Despite its powerful feature set, OpCon is not without its shortcomings:
-
-**Resource Intensiveness**: OpCon's architecture can sometimes require substantial system resources, making it less ideal for smaller environments or cloud-native applications that demand lightweight solutions.
-
-**No Native Support for Modern DevOps Practices:** As a tool that’s been around for a while, OpCon lacks out-of-the-box support for modern DevOps practices like containerization and Infrastructure as Code (IaC), which are becoming industry standards.
-
-While OpCon offers a feature-rich and flexible scheduling solution, it still leans towards traditional IT environments and could benefit from updates to better support modern DevOps practices and cloud-native applications.
 
 ---
 
@@ -186,7 +154,7 @@ The examples above show how Kestra allows you to keep the entire scheduling logi
 
 ## What's Next
 
-As we've seen, the right tool for your scheduling needs depends on a variety of factors, from the scale and complexity of your tasks to the architecture of your system. While traditional tools like Dollar Universe and OpCon have many useful features, Kestra provides more flexibility and brings Infrastructure as Code best practices to all scheduled and event-driven workflows.
+As we've seen, the right tool for your scheduling needs depends on a variety of factors, from the scale and complexity of your tasks to the architecture of your system. While traditional tools like Dollar Universe have many useful features, Kestra provides more flexibility and brings Infrastructure as Code best practices to all scheduled and event-driven workflows.
 
 Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance. Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
 
