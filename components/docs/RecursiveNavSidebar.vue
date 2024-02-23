@@ -203,7 +203,7 @@
                 a {
                     padding-left: 0.25rem;
                     border-left: 0;
-                    color: var(--bs-body-color);
+                    color: $white-1;
                 }
             }
 
