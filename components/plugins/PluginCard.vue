@@ -2,7 +2,7 @@
     <NuxtLink :href="`/plugins/${plugin.name}`">
         <div class="plugin d-flex align-items-center gap-2 bg-dark-2">
             <div class="icon-content">
-                <img :src="`${iconUrl}${plugin.group}`" :alt="plugin.title">
+                <img :src="`/icons/${plugin.group}.svg`" :alt="plugin.title">
             </div>
             <h6>
                 {{ plugin.title.length > 150 ? plugin.title.substring(0, 150) + '...' : plugin.title }}
@@ -11,7 +11,6 @@
     </NuxtLink>
 </template>
 <script setup>
-    const config = useRuntimeConfig();
     const props = defineProps({
         plugin: {
             type: Object,
@@ -22,7 +21,6 @@
             default: undefined
         },
     });
-    const  iconUrl = `${config.public.apiUrl}/plugins/icons/`;
 </script>
 
 
