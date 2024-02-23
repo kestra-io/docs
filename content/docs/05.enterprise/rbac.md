@@ -3,6 +3,10 @@ title: Role-Based Access Control (RBAC)
 icon: /docs/icons/admin.svg
 ---
 
+This page describes how to manage access and permissions to your instance.
+
+## Overview
+
 Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to manage access to workflows and resources by assigning Roles to Users, Groups and Service Accounts.
 
 The image below shows the relationship between Users, Groups, Service Accounts, Roles, and Bindings (visible on the Access page in the UI).
