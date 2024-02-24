@@ -91,56 +91,62 @@ kestra auths users create <username> <password> \
 ---
 
 ## Super Admin
-- **Super Admin**: this role has full access to all resources within the tenant from which it was granted to a User, Service Account or Group. On top of that, this role also has access to **manage tenants** within a Kestra Enterprise instance.
 
-A user with a Super Admin role has full access to all resources in a specific tenant from which it was created. Additionally, it has permissions to create or delete tenants, as well as centrally govern Roles, Groups, and Users on the instance level (i.e. across all tenants). Users with Super Admin Role can access executions, logs, audit logs, and other tenant information from any tenant if this is required for troubleshooting purposes or to help a user with a problem, e.g. if a user forgot their password, locked themselves out, etc.
+Super Admin is a type of user with access to manage tenants, users and roles within a Kestra Enterprise instance. That user can create or delete tenants, as well as centrally govern Roles, Groups, and Users on the instance level (i.e. across all tenants).
 
-When a User with Super Admin Role creates a new tenant, they aren't automatically granted an Admin Role to that tenant. They can assign Admin Role to themselves or any other User, Service Account or Group in that tenant. The tenant-level Admin Role must be explicitly granted.
+### Support Access
+When required for troubleshooting purposes, any user can toggle `Support Access` to grant the Super Admin user access to their tenant. This is useful if a user forgot their password, locked themselves out, etc.
 
-**How can a User with a Super Admin Role grant someone an Admin Role without having an Admin Role in that tenant themselves?** There is a dedicated API endpoint accessible only to those with a Super Admin Role through a Management Console, allowing them to bypass the tenant-level permissions. Even though that user can grant permission to any tenant, that user will not be listed under tenant-level Users.
+### Access to a new tenant
 
-Super Admin is a powerful Role that allows you to troubleshoot any tenant issues without having to be an Admin in that tenant. Use that role sparingly and only for use cases that require it, such as creating a new tenant, troubleshooting tenant issues, or helping a user with a problem.
+When a Super Admin user creates a new tenant, they aren't automatically granted an Admin Role to that tenant. They can assign an Admin Role to anyone including:
+- themselves
+- any other User, Service Account or Group .
 
-::alert{type="info"}
-Except for the `Super Admin`, all Roles are always tied to one and only one [tenant ID](./03.tenants.md). We currently don’t provide any cross-tenant RBAC permissions. However, when configuring permissions using [our Terraform provider](https://registry.terraform.io/providers/kestra-io/kestra/latest), you can add modules to reuse the same configuration across tenants to achieve the same effect without duplicating the configuration.
-::
+TL;DR: the tenant-level Admin Role must be explicitly granted.
 
-The main difference between an **Admin** and a **Super Admin** roles is that the **Super Admin** also has the `SUPERADMIN` permission. This extra permission grants access to create, manage or delete tenants.
+### Use Cases
+Super Admin is a powerful type of user. Use that role sparingly and only for use cases that require it, such as creating a new tenant, troubleshooting tenant issues, or helping a user with a problem.
 
-A User with a `Super Admin` Role can:
+### Super Admin vs. Admin
+
+Here are the main differences between an **Admin Role** and a **Super Admin user type**:
+- **Admin Role** grants full access to all resources in a specific tenant
+- **Super Admin** has access to manage tenants, users and roles but it doesn't grant access to any tenant by default.
+
+A `Super Admin` user can:
+- see an instance-level overview of existing tenants
 - create/remove tenants
 - create/remove Roles
 - create/remove Users, Service Accounts, and Groups
 - add users to, or remove them from, tenants or Groups
 - add or remove Roles from Users, Service Accounts, and Groups in any tenant
-- assign themselves or anyone else an `Admin` Role in any tenant.
-- grant `Super Admin` Role to other Users, Service Accounts, and Groups
-- do anything in their tenant: manage Users, Groups, Roles, flows, executions, logs, audit logs etc.
-- get access other tenants' flows, executions, logs, audit logs, etc when needed for troubleshooting purposes
-- see an instance-level overview of existing tenants.
+- assign themselves or anyone else an `Admin` Role in any tenant
+- create new `Super Admin` users
+- troubleshoot other tenants' flows, executions, logs, audit logs, etc when eplicitly granted permission via `Support Access` toggle.
 
 
-### Creating a User with Super Admin Role from the UI
+### Creating a Super Admin user from the UI
 
-When launching Kestra for the first time, you will see a welcome screen allowing you to create a first User if you don't have one already. This User will automatically be assigned the `Super Admin` Role.
+When launching Kestra for the first time, you will see a [Setup Page](./02.setup-page.md) allowing you to create a first user if you don't have one already. This User will automatically be assigned the `Super Admin` Role.
 
-### Creating a User with Super Admin Role from the CLI
+### Creating a Super Admin from the CLI
 
 To create a User with a Super Admin Role from the CLI, use the `--superadmin` property:
 
 ```bash
-kestra auths users create prod.admin@kestra.io TopSecret42 --superadmin
+kestra auths users create admin@kestra.io TopSecret42 --superadmin
 
 # schema: select either `--admin` or `--superadmin`:
 kestra auths users create <username> <password> \
 --tenant=<tenant-id> --admin --superadmin
 ```
 
-If you use the same command as above, but change the `--superadmin` flag to just `--admin`, the user will be created with the `Tenant Admin` Role instead. Make sure to include the `--tenant` property with the tenant ID when creating a user with an `Admin` Role.
+Check the [CLI documentation](./cli.md) for more details on how to use the CLI to create users.
 
-Note that only a user with a `Super Admin` Role can grant a Role with `SUPERADMIN` or `ROLES` permissions:
-  - If you want to give a role with `SUPERADMIN` permission to someone, you need to have a `SUPERADMIN` permission yourself
-  - If you want to give a role with `ROLES` permission, you need to have a `SUPERADMIN` permission, as otherwise, someone could grant themselves or someone else a `SUPERADMIN` permission.
+If you use the same command as above, but change the `--superadmin` flag to just `--admin`, the user will be created with the `Admin` Role instead. Make sure to include the `--tenant` property with the tenant ID when creating a user with an `Admin` Role.
+
+Note that after the initial setup, only a `Super Admin` user can create another super admin user.
 
 ---
 
@@ -196,9 +202,6 @@ Neither Admin nor Super Admin can change a user's password arbitrarily. However,
 
 ## RBAC FAQ
 
-**Why a Service Account is not just one type of User?**
-
-Service Account is not a User, but a collection of Permissions to allow an external application (such as Terraform or GitHub Actions) to assume programmatic access to Kestra resources. You can think of a Service Account as an application (a bot 🤖) that is granted permissions to perform actions on behalf of a user.
 
 **Why Admin is a Role rather than User type?**
 
