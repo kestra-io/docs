@@ -52,6 +52,8 @@ Transforming data with SQL is in growing need, and several other actors have to 
 
 - [lea](https://github.com/carbonfact/lea): a lightweight alternative to dbt or SQLMesh. Fully open-source and maintained by the team using it for their data warehouse ([CarbonFact](https://www.carbonfact.com/)).
 
+- [Quary](https://www.quary.dev/): an open-source alternative of dbt Core, made in Rust.
+
 - Building your own “in-house dbt” is definitely something to consider if you have the skill and the need for a custom solution. dbt is basically SQL plus templating, so why not build your own?
 
 - Declaring queries with Terraform resources: this is something often overlooked, but if your modeling is simple enough, using only [resources like google_bigquery_table with Terraform](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table) to build views on top of raw data can be a very lightweight solution.
