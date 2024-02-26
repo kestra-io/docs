@@ -87,11 +87,13 @@ But once you have chosen your SQL transformation frameworks, the real flaws are 
 
 - Just like an inexperienced software engineer tends to write complex code with all the wrong abstractions, the same can happen in any project involving a SQL framework. 
 
-Globally speaking it resonates a lot with what we heard here with Kestra users. Clean operations are the keystone to driving value out of data and navigating models and the chain value is hard.
+Globally speaking it resonates a lot with what we hear here with Kestra users. Clean operations are the keystone to driving value out of data and navigating models and the chain value is hard.
 
 Like Airflow was the first of a new generation of orchestrators, dbt was the first to emphasize software practice applied to data analytics. New actors are coming into the game, bringing new improvements and new visions along the way.
 
 To somehow answer the question raised in the head title: the time to switch depends on your team's and your company's maturity. 
 dbt has the biggest community and tons of documentation and tutorials. It’s probably the best tool to start with if you want something battle-tested by a lot of users. If you need more solutions regarding proper operation and environment management, then using SQLMesh could be something to think of.
 
--- TODO: add why Kestra + footer social networks/slack
+
+Are you already using dbt? Do you plan to use SQLMesh? At Kestra we would love to hear from you. You can [join the Slack community](https://kestra.io/slack) we're we'll be happy to help you in your development.
+Checkout [dbt and SQLMesh tasks on the plugin page](https://kestra.io/plugins?page=1&size=40&category=All+Categories&q=dbt) and [check the code in our GitHub repository](https://github.com/kestra-io) and give us a star if you like the project. Follow us on Twitter for the latest news.  
