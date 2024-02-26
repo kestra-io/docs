@@ -1,12 +1,9 @@
 <template>
-    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top"
-        :class="{ transparent: transparentClass, open: isOpen }">
+    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{open: isOpen}">
         <div class="container-xl">
             <NuxtLink class="navbar-brand" href="/" @click="logoClick">
                 <img class="icon" src="/icon.svg" alt="Kestra, Open source declarative data orchestration" />
-                <img v-if="transparentClass" src="/logo-white.svg"
-                    alt="Kestra, Open source declarative data orchestration" />
-                <img v-else src="/logo.svg" alt="Kestra, Open source declarative data orchestration" />
+                <img src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
             </NuxtLink>
 
             <button class="navbar-toggler" @click="globalClick(false)" type="button" aria-controls="main-header"
@@ -29,7 +26,7 @@
                                     <FeatureSearch />
                                     <p>
                                         <span>Open Source</span><br />
-                                        Discover all the features of Kestra
+                                        Explore Kestra's Core Capabilities
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -38,7 +35,7 @@
                                     <Security />
                                     <p>
                                         <span>Enterprise Edition</span><br />
-                                        Security and High Availability for enterprise
+                                        Security and Governance for Enterprise Needs
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -48,7 +45,17 @@
                                     <FileCodeOutline />
                                     <p>
                                         <span>Declarative Orchestration</span><br />
-                                        Simplified data workflow creation and execution
+                                        Infrastructure as Code for All Workflows
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/features/scheduling-and-automation"
+                                          @click="globalClick(true)">
+                                    <Sync />
+                                    <p>
+                                        <span>Automation Platform</span><br />
+                                        Scheduling and Automation Made Easy
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -66,8 +73,8 @@
                                 <NuxtLink class="dropdown-item" href="/use-cases" @click="globalClick(true)">
                                     <ChartDonut />
                                     <p>
-                                        <span>Use cases</span><br />
-                                        Uncover a wide range of use cases
+                                        <span>Use Cases</span><br />
+                                        Explore a wide range of supported use cases
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -86,7 +93,7 @@
                                     <Terraform />
                                     <p>
                                         <span>Kestra's Terraform Provider</span><br />
-                                        Manage and deploy Kestra workflows in your Terraform environment
+                                        Deploy and manage all Kestra resources with Terraform
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -95,7 +102,7 @@
                                     <BookOpenVariant />
                                     <p>
                                         <span>Customers stories</span><br />
-                                        Learn how Kestra helped companies manage their critical operations
+                                        Learn how Enterprises orchestrate their business-critical workflows
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -125,6 +132,15 @@
                                     <p>
                                         <span>Blueprints</span><br />
                                         Explore blueprints to kick-start your next flow
+                                    </p>
+                                </NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/use-cases/retail" @click="globalClick(true)">
+                                    <BasketOutline />
+                                    <p>
+                                        <span>Kestra for Retail</span><br />
+                                        Automate and Orchestrate Your Retail Operations
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -172,7 +188,7 @@
                                     <Handshake />
                                     <p>
                                         <span>Partners</span><br />
-                                        Elevate your Kestra use through our partner ecosystem
+                                        Use our partner ecosystem to accelerate your Kesra adoption
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -181,7 +197,7 @@
                                     <AccountGroup />
                                     <p>
                                         <span>FAQ</span><br />
-                                        FAQ about the product and the company
+                                        Common questions about the product and the company
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -190,7 +206,7 @@
                                     <Domain />
                                     <p>
                                         <span>About us</span><br />
-                                        Discover our story and meet our team
+                                        Read about our story and meet our team
                                     </p>
                                 </NuxtLink>
                             </li>
@@ -290,6 +306,8 @@ import Ballot from "vue-material-design-icons/Ballot.vue"
 import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
 import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
 import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
+import Sync from "vue-material-design-icons/Sync.vue"
+import BasketOutline from "vue-material-design-icons/BasketOutline.vue"
 </script>
 
 <script>
@@ -400,12 +418,18 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
 
-nav {
-    background: var(--bs-white);
-    box-shadow: $box-shadow;
-    transition: all ease 0.2s;
-    transform: translateY(0);
-    max-height: 100%;
+    nav {
+        background: $black-4;
+        transition: all ease 0.2s;
+        transform: translateY(0);
+        max-height: 100%;
+        @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+            & {
+                -webkit-backdrop-filter: blur(calc($spacer * 0.625));
+                backdrop-filter: blur(calc($spacer * 0.625));
+                background-color: rgb(17 17 19 / 65%);
+            }
+        }
 
     .navbar-brand {
         img:not(.icon) {
@@ -430,12 +454,10 @@ nav {
         }
     }
 
-    a.nav-link,
-    button.navbar-toggler,
-    &.btn.search {
-        color: var(--bs-black);
-        box-shadow: none !important;
-    }
+        a.nav-link, button.navbar-toggler, &.btn.search, .nav-item a {
+            color: var(--gray-white, #FFF) !important;
+            box-shadow: none !important;
+        }
 
     .navbar-toggler {
         border: 0;
@@ -470,12 +492,10 @@ nav {
                         display: none;
                     }
 
-                    &.show,
-                    &:hover {
-                        color: $black-9 !important;
-                        background: var(--bs-gray-100);
+                        &.show, &:hover {
+                            color: $purple-36 !important;
+                        }
                     }
-                }
 
                 @include media-breakpoint-down(lg) {
                     .chevron-down-icon {
@@ -499,13 +519,13 @@ nav {
                 }
 
 
-                .dropdown-menu {
-                    --bs-dropdown-link-hover-bg: var(--bs-gray-100);
-                    --bs-dropdown-link-active-bg: var(--bs-gray-100);
-                    padding: 1rem;
-                    box-shadow: $box-shadow;
-                    border-radius: $border-radius-lg;
-                    border: 1px solid var(--bs-border-color);
+                    .dropdown-menu {
+                        --bs-dropdown-link-hover-bg: $black-4;
+                        --bs-dropdown-link-active-bg: $black-4;
+                        padding: 1rem;
+                        border-radius: $border-radius-lg;
+                        border: 1px solid $black-6;
+                        background: $black-2;
 
                     @include media-breakpoint-down(lg) {
                         display: block;
@@ -533,28 +553,34 @@ nav {
                             margin-bottom: 0;
                         }
 
-                        .material-design-icon,
-                        span {
-                            color: $purple-12;
+                        .material-design-icon {
+                            color: $black-8;
+                        }
+
+                        p {
+                            color: $black-8 !important;
+                            font-size: 0.813rem;
+                            font-weight: 300;
+                            margin-bottom: 0;
+
+                            span {
+                                display: inline-block;
+                                color: $white !important;
+                                font-size: $font-size-sm;
+                                font-weight: 600;
+                            }
+
+                            mark {
+                                padding-left: 0;
+                                padding-right: 0;
+                            }
                         }
 
                         &:hover {
+                            background-color: $black-3;
 
-                            .material-design-icon,
-                            span {
-                                color: $primary;
-                            }
-
-                            p span {
-                                &:after {
-                                    content: '→';
-                                    font-weight: bold;
-                                    font-family: var(--bs-font-monospace);
-                                    position: absolute;
-                                    font-size: 26px;
-                                    top: -8px;
-                                    right: -25px;
-                                }
+                            .material-design-icon, span, p {
+                                color: $white !important;
                             }
                         }
 
@@ -577,21 +603,6 @@ nav {
                                 bottom: 0.125rem;
                             }
                         }
-
-                        p {
-                            color: var(--bs-black);
-                            font-size: var(--bs-font-size-sm);
-                            margin-bottom: 0;
-
-                            span {
-                                display: inline-block;
-                            }
-
-                            mark {
-                                padding-left: 0;
-                                padding-right: 0;
-                            }
-                        }
                     }
                 }
             }
@@ -609,7 +620,7 @@ nav {
                     font-size: 1.5rem;
 
                     &:hover {
-                        color: $black-9 !important;
+                        color: $purple-36 !important;
                     }
                 }
             }
@@ -625,20 +636,21 @@ nav {
         font-size: 12px !important;
     }
 
-    &:not(.transparent) {
-        :deep(.github .btn-dark) {
-            background-color: var(--bs-gray-200);
-            border-color: var(--bs-border-color);
-            color: var(--bs-body-color);
-        }
+        &:not(.transparent) {
+            :deep(.github .btn-dark) {
+                border-color: $black-5;
+                background: $black-5;
+                color: $white-6;
+            }
 
-        :deep(.github .btn-outline-dark) {
-            border-color: var(--bs-border-color);
+            :deep(.github .btn-outline-dark) {
+                border-color: $black-5;
+                color: $white-6;
+            }
         }
-    }
 
     .btn:hover {
-        color: $black-9;
+        color: $purple-36;
     }
 
     &.transparent {

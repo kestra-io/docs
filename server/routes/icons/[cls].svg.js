@@ -6,5 +6,7 @@ export default defineEventHandler(async (event) => {
     event.node.res.setHeader('content-type', response.type)
     event.node.res.setHeader('cache-control', "max-age=86400;")
 
-    event.node.res.end(await response.text())
+    const byte = (await response.text()).replaceAll("currentColor", "#CAC5DA")
+
+    event.node.res.end(byte)
 })

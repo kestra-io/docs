@@ -1,22 +1,15 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid bg-dark-1">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 p-5">
-                    <h2 data-aos="fade-left">Take Kestra to the next level with the Enterprise Edition</h2>
-                    <ul class="mb-5" data-aos="fade-right">
-                        <li>SSO/OIDC Authentication</li>
-                        <li>Role-Based Access Control</li>
-                        <li>Secret Manager Integration</li>
-                        <li>High Availability</li>
-                        <li>Best in Class Support</li>
-                        <li>And More...</li>
-                    </ul>
-
-                    <NuxtLink href="/enterprise" class="btn btn-primary me-2" data-aos="zoom-in">Learn more</NuxtLink>
-                    <NuxtLink href="/contact-us" class="btn btn-dark" data-aos="zoom-in">Contact us</NuxtLink>
-                </div>
-                <div class="col-md-6">
+                <div class="p-1 p-sm-5 d-flex flex-column align-items-center gap-3">
+                    <img class="levels" src="/landing/ee/level.svg" alt="levels" />
+                    <h2>Take Kestra to the next level with the <span>Enterprise Edition</span></h2>
+                    <p class="description">Ensure scalability and high availability with managed Kafka and Elasticsearch integrated into the Enterprise Edition to eliminate single point of failure.</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <NuxtLink href="/enterprise" class="btn btn-animated btn-dark-animated me-2" data-aos="zoom-in">Learn more</NuxtLink>
+                        <NuxtLink href="/contact-us" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Talk to Us</NuxtLink>
+                    </div>
                 </div>
             </div>
 
@@ -37,33 +30,52 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: $purple-7;
         color: var(--bs-white);
-        padding: 5rem 0;
+
+        .container {
+            background: url("/landing/ee/ee-background.svg") no-repeat center;
+            background-size: 100%;
+            padding: 5rem 0;
+        }
 
         .row {
-            background: url("/landing/ee/background.svg") no-repeat right center;
+            h2 {
+                color: var(--bs-white);
+                text-align: center;
+                font-family: $font-family-sans-serif;
+                font-size: calc($font-size-base * 3.125);
+                font-style: normal;
+                font-weight: 300;
+                line-height: calc($spacer * 3.125);
+                padding: 0 21%;
 
-            @include media-breakpoint-down(md) {
-                background: url("/landing/ee/background.svg") no-repeat left center;
-            }
+                @include media-breakpoint-down(md) {
+                    line-height: calc($spacer * 1.625);
+                }
 
-            div:first-child {
-                padding: calc($spacer * 9);
-
-                h2 {
-                    margin-bottom: calc($spacer * 2);
+                span {
+                    background: linear-gradient(90deg, #E151F7 38.91%, #5C47F5 91.17%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
                 }
             }
 
-            .col-md-6 {
-                @include media-breakpoint-down(md) {
+            .description {
+                padding: 0 21%;
+                color: var(--bs-white);
+                text-align: center;
+                font-family: $font-family-sans-serif;
+                font-size: $h6-font-size;
+                font-style: normal;
+                font-weight: 400;
+                line-height: calc($spacer * 1.625);
+            }
+
+            @include media-breakpoint-down(lg) {
+                h2, .description {
                     padding: 0;
                 }
-            }
-
-            .btn-dark {
-                background-color: rgba($white, 10%);
             }
         }
     }

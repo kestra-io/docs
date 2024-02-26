@@ -13,7 +13,7 @@
           <h3 class="title heading ">
             Connect Your
             <span class="title-animated"> Entire Tech Stack</span>
-            with Plugins
+            with Dedicated Plugins
           </h3>
           <p class="para mt-3" data-aos="fade-right ">
             Integrate with your existing technology landscape using Kestra's
@@ -33,8 +33,8 @@
 @import "../../../assets/styles/variable";
 
 .plugin{
-  border-top: 1px solid $black-3;
-  border-bottom: 1px solid $black-3;
+  border-top: $block-border;
+  border-bottom: $block-border;
 }
 .heading {
   max-width: 400px;
@@ -43,6 +43,10 @@
   font-size: $font-size-3xl !important;
   font-weight: 300;
   margin-bottom: 0;
+  @include media-breakpoint-down(sm) {
+      font-size: calc($font-size-base * 1.625)!important;
+      line-height: calc($spacer * 2);
+  }
   &-animated {
     background: var(
       --Text_gradient,

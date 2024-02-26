@@ -1,6 +1,6 @@
 <template>
     <div class="container hero header" data-aos="fade-right">
-        <div class="row">
+        <div class="row header-content">
             <div class="col-md-6">
                 <h1 class="title fw-light" v-html="content.tag"></h1>
                 <p class="description fw-light pb-4">
@@ -66,6 +66,12 @@ export default {
     @include media-breakpoint-down(sm) {
         padding-top: $rem-4;
     }
+
+    .header-content {
+        @include media-breakpoint-down(md) {
+            flex-direction: column-reverse;
+        }
+    }
 }
 
 .title {
@@ -98,4 +104,12 @@ export default {
         margin-top: 0;
     }
 }
+
+.hero{
+    padding-bottom: 0rem;
+    @include media-breakpoint-down(md) {
+        padding-top: 0;
+    }
+}
+
 </style>

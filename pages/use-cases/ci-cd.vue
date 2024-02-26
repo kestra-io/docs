@@ -6,15 +6,18 @@
         </Head>
 
         <SolutionsDetailHeader
-            title="CI/CD for your Kestra Workflows"
+            title="for your Kestra Workflows"
+            titleBefore="CI/CD"
             subtitle="Embrace software engineering practices for versioning, deploying, and maintaining data workflows"
-            detail-title="What is CI/CD?"
-            detail-content="CI/CD stands for Continuous Integration and Continuous Deployment, software engineering practices that involve regularly merging code changes (Continuous Integration) and automated deployment to production (Continuous Deployment). CI/CD practices make the development process more efficient, less error-prone, and better aligned with business needs."
-            image="/landing/usecases/cicd/intro.svg"
+            image="/landing/usecases/cicd/intro-bg.svg"
         />
-        <SolutionsDetailMain
-            title="Implement CI/CD for Kestra Workflows"
-            subtitle="Build your Workflows as Code"
+        <SolutionsDetailContent
+            title="What is CI/CD?"
+            subtitle="CI/CD stands for Continuous Integration and Continuous Deployment, software engineering practices that involve regularly merging code changes (Continuous Integration) and automated deployment to production (Continuous Deployment). CI/CD practices make the development process more efficient, less error-prone, and better aligned with business needs."
+        />
+        <LayoutDetailMainContent
+            subtitle="Build your Workflows"
+            subtitleAfter="as Code"
             baseline="Kestra allows building workflows as code. This approach facilitates seamless integration with existing CI/CD processes, Infrastructure as Code tools like Terraform, and version control systems like Git."
             :items="mainContent"
         />
@@ -23,11 +26,17 @@
             subtitle="Kestra provides a comprehensive solution to streamline the data engineering lifecycle by offering collaborative development and infrastructure as code capabilities. Through its user-friendly interface and integration with tools like Terraform, Kestra enables organizations to develop and deploy data workflows efficiently while maintaining the stability and security of production environments."
         />
         <SolutionsDetailFeatures
-            title="Leveraging Kestra's Features"
-            subtitle="Key Features"
+            subtitle="Key"
+            subtitleAfter="Features"
             :items="features"
         />
-        <SolutionsDetailNext />
+        <LayoutFooterContact
+            title="Ready to take your data platform to the next level?"
+            darkButtonText="Contact us"
+            darkButtonHref="/contact-us"
+            purpleButtonText="Live demo"
+            purpleButtonHref="https://demo.kestra.io/ui/login?auto"
+        />
     </div>
 </template>
 

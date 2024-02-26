@@ -1,24 +1,9 @@
 <template>
-    <div class="container-fluid">
+    <div ref="container" class="container-fluid bg-dark-4">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-7" data-aos="zoom-in">
-                    <img class="img-fluid mt-2 mb-4 mt-kg-0" src="/landing/home/plugins/artwork.svg" alt="Logos of tools that integrate with Kestra such as Snowflake, Airbyte, DBT or Fivetran and Kestra at the center of It"/>
-                </div>
-                <div class="col-lg-5 mb-5 align-items-center d-flex">
-                    <div>
-                        <h2 data-aos="fade-left">Over 300 plugins</h2>
-                        <p data-aos="fade-right">
-                            Plugins are at the core of Kestra's extensibility. Many plugins are available from the Kestra core team, and creating your own is easy. With plugins, you can add new functionality to Kestra.
-                        </p>
-
-                        <div class="mt-5">
-                            <!-- data-aos="zoom-in" -->
-                            <NuxtLink class="btn btn-animated btn-dark-animated" href="/plugins">See all plugins</NuxtLink>
-                        </div>
-
-                    </div>
-                </div>
+            <div class="mb-5">
+                <h2 class="title">Integrate with over 400+ plugins you already <span>know</span> and <span>love</span></h2>
+                <LayoutPlugins />
             </div>
         </div>
     </div>
@@ -41,10 +26,42 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: $purple-34 url("/landing/home/plugins/background.svg") no-repeat bottom right;
+        background: url("/landing/home/plugins/background.svg") no-repeat center;
         color: var(--bs-white);
         padding: 0;
 
+        .container {
+            padding: 4rem 0;
+            border-bottom: $block-border;
+            border-top: $block-border;
+        }
+
+        .title {
+            margin: 0;
+            color: var(--bs-white);
+            text-align: center;
+            font-family: $font-family-sans-serif;
+            font-size: calc($font-size-base * 3.125);
+            font-style: normal;
+            font-weight: 300;
+            line-height: 4rem;
+            padding: 0 20%;
+            @include media-breakpoint-down(sm) {
+                font-size: 1.875rem;
+                line-height: 2.563rem;
+            }
+
+            @include media-breakpoint-down(lg) {
+                padding: 0;
+            }
+
+            span {
+                background: linear-gradient(91deg, #E151F7 43.87%, #5C47F5 55.51%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
 
         .row {
             div:nth-child(2) {

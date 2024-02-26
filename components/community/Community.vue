@@ -1,13 +1,13 @@
 <template>
-    <div class="container-fluid bg-body-tertiary hide-overflow">
+    <div class="container-fluid hide-overflow">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-right">
-                    <img data-aos="fade-left" src="/landing/community/contributors.png" class="mb-5 img-fluid"/>
-                    <h2 data-aos="fade-left">Kestra is built by the open-source community</h2>
+                    <img data-aos="fade-left" src="/landing/community/contributors.png" class="mb-4 img-fluid"/>
+                    <h2 class="mb-4" data-aos="fade-left">Kestra is built in the open</h2>
                     <p data-aos="fade-right">
-                        Inspire and get inspired. Join our community of maintainers and contributors and help us make
-                        Kestra better!
+                        Inspire and get inspired. Join our community of maintainers and contributors and help us improve
+                        our open-source product.
                     </p>
                 </div>
                 <div class="col-md-6">
@@ -64,11 +64,32 @@
                 </div>
             </div>
             <div class="container text-center community-links mb-3">
-                <a href="https://github.com/kestra-io/kestra" data-aos="zoom-in" class="btn btn-dark mt-2 mx-2">Follow on GitHub</a>
-                <a href="https://github.com/kestra-io/kestra/issues" data-aos="zoom-in" class="btn btn-primary mt-2">Find Open Issues</a>
+                <NuxtLink
+                    href="https://github.com/kestra-io/kestra"
+                    data-aos="zoom-in"
+                    class="btn btn-animated btn-dark-animated mt-2 mx-2"
+                >
+                    Follow on GitHub
+                </NuxtLink>
+                <NuxtLink
+                    href="https://github.com/kestra-io/kestra/issues"
+                    data-aos="zoom-in"
+                    class="btn btn-animated btn-purple-animated
+                     mt-2"
+                >
+                    Find Open Issues
+                </NuxtLink>
             </div>
         </div>
     </div>
+    <svg width="0" height="0">
+        <defs>
+            <linearGradient id="featureiconsgradient" x1="4.99595" y1="6.83411" x2="31.2214" y2="33.0161" gradientUnits="userSpaceOnUse">
+                <stop offset="0.015625" stop-color="#F2D5FF"/>
+                <stop offset="1" stop-color="#CB5AFF"/>
+            </linearGradient>
+        </defs>
+    </svg>
 </template>
 
 <script>
@@ -121,51 +142,83 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: $purple-7;
         color: var(--bs-white);
+        background: url("/landing/community/community-bg.svg") no-repeat right;
 
         &.hide-overflow {
             overflow: hidden;
         }
 
-        .container > .row {
-            padding: calc($spacer * 2);
-            padding-top: calc($spacer * 4);
+        h2 {
+            font-size: $h2-font-size;
+            font-weight: 300;
+        }
 
-            .text-right {
-                text-align: right;
+        .container {
+            & > .row {
+                padding: calc($spacer * 2);
+                padding-top: calc($spacer * 4);
 
-                @include media-breakpoint-up(md) {
-                    border-right: 1px solid var(--bs-white);
-                    padding-right: calc($spacer * 3);
+                .text-right {
+                    text-align: right;
+
+                    @include media-breakpoint-up(md) {
+                        border-right: 1px solid $black-6;
+                        padding-right: calc($spacer * 3);
+                    }
+
+                    @include media-breakpoint-down(md) {
+                        border-bottom: 1px solid $black-6;
+                        padding-bottom: calc($spacer * 3);
+                        margin-bottom: calc($spacer * 3);
+                    }
                 }
+            }
 
-                @include media-breakpoint-down(md) {
-                    border-bottom: 1px solid var(--bs-white);
-                    padding-bottom: calc($spacer * 3);
-                    margin-bottom: calc($spacer * 3);
-                }
+            .container {
+                border-bottom: $block-border;
+                margin-bottom: 0 !important;
+                padding-bottom: calc($spacer * 4);
             }
         }
     }
 
-    .container {
-        .community-links {
-            padding-bottom: calc($spacer * 2);
+    .images-contributors {
+        display: flex;
+        position: relative;
+        justify-content: flex-end;
+        min-height: calc($spacer * 4.135);;
+        img {
+            border-radius: 50%;
+            height: calc($spacer * 4.135);
+            position: absolute;
         }
     }
-
     .community {
         text-align: center;
+        color: $white;
 
         :deep(.material-design-icon) {
             border-radius: $border-radius-lg;
-            background: var(--bs-white);
+            background: $black-4;
             font-size: 2rem;
-            color: $primary;
             padding: 1.5rem;
             align-items: center;
             justify-content: center;
+
+            svg path {
+                fill: url(#featureiconsgradient);
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: -0.5px; right: 0; bottom: 0; left: 0;
+                z-index: -1;
+                margin: -1px;
+                border-radius: inherit;
+                background: linear-gradient(90deg, rgba(176,16,251,1) 0%, rgba(222,151,255,1) 14%, rgba(162,39,219,1) 28%, rgba(255,255,255,0.4654236694677871) 50%, rgba(166,16,236,0.8435749299719888) 72%);
+            }
 
             > .material-design-icon__svg {
                 bottom: 0;

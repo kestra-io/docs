@@ -1,16 +1,12 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid bg-dark-4">
         <div class="hero hero-sm container">
             <div class="row">
-                <div class="col-md-6 d-flex align-items-center order-1 order-md-0">
-                    <div>
-                        <p data-aos="fade-left" class="overline">Usages & Use Cases</p>
-                        <h1 data-aos="fade-right">Unlock the Full Potential of Kestra</h1>
-                        <p data-aos="fade-left" class="baseline">Harness your data, unlock valuable insights, and drive informed decision-making</p>
+                <div class="align-items-center col-md-12 d-flex justify-content-center order-1 order-md-0">
+                    <div class="text-center d-flex flex-column gap-3">
+                        <p data-aos="fade-left" class="title">Use Cases</p>
+                        <p data-aos="fade-left" class="baseline">Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform</p>
                     </div>
-                </div>
-                <div class="col-md-6 order-0 order-md-1">
-                    <img class="zoom img-fluid" src="/landing/company/ui.png" alt="Picture of the user interface of Kestra on light mode" data-aos="zoom-in" />
                 </div>
             </div>
         </div>
@@ -30,6 +26,29 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: $purple-8;
+        background: url("/landing/usecases/header-bg.svg") no-repeat center;
+        background-size: 100% 100%;
+
+        .container {
+            border-bottom: $container-border;
+
+            p {
+                color: $white;
+                font-family: $font-family-sans-serif;
+                font-style: normal;
+                font-weight: 300;
+                margin: 0;
+
+                &.title {
+                    font-size: $font-size-4xl;
+                    line-height: 3.375rem;
+                }
+
+                &.baseline {
+                    font-size: $font-size-xl;
+                    line-height: 2rem;
+                }
+            }
+        }
     }
 </style>

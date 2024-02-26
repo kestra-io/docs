@@ -26,19 +26,33 @@ export default {
     }
 }
 </script>
-
 <style scoped lang="scss">
-@import "../../assets/styles/variable";
-div.title {
-    margin: 0 auto calc($spacer / 2);
+    @import "../../assets/styles/variable";
 
-    p {
-        font-size: $font-size-xl;
-        color: var(--bs-pink);
-        font-weight: 700;
-        text-transform: uppercase;
-        font-family: var(--bs-font-monospace);
-        display: inline;
+    h3 {
+        color: $white;
+        font-size: $h2-font-size;
+        font-weight: 300;
     }
-}
+    div.title {
+        margin: 0 auto calc($spacer / 2);
+
+        p {
+            color: $purple-36;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xl;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline;
+        }
+    }
+
+  :deep(.bd-markdown) {
+      color: $white;
+
+      a {
+        color: $purple-36;
+      }
+  }
+
 </style>

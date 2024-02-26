@@ -31,7 +31,7 @@
             </div>
         </template>
 
-        <div class="d-none d-lg-block mt-4">
+        <div class="d-none d-lg-block pt-4 bd-social-list">
             <CommonSocialsList :page="page" />
         </div>
     </div>
@@ -116,6 +116,7 @@
                     a {
                         border-left: .125rem solid var(--bs-gray-200);
                         padding-left: 0.75rem;
+                        color: $white-1;
 
                         @for $i from 2 through 6 {
                             &.depth-#{$i} {
@@ -125,9 +126,9 @@
 
                         &:hover,
                         &.active {
-                            color: var(--bs-primary);
+                            color: $purple;
                             font-weight: 500;
-                            border-left-color: var(--bs-primary);
+                            border-left-color: $purple;
                         }
                     }
                 }
@@ -147,7 +148,7 @@
         }
 
         .h6 {
-            color: var(--bs-gray-700);
+            color: $white-1;
             font-size: $font-size-sm;
             line-height: 1.875rem;
             font-weight: 600;
@@ -188,6 +189,25 @@
 
         @include media-breakpoint-up(lg) {
             display: block !important; // stylelint-disable-line declaration-no-important
+        }
+    }
+
+    .bd-social-list, .bd-toc-collapse {
+        border-left: $block-border;
+
+        ul, :deep(ul) {
+            padding-left: 0 !important;
+            li {
+                a {
+                    border-left: 0 !important;
+                    padding-left: 1.5rem !important;
+
+                    &:hover {
+                        color: $purple-36 !important;
+                        border-left: 1px solid $purple-36 !important;
+                    }
+                }
+            }
         }
     }
 </style>

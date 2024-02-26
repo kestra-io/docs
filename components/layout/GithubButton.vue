@@ -29,6 +29,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+
     .btn-group {
 
         &.btn-group-sm {
@@ -39,17 +41,17 @@
         }
 
         .btn {
-            border: 1px solid #333336;
+            border: 1px solid $black-5;
             color: var(--bs-white);
         }
 
         .btn-dark {
-            background: #333336;
+            background: $black-5;
         }
 
         .btn-outline-dark {
             border-left: 0;
-            color: #333336;
+            color: $black-5;
 
             .placeholder {
                 background: transparent;

@@ -77,28 +77,35 @@ const {navDirFromPath} = useContentHelpers()
         display: flex;
         width: 100%;
 
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
         .title {
             font-size: $font-size-sm;
         }
 
         a {
-            border: 1px solid var(--bs-border-color);
+            border: $block-border;
+            background-color: $black-2;
             padding: calc($spacer/2) calc($spacer);
             display: flex;
+            gap: $spacer;
             border-radius: var(--bs-border-radius);
             width: 50%;
 
             &.prev {
                 margin-right: calc($spacer / 2);
                 .material-design-icon {
-                    margin-right: calc($spacer / 2);
+                    color: $purple-36;
                 }
             }
 
             &.next {
                 margin-left: calc($spacer / 2);
                 .material-design-icon {
-                    margin-left: calc($spacer / 2);
+                    color: $purple-36;
                 }
             }
 
@@ -109,10 +116,11 @@ const {navDirFromPath} = useContentHelpers()
 
                     &.title {
                         font-weight: bold;
+                        color: $purple-36;
                     }
 
                     &.directory {
-                        color: var(--bs-gray-500);
+                        color: $white-1;
                         font-size: $font-size-sm;
                     }
                 }

@@ -4,10 +4,9 @@
             <div class="row">
                 <div class="col-md-7 align-items-center d-flex order-1 order-md-0">
                     <div>
-                        <p  data-aos="fade-left" class="overline">Community</p>
-                        <h1 data-aos="fade-right">Connect, Collaborate, and Empower Your Data Journey</h1>
-                        <p class="baseline" data-aos="fade-left">Connect with peers, exchange ideas and drive innovation in data orchestration</p>
-                        <NuxtLink href="https://kestra.io/slack" class="btn btn-lg btn-primary mb-2" data-aos="zoom-in" target="_blank">
+                        <h1 data-aos="fade-right">Connect and Collaborate</h1>
+                        <p class="baseline" data-aos="fade-left">Connect with experts in the field, get support from the community, exchange ideas and contribute your code and feedback.</p>
+                        <NuxtLink href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated" data-aos="zoom-in" target="_blank">
                             Join us on Slack
                         </NuxtLink>
                     </div>
@@ -33,10 +32,37 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: $purple-8;
+        background: url("/landing/community/header-bg.svg") no-repeat center;
+        background-size: 100% 100%;
+        color: $white;
+
+        .container {
+            border-bottom: $block-border;
+        }
+
         .hero {
             padding-top: 4rem;
             padding-bottom: 4rem;
+        }
+
+        h1, p {
+            font-weight: 300;
+            padding-bottom: 0;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: $font-size-4xl;
+        }
+
+        p {
+            font-size: $font-size-xl;
+        }
+
+        .hero{
+            @include media-breakpoint-down(md) {
+                padding-top: 0;
+            }
         }
     }
 </style>

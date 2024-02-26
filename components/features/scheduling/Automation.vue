@@ -1,7 +1,7 @@
 <template>
     <section class="container">
         <div class="heading mx-auto pb-4">
-            <h3 class="title">Automation and Scheduling 
+            <h3 class="title">Automation and Scheduling
                 <span class="title-animated"> Features</span>
             </h3>
         </div>
@@ -12,7 +12,7 @@
                         <img src="/landing/features/scheduling/automation/Icon_auto.svg" alt="BackFill pattern svg"
                             class="mb-2">
                         <h6 class="card-heading">Backfill Support</h6>
-                        <p class="card-para">Kestra's Backfill feature automatically catches up on missed workflows.</p>
+                        <p class="card-para">Kestra's Backfills can automatically catch up on missed workflows after an outage. You can trigger backfills from the UI without having to redeploy your code.</p>
                     </div>
                 </div>
             </div>
@@ -54,9 +54,8 @@
                     <div class="card-body mx-2 ">
                         <img src="/landing/features/scheduling/automation/Icon_auto4.svg" alt="Subflow svg"
                             class="mb-2">
-                        <h6 class="card-heading">Subflow Triggering</h6>
-                        <p class="card-para">Initiate subflows from the primary workflow to manage complex workflows while
-                            keeping reusability and structure.</p>
+                        <h6 class="card-heading">Modularity with Subflows</h6>
+                        <p class="card-para">Build modular and reusable reusable components. Write your logic once and call it from any other workflow when needed. Pass data between flows for seamless orchestration.</p>
                     </div>
                 </div>
             </div>

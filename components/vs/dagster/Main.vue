@@ -1,13 +1,13 @@
 <template>
     <div class="container">
-        <Section>
+        <Section class="about">
             <div>
-                <h2>Kestra vs. Dagster</h2>
+                <h2><span>Kestra</span> vs. Dagster</h2>
                 <p>Kestra is an open-source orchestrator designed to bring Infrastructure as Code (IaC) best practices to all workflows — from those orchestrating mission-critical operations, business processes, and data pipelines to simple Zapier-style automation. Built with an API-first philosophy, Kestra enables users to define and manage data pipelines through a simple YAML configuration file. This approach frees you from being tied to a specific client implementation, allowing for greater flexibility and easier integration with various tools and services.</p>
                 <p>Dagster is an entirely different product — it's focused on orchestrating data assets, not on orchestrating tasks, processes, business operations, microservices, and applications as Kestra does. While Kestra can orchestrate data workflows in a generic way, Dagster is more specialized in that area.</p>
             </div>
 
-             <div clas="mt-5">
+             <div>
                 <h3>Similarities</h3>
                 <ul>
                 <li>Both provide a declarative interface.</li>
@@ -16,7 +16,7 @@
                 </ul>
              </div>
 
-             <div clas="mt-5">
+             <div>
                 <h3>Differences</h3>
                 <ul>
                 <li>Kestra is language-agnostic, while Dagster is designed primarily for Python.</li>
@@ -26,44 +26,32 @@
                 </ul>
              </div>
 
-            <div class="mt-5">
+            <div>
                 <h2>Declarative Paradigms</h2>
                 <p>Dagster embraces a Python-first environment, with its Software-Defined Assets (SDAs). This approach naturally attracts those who are comfortable in a Pythonic ecosystem. SDAs serve not just as units of computation but as documented assets within the framework. By isolating the business logic from I/O operations, they grant engineers fine-grained control over data lineage, aiding debugging and understanding of asset states. This Python-centric philosophy extends into Dagster’s environmental abstraction, allowing users to swap out external services and runtimes without altering any user code. Dagster is designed for data engineers and analytics engineers who desire a platform that accommodates a complex Python-based asset lifecycle.</p>
                 <p>On the other side, Kestra aims for an agnostic approach to programming languages and focuses on the YAML-based orchestration. Data pipeline orchestration can be language-neutral and still maintain robustness and scalability.  YAML serves as the primary interface through which workflows are defined. This inclusivity manifests in its ability to incorporate business logic written in languages as diverse as SQL, R, Rust, and even Bash. Consequently, Kestra finds its audience among senior software engineers, especially those who work in diverse tech stacks.</p>
                 <p> Both Kestra and Dagster offer unique answers to the question of what declarative orchestration can be. While Dagster may appeal to those who favor a Pythonic richness in their workflows, Kestra attracts those who seek language flexibility, scalability, and a more inclusive approach to defining orchestration logic. The choice between the two will, therefore, depend heavily on the specific technical needs, the programming languages your team is comfortable with, and your long-term vision for data pipeline or workflow management.</p>
             </div>
 
-            <div class="mt-5">
+            <div>
                 <h2>Approach to Workflow Definitions</h2>
                 <p>Kestra offers a YAML-based workflow definition interface that simplifies the creation and management of workflows. This contrasts with Dagster’s Python DSL, which, while offering several advantages, adds a layer of complexity and leads to difficulties in maintaining custom Python wrappers over time.</p>
             </div>
 
-            <div class="mt-5">
+            <div>
                 <h2>Workflow Deployment</h2>
-                <p>Kestra allows for workflow deployments directly from its integrated UI code editor. Moreover, it supports Terraform and integrates with various CI/CD systems like GitHub Actions.</p> 
+                <p>Kestra allows for workflow deployments directly from its integrated UI code editor. Moreover, it supports Terraform and integrates with various CI/CD systems like GitHub Actions.</p>
                 <p>In contrast, the deployment patterns in Dagster might be more challenging, especially in the open-source version .</p>
             </div>
 
-            <div class="mt-5">
+            <div>
                 <h2>Developer Experience</h2>
                 <p>Kestra offers a more comprehensive developer experience with built-in documentation and a code editor, as well as a live-updating topology view. Dagster focuses on data engineers who know Python. In contrast, Kestra supports software engineers working on any technology stack.</p>
             </div>
 
-            <div class="mt-5">
+            <div>
                 <h2>Cross-role Collaboration and Accessibility</h2>
                 <p>Kestra’s user-friendly interface aims to invite not just engineers but also business stakeholders into the data pipeline process. Dagster comes with a steeper learning curve; it introduces many concepts that can be overwhelming when onboarding new colleagues and stakeholders to the platform.</p>
-            </div>
-        </Section>
-
-        <Section class="modern mb-5">
-            <div class="row">
-                <div class="col-lg-6 col-sm-12 text-center" data-aos="fade-left">
-                    <img class="zoom img-fluid" src="/landing/vs/dagster/modern-data-stack.png" width="375" alt="Kestra plugins"/>
-                </div>
-                <div class="col-lg-6 col-sm-12 pe-5 mt-5 mt-lg-0" data-aos="fade-right">
-                    <h3>Integration</h3>
-                    <p>Kestra excels with its flexible and extensible plugin ecosystem. Its REST API allows seamless interaction with third-party systems. Dagster, being Python-dependent, can encounter issues related to package dependency conflicts.</p>
-                </div>
             </div>
         </Section>
 
@@ -132,7 +120,12 @@
 </div>
     </div>
 
-    <BottomCallToAction />
+    <LayoutFooterContact
+        title="Getting started"
+        subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+        darkButtonText="Read the docs"
+        purpleButtonText="Get started!"
+    />
 </template>
 
 
@@ -147,10 +140,9 @@
 
 <script>
     import Section from '../../layout/Section.vue';
-    import BottomCallToAction from '../../layout/BottomCallToAction.vue';
 
     export default {
-        components: {Section, BottomCallToAction}
+        components: { Section }
     }
 </script>
 
@@ -159,46 +151,61 @@
     @import "../../../assets/styles/variable";
 
     table {
-        border: 1px solid var(--bs-gray-300);
+        margin-top: 5.625rem;
+        border: 1px solid $black-9;
 
         thead {
-            border-bottom: 2px solid var(--bs-gray-300);
+            border-bottom: 1px solid $black-9;
         }
 
         th {
-            background: var(--bs-gray-200);
+            background: $black-2;
+            text-align: center;
         }
 
         td {
-            background: var(--bs-gray-100);
+            background: $black-2;
+            vertical-align: middle;
+
+            &:first-of-type {
+                text-align: center;
+            }
         }
         th, td {
-            padding: 1.5rem;
+            padding: 1.375rem 2.938rem;
+            color: $white;
+            font-size: $font-size-md;
+            font-weight: 300;
         }
     }
 
+    section.about {
+        border-bottom: $block-border;
 
-    section.modern {
-        background: linear-gradient(134deg, #9535D0 2.10%, #6A22BB 4.58%, #461A97 11.00%, #36188D 21.11%, #321974 34.99%, #25185C 47.08%, #24155B 64.06%, #25155B 76.00%, #450F95 91.93%, #4F39B3 96.26%, #893FE5 99.33%);
-        color: var(--bs-white);
-        border-radius: var(--bs-border-radius-xl);
-        padding: calc($spacer * 3) 0;
+        h2, h3 {
+            color: $white;
+            font-weight: 300;
+            margin-bottom: 16px;
+
+            span {
+                background: linear-gradient(90deg, #E151F7 18.28%, #5C47F5 35.74%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+
+        p, ul > li {
+            color: $white;
+            font-size: $h6-font-size;
+            font-weight: 400;
+        }
 
         :deep(.main) {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
             padding-top: 0;
         }
-
-        @include media-breakpoint-up(lg) {
-            .row {
-                padding: 0 6rem;
-            }
-        }
-
-        @include media-breakpoint-down(lg) {
-            .row {
-                padding: 0 3rem;
-            }
-        }
-
     }
 </style>

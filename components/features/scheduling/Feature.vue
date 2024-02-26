@@ -27,10 +27,10 @@
 @import "../../../assets/styles/variable";
 
 .feature {
-  background-color: $black-5;
+  background-color: $black-1;
 }
 .container{
-  border-bottom: 1px solid $black-3;
+  border-bottom: $block-border;
 }
 .heading {
   max-width: 700px;
@@ -40,6 +40,9 @@
     font-weight: 300 !important;
     margin-bottom: 0;
     font-size: $font-size-3xl;
+    @include media-breakpoint-down(md) {
+        line-height: 1.625rem;
+    }
 
     &-animate {
       background: linear-gradient(90deg, #e151f7 24.82%, #5c47f5 76.81%);

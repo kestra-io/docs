@@ -1,13 +1,13 @@
 <template>
-    <div class="d-md-flex flex-row justify-content-between" role="button">
+    <div class="" role="button">
         <NuxtLink class="text-dark" :href="blog._path">
-            <NuxtImg width="512" loading="lazy" format="webp" quality="80" densities="x1 x2" class="col-md-12 rounded-3 img-fluid" :alt="blog.image" :src="blog.image" />
+            <NuxtImg width="512" loading="lazy" format="webp" quality="80" densities="x1 x2" class="col-md-12 rounded-3 img-fluid blog-image" :alt="blog.image" :src="blog.image" />
             <div class="description mt-4">
                 <span class="small-text category">{{ blog.category }}</span>
                 <h3>
                     {{ blog.title }}
                 </h3>
-                <p>{{ blog.description }}</p>
+                <p class="text">{{ blog.description }}</p>
                 <BlogCardDetails :name="blog.author.name" :date="blog.date"/>
             </div>
         </NuxtLink>
@@ -32,15 +32,26 @@
 <style lang="scss" scoped>
     @import '../../assets/styles/_variable.scss';
 
+    .blog-image {
+        border: $block-border;
+    }
+
     .description {
         span {
-            color: var(--bs-primary);
+            color: $purple-36;
             font-size: $font-size-sm;
+            font-weight: 400;
         }
-        h3{
+        h3 {
+            color: $white;
+            font-size: $h3-font-size;
+            font-weight: 600;
             line-height: 2.375rem;
         }
-        p{
+        .text {
+            color: $white-1;
+            font-size: $h6-font-size;
+            font-weight: 400;
             line-height: 1.625rem;
             margin-bottom: 0.75rem;
         }

@@ -2,11 +2,11 @@
     <nav aria-label="Page navigation">
         <ul class="pagination mb-0">
             <li class="page-item" @click="changePage({ direction: 'previous' })" role="button">
-                <span class="page-link text-dark fw-bold arrow-button" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
+                <span class="page-link fw-bold arrow-button bg-dark-2" tabindex="-1" aria-disabled="true"><ChevronLeft /></span>
             </li>
-            <li v-for="n in pages" :key="n" :role="n === morePagesPlaceholder ? '' : 'button'" class="page-item" :class="{ 'active': currentPage === n, 'disabled': n === morePagesPlaceholder }" @click="changePage({ pageNo: n })"><span class="page-list-item page-link text-dark fw-bold">{{ n }}</span></li>
+            <li v-for="n in pages" :key="n" :role="n === morePagesPlaceholder ? '' : 'button'" class="page-item" :class="{ 'active': currentPage === n, 'disabled': n === morePagesPlaceholder }" @click="changePage({ pageNo: n })"><span class="page-list-item bg-dark-2 page-link fw-bold">{{ n }}</span></li>
             <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
-                <span class="page-link text-dark fw-bold arrow-button"><ChevronRight /></span>
+                <span class="page-link fw-bold arrow-button bg-dark-2"><ChevronRight /></span>
             </li>
         </ul>
     </nav>
@@ -85,14 +85,14 @@ export default {
         z-index: 2;
     }
     .active span {
-        background-color: white !important;
+        background-color: $primary-1 !important;
     }
 
     .page-list-item {
         border-radius: 4px;
-        border: 1px solid $purple-13;
+        border: $block-border;
         padding: 8px 16px;
-        color: $black;
+        color: $white;
         text-align: center;
         font-family: $font-family-sans-serif;
         font-size: 14px;
@@ -101,29 +101,29 @@ export default {
         line-height: 22px;
 
         &:hover {
-            color: $white !important;
+            border-color: $primary-1;
         }
     }
 
     .active {
         .page-list-item {
-            border-color: $primary;
-            color: $primary !important;
+            border-color: $primary-1;
         }
     }
 
     .arrow-button {
         padding: 1px 8px;
         font-size: 24px;
+        border-color: $black-3;
+        color: $white;
 
         &:hover {
-            background-color: $primary;
-            color: $white !important;
+            border-color: $primary-1;
         }
 
         &:focus {
             box-shadow: none;
-            background-color: $white;
+            background-color: $primary-1;
         }
     }
 }

@@ -1,10 +1,15 @@
 $primary: #8405FF;
+$primary: #8405FF;
+$primary-1: #4B0AAA;
 $secondary: #C182FF;
 
 $white: #fff;
 $white-1 : #E1E1E1;
 $white-2: #E5E4F7;
 $white-3:  #B9B9BA;
+$white-4: #CCC6D2;
+$white-5: #7C7C7C;
+$white-6: #F0F0FF;
 
 $gray-100: #f8f8fc;
 $gray-200: #f1f5fa;
@@ -21,11 +26,19 @@ $black-1 : #070708;
 $black-2 : #161617;
 $black-3 : #252526;
 $black-4 : #111113;
-$black-5 : #070708;
+$black-5 : #333336;
 $black-6 : #3D3D3F;
 $black-7 : #0D0D0C;
 $black-8 : #8B8B8D;
-
+$black-9 : #1D1D1E;
+$black-10 : #646465;
+// Define dark color classes
+@each $number in 1, 2, 3, 4, 5, 6, 7, 8 {
+    $color: map-get((1: $black-1, 2: $black-2, 3: $black-3, 4: $black-4, 5: $black-5, 6: $black-6, 7: $black-7, 8: $black-8), $number);
+    .bg-dark-#{$number} {
+        background-color: $color;
+    }
+}
 $green: #03DABA;
 $green-1: #BFE1B0;
 
@@ -50,76 +63,6 @@ $danger: $red;
 $light: $gray-100;
 $dark: $gray-900;
 
-$theme-colors: (
-    "primary": $primary,
-    "secondary": $secondary,
-    "success": $success,
-    "info": $info,
-    "warning": $warning,
-    "danger": $danger,
-    "light": $light,
-    "dark": $dark,
-    "indigo": $indigo,
-    "purple": $purple,
-    "pink": $pink,
-    "orange": $orange,
-    "teal": $teal,
-);
-
-$font-family-sans-serif: "Public Sans", sans-serif;
-$font-family-monospace: "Source Code Pro", monospace;
-
-$font-size-base: 1rem;
-$font-size-xs: $font-size-base * .75;
-$font-size-sm: $font-size-base * .875;
-$font-size-mdsm : $font-size-base * 1;
-$font-size-lg: $font-size-base * 1.25;
-$font-size-xl: $font-size-base * 1.375;
-$font-size-2xl : $font-size-base * 2.188;
-$font-size-3xl : $font-size-base * 3;
-$font-size-4xl : $font-size-base * 3.75;
-
-
-$h1-font-size: $font-size-base * 3.375;
-$h2-font-size: $font-size-base * 2.5;
-$h3-font-size: $font-size-base * 2;
-$h4-font-size: $font-size-base * 1.375;
-$h5-font-size: $font-size-base * 1.25;
-$h6-font-size: $font-size-base * 1.125;
-
-$body-color: $black;
-$body-tertiary-color: #FFFFFF;
-$body-tertiary-bg: #785EEA;
-
-$link-decoration: none;
-
-// button
-$btn-font-size-lg: 18px;
-
-// grid
-$grid-gutter-width: 1.75rem;
-
-// border
-$border-radius: .25rem;
-$border-radius-sm: .125rem;
-$border-radius-lg: .5rem;
-
-//margin
-$popper-margin: .2rem;
-
-// shadow
-$box-shadow: 0 .75rem .75rem rgba(#DCE0F9, .5);
-$box-shadow-sm: 0 0.375rem 0.375rem rgba(#DCE0F9, .5);
-$box-shadow-lg: 0 1.5rem 1.5rem rgba(#DCE0F9, .5);
-
-
-// nav
-$nav-pills-border-radius: 50rem;
-
-
-// accordiion
-$accordion-icon-color: $white;
-$accordion-icon-active-color: $white;
 
 // purples
 $purple-1: #382369;
@@ -156,19 +99,83 @@ $purple-31: #2A1940;
 $purple-32: #CFCEFF;
 $purple-33: #110221;
 $purple-34: #10051F;
-$purple-35 : #736BCD;
+$purple-35: #736BCD;
+$purple-36: #9CA1DE;
+
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark,
+    "indigo": $indigo,
+    "purple": $purple,
+    "pink": $pink,
+    "orange": $orange,
+    "teal": $teal,
+);
+
+$font-family-sans-serif: "Public Sans", sans-serif;
+$font-family-monospace: "Source Code Pro", monospace;
+
+$font-size-base: 1rem;
+$font-size-xs: $font-size-base * .75;
+$font-size-sm: $font-size-base * .875;
+$font-size-md : $font-size-base * 1;
+$font-size-lg: $font-size-base * 1.25;
+$font-size-xl: $font-size-base * 1.375;
+$font-size-2xl : $font-size-base * 2.188;
+$font-size-3xl : $font-size-base * 3;
+$font-size-4xl : $font-size-base * 3.75;
 
 
-$black: #26282D;
-$black-1 : #070708;
-$black-2 : #161617;
-$black-3 : #252526;
-$black-4 : #111113;
-$black-5 : #070708;
-$black-6 : #3D3D3F;
-$black-7 : #0D0D0C;
-$black-8 : #1D1D1E;
-$black-9 : #9CA1DE;
+$h1-font-size: $font-size-base * 3.375;
+$h2-font-size: $font-size-base * 2.5;
+$h3-font-size: $font-size-base * 2;
+$h4-font-size: $font-size-base * 1.375;
+$h5-font-size: $font-size-base * 1.25;
+$h6-font-size: $font-size-base * 1.125;
+
+$body-color: $black;
+$body-tertiary-color: #FFFFFF;
+$body-tertiary-bg: #785EEA;
+
+$link-color: $purple-35;
+$link-decoration: none;
+
+// button
+$btn-font-size-lg: 18px;
+
+// grid
+$grid-gutter-width: 1.75rem;
+
+// border
+$border-radius: .25rem;
+$border-radius-sm: .125rem;
+$border-radius-lg: .5rem;
+$container-border: 1px solid rgba(255, 255, 255, 0.10);
+$block-border: 1px solid $black-3;
+$btn-dark-border: 1px solid rgba(255, 255, 255, 0.12);
+
+//margin
+$popper-margin: .2rem;
+
+// shadow
+$box-shadow: 0 .75rem .75rem rgba(#DCE0F9, .5);
+$box-shadow-sm: 0 0.375rem 0.375rem rgba(#DCE0F9, .5);
+$box-shadow-lg: 0 1.5rem 1.5rem rgba(#DCE0F9, .5);
+
+
+// nav
+$nav-pills-border-radius: 50rem;
+
+
+// accordiion
+$accordion-icon-color: $white;
+$accordion-icon-active-color: $white;
 
 $enable-reduced-motion: false;
 $min-contrast-ratio: 2.5;
