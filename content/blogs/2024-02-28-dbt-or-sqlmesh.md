@@ -78,7 +78,7 @@ resource "google_bigquery_table" "dwh_organizations" {
 
 ![malloy-nested-query](/blogs/2024-02-28-dbt-or-sqlmesh/malloy.png)
 
-## What are we optimizing for?
+## Different frameworks for different needs
 
 Highlighted by the growing number of actors in the field, the focus on how software practices could be applied to analytics is taking real depth.
 
@@ -88,12 +88,13 @@ But once you have chosen your SQL transformation frameworks, the real flaws are 
 
 - Just like an inexperienced software engineer tends to write complex code with all the wrong abstractions, the same can happen in any project involving a SQL framework. 
 
-Globally speaking it resonates a lot with what we hear here with Kestra users. Clean operations are the keystone to driving value out of data and navigating models and the chain value is hard.
+In conclusion, the emphasis on clean data operations resonates strongly with the growing adoption of tools like Kestra. After all, well-defined operations are fundamental to unlocking the true value of data, and managing complex data models and their value chains can be a significant challenge.
 
-Like Airflow was the first of a new generation of orchestrators, dbt was the first to emphasize software practice applied to data analytics. New actors are coming into the game, bringing new improvements and new visions along the way.
+Just as Airflow pioneered a new generation of data orchestration tools, dbt was the first to champion the application of software development best practices to data analytics. However, the landscape is constantly evolving, with new players emerging and introducing innovative solutions and fresh perspectives.
 
-To somehow answer the question raised in the head title: the time to switch depends on your team's and your company's maturity. 
-dbt has the biggest community and tons of documentation and tutorials. It’s probably the best tool to start with if you want something battle-tested by a lot of users. If you need more solutions regarding proper operation and environment management, then using SQLMesh could be something to think of.
+So, when is the right time to consider switching from dbt to SQLMesh? The answer ultimately depends on the specific maturity level of your team and organization.
+
+dbt boasts a large and active community, along with extensive documentation and readily available tutorials. This makes it an excellent choice, especially for those seeking a well-established and user-tested solution. On the other hand, if your primary concern lies in robust operational capabilities and comprehensive environment management, then SQLMesh might be a more suitable option to explore.
 
 
 Are you already using dbt? Do you plan to use SQLMesh? At Kestra we would love to hear from you. You can [join the Slack community](https://kestra.io/slack) we're we'll be happy to help you in your development.
