@@ -1,68 +1,54 @@
 <template>
     <div class="container">
-        <Section title="Perks & Benefits">
-            <div class="row card-group card-centered mb-2">
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><MedalOutline /></span>
-                            <h4 class="card-title">Partner Badge</h4>
-                        </div>
-                    </div>
+        <Section subtitle="Better Together">
+            <div class="row card-group mb-2">
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
+                    <Card
+                        :icon="MedalOutline"
+                        title="Partner Badge"
+                    />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><PlaylistStar /></span>
-                            <h4 class="card-title">Partner Directory Listing</h4>
-                        </div>
-                    </div>
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
+                    <Card
+                        :icon="PlaylistStar"
+                        title="Partner Directory Listing"
+                    />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><Looks /></span>
-                            <h4 class="card-title">Marketing & Co-branding Materials</h4>
-                        </div>
-                    </div>
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
+                    <Card
+                        :icon="Looks"
+                        title="Marketing & Co-branding Materials"
+                    />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><ToggleSwitchOutline /></span>
-                            <h4 class="card-title">Partner Enablement</h4>
-                        </div>
-                    </div>
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
+                    <Card
+                        :icon="ToggleSwitchOutline"
+                        title="Partner Enablement"
+                    />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><ClockFast /></span>
-                            <h4 class="card-title">Priority Services Routing</h4>
-                        </div>
-                    </div>
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
+                    <Card
+                        :icon="ClockFast"
+                        title="Priority Services Routing"
+                    />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><GamepadOutline /></span>
-                            <h4 class="card-title">Sandbox Enterprise Edition</h4>
-                        </div>
-                    </div>
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
+                    <Card
+                        :icon="GamepadOutline"
+                        title="Sandbox Enterprise Edition"
+                    />
                 </div>
 
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card" data-aos="zoom-in">
-                        <div class="card-body">
-                            <span class="card-icon"><TimerSandEmpty /></span>
-                            <h4 class="card-title">Feature Early Access</h4>
-                        </div>
-                    </div>
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
+                    <Card
+                        :icon="TimerSandEmpty"
+                        title="Feature Early Access"
+                    />
                 </div>
             </div>
         </Section>
@@ -71,6 +57,7 @@
 
 <script setup>
     import Section from '../layout/Section.vue'
+    import Card from '../card/Card.vue';
     import MedalOutline from 'vue-material-design-icons/MedalOutline.vue'
     import PlaylistStar from 'vue-material-design-icons/PlaylistStar.vue'
     import Looks from 'vue-material-design-icons/Looks.vue'
@@ -81,13 +68,14 @@
 </script>
 
 <style scoped lang="scss">
-    .card-group {
-        background: none !important;
-        justify-content: start;
+    @import "../../assets/styles/variable";
 
-        .card {
-            min-height: 190px;
-            padding: 32px 16px;
-        }
+    .container {
+        border-top: $block-border;
+        border-bottom: $block-border;
+    }
+
+    .card-group {
+        justify-content: start;
     }
 </style>

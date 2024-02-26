@@ -1,8 +1,8 @@
 <template>
     <div>
         <Head>
-            <Title>Declarative Data Orchestration with Kestra</Title>
-            <Meta name="description" content="Simplified Data Workflow Creation and Execution with YAML" />
+            <Title>Declarative Orchestration with Kestra</Title>
+            <Meta name="description" content="Bring Infrastructure as Code Best Practices to All Workflows" />
         </Head>
 
         <Header />
@@ -10,7 +10,11 @@
         <Features />
         <Empower />
         <HomePlugins />
-        <CallToAction />
+        <LayoutFooterContact
+            title="Getting Started with  Declarative Orchestration"
+            darkButtonText="Read the docs"
+            purpleButtonText="Get started!"
+        />
     </div>
 </template>
 
@@ -36,9 +40,8 @@
     import Main from '../../components/features/declaratives/Main.vue';
     import Features from '../../components/features/declaratives/Features.vue';
     import Empower from '../../components/features/declaratives/Empower.vue';
-    import CallToAction from '../../components/features/declaratives/CallToAction.vue';
 
     export default {
-        components: {Header, Main, Features, Empower, CallToAction}
+        components: {Header, Main, Features, Empower}
     }
 </script>

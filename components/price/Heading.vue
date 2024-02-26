@@ -17,8 +17,11 @@
                             <div class="pb-4">
                                 <h4 class="card-title" data-aos="fade-right">Open-Source</h4>
                                 <p class="pricing" data-aos="fade-left">Free under Apache 2.O License</p>
-                                <NuxtLink href="https://github.com/kestra-io/kestra"
-                                    class="btn btn-secondary w-100 btnstart text-white" data-aos="zoom-in">
+                                <NuxtLink
+                                    href="https://github.com/kestra-io/kestra"
+                                    class="btn btn-animated btn-dark-animated w-100"
+                                    data-aos="zoom-in"
+                                >
                                     Get started
                                 </NuxtLink>
                             </div>
@@ -96,16 +99,10 @@ import Section from '../layout/Section.vue';
 @import "../../assets/styles/variable";
 
 .container {
-
-    .btnstart {
-        background-color: $black-4;
-        border: 1px solid $black-6;
-    }
-
     .card-Demo {
         background-color: $black-2 !important;
         box-shadow: none;
-        background: var(--Kestra-io-Token-color-background-secondary, #161617);
+        background: var(--Kestra-io-Token-color-background-secondary, $black-2);
 
         position: relative;
         $border: 1px;
@@ -131,7 +128,7 @@ import Section from '../layout/Section.vue';
 
     .card {
         background-color: $black-2 !important;
-        border: 1px solid $black-3 !important;
+        border: $block-border !important;
         box-shadow: none;
 
     }
@@ -146,7 +143,7 @@ import Section from '../layout/Section.vue';
     .pricing {
         color: #B9B9BA;
         font-weight: 400;
-        font-size: $font-size-mdsm;
+        font-size: $font-size-md;
         line-height: 2rem;
     }
 
@@ -215,7 +212,7 @@ import Section from '../layout/Section.vue';
     }
 
     .title {
-        font-weight: 600;
+        font-weight: 300;
         font-size: $font-size-4xl;
         line-height: 3.75rem;
 

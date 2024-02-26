@@ -1,10 +1,10 @@
 <template>
     <div class="container">
         <Section
-            title="Meet the team"
-            subtitle="The Backbone of Kestra"
+            subtitle="Meet the"
+            subtitle-after="team"
         >
-            <div class="justify-content-center d-flex flex-wrap">
+            <div class="justify-content-center row row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 px-md-5 px-sm-0 mx-md-5 mx-sm-0">
                 <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/edarras.png" alt="Emmanuel Darras Picture"/>
                     <div>
@@ -173,6 +173,12 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
+    :deep(section) {
+        .subtitle p {
+            margin-bottom: 0;
+        }
+    }
+
     .container {
         .row {
             padding-bottom: calc($spacer * 2);
@@ -180,8 +186,9 @@
     }
 
     .team-name {
-        font-weight: bold;
+        color: $white;
         font-size: $font-size-lg;
+        font-weight: 700;
     }
 
     img {
@@ -189,13 +196,15 @@
     }
 
     .team-title {
-        color: var(--bs-gray-700);
+        color: $white-3;
+        font-size: $font-size-md;
+        font-weight: 400;
     }
 
     .team-card {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        align-items: center;
         padding: 1rem;
 
 
@@ -204,12 +213,12 @@
 
             a {
                 :deep(.material-design-icon) {
-                    color: var(--bs-gray-600)
+                    color: $white-3;
                 }
 
                 &:hover {
                     :deep(.material-design-icon) {
-                        color: var(--bs-primary);
+                        color: $purple-36;
                     }
 
                 }

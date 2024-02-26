@@ -9,8 +9,11 @@ body {
     min-width: 320px;
     min-height: 100%;
     position: relative;
+    background-color: $black-4;
 }
-
+.nuxt-loading-indicator {
+  background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%)!important;
+}
 :root {
     --spacer: #{$spacer};
     --#{$prefix}font-size-lg: #{$font-size-lg};
@@ -31,22 +34,22 @@ h1, h2, h3, h4, h5, h6 {
 
 @include media-breakpoint-down(lg) {
     h1 {
-        font-size: 1.625rem;
+        font-size: 1.625rem !important;
     }
     h2 {
-        font-size: $h4-font-size;
+        font-size: $h4-font-size !important;
     }
     h3 {
-        font-size: $h5-font-size;
+        font-size: $h5-font-size !important;
     }
     h4 {
-        font-size: $h6-font-size;
+        font-size: $h6-font-size !important;
     }
     h5 {
-        font-size: $font-size-base;
+        font-size: $font-size-base !important;
     }
     h6 {
-        font-size: $font-size-sm;
+        font-size: $font-size-sm !important;
     }
 }
 
@@ -175,6 +178,15 @@ blockquote.blockquote {
     }
 }
 
+.btn-dark {
+    border: $btn-dark-border;
+    background-color: $black-4;
+
+    &:hover {
+        background-color: $black-2;
+        border-color: rgba(255, 255, 255, 0.12);
+    }
+}
 
 .btn-dark-animated {
     &::before {
@@ -264,7 +276,7 @@ blockquote.blockquote {
     }
 
     .btn-secondary {
-        background-color: rgba(#FFF, 10%);
+        background-color: rgba($white, 10%);
     }
 
     .dot {
@@ -280,7 +292,6 @@ blockquote.blockquote {
 
 .card {
     border-radius: $border-radius-lg;
-    box-shadow: $box-shadow;
 }
 
 .card-group {
@@ -291,7 +302,6 @@ blockquote.blockquote {
     .card {
         height: 100%;
         border-radius: $border-radius-lg;
-        box-shadow: $box-shadow;
     }
 
     &.card-centered {
@@ -510,6 +520,14 @@ blockquote.blockquote {
         width: 51px;
         background: var(--bs-pink);
     }
+}
+
+.line-path-animation {
+    transition-duration: 1s;
+}
+
+.form-select {
+    --bs-form-select-bg-img: url("/landing/plugins/select-arrow.svg") !important;
 }
 
 @include media-breakpoint-down(lg) {

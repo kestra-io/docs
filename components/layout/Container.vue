@@ -1,11 +1,11 @@
 <template>
     <div class="container bd-gutter bd-layout margin">
-        <NavSideBar :type="type" :navigation="navigation" />
-        <article class="bd-main order-1" :class="{'full': page.rightBar === false , 'docs' : isDoc}">
+        <NavSideBar :type="type" :navigation="navigation"/>
+        <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="slug" :pageList="pageList"/>
-                    <h1 v-html="transformTitle(page.title)" class="py-0 title "></h1>
+                    <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title "></h1>
                 </div>
 
                 <NavToc :page="page"/>
@@ -113,49 +113,118 @@
     useContentHead(page);
 
     const {description, title} = page;
-    const { origin } = useRequestURL()
+    const {origin} = useRequestURL()
     useHead({
         meta: [
-            { name: 'twitter:card', content: 'summary_large_image' },
-            { name: 'twitter:site', content: '@kestra_io' },
-            { name: 'twitter:title', content: title },
-            { name: 'twitter:description', content: description },
-            { name: 'twitter:image', content: `${origin}/landing/home/header-bg.png` },
-            { name: 'twitter:image:alt', content: title }
+            {name: 'twitter:card', content: 'summary_large_image'},
+            {name: 'twitter:site', content: '@kestra_io'},
+            {name: 'twitter:title', content: title},
+            {name: 'twitter:description', content: description},
+            {name: 'twitter:image', content: `${origin}/landing/home/header-bg.png`},
+            {name: 'twitter:image:alt', content: title}
         ]
     })
 </script>
-<style lang="scss" scoped >
-@import "../../assets/styles/variable";
-.container{
-    max-width: 1500px;
-    .title{
-        font-size: 2.375rem;
-        font-weight: 600;
-        line-height: 3.25rem;
+<style lang="scss" scoped>
+    @import "../../assets/styles/variable";
+
+    .container {
+        max-width: 1500px;
+
+        .title {
+            font-size: 2.375rem;
+            font-weight: 600;
+            line-height: 3.25rem;
+        }
     }
-}
-:deep(p){
-    font-weight: 400;
-    line-height: 1.75rem;
-}
-:deep(p > a){
-    text-decoration: underline;
-}
-:deep(h2 > a){
-    font-size: 1.5rem;
-    font-weight: 600;
-    line-height: 2.375;
-    margin: 0;
-}
-:deep(h3 > a ){
-    font-size: 1.5rem;
-    font-weight: 600;
-    line-height: 2.375;
-}
 
+    :deep(p) {
+        font-weight: 400;
+        line-height: 1.75rem;
+    }
 
-.docs :deep(img){
-    width: 100%;
-}
+    :deep(p > a) {
+        text-decoration: underline;
+    }
+
+    :deep(h2 > a) {
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 2.375;
+        margin: 0;
+    }
+
+    :deep(h3 > a ) {
+        color: $white !important;
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 2.375;
+    }
+
+    .bd-main :deep(p > a), .bd-main :deep(ul a) {
+        color: $link-color;
+    }
+
+    .container, :deep(h2 > a) {
+        color: $white !important;
+    }
+
+    :deep(.doc-alert) {
+        border: 1px solid #3A3C55;
+        background-color: #18131F;
+        color: #B9BEF8;
+    }
+
+    :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
+        color: $white-3;
+        text-decoration: none !important;
+    }
+
+    :deep(.code-block), :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
+        border: $block-border;
+        background-color: $black-2 !important;
+    }
+
+    :deep(li > mark) {
+        background-color: $link-color;
+    }
+
+    :deep(.docs-prev-next a) {
+        span {
+            color: $link-color;
+        }
+
+        .directory {
+            color: $white;
+        }
+    }
+
+    :deep(.btn) {
+        span {
+            color: $link-color;
+        }
+
+        &:hover {
+
+            span {
+                color: $white;
+            }
+        }
+    }
+
+    :deep(table) {
+        td, th {
+            background-color: $black-2;
+            border: $block-border;
+            color: $white;
+
+            a {
+                color: $link-color;
+            }
+        }
+    }
+
+    .docs :deep(img) {
+        width: 100%;
+    }
 </style>

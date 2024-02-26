@@ -5,32 +5,42 @@
                 <h3 data-aos="fade-right"><span>Get Kestra updates</span> to your inbox</h3>
                 <div v-if="valid === true && message" class="alert alert-success" v-html="message" />
                 <div v-if="valid === false && message" class="alert alert-danger">{{ message }}</div>
-                <form class="row row-cols-lg-auto g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate data-aos="fade-left">
-                    <div class="col-12">
+                <form class="row g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate data-aos="fade-left">
+                    <div class="col-md-5 col-12">
                         <label class="visually-hidden" for="newsletter-email">Email</label>
                         <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" required>
                     </div>
 
-                    <div class="col-12">
+                    <div class="col-md-auto col-12">
                         <button type="submit" class="btn btn-dark">Subscribe</button>
                     </div>
                 </form>
 
                 <p class="mt-3" data-aos="zoom-in">Stay up to date with the latest features and changes to Kestra</p>
-                <Socials class="mt-4 mb-0 socials" data-aos="zoom-in" />
+                <div class="d-flex align-items-center justify-content-center gap-3 socials">
+                    <a href="https://twitter.com/kestra_io" class="d-flex align-items-center social-item gap-1" title="Twitter" target="_blank">
+                        <twitter />
+                        <p class="m-0">Twitter</p>
+                    </a>
+                    <a href="https://www.youtube.com/@kestra-io" class="d-flex align-items-center social-item gap-1" title="YouTube" target="_blank">
+                        <youtube />
+                        <p class="m-0">Youtube</p>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import Socials from "./Socials.vue";
+    import Twitter from "vue-material-design-icons/Twitter.vue";
+    import Youtube from "vue-material-design-icons/Youtube.vue";
     import axios from "axios";
 
     const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/433b234f-f3c6-431c-898a-ef699e5525fa";
 
     export default {
-        components: {Socials},
+        components: {Twitter, Youtube},
         data() {
             return {
                 valid: undefined,
@@ -89,23 +99,18 @@
     @import "../../assets/styles/variable";
 
     .container {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: $rem-5;
+
         > div {
             position: relative;
-            background: $purple-8;
+            background: $black-2;
             padding: calc($spacer * 3);
-            color: var(--bs-primary);
-
-            &:before {
-                content: "";
-                background: url("/landing/dot2.svg") no-repeat bottom right;
-                width: 329px;
-                height: 236px;
-                position: absolute;
-                right: 1rem;
-                bottom: 1rem;
-                z-index: 1;
+            color: $purple-35;
+            border: $block-border;
+            @include media-breakpoint-down(md) {
+                padding: calc($spacer * 0.5);
             }
-
             > div {
                 position: relative;
                 z-index: 2;
@@ -113,7 +118,15 @@
         }
 
         input {
-            border-radius: $border-radius;
+            border: 1px solid #242427;
+            background: $black-4;
+            color: $white-1;
+            font-size: 15px;
+            padding: 13px;
+
+            &::placeholder {
+                color: $white-1;
+            }
         }
 
         .btn-lg {
@@ -127,16 +140,24 @@
             font-weight: 800;
 
             span {
-                color: var(--bs-black);
+                color: $body-tertiary-color;
             }
         }
 
         .socials {
-            font-size: calc($font-size-base * 2);
-        }
+            .social-item {
+                color: $white-4;
+                .material-design-icon {
+                    font-size: $font-size-xl;
+                    height: $btn-font-size-lg;
+                }
 
-        @include media-breakpoint-down(sm) {
-            max-width: 80%
+                p {
+                    color: $white-4;
+                    font-family: $font-family-sans-serif;
+                    font-size: $font-size-base;
+                }
+            }
         }
     }
 

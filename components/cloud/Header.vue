@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid bg-dark-4">
         <div class="pt-5 d-flex flex-column justify-content-center">
             <div class="text-center header text-white mx-auto mt-4">
                 <h1 class="fw-light">
@@ -54,9 +54,6 @@
 }
 
 .container-fluid {
-
-    background-color: #111113;
-
     h1{
         font-size:$font-size-4xl !important;
         line-height: $font-size-4xl
@@ -74,7 +71,7 @@
     .input {
         background-color: $black-4;
         border: 1px;
-        border-style: #252526;
+        border-style: $black-3;
         border: none;
     }
 
@@ -97,7 +94,7 @@
         z-index: 10;
         background-color: $black-2;
         border-style: solid;
-        border-color: #252526;
+        border-color: $black-3;
         padding: 1rem;
         padding-bottom: 0rem;
         margin-bottom: 3rem;

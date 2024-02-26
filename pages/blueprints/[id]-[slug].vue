@@ -17,7 +17,12 @@
                 :icons="icons"
                 :tags="tags"
             />
-            <BlueprintsNewToKestra />
+            <LayoutFooterContact
+                title="New to Kestra?"
+                subtitle="Use blueprints to kickstart your first workflows."
+                purpleButtonText="Get started with Kestra"
+                purpleButtonHref="/docs/getting-started"
+            />
         </div>
     </div>
 </template>

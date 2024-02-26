@@ -3,11 +3,17 @@
           <Title>Kestra Terraform Provider: Deploy All Your Workflows in a CI/CD Process</Title>
           <Meta name="description" content="Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations." />
         </Head>
-    <div class="main">
+    <div class="main bg-dark-4">
             <TerraformHeader/>
             <TerraformOverview />
             <TerraformUseCases />
-            <TerraformFooter />
+            <LayoutFooterContact
+                subtitle="Integration between Kestra and Terraform is simple. Add the Kestra provider to your Terraform configuration file to get started."
+                darkButtonText="YouTube playlist"
+                darkButtonHref="https://www.youtube.com/watch?v=tiHa3zucS_Q&list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr&ab_channel=Kestra"
+                purpleButtonText="Documentation"
+                purpleButtonHref="/docs/terraform"
+            />
     </div>
 </template>
 
@@ -34,7 +40,6 @@
 @import "../../assets/styles/variable";
 
 .main {
-    background-color: $purple-34;
-    color: white;
+    color: $white;
 }
 </style>

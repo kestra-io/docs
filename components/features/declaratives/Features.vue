@@ -1,65 +1,73 @@
 <template>
     <div class="container-fluid hide-overflow">
         <div class="container pt-5 pb-5">
-            <div class="row ">
+            <div class="row">
                 <div class="col-md-6 d-flex flex-column justify-content-center">
-                    <h2 data-aos="fade-left">Simple Yet Powerful</h2>
+                    <h2 data-aos="fade-left">Simple Yet <span>Powerful</span></h2>
                     <p data-aos="fade-right">
-                        Kestra's declarative data orchestrator simplifies data orchestration by using YAML (Yet Another Markup Language) to define workflows.
-                        This approach simplifies the creation, execution, and maintenance of data pipelines, making them accessible to both technical and non-technical team members.
+                        The declarative syntax in a YAML format significantly reduces the barrier to entry.
+                        You can onboard new team members quickly, and maintain your workflows with minimal effort.
+                        <br><br>
+                        In just a few lines of YAML configuration, anyone in your team can build their first scheduled workflow.
+                        With that first success, your team members can start automating more advanced use cases with confidence.
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <div class="code rounded-3">
-                        <span class="text-success">id:</span> "each_parallel"<br />
-                        <span class="text-success">type:</span> io.kestra.core.tasks.flows.EachParallel<br />
-                        <span class="text-success">value:</span><br />
-                        <span class="text-success">  -</span> value 1<br />
-                        <span class="text-success">  -</span> value 2<br />
-                        <span class="text-success">  -</span> value 3<br />
-                        <span class="text-success">tasks:</span><br />
-                        <span class="text-success">  id:</span> each-value<br />
-                        <span class="text-success">  type:</span> io.kestra.core.tasks.debugs.Return<br />
-                        <span class="text-success">  format:</span> <span v-pre>"{{ taskrun.value }}"</span>
+                    <div class="code">
+                        <div class="code-header">
+                            <img src="/landing/3dot.svg" alt="code">
+                        </div>
+                        <div class="code-content">
+                            <span>id:</span> hello_world<br />
+                            <span>namespace:</span> dev<br />
+                            <span>tasks:</span><br />
+                            <div style="margin-left: 20px;">
+                                <span>- id:</span> greeting<br />
+                                <div style="margin-left: 20px;">
+                                    <span>type:</span> io.kestra.core.tasks.log.Log<br />
+                                    <span>message:</span> Hello from a declarative workflow!<br />
+                                </div>
+                            </div>
+                            <span>triggers:</span><br />
+                            <div style="margin-left: 20px;">
+                                <span>- id:</span> schedule<br />
+                                <div style="margin-left: 20px;">
+                                    <span>type:</span> io.kestra.core.models.triggers.types.Schedule<br />
+                                    <span>cron:</span> "@hourly"
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row mt-5">
                 <div class="col-12">
-                    <div class="row card-group card-centered no-shadow mb-2">
+                    <div class="row card-group no-shadow mb-2">
                         <div class="col-md-4 mb-4">
-                            <div class="card" data-aos="zoom-in">
-                                <div class="card-body">
-                                    <span class="card-icon"><CalculatorVariantOutline /></span>
-                                    <h4 class="card-title">Improved Workflow Flexibility</h4>
-                                    <p class="card-text">Easily adapt workflows by updating YAML; Kestra adjusts execution automatically.</p>
-                                </div>
-                            </div>
+                            <Card
+                                :icon="CalculatorVariantOutline"
+                                title="Faster Development Cycles"
+                                description="Easily adapt workflows by updating your declarative configuration. No need for complex CI/CD pipelines."
+                            />
                         </div>
-
                         <div class="col-md-4 mb-4">
-                            <div class="card" data-aos="zoom-in">
-                                <div class="card-body">
-                                    <span class="card-icon"><Lan /></span>
-                                    <h4 class="card-title">Reduced Complexity</h4>
-                                    <p class="card-text">Simplifies data pipelines by eliminating intricate code, enhancing maintainability.</p>
-                                </div>
-                            </div>
+                            <Card
+                                :icon="Lan"
+                                title="Reduced Complexity"
+                                description="Simplifies your codebase by eliminating boilerplate code. No need to write code to deploy code — each Kestra flow includes everything it needs to run."
+                            />
                         </div>
-
                         <div class="col-md-4 mb-4">
-                            <div class="card" data-aos="zoom-in">
-                                <div class="card-body">
-                                    <span class="card-icon"><GoogleCirclesExtended /></span>
-                                    <h4 class="card-title">Enhanced Collaboration</h4>
-                                    <p class="card-text">Easy-to-read workflows for both technical and non-technical team members.</p>
-                                </div>
-                            </div>
+                            <Card
+                                :icon="GoogleCirclesExtended"
+                                title="Enhanced Collaboration"
+                                description="Build workflows that are easy to read and understand for both technical and non-technical team members."
+                            />
                         </div>
                     </div>
 
                     <div class="text-center">
-                        <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-primary" data-aos="zoom-in">Live demo</a>
+                        <a href="https://demo.kestra.io/ui/login?auto" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Live demo</a>
                     </div>
                 </div>
             </div>
@@ -76,29 +84,49 @@
 
 <script>
     import Section from '../../layout/Section.vue';
+    import Card from '../../components/card/Card.vue';
 
 
     export default {
-        components: {Section}
+        components: {Section, Card}
     }
 </script>
 
 <style lang="scss" scoped>
     @import "../../../assets/styles/variable";
 
-
     .container-fluid {
-        background-color: var(--bs-gray-200);
         position: relative;
+        background: $black-1;
+
+        h2 {
+            color: $white;
+            font-size: $h2-font-size;
+            font-weight: 300;
+            margin-bottom: 1.576rem;
+
+            span {
+                background: linear-gradient(90deg, #E151F7 2.16%, #5C47F5 65.09%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+
+        p {
+            color: $white;
+            font-size: 1.125rem;
+            font-weight: 300;
+        }
 
         &:before {
             content: "";
             width: 100%;
             height: 100%;
-            opacity: 0.3;
+            opacity: 1;
             position: absolute;
             top: 0;
-            background: url("/landing/shadow3.svg") no-repeat 50% 150px;
+            background: url("/landing/shadow3.svg") no-repeat center;
 
             @include media-breakpoint-down(md) {
                 & {
@@ -111,26 +139,97 @@
 
     .code {
         position: relative;
-        background: var(--bs-white);
-        padding: 3rem 2rem 2rem 2rem;
-        border: 1px solid var(--bs-gray-500);
-        font-family: var(--bs-font-monospace);
-        color: var(--bs-indigo);
-        white-space: pre;
         overflow: hidden;
+        border-radius: 0.5rem;
+
+        .code-content {
+            padding: 3rem 2rem 2rem 2rem;
+            font-family: var(--bs-font-monospace);
+            color: #E8A979;
+            white-space: pre;
+
+            span {
+                color: #7FBC85;
+            }
+
+            @include media-breakpoint-down(xl) {
+                font-size: $font-size-sm;
+            }
+
+            @include media-breakpoint-down(lg) {
+                font-size: calc($font-size-base * 0.625);
+            }
+
+            @include media-breakpoint-down(md) {
+                font-size: $font-size-sm;
+            }
+
+            @include media-breakpoint-down(sm) {
+                font-size: calc($font-size-base * 0.563);
+                padding: 2rem 1rem;
+            }
+        }
+
+        .code-content, .code-header {
+            --border-size: 1px;
+            position: relative;
+            z-index: 0;
+            overflow: hidden;
+            border: 0;
+
+            &::before {
+                content: '';
+                position: absolute;
+                z-index: -2;
+                left: -50%;
+                top: -300%;
+                width: 200%;
+                height: 700%;
+                animation: rotate 6s linear infinite;
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                left: 1px;
+                top: 1px;
+                width: calc(100% - 2px);
+                height: calc(100% - 2px);
+                background: #0A0113;
+                border-radius: 0 0 0.5rem 0.5rem;
+                transition: background-color 0.2s ease;
+            }
+
+            &::before {
+                background: conic-gradient(#B010FB,
+                    #DE97FF 10%,
+                    #A227DB,
+                    transparent 50%,
+                    #A610EC);
+            }
+        }
+
+        .code-header {
+            padding: 0.75rem 1rem;
+            background-color: #1B0F29;
+
+            &::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                left: 1px;
+                top: 1px;
+                width: calc(100% - 2px);
+                height: calc(100% - 2px);
+                background: #0A0113;
+                border-radius: 0.5rem 0.5rem 0 0;
+                transition: background-color 0.2s ease;
+            }
+        }
 
         .text-success {
             color: #2C3F3A !important;
-        }
-
-        &:before {
-            content: "";
-            position: absolute;
-            background: url("/landing/3dot.svg") no-repeat top left;
-            width: 55px;
-            height: 13px;
-            top: 1rem;
-            left: 1rem;
         }
     }
 </style>

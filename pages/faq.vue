@@ -4,14 +4,12 @@
         <Meta name="description" content="Get responses on all your common questions about Kestra"/>
     </Head>
     <div>
-        <div class="container mb-5">
-            <div class="mt-5">
-                <p class="top-breadcrumb" data-aos="fade-right">
-                    FAQ
-                </p>
+        <div class="header-container">
+            <div class="header container">
                 <h1 data-aos="fade-left">Frequently Asked Questions</h1>
             </div>
-
+        </div>
+        <div class="container mb-5">
             <h2 data-aos="zoom-in" class="mt-5">General Questions</h2>
             <CustomDetails title="What is Kestra?">
                 <p>Kestra is an open-source orchestrator designed to bring Infrastructure as Code (IaC) best practices
@@ -21,7 +19,7 @@
                     frees you from being tied to a specific client implementation, allowing for greater flexibility and
                     easier integration with various tools and services.</p>
             </CustomDetails>
-            <CustomDetails title="What is a declarative Orchestrator?">
+            <CustomDetails title="What is a declarative orchestrator?">
                 <p>A declarative orchestrator is a system that allows you to define and manage complex workflows using a
                     high-level, descriptive language. Instead of specifying the exact steps and sequences to achieve a
                     specific outcome, a declarative orchestrator lets you define the desired end state and the system
@@ -32,7 +30,7 @@
                     workflows consist of tasks and triggers that represent various data processing operations, connected
                     by data dependencies and flow control structures.</p>
             </CustomDetails>
-            <CustomDetails title="What are the advantages of a Declarative Orchestrator?">
+            <CustomDetails title="What are the advantages of a declarative orchestrator?">
                 <p>By using a declarative approach, Kestra simplifies the development, maintenance, and scalability of
                     workflows. It allows you to focus on the high-level goals and objectives of your data workflows,
                     while Kestra takes care of executing the tasks and handling errors, retries, and parallelism.</p>
@@ -70,7 +68,7 @@
             <CustomDetails title="What languages are supported in Kestra flows?">
                 <p>Kestra flows are primarily defined in YAML, which provides a simple and human-readable syntax for
                     describing your data workflows. In addition to YAML, you can also use various scripting languages
-                    within your tasks, such as Python, JavaScript, or Bash, to perform custom operations and data
+                    within your tasks, such as Python, R, Node.js, Julia, Ruby, Shell, or PowerShell, to perform custom operations and data
                     transformations.</p>
                 <p>Furthermore, Kestra supports Docker, which enables you to execute tasks using any language, expanding
                     the range of possibilities for your workflows. This flexibility allows you to leverage the power of
@@ -178,12 +176,12 @@
             </CustomDetails>
         </div>
     </div>
-    <Newsletter/>
+    <Updateletter/>
 </template>
 
 <script setup>
     import CustomDetails from "../components/layout/CustomDetails.vue";
-    import Newsletter from "../components/layout/Newsletter.vue";
+    import Updateletter from "../components/layout/Updateletter.vue";
 
     const { origin } = useRequestURL()
     useHead({
@@ -200,8 +198,75 @@
 
 
 <style scoped lang="scss">
+    @import "../assets/styles/variable";
+
+    .header-container {
+        padding-top: 6rem;
+        background: url("/landing/careers/bg.svg") no-repeat bottom;
+        margin-bottom: 3.125rem;
+        .header {
+            padding-bottom: calc($spacer * 4.125);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+
+            h1 {
+                color: $white;
+                text-align: center;
+                font-weight: 300;
+                margin-bottom: 0;
+                font-size: $font-size-4xl;
+
+                @include media-breakpoint-down(sm) {
+                    font-size: 1.875rem !important;
+                }
+
+                span {
+                    background: linear-gradient(90deg, #E151F7 58.97%, #5C47F5 85.36%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+        }
+
+    }
 
     h2 {
-        margin-top: 2rem;
+        margin: 2.5rem 0;
+        color: $white;
+        font-size: $h2-font-size;
+        font-weight: 300;
+    }
+
+    :deep(details) {
+        box-shadow: none;
+        border: $block-border;
+        background-color: $black-2;
+        @include media-breakpoint-down(sm) {
+            padding-left: calc($spacer * 0.2);
+            padding-right: calc($spacer * 0.2);
+        }
+
+        summary h3 {
+            color: $white;
+            font-size: $h6-font-size;
+            font-weight: 700;
+            @include media-breakpoint-down(sm) {
+                font-size: $font-size-md!important;
+            }
+        }
+
+        span {
+            color: $white;
+        }
+
+        div {
+            border-left-color: $purple-35;
+
+           ul > li,
+           ol > li,
+           p {
+                color: $white;
+            }
+        }
     }
 </style>

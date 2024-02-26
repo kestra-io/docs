@@ -4,13 +4,13 @@
             <div class="row">
                 <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
                     <div>
-                        <h1 data-aos="fade-right">Declarative Data Orchestration with Kestra</h1>
-                        <p class="baseline" data-aos="fade-left">Simplified Data Workflow Creation and Execution with YAML</p>
-                        <div class="cta">
-                            <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary mx-2 mt-2" data-aos="zoom-in">
+                        <h1 data-aos="fade-right"><span>Declarative</span> Orchestration with Kestra</h1>
+                        <p class="baseline" data-aos="fade-left">Bring Infrastructure as Code Best Practices to All Workflows</p>
+                        <div class="cta d-flex gap-3">
+                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
                                 Get started
                             </NuxtLink>
-                            <a href="/docs"  class="btn btn-lg btn-secondary mx-2 mt-2" data-aos="zoom-in">
+                            <a href="/docs"  class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Read the docs
                             </a>
                         </div>
@@ -24,21 +24,53 @@
     </div>
 </template>
 
-<script>
-
-    export default {
-    }
-</script>
-
 <style lang="scss" scoped>
     @import "../../../assets/styles/variable";
 
     .container-fluid {
-        background: #1F1D5E url("/landing/features/declarative/header-bg.svg") no-repeat bottom center;
+        background: url("/landing/features/declarative/header-bg.svg") no-repeat;
         background-size: cover;
         color: var(--bs-white);
         padding-top: 80px;
         margin-top: -80px;
+        .container {
+            border-bottom: $block-border;
+
+            h1 {
+                color: $white;
+                font-size: $font-size-4xl;
+                font-weight: 300;
+                padding-bottom: 0;
+                margin-bottom: 16px;
+
+                span {
+                    background: linear-gradient(90deg, #E151F7 2.16%, #5C47F5 65.09%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+
+            p {
+                color: $white;
+                font-size: $font-size-xl;
+                font-weight: 300;
+                margin-bottom: 2rem;
+                padding-bottom: 0;
+            }
+
+            .btn-dark {
+                border: 1px solid $black-6;
+            }
+        }
+
+        .hero{
+            padding-bottom: 0rem;
+            @include media-breakpoint-down(md) {
+                padding-top: 0;
+            }
+        }
+
     }
 </style>
 

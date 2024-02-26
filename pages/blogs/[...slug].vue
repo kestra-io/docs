@@ -7,9 +7,8 @@
             <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
                 <ContentRenderer :value="page">
                     <div class="bd-title">
-                        <p class="top-breadcrumb" data-aos="fade-right">
-                            <NuxtLink to="/">Home</NuxtLink>  /
-                            <NuxtLink to="/blogs">Blog</NuxtLink>
+                        <p class="d-flex breadcrumb" data-aos="fade-right">
+                            <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
                         </p>
                         <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
                     </div>
@@ -19,23 +18,32 @@
                         </template>
                     </NavToc>
                     <div class="bd-content">
-                        <NuxtImg loading="lazy" format="webp" quality="80" densities="x1 x2" data-aos="fade-right"
-                                 class="mb-2 rounded-3 img" :alt="page.title" :src="page.image" fit="cover"/>
-                                 <ClientOnly>
-                                     <ContentRendererMarkdown
-                                         data-aos="fade-zoom"
-                                         class="bd-markdown mt-4"
-                                         :value="page"
-                                         data-bs-spy="scroll"
-                                         data-bs-target="#nav-toc"
-                                     />
-                                 </ClientOnly>
+                        <NuxtImg
+                            loading="lazy"
+                            format="webp"
+                            quality="80"
+                            densities="x1 x2"
+                            data-aos="fade-right"
+                            class="mb-2 rounded-3 img"
+                            :alt="page.title"
+                            :src="page.image"
+                            fit="cover"
+                        />
+                        <ClientOnly>
+                            <ContentRendererMarkdown
+                                data-aos="fade-zoom"
+                                class="bd-markdown mt-4"
+                                :value="page"
+                                data-bs-spy="scroll"
+                                data-bs-target="#nav-toc"
+                            />
+                        </ClientOnly>
                     </div>
                 </ContentRenderer>
             </article>
             <div class="bottom">
                 <DocsBlogs title="More contents"/>
-                <LayoutNewsletter/>
+                <Updateletter/>
             </div>
         </div>
 
@@ -45,6 +53,7 @@
 <script setup>
     import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
+    import Updateletter from "~/components/layout/Updateletter.vue";
 
     const route = useRoute()
     const slug = "/blogs/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
@@ -145,6 +154,10 @@
         margin-left: 0;
     }
 
+    :deep(main) {
+        position: relative;
+    }
+
     .bd-layout {
         display: block;
     }
@@ -152,29 +165,46 @@
         row-gap: 0px;
         column-gap: 4rem;
     }
+
     .bd-content{
         max-width: 100%;
+        img {
+            border: $block-border;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            height: calc($spacer * 12.5);
+            width: 20%;
+            top: 2%;
+            left: 20%;
+            z-index: -147;
+            filter: blur(100px);
+            background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+        }
     }
-    .top-breadcrumb {
+    .breadcrumb {
         margin: 0;
+        gap: 0.25rem;
+        color: #CDD5EF;
+
+        a {
+            color: #CDD5EF !important;
+            font-size: $font-size-sm;
+            font-weight: 400;
+        }
     }
     h2{
-        line-height: 3.25rem;
-        font-weight: 600;
+        color: $white !important;
+        line-height: 3.25rem !important;
+        font-weight: 600 !important;
         font-size: 2.375rem !important;
     }
     .para{
-        line-height: 1.375rem ;
-        font-size: $font-size-sm ;
+        line-height: 1.375rem;
+        font-size: $font-size-sm;
         margin-bottom: $font-size-xs;
-        font-weight: 600;
-    }
-    :deep(p){
-        line-height: 1.75rem;
-    }
-    :deep(h2){
-        font-size: 1.75rem;
-        line-height: 2.735rem;
         font-weight: 600;
     }
 </style>

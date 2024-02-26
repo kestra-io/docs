@@ -10,7 +10,12 @@
         <CommunitySlack/>
         <Community/>
         <CommunityContributors/>
-        <LayoutBottomCallToAction/>
+        <LayoutFooterContact
+            title="Getting started"
+            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+            darkButtonText="Read the docs"
+            purpleButtonText="Get started!"
+        />
     </div>
 </template>
 

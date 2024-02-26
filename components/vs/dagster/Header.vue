@@ -2,18 +2,18 @@
     <div class="container-fluid">
         <div class="hero container">
             <div class="row">
-                <div class="col-md-6 align-items-center d-flex">
+                <div class="col-md-6 order-1 order-md-0 align-items-center d-flex">
                     <div>
                         <h1 data-aos="fade-right">The differences between Kestra and Dagster</h1>
                         <p class="baseline" data-aos="fade-left">How to Choose the Right Orchestration Platform</p>
                         <div class="cta">
-                            <NuxtLink href="/docs/getting-started" class="btn btn-lg btn-primary mx-2 mt-2" data-aos="zoom-in">
+                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-aos="zoom-in">
                                 Get started with Kestra
                             </NuxtLink>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 d-flex justify-content-center" data-aos="zoom-in">
+                <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-aos="zoom-in">
                     <img class="zoom img-fluid" src="/landing/vs/dagster/header.svg" alt="Kestra compared to dagster"/>
                 </div>
             </div>
@@ -31,11 +31,26 @@
     @import "../../../assets/styles/variable";
 
     .container-fluid {
-        background: #090311 url("/landing/vs/dagster/header-bg.svg") no-repeat bottom center;
+        background:url("/landing/vs/header-bg.svg") no-repeat center;
         background-size: cover;
         color: var(--bs-white);
         padding-top: 80px;
         margin-top: -80px;
+
+        .container {
+            border-bottom: $block-border;
+
+            h1, .baseline {
+                color: $white;
+                font-weight: 300;
+                padding: 0;
+                margin-bottom: 1rem;
+            }
+
+            .baseline {
+                font-size: $font-size-xl;
+            }
+        }
     }
 </style>
 

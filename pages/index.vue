@@ -12,9 +12,8 @@
         <HomeHow/>
         <HomePlugins/>
         <HomeTestimonials/>
-        <HomeEnterpriseEdition/>
         <HomeOpenSource/>
-        <LayoutBlogs title="What’s new in Kestra?"/>
+        <LayoutBlogs title="Blog"/>
         <LayoutNewsletter/>
     </div>
 </template>

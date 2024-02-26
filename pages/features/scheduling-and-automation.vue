@@ -11,7 +11,7 @@
         <Footer/>
     </div>
 </template>
-<script setup> 
+<script setup>
 import Workflows from '../../components/features/scheduling/Workflows.vue';
 import Header from '../../components/features/scheduling/Header.vue';
 import Automation from '~/components/features/scheduling/Automation.vue';

@@ -1,23 +1,13 @@
 <template>
-    <div class="container d-flex flex-column align-items-center">
-        <h1 data-aos="fade-left" class="title text-center card-title fw-light">
-            Connect Your <span>Entire Stack</span> <br />
-            with Plugins
-        </h1>
-        <div
-            data-aos="fade-right"
-            class="d-flex justify-content-center flex-wrap plugins gap-4 my-5"
-        >
-            <img
-                v-for="plugin in content.items"
-                :src="plugin.icon"
-                :alt="plugin.name"
-            />
-        </div>
-        <div>
-            <NuxtLink :href="content.cta.href" class="btn btn-dark">
-                {{ content.cta.text }}
-            </NuxtLink>
+    <div ref="container" class="container-fluid bg-dark-4">
+        <div class="container">
+            <div class="mb-5">
+                <h1 data-aos="fade-left" class="title text-center card-title fw-light">
+                    Connect Your <span>Entire Stack</span> <br />
+                    with Dedicated Plugins
+                </h1>
+                <LayoutPlugins />
+            </div>
         </div>
     </div>
 </template>
@@ -65,8 +55,16 @@ export default {
     border: 1px solid $black-6;
 }
 
-.container {
-    background: #111113 url("/retail/header-mask.svg") center;
-    margin-top: 4rem;
+.container-fluid {
+    background: url("/landing/home/plugins/background.svg") no-repeat center;
+    color: var(--bs-white);
+    padding: 0;
+
+    .container {
+        padding: 4rem 0;
+        border-bottom: $block-border;
+        border-top: $block-border;
+    }
 }
+
 </style>

@@ -2,20 +2,23 @@
     <div>
         <Head>
           <Title>Integrate Kestra in the Modern Data Stack</Title>
-          <Meta name="description" content="Enhance Data Orchestration and Analytics by Integrating Kestra with Leading Data Tools" />
+          <Meta name="description" content="Orchestrate Your Data and Analytics Stack by Integrating Kestra with Leading Data Tools" />
         </Head>
 
         <SolutionsDetailHeader
-            title="Integrate Kestra in the Modern Data Stack"
-            subtitle="Enhance Data Orchestration and Analytics by Integrating Kestra with Leading Data Tools"
-            detail-title="What is Modern Data Stack?"
-            detail-content="The modern data stack combines powerful automation and integration capabilities. Organizations can establish scalable, reliable, and streamlined data workflows by leveraging robust automation capabilities and seamless integrations with tools like dbt, Snowflake, Airbyte, and others. This ecosystem empowers data-driven decision-making and facilitates the generation of actionable insights."
-            image="/landing/usecases/mds/intro.svg"
+            title="Integrate Kestra in the"
+            titleAfter="Modern Data Stack"
+            subtitle="Orchestrate Your Data and Analytics Stack by Integrating Kestra with Leading Data Tools"
+            image="/landing/usecases/mds/intro-bg.svg"
         />
-        <SolutionsDetailMain
-            title="Kestra's Automation and Integrations: A Powerful Combination"
-            subtitle="Leverage Modern Data Stack"
-            baseline="Discover how Kestra's automation capabilities and extensive integrations with popular data tools, from the modern data stack, empower organizations to manage data pipelines more efficiently."
+        <SolutionsDetailContent
+            title="What is the Modern Data Stack?"
+            subtitle="The modern data stack combines powerful automation and integration capabilities. Organizations can establish scalable, reliable, and streamlined data workflows by leveraging robust automation capabilities and seamless integrations with tools like dbt, Snowflake, Airbyte, and others. This ecosystem empowers data-driven decision-making and facilitates the generation of actionable insights."
+        />
+        <LayoutDetailMainContent
+            subtitle="Leverage"
+            subtitleAfter="Modern Data Stack"
+            baseline="Discover how Kestra's automation capabilities and extensive integrations with popular data tools from the modern data stack empower organizations to manage data pipelines with confidence."
             :items="mainContent"
         />
         <SolutionsDetailEmpower
@@ -23,11 +26,17 @@
             subtitle="Kestra's flexibility enables seamless integration with a variety of modern data stack tools like Apache Kafka, Apache Spark for scalable processing, Fivetran for data replication, as well as leading data tools such as dbt, Snowflake, and Airbyte. By leveraging these integrations, organizations can automate data pipeline management, customize their data pipelines to meet specific requirements, and enhance their analytics capabilities."
         />
         <SolutionsDetailFeatures
-            title="Leveraging Kestra's Features"
-            subtitle="Key Features"
+            subtitle="Key"
+            subtitleAfter="Features"
             :items="features"
         />
-        <SolutionsDetailNext />
+        <LayoutFooterContact
+            title="Ready to take your data platform to the next level?"
+            darkButtonText="Contact us"
+            darkButtonHref="/contact-us"
+            purpleButtonText="Live demo"
+            purpleButtonHref="https://demo.kestra.io/ui/login?auto"
+        />
     </div>
 </template>
 

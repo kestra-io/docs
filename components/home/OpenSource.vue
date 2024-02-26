@@ -13,53 +13,50 @@
             </template>
         </div>
         <div class="container container-min">
-
             <Section
-                title="Join the Open Source Community"
-                subtitle="Community"
-                baseline="Kestra empowers you to customize and extend your data orchestration with plugins and features that can be deployed anywhere. Join our Open Source community and help us shape the best orchestration and scheduling platform on the market."
+                subtitle="Join the community"
             >
                 <div class="metrics">
                     <div class="counter-box text-center">
-                        <Star title="" />
-                        <h6>Stars</h6>
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.stars : 0" :duration="4000"></CountTo>
                         </h5>
+                        <p>Stars</p>
                     </div>
+                    <div class="line-separator"></div>
                     <div class="counter-box text-center">
-                        <DirectionsFork title="" />
-                        <h6>Forks</h6>
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.forks : 0" :duration="4000"></CountTo>
                         </h5>
+                        <p>Forks</p>
                     </div>
+                    <div class="line-separator"></div>
                     <div class="counter-box text-center">
-                        <BugOutline title="" />
-                        <h6>Issues</h6>
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.issues : 0" :duration="4000"></CountTo>
                         </h5>
+                        <p>Issues</p>
                     </div>
+                    <div class="line-separator"></div>
                     <div class="counter-box text-center">
-                        <SourcePull title="" />
-                        <h6>Pull Requests</h6>
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo>
                         </h5>
+                        <p>Pull Requests</p>
                     </div>
+                    <div class="line-separator"></div>
                     <div class="counter-box text-center">
-                        <AccountGroupOutline title="" />
-                        <h6>Contributors</h6>
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="contributors ? contributors.length : 0" :duration="4000"></CountTo>
                         </h5>
+                        <p>Contributors</p>
                     </div>
                 </div>
 
-                <div class="text-center mt-5">
-                    <a href="https://kestra.io/slack" target="_blank" class="btn btn-primary me-2" data-aos="zoom-in">Join our slack</a>
-                    <a href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-dark" data-aos="zoom-in">Give us a ⭐</a>
+                <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3 px-4">
+                    <NuxtLink href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-animated btn-dark-animated btn-dark" data-aos="zoom-in">Give a star</NuxtLink>
+                    <NuxtLink href="https://kestra.io/slack" target="_blank" class="btn btn-animated btn-purple-animated btn-purple" data-aos="zoom-in">Join the Community</NuxtLink>
+                    <NuxtLink href="/docs/getting-started/contributing" class="btn btn-animated btn-dark-animated btn-dark" data-aos="zoom-in">Contribute</NuxtLink>
                 </div>
             </Section>
         </div>
@@ -136,11 +133,23 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
-
     .main {
-        background: #FBF7F7;
         position: relative;
         display: flex;
+
+        :deep(section) {
+            padding: 2rem 0;
+            border-radius: 8px;
+            border: $block-border;
+            background: $black-2;
+            .subtitle {
+                font-weight: 400;
+                font-size: $font-size-sm;
+            }
+            .main {
+                background-color: $black-2 !important;
+            }
+        }
 
         .contributors {
             height: 100%;
@@ -160,54 +169,46 @@
                 }
             }
         }
-    }
 
-    .metrics {
-        padding-left: calc($spacer * 2);
-        padding-right: calc($spacer * 2);
-        margin: 0 auto;
-        max-width: 750px;
-        display: flex;
-        justify-content: center;
-        gap: $spacer calc($spacer * 2);
-        flex-flow: row wrap;
-
-        > div {
-            width: 100px;
+        .metrics {
+            padding-left: calc($spacer * 2);
+            padding-right: calc($spacer * 2);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: $spacer calc($spacer * 2.57);
+            @include media-breakpoint-down(xxl) {
+                gap: $spacer calc($spacer * 1.57);
+            }
+            flex-flow: row wrap;
         }
-    }
 
-    .container {
-        flex-grow: 1;
+        .container {
+            flex-grow: 1;
 
-        .counter-box {
-            color: $primary;
-
-            .material-design-icon {
-                background: var(--bs-white);
-                border-radius: var(--bs-border-radius-lg);
-                box-shadow: 0px 1.20763px 2.41527px rgba(0, 0, 0, 0.07);
-                font-size: 200%;
-                width: 3rem;
-                height: 3rem;
-                text-align: center;
-                align-items: center;
-                justify-content: center;
-
-                :deep(svg) {
-                    bottom: 0.250em;
+            .line-separator {
+                width: calc($spacer * 0.063);
+                background-color: #242427;
+                @include media-breakpoint-down(xl) {
+                    display: none;
                 }
             }
 
-            h5 {
-                color: var(--bs-black);
-            }
+            .counter-box {
+                text-align: center;
+                font-family: $font-family-sans-serif;
+                font-style: normal;
+                h5 {
+                    color: $white !important;
+                    font-size: 58px;
+                    font-weight: 700;
+                }
 
-            h6 {
-                color: $primary;
-                font-size: $font-size-sm;
-                &:after {
-                    display: none;
+                p {
+                    color: #ABABB2;
+                    font-size: 14px;
+                    font-weight: 500;
+                    text-transform: uppercase;
                 }
             }
         }

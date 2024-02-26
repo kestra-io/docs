@@ -1,10 +1,10 @@
 <template>
     <div class="container">
-        <Section :subtitle="title ? 'blog' : undefined" :title="title || 'Get Kestra updates'">
+        <Section :subtitle="title || undefined" :title="title ? undefined : 'Get Kestra updates'">
             <div class="row">
                 <template v-for="blog in blogs">
                     <div class="col-md-4 mb-4">
-                        <div class="card" data-aos="fade-right">
+                        <div class="card bg-dark-4" data-aos="fade-right">
                             <NuxtLink class="text-dark" :href="blog._path">
                                 <NuxtImg loading="lazy" format="webp" quality="80" densities="x1 x2" :src="blog.image" class="card-img-top rounded-3" :alt="blog.image" />
                                 <div class="card-body">
@@ -20,7 +20,7 @@
                 </template>
             </div>
             <div class="text-center">
-                <NuxtLink class="btn btn-primary " href="/blogs" data-aos="zoom-in">See all news</NuxtLink>
+                <NuxtLink class="btn btn-animated btn-purple-animated" href="/blogs" data-aos="zoom-in">See all news</NuxtLink>
             </div>
         </Section>
     </div>
@@ -66,9 +66,13 @@
             color: $primary;
         }
 
+        .card-title {
+            color: $white;
+        }
+
         .author {
             font-size: $font-size-sm;
-            color: $gray-500;
+            color: $white-5;
             margin-bottom: 0;
         }
     }

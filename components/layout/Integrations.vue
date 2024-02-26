@@ -1,59 +1,73 @@
 <template>
-    <div class="container-fluid bg-body-tertiary">
+    <div ref="container" class="container-fluid bg-dark-4">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6" data-aos="zoom-in">
-                    <img class="img-fluid mt-5 mt-kg-0" src="/landing/features/integration.svg" alt="Logos of tools that integrate with Kestra such as Snowflake, Airbyte, DBT or Fivetran and Kestra at the center of It"/>
-                </div>
-                <div class="col-lg-6 mb-5">
-                    <h2 data-aos="fade-left">Simple Integration</h2>
-                    <p class="mb-5" data-aos="fade-right">
-                        <b>Customize and extend</b> Kestra's integrations with custom plugins, tailored to your specifics needs. Integrate internal systems, third-party APIs, cloud services or databases using simple and scalable integrations.
-                    </p>
-
-                    <NuxtLink href="/plugins" class="btn btn-dark me-2 mb-2" data-aos="zoom-in">See open-source plugins</NuxtLink>
-                    <NuxtLink href="/docs/plugin-developer-guide" class="btn btn-primary mb-2" data-aos="zoom-in">Create a custom plugin</NuxtLink>
-                </div>
+            <div class="mb-5">
+                <h2 class="title">Integrate with over 400+ plugins you already <span>know</span> and <span>love</span></h2>
+                <LayoutPlugins />
             </div>
         </div>
     </div>
-</template>
+  </template>
 
-<script>
-    import Section from '../layout/Section.vue';
+  <style lang="scss" scoped>
+      @import "../../assets/styles/variable";
 
-    export default {
-        components: {Section}
-    }
-</script>
+      .container-fluid {
+          background: url("/landing/home/plugins/background.svg") no-repeat center;
+          color: var(--bs-white);
+          padding: 0;
 
+          .container {
+              padding: 4rem 0;
+              border-bottom: $block-border;
+              border-top: $block-border;
+          }
 
-<style lang="scss" scoped>
-    @import "../../assets/styles/variable";
+          .title {
+              margin: 0;
+              color: var(--bs-white);
+              text-align: center;
+              font-family: $font-family-sans-serif;
+              font-size: calc($font-size-base * 3.125);
+              font-style: normal;
+              font-weight: 300;
+              line-height: 4rem;
+              padding: 0 20%;
+              @include media-breakpoint-down(sm) {
+                  font-size: 1.875rem;
+                  line-height: 2.563rem;
+              }
 
-    .container-fluid {
-        background: $purple-7;
-        color: var(--bs-white);
+              @include media-breakpoint-down(lg) {
+                  padding: 0;
+              }
 
-        .row {
-            div:nth-child(1) {
-                justify-content: center;
-                display: flex;
-            }
+              span {
+                  background: linear-gradient(91deg, #E151F7 43.87%, #5C47F5 55.51%);
+                  background-clip: text;
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+              }
+          }
 
-            div:nth-child(2) {
-                @include media-breakpoint-up(lg) {
-                    padding: calc($spacer * 4) calc($spacer * 4) 0;
-                }
+          .row {
+              div:nth-child(2) {
+                  @include media-breakpoint-up(lg) {
+                      padding: calc($spacer * 4) calc($spacer * 4) 0;
+                  }
 
-                h2 {
-                    margin-bottom: calc($spacer * 2);
-                }
+                  h2 {
+                      margin-bottom: calc($spacer * 2);
+                      background: linear-gradient(90.03deg, #E151F7 2.16%, #5C47F5 65.09%);
+                      -webkit-text-fill-color: transparent;
+                      background-clip: text;
+                      text-fill-color: transparent;
+                  }
 
-                p {
-                    font-size: $font-size-lg;
-                }
-            }
-        }
-    }
-</style>
+                  p {
+                      font-size: $font-size-lg;
+                  }
+              }
+          }
+      }
+  </style>

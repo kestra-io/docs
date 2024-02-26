@@ -3,8 +3,6 @@ title: "Lead Backend Software Engineer"
 type: Engineering
 ---
 
-# Lead Backend Software Engineer
-
 This role involves working closely alongside the CTO, quickly learning the entire project, and becoming its counterpart.
 
 ## What you will do:
