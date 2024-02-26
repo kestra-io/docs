@@ -24,7 +24,7 @@ Davidson is a renowned management consulting and technology expertise firm estab
 ### Why This Partnership Matters
 We're thrilled to have Davidson on board as our partner! Davidson's approach is refreshingly different: by cultivating an environment where creativity and collective intelligence are the norm,  they stand out as unique incubators of innovation. This collaborative spirit is exactly what we were looking for in a partner, and we're confident that together, we can achieve great things.
 
-![DavidsonXkestra](/2024-03-01-kestra-davidson-partnership/KestraXDavidson.png)
+![DavidsonXkestra](blogs/2024-03-01-kestra-davidson-partnership/KestraXDavidson.png)
 
 ### Davidson's Commitment to Excellence
 Davidson’s expertise supercharges Kestra’s platform. In less than 60 days, we were impressed by their capacities to enable an entire department at full speed, leading to commercial discussions with multiple industry leaders and 18 certified consultants! And that’s only the beginning…
@@ -32,7 +32,7 @@ Davidson’s expertise supercharges Kestra’s platform. In less than 60 days, w
 ### A Synergistic Partnership
 Our Engineering teams collaborated for weeks on readily available solutions for advanced automation needs. Meanwhile, our Sales teams aligned on a comprehensive delivery approach covering everything from single technical assistance to structured Proof of Concepts. This combined effort, already battletested with a couple of customers, empowers companies to implement robust, collaborative orchestration solutions efficiently.
 
-![synergic partnership](/2024-03-01-kestra-davidson-partnership/goals.png)
+![synergic partnership](blogs/2024-03-01-kestra-davidson-partnership/goals.png)
 
 ### Empowering Businesses with Advanced Orchestration
 Together, Kestra and Davidson are committed to empowering businesses to implement simple, powerful, and collaborative orchestration solutions more effectively. This partnership will provide businesses with the support they need to implement Kestra in their operations successfully, ensuring they get the full benefits of advanced workflow orchestration.
@@ -43,16 +43,5 @@ This partnership will also feature a knowledge exchange program, including joint
 
 ## Get Involved
 
-Stay tuned for more updates on this exciting partnership. For more information or to get involved with our joint initiatives, please contact us through our channels. We're eager to explore this new chapter with Davidson and invite you to join us on this journey!
+Stay tuned for more updates on this exciting partnership. For more information or to get involved with our joint initiatives, please contact us through [Slack channels](https://kestra.io/slack). We're eager to explore this new chapter with Davidson and invite you to join us on this journey!
 
-If you are looking to leverage the simplest and most versatile open-source workflow orchestration solution, fill out the form below to become a partner. 
-
-
-::HubspotForm
-{
-  "region": "eu1",
-  "portalId": "27220195",
-  "formId": "e044de55-bda2-4bb8-9e50-ed8c78b94922",
-  "event": "partner_form"
-}
-::
