@@ -1,39 +1,33 @@
 ---
 title: "Announcing Kestra Partnership with Davidson"
 description: "We are thrilled to announce the launch of our partnership with Davidson, a leader in the consulting industry known for its expertise in digital transformation and modern technologies."
-date: 2023-12-12T12:00:00
+date: 2024-03-01T12:00:00
 category: Company News
 author:
   name: Quentin Sinig
   image: "qsinig"
-image: /blogs/2023-12-12-kestra-davidson-partnership.jpg
+image: /blogs/2024-03-01-kestra-davidson-partnership.jpg
 ---
 
 We are excited to announce our partnership with [Davidson](https://www.davidson.group/), a leader in the consulting industry known for its expertise in digital transformation and modern technologies.
 
-> “”
-
-*Emmanuel Darras, CEO at Kestra.*
-
-> “”
-
-*XX, XX at Davidson.*
-
----
+> “Partnering with Davidson was a natural fit. We’re sharing the same values herited the open-source DNA and a common sense to solve businesses pains with cutting-edge technology.""
 
 ## About Davidson
 Davidson is a renowned management consulting and technology expertise firm established in 2005. Davidson has made a significant impact in the industry with its expansive network across France, Switzerland, Belgium, the United Arab Emirates, Spain, and Germany. Boasting over 2,000 employees they stands out with their unique approach to consultancy, focusing on domains such as cloud infrastructure, telecomunication, Big Data & AI, smart factories, healthcare, and finance. 
 
 ### Why This Partnership Matters
-We're thrilled to have Davidson on board as our partner. Davidson's approach is refreshingly different. From implementing solutions from scratch to managing complex migration projects and custom development, Davidson's expertise in consulting will provide valuable support to organizations seeking to optimize their workflows with [Kestra](https://github.com/kestra-io/kestra).
+We're thrilled to have Davidson on board as our partner! Davidson's approach is refreshingly different: by cultivating an environment where creativity and collective intelligence are the norm,  they stand out as unique incubators of innovation. This collaborative spirit is exactly what we were looking for in a partner, and we're confident that together, we can achieve great things.
 
-Davidson has cultivated an environment where creativity and collective intelligence are the norm. This approach allows them to offer unique, tailored solutions that are as inventive as they are effective.
+![DavidsonXkestra](/2024-03-01-kestra-davidson-partnership/KestraXDavidson.png)
 
 ### Davidson's Commitment to Excellence
- They are dedicated to understanding each client's unique needs and challenges, ensuring that the solutions they provide remain relevant in this fast-paced landscape. This forward-thinking mindset, coupled with a keen eye on the latest technological trends, ensures that their solutions are always a step ahead.
+Davidson’s expertise supercharges Kestra’s platform. In less than 60 days, we were impressed by their capacities to enable an entire department at full speed, leading to commercial discussions with multiple industry leaders and 18 certified consultants! And that’s only the beginning…
 
 ### A Synergistic Partnership
-Our partnership with Davidson aligns perfectly with our vision at Kestra. Their dynamic approach to technology and innovation perfectly complements our advanced orchestration capabilities. 
+Our Engineering teams collaborated for weeks on readily available solutions for advanced automation needs. Meanwhile, our Sales teams aligned on a comprehensive delivery approach covering everything from single technical assistance to structured Proof of Concepts. This combined effort, already battletested with a couple of customers, empowers companies to implement robust, collaborative orchestration solutions efficiently.
+
+![synergic partnership](/2024-03-01-kestra-davidson-partnership/goals.png)
 
 ### Empowering Businesses with Advanced Orchestration
 Together, Kestra and Davidson are committed to empowering businesses to implement simple, powerful, and collaborative orchestration solutions more effectively. This partnership will provide businesses with the support they need to implement Kestra in their operations successfully, ensuring they get the full benefits of advanced workflow orchestration.
