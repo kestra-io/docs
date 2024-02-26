@@ -9,10 +9,11 @@ author:
 image: /blogs/2024-02-28-dbt-or-sqlmesh.png
 ---
 
-Discussions around the Analytics Stack often assume everyone is doing ELT whereas the T is happening in some data warehouse using SQL. And so quickly with dbt.
-But a lot of teams are using other stacks and other tools. 
+Conversations around the [Analytics Stack](https://twitter.com/mattturck/status/1761436014122332187) often revolve around the assumption that everyone is using the Extract, Load, Transform (ELT) approach, with the transformation (T) happening within a data warehouse using SQL. These discussions quickly shift towards the use of dbt as the go-to tool for this process.
 
-In this blog post, we won’t dive into the debate of SQL versus a tool like Spark. We will focus on where we are now regarding SQL transformation and how all those debates are somehow converging toward a natural solution.
+However, it's important to acknowledge that many teams are utilizing different data stacks and tools beyond the common ELT and dbt combination.
+
+In this blog post, we'll delve into the current landscape of SQL transformations and explore how various discussions and debates in this space are often all about different maturity and project scales.
 
 ## The old debate with dbt
 
