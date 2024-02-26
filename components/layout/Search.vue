@@ -523,6 +523,7 @@
                 font-family: var(--bs-font-monospace);
                 font-size: 80%;
                 max-width: 100%;
+                color: $white;
 
                 p {
                     white-space: pre;
