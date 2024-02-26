@@ -56,7 +56,7 @@
                 <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3 px-4">
                     <NuxtLink href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-animated btn-dark-animated btn-dark" data-aos="zoom-in">Give a star</NuxtLink>
                     <NuxtLink href="https://kestra.io/slack" target="_blank" class="btn btn-animated btn-purple-animated btn-purple" data-aos="zoom-in">Join the Community</NuxtLink>
-                    <NuxtLink href="#" target="_blank" class="btn btn-animated btn-dark-animated btn-dark" data-aos="zoom-in">Contribute</NuxtLink>
+                    <NuxtLink href="/docs/getting-started/contributing" class="btn btn-animated btn-dark-animated btn-dark" data-aos="zoom-in">Contribute</NuxtLink>
                 </div>
             </Section>
         </div>

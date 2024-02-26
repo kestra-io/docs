@@ -29,28 +29,37 @@
                             <br />
                             <br />
                             <span>tasks:</span><br/>
-                            <span>- id:</span> extract_from_api<br/>
-                            <span>type:</span> io.kestra.plugin.fs.http.Request<br/>
-                            <span>uri:</span> https://dummyjson.com/products<br/>
-                            <br/>
-                            <span>- id:</span> python_transform<br/>
-                            <span>type:</span> io.kestra.plugin.scripts.python.Script<br/>
-                            <span>docker:</span><br/>
-                            <span>image:</span> ghcr.io/kestra-io/pydata:latest <br/>
-                            <span>script:</span>|<br/>
-                            import polars as pl<br/>
-                            ...
-                            <br/>
-                            <br/>
-                            <span>- id:</span> load_sql<br/>
-                            <span>type:</span> io.kestra.plugin.gcp.bigquery.Load<br/>
-                            <span>from:</span> {{ output }}<br/>
-                            <span>destinationTable: </span>gcp_project.dataset.table<br/>
-                            <br/>
+                            <div class="ms-1">
+                                <span class="ms-1">- id:</span> extract_from_api<br/>
+                                <span class="ms-3">type:</span> io.kestra.plugin.fs.http.Request<br/>
+                                <span class="ms-3">uri:</span> https://dummyjson.com/products<br/>
+                                <br/>
+                                <span class="ms-1">- id:</span> python_transform<br/>
+                                <span class="ms-3">type:</span> io.kestra.plugin.scripts.python.Script<br/>
+                                <span class="ms-3">docker:</span><br/>
+                                <span class="ms-4">image:</span> ghcr.io/kestra-io/pydata:latest <br/>
+                                <span class="ms-3">script:</span>|<br/>
+                                <i class="fst-normal ms-3">
+                                    import polars as pl
+                                </i>
+                                <br>
+                                <i class="ms-3">
+                                    ...
+                                </i>
+                                <br/>
+                                <br/>
+                                <span class="ms-1">- id:</span> load_sql<br/>
+                                <span class="ms-3">type:</span> io.kestra.plugin.gcp.bigquery.Load<br/>
+                                <span class="ms-3">from:</span> {{ output }}<br/>
+                                <span class="ms-3">destinationTable: </span>gcp_project.dataset.table<br/>
+                                <br/>
+                            </div>
                             <span>triggers:</span><br/>
-                            <span>- id:</span> daily<br/>
-                            <span>type:</span> io.kestra.core.models.triggers.types.Schedule<br/>
-                            <span>cron:</span> "@daily"<br/>
+                            <div class="ms-1">
+                                <span class="ms-1">- id:</span> daily<br/>
+                                <span class="ms-3">type:</span> io.kestra.core.models.triggers.types.Schedule<br/>
+                                <span class="ms-3">cron:</span> "@daily"<br/>
+                            </div>
                         </div>
                     </div>
                 </div>
