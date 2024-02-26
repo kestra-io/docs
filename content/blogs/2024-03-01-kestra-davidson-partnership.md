@@ -11,7 +11,12 @@ image: /blogs/2024-03-01-kestra-davidson-partnership.jpg
 
 We are excited to announce our partnership with [Davidson](https://www.davidson.group/), a leader in the consulting industry known for its expertise in digital transformation and modern technologies.
 
-> “Partnering with Davidson was a natural fit. We’re sharing the same values herited the open-source DNA and a common sense to solve businesses pains with cutting-edge technology.""
+> "Partnering with Davidson was a natural fit. We’re sharing the same values herited the open-source DNA and a common sense to solve businesses pains with cutting-edge technology."
+*Quentin SINIG, VP Go-to-Market at Kestra.*
+
+> "By partnering with Kestra, we gain access to scalable and customizable capabilities that will allow us to fully leverage all the market opportunities.
+*Nicolas Lecaplain, Business Unit Director*
+
 
 ## About Davidson
 Davidson is a renowned management consulting and technology expertise firm established in 2005. Davidson has made a significant impact in the industry with its expansive network across France, Switzerland, Belgium, the United Arab Emirates, Spain, and Germany. Boasting over 2,000 employees they stands out with their unique approach to consultancy, focusing on domains such as cloud infrastructure, telecomunication, Big Data & AI, smart factories, healthcare, and finance. 
