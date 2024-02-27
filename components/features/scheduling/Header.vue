@@ -11,7 +11,7 @@
                                 Talk to Us
                             </NuxtLink>
                             <NuxtLink href="https://github.com/kestra-io/kestra"  class="btn btn-animated btn-purple-animated mt-2" data-aos="zoom-in">
-                                Get started!
+                                Get started
                             </NuxtLink>
                         </div>
                     </div>

@@ -8,7 +8,7 @@
                             <button class="btn  btn-dark mx-2 mt-2">Read the docs</button>
                         </NuxtLink>
                         <NuxtLink href="https://github.com/kestra-io/kestra">
-                            <button class="btn btn-animated btn-purple-animated mx-2 mt-2">Getting Started!</button>
+                            <button class="btn btn-animated btn-purple-animated mx-2 mt-2">Get Started</button>
                         </NuxtLink>
                     </div>
                 </div>

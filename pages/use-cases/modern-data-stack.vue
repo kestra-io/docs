@@ -32,10 +32,10 @@
         />
         <LayoutFooterContact
             title="Ready to take your data platform to the next level?"
-            darkButtonText="Contact us"
-            darkButtonHref="/contact-us"
-            purpleButtonText="Live demo"
-            purpleButtonHref="https://demo.kestra.io/ui/login?auto"
+            darkButtonText="Talk to Us"
+            darkButtonHref="/demo"
+            purpleButtonText="Get Started"
+            purpleButtonHref="https://github.com/kestra-io/kestra"
         />
     </div>
 </template>

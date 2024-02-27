@@ -13,7 +13,7 @@
         <LayoutFooterContact
             title="Getting Started with  Declarative Orchestration"
             darkButtonText="Read the docs"
-            purpleButtonText="Get started!"
+            purpleButtonText="Get started"
         />
     </div>
 </template>
