@@ -280,7 +280,7 @@ ngrok config add-authtoken long_token_string
 
 Create a FastAPI app in a file called `main.py`:
 
-```
+```python
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 import requests
