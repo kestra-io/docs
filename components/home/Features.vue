@@ -5,14 +5,14 @@
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="CalculatorVariant"
-                        title="Embedded Visual Studio Code editor IDE"
+                        title="Declarative orchestration"
                     />
                 </div>
 
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="Lan"
-                        title="Scalable event-driven multitenant architecture"
+                        title="Scalable event-driven architecture"
                     />
                 </div>
 
