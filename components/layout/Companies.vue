@@ -45,7 +45,7 @@
         computed: {
             companies() {
                 return [
-                    "axciom",
+                    "acxiom",
                     "fortinet",
                     "bouygues-immobilier",
                     "leroymerlin",
