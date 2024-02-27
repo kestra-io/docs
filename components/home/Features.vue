@@ -1,25 +1,25 @@
 <template>
     <div class="container">
-        <Section subtitle="Simplicity scales, complexity" subtitle-after="Fails">
+        <Section subtitle="Simplicity scales, complexity" subtitle-after="fails">
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="CalculatorVariant"
-                        title="Embedded Visual Studio Code editor IDE"
+                        title="Declarative workflow creation"
                     />
                 </div>
 
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="Lan"
-                        title="Scalable event-driven multitenant architecture"
+                        title="Scalable multitenant architecture"
                     />
                 </div>
 
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="Hubspot"
-                        title="Run anywhere, code in any language"
+                        title="Run anywhere, code in any language in built-in Editor"
                     />
                 </div>
 

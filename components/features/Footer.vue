@@ -10,8 +10,8 @@
           <div
             class="d-flex gap-2 flex-wrap justify-content-center align-items-center"
           >
-            <NuxtLink href="/contact-us">
-              <button class="btn btn-dark mx-2 mt-2">Contact Us</button>
+            <NuxtLink href="/docs/getting-started">
+              <button class="btn btn-dark mx-2 mt-2">Get Started</button>
             </NuxtLink>
             <NuxtLink href="/demo">
               <button class="btn btn-animated btn-purple-animated mx-2 mt-2">

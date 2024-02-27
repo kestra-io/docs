@@ -11,8 +11,8 @@
         <EnterpriseSecurity/>
         <EnterpriseEditions/>
         <LayoutFooterContact
-            darkButtonText="Contact Us"
-            darkButtonHref="https://kestra.io/demo"
+            darkButtonText="Get Started"
+            darkButtonHref="https://github.com/kestra-io/kestra"
             purpleButtonText="Talk to Us"
             purpleButtonHref="https://kestra.io/demo"
         />
