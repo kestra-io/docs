@@ -19,7 +19,7 @@
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="Hubspot"
-                        title="Run anywhere, code in any language"
+                        title="Run anywhere, code in any language in built-in Editor"
                     />
                 </div>
 
