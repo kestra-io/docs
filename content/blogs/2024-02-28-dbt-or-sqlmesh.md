@@ -1,12 +1,12 @@
 ---
 title: "Is It Time For You To Move From dbt to SQLMesh?"
 description: "Where are we with SQL transformation in the data warehouse in the Analytics Stack?"
-date: 2024-02-28T10:00:00
+date: 2024-02-27T10:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: /blogs/2024-02-28-dbt-or-sqlmesh.png
+image: /blogs/2024-02-27-dbt-or-sqlmesh.png
 ---
 
 Conversations around the [Analytics Stack](https://twitter.com/mattturck/status/1761436014122332187) often revolve around the assumption that everyone is using the Extract, Load, Transform (ELT) approach, with the transformation (T) happening within a data warehouse using SQL. These discussions quickly shift towards the use of dbt as the go-to tool for this process.
@@ -38,9 +38,9 @@ Major differences with dbt are:
 
 You can find all the differences explained by the SQLMesh team [in this documentation](https://sqlmesh.readthedocs.io/en/stable/comparisons/#feature-comparisons).
 
-![sqlmesh-ui](/blogs/2024-02-28-dbt-or-sqlmesh/sqlmesh-ui.png)
+![sqlmesh-ui](/blogs/2024-02-27-dbt-or-sqlmesh/sqlmesh-ui.png)
 
-![sqlmesh-kestra](/blogs/2024-02-28-dbt-or-sqlmesh/sqlmesh-kestra.png)
+![sqlmesh-kestra](/blogs/2024-02-27-dbt-or-sqlmesh/sqlmesh-kestra.png)
 
 ## Alternatives
 
@@ -48,7 +48,7 @@ Transforming data with SQL is in growing need, and several other actors have to 
 
 - [Y42](https://www.y42.com/blog/virtual-data-builds-one-data-warehouse-environment-for-every-git-commit), [GCP Dataform](https://cloud.google.com/dataform), or [SDF](https://www.sdf.com/):  they are dbt Cloud alternatives (no open-source versions) with their advantages and limitations.
 
-![y42](/blogs/2024-02-28-dbt-or-sqlmesh/y42.png)
+![y42](/blogs/2024-02-27-dbt-or-sqlmesh/y42.png)
 
 - [lea](https://github.com/carbonfact/lea): a lightweight alternative to dbt or SQLMesh. Fully open-source and maintained by the team using it for their data warehouse ([CarbonFact](https://www.carbonfact.com/)).
 
@@ -78,7 +78,7 @@ resource "google_bigquery_table" "dwh_organizations" {
 
 - [Malloy](https://kestra.io/blogs/2023-09-15-football-malloy-kestra): though more for ad-hoc analytics now, the Google team behind Malloy has emphasized something real: [SQL has not been designed for analytics](https://medium.pimpaudben.fr/sql-is-not-designed-for-analytics-079fc97b139c), it simply wasn't made for building whole systems with it. With BI as code in the backset, Malloy could be the next semantic to build models that often need to [think beyond rectangular data](https://docs.malloydata.dev/blog/2023-01-18-data-is-rectangular/index#dimensionality-granularity).
 
-![malloy-nested-query](/blogs/2024-02-28-dbt-or-sqlmesh/malloy.png)
+![malloy-nested-query](/blogs/2024-02-27-dbt-or-sqlmesh/malloy.png)
 
 ## Different frameworks for different needs
 
