@@ -13,12 +13,12 @@
 
             <div class="cta">
               <NuxtLink
-                href="https://demo.kestra.io/ui/login?auto"
+                href="https://kestra.io/demo"
                 target="_blank"
                 class="btn text-white mt-2 me-3 btn-animated btn-dark-animated"
                 data-aos="zoom-in"
               >
-                Live demo
+                Talk to Us
               </NuxtLink>
 
               <NuxtLink
@@ -26,7 +26,7 @@
                 class="btn btn-animated btn-purple-animated mt-2"
                 data-aos="zoom-in"
               >
-                Get started!
+                Get started
               </NuxtLink>
             </div>
           </div>
