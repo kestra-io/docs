@@ -1,6 +1,6 @@
 ---
 title: "Is It Time For You To Move From dbt to SQLMesh?"
-description: "Where are we with SQL transformation in the data warehouse in the Analytics Stack?"
+description: "What are dbt shorcomings ? Where SQLMesh shines? How to orchestrate SQL frameworks?"
 date: 2024-02-27T10:00:00
 category: Solutions
 author:
@@ -10,91 +10,149 @@ image: /blogs/2024-02-27-dbt-or-sqlmesh.png
 ---
 
 Conversations around the [Analytics Stack](https://twitter.com/mattturck/status/1761436014122332187) often revolve around the assumption that everyone is using the Extract, Load, Transform (ELT) approach, with the transformation (T) happening within a data warehouse using SQL. These discussions quickly shift towards the use of dbt as the go-to tool for this process.
+The need for such framework is here because of the use of cloud data warehouse, all proposing SQL as the main syntax to query their data.
 
-However, it's important to acknowledge that many teams are utilizing different data stacks and tools beyond the common ELT and dbt combination.
+Before dbt, most of data-engineers where maintaining hand-made SQL templating engines to operate queries on their data-warehouse. dbt has been the first to really stand outs and drive a real community around it.
 
-In this blog post, we'll delve into the current landscape of SQL transformations and explore how various discussions and debates in this space are often all about different maturity and project scales.
+With usage growing, some users started to complain about dbt shortcomings. New tools like SQLMesh started to emerge to address these challenges.
 
-## The old debate with dbt
+In this blog post, we'll delve into dbt and SQLMesh frameworks and how they need an orchestration engine to really shine.
+
+
+## dbt shortcomings
 
 [dbt](https://www.getdbt.com/) is the go-to solution for anything regarding transformation and data modeling with SQL nowadays. It’s used by top-notch companies, [can scale quite well](https://www.getdbt.com/blog/new-dbt-cloud-features-announced-at-coalesce-2023), and has a great community of users.
 
 Still, it has some flaws:
-- [Users are wondering why they should references to build proper dependencies between models](https://www.reddit.com/r/dataengineering/comments/zamewl/whats_wrong_with_dbt/) while other solutions often parse the SQL queries to infer the DAG.
-- You still need to orchestrate it: at Kestra we have seen many users moving away from dbt Cloud because of pricing changes and use Kestra with dbt Core to model their data and manage dependencies.
 
-Talking about dependencies: we often have more complex pipelines than what we see in Modern Data Stack schemas where it’s often about connecting an ingesting tool ([Airbyte](https://airbyte.com/), [Fivetran](https://www.fivetran.com), [dlt](https://dlthub.com/)), transforming tool (dbt), and a reverse ETL tool ([Hightouch](https://hightouch.com/), [Census](https://www.getcensus.com/reverse-etl)) or a dashboarding tool ([Tableau](https://www.tableau.com), [PowerBI](https://www.microsoft.com/en-en/power-platform/products/power-bi), [Metabase](https://www.metabase.com/), [Superset](https://superset.apache.org/)). Data teams also need notification services, custom API calls, monitoring, very specific transformations, etc.
+- [Users are wondering why they should references to build proper dependencies between models](https://www.reddit.com/r/dataengineering/comments/zamewl/whats_wrong_with_dbt/). It oftens ends in complex dependancies managements and over-engineered stuff. Other solutions often parse the SQL queries to infer the DAG of dependancies directly.
 
-Connecting all those tools needs a control plane - [an orchestrator](https://github.com/kestra-io/kestra).
+- Scaling across multiple projects is difficult: having too many dbt projects in a single repository is often hard to manage. You often need to split your hundred (if not thousands) models within different teams and projects. But cross-project references is not possible in dbt Core. It has been discussed in previous [roadmap discussions](https://github.com/dbt-labs/dbt-core/blob/main/docs/roadmap/2022-08-back-for-more.md?ref=blef.fr#v15-next-year) but the final decisions has been to move it into [dbt Mesh, part of the Cloud offering](https://www.getdbt.com/product/dbt-mesh).
 
-## Is it time to say goodbye to dbt and move to SQLMesh?
+
+## How SQLMesh addresses these shortcomings?
 
 At the end of 2022, ex-engineers from Airbnb, Apple, Google, and Netflix started a project called [SQLMesh](https://sqlmesh.com/). Built on top the the SQLGlot library allowing parsing and transpiling SQL SQLMesh is, like dbt, a framework to run data pipelines written in SQL. The major shift from dbt is that SQLMesh has an emphasis on operations.
 
-Major differences with dbt are:
+SQLMesh introduces key improvements for managing SQL queries:
+
 - SQLMesh can infer query dependencies
-- It can create new environments without duplicating data. Allowing to create dynamic representations of the data while ensuring tables are never built more than once. Unit tests, Audits, and Data Diff provide validation throughout the development workflow.
-- It comes with different user interfaces: a web UI and a CLI. Both are in the open-source version.
 
-You can find all the differences explained by the SQLMesh team [in this documentation](https://sqlmesh.readthedocs.io/en/stable/comparisons/#feature-comparisons).
+- SQLMesh allows to create new environments without duplicating data. Allowing to create dynamic representations of the data while ensuring tables are never built more than once. Unit tests, Audits, and Data Diff provide validation throughout the development workflow.
 
-![sqlmesh-ui](/blogs/2024-02-27-dbt-or-sqlmesh/sqlmesh-ui.png)
+- SQLMesh comes with different user interfaces: a web UI and a CLI. dbt main interface is only a CLI while the web UI is only available in dbt Cloud. For SQLMesh, both are in the open-source version.
+
+(You can find all the differences explained by the SQLMesh team [in this documentation](https://sqlmesh.readthedocs.io/en/stable/comparisons/#feature-comparisons))
+
+GIF SQLMESH
+
+## dbt Cloud vs. SQL Mesh commercial product
+
+TODO
+
+at Kestra we have seen many users moving away from dbt Cloud because of pricing changes and use Kestra with dbt Core to model their data and manage dependencies.
+
+## The need for orchestration
+
+Even though both frameworks are extraordinary for building data transformations in ELT style, they don’t cover the full orchestration spectrum required by companies nowadays.
+
+Data engineers often have more complex pipelines than what we see in Modern Data Stack schemas where it’s often about connecting an ingesting tool ([Airbyte](https://airbyte.com/), [Fivetran](https://www.fivetran.com), [dlt](https://dlthub.com/)), transforming tool (dbt), and a reverse ETL tool ([Hightouch](https://hightouch.com/), [Census](https://www.getcensus.com/reverse-etl)) or a dashboarding tool ([Tableau](https://www.tableau.com), [PowerBI](https://www.microsoft.com/en-en/power-platform/products/power-bi), [Metabase](https://www.metabase.com/), [Superset](https://superset.apache.org/)). Data teams also need notification services, custom API calls, monitoring, very specific transformations, etc.
+
+Connecting all those tools needs a control plane - [an orchestrator such as Kestra](https://github.com/kestra-io/kestra). Here is how you can easily orchestrate both dbt and SQL Mesh transformation in just a few lines of YAML in Kestra.
+
+### Orchestrating SQL Mesh with Kestra
+
+Using SQLMesh in Kestra is quite straightforward. The following example shows how you can clone a SQLMesh project from a Git repository, run it with the dedicated [SQLMeshCLI task](https://kestra.io/plugins/tasks/cli/io.kestra.plugin.sqlmesh.cli.sqlmeshcli) and finally query the results with DuckDB.
+
+```yaml
+id: sqlmesh
+namespace: blueprint
+description: Clone SQLMesh project and run the project, and query with DuckDB
+tasks:
+
+  - id: working_dir
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+    
+      - id: git_clone
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/TobikoData/sqlmesh-examples.git
+        branch: main
+
+      - id: sqlmesh
+        type: io.kestra.plugin.sqlmesh.cli.SQLMeshCLI
+        beforeCommands:
+          - cd 001_sushi/1_simple
+        commands:
+          - sqlmesh plan --auto-apply
+        outputFiles:
+          - '001_sushi/1_simple/db/sushi-example.db'
+
+  - id: query
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    inputFiles:
+      data.db: "{{ outputs.sqlmesh.outputFiles['001_sushi/1_simple/db/sushi-example.db'] }}"
+    sql: |
+      ATTACH '{{workingDir }}/data.db';
+      SELECT * FROM sushisimple.top_waiters;
+    store: true
+
+triggers:
+  - id: schedule
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "30 6 * * *"
+```
 
 ![sqlmesh-kestra](/blogs/2024-02-27-dbt-or-sqlmesh/sqlmesh-kestra.png)
 
-## Alternatives
+### Orchestrating dbt with Kestra
 
-Transforming data with SQL is in growing need, and several other actors have to be considered in that space:
+In a similar fashion, orchestrating a dbt project with Kestra can be done in few lines of YAML:
 
-- [Y42](https://www.y42.com/blog/virtual-data-builds-one-data-warehouse-environment-for-every-git-commit), [GCP Dataform](https://cloud.google.com/dataform), or [SDF](https://www.sdf.com/):  they are dbt Cloud alternatives (no open-source versions) with their advantages and limitations.
+```yaml
+id: dbt_duckdb
+namespace: blueprint
 
-![y42](/blogs/2024-02-27-dbt-or-sqlmesh/y42.png)
+tasks:
+  - id: dbt
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+    - id: cloneRepository
+      type: io.kestra.plugin.git.Clone
+      url: https://github.com/kestra-io/dbt-example
+      branch: main
 
-- [lea](https://github.com/carbonfact/lea): a lightweight alternative to dbt or SQLMesh. Fully open-source and maintained by the team using it for their data warehouse ([CarbonFact](https://www.carbonfact.com/)).
-
-- [Quary](https://www.quary.dev/): an open-source alternative of dbt Core, made in Rust.
-
-- Building your own “in-house dbt” is definitely something to consider if you have the skill and the need for a custom solution. dbt is basically SQL plus templating, so why not build your own?
-
-- Declaring queries with Terraform resources: this is something often overlooked, but if your modeling is simple enough, using only [resources like google_bigquery_table with Terraform](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table) to build views on top of raw data can be a very lightweight solution.
-
-```hcl
-resource "google_bigquery_table" "dwh_organizations" {
-  project = data.google_project.prd.project_id
-  dataset_id = google_bigquery_dataset.dwh.dataset_id
-  table_id = "organizations"
-  deletion_protection = false
-
-  view {
-    query = templatefile("bigquery/dwh/simple_select.sql", {
-      project = google_bigquery_dataset.ods.project
-      dataset = google_bigquery_dataset.ods.dataset_id
-      table = "organizations"
-    })
-    use_legacy_sql = false
-  }
-}
+    - id: dbt-build
+      type: io.kestra.plugin.dbt.cli.DbtCLI
+      runner: DOCKER
+      docker:
+        image: ghcr.io/kestra-io/dbt-duckdb:latest
+      commands:
+        - dbt deps
+        - dbt build
+      profiles: |
+        my_dbt_project:
+          outputs:
+            dev:
+              type: duckdb
+              path: ":memory:"
+              fixed_retries: 1
+              threads: 16
+              timeout_seconds: 300
+          target: dev
+triggers:
+  - id: schedule
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "30 6 * * *"
 ```
 
-- [Malloy](https://kestra.io/blogs/2023-09-15-football-malloy-kestra): though more for ad-hoc analytics now, the Google team behind Malloy has emphasized something real: [SQL has not been designed for analytics](https://medium.pimpaudben.fr/sql-is-not-designed-for-analytics-079fc97b139c), it simply wasn't made for building whole systems with it. With BI as code in the backset, Malloy could be the next semantic to build models that often need to [think beyond rectangular data](https://docs.malloydata.dev/blog/2023-01-18-data-is-rectangular/index#dimensionality-granularity).
+You can find several examples of [flows involving dbt and other technologies in our blueprint library](https://kestra.io/blueprints?page=1&size=24&tags=36).
 
-![malloy-nested-query](/blogs/2024-02-27-dbt-or-sqlmesh/malloy.png)
-
-## Different frameworks for different needs
+## Conclusion
 
 Highlighted by the growing number of actors in the field, the focus on how software practices could be applied to analytics is taking real depth.
 
-But once you have chosen your SQL transformation frameworks, the real flaws are still here:
-
-- Duplicating the structural frameworks from transactional databases upstream entails the need for the upstream team to synchronize modifications, leading to potential oversights and unexpected disruptions for the warehouse team. A more effective approach would involve the transactional team publishing domain objects as an interface and validating through a data contract.
-
-- Just like an inexperienced software engineer tends to write complex code with all the wrong abstractions, the same can happen in any project involving a SQL framework. 
-
-In conclusion, the emphasis on clean data operations resonates strongly with the growing adoption of tools like Kestra. After all, well-defined operations are fundamental to unlocking the true value of data, and managing complex data models and their value chains can be a significant challenge.
-
-Just as Airflow pioneered a new generation of data orchestration tools, dbt was the first to champion the application of software development best practices to data analytics. However, the landscape is constantly evolving, with new players emerging and introducing innovative solutions and fresh perspectives.
-
-So, when is the right time to consider switching from dbt to SQLMesh? The answer ultimately depends on the specific maturity level of your team and organization.
+When is the right time to consider switching from dbt to SQLMesh? The answer ultimately depends on the specific maturity level of your team and organization.
 
 dbt boasts a large and active community, along with extensive documentation and readily available tutorials. This makes it an excellent choice, especially for those seeking a well-established and user-tested solution. On the other hand, if your primary concern lies in robust operational capabilities and comprehensive environment management, then SQLMesh might be a more suitable option to explore.
 
