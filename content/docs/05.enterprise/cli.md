@@ -35,7 +35,7 @@ Commands:
   tenants    handle tenants
 ```
 
-## auths
+## kestra-ee auths
 
 ```bash
 Usage: kestra-ee auths [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
@@ -59,7 +59,7 @@ Commands:
   users  handle users
 ```
 
-### auths users
+### kestra-ee auths users
 
 ```bash
 Usage: kestra-ee auths users [-hVv] [--internal-log] [-c=<config>]
@@ -91,7 +91,7 @@ Commands:
   set-type     Set type of a user between STANDARD and SUPER_ADMIN.
 ```
 
-#### auths users sync-access
+#### kestra-ee auths users sync-access
 
 ```bash
 Usage: kestra-ee auths users sync-access [-hVv] [--internal-log] [-c=<config>]
@@ -117,7 +117,7 @@ be synchronized)
   -V, --version           Print version information and exit.
 ```
 
-#### auths users refresh
+#### kestra-ee auths users refresh
 
 ```bash
 Usage: kestra-ee auths users refresh [-hVv] [--internal-log] [-c=<config>]
@@ -139,7 +139,7 @@ Refresh users to update their properties
   -V, --version           Print version information and exit.
 ```
 
-#### auths users set-type
+#### kestra-ee auths users set-type
 
 ```bash
 Usage: kestra-ee auths users set-type [-hVv] [--internal-log] [-c=<config>]
@@ -165,7 +165,7 @@ Set type of a user between STANDARD and SUPER_ADMIN.
 ```
 
 
-#### auths users create
+#### kestra-ee auths users create
 
 Example command to create a Super Admin user:
 
@@ -222,7 +222,7 @@ Create a new users
 
 ---
 
-## flow
+## kestra-ee flow
 
 ```bash
 Usage: kestra-ee flow [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
@@ -250,7 +250,7 @@ Commands:
   export     export flows to a zip file
 ```
 
-### flow namespace
+### kestra-ee flow namespace
 
 ```bash
 Usage: kestra-ee flow namespace [-hVv] [--internal-log] [-c=<config>]
@@ -274,7 +274,7 @@ Commands:
   update  handle namespace flows
 ```
 
-#### flow namespace update
+#### kestra-ee flow namespace update
 
 ```bash
 Usage: kestra-ee flow namespace update [-hVv] [--[no-]delete] [--internal-log]
@@ -312,7 +312,7 @@ handle namespace flows
 ```
 
 
-### flow test
+### kestra-ee flow test
 
 ```bash
 Usage: kestra-ee flow test [-hVv] [--internal-log] [-c=<config>]
@@ -340,7 +340,7 @@ test a flow
   -V, --version           Print version information and exit.
 ```
 
-### flow dot
+### kestra-ee flow dot
 
 ```bash
 Usage: kestra-ee flow dot [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
@@ -363,7 +363,7 @@ generate a dot graph from a file
   -V, --version           Print version information and exit.
 ```
 
-### flow export
+### kestra-ee flow export
 
 ```bash
 Usage: kestra-ee flow export [-hVv] [--internal-log] [-c=<config>]
@@ -400,7 +400,7 @@ export flows to a zip file
 ```
 
 
-### flow validate
+### kestra-ee flow validate
 
 ```bash
 Usage: kestra-ee flow validate [-hVv] [--internal-log] [--local] [-c=<config>]

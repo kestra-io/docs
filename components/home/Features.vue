@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <Section subtitle="Simplicity scales, complexity" subtitle-after="Fails">
+        <Section subtitle="Simplicity scales, complexity" subtitle-after="fails">
             <div class="row card-group mb-2">
                 <div class="col-md-4 mb-4">
                     <Card

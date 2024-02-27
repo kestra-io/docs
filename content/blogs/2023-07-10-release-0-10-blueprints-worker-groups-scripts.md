@@ -33,16 +33,16 @@ The current blueprint catalog encompasses a wide range of use cases and integrat
 If you have any suggestions about new Blueprints or improvements to the existing ones, submit a GitHub issue using the following [issue template](https://github.com/kestra-io/kestra/issues/new?assignees=&labels=blueprint&projects=&template=blueprint.yml).
 
 
-## Organization Blueprints
+## Custom Blueprints
 
-The Enterprise Edition allows the creation of **internal** Blueprints, helping you share commonly used workflows as reusable components and establish standardized data processing patterns. Organization Blueprints facilitate sharing knowledge about best practices in your team by embedding both code and markdown documentation into the product.
+The Enterprise Edition allows the creation of **internal** Blueprints, helping you share commonly used workflows as reusable components and establish standardized data processing patterns. Custom Blueprints facilitate sharing knowledge about best practices in your team by embedding both code and markdown documentation into the product.
 
-Here is what Organization Blueprints look like in the UI:
+Here is what Custom Blueprints look like in the UI:
 
 ![blueprint3](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/blueprint3.png)
 
 
-## Improved Support for Scripts and Docker
+## Improved Support for Scripts and Docker
 
 We've added a new Script plugin making it easier to work with custom Python, R, Node.js, Shell, and Powershell scripts. By default, each task runs in a **separate Docker container** to ensure environment isolation and simple deployment patterns. You can manage custom dependencies by providing a custom Docker image or installing required packages at runtime. This customizability is possible thanks to the new `beforeCommands` property, available on each task from the script plugin, allowing you to execute any instructions needed before running the main script.
 
@@ -164,7 +164,7 @@ Dependencies between tasks in Kestra flows are defined in a *declarative* way. F
 
 However, in certain scenarios, it's easier to define only the upstream dependencies for each task and let the orchestration engine figure out the optimal execution order. That's where the new DAG task, introduced in Kestra 0.10.0, comes in handy.
 
-The workflow below demonstrates a simple use case where there are: 
+The workflow below demonstrates a simple use case where there are:
 - several tasks that extract raw data (*here: orders, customers, and payments tasks*)
 - one task that takes that raw data as input and transforms it (*here, using `dbt`*).
 

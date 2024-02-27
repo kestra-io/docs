@@ -5,7 +5,7 @@
         <div class="heading mx-auto">
           <h2 class="title text-center">
             <span class="title-animate">Simplicity Scales</span>, Complexity
-            Fails
+            fails
             <p class="desc">
               Less time spent writing boilerplate orchestration code, more time
               for what matters to your business.
