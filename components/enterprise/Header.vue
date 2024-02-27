@@ -7,9 +7,6 @@
                         <h1 data-aos="fade-right"><span class="dot">Kestra Enterprise</span> to Scale Your Workflows.</h1>
                         <p data-aos="fade-left" class="baseline">Designed for production workloads with high-security standards and Enterprise-grade governance.</p>
                         <div class="d-flex gap-2 mb-2 mb-md-0">
-                            <NuxtLink href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
-                                Contact Us
-                            </NuxtLink>
                             <NuxtLink href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Talk to Us
                             </NuxtLink>
