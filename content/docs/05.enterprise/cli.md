@@ -59,7 +59,9 @@ Commands:
   users  handle users
 ```
 
-### kestra-ee auths users
+Here is the list of available commands withing `kestra-ee auths`:
+
+- `kestra-ee auths users`
 
 ```bash
 Usage: kestra-ee auths users [-hVv] [--internal-log] [-c=<config>]
@@ -91,7 +93,7 @@ Commands:
   set-type     Set type of a user between STANDARD and SUPER_ADMIN.
 ```
 
-#### kestra-ee auths users sync-access
+- `kestra-ee auths users sync-access`
 
 ```bash
 Usage: kestra-ee auths users sync-access [-hVv] [--internal-log] [-c=<config>]
@@ -117,7 +119,7 @@ be synchronized)
   -V, --version           Print version information and exit.
 ```
 
-#### kestra-ee auths users refresh
+- `kestra-ee auths users refresh`
 
 ```bash
 Usage: kestra-ee auths users refresh [-hVv] [--internal-log] [-c=<config>]
@@ -139,7 +141,7 @@ Refresh users to update their properties
   -V, --version           Print version information and exit.
 ```
 
-#### kestra-ee auths users set-type
+- `kestra-ee auths users set-type`
 
 ```bash
 Usage: kestra-ee auths users set-type [-hVv] [--internal-log] [-c=<config>]
@@ -165,60 +167,62 @@ Set type of a user between STANDARD and SUPER_ADMIN.
 ```
 
 
-#### kestra-ee auths users create
+- `kestra-ee auths users create`
+
+```bash
+Usage: kestra-ee auths users create [-hVv] [--admin] [--internal-log]
+                          [--superadmin] [-c=<config>]
+                          [-l=<logLevel>] [-p=<pluginsPath>]
+                          [--tenant=<tenantId>] [--groups=<group>]...
+                          <user> [<password>]
+Create a new users
+      <user>             User username
+      [<password>]       User password
+      --admin            Create the admin role if not exists and add it to
+                         provided users; cannot be use at the same time as
+                            --superadmin
+
+-c, --config=<config>     Path to a configuration file
+                            Default: /home/kestra/.kestra/config.yml
+    --groups=<group>      User groups
+-h, --help                Show this help message and exit.
+    --internal-log        Change also log level for internal log
+-l, --log-level=<logLevel>
+                          Change log level (values: TRACE, DEBUG, INFO, WARN,
+                            ERROR)
+                            Default: INFO
+-p, --plugins=<pluginsPath>
+                          Path to plugins directory
+                            Default: /app/plugins
+    --superadmin          Create the superadmin role if not exists and add it
+                            to provided users, cannot be use at the same time
+                            as --admin
+    --tenant=<tenantId>   tenant identifier
+-v, --verbose             Change log level. Multiple -v options increase the
+                            verbosity.
+-V, --version             Print version information and exit.
+```
 
 Example command to create a Super Admin user:
 
 ```shell
-kestra-ee auths users create --superadmin --tenant=default admin admin_password123
+kestra-ee auths users create --superadmin \
+  --tenant=default admin admin_password123
 ```
 
 Example command to create an Admin user:
 
 ```shell
-kestra-ee auths users create --admin --tenant=default admin admin_password123
+kestra-ee auths users create --admin \
+  --tenant=default admin admin_password123
 ```
 
-Eampel command to create a regular user:
+Example command to create a regular user:
 
 ```shell
 kestra-ee auths users create --tenant=default user user_password123
 ```
 
-Full reference:
-
-```bash
-Usage: kestra-ee auths users create [-hVv] [--admin] [--internal-log]
-                                    [--superadmin] [-c=<config>]
-                                    [-l=<logLevel>] [-p=<pluginsPath>]
-                                    [--tenant=<tenantId>] [--groups=<group>]...
-                                    <user> [<password>]
-Create a new users
-      <user>                User username
-      [<password>]          User password
-      --admin               Create the admin role if not exists and add it to
-                              provided users, cannot be use at the same time as
-                              --superadmin
-  -c, --config=<config>     Path to a configuration file
-                              Default: /home/kestra/.kestra/config.yml
-      --groups=<group>      User groups
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR)
-                              Default: INFO
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory
-                              Default: /app/plugins
-      --superadmin          Create the superadmin role if not exists and add it
-                              to provided users, cannot be use at the same time
-                              as --admin
-      --tenant=<tenantId>   tenant identifier
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
-```
 
 ---
 
@@ -250,7 +254,7 @@ Commands:
   export     export flows to a zip file
 ```
 
-### kestra-ee flow namespace
+- `kestra-ee flow namespace`
 
 ```bash
 Usage: kestra-ee flow namespace [-hVv] [--internal-log] [-c=<config>]
@@ -274,7 +278,7 @@ Commands:
   update  handle namespace flows
 ```
 
-#### kestra-ee flow namespace update
+- `kestra-ee flow namespace update`
 
 ```bash
 Usage: kestra-ee flow namespace update [-hVv] [--[no-]delete] [--internal-log]
@@ -312,7 +316,7 @@ handle namespace flows
 ```
 
 
-### kestra-ee flow test
+- `kestra-ee flow test`
 
 ```bash
 Usage: kestra-ee flow test [-hVv] [--internal-log] [-c=<config>]
@@ -340,7 +344,7 @@ test a flow
   -V, --version           Print version information and exit.
 ```
 
-### kestra-ee flow dot
+- `kestra-ee flow dot`
 
 ```bash
 Usage: kestra-ee flow dot [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
@@ -363,7 +367,7 @@ generate a dot graph from a file
   -V, --version           Print version information and exit.
 ```
 
-### kestra-ee flow export
+- `kestra-ee flow export`
 
 ```bash
 Usage: kestra-ee flow export [-hVv] [--internal-log] [-c=<config>]
@@ -400,7 +404,7 @@ export flows to a zip file
 ```
 
 
-### kestra-ee flow validate
+- `kestra-ee flow validate`
 
 ```bash
 Usage: kestra-ee flow validate [-hVv] [--internal-log] [--local] [-c=<config>]
@@ -463,7 +467,7 @@ Commands:
 ```
 
 
-### kestra-ee tenants create
+- `kestra-ee tenants create`
 
 ```bash
 Usage: kestra-ee tenants create [-hVv] [--internal-log]
@@ -520,7 +524,7 @@ Commands:
   doc      write documentation for all plugins currently installed
 ```
 
-### kestra-ee plugins install
+- `kestra-ee plugins install`
 
 ```bash
 Usage: kestra-ee plugins install [-hVv] [--internal-log] [-c=<config>]
@@ -548,7 +552,7 @@ install a plugin
   -V, --version             Print version information and exit.
 ```
 
-### kestra-ee plugins list
+- `kestra-ee plugins list`
 
 ```bash
 Usage: kestra-ee plugins list [-hVv] [--core] [--internal-log] [-c=<config>]
@@ -571,7 +575,7 @@ list all plugins already installed
   -V, --version           Print version information and exit.
 ```
 
-### kestra-ee plugins doc
+- `kestra-ee plugins doc`
 
 ```bash
 Usage: kestra-ee plugins doc [-hVv] [--core] [--icons] [--internal-log]
@@ -597,8 +601,6 @@ write documentation for all plugins currently installed
                             verbosity.
   -V, --version           Print version information and exit.
 ```
-
-
 
 ---
 
@@ -967,7 +969,7 @@ Commands:
   properties  Display actual configurations properties.
 ```
 
-### kestra-ee configs properties
+- `kestra-ee configs properties`:
 
 ```bash
 Usage: kestra-ee configs properties [-hVv] [--internal-log] [-c=<config>]
@@ -988,7 +990,6 @@ Display actual configurations properties.
                             verbosity.
   -V, --version           Print version information and exit.
 ```
-
 
 
 ---
