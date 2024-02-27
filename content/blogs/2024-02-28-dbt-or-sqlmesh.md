@@ -1,5 +1,5 @@
 ---
-title: "Is it time to say goodbye to dbt and move to SQLMesh?"
+title: "Is It Time For You To Move From dbt to SQLMesh?"
 description: "Where are we with SQL transformation in the data warehouse in the Analytics Stack?"
 date: 2024-02-28T10:00:00
 category: Solutions
@@ -27,7 +27,7 @@ Talking about dependencies: we often have more complex pipelines than what we se
 
 Connecting all those tools needs a control plane - [an orchestrator](https://github.com/kestra-io/kestra).
 
-## The main challenger: SQLMesh
+## Is it time to say goodbye to dbt and move to SQLMesh?
 
 At the end of 2022, ex-engineers from Airbnb, Apple, Google, and Netflix started a project called [SQLMesh](https://sqlmesh.com/). Built on top the the SQLGlot library allowing parsing and transpiling SQL SQLMesh is, like dbt, a framework to run data pipelines written in SQL. The major shift from dbt is that SQLMesh has an emphasis on operations.
 
