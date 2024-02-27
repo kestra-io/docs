@@ -45,22 +45,22 @@
         computed: {
             companies() {
                 return [
-                    "aimtec",
-                    "cleverconnect",
-                    "decathlon",
+                    "acxiom",
                     "fortinet",
-                    "hcl",
-                    "huawei",
-                    "clever-cloud",
-                    "leroymerlin",
                     "bouygues-immobilier",
+                    "leroymerlin",
+                    "experian",
+                    "sophia-genetics",
+                    "cleverconnect",
                     "tencent",
-                    "facily",
-                    "airpazz",
                     "gorgias",
                     "jcdecaux",
+                    "aimtec",
+                    "hcl",
+                    "clever-cloud",
+                    "quadis",
                     "orlando-city",
-                    "sophia-genetics",
+                    "huawei",
                 ]
                     .sort(() => .5 - Math.random())
             },
