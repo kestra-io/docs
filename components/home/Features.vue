@@ -12,7 +12,7 @@
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="Lan"
-                        title="Scalable event-driven architecture"
+                        title="Scalable multitenant architecture"
                     />
                 </div>
 
