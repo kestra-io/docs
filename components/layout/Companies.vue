@@ -59,7 +59,6 @@
                     "hcl",
                     "clever-cloud",
                     "quadis",
-                    "sumup",
                     "orlando-city",
                     "huawei",
                 ]
