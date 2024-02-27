@@ -5,7 +5,7 @@
                 <div class="col-md-4 mb-4">
                     <Card
                         :icon="CalculatorVariant"
-                        title="Declarative UX with embedded code editor"
+                        title="Declarative workflow creation"
                     />
                 </div>
 
