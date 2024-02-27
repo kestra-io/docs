@@ -99,10 +99,10 @@
         }
 
         > .btn.d-lg-none {
-            color: $black;
+            color: $white;
             font-weight: 900;
             font-size: $font-size-sm;
-            background-color: $white;
+            background-color: $black-4;
             box-shadow: $box-shadow-sm;
         }
 

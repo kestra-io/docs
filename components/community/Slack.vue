@@ -1,6 +1,6 @@
 <template>
     <div v-if="widget" class="widget-chat">
-        <NuxtLink href="https://kestra.io/slack" target="_blank" class="btn btn-animated btn-purple-animated mb-2">
+        <NuxtLink href="https://kestra.io/slack" target="_blank" class="btn btn-sm btn-primary rounded">
             <slack title=""/>
             Slack <span v-if="online" class="online">{{ onlineText }} members</span>
         </NuxtLink>
@@ -108,6 +108,12 @@ export default {
         border-bottom: $block-border;
     }
 
+    .widget-chat {
+        a {
+            background-color: $primary-1;
+            border-color: $primary-1;
+        }
+    }
     span.online {
         font-weight: normal;
         font-size: $font-size-xs;

@@ -53,3 +53,18 @@ export const recursivePages = (item) => {
 
     return paths;
 }
+
+export const generatePageNames = (item) => {
+    const result = {};
+    function traverse(item) {
+        if (item._path && item.title) {
+            let key = item._path.split("/")[[item._path.split("/").length - 1]];
+            result[key] = item.title;
+        }
+        if (item.children) {
+            item.children.forEach(child => traverse(child));
+        }
+    }
+    traverse(item);
+    return result;
+}

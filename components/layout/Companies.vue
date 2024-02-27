@@ -1,6 +1,6 @@
 <template>
     <div ref="container" class="container mb-4">
-        <div ref="companies" class="companies">
+        <div ref="companies" class="companies scrolling">
             <template v-for="(img, index) in companies" :key="index">
                 <img
                     data-aos="fade-up"
@@ -16,30 +16,11 @@
 
 <script>
     export default defineComponent({
-        mounted() {
-            window.addEventListener("resize", this.autoScrollIfNeeded);
-            this.autoScrollIfNeeded();
-        },
-        unmounted() {
-            window.removeEventListener("resize", this.autoScrollIfNeeded)
-        },
+
         props: {
             inverted: {
                 type: Boolean,
                 default: false
-            }
-        },
-        methods: {
-            autoScrollIfNeeded() {
-                if (this.$refs && this.$refs.companies) {
-                    const companies = this.$refs.companies;
-                    const classes = companies.classList;
-                    if (companies.clientWidth >= this.$refs.container.parentElement.offsetWidth) {
-                        classes.add("scrolling");
-                    } else {
-                        classes.remove("scrolling")
-                    }
-                }
             }
         },
         computed: {
@@ -70,22 +51,6 @@
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
-
-    .container {
-        text-align: center;
-        .companies {
-
-            img {
-                margin-right: calc($spacer * 2.649);
-                margin-top: calc($spacer * 2);
-
-                &.inverted {
-                    filter: invert(100%);
-                }
-            }
-        }
-    }
-
     @keyframes auto-scroll {
         0% {
             -webkit-transform: translateX(0);
@@ -100,29 +65,41 @@
             transform: translateX(0);
         }
     }
+    .container {
+        text-align: center;
+        width: fit-content;
+        max-width: unset;
 
-    @include media-breakpoint-down(lg) {
-        .container {
+        .companies {
+            width: calc(250px * 14);
+            position: relative;
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            overflow-y: hidden;
             width: fit-content;
-            max-width: unset;
-
-            .companies {
-                width: calc(250px * 14);
-                position: relative;
-                display: flex;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                overflow-y: hidden;
-                width: fit-content;
-                margin: auto;
-                margin-bottom: 1.5rem;
+            margin: auto;
+            margin-bottom: 1.5rem;
 
 
-                &.scrolling {
-                    animation: auto-scroll 30s infinite linear;
+            &.scrolling {
+                animation: auto-scroll 30s infinite linear;
+            }
+        }
+        .companies {
+
+            img {
+                margin-right: calc($spacer * 2.649);
+                margin-top: calc($spacer * 2);
+
+                &.inverted {
+                    filter: invert(100%);
                 }
             }
         }
     }
+
+
+
 
 </style>

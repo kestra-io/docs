@@ -88,6 +88,11 @@
     .img-container {
       position: relative;
       z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 5rem;
+      padding-right: 2rem;
 
       .img-fluid {
         max-width: 204px;

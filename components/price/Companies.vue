@@ -1,6 +1,6 @@
 <template>
     <div ref="container" class="container pb-5">
-        <div ref="companies" class="companies">
+        <div ref="companies" class="companies scrolling">
             <template v-for="(img, index) in companies">
                 <img data-aos="fade-up" :class="{ 'inverted': inverted }" :data-aos-delay="index * 50"
                     :src="'landing/companies/' + img + '.svg'" :alt="img" />
@@ -11,30 +11,10 @@
 
 <script>
 export default defineComponent({
-    mounted() {
-        window.addEventListener("resize", this.autoScrollIfNeeded);
-        this.autoScrollIfNeeded();
-    },
-    unmounted() {
-        window.removeEventListener("resize", this.autoScrollIfNeeded)
-    },
     props: {
         inverted: {
             type: Boolean,
             default: false
-        }
-    },
-    methods: {
-        autoScrollIfNeeded() {
-            if (this.$refs && this.$refs.companies) {
-                const companies = this.$refs.companies;
-                const classes = companies.classList;
-                if (companies.clientWidth >= this.$refs.container.parentElement.offsetWidth) {
-                    classes.add("scrolling");
-                } else {
-                    classes.remove("scrolling")
-                }
-            }
         }
     },
     computed: {
@@ -69,9 +49,19 @@ export default defineComponent({
     text-align: center;
     border-top: $container-border;
     border-bottom: $container-border;
-
+    width: fit-content;
+    max-width: unset;
     .companies {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: fit-content;
+        margin: auto;
 
+        &.scrolling {
+            animation: auto-scroll 30s infinite linear;
+        }
         img {
             margin-right: calc($spacer * 2);
             margin-top: calc($spacer * 2);
@@ -94,26 +84,6 @@ export default defineComponent({
 
     100% {
         margin-left: 0;
-    }
-}
-
-@include media-breakpoint-down(lg) {
-    .container {
-        width: fit-content;
-        max-width: unset;
-
-        .companies {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            overflow-y: hidden;
-            width: fit-content;
-            margin: auto;
-
-            &.scrolling {
-                animation: auto-scroll 30s infinite linear;
-            }
-        }
     }
 }
 </style>
