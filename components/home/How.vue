@@ -130,7 +130,7 @@
                         Get started
                     </NuxtLink>
                     <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
-                        Read the doc
+                        Read the docs
                     </NuxtLink>
                 </div>
             </div>
