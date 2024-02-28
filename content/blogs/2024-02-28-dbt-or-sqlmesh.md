@@ -38,7 +38,7 @@ Still, here are some common complaints raised by the dbt community:
 - Thousands of lines of SQL paired with Jinja macros can easily become difficult to maintain especially with complex business logic. 
 
 
-- Scaling across multiple projects is difficult: having too many dbt projects in a single repository is often hard to manage. You often need to split your hundreds (if not thousands) of models built by different teams and projects. However, cross-project references are not possible in dbt Core. It has been discussed in previous [roadmap discussions](https://github.com/dbt-labs/dbt-core/blob/main/docs/roadmap/2022-08-back-for-more.md?ref=blef.fr#v15-next-year), but the final decisions have been to move it into [dbt Mesh](https://www.getdbt.com/product/dbt-mesh), which is part of the commercial dbt Cloud offering.
+- Scaling across multiple projects is difficult: having too many dbt projects in a single repository is often hard to manage. You often need to split your hundreds (if not thousands) of models built by different teams and projects. However, cross-project references are not possible in dbt Core. It has been discussed in previous [roadmap discussions](https://github.com/dbt-labs/dbt-core/blob/main/docs/roadmap/2022-08-back-for-more.md), but the final decisions have been to move it into [dbt Mesh](https://www.getdbt.com/product/dbt-mesh), which is part of the commercial dbt Cloud offering.
 
 
 The main interface to interact with dbt is the CLI, optionally generating a static documentation website. Web UI is only available through the dbt Cloud offering.
@@ -82,7 +82,9 @@ SQLMesh introduces key improvements for managing SQL queries:
 
 Comparing SQLMesh's exposed commands, like `sqlmesh plan`, and the way it interacts with the data warehouse, it evokes a strong resemblance to Terraform's approach. Adding UI on top is the realization that different user interfaces (Terraform being one) are important to support any user experiences.
 
-![sqlmesh ui](/blogs/2024-02-27-dbt-or-sqlmesh/sqlmesh-ui.gif)
+::div
+<iframe width="700" height="400" src="https://www.youtube.com/embed/wTLoDq-SW-g?si=6gbmbLJV8j1L9LT0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+::
 
 Here is a general feature comparison between dbt and SQLMesh:
 
