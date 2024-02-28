@@ -13,7 +13,7 @@ Conversations around the [Analytics Stack](https://twitter.com/mattturck/status/
 
 Tools such as dbt and SQLMesh allow for such transformations to happen directly within a cloud data warehouse.
 
-Before dbt, most of data-engineers where maintaining hand-made SQL templating engines to operate queries on their data-warehouse. dbt has been the first to really stand outs and drive a real community around it.
+Before dbt, most data engineers maintained hand-made SQL templating engines to operate queries on their data warehouse. dbt has emerged as a standard to help avoid reinventing the wheel and has built a wonderful community around it.
 
 With usage growing, some users started to complain about dbt shortcomings. New tools like SQLMesh started to emerge to address these challenges.
 
