@@ -156,8 +156,8 @@ Using SQLMesh in Kestra is straightforward. The following example shows how you 
 id: sqlmesh
 namespace: blueprint
 description: Clone SQLMesh project and run the project, and query with DuckDB
-tasks:
 
+tasks:
   - id: working_dir
     type: io.kestra.core.tasks.flows.WorkingDirectory
     tasks:
