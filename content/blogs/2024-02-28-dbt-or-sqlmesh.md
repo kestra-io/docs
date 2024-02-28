@@ -44,9 +44,11 @@ Still, here are some common complaints raised by the dbt community:
 The main interface to interact with dbt is the CLI, optionally generating a static documentation website. Web UI is only available through the dbt Cloud offering.
 
 
-Adding to these main shortcomings, it's worth mentioning the analogy often made: "dbt is the Terraform for data transformation". Actually [dbt is more about jQuery than Terraform](https://www.aranke.org/dbt-jquery/). The biggest reason jQuery isn’t the de facto web framework today is because it was hard to scale to large teams.
+Adding to these main shortcomings, it's worth mentioning the analogy often made: "dbt is the Terraform for data transformation". In my opinion, [dbt is more similar to jQuery than Terraform](https://www.aranke.org/dbt-jquery/). The biggest reason jQuery isn’t the de facto web framework today is that it was hard to scale to large teams.
+
 The same flexibility that allowed small teams to deliver value quickly left behind messes of spaghetti code for large teams to maintain.
-The introduction of React in 2013 from Facebook teams promised to address these pain points by rethinking best practices, and has been the de facto web framework ever since.
+
+The introduction of React in 2013 by Facebook teams promised to address these pain points by rethinking best practices, and it has been the de facto web framework ever since.
 
 The rapid adoption of dbt has led to the swift addition of features, which, at times, has introduced increased complexity.  This raises the question of whether dbt can maintain its position as the de facto SQL framework in the long term.
 
