@@ -29,7 +29,7 @@ Still, here are some common complaints raised by the dbt community:
 - [Users are wondering](https://www.reddit.com/r/dataengineering/comments/zamewl/whats_wrong_with_dbt/) why they need to explicitly use refs to declare dependencies between models. Other solutions often parse the SQL queries to infer the DAG of dependencies directly.
 
 
-- While dbt's model contracts offer validation through manually defined YAML schemas, including column names and types, this approach adds an additional user burden without truly tackling the root cause of data quality issues. Change in columns or type is often done on purpose, and a failed build due to an outdated contract can be disruptive, offering limited utility beyond frustration.
+- Some users are not fond of using YAML to define the model's schema as it leads to an additional user burden without tackling the root cause of data quality issues. Columns or types often change on purpose, and a failed build due to an outdated YAML schema can lead to frustration.
 
 
 - While incremental models in dbt efficiently process new or updated data, managing scenarios with pending or required processing of specific date intervals can become challenging when using the "most recent records" approach.
