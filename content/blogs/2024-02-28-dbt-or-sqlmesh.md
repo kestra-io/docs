@@ -238,7 +238,7 @@ You can find several examples of flows involving dbt and other technologies in o
 
 ## Conclusion
 
-Highlighted by the growing number of actors in the field, the focus on how software practices could be applied to analytics is taking real depth.
+Highlighted by the growing number of actors in the field, there is a growing popularity in applying software practices to analytics.
 
 When is the right time to consider switching from dbt to SQLMesh? The answer ultimately depends on the specific maturity level of your team and organization.
 
