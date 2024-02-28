@@ -1,12 +1,12 @@
 ---
 title: "Is It Time To Move From dbt to SQLMesh?"
 description: "Are dbt shortcomings painful enough to migrate to a new SQL transformation framework such as SQLMesh? Here's my take."
-date: 2024-02-27T10:00:00
+date: 2024-02-28T10:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: /blogs/2024-02-27-dbt-or-sqlmesh.png
+image: /blogs/2024-02-28-dbt-or-sqlmesh.png
 ---
 
 Conversations around the [Analytics Stack](https://twitter.com/mattturck/status/1761436014122332187) often revolve around the assumption that everyone is using the Extract, Load, Transform (ELT) approach, with the transformation (T) happening within a data warehouse using SQL. These discussions quickly shift towards the use of dbt as the go-to tool for this process.
@@ -193,7 +193,7 @@ triggers:
     cron: "30 6 * * *"
 ```
 
-![sqlmesh-kestra](/blogs/2024-02-27-dbt-or-sqlmesh/sqlmesh-kestra.png)
+![sqlmesh-kestra](/blogs/2024-02-28-dbt-or-sqlmesh/sqlmesh-kestra.png)
 
 ### Orchestrating dbt with Kestra
 
