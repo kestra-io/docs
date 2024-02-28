@@ -1,15 +1,54 @@
 <template>
-    <div ref="container" class="container companies-container mb-4">
-        <div ref="companies" class="companies companies-list scrolling">
-            <template v-for="(img, index) in companies" :key="index">
-                <img
-                    data-aos="fade-up"
-                    :class="{'inverted': inverted}"
-                    :data-aos-delay="index*50"
-                    :src="'/landing/companies/' + img  + '.svg'"
-                    :alt="img"
-                />
-            </template>
+    <div ref="container" class="container mb-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="companies-container">
+                    <div ref="companies" class="companies companies-list scrolling">
+                        <template v-for="(img, index) in companies" :key="index">
+                            <img
+                                data-aos="fade-up"
+                                :class="{'inverted': inverted}"
+                                :data-aos-delay="index*50"
+                                :src="'/landing/companies/' + img  + '.svg'"
+                                :alt="img"
+                            />
+                        </template>
+                    </div>
+                    <div ref="companies" class="companies companies-list scrolling">
+                        <template v-for="(img, index) in companies" :key="index">
+                            <img
+                                data-aos="fade-up"
+                                :class="{'inverted': inverted}"
+                                :data-aos-delay="index*50"
+                                :src="'/landing/companies/' + img  + '.svg'"
+                                :alt="img"
+                            />
+                        </template>
+                    </div>
+                    <div ref="companies" class="companies companies-list scrolling">
+                        <template v-for="(img, index) in companies" :key="index">
+                            <img
+                                data-aos="fade-up"
+                                :class="{'inverted': inverted}"
+                                :data-aos-delay="index*50"
+                                :src="'/landing/companies/' + img  + '.svg'"
+                                :alt="img"
+                            />
+                        </template>
+                    </div>
+                    <div ref="companies" class="companies companies-list scrolling">
+                        <template v-for="(img, index) in companies" :key="index">
+                            <img
+                                data-aos="fade-up"
+                                :class="{'inverted': inverted}"
+                                :data-aos-delay="index*50"
+                                :src="'/landing/companies/' + img  + '.svg'"
+                                :alt="img"
+                            />
+                        </template>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -40,7 +79,6 @@
                     "hcl",
                     "clever-cloud",
                     "quadis",
-                    "orlando-city",
                     "huawei",
                 ]
                     .sort(() => .5 - Math.random())
@@ -52,29 +90,37 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
     @keyframes auto-scroll {
-        0% {
-            -webkit-transform: translateX(0);
+        from {
             transform: translateX(0);
         }
-        50% {
-            -webkit-transform: translateX(calc(-180px * 7));
-            transform: translateX(calc(-180px * 7));
-        }
-        100% {
-            -webkit-transform: translateX(0);
-            transform: translateX(0);
+
+        to {
+            transform: translateX(calc(-100% - 2rem));
         }
     }
     .container {
-        &.companies-container {
-            text-align: center;
+        .companies-container {
             width: 100%;
-            overflow: hidden;
+            grid-column-gap: 2rem;
+            grid-row-gap: 2rem;
+            flex: 0 auto;
+            align-content: flex-start;
+            display: flex;
             position: relative;
+            overflow: hidden;
             .companies-list {
+                min-width: 100%;
+                grid-column-gap: 2rem;
+                grid-row-gap: 2rem;
+                flex: none;
+                justify-content: space-between;
+                align-items: center;
                 display: flex;
-                animation: auto-scroll 25s linear infinite;
+                &.scrolling {
+                    animation: auto-scroll 30s linear infinite;
+                }
             }
+
         }
 
         .companies {

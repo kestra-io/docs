@@ -4,6 +4,7 @@
         <template v-if="generated.length > 0">
             <button
                 class="btn d-lg-none"
+                :class="tableOfContentsExpanded = !tableOfContentsExpanded ? '' : 'collapsed'"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#tocContents"
@@ -22,7 +23,7 @@
                 <nav id="nav-toc">
                     <ul>
                         <template v-for="item in generated" >
-                            <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc">
+                            <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" class="mt-3">
                                 <a :href="'#' + item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
                             </li>
                         </template>
@@ -103,6 +104,9 @@
             font-weight: 900;
             font-size: $font-size-sm;
             background-color: $black-4;
+            &.collapsed {
+                border-radius: 8px 8px 0 0;
+            }
         }
 
         nav {
@@ -179,8 +183,7 @@
     .bd-toc-collapse {
         @include media-breakpoint-down(lg) {
             nav {
-                padding: $spacer 0;
-                border: 1px solid $black-6;
+                padding-bottom: $spacer;
                 @include border-radius(var(--bs-border-radius));
             }
         }
@@ -191,14 +194,16 @@
     }
 
     .bd-social-list, .bd-toc-collapse {
-        border-left: $block-border;
-
+        border: 1px solid $black-6;
+        border-top: unset;
+        border-radius: 0 0 8px 8px;
+        background-color: $black-4;
         ul, :deep(ul) {
             padding-left: 0 !important;
             li {
                 a {
                     border-left: 0 !important;
-                    padding-left: 1.5rem !important;
+                    padding-left: 2rem !important;
 
                     &:hover {
                         color: $purple-36 !important;
