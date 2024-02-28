@@ -71,7 +71,7 @@ Comparing SQLMesh's exposed commands, like `sqlmesh plan`, and the way it intera
 
 Here is a general feature comparison between dbt and SQLMesh:
 
-## Feature Comparison: dbt vs. SQLMesh
+**Feature Comparison: dbt vs. SQLMesh**
 
 | Feature | dbt | SQLMesh |
 |---|---|---|
