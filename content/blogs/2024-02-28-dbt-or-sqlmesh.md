@@ -38,7 +38,7 @@ Still, here are some common complaints raised by the dbt community:
 - Thousands of lines of SQL paired with Jinja macros can easily become difficult to maintain especially with complex business logic. 
 
 
-- Scaling across multiple projects is difficult: having too many dbt projects in a single repository is often hard to manage. You often need to split your hundred (if not thousands) models within different teams and projects. But cross-project references is not possible in dbt Core. It has been discussed in previous [roadmap discussions](https://github.com/dbt-labs/dbt-core/blob/main/docs/roadmap/2022-08-back-for-more.md?ref=blef.fr#v15-next-year) but the final decisions has been to move it into [dbt Mesh, part of the Cloud offering](https://www.getdbt.com/product/dbt-mesh).
+- Scaling across multiple projects is difficult: having too many dbt projects in a single repository is often hard to manage. You often need to split your hundreds (if not thousands) of models built by different teams and projects. However, cross-project references are not possible in dbt Core. It has been discussed in previous [roadmap discussions](https://github.com/dbt-labs/dbt-core/blob/main/docs/roadmap/2022-08-back-for-more.md?ref=blef.fr#v15-next-year), but the final decisions have been to move it into [dbt Mesh](https://www.getdbt.com/product/dbt-mesh), which is part of the commercial dbt Cloud offering.
 
 
 - User interface is mainly about a CLI an generating a static documentation website. Web UI is only available through dbt Cloud offering.
