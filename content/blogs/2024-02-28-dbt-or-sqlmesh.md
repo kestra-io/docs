@@ -240,10 +240,10 @@ You can find several examples of flows involving dbt and other technologies in o
 
 Highlighted by the growing number of actors in the field, there is a growing popularity in applying software practices to analytics.
 
-When is the right time to consider switching from dbt to SQLMesh? The answer ultimately depends on the specific maturity level of your team and organization.
+When is the right time to consider switching from dbt to SQLMesh? The answer ultimately depends on the specific needs of your team and organization.
 
-dbt boasts a large and active community, along with extensive documentation and readily available tutorials. This makes it an excellent choice, especially for those seeking a well-established and user-tested solution. On the other hand, if your primary concern lies in robust operational capabilities and comprehensive environment management, then SQLMesh might be a more suitable option to explore.
+dbt has a large and active community, along with extensive documentation and readily available tutorials. This makes it an excellent choice, especially for those seeking a well-established and user-tested solution. On the other hand, if your primary concern lies in robust operational capabilities and comprehensive environment management, then SQLMesh might be a more suitable option to explore.
 
+Are you already using dbt? Do you plan to use SQLMesh? At Kestra, we would love to hear from you. You can [join the Slack community](https://kestra.io/slack), where we'll be happy to help you develop your data pipelines.
 
-Are you already using dbt? Do you plan to use SQLMesh? At Kestra we would love to hear from you. You can [join the Slack community](https://kestra.io/slack) we're we'll be happy to help you in your development.
-Checkout [dbt and SQLMesh tasks on the plugin page](https://kestra.io/plugins?page=1&size=40&category=All+Categories&q=dbt) and [check the code in our GitHub repository](https://github.com/kestra-io) and give us a star if you like the project. Follow us on Twitter for the latest news.  
+Checkout dbt and SQLMesh tasks on the [plugin page](https://kestra.io/plugins?page=1&size=40&category=All+Categories&q=dbt) and check the code  [in our GitHub repository](https://github.com/kestra-io) and make sure to give us a star if you like the project.
