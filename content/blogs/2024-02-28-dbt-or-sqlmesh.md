@@ -35,7 +35,7 @@ Still, here are some common complaints raised by the dbt community:
 - While incremental models in dbt efficiently process new or updated data, backfilling only specific time range intervals can become challenging when using the "most recent records" approach.
 
 
-- Thoushands lines of SQL is never good - Jinja macros plus a massive pile of SQL doesn't seems a better solution to scale complex business logic. 
+- Thousands of lines of SQL paired with Jinja macros can easily become difficult to maintain especially with complex business logic. 
 
 
 - Scaling across multiple projects is difficult: having too many dbt projects in a single repository is often hard to manage. You often need to split your hundred (if not thousands) models within different teams and projects. But cross-project references is not possible in dbt Core. It has been discussed in previous [roadmap discussions](https://github.com/dbt-labs/dbt-core/blob/main/docs/roadmap/2022-08-back-for-more.md?ref=blef.fr#v15-next-year) but the final decisions has been to move it into [dbt Mesh, part of the Cloud offering](https://www.getdbt.com/product/dbt-mesh).
