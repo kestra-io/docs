@@ -1,5 +1,5 @@
 ---
-title: "Is It Time For You To Move From dbt to SQLMesh?"
+title: "Is It Time To Move From dbt to SQLMesh?"
 description: "What are dbt shorcomings ? Where SQLMesh shines? How to orchestrate SQL frameworks?"
 date: 2024-02-27T10:00:00
 category: Solutions
