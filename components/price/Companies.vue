@@ -40,21 +40,21 @@ export default defineComponent({
     computed: {
         companies() {
             return [
-                "aimtec",
-                "cleverconnect",
-                "decathlon",
+                "acxiom",
                 "fortinet",
-                "hcl",
-                "huawei",
-                "leroymerlin",
                 "bouygues-immobilier",
+                "leroymerlin",
+                "experian",
+                "sophia-genetics",
+                "cleverconnect",
                 "tencent",
-                "facily",
-                "airpazz",
                 "gorgias",
                 "jcdecaux",
-                "orlando-city",
-                "sophia-genetics",
+                "aimtec",
+                "hcl",
+                "clever-cloud",
+                "quadis",
+                "huawei",
             ]
                 .sort(() => .5 - Math.random())
         },
