@@ -24,7 +24,7 @@ In this blog post, we'll delve into dbt and SQLMesh frameworks and how they need
 
 [dbt](https://www.getdbt.com/) is the go-to solution for anything regarding transformation and data modeling with SQL nowadays. Some of the largest companies rely on dbt, and dbt [can scale quite well](https://www.getdbt.com/blog/new-dbt-cloud-features-announced-at-coalesce-2023), and has a great community.
 
-Still, it has some flaws:
+Still, here are some common complaints raised by the dbt community:
 
 - [Users are wondering why they should references to build proper dependencies between models](https://www.reddit.com/r/dataengineering/comments/zamewl/whats_wrong_with_dbt/). Other solutions often parse the SQL queries to infer the DAG of dependancies directly.
 
