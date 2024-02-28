@@ -53,7 +53,7 @@ The introduction of React in 2013 by Facebook teams promised to address these pa
 The rapid adoption of dbt has led to the swift addition of features, which, at times, has introduced increased complexity. This raises the question of whether dbt can maintain its position as the de facto SQL framework in the long term.
 
 
-## How SQLMesh addresses these shortcomings?
+## How SQLMesh aims to address the dbt shortcomings
 
 At the end of 2022, ex-engineers from Airbnb, Apple, Google, and Netflix started a project called [SQLMesh](https://sqlmesh.com/). Built on top the the SQLGlot library allowing parsing and transpiling SQL SQLMesh is, like dbt, a framework to run data pipelines written in SQL. The major shift from dbt is that SQLMesh has an emphasis on [operations](https://kestra.io/blogs/2024-02-06-gitops).
 
