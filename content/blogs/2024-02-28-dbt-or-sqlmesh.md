@@ -20,7 +20,7 @@ With usage growing, some users started to complain about dbt shortcomings. New t
 In this blog post, we'll delve into dbt and SQLMesh frameworks and how they need an orchestration engine to really shine.
 
 
-## dbt Core shortcomings
+## The shortcomings of dbt core: why many practitioners consider alternatives
 
 [dbt](https://www.getdbt.com/) is the go-to solution for anything regarding transformation and data modeling with SQL nowadays. It’s used by top-notch companies, [can scale quite well](https://www.getdbt.com/blog/new-dbt-cloud-features-announced-at-coalesce-2023), and has a great community of users.
 
