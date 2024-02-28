@@ -65,19 +65,19 @@ SQLMesh introduces key improvements for managing SQL queries:
 - SQLMesh facilitates the identification of all downstream consumers of a specific model, along with the impact of changes (breaking or non-breaking) on each consumer, enabling a smooth migration process.
 
 
-- SQLMesh leverages an "intervals approach" for incremental by time models. This approach meticulously tracks which time intervals have been successfully processed, identifies those pending execution, and differentiates between completed and incomplete intervals.
+- SQLMesh leverages an "intervals approach" for incremental by-time models. This approach meticulously tracks which time intervals have been successfully processed identifies those pending execution and differentiates between completed and incomplete intervals.
 
 
-- While SQLMesh supports Jinja templating, it also let the user to extend the SQL language itself with native support for metaprogramming constructs that enable direct invocation of functions implemented in Python (or other programming language). This approach encourage reasoning about the code without requiring deep dives into individual macro implementations. The clear separation of Python and SQL source files contributes to a clean codebase, while Python's inherent modularity further promotes well-organized implementation.
+- While SQLMesh supports Jinja templating, it also lets the user extend the SQL language itself with native support for metaprogramming constructs that enable direct invocation of functions implemented in Python (or other programming language). This approach encourages reasoning about the code without requiring deep dives into individual macro implementations. The clear separation of Python and SQL source files contributes to a clean codebase, while Python's inherent modularity further promotes well-organized implementation.
 
 
-- SQLMesh allows to create new environments without duplicating data. Allowing to create dynamic representations of the data while ensuring tables are never built more than once. Unit tests, Audits, and Data Diff provide validation throughout the development workflow.
+- SQLMesh allows the creation of new environments without duplicating data. Allowing the creation of dynamic representations of the data while ensuring tables are never built more than once. Unit tests, Audits, and Data Diff provide validation throughout the development workflow.
 
 
 - SQLMesh provides native support for multiple repos and makes it easy to maintain data consistency and correctness even with multiple repos.
 
 
-- SQLMesh comes with different user interfaces: a web UI and a CLI. Both are in the open-source version. 
+- SQLMesh has different user interfaces: a web UI and a CLI. Both are included in the open-source version. 
 
 
 Comparing SQLMesh's exposed commands, like `sqlmesh plan`, and the way it interacts with the data warehouse, it evokes a strong resemblance to Terraform's approach. Adding UI on top is the realization that different user interfaces (Terraform being one) are important to support any user experiences.
