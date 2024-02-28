@@ -59,7 +59,6 @@
                     "hcl",
                     "clever-cloud",
                     "quadis",
-                    "orlando-city",
                     "huawei",
                 ]
                     .sort(() => .5 - Math.random())
