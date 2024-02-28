@@ -83,7 +83,7 @@ Here is a general feature comparison between dbt and SQLMesh:
 | Python macros | No | Yes |
 | **Validation** | | |
 | SQL semantic validation | No | Yes |
-| Unit tests | No | Yes |
+| Unit tests | No | Yes |
 | Table diff | No | Yes |
 | Data audits | Yes | Yes |
 | Schema contracts | Yes | Yes |
@@ -100,7 +100,7 @@ Here is a general feature comparison between dbt and SQLMesh:
 | Visualization | No | Yes |
 | Documentation generation | Yes | Yes |
 | Column-level lineage | Yes (Cloud) | Yes (OSS) |
-| ****Miscellaneous** | | | 
+| **Miscellaneous** | | | 
 | Package manager | Yes | No |
 | Multi-repository support | No | Yes |
 | SQL transpilation | No | Yes |
