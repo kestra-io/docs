@@ -22,7 +22,7 @@ In this blog post, we'll delve into dbt and SQLMesh frameworks and how they need
 
 ## The shortcomings of dbt core: why many practitioners consider alternatives
 
-[dbt](https://www.getdbt.com/) is the go-to solution for anything regarding transformation and data modeling with SQL nowadays. It’s used by top-notch companies, [can scale quite well](https://www.getdbt.com/blog/new-dbt-cloud-features-announced-at-coalesce-2023), and has a great community of users.
+[dbt](https://www.getdbt.com/) is the go-to solution for anything regarding transformation and data modeling with SQL nowadays. Some of the largest companies rely on dbt, and dbt [can scale quite well](https://www.getdbt.com/blog/new-dbt-cloud-features-announced-at-coalesce-2023), and has a great community.
 
 Still, it has some flaws:
 
