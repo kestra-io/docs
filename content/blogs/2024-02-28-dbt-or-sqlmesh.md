@@ -126,11 +126,11 @@ Here is a general feature comparison between dbt and SQLMesh:
 
 ## dbt Cloud vs. SQL Mesh commercial product
 
-dbt Core remains the foundation of the dbt open-source project, however, recent development efforts have primarily focused on the Cloud offering. This has coincided with both [pricing adjustments](https://www.getdbt.com/blog/consumption-based-pricing-and-the-future-of-dbt-cloud) and a perceived slowdown in core feature development. It's worth mentioning that dbt Cloud recently introduced column-level lineage (so only in their commercial product) built on top of [SQLMesh's open-source technology SQLGlot](https://github.com/tobymao/sqlglot)
+dbt Core remains the foundation of the dbt open-source project. However, recent development efforts have primarily focused on the Cloud offering. This has coincided with both [pricing adjustments](https://www.getdbt.com/blog/consumption-based-pricing-and-the-future-of-dbt-cloud) and a perceived slowdown in core feature development. It's worth mentioning that dbt Cloud recently introduced column-level lineage (so only in their commercial product) built on top of SQLMesh's open-source technology [SQLGlot](https://github.com/tobymao/sqlglot).
 
-At Kestra we have seen many users moving away from dbt Cloud because of thos pricing changes and use Kestra with dbt Core to model their data and manage dependencies.
+At Kestra, we have seen many users moving away from dbt Cloud because of those pricing changes and using Kestra with dbt Core to model their data and manage dependencies.
 
-On the other side, the commercial product associated with SQLMesh [is still under development](https://sqlmesh.readthedocs.io/en/stable/faq/faq/#company) and is expected to include features such as:
+On the other side, the commercial product associated with SQLMesh is still [under development](https://sqlmesh.readthedocs.io/en/stable/faq/faq/#company) and is expected to include features such as:
 
 - Model execution observability and monitoring tools
 - An enterprise-focused GitHub Actions CI/CD application
