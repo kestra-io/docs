@@ -69,6 +69,43 @@ Comparing SQLMesh's exposed commands, like `sqlmesh plan`, and the way it intera
 
 ![sqlmesh ui](/blogs/2024-02-27-dbt-or-sqlmesh/sqlmesh-ui.gif)
 
+Here is a general feature comparison between dbt and SQLMesh:
+
+## Feature Comparison: dbt vs. SQLMesh
+
+| Feature | dbt | SQLMesh |
+|---|---|---|
+| Modeling | | |
+| SQL models | Yes | Yes |
+| Python models | Yes | Yes|
+| Jinja support | Yes | Yes |
+| Jinja macros | Yes | Yes |
+| Python macros | No | Yes |
+| Validation | | |
+| SQL semantic validation | No | Yes|
+| Unit tests | No | Yes |
+| Table diff | No | Yes |
+| Data audits | Yes | Yes |
+| Schema contracts | Yes | Yes |
+| Data contracts | No | Yes |
+| Deployment | | | 
+| Virtual Data Environments | No | Yes |
+| Open-source CI/CD bot | No | Yes |
+| Data consistency enforcement | No | Yes |
+| Native Airflow integration | No | Yes |
+| Interfaces | CLI | CLI, Paid UI |
+| Open-source UI | Yes | No |
+| Native Notebook Support | No | Yes |
+| Visualization | No | Documentation generation |
+| Column-level lineage | No | Yes |
+| Miscellaneous | | | 
+| Package manager | Yes | No |
+| Multi-repository support | No | Yes |
+| SQL transpilation | No | Yes |
+
+> **Note:** This table is for informational purposes only and may not reflect the latest features or capabilities of each tool. Please consult the official documentation for the most up-to-date information.
+
+
 
 ## dbt Cloud vs. SQL Mesh commercial product
 
