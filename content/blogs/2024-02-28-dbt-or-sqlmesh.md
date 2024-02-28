@@ -10,7 +10,8 @@ image: /blogs/2024-02-27-dbt-or-sqlmesh.png
 ---
 
 Conversations around the [Analytics Stack](https://twitter.com/mattturck/status/1761436014122332187) often revolve around the assumption that everyone is using the Extract, Load, Transform (ELT) approach, with the transformation (T) happening within a data warehouse using SQL. These discussions quickly shift towards the use of dbt as the go-to tool for this process.
-The need for such framework is here because of the use of cloud data warehouse, all proposing SQL as the main syntax to query their data.
+
+Tools such as dbt and SQLMesh allow for such transformations to happen directly within a cloud data warehouse.
 
 Before dbt, most of data-engineers where maintaining hand-made SQL templating engines to operate queries on their data-warehouse. dbt has been the first to really stand outs and drive a real community around it.
 
