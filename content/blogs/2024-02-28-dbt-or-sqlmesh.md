@@ -32,7 +32,7 @@ Still, here are some common complaints raised by the dbt community:
 - Some users are not fond of using YAML to define the model's schema as it leads to an additional user burden without tackling the root cause of data quality issues. Columns or types often change on purpose, and a failed build due to an outdated YAML schema can lead to frustration.
 
 
-- While incremental models in dbt efficiently process new or updated data, managing scenarios with pending or required processing of specific date intervals can become challenging when using the "most recent records" approach.
+- While incremental models in dbt efficiently process new or updated data, backfilling only specific time range intervals can become challenging when using the "most recent records" approach.
 
 
 - Thoushands lines of SQL is never good - Jinja macros plus a massive pile of SQL doesn't seems a better solution to scale complex business logic. 
