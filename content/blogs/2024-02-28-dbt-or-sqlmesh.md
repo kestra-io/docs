@@ -50,7 +50,7 @@ The same flexibility that allowed small teams to deliver value quickly left behi
 
 The introduction of React in 2013 by Facebook teams promised to address these pain points by rethinking best practices, and it has been the de facto web framework ever since.
 
-The rapid adoption of dbt has led to the swift addition of features, which, at times, has introduced increased complexity.  This raises the question of whether dbt can maintain its position as the de facto SQL framework in the long term.
+The rapid adoption of dbt has led to the swift addition of features, which, at times, has introduced increased complexity. This raises the question of whether dbt can maintain its position as the de facto SQL framework in the long term.
 
 
 ## How SQLMesh addresses these shortcomings?
