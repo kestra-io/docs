@@ -94,7 +94,7 @@ Connecting all those tools needs a control plane - [an orchestrator such as Kest
 
 ### Orchestrating SQL Mesh with Kestra
 
-Using SQLMesh in Kestra is quite straightforward. The following example shows how you can clone a SQLMesh project from a Git repository, run it with the dedicated [SQLMeshCLI task](https://kestra.io/plugins/tasks/cli/io.kestra.plugin.sqlmesh.cli.sqlmeshcli) and finally query the results with DuckDB.
+Using SQLMesh in Kestra is quite straightforward. The following example shows how you can clone a [SQLMesh project from a Git repository](https://github.com/TobikoData/sqlmesh-examples), run it with the dedicated [SQLMeshCLI task](https://kestra.io/plugins/tasks/cli/io.kestra.plugin.sqlmesh.cli.sqlmeshcli) and finally query the results with [DuckDB](https://duckdb.org/).
 
 ```yaml
 id: sqlmesh
