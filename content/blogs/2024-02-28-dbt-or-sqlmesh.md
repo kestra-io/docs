@@ -234,7 +234,7 @@ triggers:
     cron: "30 6 * * *"
 ```
 
-You can find several examples of [flows involving dbt and other technologies in our blueprint library](https://kestra.io/blueprints?page=1&size=24&tags=36).
+You can find several examples of flows involving dbt and other technologies in our [blueprints library](https://kestra.io/blueprints?page=1&size=24&tags=36).
 
 ## Conclusion
 
