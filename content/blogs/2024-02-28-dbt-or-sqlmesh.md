@@ -27,6 +27,12 @@ Still, it has some flaws:
 
 - [Users are wondering why they should references to build proper dependencies between models](https://www.reddit.com/r/dataengineering/comments/zamewl/whats_wrong_with_dbt/). It oftens ends in complex dependancies managements and over-engineered stuff. Other solutions often parse the SQL queries to infer the DAG of dependancies directly.
 
+- While dbt's model contracts offer validation through manually defined YAML schemas, including column names and types, this approach adds an additional user burden without truly tackling the root cause of data quality issues. Change in columns or type is often done on purpose, and a failed build due to an outdated contract can be disruptive, offering limited utility beyond frustration.
+
+- While incremental models in dbt efficiently process new or updated data, managing scenarios with pending or required processing of specific date intervals can become challenging when using the "most recent records" approach.
+
+- Thoushands lines of SQL is never good - Jinja macros plus a massive pile of SQL doesn't seems a better solution to scale complex business logic. 
+
 - Scaling across multiple projects is difficult: having too many dbt projects in a single repository is often hard to manage. You often need to split your hundred (if not thousands) models within different teams and projects. But cross-project references is not possible in dbt Core. It has been discussed in previous [roadmap discussions](https://github.com/dbt-labs/dbt-core/blob/main/docs/roadmap/2022-08-back-for-more.md?ref=blef.fr#v15-next-year) but the final decisions has been to move it into [dbt Mesh, part of the Cloud offering](https://www.getdbt.com/product/dbt-mesh).
 
 
