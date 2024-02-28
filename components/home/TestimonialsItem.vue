@@ -29,8 +29,8 @@
     @import "../../assets/styles/variable";
     .card {
         border: $block-border;
-        height: 390px;
-        max-height: 390px;
+        height: calc($spacer * 16.188);
+        max-height: calc($spacer * 16.188);
         .card-body {
             padding: $rem-2;
             text-align: left;

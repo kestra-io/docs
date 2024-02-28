@@ -2,7 +2,7 @@
     <div id="fixed-container">
         <div class="text-end">
             <Transition>
-                <a href="#" class="btn btn-animated btn-purple-animated mb-2" @click="backToTop" v-if="yScroll > 200">
+                <a href="#" class="btn btn-sm btn-primary mb-2" @click="backToTop" v-if="yScroll > 200">
                     <ChevronUp />
                 </a>
             </Transition>
@@ -61,6 +61,13 @@ export default {
         right: 10px;
         transform: translateX(0);
         transition: all ease 0.2s;
+
+        .text-end {
+            a {
+                background-color: $primary-1;
+                border-color: $primary-1;
+            }
+        }
 
         @include media-breakpoint-down("md") {
             display: none;

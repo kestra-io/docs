@@ -3,7 +3,7 @@
         <span :class="{first: index === 0}" v-for="(item, index) in breadcrumb()"
               :key="item">
             <NuxtLink :href="breadcrumbLinkExist(item, index) ? breadcrumbLink(item, index) : ''" class="link">
-                {{ item }}
+                {{ pageNames ? pageNames[item] : item }}
             </NuxtLink>
         </span>
     </div>
@@ -19,6 +19,9 @@
             },
             pageList: {
                 type: Array,
+            },
+            pageNames: {
+                type: Object,
             }
         },
         methods: {

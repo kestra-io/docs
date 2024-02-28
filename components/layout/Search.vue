@@ -433,7 +433,7 @@
             }
 
             &::-webkit-scrollbar-thumb {
-                background: #4B0AAA;
+                background: $primary-1;
             }
 
             &::-webkit-scrollbar-thumb:hover {

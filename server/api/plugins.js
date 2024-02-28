@@ -134,7 +134,6 @@ export default defineEventHandler(async (event) => {
                 return {
                     title: toNavTitle(plugin.title),
                     _path: rootPluginUrl.toLowerCase(),
-                    isPage: false,
                     children
                 };
             }).sort((a, b) => {
@@ -153,7 +152,6 @@ export default defineEventHandler(async (event) => {
             return [{
                 title: "Plugins",
                 _path: "/plugins",
-                isPage: false,
                 children: sortedPluginsHierarchy
             }];
         }

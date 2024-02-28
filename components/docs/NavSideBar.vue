@@ -76,6 +76,11 @@
     @import "../../assets/styles/_variable.scss";
 
     .bd-sidebar {
+        &::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background: $black-9;
+        }
+
         @include media-breakpoint-up(lg) {
             position: sticky;
             top: 7rem;
