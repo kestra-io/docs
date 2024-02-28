@@ -78,7 +78,7 @@
     .bd-sidebar {
         &::-webkit-scrollbar-thumb {
             border-radius: 5px;
-            background: darkgray;
+            background: $black-9;
         }
 
         @include media-breakpoint-up(lg) {

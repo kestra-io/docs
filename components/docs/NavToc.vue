@@ -103,7 +103,6 @@
             font-weight: 900;
             font-size: $font-size-sm;
             background-color: $black-4;
-            box-shadow: $box-shadow-sm;
         }
 
         nav {
@@ -160,7 +159,7 @@
     }
 
     .btn {
-        border: 1px solid var(--bs-border-color);
+        border: 1px solid $black-6;
         text-align: center;
         width: 100%;
         display: inline-block;
@@ -181,8 +180,7 @@
         @include media-breakpoint-down(lg) {
             nav {
                 padding: $spacer 0;
-                border: 1px solid var(--bs-border-color);
-                box-shadow: $box-shadow-sm;
+                border: 1px solid $black-6;
                 @include border-radius(var(--bs-border-radius));
             }
         }

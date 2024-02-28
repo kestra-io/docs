@@ -44,6 +44,7 @@ export default {
 
     .blog-details {
         margin-left: 1rem !important;
+        padding-top: 1rem;
     }
 
     p {

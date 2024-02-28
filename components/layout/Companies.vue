@@ -1,6 +1,6 @@
 <template>
-    <div ref="container" class="container mb-4">
-        <div ref="companies" class="companies scrolling">
+    <div ref="container" class="container companies-container mb-4">
+        <div ref="companies" class="companies companies-list scrolling">
             <template v-for="(img, index) in companies" :key="index">
                 <img
                     data-aos="fade-up"
@@ -57,8 +57,8 @@
             transform: translateX(0);
         }
         50% {
-            -webkit-transform: translateX(calc(-250px * 7));
-            transform: translateX(calc(-250px * 7));
+            -webkit-transform: translateX(calc(-180px * 7));
+            transform: translateX(calc(-180px * 7));
         }
         100% {
             -webkit-transform: translateX(0);
@@ -66,26 +66,17 @@
         }
     }
     .container {
-        text-align: center;
-        width: fit-content;
-        max-width: unset;
-
-        .companies {
-            width: calc(250px * 14);
+        &.companies-container {
+            text-align: center;
+            width: 100%;
+            overflow: hidden;
             position: relative;
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            overflow-y: hidden;
-            width: fit-content;
-            margin: auto;
-            margin-bottom: 1.5rem;
-
-
-            &.scrolling {
-                animation: auto-scroll 30s infinite linear;
+            .companies-list {
+                display: flex;
+                animation: auto-scroll 25s linear infinite;
             }
         }
+
         .companies {
 
             img {
@@ -98,8 +89,5 @@
             }
         }
     }
-
-
-
 
 </style>
