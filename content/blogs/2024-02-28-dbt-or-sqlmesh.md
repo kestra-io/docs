@@ -75,30 +75,32 @@ Here is a general feature comparison between dbt and SQLMesh:
 
 | Feature | dbt | SQLMesh |
 |---|---|---|
-| Modeling | | |
+| **Modeling** | | |
 | SQL models | Yes | Yes |
-| Python models | Yes | Yes|
+| Python models | Yes | Yes |
 | Jinja support | Yes | Yes |
 | Jinja macros | Yes | Yes |
 | Python macros | No | Yes |
-| Validation | | |
-| SQL semantic validation | No | Yes|
+| **Validation** | | |
+| SQL semantic validation | No | Yes |
 | Unit tests | No | Yes |
 | Table diff | No | Yes |
 | Data audits | Yes | Yes |
 | Schema contracts | Yes | Yes |
 | Data contracts | No | Yes |
-| Deployment | | | 
+| **Deployment** | | | 
 | Virtual Data Environments | No | Yes |
 | Open-source CI/CD bot | No | Yes |
 | Data consistency enforcement | No | Yes |
 | Native Airflow integration | No | Yes |
-| Interfaces | CLI | CLI, Paid UI |
-| Open-source UI | Yes | No |
+| **Interfaces** | | |
+| CLI | Yes | Yes |
+| UI | Yes (Cloud) | Yes (OSS) |
 | Native Notebook Support | No | Yes |
-| Visualization | No | Documentation generation |
-| Column-level lineage | No | Yes |
-| Miscellaneous | | | 
+| Visualization | No | Yes |
+| Documentation generation | Yes | Yes |
+| Column-level lineage | Yes (Cloud) | Yes (OSS) |
+| ****Miscellaneous** | | | 
 | Package manager | Yes | No |
 | Multi-repository support | No | Yes |
 | SQL transpilation | No | Yes |
