@@ -144,7 +144,9 @@ Even though both frameworks are extraordinary for building data transformations 
 
 Data engineers often have more complex pipelines than what we see in Modern Data Stack schemas where it’s often about connecting an ingesting tool ([Airbyte](https://airbyte.com/), [Fivetran](https://www.fivetran.com), [dlt](https://dlthub.com/)), transforming tool (dbt), and a reverse ETL tool ([Hightouch](https://hightouch.com/), [Census](https://www.getcensus.com/reverse-etl)) or a dashboarding tool ([Tableau](https://www.tableau.com), [PowerBI](https://www.microsoft.com/en-en/power-platform/products/power-bi), [Metabase](https://www.metabase.com/), [Superset](https://superset.apache.org/)). Data teams also need notification services, custom API calls, monitoring, very specific transformations, etc.
 
-Connecting all those tools needs a control plane - [an orchestrator such as Kestra](https://github.com/kestra-io/kestra). Here is how you can easily orchestrate both dbt and SQL Mesh transformation in just a few lines of YAML in Kestra.
+Connecting all those tools needs a central orchestrator such as [Kestra](https://github.com/kestra-io/kestra). 
+
+The following sections will demonstrate how you can easily orchestrate dbt and SQL Mesh transformations in just a few lines of YAML code in Kestra.
 
 ### Orchestrating SQL Mesh with Kestra
 
