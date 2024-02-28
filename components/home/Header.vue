@@ -29,8 +29,9 @@
             </div>
         </div>
 
-        <div class="companies-background">
-            <Companies class="mt-4 pb-4 companies" />
+        <div class="companies-background overflow-x-hidden">
+            <Companies class="mt-4 pb-4 companies container" />
+
 
             <div class="activity-list container bg-dark-2 d-flex align-items-center justify-content-between">
                 <div>

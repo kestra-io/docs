@@ -223,8 +223,8 @@
         line-height: 1.375rem;
 
         &.active {
-            background-color: var(--bs-primary);
-            border-color: var(--bs-primary);
+            background-color: $primary-1;
+            border-color: $primary-1;
         }
     }
 

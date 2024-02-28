@@ -1,5 +1,5 @@
 <template>
-    <div class="blog-details mb-4">
+    <div class="blog-details">
         <p>
             <span class="category">
                 {{ blog.category }}
@@ -43,7 +43,9 @@ export default {
     @import "../../assets/styles/variable";
 
     .blog-details {
-        margin-left: 1rem !important;
+        margin-left: 2rem !important;
+        margin-right: 2rem !important;
+        padding-top: 1rem;
     }
 
     p {

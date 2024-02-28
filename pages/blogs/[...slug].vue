@@ -157,6 +157,9 @@
     :deep(main) {
         position: relative;
     }
+    :deep(.bd-toc .btn) {
+        position: relative;
+    }
 
     .bd-layout {
         display: block;

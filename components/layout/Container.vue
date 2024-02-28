@@ -4,7 +4,7 @@
         <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
-                    <Breadcrumb :slug="slug" :pageList="pageList"/>
+                    <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" />
                     <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title "></h1>
                 </div>
 
@@ -30,7 +30,13 @@
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
     import NavToc from "~/components/docs/NavToc.vue";
     import {hash} from "ohash";
-    import {recursivePages} from "~/utils/navigation.js";
+    import {recursivePages, generatePageNames} from "~/utils/navigation.js";
+
+    const isDoc = computed(() => props.type === 'docs');
+
+    const route = useRoute()
+    const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
+    let page;
 
     const fetchNavigation = async () => {
         let navigationFetch;
@@ -46,8 +52,10 @@
         }
 
         const navigation = navigationFetch.data;
+
         const pageList = recursivePages(navigation.value[0]);
-        return {navigation, pageList};
+        const pageNames = generatePageNames(navigation.value[0]);
+        return {navigation, pageList, pageNames};
     }
 
     const transformTitle = (text) => {
@@ -67,13 +75,6 @@
             default: true
         },
     })
-
-    const isDoc = computed(() => props.type === 'docs');
-
-    const route = useRoute()
-    const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
-    let page;
-
 
     if (props.type === 'plugins') {
         const parts = slug.value.split('/');
@@ -108,7 +109,7 @@
         }
     }
 
-    const {navigation, pageList} = await fetchNavigation();
+    const {navigation, pageList, pageNames} = await fetchNavigation();
 
     useContentHead(page);
 
@@ -161,8 +162,15 @@
         line-height: 2.375;
     }
 
+    :deep(h4 > a ) {
+        color: $white !important;
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 2.375;
+    }
+
     .bd-main :deep(p > a), .bd-main :deep(ul a) {
-        color: $link-color;
+        color: $purple-36;
     }
 
     .container, :deep(h2 > a) {

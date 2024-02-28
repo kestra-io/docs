@@ -1,41 +1,66 @@
 <template>
     <div ref="container" class="container pb-5">
-        <div ref="companies" class="companies">
-            <template v-for="(img, index) in companies">
-                <img data-aos="fade-up" :class="{ 'inverted': inverted }" :data-aos-delay="index * 50"
-                    :src="'landing/companies/' + img + '.svg'" :alt="img" />
-            </template>
+        <div class="row">
+            <div class="col-12">
+                <div class="companies-container">
+                    <div class="companies companies-list scrolling">
+                        <template v-for="(img, index) in companies" :key="index">
+                            <img
+                                data-aos="fade-up"
+                                :class="{'inverted': inverted}"
+                                :data-aos-delay="index*50"
+                                :src="'/landing/companies/' + img  + '.svg'"
+                                :alt="img"
+                            />
+                        </template>
+                    </div>
+                    <div class="companies companies-list scrolling">
+                        <template v-for="(img, index) in companies" :key="index">
+                            <img
+                                data-aos="fade-up"
+                                :class="{'inverted': inverted}"
+                                :data-aos-delay="index*50"
+                                :src="'/landing/companies/' + img  + '.svg'"
+                                :alt="img"
+                            />
+                        </template>
+                    </div>
+                    <div class="companies companies-list scrolling">
+                        <template v-for="(img, index) in companies" :key="index">
+                            <img
+                                data-aos="fade-up"
+                                :class="{'inverted': inverted}"
+                                :data-aos-delay="index*50"
+                                :src="'/landing/companies/' + img  + '.svg'"
+                                :alt="img"
+                            />
+                        </template>
+                    </div>
+                    <div class="companies companies-list scrolling">
+                        <template v-for="(img, index) in companies" :key="index">
+                            <img
+                                data-aos="fade-up"
+                                :class="{'inverted': inverted}"
+                                :data-aos-delay="index*50"
+                                :src="'/landing/companies/' + img  + '.svg'"
+                                :alt="img"
+                            />
+                        </template>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-export default defineComponent({
-    mounted() {
-        window.addEventListener("resize", this.autoScrollIfNeeded);
-        this.autoScrollIfNeeded();
-    },
-    unmounted() {
-        window.removeEventListener("resize", this.autoScrollIfNeeded)
-    },
+  export default defineComponent({
+
     props: {
-        inverted: {
-            type: Boolean,
-            default: false
-        }
-    },
-    methods: {
-        autoScrollIfNeeded() {
-            if (this.$refs && this.$refs.companies) {
-                const companies = this.$refs.companies;
-                const classes = companies.classList;
-                if (companies.clientWidth >= this.$refs.container.parentElement.offsetWidth) {
-                    classes.add("scrolling");
-                } else {
-                    classes.remove("scrolling")
-                }
-            }
-        }
+      inverted: {
+        type: Boolean,
+        default: false
+      }
     },
     computed: {
         companies() {
@@ -59,61 +84,59 @@ export default defineComponent({
                 .sort(() => .5 - Math.random())
         },
     }
-});
+  });
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/styles/variable";
+    @import "../../assets/styles/variable";
+    @keyframes auto-scroll {
+        from {
+            transform: translateX(0);
+        }
 
-.container {
-    text-align: center;
-    border-top: $container-border;
-    border-bottom: $container-border;
-
-    .companies {
-
-        img {
-            margin-right: calc($spacer * 2);
-            margin-top: calc($spacer * 2);
-
-            &.inverted {
-                filter: invert(100%);
-            }
+        to {
+            transform: translateX(calc(-100% - 2rem));
         }
     }
-}
-
-@keyframes auto-scroll {
-    0% {
-        margin-left: 0;
-    }
-
-    50% {
-        margin-left: -25%;
-    }
-
-    100% {
-        margin-left: 0;
-    }
-}
-
-@include media-breakpoint-down(lg) {
     .container {
-        width: fit-content;
+        text-align: center;
+        border-top: $container-border;
+        border-bottom: $container-border;
         max-width: unset;
+        .companies-container {
+            width: 100%;
+            grid-column-gap: 2rem;
+            grid-row-gap: 2rem;
+            flex: 0 auto;
+            align-content: flex-start;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            .companies-list {
+                min-width: 100%;
+                grid-column-gap: 2rem;
+                grid-row-gap: 2rem;
+                flex: none;
+                justify-content: space-between;
+                align-items: center;
+                display: flex;
+                &.scrolling {
+                    animation: auto-scroll 30s linear infinite;
+                }
+            }
+        }
 
         .companies {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            overflow-y: hidden;
-            width: fit-content;
-            margin: auto;
 
-            &.scrolling {
-                animation: auto-scroll 30s infinite linear;
+            img {
+                margin-right: calc($spacer * 2.649);
+                margin-top: calc($spacer * 2);
+
+                &.inverted {
+                    filter: invert(100%);
+                }
             }
         }
     }
-}
+
 </style>
