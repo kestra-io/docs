@@ -19,7 +19,7 @@ With usage growing, some users started to complain about dbt shortcomings. New t
 In this blog post, we'll delve into dbt and SQLMesh frameworks and how they need an orchestration engine to really shine.
 
 
-## dbt shortcomings
+## dbt Core shortcomings
 
 [dbt](https://www.getdbt.com/) is the go-to solution for anything regarding transformation and data modeling with SQL nowadays. It’s used by top-notch companies, [can scale quite well](https://www.getdbt.com/blog/new-dbt-cloud-features-announced-at-coalesce-2023), and has a great community of users.
 
@@ -35,6 +35,15 @@ Still, it has some flaws:
 
 - Scaling across multiple projects is difficult: having too many dbt projects in a single repository is often hard to manage. You often need to split your hundred (if not thousands) models within different teams and projects. But cross-project references is not possible in dbt Core. It has been discussed in previous [roadmap discussions](https://github.com/dbt-labs/dbt-core/blob/main/docs/roadmap/2022-08-back-for-more.md?ref=blef.fr#v15-next-year) but the final decisions has been to move it into [dbt Mesh, part of the Cloud offering](https://www.getdbt.com/product/dbt-mesh).
 
+- User interface is mainly about a CLI an generating a static documentation website. Web UI is only available through dbt Cloud.
+
+
+Adding to these main shortcomings, it's worth mentioning the analogy often made: "dbt is the Terraform for data transformation". Actually [dbt is more about jQuery than Terraform](https://www.aranke.org/dbt-jquery/). The biggest reason jQuery isn’t the de facto web framework today is because it was hard to scale to large teams.
+The same flexibility that allowed small teams to deliver value quickly left behind messes of spaghetti code for large teams to maintain.
+The introduction of React in 2013 from Facebook teams promised to address these pain points by rethinking best practices, and has been the de facto web framework ever since.
+
+The rapid adoption of dbt has led to the swift addition of features, which, at times, has introduced increased complexity.  This raises the question of whether dbt can maintain its position as the de facto SQL framework in the long term.
+
 
 ## How SQLMesh addresses these shortcomings?
 
@@ -44,19 +53,36 @@ SQLMesh introduces key improvements for managing SQL queries:
 
 - SQLMesh can infer query dependencies
 
+- SQLMesh facilitates the identification of all downstream consumers of a specific model, along with the impact of changes (breaking or non-breaking) on each consumer, enabling a smooth migration process.
+
+- SQLMesh leverages an "intervals approach" for incremental by time models. This approach meticulously tracks which time intervals have been successfully processed, identifies those pending execution, and differentiates between completed and incomplete intervals.
+
+- While SQLMesh supports Jinja templating, it also let the user to extend the SQL language itself with native support for metaprogramming constructs that enable direct invocation of functions implemented in Python (or other programming language). This approach encourage reasoning about the code without requiring deep dives into individual macro implementations. The clear separation of Python and SQL source files contributes to a clean codebase, while Python's inherent modularity further promotes well-organized implementation.
+
 - SQLMesh allows to create new environments without duplicating data. Allowing to create dynamic representations of the data while ensuring tables are never built more than once. Unit tests, Audits, and Data Diff provide validation throughout the development workflow.
 
-- SQLMesh comes with different user interfaces: a web UI and a CLI. dbt main interface is only a CLI while the web UI is only available in dbt Cloud. For SQLMesh, both are in the open-source version.
+- SQLMesh provides native support for multiple repos and makes it easy to maintain data consistency and correctness even with multiple repos.
 
-(You can find all the differences explained by the SQLMesh team [in this documentation](https://sqlmesh.readthedocs.io/en/stable/comparisons/#feature-comparisons))
+- SQLMesh comes with different user interfaces: a web UI and a CLI. Both are in the open-source version. 
+
+Comparing SQLMesh's exposed commands, like `sqlmesh plan`, and the way it interacts with the data warehouse, it evokes a strong resemblance to Terraform's approach. Adding UI on top is the realization that different user interfaces (Terraform being one) are important to support any user experiences.
+
 
 GIF SQLMESH
 
 ## dbt Cloud vs. SQL Mesh commercial product
 
-TODO
+dbt Core remains the foundation of the dbt open-source project, however, recent development efforts have primarily focused on the Cloud offering. This has coincided with both [pricing adjustments](https://www.getdbt.com/blog/consumption-based-pricing-and-the-future-of-dbt-cloud) and a perceived slowdown in core feature development. It's worth mentioning that dbt Cloud recently introduced column-level lineage (so only in their commercial product) built on top of [SQLMesh's open-source technology SQLGlot](https://github.com/tobymao/sqlglot)
 
-at Kestra we have seen many users moving away from dbt Cloud because of pricing changes and use Kestra with dbt Core to model their data and manage dependencies.
+At Kestra we have seen many users moving away from dbt Cloud because of thos pricing changes and use Kestra with dbt Core to model their data and manage dependencies.
+
+The commercial product associated with SQLMesh [is still under development](https://sqlmesh.readthedocs.io/en/stable/faq/faq/#company) and is expected to include features such as:
+
+- Model execution observability and monitoring tools
+- An enterprise-focused GitHub Actions CI/CD application
+- An advanced version of the open-source CI/CD bot
+- Hands-on support for companies using SQLMesh
+
 
 ## The need for orchestration
 
