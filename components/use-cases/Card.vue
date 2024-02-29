@@ -76,6 +76,7 @@ export default {
 
 .title {
     font-size: $h1-font-size;
+    font-weight: 400;
 }
 
 .title-sm {

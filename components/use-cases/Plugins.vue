@@ -38,6 +38,7 @@ export default {
 
 .title {
     font-size: $font-size-3xl;
+    font-weight: 400;
     span {
         background: var(
             --Text_gradient,

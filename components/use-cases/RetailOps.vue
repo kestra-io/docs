@@ -103,7 +103,7 @@ export default {
 }
 
 .title {
-    font-weight: 300;
+    font-weight: 400;
     font-size: $font-size-3xl;
     span {
         background: var(
