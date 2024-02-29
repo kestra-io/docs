@@ -23,7 +23,7 @@
             h1, h4 {
                 color: $white;
                 text-align: center;
-                font-weight: 300;
+                font-weight: 400;
                 margin-bottom: 0;
             }
 

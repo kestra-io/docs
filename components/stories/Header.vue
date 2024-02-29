@@ -75,7 +75,7 @@
 
   .heading {
     font-size: $font-size-4xl;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 3.7rem;
     @include media-breakpoint-down(lg) {
       line-height: calc($font-size-base * 1.625);;

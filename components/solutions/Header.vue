@@ -36,7 +36,7 @@
                 color: $white;
                 font-family: $font-family-sans-serif;
                 font-style: normal;
-                font-weight: 300;
+                font-weight: 400;
                 margin: 0;
 
                 &.title {

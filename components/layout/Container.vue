@@ -134,7 +134,7 @@
 
         .title {
             font-size: 2.375rem;
-            font-weight: 600;
+            font-weight: 400;
             line-height: 3.25rem;
         }
     }
