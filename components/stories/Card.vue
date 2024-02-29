@@ -69,10 +69,10 @@
         }
 
         &-title {
-            color: #C6C1D9;
+            color: #CDD5EF;
             font-family: $font-family-monospace;
-            font-size: $font-size-xl;
-            font-weight: 600;
+            font-size: $font-size-md;
+            font-weight: 400;
             line-height: calc($spacer * 1.75);
             text-transform: uppercase;
         }
