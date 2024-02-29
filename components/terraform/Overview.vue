@@ -107,7 +107,7 @@
 
     h3 {
         font-size: $h2-font-size;
-        font-weight: 300;
+        font-weight: 400;
     }
 
     .configurations-img {

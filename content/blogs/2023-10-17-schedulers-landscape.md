@@ -29,9 +29,9 @@ Let's explore a selection of tools in the field, from legacy platforms to modern
 
 ### The API Ecosystem
 
-The tool comes with a set of APIs that are designed to facilitate integrations across a variety of enterprise-level applications. These APIs are developed to function in tandem with both SOAP and RESTful web services. The APIs provide the hooks necessary for linking tasks across multiple platforms and business applications.  
+The tool comes with a set of APIs that are designed to facilitate integrations across a variety of enterprise-level applications. These APIs are developed to function in tandem with both SOAP and RESTful web services. The APIs provide the hooks necessary for linking tasks across multiple platforms and business applications.
 
-**How it Works**  
+**How it Works**
 It allows the scheduler to respond to external events such as file changes, database updates, and system failures.
 
 ### Limitations: Areas for Improvement
@@ -114,13 +114,13 @@ triggers:
 
 **Complex Schedule**
 
-For more complex scheduling needs, use `scheduleConditions`.
+For more complex scheduling needs, use `conditions`.
 
 ```yaml
 triggers:
   - id: schedule
     cron: "0 11 * * 1"
-    scheduleConditions:
+    conditions:
       - id: monday
         date: "{{ trigger.date }}"
         dayOfWeek: "MONDAY"

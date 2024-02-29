@@ -1,6 +1,6 @@
 ---
 title: "Your Private App Store for Data Pipelines"
-description: "New feature: Data Orchestration Blueprints to Kickstart Your Next Flow"
+description: "New feature: Data Orchestration Blueprints to Kickstart Your Next Flow"
 date: 2023-07-12T14:00:00
 category: Solutions
 author:
@@ -14,7 +14,7 @@ Data professionals are exposed to a growing number of tools in the data, AI, and
 
 ## Why Blueprints
 
-### The first step is always the hardest
+### The first step is always the hardest
 
 Blueprints are helpful because they make it **easier to get started**. Often the biggest hurdle to solving a challenging problem is just taking the first step. Blueprints help by providing a scaffold (…blueprint?) for a specific use case or integration.
 
@@ -22,9 +22,9 @@ Blueprints are helpful because they make it **easier to get started**. Often the
 
 Many data management tasks are increasingly **standardized**. It doesn’t make much sense to write glue code yet again only to concurrently trigger several data ingestion syncs, then start a dbt or Spark transformation job, configure alert notifications, or invoke some process via a third-party API and report on their completion status. Instead of spending time writing imperative code to glue those standardized tasks together, you can just declare them in a YAML config, validate they work as expected, and move on to the next tasks quickly. Less time spent on *boring* glue code, more time left for *fun* code that adds value to your business. Blueprints further optimize that process by providing ready-to-use examples to help you iterate even faster.
 
-### A better place for docs than docs
+### A better place for docs than docs
 
-Blueprints serve as a natural extension to the docs. Instead of searching online resources for configuration or real-life examples, they are now available in a place where you need them most — right next to your code editor.
+Blueprints serve as a natural extension to the docs. Instead of searching online resources for configuration or real-life examples, they are now available in a place where you need them most — right next to your code editor.
 
 ## What are Blueprints
 
@@ -56,7 +56,7 @@ Once you are on the Blueprints page, you can:
 Blueprints, available out of the box, cover only the most common and standardized tasks. There are two ways to extend Blueprints with more nuanced workflow examples tailored to your needs.
 
 1. **Community Blueprints:** use the [dedicated issue template](https://github.com/kestra-io/kestra/issues/new?assignees=&labels=blueprint&projects=&template=blueprint.yml) on GitHub to contribute a new Blueprint. We’ll then either add your Blueprint right away or leave comments to discuss and refine the flow together.
-2. **Organization Blueprints:** while Community Blueprints are visible to everyone, the Enterprise Edition allows adding private fine-grained Blueprints available only to your organization. You can use them to share, centralize, and document commonly used workflows in your team. The combination of custom plugins and Organization Blueprints covers a wide range of integrations and workflow patterns tailored to your needs.
+2. **Custom Blueprints:** while Community Blueprints are visible to everyone, the Enterprise Edition allows adding private fine-grained Blueprints available only to your organization. You can use them to share, centralize, and document commonly used workflows in your team. The combination of custom plugins and Custom Blueprints covers a wide range of integrations and workflow patterns tailored to your needs.
 
 Blueprints facilitate fast feedback loops and knowledge sharing. No need to wait for the next release or implement a CI/CD workflow. Once the Blueprint is published, it’s available within the UI right away. No upgrade or restart is required. This way, you can quickly share institutional knowledge with your team. By combining custom plugins and blueprints, you can effectively build a private App Store for your data workflows.
 

@@ -290,7 +290,7 @@ h2 {
 
     h1 {
         font-size: $font-size-4xl;
-        font-weight: 100;
+        font-weight: 400;
         color: $white;
         margin-bottom: 2rem;
     }
@@ -322,7 +322,7 @@ h2 {
     font-family: $font-family-sans-serif;
     font-size: 14px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 22px;
 }
 </style>

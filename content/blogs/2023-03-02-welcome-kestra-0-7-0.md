@@ -48,7 +48,7 @@ This works thanks to our validation based on a JSON Schema computed for each tas
 
 We have improved the flow validation in Kestra. Flows are now validated with Task Defaults, meaning no more issues when a mandatory field is set in task defaults and not directly in the flow definition.
 
-Flow validation is also now performed inside the editor before you save your flow so it is no more possible to create invalid flows and templates.
+Flow validation is also now performed in the editor before you save your flow so it is no more possible to create invalid flows and templates.
 
 ## Continuous Integration / Continuous Deployment (CI/CD)
 
@@ -135,7 +135,7 @@ Last but not least, all existing relational database plugins (what we called the
 ## Some other goodies
 
 *   We greatly improved our documentation and plan to continue improving it during the next few months.
-*   We published the Python Kestra library on [pip](https://pypi.org/project/kestra), making it easier for local testing as otherwise it was only available when running your Python scripts inside Kestra.
+*   We published the Python Kestra library on [pip](https://pypi.org/project/kestra), making it easier for local testing as otherwise it was only available when running your Python scripts in Kestra.
 *   We also made a lot of small enhancements, fixes, and updates. See the [list of all the changes since 0.6.0](https://github.com/kestra-io/kestra/compare/v0.6.0...0.7.1).
 
 We wanted to thank all the contributors who helped us make this release.

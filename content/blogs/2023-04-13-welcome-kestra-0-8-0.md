@@ -22,7 +22,7 @@ This new release feature the first iteration of our low-code editor. The previou
 
 ### Task documentation in the editor
 
-Each task has exhaustive documentation in the [plugin documentation](https://kestra.io/plugins/) section of our website, but when you create a flow inside the UI, switching from the editor to the plugin documentation site is not very convenient.
+Each task has exhaustive documentation in the [plugin documentation](https://kestra.io/plugins/) section of our website, but when you create a flow from the UI, switching from the editor to the plugin documentation site is not very convenient.
 
 To limit context switching, we added a contextual panel in the flow editor displaying the current task documentation. So now you can keep your flow at hand while developing and still be close to the documentation.
 

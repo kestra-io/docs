@@ -33,12 +33,12 @@ If you're new to this, there is nothing to be afraid of! You're just a few insta
 
 As a person without an engineering background, manipulating the Command Line Interface (CLI) was a source of stress for a while! I’ve been there, and I got your back. Here are two tips to follow for a Full Click Installation.
 
-### 1-Download Docker Extension for VSC ### 
+### 1-Download Docker Extension for VSC ###
 After installing Visual Studio Code, download [Docker Extension for VSC](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) and directly click right on `the docker-compose.yaml` file to access the `Compose Up` command. If any dependency is missing on your local machine, leveraging this plugin will overcome the issue.
 
 ![docker compose](/blogs/2023-05-31-beginner-guide-kestra/docker.png)
 
-### 2-Use and re-use the Docker Desktop UI ### 
+### 2-Use and re-use the Docker Desktop UI ###
 Thanks to the UI, you can directly search the `Kestra installer` (a.k.a the Docker image) via the Search Bar. You can also decide which version you want to pick up. Once it’s done, you can keep using it to stop/start your server and directly open Kestra in Visual Studio Code.
 
 ![docker step 1](/blogs/2023-05-31-beginner-guide-kestra/docker-step-1.png)
@@ -47,7 +47,7 @@ Thanks to the UI, you can directly search the `Kestra installer` (a.k.a the Dock
 
 You can also download [Docker Extension for VSC](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) and directly click right on the docker-compose.yaml file to access the `Compose Up` command.
 
-## Kestra Guided Tour ## 
+## Kestra Guided Tour ##
 
 Once you're in, the easiest thing to do is the follow the [Guided Tour](https://kestra.io/docs/flow-examples/example-guided-tour.html) automatically suggested by Kestra. Step by step, several code snippets will appear in a dialog box. The good news is: they're written in YAML, a human-readable file format.
 
@@ -89,7 +89,7 @@ Also named [Inputs](https://kestra.io/docs/developer-guide/inputs). You can see 
 
 ```yaml
 inputs:
-  - name: csvUrl
+  - id: csvUrl
     type: STRING
     defaults: https://www.data.gouv.fr/fr/datasets/r/6637991e-c4d8-4cd6-854e-ce33c5ab49d5
 ```
@@ -127,7 +127,7 @@ namespace: io.kestra.downloads
 description: My first flow is a CSV Download and transform the results into JSON
 
 inputs:
-  - name: csvUrl
+  - id: csvUrl
     type: STRING
     defaults: https://www.data.gouv.fr/fr/datasets/r/6637991e-c4d8-4cd6-854e-ce33c5ab49d5
 
@@ -150,5 +150,5 @@ What will your next move be? To play a few SQL Queries and export the results in
 And that’s what I personally love about Kestra: it empowers thousands of people to manipulate data regardless of their technical background!
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
-Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news. 
+Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.

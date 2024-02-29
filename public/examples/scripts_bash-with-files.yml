@@ -4,7 +4,7 @@ namespace: dev
 description: This flow shows how to pass files between inputs and tasks in Shell scripts.
 
 inputs:
-  - name: file
+  - id: file
     type: FILE
 
 tasks:

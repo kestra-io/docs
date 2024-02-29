@@ -55,7 +55,7 @@ $bd-gutter-x: 3rem;
         padding-bottom: 1.5rem;
         font-size: calc($font-size-base * 3.125);
         color: $white;
-        font-weight: 300;
+        font-weight: 400;
         @include media-breakpoint-down(sm) {
             font-size: calc($font-size-base * 2.125);
         }
@@ -65,7 +65,7 @@ $bd-gutter-x: 3rem;
         padding-top: 1.5rem;
         font-size: $h2-font-size;
         color: $white;
-        font-weight: 300;
+        font-weight: 400;
         @include media-breakpoint-down(sm) {
             font-size: calc($font-size-base * 1.875);
         }
@@ -75,7 +75,7 @@ $bd-gutter-x: 3rem;
         padding-top: 1.25rem;
         font-size: calc($font-size-base * 1.5);
         color: $white;
-        font-weight: 300;
+        font-weight: 400;
     }
 
     h4 {
@@ -90,7 +90,7 @@ $bd-gutter-x: 3rem;
 
     h6 {
         padding-top: .5rem;
-        font-weight: 900;
+        font-weight: 400;
         font-size: $font-size-base;
     }
 
@@ -256,7 +256,7 @@ $bd-gutter-x: 3rem;
         color: $white;
         font-size: 1.875rem;
         line-height: 2.735rem;
-        font-weight: 300;
+        font-weight: 400;
     }
 
     h3 a {

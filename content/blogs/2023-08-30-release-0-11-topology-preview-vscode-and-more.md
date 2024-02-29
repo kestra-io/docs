@@ -492,7 +492,7 @@ kestra:
 
 ### Core script tasks
 
-Before Kestra 0.10.0, script tasks were offered exclusively by the `core` plugin (the one which is always included inside any Kestra distribution). In 0.10.0, we introduced new [script tasks](https://kestra.io/docs/developer-guide/scripts) maintained using [dedicated script plugins](https://github.com/kestra-io/plugin-scripts) which offer script tasks for Python, R, Node.js, Shell and Powershell (and now, also Julia). Since then, the old core scripting tasks have been deprecated and moved out of the core plugin.
+Before Kestra 0.10.0, script tasks were offered exclusively by the `core` plugin (the one which is always included in any Kestra distribution). In 0.10.0, we introduced new [script tasks](https://kestra.io/docs/developer-guide/scripts) maintained using [dedicated script plugins](https://github.com/kestra-io/plugin-scripts) which offer script tasks for Python, R, Node.js, Shell and Powershell (and now, also Julia). Since then, the old core scripting tasks have been deprecated and moved out of the core plugin.
 
 ::alert{type="warning"}
 If you use one of these `core` script tasks e.g. `io.kestra.core.tasks.scripts.python`, you should **migrate to the new script task** that runs by default in a Docker container and is more feature-rich. Using the same Python task as an example, you should now use the  `io.kestra.plugin.scripts.python.Script` task instead.

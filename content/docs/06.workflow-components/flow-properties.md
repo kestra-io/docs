@@ -67,7 +67,7 @@ labels:
   country: US
 
 inputs:
-  - name: user
+  - id: user
     type: STRING
     required: false
     defaults: Rick Astley

@@ -37,7 +37,7 @@ id: upload_to_s3
 namespace: dev
 
 inputs:
-  - name: bucket
+  - id: bucket
     type: STRING
     defaults: declarative-data-orchestration
 
@@ -70,7 +70,7 @@ id: conditional_branching
 namespace: dev
 
 inputs:
-  - name: parameter
+  - id: parameter
     type: STRING
     required: false
 
@@ -106,7 +106,7 @@ triggers:
     backfill:
       start: 2023-11-11T00:00:00Z
     cron: "0 11 * * MON" # at 11 on every Monday
-    scheduleConditions: # only first Monday of the month
+    conditions: # only first Monday of the month
       - type: io.kestra.core.models.conditions.types.DayWeekInMonthCondition
         date: "{{ trigger.date }}"
         dayOfWeek: "MONDAY"

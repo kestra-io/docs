@@ -44,7 +44,7 @@
 
     h1 {
         font-size: $h1-font-size;
-        font-weight: 300;
+        font-weight: 400;
     }
     @include media-breakpoint-down(sm) {
         h1 {

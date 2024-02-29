@@ -137,7 +137,7 @@
 
         h3 {
             font-size: $h3-font-size;
-            font-weight: 800;
+            font-weight: 400;
 
             span {
                 color: $body-tertiary-color;

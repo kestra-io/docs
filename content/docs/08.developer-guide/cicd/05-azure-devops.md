@@ -1,6 +1,6 @@
 ---
 title: Azure DevOps
-icon: /docs/icons/ci.svg
+icon: /docs/icons/dev.svg
 ---
 
 This page describes how to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
@@ -32,13 +32,11 @@ pool:
   name: test-pool
 
 stages:
-
   - stage: tfvalidate
     jobs:
       - job: deploy
         continueOnError: false
         steps:
-
           - task: TerraformInstaller@1
             inputs:
               terraformVersion: 'latest'

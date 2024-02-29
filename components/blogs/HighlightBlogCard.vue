@@ -45,13 +45,13 @@
         h3 {
             color: $white;
             font-size: $h3-font-size;
-            font-weight: 600;
+            font-weight: 400;
             line-height: 2.375rem;
         }
         .text {
             color: $white-1;
             font-size: $h6-font-size;
-            font-weight: 400;
+            font-weight: 300;
             line-height: 1.625rem;
             margin-bottom: 0.75rem;
         }

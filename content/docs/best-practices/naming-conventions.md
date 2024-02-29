@@ -3,7 +3,7 @@ title: Naming conventions
 icon: /docs/icons/best-practices.svg
 ---
 
-To keep your flows and tasks organized, it's useful to adopt a consistent naming convention. This page describes some common conventions.
+This page describes common naming conventions to keep your flows and tasks well-organized and consistent.
 
 ## Subscript notation and valid characters in IDs
 

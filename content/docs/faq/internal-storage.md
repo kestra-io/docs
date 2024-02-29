@@ -22,7 +22,7 @@ id: read_file_as_string
 namespace: dev
 
 inputs:
-  - name: file
+  - id: file
     type: FILE
 
 tasks:
@@ -47,7 +47,7 @@ id: subflow_raw_string_input
 namespace: dev
 
 inputs:
-  - name: string_input
+  - id: string_input
     type: STRING
     defaults: hey there
 
