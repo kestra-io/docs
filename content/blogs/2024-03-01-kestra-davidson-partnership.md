@@ -1,7 +1,7 @@
 ---
 title: "Announcing Kestra Partnership with Davidson"
 description: "We are thrilled to announce the launch of our partnership with Davidson, a leader in the consulting industry known for its expertise in digital transformation and modern technologies."
-date: 2024-03-01T12:00:00
+date: 2024-02-28T12:00:00
 category: Company News
 author:
   name: Quentin Sinig

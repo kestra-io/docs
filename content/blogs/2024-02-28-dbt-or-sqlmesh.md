@@ -1,7 +1,7 @@
 ---
 title: "Is It Time To Move From dbt to SQLMesh?"
 description: "Are dbt shortcomings painful enough to migrate to a new SQL transformation framework such as SQLMesh? Here's my take."
-date: 2024-02-28T10:00:00
+date: 2024-02-28T18:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
