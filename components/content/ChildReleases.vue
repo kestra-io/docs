@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body">
                     <div>
-                        <h4>{{ item.release }}</h4>
+                        <h4 class="text-white">{{ item.release }}</h4>
                         <h4 class="card-title">{{ item.title }}</h4>
                     </div>
                     <p class="card-text">{{ item.description }}</p>

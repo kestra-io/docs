@@ -1,7 +1,7 @@
 <template>
     <div>
-        <strong class="h6 my-2 ms-3 title text-white">Contribute</strong>
-        <nav class="social">
+        <strong class="h6 my-2 title text-white">Contribute</strong>
+        <nav class="social mt-1">
             <ul>
                 <li v-if="page.editLink !== false && editLink">
                     <a class="text-white" :href="editLink" target="_blank">
@@ -59,7 +59,9 @@
 </script>
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
-
+    strong {
+        margin-left: calc($spacer * 2);
+    }
     nav {
         @include font-size($font-size-xs);
         line-height: 1.188rem;

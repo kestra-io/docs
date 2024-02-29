@@ -83,7 +83,7 @@
 
         @include media-breakpoint-up(lg) {
             position: sticky;
-            top: 7rem;
+            top: 4rem;
             display: block !important;
             height: fit-content;
             max-height: subtract(100vh, 9rem);

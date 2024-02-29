@@ -50,16 +50,12 @@
         font-family: var(--bs-font-monospace);
         font-weight: 600;
         margin: 0 auto;
-        max-width: 700px;
         @include media-breakpoint-down(lg) {
             a {
                 font-size: 0.813rem
             }
         }
 
-        @include media-breakpoint-up(xxl) {
-            margin-left: 7.2rem;
-        }
 
         @include media-breakpoint-down(sm) {
             font-size: 0.55rem;

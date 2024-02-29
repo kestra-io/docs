@@ -84,7 +84,6 @@
     @import "../../assets/styles/variable";
 
     .container {
-        border-bottom: 1px solid $purple-30;
 
         > div {
             position: relative;
