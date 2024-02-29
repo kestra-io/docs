@@ -3,7 +3,7 @@ namespace: dev
 description: Trigger a flow once another flow is finished successfully
 
 inputs:
-  - name: from-parent
+  - id: from-parent
     type: STRING
 
 tasks:

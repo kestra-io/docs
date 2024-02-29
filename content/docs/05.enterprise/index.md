@@ -2,9 +2,13 @@
 title: Kestra Enterprise
 ---
 
-This section provides an overview of the available Kestra editions, including:
-- [Enterprise Edition](./01.enterprise-edition.md) — enterprise-grade edition deployed to your private infrastructure
-- [Kestra Cloud (Alpha)](./02.cloud.md) — a fully managed SaaS hosted by the Kestra team. Kestra Cloud is currently in private Alpha. If you are interested in trying it out, [sign up here](https://kestra.io/cloud).
+This large section describes how to configure Kestra Enterprise Edition.
+
+The [Enterprise Edition](./01.enterprise-edition.md) is a robust, enterprise-grade version of Kestra deployed to your private infrastructure. It offers security and governance features including multi-tenancy, authentication, SSO, RBAC, namespace-level management, distributed worker groups, worker isolation, secrets manager integrations, audit logs, and more.
+
+This section describes those features in detail and explains how to configure them.
+
+
 
 ::ChildCard
 ::

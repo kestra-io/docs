@@ -43,9 +43,9 @@ id: gemini
 namespace: company.team
 
 inputs:
-  - name: image
+  - id: image
     type: FILE
-  - name: video
+  - id: video
     type: FILE
 
 tasks:
@@ -112,14 +112,14 @@ You can see in the outputs that the safety category `HARM_CATEGORY_DANGEROUS_CON
 
 Now that you saw how to leverage Vertex AI Gemini model with Kestra, you can play with it and integrate it to others workflows!
 
-Check out others tasks related to Generative AI that we support with Kestra: 
+Check out others tasks related to Generative AI that we support with Kestra:
 
 - [**CustomJob**](https://kestra.io/plugins/tasks/vertexai/io.kestra.plugin.gcp.vertexai.CustomJob): To start Vertex AI Custom Jobs
 - [**ChatCompletion**](https://kestra.io/plugins/tasks/vertexai/io.kestra.plugin.gcp.vertexai.ChatCompletion): For Chat completion
 - [**TextCompletion**](https://kestra.io/plugins/tasks/vertexai/io.kestra.plugin.gcp.vertexai.TextCompletion): For Text completion
 
-For more information, you can have a look at the [Google Quickstarts for Generative AI](https://cloud.google.com/vertex-ai/docs/generative-ai/start/quickstarts/api-quickstart) and the documentation of the TestCompletion and ChatCompletion tasks. 
+For more information, you can have a look at the [Google Quickstarts for Generative AI](https://cloud.google.com/vertex-ai/docs/generative-ai/start/quickstarts/api-quickstart) and the documentation of the TestCompletion and ChatCompletion tasks.
 
-If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). 
+If you have any questions, reach out via [Kestra Community Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](https://kestra.io/slack).

@@ -1,21 +1,22 @@
 ---
 title: Create a CI/CD pipeline
-icon: /docs/icons/ci.svg
+icon: /docs/icons/dev.svg
 ---
 
 Kestra provides several ways to create a CI/CD pipeline for your flows. This section explains how to automate the validation and deployment of your workflows using CI/CD.
 
 ## Introduction
 
-Manual deployments can be challenging. CI/CD pipelines are a great way to automate the validation and deployment of your workflows. This section explains several ways of creating a CI/CD pipeline for your Kestra resources.
+Manual deployments are often not desirable. CI/CD pipelines are a great way to automate the validation and deployment of your workflows to production environments. This section explains several ways of creating a CI/CD pipeline for your Kestra resources.
 
 ## Why a CI/CD pipeline?
 
 A CI/CD process helps ensure fast and reliable deployments. Your changes get deployed automatically, as soon as they get peer-reviewed and merged to a VCS (Version Control System) like Git.
 
-## CI/CD for data workflows
+## CI/CD for Kestra workflows
 
 There are several ways to create a CI/CD pipeline for your flows in Kestra. Pick one of the options listed below that best suits your needs.
+
 <ChildTableOfContents :max="1" />
 
 ### Kestra CLI
@@ -23,9 +24,16 @@ There are several ways to create a CI/CD pipeline for your flows in Kestra. Pick
 Kestra CLI provides several [commands](./04.helpers.md) for validating and deploying your flows:
 
 ```bash
-./kestra flow validate flow_directory/myflow.yml
-./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete
+# validate a single flow
+./kestra flow validate flow_directory/myflow.yml --server http://localhost:8080 --api-token <your-api-token>
+
+# deploy a single flow to a namespace without deleting existing flows
+./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --api-token <your-api-token>
 ```
+
+::alert{type="info"}
+Note that the `--api-token` option is available only in the Enterprise Edition. Check the [API Tokens](../../05.enterprise/api-tokens.md) page for more details.
+::
 
 If you run Kestra in a Docker container, you can access the CLI as follows:
 
@@ -37,8 +45,8 @@ docker exec -it kestra-container-name /bin/bash
 To validate and deploy multiple flows within a directory named `flows`, you can provide a path to that directory:
 
 ```bash
-./kestra flow validate flows/
-./kestra flow namespace update namespace_name flows/ --no-delete
+./kestra flow validate flows/ --server http://localhost:8080 --api-token <your-api-token>
+./kestra flow namespace update namespace_name flows/ --no-delete --server http://localhost:8080 --api-token <your-api-token>
 ```
 
 The `--no-delete` flag is used to preserve existing flows already stored within your Kestra instance. Don't include that flag if you want that a specific Git repository or a local directory is used as the single source of truth for your production workflows. This way, all previously stored flows get deleted, and only those flows maintained in Git (or that directory) are kept and updated.
@@ -59,23 +67,27 @@ For all available CLI options on both `flow validate` and `flow namespace update
 ```
 
 
-#### Templates
+#### Templates (deprecated)
 
-Templates can be validated and deployed in the same way as flows:
+[Templates](../../10.migration-guide/templates.md) can be validated and deployed in the same way as flows:
 
 ```bash
 ./kestra template validate path-to-template-directory
 ./kestra template namespace update template-namespace-to-update path-to-template-directory
 ```
 
+::alert{type="warning"}
+Note that templates are deprecated and will be removed in a future release. Use subflows instead.
+::
 
 ### Deploy flows... from a flow!
 
-The CLI commands explained above can be used in a Bash script within a flow. This way, your CI/CD pipeline can be managed directly from your Kestra instance.
+The CLI commands explained above can be used in a Shell script within a flow. This way, your CI/CD pipeline can be managed directly from your Kestra instance directly.
 
 ```yaml
 id: ci-cd
 namespace: prod
+
 tasks:
   - id: github-ci-cd
     type: io.kestra.core.tasks.flows.WorkingDirectory
@@ -91,16 +103,16 @@ tasks:
         runner: PROCESS
         warningOnStdErr: false
         commands:
-          - /app/kestra flow validate flows/
+          - /app/kestra flow validate flows/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
 
       - id: deploy-flows
         type: io.kestra.plugin.scripts.shell.Commands
-        description: "Deply flows to the Kestra namespace."
+        description: "Deply flows to a Kestra namespace."
         runner: PROCESS
         warningOnStdErr: false
         commands:
-          - /app/kestra flow namespace update prod flows/prod/
-          - /app/kestra flow namespace update prod.marketing flows/prod.marketing/
+          - /app/kestra flow namespace update prod flows/prod/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
+          - /app/kestra flow namespace update prod.marketing flows/prod.marketing/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
 
 triggers:
   - id: github
@@ -155,7 +167,7 @@ jobs:
         with:
           directory: ./flows/prod
           resource: flow
-          server: ${{secrets.KESTRA_WEBSERVER_OR_STANDALONE_HOST}}
+          server: ${{secrets.KESTRA_HOSTNAME}}
           user: ${{secrets.KESTRA_USER}}
           password: ${{secrets.KESTRA_PASSWORD}}
       - name: deploy-prod
@@ -164,7 +176,7 @@ jobs:
           namespace: prod
           directory: ./flows/prod
           resource: flow
-          server: ${{secrets.KESTRA_WEBSERVER_OR_STANDALONE_HOST}}
+          server: ${{secrets.KESTRA_HOSTNAME}}
           user: ${{secrets.KESTRA_USER}}
           password: ${{secrets.KESTRA_PASSWORD}}
           delete: false
@@ -174,13 +186,54 @@ jobs:
           namespace: prod.marketing
           directory: ./flows/prod.marketing
           resource: flow
-          server: ${{secrets.KESTRA_WEBSERVER_OR_STANDALONE_HOST}}
+          server: ${{secrets.KESTRA_HOSTNAME}}
           user: ${{secrets.KESTRA_USER}}
           password: ${{secrets.KESTRA_PASSWORD}}
           delete: false
 ```
 
 Note that this example uses GitHub repository **secrets** to store the host name, user name and password to your Kestra instance. Make sure to add those secrets to your repository before using this workflow.
+
+::alert{type="info"}
+Here is a modified version of the same workflow but this time using an [API token](../../05.enterprise/api-tokens.md) instead of a `user` name and `password`:
+
+```yaml
+name: Kestra CI/CD
+on:
+  push:
+    branches:
+      - main
+jobs:
+  prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: validate-all flows
+        uses: kestra-io/validate-action@develop
+        with:
+          directory: ./flows/prod
+          resource: flow
+          server: ${{secrets.KESTRA_HOSTNAME}}
+          apiToken: ${{secrets.KESTRA_API_TOKEN}}
+      - name: deploy-prod
+        uses: kestra-io/deploy-action@develop
+        with:
+          namespace: prod
+          directory: ./flows/prod
+          resource: flow
+          server: ${{secrets.KESTRA_HOSTNAME}}
+          apiToken: ${{secrets.KESTRA_API_TOKEN}}
+          delete: false
+      - name: deploy-prod-marketing
+        uses: kestra-io/deploy-action@develop
+        with:
+          namespace: prod.marketing
+          directory: ./flows/prod.marketing
+          resource: flow
+          server: ${{secrets.KESTRA_HOSTNAME}}
+          apiToken: ${{secrets.KESTRA_API_TOKEN}}
+          delete: false
+```
 
 
 ### Deploy flows from a GitLab CI/CD
@@ -198,14 +251,15 @@ The [Terraform CI/CD](./03.terraform.md) page provides a more detailed explanati
 terraform {
   required_providers {
     kestra = {
-      source  = "kestra-io/kestra" # namespace of Kestra provider
-      version = "~> 0.7.0"         # version of Kestra Terraform provider, not the version of Kestra
+      source  = "kestra-io/kestra"
+      version = "~> 0.15.0"
     }
   }
 }
 
 provider "kestra" {
   url = "http://localhost:8080" # Kestra webserver/standalone server URL
+  api_token = "<your-api-token>" # only available in the Enterprise Edition
 }
 
 resource "kestra_flow" "flows" {

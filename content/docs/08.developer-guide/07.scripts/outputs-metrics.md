@@ -92,7 +92,7 @@ id: outputsMetricsPython
 namespace: dev
 
 inputs:
-  - name: attempts
+  - id: attempts
     type: INT
     defaults: 10
 

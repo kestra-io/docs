@@ -22,7 +22,7 @@ But before diving into the tools, let's discuss briefly what orchestration tools
 Data-centric companies need orchestration tools daily and rely on them heavily when making data-driven business decisions. For a newcomer, seeing value in such a tool might be a bit more challenging, so let's go over some main benefits.
 
 ### What an Orchestration Tool Does
-Put simply, the role of an orchestration tool is to coordinate and harmonize the flow of data in an organization, making sure it's moving smoothly and error-free from one place to another. 
+Put simply, the role of an orchestration tool is to coordinate and harmonize the flow of data in an organization, making sure it's moving smoothly and error-free from one place to another.
 
 Orchestration tools are used to streamline many data-related processes, from data collection, transformation, storage, delivery, and so on. **The end goal?** Making it easier for you to make informed business decisions and extract valuable insights from data.
 
@@ -58,7 +58,7 @@ Airflow belongs to the FOSS category (free and open-source software). Of course,
 It's also worth mentioning that there are ways to run Airflow with **less or no overhead**. For example, [Astronomer](https://www.astronomer.io/) is a managed Airflow service that allows you to orchestrate workflows in a cloud environment. There's a similar option called [Cloud Composer](https://cloud.google.com/composer/docs/concepts/overview) which is worth checking out if you're using Google Cloud. It is basically another way to have a fully managed Airflow environment. Both are great, but the latter makes more sense if your company already uses GCP.
 
 Here's a couple of reasons people adopt Airflow:
-- **It's most widely known** — it's the oldest and most widely known across all orchestration tools mentioned in this post. 
+- **It's most widely known** — it's the oldest and most widely known across all orchestration tools mentioned in this post.
 - **Old-school, yet fairly capable user interface** - Airflow is capable of doing much without making the UI look crowded. Its web UI is intuitive, allows you to monitor scheduled DAGs, and gives you the option to store variables and credentials, which means you won't need to hardcode them.
 - **Rich ecosystem** - This tool has a wide array of pre-built connectors and plugins that simplify integration with almost any data source you can imagine. You can easily communicate with REST APIs, databases, cloud platforms, messaging systems, and much more.
 - **Flexibility** - You can use Airflow to handle everything from simple bash jobs to repetitive tasks, ETL pipelines, and even some machine learning workflows.
@@ -77,7 +77,7 @@ That being said, Airflow isn't without its flaws. Here are some you might find a
 
 ![Image 2 - Kestra](/blogs/2023-10-30-top-data-orchestration-platforms-2023/2.png)
 
-The open-source version of Kestra is **completely free** and recommended for a single-player experience. If you want to adopt Kestra in your team, we recommend the [Enterprise edition](https://kestra.io/enterprise), which offers Enterprise-grade features such as SSO, RBAC, namespace level secrets and variable management, task defaults, worker groups, organization blueprints, high availability with no single point of failure architecture, and so much more.
+The open-source version of Kestra is **completely free** and recommended for a single-player experience. If you want to adopt Kestra in your team, we recommend the [Enterprise edition](https://kestra.io/enterprise), which offers Enterprise-grade features such as SSO, RBAC, namespace level secrets and variable management, task defaults, worker groups, custom blueprints, high availability with no single point of failure architecture, and so much more.
 
 This is the list of areas in which Kestra easily beats the competition:
 - **Language-agnostic orchestration tool** - Kestra uses YAML for data flow design, which isn't a programming language. This data serialization language is easy to pick up and is much easier to understand for users with no technical background. As an end result, employees from all parts of the organization can take part in the data flow creation process.
@@ -98,7 +98,7 @@ It's often difficult to figure out how much a cloud tool will cost you on a mont
 
 That being said, Azure Data Factory does offer some unique benefits:
 - **No-code platform** - ADF offers an intuitive drag-and-drop UI which makes it easy for domain experts to build their own data flows - no programming knowledge required.
-- **Scalability** - This orchestration tool lives in the cloud, and can leverage all cloud technologies you can think of to scale seamlessly and limitelessly. 
+- **Scalability** - This orchestration tool lives in the cloud, and can leverage all cloud technologies you can think of to scale seamlessly and limitelessly.
 - **Security and Compliance** - ADF is built with strong security and compliance measures in mind and adheres to Azure's security standards and regulations. It will be a perfectly suitable solution for organizations with strict data security requirements.
 - **Great Azure ecosystem integration** - If your organization relies heavily on Azure services, ADF will work and integrate with these like a charm. You have seamless integration with Azure data sources, which reduces data movement complexities.
 
@@ -117,7 +117,7 @@ However, there are more than a few cons you need to be aware of:
 
 Prefect has a lot of things going for it, including:
 - **Dynamic workflows** - Parametrization in Prefect allows you to implement dynamic workflows, or workflows that adapt to changing conditions or data. This allows Prefect to be among the most flexible orchestration tools available.
-- **Scalability** - You can easily parallelize flow executions with Kubernetes, which makes Prefect easy to scale with an increased number of data flows or larger volumes of data. 
+- **Scalability** - You can easily parallelize flow executions with Kubernetes, which makes Prefect easy to scale with an increased number of data flows or larger volumes of data.
 - **Prefect API** - You can orchestrate data workflows through the API, which makes custom integrations feasible. It's not on the same level as other orchestration tools such as Kestra, but it's on the right track.
 - **Tasks as functions** - If you have experience with Python, you can decorate your Python functions to turn them into a task.
 

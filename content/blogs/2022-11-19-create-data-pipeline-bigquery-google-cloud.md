@@ -152,7 +152,7 @@ Inputs for flow execution in Kestra can be provided either via the UI or when ex
 
 ```yaml
 inputs:
-  - name: destinationFile
+  - id: destinationFile
     type: STRING
     required: true
 ```

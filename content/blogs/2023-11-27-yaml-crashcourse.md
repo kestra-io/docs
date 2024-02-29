@@ -132,7 +132,7 @@ id: boolean_test
 namespace: dev
 
 inputs:
-  - name: mybool
+  - id: mybool
     type: BOOLEAN
     defaults: yes # true, on
 
@@ -166,43 +166,43 @@ id: explicit_data_types
 namespace: dev
 
 inputs:
-  - name: mybool
+  - id: mybool
     type: BOOLEAN
     defaults: true
 
-  - name: mybool_explicit
+  - id: mybool_explicit
     type: BOOLEAN
     defaults: !!bool true
 
-  - name: myint
+  - id: myint
     type: INT
     defaults: 42
 
-  - name: myint_explicit
+  - id: myint_explicit
     type: INT
     defaults: !!int 42
 
-  - name: myfloat
+  - id: myfloat
     type: FLOAT
     defaults: 42.2
 
-  - name: myfloat_explicit
+  - id: myfloat_explicit
     type: FLOAT
     defaults: !!float 42.2
 
-  - name: mystring
+  - id: mystring
     type: STRING
     defaults: hello
 
-  - name: mystring_explicit
+  - id: mystring_explicit
     type: STRING
     defaults: !!str hello
 
-  - name: mydatetime
+  - id: mydatetime
     type: DATETIME
     defaults: 2024-04-24T02:42:00+02:00
 
-  - name: mydatetime_explicit
+  - id: mydatetime_explicit
     type: DATETIME
     defaults: !!timestamp 2024-04-24T02:42:00+02:00
 
@@ -355,11 +355,11 @@ labels:
 
 # example of a list of maps
 inputs:
-  - name: user
+  - id: user
     type: STRING
     defaults: Rick Astley
 
-  - name: api_url
+  - id: api_url
     type: STRING
     defaults: https://dummyjson.com/products
 

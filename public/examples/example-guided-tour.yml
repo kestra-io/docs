@@ -7,7 +7,7 @@ description: Welcome to Kestra!
 # Flow inputs: each input has a name, a type, and an optional default value.
 inputs:
   # We define one input of name 'user' with a default value 'Kestra user'
-  - name: user
+  - id: user
     type: STRING
     defaults: Kestra user
 

@@ -20,7 +20,7 @@ namespace: io.kestra.tests
 revision: 1
 
 inputs:
-  - name: fromParent
+  - id: fromParent
     type: STRING
 
 tasks:
