@@ -53,7 +53,7 @@
             color: $white;
             h1 {
                 font-size: $font-size-4xl;
-                font-weight: 300;
+                font-weight: 400;
 
                 span {
                     background: linear-gradient(90deg, #E151F7 56.37%, #5C47F5 64.15%);

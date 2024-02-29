@@ -42,7 +42,7 @@
         font-size: $font-size-xl;
     }
     .title{
-        font-weight: 300;
+        font-weight: 400;
         font-size: 3.75rem;
         margin:0;
         &-1{

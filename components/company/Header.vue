@@ -49,7 +49,7 @@
             h2 {
                 color: $white;
                 font-size: $font-size-4xl;
-                font-weight: 300;
+                font-weight: 400;
                 max-width: 45%;
                 margin: 0 auto;
 

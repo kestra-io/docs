@@ -116,7 +116,7 @@ h3 {
 
     &-heading {
         font-size: $font-size-xl;
-        font-weight: 300;
+        font-weight: 400;
         line-height: 2rem;
     }
 
