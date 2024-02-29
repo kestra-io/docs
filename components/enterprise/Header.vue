@@ -34,7 +34,7 @@
 
             h1 {
                 font-size: $font-size-4xl;
-                font-weight: 300;
+                font-weight: 400;
                 margin-bottom: 2rem;
                 padding: 0;
 

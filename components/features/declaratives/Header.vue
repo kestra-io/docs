@@ -39,7 +39,7 @@
             h1 {
                 color: $white;
                 font-size: $font-size-4xl;
-                font-weight: 300;
+                font-weight: 400;
                 padding-bottom: 0;
                 margin-bottom: 16px;
 

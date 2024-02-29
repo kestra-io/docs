@@ -46,7 +46,7 @@
         }
 
         h1, p {
-            font-weight: 300;
+            font-weight: 400;
             padding-bottom: 0;
             margin-bottom: 1rem;
         }

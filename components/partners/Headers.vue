@@ -34,7 +34,7 @@
             h2 {
                 color: $white;
                 font-size: $font-size-4xl;
-                font-weight: 300;
+                font-weight: 400;
                 margin-bottom: 1rem;
 
                 span {

@@ -212,7 +212,7 @@ import Section from '../layout/Section.vue';
     }
 
     .title {
-        font-weight: 300;
+        font-weight: 400;
         font-size: $font-size-4xl;
         line-height: 3.75rem;
 
