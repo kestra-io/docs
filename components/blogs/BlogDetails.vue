@@ -45,7 +45,7 @@ export default {
     .blog-details {
         margin-left: 2rem !important;
         margin-right: 2rem !important;
-        padding-top: 1rem;
+        padding-top: 4rem;
     }
 
     p {

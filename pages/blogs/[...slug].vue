@@ -192,7 +192,7 @@
     }
 
     .bd-title {
-        margin-top: calc($spacer * 4.5);
+        margin-top: calc($spacer * 4);
     }
 
     .bd-content{

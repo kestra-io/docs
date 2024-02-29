@@ -32,7 +32,7 @@
                 </div>
             </template>
 
-            <div class="d-none d-lg-block pt-4 bd-social-list">
+            <div class="d-none d-lg-block bd-social-list">
                 <CommonSocialsList :page="page" />
             </div>
         </div>
@@ -209,6 +209,9 @@
         @include media-breakpoint-up(lg) {
             display: block !important; // stylelint-disable-line declaration-no-important
         }
+    }
+    .bd-social-list {
+        padding-top: 4rem;
     }
     .bd-social-list, .bd-toc-collapse {
         background-color: $black-4;

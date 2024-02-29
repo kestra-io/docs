@@ -158,18 +158,21 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/_variable.scss";
 
+    :deep(.accordion-button) {
+        > .material-design-icon__svg {
+            fill: $black-10;
+        }
+    }
     .accordion-collapse {
+        @include media-breakpoint-up(xxl) {
+            margin-left: 3rem;
+        }
         li {
             display: flex;
             align-items: center;
 
             .accordion-button {
                 width: 16px;
-
-                .material-design-icon__svg {
-                    bottom: 0;
-                    color: $black-10;
-                }
             }
 
             @for $i from 0 through 6 {
