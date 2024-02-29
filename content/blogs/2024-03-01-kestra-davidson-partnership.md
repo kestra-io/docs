@@ -29,6 +29,8 @@ We're thrilled to have Davidson on board as our partner! Davidson's approach is 
 ### Davidson's Commitment to Excellence
 Davidson’s expertise supercharges Kestra’s platform. In less than 60 days, we were impressed by their capacities to enable an entire department at full speed, leading to commercial discussions with multiple industry leaders and 18 certified consultants! And that’s only the beginning…
 
+![certified](blogs/2024-03-01-kestra-davidson-partnership/certified.png)
+
 ### A Synergistic Partnership
 Our Engineering teams collaborated for weeks on readily available solutions for advanced automation needs. Meanwhile, our Sales teams aligned on a comprehensive delivery approach covering everything from single technical assistance to structured Proof of Concepts. This combined effort, already battletested with a couple of customers, empowers companies to implement robust, collaborative orchestration solutions efficiently.
 
