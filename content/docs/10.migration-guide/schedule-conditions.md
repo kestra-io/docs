@@ -71,12 +71,24 @@ id: beverage_order
 namespace: dev
 
 inputs:
-  - name: beverage
+  - id: beverage
     type: STRING
     defaults: coffee
 
 tasks:
-  - id: ... (the same tasks as before)
+  - id: order_beverage
+    type: io.kestra.plugin.fs.http.Request
+    uri: https://reqres.in/api/products
+    method: POST
+    contentType: application/json
+    formData:
+      beverage: "{{inputs.beverage}}"
+
+  - id: set_labels
+    type: io.kestra.core.tasks.executions.Labels
+    labels:
+      date: "{{trigger.date ?? execution.startDate | date('yyyy-MM-dd')}}"
+      beverage: "{{inputs.beverage}}"
 
 triggers:
   - id: workday
