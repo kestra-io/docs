@@ -32,7 +32,7 @@
     h6 {
         color: $white;
         font-size: $font-size-md;
-        font-weight: 300;
+        font-weight: 400;
     }
 
     span {
