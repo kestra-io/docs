@@ -37,7 +37,7 @@
 .container {
     :deep(section h2), h3 {
         font-size: 3.125rem;
-        font-weight: 300;
+        font-weight: 400;
     }
     p {
         color: $white;
