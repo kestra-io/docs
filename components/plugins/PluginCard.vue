@@ -42,8 +42,8 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            font-size: $font-size-xs;
-            font-weight: 700;
+            font-size: $font-size-md;
+            font-weight: 400;
             margin-bottom: 0;
         }
     }
