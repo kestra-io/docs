@@ -14,11 +14,14 @@ Here are the available retry configuration options:
 - `kestra.retries.max-delay`: the max amount of time to retry (default `undefined`)
 - `kestra.retries.multiplier`: the multiplier of `delay` between each attempt (default `2.0`)
 
-Note that those retries are only applied to API calls made to internal storage (like S3 or GCS) and to secrets managers (like Vault or AWS Secrets Manager). They are not applied to tasks. In order to globally configure retries for tasks, you can use the task defaults with a global scope tied to the main `io.kestra` plugin path as follows:
+::alert{type="warning"}
+Note that those retries are only applied to API calls made to internal storage (like S3 or GCS) and to secrets managers (like Vault or AWS Secrets Manager). They are not applied to tasks.
+::
+
+In order to globally configure retries for tasks, you can use the [task defaults](../06.workflow-components/09.task-defaults.md) with a global scope tied to the main `io.kestra` plugin path as follows:
 
 ```yaml
 - type: io.kestra
-  retries:
   retry:
     type: constant # type: string
     interval: PT5M # type: Duration

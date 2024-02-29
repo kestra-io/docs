@@ -45,7 +45,7 @@ By default, the `outputs` property of a parent flow's `Subflow` task is deprecat
 
 ## Plugin configurations to set default values
 
-You can also set default values for a plugin. For example, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE` to avoid recovering missed scheduled executions after a server restart:
+You can also set default values for a plugin. For example, starting from Kestra 0.15.0, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE` to avoid recovering missed scheduled executions after a server restart:
 
 ```yaml
 kestra:
@@ -53,6 +53,25 @@ kestra:
     configurations:
       - type: io.kestra.core.models.triggers.types.Schedule
         values:
-          # available options: LAST | NONE | ALL -- default: ALL
+          # Available options: LAST | NONE | ALL. The default is ALL
           recoverMissedSchedules: NONE
 ```
+
+Before 0.15, Kestra was always recovering missed schedules. This means that if your server was down for a few hours, Kestra would recover all missed schedules when it was back up. This behavior was not always desirable, as often the recovery of missed schedules is not necessary e.g. during a planned maintenance window. This is why, starting from Kestra 0.15 release, you can customize the `recoverMissedSchedules` property and choose whether you want to recover missed schedules or not.
+
+The `recoverMissedSchedules` configuration can be set to `ALL`, `NONE` or `LAST`:
+- `ALL`: Kestra will recover all missed schedules. This is the default value.
+- `NONE`: Kestra will not recover any missed schedules.
+- `LAST`: Kestra will recover only the last missed schedule for each flow.
+
+Note that this is a global configuration that will apply to all flows, unless explicitly overwritten within the flow definition:
+
+```yaml
+triggers:
+  - id: schedule
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "*/15 * * * *"
+    recoverMissedSchedules: NONE
+```
+
+In this example, the `recoverMissedSchedules` is set to `NONE`, which means that Kestra will not recover any missed schedules for this specific flow regardless of the global configuration.
