@@ -1,5 +1,5 @@
 <template>
-    <div class="container bd-gutter bd-layout margin">
+    <div class="container-fluid bd-gutter bd-layout">
         <NavSideBar :type="type" :navigation="navigation"/>
         <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
             <ContentRenderer :value="page">
@@ -129,9 +129,25 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .container {
-        max-width: 1500px;
-
+    .container-fluid {
+        gap: calc($spacer * 4);
+        .bd-title {
+            margin-top: calc($spacer * 4);
+            h1 {
+                max-width: 945px;
+                margin-left: 0;
+            }
+        }
+        .bd-main {
+            gap: calc($spacer * 2) $spacer;
+            @include media-breakpoint-down(sm) {
+                gap: calc($spacer * 2) calc($spacer * 7);
+            }
+        }
+        .bd-content {
+            max-width: 945px;
+            margin-left: 0;
+        }
         .title {
             font-size: 2.375rem;
             font-weight: 600;
@@ -149,7 +165,6 @@
     }
 
     :deep(h2 > a) {
-        font-size: 1.5rem;
         font-weight: 600;
         line-height: 2.375;
         margin: 0;

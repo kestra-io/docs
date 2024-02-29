@@ -1,39 +1,40 @@
 <template>
-    <div id="nav-toc-global" class="bd-toc mb-4">
+    <div id="nav-toc-global" class="bd-toc position-relative d-lg-flex justify-content-end">
+        <div>
+            <template v-if="generated.length > 0" class="bd-contents-list">
+                <button
+                    class="btn d-lg-none"
+                    :class="tableOfContentsExpanded = !tableOfContentsExpanded ? '' : 'collapsed'"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#tocContents"
+                    :aria-expanded="tableOfContentsExpanded"
+                    aria-controls="tocContents"
+                    @click="tableOfContentsExpanded = !tableOfContentsExpanded"
+                >
+                    Table of Contents
+                    <ChevronUp v-if="tableOfContentsExpanded"/>
+                    <ChevronDown v-else/>
+                </button>
 
-        <template v-if="generated.length > 0">
-            <button
-                class="btn d-lg-none"
-                :class="tableOfContentsExpanded = !tableOfContentsExpanded ? '' : 'collapsed'"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#tocContents"
-                :aria-expanded="tableOfContentsExpanded"
-                aria-controls="tocContents"
-                @click="tableOfContentsExpanded = !tableOfContentsExpanded"
-            >
-                Table of Contents
-                <ChevronUp v-if="tableOfContentsExpanded"/>
-                <ChevronDown v-else/>
-            </button>
+                <div class="collapse bd-toc-collapse" id="tocContents">
+                    <slot name="header"></slot>
+                    <strong class="d-none d-lg-block h6 my-2">Table of Contents</strong>
+                    <nav id="nav-toc">
+                        <ul class="pt-3">
+                            <template v-for="item in generated" >
+                                <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" class="mb-3">
+                                    <a :href="'#' + item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
+                                </li>
+                            </template>
+                        </ul>
+                    </nav>
+                </div>
+            </template>
 
-            <div class="collapse bd-toc-collapse" id="tocContents">
-                <slot name="header"></slot>
-                <strong class="d-none d-lg-block h6 my-2 ms-3">Table of Contents</strong>
-                <nav id="nav-toc">
-                    <ul>
-                        <template v-for="item in generated" >
-                            <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" class="mt-3">
-                                <a :href="'#' + item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
-                            </li>
-                        </template>
-                    </ul>
-                </nav>
+            <div class="d-none d-lg-block pt-4 bd-social-list">
+                <CommonSocialsList :page="page" />
             </div>
-        </template>
-
-        <div class="d-none d-lg-block pt-4 bd-social-list">
-            <CommonSocialsList :page="page" />
         </div>
     </div>
 </template>
@@ -90,11 +91,19 @@
     .bd-toc {
         transition: all ease 0.2s;
         transform: translateX(0);
+        > div {
+
+            @include media-breakpoint-up(lg) {
+                max-width: 308px;
+                width: 100%;
+                height: 100%;
+                border-left: 1px solid $black-6;
+
+            }
+        }
         @include media-breakpoint-up(lg) {
             position: sticky;
-            top: 7rem;
-            height: fit-content;
-            max-height: subtract(100vh, 9rem);
+            top: 0;
             right: 0;
             z-index: 2;
         }
@@ -104,12 +113,12 @@
             font-weight: 900;
             font-size: $font-size-sm;
             background-color: $black-4;
-            &.collapsed {
-                border-radius: 8px 8px 0 0;
-            }
         }
 
         nav {
+            padding-bottom: calc($spacer * 1.165);
+            padding-left: calc($spacer * 1.165);
+            border-bottom: 1px solid $black-6;
             @include font-size(.875rem);
             ul {
                 padding-left: .75rem;
@@ -120,6 +129,7 @@
                         border-left: .125rem solid var(--bs-gray-200);
                         padding-left: 0.75rem;
                         color: $white-1;
+                        font-weight: 300;
 
                         @for $i from 2 through 6 {
                             &.depth-#{$i} {
@@ -164,23 +174,31 @@
 
     .btn {
         border: 1px solid $black-6;
+        border-radius: 8px;
         text-align: center;
         width: 100%;
         display: inline-block;
-        background: var(--bs-gray-100);
+        background: $black-4;
         color: var(--bs-gray-500);
         font-size: $font-size-sm;
+        &.collapsed {
+            border-radius: 8px 8px 0 0;
+        }
 
         &:hover,
         &:focus,
         &:active,
         &[aria-expanded="true"] {
-            background: var(--bs-gray-100);
-            color: var(--bs-gray-500);
+            background: $black-4;
+            color: $white;
+            font-size: 16px;
         }
     }
 
     .bd-toc-collapse {
+        strong {
+            margin-left: calc($spacer * 2);
+        }
         @include media-breakpoint-down(lg) {
             nav {
                 padding-bottom: $spacer;
@@ -192,12 +210,14 @@
             display: block !important; // stylelint-disable-line declaration-no-important
         }
     }
-
     .bd-social-list, .bd-toc-collapse {
-        border: 1px solid $black-6;
-        border-top: unset;
-        border-radius: 0 0 8px 8px;
         background-color: $black-4;
+
+        @include media-breakpoint-down(lg) {
+            border-top-width: 0 !important;
+            border: 1px solid $black-6;
+            border-radius: 0 0 8px 8px;
+        }
         ul, :deep(ul) {
             padding-left: 0 !important;
             li {
