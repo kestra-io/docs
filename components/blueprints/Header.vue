@@ -123,7 +123,7 @@
         h2 {
             color: $white;
             font-size: $h2-font-size;
-            font-weight: 300;
+            font-weight: 400;
         }
 
         .card {

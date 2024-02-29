@@ -83,7 +83,7 @@
                 font-family: $font-family-sans-serif;
                 font-size: calc($font-size-base * 3.125);
                 font-style: normal;
-                font-weight: 300;
+                font-weight: 400;
                 line-height: calc($spacer * 3.125);
 
                 @include media-breakpoint-down(sm) {
@@ -111,7 +111,7 @@
 
         h2 {
             text-align: center;
-            font-weight: 800;
+            font-weight: 400;
             margin-bottom: 0;
         }
 
