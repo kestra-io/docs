@@ -69,14 +69,14 @@
             color: $white-1;
             font-family: $font-family-monospace;
             font-size: $font-size-xs;
-            font-weight: 700;
+            font-weight: 400;
             text-transform: uppercase;
         }
 
         .description {
             color: $white;
             font-size: $h6-font-size;
-            font-weight: 700;
+            font-weight: 400;
         }
 
         .icon {
