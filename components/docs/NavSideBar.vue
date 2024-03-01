@@ -2,7 +2,7 @@
     <aside class="bd-sidebar scroller">
         <div class="mb-4">
             <button
-                class="btn d-lg-none"
+                class="btn d-lg-none mt-2"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#docs-menu"

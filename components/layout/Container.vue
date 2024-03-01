@@ -8,7 +8,7 @@
                     <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title "></h1>
                 </div>
 
-                <NavToc :page="page"/>
+                <NavToc :page="page" class="my-md-0 my-4" />
 
                 <div class="bd-content">
                     <ContentRendererMarkdown
@@ -133,6 +133,9 @@
         gap: calc($spacer * 4);
         .bd-title {
             margin-top: calc($spacer * 4);
+            @include media-breakpoint-down(lg) {
+                margin-top: calc($spacer * 1);
+            }
             h1 {
                 max-width: 945px;
                 margin-left: 0;
