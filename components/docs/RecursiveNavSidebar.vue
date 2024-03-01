@@ -175,7 +175,7 @@
             @for $i from 0 through 6 {
                 &.depth-#{$i} {
                     a {
-                        padding-left: calc(.75rem * ($i));
+                        padding-left: calc(.5rem * ($i));
                     }
                 }
             }

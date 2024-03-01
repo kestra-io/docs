@@ -21,7 +21,7 @@
                     <slot name="header"></slot>
                     <strong class="d-none d-lg-block h6 my-2">Table of Contents</strong>
                     <nav id="nav-toc">
-                        <ul class="pt-3">
+                        <ul class="ps-0 pt-2 pt-lg-0">
                             <template v-for="item in generated" >
                                 <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" class="mb-3">
                                     <a :href="'#' + item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
@@ -117,11 +117,9 @@
 
         nav {
             padding-bottom: calc($spacer * 1.165);
-            padding-left: calc($spacer * 1.165);
             border-bottom: 1px solid $black-6;
             @include font-size(.875rem);
             ul {
-                padding-left: .75rem;
                 margin-bottom: 0;
                 list-style: none;
                 li {
@@ -133,7 +131,7 @@
 
                         @for $i from 2 through 6 {
                             &.depth-#{$i} {
-                                padding-left: calc(.75rem * ($i - 2) +  0.75rem);
+                                padding-left: calc(0.5rem * ($i - 2) +  2rem);
                             }
                         }
 
@@ -219,11 +217,9 @@
             border-radius: 0 0 8px 8px;
         }
         ul, :deep(ul) {
-            padding-left: 0 !important;
             li {
                 a {
                     border-left: 0 !important;
-                    padding-left: 2rem !important;
 
                     &:hover {
                         color: $purple-36 !important;

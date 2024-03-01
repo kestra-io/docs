@@ -67,19 +67,13 @@
         line-height: 1.188rem;
 
         ul {
-            padding-left: 0.75rem;
+            padding-left: 0;
             margin-bottom: 0;
             list-style: none;
 
             li {
                 a {
-                    padding-left: 0.75rem;
-
-                    @for $i from 2 through 6 {
-                        &.depth-#{$i} {
-                            padding-left: calc(0.75rem * ($i - 2) + 0.75rem);
-                        }
-                    }
+                    padding-left: 2rem;
 
                     &:hover,
                     &.active {
