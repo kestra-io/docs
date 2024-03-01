@@ -1,7 +1,7 @@
 <template>
     <div ref="container" class="container mb-4">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 p-0">
                 <div class="companies-container">
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
