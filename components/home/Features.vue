@@ -2,28 +2,28 @@
     <div class="container">
         <Section subtitle="Simplicity scales, complexity" subtitle-after="fails">
             <div class="row card-group mb-2">
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4">
                     <Card
                         :icon="CalculatorVariant"
                         title="Declarative workflow creation"
                     />
                 </div>
 
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4">
                     <Card
                         :icon="Lan"
                         title="Scalable multitenant architecture"
                     />
                 </div>
 
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4">
                     <Card
                         :icon="Hubspot"
                         title="Run anywhere, code in any language in built-in Editor"
                     />
                 </div>
 
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4">
                     <Card
                         :icon="LightningBolt"
                         title="Fast development cycles, simple deployments"
@@ -31,14 +31,14 @@
                     </Card>
                 </div>
 
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4">
                     <Card
                         :icon="RefreshAuto"
                         title="API-first design with a rich plugin ecosystem"
                     />
                 </div>
 
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 col-lg-4 mb-4">
                     <Card
                         :icon="ImageFilterDrama"
                         title="Deploy anywhere with no single point of failure"
@@ -88,5 +88,23 @@
                 }
             }
         }
+        :deep(.card) {
+            padding: 1.625rem 1rem;
+            min-height: 112px;
+            height: unset;
+            .card-title {
+
+            }
+            @include media-breakpoint-down(xxl) {
+                padding: 1rem;
+                height: 100%;
+            }
+            @include media-breakpoint-down(lg) {
+                padding: 1rem;
+                height: unset;
+                min-height: unset;
+            }
+        }
+
     }
 </style>
