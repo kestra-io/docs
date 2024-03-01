@@ -1,7 +1,8 @@
 <template>
     <div class="card mb-3 bg-dark-2">
         <div class="card-body d-flex flex-column justify-content-between">
-            <p>
+            <span class="card-quote">“</span>
+            <p class="mt-3">
                 {{ item.message }}
             </p>
             <div class="footer">
@@ -29,11 +30,25 @@
     @import "../../assets/styles/variable";
     .card {
         border: $block-border;
-        height: calc($spacer * 16.188);
-        max-height: calc($spacer * 16.188);
+        height: calc($spacer * 18.617);
+        max-height: calc($spacer * 18.617);
+        @include media-breakpoint-down(xl) {
+            height: calc($spacer * 22);
+            max-height: calc($spacer * 22);
+        }
+        @include media-breakpoint-down(md) {
+            height: calc($spacer * 20);
+            max-height: calc($spacer * 20);
+        }
         .card-body {
             padding: $rem-2;
             text-align: left;
+            .card-quote {
+                color: $purple-35;
+                font-size: calc($font-size-base * 4.625);
+                line-height: calc($spacer * 3.75);;
+                height: 22px;
+            }
             p, .footer a {
                 color: $white-6 !important;
             }
