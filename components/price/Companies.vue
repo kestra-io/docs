@@ -1,9 +1,9 @@
 <template>
     <div ref="container" class="container pb-5">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 p-0">
                 <div class="companies-container">
-                    <div class="companies companies-list scrolling">
+                    <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
                             <img
                                 data-aos="fade-up"
@@ -14,7 +14,7 @@
                             />
                         </template>
                     </div>
-                    <div class="companies companies-list scrolling">
+                    <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
                             <img
                                 data-aos="fade-up"
@@ -25,7 +25,7 @@
                             />
                         </template>
                     </div>
-                    <div class="companies companies-list scrolling">
+                    <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
                             <img
                                 data-aos="fade-up"
@@ -36,7 +36,7 @@
                             />
                         </template>
                     </div>
-                    <div class="companies companies-list scrolling">
+                    <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
                             <img
                                 data-aos="fade-up"
@@ -63,26 +63,26 @@
       }
     },
     computed: {
-        companies() {
-            return [
-                "acxiom",
-                "fortinet",
-                "bouygues-immobilier",
-                "leroymerlin",
-                "experian",
-                "sophia-genetics",
-                "cleverconnect",
-                "tencent",
-                "gorgias",
-                "jcdecaux",
-                "aimtec",
-                "hcl",
-                "clever-cloud",
-                "quadis",
-                "huawei",
-            ]
-                .sort(() => .5 - Math.random())
-        },
+      companies() {
+        return [
+          "acxiom",
+          "fortinet",
+          "bouygues-immobilier",
+          "leroymerlin",
+          "experian",
+          "sophia-genetics",
+          "cleverconnect",
+          "tencent",
+          "gorgias",
+          "jcdecaux",
+          "aimtec",
+          "hcl",
+          "clever-cloud",
+          "quadis",
+          "huawei",
+        ]
+          .sort(() => .5 - Math.random())
+      },
     }
   });
 </script>
@@ -99,10 +99,8 @@
         }
     }
     .container {
-        text-align: center;
         border-top: $container-border;
         border-bottom: $container-border;
-        max-width: unset;
         .companies-container {
             width: 100%;
             grid-column-gap: 2rem;
