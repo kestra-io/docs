@@ -5,7 +5,7 @@
             subtitle-after="At Any Scale"
         >
             <div class="item workflow-1 row pb-5">
-                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 position-relative">
+                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-1">
                         <HomeConnectionLine :lineN="1" :strokeDasharray="strokeDasharray1"/>
                     </div>
@@ -14,12 +14,18 @@
                         By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
                     </p>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 code-container">
                     <div class="code">
                         <div class="code-header">
                             <img src="/landing/3dot-home.svg" alt="code">
                         </div>
                         <div class="code-content" ref="codeContainer">
+                            <div class="copied-block">
+                                <div ref="copyTooltip" v-if="!!copyIconResetTimer" id="copied-tooltip" role="tooltip">
+                                    Copied!
+                                    <div id="arrow" data-popper-arrow></div>
+                                </div>
+                            </div>
                             <button class="btn content-copy-icon p-0" ref="copyBtn" @click="copyCodeContext" data-toggle="tooltip"  data-placement="top" :title="copyCodeText">
                                 <img src="/landing/content_copy.svg" alt="content_copy">
                             </button>
@@ -69,7 +75,7 @@
                 <div class="col-md-6 order-1 order-md-0">
                     <img class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
                 </div>
-                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative">
+                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-2">
                         <HomeConnectionLine :lineN="2" :strokeDasharray="strokeDasharray2"/>
                     </div>
@@ -79,7 +85,7 @@
             </div>
 
             <div class="item workflow-3 row mb-s mb-2 mb-md-5">
-                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 position-relative">
+                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-3">
                         <HomeConnectionLine :lineN="3" :strokeDasharray="strokeDasharray3"/>
                     </div>
@@ -95,7 +101,7 @@
                 <div class="col-md-6 order-1 order-md-0">
                     <img class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
                 </div>
-                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative">
+                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-4">
                         <HomeConnectionLine :lineN="4" :strokeDasharray="strokeDasharray4"/>
                     </div>
@@ -107,7 +113,7 @@
             </div>
 
             <div class="item workflow-5 row mb-5">
-                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 position-relative">
+                <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-5">
                         <HomeConnectionLine :lineN="5" :strokeDasharray="strokeDasharray5"/>
                     </div>
@@ -152,7 +158,8 @@
                 strokeDasharray5: 1,
                 strokeDasharray6: 1,
                 output: `"{{ outputs.python.outputFiles['products.csv'] }}"`,
-                copyCodeText: "Copy to clipboard"
+                copyCodeText: "Copy to clipboard",
+               copyIconResetTimer: undefined,
             };
         },
         methods: {
@@ -180,10 +187,9 @@
               copyTextArea.select();
               document.execCommand('copy');
               document.body.removeChild(copyTextArea);
-              this.copyCodeText = "Copied!";
-              setTimeout(() => {
-                this.copyCodeText = "Copy to clipboard";
-              }, 1000);
+              this.copyIconResetTimer = setTimeout(() => {
+                this.copyIconResetTimer = undefined;
+              }, 2000)
            }
         },
         mounted() {
@@ -269,23 +275,32 @@
                     }
 
                     &-1 {
-                        top: -33%;
-                        left: 30.5%;
+                        top: -27%;
+                        left: -5%;
 
+                        :deep(svg) {
+                            width: calc($spacer * 40);
+                            height: calc($spacer * 15);
+                        }
 
                         @include media-breakpoint-down(xxl) {
-                            top: -35%;
-                            left: 16%;
+                            top: -29%;
+                            left: -20.5%;
                         }
 
                         @include media-breakpoint-down(xl) {
-                            top: -30%;;
-                            left: 12%;
+                            top: -23%;
+                            left: -21.5%;
                         }
 
                         @include media-breakpoint-down(lg) {
-                            top: -35%;
-                            left: 40%;
+                            top: -25%;
+                            left: 16.5%;
+
+                            :deep(svg) {
+                                width: calc($spacer * 15);
+                                height: calc($spacer * 9);
+                            }
                         }
 
                         @include media-breakpoint-down(md) {
@@ -293,24 +308,27 @@
                         }
                     }
                     &-2 {
-                        bottom: 91%;
-                        right: 63%;
+                        bottom: 73%;
+                        right: 66.5%;
 
                         @include media-breakpoint-down(xxl) {
-                            top: -78%;
-                            left: -81%;
+                            top: -68%;
+                            left: -81.5%;
                         }
 
                         @include media-breakpoint-down(xl) {
-                            top: -97%;
-                            left: -84%;
+                            top: -105%;
+                            left: -75.5%;
+                            :deep(svg) {
+                                width: calc($spacer * 35);
+                            }
                         }
 
                         @include media-breakpoint-down(lg) {
-                            top: -89%;
-                            left: -55%;
+                            top: -95%;
+                            left: -67%;
                             :deep(svg) {
-                                width: calc($spacer * 27.813);
+                                width: calc($spacer * 25);
                             }
                         }
 
@@ -320,31 +338,31 @@
                     }
 
                     &-3 {
-                        top: -60%;
-                        left: 31%;
+                        top: -36%;
+                        left: 27.5%;
 
                         @include media-breakpoint-down(xxl) {
-                            top: -67%;
-                            left: 30%;
+                            top: -46%;
+                            left: 31%;
                             :deep(svg) {
                                 width: calc($spacer * 37.5);
                             }
                         }
 
                         @include media-breakpoint-down(xl) {
-                            top: -68%;
-                            left: 53%;
+                            top: -55%;
+                            left: 28%;
                             :deep(svg) {
-                                width: calc($spacer * 31.875);
+                                width: calc($spacer * 33);
                             }
 
                         }
 
                         @include media-breakpoint-down(lg) {
-                            top: -83%;
-                            left: 50%;
+                            top: -80%;
+                            left: 17%;
                             :deep(svg) {
-                                width: calc($spacer * 25.938);
+                                width: calc($spacer * 28);
                             }
                         }
 
@@ -354,28 +372,31 @@
                     }
 
                     &-4 {
-                        top: -200%;
-                        left: -66%;
+                        top: -137%;
+                        left: -70%;
+                        :deep(svg) {
+                            height: calc($spacer * 29);
+                        }
 
                         @include media-breakpoint-down(xxl) {
-                            top: -162%;
-                            left: -68%;
+                            top: -123%;
+                            left: -66.5%;
                             :deep(svg) {
-                                width: calc($spacer * 31.875);
+                                width: calc($spacer * 35);
                             }
                         }
 
                         @include media-breakpoint-down(xl) {
-                            top: -135%;
-                            left: -44.5%;
+                            top: -106%;
+                            left: -69%;
                             :deep(svg) {
-                                width: calc($spacer * 25.625);
+                                width: calc($spacer * 33);
                             }
                         }
 
                         @include media-breakpoint-down(lg) {
-                            left: -47%;
-                            top: -159%;
+                            left: -80%;
+                            top: -123%;
                         }
 
                         @include media-breakpoint-down(md) {
@@ -384,12 +405,12 @@
                     }
 
                     &-5 {
-                        top: -57%;
-                        left: 27.5%;
+                        top: -48%;
+                        left: 39%;
 
                         @include media-breakpoint-down(xxl) {
-                            top: -58%;
-                            left: 26.5%;
+                            top: -52%;
+                            left: 37%;
                             :deep(svg) {
                                 width: calc($spacer * 33.125);
                             }
@@ -405,7 +426,7 @@
 
                         @include media-breakpoint-down(lg) {
                             top: -78%;
-                            left: 37%;
+                            left: 36%;
                         }
 
                         @include media-breakpoint-down(md) {
@@ -486,28 +507,31 @@
             }
             .connection-line-6 {
                 position: absolute;
-                top: -223%;
-                left: -5%;
+                top: -194%;
+                left: -1%;
+                :deep(svg) {
+                    height: calc($spacer * 22);
+                }
 
                 @include media-breakpoint-down(xxl) {
-                    top: -185%;
-                    left: -6.2%;
+                    top: -190%;
+                    left: 1.8%;
                     :deep(svg) {
-                        width: calc($spacer * 24.688);
+                        width: calc($spacer * 20.688);
                     }
                 }
 
                 @include media-breakpoint-down(xl) {
-                    top: -154%;
-                    left: 7.2%;
+                    top: -150%;
+                    left: 6.2%;
                     :deep(svg) {
                         width: calc($spacer * 15.625);
                     }
                 }
 
                 @include media-breakpoint-down(lg) {
-                    top: -133%;
-                    left: 2%;
+                    top: -146%;
+                    left: 1%;
                     :deep(svg) {
                         width: calc($spacer * 12.875);
                     }
@@ -540,6 +564,32 @@
         }
     }
 
+    .code-container {
+        position: relative;
+        z-index: 10;
+
+        &::before,
+        &::after
+        {
+            content: "";
+            position: absolute;
+            width: calc($spacer * 12.5);
+            height: calc($spacer * 12.5);
+            background: linear-gradient(140deg, rgba(70, 24, 255, 0) -41.95%, #7e1cfa 77.28%);
+            filter: blur(100px);
+            z-index: -5;
+        }
+
+        &::before {
+            left: -4rem;
+            top: 3rem;
+        }
+
+        &::after {
+            right: -1rem;
+            bottom: 0;
+        }
+    }
     .code {
         position: relative;
         overflow: hidden;
@@ -573,9 +623,44 @@
                 padding: calc($spacer * 2) $spacer;
             }
 
+            .copied-block {
+                position: absolute;
+                right: calc($spacer * 2.938);
+                top: $spacer;
+
+                #copied-tooltip {
+                    border-radius: $border-radius;
+                    background: #5A3ABC;
+                    padding:  calc($spacer * 0.6) 0;
+                    font-size: calc($font-size-base * 0.625);
+                    margin-right: $popper-margin !important;
+                    color: $white;
+
+                    #arrow,
+                    #arrow::before {
+                        position: absolute;
+                        width: calc($spacer * 0.5);
+                        height: calc($spacer * 0.5);
+                        background: inherit;
+                    }
+
+                    #arrow {
+                        visibility: hidden;
+                        visibility: hidden;
+                        right: 0;
+                        top: calc($spacer * 0.813);
+                    }
+
+                    #arrow::before {
+                        visibility: visible;
+                        content: '';
+                        transform: rotate(45deg);
+                    }
+                }
+            }
             .content-copy-icon {
                 position: absolute;
-                top: calc($spacer * 1.25);
+                top: $spacer;
                 right: calc($spacer * 1.25);
                 cursor: pointer;
             }
