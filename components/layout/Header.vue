@@ -391,17 +391,26 @@ export default {
             }
         },
 
+        toggleBackdropScroll(enabled) {
+            document.body.style.overflow = enabled ? '' : 'hidden';
+        },
+
         globalClick(close) {
             if (close) {
-                if (this.$refs.navbar.classList.contains("open")) {
+                if (this.$refs.navbar?.classList.contains("open")) {
                     this.collapse.hide();
                     this.isOpen = false;
+
+                    this.toggleBackdropScroll(true)
                 }
             } else {
                 this.collapse.toggle();
                 this.isOpen = !this.isOpen;
+
+                this.toggleBackdropScroll(false)
             }
         },
+
         logoClick() {
             if (this.$route.path === "/") {
                 window.scrollTo({
