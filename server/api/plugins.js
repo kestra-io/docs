@@ -78,7 +78,18 @@ export default defineEventHandler(async (event) => {
         if (type === 'plugin') {
             let pageData = await $fetch(`${config.public.apiUrl}/plugins/${page}`);
 
-            const parsedMarkdown = await parseMarkdown(pageData.body);
+            let parsedMarkdown = await parseMarkdown(pageData.body);
+
+            // Start of temporary solution for plugins
+            // TODO: Handle response structure on the BE part differently (description and image parameters need to be subchildren of the the same child)
+            let elementToMove = parsedMarkdown.body.children?.splice(2, 1)?.[0]?.children?.[0];
+
+            if(elementToMove) {
+                elementToMove.props.defaultClasses = '';
+                elementToMove.props.width = 60;
+                parsedMarkdown.body.children?.[1]?.children?.unshift(elementToMove);
+            }
+            // End of temporary solution for plugins
 
             return toNuxtContent(parsedMarkdown);
         }

@@ -1,10 +1,10 @@
 <template>
-    <span class="text-center d-block">
+    <span class="image-margin" :class="defaultClasses">
         <NuxtImg
             :src="refinedSrc"
             :alt="alt"
-            :width="width"
-            :height="height"
+            :width="`${width}px`"
+            :height="`${height}px`"
             :class="classWithZoom"
             loading="lazy"
             format="webp"
@@ -35,6 +35,10 @@
             type: [String, Number],
             default: undefined
         },
+        defaultClasses: {
+            type: String,
+            default: 'text-center d-block'
+        },
         class: {
             type: String,
             default: ''
@@ -52,3 +56,9 @@
         return "zoom " + props.class
     })
 </script>
+
+<style lang="scss">
+.image-margin {
+    margin-right: 10px;
+}
+</style>
