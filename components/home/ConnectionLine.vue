@@ -117,40 +117,28 @@
         </defs>
     </svg>
 
-    <svg  v-if="lineN === 4" width="639" height="595" viewBox="0 0 639 595" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_39_82)">
-            <mask id="mask0_39_82" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="639" height="595">
-                <path d="M639 0H0V595H639V0Z" fill="white"/>
-            </mask>
-            <g mask="url(#mask0_39_82)">
-                <path
-                    d="M619.305 553V388C619.305 374.746 608.56 364 595.305 364L25.8265 364C12.5725 364 1.82654 353.255 1.82654 340L1.82654 0.999939"
-                    stroke="#5D48F5"
-                    stroke-width="2"
-                    stroke-miterlimit="0"
-                    stroke-linejoin="bevel"
-                    opacity="0.3"
-                />
-                <path
-                    class="line-path-animation"
-                    d="M619.305 553V388C619.305 374.746 608.56 364 595.305 364L25.8265 364C12.5725 364 1.82654 353.255 1.82654 340L1.82654 0.999939"
-                    stroke="#5D48F5"
-                    stroke-width="2"
-                    stroke-miterlimit="0"
-                    stroke-linejoin="bevel"
-                    stroke-dashoffset="0px"
-                    pathLength="1"
-                    :stroke-dasharray="`${strokeDasharray} 1px`"
-                />
-                <path d="M619.955 594.91C630.424 594.91 638.91 586.424 638.91 575.955C638.91 565.487 630.424 557 619.955 557C609.487 557 601 565.487 601 575.955C601 586.424 609.487 594.91 619.955 594.91Z" fill="#5D48F5"/>
-                <path d="M619 579H614L621 565V573H626L619 587V579Z" fill="white"/>
-            </g>
-        </g>
-        <defs>
-            <clipPath id="clip0_39_82">
-                <rect width="639" height="595" fill="white"/>
-            </clipPath>
-        </defs>
+    <svg v-if="lineN === 4" xmlns="http://www.w3.org/2000/svg" width="741" height="422" viewBox="0 0 741 422" fill="none">
+        <path
+            d="M722 382V237.533C722 224.278 711.255 213.533 698 213.533H25C11.7452 213.533 1 202.787 1 189.533V0"
+            stroke="#5D48F5"
+            stroke-width="2"
+            stroke-miterlimit="0"
+            stroke-linejoin="bevel"
+            opacity="0.3"
+        />
+        <path
+            class="line-path-animation"
+            d="M722 382V237.533C722 224.278 711.255 213.533 698 213.533H25C11.7452 213.533 1 202.787 1 189.533V0"
+            stroke="#5D48F5"
+            stroke-width="2"
+            stroke-miterlimit="0"
+            stroke-linejoin="bevel"
+            stroke-dashoffset="0px"
+            pathLength="1"
+            :stroke-dasharray="`${strokeDasharray} 1px`"
+        />
+        <path d="M721.955 421.91C732.424 421.91 740.91 413.424 740.91 402.955C740.91 392.487 732.424 384 721.955 384C711.487 384 703 392.487 703 402.955C703 413.424 711.487 421.91 721.955 421.91Z" fill="#5D48F5"/>
+        <path d="M721 406H716L723 392V400H728L721 414V406Z" fill="white"/>
     </svg>
 
     <svg  v-if="lineN === 5" width="669" height="332" viewBox="0 0 669 332" fill="none" xmlns="http://www.w3.org/2000/svg">
