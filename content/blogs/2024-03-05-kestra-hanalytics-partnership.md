@@ -1,6 +1,6 @@
 ---
-title: "Announcing Kestra Partnership with Hanalytics"
-description: "We are thrilled to announce the launch of our partnership with Davidson, a leader in the consulting industry known for its expertise in digital transformation and modern technologies."
+title: "Kestra and Hanalytics: Making Analytics Stack Accessible to All Teams"
+description: "We are thrilled to announce our partnership with Hanalytics, a leader in consulting service dedicated to empowering data-rich organizations to enhance their analytics capabilities."
 date: 2024-03-05T12:00:00
 category: Company News
 author:
@@ -31,13 +31,13 @@ They have already proven their success by implementing best in class analytics s
 
 Our shared agile mindset drives the success of this partnership. Both teams value continuous improvement and rapid iteration, facilitated by a short feedback loop. [Hanalytics](https://kestra.io/partners) consistently provides constructive product feedback as a true agile partner, and we're thrilled to deliver new features that empower them.
 
-Their Kestra-certified team has already successfully implemented Kestra in multiple companies like: [Bouygues Immobilier (Valorissimo)](https://kestra.io/blogs/2024-01-23-bouygues-immobilier-valorissimo) and [Copines de Voyages](https://kestra.io/use-cases/stories/10-copines-de-voyage). By making Kestra their go-to solution for orchestration, Hanalytics has delivered significant value to its clients, including:
+Their Kestra-certified team has already successfully implemented Kestra in multiple companies like: [Bouygues Immobilier (Valorissimo)](https://kestra.io/blogs/2024-01-23-bouygues-immobilier-valorissimo), [Copines de Voyages](https://kestra.io/use-cases/stories/10-copines-de-voyage), [Tui](https://www.data-hanalytics.io/blog/tui-customer-data-platform). By making Kestra their go-to solution for orchestration, Hanalytics has delivered significant value to its clients, including:
 
 - **Increased marketing agility and sales efficiency:** Hanalytics' data stack helped Valorissimo personalize their marketing automation campaigns and double their conversion rates. This demonstrates the value that Hanalytics can bring to customers by improving their marketing and sales effectiveness.
 
 - **Reduced complexities, improved performances:** Hanalytics' expertise helped Copines de Voyage transition from a legacy system to a modern data stack. This modernized infrastructure allows for better data organization, access, and utilization for valuable insights.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/40bb7360-23c2-4bc2-be27-bdb7d035d79c/2fbdc776-d30c-42fa-8944-c93f4bd87ba3/Untitled.png)
+![kestraxHanalytics](/blogs/2024-01-23-bouygues-immobilier-valorissimo.jpg)
 
 ## Get Involved
 
