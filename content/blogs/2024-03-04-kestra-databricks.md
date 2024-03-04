@@ -1,6 +1,6 @@
 ---
 title: "Interacting with Databricks using Kestra"
-description: Kestra’s Databricks plugin makes data warehousing simple. Even non-developers can write relevant flows and data pipeline.
+description: Kestra’s Databricks plugin makes data warehousing simple. Even non-developers can build their own data pipelines in just a few lines of code.
 date: 2024-03-04T10:00:00
 category: Solutions
 author:
@@ -8,15 +8,15 @@ author:
   image: "smantri"
 ---
 
-Databricks is a leading unified analytics platform that empowers organizations to harness the full potential of their data. Databricks provides a collaborative and scalable environment for data scientists, engineers, and analysts to seamlessly collaborate on big data and machine learning projects. This post demonstrates [Kestra](https://github.com/kestra-io/kestra) plugins for Databricks data management, showing the journey of how different actions can be performed on Databricks using Kestra.
+Databricks provides a unified analytics platform for data scientists, engineers, and analysts to seamlessly collaborate on big data and machine learning projects. This post demonstrates [Kestra](https://github.com/kestra-io/kestra) how various data engineering activities can be performed on Databricks using Kestra's plugin.
 
 ## About Databricks ##
 
-Databricks stands at the forefront of modern data analytics and processing, revolutionizing the way organizations manage and derive insights from vast and complex datasets. Established by the visionaries behind Apache Spark, Databricks offers a comprehensive and unified analytics platform designed to empower teams across data science, engineering, and analytics. Operating in the cloud, this platform seamlessly integrates a diverse array of functionalities, streamlining the entire data workflow from data preparation and exploration to advanced analytics and machine learning.
+Databricks, created by the creators of Apache Spark, provides a complete analytics platform that helps data science, engineering, and analytics teams work better together. It runs in the cloud and combines various tools, streamlining the entire data lifecycle from preparing and exploring data to advanced analytics and machine learning.
 
-At its core, Databricks addresses the challenges associated with big data by providing a collaborative environment where cross-functional teams can collaborate effortlessly. This collaborative approach not only enhances productivity but also promotes knowledge sharing, ultimately leading to more informed and impactful decision-making processes.
+At its heart, Databricks makes it easier for teams from different areas to work together smoothly. This teamwork boosts productivity and encourages sharing knowledge, leading to better decisions.
 
-In addition to its collaborative features, Databricks facilitates advanced analytics and machine learning capabilities, enabling organizations to extract actionable insights from their data. With its emphasis on simplicity, scalability, and efficiency, Databricks has become an indispensable tool for enterprises looking to harness the full potential of their data, fostering innovation and driving competitive advantage in today's data-driven landscape.
+Databricks also offers advanced analytics and machine learning features, helping companies find valuable insights in their data. It's known for being easy to use, scalable, and efficient, making it a key tool for businesses that want to use their data to innovate and stay ahead in the competitive, data-centric world.
 
 ## Enhancing Databricks using Kestra ##
 
@@ -24,7 +24,7 @@ Data warehouse workloads are typically part of a larger technological stack. To 
 
 Kestra is designed to orchestrate and schedule scalable data workflows, thereby enhancing DataOps teams' productivity. It can construct, operate, manage, and monitor a [variety of complex workflows](https://kestra.io/docstutorialflowable) sequentially or in parallel.
 
-Kestra can execute workflows based on event-based, time-based, and API-based scheduling, giving complete control. Databricks already offers many cost optimization processes like data compression and auto-scaling. However, Kestra makes it simpler to create or delete Databricks compute cluster, upload or download files from Databricks File System (DBFS), and query data by integrating with Databrick’s storage and compute resources. Not only this, Kestra also supports interacting with Databricks jobs.
+Kestra can execute workflows based on event-based, time-based, and API-based scheduling, giving data teams complete control over their orchestration. Databricks already offers many cost optimization processes like data compression and auto-scaling. However, Kestra makes it simpler to create or delete Databricks compute clusters, upload or download files from Databricks File System (DBFS), and query data by integrating with Databricks's storage and compute resources. Not only this, Kestra also supports interacting with Databricks jobs.
 
 ### Kestra's Plugin System ###
 
@@ -69,7 +69,7 @@ Post running this flow, you can check that the newly created compute cluster sho
 
 Now that the compute cluster is running, let us upload a file to DBFS. Using the [upload task](https://kestra.io/plugins/tasks/dbfs/io.kestra.plugin.databricks.dbfs.upload) of the Kestra’s Databricks plugin, we can upload a file from Kestra’s internal storage onto DBFS. There is no restriction on the size of the file. The task will upload the file in chunks of 1 MB.
 
-The following code snippet will first download a csv file from HTTP URL onto Kestra’s internal storage. This file from Kestra’s internal storage will then be uploaded onto DBFS on the path specified in the `to` attribute of the Databricks' Upload task.
+The following code snippet will first download a CSV file from the HTTP URL into Kestra’s internal storage. This file from Kestra’s internal storage will then be uploaded onto DBFS on the path specified in the `to` attribute of the Databricks' Upload task.
 
 ```yaml
 id: databricks-upload
@@ -91,9 +91,9 @@ Once the flow is successfully run, you can open the DBFS Browser on your Databri
 
 ### Running Query on Databricks ###
 
-Let us now perform a couple of query operations on Databricks. Kestra’s Databricks plugin provides the [query task](https://kestra.io/plugins/tasks/sql/io.kestra.plugin.databricks.sql.query) for querying data from Databricks. This task requires you to mention the `httpPath`. In order to get the `httpPath`, you need to go to the compute cluster using which you need to perform this query. On the compute cluster’s page, go to `JDBC/ODBC` tab under the Advanced options. This is where you will get the `HTTP Path` which you can use in the `httpPath` attribute of your query task.
+Let us now perform a couple of query operations on Databricks. Kestra’s Databricks plugin provides a [dedicated task](https://kestra.io/plugins/tasks/sql/io.kestra.plugin.databricks.sql.query) for querying data from Databricks. This task requires you to mention the `httpPath`. In order to get the `httpPath`, you need to go to the compute cluster using which you need to perform this query. On the compute cluster’s page, go to `JDBC/ODBC` tab under the Advanced options. This is where you will get the `HTTP Path`, which you can use in the `httpPath` attribute of your query task.
 
-The first query task that we will perform will be to load the data from the DBFS file onto a table. The query in this task will read the CSV file from the DBFS. It will create the table in the Databricks by inferring the schema from the CSV file, and the data will be filled in the table from this CSV file.
+The first query task that we will perform will be to load the data from the DBFS file into a table. The query in this task will read the CSV file from the DBFS. It will create the table in Databricks by inferring the schema from the CSV file, and the data will be filled in the table from this CSV file.
 
 The following code snippet will create the table, and load the data from the CSV file present in the DBFS.
 
@@ -127,15 +127,15 @@ tasks:
     sql: "SELECT * FROM orders ORDER BY total DESC limit 10;"
 ```
 
-On running this flow, take a look at the Outputs tab of this execution. The Outputs tab would contain the `size` indicating the number of records fetched by the query, and an `uri` to the Kestra’s internal storage file which contains the fetched records from the query.
+Once you run this flow, take a look at the Outputs tab of this execution. The Outputs tab will provide the `size` indicating the number of records fetched by the query, and an `uri` to the Kestra’s internal storage file which contains the fetched records from the query.
 
 ![top_10_orders_query_output](/blogs/2024-03-04-kestra-databricks/top_10_orders_query_output.png)
 
 ### Delete Compute Cluster ###
 
-Now that we have performed all the tasks on the Databricks cluster, let us delete the compute cluster. Kestra’s Databricks plugin provides the [DeleteCluster task](https://kestra.io/plugins/tasks/cluster/io.kestra.plugin.databricks.cluster.deletecluster)  that will delete the compute cluster. This task takes the compute cluster’s clusterId in order to pick the corresponding cluster for deletion.
+Now that we have performed all the tasks on the Databricks cluster, we can delete it to avoid unnecessary compute costs. Kestra’s Databricks plugin provides the [DeleteCluster task](https://kestra.io/plugins/tasks/cluster/io.kestra.plugin.databricks.cluster.deletecluster)  that will delete the compute cluster. This task takes the `clusterId` to pick the corresponding cluster for deletion.
 
-The following code snippet would delete the cluster from Databricks workspace.
+The following code snippet will delete the cluster from your Databricks workspace:
 
 ```yaml
 id: databricks-delete-cluster
@@ -148,11 +148,12 @@ tasks:
     host: <your-host>
     clusterId: <cluster-id>
 ```
-Kestra provides flexibility and control to data teams, it can orchestrate any kind of workflow with ease using the rich UI that monitors all flows.
+
+This example demonstrated how Kestra provides flexibility and control to data teams. It can orchestrate any kind of workflow with ease using the rich UI that monitors all executions.
 
 ![](/ui.gif)
 
-Kestra's Databricks plugin makes data warehousing simple even for non-developers thanks to YAML. Your Databricks pipeline can accommodate raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the ELT pipeline. Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
+Kestra's Databricks plugin makes data warehousing simple even for non-developers thanks to the simple declarative definition. Your Databricks pipeline can accommodate raw data from multiple sources and transform it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the ELT pipeline. Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
