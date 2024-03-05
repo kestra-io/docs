@@ -176,14 +176,14 @@
         row-gap: 0px;
     }
 
-    .bd-title {
-        margin-top: calc($spacer * 4.5);
-    }
-
     .bd-content{
         max-width: 100%;
         img {
             border: $block-border;
+        }
+
+        img:first-child {
+            width: 100%;
         }
 
         &::after {
