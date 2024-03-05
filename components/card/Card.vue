@@ -2,7 +2,17 @@
     <div class="card bg-dark-2" :class="number ? 'number-card' : ''" data-aos="zoom-in">
         <div class="card-body">
             <div class="d-flex gap-3 title-block">
-                <span v-if="icon" class="card-icon"><component :is="icon" /></span>
+                <span v-if="icon" class="card-icon">
+                    <component :is="icon" />
+                     <svg width="0" height="0">
+                        <defs>
+                            <linearGradient id="featureiconsgradient" x1="4.99595" y1="6.83411" x2="31.2214" y2="33.0161" gradientUnits="userSpaceOnUse">
+                                <stop offset="0.015625" stop-color="#F2D5FF"/>
+                                <stop offset="1" stop-color="#CB5AFF"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </span>
                 <span v-if="img" class="card-icon">
                     <img :src="img" :alt="imgAlt">
                 </span>
@@ -17,14 +27,6 @@
             </p>
         </div>
     </div>
-    <svg width="0" height="0">
-        <defs>
-            <linearGradient id="featureiconsgradient" x1="4.99595" y1="6.83411" x2="31.2214" y2="33.0161" gradientUnits="userSpaceOnUse">
-                <stop offset="0.015625" stop-color="#F2D5FF"/>
-                <stop offset="1" stop-color="#CB5AFF"/>
-            </linearGradient>
-        </defs>
-    </svg>
 </template>
 <script>
     export default {
