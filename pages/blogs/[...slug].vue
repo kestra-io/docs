@@ -1,72 +1,57 @@
 <template>
-    <div class="container-fluid">
-        <div class="row" v-if="slug === '/blogs/' || slug === '/blogs/community'" >
-            <div class="col-12">
-                <div class="container">
-                    <BlogsList :blogs="page"
-                               :external-news="externalNews"/>
-                </div>
-            </div>
-        </div>
-        <div v-else class="row">
-            <div class="bd-gutter bd-layout margin mt-0">
-                <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
-                    <ContentRenderer :value="page">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-8 col-md-12 p-0">
-                                    <div class="blog-content">
-                                        <div class="bd-title">
-                                            <p class="d-flex breadcrumb" data-aos="fade-right">
-                                                <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
-                                            </p>
-                                            <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
-                                        </div>
-                                        <NavToc class="d-block d-lg-none mb-4" data-aos="fade-zoom" :page="page">
-                                            <template #header>
-                                                <BlogDetails :blog="page"/>
-                                            </template>
-                                        </NavToc>
-                                        <div class="bd-content">
-                                            <NuxtImg
-                                                loading="lazy"
-                                                format="webp"
-                                                quality="80"
-                                                densities="x1 x2"
-                                                data-aos="fade-right"
-                                                class="mb-2 rounded-3 img"
-                                                :alt="page.title"
-                                                :src="page.image"
-                                                fit="cover"
-                                            />
-                                            <ClientOnly>
-                                                <ContentRendererMarkdown
-                                                    data-aos="fade-zoom"
-                                                    class="bd-markdown mt-4"
-                                                    :value="page"
-                                                    data-bs-spy="scroll"
-                                                    data-bs-target="#nav-toc"
-                                                />
-                                            </ClientOnly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <NavToc class="d-lg-block d-none" data-aos="fade-zoom" :page="page">
-                            <template #header>
-                                <BlogDetails :blog="page"/>
-                            </template>
-                        </NavToc>
+    <div class="container">
+        <BlogsList v-if="slug === '/blogs/' || slug === '/blogs/community'" :blogs="page"
+                   :external-news="externalNews"/>
 
-                    </ContentRenderer>
-                </article>
-                <div class="bottom">
-                    <DocsBlogs title="More contents"/>
-                    <Updateletter/>
-                </div>
+        <div v-else class="container bd-gutter bd-layout margin">
+            <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
+                <ContentRenderer :value="page">
+                    <div class="bd-title">
+                        <p class="d-flex breadcrumb" data-aos="fade-right">
+                            <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
+                        </p>
+                        <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
+                    </div>
+                    <NavToc data-aos="fade-zoom" :page="page">
+                        <template #header>
+                            <BlogDetails :blog="page"/>
+                        </template>
+                    </NavToc>
+                    <div class="bd-content">
+                        <NuxtImg
+                            loading="lazy"
+                            format="webp"
+                            quality="80"
+                            densities="x1 x2"
+                            data-aos="fade-right"
+                            class="mb-2 rounded-3 img"
+                            :alt="page.title"
+                            :src="page.image"
+                            fit="cover"
+                        />
+                        <ClientOnly>
+                            <ContentRendererMarkdown
+                                data-aos="fade-zoom"
+                                class="bd-markdown mt-4"
+                                :value="page"
+                                data-bs-spy="scroll"
+                                data-bs-target="#nav-toc"
+                            />
+                        </ClientOnly>
+                    </div>
+                    <NavToc class="d-lg-block d-none" data-aos="fade-zoom" :page="page">
+                        <template #header>
+                            <BlogDetails :blog="page"/>
+                        </template>
+                    </NavToc>s
+                </ContentRenderer>
+            </article>
+            <div class="bottom">
+                <DocsBlogs title="More contents"/>
+                <Updateletter/>
             </div>
         </div>
+
     </div>
 </template>
 
