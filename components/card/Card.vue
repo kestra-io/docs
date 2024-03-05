@@ -11,6 +11,14 @@
                 </span>
                 <h4 v-if="title" class="card-title">{{title}}</h4>
             </div>
+            <div v-if="bottomMenuBar && bottomMenuBar.length" class="bottom-menu">
+                <div class="bottom-menu-item" v-for="menuItem in bottomMenuBar" @click="() => menuItem.active = !menuItem.active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                        <path d="M14.9891 17.3359V13.3359H6.06906L6.03906 11.3259H14.9891V7.33594L19.9891 12.3359L14.9891 17.3359Z" :fill="menuItem.active ? '#CDD5EF' : '#9CA1DE'"/>
+                    </svg>
+                    <span :style="`color : ${menuItem.active ? '#CDD5EF' : '#9CA1DE'}`">{{ menuItem.text }}</span>
+                </div>
+            </div>
             <p v-if="description" class="card-text">{{description}}</p>
             <p v-if="$slots.descriptionHtml" class="card-text">
                 <slot name="descriptionHtml"></slot>
@@ -48,6 +56,12 @@
             number: {
                 default: null,
             },
+            bottomMenuBar: {
+              default: null,
+            },
+            style: {
+              default: null,
+            }
         },
     };
 </script>
@@ -130,6 +144,19 @@
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 margin: 0;
+            }
+        }
+
+        .bottom-menu {
+            display: flex;
+            flex-direction: column;
+            gap: calc($spacer * 0.5);
+            min-width: calc($spacer * 18.5);
+
+            .bottom-menu-item {
+                display: flex;
+                align-items: center;
+                gap: calc($spacer * 0.5);
             }
         }
     }
