@@ -63,7 +63,7 @@
     .card-body {
         .type {
             font-size: $font-size-sm;
-            color: $primary;
+            color: $purple-36;
         }
 
         .card-title {
