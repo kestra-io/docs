@@ -11,6 +11,12 @@
         <BlueprintsHeader :page="page" :graph="graph" :slug="slug" :icons="icons" :flow="flowAsMd"/>
         <div class="container">
             <BlueprintsDetail :page="page" :description="descriptionAsMd"/>
+            <div class="mt-5">
+                <ContentRendererMarkdown
+                    class="bd-markdown"
+                    :value="flowAsMd"
+                />
+            </div>
             <BlueprintsRelated
                 v-if="relatedBlueprints.length > 0"
                 :related-blueprints="relatedBlueprints"
