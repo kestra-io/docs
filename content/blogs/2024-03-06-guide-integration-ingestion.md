@@ -9,6 +9,10 @@ author:
 image: /blogs/2024-03-06-guide-integration-ingestion.jpg
 ---
 
+This blog post serves as a practical guide to cloud data warehouse (CDW) ingestion and integration, focusing on BigQuery, Redshift, and Snowflake. We address the key challenges data teams face, such as manual pipeline maintenance, and offer solutions to streamline these processes. Dive in!
+
+
+## The Problem
 According to a [2022 report by Wakefield Research](https://get.fivetran.com/rs/353-UTB-444/images/2021-CDL-Wakefield-Research.pdf), data teams spend 40% of their time troubleshooting data downtime. [According to a 2023 TDWI article on data engineer burnout](https://tdwi.org/articles/2023/02/21/ppm-all-how-to-fix-data-engineer-burnout.aspx), more than half of all data engineers say they spend too much time on:
 
 - Finding and fixing errors
@@ -19,8 +23,6 @@ And then there’s the trouble caused by software developers: changing the data 
 
 >One of the Wakefield report’s key findings was the insanely high cost of data integration
 
-**solutions:**
-
 - Companies spend, on average, $520K every year paying data engineers to build and maintain data pipelines manually.
 - That cost doesn't even factor in inefficiencies, as 4 in 5 data leaders (80%) say they sometimes have to rebuild data pipelines after deployment; this happens often or even all the time in 39% of companies.
 - This means that the actual cost of data integration that relies on this manual process could be an even larger line item on the balance sheet than most companies suspect.
@@ -29,9 +31,7 @@ Why am I writing about the problems faced by data engineers and companies trying
 
 ---
 
-Cloud data warehouses (CDWs) can streamline, automate, and improve data workflows, leading to faster insights, better decision-making, and increased efficiency across the organization.
-
-**Or not.**
+Cloud data warehouses (CDWs) can streamline, automate, and improve data workflows, leading to faster insights, better decision-making, and increased efficiency across the organization. **Or not.**
 
 Most data & analytics leaders in that Wakefield study (73%) say their team’s time is being wasted on manual oversight of data pipelines. Time sunk into this takes away from engineers’ ability to provide more advanced analysis - i.e., the work that provides real business value.
 
@@ -41,12 +41,10 @@ Research shows that organizations that make the best use of data insights tend t
 - A 2021 Accenture survey found that 67% of organizations struggle to build trust in data and analytics within their businesses.
 - 85% of big data projects fail ([Gartner](https://designingforanalytics.com/resources/failure-rates-for-analytics-bi-iot-and-big-data-projects-85-yikes/), 2017)
 - 87% of data science projects never make it to production ([VentureBeat](https://venturebeat.com/2019/07/19/why-do-87-of-data-science-projects-never-make-it-into-production/), 2019)
-- *“Through 2022, only 20% of analytic insights will deliver business outcomes”* ([Gartner](https://blogs.gartner.com/andrew_white/2019/01/03/our-top-data-and-analytics-predicts-for-2019/), 2019)
+- “Through 2022, only 20% of analytic insights will deliver business outcomes”* ([Gartner](https://blogs.gartner.com/andrew_white/2019/01/03/our-top-data-and-analytics-predicts-for-2019/), 2019)
 
 
 And on top of all this, someone in your org is trying to implement a data democratization initiative, or talking about things like decentralization and self-service.
-
-Kinda makes you want to change careers!
 
 ## What is the solution?
 
@@ -60,7 +58,7 @@ But before we get to the solution, we have to understand the problem domain. Let
 
 - **Data Ingestion**: This term should refer to getting data into your destination storage, the ‘L’ in ETL
 
-**I mention this because, I have often seen the three terms mixed up, leading to confusion.
+*I mention this because, I have often seen the three terms mixed up, leading to confusion.*
 
 ---
 
@@ -308,7 +306,7 @@ Each integration is further categorized:
 
 A solution to the problems of the high cost and friction of creating, changing, and managing data pipeline is a few simple architectures based on your data, metadata and your chosen CDW. Depending on your source, either Redshift or BigQuery was the first cloud data warehouse as a service, and in the past 13 years, these products have become incredibly popular, capable, and mature. Have a look at the diagram below created by Google Machine Learning Solution Architect, Rajesh Thallam, for his blog, [How to load, import, or ingest data into BigQuery for analysis | Google Cloud Blog](https://cloud.google.com/blog/topics/developers-practitioners/bigquery-explained-data-ingestion). It’s an almost complete list of the ways you can load data into BigQuery (see the section above on integration and ingestion).
 
-! [diagram](/blogs/2024-03-06-guide-integration-ingestion/diagram.png)
+![diagram](/blogs/2024-03-06-guide-integration-ingestion/diagram.png)
 
 
 There are 39 leaf nodes in the above diagram. 39 different data sources that BigQuery knows how to handle. Then there’s logging, monitoring, alerting, permissions, and security.
@@ -321,17 +319,17 @@ Let’s take a look at the work that might be involved in going from a great ide
 
 So, we uploaded some CSV to cloud storage and then queried the data with BigQuery! Simple, straightforward, and easy to maintain.
 
-! [Step1](/blogs/2024-03-06-guide-integration-ingestion/step1.png)
+![Step1](/blogs/2024-03-06-guide-integration-ingestion/step1.png)
 
 Then one day, some eager beaver says, “You know, we could capture some events from the mobile app, and make it available to BigQuery. The business would love it! Probably wouldn't be too hard…”
 
-! [Step2](/blogs/2024-03-06-guide-integration-ingestion/step2.png)
+![Step2](/blogs/2024-03-06-guide-integration-ingestion/step2.png)
 
 Ok, that’s adding some complexity but there’s real business value.
 
 A few months later, another bright spark says, “You know, instead of uploading these events every day, we could stream these app events in real time. The business would love it! Probably wouldn't be too hard…”
 
-! [Step3](/blogs/2024-03-06-guide-integration-ingestion/step3.png)
+![Step3](/blogs/2024-03-06-guide-integration-ingestion/step3.png)
 
 Did we really need to stream the event data in real time? Was the business value worth the cost in added complexity and dev hours? Or did the business team just say, “Yeah, that’d be cool.”
 
@@ -410,7 +408,7 @@ If your organization is adopting a data mesh architecture, Kestra instances can 
 
 You have the ability to quickly implement any of the best-in-class tools like [FiveTran](https://kestra.io/plugins/plugin-fivetran), [dlt](https://github.com/dlt-hub/dlt-kestra-demo), [Airbyte](https://kestra.io/plugins/plugin-airbyte) or [SQLMesh](https://kestra.io/plugins/plugin-sqlmesh).
 
-! [schema](/blogs/2024-03-06-guide-integration-ingestion/schema.png)
+![schema](/blogs/2024-03-06-guide-integration-ingestion/schema.png)
 
 
 ## Kestra Features
@@ -434,7 +432,7 @@ My mother was constantly sharing her pearls of wisdom, and the one that applies 
 
 In a happy and efficient architecture, cleaning and standardizing data should be handled by services, called by your workflow orchestrator. If you’re not able to easily implement REST APIs in your company, then you can do the same thing by calling the same code via command lines, executed by your workflow orchestrator.
 
-**Your data transformations should be executed at the cheapest possible price, and maybe that means spinning up 50 k8s nodes on a different cloud. Your workflow orchestrator should do that, too.
+Your data transformations should be executed at the cheapest possible price, and maybe that means spinning up 50 k8s nodes on a different cloud. Your workflow orchestrator should do that, too.
 
 Alerting, monitoring, and logging of your data pipelines doesn’t need to be scattered over a half-dozen providers, it can and should be handled by, you guessed it, your workflow orchestrator.
 
