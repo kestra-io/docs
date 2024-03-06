@@ -39,7 +39,7 @@ The most flexible yet complex model involves embedding a **`tenantId`** identifi
 
 Kestra’s architecture is built on a distributed system, where various components interact asynchronously, primarily through messaging queues. Below is an overview of the key components that make up Kestra’s architecture:
 
-!https://i0.wp.com/loicmathieu.fr/wordpress/wp-content/uploads/kestra-software-architecture.png?resize=640%2C360&ssl=1
+![architecture](/blogs/2024-03-08-building-multi-tenant-saas/architecture.png)
 
 ### Core Components of Kestra:
 
