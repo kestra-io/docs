@@ -121,6 +121,8 @@ As a final not I strongly recommend that you plan a substantial testing period, 
 
 Stay tuned for more insights on our engineering journey!
 
+> this blog post was originally posted in my personal blog you can check it [here](https://www.loicmathieu.fr/wordpress/en/informatique/concevoir-un-saas-multitenant/)
+
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
