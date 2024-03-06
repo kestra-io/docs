@@ -1,8 +1,8 @@
 ---
 title: "The Guide to Cloud Data Warehouse Integration and Ingestion"
-description: ""
-date: 2024-03-05T12:00:00
-category: Company News
+description: "All you need to know about integration and Ingestion in your Cloud Data Warehouse"
+date: 2024-03-06T12:00:00
+category: Solution
 author:
   name: Kevin Fleming
   image: "kfleming"
@@ -29,7 +29,9 @@ And then there’s the trouble caused by software developers: changing the data 
 
 Why am I writing about the problems faced by data engineers and companies trying to be data-driven? Because context is everything. Cloud Data Warehouse do not exist in isolation; there’s the general business context as seen above; there’s the business architectural context - how CDWs are used in an organization; and finally, there’s the technical architectural context - how CDWs fit with all the other systems. CDW data ingestion and integration lie at the center of all three contexts so it’s critical to consider the full spectrum of potential drawbacks and benefits, and pitfalls and opportunities.
 
+
 ---
+
 
 Cloud data warehouses (CDWs) can streamline, automate, and improve data workflows, leading to faster insights, better decision-making, and increased efficiency across the organization. **Or not.**
 
@@ -60,7 +62,9 @@ But before we get to the solution, we have to understand the problem domain. Let
 
 *I mention this because, I have often seen the three terms mixed up, leading to confusion.*
 
+
 ---
+
 
 ## Integration & Ingestion
 
@@ -119,7 +123,9 @@ The [bq command-line tool](https://cloud.google.com/bigquery/docs/bq-command-lin
 
 BigQuery also supports third-party data integration tools, such as Stitch, Fivetran, and Integrate.io, that can connect to various data sources and load data into the warehouse. These tools can simplify the data integration process and provide additional features, such as data quality monitoring, data transformation, and data cataloging.
 
+
 ---
+
 
 ## Redshift Integration
 
@@ -170,7 +176,9 @@ The following AWS Partners can integrate with Amazon Redshift using the AWS CLI 
 - **Sisense (preview)**
 - **Thoughtspot**
 
+
 ---
+
 
 ## Snowflake Integration
 
@@ -244,7 +252,9 @@ Snowflake partners with various data integration platforms:
 - **Fivetran**
 - **Stitch**
 
+
 ---
+
 
 ## ClickHouse Cloud Integration
 
@@ -275,7 +285,7 @@ Each integration is further categorized:
 - **SQL client**
 - **Schema management**
 
-### **Command Line Tool**
+### Command Line Tool
 
 [ClickHouse Client](https://clickhouse.com/docs/en/interfaces/cli) ClickHouse Client is the native command-line SQL client for ClickHouse.
 
@@ -364,7 +374,9 @@ When you add up all of the above, you can clearly see what the problem is: compl
 
 So, reduce complexity. But where?
 
+
 ---
+
 
 ## Smaller, Faster, Better Workflow Automation & Orchestration
 
