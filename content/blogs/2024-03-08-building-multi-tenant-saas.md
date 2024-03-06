@@ -1,6 +1,6 @@
 ---
 title: "Building A Multi-Tenant SaaS"
-description: "Discover the backstages of building a multi-tenant architecture for a SaaS prchestration platform"
+description: "Discover the backstages of building a multi-tenant architecture for a SaaS orchestration platform"
 date: 2024-03-08T12:00:00
 category: Engineering
 author:
