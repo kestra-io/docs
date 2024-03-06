@@ -27,7 +27,7 @@ This model advocates for launching a distinct application instance for every ten
 
 Here, each tenant benefits from a dedicated database, ensuring data isolation at the database level. This straightforward approach slightly elevates implementation costs but also raises operational expenses, as it requires maintaining separate databases.
 
-### Shared Schema Model
+### Shared Database, Dedicated Schema
 
 In this approach, we allocate a unique database schema for every tenant within a shared database environment. It strikes a balance between simplicity and operational efficiency, offering a cost-effective solution without the complexity of managing numerous databases. However, it leans on the database’s ability to support multiple schemas, which could become a single point of failure (SPOF).
 
@@ -72,7 +72,7 @@ The objective? To create a robust, highly available cluster that can host a Kafk
 
 ### Understanding namespace
 
-Kestra's use of namespaces, hierarchical structures similar to filesystem directories, they are already used in Kestra to store flows. Namespaces allow for specific configurations (e.g., tasks, secrets) and role-based access control in our enterprise version, raising the question of their utility in our multi-tenant architecture.
+Namespaces are hierarchical structures similar to filesystem directories, they are a component of Kestra used to store flows. Namespaces allow for specific configurations (e.g., tasks, secrets) and role-based access control in our enterprise version, raising the question of their utility in our multi-tenant architecture.
 
 ### Evaluating Multi-Tenancy Models
 
@@ -115,9 +115,9 @@ To ease the transition for existing users, we introduced a default tenant strate
 
 The process of embedding multi-tenancy into Kestra revealed the complexities of altering a system's foundational architecture to accommodate such a significant feature. Through this journey, we've gained insights into both the potential and the pitfalls of implementing multi-tenancy, setting a solid foundation for Kestra's evolution as a platform.
 
-In conclusion, multitenancy is essential when setting up a SaaS, and once you’ve carefully chosen your implementation model, you can expect a long, laborious and bug-prone implementation. To mitigate the risk of bugs, we chose to merge the PR on the multi-tenant at the start of the release cycle, which enabled us to test it for a month on our own test environments before delivering it to our users, thus uncovering many of the bugs that had been introduced.
+In conclusion, multitenancy is essential when setting up a SaaS, and once you’ve carefully chosen your implementation model, you can expect a long, laborious and bug-prone implementation. To mitigate the risk of bugs, we choose to merge the PR on the multi-tenant at the start of the release cycle, which enabled us to test it for a month on our own test environments before delivering it to our users, thus uncovering many of the bugs that had been introduced.
 
-As a final not I strongly recommend that you plan a substantial testing period, as we did. implementing a multi-tenant architecture isn’t easy, ideally, it needs to be implemented as early as possible in a code base.
+As a final note I strongly recommend that you plan a substantial testing period, as we did. implementing a multi-tenant architecture isn’t easy, ideally, it needs to be implemented as early as possible in a code base.
 
 Stay tuned for more insights on our engineering journey!
 
