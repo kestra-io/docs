@@ -43,7 +43,7 @@
                         <template #header>
                             <BlogDetails :blog="page"/>
                         </template>
-                    </NavToc>s
+                    </NavToc>
                 </ContentRenderer>
             </article>
             <div class="bottom">
