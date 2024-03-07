@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" data-aos="fade-left">
         <div class="business-details-container">
             <ul class="nav nav-tabs w-100 d-md-flex d-none" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">

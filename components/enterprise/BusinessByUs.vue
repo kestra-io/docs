@@ -49,8 +49,8 @@
         background-color: $black-2;
         border-radius: calc($spacer * 0.5);
         border: 1px solid #404559;
-        background: url("landing/home/container-bg.svg") no-repeat 213% 47%;
-        background-size: 102% 267%;
+        background: url("/landing/enterprise/business-us-bg.svg") no-repeat 213% 34%;
+        background-size: 104% 226%;
 
         .business-by-us {
             display: flex;
