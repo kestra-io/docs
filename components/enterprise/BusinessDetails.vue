@@ -41,8 +41,8 @@
             active: false,
             text: 'Vault Integration & Secret Management',
             tabText: 'Vault Integration & Secret Management',
-            imgHref: '/landing/ee/company-stories/sso-support.svg',
-            imgAlt: 'Vault Integration'
+            imgHref: '/landing/ee/company-stories/secrets.svg',
+            imgAlt: 'Secrets',
           },
           {
             id: 2,
@@ -50,31 +50,23 @@
             text: 'SSO Support',
             tabText: 'List all your workflow definitions in one place',
             imgHref: '/landing/ee/company-stories/sso-support.svg',
-            imgAlt: 'SSO Support'
+            imgAlt: 'SSO',
           },
           {
             id: 3,
             active: false,
             text: 'Detailed Audit Logs',
             tabText: 'Detailed Audit Logs',
-            imgHref: '/landing/ee/sso-support.svg',
-            imgAlt: 'Detailed Audit Logs'
+            imgHref: '/landing/ee/company-stories/audit-log.svg',
+            imgAlt: 'Audit Log',
           },
           {
             id: 4,
             active: false,
             text: 'Multi-Tenant Architecture',
             tabText: 'Multi-Tenant Architecture',
-            imgHref: '/landing/ee/company-stories/sso-support.svg',
-            imgAlt: 'Multi-Tenant Architecture'
-          },
-          {
-            id: 5,
-            active: false,
-            text: 'Enterprise Blueprints',
-            tabText: 'Enterprise Blueprints',
-            imgHref: '/landing/ee/company-stories/sso-support.svg',
-            imgAlt: 'Enterprise Blueprints'
+            imgHref: '/landing/ee/company-stories/tenants.svg',
+            imgAlt: 'Tenants',
           },
         ]
       }
@@ -103,16 +95,21 @@
         background: url("landing/home/container-bg.svg") no-repeat 213% 47%;
         background-size: 102% 267%;
         margin-bottom: calc($spacer * 2.875);
-
+        overflow: hidden;
         @include media-breakpoint-down(md) {
             border: none;
         }
 
         ul {
+            background-color: $black-2;
+            overflow: hidden;
             flex-wrap: nowrap;
             justify-content: center;
             border: none;
+            border-bottom: $block-border;
+
             li {
+                border-right: $block-border;
                 padding: 0;
                 .active {
                     color: $white;
@@ -144,6 +141,10 @@
                         font-size: calc($font-size-base * 0.8);
                     }
                 }
+            }
+
+            li:last-child {
+                border: none;
             }
         }
 

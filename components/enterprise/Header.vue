@@ -2,17 +2,20 @@
     <div class="container-fluid container">
         <div class="hero hero-sm mx-2 sm-mx-0">
             <div class="row" data-aos="fade-right">
-                <div class="col-12 col-md-8 col-lg-6 order-1 order-md-0">
+                <div class="col-12 col-md-8 col-lg-6 order-1 order-md-0 pr-4">
                     <h1 data-aos="fade-right"><span class="dot">Kestra Enterprise</span> to Scale Your Workflows.</h1>
-                    <p data-aos="fade-left" class="baseline">Designed for production workloads with high-security standards and Enterprise-grade governance.</p>
+                    <p data-aos="fade-left" class="baseline">Made for organizations & professionals seeking to secure
+                        production workloads with high-security standards and enterprise support.</p>
                     <div class="d-flex flex-wrap gap-2">
-                        <NuxtLink href="https://kestra.io/demo" target="_blank" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                        <NuxtLink href="https://kestra.io/demo" target="_blank"
+                                  class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                             Talk to Us
                         </NuxtLink>
                     </div>
                 </div>
                 <div class="order-0 order-md-1 d-flex d-md-none">
-                    <img class="img-container img-fluid" src="/landing/ee/background.svg" alt="Illustration of Kestra's logo with a dark background" data-aos="zoom-in"/>
+                    <img class="img-container img-fluid" src="/landing/ee/background.svg"
+                         alt="Illustration of Kestra's logo with a dark background" data-aos="zoom-in"/>
                 </div>
             </div>
         </div>
@@ -41,6 +44,7 @@
             font-size: $font-size-4xl;
             font-weight: 300;
             font-family: $font-family-sans-serif;
+            max-width: 75%;
         }
 
         span {
@@ -50,6 +54,8 @@
             -webkit-text-fill-color: transparent;
             font-size: $font-size-4xl;
             letter-spacing: calc($spacer * -0.188);
+            font-family: $font-family-sans-serif;
+
             @include media-breakpoint-down(lg) {
                 font-size: 1.625rem !important;
             }
@@ -58,8 +64,10 @@
         @include media-breakpoint-down(sm) {
             h1, h1 > span {
                 font-size: 1.625rem !important;
+                max-width: 100%;
             }
         }
+
         .subtitle {
             font-size: 1.875rem;
             font-weight: 100;
@@ -78,13 +86,19 @@
             transform-origin: 40% 30%;
         }
 
-        .hero{
+        .hero {
             padding-bottom: 5rem;
 
             .baseline {
                 font-weight: 300;
+                max-width: 78%;
+
                 @include media-breakpoint-down(lg) {
-                   font-size: $font-size-base;
+                    font-size: $font-size-base;
+                }
+
+                @include media-breakpoint-down(sm) {
+                    max-width: 100%;
                 }
             }
 
