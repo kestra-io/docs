@@ -13,7 +13,7 @@ We're excited to announce a strategic partnership between [Kestra](https://githu
 
 ## About Databricks
 
-Databricks positions as a leader in data and AI, offer a unified platform that facilitates collaborative work across data science, engineering, and analytics teams. Their platform is engineered to simplify the data lifecycle, encompassing preparation, exploration, analytics, and machine learning, all within a cloud-based environment. Designed to manage the full spectrum of the data and analytics lifecycle, from ingestion through to visualization and machine learning, Databricks stands as a comprehensive tool for organizations aiming to leverage advanced analytics and big data in a cloud-centric world.
+Databricks positions as a leader in data and AI, offers a unified platform that facilitates collaborative work across data science, engineering, and analytics teams. Their platform is engineered to simplify the data lifecycle, encompassing preparation, exploration, analytics, and machine learning, all within a cloud-based environment. Designed to manage the full spectrum of the data and analytics lifecycle, from ingestion through to visualization and machine learning, Databricks stands as a comprehensive tool for organizations aiming to leverage advanced analytics and big data in a cloud-centric world.
 
 Databricks stands as a leader in the data and AI industry, offering a powerful platform that facilitates collaborative work across data science, engineering, and analytics teams. Central to Databricks' offering is the Lakehouse architecture, which merges the advantages of data lakes and data warehouses. This architecture offer a unified data and scalable environment, ensuring that organizations can efficiently manage their data lifecycle from preparation to advanced analytics and machine learning, all within a cloud-based ecosystem.
 
@@ -21,7 +21,7 @@ The platform's architecture, built on the  foundation of open-source projects li
 
 ## Kestra's Integration with Databricks
 
-Kestra leverages this advanced architecture to provide dynamic data workflow management, enhancing Databricks' capabilities with efficient orchestration and scheduling.Through our partnership with Databricks we offer a way to simplify the execution of data engineering tasks, from managing compute clusters and interacting with the Databricks File System (DBFS) to executing SQL queries and scheduling jobs directly on the Databricks platform.
+Kestra leverages this advanced architecture to provide dynamic data workflow management, enhancing Databricks' capabilities with efficient orchestration and scheduling. Through our partnership with Databricks we offer a way to simplify the execution of data engineering tasks, from managing compute clusters and interacting with the Databricks File System (DBFS) to executing SQL queries and scheduling jobs directly on the Databricks platform.
 
 Kestra's plugin for  Databricks extends the platform's functionality, allowing for efficient data processing and transformation. This integration empowers data teams to leverage Databricks' compute and storage resources more effectively, optimizing data workflows and reducing operational costs.
 
