@@ -52,7 +52,6 @@ Stay tuned for updates on additional integrations and case studies showcasing ho
 ![Blueprints](/blogs/2024-03-07-databricks-partnership/blueprints.png)
 
 
-
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
