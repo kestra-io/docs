@@ -45,7 +45,7 @@ Through the Kestra-Databricks integration, users benefit from a more cohesive an
 
 ## What's Next
 
-Our collaboration between Kestra and Databricks is the beginning of a strategic partnership designed to evolve. We're dedicated to deepening this relationship, aiming to unveil new functionalities and use cases that will further empower our users. Expect to see a range of exciting developments as we continue to explore the synergies between Kestra and Databricks.
+Our collaboration with Databricks is the beginning of a strategic partnership designed to evolve. We're dedicated to deepening this relationship, aiming to unveil new functionalities and use cases that will further empower our users. Expect to see a range of exciting developments as we continue to explore the synergies between Kestra and Databricks.
 
 Stay tuned for updates on additional integrations and case studies showcasing how this partnership is facilitating more efficient, scalable, and effective data management strategies. For a closer look at how Kestra and Databricks are working together today, check out our [blueprints](https://kestra.io/blueprints?page=1&size=24&q=databricks). These resources are designed to give you practical insights into leveraging our combined strengths for your data projects.
 
