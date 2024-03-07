@@ -4,18 +4,18 @@
             <ul class="nav nav-tabs w-100 d-md-flex d-none">
                 <li class="nav-item" v-for="(navLink, index) in navLinks" :key="navLink.id">
                     <button :class="`nav-link ${activeTabIndex === index ? 'active' : ''}`" @click="setTab(index)">
-                        {{ navLink.text }}
+                        {{ navLink.tabText }}
                     </button>
                 </li>
             </ul>
             <div class="dropdown d-md-none d-block w-100">
                 <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ navLinks[activeTabIndex].text }}
+                    {{ navLinks[activeTabIndex].tabText }}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-bar">
                     <li class="nav-item" v-for="(navLink, index) in navLinks" :key="navLink.id">
                         <button :class="`nav-link ${activeTabIndex === index ? 'active' : ''}`" @click="setTab(index)">
-                            {{ navLink.text }}
+                            {{ navLink.tabText }}
                         </button>
                     </li>
                 </ul>
@@ -39,7 +39,7 @@
           {
             id: 1,
             active: false,
-            text: 'Vault Integration & Secret Management',
+            text: 'Secrets',
             tabText: 'Vault Integration & Secret Management',
             imgHref: '/landing/ee/company-stories/secrets.svg',
             imgAlt: 'Secrets',
@@ -47,15 +47,15 @@
           {
             id: 2,
             active: false,
-            text: 'SSO Support',
-            tabText: 'List all your workflow definitions in one place',
+            text: 'SSO',
+            tabText: 'SSO Support',
             imgHref: '/landing/ee/company-stories/sso-support.svg',
             imgAlt: 'SSO',
           },
           {
             id: 3,
             active: false,
-            text: 'Detailed Audit Logs',
+            text: 'Audit Log',
             tabText: 'Detailed Audit Logs',
             imgHref: '/landing/ee/company-stories/audit-log.svg',
             imgAlt: 'Audit Log',
@@ -63,7 +63,7 @@
           {
             id: 4,
             active: false,
-            text: 'Multi-Tenant Architecture',
+            text: 'Tenants',
             tabText: 'Multi-Tenant Architecture',
             imgHref: '/landing/ee/company-stories/tenants.svg',
             imgAlt: 'Tenants',
@@ -96,8 +96,10 @@
         background-size: 102% 267%;
         margin-bottom: calc($spacer * 2.875);
         overflow: hidden;
+
         @include media-breakpoint-down(md) {
             border: none;
+            overflow: unset;
         }
 
         ul {
