@@ -1,38 +1,40 @@
 <template>
-    <Section class="container" subtitle="Building on an" subtitle-after="API-First Platform">
-        <div class="row mt-5">
-            <div class="col-12">
-                <div class="row card-group no-shadow mb-2">
-                    <div class="col-md-4 mb-4">
-                        <Card
-                            :icon="ServerNetwork"
-                            title="API Coverage"
-                            description="From workflow creation to user management, our API reference details how to interact with every aspect of the platform programmatically."
-                        />
+    <div class="container-fluid">
+        <Section class="container px-2" subtitle="Building on an" subtitle-after="API-First Platform">
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="row card-group no-shadow mb-2">
+                        <div class="col-12 col-md-4 mb-4">
+                            <Card
+                                :icon="ServerNetwork"
+                                title="API Coverage"
+                                description="From workflow creation to user management, our API reference details how to interact with every aspect of the platform programmatically."
+                            />
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <Card
+                                :icon="Extensibility"
+                                title="Extensibility for Custom Solutions"
+                                description="Leverage the power of Kestra to create interfaces or enhance existing systems, thanks to the API's flexibility."
+                            />
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <Card
+                                :icon="TerraformIntegration"
+                                title="Terraform Integration & Future SDKs"
+                                description="We offer Terraform integration, and we're expanding our toolkit with SDKs in popular programming languages for even easier integration."
+                            />
+                        </div>
                     </div>
-                    <div class="col-md-4 mb-4">
-                        <Card
-                            :icon="Extensibility"
-                            title="Extensibility for Custom Solutions"
-                            description="Leverage the power of Kestra to create interfaces or enhance existing systems, thanks to the API's flexibility."
-                        />
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <Card
-                            :icon="TerraformIntegration"
-                            title="Terraform Integration & Future SDKs"
-                            description="We offer Terraform integration, and we're expanding our toolkit with SDKs in popular programming languages for even easier integration."
-                        />
-                    </div>
-                </div>
 
-                <div class="text-center">
-                    <a href="https://demo.kestra.io/ui/login?auto" target="_blank"
-                       class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Live demo</a>
+                    <div class="text-center">
+                        <a href="https://demo.kestra.io/ui/login?auto" target="_blank"
+                           class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Live demo</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </Section>
+        </Section>
+    </div>
 </template>
 
 
@@ -57,8 +59,6 @@
     .container {
         padding: calc($spacer * 4) 0;
         background-image: url('/landing/features/scheduling/masking.svg');
-        z-index: 99;
-
         position: relative;
         z-index: 10;
 

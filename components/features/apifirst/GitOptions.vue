@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid bg-dark-1 my-5">
         <div class="container">
-            <div class="workflow-options row">
+            <div class="workflow-options row" data-aos="fade-left">
                 <div class="options-item col-12 col-md-12 col-lg-6">
                     <div class="img-bar">
                         <img src="/landing/features/apifirst/workflow-integration.svg" alt="GitOps with Kestra">
