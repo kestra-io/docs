@@ -11,10 +11,10 @@
         <FeaturesApifirstPlugins />
         <LayoutFooterContact
             title="Getting Started with  Declarative Orchestration"
-            darkButtonText="Read the docs"
+            darkButtonText="Get started"
             darkButtonHref="docs/getting-started"
-            purpleButtonText="Get started"
-            purpleButtonHref="https://github.com/kestra-io/kestra"
+            purpleButtonText="Talk to us"
+            purpleButtonHref="https://kestra.io/demo"
         />
     </div>
 </template>

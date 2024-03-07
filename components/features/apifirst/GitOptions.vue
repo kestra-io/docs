@@ -27,7 +27,7 @@
                             The <span>HTTP Trigger</span> opens your workflows for integration with any external events.
                         </p>
                     </div>
-                    <NuxtLink class="btn btn-animated btn-purple-animated" href="https://kestra.io/docs/developer-guide/git" data-aos="zoom-in">
+                    <NuxtLink class="btn btn-animated btn-purple-animated" href="https://kestra.io/plugins/triggers/http/io.kestra.plugin.fs.http.trigger" data-aos="zoom-in">
                         Learn more
                     </NuxtLink>
                 </div>
