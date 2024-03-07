@@ -26,14 +26,14 @@
                             />
                         </div>
                     </div>
-
-                <div class="text-center">
-                    <a href="https://kestra.io/docs/getting-started/api-reference" target="_blank"
-                       class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Learn more</a>
+                    <div class="text-center">
+                        <a href="https://kestra.io/docs/getting-started/api-reference" target="_blank"
+                           class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Learn more</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </Section>
+        </Section>
+    </div>
 </template>
 
 
