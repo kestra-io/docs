@@ -51,6 +51,12 @@
     }
 
     :deep(.card) {
+
+        .card-body {
+            .card-img-top {
+                border-radius: calc($spacer * 0.5);
+            }
+        }
         .story-tasks {
             display: none !important;
         }

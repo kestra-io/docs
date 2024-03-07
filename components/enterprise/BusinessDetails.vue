@@ -1,95 +1,29 @@
 <template>
-    <div class="container">
+    <div class="container" data-aos="fade-left">
         <div class="business-details-container">
-            <ul class="nav nav-tabs w-100 d-md-flex d-none" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="vault-tab" data-bs-toggle="tab" data-bs-target="#vault" type="button" role="tab" aria-controls="vault" aria-selected="false">
-                        Vault Integration & Secret Management
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="sso-tab" data-bs-toggle="tab" data-bs-target="#sso" type="button" role="tab" aria-controls="sso" aria-selected="true">
-                        SSO Support
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="audit-tab" data-bs-toggle="tab" data-bs-target="#audit" type="button" role="tab" aria-controls="audit" aria-selected="false">
-                        Detailed Audit Logs
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="tenant-tab" data-bs-toggle="tab" data-bs-target="#tenant" type="button" role="tab" aria-controls="tenant" aria-selected="false">
-                        Multi-Tenant Architecture
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="enterprise-tab" data-bs-toggle="tab" data-bs-target="#enterprise" type="button" role="tab" aria-controls="enterprise" aria-selected="false">
-                        Enterprise Blueprints
+            <ul class="nav nav-tabs w-100 d-md-flex d-none">
+                <li class="nav-item" v-for="(navLink, index) in navLinks" :key="navLink.id">
+                    <button :class="`nav-link ${activeTabIndex === index ? 'active' : ''}`" @click="setTab(index)">
+                        {{ navLink.text }}
                     </button>
                 </li>
             </ul>
             <div class="dropdown d-md-none d-block w-100">
                 <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{activeTab}}
+                    {{ navLinks[activeTabIndex].text }}
                 </button>
-                <ul class="dropdown-menu bropdown-menu-bar" id="myTab" role="tablist"s>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="vault-tab" data-bs-toggle="tab" data-bs-target="#vault" type="button" role="tab" aria-controls="vault" aria-selected="false" @click="setTab('Vault Integration & Secret Management')">
-                            Vault Integration & Secret Management
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="sso-tab" data-bs-toggle="tab" data-bs-target="#sso" type="button" role="tab" aria-controls="sso" aria-selected="true" @click="setTab('SSO Support')">
-                            SSO Support
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="audit-tab" data-bs-toggle="tab" data-bs-target="#audit" type="button" role="tab" aria-controls="audit" aria-selected="false" @click="setTab('Detailed Audit Logs')">
-                            Detailed Audit Logs
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tenant-tab" data-bs-toggle="tab" data-bs-target="#tenant" type="button" role="tab" aria-controls="tenant" aria-selected="false" @click="setTab('Multi-Tenant Architecture')">
-                            Multi-Tenant Architecture
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="enterprise-tab" data-bs-toggle="tab" data-bs-target="#enterprise" type="button" role="tab" aria-controls="enterprise" aria-selected="false" @click="setTab('Enterprise Blueprints')">
-                            Enterprise Blueprints
+                <ul class="dropdown-menu dropdown-menu-bar">
+                    <li class="nav-item" v-for="(navLink, index) in navLinks" :key="navLink.id">
+                        <button :class="`nav-link ${activeTabIndex === index ? 'active' : ''}`" @click="setTab(index)">
+                            {{ navLink.text }}
                         </button>
                     </li>
                 </ul>
             </div>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade" id="vault" role="tabpanel" aria-labelledby="vault-tab">
-                    <div class="active-tab-content">
-                        <img src="/landing/ee/copmany-stories/sso-support.svg" alt="">
-                        <p>Vault Integration & Secret Management</p>
-                    </div>
-                </div>
-                <div class="tab-pane fade show active" id="sso" role="tabpanel" aria-labelledby="sso-tab">
-                    <div class="active-tab-content">
-                        <img src="/landing/ee/copmany-stories/sso-support.svg" alt="">
-                        <p>List all your workflow definitions in one place</p>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="audit" role="tabpanel" aria-labelledby="audit-tab">
-                    <div class="active-tab-content">
-                        <img src="/landing/ee/copmany-stories/sso-support.svg" alt="">
-                        <p>Detailed Audit Logs</p>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="tenant" role="tabpanel" aria-labelledby="tenant-tab">
-                    <div class="active-tab-content">
-                        <img src="/landing/ee/copmany-stories/sso-support.svg" alt="">
-                        <p>Multi-Tenant Architecture</p>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="enterprise" role="tabpanel" aria-labelledby="enterprise-tab">
-                    <div class="active-tab-content">
-                        <img src="/landing/ee/copmany-stories/sso-support.svg" alt="">
-                        <p>Enterprise Blueprints</p>
-                    </div>
+            <div class="tab-content">
+                <div class="active-tab-content">
+                    <img :src="navLinks[activeTabIndex].imgHref" :alt="navLinks[activeTabIndex].imgAlt">
+                    <p>{{ navLinks[activeTabIndex].text }}</p>
                 </div>
             </div>
         </div>
@@ -100,12 +34,56 @@
   export default {
     data() {
       return {
-        activeTab: 'SSO Support'
+        activeTabIndex: 1,
+        navLinks: [
+          {
+            id: 1,
+            active: false,
+            text: 'Vault Integration & Secret Management',
+            tabText: 'Vault Integration & Secret Management',
+            imgHref: '/landing/ee/company-stories/sso-support.svg',
+            imgAlt: 'Vault Integration'
+          },
+          {
+            id: 2,
+            active: false,
+            text: 'SSO Support',
+            tabText: 'List all your workflow definitions in one place',
+            imgHref: '/landing/ee/company-stories/sso-support.svg',
+            imgAlt: 'SSO Support'
+          },
+          {
+            id: 3,
+            active: false,
+            text: 'Detailed Audit Logs',
+            tabText: 'Detailed Audit Logs',
+            imgHref: '/landing/ee/sso-support.svg',
+            imgAlt: 'Detailed Audit Logs'
+          },
+          {
+            id: 4,
+            active: false,
+            text: 'Multi-Tenant Architecture',
+            tabText: 'Multi-Tenant Architecture',
+            imgHref: '/landing/ee/company-stories/sso-support.svg',
+            imgAlt: 'Multi-Tenant Architecture'
+          },
+          {
+            id: 5,
+            active: false,
+            text: 'Enterprise Blueprints',
+            tabText: 'Enterprise Blueprints',
+            imgHref: '/landing/ee/company-stories/sso-support.svg',
+            imgAlt: 'Enterprise Blueprints'
+          },
+        ]
       }
     },
     methods: {
-      setTab(tabName) {
-        this.activeTab = tabName
+      setTab(index) {
+        if (this.activeTabIndex !== index) {
+            this.activeTabIndex = index
+        }
       },
     }
   }
@@ -153,7 +131,7 @@
                     }
 
                     @include media-breakpoint-down(lg) {
-                        padding: 1;
+                        padding: 1rem;
                     }
 
                     @include media-breakpoint-down(md) {
@@ -257,7 +235,7 @@
                 }
             }
 
-            .bropdown-menu-bar {
+            .dropdown-menu-bar {
                 width: 100%;
                 color: $white;
                 background-color: $black-4;

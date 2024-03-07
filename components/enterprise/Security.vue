@@ -204,9 +204,14 @@
 
         .security-features {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             gap: calc($spacer * 1.8);
             position: relative;
+
+            :deep(.title-block) {
+                align-items: center;
+            }
+
             @include media-breakpoint-down(lg) {
                 flex-direction: column;
                 align-items: center;

@@ -24,9 +24,9 @@
 
     .container-fluid {
         color: var(--bs-white);
-        background: url("/landing/ee/bg.svg") no-repeat 104% 46%;
-        background-size: 77% 120% !important;
-        border-bottom: $block-border;
+        background: url("/landing/ee/bg.svg") no-repeat 32% 63%;
+        background-size: 127% 181% !important;
+        border-bottom: 1px solid #252526;
 
         @include media-breakpoint-down(md) {
             background-image: none !important;
@@ -38,8 +38,9 @@
         }
 
         h1 {
-            font-size: $h1-font-size;
-            font-weight: 400;
+            font-size: $font-size-4xl;
+            font-weight: 300;
+            font-family: $font-family-sans-serif;
         }
 
         span {
@@ -47,6 +48,11 @@
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-size: $font-size-4xl;
+            letter-spacing: calc($spacer * -0.188);
+            @include media-breakpoint-down(lg) {
+                font-size: 1.625rem !important;
+            }
         }
 
         @include media-breakpoint-down(sm) {
@@ -73,6 +79,15 @@
         }
 
         .hero{
+            padding-bottom: 5rem;
+
+            .baseline {
+                font-weight: 300;
+                @include media-breakpoint-down(lg) {
+                   font-size: $font-size-base;
+                }
+            }
+
             @include media-breakpoint-down(md) {
                 padding-top: 0;
             }
