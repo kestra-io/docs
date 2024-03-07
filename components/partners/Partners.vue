@@ -27,6 +27,16 @@
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-4">
                     <div class="card" data-aos="zoom-in">
+                        <img src="/partners/partners-logos/databricks.svg" class="card-img-top" alt="databricks's Logo">
+                        <div class="card-body">
+                            <p class="card-text">Technology Partner</p>
+                            <h5 class="card-title">Databricks</h5>
+                            <a href="https://databricks.com/" target="_blank">Visit Databricks website <OpenInNew /></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 mb-4">
+                    <div class="card" data-aos="zoom-in">
                         <img src="/partners/partners-logos/motherduck.svg" class="card-img-top" alt="Mother Duck's Logo">
                         <div class="card-body">
                             <p class="card-text">Technology Partner</p>
