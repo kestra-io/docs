@@ -65,6 +65,7 @@
 
         .hero{
             padding-bottom: 0rem;
+            padding-top: 0rem;
             @include media-breakpoint-down(md) {
                 padding-top: 0;
             }

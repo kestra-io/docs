@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid bg-dark-1 my-5">
         <div class="container">
-            <div class="git-options">
+            <div class="git-options" data-aos="zoom-in">
                 <div class="options-item">
                     <div class="title-bar">
                         <h2 class="title">GitOps with Kestra</h2>
