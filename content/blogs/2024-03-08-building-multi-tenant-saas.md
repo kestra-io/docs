@@ -6,7 +6,7 @@ category: Engineering
 author:
   name: Loïc Mathieu
   image: "lmathieu"
-image: /blogs/
+image: /blogs/2024-03-08-building-multi-tenant-saas.jpg
 ---
 
 One of the recent Kestra evolutions I was responsible for was multitenancy support, a critical feature for providing scalable and secure data management solutions to a wide range of clients. This blog post delves into how we're implementing multi-tenancy at Kestra, guided by insights from a recent talk I gave on designing multi-tenant SaaS systems.
