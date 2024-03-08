@@ -113,7 +113,7 @@
         box-shadow: none !important;
 
         &-body {
-            padding: 2rem 2rem 7rem 2rem;
+            padding: 2rem;
         }
 
         &-heading {
