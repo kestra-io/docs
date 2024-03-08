@@ -9,7 +9,7 @@ author:
 image: /blogs/2024-03-07-databricks-partnership.jpg
 ---
 
-We're excited to announce a strategic partnership between [Kestra](https://github.com/kestra-io/kestra) and [Databricks](https://www.databricks.com/), uniting our strengths to enhance the data orchestration and analytics landscape. This collaboration is set to empower data teams by integrating Kestra's orchestration capabilities with Databricks' unified analytics platform, offering a comprehensive solution for managing complex data workflows.
+#### We're excited to announce a strategic partnership between [Kestra](https://github.com/kestra-io/kestra) and [Databricks](https://www.databricks.com/), uniting our strengths to enhance the data orchestration and analytics landscape. This collaboration is set to empower data teams by integrating Kestra's orchestration capabilities with Databricks' unified analytics platform, offering a comprehensive solution for managing complex data workflows.
 
 ## About Databricks
 
