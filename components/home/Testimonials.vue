@@ -194,6 +194,8 @@
     }
     .container {
         :deep(section) {
+            padding: 0;
+            padding-bottom: 4rem;
             .subtitle, .subtitle p {
                 margin: 0 !important;
                 text-align: left !important;
