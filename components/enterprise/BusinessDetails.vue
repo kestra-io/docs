@@ -2,7 +2,7 @@
     <div class="container" data-aos="fade-left">
         <div class="business-details-container">
             <ul class="nav nav-tabs w-100 d-md-flex d-none">
-                <li class="nav-item" v-for="(navLink, index) in navLinks" :key="navLink.id">
+                <li class="nav-item w-25" v-for="(navLink, index) in navLinks" :key="navLink.id">
                     <button :class="`nav-link ${activeTabIndex === index ? 'active' : ''}`" @click="setTab(index)">
                         {{ navLink.tabText }}
                     </button>

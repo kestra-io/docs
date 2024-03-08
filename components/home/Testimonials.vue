@@ -192,6 +192,7 @@
             }
         }
     }
+
     .container {
         :deep(section) {
             padding: 0;
