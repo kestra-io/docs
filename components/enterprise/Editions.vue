@@ -390,7 +390,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Official support for Github Actions, GitLab, Azure DevOps and more CI/CD providers</td>
+                                    <td>Official support for GitHub Actions, GitLab, Azure DevOps and more CI/CD providers</td>
                                     <td>
                                         <img src="/landing/enterprise/check.svg" alt="Check"/>
                                     </td>
