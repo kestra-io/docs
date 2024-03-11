@@ -4,8 +4,8 @@ description: "Discover how Kestra and Databricks unite to transform data workflo
 date: 2024-03-07T12:00:00
 category: Company News
 author:
-  name: Martin-Pierre Roset
-  image: "mproset"
+  name: Emmanuel Darras
+  image: "edarras"
 image: /blogs/2024-03-07-databricks-partnership.jpg
 ---
 
