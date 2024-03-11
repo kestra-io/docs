@@ -29,7 +29,7 @@ As a front-end engineer at Kestra, you'll work on developing:
 - Ability to develop a full interface based on figma design.
 - Speaking/writing in English.
 - Experience working on a full remote company.
-- Experience with writing good tests for applications, automation of testing, agile development, Git and Github workflows.
+- Experience with writing good tests for applications, automation of testing, agile development, Git and GitHub workflows.
 - Track record of learning new technologies and concepts quickly.
 - Ability to work both autonomously and collaboratively, as needed.
 - Strong written and verbal communications skills.
