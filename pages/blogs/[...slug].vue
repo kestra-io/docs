@@ -47,7 +47,7 @@
                 </ContentRenderer>
             </article>
             <div class="bottom">
-                <DocsBlogs title="More contents"/>
+                <DocsBlogs title="More content"/>
                 <Updateletter/>
             </div>
         </div>

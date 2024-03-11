@@ -1,6 +1,6 @@
 ---
 title: Recursive rendering of Pebble expressions
-icon: /docs/icons/migrations.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.14.0
 ---
 
