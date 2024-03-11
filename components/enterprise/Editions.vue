@@ -65,7 +65,7 @@
                         Compare all features <ChevronUp v-if="!isOpen" /><ChevronDown v-if="isOpen" />
                     </button>
                     <div id="compare" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body feature-comparison">
+                        <div class="accordion-body feature-comparison table-responsive">
                             <table>
                                 <tr>
                                     <th>Features</th>
