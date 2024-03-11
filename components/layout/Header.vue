@@ -59,6 +59,16 @@
                                     </p>
                                 </NuxtLink>
                             </li>
+                            <li>
+                                <NuxtLink class="dropdown-item" href="/features/code-in-any-language"
+                                          @click="globalClick(true)">
+                                    <Translate />
+                                    <p>
+                                        <span>Language Agnostic</span><br />
+                                        Separate your Business Logic from Orchestration Logic
+                                    </p>
+                                </NuxtLink>
+                            </li>
                         </ul>
                     </li>
 
@@ -308,6 +318,7 @@ import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
 import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
 import Sync from "vue-material-design-icons/Sync.vue"
 import BasketOutline from "vue-material-design-icons/BasketOutline.vue"
+import Translate from "vue-material-design-icons/Translate.vue"
 </script>
 
 <script>
