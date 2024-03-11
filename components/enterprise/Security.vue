@@ -111,7 +111,7 @@
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
     :deep(section) {
-        margin-top: calc($spacer * 7.813);
+        margin-top: calc($spacer * 7.8);
         position: relative;
 
         &:before {
@@ -167,8 +167,8 @@
             {
                 content: "";
                 position: absolute;
-                width: calc($spacer * 12.5);
-                height: calc($spacer * 12.5);
+                width: calc($spacer * 12);
+                height: calc($spacer * 12);
                 background: radial-gradient(50% 50% at 50% 50%, #343434 0%, rgba(127, 122, 232, 0) 195% 117%);
                 filter: blur(47px);
                 z-index: -5;
@@ -231,8 +231,8 @@
             &::before {
                 content: "";
                 position: absolute;
-                width: calc($spacer * 12.5);
-                height: calc($spacer * 12.5);
+                width: calc($spacer * 12);
+                height: calc($spacer * 12);
                 background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
                 filter: blur(100px);
                 z-index: -5;
