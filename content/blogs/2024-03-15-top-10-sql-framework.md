@@ -35,8 +35,30 @@ SCREENSHOT AIRFLOW
 
 ## 2) Terraform
 
-- IaC prominence
-- screenshot example big query view
+Cloud infrastructure management has undergone a revolution with Infrastructure as Code (IaC) becoming the go-to approach. Tools like [Terraform](https://kestra.io/blogs/2023-09-19-kestra-terraform-partnership), with its single language (HCL), dependency management, and modular design, allow seamless configuration of diverse resources. Teams can collaborate effortlessly across different resources thanks to Terraform's providers and the unified declarative syntax, streamlining workflows for various infrastructure needs.
+
+Declaring queries with Terraform resources is often something overlooked. But if your modeling is simple enough, using only [resources like google_bigquery_table with Terraform](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table) to build views on top of raw data can be a very lightweight solution.
+
+```hcl
+resource "google_bigquery_table" "dwh_organizations" {
+  project = data.google_project.prd.project_id
+  dataset_id = google_bigquery_dataset.dwh.dataset_id
+  table_id = "organizations"
+  deletion_protection = false
+
+  view {
+    query = templatefile("bigquery/dwh/simple_select.sql", {
+      project = google_bigquery_dataset.ods.project
+      dataset = google_bigquery_dataset.ods.dataset_id
+      table = "organizations"
+    })
+    use_legacy_sql = false
+  }
+}
+```
+While Terraform might not be ideal for scenarios requiring complex incremental strategies, diverse materialization methods, or when data analysts lack familiarity with the tool, it excels in managing simpler pipelines. 
+
+For instance, platform or data engineers often used to Terraform can effectively orchestrate their daily FinOps analytics pipelines this way.
 
 
 ## 3) y42
