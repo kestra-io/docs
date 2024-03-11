@@ -1,6 +1,6 @@
 ---
 title: Migration to Micronaut 4.3
-icon: /docs/icons/migrations.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.15.0
 ---
 
