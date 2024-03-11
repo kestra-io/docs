@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-4 mask">
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
                 <div class="card h-100 d-flex" data-aos="fade-right">
                     <div class="card-body mx-2">
                         <div class="d-flex align-items-center gap-3">
@@ -83,10 +83,25 @@
     .container {
         padding: calc($spacer * 4) 0;
         background-image: url('/landing/features/scheduling/masking.svg');
+        position: relative;
         z-index: 99;
+
+        &::after{
+            content: "";
+            position: absolute;
+            height: calc($spacer * 20);
+            width: calc($spacer * 23);
+            right: 19%;
+            bottom: calc($spacer * 10);
+            z-index: 10;
+            background: linear-gradient(180deg, rgba(98, 24, 255, 0), #6117FF 100%);
+            filter: blur(100px);
+        }
+
         .heading{
             max-width: 500px;
         }
+
         .title {
             font-weight: 300;
             font-size: $font-size-3xl;
@@ -99,6 +114,7 @@
 
             }
         }
+
     }
 
     h3 {
@@ -127,21 +143,6 @@
             font-weight: 400;
             line-height: 1.375;
             color: $white-1;
-        }
-    }
-    .mask{
-        position: relative;
-        z-index: 99;
-        &::after{
-            content: "";
-            position: absolute;
-            height: calc($spacer * 16.656);
-            width: calc($spacer * 10.641);
-            right: calc($spacer * -5.887);
-            bottom: calc($spacer * -14.531);
-            z-index: 10;
-            background: linear-gradient(180deg, rgba(98, 24, 255, 0.00), #6117FF 100%);
-            filter: blur(100px);
         }
     }
 </style>
