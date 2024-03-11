@@ -1,6 +1,6 @@
 ---
 title: Script tasks moved to dedicated plugins
-icon: /docs/icons/migrations.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.11.0
 ---
 

@@ -479,7 +479,7 @@ tasks:
 ### Templates
 
 ::alert{type="warning"}
-Templates are now marked as **deprecated**. Please use **subflows** instead. The [migration documentation](https://kestra.io/docs/migrations/templates) explains why templates are being phased out and how to transition from templates to subflows.
+Templates are now marked as **deprecated**. Please use **subflows** instead. The [migration documentation](https://kestra.io/docs/migration-guide/templates) explains why templates are being phased out and how to transition from templates to subflows.
 ::
 
 If you are using templates and you are not ready to migrate to subflows yet, add the following Kestra configuration option to still be able to use them:
@@ -524,7 +524,7 @@ We have further **improved performance** across multiple areas, including:
 The **documentation enhancements** include, among others:
 - [New welcome page](https://kestra.io/docs) explaining the product principles
 - [New troubleshooting section](https://kestra.io/docs/troubleshooting) explaining a.o. how to troubleshoot networking issues when running Kestra locally with Docker-Compose
-- [New migrations section](https://kestra.io/docs/migrations) explaining how to migrate from older versions of Kestra and how to transition from deprecated features e.g. from templates to subflows
+- [New migrations section](https://kestra.io/docs/migration-guide) explaining how to migrate from older versions of Kestra and how to transition from deprecated features e.g. from templates to subflows
 - [New FAQ page](https://kestra.io/faq)
 - [Improved inputs docs](https://kestra.io/docs/developer-guide/inputs) providing examples on how to use custom input validators.
 
