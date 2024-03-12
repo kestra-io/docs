@@ -5,7 +5,7 @@ icon: /docs/icons/admin.svg
 
 Here are the configuration options for the heartbeat.
 
-JDBC have a concept of heartbeats that periodically check the health of a worker at the specified `frequency`.
+Deployments based on the [JDBC architecture](../04.architecture/index.md#architecture-with-jdbc-backend) use a concept of heartbeats that periodically check the health of a worker at the specified `frequency`.
 
 * If the last healthcheck is older than `heartbeat-missed * frequency`, the worker will be marked as unhealthy.
 * If the last healthcheck is older than `heartbeat-missed * frequency * 2`, the worker will be deleted.
