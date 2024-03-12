@@ -71,7 +71,6 @@
     @import "../../assets/styles/variable";
 
     .container {
-        border-top: $block-border;
         border-bottom: $block-border;
     }
 
