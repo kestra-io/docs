@@ -1,14 +1,14 @@
 ---
 title: "Interacting with Databricks using Kestra"
 description: Kestra’s Databricks plugin makes data warehousing simple. Even non-developers can build their own data pipelines in just a few lines of code.
-date: 2024-03-04T10:00:00
+date: 2024-03-12T10:00:00
 category: Solutions
 author:
   name: Shruti Mantri
   image: "smantri"
 ---
 
-Databricks provides a unified analytics platform for data scientists, engineers, and analysts to seamlessly collaborate on big data and machine learning projects. This post demonstrates [Kestra](https://github.com/kestra-io/kestra) how various data engineering activities can be performed on Databricks using Kestra's plugin.
+**Databricks provides a unified analytics platform for data scientists, engineers, and analysts to seamlessly collaborate on big data and machine learning projects. This post demonstrates how various data engineering activities can be performed on Databricks using [Kestra](https://github.com/kestra-io/kestra)'s plugin.**
 
 ## About Databricks ##
 
@@ -36,7 +36,7 @@ Kestra's Databricks plugin provides an efficient solution for creating intricate
 
 All the Kestra's Database plugin tasks will require you to provide the Databricks host name and authentication token to communicate with the Databricks cluster. In order to generate the authentication token for your cluster, you should go to the `Settings` and go to `Developer` tab. Here, you would have `Access tokens` section. Click on the “Manage” button in this section. Here you can generate a new token. You can put a comment on “What's this token for?” text box, and select the appropriate lifetime for the token. Click on the "Generate" button. This will generate the new token.
 
-![generate_new_token](/blogs/2024-03-04-kestra-databricks/generate_new_token.png)
+![generate_new_token](/blogs/2024-03-12-kestra-databricks/generate_new_token.png)
 
 Do ensure that you save the generated token with you before hitting "Done" on the popup, as you will not be able to access this token any time later.
 
@@ -63,7 +63,7 @@ tasks:
 
 Post running this flow, you can check that the newly created compute cluster should now appear under the Compute section on the Databricks console.
 
-![create_compute_cluster](/blogs/2024-03-04-kestra-databricks/create_compute_cluster.png)
+![create_compute_cluster](/blogs/2024-03-12-kestra-databricks/create_compute_cluster.png)
 
 ### Upload file to Databricks File System ###
 
@@ -129,7 +129,7 @@ tasks:
 
 Once you run this flow, take a look at the Outputs tab of this execution. The Outputs tab will provide the `size` indicating the number of records fetched by the query, and an `uri` to the Kestra’s internal storage file which contains the fetched records from the query.
 
-![top_10_orders_query_output](/blogs/2024-03-04-kestra-databricks/top_10_orders_query_output.png)
+![top_10_orders_query_output](/blogs/2024-03-12-kestra-databricks/top_10_orders_query_output.png)
 
 ### Delete Compute Cluster ###
 
