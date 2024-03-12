@@ -273,7 +273,7 @@ const tableData = ref([
     },
     {
         id: 40,
-        title: "Official support for Github Actions, GitLab, Azure DevOps and more CI/CD providers",
+        title: "Official support for GitHub Actions, GitLab, Azure DevOps and more CI/CD providers",
         isOpenSource: true,
         isEnterprise: true,
     },

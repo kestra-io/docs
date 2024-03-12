@@ -1,6 +1,6 @@
 ---
 title: Deprecation of Templates
-icon: /docs/icons/migrations.svg
+icon: /docs/icons/migration-guide.svg
 release: 0.11.0
 ---
 
@@ -160,7 +160,7 @@ tasks:
 
 You can look at both a flow with a template task and a flow with a subflow task side by side to see the difference in syntax:
 
-![template-vs-subflow](/docs/migrations/template-vs-subflow.png)
+![template-vs-subflow](/docs/migration-guide/template-vs-subflow.png)
 
 If you still have questions about migrating from templates to subflows, reach out via our [Community Slack](https://kestra.io/slack).
 

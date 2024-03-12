@@ -68,6 +68,13 @@
                                         Separate your Business Logic from Orchestration Logic
                                     </p>
                                 </NuxtLink>
+                                <NuxtLink class="dropdown-item" href="/features/api-first" @click="globalClick(true)">
+                                    <Earth />
+                                    <p>
+                                        <span>API-First</span><br />
+                                        Learn more about Kestra’s API features
+                                    </p>
+                                </NuxtLink>
                             </li>
                         </ul>
                     </li>
@@ -319,6 +326,7 @@ import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
 import Sync from "vue-material-design-icons/Sync.vue"
 import BasketOutline from "vue-material-design-icons/BasketOutline.vue"
 import Translate from "vue-material-design-icons/Translate.vue"
+import Earth from "vue-material-design-icons/Earth.vue"
 </script>
 
 <script>

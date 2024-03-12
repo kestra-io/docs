@@ -43,11 +43,11 @@
                         <template #header>
                             <BlogDetails :blog="page"/>
                         </template>
-                    </NavToc>s
+                    </NavToc>
                 </ContentRenderer>
             </article>
             <div class="bottom">
-                <DocsBlogs title="More contents"/>
+                <DocsBlogs title="More content"/>
                 <Updateletter/>
             </div>
         </div>
@@ -176,14 +176,14 @@
         row-gap: 0px;
     }
 
-    .bd-title {
-        margin-top: calc($spacer * 4.5);
-    }
-
     .bd-content{
         max-width: 100%;
         img {
             border: $block-border;
+        }
+
+        img:first-child {
+            width: 100%;
         }
 
         &::after {

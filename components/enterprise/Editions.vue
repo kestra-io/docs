@@ -24,7 +24,7 @@
                                 <li data-aos="fade-right" data-aos-delay="350">Live-updating topology view</li>
                                 <li data-aos="fade-right" data-aos-delay="400">Access to 400+ plugins</li>
                                 <li data-aos="fade-right" data-aos-delay="450">Git & CI/CD integrations</li>
-                                <li data-aos="fade-right" data-aos-delay="500">Basic authentification</li>
+                                <li data-aos="fade-right" data-aos-delay="500">Basic authentication</li>
                                 <li data-aos="fade-right" data-aos-delay="550">Community support</li>
                             </ul>
                         </div>
@@ -65,7 +65,7 @@
                         Compare all features <ChevronUp v-if="!isOpen" /><ChevronDown v-if="isOpen" />
                     </button>
                     <div id="compare" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body feature-comparison">
+                        <div class="accordion-body feature-comparison table-responsive">
                             <table>
                                 <tr>
                                     <th>Features</th>
@@ -390,7 +390,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Official support for Github Actions, GitLab, Azure DevOps and more CI/CD providers</td>
+                                    <td>Official support for GitHub Actions, GitLab, Azure DevOps and more CI/CD providers</td>
                                     <td>
                                         <img src="/landing/enterprise/check.svg" alt="Check"/>
                                     </td>
