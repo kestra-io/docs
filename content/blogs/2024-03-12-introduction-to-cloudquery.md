@@ -43,7 +43,7 @@ CloudQuery offers many useful source and destination [plugins](https://hub.cloud
 
 **Source plugins** collect data from the source system's APIs, and **destination plugins** push that data to specific target destinations. You can think of plugins as microservices that conform to a gRPC API spec. The role of a source plugin is to collect information and adapt it to the desired destination schema using CloudQuery's Apache Arrow-based type system. Destination plugins are then responsible for taking the serialized data received from a source plugin and converting them into a suitable storage format (i.e., the logic to write to a database, a file, or a third-party API).
 
-CloudQuery also offers a managed service called [CloudQuery Cloud](https://cloud.cloudquery.io/). You can sign up, generate an API key, and log in from the CLI using:
+CloudQuery also operates [CloudQuery Hub](https://cloud.cloudquery.io/), a managed service that hosts the source and destination plugins. You can sign up, generate an API key, and log in from the CLI using:
 
 ```bash
 cloudquery login
