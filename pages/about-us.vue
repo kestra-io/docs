@@ -15,7 +15,7 @@
         <CompanyPress/>
         <LayoutFooterContact
             title="Join Our Team and Contribute to the Future of Data Orchestration"
-            purpleButtonText="Get started"
+            purpleButtonText="See open roles"
             purpleButtonHref="/careers"
         />
     </div>

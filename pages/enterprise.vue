@@ -8,8 +8,10 @@
 
         <EnterpriseHeader/>
         <EnterpriseCustomers/>
+        <EnterpriseBusinessByUs/>
         <EnterpriseSecurity/>
-        <EnterpriseEditions/>
+        <EnterpriseBusinessDetails/>
+        <EnterpriseCompanyStories/>
         <LayoutFooterContact
             darkButtonText="Get Started"
             darkButtonHref="https://github.com/kestra-io/kestra"
