@@ -7,10 +7,10 @@ export default defineNuxtPlugin(nuxtApp => {
     const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
 
     nuxtApp.hook('page:finish', () => {
-        const {grantConsent} = useGtag()
+        const {initialize} = useGtag()
 
         const enabledAnalytics = async () => {
-            grantConsent();
+            initialize();
 
             const response = await axios.get('https://api.kestra.io/v1/config', {withCredentials: true})
 
