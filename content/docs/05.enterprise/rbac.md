@@ -21,7 +21,7 @@ A Role is a collection of permissions that can be assigned to Users, Service Acc
 Theses permissions are defined by a combination of a **Permission** (e.g. `FLOWS`) and an **Action** (
 e.g. `CREATE`).
 
-::collapse{title="More informations"}
+::collapse{title="More information"}
 
 The **Role** itself does not grant any permissions to anyone.\
 Through the **Access* UI page, you will be able to attach a Role to a User,
@@ -35,7 +35,6 @@ a Role attached to the `prod` namespace will automatically grant access to `prod
 
 In short, Roles encapsulate permission boundaries that can be attached to users, service accounts or groups across
 tenants and namespaces.
-
 ::
 
 ### Permissions
@@ -81,7 +80,7 @@ Super Admin is a type of user that works outside the box. Without any Role or Bi
 users, roles, groups and access within a Kestra Enterprise instance.\
 The purpose of the Super Admin is to allow an easy management of your instance.
 
-::collapse{title="More informations"}
+::collapse{title="More information"}
 
 #### Use Cases
 
@@ -111,13 +110,14 @@ kestra auths users create <username> <password> \
 ```
 ::
 
-::collapse{title="Give/Revoke Super Admin privilege"}
+::collapse{title="Grant/Revoke Super Admin permissions"}
 
 ::alert{type="info"}
 Note that you need to be a super admin yourself.
 ::
 
 #### Through the UI
+
 You can give or revoke the Super Admin privilege
 using the switch in the User Edit page.
 
