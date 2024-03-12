@@ -12,11 +12,11 @@ However, if you want to use Git to track changes to your [Flows](../06.workflow-
 There are multiple ways to use Git with Kestra:
 - The [git.Sync](https://kestra.io/plugins/plugin-git/tasks/io.kestra.plugin.git.sync) pattern allows you to implement GitOps and use Git as a single source of truth; this pattern is useful if you want to use Git as a single source of truth and avoid making changes to flows and Namespace Files from the UI
 - The [git.Push](https://kestra.io/plugins/plugin-git/tasks/io.kestra.plugin.git.push) pattern allows you to edit your flows and Namespace Files from the UI and regularly commit and push changes to Git; this pattern is useful if you want to use the built-in Editor in the UI and still have your code in Git
-- The [CI/CD](./cicd/index.md) pattern is useful if you want to manage the CI/CD process yourself e.g. via GitHub Actions or Terraform, and keep Git as a single source of truth for your code.
+- The [CI/CD](../08.developer-guide/cicd/index.md) pattern is useful if you want to manage the CI/CD process yourself e.g. via GitHub Actions or Terraform, and keep Git as a single source of truth for your code.
 
 The image below shows how to choose the right pattern based on your needs:
 
 ![git](/docs/developer-guide/git/git.png)
 
-For a detailed comparison of the three patterns, check the [Version Control with Git](./git-patterns.md) page.
+For a detailed comparison of the three patterns, check the [Version Control with Git](../08.developer-guide/04.git.md) page.
 
