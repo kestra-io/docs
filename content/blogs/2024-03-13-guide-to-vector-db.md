@@ -57,7 +57,7 @@ For the rest of the article examples, the vectors I will be referring to are cre
 
 ### Search algorithms and indexes 
 
-Let’s use the previous example to help understand how search works in VDBs. Consider a corpus of help documents. One of the sections in the document explains how to enable and disable a workflow. Your customers or users, come from all over the world and will probably express their query with a set of related terms. With lexical search, the user must use “enable” or “disable”, and “workflow” to retrieve a result. If the user writes, “How do I start a workflow?” they get nothing, or they get unrelated results. That’s friction; I hate friction.**
+Let’s use the previous example to help understand how search works in VDBs. Consider a corpus of help documents. One of the sections in the document explains how to enable and disable a workflow. Your customers or users, come from all over the world and will probably express their query with a set of related terms. With lexical search, the user must use “enable” or “disable”, and “workflow” to retrieve a result. If the user writes, “How do I start a workflow?” they get nothing, or they get unrelated results. That’s friction; I hate friction.
 
 Vector databases, whether they contain embeddings for text, images, or music, use the semantic qualities of data. Semantic refers to the meaning or context of data, rather than its characteristics (like data type or range of values). Semantic analysis is the process of analyzing and interpreting the meaning of data to extract relevant information and insights.
 
@@ -65,7 +65,7 @@ Similar to text embeddings, visual embeddings also capture the semantic qualitie
 
 VDB search uses semantic similarity, and similarity is not binary, it is a matter of degree.
 
-For example, below are two sentence pairs that have been encoded as embedding vectors and compared using the [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) function:**
+For example, below are two sentence pairs that have been encoded as embedding vectors and compared using the [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) function:
 
 ```
 # model = SentenceTransformer("all-MiniLM-L6-v2")
@@ -84,7 +84,7 @@ Similarity Score: 0.6521
 
 Here, the calculated cosine similarity values of float data type, with values between -1 meaning exactly opposite, to 1 meaning exactly the same.
 
-Why are the first two pairs more similar (**0.8491**) than the second pair (**0.6521**)?**
+Why are the first two pairs more similar (**0.8491**) than the second pair (**0.6521**)?
 
 It is critical to understand that this depends entirely on the model used to encode the vectors.
 
@@ -100,7 +100,7 @@ What really matters is how well a particular VDB handles your use cases.
 
 ## Comparing VDB metrics and benchmarks 
 
-**This is where the rubber meets the vector database road. The solution to the search problem is what separates the leaders from the hackers.
+This is where the rubber meets the vector database road. The solution to the search problem is what separates the leaders from the hackers.
 
 **There are six metrics here that you should concern yourself with:**
 
@@ -142,7 +142,7 @@ As for all the other aspects of a vector database, you need to consider the same
 
 **Wait, four dimensions? Scale up, scale out, and …? Scale the number of records and scale vector size. Yup.**
 
-When considering what kind of infra you’ll need to load and perf test your vector db candidates, you will need to consider how well you can scale up and out at a given db size and vector size. I can almost guarantee that within the first year of operation, some new language model will come along that makes a huge difference using vectors half the size. Or, twice the size. You get what I mean. More about this later.**
+When considering what kind of infra you’ll need to load and perf test your vector db candidates, you will need to consider how well you can scale up and out at a given db size and vector size. I can almost guarantee that within the first year of operation, some new language model will come along that makes a huge difference using vectors half the size. Or, twice the size. You get what I mean. More about this later.
 
 ---
 
@@ -242,13 +242,13 @@ Let’s use a text model to explain. In a text model’s training dataset, the s
 
 Embeddings reduce the size of the vector needed to encode some text from the high-dimensional space (21,441 dimensions) to a low-dimensional space of, 384 or 768 dimensions, depending on the model. This process reduces the complexity of the data while still preserving the essential information about the text's semantic content.
 
-You may also see the terms ‘sparse’ or ‘dense’ vectors. These refer to the number of vectors where the element values are equal to zero, i.e., sparse means lots of zero values. Zero values tell us nothing so ML doesn’t like them. Dense vectors are much better.**
+You may also see the terms ‘sparse’ or ‘dense’ vectors. These refer to the number of vectors where the element values are equal to zero, i.e., sparse means lots of zero values. Zero values tell us nothing so ML doesn’t like them. Dense vectors are much better.
 
 If you’d like to read more technical details about embedding, I can highly recommend this article form VBD maker Pinecone: [Sentence Transformers: Meanings in Disguise | Pinecone](https://www.pinecone.io/learn/series/nlp/sentence-embeddings/)
 
 In the code examples I wrote for this article, I’m using the [Sentence Transformer](https://www.sbert.net/) created by Nils Reimers, currently the director of ML at Cohere.ai.
 
-**I’ve chosen two sentence transformer models for the demo code, which are described very well [here](https://www.sbert.net/docs/pretrained_models.html)
+I’ve chosen two sentence transformer models for the demo code, which are described very well [here](https://www.sbert.net/docs/pretrained_models.html)
 
 These descriptions are critical to the proper use of the models.
 
@@ -279,8 +279,6 @@ Think of a model as if it were a person, and the model’s training data as the 
 
 Now imagine that you can encode your total understanding of “disable” in a vector with 768 dimensions but I can only use a vector of 384 dimensions to encode mine. The embeddings we produce will always be different. And when we use something like the cosine similarity function or the [Euclidean distance function](https://en.wikipedia.org/wiki/Euclidean_distance) to compare similarity between our embeddings, they, too, will be different.
 
-
-
 ---
 
 ## Embedding Vectors are not interchangeable
@@ -308,7 +306,6 @@ If you do this, then from the moment this goes into production, you will need to
 
 Since I have no control over ChatGPT’s code, testing, or releases, I do not use their embeddings. Also, there’s really no need to pay for embeddings when so many open-source models can do just about everything you need for no per-transaction fee.
 
-
 ---
 
 ## Vector databases in your architecture
@@ -332,8 +329,7 @@ Abstraction is the art of simplifying complex systems by focusing on essential d
 - Flexibility and Adaptability – Abstracting core functionalities allows for easier modifications and upgrades. Changes within a module can be made without affecting the entire system as long as the public interface remains consistent. This future-proofs the architecture and facilitates adaptation to evolving needs.
 - Reducing Complexity – By hiding unnecessary details, abstraction helps developers grasp the big picture and reason about the overall system behavior without getting overwhelmed by low-level complexities.
 
-**But How? [The Facade Pattern](https://en.wikipedia.org/wiki/Facade_pattern#:~:text=The%20facade%20pattern%20(also%20spelled,complex%20underlying%20or%20structural%20code.). A facade is an object that serves as a front-facing interface masking more complex underlying or structural code. Put your chosen VDB behind a facade API layer, and ensure that the API is generic and not tightly coupled to your particular VDB’s implementation details.**
-
+But How? The Facade Pattern. A facade is an object that serves as a front-facing interface masking more complex underlying or structural code. Put your chosen VDB behind a facade API layer, and ensure that the API is generic and not tightly coupled to your particular VDB’s implementation details.
 
 ---
 
@@ -347,7 +343,7 @@ ChatGT is pretty awesome, but for many use cases, it is expensive or overkill. S
 
 - [Topic Modeling](https://www.sbert.net/examples/applications/clustering/README.html#topic-modeling) is a key machine-learning technique that uses statistical methods to analyze text data. It's used to create structured data from unstructured data. It’s also necessary for the observability example I used above.
 
-- [Yes, Image Search!](https://www.sbert.net/examples/applications/image-search/README.html)**
+- [Yes, Image Search!](https://www.sbert.net/examples/applications/image-search/README.html)
 
 SentenceTransformers provides models that allow us to embed images and text into the same vector space to implement image search.
 
