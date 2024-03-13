@@ -119,11 +119,11 @@
             position: absolute;
             height: 100%;
             width: 100%;
-            position: absolute;
             background: url("/landing/ee/background-mask.svg") no-repeat center;
             background-size: 156% 100%;
             overflow: hidden;
             top: -33%;
+            z-index: -1;
         }
         .subtitle {
             margin: 0 !important;
