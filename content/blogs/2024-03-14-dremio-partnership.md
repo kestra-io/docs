@@ -1,6 +1,6 @@
 ---
-title: "Databricks & Kestra Joining Force in a Technological Partnership"
-description: "Discover how Kestra and Databricks unite to transform data workflows, dive into our integrated approach to managing complex data processes"
+title: "Dremio & Kestra Partnership, Orchestrate Workflows Built on Top of Your Data Lakehouse"
+description: "We are proud to announce our Partnership with Dremio, the data lakehouse platform that simplifies big data analytics"
 date: 2024-03-14T08:00:00
 category: Company News
 author:
@@ -27,7 +27,7 @@ Together, we reduce unnecessary coding overhead and eliminate the need for compl
 
 ### Practical Applications of the Kestra-Dremio Integration
 
-In addition to our partnership, we've recently launched the Dremio and Arrow Flight SQL plugins, demonstrating our commitment to streamline data lakehouse workflows. These innovations allow for seamless integration of Dremio with Kestra, empowering users to automate complex data processes including:
+In addition to our partnership, we've recently launched the Dremio and Arrow Flight SQL plugins to orchestrate your data lakehouse workflows. These plugins , empower users to automate complex data processes including:
 
 - Trigger when there is an anomaly in the Dremio database, or when certain KPIs fall outside of an expected range.
 - Run SQL queries against Dremio databases to fetch data for downstream processing in Python, R, or other languages supported by Kestra.
