@@ -68,7 +68,7 @@
             </div>
             <div class="row mt-1 mb-5">
                 <div class="d-flex justify-content-center">
-                    <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                    <NuxtLink href="/pricing" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                         Compare all features
                     </NuxtLink>
                 </div>
