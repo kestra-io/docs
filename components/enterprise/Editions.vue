@@ -11,7 +11,7 @@
                         <div class="card-body p-3 p-sm-5">
                             <h4 class="card-title" data-aos="fade-right">Open-Source Edition</h4>
                             <p class="type" data-aos="fade-left">Free</p>
-                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-dark-animated w-100" data-aos="zoom-in">
+                            <NuxtLink href="/pricing" class="btn btn-animated btn-dark-animated w-100" data-aos="zoom-in">
                                 Get started
                             </NuxtLink>
                             <ul>
