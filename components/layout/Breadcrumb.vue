@@ -47,8 +47,8 @@
         white-space: pre-wrap;
         width: 100%;
         font-size: $font-size-sm;
-        font-family: var(--bs-font-monospace);
-        font-weight: 600;
+        font-family: $font-family-sans-serif;
+        font-weight: 400;
         margin: 0 auto;
         @include media-breakpoint-down(lg) {
             a {
@@ -63,7 +63,7 @@
 
         span {
             &:before {
-                content: '>';
+                content: '/';
                 margin-right: 0.25rem;
                 margin-left: 0.25rem;
                 color: #CDD5EF !important;
