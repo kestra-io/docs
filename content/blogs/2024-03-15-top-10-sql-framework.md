@@ -123,7 +123,10 @@ Check out [Quary GitHub repository](https://github.com/quarylabs/quary) and [doc
 
 ## 7) lea
 
-X most mature in-house
+Crafted in-house by the data experts at [Carbonfact](https://www.carbonfact.com/), [Lea](https://github.com/carbonfact/lea)is intentionally a simple and opinionated solution prioritizing ease of use while still offering room for customization.  At Carbonfact, Lea is their go-to tool for managing their data warehouse, and it currently integrates seamlessly with [BigQuery](https://cloud.google.com/bigquery) and [DuckDB](https://duckdb.org/). 
+
+If you're looking for a lightweight alternative to established options like dbt, SQLMesh, or Dataform, Lea is definitely worth considering.
+
 
 ## 8) Malloy
 
@@ -145,7 +148,7 @@ X not OSS
 
 A newcomer to the scene, [Yato](https://github.com/Bl3f/yato) stands out as possibly the most lightweight SQL framework available. Designed for simplicity and speed, Yato takes a folder containing your SQL queries (or even Python transformations) and automatically determines the dependency order.
 
-This eliminates the need for complex configuration, letting you focus on writing your data manipulation logic.  Yato excels when used alongside [dlt](https://dlthub.com/), a data loading tool. Together, this duo streamlines your data workflow by handling both data acquisition and transformation. It can be quite useful for simple projects and fast experimentation.
+This eliminates the need for complex configuration, letting you focus on writing your data manipulation logic.  Yato excels when used alongside [dlt, a data-loading tool. Together, this duo streamlines your data workflow by handling both data acquisition and transformation. It can be quite useful for simple projects and fast experimentation.
 
 
 ## SQL Framework + Kestra = Complete Holistic Stack
