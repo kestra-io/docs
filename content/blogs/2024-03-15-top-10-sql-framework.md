@@ -14,8 +14,9 @@ Many discussions in data analytics assume everyone uses the ELT approach, with S
 But, the reality is that many teams use different data stacks and tools. This blog post unpacks the various SQL frameworks, highlighting the trade-offs each method presents for different project requirements.
 
 ## dbt core
-The most popular + why is the most popular and widely adopted
-But it has shortcomings discussed in this post – Link to the dbt vs SQLMesh post
+
+X The most popular + why is the most popular and widely adopted
+X But it has shortcomings discussed in this post – Link to the dbt vs SQLMesh post
 
 ## 1) Airflow
 
@@ -63,8 +64,17 @@ For instance, platform or data engineers often used to Terraform can effectively
 
 ## 3) y42
 
-- modern data stack (= analytics stack) orchestrator
-- not OSS
+
+While dbt can be seen as a point solution for the T in ELT, an analytics stack often starts with data extraction processes. Therefore, it's important to be able to orchestrate these two concepts together.
+
+Y42 helps here with built-in ingestion capabilities allowing to orchestrate all steps together. From Airbyte, Fivetran dbt models and Python scripts, Y42 makes it possible to build a lightweight "Extract-Load" pattern with enhanced monitoring, isolated branch environments and automated deployments.
+
+While it's not an open-source tool, Y42 can be a good alternative to dbt Cloud offering. [Check out their comparison](https://www.y42.com/compare/y42-vs-dbt-cloud) with the latter in a dedicated blog post.
+
+Y42 can still be limiting for teams looking for a full control plane. Orchestrating custom containers or handling complex dependencies management is not the goal of Y42: it's more about streamlining a sequential extract-load process for data analytics purposes.
+
+IMAGE: https://www.y42.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-page-hero-img.dfe545ec.webp&w=1920&q=75
+
 
 ## 4) SQLMesh
 
@@ -83,28 +93,70 @@ If you're looking to learn more about SQLmesh and the differences with dbt, chec
 
 ## 5) Dataform
 
-- Mention OSS + GCP BQ version
+Started as an open-source project, [Dataform](https://github.com/dataform-co/dataform) has been designed as a meta-language to create SQL tables and workflows in BigQuery. It has been [fully integrated by Google in late 2020](https://cloud.google.com/blog/products/data-analytics/welcoming-dataform-to-bigquery?hl=en)
+
+One big difference with dbt is that Dataform uses JavaScript as its scripting language whilst dbt opts for Jinja.
+
+Provides a full web interface within Google Cloud Console, perfect for quick starts within that ecosystem but less flexible for external tools.
+
+Dataform can be used for free (costs being downstreamed on BigQuery compute) and is a nice fit for teams already tightened to Google Cloud services.
+
+It's better to compare it with dbt Cloud offering as it's a fully managed solution. However, it didn't have the community size as dbt and support will mostly come from Google teams.
+
+
+IMAGE: https://storage.googleapis.com/gweb-cloudblog-publish/images/1_dataform_diagram.max-2200x2200.jpg
+
 
 ## 6) Quarry
 
-- build in Rust, but it's not where it shines (the bottleneck is ultimately on the warehouse)
+Put simply [Quary](https://www.quary.dev/) is dbt developed in Rust.
+
+Why Rust? After all in analytics the most compute-intensive bottleneck, the data transformation, is done on the database, not by the actual SQL Framework.
+
+Quary [answers this question](https://www.quary.dev/blog/why-rust) by taking a step back:
+
+>There are many other steps to getting a data insight that are equally, if not more, time-consuming. Here are a few examples: deciding the initial requirements, finding the right tool, security reviews, setting up environments, reviewing the code that defines the data transformation layer, data quality spot checks, updating data catalogs, waiting for merges to build reports, internal marketing for that data asset... the list goes on.
+
+If you have several CI/CD pipelines or unit tests taking more and more time to run due to Python engine, switching to a more optimized SQL framework base on Rust can be a nice choice to streamline and get things done faster.
+
+Check out [Quary GitHub repository](https://github.com/quarylabs/quary) and [documentation](https://www.quary.dev/docs) for more details on the solution
 
 ## 7) lea
 
-- most mature in-house
+X most mature in-house
 
 ## 8) Malloy
 
-- SQL has not been designed for analytics
-- rectangular data
-- BI as code
+While Malloy isn't a traditional SQL framework, it offers functionalities that might be of interest in this context. 
+
+Malloy made the realization that [thinking in a "rectangle"](https://lloydtabb.substack.com/p/data-is-rectangular-and-other-limiting) isn't practical when doing data analysis. We often need to compute nested fields or filtering on top of complex aggregation. It's somehow the realization that [SQL has not been designed for analytics](https://medium.pimpaudben.fr/sql-is-not-designed-for-analytics-079fc97b139c).
+
+Malloy answers these issues with a new syntax built on top of SQL. It allows better nesting and filtering without the overhead of complex SQL queries. It also comes with [data vizualisation annotation capabilities](https://docs.malloydata.dev/blog/2024-02-29-hierarchical-viz/), making it a great choice to build "BI as code" pattern.
+
+Check out [Malloy website](https://www.malloydata.dev/) and [documentation](https://docs.malloydata.dev/documentation/) to learn about this promising language.
+
 
 ## 9) sdf
 
-- https://www.sdf.com/pricing
-- not OSS
+X https://www.sdf.com/pricing
+X not OSS
 
 ## 10) yato
 
-- lightweight / get things done
-- embeddable
+A newcomer to the scene, [Yato](https://github.com/Bl3f/yato) stands out as possibly the most lightweight SQL framework available. Designed for simplicity and speed, Yato takes a folder containing your SQL queries (or even Python transformations) and automatically determines the dependency order.
+
+This eliminates the need for complex configuration, letting you focus on writing your data manipulation logic.  Yato excels when used alongside [dlt](https://dlthub.com/), a data loading tool. Together, this duo streamlines your data workflow by handling both data acquisition and transformation. It can be quite useful for simple projects and fast experimentation.
+
+
+## SQL Framework + Kestra = Complete Holistic Stack
+
+X Orchestrate dbt, SQLMesh, Malloy
+X Orchestrate any CLI based tool
+X Manage your business logic with Git (GitOps)
+
+
+## Conclusion
+
+X choosing tool it depends of your level of maturity/complexity
+X Kestra allows to orchestrate any of these tools
+X Kestra links
