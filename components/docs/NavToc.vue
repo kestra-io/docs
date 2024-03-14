@@ -103,13 +103,12 @@
                 width: 100%;
                 height: 100%;
                 border-left: 1px solid $black-6;
-                padding-top: 4rem;
             }
         }
 
         @include media-breakpoint-up(lg) {
             position: sticky !important;
-            top: 0;
+            top: 4rem;
             right: 0;
             z-index: 2;
             height: fit-content;

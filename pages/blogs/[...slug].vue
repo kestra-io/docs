@@ -171,6 +171,7 @@
 
     .bd-layout {
         display: block;
+        height: 100%;
     }
     .bd-main{
         row-gap: 0px;
