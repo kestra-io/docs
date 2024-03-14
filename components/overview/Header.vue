@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-md-4 mb-4">
                     <Card
-                        :icon="lan"
+                        :icon="Lan"
                         title="Everything As Code"
                         description="Manage your resources programmatically, ensuring reproducibility, version control,"
                     />
@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-  import lan from "vue-material-design-icons/lan.vue";
+  import Lan from "vue-material-design-icons/Lan.vue"
   import ToyBrickPlus from "vue-material-design-icons/ToyBrickPlus.vue";
 </script>
 
