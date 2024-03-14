@@ -15,8 +15,14 @@ But, the reality is that many teams use different data stacks and tools. This bl
 
 ## dbt core
 
-X The most popular + why is the most popular and widely adopted
-X But it has shortcomings discussed in this post – Link to the dbt vs SQLMesh post
+[dbt](https://www.getdbt.com/) is the most popular SQL framework in the data industry.  Its reach extends across companies of all sizes, fostering a thriving community around it. 
+
+Pioneering the concept of a full-fledged SQL framework, dbt empowers users to construct intricate model dependencies and efficiently test their SQL queries using a straightforward YAML declaration syntax. This combination of functionality and ease of use has cemented dbt's position as a leader in data transformation.
+
+While dbt excels in many areas, there's room for improvement when handling large-scale projects.  The current approach of using "refs" to define model dependencies can be limiting, and backfilling capabilities could benefit from further refinement.
+
+For a deeper dive into these drawbacks, check out our [recent blog post](https://kestra.io/blogs/2024-02-28-dbt-or-sqlmesh) exploring the comparison between dbt and SQLMesh.
+
 
 ## 1) Airflow
 
@@ -82,7 +88,8 @@ SQLMesh is a recent project aiming to emphasize better operations management. It
 - Environment management
 - Different user interfaces: a web UI and a CLI. Both are included in the open-source version.
 - Native support for multiple repositories
-- SQLMesh supports Jinja templating, it also lets the user extend the SQL language itself with native support for metaprogramming constructs that enable direct invocation of functions implemented in Python.
+- SQLMesh supports Jinja templating but it actually understands SQL instead of just treating it as a templated string like dbt does. It also lets the user extend the SQL language itself with native support for metaprogramming constructs that enable direct invocation of functions implemented in Python.
+
 
 If you're looking to learn more about SQLmesh and the differences with dbt, check out our recent [deep-dive comparison between dbt and SQLMesh](https://kestra.io/blogs/2024-02-28-dbt-or-sqlmesh).
 
