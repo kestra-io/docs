@@ -12,7 +12,7 @@ body {
     background-color: $black-4;
 }
 .nuxt-loading-indicator {
-  background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%)!important;
+    background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%)!important;
 }
 :root {
     --spacer: #{$spacer};
@@ -476,7 +476,7 @@ blockquote.blockquote {
     --cc-overlay-bg: var(--bs-black);
 
     .cc--anim {
-        .pm-wrapper .pm-overlay, .cm-wrapper:before {
+        & .pm-overlay, &.cm-wrapper:before {
             opacity: .5 !important;
         }
     }
