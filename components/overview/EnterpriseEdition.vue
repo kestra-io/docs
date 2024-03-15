@@ -15,8 +15,6 @@
 </template>
 
 <script setup>
-  import lan from "vue-material-design-icons/lan.vue";
-  import ToyBrickPlus from "vue-material-design-icons/ToyBrickPlus.vue";
   import businessDetails from "~/data/business-details.js";
 </script>
 
