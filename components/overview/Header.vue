@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="hero container">
             <div class="row">
-                <div class="col-md-12 d-flex justify-content-center">
+                <div class="col-md-12 d-flex justify-content-center header-content">
                     <div class="text-white">
                         <h1 class="heading">Orchestrate Your <span>Platform</span> with Kestra</h1>
                         <p class="text-white baseline fs-4">Orchestrate your business-critical applications. Take full
@@ -91,6 +91,10 @@
             @include media-breakpoint-down(lg) {
                 top: 45%;
             }
+        }
+
+        .header-content {
+            padding-bottom: calc($spacer * 2.13);
         }
     }
 

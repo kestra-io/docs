@@ -41,7 +41,7 @@
                         </ul>
                     </ul>
                 </div>
-                <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-0 left-glow" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/features/advanced-conditional.svg"
                          alt="Advanced Conditional">
                 </div>
@@ -54,7 +54,7 @@
                         Integrate various programming languages within your workflows.
                     </p>
                 </div>
-                <div class="col-md-8 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/features/scripting-support.svg"
                          alt="Scripting Support">
                 </div>
@@ -78,7 +78,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-0 left-glow" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/features/reusable-subflows.svg"
                          alt="Reusable Subflows">
                 </div>
@@ -92,7 +92,7 @@
                         streamlining your troubleshooting process.
                     </p>
                 </div>
-                <div class="col-md-8 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/features/monitoring.svg"
                          alt="Debugging and Monitoring">
                 </div>
@@ -106,7 +106,7 @@
                         process step levels.
                     </p>
                 </div>
-                <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-0 left-glow" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/features/long-running.svg" alt="Long-Running">
                 </div>
             </div>
@@ -127,7 +127,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-8 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/features/orchestration.svg"
                          alt="Orchestration">
                 </div>
@@ -160,7 +160,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-0 left-glow" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/features/comprehensive.svg" alt="Comprehensive">
                 </div>
             </div>
@@ -182,7 +182,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-8 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/features/execution.svg"
                          alt="Execution">
                 </div>
@@ -205,7 +205,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-0 left-glow" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/features/metrics-visualization.svg"
                          alt="Metrics Visualization">
                 </div>
@@ -285,7 +285,7 @@
 
         .right-glow {
             &::before {
-                left: 18rem;
+                left: 14rem;
                 top: 0rem;
             }
 

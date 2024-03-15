@@ -7,7 +7,7 @@
                     <LayoutTabContent :navLinks="workflowDefinition.navLinks" />
                 </div>
             </Section>
-            <div class="row mb-5">
+            <div class="row mb-5 pb-3">
                 <div class="col-md-4 order-1 order-md-1 d-flex flex-column justify-content-center mt-4" data-aos="fade-left">
                     <h3>Interactive Topology View</h3>
                     <p>
@@ -15,7 +15,7 @@
                         provides an intuitive understanding of how each step in your process interconnects and operates.
                     </p>
                 </div>
-                <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-0 left-glow" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/interactive-topology.svg" alt="Interactive Topology" data-aos="zoom-in">
                 </div>
             </div>
@@ -28,7 +28,7 @@
                         existing ones without deep diving into code.
                     </p>
                 </div>
-                <div class="col-md-8 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
+                <div class="col-md-7 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
                     <img class="img-fluid zoom" src="/landing/overview/intuitive-form.svg"
                          alt="Intuitive Form">
                 </div>
@@ -110,13 +110,13 @@
 
         .right-glow {
             &::before {
-                left: 18rem;
+                left: 12rem;
                 top: 0rem;
             }
 
             &::after {
-                right: -1rem;
-                bottom: 2rem;
+                right: 1rem;
+                bottom: 1rem;
             }
 
             @include media-breakpoint-down(lg) {
@@ -129,11 +129,11 @@
         .left-glow {
             &::before {
                 left: -1rem;
-                top: -2rem;
+                top: 0;
             }
 
             &::after {
-                right: 19rem;
+                right: 11rem;
                 bottom: 1rem;
             }
 
