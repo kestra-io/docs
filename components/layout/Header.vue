@@ -32,10 +32,10 @@
                         <ul class="dropdown-menu product-menu">
                             <div class="submenu-item d-none d-lg-block">
                                 <li>
-                                    <div class="submenu-img">
-                                        <img src="/landing/header-menu/platform-overview.svg" alt="Platform Overview">
-                                    </div>
                                     <NuxtLink class="dropdown-item" href="/overview" @click="globalClick(true)">
+                                        <div class="submenu-img">
+                                            <img src="/landing/header-menu/platform-overview.svg" alt="Platform Overview">
+                                        </div>
                                         <p>
                                             <span>Platform Overview</span><br />
                                             Powerful capabilities from the UI
@@ -63,7 +63,7 @@
                                     </NuxtLink>
                                 </li>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/enterprise" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" href="/cloud" @click="globalClick(true)">
                                         <CloudOutline />
                                         <p>
                                             <span>Cloud Edition</span><br />
@@ -99,8 +99,7 @@
                                         <CodeNotEqualVariant />
                                         <p>
                                             <span>Declarative Orchestration</span><br />
-                                            Elevate your Kestra use through
-                                            our partner ecosystem
+                                            Infrastructure as Code for All Your Workflows
                                         </p>
                                     </NuxtLink>
                                 </li>
@@ -188,24 +187,24 @@
                                         </p>
                                     </NuxtLink>
                                 </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/retail" @click="globalClick(true)">
-                                        <BankOutline />
-                                        <p>
-                                            <span>Banking</span><br />
-                                            Learn how Kestra helped companies manage their critical operations
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/retail" @click="globalClick(true)">
-                                        <PillMultiple />
-                                        <p>
-                                            <span>Healthcare</span><br />
-                                            Ask any questions and share your feedback
-                                        </p>
-                                    </NuxtLink>
-                                </li>
+<!--                                <li>-->
+<!--                                    <NuxtLink class="dropdown-item" href="/use-cases/retail" @click="globalClick(true)">-->
+<!--                                        <BankOutline />-->
+<!--                                        <p>-->
+<!--                                            <span>Banking</span><br />-->
+<!--                                            Learn how Kestra helped companies manage their critical operations-->
+<!--                                        </p>-->
+<!--                                    </NuxtLink>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <NuxtLink class="dropdown-item" href="/use-cases/retail" @click="globalClick(true)">-->
+<!--                                        <PillMultiple />-->
+<!--                                        <p>-->
+<!--                                            <span>Healthcare</span><br />-->
+<!--                                            Ask any questions and share your feedback-->
+<!--                                        </p>-->
+<!--                                    </NuxtLink>-->
+<!--                                </li>-->
                             </div>
 <!--                            <li>-->
 <!--                                <NuxtLink class="dropdown-item" href="/use-cases" @click="globalClick(true)">-->
@@ -251,11 +250,11 @@
                         <ul class="dropdown-menu resources-menu">
                             <div class="submenu-item d-none d-lg-block">
                                 <li>
-                                    <div class="submenu-img">
-                                        <p>+200 blueprints</p>
-                                        <img src="/landing/header-menu/platform-blueprints.svg" alt="Blueprints">
-                                    </div>
                                     <NuxtLink class="dropdown-item" href="/blueprints" @click="globalClick(true)">
+                                        <div class="submenu-img">
+                                            <p>+200 blueprints</p>
+                                            <img src="/landing/header-menu/platform-blueprints.svg" alt="Blueprints">
+                                        </div>
                                         <p>
                                             <span>Blueprints</span><br />
                                             Explore blueprints to kick-start
@@ -637,10 +636,16 @@ export default {
             overflow-y: auto;
             overflow-x: hidden;
             background-color: $black-2;
+            height: calc(100vh - 4.3rem);
         }
 
         ul.navbar-nav {
             li {
+
+                a.dropdown-item {
+                    white-space: unset;
+                }
+
                 @include media-breakpoint-between(lg, xxl) {
                     font-size: 1rem;
                 }
@@ -767,12 +772,13 @@ export default {
                             font-size: 0.813rem;
                             font-weight: 300;
                             margin-bottom: 0;
-                            line-height: calc($spacer * 1.5);
+                            line-height: $spacer;
                             span {
                                 display: inline-block;
                                 color: $white !important;
                                 font-size: $font-size-sm;
                                 font-weight: 600;
+                                line-height: calc($spacer * 1.37);
                             }
 
                             mark {
@@ -816,6 +822,8 @@ export default {
                     align-items: flex-start;
                     gap: $spacer;
                     padding: 2rem;
+                    width: calc($spacer * 41);
+
 
                     .submenu-item {
                         border-radius: calc($spacer * 0.5);
@@ -825,6 +833,12 @@ export default {
                         overflow: hidden;
                         z-index: 1;
                         min-width: calc($spacer * 15.5);
+                        pointer-events: none;
+
+
+                        &:hover {
+                            background: $black-6 !important;
+                        }
 
                         &::before {
                             content: "";
@@ -838,12 +852,20 @@ export default {
                         }
 
                         .dropdown-item {
+                            padding: 0;
+                            white-space: unset;
+                            pointer-events: auto !important;
+                            display: flex;
+                            flex-direction: column;
+                            gap: calc($spacer * 2.7);
+                            position: relative;
+                            z-index: 1;
+
+                            .material-design-icon, span, p {
+                                color: $white !important;
+                            }
                             &:hover {
                                 background-color: transparent;
-
-                                .material-design-icon, span, p {
-                                    color: $white !important;
-                                }
                             }
                         }
 
@@ -854,16 +876,6 @@ export default {
                             }
                         }
                         li {
-                            display: flex;
-                            flex-direction: column;
-                            gap: calc($spacer * 2.5);
-                            position: relative;
-                            z-index: 1;
-
-                            a {
-                                padding: 0;
-                            }
-
                             .submenu-img {
                                 padding: calc($spacer * 1.8) calc($spacer * 0.4);
                                 min-height: 113px;
@@ -889,12 +901,13 @@ export default {
                 .solutions-menu {
                     gap: 1rem;
                     left: -280%;
+                    max-width: calc($spacer * 59);
 
                     .dropdown-column {
                         display: flex;
-                        min-width: calc($spacer * 19);
+                        min-width: calc($spacer * 18);
                         flex-direction: column;
-                        gap: 2rem;
+                        gap: $spacer;
 
                         @include media-breakpoint-down(lg) {
                             margin-bottom: calc($spacer * 2);
@@ -921,12 +934,18 @@ export default {
                     .submenu-item {
                         min-height: 16rem;
 
-                        li {
+                        .dropdown-item {
                             gap: calc($spacer * 5.5);
+
+                            .submenu-img {
+                                p {
+                                    margin-bottom: calc($spacer * 0.7);
+                                }
+                            }
                         }
                     }
                     .aside-menu {
-                        gap: calc($spacer * 2);
+                        gap: $spacer;
 
                         li > a {
                             padding: calc($spacer * 0.5) $spacer;
