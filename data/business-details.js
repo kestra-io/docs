@@ -11,7 +11,7 @@ export default {
         {
             id: 2,
             active: true,
-            text: 'Allow users to access multiple applications with one set of login credentials.',
+            text: 'Allow users to access multiple applications with one set of login credentials',
             tabText: 'SSO Support',
             imgHref: '/landing/ee/company-stories/sso-support.svg',
             imgAlt: 'SSO',
@@ -19,7 +19,7 @@ export default {
         {
             id: 3,
             active: false,
-            text: 'Track platform activities for compliance and security.',
+            text: 'Track platform activities for compliance and security',
             tabText: 'Detailed Audit Logs',
             imgHref: '/landing/ee/company-stories/audit-log.svg',
             imgAlt: 'Audit Log',
