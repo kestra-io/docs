@@ -7,7 +7,7 @@
                     <LayoutTabContent :navLinks="workflowDefinition.navLinks" />
                 </div>
             </Section>
-            <div class="row mb-5 pb-3">
+            <div class="row pb-3">
                 <div class="col-md-4 order-1 order-md-1 d-flex flex-column justify-content-center mt-4" data-aos="fade-left">
                     <h3>Interactive Topology View</h3>
                     <p>
@@ -77,6 +77,13 @@
         z-index: 1;
         position: relative;
         overflow: hidden;
+
+        .row {
+            margin-bottom: 12rem;
+            @include media-breakpoint-down(lg) {
+                margin-bottom: 5rem;
+            }
+        }
 
         .line {
             background: rgba(255, 255, 255, 0.1) !important;

@@ -5,7 +5,7 @@
             subtitle-after="Customizable"
             baseline="Kestra is designed to cater to your specific needs, enabling you to create highly customized and efficient workflows."
         >
-            <div class="row mb-5">
+            <div class="row feature-item">
                 <div class="col-md-4 order-1 order-md-1 d-flex flex-column justify-content-center mt-4"
                      data-aos="fade-left">
                     <h3>Advanced Conditional Logic</h3>
@@ -46,7 +46,7 @@
                          alt="Advanced Conditional">
                 </div>
             </div>
-            <div class="row mb-5">
+            <div class="row feature-item">
                 <div class="col-md-4 order-1 order-md-0 d-flex flex-column justify-content-center mt-4"
                      data-aos="fade-right">
                     <h3>Wide Range of Scripting Support</h3>
@@ -59,7 +59,7 @@
                          alt="Scripting Support">
                 </div>
             </div>
-            <div class="row mb-5">
+            <div class="row feature-item">
                 <div class="col-md-4 order-1 order-md-1 d-flex flex-column justify-content-center mt-4"
                      data-aos="fade-left">
                     <h3>Reusable Subflows</h3>
@@ -83,7 +83,7 @@
                          alt="Reusable Subflows">
                 </div>
             </div>
-            <div class="row mb-5">
+            <div class="row feature-item">
                 <div class="col-md-4 order-1 order-md-0 d-flex flex-column justify-content-center mt-4"
                      data-aos="fade-right">
                     <h3>Debugging and Monitoring Made Easy</h3>
@@ -97,7 +97,7 @@
                          alt="Debugging and Monitoring">
                 </div>
             </div>
-            <div class="row mb-5">
+            <div class="row feature-item">
                 <div class="col-md-4 order-1 order-md-1 d-flex flex-column justify-content-center mt-4"
                      data-aos="fade-left">
                     <h3>Long-Running Executions </h3>
@@ -110,7 +110,7 @@
                     <img class="img-fluid zoom" src="/landing/overview/features/long-running.svg" alt="Long-Running">
                 </div>
             </div>
-            <div class="row mb-5">
+            <div class="row feature-item">
                 <div class="col-md-4 order-1 order-md-0 d-flex flex-column justify-content-center mt-4"
                      data-aos="fade-right">
                     <h3>Event Driven Orchestration</h3>
@@ -137,7 +137,7 @@
             subtitle="Get a holistic overview of your platform"
             baseline="Manage and analyze your workflow executions."
         >
-            <div class="row mb-5">
+            <div class="row feature-item">
                 <div class="col-md-4 order-1 order-md-1 d-flex flex-column justify-content-center mt-4"
                      data-aos="fade-left">
                     <h3>Comprehensive Instance Overview</h3>
@@ -164,7 +164,7 @@
                     <img class="img-fluid zoom" src="/landing/overview/features/comprehensive.svg" alt="Comprehensive">
                 </div>
             </div>
-            <div class="row mb-5">
+            <div class="row feature-item">
                 <div class="col-md-4 order-1 order-md-0 d-flex flex-column justify-content-center mt-4"
                      data-aos="fade-right">
                     <h3>Execution Tracking and Logs</h3>
@@ -187,7 +187,7 @@
                          alt="Execution">
                 </div>
             </div>
-            <div class="row mb-5">
+            <div class="row feature-item">
                 <div class="col-md-4 order-1 order-md-1 d-flex flex-column justify-content-center mt-4"
                      data-aos="fade-left">
                     <h3>Output and Metrics Visualization</h3>
@@ -240,6 +240,12 @@
     }
 
     .container {
+        .feature-item {
+            margin-bottom: 12rem;
+            @include media-breakpoint-down(lg) {
+                margin-bottom: 5rem;
+            }
+        }
 
         h3 {
             color: $white;
@@ -285,7 +291,7 @@
 
         .right-glow {
             &::before {
-                left: 14rem;
+                left: 11rem;
                 top: 0rem;
             }
 
@@ -308,7 +314,7 @@
             }
 
             &::after {
-                right: 19rem;
+                right: 12rem;
                 bottom: 1rem;
             }
 
@@ -320,12 +326,9 @@
         }
 
         .img-fluid {
-            max-width: 67%;
-
             @include media-breakpoint-down(lg) {
                 max-width: 100%;
             }
-
         }
     }
 </style>
