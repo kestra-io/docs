@@ -30,7 +30,7 @@
                     <Card
                         :icon="Lan"
                         title="Everything As Code"
-                        description="Manage your resources programmatically, ensuring reproducibility, version control,"
+                        description="Manage your resources programmatically, ensuring reproducibility, version control, and seamless collaboration."
                     />
                 </div>
 
