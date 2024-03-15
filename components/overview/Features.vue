@@ -42,7 +42,7 @@
                     </ul>
                 </div>
                 <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/overview/features/advanced-conditional.svg"
+                    <img class="img-fluid zoom" src="/landing/overview/features/advanced-conditional.svg"
                          alt="Advanced Conditional">
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     </p>
                 </div>
                 <div class="col-md-8 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/overview/features/scripting-support.svg"
+                    <img class="img-fluid zoom" src="/landing/overview/features/scripting-support.svg"
                          alt="Scripting Support">
                 </div>
             </div>
@@ -79,7 +79,7 @@
                     </ul>
                 </div>
                 <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/overview/features/reusable-subflows.svg"
+                    <img class="img-fluid zoom" src="/landing/overview/features/reusable-subflows.svg"
                          alt="Reusable Subflows">
                 </div>
             </div>
@@ -93,7 +93,7 @@
                     </p>
                 </div>
                 <div class="col-md-8 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/overview/features/monitoring.svg"
+                    <img class="img-fluid zoom" src="/landing/overview/features/monitoring.svg"
                          alt="Debugging and Monitoring">
                 </div>
             </div>
@@ -107,7 +107,7 @@
                     </p>
                 </div>
                 <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/overview/features/long-running.svg" alt="Long-Running">
+                    <img class="img-fluid zoom" src="/landing/overview/features/long-running.svg" alt="Long-Running">
                 </div>
             </div>
             <div class="row mb-5">
@@ -128,7 +128,7 @@
                     </ul>
                 </div>
                 <div class="col-md-8 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/overview/features/orchestration.svg"
+                    <img class="img-fluid zoom" src="/landing/overview/features/orchestration.svg"
                          alt="Orchestration">
                 </div>
             </div>
@@ -161,7 +161,7 @@
                     </ul>
                 </div>
                 <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/overview/features/comprehensive.svg" alt="Comprehensive">
+                    <img class="img-fluid zoom" src="/landing/overview/features/comprehensive.svg" alt="Comprehensive">
                 </div>
             </div>
             <div class="row mb-5">
@@ -183,7 +183,7 @@
                     </ul>
                 </div>
                 <div class="col-md-8 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/overview/features/execution.svg"
+                    <img class="img-fluid zoom" src="/landing/overview/features/execution.svg"
                          alt="Execution">
                 </div>
             </div>
@@ -206,7 +206,7 @@
                     </ul>
                 </div>
                 <div class="col-md-8 order-0 order-md-0 left-glow" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/overview/features/metrics-visualization.svg"
+                    <img class="img-fluid zoom" src="/landing/overview/features/metrics-visualization.svg"
                          alt="Metrics Visualization">
                 </div>
             </div>

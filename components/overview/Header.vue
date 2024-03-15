@@ -10,7 +10,7 @@
                             analytics-ready data at scale.</p>
                         <div class="text-center">
                             <NuxtLink
-                                href="/docs/getting-started"
+                                href="/demo"
                                 class="btn text-white btn-animated btn-dark-animated me-2 mb-2"
                                 data-aos="zoom-in"
                             >
@@ -21,7 +21,7 @@
                                 class="btn text-white btn-animated btn-purple-animated mb-2"
                                 data-aos="zoom-in"
                             >
-                                Get started!
+                                Get started
                             </NuxtLink>
                         </div>
                     </div>

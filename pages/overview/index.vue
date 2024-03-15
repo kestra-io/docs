@@ -11,7 +11,8 @@
         <OverviewEnterpriseEdition/>
         <LayoutFooterContact
             title="Get Started With Kestra"
-            darkButtonText="Read the docs"
+            darkButtonText="Talk to Us"
+            darkButtonHref="/demo"
             purpleButtonText="Get started"
         />
     </div>

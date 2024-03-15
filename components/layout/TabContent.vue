@@ -21,7 +21,7 @@
         </div>
         <div class="tab-content">
             <div class="active-tab-content">
-                <img :src="navLinks[activeTabIndex].imgHref" :alt="navLinks[activeTabIndex].imgAlt">
+                <img :src="navLinks[activeTabIndex].imgHref" :alt="navLinks[activeTabIndex].imgAlt" class="zoom">
                 <p>{{ navLinks[activeTabIndex].text }}</p>
             </div>
         </div>
