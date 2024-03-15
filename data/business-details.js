@@ -3,7 +3,7 @@ export default {
         {
             id: 1,
             active: false,
-            text: 'Secrets',
+            text: 'Securely store sensitive information, such as passwords and API keys',
             tabText: 'Vault Integration & Secret Management',
             imgHref: '/landing/ee/company-stories/secrets.svg',
             imgAlt: 'Secrets',
@@ -11,7 +11,7 @@ export default {
         {
             id: 2,
             active: true,
-            text: 'SSO',
+            text: 'Allow users to access multiple applications with one set of login credentials.',
             tabText: 'SSO Support',
             imgHref: '/landing/ee/company-stories/sso-support.svg',
             imgAlt: 'SSO',
@@ -19,7 +19,7 @@ export default {
         {
             id: 3,
             active: false,
-            text: 'Audit Log',
+            text: 'Track platform activities for compliance and security.',
             tabText: 'Detailed Audit Logs',
             imgHref: '/landing/ee/company-stories/audit-log.svg',
             imgAlt: 'Audit Log',
@@ -27,7 +27,7 @@ export default {
         {
             id: 4,
             active: false,
-            text: 'Tenants',
+            text: 'Manage multiple teams or projects with isolated workspaces and centralized administration',
             tabText: 'Multi-Tenant Architecture',
             imgHref: '/landing/ee/company-stories/tenants.svg',
             imgAlt: 'Tenants',
