@@ -84,6 +84,8 @@ IMAGE: https://www.y42.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-page
 
 ## 4) SQLMesh
 
+X - Update with Marisa's inputs
+
 SQLMesh is a recent project aiming to emphasize better operations management. It shifts from dbt in that sense by bringing several improvements:
 - Environment management
 - Different user interfaces: a web UI and a CLI. Both are included in the open-source version.
@@ -148,14 +150,18 @@ Check out [Malloy website](https://www.malloydata.dev/) and [documentation](http
 
 ## 9) sdf
 
-X https://www.sdf.com/pricing
-X not OSS
+In essence, [SDF](https://www.sdf.com/) acts as a translator and organizer for your SQL code. It uses in-depth analysis to understand your code and creates a detailed map of how different parts of your data interact. This map makes it easier to identify potential issues and areas for improvement.
+
+One of SDF's strengths is the ability to add labels (metadata) to your SQL sources. These labels can be anything from basic data types and privacy classifications to information on who can access specific tables and the privacy rules that apply to them.
+
+SDF is not an open-source project and can be used over [cloud or enterprised offerings](https://www.sdf.com/pricing)
+
 
 ## 10) yato
 
 A newcomer to the scene, [Yato](https://github.com/Bl3f/yato) stands out as possibly the most lightweight SQL framework available. Designed for simplicity and speed, Yato takes a folder containing your SQL queries (or even Python transformations) and automatically determines the dependency order.
 
-This eliminates the need for complex configuration, letting you focus on writing your data manipulation logic.  Yato excels when used alongside [dlt, a data-loading tool. Together, this duo streamlines your data workflow by handling both data acquisition and transformation. It can be quite useful for simple projects and fast experimentation.
+This eliminates the need for complex configuration, letting you focus on writing your data manipulation logic.  Yato excels when used alongside [dlt](https://dlthub.com/), a data-loading tool. Together, this duo streamlines your data workflow by handling both data acquisition and transformation. It can be quite useful for simple projects and fast experimentation.
 
 
 ## SQL Framework + Kestra = Complete Holistic Stack
