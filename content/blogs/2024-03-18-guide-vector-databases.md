@@ -1,12 +1,12 @@
 ---
 title: "Your Guide to Vector Databases "
 description: "Learn how they differ from traditional SQL searches, their role in AI advancements, and their applications."
-date: 2024-03-13T12:00:00
+date: 2024-03-18T12:00:00
 category: Solution
 author:
   name: Kevin Fleming
   image: "kfleming"
-image: /blogs/2024-03-14-guide-vector-databases.jpg
+image: /blogs/2024-03-18-guide-vector-databases.jpg
 ---
 In what way are vector data type searches NOT LIKE SQL data type searches? Some answers:
 
