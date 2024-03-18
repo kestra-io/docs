@@ -189,6 +189,21 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+  /api/v1/cluster/services:
+    get:
+      tags:
+      - Services
+      summary: Get all the services for teh Kestra cluster
+      operationId: findAll
+      responses:
+        "200":
+          description: findAll 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClusterController.ApiServiceInstance'
   /api/v1/configs:
     get:
       tags:
@@ -4289,21 +4304,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Usage'
-  /api/v1/workers:
-    get:
-      tags:
-      - Workers
-      summary: Get all workers
-      operationId: findAll
-      responses:
-        "200":
-          description: findAll 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/WorkerInstance'
 components:
   schemas:
     AbstractCollection_BlueprintController.BlueprintItem_:
@@ -5213,6 +5213,46 @@ components:
             $ref: '#/components/schemas/Class_Object_'
         sealed:
           type: boolean
+    ClusterController.ApiServerInstance:
+      required:
+      - hostname
+      - id
+      - type
+      - version
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/ServerInstance.Type'
+        version:
+          type: string
+        hostname:
+          type: string
+    ClusterController.ApiServiceInstance:
+      required:
+      - createdAt
+      - id
+      - server
+      - state
+      - type
+      - updatedAt
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/Service.ServiceType'
+        state:
+          $ref: '#/components/schemas/Service.ServiceState'
+        server:
+          $ref: '#/components/schemas/ClusterController.ApiServerInstance'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
     CodeSigner:
       required:
       - signerCertPath
@@ -6960,14 +7000,11 @@ components:
       - template
       - task
       - trigger
-    ServerInstance:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
+    ServerInstance.Type:
+      type: string
+      enum:
+      - SERVER
+      - STANDALONE
     ServerType:
       type: string
       enum:
@@ -6975,6 +7012,26 @@ components:
       - INDEXER
       - SCHEDULER
       - STANDALONE
+      - WEBSERVER
+      - WORKER
+    Service.ServiceState:
+      type: string
+      enum:
+      - CREATED
+      - RUNNING
+      - ERROR
+      - DISCONNECTED
+      - TERMINATING
+      - TERMINATED_GRACEFULLY
+      - TERMINATED_FORCED
+      - NOT_RUNNING
+      - EMPTY
+    Service.ServiceType:
+      type: string
+      enum:
+      - EXECUTOR
+      - INDEXER
+      - SCHEDULER
       - WEBSERVER
       - WORKER
     ServicesCatalog:
@@ -7553,42 +7610,6 @@ components:
         key:
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
-    WorkerInstance:
-      required:
-      - hostname
-      - workerUuid
-      type: object
-      properties:
-        workerUuid:
-          type: string
-          format: uuid
-        hostname:
-          type: string
-        port:
-          type: integer
-          format: int32
-        managementPort:
-          type: integer
-          format: int32
-        workerGroup:
-          type: string
-        partitions:
-          type: array
-          items:
-            type: integer
-            format: int32
-        status:
-          $ref: '#/components/schemas/WorkerInstance.Status'
-        heartbeatDate:
-          type: string
-          format: date-time
-        server:
-          $ref: '#/components/schemas/ServerInstance'
-    WorkerInstance.Status:
-      type: string
-      enum:
-      - UP
-      - DEAD
     ZoneId:
       type: object
       properties:
