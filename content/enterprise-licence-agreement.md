@@ -82,23 +82,23 @@ The right to use the Solution is granted to You only upon full payment of the pr
 
 ## **5 - Granting of the License**
 
-1. **Installation of the Solution**
+a. **Installation of the Solution**
 
 You shall install the Solution on Your IT Infrastructure under Your sole responsibility, in compliance with the Solution installation procedures set forth in the terms and conditions of installation accessible at the following address: [https://KESTRA.io/docs/](https://kestra.io/docs/).
 
-1. **Selection of Users**
+b. **Selection of Users**
 
 It is also Your responsibility to designate, among the Users, who will be in charge of the use and administration of the Solution.
 
 It is Your responsibility to use the Solution in strict compliance with the terms and conditions of this Agreement. In case of doubt of license usage, You shall contact KESTRA as soon as possible to commercially rectify its usage.
 
-1. **Access and confidentiality**
+c. **Access and confidentiality**
 
 Each User exclusively accesses the Solution through a secure authentication system determined and set by You.
 
 You are also responsible for implementing and enforcing strict policies and procedures to ensure the confidentiality and integrity of User credentials.
 
-1. **Contractual warranties**
+d. **Contractual warranties**
 
 KESTRA warrants that the Solution will, during the Initial Period , substantially operate as described in the applicable Solution technical and functional documentation set forth under Appendix 1.
 
@@ -116,21 +116,21 @@ KESTRA does not host the Solution or the data collected by it. The hosting remai
 
 ## **8 - Financial conditions**
 
-1. **Pricing**
+a. **Pricing**
 
 From the Effective date of the Agreement, You undertake to pay KESTRA the Subscription Fees set forth in the Order Form.
 
-1. **Invoicing and payment**
+b. **Invoicing and payment**
 
 Subscription Fees shall be calculated and invoiced as set out in the Order Form. The above prices will be the subject of invoices by KESTRA, communicated to You by any written means, and in particular by email, in accordance with the provisions set forth in the Order Form.
 
-1. **Late payments and payment incidents**
+c. **Late payments and payment incidents**
 
 You are hereby informed and expressly agrees that any delay in payment of all or part of an amount due on its due date shall automatically, without prior notice, result in the invoicing to KESTRA of late payment interest at the rate of 3 times the legal interest rate, based on the amount of the entire amount owed by You and a flat-rate indemnity of 40 euros for collection costs.
 
 In addition, in the absence of payment of an amount due on its due date within thirty (30) calendar days following receipt by You of a formal notice by registered letter with acknowledgement of receipt, which has remained without effect, KESTRA reserves the right to (i) suspend the Agreement, (ii) demand immediate payment of all amounts due by You, and/or (iii) terminate the Agreement, under the conditions set forth in "*Termination for breach*" section.
 
-1. **Taxes and other charges**
+d. **Taxes and other charges**
 
 Each Party shall be responsible for the due and proper payment of all taxes assessed on, levied, imposed by any government or any local state and/or national fiscal authority of any country or otherwise due in respect of its own profit, whether actual or assumed, and income and property arising in connection with this Agreement and/or its performance.
 
@@ -138,7 +138,7 @@ Each Party shall be responsible for the due and proper payment of all taxes asse
 
 Without prejudice to the other obligations provided for in the Agreement, You undertake to comply with the following obligations:
 
-1. You shall be solely responsible for ensuring the proper use of the Solution.
+a. You shall be solely responsible for ensuring the proper use of the Solution.
 
 In particular, You shall be responsible for:
 
@@ -146,14 +146,18 @@ In particular, You shall be responsible for:
 - carrying out updates of the Solution in accordance with the terms of the Appendix 1;
 - ensuring at all times that Your infrastructures take into account the conditions of use of the Solution and, where applicable, take the necessary measures to ensure that Your computer infrastructure is compatible with the requirements mentioned in the terms of the installation of the Solution ;
 - having qualified and trained personnel available to use the Solution, in order to use it in accordance with the instructions provided by KESTRA.
-1. You agree to maintain the Statistics Report mentioned in Appendix 1 and You shall not delete any data that allows KESTRA to calculate the usages performed via the Solution on Your IT infrastructure as described in Appendix 1.
-2. You are solely responsible for the use of the Solution by You and your Users.
-3. You expressly acknowledge and agree that the Solution interconnects with third-party software (the “**Third Party Softwares**”), as described in Appendix 1, for which KESTRA is not responsible.
-4. You undertake, in your use of the Solution, to comply with the laws and regulations in force and not to infringe the rights of third parties or public order.
+
+b. You agree to maintain the Statistics Report mentioned in Appendix 1 and You shall not delete any data that allows KESTRA to calculate the usages performed via the Solution on Your IT infrastructure as described in Appendix 1.
+
+c. You are solely responsible for the use of the Solution by You and your Users.
+
+d. You expressly acknowledge and agree that the Solution interconnects with third-party software (the “**Third Party Softwares**”), as described in Appendix 1, for which KESTRA is not responsible.
+
+e. You undertake, in your use of the Solution, to comply with the laws and regulations in force and not to infringe the rights of third parties or public order.
 
 You warrant against any misuse, non-compliant or illicit use that Users may make of the Solution, in particular against infringement of the laws and regulations in force. You are thus exclusively responsible for putting in place all procedures intended to prevent or remedy the commission of such acts.
 
-1. You are solely responsible for the content of the data, comments and information exchanged through the Solution (the "**Content**").
+f. You are solely responsible for the content of the data, comments and information exchanged through the Solution (the "**Content**").
 
 You warrant to KESTRA that it has all necessary rights and permissions to distribute such Content. You undertake to ensure that such Content is lawful, does not infringe public order, public morality or third party rights, does not violate any legislative or regulatory provision and, more generally, is in no way likely to give rise to civil or criminal liability on the part of KESTRA.
 
@@ -167,7 +171,7 @@ You shall not distribute, in particular and without this list being exhaustive:
 
 ## **10 - Intellectual property**
 
-1. **Rights granted**
+a. **Rights granted**
 
 You expressly acknowledge that the Agreement does not assign any intellectual property rights over the Solution, which remains the exclusive property of KESTRA. Title and all Intellectual Property Rights in and to the Solution, new versions of the Solution, Solution maintenance releases, modifications, updates and other changes to the Solution shall be and remain the property of KESTRA or any third party from whom KESTRA has licensed the same.
 
@@ -179,7 +183,7 @@ Where applicable, the Parties shall only be granted a license to use the element
 
 Your content and Your data shall remain in Your exclusive property.
 
-1. **Intellectual Property Rights Infringement**
+b. **Intellectual Property Rights Infringement**
 
 Subject to this Agreement, KESTRA will (i) defend, or at its option settle, any claim, demand, action or legal proceeding (“Claim”) made or brought against You by a third party alleging that the use of the Solution as contemplated hereunder directly infringes the intellectual property rights of such third party, and (ii) pay (a) any final judgment or award directly resulting from such Claim to the extent such judgment or award is based upon such alleged infringement or (b) those damages agreed to by KESTRA in a monetary settlement of such Claim.
 
@@ -316,7 +320,7 @@ The Agreement shall be governed by and construed in accordance with **French law
 
 In the event of a dispute between the Parties concerning its validity, interpretation or performance, the Parties shall endeavour to settle their dispute amicably within a maximum period of 30 calendar days. In case such amicable settlement fails the absence of an agreement within one month of the first notification by any means in writing sent by one Party to the other concerning the dispute concerned, the plaintiff can lodge a complaint before latter shall be subject to the exclusive jurisdiction of the courts of Paris (France), even in the event of multiple defendants and third-party claims.
 
-∞∞∞∞
+--------------
 
 **APPENDIX 1**
 
