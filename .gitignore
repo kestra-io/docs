@@ -18,7 +18,6 @@ yarn.lock
 content/plugins/**/*
 !content/plugins/index.md
 public/examples.zip
-public/kestra-ee.yml
 
 ## Nuxt
 node_modules
