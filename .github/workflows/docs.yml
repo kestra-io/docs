@@ -15,7 +15,8 @@ jobs:
 
     steps:
       - name: Deploy site
-        uses: benc-uk/workflow-dispatch@v121
+        uses: benc-uk/workflow-dispatch@v1.2.3
+
         with:
           workflow: site.yml
           repo: kestra-io/origin.kestra.io
