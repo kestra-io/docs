@@ -118,5 +118,9 @@
         .btn-dark {
             border: $btn-dark-border;
         }
+
+        a {
+            color: $white !important;
+        }
     }
 </style>
