@@ -26,28 +26,27 @@
 <script setup>
     import {useAsyncData} from "#imports";
 
+    const props = defineProps({
+      title: {
+        type: String,
+        default: undefined,
+      },
+      pageTitle: {
+        type: String,
+        default: undefined,
+      }
+    });
+
     const {data: blogs} = await useAsyncData(
         `Blog`,
         () => queryContent("/blogs/")
+            .where({ title: { $ne : props.pageTitle } })
             .sort({ date: -1 })
             .without('unused-key')
             .limit(3)
             .find()
     );
 
-</script>
-<script>
-    import Section from '../layout/Section.vue';
-
-    export default {
-        components: {Section},
-        props: {
-            title: {
-                type: String,
-                default: undefined,
-            },
-        },
-    }
 </script>
 
 <style lang="scss" scoped>
