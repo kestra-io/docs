@@ -31,7 +31,7 @@
         type: String,
         default: undefined,
       },
-      pageTitle: {
+      page: {
         type: String,
         default: undefined,
       }
@@ -40,7 +40,7 @@
     const {data: blogs} = await useAsyncData(
         `Blog`,
         () => queryContent("/blogs/")
-            .where({ title: { $ne : props.pageTitle } })
+            .where({ _path: { $ne : props.page._path } })
             .sort({ date: -1 })
             .without('unused-key')
             .limit(3)
