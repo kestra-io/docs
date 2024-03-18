@@ -722,7 +722,7 @@ export default {
                     padding: $spacer;
                     border-radius: $spacer;
                     border: 1px solid $black-6;
-                    background: $black-2;
+                    background: #161617E5;
 
                     @include media-breakpoint-down(lg) {
                         box-shadow: none;
