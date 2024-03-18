@@ -672,12 +672,12 @@ export default {
                         display: none;
                     }
 
-                        &.show, &:hover {
-                            @include media-breakpoint-up(lg) {
-                                color: #CDD5EF !important;
-                            }
+                    &.show, &:hover {
+                        @include media-breakpoint-up(lg) {
+                            color: #CDD5EF !important;
                         }
                     }
+                }
 
                 .dropdown-toggle {
                     .chevron-down-icon {
@@ -1110,6 +1110,5 @@ export default {
     nav {
         top: 40px;
     }
-}</style>
-
-<!-- 8405FF -->
+}
+</style>
