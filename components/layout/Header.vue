@@ -277,7 +277,7 @@
                                         <PostOutline />
                                         <p>
                                             <span>Blog</span><br />
-                                            Elevate your Kestra use through our partner ecosystem                                        </p>
+                                            Company news, product updates, and engineering deep dives                                     </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
