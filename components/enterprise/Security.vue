@@ -1,87 +1,248 @@
 <template>
     <div class="container">
         <Section
-            subtitle="Control and Compliance"
-            subtitle-before="Complete"
+            subtitle="Ready"
+            subtitle-before="Enterprise"
         >
             <div class="row mb-5">
-                <div class="col-md-6 order-1 order-md-1" data-aos="fade-left">
-                    <h3>Robust Architecture Built for Enterprise needs</h3>
-                    <p>
-                        Elevate your system's resilience and efficiency with our Enterprise Edition's architectural design, built to support scalability and high availability.
-                    </p>
-                    <ul>
-                        <li><b>High scalability and availability:</b> With managed <b>"Kafka-as-a-backend"</b> and <b>Elasticsearch</b> integrated into the Enterprise Edition, eliminate any single point of failure.</li>
-                        <li><b>Worker groups:</b> Looking for targeted task execution and polling trigger evaluation on specialized compute instances? The Worker Groups is offering flexibility in system resources, operating system, backend access, and regional proximity.</li>
-                    </ul>
+                <div class="col-md-6 order-1 order-md-0 d-flex flex-column justify-content-center align-items-center" data-aos="fade-right">
+                    <div>
+                        <h3>More Security</h3>
+                        <p class="mt-3">
+                            Monitor unauthorized access, modifications, or executions with precision, manage resource permission,  and unify account access through a single, secure connection. Securely store all secrets in one dedicated and managed environment, ensuring your data's safety and integrity with Kestra Enterprise.
+                        </p>
+                    </div>
                 </div>
-                <div class="col-md-6 order-0 order-md-0" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/enterprise/ee-4.svg" alt="High availability Schema">
+                <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
+                    <img class="img-fluid" src="/landing/enterprise/security-1.svg" alt="A dashboard with success or fail task events">
                 </div>
             </div>
             <div class="row mb-5">
-                <div class="col-md-6 order-1 order-md-0" data-aos="fade-right">
-                    <h3>Advanced Security and Role-Based Access Control</h3>
-                    <p>
-                        Ensure that your data workflows and resources remain protected and compliant with industry standards.
-                    </p>
-                    <ul>
-                        <li><b>Secure Authentication:</b> Integrate with Single Sign-On (SSO) and enterprise-grade identity providers to manage user access and authenticate users efficiently and securely.</li>
-                        <li><b>Role-Based Access Control:</b> Define custom roles and permissions for granular control over user access to workflows, tasks, and resources. Ensure that users only have access to the appropriate data and features.</li>
-                        <li><b>Enterprise Secret Management:</b> Kestra's Enterprise Edition offers robust secret management, supporting integration with AWS Secret Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, and Vault, ensuring secure, in-memory access to secrets at runtime.</li>
-                        <li><b>Audit logs:</b> Gain full visibility into all user activities on Kestra resources with detailed audit logs, empowering system administrators and security teams to monitor actions, investigate breaches, and maintain compliance.</li>
-                    </ul>
+                <div class="col-md-6 image-container" data-aos="fade-right">
+                    <img  class="img-fluid" src="/landing/enterprise/security-2.svg" alt="Stylized view of administrator settings with role-based view">
+                </div>
+                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                    <div>
+                        <h3>Complete Governance</h3>
+                        <p class="mt-3">
+                            Enable your multi-tenant architecture by combining centralized control of user access with namespace management for organized workflow control, and custom blueprints for shared knowledge and efficiency. Simplify collaboration and secure your operations with these powerful features designed for enterprise-level orchestration and automation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-6 order-1 order-md-0 d-flex justify-content-center align-items-center" data-aos="fade-right">
+                    <div>
+                        <h3>Scale with no limits</h3>
+                        <p class="mt-3">
+                            Kestra Enterprise offers dedicated workers to target computing resources accurately for specific tasks, ensuring both adaptability and customization. Guaranteed with no single point of failure, enhancing system reliability. Worker groups add flexibility, enabling specialized task execution and effective resource use across various settings.
+                        </p>
+                    </div>
                 </div>
                 <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
                     <img class="img-fluid" src="/landing/enterprise/security-3.svg" alt="A dashboard with success or fail task events">
                 </div>
             </div>
-            <div class="row mb-5">
-                <div class="col-md-6" data-aos="fade-right">
-                    <img  class="img-fluid" src="/landing/enterprise/security-1.svg" alt="Stylized view of administrator settings with role-based view">
+
+            <div class="row mb-4">
+                <div class="security-features">
+                    <Card
+                        img="/landing/enterprise/security-icon.svg"
+                        imgAlt="Security"
+                        title="Security"
+                        :bottomMenuBar="securityFeatures.security"
+                    />
+                    <Card
+                        img="/landing/enterprise/governance-icon.svg"
+                        imgAlt="Governance"
+                        title="Governance"
+                        :bottomMenuBar="securityFeatures.governance"
+                    />
+                    <Card
+                        img="/landing/enterprise/scalability-icon.svg"
+                        imgAlt="Scalability"
+                        title="Scalability"
+                        :bottomMenuBar="securityFeatures.scalability"
+                    />
                 </div>
-                <div class="col-md-6">
-                    <h3>Advanced Team Collaboration</h3>
-                    <p>
-                        Take workflow organization and collaboration to the next level with configurable namespaces, organization Blueprints and credential store.
-                    </p>
-                    <ul>
-                        <li><b>Namespace Management:</b> Create separate namespaces for different teams or projects, making it easy to find and manage your workflows.</li>
-                        <li><b>Control Access and Permissions:</b> Configure access and permissions at the namespace level, ensuring that users only have access to the workflows and resources relevant to their roles.</li>
-                        <li><b>Share Workflows and Resources:</b> Easily share workflows, tasks, and other resources across namespaces, fostering efficient collaboration between teams.</li>
-                        <li><b>Organization Blueprints:</b> Share custom, organization-specific Blueprints directly within your team, exclusively available for your organization's use.</li>
-                    </ul>
+            </div>
+            <div class="row mt-1 mb-5">
+                <div class="d-flex justify-content-center">
+                    <NuxtLink href="/pricing" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                        Compare all features
+                    </NuxtLink>
                 </div>
             </div>
         </Section>
     </div>
 </template>
 
+
 <script>
     import Section from '../layout/Section.vue';
     export default {
-        components: {Section}
+      components: {Section},
+      data() {
+        return {
+          securityFeatures: {
+            security: [
+              { text: "Audit log", active: false },
+              { text: "RBAC", active: false },
+              { text: "SSO", active: false },
+              { text: "Secrets Manager", active: false },
+            ],
+            governance: [
+              { text: "Multi Tenancy", active: false },
+              { text: "Namespace Management", active: false },
+              { text: "Custom blueprints", active: false },
+              { text: "Task Configuration", active: false },
+            ],
+            scalability: [
+              { text: "Dedicated Worker", active: false },
+              { text: "High Throughput", active: false },
+              { text: "High Availability", active: false },
+              { text: "Fault Tolerant", active: false },
+            ],
+          },
+        };
+      },
     }
 </script>
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
+    :deep(section) {
+        margin-top: calc($spacer * 7.8);
+        position: relative;
+
+        &:before {
+            content: "";
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background: url("/landing/ee/background-mask.svg") no-repeat center;
+            background-size: 156% 100%;
+            overflow: hidden;
+            top: -33%;
+            z-index: -1;
+        }
+        .subtitle {
+            margin: 0 !important;
+            p {
+                margin: 0 !important;
+            }
+
+            div.main {
+                padding-top: 0 !important;
+            }
+        }
+    }
     .container {
         border-top: $block-border;
-        border-bottom: $block-border;
 
         h3 {
             color: $white;
             font-size: $h2-font-size;
             font-weight: 300;
+            margin: 0;
         }
-        p, ul {
-            color: $white-1;
+
+        p {
+            color: $white;
             font-size: $font-size-md;
             font-weight: 300;
+            max-width: calc($spacer * 28);
 
             b {
                 color: $white;
                 font-weight: 600;
+            }
+        }
+
+        .image-container {
+            position: relative;
+            z-index: 10;
+
+            &::before,
+            &::after
+            {
+                content: "";
+                position: absolute;
+                width: calc($spacer * 12);
+                height: calc($spacer * 12);
+                background: radial-gradient(50% 50% at 50% 50%, #343434 0%, rgba(127, 122, 232, 0) 195% 117%);
+                filter: blur(47px);
+                z-index: -5;
+            }
+
+            &::before {
+                left: -1rem;
+                top: 11rem;
+            }
+
+            &::after {
+                left: 27rem;
+                top: -2rem;
+            }
+
+            @include media-breakpoint-down(lg) {
+                &::after {
+                    left: 13rem;
+                }
+
+                &::before {
+                    left: -3rem;
+                    top: 5rem;
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                &::after {
+                   left: 23rem;
+                }
+            }
+        }
+
+        .security-features {
+            display: flex;
+            justify-content: center;
+            gap: calc($spacer * 1.8);
+            position: relative;
+
+            :deep(.title-block) {
+                align-items: center;
+            }
+
+            @include media-breakpoint-down(lg) {
+                flex-direction: column;
+                align-items: center;
+
+                :deep(.card) {
+                    width: 60%;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                :deep(.card) {
+                    width: auto;
+                }
+            }
+            &::before {
+                content: "";
+                position: absolute;
+                width: calc($spacer * 12);
+                height: calc($spacer * 12);
+                background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+                filter: blur(100px);
+                z-index: -5;
+                left: 49rem;
+                top: -1rem;
+
+                @include media-breakpoint-down(lg) {
+                    left: 35%;
+                    top: 50%;
+                }
             }
         }
     }

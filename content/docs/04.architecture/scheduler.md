@@ -14,5 +14,5 @@ Note that polling triggers cannot be evaluated concurrently. They also can't be 
 Internally, the Scheduler will keep checking every second whether some trigger must be evaluated.
 
 ::alert{type="warning"}
-By default, Kestra will handle all dates based on your system timezone. You can change the timezone with [JVM options](../10.administrator-guide/01.configuration/04.others.md#jvm-configuration).
+By default, Kestra will handle all dates based on your system timezone. You can change the timezone with [JVM options](../10.configuration-guide/jvm.md).
 ::

@@ -43,7 +43,7 @@ kestra:
 
 We are using [Logback](https://logback.qos.ch/) to handle log. You change the format of the log format, and we provide some default and common one configuring a [logback configuration files](https://logback.qos.ch/manual/).
 
-If you want to customize the log format, you can create a `logback.xml` file and add it to the classpath. Then, add a new `JAVA_OPS` environment variable: `"-Dlogback.configurationFile=file:/path/to/your/configuration/logback.xml"`
+If you want to customize the log format, you can create a `logback.xml` file and add it to the classpath. Then, add a new `JAVA_OPTS` environment variable: `"-Dlogback.configurationFile=file:/path/to/your/configuration/logback.xml"`
 
 We provide some predefined configuration, and some example of the `logback.xml` files:
 

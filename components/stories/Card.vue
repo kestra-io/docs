@@ -14,7 +14,7 @@
                     />
                     <p class="card-title mt-3 mb-2">{{ story.title }}</p>
                     <p class="card-meta-description">{{ story.description }}</p>
-                    <div class="d-flex flex-wrap gap-3 my-3">
+                    <div class="d-flex flex-wrap gap-3 my-3 story-tasks">
                         <div class="icon bg-dark-4" v-for="task in story.tasks" :key="task">
                             <CommonTaskIcon :cls="task" />
                         </div>

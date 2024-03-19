@@ -113,10 +113,25 @@ export default defineEventHandler(async (event) => {
                                 );
                             }
                         } else {
-                            children = generateSubMenu(
+                            const coreTaskByFqn = {};
+                            const coreTaskQualifier = "io.kestra.core.tasks";
+                            children = generateSubMenuWithGroupProvider(
                                 `${rootPluginUrl}/${category}`,
-                                `${plugin.group}`,
-                                plugin[category].map(item => item.substring(plugin.group.length + 1))
+                                (item) => {
+                                    let fqnTask = coreTaskByFqn[item];
+                                    if (fqnTask !== undefined) {
+                                        return coreTaskQualifier;
+                                    }
+                                    return plugin.group;
+                                },
+                                plugin[category].map(item => {
+                                    if (item.startsWith(coreTaskQualifier)) {
+                                        let relativeItem = item.substring(coreTaskQualifier.length + 1);
+                                        coreTaskByFqn[relativeItem] = item;
+                                        return relativeItem;
+                                    }
+                                    return item.substring(plugin.group.length + 1);
+                                })
                             );
                         }
 

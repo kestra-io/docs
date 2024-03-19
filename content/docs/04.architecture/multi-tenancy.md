@@ -11,9 +11,7 @@ Multi-tenancy is a software architecture in which a single instance of software 
 This feature requires a [commercial license](https://kestra.io/pricing).
 
 ## How does multi-tenancy work in Kestra
-By default, multi-tenancy is disabled. See the [multi-tenancy section](../10.configuration-guide/03.enterprise-edition/multi-tenancy.md) of the Administrator Guide on how to configure it.
-
-When multi-tenancy is enabled, all resources (such as flows, triggers, executions, RBAC, and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
+By default, multi-tenancy is disabled. When multi-tenancy is enabled, all resources (such as flows, triggers, executions, RBAC, and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
 
 Data stored inside the internal storage is also isolated by tenants.
 

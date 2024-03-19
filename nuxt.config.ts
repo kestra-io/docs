@@ -118,7 +118,7 @@ export default defineNuxtConfig({
 
     gtag: {
         id: 'G-EYVNS03HHR',
-        initialConsent: false
+        enabled: false
     },
 
     runtimeConfig: {

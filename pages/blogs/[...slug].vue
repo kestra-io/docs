@@ -43,11 +43,11 @@
                         <template #header>
                             <BlogDetails :blog="page"/>
                         </template>
-                    </NavToc>s
+                    </NavToc>
                 </ContentRenderer>
             </article>
             <div class="bottom">
-                <DocsBlogs title="More contents"/>
+                <DocsBlogs title="More content"/>
                 <Updateletter/>
             </div>
         </div>
