@@ -1,6 +1,6 @@
 ---
 title: "Top 10 Alternative to dbt"
-description: ""
+description: "Comparing the different SQL frameworks used for analytics pipelines"
 date: 2024-03-21T17:00:00
 category: Solutions
 author:
