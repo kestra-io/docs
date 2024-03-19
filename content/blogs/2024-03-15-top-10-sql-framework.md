@@ -9,9 +9,11 @@ author:
 image: /blogs/2024-03-15-top-10-sql-framework.png
 ---
 
-Many discussions in data analytics assume everyone uses the ELT approach, with SQL transformations happening in the data warehouse. These discussions often favor dbt as the primary tool.
+When discussing how to process data using SQL transformation happening in the data warehouse, we directly think of dbt as the primary tool to use. 
 
-But, the reality is that many teams use different data stacks and tools. This blog post unpacks the various SQL frameworks, highlighting the trade-offs each method presents for different project requirements.
+For several years, dbt has established itself as a leader in the field, offering a user-friendly and efficient way to build data pipelines. However the data engineering landscape is constantly evolving, and new options are emerging to meet the ever-growing needs of modern data teams.
+
+This post delves into 10 alternatives to dbt, each catering to specific requirements and workflows. Whether you're an experimented data engineer or just starting your journey, exploring these options can equip you with the right tools to transform your data efficiently. We'll explore the unique strengths of each alternative, along with considerations to help you connect them with other tools and dependencies.
 
 ## dbt core
 
@@ -20,52 +22,46 @@ But, the reality is that many teams use different data stacks and tools. This bl
 Pioneering the concept of a full-fledged SQL framework, dbt empowers users to construct intricate model dependencies and efficiently test their SQL queries using a straightforward YAML declaration syntax. This combination of functionality and ease of use has cemented dbt's position as a leader in data transformation.
 
 While dbt excels in many areas, there's room for improvement when handling large-scale projects.  The current approach of using "refs" to define model dependencies can be limiting, and backfilling capabilities could benefit from further refinement.
-
-For a deeper dive into these drawbacks, check out our [recent blog post](https://kestra.io/blogs/2024-02-28-dbt-or-sqlmesh) exploring the comparison between dbt and SQLMesh.
+Also, recent developments including discussions around dbt Cloud and its pricing structure, have prompted some users to re-evaluate their commitment to dbt.
 
 
 ## 1) Airflow
 
-- Before dbt, many data engineers used to template their SQL in Airflow DAG code.
-
-Before the advent of dbt, many data engineers used to template their SQL queries in Airflow DAG code. In the end, dbt can be summarized as a framework to manage templated SQL queries. Using Jinja with Airflow dependencies management can be the great foundation of a SQL management platform.
-
-- business logic vs orchestration logic
+Before the advent of dbt, many data engineers used to template their SQL queries in Airflow DAG code. 
+In the end, dbt can be summarized as a framework to manage templated SQL queries and using Jinja with Airflow dependencies management can be the great foundation of a SQL management platform.
 
 Still, this approach has one major flaw: it couples Airflow with your business logic. 
 
-While it's possible to organize a repository with Airflow DAGs in one part and SQL queries in another, in-house tooling is often hard to manage in the long term. Onboarding new developers need dedicated training sessions and handling outlier cases often complicates the overall design, ending in over-engineering and shadow code routines.
+While it's possible to organize a repository with Airflow DAGs in one part and SQL queries in another, in-house tooling is often hard to manage in the long term. Onboarding new developers need dedicated training sessions and handling outlier cases often complicates the overall design, ending in over-engineering and shadow routines.
 
 Mixing business and orchestration logic is probably the last thing you want to do as a data engineer. Being conscious about it is a great skill to have and to foster within teams and projects. Also coupling your SQL queries to a specific orchestration engine can lock you in your own system. What if another team wants to automate their own SQL queries with another system?
 
-SCREENSHOT AIRFLOW
+## 2) SQLMesh
 
-## 2) Terraform
+X - Update with Marisa's inputs
 
-Cloud infrastructure management has undergone a revolution with Infrastructure as Code (IaC) becoming the go-to approach. Tools like [Terraform](https://kestra.io/blogs/2023-09-19-kestra-terraform-partnership), with its single language (HCL), dependency management, and modular design, allow seamless configuration of diverse resources. Teams can collaborate effortlessly across different resources thanks to Terraform's providers and the unified declarative syntax, streamlining workflows for various infrastructure needs.
+SQLMesh is a recent project aiming to emphasize better operations management. It shifts from dbt in that sense by bringing several improvements:
 
-Declaring queries with Terraform resources is often something overlooked. But if your modeling is simple enough, using only [resources like google_bigquery_table with Terraform](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table) to build views on top of raw data can be a very lightweight solution.
+- Semantic Understanding: SQLMesh goes beyond simple syntax checking. It understands the meaning of your SQL code, allowing for early detection of errors like incorrect column references.
 
-```hcl
-resource "google_bigquery_table" "dwh_organizations" {
-  project = data.google_project.prd.project_id
-  dataset_id = google_bigquery_dataset.dwh.dataset_id
-  table_id = "organizations"
-  deletion_protection = false
+- Column-Level Lineage: Track how data flows through your models at a granular level. This helps you understand how changes in one model impact downstream models.
 
-  view {
-    query = templatefile("bigquery/dwh/simple_select.sql", {
-      project = google_bigquery_dataset.ods.project
-      dataset = google_bigquery_dataset.ods.dataset_id
-      table = "organizations"
-    })
-    use_legacy_sql = false
-  }
-}
-```
-While Terraform might not be ideal for scenarios requiring complex incremental strategies, diverse materialization methods, or when data analysts lack familiarity with the tool, it excels in managing simpler pipelines. 
+- Automatic Data Contracts: SQLMesh automatically validates changes to your models and identifies their impact on downstream data consumers. It can even handle backfilling data when necessary.
 
-For instance, platform or data engineers often used to Terraform can effectively orchestrate their daily FinOps analytics pipelines this way.
+- Transpilation: Write SQL in your preferred dialect and let SQLMesh translate it to the target database system's dialect. This removes dialect-specific limitations and ensures code compatibility.
+
+- Virtual Data Environments: Work on models in isolated environments without affecting collaborators. SQLMesh tracks all versions and simplifies merging changes to production.
+
+- Easy Rollbacks: Version control allows you to easily revert to previous versions of your models if needed. This saves time and avoids production issues.
+
+These features empower data teams to build accurate and efficient data pipelines. SQLMesh offers these functionalities out-of-the-box, eliminating the need for complex setup or additional costs as your team scales.
+
+
+If you're looking to learn more about SQLmesh and the differences with dbt, check out our recent [deep-dive comparison between dbt and SQLMesh](https://kestra.io/blogs/2024-02-28-dbt-or-sqlmesh).
+
+::div
+<iframe width="700" height="400" src="https://www.youtube.com/embed/wTLoDq-SW-g?si=6gbmbLJV8j1L9LT0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+::
 
 
 ## 3) y42
@@ -82,22 +78,6 @@ Y42 can still be limiting for teams looking for a full control plane. Orchestrat
 IMAGE: https://www.y42.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-page-hero-img.dfe545ec.webp&w=1920&q=75
 
 
-## 4) SQLMesh
-
-X - Update with Marisa's inputs
-
-SQLMesh is a recent project aiming to emphasize better operations management. It shifts from dbt in that sense by bringing several improvements:
-- Environment management
-- Different user interfaces: a web UI and a CLI. Both are included in the open-source version.
-- Native support for multiple repositories
-- SQLMesh supports Jinja templating but it actually understands SQL instead of just treating it as a templated string like dbt does. It also lets the user extend the SQL language itself with native support for metaprogramming constructs that enable direct invocation of functions implemented in Python.
-
-
-If you're looking to learn more about SQLmesh and the differences with dbt, check out our recent [deep-dive comparison between dbt and SQLMesh](https://kestra.io/blogs/2024-02-28-dbt-or-sqlmesh).
-
-::div
-<iframe width="700" height="400" src="https://www.youtube.com/embed/wTLoDq-SW-g?si=6gbmbLJV8j1L9LT0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-::
 
 
 ## 5) Dataform
@@ -116,7 +96,7 @@ It's better to compare it with dbt Cloud offering as it's a fully managed soluti
 IMAGE: https://storage.googleapis.com/gweb-cloudblog-publish/images/1_dataform_diagram.max-2200x2200.jpg
 
 
-## 6) Quarry
+## 6) Quary
 
 Put simply [Quary](https://www.quary.dev/) is dbt developed in Rust.
 
@@ -162,6 +142,34 @@ SDF is not an open-source project and can be used over [cloud or enterprised off
 A newcomer to the scene, [Yato](https://github.com/Bl3f/yato) stands out as possibly the most lightweight SQL framework available. Designed for simplicity and speed, Yato takes a folder containing your SQL queries (or even Python transformations) and automatically determines the dependency order.
 
 This eliminates the need for complex configuration, letting you focus on writing your data manipulation logic.  Yato excels when used alongside [dlt](https://dlthub.com/), a data-loading tool. Together, this duo streamlines your data workflow by handling both data acquisition and transformation. It can be quite useful for simple projects and fast experimentation.
+
+
+## 10) Terraform
+
+Cloud infrastructure management has undergone a revolution with Infrastructure as Code (IaC) becoming the go-to approach. Tools like [Terraform](https://kestra.io/blogs/2023-09-19-kestra-terraform-partnership), with its single language (HCL), dependency management, and modular design, allow seamless configuration of diverse resources. Teams can collaborate effortlessly across different resources thanks to Terraform's providers and the unified declarative syntax, streamlining workflows for various infrastructure needs.
+
+Declaring queries with Terraform resources is often something overlooked. But if your modeling is simple enough, using only [resources like google_bigquery_table with Terraform](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table) to build views on top of raw data can be a very lightweight solution.
+
+```hcl
+resource "google_bigquery_table" "dwh_organizations" {
+  project = data.google_project.prd.project_id
+  dataset_id = google_bigquery_dataset.dwh.dataset_id
+  table_id = "organizations"
+  deletion_protection = false
+
+  view {
+    query = templatefile("bigquery/dwh/simple_select.sql", {
+      project = google_bigquery_dataset.ods.project
+      dataset = google_bigquery_dataset.ods.dataset_id
+      table = "organizations"
+    })
+    use_legacy_sql = false
+  }
+}
+```
+While Terraform might not be ideal for scenarios requiring complex incremental strategies, diverse materialization methods, or when data analysts lack familiarity with the tool, it excels in managing simpler pipelines. 
+
+For instance, platform or data engineers often used to Terraform can effectively orchestrate their daily FinOps analytics pipelines this way.
 
 
 ## SQL Framework + Kestra = Complete Holistic Stack
