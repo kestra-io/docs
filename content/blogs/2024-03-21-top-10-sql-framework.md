@@ -86,8 +86,7 @@ It provides a full web interface within Google Cloud Console, perfect for quick 
 It's better to compare it with dbt Cloud offering as it's a fully managed solution. However, it didn't have the community size as dbt and support will mostly come from Google teams.
 
 
-IMAGE: https://storage.googleapis.com/gweb-cloudblog-publish/images/1_dataform_diagram.max-2200x2200.jpg
-
+![dataform](/blogs/2024-03-21-top-10-sql-framework/dataform.jpg)
 
 ## 5) Quary
 
@@ -236,7 +235,7 @@ taskDefaults:
       password: "{{ secret('AIRBYTE_PASSWORD') }}"
 ```
 
-SCREENSHOT BLUEPRINT
+![airbyte_dbt](/blogs/2024-03-21-top-10-sql-framework/airbyte_dbt.png)
 
 Having the business logic managed by a SQL framework and the orchestration logic in Kestra makes things way simpler to automate. Analytics engineers and data analysts can focus on the actual code that extracts business value from the data while data engineers can manage the orchestration layer and other projects altogether thanks to Kestra.
 
