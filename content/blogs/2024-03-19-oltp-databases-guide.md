@@ -74,23 +74,17 @@ The diagram below is an ecosystem view of the context for your OLTP database cho
 
 ![diagram](\blogs\2024-03-19-oltp-databases-guide/9.png)
 
-The stakeholders alone can be daunting to consider,each with their own set of poorly-defined requirements:
+The stakeholders alone can be daunting to consider,each with their own set of requirements:
 
-| Backend Developers 
-DB Admins
-DevOps
-Infra
-Cloud
-Data Engineers
-Cybersecurity
-BI Analysts | Business Team (change and downtime approvals)
-Governance
-Vendor Mgmt
-CTO
-Project Managers
-Risk Mgmt
-FinOps |
-| --- | --- |
+| Backend Developers,  DB Admins                       | Business Team (change and downtime approvals)    |
+| Devops                                               | Governance                                       |
+| Infra                                                | Vendor Mgmt                                      |
+| Cloud                                                | CTO                                              |
+| Data Engineers                                       | Project Managers                                 |
+| Cybersecurity                                        | Risk Management                                  |
+| BI Analysts                                          | FinOps                                           |
+
+
 
 But let’s start with the core requirements or capabilities
 
