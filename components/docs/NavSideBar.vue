@@ -156,6 +156,7 @@
 
             :deep(.material-design-icon__svg) {
                 bottom: 0;
+                fill: #8B8B8D;
             }
 
             .input-group {
@@ -164,6 +165,7 @@
                 display: flex;
                 gap: calc($spacer * 0.5);
                 align-items: center;
+                justify-content: space-between;
 
                 .input-icon {
                     max-height: 100%;
@@ -200,8 +202,8 @@
                 gap: calc($spacer * 0.25);
 
                 .command {
-                    color: $black-10;
-                    font-family: Public Sans;
+                    color: $black-8;
+                    font-family: $font-family-sans-serif;
                     font-size: calc($font-size-base * 0.62);
                 }
             }
