@@ -25,7 +25,7 @@
 
             nuxtApp.hook("page:start", () => {
                 document.querySelector('body').classList.add("loading");
-
+                window.scrollTo(0, 0);
             });
 
             nuxtApp.hook("page:finish", () => {
