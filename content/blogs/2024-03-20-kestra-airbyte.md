@@ -6,6 +6,7 @@ category: Solutions
 author:
   name: Shruti Mantri
   image: "smantri"
+image: /blogs/2024-03-20-kestra-airbyte.jpg
 ---
 
 Airbyte is an open-source data integration platform designed to simplify the process of collecting, integrating, and moving data across various sources. This post demonstrates how we can integrate Airbyte using [Kestra](https://github.com/kestra-io/kestra) and perform operations on Airbyte using Kestra's Airbyte plugin.
