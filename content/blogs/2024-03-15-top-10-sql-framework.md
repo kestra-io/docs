@@ -1,5 +1,5 @@
 ---
-title: "Top 10 SQL Framework Alternative to dbt"
+title: "Top 10 Alternative to dbt"
 description: ""
 date: 2024-03-15T18:00:00
 category: Solutions
@@ -38,9 +38,7 @@ Mixing business and orchestration logic is probably the last thing you want to d
 
 ## 2) SQLMesh
 
-X - Update with Marisa's inputs
-
-SQLMesh is a recent project aiming to emphasize better operations management. It shifts from dbt in that sense by bringing several improvements:
+[SQLMesh](https://sqlmesh.com/) is a recent project aiming to emphasize better operations management. It shifts from dbt in that sense by bringing several improvements:
 
 - Semantic Understanding: SQLMesh goes beyond simple syntax checking. It understands the meaning of your SQL code, allowing for early detection of errors like incorrect column references.
 
@@ -68,7 +66,7 @@ If you're looking to learn more about SQLmesh and the differences with dbt, chec
 
 While dbt can be seen as a point solution for the T in ELT, an analytics stack often starts with data extraction processes. Therefore, it's important to be able to orchestrate these two concepts together.
 
-Y42 helps here with built-in ingestion capabilities allowing to orchestrate all steps together. From Airbyte, Fivetran dbt models and Python scripts, Y42 makes it possible to build a lightweight "Extract-Load" pattern with enhanced monitoring, isolated branch environments and automated deployments.
+[Y42](https://www.y42.com/) helps here with built-in ingestion capabilities allowing to orchestrate all steps together. From Airbyte, Fivetran dbt models and Python scripts, Y42 makes it possible to build a lightweight "Extract-Load" pattern with enhanced monitoring, isolated branch environments and automated deployments.
 
 While it's not an open-source tool, Y42 can be a good alternative to dbt Cloud offering. [Check out their comparison](https://www.y42.com/compare/y42-vs-dbt-cloud) with the latter in a dedicated blog post.
 
@@ -77,7 +75,7 @@ Y42 can still be limiting for teams looking for a full control plane. Orchestrat
 IMAGE: https://www.y42.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-page-hero-img.dfe545ec.webp&w=1920&q=75
 
 
-## 5) Dataform
+## 4) Dataform
 
 Started as an open-source project, [Dataform](https://github.com/dataform-co/dataform) has been designed as a meta-language to create SQL tables and workflows in BigQuery. It has been [fully integrated by Google in late 2020](https://cloud.google.com/blog/products/data-analytics/welcoming-dataform-to-bigquery?hl=en)
 
@@ -91,7 +89,7 @@ It's better to compare it with dbt Cloud offering as it's a fully managed soluti
 IMAGE: https://storage.googleapis.com/gweb-cloudblog-publish/images/1_dataform_diagram.max-2200x2200.jpg
 
 
-## 6) Quary
+## 5) Quary
 
 Put simply [Quary](https://www.quary.dev/) is dbt developed in Rust.
 
@@ -105,14 +103,14 @@ If you have several CI/CD pipelines or unit tests taking more and more time to r
 
 Check out [Quary GitHub repository](https://github.com/quarylabs/quary) and [documentation](https://www.quary.dev/docs) for more details on the solution
 
-## 7) lea
+## 6) lea
 
 Crafted in-house by the data experts at [Carbonfact](https://www.carbonfact.com/), [Lea](https://github.com/carbonfact/lea)is intentionally a simple and opinionated solution prioritizing ease of use while still offering room for customization.  At Carbonfact, Lea is their go-to tool for managing their data warehouse, and it currently integrates seamlessly with [BigQuery](https://cloud.google.com/bigquery) and [DuckDB](https://duckdb.org/). 
 
 If you're looking for a lightweight alternative to established options like dbt, SQLMesh, or Dataform, Lea is definitely worth considering.
 
 
-## 8) Malloy
+## 7) Malloy
 
 While Malloy isn't a traditional SQL framework, it offers functionalities that might be of interest in this context. 
 
@@ -123,7 +121,7 @@ Malloy answers these issues with a new syntax built on top of SQL. It allows bet
 Check out [Malloy website](https://www.malloydata.dev/) and [documentation](https://docs.malloydata.dev/documentation/) to learn about this promising language.
 
 
-## 9) sdf
+## 8) SDF
 
 In essence, [SDF](https://www.sdf.com/) acts as a translator and organizer for your SQL code. It uses in-depth analysis to understand your code and creates a detailed map of how different parts of your data interact. This map makes it easier to identify potential issues and areas for improvement.
 
@@ -132,7 +130,7 @@ One of SDF's strengths is the ability to add labels (metadata) to your SQL sourc
 SDF is not an open-source project and can be used over [cloud or enterprised offerings](https://www.sdf.com/pricing)
 
 
-## 10) yato
+## 9) yato
 
 A newcomer to the scene, [Yato](https://github.com/Bl3f/yato) stands out as possibly the most lightweight SQL framework available. Designed for simplicity and speed, Yato takes a folder containing your SQL queries (or even Python transformations) and automatically determines the dependency order.
 
