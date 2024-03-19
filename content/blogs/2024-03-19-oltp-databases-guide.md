@@ -15,9 +15,9 @@ image: /blogs/2024-03-19-oltp-databases-guide.jpg
 
 ## The Problem with Microservices Architecture
 
-The problem with microservices has always been twofold: managing the complexity of dozens or hundreds of microservices, and domain-driven design. Fortunately, understanding and properly executing domain-driven design is just a matter of doing the [reading](https://www.wiley.com/en-us/Patterns,+Principles,+and+Practices+of+Domain+Driven+Design-p-9781118714706#:~:text=Patterns%2C%20Principles%2C%20and%20Practices%20of%20Domain%2DDriven%20Design%20%7C%20Wiley) and following the rules (and maybe re-engineering some bad business processes).**
+The problem with microservices has always been twofold: managing the complexity of dozens or hundreds of microservices, and domain-driven design. Fortunately, understanding and properly executing domain-driven design is just a matter of doing the [reading](https://www.wiley.com/en-us/Patterns,+Principles,+and+Practices+of+Domain+Driven+Design-p-9781118714706#:~:text=Patterns%2C%20Principles%2C%20and%20Practices%20of%20Domain%2DDriven%20Design%20%7C%20Wiley) and following the rules (and maybe re-engineering some bad business processes).
 
-Managing complexity is a different matter, where the secret is simply to avoid it at all costs. The first step in avoiding it is coming up with a small set of definitions and then some metrics to help us identify and quantify complexity. Why a set of definitions? Because for software developers, complexity comes in several different flavors. Starting from the inside moving outward, we have:**
+Managing complexity is a different matter, where the secret is simply to avoid it at all costs. The first step in avoiding it is coming up with a small set of definitions and then some metrics to help us identify and quantify complexity. Why a set of definitions? Because for software developers, complexity comes in several different flavors. Starting from the inside moving outward, we have:
 
 - **[Cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity) of software**
 - **Complexity of interacting systems (think C4 diagrams)**
@@ -421,3 +421,7 @@ I don’t envy you the task of choosing the *right* database for your OLTP  mic
 Please do give some serious thought to an automation solution for all the database related coding, scripting and SQLing. It’s saved my sanity more times than I can count and the QA team loves it! Using a workflow orchestration platform like Kestra makes this kind of automation ridiculously easy.
 
 Whatever you do, keep a close watch on complexity and give a shout when it starts to grow in the dark corners of your shop like!
+
+Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
+Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
+Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
