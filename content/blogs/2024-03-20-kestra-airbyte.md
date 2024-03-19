@@ -12,25 +12,25 @@ Airbyte is an open-source data integration platform designed to simplify the pro
 
 ## About Airbyte ##
 
-Airbyte, introduced in 2020, stands out as a cutting-edge, open-source data integration platform renowned for its user-friendly interface and powerful capabilities. Airbyte has a rich set of connectors, providing users with a diverse toolkit for extracting, transforming, and loading data from various sources to destinations seamlessly. This extensive library of pre-built connectors ensures flexibility and efficiency in managing data pipelines, catering to the diverse needs of both technical and non-technical users.
+Airbyte, introduced in 2020, stands out as an open-source data integration platform known for its user-friendly interface and large community. Airbyte has hundreds of connectors for extracting, transforming, and loading data from various sources to destinations. This extensive library of pre-built connectors ensures flexibility and efficiency in managing data pipelines, catering to the diverse needs of both technical and non-technical users.
 
-Airbyte also offers its fully managed and adaptable version using Airbyte Cloud. As organizations increasingly embrace cloud-based solutions for their data infrastructure, Airbyte Cloud emerges as a strategic choice, combining the proven capabilities of Airbyte with the advantages of cloud-native architecture. With a focus on simplicity, adaptability, and scalability, Airbyte Cloud is poised to meet the evolving needs of businesses navigating the complexities of data integration in the cloud era.
+Airbyte also offers a fully managed product called Airbyte Cloud. 
 
 ## Integrating Airbyte using Kestra ##
 
-Kestra is a powerful tool that helps streamline operations, orchestration, and scheduling of data pipelines. Airbyte helps get easy connectivity between two data stores and helps establish seamless connection between them, making it easier to transfer data between these two data stores. With the help of Kestra, you can easily manage operations on Airbyte and track the status of these operations.
+Kestra is a powerful tool for orchestrating business-critical operations and workflows. It helps you easily trigger your Airbyte syncs and track their status.
 
-In this post, we would be setting up Airbyte and Kestra on two different AWS EC2 instances, create a new connection in Airbyte that will capture data from RDS MySQL database and sync it to S3 bucket. We will then use Kestra to invoke the Sync operation, as well as check the status of the Sync job. We can then go to the S3 bucket and confirm that the Kestra tasks indeed interacted with Airbyte and performed the requested sync.
+In this post, we will set up Airbyte and Kestra on two different AWS EC2 instances, create a new connection in Airbyte that will capture data from the RDS MySQL database, and sync it to an S3 bucket, use Kestra to invoke the Sync operation, and check the status of the Sync job. We can then go to the S3 bucket and confirm that the Kestra tasks indeed interacted with Airbyte and performed the requested sync.
 
 ### Setup Airbyte cluster ###
 
-In order to create Airbyte cluster on AWS EC2 machine, we will be creating an Amazon Linux OS based EC2 machine. Do ensure to use atleast "t2.medium" machine with 30GB of disk space. Once the machine is running, we will SSH into the machine and install Airbyte using docker compose. Follow the Airbyte [documentation page](https://docs.airbyte.com/deploying-airbyte/on-aws-ec2) on AWS EC2 installation for getting the Airbyte running on EC2.
+To create an Airbyte cluster on an AWS EC2 machine, we will create an Amazon Linux OS-based EC2 machine. Make sure to use at least a "t2.medium" machine with 30GB of disk space. Once the machine is running, we will SSH into it and install Airbyte using docker-compose. Follow the Airbyte [documentation page](https://docs.airbyte.com/deploying-airbyte/on-aws-ec2) on AWS EC2 installation to get the Airbyte running on EC2.
 
-Once the Airbyte is running using docker compose, you can go to the Security Group of your EC2 machine, and edit the inbound rules to open port `8000` across all hosts using `0.0.0.0/0`. You will now be able to access the Airbyte cluster using your EC2 machine's public IP address on port 8000. If you followed the instructions as is, `airbyte` and `password` would be your username and password respectively to login into the Airbyte UI.
+Once Airbyte is running, you can go to the Security Group of your EC2 machine and edit the inbound rules to open port `8000` across all hosts using `0.0.0.0/0`. You will now use the Airbyte cluster using your EC2 machine's public IP address on port 8000. If you followed the instructions as is, `airbyte` and `password` would be your username and password, respectively, to log into the Airbyte UI.
 
 ### Create RDS MySQL database ###
 
-Now, we will be creating the RDS MySQL instance. Go to the AWS RDS service, and create a new database. You can use the `Standard Create` option, choose `MySQL` engine and use any MySQL 8 version. You can choose the deployment options as per your preference. Then, you can proceed to provide an appropriate DB cluster name, master username and password. Do ensure to select `Yes` for public access, as this helps us to easily connect to the database from any machine (we are not discussing the networking details in this blog that would be required in case the public access is disabled). The database will still be protected using the username and password. With all the settings in place, click on the button "Create Database". The database will be provisioned in a few minutes.
+Now, we will be creating the RDS MySQL instance. Go to the AWS RDS service, and create a new database. You can use the `Standard Create` option, choose `MySQL` engine and use any MySQL 8 version. You can choose the deployment options as per your preference. Then, you can proceed to provide an appropriate DB cluster name, master username and password.  Select `Yes` for public access, as this helps us to easily connect to the database from any machine (we are not discussing the networking details in this blog that would be required in case the public access is disabled). The database will still be protected using the username and password. With all the settings in place, click on the button "Create Database". The database will be provisioned in a few minutes.
 
 Once the database is provisioned, you can use the RDS instance's public endpoint, port, username and password to connect to the database. Let us connect to this database using any MySQL client like MySQL Workbench or DB Visualizer from your local machine. Once connected to the database, we will create a `test` database, an `employees` table in that database, and insert three rows into the table using the following commands:
 
@@ -52,17 +52,17 @@ Create an S3 bucket with the name of your choice. In the bucket, create a folder
 
 ### Create Airbyte connection ###
 
-On the Airbyte homepage, click on "Create your first connection". Firstly, we would be creating the Source connection for which we will choose `MySQL`. Here, put in the appropriate DB host name, port, database, username and password. Select "Scan Changes with User Defined Cursor" option. This is how your connection settings should appear:
+On the Airbyte homepage, click on "Create your first connection". First, create the Source connection for which we will choose `MySQL`. Here, put in the appropriate DB host name, port, database, username and password. Select "Scan Changes with User Defined Cursor" option. This is how your connection settings should appear:
 
 ![airbyte_setup_source_connection](/blogs/2024-03-20-kestra-airbyte/airbyte_setup_source_connection.png)
 
-Now, click on "Set up source" button, which would first test the connection, and if the connection is successful, would proceed to the next page.
+Now, click on the "Set up source" button, which will first test the connection, and if the connection is successful, proceed to the next page.
 
-For the destination connection, select `S3`. You will have to provide the AWS access key, AWS secret key, bucket name, bucket region and the folder path within the bucket. Rest of the form you can leave default to have output format as `CSV: Comma-Separated Values` with no compression and no flattening. This is how your connection settings should appear:
+For the destination connection, select `S3`. You will have to provide the AWS access key, AWS secret key, bucket name, bucket region and the folder path within the bucket. For the rest of the form, you can leave the default to have the output format as `CSV: Comma-Separated Values` with no compression and no flattening. This is how your connection settings should appear:
 
 ![airbyte_setup_destination_connection](/blogs/2024-03-20-kestra-airbyte/airbyte_setup_destination_connection.png)
 
-Now, click on "Set up destination" button, which would first test the connection to the destination, and if the connection is successful, would proceed to the next page.
+Now, click on "Set up destination" button, which will first test the connection to the destination, and if the connection is successful, proceed to the next page.
 
 On this page is the final connection configuration. Leave everything default. Ensure that the `employees` stream shows up in the below table, and the sync mode for the stream is `Full refresh | Overwrite`.
 
@@ -104,11 +104,13 @@ tasks:
     password: password
 ```
 
-When you run this task, the sync operation would be invoked on the connection. The output of this task would have the job ID of the sync job as shown in the screenshot below.
+When you run this task, the sync operation should be invoked on the connection. The output of this task should have the job ID of the sync job as shown in the screenshot below.
 
 ![kestra_airbyte_sync_flow_output](/blogs/2024-03-20-kestra-airbyte/kestra_airbyte_sync_flow_output.png)
 
-Now, let us use this job Id and check the status of this job using another Kestra flow where we will use the [CheckStatus task](https://kestra.io/plugins/tasks/connections/io.kestra.plugin.airbyte.connections.checkstatus). The flow would look like this:
+Now, let us use this job ID and check the status of this job using another Kestra flow where we will use the [CheckStatus task](https://kestra.io/plugins/tasks/connections/io.kestra.plugin.airbyte.connections.checkstatus). 
+
+The flow should look as follows:
 
 ```yaml
 id: airbyte-check-status
@@ -122,7 +124,7 @@ tasks:
     password: password
 ```
 
-The output of this flow would have the Sync job status.
+The output of this flow should have the Sync job status.
 
 ![kestra_airbyte_check_status_flow_output](/blogs/2024-03-20-kestra-airbyte/kestra_airbyte_check_status_flow_output.png)
 
@@ -130,7 +132,7 @@ When the Sync job has succeeded, you can verify that the `Full refresh | Overwri
 
 ![csv_file_content](/blogs/2024-03-20-kestra-airbyte/airbyte_destination_output_five_lines.png)
 
-This example demonstrated how we can integrate Airbyte with Kestra. Kestra can orchestrate any kind of workflow with ease using the rich UI that monitors all executions.
+This example demonstrated how we can integrate Airbyte with Kestra. Kestra can orchestrate any kind of workflow, exposing a rich UI that monitors all executions.
 
 ![](/ui.gif)
 
