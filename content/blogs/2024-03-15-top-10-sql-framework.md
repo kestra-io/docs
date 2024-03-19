@@ -28,7 +28,7 @@ Also, recent developments including discussions around dbt Cloud and its pricing
 ## 1) Airflow
 
 Before the advent of dbt, many data engineers used to template their SQL queries in Airflow DAG code. 
-In the end, dbt can be summarized as a framework to manage templated SQL queries and using Jinja with Airflow dependencies management can be the great foundation of a SQL management platform.
+In the end, dbt can be summarized as a framework to manage templated SQL queries, and using Jinja with Airflow dependencies management can be the great foundation of a SQL management platform.
 
 Still, this approach has one major flaw: it couples Airflow with your business logic. 
 
@@ -66,7 +66,6 @@ If you're looking to learn more about SQLmesh and the differences with dbt, chec
 
 ## 3) y42
 
-
 While dbt can be seen as a point solution for the T in ELT, an analytics stack often starts with data extraction processes. Therefore, it's important to be able to orchestrate these two concepts together.
 
 Y42 helps here with built-in ingestion capabilities allowing to orchestrate all steps together. From Airbyte, Fivetran dbt models and Python scripts, Y42 makes it possible to build a lightweight "Extract-Load" pattern with enhanced monitoring, isolated branch environments and automated deployments.
@@ -78,17 +77,13 @@ Y42 can still be limiting for teams looking for a full control plane. Orchestrat
 IMAGE: https://www.y42.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-page-hero-img.dfe545ec.webp&w=1920&q=75
 
 
-
-
 ## 5) Dataform
 
 Started as an open-source project, [Dataform](https://github.com/dataform-co/dataform) has been designed as a meta-language to create SQL tables and workflows in BigQuery. It has been [fully integrated by Google in late 2020](https://cloud.google.com/blog/products/data-analytics/welcoming-dataform-to-bigquery?hl=en)
 
-One big difference with dbt is that Dataform uses JavaScript as its scripting language whilst dbt opts for Jinja.
+One big difference with dbt is that Dataform uses JavaScript as its scripting language while dbt opts for Jinja.
 
-Provides a full web interface within Google Cloud Console, perfect for quick starts within that ecosystem but less flexible for external tools.
-
-Dataform can be used for free (costs being downstreamed on BigQuery compute) and is a nice fit for teams already tightened to Google Cloud services.
+It provides a full web interface within Google Cloud Console, perfect for quick starts within that ecosystem but less flexible for external tools. Dataform can be used for free (costs being downstreamed on BigQuery compute) and is a nice fit for teams already tightened to Google Cloud services.
 
 It's better to compare it with dbt Cloud offering as it's a fully managed solution. However, it didn't have the community size as dbt and support will mostly come from Google teams.
 
@@ -106,7 +101,7 @@ Quary [answers this question](https://www.quary.dev/blog/why-rust) by taking a s
 
 >There are many other steps to getting a data insight that are equally, if not more, time-consuming. Here are a few examples: deciding the initial requirements, finding the right tool, security reviews, setting up environments, reviewing the code that defines the data transformation layer, data quality spot checks, updating data catalogs, waiting for merges to build reports, internal marketing for that data asset... the list goes on.
 
-If you have several CI/CD pipelines or unit tests taking more and more time to run due to Python engine, switching to a more optimized SQL framework base on Rust can be a nice choice to streamline and get things done faster.
+If you have several CI/CD pipelines or unit tests taking more and more time to run due to the Python engine, switching to a more optimized SQL framework based on Rust can be a nice choice to streamline and get things done faster.
 
 Check out [Quary GitHub repository](https://github.com/quarylabs/quary) and [documentation](https://www.quary.dev/docs) for more details on the solution
 
@@ -141,7 +136,9 @@ SDF is not an open-source project and can be used over [cloud or enterprised off
 
 A newcomer to the scene, [Yato](https://github.com/Bl3f/yato) stands out as possibly the most lightweight SQL framework available. Designed for simplicity and speed, Yato takes a folder containing your SQL queries (or even Python transformations) and automatically determines the dependency order.
 
-This eliminates the need for complex configuration, letting you focus on writing your data manipulation logic.  Yato excels when used alongside [dlt](https://dlthub.com/), a data-loading tool. Together, this duo streamlines your data workflow by handling both data acquisition and transformation. It can be quite useful for simple projects and fast experimentation.
+This eliminates the need for complex configuration, letting you focus on writing your data manipulation logic.  Yato excels when used alongside [dlt](https://dlthub.com/), a data-loading tool. Together, this duo streamlines your data workflow by handling both data acquisition and transformation. 
+
+It can be quite useful for simple projects and fast experimentation.
 
 
 ## 10) Terraform
@@ -167,20 +164,94 @@ resource "google_bigquery_table" "dwh_organizations" {
   }
 }
 ```
+
 While Terraform might not be ideal for scenarios requiring complex incremental strategies, diverse materialization methods, or when data analysts lack familiarity with the tool, it excels in managing simpler pipelines. 
 
-For instance, platform or data engineers often used to Terraform can effectively orchestrate their daily FinOps analytics pipelines this way.
+For instance, platform or data engineers already used to Terraform can effectively orchestrate their daily FinOps analytics pipelines this way.
 
 
 ## SQL Framework + Kestra = Complete Holistic Stack
 
-X Orchestrate dbt, SQLMesh, Malloy
-X Orchestrate any CLI based tool
-X Manage your business logic with Git (GitOps)
+While SQL frameworks excel at expressing complex data logic, running and automating these scripts requires a dedicated orchestration tool for data practitioners.
 
+At Kestra, we observe many users orchestrating their dbt workflows alongside various elements – data ingestion, alerting, machine learning training, and more. While SQL plays a crucial role, organizations need a solution to automate the entire pipeline. This is where Kestra's orchestration engine steps in.
+
+Here is an example using Kestra declarative syntax to run data ingestion pipelines with Airbyte and then run a dbt project from a GitHub repository
+
+```yaml
+id: airbyteSyncParallelWithDbt
+namespace: blueprint
+
+tasks:
+  - id: data-ingestion
+    type: io.kestra.core.tasks.flows.Parallel
+    tasks:
+      - id: salesforce
+        type: io.kestra.plugin.airbyte.connections.Sync
+        connectionId: e3b1ce92-547c-436f-b1e8-23b6936c12ab
+
+      - id: google-analytics
+        type: io.kestra.plugin.airbyte.connections.Sync
+        connectionId: e3b1ce92-547c-436f-b1e8-23b6936c12cd
+
+      - id: facebook-ads
+        type: io.kestra.plugin.airbyte.connections.Sync
+        connectionId: e3b1ce92-547c-436f-b1e8-23b6936c12ef
+
+  - id: dbt
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+    - id: cloneRepository
+      type: io.kestra.plugin.git.Clone
+      url: https://github.com/kestra-io/dbt-demo
+      branch: main
+    
+    - id: dbt-run
+      type: io.kestra.plugin.dbt.cli.Run
+      runner: DOCKER
+      dbtPath: /usr/local/bin/dbt
+      dockerOptions:
+        image: ghcr.io/kestra-io/dbt-bigquery:latest
+      inputFiles:
+        .profile/profiles.yml: |
+          jaffle_shop:
+            outputs:
+              dev:
+                type: bigquery
+                dataset: your_big_query_dataset_name
+                project: your_big_query_project
+                fixed_retries: 1
+                keyfile: sa.json
+                location: EU
+                method: service-account
+                priority: interactive
+                threads: 8
+                timeout_seconds: 300
+            target: dev
+        sa.json: "{{ secret('GCP_CREDS') }}"
+
+taskDefaults:
+  - type: io.kestra.plugin.airbyte.connections.Sync
+    values:
+      url: http://host.docker.internal:8000/
+      username: "{{ secret('AIRBYTE_USERNAME') }}"
+      password: "{{ secret('AIRBYTE_PASSWORD') }}"
+```
+
+SCREENSHOT BLUEPRINT
+
+Having the business logic managed by a SQL framework and the orchestration logic in Kestra makes things way simpler to automate. Analytics engineers and data analysts can focus on the actual code that extracts business value from the data while data engineers can manage the orchestration layer and other projects altogether thanks to Kestra.
+
+By using a declarative language syntax, everyone can readily understand data pipelines. This simplifies collaboration, promotes knowledge sharing, and ultimately makes everyone more productive and confident in utilizing data within the company.
+
+Check out the many [blueprints](https://kestra.io/blueprints) to explore how Kestra can easily connect your projects and tools together.
 
 ## Conclusion
 
-X choosing tool it depends of your level of maturity/complexity
-X Kestra allows to orchestrate any of these tools
-X Kestra links
+This blog post focused on the alternatives to dbt. Ultimately, choosing an SQL framework is about the level of complexity in your project and the skills of your team. Sometimes a lightweight framework will perfectly do the work while you might need something more focused on operation to scale your business logic handling.
+
+Having a control plane like Kestra here is key: uncoupling business from orchestration logic makes things way simpler to manage and allows you to connect the bits between all the teams and projects in your company.
+
+What SQL framework are you using? Are you using others we didn't mention in this piece? At Kestra, we would love to hear from you. You can [join the Slack community](https://kestra.io/slack), where we'll be happy to help you develop your data pipelines.
+
+Check out dbt and SQLMesh tasks on the [plugin page](https://kestra.io/plugins?page=1&size=40&category=All+Categories&q=dbt) and check the code [in our GitHub repository](https://github.com/kestra-io) and make sure to give us a star if you like the project.
