@@ -36,7 +36,7 @@
         },
         async created() {
             try {
-                const { data } = await this.useApi.get('/communities/github/contributors')
+                const { data } = await this.useApi().get('/communities/github/contributors')
                 this.contributors = data
                 this.contributorsRand = this.contributors.sort(() => 0.5 - Math.random())
             } catch (e) {

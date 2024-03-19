@@ -107,8 +107,8 @@
         async created() {
             try {
                 const [metrics, contributors] = await Promise.all([
-                    this.useApi.get('/communities/github/metrics'),
-                    this.useApi.get('/communities/github/contributors')
+                    this.useApi().get('/communities/github/metrics'),
+                    this.useApi().get('/communities/github/contributors')
                 ])
                 this.metrics = metrics.data
                 this.contributors = contributors.data
