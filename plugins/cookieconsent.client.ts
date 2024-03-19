@@ -4,6 +4,8 @@ import axios from "axios";
 
 export default defineNuxtPlugin(nuxtApp => {
     const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
+    const cookieConsent = CookieConsent;
+    nuxtApp.provide("cookieConsent", cookieConsent);
 
     nuxtApp.hook('page:finish', () => {
         const {initialize} = useGtag()
@@ -35,9 +37,6 @@ export default defineNuxtPlugin(nuxtApp => {
             posthog.capture('$pageview');
         };
 
-
-        const cookieConsent = CookieConsent;
-        nuxtApp.provide("cookieConsent", cookieConsent);
         const enabledMarketing = () => {
             return cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js',{defer: "defer"});
         };
