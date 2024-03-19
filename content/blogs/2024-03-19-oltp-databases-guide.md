@@ -6,7 +6,7 @@ category: Solution
 author:
   name: Kevin Fleming
   image: "kfleming"
-image: /blogs/2024-03-18-guide-vector-databases.jpg
+image: /blogs/2024-03-19-oltp-databases-guide.jpg
 ---
 
 **Context is everything. Decisions need context;  effective choices rely on considering all relevant factors.  For example, a doctor wouldn't prescribe medication solely based on symptoms; they'd need the patient's medical history as context.**
