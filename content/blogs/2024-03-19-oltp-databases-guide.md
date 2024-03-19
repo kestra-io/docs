@@ -34,37 +34,37 @@ The simplest measure of complexity, the one that is easiest to understand and us
 
 The following diagrams illustrate the easiest way of measuring complexity. The first diagram shows the number of components in a system, the interactions, and the number of interactions between components:
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/1.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/1.png)
 
 If you simply change the labels and the layout of the components, you see the familiar and well-architected API Gateway to microservices:
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/2.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/2.png)
 
 However, in the subsequent illustration, you can see right away that the complexity is greatly increased. The number of components has not increased but the number of interactions has increased dramatically.
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/3.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/3.png)
 
 There is a saying that is appropriate here: “Good fences make good neighbors.” The following examples show a complete lack of fences, or boundaries between domain context. The API Gateway to microservices architecture shows a relatively low level of complexity. However, In this example, there is little analysis or evidence of domain-driven design and there is a significant amount of complexity as a result.
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/4.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/4.png)
 
 This is exactly what happens inside a monolithic web application, an example of which is illustrated below. This was how everyone built applications when web application servers were the hot new technology.
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/5.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/5.png)
 
 The result of multiple teams working on the same business domains was fragile, slow-to-change, monolithic apps.
 
 Then one magical day, Domain-Driven Design and Microservices got together and the result was highly reliable, scalable, systems that quickly could adapt to the needs of the business and its customers. Yay!
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/6.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/6.png)
 
 If you followed the rules, and managed complexity not just in the system architecture but in the software development teams’ architecture, you too could do what Netflix, Amazon, and others have done.
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/7.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/7.png)
 
 Amazon's two-pizza team structure gives teams low complexity, single-threaded ownership over a product or service. This means that the team is responsible for the entire customer experience and the lifecycle of the product or service. The teams are also organized around the product or service they deliver, rather than the skills they provide.
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/8.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/8.png)
 
 ## The OLTP Database
 
@@ -72,7 +72,7 @@ It’s now very clear why complexity is probably the most important aspect of co
 
 The diagram below is an ecosystem view of the context for your OLTP database choice:
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/9.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/9.png)
 
 The stakeholders alone can be daunting to consider,each with their own set of requirements:
 
@@ -88,7 +88,7 @@ The stakeholders alone can be daunting to consider,each with their own set of re
 
 But let’s start with the core requirements or capabilities
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/10.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/10.png)
 
 For the dev team, the choice of database is mostly decided by the ecosystem of helpful libraries that make implementing a domain-driven design better, faster, and stronger.
 
@@ -96,7 +96,7 @@ But when you step back just a bit, you see that the complexity nearly explodes. 
 
 This side of the content equation can be particularly aggrieved when the data schema suddenly changes without prior consultation.
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/11.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/11.png)
 
 ## Managing Backend Complexity
 
@@ -136,11 +136,11 @@ Anytime you need a state change to be atomic, you need a transaction. Transactio
 
 The microservice on the left has a cache that must be consistent with the data in the database aka the [system of record](https://en.wikipedia.org/wiki/System_of_record). This means that two transactions are needed: the inner database transactions ensure the consistency and integrity of the database, while the outer ensures the overall integrity of the database and the cache. The microservice on the right has no need for a cache in their use case so only one transaction in the database is required.
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/12.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/12.png)
 
 ### Architectural Principles & Design Patterns
 
-There are a few architectural principles and design patterns that can go a long way to helping you manage complexity but also help you cope with changing schemas and database growth: 
+There are a few architectural principles and design patterns that can go a long way to helping you manage complexity but also help you cope with changing schemas and database growth:
 
 - Separation of concerns is a design principle for splitting software into modules. Each module handles a specific aspect (like data access or user interface) to improve organization, maintainability, and reusability.
 
@@ -152,11 +152,11 @@ There are a few architectural principles and design patterns that can go a long 
 
 - Encapsulation bundles data and the methods that operate on that data together. This keeps internal details hidden and lets you control access, promoting data integrity, modularity, and reusability of your code.
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/13.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/13.png)
 
 **Loose coupling is key to managing complexity and inevitable change…**
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/14.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/14.png)
 
 **and growth!**
 
@@ -168,7 +168,7 @@ There are a few architectural principles and design patterns that can go a long 
 - **Repository Pattern**
 - **Data Access Layer (DAL)**
 
-![diagram](\blogs\2024-03-19-oltp-databases-guide/15.png)
+![diagram](/blogs/2024-03-19-oltp-databases-guide/15.png)
 
 ***In this diagram, Raw is provided as a contrast to the actual design patterns.***
 
@@ -214,7 +214,7 @@ The facade provides a security boundary between the application and the database
 
 ## OLTP Candidates for your Microservices
 
-## MongoDB 
+## MongoDB
 
 MongoDB excels in handling large volumes of unstructured or semi-structured data (like JSON * BSON) with flexible schema designs. While not traditionally ideal for OLTP due to potential performance overhead in rigid transactions, it can handle some OLTP workloads if performance is not ultra-critical.
 
@@ -261,7 +261,7 @@ MongoDB introduced multi-document ACID transactions in version 4.0, extending th
 
 PostgreSQL (ORDBMS): another open-source RDBMS offering a powerful feature set beyond MySQL, including complex data types, stored procedures, and advanced indexing. It provides robust ACID transactions and is well-suited for OLTP workloads that demand both performance and flexibility for complex data operations.
 
-### Client Libraries 
+### Client Libraries
 
 PostgreSQL's client libraries are extensive, covering a broad spectrum of programming languages with various libraries to facilitate database interactions.
 
