@@ -737,13 +737,12 @@ export default {
                     padding: $spacer;
                     border-radius: $spacer;
                     border: 1px solid $black-6;
-                    top: 200%;
 
                     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
                         & {
                             -webkit-backdrop-filter: blur(calc($spacer * 0.625));
                             backdrop-filter: blur(calc($spacer * 0.625));
-                            background-color: rgb(17 17 19 / 65%);
+                            background-color: rgba(22, 22, 23, 0.9);
                         }
                     }
 
