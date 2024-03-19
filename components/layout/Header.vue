@@ -277,7 +277,7 @@
                                         <PostOutline />
                                         <p>
                                             <span>Blog</span><br />
-                                            Elevate your Kestra use through our partner ecosystem                                        </p>
+                                            Company news, product updates, and engineering deep dives                                     </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
@@ -567,15 +567,30 @@ export default {
         transition: all ease 0.2s;
         transform: translateY(0);
         max-height: 100%;
-        @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-            & {
-                -webkit-backdrop-filter: blur(calc($spacer * 0.625));
-                backdrop-filter: blur(calc($spacer * 0.625));
-                background-color: rgb(17 17 19 / 65%);
-                @include media-breakpoint-down(lg) {
-                    padding: 0;
-                    padding-top: $spacer;
-                    background-color: $black-9;
+        background: transparent;
+
+        @include media-breakpoint-down(lg) {
+            padding: 0;
+            padding-top: $spacer;
+            background-color: $black-9;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+                & {
+                    -webkit-backdrop-filter: blur(calc($spacer * 0.625));
+                    backdrop-filter: blur(calc($spacer * 0.625));
+                    background-color: rgb(17 17 19 / 65%);
+                    @include media-breakpoint-down(lg) {
+                        content: none;
+                    }
                 }
             }
         }
@@ -722,9 +737,19 @@ export default {
                     padding: $spacer;
                     border-radius: $spacer;
                     border: 1px solid $black-6;
-                    background: #161617E5;
+                    top: 200%;
+
+                    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+                        & {
+                            -webkit-backdrop-filter: blur(calc($spacer * 0.625));
+                            backdrop-filter: blur(calc($spacer * 0.625));
+                            background-color: rgb(17 17 19 / 65%);
+                        }
+                    }
 
                     @include media-breakpoint-down(lg) {
+                        background: #161617E5;
+                        width: 100% !important;
                         box-shadow: none;
                         border: 0;
                         padding: 0 $spacer !important;
