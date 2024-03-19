@@ -4,6 +4,7 @@ import axios from "axios";
 
 export default defineNuxtPlugin(nuxtApp => {
     const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
+    const runtimeConfig = useRuntimeConfig()
     const cookieConsent = CookieConsent;
     nuxtApp.provide("cookieConsent", cookieConsent);
 
@@ -13,7 +14,7 @@ export default defineNuxtPlugin(nuxtApp => {
         const enabledAnalytics = async () => {
             initialize();
 
-            const response = await axios.get('https://api.kestra.io/v1/config', {withCredentials: true})
+            const response = await axios.get(`${runtimeConfig.public.apiUrl}/config`, {withCredentials: true})
 
             posthog.init(
                 response.data.posthog.token,

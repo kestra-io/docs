@@ -1,4 +1,4 @@
-const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
+const DEFAULT_KESTRA_API_URL = 'https://api.develop.kestra.io/v1';
 export default defineNuxtConfig({
     modules: [
         '@nuxt/devtools',
