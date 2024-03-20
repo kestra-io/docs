@@ -67,7 +67,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="facets overflow-x-auto overflow-y-hidden bg-dark-2 p-0" v-if="allSum > 0">
+                    <div class="facets overflow-x-auto overflow-y-hidden bg-dark-2 p-0">
                         <div class="facet" :class="{'facet-active': selectedFacet === undefined}" @click="() => selectFacet(undefined)">
                             <span>All</span>
                             <span>({{ allSum }})</span>
