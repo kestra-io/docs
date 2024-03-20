@@ -41,7 +41,7 @@
 
     .topology-root {
         width: 100%;
-        height: 400px;
+        height: calc($spacer * 19.875);
     }
 
 
