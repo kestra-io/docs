@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: /blogs/2024-03-21-top-10-sql-framework.png
+image: /blogs/2024-03-21-top-10-sql-framework.jpg
 ---
 
 When discussing how to process data using SQL transformation happening in the data warehouse, we directly think of dbt as the primary tool to use. 
