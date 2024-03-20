@@ -357,7 +357,7 @@
                             </span>
                         </NuxtLink>
 
-                        <a @click="globalClick(true)" href="#" class="btn btn-sm d-none d-lg-inline-block icon-button"
+                        <a @click="globalClick(true)" href="#" id="header-search-button" class="btn btn-sm d-none d-lg-inline-block icon-button"
                             data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
                             <Magnify />
                         </a>
