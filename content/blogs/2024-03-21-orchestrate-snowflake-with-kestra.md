@@ -1,5 +1,5 @@
 ---
-title: "Kestra and Snowflake Partnership: How Our Users Are Orchestrating Their Snowflake Lakehouse"
+title: "Kestra and Snowflake Partnership: How Our Users Are Orchestrating Their Snowflake Data Warehouse"
 description: "Following our partnership announcement with Snowflake, an increasing number of Kestra users are effectively orchestrating their Snowflake environments using Kestra"
 date: 2024-03-21T08:00:00
 category: Company News
@@ -9,11 +9,11 @@ author:
 image: /blogs/2024-03-21-orchestrate-snowflake-with-kestra.jpg
 ---
 
-Following the announcement of our [parntership with Snowflake](https://kestra.io/blogs/2023-09-25-kestra-snowflake-partnership), we've witnessed a surge in the usage of our plugin. An increasing number of companies are now leveraging Kestra to orchestrate their Snowflake data lakehouses, transforming how they manage their data at scale. This collaboration has significantly improved how data is managed at scale, offering Kestra users advanced capabilities for orchestration within Snowflake's ecosystem.
+Following the announcement of our [partnership with Snowflake](https://kestra.io/blogs/2023-09-25-kestra-snowflake-partnership), we've witnessed a surge in the usage of our plugin. An increasing number of companies are now leveraging Kestra to orchestrate their Snowflake data lakehouses, transforming how they manage their data at scale. This collaboration has significantly improved how data is managed at scale, offering Kestra users advanced capabilities for orchestration within Snowflake's ecosystem.
 
 ### Inside Snowflake's Cloud-Native Capabilities
 
-Snowflake provides a unified, cloud-native platform that eliminates data silos, facilitating secure collaboration and sharing across data pipelines. Its architecture features robust cloud storage, a sophisticated query processing engine, and a comprehensive suite of cloud services, all designed to work seamlessly with a wide range of third-party integrations. Additionally, Snowflake's multi-cloud, multi-cluster warehouse capabilities include dynamic auto-scaling to efficiently manage virtual warehouses, optimizing both resource usage and costs.
+Snowflake provides a unified cloud platform that eliminates data silos, facilitating secure collaboration and sharing across data pipelines. Its architecture features robust cloud storage, a sophisticated query processing engine, and a comprehensive suite of cloud services, all designed to work seamlessly with a wide range of third-party integrations. Additionally, Snowflake's multi-cloud, multi-cluster warehouse capabilities include dynamic auto-scaling to efficiently manage virtual warehouses, optimizing both resource usage and costs.
 
 ## How our Users are Leveraging the Snowflake Plugin
 
@@ -115,9 +115,9 @@ tasks:
 
 ## More to Come
 
-The synergy between Kestra and Snowflake through this plugin has opened new avenues for efficient data orchestration and management.This partnership not only simplifies complex data processes but also empowers users to leverage their data assets more effectively.
+The synergy between Kestra and Snowflake through this plugin has opened new avenues for efficient data orchestration and management. This partnership not only simplifies complex data processes but also empowers users to leverage their data assets more effectively.
 
-As we continue to enhance this integration, Kestra users can look forward to even more features designed to maximize the value of their data within Snowflake's platform.
+As we continue to enhance this integration, Kestra users can expect even more features designed to maximize the value of their data within Snowflake's platform.
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
