@@ -4,6 +4,9 @@ import axios from "axios";
 
 export default defineNuxtPlugin(nuxtApp => {
     const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
+    const runtimeConfig = useRuntimeConfig()
+    const cookieConsent = CookieConsent;
+    nuxtApp.provide("cookieConsent", cookieConsent);
 
     nuxtApp.hook('page:finish', () => {
         const {initialize} = useGtag()
@@ -11,7 +14,7 @@ export default defineNuxtPlugin(nuxtApp => {
         const enabledAnalytics = async () => {
             initialize();
 
-            const response = await axios.get('https://api.kestra.io/v1/config', {withCredentials: true})
+            const response = await axios.get(`${runtimeConfig.public.apiUrl}/config`, {withCredentials: true})
 
             posthog.init(
                 response.data.posthog.token,
@@ -35,9 +38,6 @@ export default defineNuxtPlugin(nuxtApp => {
             posthog.capture('$pageview');
         };
 
-
-        const cookieConsent = CookieConsent;
-        nuxtApp.provide("cookieConsent", cookieConsent);
         const enabledMarketing = () => {
             return cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js',{defer: "defer"});
         };

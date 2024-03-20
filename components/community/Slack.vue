@@ -55,10 +55,13 @@
 import Section from '../../components/layout/Section.vue';
 import Card from '../card/Card.vue';
 import Slack from "vue-material-design-icons/Slack.vue";
-import { kestraInstance } from "~/utils/api.js";
+import {useApi} from "~/composables/useApi.js";
 
 export default {
     components: {Slack, Section, Card},
+    setup() {
+        return {useApi}
+    },
     props: {
         widget: {
             type: Boolean,
@@ -70,12 +73,12 @@ export default {
             online: undefined,
         }
     },
-    async mounted() {
+    async created() {
         try {
             const memberCount = window.sessionStorage.getItem("slack_member_count")
 
             if (!memberCount) {
-                const { data: { total } } = await kestraInstance.get('/communities/slack')
+                const { data: { total } } = await useApi().get('/communities/slack')
                 window.sessionStorage.setItem("slack_member_count", total)
                 this.online = total
             } else {

@@ -23,7 +23,7 @@
                     <nav id="nav-toc">
                         <ul class="ps-0 pt-2 pt-lg-0">
                             <template v-for="item in generated" >
-                                <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" class="mb-3">
+                                <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" :class="{'mt-3': item.depth === 2}">
                                     <a :href="'#' + item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
                                 </li>
                             </template>

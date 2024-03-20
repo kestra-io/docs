@@ -3,15 +3,17 @@ import {recursivePages} from "~/utils/navigation.js";
 import type {SitemapUrlInput} from "@nuxtjs/sitemap/dist/runtime/types";
 
 const generateDefaultSitemap = async () => {
+    const runtimeConfig = useRuntimeConfig()
+
     type SitemapsToGenerate = { rootUrl: string, apiUrl: string, sitemap?: string };
     const sitemapsToGenerate: Array<SitemapsToGenerate> = [
         {
             rootUrl: '/blueprints/',
-            apiUrl: 'https://api.kestra.io/v1/blueprints',
+            apiUrl: `${runtimeConfig.public.apiUrl}/blueprints`,
         },
         {
             rootUrl: '/use-cases/stories/',
-            apiUrl: 'https://api.kestra.io/v1/customer-stories'
+            apiUrl: `${runtimeConfig.public.apiUrl}/customer-stories`
         }
     ];
 

@@ -18,11 +18,6 @@ yarn.lock
 content/plugins/**/*
 !content/plugins/index.md
 public/examples.zip
-public/kestra-ee.yml
-
-## Terraform
-content/docs/11.terraform/**/*
-!content/docs/11.terraform/index.md
 
 ## Nuxt
 node_modules
