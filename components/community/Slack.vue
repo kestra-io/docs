@@ -73,12 +73,12 @@ export default {
             online: undefined,
         }
     },
-    async mounted() {
+    async created() {
         try {
             const memberCount = window.sessionStorage.getItem("slack_member_count")
 
             if (!memberCount) {
-                const { data: { total } } = await this.useApi().get('/communities/slack')
+                const { data: { total } } = await useApi().get('/communities/slack')
                 window.sessionStorage.setItem("slack_member_count", total)
                 this.online = total
             } else {
