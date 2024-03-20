@@ -23,7 +23,7 @@
                 <div class="d-flex justify-content-center flex-column plugins-container">
                     <div class="plugin-icon card bg-dark-2" v-for="icon in page.includedTasks" :key="icon">
                         <CommonTaskIcon :cls="icon"/>
-                        <p class="text-center">Plugins Used in this Blueprints</p>
+                        <p class="text-center">{{getLastWord(icon)}}</p>
                     </div>
                 </div>
             </div>
@@ -45,6 +45,14 @@ export default {
         flow: {
             type: Object,
             required: true
+        }
+    },
+    methods: {
+        getLastWord(value) {
+          if (!value) return '';
+          const lastWord = value.substring(value.lastIndexOf('.') + 1);
+          const formattedLastWord = lastWord.replace(/([a-z])([A-Z])/g, '$1 $2');
+          return formattedLastWord;
         }
     }
 }
@@ -75,6 +83,9 @@ export default {
 
       a {
         color: $purple-36;
+      }
+      .code-block {
+          border: 1px solid #252526;
       }
   }
 

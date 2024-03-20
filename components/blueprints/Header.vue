@@ -66,6 +66,7 @@
 
     .container-fluid {
         padding-bottom: calc($spacer * 7);
+        background: url('/landing/blueprints/mask.svg') no-repeat center right;
 
         .nav-tabs {
             border-bottom: 1px solid $black-6;
@@ -106,7 +107,20 @@
         .card {
             border-radius: 8px;
             border: 1px solid $black-6;
-
+            &::before {
+                content: "";
+                position: absolute;
+                width: 234px;
+                height: 307px;
+                background: linear-gradient(140deg, rgba(70, 24, 255, 0) -41.95%, #7e1cfa 77.28%);
+                filter: blur(100px);
+                right: 2rem;
+                top: 2rem;
+                z-index: -1;
+                @include media-breakpoint-down(md) {
+                    width: 134px;
+                }
+            }
             .card-body {
                 padding: 0;
             }
