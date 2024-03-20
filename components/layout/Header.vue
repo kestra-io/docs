@@ -331,6 +331,15 @@
                         <GithubButton :small="true" />
 
                         <NuxtLink @click="globalClick(true)"
+                                  class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block"
+                                  href="/demo">
+                            <span>
+                                <CalendarOutline />
+                                Talk to Us
+                            </span>
+                        </NuxtLink>
+
+                        <NuxtLink @click="globalClick(true)"
                             class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-animated btn-purple-animated btn-sm get-started"
                             href="/docs/getting-started">
                             <span>
