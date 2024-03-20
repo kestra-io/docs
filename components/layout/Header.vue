@@ -220,7 +220,7 @@
                                         </div>
                                         <p>
                                             <span>Blueprints</span><br />
-                                            Explore blueprints to kick-start
+                                            Explore the Blueprints library
                                         </p>
                                     </NuxtLink>
                                 </li>
@@ -231,7 +231,7 @@
                                         <Ballot />
                                         <p>
                                             <span>Blueprints</span><br />
-                                            Explore blueprints to kick-start
+                                             Explore the Blueprints library
                                         </p>
                                     </NuxtLink>
                                 </li>
