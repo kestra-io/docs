@@ -187,44 +187,7 @@
                                         </p>
                                     </NuxtLink>
                                 </li>
-<!--                                <li>-->
-<!--                                    <NuxtLink class="dropdown-item" href="/use-cases/retail" @click="globalClick(true)">-->
-<!--                                        <BankOutline />-->
-<!--                                        <p>-->
-<!--                                            <span>Banking</span><br />-->
-<!--                                            Learn how Kestra helped companies manage their critical operations-->
-<!--                                        </p>-->
-<!--                                    </NuxtLink>-->
-<!--                                </li>-->
-<!--                                <li>-->
-<!--                                    <NuxtLink class="dropdown-item" href="/use-cases/retail" @click="globalClick(true)">-->
-<!--                                        <PillMultiple />-->
-<!--                                        <p>-->
-<!--                                            <span>Healthcare</span><br />-->
-<!--                                            Ask any questions and share your feedback-->
-<!--                                        </p>-->
-<!--                                    </NuxtLink>-->
-<!--                                </li>-->
                             </div>
-<!--                            <li>-->
-<!--                                <NuxtLink class="dropdown-item" href="/use-cases" @click="globalClick(true)">-->
-<!--                                    <ChartDonut />-->
-<!--                                    <p>-->
-<!--                                        <span>Use Cases</span><br />-->
-<!--                                        Explore a wide range of supported use cases-->
-<!--                                    </p>-->
-<!--                                </NuxtLink>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <NuxtLink class="dropdown-item" href="/use-cases/terraform-provider"-->
-<!--                                    @click="globalClick(true)">-->
-<!--                                    <Terraform />-->
-<!--                                    <p>-->
-<!--                                        <span>Kestra's Terraform Provider</span><br />-->
-<!--                                        Deploy and manage all Kestra resources with Terraform-->
-<!--                                    </p>-->
-<!--                                </NuxtLink>-->
-<!--                            </li>-->
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -585,9 +548,9 @@ export default {
             z-index: -1;
             @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
                 & {
-                    -webkit-backdrop-filter: blur(calc($spacer * 0.625));
-                    backdrop-filter: blur(calc($spacer * 0.625));
-                    background-color: rgb(17 17 19 / 65%);
+                    -webkit-backdrop-filter: $menu-backdrop-filter;
+                    backdrop-filter: $menu-backdrop-filter;
+                    background-color: $menu-bg;
                     @include media-breakpoint-down(lg) {
                         content: none;
                     }
@@ -737,17 +700,16 @@ export default {
                     padding: $spacer;
                     border-radius: $spacer;
                     border: 1px solid $black-6;
+                    background-color: $menu-dropdown-bg;
 
                     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
                         & {
-                            -webkit-backdrop-filter: blur(calc($spacer * 0.625));
-                            backdrop-filter: blur(calc($spacer * 0.625));
-                            background-color: #161617f0;
+                            -webkit-backdrop-filter: $menu-backdrop-filter;
+                            backdrop-filter: $menu-backdrop-filter;
                         }
                     }
 
                     @include media-breakpoint-down(lg) {
-                        background: #161617E5;
                         width: 100% !important;
                         box-shadow: none;
                         border: 0;
