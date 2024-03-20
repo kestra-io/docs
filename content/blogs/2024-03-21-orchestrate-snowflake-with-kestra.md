@@ -1,6 +1,6 @@
 ---
-title: "Kestra and Snowflake Partnership: How Our Users Are Orchestrating Their Snowflake Data Warehouse"
-description: "Following our partnership announcement with Snowflake, an increasing number of Kestra users are effectively orchestrating their Snowflake environments using Kestra"
+title: "Kestra & Snowflake Partnership: How our users orchestate their Data Warehouse"
+description: "Following our partnership announcement with Snowflake, an increasing number of Kestra users are effectively orchestrating their Snowflake environments"
 date: 2024-03-21T08:00:00
 category: Company News
 author:
