@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container p-0">
         <!-- <div class="line"/> -->
         <Section :title="title || 'Get Kestra updates'">
             <div class="row">
@@ -24,6 +24,7 @@
     </div>
 </template>
 <script setup>
+    import Section from '../layout/Section.vue';
     import {useAsyncData} from "#imports";
 
     const props = defineProps({
