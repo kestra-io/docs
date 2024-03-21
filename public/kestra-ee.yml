@@ -18056,6 +18056,10 @@ components:
           type: array
           items:
             type: string
+        scriptRunners:
+          type: array
+          items:
+            type: string
         guides:
           type: array
           items:
