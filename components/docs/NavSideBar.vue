@@ -11,7 +11,7 @@
             >
                 <Menu /> Documentation Menu
             </button>
-            <div class="search" data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
+            <div class="search btn-animated input-animated" data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
                 <div class="input-group">
                     <div class="input-icon">
                         <span class="input-group-text"><Magnify/></span>
@@ -148,6 +148,25 @@
             background-color: $black-2;
             border: $block-border;
             margin-bottom: $spacer;
+
+            &.input-animated {
+                &::before {
+                    background: conic-gradient(#8b8b8d, #e2e2e5 10%, #ada7b3, transparent 50%, #afabb6);
+
+                }
+
+                &::after {
+                    background: $black-2;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: $black-4;
+                    &::after {
+                        background: $black-4;
+                    }
+                }
+            }
 
             @include media-breakpoint-down(lg) {
                 width: 100%;
