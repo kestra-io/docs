@@ -8,7 +8,7 @@
                     <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title "></h1>
                 </div>
 
-                <NavToc :page="page" class="my-md-0 my-4" />
+                <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4" />
 
                 <div class="bd-content">
                     <ContentRendererMarkdown
