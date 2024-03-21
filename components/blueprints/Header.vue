@@ -10,42 +10,19 @@
                     </div>
                     <div class="col-12 col-md-3">
                         <div class="justify-content-start d-flex justify-content-md-end">
-                            <BlueprintsCopy :code="page.flow" />
+                            <BlueprintsCopy :code="page.flow"/>
                         </div>
                     </div>
                 </div>
-                <ul class="nav nav-tabs">
-                    <li class="nav-item" @click="setTab('topology')">
-                        <span class="nav-link" :class="{ 'active': activeTab === 'topology' }" aria-current="page">Topology</span>
-                    </li>
-                    <li class="nav-item" @click="setTab('source-code')">
-                        <span class="nav-link" :class="{ 'active': activeTab === 'source-code' }">Source Code</span>
-                    </li>
-                </ul>
                 <div class="pt-3">
                     <div class="card bg-dark-2">
                         <div class="card-body">
-                            <div v-if="activeTab === 'topology'">
-                                <BlueprintsTopology :flow-graph="graph" :source="page.flow" :id="page.id" />
-                            </div>
-                            <div v-else>
-                                <ContentRendererMarkdown
-                                    class="bd-markdown"
-                                    :value="flow"
-                                />
+                            <div>
+                                <BlueprintsTopology :flow-graph="graph" :source="page.flow" :id="page.id"/>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="plugins-icons" v-if="page.includedTasks && page.includedTasks.length">
-        <p class="text-center">Plugins Used in this Blueprints</p>
-        <div class="d-flex justify-content-center gap-3">
-            <div class="plugin-icon card bg-dark-2" v-for="icon in page.includedTasks" :key="icon">
-                <CommonTaskIcon :cls="icon" />
             </div>
         </div>
     </div>
@@ -89,6 +66,7 @@
 
     .container-fluid {
         padding-bottom: calc($spacer * 7);
+        background: url('/landing/blueprints/mask.svg') no-repeat center right;
 
         .nav-tabs {
             border-bottom: 1px solid $black-6;
@@ -129,41 +107,25 @@
         .card {
             border-radius: 8px;
             border: 1px solid $black-6;
-
+            &::before {
+                content: "";
+                position: absolute;
+                width: 234px;
+                height: 307px;
+                background: linear-gradient(140deg, rgba(70, 24, 255, 0) -41.95%, #7e1cfa 77.28%);
+                filter: blur(100px);
+                right: 2rem;
+                top: 2rem;
+                z-index: -1;
+                @include media-breakpoint-down(md) {
+                    width: 134px;
+                }
+            }
             .card-body {
                 padding: 0;
             }
         }
     }
-
-    .plugins-icons {
-        p {
-            color: $white;
-            text-align: center;
-            font-size: $h6-font-size;
-            font-weight: 400;
-        }
-
-        .plugin-icon {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            align-items: center;
-            justify-content: center;
-            min-width: 134px;
-            height: 96px;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            font-size: $font-size-sm;
-            border: $block-border;
-
-            :deep(.icon-wrapper) {
-                width: 45px;
-                height: 45px;
-            }
-        }
-    }
-
 
     :deep(.slug) {
         @include media-breakpoint-up(xxl) {
