@@ -60,16 +60,27 @@ kestra:
       indice-prefix: "uat_kestra"
 ```
 
-## `kestra.elasticsearch.defaults.indices`
-This configuration allows to change indices settings created by kestra, example:
+## `kestra.elasticsearch.indices`
+By default, a unique indices is used for all different datas, it could be useful to split index by day / week / month to avoid having large indices in ElasticSearch.
+For now, `executions`, `logs` & `metrics` can be split, and we support all this split type:
+- `DAILY`
+- `WEEKLY`
+- `MONTHLY`
+- `YEARLY`
 
 ```yaml
 kestra:
   elasticsearch:
-    defaults:
-      indices:
-        index.number_of_replicas: 0
+    indices:
+      executions:
+        alias: daily
+      logs:
+        alias: daily
+      metrics:
+        alias: daily
 ```
+
+## `kestra.elasticsearch.client.trust-all-ssl`
 
 ## `kestra.indexer`
 Indexer send data from Kafka to Elasticsearch using Bulk Request. You can control the batch size and frequency to reduce the load on ElasticSearch. This will delay some information on the UI raising that values, example:

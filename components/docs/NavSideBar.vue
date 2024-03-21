@@ -11,6 +11,18 @@
             >
                 <Menu /> Documentation Menu
             </button>
+            <div class="search" data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
+                <div class="input-group">
+                    <div class="input-icon">
+                        <span class="input-group-text"><Magnify/></span>
+                        <p>Search</p>
+                    </div>
+                    <div class="align-items-center d-flex input-group-append">
+                        <Keyboard />
+                        <span class="command">Ctrl + K</span>
+                    </div>
+                </div>
+            </div>
             <div class="collapse bd-menu-collapse" id="docs-menu">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
                     <RecursiveNavSidebar
@@ -29,6 +41,12 @@
     </aside>
 
 </template>
+
+<script setup>
+  import Magnify from "vue-material-design-icons/Magnify.vue"
+  import Keyboard from "vue-material-design-icons/Keyboard.vue"
+
+</script>
 
 <script>
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
@@ -119,6 +137,84 @@
             @include media-breakpoint-up(lg) {
                 display: block !important; // stylelint-disable-line declaration-no-important
             }
+        }
+
+        .search {
+            width: 209px;
+            height: 32px;
+            padding: calc($spacer * 0.3) calc($spacer * 0.8);
+            gap: 8px;
+            border-radius: calc($spacer * 0.25);
+            background-color: $black-2;
+            border: 1px solid $black-3;
+            margin-bottom: $spacer;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $black-4;
+                border: 1px solid $black-6;
+            }
+
+            @include media-breakpoint-down(lg) {
+                width: 100%;
+                margin-top: $spacer;
+            }
+
+            :deep(.material-design-icon__svg) {
+                bottom: 0;
+                fill: #8B8B8D;
+            }
+
+            .input-group {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                gap: calc($spacer * 0.5);
+                align-items: center;
+                justify-content: space-between;
+
+                .input-icon {
+                    max-height: 100%;
+                    display: flex;
+                    gap: calc($spacer * 0.5);
+                    align-items: center;
+                    color: $white;
+                }
+
+                @include media-breakpoint-down(lg) {
+                    justify-content: space-between;
+                    gap: calc($spacer * 2);
+                }
+
+                p {
+                    color: $white;
+                    font-size: $font-size-sm;
+                    font-weight: 400;
+                    margin: 0;
+                }
+
+                .input-group-text {
+                    max-height: 100%;
+                    background-color: transparent;
+                    border: none;
+                    padding: 0;
+                    color: $white;
+                }
+            }
+
+            .input-group-append {
+                display: flex;
+                align-items: center;
+                gap: calc($spacer * 0.25);
+
+                .command {
+                    color: $black-8;
+                    font-family: $font-family-sans-serif;
+                    font-size: calc($font-size-base * 0.62);
+                }
+            }
+
+
         }
     }
 </style>

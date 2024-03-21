@@ -166,7 +166,7 @@
             .accordion-button {
                 width: 16px;
 
-                .material-design-icon__svg {
+                :deep(.material-design-icon__svg) {
                     bottom: 0;
                     color: $black-10;
                 }
