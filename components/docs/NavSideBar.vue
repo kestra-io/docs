@@ -146,12 +146,13 @@
             gap: 8px;
             border-radius: calc($spacer * 0.25);
             background-color: $black-2;
-            border: 1px solid $black-6;
+            border: 1px solid $black-3;
             margin-bottom: $spacer;
             cursor: pointer;
 
             &:hover {
                 background-color: $black-4;
+                border: 1px solid $black-6;
             }
 
             @include media-breakpoint-down(lg) {
