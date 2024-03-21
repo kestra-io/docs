@@ -46,7 +46,7 @@
                             <h5>Docs</h5>
                             <ul class="list-unstyled">
                                 <li class="mb-2"><NuxtLink href="/docs">Documentation</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/plugins/">Plugins documentation</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/plugins">Plugins documentation</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/docs/terraform">Terraform provider</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/docs/administrator-guide">Administrator guide</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/faq">FAQ</NuxtLink></li>
