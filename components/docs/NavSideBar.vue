@@ -146,7 +146,7 @@
             gap: 8px;
             border-radius: calc($spacer * 0.25);
             background-color: $black-2;
-            border: $block-border;
+            border: 1px solid $black-6;
             margin-bottom: $spacer;
             cursor: pointer;
 
