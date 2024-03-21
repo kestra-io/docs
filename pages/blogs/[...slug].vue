@@ -6,18 +6,20 @@
         <div v-else class="container bd-gutter bd-layout margin">
             <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
                 <ContentRenderer :value="page">
-                    <div class="bd-title">
-                        <p class="d-flex breadcrumb" data-aos="fade-right">
-                            <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
-                        </p>
-                        <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
-                    </div>
-                    <NavToc data-aos="fade-zoom" :page="page">
-                        <template #header>
-                            <BlogDetails :blog="page"/>
-                        </template>
-                    </NavToc>
                     <div class="bd-content">
+                        <div class="bd-title">
+                            <p class="d-flex breadcrumb" data-aos="fade-right">
+                                <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
+                            </p>
+                            <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
+                            <div class="d-lg-none d-block" data-aos="fade-zoom">
+                                <NavToc :page="page" >
+                                    <template #header>
+                                        <BlogDetails :blog="page"/>
+                                    </template>
+                                </NavToc>
+                            </div>
+                        </div>
                         <NuxtImg
                             loading="lazy"
                             format="webp"
@@ -31,7 +33,6 @@
                         />
                         <ClientOnly>
                             <ContentRendererMarkdown
-                                data-aos="fade-zoom"
                                 class="bd-markdown mt-4"
                                 :value="page"
                                 data-bs-spy="scroll"
@@ -171,6 +172,7 @@
 
     .bd-layout {
         display: block;
+        height: 100%;
     }
     .bd-main{
         row-gap: 0px;
@@ -178,6 +180,16 @@
 
     .bd-content{
         max-width: 100%;
+        @include media-breakpoint-up(lg) {
+            height: calc(100vh - 2rem);
+            overflow-x: hidden;
+            overflow-y: auto;
+
+        }
+        &::-webkit-scrollbar {
+            display: none !important;
+        }
+
         img {
             border: $block-border;
         }

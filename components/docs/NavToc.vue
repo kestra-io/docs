@@ -19,7 +19,7 @@
 
                 <div class="collapse bd-toc-collapse" id="tocContents">
                     <slot name="header"></slot>
-                    <strong class="d-none d-lg-block h6 my-2">Table of Contents</strong>
+                    <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
                         <ul class="ps-0 pt-2 pt-lg-0">
                             <template v-for="item in generated" >
@@ -91,6 +91,11 @@
     .bd-toc {
         transition: all ease 0.2s;
         transform: translateX(0);
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
         > div {
 
             @include media-breakpoint-up(lg) {
@@ -98,14 +103,18 @@
                 width: 100%;
                 height: 100%;
                 border-left: 1px solid $black-6;
-
             }
         }
+
         @include media-breakpoint-up(lg) {
-            position: sticky;
-            top: 0;
+            position: sticky !important;
+            top: 4rem;
             right: 0;
             z-index: 2;
+            height: fit-content;
+            max-height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         > .btn.d-lg-none {

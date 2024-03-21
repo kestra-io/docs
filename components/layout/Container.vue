@@ -138,7 +138,6 @@
             }
             h1 {
                 max-width: 945px;
-                margin-left: 0;
             }
         }
         .bd-main {
@@ -148,13 +147,14 @@
             }
         }
         .bd-content {
+            margin: 0 auto;
             max-width: 945px;
-            margin-left: 0;
         }
         .title {
             font-size: 2.375rem;
             font-weight: 400;
             line-height: 3.25rem;
+            margin: 0 auto;
         }
     }
 
