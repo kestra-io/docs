@@ -33,6 +33,7 @@
                         data-bs-target="#nav-toc"
                     />
                     <PrevNext v-if="prevNext" :navigation="navigation" />
+                    <LayoutBluerpintsCardsCarusel />
                 </div>
             </ContentRenderer>
         </article>
