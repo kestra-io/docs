@@ -37,7 +37,6 @@
       required: true
     },
   })
-  const cls = "io.kestra.plugin.jdbc.pinot.trigger"
   const { data: blueprintsData } = await useAsyncData('blueprints', () => {
     return $fetch(`${config.public.apiUrl}/blueprints?type=${props.query}`)
   });
