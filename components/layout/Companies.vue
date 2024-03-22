@@ -108,6 +108,7 @@
             display: flex;
             position: relative;
             overflow: hidden;
+
             &:before,
             &:after {
                 content: '';
@@ -121,14 +122,15 @@
             }
 
             &:after {
-                top: -19px;
-                right: -48px;
+                top:  calc($spacer * 1.1);
+                right: calc($spacer * -3.2);
             }
 
             &:before {
-                top: -19px;
-                left: -48px;
+                top:  calc($spacer * 1.1);
+                left: calc($spacer * -3.2);
             }
+
             .companies-list {
                 min-width: 100%;
                 grid-column-gap: 2rem;
