@@ -1205,36 +1205,136 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BlueprintWithFlow'
-  /api/v1/cluster/services:
+  /api/v1/cluster/services/search:
     get:
       tags:
       - Services
-      summary: Get all the services for teh Kestra cluster
-      operationId: findAll
+      summary: Search for service
+      operationId: find_4
+      parameters:
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: state
+        in: query
+        description: The state filter
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Service.ServiceState'
       responses:
         "200":
-          description: findAll 200 response
+          description: find_4 200 response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ClusterController.ApiServiceInstance'
-  /api/v1/cluster/services/{tenant}:
+                $ref: '#/components/schemas/PagedResults_ClusterController.ApiServiceInstance_'
+  /api/v1/cluster/services/search/{tenant}:
     get:
       tags:
       - Services
-      summary: Get all the services for teh Kestra cluster
-      operationId: findAll_1
+      summary: Search for service
+      operationId: find_5
+      parameters:
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: state
+        in: query
+        description: The state filter
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Service.ServiceState'
       responses:
         "200":
-          description: findAll_1 200 response
+          description: find_5 200 response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ClusterController.ApiServiceInstance'
+                $ref: '#/components/schemas/PagedResults_ClusterController.ApiServiceInstance_'
+  /api/v1/cluster/services/{id}:
+    get:
+      tags:
+      - Services
+      summary: Get details about a service
+      operationId: index_3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: index_3 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceInstance'
+  /api/v1/cluster/services/{id}/{tenant}:
+    get:
+      tags:
+      - Services
+      summary: Get details about a service
+      operationId: index_4
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: index_4 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceInstance'
   /api/v1/configs:
     get:
       tags:
@@ -2923,7 +3023,7 @@ paths:
       tags:
       - Executions
       summary: Search for executions
-      operationId: find_4
+      operationId: find_6
       parameters:
       - name: page
         in: query
@@ -3024,7 +3124,7 @@ paths:
           - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
       responses:
         "200":
-          description: find_4 200 response
+          description: find_6 200 response
           content:
             application/json:
               schema:
@@ -3034,7 +3134,7 @@ paths:
       tags:
       - Executions
       summary: Search for executions
-      operationId: find_5
+      operationId: find_7
       parameters:
       - name: page
         in: query
@@ -3135,7 +3235,7 @@ paths:
           - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
       responses:
         "200":
-          description: find_5 200 response
+          description: find_7 200 response
           content:
             application/json:
               schema:
@@ -5027,7 +5127,7 @@ paths:
       tags:
       - Flows
       summary: Search for flows
-      operationId: find_6
+      operationId: find_8
       parameters:
       - name: page
         in: query
@@ -5075,7 +5175,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_6 200 response
+          description: find_8 200 response
           content:
             application/json:
               schema:
@@ -5085,7 +5185,7 @@ paths:
       tags:
       - Flows
       summary: Search for flows
-      operationId: find_7
+      operationId: find_9
       parameters:
       - name: page
         in: query
@@ -5133,7 +5233,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_7 200 response
+          description: find_9 200 response
           content:
             application/json:
               schema:
@@ -5408,7 +5508,7 @@ paths:
       tags:
       - Flows
       summary: Get a flow
-      operationId: index_3
+      operationId: index_5
       parameters:
       - name: namespace
         in: path
@@ -5445,7 +5545,7 @@ paths:
           default: false
       responses:
         "200":
-          description: index_3 200 response
+          description: index_5 200 response
           content:
             application/json:
               schema:
@@ -5877,7 +5977,7 @@ paths:
       tags:
       - Flows
       summary: Get a flow
-      operationId: index_4
+      operationId: index_6
       parameters:
       - name: namespace
         in: path
@@ -5914,7 +6014,7 @@ paths:
           default: false
       responses:
         "200":
-          description: index_4 200 response
+          description: index_6 200 response
           content:
             application/json:
               schema:
@@ -6184,7 +6284,7 @@ paths:
       tags:
       - Groups
       summary: Search for groups
-      operationId: find_8
+      operationId: find_10
       parameters:
       - name: q
         in: query
@@ -6218,7 +6318,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_8 200 response
+          description: find_10 200 response
           content:
             application/json:
               schema:
@@ -6228,7 +6328,7 @@ paths:
       tags:
       - Groups
       summary: Search for groups
-      operationId: find_9
+      operationId: find_11
       parameters:
       - name: q
         in: query
@@ -6262,7 +6362,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_9 200 response
+          description: find_11 200 response
           content:
             application/json:
               schema:
@@ -6272,7 +6372,7 @@ paths:
       tags:
       - Groups
       summary: Get a group
-      operationId: index_5
+      operationId: index_7
       parameters:
       - name: id
         in: path
@@ -6282,7 +6382,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_5 200 response
+          description: index_7 200 response
           content:
             application/json:
               schema:
@@ -6534,7 +6634,7 @@ paths:
       tags:
       - Groups
       summary: Get a group
-      operationId: index_6
+      operationId: index_8
       parameters:
       - name: id
         in: path
@@ -6544,7 +6644,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_6 200 response
+          description: index_8 200 response
           content:
             application/json:
               schema:
@@ -6626,7 +6726,7 @@ paths:
       tags:
       - Logs
       summary: Search for logs
-      operationId: find_10
+      operationId: find_12
       parameters:
       - name: q
         in: query
@@ -6693,7 +6793,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_10 200 response
+          description: find_12 200 response
           content:
             application/json:
               schema:
@@ -6703,7 +6803,7 @@ paths:
       tags:
       - Logs
       summary: Search for logs
-      operationId: find_11
+      operationId: find_13
       parameters:
       - name: q
         in: query
@@ -6770,7 +6870,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_11 200 response
+          description: find_13 200 response
           content:
             application/json:
               schema:
@@ -7106,10 +7206,10 @@ paths:
       tags:
       - Auths
       summary: Get current user
-      operationId: index_7
+      operationId: index_9
       responses:
         "200":
-          description: index_7 200 response
+          description: index_9 200 response
           content:
             application/json:
               schema:
@@ -7240,10 +7340,10 @@ paths:
       tags:
       - Auths
       summary: Get current user
-      operationId: index_8
+      operationId: index_10
       responses:
         "200":
-          description: index_8 200 response
+          description: index_10 200 response
           content:
             application/json:
               schema:
@@ -7863,7 +7963,7 @@ paths:
       tags:
       - Namespaces
       summary: Search for namespaces
-      operationId: find_12
+      operationId: find_14
       parameters:
       - name: q
         in: query
@@ -7904,7 +8004,7 @@ paths:
           default: false
       responses:
         "200":
-          description: find_12 200 response
+          description: find_14 200 response
           content:
             application/json:
               schema:
@@ -7914,7 +8014,7 @@ paths:
       tags:
       - Namespaces
       summary: Search for namespaces
-      operationId: find_13
+      operationId: find_15
       parameters:
       - name: q
         in: query
@@ -7955,7 +8055,7 @@ paths:
           default: false
       responses:
         "200":
-          description: find_13 200 response
+          description: find_15 200 response
           content:
             application/json:
               schema:
@@ -7965,7 +8065,7 @@ paths:
       tags:
       - Namespaces
       summary: Get a namespace
-      operationId: index_9
+      operationId: index_11
       parameters:
       - name: id
         in: path
@@ -7975,7 +8075,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_9 200 response
+          description: index_11 200 response
           content:
             application/json:
               schema:
@@ -8111,7 +8211,7 @@ paths:
       tags:
       - Namespaces
       summary: Get a namespace
-      operationId: index_10
+      operationId: index_12
       parameters:
       - name: id
         in: path
@@ -8121,7 +8221,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_10 200 response
+          description: index_12 200 response
           content:
             application/json:
               schema:
@@ -9279,7 +9379,7 @@ paths:
       tags:
       - Roles
       summary: Search for roles
-      operationId: find_14
+      operationId: find_16
       parameters:
       - name: q
         in: query
@@ -9313,7 +9413,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_14 200 response
+          description: find_16 200 response
           content:
             application/json:
               schema:
@@ -9323,7 +9423,7 @@ paths:
       tags:
       - Roles
       summary: Search for roles
-      operationId: find_15
+      operationId: find_17
       parameters:
       - name: q
         in: query
@@ -9357,7 +9457,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_15 200 response
+          description: find_17 200 response
           content:
             application/json:
               schema:
@@ -9367,7 +9467,7 @@ paths:
       tags:
       - Roles
       summary: Get a role
-      operationId: index_11
+      operationId: index_13
       parameters:
       - name: id
         in: path
@@ -9377,7 +9477,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_11 200 response
+          description: index_13 200 response
           content:
             application/json:
               schema:
@@ -9427,7 +9527,7 @@ paths:
       tags:
       - Roles
       summary: Get a role
-      operationId: index_12
+      operationId: index_14
       parameters:
       - name: id
         in: path
@@ -9437,7 +9537,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_12 200 response
+          description: index_14 200 response
           content:
             application/json:
               schema:
@@ -10256,7 +10356,7 @@ paths:
       tags:
       - Templates
       summary: Search for templates
-      operationId: find_16
+      operationId: find_18
       parameters:
       - name: page
         in: query
@@ -10296,7 +10396,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_16 200 response
+          description: find_18 200 response
           content:
             application/json:
               schema:
@@ -10306,7 +10406,7 @@ paths:
       tags:
       - Templates
       summary: Search for templates
-      operationId: find_17
+      operationId: find_19
       parameters:
       - name: page
         in: query
@@ -10346,7 +10446,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_17 200 response
+          description: find_19 200 response
           content:
             application/json:
               schema:
@@ -10438,7 +10538,7 @@ paths:
       tags:
       - Templates
       summary: Get a template
-      operationId: index_13
+      operationId: index_15
       parameters:
       - name: namespace
         in: path
@@ -10454,7 +10554,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_13 200 response
+          description: index_15 200 response
           content:
             application/json:
               schema:
@@ -10518,7 +10618,7 @@ paths:
       tags:
       - Templates
       summary: Get a template
-      operationId: index_14
+      operationId: index_16
       parameters:
       - name: namespace
         in: path
@@ -10534,7 +10634,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_14 200 response
+          description: index_16 200 response
           content:
             application/json:
               schema:
@@ -10695,132 +10795,6 @@ paths:
       tags:
       - Bindings
       summary: Search for bindings
-      operationId: find_18
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: type
-        in: query
-        description: Binding type filter
-        schema:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/Binding.Type'
-      - name: id
-        in: query
-        description: External id filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: find_18 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_AbstractBindingController.BindingDetail_'
-  /api/v1/tenants/bindings/search/{tenant}:
-    get:
-      tags:
-      - Bindings
-      summary: Search for bindings
-      operationId: find_19
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: type
-        in: query
-        description: Binding type filter
-        schema:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/Binding.Type'
-      - name: id
-        in: query
-        description: External id filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: find_19 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_AbstractBindingController.BindingDetail_'
-  /api/v1/tenants/bindings/search/{tenant}/{ressourceTenant}:
-    get:
-      tags:
-      - Bindings
-      summary: Search for bindings
       operationId: find_20
       parameters:
       - name: q
@@ -10879,12 +10853,138 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResults_AbstractBindingController.BindingDetail_'
+  /api/v1/tenants/bindings/search/{tenant}:
+    get:
+      tags:
+      - Bindings
+      summary: Search for bindings
+      operationId: find_21
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: type
+        in: query
+        description: Binding type filter
+        schema:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/Binding.Type'
+      - name: id
+        in: query
+        description: External id filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: find_21 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_AbstractBindingController.BindingDetail_'
+  /api/v1/tenants/bindings/search/{tenant}/{ressourceTenant}:
+    get:
+      tags:
+      - Bindings
+      summary: Search for bindings
+      operationId: find_22
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: type
+        in: query
+        description: Binding type filter
+        schema:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/Binding.Type'
+      - name: id
+        in: query
+        description: External id filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: find_22 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_AbstractBindingController.BindingDetail_'
   /api/v1/tenants/bindings/{id}:
     get:
       tags:
       - Bindings
       summary: Get a binding
-      operationId: index_15
+      operationId: index_17
       parameters:
       - name: id
         in: path
@@ -10894,7 +10994,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_15 200 response
+          description: index_17 200 response
           content:
             application/json:
               schema:
@@ -10919,7 +11019,7 @@ paths:
       tags:
       - Bindings
       summary: Get a binding
-      operationId: index_16
+      operationId: index_18
       parameters:
       - name: id
         in: path
@@ -10929,7 +11029,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_16 200 response
+          description: index_18 200 response
           content:
             application/json:
               schema:
@@ -10954,7 +11054,7 @@ paths:
       tags:
       - Bindings
       summary: Get a binding
-      operationId: index_17
+      operationId: index_19
       parameters:
       - name: id
         in: path
@@ -10964,7 +11064,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_17 200 response
+          description: index_19 200 response
           content:
             application/json:
               schema:
@@ -11172,94 +11272,6 @@ paths:
       tags:
       - Groups
       summary: Search for groups
-      operationId: find_21
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      responses:
-        "200":
-          description: find_21 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_Group_'
-  /api/v1/tenants/groups/search/{tenant}:
-    get:
-      tags:
-      - Groups
-      summary: Search for groups
-      operationId: find_22
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      responses:
-        "200":
-          description: find_22 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_Group_'
-  /api/v1/tenants/groups/search/{tenant}/{ressourceTenant}:
-    get:
-      tags:
-      - Groups
-      summary: Search for groups
       operationId: find_23
       parameters:
       - name: q
@@ -11299,12 +11311,100 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResults_Group_'
+  /api/v1/tenants/groups/search/{tenant}:
+    get:
+      tags:
+      - Groups
+      summary: Search for groups
+      operationId: find_24
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      responses:
+        "200":
+          description: find_24 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_Group_'
+  /api/v1/tenants/groups/search/{tenant}/{ressourceTenant}:
+    get:
+      tags:
+      - Groups
+      summary: Search for groups
+      operationId: find_25
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      responses:
+        "200":
+          description: find_25 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_Group_'
   /api/v1/tenants/groups/{id}:
     get:
       tags:
       - Groups
       summary: Get a group
-      operationId: index_18
+      operationId: index_20
       parameters:
       - name: id
         in: path
@@ -11314,7 +11414,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_18 200 response
+          description: index_20 200 response
           content:
             application/json:
               schema:
@@ -11667,7 +11767,7 @@ paths:
       tags:
       - Groups
       summary: Get a group
-      operationId: index_19
+      operationId: index_21
       parameters:
       - name: id
         in: path
@@ -11677,7 +11777,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_19 200 response
+          description: index_21 200 response
           content:
             application/json:
               schema:
@@ -11727,7 +11827,7 @@ paths:
       tags:
       - Groups
       summary: Get a group
-      operationId: index_20
+      operationId: index_22
       parameters:
       - name: id
         in: path
@@ -11737,7 +11837,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_20 200 response
+          description: index_22 200 response
           content:
             application/json:
               schema:
@@ -12051,94 +12151,6 @@ paths:
       tags:
       - Roles
       summary: Search for roles
-      operationId: find_24
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      responses:
-        "200":
-          description: find_24 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_Role_'
-  /api/v1/tenants/roles/search/{tenant}:
-    get:
-      tags:
-      - Roles
-      summary: Search for roles
-      operationId: find_25
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      responses:
-        "200":
-          description: find_25 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_Role_'
-  /api/v1/tenants/roles/search/{tenant}/{ressourceTenant}:
-    get:
-      tags:
-      - Roles
-      summary: Search for roles
       operationId: find_26
       parameters:
       - name: q
@@ -12178,12 +12190,100 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResults_Role_'
+  /api/v1/tenants/roles/search/{tenant}:
+    get:
+      tags:
+      - Roles
+      summary: Search for roles
+      operationId: find_27
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      responses:
+        "200":
+          description: find_27 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_Role_'
+  /api/v1/tenants/roles/search/{tenant}/{ressourceTenant}:
+    get:
+      tags:
+      - Roles
+      summary: Search for roles
+      operationId: find_28
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      responses:
+        "200":
+          description: find_28 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_Role_'
   /api/v1/tenants/roles/{id}:
     get:
       tags:
       - Roles
       summary: Get a role
-      operationId: index_21
+      operationId: index_23
       parameters:
       - name: id
         in: path
@@ -12193,7 +12293,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_21 200 response
+          description: index_23 200 response
           content:
             application/json:
               schema:
@@ -12243,7 +12343,7 @@ paths:
       tags:
       - Roles
       summary: Get a role
-      operationId: index_22
+      operationId: index_24
       parameters:
       - name: id
         in: path
@@ -12253,7 +12353,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_22 200 response
+          description: index_24 200 response
           content:
             application/json:
               schema:
@@ -12303,7 +12403,7 @@ paths:
       tags:
       - Roles
       summary: Get a role
-      operationId: index_23
+      operationId: index_25
       parameters:
       - name: id
         in: path
@@ -12313,7 +12413,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_23 200 response
+          description: index_25 200 response
           content:
             application/json:
               schema:
@@ -12401,7 +12501,7 @@ paths:
       tags:
       - Tenants
       summary: Search for tenants
-      operationId: find_27
+      operationId: find_29
       parameters:
       - name: q
         in: query
@@ -12435,7 +12535,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_27 200 response
+          description: find_29 200 response
           content:
             application/json:
               schema:
@@ -12445,7 +12545,7 @@ paths:
       tags:
       - Tenants
       summary: Search for tenants
-      operationId: find_28
+      operationId: find_30
       parameters:
       - name: q
         in: query
@@ -12479,7 +12579,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_28 200 response
+          description: find_30 200 response
           content:
             application/json:
               schema:
@@ -12571,108 +12671,6 @@ paths:
       tags:
       - Users
       summary: Search for users
-      operationId: find_29
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: type
-        in: query
-        description: The type of user
-        schema:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/UserType'
-      responses:
-        "200":
-          description: find_29 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_ApiUser_'
-  /api/v1/tenants/users/search/{tenant}:
-    get:
-      tags:
-      - Users
-      summary: Search for users
-      operationId: find_30
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: type
-        in: query
-        description: The type of user
-        schema:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/UserType'
-      responses:
-        "200":
-          description: find_30 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_ApiUser_'
-  /api/v1/tenants/users/search/{tenant}/{ressourceTenant}:
-    get:
-      tags:
-      - Users
-      summary: Search for users
       operationId: find_31
       parameters:
       - name: q
@@ -12715,6 +12713,108 @@ paths:
       responses:
         "200":
           description: find_31 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_ApiUser_'
+  /api/v1/tenants/users/search/{tenant}:
+    get:
+      tags:
+      - Users
+      summary: Search for users
+      operationId: find_32
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: type
+        in: query
+        description: The type of user
+        schema:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/UserType'
+      responses:
+        "200":
+          description: find_32 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_ApiUser_'
+  /api/v1/tenants/users/search/{tenant}/{ressourceTenant}:
+    get:
+      tags:
+      - Users
+      summary: Search for users
+      operationId: find_33
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: type
+        in: query
+        description: The type of user
+        schema:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/UserType'
+      responses:
+        "200":
+          description: find_33 200 response
           content:
             application/json:
               schema:
@@ -12847,7 +12947,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_24
+      operationId: index_26
       parameters:
       - name: id
         in: path
@@ -13180,58 +13280,6 @@ paths:
       tags:
       - Users
       summary: Create a basic auth password for a standard user
-      operationId: index_25
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AbstractUserController.PasswordRequest'
-        required: true
-      responses:
-        "200":
-          description: index_25 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiUser'
-  /api/v1/tenants/users/{id}/password/{tenant}:
-    put:
-      tags:
-      - Users
-      summary: Create a basic auth password for a standard user
-      operationId: index_26
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AbstractUserController.PasswordRequest'
-        required: true
-      responses:
-        "200":
-          description: index_26 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiUser'
-  /api/v1/tenants/users/{id}/password/{tenant}/{ressourceTenant}:
-    put:
-      tags:
-      - Users
-      summary: Create a basic auth password for a standard user
       operationId: index_27
       parameters:
       - name: id
@@ -13249,6 +13297,58 @@ paths:
       responses:
         "200":
           description: index_27 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUser'
+  /api/v1/tenants/users/{id}/password/{tenant}:
+    put:
+      tags:
+      - Users
+      summary: Create a basic auth password for a standard user
+      operationId: index_28
+      parameters:
+      - name: id
+        in: path
+        description: The user id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbstractUserController.PasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: index_28 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUser'
+  /api/v1/tenants/users/{id}/password/{tenant}/{ressourceTenant}:
+    put:
+      tags:
+      - Users
+      summary: Create a basic auth password for a standard user
+      operationId: index_29
+      parameters:
+      - name: id
+        in: path
+        description: The user id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbstractUserController.PasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: index_29 200 response
           content:
             application/json:
               schema:
@@ -13324,7 +13424,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_28
+      operationId: index_30
       parameters:
       - name: id
         in: path
@@ -13378,7 +13478,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_29
+      operationId: index_31
       parameters:
       - name: id
         in: path
@@ -13842,7 +13942,7 @@ paths:
       tags:
       - Triggers
       summary: Get all triggers for a flow
-      operationId: find_32
+      operationId: find_34
       parameters:
       - name: page
         in: query
@@ -13888,7 +13988,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_32 200 response
+          description: find_34 200 response
           content:
             application/json:
               schema:
@@ -13898,7 +13998,7 @@ paths:
       tags:
       - Triggers
       summary: Get all triggers for a flow
-      operationId: find_33
+      operationId: find_35
       parameters:
       - name: page
         in: query
@@ -13944,7 +14044,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_33 200 response
+          description: find_35 200 response
           content:
             application/json:
               schema:
@@ -14194,7 +14294,7 @@ paths:
       tags:
       - Users
       summary: Search for users
-      operationId: find_34
+      operationId: find_36
       parameters:
       - name: q
         in: query
@@ -14235,7 +14335,7 @@ paths:
           - $ref: '#/components/schemas/UserType'
       responses:
         "200":
-          description: find_34 200 response
+          description: find_36 200 response
           content:
             application/json:
               schema:
@@ -14245,7 +14345,7 @@ paths:
       tags:
       - Users
       summary: Search for users
-      operationId: find_35
+      operationId: find_37
       parameters:
       - name: q
         in: query
@@ -14286,7 +14386,7 @@ paths:
           - $ref: '#/components/schemas/UserType'
       responses:
         "200":
-          description: find_35 200 response
+          description: find_37 200 response
           content:
             application/json:
               schema:
@@ -14378,7 +14478,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_30
+      operationId: index_32
       parameters:
       - name: id
         in: path
@@ -14618,7 +14718,7 @@ paths:
       tags:
       - Users
       summary: Create a basic auth password for a standard user
-      operationId: index_31
+      operationId: index_33
       parameters:
       - name: id
         in: path
@@ -14634,7 +14734,7 @@ paths:
         required: true
       responses:
         "200":
-          description: index_31 200 response
+          description: index_33 200 response
           content:
             application/json:
               schema:
@@ -14644,7 +14744,7 @@ paths:
       tags:
       - Users
       summary: Create a basic auth password for a standard user
-      operationId: index_32
+      operationId: index_34
       parameters:
       - name: id
         in: path
@@ -14660,7 +14760,7 @@ paths:
         required: true
       responses:
         "200":
-          description: index_32 200 response
+          description: index_34 200 response
           content:
             application/json:
               schema:
@@ -14670,7 +14770,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_33
+      operationId: index_35
       parameters:
       - name: id
         in: path
@@ -14781,6 +14881,11 @@ components:
       properties:
         empty:
           type: boolean
+    AbstractCollection_ClusterController.ApiServiceInstance_:
+      type: object
+      properties:
+        empty:
+          type: boolean
     AbstractCollection_Execution_:
       type: object
       properties:
@@ -14865,6 +14970,8 @@ components:
       $ref: '#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_'
     AbstractList_Blueprint_:
       $ref: '#/components/schemas/AbstractCollection_Blueprint_'
+    AbstractList_ClusterController.ApiServiceInstance_:
+      $ref: '#/components/schemas/AbstractCollection_ClusterController.ApiServiceInstance_'
     AbstractList_Execution_:
       $ref: '#/components/schemas/AbstractCollection_Execution_'
     AbstractList_Flow_:
@@ -14952,6 +15059,11 @@ components:
           $ref: '#/components/schemas/WorkerGroup'
         logLevel:
           $ref: '#/components/schemas/Level'
+        labels:
+          title: The labels to pass to the execution created.
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
         stopAfter:
           title: List of execution states after which a trigger should be stopped
             (a.k.a. disabled).
@@ -15217,6 +15329,18 @@ components:
           total:
             type: integer
             format: int64
+    ArrayListTotal_ClusterController.ApiServiceInstance_:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ArrayList_ClusterController.ApiServiceInstance_'
+      - $ref: '#/components/schemas/AbstractList_ClusterController.ApiServiceInstance_'
+      - $ref: '#/components/schemas/AbstractCollection_ClusterController.ApiServiceInstance_'
+      - required:
+        - total
+        properties:
+          total:
+            type: integer
+            format: int64
     ArrayListTotal_Execution_:
       type: object
       allOf:
@@ -15410,6 +15534,14 @@ components:
       allOf:
       - $ref: '#/components/schemas/AbstractList_Blueprint_'
       - $ref: '#/components/schemas/AbstractCollection_Blueprint_'
+      - properties:
+          empty:
+            type: boolean
+    ArrayList_ClusterController.ApiServiceInstance_:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AbstractList_ClusterController.ApiServiceInstance_'
+      - $ref: '#/components/schemas/AbstractCollection_ClusterController.ApiServiceInstance_'
       - properties:
           empty:
             type: boolean
@@ -16164,30 +16296,6 @@ components:
           type: string
         hostname:
           type: string
-    ClusterController.ApiServiceInstance:
-      required:
-      - createdAt
-      - id
-      - server
-      - state
-      - type
-      - updatedAt
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/Service.ServiceType'
-        state:
-          $ref: '#/components/schemas/Service.ServiceState'
-        server:
-          $ref: '#/components/schemas/ClusterController.ApiServerInstance'
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
     CodeSigner:
       required:
       - signerCertPath
@@ -17509,6 +17617,39 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FieldTypeSignature'
+    Metric:
+      required:
+      - baseUnit
+      - description
+      - name
+      - tags
+      - type
+      - value
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        baseUnit:
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metric.Tag'
+        value: {}
+    Metric.Tag:
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
     MetricAggregation:
       required:
       - date
@@ -17807,6 +17948,17 @@ components:
       properties:
         results:
           $ref: '#/components/schemas/ArrayListTotal_Blueprint_'
+        total:
+          type: integer
+          format: int64
+    PagedResults_ClusterController.ApiServiceInstance_:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/ArrayListTotal_ClusterController.ApiServiceInstance_'
         total:
           type: integer
           format: int64
@@ -18223,6 +18375,61 @@ components:
       - template
       - task
       - trigger
+    ServerConfig:
+      required:
+      - liveness
+      - terminationGracePeriod
+      type: object
+      properties:
+        terminationGracePeriod:
+          $ref: '#/components/schemas/Duration'
+        liveness:
+          $ref: '#/components/schemas/ServerConfig.Liveness'
+    ServerConfig.Liveness:
+      required:
+      - enabled
+      - heartbeatInterval
+      - initialDelay
+      - interval
+      - timeout
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+        interval:
+          $ref: '#/components/schemas/Duration'
+        timeout:
+          $ref: '#/components/schemas/Duration'
+        initialDelay:
+          $ref: '#/components/schemas/Duration'
+        heartbeatInterval:
+          $ref: '#/components/schemas/Duration'
+    ServerInstance:
+      required:
+      - hostname
+      - id
+      - metrics
+      - props
+      - type
+      - version
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/ServerInstance.Type'
+        version:
+          type: string
+        hostname:
+          type: string
+        props:
+          type: object
+          additionalProperties: true
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metric'
     ServerInstance.Type:
       type: string
       enum:
@@ -18257,6 +18464,65 @@ components:
       - SCHEDULER
       - WEBSERVER
       - WORKER
+    ServiceInstance:
+      required:
+      - config
+      - createdAt
+      - events
+      - id
+      - metrics
+      - props
+      - seqId
+      - server
+      - state
+      - type
+      - updatedAt
+      type: object
+      properties:
+        server:
+          $ref: '#/components/schemas/ServerInstance'
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metric'
+        state:
+          $ref: '#/components/schemas/Service.ServiceState'
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/Service.ServiceType'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceInstance.TimestampedEvent'
+        config:
+          $ref: '#/components/schemas/ServerConfig'
+        props:
+          type: object
+          additionalProperties: true
+        seqId:
+          type: integer
+          format: int64
+    ServiceInstance.TimestampedEvent:
+      required:
+      - ts
+      - type
+      - value
+      type: object
+      properties:
+        ts:
+          type: string
+          format: date-time
+        value:
+          type: string
+        type:
+          type: string
     ServicesCatalog:
       type: object
     SetupConfiguration:
@@ -18339,7 +18605,6 @@ components:
       - KILLED
       - CANCELLED
       - QUEUED
-      - RETRYING
     StatsController.ByFlowStatisticRequest:
       type: object
       properties:

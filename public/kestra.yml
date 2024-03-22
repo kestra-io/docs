@@ -189,21 +189,6 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
-  /api/v1/cluster/services:
-    get:
-      tags:
-      - Services
-      summary: Get all the services for teh Kestra cluster
-      operationId: findAll
-      responses:
-        "200":
-          description: findAll 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ClusterController.ApiServiceInstance'
   /api/v1/configs:
     get:
       tags:
@@ -4446,6 +4431,11 @@ components:
           $ref: '#/components/schemas/WorkerGroup'
         logLevel:
           $ref: '#/components/schemas/Level'
+        labels:
+          title: The labels to pass to the execution created.
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
         stopAfter:
           title: List of execution states after which a trigger should be stopped
             (a.k.a. disabled).
@@ -5213,46 +5203,6 @@ components:
             $ref: '#/components/schemas/Class_Object_'
         sealed:
           type: boolean
-    ClusterController.ApiServerInstance:
-      required:
-      - hostname
-      - id
-      - type
-      - version
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/ServerInstance.Type'
-        version:
-          type: string
-        hostname:
-          type: string
-    ClusterController.ApiServiceInstance:
-      required:
-      - createdAt
-      - id
-      - server
-      - state
-      - type
-      - updatedAt
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/Service.ServiceType'
-        state:
-          $ref: '#/components/schemas/Service.ServiceState'
-        server:
-          $ref: '#/components/schemas/ClusterController.ApiServerInstance'
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
     CodeSigner:
       required:
       - signerCertPath
@@ -7004,11 +6954,6 @@ components:
       - template
       - task
       - trigger
-    ServerInstance.Type:
-      type: string
-      enum:
-      - SERVER
-      - STANDALONE
     ServerType:
       type: string
       enum:
@@ -7016,26 +6961,6 @@ components:
       - INDEXER
       - SCHEDULER
       - STANDALONE
-      - WEBSERVER
-      - WORKER
-    Service.ServiceState:
-      type: string
-      enum:
-      - CREATED
-      - RUNNING
-      - ERROR
-      - DISCONNECTED
-      - TERMINATING
-      - TERMINATED_GRACEFULLY
-      - TERMINATED_FORCED
-      - NOT_RUNNING
-      - EMPTY
-    Service.ServiceType:
-      type: string
-      enum:
-      - EXECUTOR
-      - INDEXER
-      - SCHEDULER
       - WEBSERVER
       - WORKER
     ServicesCatalog:
@@ -7085,7 +7010,6 @@ components:
       - KILLED
       - CANCELLED
       - QUEUED
-      - RETRYING
     StatsController.ByFlowStatisticRequest:
       type: object
       properties:
