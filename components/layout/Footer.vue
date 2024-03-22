@@ -27,9 +27,9 @@
                             <ul class="list-unstyled">
                                 <li class="mb-2"><NuxtLink href="/use-cases">Use Cases</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/features/declarative-data-orchestration">Declarative Orchestration</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/use-cases/modern-data-stack">Modern Data Stack Integration</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/features/scheduling-and-automation">Automation Platform</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/features/api-first">API First</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/features/code-in-any-language">Code in Any Language</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/use-cases/terraform-provider">Terraform Provider</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/vs/airflow">Airflow vs Kestra</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/vs/prefect">Prefect vs Kestra</NuxtLink></li>
