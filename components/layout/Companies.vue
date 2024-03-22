@@ -108,6 +108,27 @@
             display: flex;
             position: relative;
             overflow: hidden;
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                width: 7rem;
+                z-index: 999;
+                border-radius: inherit;
+                background-color: #111113;
+                filter: blur(13px);
+                height: 10rem;
+            }
+
+            &:after {
+                top: -19px;
+                right: -48px;
+            }
+
+            &:before {
+                top: -19px;
+                left: -48px;
+            }
             .companies-list {
                 min-width: 100%;
                 grid-column-gap: 2rem;
