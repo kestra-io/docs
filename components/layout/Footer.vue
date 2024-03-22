@@ -15,18 +15,22 @@
                         <div class="col-6 col-lg-2 offset-lg-1 mb-3">
                             <h5>Product</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><NuxtLink href="/features">Features</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/plugins">Connectors</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/overview">Platform Overview</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/features">Open Source</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/enterprise">Enterprise Edition</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/cloud">Kestra Cloud</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/pricing">Pricing</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Solutions</h5>
                             <ul class="list-unstyled">
                                 <li class="mb-2"><NuxtLink href="/use-cases">Use Cases</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/use-cases/ci-cd">CI/CD for Kestra Workflows</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/features/declarative-data-orchestration">Declarative Orchestration</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/use-cases/modern-data-stack">Modern Data Stack Integration</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/use-cases/change-data-capture">Change Data Capture</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/features/scheduling-and-automation">Automation Platform</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/features/api-first">API First</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/use-cases/terraform-provider">Terraform Provider</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/vs/airflow">Airflow vs Kestra</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/vs/prefect">Prefect vs Kestra</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/vs/dagster">Dagster vs Kestra</NuxtLink></li>
@@ -46,18 +50,21 @@
                             <h5>Docs</h5>
                             <ul class="list-unstyled">
                                 <li class="mb-2"><NuxtLink href="/docs">Documentation</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/plugins">Plugins documentation</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/docs/terraform">Terraform provider</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/docs/administrator-guide">Administrator guide</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/plugins">Plugins</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/blueprints">Blueprints</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/docs/getting-started">Getting Started</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/docs/administrator-guide">Administrator Guide</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/faq">FAQ</NuxtLink></li>
                             </ul>
                         </div>
                         <div class="col-6 col-lg-2 mb-3">
                             <h5>Company</h5>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><NuxtLink href="/about-us">About us</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/about-us">About Us</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/careers">Careers <span class="badge text-bg-danger">Hiring!</span></NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/contact-us">Contact us</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/contact-us">Contact Us</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/customer-stories">Customer Stories</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/patners">Partners Ecosystem</NuxtLink></li>
                             </ul>
                         </div>
                     </div>
