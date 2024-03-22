@@ -64,7 +64,7 @@
                                 <li class="mb-2"><NuxtLink href="/careers">Careers <span class="badge text-bg-danger">Hiring!</span></NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/contact-us">Contact Us</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/customer-stories">Customer Stories</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/patners">Partners Ecosystem</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/partners">Partners Ecosystem</NuxtLink></li>
                             </ul>
                         </div>
                     </div>
