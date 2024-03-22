@@ -110,6 +110,29 @@
             display: flex;
             position: relative;
             overflow: hidden;
+
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                width: 7rem;
+                z-index: 999;
+                border-radius: inherit;
+                background-color: #111113;
+                filter: blur(13px);
+                height: 10rem;
+            }
+
+            &:after {
+                top:  calc($spacer * 1.1);
+                right: calc($spacer * -3.2);
+            }
+
+            &:before {
+                top:  calc($spacer * 1.1);
+                left: calc($spacer * -3.2);
+            }
+
             .companies-list {
                 min-width: 100%;
                 grid-column-gap: 2rem;
