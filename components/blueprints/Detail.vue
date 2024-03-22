@@ -3,7 +3,7 @@
         <div class="col-md-10">
             <h3>About this blueprint</h3>
             <div class="title">
-                <p>{{ page.title }}</p>
+                <p>{{ tagsList }}</p>
             </div>
 
             <ContentRendererMarkdown
@@ -45,7 +45,19 @@ export default {
         flow: {
             type: Object,
             required: true
+        },
+        tags: {
+            type: Array,
+            default: []
         }
+    },
+    computed: {
+      tagsList() {
+        if (this.tags && this.page.tags) {
+          return this.tags.filter(t => this.page.tags.includes(t.id)).map(t => t.name).join(' ')
+        }
+        return ""
+      }
     },
     methods: {
         getLastWord(value) {
