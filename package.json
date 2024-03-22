@@ -56,7 +56,7 @@
     "nuxt-gtag": "^2.0.5",
     "nuxt-multi-cache": "^3.0.1",
     "remark-code-import": "file:./utils/remark-code-import",
-    "remark-flexible-markers": "^1.2.0",
+    "remark-flexible-markers": "^1.2.1",
     "rss": "^1.2.2",
     "sass": "^1.71.1",
     "wrangler": "^3.32.0"
