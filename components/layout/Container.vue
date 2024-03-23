@@ -5,7 +5,10 @@
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" />
-                    <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title "></h1>
+                    <div class="title-block">
+                        <img :src="icon" :alt="page.title" width="24" v-if="icon">
+                        <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title "></h1>
+                    </div>
                 </div>
 
                 <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4" />
@@ -37,6 +40,7 @@
     const route = useRoute()
     const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
     let page;
+    let icon;
 
     const fetchNavigation = async () => {
         let navigationFetch;
@@ -56,13 +60,13 @@
         const pageList = recursivePages(navigation.value[0]);
         const pageNames = generatePageNames(navigation.value[0]);
         return {navigation, pageList, pageNames};
-    }
+    };
 
     const transformTitle = (text) => {
         return text
             .replace(/([A-Z])/g, '&#x200B;$1')
             .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
-    }
+    };
 
     const props = defineProps({
         type: {
@@ -74,7 +78,7 @@
             required: false,
             default: true
         },
-    })
+    });
 
     if (props.type === 'plugins') {
         const parts = slug.value.split('/');
@@ -93,7 +97,16 @@
             throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
         }
 
-        page = pluginInformation.value;
+        if (pluginInformation.value && pluginInformation.value.page) {
+          page = pluginInformation.value.page;
+        } else {
+          page = pluginInformation.value;
+        }
+
+        if (pluginInformation.value && pluginInformation.value.icon) {
+          icon = pluginInformation.value.icon;
+        }
+
     } else {
         const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
             try {
@@ -150,11 +163,19 @@
             margin: 0 auto;
             max-width: 945px;
         }
-        .title {
-            font-size: 2.375rem;
-            font-weight: 400;
-            line-height: 3.25rem;
+        .title-block {
+            display: flex;
             margin: 0 auto;
+            gap: $spacer;
+            max-width: calc($spacer * 59);
+            align-items: center;
+
+            .title {
+                font-size: 2.375rem;
+                font-weight: 400;
+                line-height: 3.25rem;
+                margin: 0;
+            }
         }
     }
 
@@ -252,5 +273,11 @@
 
     .docs :deep(img) {
         width: 100%;
+    }
+
+    .bd-markdown {
+        :deep(h2 > span.d-block) {
+          display: none !important;
+        }
     }
 </style>
