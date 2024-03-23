@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid pt-4 pb-4">
-        <Companies />
+        <Companies class="mb-4"/>
     </div>
 </template>
 
