@@ -5,9 +5,8 @@
                 <div class="col-md-12 d-flex justify-content-center header-content">
                     <div class="text-white">
                         <h1 class="heading">Orchestrate Your <span>Platform</span> with Kestra</h1>
-                        <p class="text-white baseline fs-4">Orchestrate your business-critical applications. Take full
-                            advantage of the speed, and performance, enabling you to deliver business and
-                            analytics-ready data at scale.</p>
+                        <p class="text-white baseline fs-4">Orchestrate your business-critical applications and deliver business and
+                            analytics-ready data at scale</p>
                         <div class="text-center">
                             <NuxtLink
                                 href="/demo"

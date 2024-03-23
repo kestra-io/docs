@@ -8,7 +8,7 @@
             <p class="text-white baseline fs-4">{{ metaDescription }}</p>
             <div class="cta">
               <NuxtLink
-                  href="/docs/getting-started"
+                  href="/demo"
                   class="btn text-white btn-animated btn-purple-animated mt-2"
                   data-aos="zoom-in"
               >
