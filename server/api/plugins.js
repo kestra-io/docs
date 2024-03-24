@@ -79,8 +79,8 @@ export default defineEventHandler(async (event) => {
             let pageData = await $fetch(`${config.public.apiUrl}/plugins/${page}`);
 
             const parsedMarkdown = await parseMarkdown(pageData.body);
-
-            return { page: toNuxtContent(parsedMarkdown), icon = `data:image/svg+xml;base64,${pageData.icon}`;
+            const icon = `data:image/svg+xml;base64,${pageData.icon}`;
+            return { page: toNuxtContent(parsedMarkdown), icon }
         }
         if (type === 'navigation') {
             const plugins = await $fetch(`${config.public.apiUrl}/plugins`);
