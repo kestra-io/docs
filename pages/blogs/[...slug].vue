@@ -207,7 +207,7 @@
             border: $block-border;
         }
 
-        img:first-child {
+        img {
             width: 100%;
         }
 
