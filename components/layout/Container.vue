@@ -137,7 +137,7 @@
                 margin-top: calc($spacer * 1);
             }
             h1 {
-                max-width: 945px;
+                max-width: calc($spacer * 43.7);
             }
         }
         .bd-main {
@@ -148,10 +148,10 @@
         }
         .bd-content {
             margin: 0 auto;
-            max-width: 945px;
+            max-width: calc($spacer * 43.7);
         }
         .title {
-            font-size: 2.375rem;
+            font-size: $h2-font-size;
             font-weight: 400;
             line-height: 3.25rem;
             margin: 0 auto;
@@ -161,7 +161,22 @@
     :deep(p) {
         font-weight: 400;
         line-height: 1.75rem;
+        font-size: $h6-font-size;
     }
+
+    :deep(.bd-markdown > h2) {
+        margin-top: calc($spacer * 4.12);
+        border-top: 1px solid $black-6;
+        padding-top: calc($spacer * 3.125);
+        margin-bottom: 2rem;
+
+        a {
+            border-left: 5px solid $purple-36;
+            padding-left: calc($spacer * 0.6);
+            font-size: calc($font-size-base * 2.25);
+        }
+    }
+
 
     :deep(p > a) {
         text-decoration: underline;
@@ -199,6 +214,9 @@
         border: 1px solid #3A3C55;
         background-color: #18131F;
         color: #B9BEF8;
+        p {
+            font-size: $font-size-base;
+        }
     }
 
     :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {

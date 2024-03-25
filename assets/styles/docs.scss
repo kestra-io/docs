@@ -78,7 +78,7 @@ $bd-gutter-x: 3rem;
 
     h3 {
         padding-top: 1.25rem;
-        font-size: calc($font-size-base * 1.5);
+        font-size: calc($font-size-base * 1.75);
         color: $white;
         font-weight: 400;
     }
@@ -228,6 +228,7 @@ $bd-gutter-x: 3rem;
 
     img, video, iframe {
         max-width: 100%;
+        width: 100%;
     }
     iframe {
         width: 100%;

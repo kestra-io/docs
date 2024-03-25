@@ -40,7 +40,7 @@
                             />
                         </ClientOnly>
                     </div>
-                    <NavToc class="d-lg-block d-none" data-aos="fade-zoom" :page="page">
+                    <NavToc class="d-lg-block d-none right-menu" data-aos="fade-zoom" :page="page">
                         <template #header>
                             <BlogDetails :blog="page"/>
                         </template>
@@ -176,10 +176,18 @@
     }
     .bd-main{
         row-gap: 0px;
+        display: flex;
+        justify-content: space-between;
+        padding-right: calc($spacer * 2);
+
+        @include media-breakpoint-down(lg) {
+            padding-right: 0;
+        }
     }
 
     .bd-content{
-        max-width: 100%;
+        max-width: 46rem;
+        margin: 0;
         @include media-breakpoint-up(lg) {
             height: calc(100vh - 2rem);
             overflow-x: hidden;
@@ -210,6 +218,58 @@
             background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
         }
     }
+
+    .bd-gutter {
+        padding: 0 !important;
+    }
+
+    :deep(.bd-markdown > hr) {
+        display: none;
+    }
+
+    :deep(.bd-markdown > h2) {
+        margin-top: calc($spacer * 4.12);
+        border-top: 1px solid $black-6;
+        padding-top: calc($spacer * 3.125);
+        margin-bottom: 2rem;
+
+        a {
+            border-left: 5px solid $purple-36;
+            padding-left: calc($spacer * 0.6);
+            font-size: calc($font-size-base * 2.25);
+        }
+    }
+
+    :deep(.bd-markdown > ul) {
+        ul {
+            list-style: disc;
+            li::marker {
+                color: #736BCD ;
+            }
+        }
+
+        li::marker {
+            color: #5A3ABC;
+        }
+    }
+
+    :deep(p) {
+        font-weight: 400;
+        line-height: 2rem;
+        font-size: $h6-font-size;
+        margin-bottom: 2rem;
+        max-width: 95%;
+
+        @include media-breakpoint-down(lg) {
+            max-width: unset;
+        }
+
+    }
+
+    .right-menu {
+        min-width: 19.3rem;
+    }
+
     .breadcrumb {
         margin: 0;
         gap: 0.25rem;
@@ -221,11 +281,12 @@
             font-weight: 400;
         }
     }
+
     h2{
         color: $white !important;
         line-height: 3.25rem !important;
         font-weight: 600 !important;
-        font-size: 2.375rem !important;
+        font-size: $h2-font-size !important;
     }
     .para{
         line-height: 1.375rem;
