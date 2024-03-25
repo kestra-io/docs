@@ -185,15 +185,20 @@
         }
     }
 
-    .bd-content{
-        max-width: 46rem;
+    .bd-content {
+        max-width: 100%;
         margin: 0;
+
+        @include media-breakpoint-up(xxl) {
+            padding-right: 10.5rem;
+        }
+
         @include media-breakpoint-up(lg) {
             height: calc(100vh - 2rem);
             overflow-x: hidden;
             overflow-y: auto;
-
         }
+
         &::-webkit-scrollbar {
             display: none !important;
         }
