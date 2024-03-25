@@ -207,10 +207,6 @@
             border: $block-border;
         }
 
-        img {
-            width: 100%;
-        }
-
         &::after {
             content: "";
             position: absolute;
@@ -269,6 +265,12 @@
             max-width: unset;
         }
 
+    }
+
+    :deep(.bd-content) {
+        img {
+            width: 100%;
+        }
     }
 
     .right-menu {
