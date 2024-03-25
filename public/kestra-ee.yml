@@ -1244,6 +1244,14 @@ paths:
           nullable: true
           items:
             $ref: '#/components/schemas/Service.ServiceState'
+      - name: type
+        in: query
+        description: The server type filter
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Service.ServiceType'
       responses:
         "200":
           description: find_4 200 response
@@ -1290,6 +1298,14 @@ paths:
           nullable: true
           items:
             $ref: '#/components/schemas/Service.ServiceState'
+      - name: type
+        in: query
+        description: The server type filter
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Service.ServiceType'
       responses:
         "200":
           description: find_5 200 response
@@ -18381,6 +18397,10 @@ components:
       - terminationGracePeriod
       type: object
       properties:
+        workerTaskRestartStrategy:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/WorkerTaskRestartStrategy'
         terminationGracePeriod:
           $ref: '#/components/schemas/Duration'
         liveness:
@@ -18605,6 +18625,7 @@ components:
       - KILLED
       - CANCELLED
       - QUEUED
+      - RETRYING
     StatsController.ByFlowStatisticRequest:
       type: object
       properties:
@@ -19325,6 +19346,12 @@ components:
         key:
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
+    WorkerTaskRestartStrategy:
+      type: string
+      enum:
+      - NEVER
+      - IMMEDIATELY
+      - AFTER_TERMINATION_GRACE_PERIOD
     ZoneId:
       type: object
       properties:

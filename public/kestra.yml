@@ -7010,6 +7010,7 @@ components:
       - KILLED
       - CANCELLED
       - QUEUED
+      - RETRYING
     StatsController.ByFlowStatisticRequest:
       type: object
       properties:
