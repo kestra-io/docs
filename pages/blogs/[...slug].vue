@@ -150,6 +150,20 @@
                 }]
             })
     }
+
+    onMounted(() => {
+        const stickyContainer = document.querySelector('.container-stick');
+        if (stickyContainer && route.params.slug && route.params.slug.length) {
+          stickyContainer.addEventListener("scroll", (e) => {
+            if (stickyContainer.scrollTop > 0) {
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+              });
+            }
+          });
+        }
+    })
 </script>
 
 <style lang="scss" scoped>
@@ -181,6 +195,10 @@
     }
     :deep(.bd-toc .btn) {
         position: relative;
+    }
+
+    :deep(.code-block) {
+        margin-bottom: calc($spacer * 2) !important;
     }
 
     .bd-layout {
@@ -225,6 +243,12 @@
 
     .bd-gutter {
         padding: 0 !important;
+    }
+
+    :deep(.bd-markdown > h3) {
+        margin-top: 0 !important;
+        padding-top: 2rem;
+        margin-bottom: calc($spacer * 0.75);
     }
 
     :deep(.bd-markdown > hr) {
