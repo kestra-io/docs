@@ -313,7 +313,6 @@
     h2{
         color: $white !important;
         line-height: 3.25rem !important;
-        font-weight: 600 !important;
         font-size: $h2-font-size !important;
     }
     .para{

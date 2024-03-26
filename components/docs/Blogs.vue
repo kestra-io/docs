@@ -64,7 +64,7 @@
         h2 {
             color: $white;
             font-size: 3.125rem;
-            font-weight: 400;
+            font-weight: 300;
         }
     }
     .card {
