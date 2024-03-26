@@ -183,6 +183,10 @@
         position: relative;
     }
 
+    :deep(.code-block) {
+        margin-bottom: calc($spacer * 2) !important;
+    }
+
     .bd-layout {
         display: block;
         height: 100%;
@@ -225,6 +229,12 @@
 
     .bd-gutter {
         padding: 0 !important;
+    }
+
+    :deep(.bd-markdown > h3) {
+        margin-top: 0 !important;
+        padding-top: 2rem;
+        margin-bottom: calc($spacer * 0.75);
     }
 
     :deep(.bd-markdown > hr) {
