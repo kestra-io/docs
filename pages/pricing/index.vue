@@ -7,7 +7,7 @@
         </Head>
         <Heading />
 
-        <Companies />
+        <LayoutCompanies />
 
         <Table />
         <Faq />
@@ -21,7 +21,6 @@
 
 <script setup>
 import Heading from "../../components/price/Heading.vue"
-import Companies from "../../components/price/Companies.vue"
 import Table from "../../components/price/Table.vue"
 import Faq from "../../components/price/Faq.vue"
 
@@ -31,5 +30,10 @@ import Faq from "../../components/price/Faq.vue"
 @import "../../assets/styles/variable";
 .cont{
    background: $black-4 ;
+}
+:deep(.companies-container) {
+    border-top: $container-border;
+    border-bottom: $container-border;
+    padding-bottom: 3rem;
 }
 </style>
