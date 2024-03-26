@@ -10,7 +10,7 @@
 
         <BlueprintsHeader :page="page" :graph="graph" :slug="slug" :icons="icons" :flow="flowAsMd"/>
         <div class="container">
-            <BlueprintsDetail :page="page" :description="descriptionAsMd"/>
+            <BlueprintsDetail :page="page" :description="descriptionAsMd" :flow="flowAsMd" :tags="tags" />
             <BlueprintsRelated
                 v-if="relatedBlueprints.length > 0"
                 :related-blueprints="relatedBlueprints"

@@ -1,57 +1,58 @@
 <template>
-    <div class="container">
-        <BlogsList v-if="slug === '/blogs/' || slug === '/blogs/community'" :blogs="page"
-                   :external-news="externalNews"/>
-
-        <div v-else class="container bd-gutter bd-layout margin">
-            <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
-                <ContentRenderer :value="page">
-                    <div class="bd-title">
-                        <p class="d-flex breadcrumb" data-aos="fade-right">
-                            <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
-                        </p>
-                        <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
-                    </div>
-                    <NavToc data-aos="fade-zoom" :page="page">
-                        <template #header>
-                            <BlogDetails :blog="page"/>
-                        </template>
-                    </NavToc>
-                    <div class="bd-content">
-                        <NuxtImg
-                            loading="lazy"
-                            format="webp"
-                            quality="80"
-                            densities="x1 x2"
-                            data-aos="fade-right"
-                            class="mb-2 rounded-3 img"
-                            :alt="page.title"
-                            :src="page.image"
-                            fit="cover"
-                        />
-                        <ClientOnly>
-                            <ContentRendererMarkdown
-                                data-aos="fade-zoom"
-                                class="bd-markdown mt-4"
-                                :value="page"
-                                data-bs-spy="scroll"
-                                data-bs-target="#nav-toc"
+    <div :class="`container-fluid ${route.params.slug && route.params.slug.length ? 'container-stick' : ''}`">
+        <div class="container">
+            <BlogsList v-if="slug === '/blogs/' || slug === '/blogs/community'" :blogs="page"
+                       :external-news="externalNews"/>
+            <div v-else class="container bd-gutter bd-layout margin">
+                <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
+                    <ContentRenderer :value="page">
+                        <div class="bd-content">
+                            <div class="bd-title">
+                                <p class="d-flex breadcrumb" data-aos="fade-right">
+                                    <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
+                                </p>
+                                <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
+                                <div class="d-lg-none d-block" data-aos="fade-zoom">
+                                    <NavToc :page="page" >
+                                        <template #header>
+                                            <BlogDetails :blog="page"/>
+                                        </template>
+                                    </NavToc>
+                                </div>
+                            </div>
+                            <NuxtImg
+                                loading="lazy"
+                                format="webp"
+                                quality="80"
+                                densities="x1 x2"
+                                data-aos="fade-right"
+                                class="mb-2 rounded-3 img"
+                                :alt="page.title"
+                                :src="page.image"
+                                fit="cover"
                             />
-                        </ClientOnly>
-                    </div>
-                    <NavToc class="d-lg-block d-none" data-aos="fade-zoom" :page="page">
-                        <template #header>
-                            <BlogDetails :blog="page"/>
-                        </template>
-                    </NavToc>
-                </ContentRenderer>
-            </article>
-            <div class="bottom">
-                <DocsBlogs title="More content" :page="page"/>
-                <Updateletter/>
+                            <ClientOnly>
+                                <ContentRendererMarkdown
+                                    class="bd-markdown mt-4"
+                                    :value="page"
+                                    data-bs-spy="scroll"
+                                    data-bs-target="#nav-toc"
+                                />
+                            </ClientOnly>
+                        </div>
+                        <NavToc class="d-lg-block d-none right-menu" :page="page">
+                            <template #header>
+                                <BlogDetails :blog="page"/>
+                            </template>
+                        </NavToc>
+                    </ContentRenderer>
+                </article>
             </div>
         </div>
-
+    </div>
+    <div class="bottom">
+        <DocsBlogs title="More content"/>
+        <Updateletter/>
     </div>
 </template>
 
@@ -155,6 +156,19 @@
     @import "../../assets/styles/variable";
     @import '../../assets/styles/docs.scss';
 
+    .container-stick {
+        @include media-breakpoint-up(lg) {
+            margin: 0;
+            height: calc(100vh - 2rem);
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        &::-webkit-scrollbar {
+            display: none !important;
+        }
+    }
+
     .blog-content {
         padding-bottom: calc($spacer * 8.75);
     }
@@ -169,21 +183,35 @@
         position: relative;
     }
 
+    :deep(.code-block) {
+        margin-bottom: calc($spacer * 2) !important;
+    }
+
     .bd-layout {
         display: block;
+        height: 100%;
     }
     .bd-main{
         row-gap: 0px;
+        display: flex;
+        justify-content: space-between;
+        padding-right: calc($spacer * 2);
+
+        @include media-breakpoint-down(lg) {
+            padding-right: 0;
+        }
     }
 
-    .bd-content{
+    .bd-content {
         max-width: 100%;
-        img {
-            border: $block-border;
+        margin: 0;
+
+        @include media-breakpoint-up(xxl) {
+            padding-right: 10.5rem;
         }
 
-        img:first-child {
-            width: 100%;
+        img {
+            border: $block-border;
         }
 
         &::after {
@@ -198,6 +226,64 @@
             background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
         }
     }
+
+    .bd-gutter {
+        padding: 0 !important;
+    }
+
+    :deep(.bd-markdown > h3) {
+        margin-top: 0 !important;
+        padding-top: 2rem;
+        margin-bottom: calc($spacer * 0.75);
+    }
+
+    :deep(.bd-markdown > hr) {
+        display: none;
+    }
+
+    :deep(.bd-markdown > h2) {
+        margin-top: calc($spacer * 4.12);
+        border-top: 1px solid $black-6;
+        padding-top: calc($spacer * 3.125);
+        margin-bottom: 2rem;
+
+        a {
+            border-left: 5px solid $purple-36;
+            padding-left: calc($spacer * 0.6);
+            font-size: calc($font-size-base * 2.25);
+        }
+    }
+
+    :deep(.bd-markdown > ul) {
+        ul {
+            list-style: disc;
+            li::marker {
+                color: #736BCD ;
+            }
+        }
+
+        li::marker {
+            color: #5A3ABC;
+        }
+    }
+
+    :deep(p) {
+        font-weight: 400;
+        line-height: 2rem;
+        font-size: $h6-font-size;
+        margin-bottom: 2rem;
+    }
+
+    :deep(.bd-content) {
+        img {
+            width: 100%;
+        }
+    }
+
+    .right-menu {
+        min-width: 19.3rem;
+    }
+
     .breadcrumb {
         margin: 0;
         gap: 0.25rem;
@@ -209,11 +295,11 @@
             font-weight: 400;
         }
     }
+
     h2{
         color: $white !important;
         line-height: 3.25rem !important;
-        font-weight: 600 !important;
-        font-size: 2.375rem !important;
+        font-size: $h2-font-size !important;
     }
     .para{
         line-height: 1.375rem;

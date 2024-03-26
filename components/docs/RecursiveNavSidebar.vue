@@ -166,7 +166,7 @@
             .accordion-button {
                 width: 16px;
 
-                .material-design-icon__svg {
+                :deep(.material-design-icon__svg) {
                     bottom: 0;
                     color: $black-10;
                 }
@@ -182,7 +182,7 @@
 
             a {
                 color: $white-1;
-                font-size: $font-size-sm;
+                font-size: $font-size-base;
                 padding: calc($spacer / 2);
                 display: flex;
 

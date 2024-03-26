@@ -100,10 +100,6 @@
 <style scoped lang="scss">
     @import "../../../assets/styles/variable";
 
-    .container {
-        padding-bottom: 5.625rem;
-    }
-
     p, ul > li {
         line-height: 1.5rem;
     }

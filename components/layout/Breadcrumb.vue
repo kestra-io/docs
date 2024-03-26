@@ -46,6 +46,7 @@
     .slug {
         white-space: pre-wrap;
         width: 100%;
+        max-width: calc($spacer * 43.7);
         font-size: $font-size-sm;
         font-family: $font-family-sans-serif;
         font-weight: 400;

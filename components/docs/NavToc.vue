@@ -19,11 +19,11 @@
 
                 <div class="collapse bd-toc-collapse" id="tocContents">
                     <slot name="header"></slot>
-                    <strong class="d-none d-lg-block h6 my-2">Table of Contents</strong>
+                    <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
                         <ul class="ps-0 pt-2 pt-lg-0">
                             <template v-for="item in generated" >
-                                <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" class="mb-3">
+                                <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" :class="{'mt-3': item.depth === 2}">
                                     <a :href="'#' + item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
                                 </li>
                             </template>
@@ -33,6 +33,22 @@
             </template>
 
             <div class="d-none d-lg-block pt-4 bd-social-list">
+                <div class="ms-4 mb-3" v-if="rateHelpful">
+                    <p class="mb-0">Was this page helpful?</p>
+                    <div class="d-flex" v-if="!showThankYou">
+                        <button class="bg-transparent border-0 text-white" @click="ratePage(true)">
+                            <ThumbUpOutline />
+                            Yes
+                        </button>
+                        <button class="bg-transparent border-0 text-white" @click="ratePage(false)">
+                            <ThumbDownOutline />
+                            No
+                        </button>
+                    </div>
+                    <div v-else>
+                        <span class="text-white">Thank you!</span>
+                    </div>
+                </div>
                 <CommonSocialsList :page="page" />
             </div>
         </div>
@@ -42,19 +58,28 @@
 <script setup>
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
+    import ThumbUpOutline from "vue-material-design-icons/ThumbUpOutline.vue";
+    import ThumbDownOutline from "vue-material-design-icons/ThumbDownOutline.vue";
 </script>
 
 <script>
+    import posthog from 'posthog-js'
+
     export default {
         props: {
             page: {
                 type: Object,
                 required: true
             },
+            rateHelpful: {
+                type: Boolean,
+                required: false
+            },
         },
         data() {
             return {
-                tableOfContentsExpanded: false
+                tableOfContentsExpanded: false,
+                showThankYou: false
             }
         },
         computed: {
@@ -80,6 +105,21 @@
             closeToc() {
                 this.tableOfContentsExpanded = false;
                 document.getElementById('tocContents').classList.remove("show");
+            },
+            ratePage(isHelpful) {
+              const result = posthog.capture('helpful', {"positive": isHelpful});
+              if (result) {
+                this.showThankYou = true;
+              }
+            }
+        },
+        watch: {
+            '$route.params': {
+                handler(newParams, oldParams) {
+                    this.showThankYou = false;
+                },
+                deep: true,
+                immediate: true
             }
         }
     }
@@ -94,6 +134,11 @@
         @include media-breakpoint-down(lg) {
             margin: $rem-1 0;
         }
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
         > div {
 
             @include media-breakpoint-up(lg) {
@@ -101,14 +146,18 @@
                 width: 100%;
                 height: 100%;
                 border-left: 1px solid $black-6;
-
             }
         }
+
         @include media-breakpoint-up(lg) {
-            position: sticky;
-            top: 0;
+            position: sticky !important;
+            top: 4rem;
             right: 0;
             z-index: 2;
+            height: fit-content;
+            max-height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         > .btn.d-lg-none {
@@ -218,6 +267,9 @@
             border-top-width: 0 !important;
             border: 1px solid $black-6;
             border-radius: 0 0 8px 8px;
+        }
+        button:hover {
+            color: $purple-36 !important;
         }
         ul, :deep(ul) {
             li {

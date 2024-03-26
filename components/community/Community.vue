@@ -101,7 +101,7 @@
     import SourcePull from "vue-material-design-icons/SourcePull.vue";
     import BugOutline from "vue-material-design-icons/BugOutline.vue";
     import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue";
-    import {kestraInstance} from "~/utils/api.js";
+    import {useApi} from "~/composables/useApi.js";
 
     export default {
         components: {
@@ -114,6 +114,9 @@
             BugOutline,
             AccountGroupOutline,
         },
+        setup() {
+            return {useApi}
+        },
         data() {
             return {
                 metrics: undefined,
@@ -123,9 +126,10 @@
         async created() {
             try {
                 const [metrics, contributors] = await Promise.all([
-                    kestraInstance.get('/communities/github/metrics'),
-                    kestraInstance.get('/communities/github/contributors')
+                    this.useApi().get('/communities/github/metrics'),
+                    this.useApi().get('/communities/github/contributors')
                 ])
+
                 this.metrics = metrics.data
                 this.contributors = contributors.data
 

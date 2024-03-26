@@ -21,10 +21,13 @@
 
 <script>
     import Section from '../../components/layout/Section.vue';
-    import { kestraInstance } from "~/utils/api.js";
+    import {useApi} from "~/composables/useApi.js";
 
     export default {
         components: {Section},
+        setup() {
+            return {useApi}
+        },
         data() {
             return {
                 contributors: undefined,
@@ -33,7 +36,7 @@
         },
         async created() {
             try {
-                const { data } = await kestraInstance.get('/communities/github/contributors')
+                const { data } = await this.useApi().get('/communities/github/contributors')
                 this.contributors = data
                 this.contributorsRand = this.contributors.sort(() => 0.5 - Math.random())
             } catch (e) {
