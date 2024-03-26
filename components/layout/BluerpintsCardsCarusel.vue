@@ -115,7 +115,6 @@
         :deep(.card) {
             text-align: left;
             min-width: 282px;
-            height: 313px;
             margin-right: $spacer;
         }
 
