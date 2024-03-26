@@ -12,7 +12,7 @@
                     <div class="info-item">
                         <h3>5 Million</h3>
                         <p>Tasks executed each month</p>
-                        <img src="/landing/enterprise/Leroy_Merlin 1.svg" alt="Leroy Merlin">
+                        <img src="/landing/enterprise/leroymerlin.svg" alt="Leroy Merlin">
                     </div>
                     <div class="vertical-line"></div>
                     <div class="info-item">
