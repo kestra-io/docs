@@ -182,7 +182,7 @@
 
             a {
                 color: $white-1;
-                font-size: $font-size-sm;
+                font-size: $font-size-base;
                 padding: calc($spacer / 2);
                 display: flex;
 
