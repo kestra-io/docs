@@ -1,58 +1,58 @@
 <template>
-    <div class="container">
-        <BlogsList v-if="slug === '/blogs/' || slug === '/blogs/community'" :blogs="page"
-                   :external-news="externalNews"/>
-
-        <div v-else class="container bd-gutter bd-layout margin">
-            <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
-                <ContentRenderer :value="page">
-                    <div class="bd-content">
-                        <div class="bd-title">
-                            <p class="d-flex breadcrumb" data-aos="fade-right">
-                                <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
-                            </p>
-                            <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
-                            <div class="d-lg-none d-block" data-aos="fade-zoom">
-                                <NavToc :page="page" >
-                                    <template #header>
-                                        <BlogDetails :blog="page"/>
-                                    </template>
-                                </NavToc>
+    <div class="container-fluid">
+        <div class="container">
+            <BlogsList v-if="slug === '/blogs/' || slug === '/blogs/community'" :blogs="page"
+                       :external-news="externalNews"/>
+            <div v-else class="container bd-gutter bd-layout margin">
+                <article class="bd-main order-1" v-if="page" :class="{'full': page.rightBar === false}">
+                    <ContentRenderer :value="page">
+                        <div class="bd-content">
+                            <div class="bd-title">
+                                <p class="d-flex breadcrumb" data-aos="fade-right">
+                                    <NuxtLink to="/">Home </NuxtLink> / <NuxtLink to="/blogs"> Blog</NuxtLink>
+                                </p>
+                                <h2 data-aos="fade-left" class="pt-0">{{ page.title }}</h2>
+                                <div class="d-lg-none d-block" data-aos="fade-zoom">
+                                    <NavToc :page="page" >
+                                        <template #header>
+                                            <BlogDetails :blog="page"/>
+                                        </template>
+                                    </NavToc>
+                                </div>
                             </div>
-                        </div>
-                        <NuxtImg
-                            loading="lazy"
-                            format="webp"
-                            quality="80"
-                            densities="x1 x2"
-                            data-aos="fade-right"
-                            class="mb-2 rounded-3 img"
-                            :alt="page.title"
-                            :src="page.image"
-                            fit="cover"
-                        />
-                        <ClientOnly>
-                            <ContentRendererMarkdown
-                                class="bd-markdown mt-4"
-                                :value="page"
-                                data-bs-spy="scroll"
-                                data-bs-target="#nav-toc"
+                            <NuxtImg
+                                loading="lazy"
+                                format="webp"
+                                quality="80"
+                                densities="x1 x2"
+                                data-aos="fade-right"
+                                class="mb-2 rounded-3 img"
+                                :alt="page.title"
+                                :src="page.image"
+                                fit="cover"
                             />
-                        </ClientOnly>
-                    </div>
-                    <NavToc class="d-lg-block d-none right-menu" data-aos="fade-zoom" :page="page">
-                        <template #header>
-                            <BlogDetails :blog="page"/>
-                        </template>
-                    </NavToc>
-                </ContentRenderer>
-            </article>
-            <div class="bottom">
-                <DocsBlogs title="More content"/>
-                <Updateletter/>
+                            <ClientOnly>
+                                <ContentRendererMarkdown
+                                    class="bd-markdown mt-4"
+                                    :value="page"
+                                    data-bs-spy="scroll"
+                                    data-bs-target="#nav-toc"
+                                />
+                            </ClientOnly>
+                        </div>
+                        <NavToc class="d-lg-block d-none right-menu" :page="page">
+                            <template #header>
+                                <BlogDetails :blog="page"/>
+                            </template>
+                        </NavToc>
+                    </ContentRenderer>
+                </article>
             </div>
         </div>
-
+    </div>
+    <div class="bottom">
+        <DocsBlogs title="More content"/>
+        <Updateletter/>
     </div>
 </template>
 
@@ -156,6 +156,19 @@
     @import "../../assets/styles/variable";
     @import '../../assets/styles/docs.scss';
 
+    .container-fluid {
+        @include media-breakpoint-up(lg) {
+            margin: 0;
+            height: calc(100vh - 2rem);
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        &::-webkit-scrollbar {
+            display: none !important;
+        }
+    }
+
     .blog-content {
         padding-bottom: calc($spacer * 8.75);
     }
@@ -193,22 +206,8 @@
             padding-right: 10.5rem;
         }
 
-        @include media-breakpoint-up(lg) {
-            height: calc(100vh - 2rem);
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-
-        &::-webkit-scrollbar {
-            display: none !important;
-        }
-
         img {
             border: $block-border;
-        }
-
-        img {
-            width: 100%;
         }
 
         &::after {
@@ -269,6 +268,12 @@
             max-width: unset;
         }
 
+    }
+
+    :deep(.bd-content) {
+        img {
+            width: 100%;
+        }
     }
 
     .right-menu {
