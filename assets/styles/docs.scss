@@ -231,6 +231,7 @@ $bd-gutter-x: 3rem;
     }
     iframe {
         width: 100%;
+        margin-bottom: $spacer;
     }
 
     a[target="_blank"]::after {

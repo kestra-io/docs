@@ -262,12 +262,6 @@
         line-height: 2rem;
         font-size: $h6-font-size;
         margin-bottom: 2rem;
-        max-width: 95%;
-
-        @include media-breakpoint-down(lg) {
-            max-width: unset;
-        }
-
     }
 
     :deep(.bd-content) {
