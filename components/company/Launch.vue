@@ -13,9 +13,7 @@
             </div>
         </Section>
 
-        <div class="container-fluid pb-5">
-            <Companies />
-        </div>
+        <Companies class="pb-5"/>
     </div>
 </template>
 
@@ -43,8 +41,8 @@
             margin-bottom: 0;
         }
 
-        .container-fluid {
-            border-bottom: $block-border;
+        :deep(.companies-container) {
+            border-bottom: $container-border;
         }
     }
 </style>
