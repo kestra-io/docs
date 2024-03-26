@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div :class="`container-fluid ${route.params.slug && route.params.slug.length ? 'container-stick' : ''}`">
         <div class="container">
             <BlogsList v-if="slug === '/blogs/' || slug === '/blogs/community'" :blogs="page"
                        :external-news="externalNews"/>
@@ -156,7 +156,7 @@
     @import "../../assets/styles/variable";
     @import '../../assets/styles/docs.scss';
 
-    .container-fluid {
+    .container-stick {
         @include media-breakpoint-up(lg) {
             margin: 0;
             height: calc(100vh - 2rem);
