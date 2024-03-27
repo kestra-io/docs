@@ -75,7 +75,7 @@ That's why Python is so popular - it's easy to learn and understand, almost like
 
 In computer science, there's a trade-off between programmer friendliness and performance. Languages closer to the machine code - the ones and zeros - run faster, but they're also much harder for humans to understand and write. This is because high-level languages, which are closer to natural language, offer features and abstractions that make them easier to use, but these features can sometimes come at the cost of some speed.
 
-👉 IMAGE PROGRAMMING LANGUAGE SCALE
+![programming language scale](/blogs/2024-03-27-python-business-logic/programming-language.png)
 
 The tension in this duality is often a matter of context. Building robust software that will handle high levels of concurrency and need high availability will often be written in lower-level languages such as C++ or Java.
 On the contrary, when we want to make the code easy to understand and easy to replace, we might choose a language closer to our natural language. It will be accessible to a broader range of profiles and match a broader scope of needs.
@@ -105,23 +105,24 @@ With Kestra, we’ve built several features to allow developers to handle their 
 
 For example, Kestra allows to pull of Git repositories containing a whole Python project. Then it’s easy to run Python main commands and describe the orchestration of scripts easily.
 
-👉EXAMPLE Flow git pull + two Python commands chained together. Screenshot of git repo with only Python codes. Screenshots flow Kestra w/ topo
+![git repo](/blogs/2024-03-27-python-business-logic/git-repo.png)
+![Kestra Flow Git clone with Python](/blogs/2024-03-27-python-business-logic/git-clone-flow.png)
 
 We even went further by allowing to write Python scripts directly in an embedded VS Code editor, while connecting these scripts easily in the orchestration logic.
 
-👉 EXAMPLE VS Code editor - two screenshots: one with Python code, the other with a read method
-
+![VS Code in Kestra](/blogs/2024-03-27-python-business-logic/vs-code-python.png)
+![read method](/blogs/2024-03-27-python-business-logic/read-method.png)
 
 ## Conclusion
 
-The time to value is one of the most important indicators of engineer productivity. As engineers our goal is to automate the mundane. This allows us to focus our expertise on solving intricate system problems and developing innovative projects with high business value.
+The time to value is one of the most important indicators of engineer productivity. As engineers our goal is to [automate the mundane](https://stkbailey.substack.com/p/good-data-engineers-are-lazy). This allows us to focus our expertise on solving intricate system problems and developing innovative projects with high business value.
 
 If our system doesn't allow us to sit and wait for completion to focus on something more important, we are missing something. Data engineers are not used to their full potential when writing the same code over and over, dealing with the same data issues, and creating new templates again and again. Stacking decorators on top of decorators. This is not really an engineering job, is it?
 
 The outcomes we should look for are automation at its full potential and optimized engineering costs.
-Most of the time we just want to trigger those docker container runs. To launch this python main.py command. To trigger them and manage the dependencies that come before and after the execution. That’s it.
+Most of the time we just want to trigger those docker container runs. To launch this `python main.py` command. To trigger them and manage the dependencies that come before and after the execution. That’s it.
 Managing the underlying business logic is not out of the scope here. It’s about uncoupling stuff from each other. Making simple inputs and outputs definitions here is the key to making things flow seamlessly.
-That’s why Kestra comes with simple declarative statements to deal with inputs, outputs, and globally speaking metadata arising from orchestrating dependencies between one job and another.
+That’s why Kestra comes with simple declarative statements to deal with [inputs](https://kestra.io/docs/tutorial/inputs), [outputs](https://kestra.io/docs/tutorial/outputs), and globally speaking metadata arising from orchestrating dependencies between one job and another.
 
 As engineers, we're like Lego builders who've already molded the plastic bricks. Once we pass that stage, we just want to grab the polished blocks and start assembling the system that unlocks the real value of the data for the business.
 
