@@ -240,7 +240,8 @@
                                         <PostOutline />
                                         <p>
                                             <span>Blog</span><br />
-                                            Company news, product updates, and engineering deep dives                                     </p>
+                                            Company news, product updates, and engineering deep dives
+                                        </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
@@ -331,7 +332,7 @@
                         <GithubButton :small="true" />
 
                         <NuxtLink @click="globalClick(true)"
-                                  class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block"
+                                  class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block talk-us"
                                   href="/demo">
                             <span>
                                 <CalendarOutline />
@@ -594,6 +595,15 @@ export default {
         a.nav-link, button.navbar-toggler, &.btn.search, .nav-item a, div.nav-items a {
             color: var(--gray-white, #FFF) !important;
             box-shadow: none !important;
+        }
+
+        a.talk-us {
+            border:1px solid $black-6;
+            background-color: $black-4;
+
+            &:hover {
+                background-color: $black-6;
+            }
         }
 
         div.nav-items {
@@ -1015,14 +1025,24 @@ export default {
     }
 
         &:not(.transparent) {
+            background: #333336;
+            :deep(.github) {
+                &:hover {
+                    .btn-dark {
+                        background: #18181B !important;
+                    }
+
+                    .btn-outline-dark {
+                        background: #333336 !important;
+                    }
+                }
+            }
             :deep(.github .btn-dark) {
-                border-color: $black-5;
-                background: $black-5;
                 color: $white-6;
             }
 
             :deep(.github .btn-outline-dark) {
-                border-color: $black-5;
+                background: #18181B;
                 color: $white-6;
             }
         }
