@@ -1,6 +1,6 @@
 ---
-title: "Python is the Best Language for Writing Business Logic"
-description: ""
+title: "Is Python the right language for your business logic?"
+description: "Maintain and update your business logic in Python, manage your workflows, integrations, and dependencies declaratively"
 date: 2024-03-27T17:00:00
 category: Solutions
 author:
