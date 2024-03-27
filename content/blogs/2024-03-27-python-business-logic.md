@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: "bpimpaud"
-image: /blogs/2024-03-27-python-business-logic.jpg
+image: /blogs/2024-03-27-python-business-logic.png
 ---
 
 ## What’s business logic anyway?
@@ -76,6 +76,7 @@ That's why Python is so popular - it's easy to learn and understand, almost like
 In computer science, there's a trade-off between programmer friendliness and performance. Languages closer to the machine code - the ones and zeros - run faster, but they're also much harder for humans to understand and write. This is because high-level languages, which are closer to natural language, offer features and abstractions that make them easier to use, but these features can sometimes come at the cost of some speed.
 
 ![programming language scale](/blogs/2024-03-27-python-business-logic/programming-language.png)
+
 
 The tension in this duality is often a matter of context. Building robust software that will handle high levels of concurrency and need high availability will often be written in lower-level languages such as C++ or Java.
 On the contrary, when we want to make the code easy to understand and easy to replace, we might choose a language closer to our natural language. It will be accessible to a broader range of profiles and match a broader scope of needs.
