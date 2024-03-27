@@ -63,12 +63,16 @@
             }
         }
 
+        :deep(.card) {
+            width: 100%;
+            height: unset;
+        }
+
         @include media-breakpoint-down(lg) {
             flex-direction: column;
             align-items: center;
 
             :deep(.card) {
-                height: unset;
                 width: 60%;
             }
         }

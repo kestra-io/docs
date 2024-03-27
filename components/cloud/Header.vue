@@ -4,7 +4,7 @@
             <div class="hero-container py-5 d-flex justify-content-center">
                 <div class="header text-white">
                     <img src="/landing/cloud/cloud-hero.svg" alt="Kestra Cloud Comming Soon">
-                    <h1 class="fw-light my-3">
+                    <h1 class="my-3">
                         Kestra <span class="text-gradient">Cloud</span> Comming Soon
                     </h1>
                     <h6 class="fw-light lh-lg m-0">
@@ -75,6 +75,7 @@
                 font-size: $font-size-4xl !important;
                 line-height: $font-size-4xl;
                 max-width: 80%;
+                font-weight: 400;
             }
 
             h6 {
