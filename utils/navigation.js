@@ -58,7 +58,7 @@ export const generatePageNames = (item) => {
     const result = {};
     function traverse(item) {
         if (item._path && item.title) {
-            let key = item._path.split("/")[[item._path.split("/").length - 1]];
+            let key = item._path.split("/")[item._path.split("/").length - 1];
             result[key] = item.title;
         }
         if (item.children) {

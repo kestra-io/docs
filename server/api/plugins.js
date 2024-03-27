@@ -1,5 +1,6 @@
 import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 import url from "node:url";
+import {camelToKebabCase} from "~/utils/url.js";
 
 function toNuxtContent(parsedMarkdown) {
     return {
@@ -54,7 +55,11 @@ function generateSubMenuWithGroupProvider(baseUrl, groupProviderFromItem, items)
 }
 
 function toNavTitle(title) {
-    return title.split(".")
+    let startCaseTitle = title;
+    if (title.match(/^[a-z]+[A-Z][a-z]/)) {
+        startCaseTitle = title.replace(/[A-Z][a-z]/, match => " " + match);
+    }
+    return startCaseTitle.split(".")
         .map(string => string.charAt(0).toUpperCase() + string.slice(1))
         .join("");
 }
@@ -89,17 +94,18 @@ export default defineEventHandler(async (event) => {
                 const children = pluginCategories
                     .flatMap(category => {
                         let children;
+                        let kebabCasedCategory = camelToKebabCase(category);
                         if (plugin.name === "core") {
                             if (category === "tasks") {
                                 children = generateSubMenu(
-                                    `${rootPluginUrl}/${category}`,
+                                    `${rootPluginUrl}/${kebabCasedCategory}`,
                                     plugin.group,
                                     plugin[category].map(item => item.split(".").slice(-2).join("."))
                                 );
                             } else {
                                 const fqnByClassName = {};
                                 children = generateSubMenuWithGroupProvider(
-                                    `${rootPluginUrl}/${category}`,
+                                    `${rootPluginUrl}/${kebabCasedCategory}`,
                                     (item) => {
                                         const fqn = fqnByClassName[item];
 
@@ -116,7 +122,7 @@ export default defineEventHandler(async (event) => {
                             const coreTaskByFqn = {};
                             const coreTaskQualifier = "io.kestra.core.tasks";
                             children = generateSubMenuWithGroupProvider(
-                                `${rootPluginUrl}/${category}`,
+                                `${rootPluginUrl}/${kebabCasedCategory}`,
                                 (item) => {
                                     let fqnTask = coreTaskByFqn[item];
                                     if (fqnTask !== undefined) {
@@ -141,7 +147,7 @@ export default defineEventHandler(async (event) => {
 
                         return {
                             title: toNavTitle(category),
-                            _path: `${rootPluginUrl}/${category}`.toLowerCase(),
+                            _path: `${rootPluginUrl}/${kebabCasedCategory}`.toLowerCase(),
                             isPage: false,
                             children
                         }

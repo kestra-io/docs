@@ -42,7 +42,7 @@
         }
 
         // If we are on an index page, we want to resolve relative paths starting from our current route
-        if (page?.value?._file?.includes('index.md')) {
+        if (page?.value?._file?.includes('index.md') || !page) {
             absolutePath = absolutePath + "/";
         }
 
