@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid bg-dark-4">
         <div class="container py-5 my-3">
-            <div class="hero-container py-5 d-flex justify-content-center align-items-center">
+            <div class="hero-container py-lg-5 d-flex justify-content-center align-items-center">
                 <div class="header text-white">
                     <img src="/landing/cloud/cloud-hero.svg" alt="Kestra Cloud Comming Soon">
                     <h1 class="my-3">
@@ -90,10 +90,17 @@
 
             @include media-breakpoint-down(lg) {
                 flex-direction: column;
+                align-items: flex-start !important;
                 gap: calc($spacer * 2);
 
                 h1 {
                     max-width: unset;
+                    font-size: calc($font-size-base * 1.625) !important;
+                    line-height: calc($spacer * 1.625);
+                }
+
+                h6 {
+                    line-height: unset !important;
                 }
             }
         }
