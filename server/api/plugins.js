@@ -64,7 +64,7 @@ function toNavTitle(title) {
         .join("");
 }
 
-const pluginCategories = ['tasks', 'triggers', 'conditions', 'controllers', 'storages', 'secrets', 'guides'];
+const pluginCategories = ['tasks', 'triggers', 'conditions', 'controllers', 'storages', 'secrets', 'guides', 'scriptRunners'];
 
 export default defineEventHandler(async (event) => {
     try {
