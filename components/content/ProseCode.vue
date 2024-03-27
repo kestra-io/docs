@@ -93,6 +93,7 @@
 
     .code-block {
         background-color: $black-2;
+        border: $block-border;
         padding: 1.25rem 1.5rem;
         border-radius: var(--bs-border-radius-lg);
         color: var(--bs-white);
