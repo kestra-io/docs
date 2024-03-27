@@ -78,7 +78,7 @@ $bd-gutter-x: 3rem;
 
     h3 {
         padding-top: 1.25rem;
-        font-size: calc($font-size-base * 1.5);
+        font-size: calc($font-size-base * 1.75);
         color: $white;
         font-weight: 400;
     }
@@ -231,6 +231,7 @@ $bd-gutter-x: 3rem;
     }
     iframe {
         width: 100%;
+        margin-bottom: $spacer;
     }
 
     a[target="_blank"]::after {

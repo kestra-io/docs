@@ -490,10 +490,14 @@ export default {
                     this.collapse.hide();
                     this.isOpen = false;
                 }
+                const element = document.querySelector('.nav-link.show');
+                element.classList.remove('show');
+                element.nextElementSibling.classList.remove('show');
             } else {
                 this.collapse.toggle();
                 this.isOpen = !this.isOpen;
             }
+          this.isOpen = !this.isOpen;
         },
         logoClick() {
             if (this.$route.path === "/") {
@@ -763,7 +767,7 @@ export default {
                         }
 
                         p {
-                            color: $black-8 !important;
+                            color: $white-1 !important;
                             font-size: 0.813rem;
                             font-weight: 300;
                             margin-bottom: 0;
@@ -783,7 +787,7 @@ export default {
                         }
 
                         &:hover {
-                            background-color: $black-3;
+                            background-color: $black-6;
 
                             .material-design-icon, span, p {
                                 color: $white !important;

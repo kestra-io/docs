@@ -1,8 +1,8 @@
 <template>
-    <div ref="container" class="container mb-4">
+    <div ref="container" class="companies-container container">
         <div class="row">
             <div class="col-12 p-0">
-                <div class="companies-container">
+                <div class="companies-list-container">
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
                             <img
@@ -98,8 +98,8 @@
             transform: translateX(calc(-100% - 2rem));
         }
     }
-    .container {
-        .companies-container {
+    .companies-container {
+        .companies-list-container {
             width: 100%;
             grid-column-gap: 2rem;
             grid-row-gap: 2rem;
@@ -108,6 +108,29 @@
             display: flex;
             position: relative;
             overflow: hidden;
+
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                width: 7rem;
+                z-index: 999;
+                border-radius: inherit;
+                background-color: #111113;
+                filter: blur(13px);
+                height: 10rem;
+            }
+
+            &:after {
+                top:  calc($spacer * 1.1);
+                right: calc($spacer * -3.2);
+            }
+
+            &:before {
+                top:  calc($spacer * -1.9);
+                left: calc($spacer * -3.2);
+            }
+
             .companies-list {
                 min-width: 100%;
                 grid-column-gap: 2rem;

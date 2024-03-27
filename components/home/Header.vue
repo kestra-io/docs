@@ -30,24 +30,24 @@
         </div>
 
         <div class="companies-background overflow-x-hidden">
-            <Companies class="mt-4 pb-4 companies container" />
+            <Companies class="mt-4 mb-4 pb-4 companies container" />
 
 
             <div class="activity-list container bg-dark-2 d-flex align-items-center justify-content-between">
                 <div>
-                    <p class="count">+60 Million</p>
+                    <p class="count">+80 Million</p>
                     <p class="description">workflows executed</p>
                 </div>
                 <div>
-                    <p class="count">+15,000</p>
+                    <p class="count">+20,000</p>
                     <p class="description">active users</p>
                 </div>
                 <div>
-                    <p class="count">+90,000</p>
+                    <p class="count">+150,000</p>
                     <p class="description">DEPLOYMENTS</p>
                 </div>
                 <div>
-                    <p class="count">+200</p>
+                    <p class="count">+250</p>
                     <p class="description">Contributors</p>
                 </div>
             </div>
