@@ -18,7 +18,7 @@ Business logic isn't straightforward. It's shaped by factors like company practi
 We often strive to write clean, logical code. But in reality, customer requirements can sometimes involve incomplete or conflicting information. These real-world complexities, often referred to as “business logic”, require collaboration between programmers and business stakeholders to ensure the final code aligns with the desired outcome.
 
 
-This above example shows how we can map some fields between some source files and expected format in Python. Here it's a dummy example, but this kind of code often contain crucial logic that encode business understanding and need.
+This below example shows how we can map some fields between some source files and expected format in Python. Here it's a dummy example, but this kind of code often contain crucial logic that encode business understanding and need.
 
 ```python
 def map_json_fields(source_data, mapping):
