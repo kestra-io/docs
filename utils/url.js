@@ -6,3 +6,7 @@ export function slugify(text) {
         locale: 'en',
     });
 }
+
+export function camelToKebabCase(text) {
+    return text.replace(/([a-z])([A-Z][a-z])/, '$1-$2').toLowerCase();
+}
