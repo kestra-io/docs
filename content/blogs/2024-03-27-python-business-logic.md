@@ -18,7 +18,44 @@ Business logic isn't straightforward. It's shaped by factors like company practi
 We often strive to write clean, logical code. But in reality, customer requirements can sometimes involve incomplete or conflicting information. These real-world complexities, often referred to as “business logic”, require collaboration between programmers and business stakeholders to ensure the final code aligns with the desired outcome.
 
 
-👉 EXAMPLE: business logic in Python code (mapping of fields in a JSON, to align fields with another one)
+This above example shows how we can map some fields between some source files and expected format in Python. Here it's a dummy example, but this kind of code often contain crucial logic that encode business understanding and need.
+
+```python
+def map_json_fields(source_data, mapping):
+  mapped_data = {}
+  for target_field, source_field in mapping.items():
+    if source_field in source_data:
+      mapped_data[target_field] = source_data[source_field]
+    else:
+      # Handle missing source fields (optional)
+      mapped_data[target_field] = None  # Example: Set to None if missing
+
+  # Enrich the name with a fake middle name (optional)
+  if "name" in mapped_data and mapped_data["name"] is not None:
+    first_name, last_name = mapped_data["name"].split() if " " in mapped_data["name"] else (mapped_data["name"], "")
+    middle_name = get_middle_name_from_gov_api() # function that gather middle names provided by a governament service API
+    mapped_data["name"] = f"{first_name} {middle_name} {last_name}"
+
+  return mapped_data
+
+# Example usage
+source_json = {
+  "customer_id": 123,
+  "first_name": "John",
+  "last_name": "Doe",
+  "full_name": None  # Not present in source JSON
+}
+
+# Mapping dictionary defines the desired field names
+mapping = {
+  "user_uuid": "customer_id",
+  "name": "full_name",  # Map to "full_name" even if missing in source
+  "surname": "last_name"
+}
+
+mapped_data = map_json_fields(source_json.copy(), mapping)
+print(mapped_data)  # Possible output: {'user_uuid': 123, 'name': 'John David Doe', 'surname': 'Doe'}
+```
 
 ## From Plain English to Code
 
