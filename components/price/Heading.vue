@@ -167,13 +167,14 @@ import Section from '../layout/Section.vue';
                 font-weight: 700;
                 font-size: $font-size-base;
                 line-height: calc($spacer * 2);
+                margin-bottom: calc($spacer / 4);
             }
 
             li {
-                padding: 0.6rem 0.1rem;
+                padding: 0 0.1rem;
                 list-style-image: url("public/landing/check.svg");
                 list-style-position: inside;
-
+                line-height: calc($spacer * 2);
 
                 span {
                     position: relative;
