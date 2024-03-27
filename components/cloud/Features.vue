@@ -4,15 +4,15 @@
             <div class="cloud-cards">
                 <Card
                     :icon="RocketLaunch"
-                    title="Get started <br>In minutes"
+                    title="Get started In minutes"
                 />
                 <Card
                     :icon="CreditCardOff"
-                    title="Sign up for free <br>No credit card required"
+                    title="Sign up for free No credit card required"
                 />
                 <Card
                     :icon="CloudCheck"
-                    title="Fully-managed <br>Infrastructure"
+                    title="Fully-managed Infrastructure"
                 />
             </div>
         </div>
