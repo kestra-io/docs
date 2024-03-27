@@ -18174,7 +18174,7 @@ components:
       - SECRET
       - IMPERSONATE
       - SETTING
-      - WORKER
+      - INFRASTRUCTURE
       - TENANT
     PermissionCollection:
       type: object
