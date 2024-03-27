@@ -13,7 +13,7 @@
             <div class="row card-group mb-4">
                 <div class="col-12 col-md-6 z-3 d-md-flex justify-content-md-end">
                     <div class="card text-white col-lg-9 col-xl-8">
-                        <div class="card-body p-5">
+                        <div class="card-body">
                             <div class="pb-4">
                                 <h4 class="card-title" data-aos="fade-right">Open-Source</h4>
                                 <p class="pricing" data-aos="fade-left">Free under Apache 2.O License</p>
@@ -46,7 +46,7 @@
 
                 <div class="col-12 col-md-6 z-3 rightcard">
                     <div class="card-Demo text-white col-lg-9 col-xl-8 mt-3 mt-md-0">
-                        <div class="card-body p-5">
+                        <div class="card-body">
                             <div class="mb-7 gap-3">
                                 <h3 class="card-title mb-5" data-aos="fade-right">Enterprise Edition</h3>
 
@@ -57,31 +57,35 @@
                                 </NuxtLink>
                             </div>
                             <ul>
-                                <li data-aos="fade-left"><span><strong>All features from the Open-Source Edition and
-                                            more</strong></span></li>
-                                <li data-aos="fade-left" data-aos-delay="100"><span>Scalable architecture with
-                                        High-Availability</span></li>
-                                <li data-aos="fade-left" data-aos-delay="150"><span>Muti-tenancy</span></li>
-                                <li data-aos="fade-left" data-aos-delay="200"><span>Worker groups supporting distributed
-                                        workers</span></li>
-                                <li data-aos="fade-left" data-aos-delay="250"><span>Custom secrets backend (AWS Secret
-                                        Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, Hashicorp
-                                        Vault)</span>
+                                <li data-aos="fade-left">
+                                    <span>
+                                        <strong>
+                                            All features from the Open-Source Edition and
+                                            more
+                                        </strong>
+                                    </span>
                                 </li>
-                                <li data-aos="fade-left" data-aos-delay="300"><span>Audit logs</span></li>
-                                <li data-aos="fade-left" data-aos-delay="350"><span>Single Sign-On (SSO)</span>
-                                </li>
-                                <li data-aos="fade-left" data-aos-delay="400"><span>Role-Based Access Control (RBAC)</span>
-                                </li>
-                                <li data-aos="fade-left" data-aos-delay="450"><span>Custom blueprints</span></li>
-                                <li data-aos="fade-left" data-aos-delay="500"><span>Namespace-level management</span></li>
-                                <li data-aos="fade-left" data-aos-delay="550"><span>Secure credential store</span></li>
-                                <li data-aos="fade-left" data-aos-delay="550"><span>Built-in variable store</span></li>
-                                <li data-aos="fade-left" data-aos-delay="550"><span>Centralized governance over task
-                                        configuration</span></li>
-                                <li data-aos="fade-left" data-aos-delay="550"><span>Enterprise support with guaranteed
-                                        SLAs</span></li>
-                                <li data-aos="fade-left" data-aos-delay="550"><span>Onboarding & training</span></li>
+                                <ul>
+                                    <p class="category-title">Security</p>
+                                    <li data-aos="fade-left" data-aos-delay="300"><span>Audit logs</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>RBAC</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>SSO</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>Secrets Manager</span></li>
+                                </ul>
+                                <ul>
+                                    <p class="category-title">Governance</p>
+                                    <li data-aos="fade-left" data-aos-delay="300"><span>Multi Tenancy</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>Namespace Management</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>Custom blueprints</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>Task Configuration</span></li>
+                                </ul>
+                                <ul>
+                                    <p class="category-title">Scalability</p>
+                                    <li data-aos="fade-left" data-aos-delay="300"><span>Dedicated Worker</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>High Throughput</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>High Availability</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>Fault Tolerant</span></li>
+                                </ul>
                             </ul>
                         </div>
                     </div>
@@ -152,19 +156,35 @@ import Section from '../layout/Section.vue';
     }
 
     .card-body {
+        padding: calc($spacer * 2);
         ul {
             padding-top: $spacer;
             padding-left: 0px;
 
+            .category-title {
+                text-transform: uppercase;
+                margin: 0;
+                font-weight: 700;
+                font-size: $font-size-base;
+                line-height: calc($spacer * 2);
+                margin-bottom: calc($spacer / 4);
+            }
+
             li {
-                padding: 0.6rem 0.1rem;
+                padding: 0 0.1rem;
                 list-style-image: url("public/landing/check.svg");
                 list-style-position: inside;
-
+                line-height: calc($spacer * 2);
 
                 span {
                     position: relative;
                     top: -0.1rem;
+
+                    strong {
+                        font-weight: 400;
+                        line-height: calc($spacer * 2);
+                        font-size: $font-size-lg;
+                    }
                 }
             }
         }
