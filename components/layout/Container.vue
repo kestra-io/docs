@@ -40,6 +40,7 @@
     const route = useRoute()
     const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
     let page;
+    let icon;
 
     const fetchNavigation = async () => {
         let navigationFetch;
@@ -171,14 +172,14 @@
             display: flex;
             margin: 0 auto;
             gap: $spacer;
-            max-width: calc($spacer * 59);
+            max-width: calc($spacer * 43.7);
             align-items: center;
 
             .title {
                 font-size: $h2-font-size;
                 font-weight: 400;
                 line-height: calc($spacer * 3.25);
-                margin: 0 auto;
+                margin: 0;
             }
         }
 

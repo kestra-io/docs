@@ -491,8 +491,10 @@ export default {
                     this.isOpen = false;
                 }
                 const element = document.querySelector('.nav-link.show');
-                element.classList.remove('show');
-                element.nextElementSibling.classList.remove('show');
+                if (element && element.classList) {
+                  element.classList.remove('show');
+                  element.nextElementSibling.classList.remove('show');
+                }
             } else {
                 this.collapse.toggle();
                 this.isOpen = !this.isOpen;
