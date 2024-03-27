@@ -1,5 +1,5 @@
 <template>
-    <div class="audit-logs mb-3">
+    <div class="version-marker mb-3">
         <p class="title">Available on:</p>
         <div class="editions">
             <div class="edition-item" v-for="edition of editions" :style="`background-color: ${edition.color}`">
@@ -41,7 +41,7 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .audit-logs {
+    .version-marker {
         display: flex;
         padding: calc($spacer * 0.5);
         gap: 0 calc($spacer * 0.5);
