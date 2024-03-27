@@ -7,6 +7,7 @@
         </Head>
 
         <CloudHeader />
+        <CloudFeatures />
     </div>
 </template>
 
