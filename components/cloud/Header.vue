@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid bg-dark-4">
         <div class="container py-5 my-3">
-            <div class="hero-container py-5 d-flex justify-content-center">
+            <div class="hero-container py-5 d-flex justify-content-center align-items-center">
                 <div class="header text-white">
                     <img src="/landing/cloud/cloud-hero.svg" alt="Kestra Cloud Comming Soon">
                     <h1 class="my-3">
