@@ -1025,8 +1025,9 @@ export default {
     }
 
         &:not(.transparent) {
-            background: #333336;
             :deep(.github) {
+                background: #333336;
+
                 &:hover {
                     .btn-dark {
                         background: #18181B !important;
