@@ -107,11 +107,15 @@ With Kestra, we’ve built several features to allow developers to handle their 
 For example, Kestra allows to pull of Git repositories containing a whole Python project. Then it’s easy to run Python main commands and describe the orchestration of scripts easily.
 
 ![git repo](/blogs/2024-03-27-python-business-logic/git-repo.png)
+
+
 ![Kestra Flow Git clone with Python](/blogs/2024-03-27-python-business-logic/git-clone-flow.png)
 
 We even went further by allowing to write Python scripts directly in an embedded VS Code editor, while connecting these scripts easily in the orchestration logic.
 
 ![VS Code in Kestra](/blogs/2024-03-27-python-business-logic/vs-code-python.png)
+
+
 ![read method](/blogs/2024-03-27-python-business-logic/read-method.png)
 
 ## Conclusion
