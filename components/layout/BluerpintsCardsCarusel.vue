@@ -84,7 +84,7 @@
             snapAlign: 'start',
           },
           1500: {
-            itemsToShow: 2.3,
+            itemsToShow: 2.4,
             snapAlign: 'start',
           },
         },
@@ -114,8 +114,9 @@
 
         :deep(.card) {
             text-align: left;
-            min-width: 282px;
+            min-width: calc($spacer * 17.7);
             margin-right: $spacer;
+            min-height: calc($spacer * 19.1);
         }
 
         .carousel-control-prev, .carousel-control-next {
