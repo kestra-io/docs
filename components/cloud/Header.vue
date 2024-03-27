@@ -3,10 +3,10 @@
         <div class="pt-5 d-flex flex-column justify-content-center">
             <div class="text-center header text-white mx-auto mt-4">
                 <h1 class="fw-light">
-                    Kestra <span class="text-gradient">Cloud</span>
+                    Kestra <span class="text-gradient">Cloud</span> Comming Soon
                 </h1>
                 <h6 class="pb-4 fw-light lh-lg">
-                    Sign up to get notified as soon as Kestra Cloud launches
+                    Register now to be the first to know when we launch!
                 </h6>
             </div>
 
