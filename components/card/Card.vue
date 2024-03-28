@@ -20,6 +20,7 @@
                     <p class="number">{{number}}</p>
                 </span>
                 <h4 v-if="title" class="card-title">{{title}}</h4>
+                <h4 v-if="titleHtml" class="card-title" v-html="titleHtml"></h4>
             </div>
             <div v-if="bottomMenuBar && bottomMenuBar.length" class="bottom-menu">
                 <div class="bottom-menu-item" v-for="menuItem in bottomMenuBar" @click="() => menuItem.active = !menuItem.active">
@@ -51,6 +52,9 @@
             },
             title: {
                 default: undefined,
+            },
+            titleHtml: {
+              default: undefined,
             },
             description: {
                 default: undefined,
