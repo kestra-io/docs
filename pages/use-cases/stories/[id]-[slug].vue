@@ -151,7 +151,7 @@
                 line-height: calc($spacer * 1.6);
             }
 
-            h3, h2 {
+            h3 {
                 margin-top: calc($spacer * 4.12);
                 margin-bottom: 3rem;
                 border-left: 5px solid $purple-36;
@@ -163,6 +163,15 @@
             h2 {
                 border-top: 1px solid $black-6;
                 margin-top: 3rem !important;
+                margin-top: calc($spacer * 4.12);
+                margin-bottom: 3rem;
+                font-size: calc($font-size-base * 2.25);
+                line-height: calc($spacer * 2.3);
+
+                a {
+                    border-left: 5px solid $purple-36;
+                    padding-left: calc($spacer * 0.6) !important;
+                }
             }
 
 

@@ -125,6 +125,20 @@
             {name: 'twitter:image:alt', content: title}
         ]
     })
+
+    onMounted(() => {
+      const stickyContainer = document.querySelector('.container-fluid');
+      if (stickyContainer && isDoc) {
+        stickyContainer.addEventListener("scroll", () => {
+          if (stickyContainer.scrollTop > 0) {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+        });
+      }
+    })
 </script>
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
