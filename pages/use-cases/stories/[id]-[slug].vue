@@ -233,6 +233,7 @@
         .card-body {
             display: flex;
             flex-direction: column;
+            gap: calc($spacer / 4);
             align-items: center;
             padding: 0;
         }
