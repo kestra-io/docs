@@ -68,7 +68,7 @@
     background-repeat: no-repeat;
 
     .line {
-      background: rgba(255, 255, 255, 0.1) !important;
+      color: rgba(255, 255, 255, 0.1) !important;
       height: 1px !important;
     }
   }
