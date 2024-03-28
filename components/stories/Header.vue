@@ -75,8 +75,10 @@
 
   .heading {
     font-size: $font-size-4xl;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 3.7rem;
+      margin-bottom: $spacer;
+    padding: 0;
     @include media-breakpoint-down(lg) {
       line-height: calc($font-size-base * 1.625);;
     }
@@ -86,6 +88,11 @@
     font-weight: 300;
     line-height: 2rem;
     font-size: $font-size-xl;
+    padding: 0 !important;
+    margin-bottom: $spacer;
+    @include media-breakpoint-up(lg) {
+        max-width: 80%;
+    }
   }
 
   .btn {

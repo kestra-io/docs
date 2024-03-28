@@ -16,17 +16,25 @@
         />
 
         <div class="container">
-            <ContentRendererMarkdown class="bd-markdown" :value="content1" />
-            <div class="d-flex flex-wrap gap-4 my-5 justify-content-center">
-                <div class="card task-card" v-for="task in story.tasks" :key="task">
-                    <div class="card-body">
-                        <CommonTaskIcon :cls="task" />
+            <div class="story-container">
+                <ContentRendererMarkdown class="bd-markdown" :value="content1" />
+                <div class="d-flex flex-wrap gap-4 my-5">
+                    <div class="card task-card">
+                        <div class="card-body">
+                            <img src="/landing/usecases/stories/monograme-kestra.svg" alt="">
+                            <p class="card-title">Kestra</p>
+                        </div>
+                    </div>
+                    <div class="card task-card" v-for="task in story.tasks" :key="task">
+                        <div class="card-body">
+                            <CommonTaskIcon :cls="task" />
+                            <p class="card-title">{{generateTagName(task)}}</p>
+                        </div>
                     </div>
                 </div>
+
+                <ContentRendererMarkdown class="bd-markdown" :value="content2" />
             </div>
-
-            <ContentRendererMarkdown class="bd-markdown" :value="content2" />
-
             <div class="section-content">
                 <LayoutSection subtitle-before="Similar" subtitle="Kestra" subtitle-after="Stories" v-if="related">
                     <div class="row">
@@ -96,9 +104,69 @@
         return $fetch(`${config.public.apiUrl}/customer-stories?size=3`)
     })
 
+    const generateTagName = (task) => {
+      const splittedTask = task.split(".");
+      const taskName = splittedTask[splittedTask.length - 1];
+
+      return taskName.length > 13 ? taskName.slice(0,13) + "..." : taskName;
+    };
 </script>
 <style scoped lang="scss">
     @import "../../../assets/styles/variable";
+
+    .story-container {
+        max-width: 55rem;
+        margin: 0 auto calc($spacer * 5.6);
+
+        :deep(.bd-markdown:first-child) {
+            p:first-of-type {
+                padding: calc($spacer * 2);
+                border: 1px solid $black-6;
+                background-color: $black-2;
+                border-radius: calc($spacer / 2);
+            }
+        }
+
+        :deep(.bd-markdown) {
+            p {
+                font-size: $h6-font-size;
+                line-height: calc($spacer * 1.6);
+            }
+
+            h3 {
+                margin-top: calc($spacer * 4.12);
+                padding-top: calc($spacer * 3.125);
+                margin-bottom: 2rem;
+                margin-top: 3rem;
+
+                a {
+                    border-left: 5px solid $purple-36;
+                    padding-left: calc($spacer * 0.6);
+                    font-size: calc($font-size-base * 2.25);
+                }
+            }
+
+            h2 {
+                margin-top: calc($spacer * 4.12);
+                border-top: 1px solid $black-6;
+                padding-top: calc($spacer * 3.125);
+                margin-bottom: 2rem;
+
+                a {
+                    border-left: 5px solid $purple-36;
+                    padding-left: calc($spacer * 0.6);
+                    font-size: calc($font-size-base * 2.25);
+                }
+            }
+
+            ul > li::marker {
+                color: #736BCD ;
+            }
+        }
+
+
+    }
+
 
     p, ul > li {
         line-height: 1.5rem;
@@ -142,7 +210,23 @@
     .card {
         border: 1px solid $black-3;
         border-right: 8px;
-        padding: calc($spacer * 0.938) calc($spacer * 2.813);
+        padding-top: calc($spacer * 0.938);
+        padding-bottom: calc($spacer * 0.8);
+        width: calc($spacer * 8.3);
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 22px;
+        }
     }
 
 
