@@ -21,7 +21,9 @@
                 <div class="d-flex flex-wrap gap-4 my-5">
                     <div class="card task-card">
                         <div class="card-body">
-                            <img src="/landing/usecases/stories/monograme-kestra.svg" alt="">
+                            <div ref="root" class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" title="Kestra">
+                                <img src="/landing/usecases/stories/monograme-kestra.svg" alt="Kestra">
+                            </div>
                             <p class="card-title">Kestra</p>
                         </div>
                     </div>
@@ -61,13 +63,29 @@
 </template>
 <script setup>
     import {parseMarkdown} from '@nuxtjs/mdc/runtime'
-
+    const {$bootstrap} = useNuxtApp()
     const route = useRoute()
     const config = useRuntimeConfig();
     const slug = (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
     const story = ref({})
     const content1 = ref('')
     const content2 = ref('')
+    const root = ref(null)
+
+    onMounted(() => {
+      if (process.client) {
+        new $bootstrap.Tooltip(root.value);
+      }
+    });
+
+    onBeforeUnmount(() => {
+      if (process.client) {
+        const tooltip = $bootstrap.Tooltip.getInstance(root.value);
+        if (tooltip) {
+          tooltip.dispose();
+        }
+      }
+    });
 
     const {data} = await useAsyncData('stories', () => {
         return $fetch(`${config.public.apiUrl}/customer-stories/${route.params.id}`)
@@ -133,31 +151,20 @@
                 line-height: calc($spacer * 1.6);
             }
 
-            h3 {
+            h3, h2 {
                 margin-top: calc($spacer * 4.12);
-                padding-top: calc($spacer * 3.125);
-                margin-bottom: 2rem;
-                margin-top: 3rem;
-
-                a {
-                    border-left: 5px solid $purple-36;
-                    padding-left: calc($spacer * 0.6);
-                    font-size: calc($font-size-base * 2.25);
-                }
+                margin-bottom: 3rem;
+                border-left: 5px solid $purple-36;
+                padding-left: calc($spacer * 0.6) !important;
+                font-size: calc($font-size-base * 2.25);
+                line-height: calc($spacer * 2.3);
             }
 
             h2 {
-                margin-top: calc($spacer * 4.12);
                 border-top: 1px solid $black-6;
-                padding-top: calc($spacer * 3.125);
-                margin-bottom: 2rem;
-
-                a {
-                    border-left: 5px solid $purple-36;
-                    padding-left: calc($spacer * 0.6);
-                    font-size: calc($font-size-base * 2.25);
-                }
+                margin-top: 3rem !important;
             }
+
 
             ul > li::marker {
                 color: #736BCD ;
