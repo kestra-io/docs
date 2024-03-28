@@ -5,7 +5,10 @@
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" />
-                    <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title "></h1>
+                    <div class="title-block">
+                        <img :src="icon" :alt="page.title" width="24" v-if="icon">
+                        <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title "></h1>
+                    </div>
                 </div>
 
                 <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4" />
@@ -37,6 +40,7 @@
     const route = useRoute()
     const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
     let page;
+    let icon;
 
     const fetchNavigation = async () => {
         let navigationFetch;
@@ -56,13 +60,13 @@
         const pageList = recursivePages(navigation.value[0]);
         const pageNames = generatePageNames(navigation.value[0]);
         return {navigation, pageList, pageNames};
-    }
+    };
 
     const transformTitle = (text) => {
         return text
             .replace(/([A-Z])/g, '&#x200B;$1')
             .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
-    }
+    };
 
     const props = defineProps({
         type: {
@@ -74,7 +78,7 @@
             required: false,
             default: true
         },
-    })
+    });
 
     if (props.type === 'plugins') {
         const parts = slug.value.split('/');
@@ -93,7 +97,16 @@
             throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
         }
 
-        page = pluginInformation.value;
+        if (pluginInformation.value && pluginInformation.value.page) {
+          page = pluginInformation.value.page;
+        } else {
+          page = pluginInformation.value;
+        }
+
+        if (pluginInformation.value && pluginInformation.value.icon) {
+          icon = pluginInformation.value.icon;
+        }
+
     } else {
         const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
             try {
@@ -131,144 +144,164 @@
 
     .container-fluid {
         gap: calc($spacer * 4);
+
         .bd-title {
             margin-top: calc($spacer * 4);
             @include media-breakpoint-down(lg) {
                 margin-top: calc($spacer * 1);
             }
+
             h1 {
                 max-width: calc($spacer * 43.7);
             }
         }
+
         .bd-main {
             gap: calc($spacer * 2) $spacer;
             @include media-breakpoint-down(sm) {
                 gap: calc($spacer * 2) calc($spacer * 7);
             }
         }
+
         .bd-content {
             margin: 0 auto;
             max-width: calc($spacer * 43.7);
         }
-        .title {
-            font-size: $h2-font-size;
-            font-weight: 400;
-            line-height: 3.25rem;
+
+        .title-block {
+            display: flex;
             margin: 0 auto;
-        }
-    }
+            gap: $spacer;
+            max-width: calc($spacer * 43.7);
+            align-items: center;
 
-    :deep(p) {
-        font-weight: 400;
-        line-height: 1.75rem;
-        font-size: $h6-font-size;
-    }
-
-    :deep(.bd-markdown > h2) {
-        margin-top: calc($spacer * 4.12);
-        border-top: 1px solid $black-6;
-        padding-top: calc($spacer * 3.125);
-        margin-bottom: 2rem;
-
-        a {
-            border-left: 5px solid $purple-36;
-            padding-left: calc($spacer * 0.6);
-            font-size: calc($font-size-base * 2.25);
-        }
-    }
-
-
-    :deep(p > a) {
-        text-decoration: underline;
-    }
-
-    :deep(h2 > a) {
-        font-weight: 600;
-        line-height: 2.375;
-        margin: 0;
-    }
-
-    :deep(h3 > a ) {
-        color: $white !important;
-        font-size: 1.5rem;
-        font-weight: 600;
-        line-height: 2.375;
-    }
-
-    :deep(h4 > a ) {
-        color: $white !important;
-        font-size: 1.5rem;
-        font-weight: 600;
-        line-height: 2.375;
-    }
-
-    .bd-main :deep(p > a), .bd-main :deep(ul a) {
-        color: $purple-36;
-    }
-
-    .container, :deep(h2 > a) {
-        color: $white !important;
-    }
-
-    :deep(.doc-alert) {
-        border: 1px solid #3A3C55;
-        background-color: #18131F;
-        color: #B9BEF8;
-        p {
-            font-size: $font-size-base;
-        }
-    }
-
-    :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
-        color: $white-3;
-        text-decoration: none !important;
-    }
-
-    :deep(.code-block), :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
-        border: $block-border;
-        background-color: $black-2 !important;
-    }
-
-    :deep(li > mark) {
-        background-color: $link-color;
-    }
-
-    :deep(.docs-prev-next a) {
-        span {
-            color: $link-color;
+            .title {
+                font-size: $h2-font-size;
+                font-weight: 400;
+                line-height: calc($spacer * 3.25);
+                margin: 0;
+            }
         }
 
-        .directory {
-            color: $white;
-        }
-    }
-
-    :deep(.btn) {
-        span {
-            color: $link-color;
+        :deep(p) {
+            font-weight: 400;
+            line-height: 1.75rem;
+            font-size: $h6-font-size;
         }
 
-        &:hover {
+        :deep(.bd-markdown > h2) {
+            margin-top: calc($spacer * 4.12);
+            border-top: 1px solid $black-6;
+            padding-top: calc($spacer * 3.125);
+            margin-bottom: 2rem;
 
+            a {
+                border-left: 5px solid $purple-36;
+                padding-left: calc($spacer * 0.6);
+                font-size: calc($font-size-base * 2.25);
+            }
+        }
+
+
+        :deep(p > a) {
+            text-decoration: underline;
+        }
+
+        :deep(h2 > a) {
+            font-weight: 600;
+            line-height: 2.375;
+            margin: 0;
+        }
+
+        :deep(h3 > a ) {
+            color: $white !important;
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 2.375;
+        }
+
+        :deep(h4 > a ) {
+            color: $white !important;
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 2.375;
+        }
+
+        .bd-main :deep(p > a), .bd-main :deep(ul a) {
+            color: $purple-36;
+        }
+
+        .container, :deep(h2 > a) {
+            color: $white !important;
+        }
+
+        :deep(.doc-alert) {
+            border: 1px solid #3A3C55;
+            background-color: #18131F;
+            color: #B9BEF8;
+
+            p {
+                font-size: $font-size-base;
+            }
+        }
+
+        :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
+            color: $white-3;
+            text-decoration: none !important;
+        }
+
+        :deep(.code-block), :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
+            border: $block-border;
+            background-color: $black-2 !important;
+        }
+
+        :deep(li > mark) {
+            background-color: $link-color;
+        }
+
+        :deep(.docs-prev-next a) {
             span {
+                color: $link-color;
+            }
+
+            .directory {
                 color: $white;
             }
         }
-    }
 
-    :deep(table) {
-        td, th {
-            background-color: $black-2;
-            border: $block-border;
-            color: $white;
-
-            a {
+        :deep(.btn) {
+            span {
                 color: $link-color;
             }
-        }
-    }
 
-    .docs :deep(img) {
-        width: 100%;
+            &:hover {
+
+                span {
+                    color: $white;
+                }
+            }
+        }
+
+        :deep(table) {
+            td, th {
+                background-color: $black-2;
+                border: $block-border;
+                color: $white;
+
+                a {
+                    color: $link-color;
+                }
+            }
+        }
+
+        .docs :deep(img) {
+            width: 100%;
+        }
+
+        .bd-markdown {
+            :deep(h2 > span.d-block) {
+                display: none !important;
+            }
+        }
     }
 </style>
