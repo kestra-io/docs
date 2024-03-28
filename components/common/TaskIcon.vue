@@ -1,5 +1,5 @@
 <template>
-    <div ref="root" class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" :title="cls">
+    <div ref="root" class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" :title="generateTagName()">
         <div class="icon" :style="styles" />
     </div>
 </template>
@@ -37,6 +37,12 @@
             }
         }
     });
+
+    const generateTagName = () => {
+      const splittedName = props.cls.split(".");
+
+      return splittedName[splittedName.length - 1];
+    };
 </script>
 
 <style lang="scss" scoped>
