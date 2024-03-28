@@ -9,7 +9,7 @@
                 <h1 data-aos="fade-left">Frequently Asked Questions</h1>
             </div>
         </div>
-        <div class="container mb-5">
+        <div class="container">
             <h2 data-aos="zoom-in" class="mt-5">General Questions</h2>
             <CustomDetails title="What is Kestra?">
                 <p>Kestra is an open-source orchestrator designed to bring Infrastructure as Code (IaC) best practices
@@ -174,9 +174,9 @@
                     join the community on <a target="_blank" href="https://kestra.io/slack">Slack</a> to discuss ideas
                     and collaborate with other developers.</p>
             </CustomDetails>
+            <Updateletter class="mt-5"/>
         </div>
     </div>
-    <Updateletter/>
 </template>
 
 <script setup>

@@ -150,20 +150,6 @@
                 }]
             })
     }
-
-    onMounted(() => {
-        const stickyContainer = document.querySelector('.container-stick');
-        if (stickyContainer && route.params.slug && route.params.slug.length) {
-          stickyContainer.addEventListener("scroll", (e) => {
-            if (stickyContainer.scrollTop > 0) {
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-              });
-            }
-          });
-        }
-    })
 </script>
 
 <style lang="scss" scoped>

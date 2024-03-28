@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container p-0">
         <!-- <div class="line"/> -->
         <Section :title="title || 'Get Kestra updates'">
             <div class="row">
@@ -24,30 +24,30 @@
     </div>
 </template>
 <script setup>
+    import Section from '../layout/Section.vue';
     import {useAsyncData} from "#imports";
+
+    const props = defineProps({
+      title: {
+        type: String,
+        default: undefined,
+      },
+      page: {
+        type: String,
+        default: undefined,
+      }
+    });
 
     const {data: blogs} = await useAsyncData(
         `Blog`,
         () => queryContent("/blogs/")
+            .where({ _path: { $ne : props.page._path } })
             .sort({ date: -1 })
             .without('unused-key')
             .limit(3)
             .find()
     );
 
-</script>
-<script>
-    import Section from '../layout/Section.vue';
-
-    export default {
-        components: {Section},
-        props: {
-            title: {
-                type: String,
-                default: undefined,
-            },
-        },
-    }
 </script>
 
 <style lang="scss" scoped>
