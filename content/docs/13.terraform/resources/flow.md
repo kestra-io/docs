@@ -18,7 +18,7 @@ resource "kestra_flow" "example" {
   flow_id   = "my-flow"
   content   = <<EOT
 inputs:
-  - name: my-value
+  - id: my-value
     type: STRING
 
 variables:
