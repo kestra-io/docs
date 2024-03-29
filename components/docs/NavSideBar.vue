@@ -100,8 +100,9 @@
         }
 
         @include media-breakpoint-up(lg) {
+            margin-top: 4rem;
             position: sticky;
-            top: 4rem;
+            top: 8rem;
             display: block !important;
             height: fit-content;
             max-height: subtract(100vh, 9rem);

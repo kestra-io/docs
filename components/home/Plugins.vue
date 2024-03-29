@@ -27,6 +27,7 @@
 
     .container-fluid {
         background: url("/landing/home/plugins/background.svg") no-repeat center;
+        overflow-x: hidden;
         color: var(--bs-white);
         padding: 0;
 

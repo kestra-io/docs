@@ -148,7 +148,7 @@
 
         @include media-breakpoint-up(lg) {
             position: sticky !important;
-            top: 4rem;
+            top: 9rem;
             right: 0;
             z-index: 2;
             height: fit-content;

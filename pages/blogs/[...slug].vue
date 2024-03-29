@@ -1,5 +1,5 @@
 <template>
-    <div :class="`container-fluid ${route.params.slug && route.params.slug.length ? 'container-stick' : ''}`">
+    <div class="container-fluid">
         <div class="container">
             <BlogsList v-if="slug === '/blogs/' || slug === '/blogs/community'" :blogs="page"
                        :external-news="externalNews"/>
@@ -150,36 +150,20 @@
                 }]
             })
     }
-
-    onMounted(() => {
-        const stickyContainer = document.querySelector('.container-stick');
-        if (stickyContainer && route.params.slug && route.params.slug.length) {
-          stickyContainer.addEventListener("scroll", (e) => {
-            if (stickyContainer.scrollTop > 0) {
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-              });
-            }
-          });
-        }
-    })
 </script>
 
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
     @import '../../assets/styles/docs.scss';
 
-    .container-stick {
+    :deep(main > div ) {
+        overflow-x: unset;
+    }
+
+    .container-fluid {
         @include media-breakpoint-up(lg) {
             margin: 0;
-            height: calc(100vh - 2rem);
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-
-        &::-webkit-scrollbar {
-            display: none !important;
+            overflow-x: unset;
         }
     }
 
