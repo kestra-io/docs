@@ -5657,7 +5657,6 @@ components:
               $ref: '#/components/schemas/AnnotatedType'
     Execution:
       required:
-      - attemptNumber
       - deleted
       - flowId
       - flowRevision
@@ -5665,7 +5664,6 @@ components:
       - inputs
       - labels
       - namespace
-      - originalCreatedDate
       - originalId
       - outputs
       - parentId
@@ -5675,9 +5673,6 @@ components:
       - variables
       type: object
       properties:
-        attemptNumber:
-          type: integer
-          format: int32
         id:
           type: string
         namespace:
@@ -5714,9 +5709,6 @@ components:
           $ref: '#/components/schemas/ExecutionTrigger'
         deleted:
           type: boolean
-        originalCreatedDate:
-          type: string
-          format: date-time
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -5933,8 +5925,6 @@ components:
             are similar to return values in programming languages.
           items:
             $ref: '#/components/schemas/Output'
-        retry:
-          $ref: '#/components/schemas/AbstractRetry'
     FlowController.TaskValidationType:
       type: string
       enum:
@@ -7021,7 +7011,6 @@ components:
       - CANCELLED
       - QUEUED
       - RETRYING
-      - RETRIED
     StatsController.ByFlowStatisticRequest:
       type: object
       properties:
