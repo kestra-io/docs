@@ -90,7 +90,7 @@
                             Solutions
                             <ChevronDown />
                         </a>
-                        <ul class="dropdown-menu solutions-menu py-lg-0 py-1">
+                        <ul class="dropdown-menu solutions-menu mb-lg-3 pb-1">
                             <div class="dropdown-column">
                                 <p class="column-caption">Features</p>
                                 <li>
