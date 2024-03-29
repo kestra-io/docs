@@ -1205,6 +1205,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BlueprintWithFlow'
+  /api/v1/cluster/services/active:
+    get:
+      tags:
+      - Services
+      summary: Get details about active services
+      operationId: active
+      responses:
+        "200":
+          description: active 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterController.ApiActiveServiceList'
+  /api/v1/cluster/services/active/{tenant}:
+    get:
+      tags:
+      - Services
+      summary: Get details about active services
+      operationId: active_1
+      responses:
+        "200":
+          description: active_1 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterController.ApiActiveServiceList'
   /api/v1/cluster/services/search:
     get:
       tags:
@@ -16296,6 +16322,30 @@ components:
             $ref: '#/components/schemas/Class_Object_'
         sealed:
           type: boolean
+    ClusterController.ApiActiveService:
+      required:
+      - total
+      - type
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/Service.ServiceType'
+        total:
+          type: integer
+          format: int64
+    ClusterController.ApiActiveServiceList:
+      required:
+      - services
+      - total
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int32
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClusterController.ApiActiveService'
     ClusterController.ApiServerInstance:
       required:
       - hostname
@@ -16822,7 +16872,6 @@ components:
               $ref: '#/components/schemas/AnnotatedType'
     Execution:
       required:
-      - attemptNumber
       - deleted
       - flowId
       - flowRevision
@@ -16830,7 +16879,6 @@ components:
       - inputs
       - labels
       - namespace
-      - originalCreatedDate
       - originalId
       - outputs
       - parentId
@@ -16840,9 +16888,6 @@ components:
       - variables
       type: object
       properties:
-        attemptNumber:
-          type: integer
-          format: int32
         id:
           type: string
         namespace:
@@ -16879,9 +16924,6 @@ components:
           $ref: '#/components/schemas/ExecutionTrigger'
         deleted:
           type: boolean
-        originalCreatedDate:
-          type: string
-          format: date-time
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -17098,8 +17140,6 @@ components:
             are similar to return values in programming languages.
           items:
             $ref: '#/components/schemas/Output'
-        retry:
-          $ref: '#/components/schemas/AbstractRetry'
     FlowController.TaskValidationType:
       type: string
       enum:
@@ -18636,7 +18676,6 @@ components:
       - CANCELLED
       - QUEUED
       - RETRYING
-      - RETRIED
     StatsController.ByFlowStatisticRequest:
       type: object
       properties:
