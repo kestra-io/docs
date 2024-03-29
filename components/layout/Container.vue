@@ -131,6 +131,8 @@
 
     .container-fluid {
         gap: calc($spacer * 4);
+        overflow-x: unset;
+
         .bd-title {
             margin-top: calc($spacer * 4);
             @include media-breakpoint-down(lg) {
