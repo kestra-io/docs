@@ -99,8 +99,8 @@ id: lock
 namespace: fr.leroymerlin.services.product.orchestrator
 -
 inputs:
-  - type: FILE
-    name: stock
+  - id: stock
+    type: FILE
 tasks:
   - id: 01_ingest_ods_stock
     type: com.leroymerlin.dataplatform.dcp.tasks.DataPlatformIngest
