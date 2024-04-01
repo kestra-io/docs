@@ -1,5 +1,6 @@
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 export default defineNuxtConfig({
+    target: 'server',
     modules: [
         '@nuxt/devtools',
         '@nuxt/content',
@@ -37,7 +38,10 @@ export default defineNuxtConfig({
             meta: [
                 {name: 'msapplication-TileColor', content: '#2c0059'},
                 {name: 'theme-color', content: '#2c0059'},
-                {property: 'og:image', content: '/og-image.png'}
+                {property: 'og:image', content: '/og-image.png'},
+                { hid: 'no-cache', 'http-equiv': 'Cache-Control', content: 'no-cache, no-store, must-revalidate' },
+                { hid: 'no-cache', 'http-equiv': 'Pragma', content: 'no-cache' },
+                { hid: 'no-cache', 'http-equiv': 'Expires', content: '0' }
             ],
             script: [
                 {src: 'https://js-eu1.hsforms.net/forms/embed/v2.js'}
@@ -81,6 +85,7 @@ export default defineNuxtConfig({
 
     router: {
         trailingSlash: false,
+        middleware: ['no-cache'],
         options: {
             strict: true
         }
@@ -148,7 +153,14 @@ export default defineNuxtConfig({
     },
 
     build: {
-        transpile: ['vue3-count-to']
+        transpile: ['vue3-count-to'],
+        extractCSS: true
+    },
+
+    optimization: {
+        splitChunks: {
+            maxSize: 300000
+        }
     },
 
     multiCache: {

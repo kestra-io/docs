@@ -5,45 +5,57 @@
                 <div class="companies-list-container">
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
-                            <img
+                            <NuxtImg
                                 data-aos="fade-up"
                                 :class="{'inverted': inverted}"
                                 :data-aos-delay="index*50"
                                 :src="'/landing/companies/' + img  + '.svg'"
                                 :alt="img"
+                                loading="lazy"
+                                format="webp"
+                                width="100%"
                             />
                         </template>
                     </div>
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
-                            <img
+                            <NuxtImg
                                 data-aos="fade-up"
                                 :class="{'inverted': inverted}"
                                 :data-aos-delay="index*50"
                                 :src="'/landing/companies/' + img  + '.svg'"
                                 :alt="img"
+                                loading="lazy"
+                                format="webp"
+                                width="100%"
                             />
                         </template>
                     </div>
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
-                            <img
+                            <NuxtImg
                                 data-aos="fade-up"
                                 :class="{'inverted': inverted}"
                                 :data-aos-delay="index*50"
                                 :src="'/landing/companies/' + img  + '.svg'"
                                 :alt="img"
+                                loading="lazy"
+                                format="webp"
+                                width="100%"
                             />
                         </template>
                     </div>
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
-                            <img
+                            <NuxtImg
                                 data-aos="fade-up"
                                 :class="{'inverted': inverted}"
                                 :data-aos-delay="index*50"
                                 :src="'/landing/companies/' + img  + '.svg'"
                                 :alt="img"
+                                loading="lazy"
+                                format="webp"
+                                width="100%"
                             />
                         </template>
                     </div>

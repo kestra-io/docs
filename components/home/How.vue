@@ -17,7 +17,7 @@
                 <div class="col-md-6 code-container">
                     <div class="code">
                         <div class="code-header">
-                            <img src="/landing/3dot-home.svg" alt="code">
+                            <NuxtImg width="100%" format="webp" loading="lazy" src="/landing/3dot-home.svg" alt="code"/>
                         </div>
                         <div class="code-content" ref="codeContainer">
                             <div class="copied-block">
@@ -27,7 +27,7 @@
                                 </div>
                             </div>
                             <button class="btn content-copy-icon p-0" ref="copyBtn" @click="copyCodeContext" data-toggle="tooltip"  data-placement="top" :title="copyCodeText">
-                                <img src="/landing/content_copy.svg" alt="content_copy">
+                                <NuxtImg width="100%" format="webp" loading="lazy" src="/landing/content_copy.svg" alt="content_copy"/>
                             </button>
                             <span>id:</span> api_python_sql
                             <br />
@@ -73,7 +73,7 @@
 
             <div class="item workflow-2 row mb-5">
                 <div class="col-md-6 order-1 order-md-0">
-                    <img class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
+                    <NuxtImg width="100%" format="webp" loading="lazy" class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-2">
@@ -93,13 +93,13 @@
                     <p>Configure your workflows to run on a schedule, in response to event-based triggers, via webhooks, or through APIs.</p>
                 </div>
                 <div class="col-md-6">
-                    <img class="img-fluid" src="/landing/how/how-3.svg" alt="How to schedule example" />
+                    <NuxtImg width="100%" format="webp" loading="lazy" class="img-fluid" src="/landing/how/how-3.svg" alt="How to schedule example" />
                 </div>
             </div>
 
             <div class="item workflow-4 row pb-5">
                 <div class="col-md-6 order-1 order-md-0">
-                    <img class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
+                    <NuxtImg width="100%" format="webp" loading="lazy" class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-4">
@@ -121,7 +121,7 @@
                     <p>Track the performance of your workflows, identify bottlenecks, and optimize them for speed and efficiency.</p>
                 </div>
                 <div class="col-md-6 row mb-5">
-                    <img class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
+                    <NuxtImg width="100%" format="webp" loading="lazy" class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
                 </div>
             </div>
             <div class="text-center footer position-relative">

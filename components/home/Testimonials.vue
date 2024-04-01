@@ -166,7 +166,7 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
     .container-fluid {
-        background: url("/demo/bg-mask.svg") no-repeat bottom;
+        background: url("/demo/bg-mask.webp") no-repeat bottom;
         padding-top: 8rem;
         @include media-breakpoint-down(lg) {
             padding-top: 4rem;

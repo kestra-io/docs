@@ -84,7 +84,7 @@
                     <p class="mb-0">
                         <NuxtLink href="/privacy-policy">Privacy Policy</NuxtLink>
                         /
-                        <NuxtLink href="/cookie-policy">Cookie Policy</NuxtLink>
+                        <NuxtLink href="/cookie-policy" aria-label="Cookie Policy">Cookie Policy</NuxtLink>
                     </p>
                 </div>
             </div>
