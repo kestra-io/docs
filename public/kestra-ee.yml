@@ -1684,6 +1684,14 @@ paths:
       - Executions
       summary: Delete a list of executions
       operationId: deleteByIds
+      parameters:
+      - name: includeNonTerminated
+        in: query
+        description: Specificies whether to delete non-terminated executions
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       requestBody:
         content:
           application/json:
@@ -1711,6 +1719,14 @@ paths:
       - Executions
       summary: Delete a list of executions
       operationId: deleteByIds_1
+      parameters:
+      - name: includeNonTerminated
+        in: query
+        description: Specificies whether to delete non-terminated executions
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       requestBody:
         content:
           application/json:
@@ -1812,6 +1828,13 @@ paths:
           nullable: true
           allOf:
           - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+      - name: includeNonTerminated
+        in: query
+        description: Specificies whether to delete non-terminated executions
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       responses:
         "200":
           description: deleteByQuery 200 response
@@ -1899,6 +1922,13 @@ paths:
           nullable: true
           allOf:
           - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+      - name: includeNonTerminated
+        in: query
+        description: Specificies whether to delete non-terminated executions
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       responses:
         "200":
           description: deleteByQuery_1 200 response
