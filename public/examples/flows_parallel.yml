@@ -14,38 +14,38 @@ tasks:
         type: io.kestra.plugin.scripts.shell.Commands
         runner: PROCESS
         commands:
-          - 'echo "running {{task.id}}"'
+          - 'echo "running {{ task.id }}"'
           - 'sleep 1'
       - id: t2
         type: io.kestra.plugin.scripts.shell.Commands
         runner: PROCESS
         commands:
-          - 'echo "running {{task.id}}"'
+          - 'echo "running {{ task.id }}"'
           - 'sleep 1'
       - id: t3
         type: io.kestra.plugin.scripts.shell.Commands
         runner: PROCESS
         commands:
-          - 'echo "running {{task.id}}"'
+          - 'echo "running {{ task.id }}"'
           - 'sleep 1'
       - id: t4
         type: io.kestra.plugin.scripts.shell.Commands
         runner: PROCESS
         commands:
-          - 'echo "running {{task.id}}"'
+          - 'echo "running {{ task.id }}"'
           - 'sleep 1'
       - id: t5
         type: io.kestra.plugin.scripts.shell.Commands
         runner: PROCESS
         commands:
-          - 'echo "running {{task.id}}"'
+          - 'echo "running {{ task.id }}"'
           - 'sleep 1'
       - id: t6
         type: io.kestra.plugin.scripts.shell.Commands
         runner: PROCESS
         commands:
-          - 'echo "running {{task.id}}"'
+          - 'echo "running {{ task.id }}"'
           - 'sleep 1'
   - id: last
     type: io.kestra.core.tasks.debugs.Return
-    format: "{{task.id}} > {{taskrun.startDate}}"
+    format: "{{ task.id }} > {{ taskrun.startDate }}"

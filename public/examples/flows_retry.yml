@@ -8,7 +8,7 @@ tasks:
   type: io.kestra.plugin.scripts.shell.Commands
   runner: PROCESS
   commands:
-  - 'if [ "{{taskrun.attemptsCount}}" -eq 4 ]; then exit 0; else exit 1; fi'
+  - 'if [ "{{ taskrun.attemptsCount }}" -eq 4 ]; then exit 0; else exit 1; fi'
   retry:
     type: constant
     interval: PT0.25S
@@ -19,4 +19,4 @@ tasks:
 errors:
   - id: never-happen
     type: io.kestra.core.tasks.debugs.Return
-    format: Never happened {{task.id}}
+    format: Never happened {{ task.id }}

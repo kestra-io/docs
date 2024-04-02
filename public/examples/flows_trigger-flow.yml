@@ -1,6 +1,6 @@
 id: trigger_flow
 namespace: dev
-description: Trigger a flow once another flow is finished successfully
+description: Trigger a flow once another flow is finished successfully.
 
 inputs:
   - id: from-parent
@@ -9,7 +9,7 @@ inputs:
 tasks:
   - id: print_input
     type: io.kestra.core.tasks.debugs.Return
-    format: "childs: {{inputs['from-parent']}}"
+    format: "childs: {{ inputs['from-parent'] }}"
 
 triggers:
   - id: listen-flow

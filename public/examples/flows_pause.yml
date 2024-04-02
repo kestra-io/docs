@@ -12,7 +12,7 @@ tasks:
         type: io.kestra.plugin.scripts.shell.Commands
         runner: PROCESS
         commands:
-          - echo "trigger {{task.id}} after manual restart"
+          - echo "trigger {{ task.id }} after manual restart"
 
   - id: last
     type: io.kestra.core.tasks.debugs.Return

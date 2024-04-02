@@ -8,16 +8,16 @@ description: |
 tasks:
   - id: first
     type: io.kestra.core.tasks.debugs.Return
-    format: first {{task.id}}
+    format: first {{ task.id }}
     logLevel: TRACE
 
   - id: skipped
     type: io.kestra.core.tasks.debugs.Return
     disabled: true
-    format: second {{task.type}}
+    format: second { task.type }}
     logLevel: WARN
 
   - id: last
     type: io.kestra.core.tasks.debugs.Return
-    format: the name of the flow is {{flow.id}}
+    format: the name of the flow is {{ flow.id }}
     logLevel: ERROR

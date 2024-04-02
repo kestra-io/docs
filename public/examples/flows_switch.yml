@@ -2,8 +2,8 @@ id: switch
 namespace: io.kestra.demo
 
 description: |
-  Depending on the value passed as the input, the will flow branch to different tasks.
-  If no matching value, the `defaults` task is used.
+  Depending on the value passed as the input, the flow will branch to different tasks.
+  If there is no matching value, the `defaults` task is used.
 
 inputs:
   - id: string
@@ -12,19 +12,19 @@ inputs:
 tasks:
   - id: parent-seq
     type: io.kestra.core.tasks.flows.Switch
-    value: "{{inputs.string}}"
+    value: "{{ inputs.string }}"
     cases:
       FIRST:
         - id: first
           type: io.kestra.core.tasks.debugs.Return
-          format: "{{task.id}} > {{taskrun.startDate}}"
+          format: "{{ task.id }} > {{ taskrun.startDate }}"
       SECOND:
         - id: second1
           type: io.kestra.core.tasks.debugs.Return
-          format: "{{task.id}} > {{taskrun.startDate}}"
+          format: "{{ task.id }} > {{ taskrun.startDate }}"
         - id: second2
           type: io.kestra.core.tasks.debugs.Return
-          format: "{{task.id}} > {{taskrun.startDate}}"
+          format: "{{ task.id }} > {{ taskrun.startDate }}"
       THIRD:
         - id: third1
           type: io.kestra.core.tasks.flows.Sequential
@@ -37,8 +37,8 @@ tasks:
           errors:
             - id: error1
               type: io.kestra.core.tasks.debugs.Return
-              format: "Error Trigger ! {{task.id}}"
+              format: "Error Trigger! {{ task.id }}"
     defaults:
       - id: default
         type: io.kestra.core.tasks.debugs.Return
-        format: "{{task.id}} > {{taskrun.startDate}}"
+        format: "{{ task.id }} > {{ taskrun.startDate }}"

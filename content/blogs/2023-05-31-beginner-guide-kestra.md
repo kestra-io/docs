@@ -49,7 +49,7 @@ You can also download [Docker Extension for VSC](https://marketplace.visualstudi
 
 ## Kestra Guided Tour ##
 
-Once you're in, the easiest thing to do is the follow the [Guided Tour](https://kestra.io/docs/flow-examples/example-guided-tour.html) automatically suggested by Kestra. Step by step, several code snippets will appear in a dialog box. The good news is: they're written in YAML, a human-readable file format.
+Once you're in, the easiest thing to do is the follow the [Guided Tour](https://kestra.io/docs/how-to-guides/example-guided-tour.html) automatically suggested by Kestra. Step by step, several code snippets will appear in a dialog box. The good news is: they're written in YAML, a human-readable file format.
 
 ![Guided tour](/blogs/2023-05-31-beginner-guide-kestra/guided-tour.png)
 

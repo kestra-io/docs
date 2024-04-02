@@ -8,20 +8,20 @@ tasks:
   type: io.kestra.plugin.scripts.shell.Commands
   runner: PROCESS
   commands:
-  - "exit 1"
+    - "exit 1"
 
 errors:
   - id: parallel
     type: io.kestra.core.tasks.flows.Parallel
     tasks:
-      - id: error1
+      - id: cleanup_task_1
         type: io.kestra.core.tasks.debugs.Return
-        format: "running error {{task.id}}"
+        format: "running cleanup {{ task.id }}"
 
-      - id: error2
+      - id: cleanup_task_2
         type: io.kestra.core.tasks.debugs.Return
-        format: "running error {{task.id}}"
+        format: "running cleanup {{ task.id }}"
 
-      - id: error3
+      - id: cleanup_task_3
         type: io.kestra.core.tasks.debugs.Return
-        format: "running error {{task.id}}"
+        format: "running cleanup {{ task.id }}"
