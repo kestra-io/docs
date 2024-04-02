@@ -123,12 +123,12 @@
 
             &:after {
                 top:  calc($spacer * 1.1);
-                right: calc($spacer * -3.2);
+                right: calc($spacer * -3.4);
             }
 
             &:before {
                 top:  calc($spacer * -1.9);
-                left: calc($spacer * -3.2);
+                left: calc($spacer * -3.4);
             }
 
             .companies-list {

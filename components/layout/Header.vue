@@ -43,9 +43,9 @@
                                     </NuxtLink>
                                 </li>
                             </div>
-                            <div class="d-flex flex-column gap-3 mb-3 pb-1">
+                            <div class="d-flex flex-column gap-3 py-lg-0 py-1">
                                 <li class="d-lg-none">
-                                    <NuxtLink class="dropdown-item">
+                                    <NuxtLink class="dropdown-item" href="/overview" @click="globalClick(true)">
                                         <ViewDashboardOutline />
                                         <p>
                                             <span>Platform Overview</span><br />
@@ -90,7 +90,7 @@
                             Solutions
                             <ChevronDown />
                         </a>
-                        <ul class="dropdown-menu solutions-menu">
+                        <ul class="dropdown-menu solutions-menu mb-lg-3 pb-1">
                             <div class="dropdown-column">
                                 <p class="column-caption">Features</p>
                                 <li>
@@ -225,7 +225,7 @@
                                     </NuxtLink>
                                 </li>
                             </div>
-                            <div class="d-flex flex-column aside-menu mb-3 pb-1">
+                            <div class="d-flex flex-column aside-menu py-lg-0 py-1">
                                 <li class="d-lg-none">
                                     <NuxtLink class="dropdown-item" href="/blueprints" @click="globalClick(true)">
                                         <Ballot />
@@ -492,13 +492,14 @@ export default {
                     this.isOpen = false;
                 }
                 const element = document.querySelector('.nav-link.show');
-                element.classList.remove('show');
-                element.nextElementSibling.classList.remove('show');
+                if (element) {
+                  element.classList.remove('show');
+                  element.nextElementSibling.classList.remove('show');
+                }
             } else {
                 this.collapse.toggle();
                 this.isOpen = !this.isOpen;
             }
-          this.isOpen = !this.isOpen;
         },
         logoClick() {
             if (this.$route.path === "/") {
@@ -544,6 +545,7 @@ export default {
         transition: all ease 0.2s;
         transform: translateY(0);
         max-height: 100%;
+        width: 100vw;
         background: transparent;
 
         @include media-breakpoint-down(lg) {
@@ -920,6 +922,9 @@ export default {
 
                         @include media-breakpoint-down(lg) {
                             margin-bottom: calc($spacer * 2);
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
                         }
 
                         .dropdown-item {

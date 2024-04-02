@@ -32,7 +32,7 @@ resource "kestra_flow" "example" {
   flow_id = "my-flow"
   content = <<EOT
 inputs:
-  - name: my-value
+  - id: my-value
     type: STRING
     required: true
 
@@ -51,7 +51,7 @@ Better will be to use a [file function](https://www.terraform.io/docs/language/f
 
 ```yaml
 inputs:
-  - name: my-value
+  - id: my-value
     type: STRING
     required: true
 

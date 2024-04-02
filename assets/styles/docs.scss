@@ -18,7 +18,6 @@ $bd-gutter-x: 3rem;
         grid-template-areas: "sidebar main";
         grid-template-columns: 1fr 5fr;
         gap: $grid-gutter-width;
-        height: 100vh;
 
         &::-webkit-scrollbar {
             display: none;
