@@ -1,6 +1,6 @@
 ---
 title: "Top 10 cool features I love about Kestra"
-description: "This blog describes some of the cool features I love about Kestra."
+description: "This blog post lists 10 Kestra features that have changed my work for the better."
 date: 2024-04-20T10:00:00
 category: Solutions
 author:
