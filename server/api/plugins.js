@@ -1,4 +1,4 @@
-import {parseMarkdown} from '@nuxtjs/mdc/runtime'
+import {parseMarkdown} from '@nuxtjs/mdc-edge/runtime'
 import url from "node:url";
 import {camelToKebabCase} from "~/utils/url.js";
 
