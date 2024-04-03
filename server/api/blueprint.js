@@ -1,10 +1,11 @@
-import {parseMarkdown} from '@nuxtjs/mdc/runtime'
+import useMarkdownParser from "~/utils/markdown-parser.js";
 import url from "node:url";
 
 export default defineEventHandler(async (event) => {
     let relatedBlueprints = []
     let flowAsMd = '';
     const config = useRuntimeConfig();
+    const parser = useMarkdownParser();
 
     const requestUrl = new url.URL("http://localhost" + event.node.req.url);
     const query = requestUrl.searchParams.get("query");
@@ -24,11 +25,11 @@ export default defineEventHandler(async (event) => {
         }
     }
     const flowMd = '```yaml\n' + pageData.flow + '\n```';
-    flowAsMd = await parseMarkdown(flowMd);
+    flowAsMd = await parser(flowMd);
 
     const graphData = await $fetch(`${config.public.apiUrl}/blueprints/${query}/graph`)
 
-    const descriptionAsMd = await parseMarkdown(pageData.description);
+    const descriptionAsMd = await parser(pageData.description);
 
     return {
         page: pageData,
