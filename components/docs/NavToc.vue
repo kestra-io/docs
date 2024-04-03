@@ -21,12 +21,17 @@
                     <slot name="header"></slot>
                     <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
-                        <ul class="ps-0 pt-2 pt-lg-0">
-                            <template v-for="item in generated" >
-                                <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" :class="{'mt-3': item.depth === 2}">
-                                    <a :href="'#' + item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
-                                </li>
-                            </template>
+                        <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in generated">
+                            <li v-if="tableOfContent.depth > 1 && tableOfContent.depth < 6" @click="closeToc" class="table-content">
+                                <a @click="menuNavigate" :name="tableOfContent.id" :class="'depth-' + tableOfContent.depth">{{ tableOfContent.text }}</a>
+                            </li>
+                            <ul class="ps-0 pt-2 pt-lg-0" v-if="tableOfContent.children && tableOfContent.children.length">
+                                <template v-for="item in tableOfContent.children" >
+                                    <li v-if="item.depth > 1 && item.depth < 6" @click="closeToc" :class="{'mt-3': item.depth === 2}">
+                                        <a @click="menuNavigate" :name="item.id" :class="'depth-' + item.depth">{{ item.text }}</a>
+                                    </li>
+                                </template>
+                            </ul>
                         </ul>
                     </nav>
                 </div>
@@ -84,22 +89,14 @@
         },
         computed: {
             generated() {
-                const recursive = (links) => {
-                    const result = [];
-
-                    for (const item of links) {
-                        result.push(item);
-
-                        if (item.children) {
-                            result.push(...recursive(item.children));
-                        }
-                    }
-
-                    return result;
-                }
-
-                return recursive(this.page.body.toc.links);
+                return this.page.body.toc.links
             }
+        },
+        mounted() {
+            window.addEventListener('scroll', this.handleScroll);
+        },
+        beforeDestroy() {
+            window.removeEventListener('scroll', this.handleScroll);
         },
         methods: {
             closeToc() {
@@ -111,6 +108,51 @@
               if (result) {
                 this.showThankYou = true;
               }
+            },
+            handleScroll() {
+              if (window.scrollY === 0) {
+                this.removeActiveTab();
+              } else {
+                this.generated.forEach((link, i) => {
+                  this.activateMenuItem(link, i, this.generated, this.removeActiveTab);
+                  if (link.children) {
+                    link.children.forEach((childrenLink, index) => {
+                      this.activateMenuItem(childrenLink, index, link.children, this.removeActiveTab);
+                    })
+                  }
+                });
+              }
+            },
+            removeActiveTab() {
+              document.querySelectorAll('.depth-2').forEach((item) => {
+                item.classList.remove('active');
+              })
+              document.querySelectorAll('.depth-3').forEach((item) => {
+                item.classList.remove('active');
+              })
+            },
+            menuNavigate(e) {
+              document.getElementById(e.target.name).scrollIntoView();
+              setTimeout(() => {
+                this.removeActiveTab();
+                e.target.classList.add('active');
+              }, 1000);
+            },
+            activateMenuItem(item, index, linkArray, removeActiveTab) {
+              if (item && item.id) {
+                const childrenLinkPosition = document.querySelector(`#${item.id}`)?.getBoundingClientRect();
+                const prevChildrenLinkPosition = index ? document.querySelector(`#${linkArray[index - 1].id}`).getBoundingClientRect().top : undefined;
+                if (childrenLinkPosition?.top <= 160  && childrenLinkPosition?.top > 0) {
+                  let activeTapItem = document.querySelector(`.right-menu a[name='${item.id}']`);
+                  if (!activeTapItem.classList.contains('active')) {
+                    if ((prevChildrenLinkPosition <= 0 || prevChildrenLinkPosition === undefined)) {
+                      removeActiveTab();
+                      activeTapItem.classList.add('active');
+                    }
+                  }
+                }
+              }
+              return
             }
         },
         watch: {
@@ -171,12 +213,23 @@
             ul {
                 margin-bottom: 0;
                 list-style: none;
+                &:has(a.active) {
+                    .table-content {
+                        a {
+                            color: $purple;
+                            font-weight: 500;
+                            border-left-color: $purple;
+                            border-left: 1px solid $purple !important;
+                        }
+                    }
+                }
                 li {
                     a {
                         border-left: .125rem solid var(--bs-gray-200);
                         padding-left: 0.75rem;
                         color: $white-1;
                         font-weight: 300;
+                        cursor: pointer;
 
                         @for $i from 2 through 6 {
                             &.depth-#{$i} {
@@ -189,6 +242,7 @@
                             color: $purple;
                             font-weight: 500;
                             border-left-color: $purple;
+                            border-left: 1px solid $purple-36 !important;
                         }
                     }
                 }

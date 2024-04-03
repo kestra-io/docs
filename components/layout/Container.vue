@@ -22,7 +22,7 @@
                     </h1>
                 </div>
 
-                <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4" />
+                <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4 right-menu" />
 
                 <div class="bd-content">
                     <ContentRendererMarkdown
