@@ -1,11 +1,12 @@
 ---
 title: "Why I Love Kestra: 10 Features That Have Won Me Over"
 description: "This blog post lists 10 Kestra features that have changed my work for the better."
-date: 2024-04-20T10:00:00
+date: 2024-04-04T10:00:00
 category: Solutions
 author:
   name: Shruti Mantri
   image: "smantri"
+image: /blogs/2024-04-04-top-10-cool-features-I-love-about-kestra.jpg
 ---
 
 Kestra is a remarkably powerful orchestration engine. It uses a rather simple, and easy to configure declarative approach for designing workflows. This simplicity facilitates seamless adaptation to Kestra, as one does not need to be a master of any particular programming language. Anyone with clear intentions about the desired workflow can search for the corresponding plugins, and put the workflow together using the powerful YAML notation.
@@ -20,13 +21,13 @@ Multiple orchestration tasks generate data, either by fetching it from external 
 
 Kestra provides an extremely smart and easy to use feature of previewing these data sets. You can go to the Outputs tab, and the data sets that are downloaded to internal storage are available with Download and Preview option. The [Preview option](https://kestra.io/docs/workflow-components/outputs#outputs-preview) is one of my favorites giving me quick access to look at the output file contents. This is how the Preview of the data set looks like:
 
-![output_preview](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/output_preview.png)
+![output_preview](/blogs/2024-04-04-top-10-cool-features-I-love-about-kestra/output_preview.png)
 
 ## 9. Editor
 
 Kestra comes with an in-built [VSCode editor](https://kestra.io/docs/getting-started/ui#editor). For any coding that you need to do, you need not go anywhere outside this tool. You have the well-equipped VS Code editor right there within Kestra itself. It also comes with the Kestra extension installed out of the box, and is flexible to also install any other extensions of your choice. This comes in very handy when you want to write scripts to be used within your orchestration flow.
 
-![vscode_editor](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/vscode_editor.png)
+![vscode_editor](/blogs/2024-04-04-top-10-cool-features-I-love-about-kestra/vscode_editor.png)
 
 ## 8. Autocompletion
 
@@ -34,7 +35,7 @@ When you become used to Kestra, you create the new flow and start typing out you
 
 Kestra has an elegant solution to this problem. After typing out `task: `, you can start typing out any part of the type content, like the plugin name, and you will get auto-suggestions containing what you have typed. This has saved multiple minutes of my time on a daily basis.
 
-![task_type_autosuggestion](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/task_type_autosuggestion.png)
+![task_type_autosuggestion](/blogs/2024-04-04-top-10-cool-features-I-love-about-kestra/task_type_autosuggestion.png)
 
 ## 7. Flow-based triggers
 
@@ -69,13 +70,13 @@ You can read more about it on this [page](https://kestra.io/plugins/core/trigger
 
 Kestra has done an amazing job of achieving this with the click of a button. If you trigger this from the UI, the "backfill execution" is placed where Kestra is already aware of the context of the backfill and requires as minimum information as the time for which backfill needs to be performed. With Kestra, no data engineer will ever panic about backfilling.
 
-![backfill](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/backfill.png)
+![backfill](/blogs/2024-04-04-top-10-cool-features-I-love-about-kestra/backfill.png)
 
 ## 5. Dashboards
 
 Kestra provides multiple dashboards, each at a different granularity, all out of the box. The global dashabord which is present as the home page of Kestra, gives an overall picture about how different workflows in Kestra are performing. The executions are available in the timeline format, highlighting any abnormal activities on the number of executions that took place. The failures are appropriately highlighted, making it difficult to miss out on them.
 
-![dashboard](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/dashboard.png)
+![dashboard](/blogs/2024-04-04-top-10-cool-features-I-love-about-kestra/dashboard.png)
 
 Every flow and namespace (EE-specific feature) are also provided with dashboards. If you find any abnormalities in the global dashboard, you can easily dive deeper by going to the dashboards of the corresponding flow or namespace.
 
@@ -85,7 +86,7 @@ Kestra flows can be configured to accept different types of [inputs](https://kes
 
 For many orchestration tools, it is a tedious task to provide file input, as the file either needs to be checked in to the code or uploaded to an apporopriate loaction in the file system. With Kestra's file input, you can literally choose file from any location of your machine, and provide it as an input. This makes it a piece of cake to try out the workflows with different test files. It could not be any simpler to make changes to the file and iterate the testing process.
 
-![input_file](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/input_file.png)
+![input_file](/blogs/2024-04-04-top-10-cool-features-I-love-about-kestra/input_file.png)
 
 ## 3. Secrets
 
@@ -95,7 +96,7 @@ Kestra just has the right solution in place. The [secrets](https://kestra.io/doc
 
 Here is an image of adding secret via the UI in EE edition:
 
-![secrets_ee](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/secrets_ee.png)
+![secrets_ee](/blogs/2024-04-04-top-10-cool-features-I-love-about-kestra/secrets_ee.png)
 
 ## 2. Task defaults
 
@@ -145,7 +146,7 @@ taskDefaults:
 
 During the pipeline development phase, you get multiple intermediate data sets that you need to further cleanse or transform in order to achieve the desired results. It is pretty overwhelming to write the next data transformation step as part of the flow and run the complete flow in order to test out the transformation. This is where Kestra has an advanced tooling that helps you perform the data transformation on the existing outputs. It evaluates the transform expression right on the spot and provides you with a preview of the transformed results.
 
-![render_expression](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/render_expression.png)
+![render_expression](/blogs/2024-04-04-top-10-cool-features-I-love-about-kestra/render_expression.png)
 
 With all these cool features, it is no wonder that Kestra is the new future of the orchestration industry. I would definitely recommend this tool, and would encourage you to make your hands dirty trying out this tool and its awesome features.
 
