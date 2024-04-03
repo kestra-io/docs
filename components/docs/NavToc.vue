@@ -22,7 +22,7 @@
                     <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
                         <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in generated">
-                            <li v-if="tableOfContent.depth > 1 && tableOfContent.depth < 6" @click="closeToc" class="table-content">
+                            <li v-if="tableOfContent.depth > 1 && tableOfContent.depth < 6 && tableOfContent.text" @click="closeToc" class="table-content">
                                 <a @click="menuNavigate" :name="tableOfContent.id" :class="'depth-' + tableOfContent.depth">{{ tableOfContent.text }}</a>
                             </li>
                             <ul class="ps-0 pt-2 pt-lg-0" v-if="tableOfContent.children && tableOfContent.children.length">
@@ -225,10 +225,10 @@
                 }
                 li {
                     a {
-                        border-left: .125rem solid var(--bs-gray-200);
+                        border-left: 1px solid transparent;
                         padding-left: 0.75rem;
                         color: $white-1;
-                        font-weight: 300;
+                        font-weight: 500;
                         cursor: pointer;
 
                         @for $i from 2 through 6 {
@@ -240,8 +240,6 @@
                         &:hover,
                         &.active {
                             color: $purple;
-                            font-weight: 500;
-                            border-left-color: $purple;
                             border-left: 1px solid $purple-36 !important;
                         }
                     }
@@ -254,6 +252,7 @@
                 color: inherit;
                 text-decoration: none;
                 color: var(--bs-gray-700);
+                border-left: 1px solid transparent;
 
                 code {
                     font: inherit;
@@ -325,8 +324,7 @@
         ul, :deep(ul) {
             li {
                 a {
-                    border-left: 0 !important;
-
+                    font-weight: 500;
                     &:hover {
                         color: $purple-36 !important;
                         border-left: 1px solid $purple-36 !important;
