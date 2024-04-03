@@ -16908,6 +16908,7 @@ components:
       - id
       - inputs
       - labels
+      - metadata
       - namespace
       - originalId
       - outputs
@@ -16954,6 +16955,8 @@ components:
           $ref: '#/components/schemas/ExecutionTrigger'
         deleted:
           type: boolean
+        metadata:
+          $ref: '#/components/schemas/ExecutionMetadata'
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -16987,6 +16990,18 @@ components:
           type: string
         state:
           $ref: '#/components/schemas/State.Type'
+    ExecutionMetadata:
+      required:
+      - attemptNumber
+      - originalCreatedDate
+      type: object
+      properties:
+        attemptNumber:
+          type: integer
+          format: int32
+        originalCreatedDate:
+          type: string
+          format: date-time
     ExecutionRepositoryInterface.ChildFilter:
       type: string
       enum:
@@ -17170,6 +17185,8 @@ components:
             are similar to return values in programming languages.
           items:
             $ref: '#/components/schemas/Output'
+        retry:
+          $ref: '#/components/schemas/AbstractRetry'
     FlowController.TaskValidationType:
       type: string
       enum:
@@ -18706,6 +18723,7 @@ components:
       - CANCELLED
       - QUEUED
       - RETRYING
+      - RETRIED
     StatsController.ByFlowStatisticRequest:
       type: object
       properties:
