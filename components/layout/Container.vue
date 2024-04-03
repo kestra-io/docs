@@ -5,7 +5,23 @@
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" />
-                    <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title "></h1>
+                    <div class="d-flex align-items-center">
+                        <NuxtImg
+                            v-if="page.icon"
+                            :src="page.icon"
+                            :alt="page.title"
+                            width="40px"
+                            height="40px"
+                            loading="lazy"
+                            format="webp"
+                            quality="80"
+                            densities="x1 x2"
+                            class="me-3"
+                        />
+                        <div>
+                            <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title"></h1>
+                        </div>
+                    </div>
                 </div>
 
                 <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4" />
