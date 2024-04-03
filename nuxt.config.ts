@@ -125,7 +125,6 @@ export default defineNuxtConfig({
         }
     },
 
-    // if using nuxt generate
     nitro: {
         prerender: {
             routes: ['/rss.xml'],
