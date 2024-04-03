@@ -1,5 +1,5 @@
 ---
-title: "Top 10 cool features I love about Kestra"
+title: "Why I Love Kestra: 10 Features That Have Won Me Over"
 description: "This blog post lists 10 Kestra features that have changed my work for the better."
 date: 2024-04-20T10:00:00
 category: Solutions
@@ -12,7 +12,7 @@ Kestra is a remarkably powerful orchestration engine. It uses a rather simple, a
 
 Kestra comes with a rich set of plugins. It has plugins for every popular system out in the market. Not just that, every plugin is also equipped with various actions, called as tasks, that it can perform. For example, if we talk about file systems like S3, Kestra not only provides tasks for uploading and downloading objects from S3, but also provides tasks that take care of smaller nitty-gritties like creating and deleting bucket, and listing the contents of bucket. This makes Kestra more powerful and dependable for all our needs.
 
-While Kestra provides all the features that any orchestration tool in the market has like scheduling jobs/flows, showing the workflow execution in Gantt and graph formats, it has much more to offer. Kestra strikes a perfect balance between the tooling functionalities and the operational reality. Kestra has many cool features that are unique and aligns with the operational needs of any data engineer. Here are the top 10 cool features that are my personal favourite, and makes me fall in love with the tool:
+While Kestra provides all the features that any orchestration tool in the market has, like scheduling jobs/flows and showing workflow execution in Gantt and graph formats, it has much more to offer. Kestra strikes a perfect balance between the tooling functionalities and the operational reality. Kestra has many cool features that are unique and align with the operational needs of any data engineer. Here are the top 10 features that are my personal favorite and make me fall in love with the tool:
 
 ## 10. Output Preview
 
@@ -28,9 +28,11 @@ Kestra comes with an in-built [VSCode editor](https://kestra.io/docs/getting-sta
 
 ![vscode_editor](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/vscode_editor.png)
 
-## 8. Auto-suggestion for task type
+## 8. Autocompletion
 
-When you become a bit used-to to Kestra, you create the new flow, and start typing out your tasks. While you know that you want to write the task pertaining to certain third party plugin, it can become difficult to memorize the actual task type. But going to the plugin documentation every time just to get the task type is pretty time consuming and exhausting. Kestra has an ultimate solution to this problem. After typing out `task: `, you can start typing out any part of the type content like the plugin name, and you would get auto-suggestions containing what you have typed. This has saved multiple minutes of my time on a daily basis.
+When you become used to Kestra, you create the new flow and start typing out your tasks. While you know that you want to write the task pertaining to certain third-party plugins, it can become difficult to memorize the actual task type. But going to the plugin documentation every time just to get the task type is pretty time-consuming and exhausting. 
+
+Kestra has an elegant solution to this problem. After typing out `task: `, you can start typing out any part of the type content, like the plugin name, and you will get auto-suggestions containing what you have typed. This has saved multiple minutes of my time on a daily basis.
 
 ![task_type_autosuggestion](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/task_type_autosuggestion.png)
 
@@ -63,9 +65,9 @@ You can read more about it on this [page](https://kestra.io/plugins/core/trigger
 
 ## 6. Backfill
 
-[Backfill](https://kestra.io/docs/concepts/backfill) is one of the dreadful words in the orchestration world. While being one of the necessary features, it is one of the difficult task to achieve. Many tools are not able to abstract this underlying complexity, and make it a tedious task for the data engineer to trigger a backfill. Data Engineer is confused with the number of parameters they need to fill in, and get them right, for achieving the desired results from a backfill.
+[Backfill](https://kestra.io/docs/concepts/backfill) is one of the dreadful words in the orchestration world. While it is one of the necessary features, it is also one of the difficult tasks to achieve. Many tools are not able to abstract this underlying complexity and make it tedious for the data engineer to trigger a backfill. Data Engineers are confused by the number of parameters they need to fill in and get them right to achieve the desired results from a backfill.
 
-Kestra has done an amazing task at achieving this with the click of a button. If you are triggering this from the UI, the "backfill execution" is placed at the location where Kestra is already aware about the context of the backfill, and requires as minimum information as the time for which backfill needs to be performed. With Kestra, no data engineer will ever panic from backfilling.
+Kestra has done an amazing job of achieving this with the click of a button. If you trigger this from the UI, the "backfill execution" is placed where Kestra is already aware of the context of the backfill and requires as minimum information as the time for which backfill needs to be performed. With Kestra, no data engineer will ever panic about backfilling.
 
 ![backfill](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/backfill.png)
 
@@ -75,7 +77,7 @@ Kestra provides multiple dashboards, each at a different granularity, all out of
 
 ![dashboard](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/dashboard.png)
 
-The dashboards are also provided with every flow and every namespace(EE specific feature). If you figure out any abnormalities in the global dashboard, you can easily zero in on any flow or namespace, and dive deeper by going to the dashboards of the corresponding flow or namespace.
+Every flow and namespace (EE-specific feature) are also provided with dashboards. If you find any abnormalities in the global dashboard, you can easily dive deeper by going to the dashboards of the corresponding flow or namespace.
 
 ## 4. Inputs
 
@@ -97,9 +99,11 @@ Here is an image of adding secret via the UI in EE edition:
 
 ## 2. Task defaults
 
-This is yet another powerful feature from the developer productivity perspective. Generally, you develop a pipeline in correspondance to some technology, and it is extremely likely that you use multiple tasks that corresponds to the same technology. For example, in a flow that queries Redshift, it is very likely that you connect to Redshift for creating the table in one task, and then to insert data into it in another task, and then query it for some purpose. In this case, you would just end up duplicating the Redshift connection information in all these tasks. This hampers the developer productivity, and also leads to config duplication.
+This is yet another powerful feature from the developer productivity perspective. Generally, you develop a pipeline related to some technology, and it is extremely likely that you use multiple tasks that correspond to the same technology. For example, in a flow that queries Redshift, it is very likely that you connect to Redshift to create the table in one task and then insert data into it in another task, and then query it for some purpose. In this case, you would just end up duplicating the Redshift connection information in all these tasks. This hampers the developer's productivity and leads to configuration duplication.
 
-In order to avoid this duplication, we have Kestra [task defaults](https://kestra.io/docs/workflow-components/task-defaults) to the rescue. Mention the task defaults once in the flow, and it gets referenced in all the tasks of the corresponding type.
+In order to avoid this duplication, Kestra provides [task defaults](https://kestra.io/docs/workflow-components/task-defaults). Mention the task defaults once in the flow, and it gets referenced in all the tasks of the corresponding type.
+
+You can even set the task defaults globally or on a namespace level to ensure that all flows using, e.g., the AWS plugin leverage the same credentials.
 
 ```yaml
 id: redshift_data_pipeline
@@ -139,7 +143,7 @@ taskDefaults:
 
 ## 1. Render Expression
 
-During the pipeline development phase, you get multiple intermediate data sets which you need to further cleanse or transform in order to achieve the desired results. It is pretty overwhelming to write the next data transformation step as part of the flow, and run the complete flow in order to test out the transformation. This is where Kestra has an advanced tooling which helps you perform the data transformation on the existing outputs. It evaluates the transform expression right on the spot, and provides you the preview of the transformed results.
+During the pipeline development phase, you get multiple intermediate data sets that you need to further cleanse or transform in order to achieve the desired results. It is pretty overwhelming to write the next data transformation step as part of the flow and run the complete flow in order to test out the transformation. This is where Kestra has an advanced tooling that helps you perform the data transformation on the existing outputs. It evaluates the transform expression right on the spot and provides you with a preview of the transformed results.
 
 ![render_expression](/blogs/2024-04-20-top-10-cool-features-I-love-about-kestra/render_expression.png)
 
