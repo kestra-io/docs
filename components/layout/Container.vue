@@ -5,7 +5,7 @@
             <ContentRenderer :value="page">
                 <div class="bd-title">
                     <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" />
-                    <div class="d-flex align-items-center">
+                    <h1 v-if="page && page.title" class="py-0 title">
                         <NuxtImg
                             v-if="page.icon"
                             :src="page.icon"
@@ -18,10 +18,8 @@
                             densities="x1 x2"
                             class="me-3"
                         />
-                        <div>
-                            <h1 v-if="page && page.title" v-html="transformTitle(page.title)" class="py-0 title"></h1>
-                        </div>
-                    </div>
+                        <span v-html="transformTitle(page.title)"></span>
+                    </h1>
                 </div>
 
                 <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4" />
