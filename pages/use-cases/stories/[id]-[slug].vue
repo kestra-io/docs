@@ -62,7 +62,7 @@
     </div>
 </template>
 <script setup>
-    import {parseMarkdown} from '@nuxtjs/mdc/runtime'
+    import {parseMarkdown} from '@nuxtjs/mdc-edge/runtime'
     const {$bootstrap} = useNuxtApp()
     const route = useRoute()
     const config = useRuntimeConfig();
