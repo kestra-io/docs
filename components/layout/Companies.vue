@@ -80,6 +80,9 @@
                     "clever-cloud",
                     "quadis",
                     "huawei",
+                    "ca",
+                    "accredible",
+                    "merkle"
                 ]
                     .sort(() => .5 - Math.random())
             },

@@ -86,6 +86,12 @@
                                     <li data-aos="fade-left" data-aos-delay="400"><span>High Availability</span></li>
                                     <li data-aos="fade-left" data-aos-delay="400"><span>Fault Tolerant</span></li>
                                 </ul>
+                                <ul>
+                                    <p class="category-title">Services</p>
+                                    <li data-aos="fade-left" data-aos-delay="300"><span>Customer Success Program</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>Support & Enterprise SLA</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>Training & Roadmap</span></li>
+                                </ul>
                             </ul>
                         </div>
                     </div>

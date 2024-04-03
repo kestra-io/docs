@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="container text-center">
-            <p data-aos="fade-left">About kestra</p>
+            <p data-aos="fade-left">About Kestra</p>
             <h2 data-aos="fade-right">Building the <span>Future</span> of Orchestration and Automation</h2>
         </div>
     </div>

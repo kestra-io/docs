@@ -40,3 +40,69 @@ You can then select the start and end date for the backfill. Additionally, you c
 You can pause and resume the backfill process at any time, and by clicking on the `Details` button, you can see more details about that backfill process:
 
 ![backfill2](/docs/workflow-components/backfill2.png)
+
+## Trigger Backfill via an API call
+
+### Using cURL
+
+You can invoke the backfill exections using the cURL call as follows:
+
+```sh
+curl -XPUT http://localhost:8080/api/v1/triggers -H 'Content-Type: application/json' -d '{
+  "backfill": {
+    "start": "2024-03-28T06:30:00.000Z",
+    "end": null,
+    "inputs": null,
+    "labels": [
+      {
+        "key": "reason",
+        "value": "outage"
+      }
+    ]
+  },
+  "flowId": "scheduled_flow",
+  "namespace": "dev",
+  "triggerId": "schedule"
+}'
+```
+
+In the `backfill` attribute, you need to provide the start time for the backfill. The end time can be optinally provided. You can provide inputs to the flow, if any. You can attach labels to the backfill executions by providing key-value pairs in the `labels` section. Other attributes to this PUT call are flowId, namespace and triggerId corresponding to the flow that is to backfilled.
+
+### Using Python requests
+
+You can invoke the backfill exections using the Python requests as follows:
+
+```python
+import requests
+import json
+
+url = 'http://localhost:8080/api/v1/triggers'
+
+headers = {
+    'Content-Type': 'application/json'
+}
+
+data = {
+  "backfill": {
+    "start": "2024-03-28T06:30:00.000Z",
+    "end": None,
+    "inputs": None,
+    "labels": [
+      {
+        "key": "reason",
+        "value": "outage"
+      }
+    ]
+  },
+  "flowId": "scheduled_flow",
+  "namespace": "dev",
+  "triggerId": "schedule"
+}
+
+response = requests.put(url, headers=headers, data=json.dumps(data))
+
+print(response.status_code)
+print(response.text)
+```
+
+With this code, you will be invoking the backfill for `scheduled_flow` flow under `dev` namespace based on `schedule` trigger ID within the flow. The number of backfills that will be executed will depend on the schedule present in the `schedule` trigger, and the `start` and `end` times mentioned in the backfill. When the `end` time is null, as in this case, the `end` time would be considered as the present time.

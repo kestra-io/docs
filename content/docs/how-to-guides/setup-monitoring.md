@@ -55,7 +55,7 @@ Let us now move on to setting up Grafana. You start by installing Grafana using 
  % docker run -d -p 3000:3000 --name=grafana grafana/grafana-enterprise
 ```
 
-You can open the Grafana server at `http://localhost:3000`. The default credentials are `admin` as both username and passowrd. Once into Grafana, click on the hamburger menu on the top left and go to Connections -> Data Sources.
+You can open the Grafana server at `http://localhost:3000`. The default credentials are `admin` as both username and passowrd. Once logged into Grafana, click on the hamburger menu on the top left and go to Connections -> Data Sources.
 
 ![grafana_data_sources](/docs/how-to-guides/setup-monitoring/grafana_data_sources.png)
 
