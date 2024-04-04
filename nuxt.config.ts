@@ -43,10 +43,7 @@ export default defineNuxtConfig({
                 { hid: 'no-cache', 'http-equiv': 'Cache-Control', content: 'no-cache, no-store, must-revalidate' },
                 { hid: 'no-cache', 'http-equiv': 'Pragma', content: 'no-cache' },
                 { hid: 'no-cache', 'http-equiv': 'Expires', content: '0' }
-            ],
-            script: [
-                {src: 'https://js-eu1.hsforms.net/forms/embed/v2.js'}
-            ],
+            ]
         }
     },
 

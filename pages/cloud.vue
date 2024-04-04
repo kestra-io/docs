@@ -11,4 +11,12 @@
     </div>
 </template>
 
+<script setup>
+    useHead({
+        script: [
+          { src: 'https://js-eu1.hsforms.net/forms/embed/v2.js' },
+        ],
+    })
+</script>
+
 
