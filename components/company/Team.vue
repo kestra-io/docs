@@ -153,7 +153,17 @@
                         <a href="https://twitter.com/martin_roset" target="_blank" class="me-2"><twitter /></a>
                     </span>
                 </div>
-
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/wrussel.png" alt="Will Russell"/>
+                    <div class="w-100">
+                        <div class="team-name">Will Russell</div>
+                        <div class="team-title font-small">Developer Advocate</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/wrussell1999/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://twitter.com/wrussell1999" target="_blank" class="me-2"><twitter /></a>
+                    </span>
+                </div>
             </div>
         </Section>
     </div>
