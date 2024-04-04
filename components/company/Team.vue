@@ -154,7 +154,7 @@
                     </span>
                 </div>
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/wrussel.png" alt="Will Russell"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/wrussell.png" alt="Will Russell"/>
                     <div class="w-100">
                         <div class="team-name">Will Russell</div>
                         <div class="team-title font-small">Developer Advocate</div>
