@@ -66,7 +66,6 @@
             companies() {
                 return [
                     "acxiom",
-                    "fortinet",
                     "bouygues-immobilier",
                     "leroymerlin",
                     "experian",
