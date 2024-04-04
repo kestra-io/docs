@@ -5,17 +5,28 @@
             <Meta name="description"
                   content="Use declarative language to build simpler, faster, scalable and flexible data pipelines"/>
         </Head>
-
         <HomeHeader/>
-        <HomeFeatures/>
-        <HomeUI/>
-        <HomeHow/>
-        <HomePlugins/>
-        <HomeCompanyStories />
-        <HomeTestimonials/>
-        <HomeOpenSource/>
-        <LayoutBlogs title="Blog"/>
-        <LayoutNewsletter/>
+        <NuxtLazyHydrate when-visible>
+            <HomeFeatures/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <HomeUI/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <HomeHow/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <HomeCompanyStories />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <HomeTestimonials/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LayoutBlogs title="Blog"/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LayoutNewsletter/>
+        </NuxtLazyHydrate>
     </div>
 </template>
 

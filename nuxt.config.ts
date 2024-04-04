@@ -8,7 +8,8 @@ export default defineNuxtConfig({
         '@nuxtjs/sitemap',
         'nuxt-gtag',
         'nuxt-multi-cache',
-        'vue3-carousel-nuxt'
+        'vue3-carousel-nuxt',
+        "nuxt-lazy-hydrate"
     ],
     sitemap: {
         sitemaps: {
