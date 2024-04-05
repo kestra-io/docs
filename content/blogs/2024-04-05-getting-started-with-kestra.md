@@ -1,6 +1,6 @@
 ---
 title: "Getting Started with Kestra"
-description: "Automate and monitor Python Scripts in 10 minutes with Kestra"
+description: "If you're new to Kestra, this post will introduce you step by step to building your first workflows with Python and configuring notifications"
 date: 2024-04-05T10:00:00
 category: Solutions
 author:
