@@ -116,7 +116,7 @@ On the Logs page, we can see the output from the Python execution, including wit
 
 ## Using Outputs
 
-Great, we can see that our Python script is correctly fetching the number of stars on the GitHub repository and outputting them to the console. However, we want to send the `gh_stars` variable back to our Kestra Flow so we can send a notification with this variable. We can adjust our Python task to generate an **output** which we can pass downstream to the next task.
+Great, we can see that our Python script is correctly fetching the number of stars on the GitHub repository and outputting them to the console without having to make any additional changes to work with Kestra. However, we want to send the `gh_stars` variable back to our Kestra Flow so we can send a notification with this variable. We can adjust our Python task to generate an **output** which we can pass downstream to the next task.
 
 To do this, we’ll need to tweak our Python script to use the Kestra library to send the `gh_stars` variable to our Flow. Firstly, we need to add `kestra` to the requirements.txt so we can install the library when our flow executes. Now we can import it at the top using `from kestra import Kestra` . All that’s left is to use the class instead of the print statement to assign the `gh_stars` variable to an `gh_stars` key in a dictionary which we’ll be able to access inside of Kestra.
 
