@@ -11,11 +11,11 @@ image: /blogs/2024-04-05-getting-started-with-kestra.png
 
 Kestra is an event driven data orchestration platform that’s highly flexible and easy to use. This guide is going to go through the basics and get you started building your own pipeline!
 
-Originating as a platform for data orchestration, Kestra finds itself well-equipped to manage all types of pipelines with its highly flexible interface and a huge range of plugins. Through this blog post, I’m going to show you how to get setup with Kestra and set up a simple workflow to run a Python script every hour and send the result as a Discord notification.
+Originating as a platform for data orchestration, Kestra finds itself well-equipped to manage all types of pipelines with its highly flexible interface and a huge range of plugins. Through this blog post, I’m going to show you how to get set up with Kestra and set up a simple workflow to run a Python script every hour and send the result as a Discord notification.
 
 ## Installation
 
-Kestra is open source meaning anyone can run it on their machine for free. There is a cloud version coming soon for those who want to start making flows straight away, however for now we'll set it up locally. To get it setup, you’ll need to make sure you have Docker installed on your machine and run the following command to start up your instance!
+Kestra is open source meaning anyone can run it on their machine for free. To get it set up, you’ll need to make sure you have Docker installed on your machine and run the following command to start up your instance!
 
 ```bash
 docker run --pull=always --rm -it -p 8080:8080 --user=root \
@@ -27,7 +27,7 @@ Once you’ve run this command, head over to your browser and open [https://loca
 
 ## Properties
 
-Before we start making our workflows, it’s worth understand a few fundamental properties that we’ll use to build everything!
+Before we start making our workflows, it’s worth learning a few fundamental properties that we’ll use to build everything!
 
 Workflows are referenced as Flows and they’re declared using YAML making it very readable as well as works with any language! Within each flow, there are 3 required properties you’ll need:
 
@@ -52,13 +52,13 @@ Everything builds off of these 3 properties but there’s a few more optional pr
 - **Outputs:** Tasks will often generate outputs that you’ll want to pass on to a later task. Outputs let you connect both variables as well as files to later tasks. An output of a variable could look like this: `"{{ outputs.script.vars.output }}"`
 - **Triggers:** Instead of manually executing your flow, you can setup triggers to execute it based on a set of conditions such as time schedule or a webhook.
 
-The last thing to mention is Plugins! To help you build powerful flows, you can utilise Plugins for tools and platforms you already use to help speed things up! Every plugin is different but we'll cover a few examples later in the blog.
+The last thing to mention is Plugins. To help you build powerful flows, you can utilise Plugins for tools and platforms you already use to help speed things up. Every plugin is different but we'll cover a few examples later in the blog.
 
 While that might be a lot of properties to get your head around, the Kestra platforms interactive topology will help us configure these correctly!
 
 ## Building our First Flow
 
-For our first flow, we're going to setup a simple automation that runs a Python script once every hour and sends its output to Discord as a notification! Let's start with the Python part! Firstly, we need a Python file for Kestra to execute! We’ll use something really simple that generates an output from an API request. 
+For our first flow, we're going to set up a simple automation that runs a Python script once every hour and sends its output to Discord as a notification. Let's start with the Python part. Firstly, we need a Python file for Kestra to execute! We’ll use something really simple that generates an output from an API request. 
 
 ```python
 import requests
@@ -68,7 +68,7 @@ output = r.json()['stargazers_count']
 print(output)
 ```
 
-The code above makes a GET request to the GitHub API asking for information on the Kestra repository. It then prints out the number of stars the repository currently has. If you haven't already, you should [give us a star](https://github.com/kestra-io/kestra)! Now we have some code, next step is to start building the flow to automate this script!
+The code above makes a GET request to the GitHub API asking for information on the Kestra repository. It then prints out the number of stars the repository currently has. If you haven't already, you should [give us a star](https://github.com/kestra-io/kestra)! Now we have some code, next step is to start building the flow to automate this script.
 
 The first time you launch Kestra in your browser, it will ask you if you want to make your first flow. When we press that, we’ll see a basic example containing the 3 fundamental properties we discussed earlier:
 
@@ -85,7 +85,7 @@ We can use this as a starting point, replacing the `Log` task type with a Python
 
 ![python_search](/blogs/2024-04-05-getting-started-with-kestra/python_search.png)
 
-Now you’re probably wondering, how do I get my Python file into Kestra? We can use the Editor in the left side menu to create this file on the platform and save it in a new folder called `scripts` as `api_example.py`. On top of this, we can add the property `namespacesFiles` in our flow and set that as enabled to allow our flow to see other files!
+Now you’re probably wondering, how do I get my Python file into Kestra? We can use the Editor in the left side menu to create this file on the platform and save it in a new folder called `scripts` as `api_example.py`. On top of this, we can add the property `namespacesFiles` in our flow and set that as enabled to allow our flow to see other files.
 
 ![editor](/blogs/2024-04-05-getting-started-with-kestra/editor.png)
 
@@ -97,26 +97,26 @@ Now let’s test this by saving our flow and executing it! Our flow should look 
 id: api_example
 namespace: example
 tasks:
-	- id: python_script
-	    type: io.kestra.plugin.scripts.python.Commands
-	    namespaceFiles:
-	      enabled: true
-	    runner: PROCESS
-	    beforeCommands:
-	      - python3 -m venv .venv
-	      - . .venv/bin/activate
-	      - pip install -r scripts/requirements.txt
-	    commands:
-	      - python scripts/api_example.py
+  - id: python_script
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    runner: PROCESS
+    beforeCommands:
+      - python3 -m venv .venv
+      - . .venv/bin/activate
+      - pip install -r scripts/requirements.txt
+    commands:
+      - python scripts/api_example.py
 ```
 
-On the Logs page, we can see the output from the Python execution, including with the desired output at the end! It setups the virtual environment, installs the dependencies inside of `requirements.txt` and then executes the Python script.
+On the Logs page, we can see the output from the Python execution, including with the desired output at the end. It set ups the virtual environment, installs the dependencies inside of `requirements.txt` and then executes the Python script.
 
 ![python_logs](/blogs/2024-04-05-getting-started-with-kestra/python_logs.png)
 
 ## Using Outputs
 
-Great, we can see that our Python script is correctly fetching the number of stars on the GitHub repository and outputting them to the console. However, we want to send this output back to our Kestra Flow so we can send a notification with this output! We can adjust our Python task to generate an **output** which we can pass downstream to the next task.
+Great, we can see that our Python script is correctly fetching the number of stars on the GitHub repository and outputting them to the console. However, we want to send this output back to our Kestra Flow so we can send a notification with this output. We can adjust our Python task to generate an **output** which we can pass downstream to the next task.
 
 To do this, we’ll need to tweak our Python script to use the Kestra library to send the `output` variable to our Flow. Firstly, we need to add `kestra` to the requirements.txt so we can install the library when our flow executes. Now we can import it at the top using `from kestra import Kestra` . All that’s left is to use the class instead of the print statement to assign the `output` variable to an `output` key in a dictionary which we’ll be able to access inside of Kestra.
 
@@ -147,7 +147,7 @@ Now we can take this one step further and send this output to a messaging app to
 
 For this example, we can use the UI to build it rather than YAML as they’ll be a lot more customisable fields. When we edit our flow, we can open a view that shows YAML on one side, and the topology view on the other giving you the best of both worlds. Underneath the `python_output` task, we can press the ➕ to add a new task and search for Discord. 
 
-We’re going to use the `DiscordExecution` task as this lets us push a message to a webhook which will send a message to a channel. The other is useful if you want your flow to trigger based on an action inside of Discord. Now we’ve opened the `DiscordExecution` page, we’re presented with a long list of properties which can be overwhelming but we can focus on the required ones for now!
+We’re going to use the `DiscordExecution` task as this lets us push a message to a webhook which will send a message to a channel. The other is useful if you want your flow to trigger based on an action inside of Discord. Now we’ve opened the `DiscordExecution` page, we’re presented with a long list of properties which can be overwhelming but we can focus on the required ones for now.
 
 ![discord_ui](/blogs/2024-04-05-getting-started-with-kestra/discord_ui.png)
 
@@ -259,11 +259,11 @@ triggers:
     cron: 0 * * * *
 ```
 
-When we look at our topology view, we can now see our trigger has been correctly recognised. There’s no further actions needed to setup the trigger, it will work as soon as you’ve saved your flow! But it is worth noting that if you want to disable it, you can add a `disabled` property set to true so you don’t have to delete it. Helpfully, you can find all these extra properties through the topology edit view!
+When we look at our topology view, we can now see our trigger has been correctly recognised. There’s no further actions needed to set up the trigger, it will work as soon as you’ve saved your flow! But it is worth noting that if you want to disable it, you can add a `disabled` property set to true so you don’t have to delete it. Helpfully, you can find all these extra properties through the topology edit view.
 
 ![topology](/blogs/2024-04-05-getting-started-with-kestra/topology.png)
 
-With that set up, we now have our fully functioning flow that can make an API request to GitHub through our Python script, output a value from that request to our Kestra logs as well as send it as a Discord notification. And on top of that, it will automatically execute once every hour! To recap, our flow should look like this:
+With that configured, we now have our fully functioning flow that can make an API request to GitHub through our Python script, output a value from that request to our Kestra logs as well as send it as a Discord notification. And on top of that, it will automatically execute once every hour! To recap, our flow should look like this:
 
 ```yaml
 id: api_example
@@ -310,6 +310,6 @@ triggers:
 
 ## What’s Next
 
-Did you find this useful for getting started with Kestra? Let us know via [Slack](https://kestra.io/slack). 
+Did you find this useful for getting started with Kestra? Let us know via [Slack](https://kestra.io/slack)! 
 
 If you want to learn more about Kestra, check out our [documentation](https://kestra.io/docs) or [request a demo](https://kestra.io/demo), and if you like the project, become our next star on [GitHub](https://github.com/kestra-io/kestra).
