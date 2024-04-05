@@ -5,7 +5,7 @@
                 <div class="header text-white">
                     <img src="/landing/cloud/cloud-hero.svg" alt="Kestra Cloud Comming Soon">
                     <h1 class="my-3">
-                        Kestra <span class="text-gradient">Cloud</span> Comming Soon
+                        Kestra <span class="text-gradient">Cloud</span> Coming Soon
                     </h1>
                     <h6 class="fw-light lh-lg m-0">
                         Register now to be the first to know when we launch!
