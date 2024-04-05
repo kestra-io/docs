@@ -78,7 +78,6 @@
             companies() {
                 return [
                     "acxiom",
-                    "fortinet",
                     "bouygues-immobilier",
                     "leroymerlin",
                     "experian",
@@ -92,6 +91,9 @@
                     "clever-cloud",
                     "quadis",
                     "huawei",
+                    "ca",
+                    "accredible",
+                    "merkle"
                 ]
                     .sort(() => .5 - Math.random())
             },

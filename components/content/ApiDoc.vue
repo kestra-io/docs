@@ -1,6 +1,6 @@
 <template>
     <rapi-doc
-        spec-url = "/kestra.yml"
+        spec-url="/kestra.yml"
         theme="dark"
         render-style="view"
         show-header="false"
@@ -13,11 +13,16 @@
     />
 </template>
 
-<script>
-
-    export default {
-
-    }
+<script setup lang="ts">
+    useHead({
+        script: [
+            {
+                src: 'https://unpkg.com/rapidoc/dist/rapidoc-min.js',
+                type: 'module',
+                tagPosition: 'head'
+            }
+        ]
+    })
 </script>
 
 <style lang="scss" scoped>

@@ -43,7 +43,7 @@ export default defineNuxtConfig({
                 { hid: 'no-cache', 'http-equiv': 'Cache-Control', content: 'no-cache, no-store, must-revalidate' },
                 { hid: 'no-cache', 'http-equiv': 'Pragma', content: 'no-cache' },
                 { hid: 'no-cache', 'http-equiv': 'Expires', content: '0' }
-            ]
+            ],
         }
     },
 
