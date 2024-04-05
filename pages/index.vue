@@ -16,6 +16,9 @@
             <HomeHow/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
+            <HomePlugins/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
             <HomeCompanyStories />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
