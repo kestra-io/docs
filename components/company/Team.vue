@@ -161,6 +161,7 @@
                     </div>
                     <span>
                         <a href="https://www.linkedin.com/in/wrussell1999/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/wrussell1999" target="_blank" class="me-2"><github /></a>
                         <a href="https://twitter.com/wrussell1999" target="_blank" class="me-2"><twitter /></a>
                     </span>
                 </div>
