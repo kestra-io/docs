@@ -49,7 +49,7 @@ tasks:
 Everything builds off of these 3 properties but there’s a few more optional properties that you’ll want to use to give you full flexibility.
 
 - **Inputs:** Instead of hardcoding values into your flows, you can set them as constant values separately. Great if you plan to reuse them in multiple tasks. An input might look like this: `{{ inputs.webhook_url }}` .
-- **Outputs:** Tasks will often generate outputs that you’ll want to pass on to a later task. Outputs let you connect both variables as well as files to later tasks. An output of a variable could look like this: `"{{ outputs.script.vars['output'] }}"`
+- **Outputs:** Tasks will often generate outputs that you’ll want to pass on to a later task. Outputs let you connect both variables as well as files to later tasks. An output of a variable could look like this: `"{{ outputs.script.vars.output }}"`
 - **Triggers:** Instead of manually executing your flow, you can setup triggers to execute it based on a set of conditions such as time schedule or a webhook.
 
 The last thing to mention is Plugins! To help you build powerful flows, you can utilise Plugins for tools and platforms you already use to help speed things up! Every plugin is different but we'll cover a few examples later in the blog.
@@ -129,12 +129,12 @@ output = r.json()['stargazers_count']
 Kestra.outputs({'output': output})
 ```
 
-With this change made, we can add an additional task that uses this variable to print it to the logs rather than mixed in with the full Python output. We can use the Log type and use the following syntax to get our output: `{{ outputs.task_id.vars['var_name'] }}` . As our Python task was called `python_script`, we can easily get our Python variable using `{{ outputs.python_script.vars['output'] }}` to retrieve it. If you’re familiar with Python f-strings or Liquid markup, then this will feel very familiar.
+With this change made, we can add an additional task that uses this variable to print it to the logs rather than mixed in with the full Python output. We can use the Log type and use the following syntax to get our output: `{{ outputs.task_id.vars.variable_name }}` . As our Python task was called `python_script`, we can easily get our Python variable using `{{ outputs.python_script.vars.output }}` to retrieve it. If you’re familiar with Python f-strings or Liquid markup, then this will feel very familiar.
 
 ```yaml
 - id: python_output
   type: io.kestra.core.tasks.log.Log
-  message: "Number of stars: {{ outputs.python_script.vars['output'] }}"
+  message: "Number of stars: {{ outputs.python_script.vars.output }}"
 ```
 
 Your new task should look like the following which will get out new output and print it out to the logs clearly for us to see. When we execute it, we should see it separated from all the Python logs for easier reading!
@@ -189,7 +189,7 @@ All we need to do now is reference these inputs inside of our tasks and we shoul
   url: "{{ inputs.discord_webhook_url }}"
   avatarUrl: "{{ inputs.kestra_logo }}"
   username: Kestra
-  content: "Total of GitHub Stars: {{ outputs.python_script.vars['output'] }}"
+  content: "Total of GitHub Stars: {{ outputs.python_script.vars.output }}"
 ```
 
 Before we execute our flow, let’s recap and check out the full flow together. We should have 2 **inputs** and 3 **tasks** defined in the order set below.
@@ -222,14 +222,14 @@ tasks:
 
   - id: python_output
     type: io.kestra.core.tasks.log.Log
-    message: "Number of stars: {{ outputs.python_script.vars['output'] }}"
+    message: "Number of stars: {{ outputs.python_script.vars.output }}"
 
   - id: send_notification
     type: io.kestra.plugin.notifications.discord.DiscordExecution
     url: "{{ inputs.discord_webhook_url }}"
     avatarUrl: "{{ inputs.kestra_logo }}"
     username: Kestra
-    content: "Total of GitHub Stars: {{ outputs.python_script.vars['output'] }}"
+    content: "Total of GitHub Stars: {{ outputs.python_script.vars.output }}"
 ```
 
 Let’s execute this and see the outcome!
@@ -293,14 +293,14 @@ tasks:
 
   - id: python_output
     type: io.kestra.core.tasks.log.Log
-    message: "Number of stars: {{ outputs.python_script.vars['output'] }}"
+    message: "Number of stars: {{ outputs.python_script.vars.output }}"
 
   - id: send_notification
     type: io.kestra.plugin.notifications.discord.DiscordExecution
     url: "{{ inputs.discord_webhook_url }}"
     avatarUrl: "{{ inputs.kestra_logo }}"
     username: Kestra
-    content: "Total of GitHub Stars: {{ outputs.python_script.vars['output'] }}"
+    content: "Total of GitHub Stars: {{ outputs.python_script.vars.output }}"
 
 triggers:
   - id: hour_trigger
