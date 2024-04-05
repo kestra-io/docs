@@ -25,22 +25,15 @@
 
 
 <script>
+    import {hubspotFormCreate} from "~/utils/hubspot.js";
+
     export default {
         mounted() {
             if (process.client) {
-                if (window.hbspt) {
-                    window.hbspt.forms.create({
-                        region: "eu1",
-                        portalId: "27220195",
-                        formId: "e044de55-bda2-4bb8-9e50-ed8c78b94922",
-                        target: "#hubspotForm",
-                        onFormSubmit: function($form) {
-                            if (window.dataLayer) {
-                                window.dataLayer.push({'event': 'partner_form'});
-                            }
-                        },
-                    })
-                }
+                hubspotFormCreate("partner_form", {
+                    formId: "e044de55-bda2-4bb8-9e50-ed8c78b94922",
+                    target: "#hubspotForm",
+                })
             }
         },
     }
