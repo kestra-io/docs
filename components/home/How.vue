@@ -73,7 +73,7 @@
 
             <div class="item workflow-2 row mb-5">
                 <div class="col-md-6 order-1 order-md-0">
-                    <img class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
+                    <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-2.webp" alt="Integration with all data stacks" />
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-2">
@@ -93,13 +93,13 @@
                     <p>Configure your workflows to run on a schedule, in response to event-based triggers, via webhooks, or through APIs.</p>
                 </div>
                 <div class="col-md-6">
-                    <img class="img-fluid" src="/landing/how/how-3.svg" alt="How to schedule example" />
+                    <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-3.svg" alt="How to schedule example" />
                 </div>
             </div>
 
             <div class="item workflow-4 row pb-5">
                 <div class="col-md-6 order-1 order-md-0">
-                    <img class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
+                    <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-4">
@@ -121,7 +121,7 @@
                     <p>Track the performance of your workflows, identify bottlenecks, and optimize them for speed and efficiency.</p>
                 </div>
                 <div class="col-md-6 row mb-5">
-                    <img class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
+                    <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
                 </div>
             </div>
             <div class="text-center footer position-relative">
@@ -439,7 +439,7 @@
 
             &-1 {
                 padding-top: calc($spacer * 7.188);
-                background: url("/landing/how/bg-1.svg") no-repeat right;
+                background: url("/landing/how/bg-1.webp") no-repeat right;
                 background-size: 50%;
             }
 
@@ -469,7 +469,7 @@
 
             &-4 {
                 padding-top: 6rem;
-                background: url("/landing/how/bg-4.svg") no-repeat left;
+                background: url("/landing/how/bg-4.webp") no-repeat left;
                 background-size: 45%;
 
                 @include media-breakpoint-down(lg) {
@@ -479,7 +479,7 @@
 
             &-5 {
                 padding-top: calc($spacer * 11.625);
-                background: url("/landing/how/bg-5.svg") no-repeat right;
+                background: url("/landing/how/bg-5.webp") no-repeat right;
                 background-size: 64%;
 
                 @include media-breakpoint-down(xxl) {
