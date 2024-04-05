@@ -1,4 +1,4 @@
-import {createMarkdownParser, createShikiHighlighter, rehypeHighlight,} from '@nuxtjs/mdc-edge/runtime'
+import {createMarkdownParser, createShikiHighlighter, rehypeHighlight,} from '@nuxtjs/mdc/runtime'
 
 import githubDark from 'shiki/themes/github-dark.mjs'
 import MdcLang from 'shiki/langs/mdc.mjs'
