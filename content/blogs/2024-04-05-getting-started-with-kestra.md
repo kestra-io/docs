@@ -263,7 +263,7 @@ When we look at our topology view, we can now see our trigger has been correctly
 
 ![topology](/blogs/2024-04-05-getting-started-with-kestra/topology.png)
 
-With that configured, we now have our fully functioning flow that can make an API request to GitHub through our Python script, output a value from that request to our Kestra logs as well as send it as a Discord notification. And on top of that, it will automatically execute once every hour! To recap, our flow should look like this:
+With that configured, we now have our fully functioning flow that can make an API request to GitHub through our Python script, output a value from that request to the Kestra logs as well as send it as a Discord notification. And on top of that, it will automatically execute once every hour! To recap, our flow should look like this:
 
 ```yaml
 id: api_example
