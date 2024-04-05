@@ -1,6 +1,6 @@
 ---
 title: "Getting Started with Kestra"
-description: "This blog post lists 10 Kestra features that have changed my work for the better."
+description: "Automate and monitor Python Scripts in 10 minutes with Kestra"
 date: 2024-04-05T10:00:00
 category: Solutions
 author:
