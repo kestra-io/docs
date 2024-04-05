@@ -8,7 +8,7 @@
                 <form class="row g-3 mt-4 mb-4 justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate data-aos="fade-left">
                     <div class="col-md-5 col-12">
                         <label class="visually-hidden" for="newsletter-email">Email</label>
-                        <input type="email" class="form-control form-control-lg" id="email" placeholder="Email" required>
+                        <input type="email" class="form-control form-control-lg" id="newsletter-email" placeholder="Email" required>
                     </div>
 
                     <div class="col-md-auto col-12">

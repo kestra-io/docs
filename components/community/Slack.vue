@@ -2,7 +2,7 @@
     <div v-if="widget" class="widget-chat">
         <NuxtLink href="https://kestra.io/slack" target="_blank" class="btn btn-sm btn-primary rounded">
             <slack title=""/>
-            Slack <span v-if="online" class="online">{{ onlineText }} members</span>
+            Slack <ClientOnly><span v-if="online" class="online">{{ onlineText }} members</span></ClientOnly>
         </NuxtLink>
     </div>
     <div v-else class="container">
@@ -36,7 +36,7 @@
                     />
                 </div>
             </div>
-            <div class="text-center ">
+            <div class="text-center">
                 <a href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated me-2" target="_blank"  data-aos="zoom-in">
                     Join our slack
                 </a>
@@ -70,23 +70,24 @@ export default {
     },
     data() {
         return {
-            online: undefined,
+            online: 0,
         }
     },
-    async created() {
-        try {
-            const memberCount = window.sessionStorage.getItem("slack_member_count")
+    async mounted() {
+        if (process.client) {
+            try {
+                const memberCount = window.sessionStorage.getItem("slack_member_count")
 
-            if (!memberCount) {
-                const { data: { total } } = await useApi().get('/communities/slack')
-                window.sessionStorage.setItem("slack_member_count", total)
-                this.online = total
-            } else {
-                this.online = memberCount
+                if (!memberCount) {
+                    const {data: {total}} = await useApi().get('/communities/slack')
+                    window.sessionStorage.setItem("slack_member_count", total)
+                    this.online = total
+                } else {
+                    this.online = memberCount
+                }
+
+            } catch (e) {
             }
-
-        } catch (e) {
-            this.online = 0
         }
     },
 
