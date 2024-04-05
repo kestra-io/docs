@@ -15,6 +15,8 @@
 </template>
 
 <script>
+    import {hubspotFormCreate} from "~/utils/hubspot.js";
+
     export default {
         data() {
             return {
@@ -24,19 +26,10 @@
         },
         mounted() {
             if (process.client) {
-                if (window.hbspt) {
-                    window.hbspt.forms.create({
-                        region: "eu1",
-                        portalId: "27220195",
-                        formId: "77f32ae3-0f49-404a-a28d-6dfe92c8bc78",
-                        target: "#hubspotForm",
-                        onFormSubmit: function($form) {
-                            if (window.dataLayer) {
-                                window.dataLayer.push({'event': 'contact_form'});
-                            }
-                        },
-                    })
-                }
+                hubspotFormCreate("contact_form", {
+                    formId: "77f32ae3-0f49-404a-a28d-6dfe92c8bc78",
+                    target: "#hubspotForm",
+                })
             }
         },
     }

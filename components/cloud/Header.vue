@@ -13,7 +13,7 @@
                 </div>
 
                 <div class="col-12 col-md-8 col-lg-5 form-container mx-auto pt-3">
-                    <div id="hubspotForm" data-aos="zoom-in"/>
+                    <div id="hubspotForm" data-aos="zoom-in" />
                 </div>
             </div>
         </div>
@@ -21,25 +21,18 @@
 </template>
 
 <script>
-  export default {
-    mounted() {
-      if (process.client) {
-        if (window.hbspt) {
-          window.hbspt.forms.create({
-            region: "eu1",
-            portalId: "27220195",
-            formId: "fbce3efa-1f99-4ab9-928c-26167aa51424",
-            target: "#hubspotForm",
-            onFormSubmit: function ($form) {
-              if (window.dataLayer) {
-                window.dataLayer.push({'event': 'cloud_form'});
-              }
-            },
-          })
-        }
-      }
-    },
-  }
+    import {hubspotFormCreate} from "~/utils/hubspot.js";
+
+    export default {
+        mounted() {
+            if (process.client) {
+                hubspotFormCreate("cloud_form", {
+                    formId: "fbce3efa-1f99-4ab9-928c-26167aa51424",
+                    target: "#hubspotForm",
+                })
+            }
+        },
+    }
 </script>
 
 <style lang="scss" scoped>
@@ -56,6 +49,7 @@
 
     .container-fluid {
         position: relative;
+
         &::after {
             content: "";
             position: absolute;
