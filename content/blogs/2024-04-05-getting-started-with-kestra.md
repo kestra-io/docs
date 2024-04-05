@@ -15,7 +15,7 @@ Originating as a platform for data orchestration, Kestra finds itself well-equip
 
 ## Installation
 
-Kestra is open source meaning anyone can run it on their machine for free. There is a cloud version coming soon for those who want to start making flows straight away. To get it setup, you’ll need to make sure you have Docker installed on your machine and run the following command to start up your instance!
+Kestra is open source meaning anyone can run it on their machine for free. There is a cloud version coming soon for those who want to start making flows straight away, however for now we'll set it up locally. To get it setup, you’ll need to make sure you have Docker installed on your machine and run the following command to start up your instance!
 
 ```bash
 docker run --pull=always --rm -it -p 8080:8080 --user=root \
