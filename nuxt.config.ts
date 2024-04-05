@@ -156,8 +156,20 @@ export default defineNuxtConfig({
     },
 
     optimization: {
+        minimize: true,
         splitChunks: {
-            maxSize: 100000
+            chunks: 'all',
+            automaticNameDelimiter: '.',
+            name: true,
+            maxSize: 144000,
+            cacheGroups: {
+                vendor: {
+                    name: 'node_vendors',
+                    test: /[\\/]node_modules[\\/]/,
+                    chunks: 'all',
+                    maxSize: 144000
+                }
+            }
         }
     },
 
