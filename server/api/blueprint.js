@@ -1,4 +1,4 @@
-import {parseMarkdown} from '@nuxtjs/mdc-edge/runtime'
+import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 import url from "node:url";
 
 export default defineEventHandler(async (event) => {

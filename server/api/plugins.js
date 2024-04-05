@@ -1,4 +1,4 @@
-import {parseMarkdown} from '@nuxtjs/mdc-edge/runtime'
+import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 import url from "node:url";
 import {camelToKebabCase} from "~/utils/url.js";
 
@@ -65,7 +65,7 @@ function toNavTitle(title) {
         .join("");
 }
 
-const pluginCategories = ['tasks', 'triggers', 'conditions', 'controllers', 'storages', 'secrets', 'guides', 'scriptRunners'];
+const pluginCategories = ['tasks', 'triggers', 'conditions', 'controllers', 'storages', 'secrets', 'guides', 'taskRunners'];
 
 export default defineEventHandler(async (event) => {
     try {
@@ -96,12 +96,13 @@ export default defineEventHandler(async (event) => {
                     .flatMap(category => {
                         let children;
                         let kebabCasedCategory = camelToKebabCase(category);
+                        const taskList = (plugin[category] || []);
                         if (plugin.name === "core") {
                             if (category === "tasks") {
                                 children = generateSubMenu(
                                     `${rootPluginUrl}/${kebabCasedCategory}`,
                                     plugin.group,
-                                    plugin[category].map(item => item.split(".").slice(-2).join("."))
+                                    taskList.map(item => item.split(".").slice(-2).join("."))
                                 );
                             } else {
                                 const fqnByClassName = {};
@@ -112,7 +113,7 @@ export default defineEventHandler(async (event) => {
 
                                         return fqn.substring(0, fqn.lastIndexOf("."));
                                     },
-                                    plugin[category].map(item => {
+                                    taskList.map(item => {
                                         const className = item.substring(item.lastIndexOf(".") + 1);
                                         fqnByClassName[className] = item;
                                         return className;
@@ -131,7 +132,7 @@ export default defineEventHandler(async (event) => {
                                     }
                                     return plugin.group;
                                 },
-                                plugin[category].map(item => {
+                                taskList.map(item => {
                                     if (item.startsWith(coreTaskQualifier)) {
                                         let relativeItem = item.substring(coreTaskQualifier.length + 1);
                                         coreTaskByFqn[relativeItem] = item;
