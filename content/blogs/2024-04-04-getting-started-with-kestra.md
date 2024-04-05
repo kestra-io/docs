@@ -68,7 +68,7 @@ output = r.json()['stargazers_count']
 print(output)
 ```
 
-The code above makes a GET request to the GitHub API asking for information on the Kestra repository. It then prints out the number of stars the repository has. Now we have some code, next step is to start building the flow to automate this script!
+The code above makes a GET request to the GitHub API asking for information on the Kestra repository. It then prints out the number of stars the repository currently has. If you haven't already, you should [give us a star](https://github.com/kestra-io/kestra)! Now we have some code, next step is to start building the flow to automate this script!
 
 The first time you launch Kestra in your browser, it will ask you if you want to make your first flow. When we press that, we’ll see a basic example containing the 3 fundamental properties we discussed earlier:
 
@@ -81,27 +81,19 @@ tasks:
     message: Hello World!
 ```
 
-We can use this as a starting point, replacing the `Log` task type with a Python one. For Python, you can either use a `Commands` or `Script` plugin. `Commands` is best for executing a separate `.py` file whereas Script is useful if you want to write your Python directly within the task. As we’ve put it into a `.py` file, we’ll use the Commands plugin. We can use the topology editor to add this and searching for Python. This will help us as it will give us the other fields to fill out, giving us some structure to work with!
+We can use this as a starting point, replacing the `Log` task type with a Python one. For Python, you can either use a `Commands` or `Script` plugin. `Commands` is best for executing a separate `.py` file whereas Script is useful if you want to write your Python directly within the task. As we’ve written a `.py` file, we’ll use the Commands plugin. We can use the topology editor to add this and searching for Python. This will help us as it will give us the other fields to fill out, giving us some structure to work with!
 
-```yaml
-- id: python_script
-    type: io.kestra.plugin.scripts.python.Commands
-    namespaceFiles:
-      enabled: true
-    runner: PROCESS
-    beforeCommands:
-      - python3 -m venv .venv
-      - . .venv/bin/activate
-      - pip install -r scripts/requirements.txt
-    commands:
-      - python scripts/api_example.py
-```
+![python_search](/blogs/2024-04-04-getting-started-with-kestra/python_search.png)
 
 Now you’re probably wondering, how do I get my Python file into Kestra? We can use the Editor in the left side menu to create this file on the platform and save it in a new folder called `scripts` as `api_example.py`. On top of this, we can add the property `namespacesFiles` and set that as enabled to allow our flow to see other files! 
 
+![editor](/blogs/2024-04-04-getting-started-with-kestra/editor.png)
+
+
+
 Once we’ve done that, we just need to make sure we install any dependencies before the script runs by using the `beforeCommands` property to create and activate a virtual environment and install the dependencies into it. One last thing: we'll need to also add a `requirements.txt` with the `requests` library inside it so this runs without any issues!
 
-Now let’s test this by saving our full flow and executing it! Our flow should look like the following below now:
+Now let’s test this by saving our flow and executing it! Our flow should look like the following below:
 
 ```yaml
 id: api_example
