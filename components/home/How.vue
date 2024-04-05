@@ -73,7 +73,7 @@
 
             <div class="item workflow-2 row mb-5">
                 <div class="col-md-6 order-1 order-md-0">
-                    <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-2.webp" alt="Integration with all data stacks" />
+                    <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-2">
