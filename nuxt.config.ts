@@ -39,9 +39,6 @@ export default defineNuxtConfig({
                 {name: 'theme-color', content: '#2c0059'},
                 {property: 'og:image', content: '/og-image.png'}
             ],
-            script: [
-                {src: 'https://js-eu1.hsforms.net/forms/embed/v2.js'}
-            ],
         }
     },
 

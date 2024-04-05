@@ -2,7 +2,7 @@
     <div class="main">
         <div class="hero container">
             <div class="text-block">
-                <h1 data-aos="fade-right">
+                <h1 data-aos="zoom-in">
                     <text-scroller :texts="scrollingTexts" /><br />Everything
                     Everywhere <br />All at Once.
                 </h1>
@@ -33,7 +33,7 @@
             <Companies class="mt-4 mb-4 pb-4 companies container" />
 
 
-            <div class="activity-list container bg-dark-2 d-flex align-items-center justify-content-between">
+            <div data-aos="zoom-in" class="activity-list container bg-dark-2 d-flex align-items-center justify-content-between">
                 <div>
                     <p class="count">+80 Million</p>
                     <p class="description">workflows executed</p>

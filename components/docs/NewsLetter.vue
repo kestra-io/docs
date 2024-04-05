@@ -7,7 +7,7 @@
                 <form class=" g-3  justify-content-center needs-validation" ref="newsletter" id="newsletter" @submit="checkForm" novalidate data-aos="fade-left">
                     <div class="d-flex justify-content-center mb-2">
                         <label class="visually-hidden" for="newsletter-email">Email</label>
-                        <input type="email" class="form-control form-control-lg " id="email" placeholder="Email" required>
+                        <input type="email" class="form-control form-control-lg " id="newsletter-email" placeholder="Email" required>
                     </div>
                         <button type="submit" class="btn btn-dark px-5">Submit</button>
                 </form>

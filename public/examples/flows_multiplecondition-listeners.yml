@@ -7,7 +7,7 @@ description: |
 tasks:
   - id: only-listener
     type: io.kestra.core.tasks.debugs.Return
-    format: "childs"
+    format: "children"
 
 triggers:
   - id: multiple-listen-flow

@@ -9,7 +9,7 @@ inputs:
 tasks:
   - id: print_input
     type: io.kestra.core.tasks.debugs.Return
-    format: "childs: {{inputs['from-parent']}}"
+    format: "children: {{inputs['from-parent']}}"
 
 triggers:
   - id: listen-flow

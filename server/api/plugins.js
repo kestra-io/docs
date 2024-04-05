@@ -10,6 +10,7 @@ function toNuxtContent(parsedMarkdown) {
         },
         description: parsedMarkdown.data.description,
         title: parsedMarkdown.data.title,
+        icon: `data:image/svg+xml;base64,${parsedMarkdown.data.icon}` ?? null
     };
 }
 
