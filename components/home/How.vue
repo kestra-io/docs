@@ -73,7 +73,9 @@
 
             <div class="item workflow-2 row mb-5">
                 <div class="col-md-6 order-1 order-md-0">
-                    <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
+                    <div class="img-container">
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
+                    </div>
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-2">
@@ -93,13 +95,17 @@
                     <p>Configure your workflows to run on a schedule, in response to event-based triggers, via webhooks, or through APIs.</p>
                 </div>
                 <div class="col-md-6">
-                    <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-3.svg" alt="How to schedule example" />
+                    <div class="img-container">
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-3.svg" alt="How to schedule example" />
+                    </div>
                 </div>
             </div>
 
             <div class="item workflow-4 row pb-5">
                 <div class="col-md-6 order-1 order-md-0">
-                    <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
+                    <div class="img-container">
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
+                    </div>
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-4">
@@ -120,8 +126,10 @@
                     <h3>Monitor and optimize your workflows</h3>
                     <p>Track the performance of your workflows, identify bottlenecks, and optimize them for speed and efficiency.</p>
                 </div>
-                <div class="col-md-6 row mb-5">
-                    <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
+                <div class="col-md-6 mb-5">
+                    <div class="img-container">
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
+                    </div>
                 </div>
             </div>
             <div class="text-center footer position-relative">
@@ -446,22 +454,78 @@
             &-2 {
                 margin-top: calc($spacer * 6.25);
 
+                .img-container {
+                    height: calc($spacer * 31.3);
+                    img {
+                        height: 100%;
+                    }
+                }
 
                 @include media-breakpoint-down(xxl) {
                     margin-top: calc($spacer * 10.938);
+                    .img-container {
+                        height: calc($spacer * 31.2);
+                    }
                 }
 
                 @include media-breakpoint-down(xl) {
                     margin-top: calc($spacer * 15.313);
+                    .img-container {
+                        height: calc($spacer * 26);
+                    }
                 }
 
                 @include media-breakpoint-down(lg) {
                     margin-top: calc($spacer * 8.125);
+                    .img-container {
+                        height: calc($spacer * 19.1);
+                    }
+                }
+
+                @include media-breakpoint-down(md) {
+                    .img-container {
+                        height: calc($spacer * 29.4);
+                        img {
+                            width: 100%;
+                        }
+                    }
                 }
             }
 
             &-3 {
                 margin-top: calc($spacer * 7.625);
+
+                .img-container {
+                    height: calc($spacer * 41.2);
+                    img {
+                        height: 100%;
+                    }
+
+                    @include media-breakpoint-down(xxl) {
+                        height: calc($spacer * 35.4);
+                    }
+
+                    @include media-breakpoint-down(xl) {
+                        height: calc($spacer * 41.1);
+                    }
+
+                    @media only screen and (max-width: 1200px) {
+                        height: calc($spacer * 29.5);
+                    }
+
+                    @include media-breakpoint-down(lg) {
+                        height: calc($spacer * 21.6);
+                    }
+
+                    @include media-breakpoint-down(md) {
+                        height: calc($spacer * 33.4);
+                        width: 100%;
+                        img {
+                            width: 100%;
+                        }
+                    }
+                }
+
                 @include media-breakpoint-down(xxl) {
                     margin-top: calc($spacer * 9.125);
                 }
@@ -471,6 +535,28 @@
                 padding-top: 6rem;
                 background: url("/landing/how/bg-4.webp") no-repeat left;
                 background-size: 45%;
+                .img-container {
+                    height: calc($spacer * 19.1);
+                    img {
+                        height: 100%;
+                    }
+
+                    @include media-breakpoint-down(xl) {
+                        height: calc($spacer * 15.7);
+                    }
+
+                    @include media-breakpoint-down(lg) {
+                        height: calc($spacer * 11.5);
+                    }
+
+                    @include media-breakpoint-down(md) {
+                        height: calc($spacer * 17.8);
+                        width: 100%;
+                        img {
+                            width: 100%;
+                        }
+                    }
+                }
 
                 @include media-breakpoint-down(lg) {
                     padding-top: calc($spacer * 16.875);
@@ -482,12 +568,41 @@
                 background: url("/landing/how/bg-5.webp") no-repeat right;
                 background-size: 64%;
 
+                .img-container {
+                    height: calc($spacer * 29.7);
+                    img {
+                        height: 100%;
+                    }
+                }
+
                 @include media-breakpoint-down(xxl) {
                     padding-top: calc($spacer * 9.063);
+                    .img-container {
+                        height:calc($spacer * 25.3);
+                    }
                 }
 
                 @include media-breakpoint-down(xl) {
                     padding-top: calc($spacer * 6.813);
+                    .img-container {
+                        height: calc($spacer * 20.8);
+                    }
+                }
+
+                @include media-breakpoint-down(lg) {
+                    .img-container {
+                        height: calc($spacer * 17.7);
+                    }
+                }
+
+                @include media-breakpoint-down(md) {
+                    .img-container {
+                        height: calc($spacer * 23.8);
+                        width: 100%;
+                        img {
+                            width: 100%;
+                        }
+                    }
                 }
 
             }
