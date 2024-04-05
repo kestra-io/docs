@@ -162,7 +162,7 @@ inputs:
     defaults: https://avatars.githubusercontent.com/u/59033362?v=4
 ```
 
-While we’re creating inputs, we can also make our Webhook URL an input incase we want to reuse it too. Discord has a [great guide](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) on how to generate the Webhook URL for a specific channel so all the messages are sent there. 
+While we’re creating inputs, we can also make our Webhook URL an input in case we want to reuse it too. Discord has a [great guide](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) on how to generate the Webhook URL for a specific channel so all the messages are sent there. 
 
 All we need to do is Edit a channel, head to Integrations and we’ll see an option for creating a Webhook. The details of the Webhook aren’t important as our flow will set these instead but we can simply call it Kestra to remind us what it's used for and press save. Once we’ve done that, we can copy the Webhook URL ready to paste into Kestra.
 
