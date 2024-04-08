@@ -7,9 +7,7 @@
         </Head>
 
         <HomeHeader/>
-        <NuxtLazyHydrate when-visible>
-            <HomeFeatures/>
-        </NuxtLazyHydrate>
+        <HomeFeatures/>
         <NuxtLazyHydrate when-visible>
             <HomeUI/>
         </NuxtLazyHydrate>
