@@ -96,6 +96,11 @@ export default defineNuxtConfig({
     },
 
     vite: {
+        build: {
+            rollupOptions: {
+                external: ['shiki/onig.wasm'],
+            }
+        },
         optimizeDeps: {
             include: [
                 "humanize-duration",
