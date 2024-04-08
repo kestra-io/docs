@@ -1,16 +1,16 @@
 <template>
     <div ref="plugins" class="plugins flex-wrap align-items-center justify-content-center">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/fivetran.svg" alt="fivetran">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/snowflake.svg" alt="snowflake">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/aws-white.svg" alt="aws">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/databricks.svg" alt="databricks">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/azure.svg" alt="azure">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/dbt.svg" alt="dbt">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/airbyte.svg" alt="airbyte">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/docker.svg" alt="docker">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/terraform.svg" alt="terraform">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/g-cloud.svg" alt="g-cloud">
-        <img data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/github.svg" alt="github">
+        <NuxtImg width="165px" height="46px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/fivetran.svg" alt="fivetran" />
+        <NuxtImg width="199px" height="48px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/snowflake.svg" alt="snowflake" />
+        <NuxtImg width="72px" height="71px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/aws-white.svg" alt="aws" />
+        <NuxtImg width="149px" height="45px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/databricks.svg" alt="databricks" />
+        <NuxtImg width="137px" height="42px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/azure.svg" alt="azure" />
+        <NuxtImg width="126px" height="49px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/dbt.svg" alt="dbt" />
+        <NuxtImg width="190px" height="53px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/airbyte.svg" alt="airbyte" />
+        <NuxtImg width="164px" height="43px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/docker.svg" alt="docker" />
+        <NuxtImg width="155px" height="59px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/terraform.svg" alt="terraform" />
+        <NuxtImg width="264px" height="43px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/g-cloud.svg" alt="g-cloud" />
+        <NuxtImg width="162px" height="41px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/github.svg" alt="github" />
     </div>
     <div class="d-flex justify-content-center">
         <NuxtLink class="btn btn-animated btn-dark-animated" href="/plugins">See all plugins</NuxtLink>
@@ -74,9 +74,15 @@
         display: flex;
         width: 100%;
 
+        img {
+            min-height: calc($spacer * 2.563);
+            height: auto;
+        }
+
         @include media-breakpoint-down(md) {
             margin: calc($spacer * 3.625) 0;
         }
+
         @include media-breakpoint-down(md) {
             width: fit-content;
             position: relative;

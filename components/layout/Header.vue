@@ -34,7 +34,7 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/overview" @click="globalClick(true)">
                                         <div class="submenu-img">
-                                            <img src="/landing/header-menu/platform-overview.svg" alt="Platform Overview">
+                                            <NuxtImg width="200px" loading="lazy" src="/landing/header-menu/platform-overview.webp" alt="Platform Overview"/>
                                         </div>
                                         <p>
                                             <span>Platform Overview</span><br />
@@ -216,7 +216,7 @@
                                     <NuxtLink class="dropdown-item" href="/blueprints" @click="globalClick(true)">
                                         <div class="submenu-img">
                                             <p>+200 blueprints</p>
-                                            <img src="/landing/header-menu/platform-blueprints.svg" alt="Blueprints">
+                                            <NuxtImg width="320px" height="143px" loading="lazy" src="/landing/header-menu/platform-blueprints.webp" alt="Blueprints"/>
                                         </div>
                                         <p>
                                             <span>Blueprints</span><br />

@@ -96,6 +96,11 @@ export default defineNuxtConfig({
     },
 
     vite: {
+        build: {
+            rollupOptions: {
+                external: ['shiki/onig.wasm'],
+            }
+        },
         optimizeDeps: {
             include: [
                 "humanize-duration",
@@ -125,7 +130,6 @@ export default defineNuxtConfig({
         }
     },
 
-    // if using nuxt generate
     nitro: {
         prerender: {
             routes: ['/rss.xml'],
