@@ -12,6 +12,7 @@ Each section below represents a built-in filter.
 - [base64encode](#base64encode)
 - [capitalize](#capitalize)
 - [default](#default)
+- [escapeChar](#escapechar)
 - [lower](#lower)
 - [replace](#replace)
 - [sha256](#sha256)
@@ -129,6 +130,38 @@ Note that the default filter will suppress any `AttributeNotFoundException` exce
 
 **Arguments**
 - default
+
+---
+
+## escapeChar
+
+The `escapeChar` filter sanitizes given string using a selected string escape sequence.
+
+Precede every `'` character with `\`:
+
+```twig
+{{ "Can't be here" | escapeChar('single') }}
+{# results in: Can\'t be here #}
+```
+
+Precede every `"` character with `\`:
+
+```twig
+{{ '"Quoted"' | escapeChar('double') }}
+{# results in: \"Quoted\" #}
+```
+
+Safely pass a rendered Pebble variable as literal value to a shell, replacing every `'` character with the `'\''` escape sequence:
+
+```twig
+{# inputs.param value set to: Can't be here #}
+echo '{{ inputs.param | escapeChar('shell') }}'
+{# results in: echo 'Can'\''t be here' #}
+```
+
+**Arguments**
+
+- `type`: escape sequence type `single`, `double`, or `shell`
 
 ---
 
