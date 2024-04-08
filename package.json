@@ -39,7 +39,7 @@
     "vanilla-cookieconsent": "^3.0.0",
     "vue": "^3.4.21",
     "vue-material-design-icons": "^5.3.0",
-    "vue3-carousel-nuxt": "^1.1.0",
+    "vue3-carousel-nuxt": "^1.1.1",
     "vue3-count-to": "^1.1.2",
     "vuex": "^4.1.0",
     "yaml": "^2.4.1"
