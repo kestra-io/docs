@@ -193,8 +193,6 @@
         row-gap: 0px;
         display: flex;
         justify-content: space-between;
-        padding-right: calc($spacer * 2);
-
         @include media-breakpoint-down(lg) {
             padding-right: 0;
         }
@@ -205,7 +203,8 @@
         margin: 0;
 
         @include media-breakpoint-up(xxl) {
-            padding-right: 10.5rem;
+            padding-right: calc($spacer * 2.75);
+            padding-left: calc($spacer * 7);
         }
 
         img {
