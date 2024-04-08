@@ -7,7 +7,8 @@ export default defineNuxtConfig({
         '@nuxtjs/sitemap',
         'nuxt-gtag',
         'nuxt-multi-cache',
-        'vue3-carousel-nuxt'
+        'vue3-carousel-nuxt',
+        'nuxt-lazy-hydrate'
     ],
     sitemap: {
         sitemaps: {
@@ -149,7 +150,26 @@ export default defineNuxtConfig({
     },
 
     build: {
-        transpile: ['vue3-count-to']
+        transpile: ['vue3-count-to'],
+        extractCSS: true
+    },
+
+    optimization: {
+        minimize: true,
+        splitChunks: {
+            chunks: 'all',
+            automaticNameDelimiter: '.',
+            name: true,
+            maxSize: 144000,
+            cacheGroups: {
+                vendor: {
+                    name: 'node_vendors',
+                    test: /[\\/]node_modules[\\/]/,
+                    chunks: 'all',
+                    maxSize: 144000
+                }
+            }
+        }
     },
 
     multiCache: {
