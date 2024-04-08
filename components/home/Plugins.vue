@@ -26,7 +26,9 @@
     @import "../../assets/styles/variable";
 
     .container-fluid {
-        background: url("/landing/home/plugins/background.svg") no-repeat center;
+        background: url("/landing/home/plugins/background.webp") no-repeat center;
+        background-size: 100% 100%;
+
         overflow-x: hidden;
         color: var(--bs-white);
         padding: 0;
