@@ -14,12 +14,12 @@
                     </div>
                 </div>
                 <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/enterprise/security-1.svg" alt="A dashboard with success or fail task events">
+                    <NuxtImg loading="lazy" format="webp" class="img-fluid" src="/landing/enterprise/security-1.webp" alt="A dashboard with success or fail task events" />
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col-md-6 image-container" data-aos="fade-right">
-                    <img  class="img-fluid" src="/landing/enterprise/security-2.svg" alt="Stylized view of administrator settings with role-based view">
+                    <NuxtImg loading="lazy" format="webp"  class="img-fluid" src="/landing/enterprise/security-2.webp" alt="Stylized view of administrator settings with role-based view" />
                 </div>
                 <div class="col-md-6 d-flex justify-content-center align-items-center">
                     <div>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/enterprise/security-3.svg" alt="A dashboard with success or fail task events">
+                    <NuxtImg loading="lazy" format="webp" class="img-fluid" src="/landing/enterprise/security-3.webp" alt="A dashboard with success or fail task events" />
                 </div>
             </div>
 
