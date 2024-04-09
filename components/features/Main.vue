@@ -19,6 +19,8 @@
                         title: 'API-first design with declarative workflow definition',
                         img: '/landing/features/declarative1.svg',
                         imgAlt: 'API-first design with declarative workflow definition',
+                        imgWidth: '576px',
+                        imgHeight: '429px',
                         content: `
                             <ul>
                                 <li>
@@ -54,6 +56,8 @@
                         title: 'Iterate faster without the overhead of CI/CD',
                         img: '/landing/features/execute.svg',
                         imgAlt: 'Iterate faster without the overhead of CI/CD',
+                        imgWidth: '426px',
+                        imgHeight: '280px',
                         content: `
                             <ul>
                                 <li>
@@ -85,6 +89,8 @@
                         title: 'Flexible Event-Driven Workflow Execution',
                         img: '/landing/features/flowable.svg',
                         imgAlt: 'Flexible Event-Driven Workflow Execution',
+                        imgWidth: '568px',
+                        imgHeight: '461px',
                         content: `
                             <ul>
                                 <li>
@@ -109,6 +115,8 @@
                         title: 'Execute and Monitor in Real Time',
                         img: '/landing/features/monitor.svg',
                         imgAlt: 'Execute and Monitor',
+                        imgWidth: '604px',
+                        imgHeight: '477px',
                         content: `
                             <ul>
                                 <li>
