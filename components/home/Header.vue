@@ -121,7 +121,7 @@ export default {
     }
 
     .hero {
-        background: $black-4 url("/landing/home/header-bg.png") no-repeat center
+        background: $black-4 url("/landing/home/header-bg.webp") no-repeat center
         center;
         background-size: 130%;
         padding-bottom: 2rem;
