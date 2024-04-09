@@ -7,14 +7,30 @@
         </Head>
 
         <FeaturesHeader/>
-        <FeaturesMain/>
-        <FeaturesShips/>
-        <LayoutIntegrations/>
-        <FeaturesCreate/>
-        <FeaturesBuild/>
-        <FeaturesData/>
-        <FeaturesEnterpriseEdition/>
-        <FeaturesFooter/>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesMain/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesShips/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LayoutIntegrations/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesCreate/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesBuild/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesData/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesEnterpriseEdition/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesFooter/>
+        </NuxtLazyHydrate>
 
     </div>
 </template>

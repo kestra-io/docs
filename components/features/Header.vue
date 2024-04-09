@@ -35,7 +35,11 @@
           class="col-md-6 order-0 order-md-1 mt-3 img-container"
           data-aos="zoom-in"
         >
-          <img
+          <NuxtImg
+            width="925px"
+            height="745px"
+            loading="lazy"
+            format="webp"
             class="img-fluid headerimg"
             src="/landing/features/header.svg"
             alt="A screenshot of the user interface of Kestra's application"
