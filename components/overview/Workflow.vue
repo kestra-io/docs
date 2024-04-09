@@ -16,7 +16,16 @@
                     </p>
                 </div>
                 <div class="col-md-7 order-0 order-md-0 left-glow" data-aos="fade-left">
-                    <img class="img-fluid zoom" src="/landing/overview/interactive-topology.svg" alt="Interactive Topology" data-aos="zoom-in">
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        width="568px"
+                        height="329px"
+                        class="img-fluid zoom"
+                        src="/landing/overview/interactive-topology.svg"
+                        alt="Interactive Topology"
+                        data-aos="zoom-in"
+                    />
                 </div>
             </div>
             <div class="row mb-5">
@@ -29,8 +38,15 @@
                     </p>
                 </div>
                 <div class="col-md-7 order-0 order-md-1 right-glow d-flex justify-content-end" data-aos="fade-left">
-                    <img class="img-fluid zoom" src="/landing/overview/intuitive-form.svg"
-                         alt="Intuitive Form">
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        width="569px"
+                        height="329px"
+                        class="img-fluid zoom"
+                        src="/landing/overview/intuitive-form.svg"
+                        alt="Intuitive Form"
+                    />
                 </div>
             </div>
         </div>
