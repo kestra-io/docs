@@ -21,7 +21,7 @@
         </div>
         <div class="tab-content">
             <div class="active-tab-content">
-                <img :src="navLinks[activeTabIndex].imgHref" :alt="navLinks[activeTabIndex].imgAlt" class="zoom">
+                <NuxtImg loading="lazy" format="webp" width="765px" :src="navLinks[activeTabIndex].imgHref" :alt="navLinks[activeTabIndex].imgAlt" class="zoom"/>
                 <p>{{ navLinks[activeTabIndex].text }}</p>
             </div>
         </div>
