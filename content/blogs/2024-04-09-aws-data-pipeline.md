@@ -1,11 +1,12 @@
 ---
 title: "Data Pipelines on Amazon Redshift — How to Orchestrate AWS Services with Kestra"
 description: "Build Data Pipelines consisting of AWS services, including DynamoDB, S3, and Redshift using Kestra."
-date: 2024-04-10T10:00:00
+date: 2024-04-09T10:00:00
 category: Solutions
 author:
   name: Shruti Mantri
   image: "smantri"
+image: /blogs/2024-04-09-aws-data-pipeline.jpg
 ---
 
 This blog post dives into [Kestra's](https://github.com/kestra-io/kestra) integrations for AWS, with an example of a real-world data pipeline I used in my daily work as a data engineer. The data pipeline consists of multiple AWS services, including DynamoDB, S3, and Redshift, which are orchestrated using Kestra.
@@ -24,7 +25,7 @@ In the actual world, dimension data like products would be present in databases 
 
 Then, we will proceed to create the data pipeline. We will load the product data from DynamoDB onto Redshift and load order data from S3 onto Redshift. We'll join these two tables from Redshift and upload the detailed orders to S3.
 
-![aws_data_pipeline](/blogs/2024-03-10-aws-data-pipeline/aws_data_pipeline.png)
+![aws_data_pipeline](/blogs/2024-04-09-aws-data-pipeline/aws_data_pipeline.png)
 
 ## Data preparation phase
 
@@ -32,7 +33,7 @@ As part of the data preparation phase, we will have a Kestra flow that downloads
 
 For uploading data onto DynamoDB, we will first create the `products` table in DynamoDB.
 
-![products_dynamodb_table](/blogs/2024-03-10-aws-data-pipeline/products_dynamodb_table.png)
+![products_dynamodb_table](/blogs/2024-04-09-aws-data-pipeline/products_dynamodb_table.png)
 
 In order to upload the product records, we will call the PutItem task on DynamoDB for each of the product records from the products CSV file. Hence, we will have a `product_upload` flow that converts each incoming product record into JSON, and then writes the record onto DynamoDB using PutItem task.
 
@@ -183,9 +184,9 @@ tasks:
 
 Once you execute this flow, you can check that the Redshift has `products` and `orders` tables with the corresponding data. You can use Redshift Query editor for this purpose.
 
-![products_redshift](/blogs/2024-03-10-aws-data-pipeline/products_redshift.png)
+![products_redshift](/blogs/2024-04-09-aws-data-pipeline/products_redshift.png)
 
-![orders_redshift](/blogs/2024-03-10-aws-data-pipeline/orders_redshift.png)
+![orders_redshift](/blogs/2024-04-09-aws-data-pipeline/orders_redshift.png)
 
 You can also check the detailed orders by going to the Outputs tab and using the Preview function on the `uri` attribute of the csv_writer_detailed_orders task. Also, you can check that this CSV file has been uploaded to the appropriate location in S3.
 
