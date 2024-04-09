@@ -4,7 +4,14 @@
             <div class="workflow-options row" data-aos="fade-left">
                 <div class="options-item col-12 col-md-12 col-lg-6">
                     <div class="img-bar">
-                        <img src="/landing/features/apifirst/workflow-integration.svg" alt="GitOps with Kestra">
+                        <NuxtImg
+                            loading="lazy"
+                            format="webp"
+                            width="453px"
+                            height="336px"
+                            src="/landing/features/apifirst/workflow-integration.svg"
+                            alt="GitOps with Kestra"
+                        />
                     </div>
                     <div class="title-bar">
                         <h2 class="title">Workflow Integration and Automation</h2>
