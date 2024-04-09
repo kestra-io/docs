@@ -7,17 +7,29 @@
         </Head>
 
         <EnterpriseHeader/>
-        <EnterpriseCustomers/>
-        <EnterpriseBusinessByUs/>
-        <EnterpriseSecurity/>
-        <EnterpriseBusinessDetails/>
-        <EnterpriseCompanyStories/>
-        <LayoutFooterContact
-            darkButtonText="Get Started"
-            darkButtonHref="https://kestra.io/docs/getting-started/quickstart"
-            purpleButtonText="Talk to Us"
-            purpleButtonHref="https://kestra.io/demo"
-        />
+        <NuxtLazyHydrate when-visible>
+            <EnterpriseCustomers/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <EnterpriseBusinessByUs/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <EnterpriseSecurity/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <EnterpriseBusinessDetails/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <EnterpriseCompanyStories/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LayoutFooterContact
+                darkButtonText="Get Started"
+                darkButtonHref="https://kestra.io/docs/getting-started/quickstart"
+                purpleButtonText="Talk to Us"
+                purpleButtonHref="https://kestra.io/demo"
+            />
+        </NuxtLazyHydrate>
     </div>
 </template>
 
