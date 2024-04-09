@@ -39,7 +39,15 @@
                 <div class="hero row justify-content-center align-items-center">
                     <div class="col-12 col-md-6">
                         <div class="configurations-img" data-aos="fade-left">
-                            <img src="/terraform/overview/declarative-configurations-code.svg" class="w-100" alt="declarative configurations code svg">
+                            <NuxtImg
+                                loading="lazy"
+                                format="webp"
+                                width="562px"
+                                height="426px"
+                                src="/terraform/overview/declarative-configurations-code.svg"
+                                class="w-100"
+                                alt="declarative configurations code svg"
+                            />
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
@@ -60,7 +68,15 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="resource-management-image" data-aos="fade-right">
-                            <img src="/terraform/overview/modular-resource-management-code.svg" class="w-100" alt="modular resource management code svg">
+                            <NuxtImg
+                                loading="lazy"
+                                format="webp"
+                                width="562px"
+                                height="354px"
+                                src="/terraform/overview/modular-resource-management-code.svg"
+                                class="w-100"
+                                alt="modular resource management code svg"
+                            />
                         </div>
                     </div>
                     <div class="col-12 col-md-6 px-5 px-md-0" data-aos="zoom-in">
