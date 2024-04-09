@@ -1,8 +1,9 @@
 ---
 title: Kestra Enterprise Licence Agreement
-description:
+description: Software license agreement
 ---
-# SOFTWARE LICENSE AGREEMENT TERMS & CONDITIONS
+
+## SOFTWARE LICENSE AGREEMENT TERMS & CONDITIONS
 
 *This software license agreement (the “Agreement”) is between Kestra Technologies, a French simplified joint stock company (“Kestra,” “we,” “us,” or “our”) and the legal entity identified in the Order (“You”). This Agreement sets forth the terms and conditions that govern order(s) placed by You under the Agreement.*
 
