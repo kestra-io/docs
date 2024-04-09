@@ -5,45 +5,55 @@
                 <div class="companies-list-container">
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
-                            <img
+                            <NuxtImg
+                                loading="lazy"
+                                format="webp"
                                 data-aos="fade-up"
                                 :class="{'inverted': inverted}"
                                 :data-aos-delay="index*50"
-                                :src="'/landing/companies/' + img  + '.svg'"
-                                :alt="img"
+                                :src="'/landing/companies/' + img.name  + '.svg'"
+                                :alt="img.name"
+                                :width="img.width"
+                                :heigth="img.heigth"
                             />
                         </template>
                     </div>
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
-                            <img
+                            <NuxtImg
                                 data-aos="fade-up"
                                 :class="{'inverted': inverted}"
                                 :data-aos-delay="index*50"
-                                :src="'/landing/companies/' + img  + '.svg'"
-                                :alt="img"
+                                :src="'/landing/companies/' + img.name  + '.svg'"
+                                :alt="img.name"
+                                :width="img.width"
+                                :heigth="img.heigth"
                             />
                         </template>
                     </div>
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
-                            <img
+                            <NuxtImg
                                 data-aos="fade-up"
                                 :class="{'inverted': inverted}"
                                 :data-aos-delay="index*50"
-                                :src="'/landing/companies/' + img  + '.svg'"
-                                :alt="img"
+                                :src="'/landing/companies/' + img.name  + '.svg'"
+                                :alt="img.name"
+                                :width="img.width"
+                                :heigth="img.heigth"
                             />
                         </template>
                     </div>
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
-                            <img
+                            <NuxtImg
                                 data-aos="fade-up"
                                 :class="{'inverted': inverted}"
                                 :data-aos-delay="index*50"
-                                :src="'/landing/companies/' + img  + '.svg'"
-                                :alt="img"
+                                :src="'/landing/companies/' + img.name  + '.svg'"
+                                :alt="img.name"
+                                :width="img.width"
+                                :heigth="img.heigth"
                             />
                         </template>
                     </div>
@@ -65,23 +75,23 @@
         computed: {
             companies() {
                 return [
-                    "acxiom",
-                    "bouygues-immobilier",
-                    "leroymerlin",
-                    "experian",
-                    "sophia-genetics",
-                    "cleverconnect",
-                    "tencent",
-                    "gorgias",
-                    "jcdecaux",
-                    "aimtec",
-                    "hcl",
-                    "clever-cloud",
-                    "quadis",
-                    "huawei",
-                    "ca",
-                    "accredible",
-                    "merkle"
+                    { name: "acxiom", width: "130px", height: "29px" },
+                    { name: "bouygues-immobilier", width: "132px", height: "53px" },
+                    { name: "leroymerlin", width: "63px", height: "39px" },
+                    { name: "experian", width: "116px", height: "37px" },
+                    { name: "sophia-genetics", width: "119px", height: "37px" },
+                    { name: "cleverconnect", width: "136px", height: "29px" },
+                    { name: "tencent", width: "189px", height: "25px" },
+                    { name: "gorgias", width: "118px", height: "29px" },
+                    { name: "jcdecaux", width: "140px", height: "53px" },
+                    { name: "aimtec", width: "134px", height: "35px" },
+                    { name: "hcl", width: "77px", height: "11px" },
+                    { name: "clever-cloud", width: "117px", height: "29px" },
+                    { name: "quadis", width: "117px", height: "23px" },
+                    { name: "huawei", width: "54px", height: "53px" },
+                    { name: "ca", width: "63px", height: "45px" },
+                    { name: "accredible", width: "167px", height: "27px" },
+                    { name: "merkle", width: "140px", height: "19px" },
                 ]
                     .sort(() => .5 - Math.random())
             },
