@@ -1,6 +1,6 @@
 ---
-title: "Building AWS Data Pipeline with Kestra"
-description: "Put together an AWS Data Pipeline consisting of DynamoDB, S3 and Redshift using Kestra."
+title: "Data Pipelines on Amazon Redshift — How to Orchestrate AWS Services with Kestra"
+description: "Build Data Pipelines consisting of AWS services, including DynamoDB, S3, and Redshift using Kestra."
 date: 2024-04-10T10:00:00
 category: Solutions
 author:
@@ -8,7 +8,7 @@ author:
   image: "smantri"
 ---
 
-Amazon Web Services(AWS) is a leading cloud provider with heavy industry adoption. This blog post dives into [Kestra's](https://github.com/kestra-io/kestra) integrations for AWS, with an example of a real-world data pipeline. The data pipeline consists of multiple AWS services like DynamoDB, S3 and Redshift, which are put together using Kestra's orchestration capabilities.
+This blog post dives into [Kestra's](https://github.com/kestra-io/kestra) integrations for AWS, with an example of a real-world data pipeline I used in my daily work as a data engineer. The data pipeline consists of multiple AWS services, including DynamoDB, S3, and Redshift, which are orchestrated using Kestra.
 
 ## Kestra and AWS
 
@@ -16,13 +16,13 @@ AWS offers a vast array of cloud services, including computing power, storage, d
 
 Kestra is a powerful orchestration engine with a rich set of plugins. Kestra seamlessly integrates with multiple [AWS services](https://kestra.io/plugins/plugin-aws) making it easy to orchestrate AWS services based data pipelines.
 
-## Usecase
+## Use case
 
 In this blog post, we will develop a data pipeline that has data about [products](https://raw.githubusercontent.com/kestra-io/datasets/main/csv/products.csv) and [orders](https://raw.githubusercontent.com/kestra-io/datasets/main/csv/products.csv). We start with both the data sets being present as CSV files. Our final aim is to join these two data sets and have detailed orders, where each order record has complete product information, in the CSV format.
 
 In the actual world, dimension data like products would be present in databases like RDS or DynamoDB, while fact data like orders will be present on file systems like S3. Taking this into consideration, we will have a data preparation phase where we would load the products CSV file onto DynamoDB, and orders CSV file onto S3 using Kestra.
 
-Then, we would proceed to create the data pipeline. We would load the products data fron DynamoDB onto Redshift, and load orders data from S3 onto Redshift. We would join these two tables from Redshift, and upload the detailed orders onto S3.
+Then, we will proceed to create the data pipeline. We will load the product data from DynamoDB onto Redshift and load order data from S3 onto Redshift. We'll join these two tables from Redshift and upload the detailed orders to S3.
 
 ![aws_data_pipeline](/blogs/2024-03-10-aws-data-pipeline/aws_data_pipeline.png)
 
@@ -34,7 +34,7 @@ For uploading data onto DynamoDB, we will first create the `products` table in D
 
 ![products_dynamodb_table](/blogs/2024-03-10-aws-data-pipeline/products_dynamodb_table.png)
 
-In order to upload the product records, we will call the PutItem task on DynamoDB for each of the product records from the products CSV file. Hence, we would have a `product_upload` flow that converts each incoming product record into JSON, and then writes the record onto DynamoDB using PutItem task.
+In order to upload the product records, we will call the PutItem task on DynamoDB for each of the product records from the products CSV file. Hence, we will have a `product_upload` flow that converts each incoming product record into JSON, and then writes the record onto DynamoDB using PutItem task.
 
 ```yaml
 id: product_upload
