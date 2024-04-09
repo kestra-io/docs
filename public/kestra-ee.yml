@@ -9137,6 +9137,36 @@ paths:
                 type: object
                 additionalProperties:
                   $ref: '#/components/schemas/PluginIcon'
+  /api/v1/plugins/icons/groups:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins icons
+      operationId: pluginGroupIcons
+      responses:
+        "200":
+          description: pluginGroupIcons 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/PluginIcon'
+  /api/v1/plugins/icons/groups/{tenant}:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins icons
+      operationId: pluginGroupIcons_1
+      responses:
+        "200":
+          description: pluginGroupIcons_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/PluginIcon'
   /api/v1/plugins/icons/{tenant}:
     get:
       tags:
