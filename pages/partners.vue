@@ -1,11 +1,21 @@
 <template>
     <div>
         <PartnersHeaders/>
-        <Partners/>
-        <PartnersIntegratesWith/>
-        <PartnersBetterTogether/>
-        <PartnersPerksAndBenefits/>
-        <PartnersBecomeAPartner/>
+        <NuxtLazyHydrate when-visible>
+            <Partners/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <PartnersIntegratesWith/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <PartnersBetterTogether/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <PartnersPerksAndBenefits/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <PartnersBecomeAPartner/>
+        </NuxtLazyHydrate>
     </div>
 </template>
 

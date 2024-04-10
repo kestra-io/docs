@@ -15,50 +15,54 @@
             :hero-image="story.heroImage"
         />
 
-        <div class="container">
-            <div class="story-container">
-                <ContentRendererMarkdown class="bd-markdown" :value="content1" />
-                <div class="d-flex flex-wrap gap-4 my-5">
-                    <div class="card task-card">
-                        <div class="card-body">
-                            <div ref="root" class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" title="Kestra">
-                                <img src="/landing/usecases/stories/monograme-kestra.svg" alt="Kestra">
+        <NuxtLazyHydrate when-visible>
+            <div class="container">
+                <div class="story-container">
+                    <ContentRendererMarkdown class="bd-markdown" :value="content1" />
+                    <div class="d-flex flex-wrap gap-4 my-5">
+                        <div class="card task-card">
+                            <div class="card-body">
+                                <div ref="root" class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" title="Kestra">
+                                    <img src="/landing/usecases/stories/monograme-kestra.svg" alt="Kestra">
+                                </div>
+                                <p class="card-title">Kestra</p>
                             </div>
-                            <p class="card-title">Kestra</p>
+                        </div>
+                        <div class="card task-card" v-for="task in story.tasks" :key="task">
+                            <div class="card-body">
+                                <CommonTaskIcon :cls="task" />
+                                <p class="card-title">{{generateTagName(task)}}</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="card task-card" v-for="task in story.tasks" :key="task">
-                        <div class="card-body">
-                            <CommonTaskIcon :cls="task" />
-                            <p class="card-title">{{generateTagName(task)}}</p>
-                        </div>
-                    </div>
-                </div>
 
-                <ContentRendererMarkdown class="bd-markdown" :value="content2" />
-            </div>
-            <div class="section-content">
-                <LayoutSection subtitle-before="Similar" subtitle="Kestra" subtitle-after="Stories" v-if="related">
-                    <div class="row">
-                        <div class="col-12 col-md-6 col-lg-4" v-for="(story, index) in related.results"
-                             :key="index">
-                            <StoriesCard :story="story" />
+                    <ContentRendererMarkdown class="bd-markdown" :value="content2" />
+                </div>
+                <div class="section-content">
+                    <LayoutSection subtitle-before="Similar" subtitle="Kestra" subtitle-after="Stories" v-if="related">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-4" v-for="(story, index) in related.results"
+                                 :key="index">
+                                <StoriesCard :story="story" />
+                            </div>
                         </div>
+                    </LayoutSection>
+                    <div class="d-flex justify-content-center">
+                        <NuxtLink href="/use-cases/stories">
+                            <button class="btn btn-animated btn-purple-animated mb-2 aos-init aos-animate">See all stories</button>
+                        </NuxtLink>
                     </div>
-                </LayoutSection>
-                <div class="d-flex justify-content-center">
-                    <NuxtLink href="/use-cases/stories">
-                        <button class="btn btn-animated btn-purple-animated mb-2 aos-init aos-animate">See all stories</button>
-                    </NuxtLink>
                 </div>
             </div>
-        </div>
-        <LayoutFooterContact
-            title="Getting started with Kestra"
-            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-            darkButtonText="Read the docs"
-            purpleButtonText="Get started!"
-        />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LayoutFooterContact
+                title="Getting started with Kestra"
+                subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+                darkButtonText="Read the docs"
+                purpleButtonText="Get started!"
+            />
+        </NuxtLazyHydrate>
     </div>
 </template>
 <script setup>

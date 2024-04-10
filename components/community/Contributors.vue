@@ -6,7 +6,11 @@
             <div v-if="contributors" class="contributors d-flex flex-wrap justify-content-center">
                 <template v-for="(contributor) in contributorsRand">
                     <a :href="'https://github.com/' + contributor.name" target="_blank" class="d-flex flex-column gap-3 align-items-center" data-aos="zoom-in" >
-                        <img
+                        <NuxtImg
+                            width="90px"
+                            height="90px"
+                            loading="lazy"
+                            format="webp"
                             class="rounded-circle"
                             :src="contributor.avatar"
                             :alt="contributor.name"
