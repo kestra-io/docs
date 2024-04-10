@@ -73,7 +73,7 @@
                 </div>
             </div>
             <div class="right-side-bar bg-dark-2 rounded-3 col-12 col-md-4 col-lg-3">
-                <h5 class="heading mb-4">Last Community’s News</h5>
+                <h5 class="heading mb-4">Latest Community News</h5>
                 <div v-for="news in externalNews" :key="news.id">
                     <BlogsBlogCard :blog="news" data-aos="zoom-in" />
                 </div>
