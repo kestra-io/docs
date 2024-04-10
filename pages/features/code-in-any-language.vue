@@ -6,17 +6,27 @@
         </Head>
 
         <FeaturesLanguageHeader />
-        <FeaturesLanguageFeatures />
-        <FeaturesLanguageGitOptions />
-        <FeaturesLanguageIntegrationsInfo />
-        <FeaturesLanguagePlugins />
-        <LayoutFooterContact
-            title="Getting Started with  Declarative Orchestration"
-            darkButtonText="Get started"
-            darkButtonHref="docs/getting-started"
-            purpleButtonText="Talk to us"
-            purpleButtonHref="https://kestra.io/demo"
-        />
+        <NuxtLazyHydrate when-visible>
+            <FeaturesLanguageFeatures />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesLanguageGitOptions />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesLanguageIntegrationsInfo />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesLanguagePlugins />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LayoutFooterContact
+                title="Getting Started with  Declarative Orchestration"
+                darkButtonText="Get started"
+                darkButtonHref="docs/getting-started"
+                purpleButtonText="Talk to us"
+                purpleButtonHref="https://kestra.io/demo"
+            />
+        </NuxtLazyHydrate>
     </div>
 </template>
 
