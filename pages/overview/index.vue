@@ -6,15 +6,23 @@
                   content="Orchestrate your business-critical applications. Take full advantage of the speed, and performance of Kestra's orchestration platform"/>
         </Head>
         <OverviewHeader/>
-        <OverviewWorkflow/>
-        <OverviewFeatures/>
-        <OverviewEnterpriseEdition/>
-        <LayoutFooterContact
-            title="Get Started With Kestra"
-            darkButtonText="Talk to Us"
-            darkButtonHref="/demo"
-            purpleButtonText="Get started"
-        />
+        <NuxtLazyHydrate when-visible>
+            <OverviewWorkflow/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <OverviewFeatures/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <OverviewEnterpriseEdition/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LayoutFooterContact
+                title="Get Started With Kestra"
+                darkButtonText="Talk to Us"
+                darkButtonHref="/demo"
+                purpleButtonText="Get started"
+            />
+        </NuxtLazyHydrate>
     </div>
 </template>
 
