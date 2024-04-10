@@ -122,7 +122,6 @@
     })
 
     const {data: related} = await useAsyncData('related-stories', () => {
-        console.log(config.public.apiUrl);
         return $fetch(`${config.public.apiUrl}/customer-stories?size=3`)
     })
 
