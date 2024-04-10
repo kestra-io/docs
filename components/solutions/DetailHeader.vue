@@ -12,7 +12,15 @@
                     </div>
                 </div>
                 <div class="col-lg-6 order-0 order-lg-1">
-                    <img class="mt-md-0" data-aos="zoom-in" :src="image" :alt="title" />
+                    <NuxtImg
+                        :width="imageWidth"
+                        loading="lazy"
+                        format="webp"
+                        class="mt-md-0"
+                        data-aos="zoom-in"
+                        :src="image"
+                        :alt="title"
+                    />
                 </div>
             </div>
         </div>
@@ -42,6 +50,10 @@
                 type: String,
                 required: true,
             },
+            imageWidth: {
+              type: String,
+              required: true,
+            }
         }
     }
 </script>
