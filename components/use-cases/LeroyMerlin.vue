@@ -4,7 +4,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div>
-                        <img :src="content.logo.href" :alt="content.logo.alt" />
+                        <NuxtImg
+                            :width="content.logo.width"
+                            :height="content.logo.height"
+                            loading="lazy"
+                            format="webp"
+                            :src="content.logo.href"
+                            :alt="content.logo.alt"
+                        />
                         <p class="my-3 subtitle">{{ content.logo.subtitle }}</p>
                     </div>
                     <h4 class="title fw-light">
@@ -28,7 +35,11 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <img
+                    <NuxtImg
+                        :width="content.image.width"
+                        :height="content.image.height"
+                        loading="lazy"
+                        format="webp"
                         class="zoom img-fluid"
                         :src="content.image.href"
                         :alt="content.image.alt"

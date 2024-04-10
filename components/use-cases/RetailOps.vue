@@ -10,7 +10,14 @@
                 <div class="col-md-6 my-2 my-md-4">
                     <div class="d-flex">
                         <div class="icon">
-                            <img :src="item.icon" :alt="item.title" />
+                            <NuxtImg
+                                width="69px"
+                                height="69px"
+                                loading="lazy"
+                                format="webp"
+                                :src="item.icon"
+                                :alt="item.title"
+                            />
                         </div>
                         <div>
                             <h4 class="fw-light mb-2">{{ item.title }}</h4>

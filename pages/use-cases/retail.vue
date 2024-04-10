@@ -6,14 +6,24 @@
     <div class="main">
         <RetailCard :content="header" />
         <Line />
-        <UseCasesExamples :content="solutions" />
-        <Line />
-        <LeroyMerlin :content="leroy" />
-        <Line />
-        <RetailOps :content="ops" />
-        <Plugins :content="plugins" />
-        <Line />
-        <Footer :content="footer" />
+        <NuxtLazyHydrate when-visible>
+            <UseCasesExamples :content="solutions" />
+            <Line />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LeroyMerlin :content="leroy" />
+            <Line />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <RetailOps :content="ops" />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <Plugins :content="plugins" />
+            <Line />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <Footer :content="footer" />
+        </NuxtLazyHydrate>
     </div>
 </template>
 

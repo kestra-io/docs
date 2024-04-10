@@ -19,7 +19,9 @@ export default {
         image: {
             href: "/write-for-us/hero.svg",
             alt: "Header",
-            style: "image-community"
+            style: "image-community",
+            width: '546px',
+            height: '554px'
         },
     },
     drafts: {

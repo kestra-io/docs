@@ -7,21 +7,31 @@
         <div>
             <HeaderCard :content="data.header" />
             <Line class="divider-md" />
-            <Examples :content="data.drafts" />
-            <Line class="mb-0" />
-            <Write :content="data.write" />
-            <Line class="mt-0 mb-0" />
-            <Process :content="data.process" />
-            <Faqs :content="data.faqs" />
-            <Line />
-            <LayoutFooterContact
-                :title="data.footer.title"
-                :subtitle="data.footer.subtitle"
-                :darkButtonText="data.footer.cta[0].text"
-                :darkButtonHref="data.footer.cta[0].href"
-                :purpleButtonText="data.footer.cta[1].text"
-                :purpleButtonHref="data.footer.cta[1].href"
-            />
+            <NuxtLazyHydrate when-visible>
+                <Examples :content="data.drafts" />
+                <Line class="mb-0" />
+            </NuxtLazyHydrate>
+            <NuxtLazyHydrate when-visible>
+                <Write :content="data.write" />
+                <Line class="mt-0 mb-0" />
+            </NuxtLazyHydrate>
+            <NuxtLazyHydrate when-visible>
+                <Process :content="data.process" />
+            </NuxtLazyHydrate>
+            <NuxtLazyHydrate when-visible>
+                <Faqs :content="data.faqs" />
+                <Line />
+            </NuxtLazyHydrate>
+            <NuxtLazyHydrate when-visible>
+                <LayoutFooterContact
+                    :title="data.footer.title"
+                    :subtitle="data.footer.subtitle"
+                    :darkButtonText="data.footer.cta[0].text"
+                    :darkButtonHref="data.footer.cta[0].href"
+                    :purpleButtonText="data.footer.cta[1].text"
+                    :purpleButtonHref="data.footer.cta[1].href"
+                />
+            </NuxtLazyHydrate>
         </div>
     </div>
 </template>
