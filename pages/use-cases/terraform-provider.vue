@@ -4,9 +4,14 @@
           <Meta name="description" content="Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations." />
         </Head>
     <div class="main bg-dark-4">
-            <TerraformHeader/>
+        <TerraformHeader/>
+        <NuxtLazyHydrate when-visible>
             <TerraformOverview />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
             <TerraformUseCases />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
             <LayoutFooterContact
                 subtitle="Integration between Kestra and Terraform is simple. Add the Kestra provider to your Terraform configuration file to get started."
                 darkButtonText="YouTube playlist"
@@ -14,6 +19,7 @@
                 purpleButtonText="Documentation"
                 purpleButtonHref="/docs/terraform"
             />
+        </NuxtLazyHydrate>
     </div>
 </template>
 

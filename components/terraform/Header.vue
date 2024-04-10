@@ -17,8 +17,16 @@
                     </div>
                 </div>
                 <div class="order-0 order-md-1 d-flex d-md-none">
-                    <img class="img-container img-fluid" src='/terraform/header/background.svg'
-                        alt="terraform logo with a dark background" data-aos="zoom-in" />
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        width="678px"
+                        height="667px"
+                        class="img-container img-fluid"
+                        src='/terraform/header/background.svg'
+                        alt="terraform logo with a dark background"
+                        data-aos="zoom-in"
+                    />
                 </div>
             </div>
         </div>
