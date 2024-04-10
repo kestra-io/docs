@@ -1,7 +1,7 @@
 <template>
     <div class="mt-5 mb-2" ref='blogs'>
         <div v-if="slug === '/blogs/community'">
-            <h2 data-aos="fade-left">Community’s News</h2>
+            <h2 data-aos="fade-left">Community News</h2>
             <div class="row mt-5">
                 <div
                     v-for="news in externalNews"
