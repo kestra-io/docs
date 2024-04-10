@@ -17,7 +17,15 @@
                     </div>
                 </div>
                 <div class="col-md-6 mb-5" data-aos="zoom-in">
-                    <img class="zoom img-fluid" src="/landing/features/scheduling/header/header.svg" alt="A screenshot of the Scheduling page"/>
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        width="806px"
+                        height="601px"
+                        class="zoom img-fluid"
+                        src="/landing/features/scheduling/header/header.svg"
+                        alt="A screenshot of the Scheduling page"
+                    />
                 </div>
             </div>
         </div>

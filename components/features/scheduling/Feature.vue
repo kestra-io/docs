@@ -2,10 +2,14 @@
   <div class="feature pt-5">
     <div class="container">
       <div class="text-center">
-        <img
-          class="img-fluid"
-          src="/landing/features/scheduling/feature/workflow.svg"
-          alt="A screenshot of the Scheduling Page"
+        <NuxtImg
+            loading="lazy"
+            format="webp"
+            width="568px"
+            height="144px"
+            class="img-fluid"
+            src="/landing/features/scheduling/feature/workflow.svg"
+            alt="A screenshot of the Scheduling Page"
         />
       </div>
       <div class="heading mx-auto pb-4">
