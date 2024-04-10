@@ -16,7 +16,7 @@
                             format="webp"
                             quality="80"
                             densities="x1 x2"
-                            class="me-3"
+                            class="me-3 page-icon"
                         />
                         <span v-html="transformTitle(page.title)"></span>
                     </h1>
@@ -100,7 +100,7 @@
             pageUrl = `/api/plugins?page=${parts[2]}&type=plugin`
         }
 
-        const {data: pluginInformation, error} = await useAsyncData(`Container-${hash(pageUrl)}`, () => {
+        const {data: pluginInformation} = await useAsyncData(`Container-${hash(pageUrl)}`, () => {
             return $fetch(pageUrl)
         });
 
@@ -285,7 +285,7 @@
         }
     }
 
-    .docs :deep(img) {
+    .docs :deep(img:not(.page-icon)) {
         width: 100%;
     }
 </style>
