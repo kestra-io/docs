@@ -31,6 +31,11 @@
                                 :src="page.image"
                                 fit="cover"
                             />
+                            <div class="subtitle">
+                                <p>
+                                    {{ page.description }}
+                                </p>
+                            </div>
                             <ClientOnly>
                                 <ContentRendererMarkdown
                                     class="bd-markdown mt-4"
@@ -221,6 +226,18 @@
             z-index: -147;
             filter: blur(100px);
             background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+        }
+
+        .subtitle {
+            padding: 2rem 0 calc($spacer * 1.75);
+            border-bottom: 1px solid $black-6;
+            p {
+                font-size: calc($font-size-base * 1.438);
+                font-weight: 600;
+                line-height: calc($spacer * 1.75);
+                color: #CDD5EF;
+                margin: 0;
+            }
         }
     }
 
