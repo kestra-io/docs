@@ -1,7 +1,7 @@
 <template>
     <div class="mt-5 mb-2" ref='blogs'>
         <div v-if="slug === '/blogs/community'">
-            <h2 data-aos="fade-left">Community’s News</h2>
+            <h2 data-aos="fade-left">Community News</h2>
             <div class="row mt-5">
                 <div
                     v-for="news in externalNews"
@@ -73,7 +73,7 @@
                 </div>
             </div>
             <div class="right-side-bar bg-dark-2 rounded-3 col-12 col-md-4 col-lg-3">
-                <h5 class="heading mb-4">Last Community’s News</h5>
+                <h5 class="heading mb-4">Latest Community News</h5>
                 <div v-for="news in externalNews" :key="news.id">
                     <BlogsBlogCard :blog="news" data-aos="zoom-in" />
                 </div>
