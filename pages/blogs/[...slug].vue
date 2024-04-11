@@ -255,16 +255,24 @@
         display: none;
     }
 
-    :deep(.bd-markdown > h2) {
-        margin-top: calc($spacer * 4.12);
-        border-top: 1px solid $black-6;
-        padding-top: calc($spacer * 3.125);
-        margin-bottom: 2rem;
+    :deep(.bd-markdown) {
+        h2 {
+            margin-top: calc($spacer * 4.12);
+            border-top: 1px solid $black-6;
+            padding-top: calc($spacer * 3.125);
+            margin-bottom: 2rem;
 
-        a {
-            border-left: 5px solid $purple-36;
-            padding-left: calc($spacer * 0.6);
-            font-size: calc($font-size-base * 2.25);
+            a {
+                border-left: 5px solid $purple-36;
+                padding-left: calc($spacer * 0.6);
+                font-size: calc($font-size-base * 2.25);
+            }
+        }
+
+        h2:first-of-type {
+            border-top: none;
+            padding-top: 0;
+            margin-top: calc($spacer * 3.12);
         }
     }
 
