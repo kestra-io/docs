@@ -131,11 +131,11 @@ triggers:
 
 ## Setup the War Room in case of Infrastructure Urgency
 
-Incident management is usually spread over diverse teams and responsibilities. Some engineers have to be on duty. Some managers would like to get notified and stick to the last incident events. You usually want to create a short-lived communication channel and gather all those responsible for managing the issue.
+Incident management is usually spread over diverse teams and responsibilities. Some engineers have to be on duty. Some managers would like to get notified and stick to the last incident events. You usually want what's called a ["war room"](https://www.pagerduty.com/resources/learn/what-is-a-war-room/), to create a short-lived communication channel and gather all those responsible for managing the issue.
 
-This involves several tools and processes. Depending on the the level of maturity and complexity of the company it can be hard to streamline the “war room” process and improve the Mean Time To Repair metric.
+This involves several tools and processes. Depending on the the level of maturity and complexity of the company it can be hard to streamline the “war room” process and improve the Mean Time To Repair metric. An automation platform like Kestra allows to manage all this setup and interconnect all the necessary tools during the process.
 
-Here is an example of Kestra flow that listens to Graphana metrics critical to the underlying business. When a metric is larger than the SLA threshold, it will automatically trigger a war room setup by creating a ticket with Service Now, creating a dedicated “war room channel” in Slack, and sending an alert through Pager Duty to easily head up the engineer in duty while managing team rotation.
+Here is an example of Kestra flow that listens to [Grafana](https://grafana.com/) metrics critical to the underlying business. When a metric is larger than the SLA threshold, it will automatically trigger a war room setup by creating a ticket with [Service Now](https://kestra.io/plugins/plugin-servicenow), creating a dedicated “war room channel” in Slack, and sending an alert through [Pager Duty](https://pagerduty.com/) to easily head up the engineer in duty while managing team rotation.
 
 ```yaml
 id: war-room-setup
@@ -198,6 +198,8 @@ triggers:
 ![war room topology](/blogs/2024-04-11-http-trigger/war-room-topology.png)
 
 ## Conclusion
+
+
 
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
