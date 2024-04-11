@@ -325,7 +325,7 @@
                     <li class="nav-item">
                         <a href="/slack"
                             class="btn btn-sm d-none d-lg-inline-block icon-button"
-                            target="_blank" title="Join our slack">
+                            target="_blank" title="Join our Slack">
                             <Slack />
                         </a>
 
