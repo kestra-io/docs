@@ -26,7 +26,6 @@
     "bootstrap": "^5.3.3",
     "dagre": "^0.8.5",
     "dayjs": "^1.11.9",
-    "esbuild": "^0.20.2",
     "highlight-words-core": "^1.2.2",
     "humanize-duration": "^3.30.0",
     "js-yaml": "^4.1.0",
