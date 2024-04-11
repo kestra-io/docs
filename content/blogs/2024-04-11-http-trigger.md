@@ -10,20 +10,17 @@ image: /blogs/2024-04-11-http-trigger.jpg
 ---
 
 If you’re into automation you know cron schedule and file system event listening are the basics. We need to run jobs on a daily schedule and listen to new files arriving on the FTP or S3 buckets.
-
 But what is the second most important part of automation?
 
 Connecting to third-party API.
 
-Nowadays it’s common to monitor and manage many different tools, operating on various company domains. Kestra already provides a control plane to manage dependencies between these.
-
-But connecting to any API tool while keeping with a simple semantic is the crux.
+Nowadays it’s common to monitor and manage many different tools, operating on various company domains. Kestra already provides a control plane to manage dependencies between these. But connecting to any API tool while keeping with a simple semantic is the crux.
 
 And this is exactly what we are going to show you in this blog post.
 
 ## Real-time Processing Relies on Real-time Action
 
-The ultimate goal of automation is to trigger action based on business events. What happens when the product stock is too low to support new orders? How to deal with unused analytics dashboards and improve data governance in the company? How to scale the underlying application infrastructure when traffic is unusual during pics of activity?
+The ultimate goal of automation is to trigger action based on business events. What happens when the product stock is too low to support new orders? How to deal with unused analytics dashboards and improve data governance in the company, how to scale the underlying application infrastructure when traffic is unusual during pics of activity?
 
 Let’s dive into 3 examples of [Kestra’s HTTP trigger task](https://kestra.io/plugins/plugin-fs/triggers/http/io.kestra.plugin.fs.http.trigger) that allows triggering workflows based on API status.
 
@@ -199,7 +196,7 @@ triggers:
 
 ## Conclusion
 
-The we can automate tasks, the more time we have for important things that help the business. It's like a never-ending race to make things faster and smoother!
+The more we can automate tasks, the more time we have for important things that help the business. It's like a never-ending race to make things faster and smoother!
 
 The key is to connect with the things that make your applications run, often through APIs. Kestra makes it easy to connect to any API and even start workflows based on real-world events!
 
