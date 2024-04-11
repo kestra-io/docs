@@ -2,11 +2,11 @@
     <div class="config-property-card">
         <table class="table table-dark">
             <tr>
-                <td class="label">Type:</td>
+                <td class="label">Type</td>
                 <td>{{ type }}</td>
             </tr>
             <tr>
-                <td class="label">Default:</td>
+                <td class="label">Default</td>
                 <td><prose-code-inline>{{ defaultValue }}</prose-code-inline></td>
             </tr>
             <tr v-if="validValues">
