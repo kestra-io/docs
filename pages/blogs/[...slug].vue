@@ -233,7 +233,7 @@
             border-bottom: 1px solid $black-6;
             p {
                 font-size: calc($font-size-base * 1.438);
-                font-weight: 600;
+                font-weight: 400;
                 line-height: calc($spacer * 1.75);
                 color: #CDD5EF;
                 margin: 0;
