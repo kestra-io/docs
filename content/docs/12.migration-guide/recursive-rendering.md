@@ -4,7 +4,7 @@ icon: /docs/icons/migration-guide.svg
 release: 0.14.0
 ---
 
-Since release 0.14.0, kestra's templating engine has changed the default rendering behavior to **not recursive**.
+Since 0.14.0, kestra's templating engine has changed the default rendering behavior to **not recursive**.
 
 ## Why the change?
 
