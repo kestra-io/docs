@@ -9,7 +9,7 @@
         <Section
             subtitle="Orchestrate Success"
             subtitle-after="Together"
-            baseline="Join our Slack Community to share ideas and best practices, get help with technical questions, and discuss any concerns with other developers."
+            baseline="Join our Slack Community to share ideas and best practices, get help with technical questions, and discuss with other developers."
         >
             <div class="row card-group no-shadow mb-2">
                 <div class="col-md-4 mb-4">
@@ -24,7 +24,7 @@
                     <Card
                         :icon="HandWave"
                         title="Say Hi"
-                        description="New to the community? Tell us about yourself and your Kestra use case in the #introductions channel."
+                        description="New to the community? Tell us about yourself and how you're using Kestra in the #introductions channel."
                     />
                 </div>
 
@@ -38,7 +38,7 @@
             </div>
             <div class="text-center">
                 <a href="https://kestra.io/slack" class="btn btn-animated btn-purple-animated me-2" target="_blank"  data-aos="zoom-in">
-                    Join our slack
+                    Join our Slack
                 </a>
             </div>
         </Section>
