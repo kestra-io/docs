@@ -1,6 +1,6 @@
 ---
 title: "Connect to Any API; Automate Everything"
-description: "How to trigger real-time action flows through API connected to the real-world?"
+description: "How to trigger real actions through API connected to the real-world?"
 date: 2024-04-11T17:00:00
 category: Solutions
 author:
@@ -18,7 +18,7 @@ Nowadays it’s common to monitor and manage many different tools, operating on 
 
 And this is exactly what we are going to show you in this blog post.
 
-## Real-time Processing Relies on Real-time Action
+## Business Relies on Event Management
 
 The ultimate goal of automation is to trigger action based on business events. What happens when the product stock is too low to support new orders? How to deal with unused analytics dashboards and improve data governance in the company, how to scale the underlying application infrastructure when traffic is unusual during pics of activity?
 
