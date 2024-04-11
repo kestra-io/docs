@@ -1,6 +1,6 @@
 ---
 title: "Connect to Any API; Automate Everything"
-description: ""
+description: "How to trigger real-time action flows through API connected to the real-world?"
 date: 2024-04-11T17:00:00
 category: Solutions
 author:
