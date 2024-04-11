@@ -33,7 +33,7 @@
                         data-bs-target="#nav-toc"
                     />
                     <PrevNext v-if="prevNext" :navigation="navigation" />
-                    <LayoutBluerpintsCardsCarusel />
+                    <LayoutBluerpintsCardsCarusel :query="queryType" />
                 </div>
             </ContentRenderer>
         </article>
@@ -53,6 +53,7 @@
     const route = useRoute()
     const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
     let page;
+    let queryType;
 
     const fetchNavigation = async () => {
         let navigationFetch;
@@ -96,9 +97,11 @@
         const parts = slug.value.split('/');
         let pageUrl;
         if (parts.length > 3) {
-            pageUrl = `/api/plugins?page=${parts[parts.length - 1].replace(/.md$/, "")}&type=definitions`
+            queryType = parts[parts.length - 1]
+            pageUrl = `/api/plugins?page=${queryType.replace(/.md$/, "")}&type=definitions`
         } else {
-            pageUrl = `/api/plugins?page=${parts[2]}&type=plugin`
+          queryType = parts[2];
+            pageUrl = `/api/plugins?page=${queryType}&type=plugin`
         }
 
         const {data: pluginInformation} = await useAsyncData(`Container-${hash(pageUrl)}`, () => {

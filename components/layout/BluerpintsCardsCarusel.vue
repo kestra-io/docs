@@ -31,9 +31,15 @@
 <script setup>
   const config = useRuntimeConfig();
   const blueprints = ref([])
-
+  const props = defineProps({
+    query: {
+      type: String,
+      required: true
+    },
+  })
+  const cls = "io.kestra.plugin.jdbc.pinot.trigger"
   const { data: blueprintsData } = await useAsyncData('blueprints', () => {
-    return $fetch(`${config.public.apiUrl}/blueprints`)
+    return $fetch(`${config.public.apiUrl}/blueprints?type=${props.query}`)
   });
 
   const {data: tags} = await useAsyncData('blueprints-tags', () => {
@@ -109,6 +115,7 @@
                 font-size: calc($font-size-base * 2.25);
                 font-weight: 600;
                 margin: 0;
+                color: $white;
             }
         }
 
@@ -131,6 +138,11 @@
                 bottom: 0;
                 color: $white;
             }
+        }
+
+        .carousel--item {
+            width: 100%;
+            height: 100%;
         }
 
         :deep(.carousel) {
