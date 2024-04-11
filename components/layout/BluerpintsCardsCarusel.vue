@@ -54,15 +54,11 @@
   import Section from '../layout/Section.vue';
   import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
   import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
-  import 'vue3-carousel/dist/carousel.css';
-  import { Carousel, Slide } from 'vue3-carousel';
 
   export default {
     components: {
       ChevronLeft,
       ChevronRight,
-      Carousel,
-      Slide,
       Section,
     },
     data() {
