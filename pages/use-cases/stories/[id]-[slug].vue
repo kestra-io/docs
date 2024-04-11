@@ -54,7 +54,7 @@
             </div>
         </div>
         <LayoutFooterContact
-            title="Getting started with Kestra"
+            title="Getting Started with Kestra"
             subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
             darkButtonText="Read the docs"
             purpleButtonText="Get started!"
