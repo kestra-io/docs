@@ -2,7 +2,7 @@
 title: Architecture
 ---
 
-Kestra's architecture is designed to be scalable, flexible and fault-tolerant. Depeding on your needs, you can choose between two different architectures: **JDBC** and **Kafka**.
+Kestra's architecture is designed to be scalable, flexible and fault-tolerant. Depending on your needs, you can choose between two different architectures: **JDBC** and **Kafka**.
 
 ## Architecture with JDBC backend
 
@@ -15,7 +15,7 @@ Here are the components and their interactions:
 1. **JDBC Backend**: this is the data storage layer used for orchestration metadata.
 
 2. **Server**: this is the central part of the system, composed of:
-   - **Webserver**: this components is serving both an API and a User Interface.
+   - **Webserver**: serves both an API and a User Interface.
    - **Scheduler**: an essential part of the system that schedules workflows and handles all triggers except for the flow triggers (see below).
    - **Executor**: another critical component responsible for the orchestration logic including flow triggers.
    - **Worker**: this might be one or multiple processes that carry out the heavy computation of runnable tasks and polling triggers. For privacy reasons, workers are the only components that interact with the user's infrastructure, including the internal storage and external services.
