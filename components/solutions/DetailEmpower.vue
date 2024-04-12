@@ -42,7 +42,7 @@
     @import "../../assets/styles/variable";
 
     .container {
-        max-width: calc($spacer * 50);
+        max-width: 50rem;
     }
 
     .section {
