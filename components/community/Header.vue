@@ -12,7 +12,16 @@
                     </div>
                 </div>
                 <div class="col-md-5 order-0 order-md-1">
-                    <img src="/landing/community/header.svg" class="img-fluid" alt="Illustration of diverse people around Kestra's logo, symbolizing Kestra's thriving community"  data-aos="zoom-in"/>
+                    <NuxtImg
+                        height="572px"
+                        width="668px"
+                        loading="lazy"
+                        format="webp"
+                        src="/landing/community/header.svg"
+                        class="img-fluid"
+                        alt="Illustration of diverse people around Kestra's logo, symbolizing Kestra's thriving community"
+                        data-aos="zoom-in"
+                    />
                 </div>
             </div>
         </div>

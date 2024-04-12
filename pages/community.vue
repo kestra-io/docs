@@ -7,15 +7,23 @@
         </Head>
 
         <CommunityHeader/>
-        <CommunitySlack/>
-        <Community/>
-        <CommunityContributors/>
-        <LayoutFooterContact
-            title="Getting Started"
-            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-            darkButtonText="Read the docs"
-            purpleButtonText="Get started!"
-        />
+        <NuxtLazyHydrate when-visible>
+            <CommunitySlack/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <Community/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <CommunityContributors/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LayoutFooterContact
+                title="Getting started"
+                subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+                darkButtonText="Read the docs"
+                purpleButtonText="Get started!"
+            />
+        </NuxtLazyHydrate>
     </div>
 </template>
 

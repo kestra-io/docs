@@ -5,17 +5,27 @@
             <Meta name="description" content="interact with every aspect of the Kestra programmatically." />
         </Head>
         <FeaturesApifirstHeader />
-        <FeaturesApifirstFeatures />
-        <FeaturesApifirstGitOptions />
-        <FeaturesApifirstIntegrationsInfo />
-        <FeaturesApifirstPlugins />
-        <LayoutFooterContact
-            title="Getting Started with  Declarative Orchestration"
-            darkButtonText="Get started"
-            darkButtonHref="docs/getting-started"
-            purpleButtonText="Talk to us"
-            purpleButtonHref="https://kestra.io/demo"
-        />
+        <NuxtLazyHydrate when-visible>
+            <FeaturesApifirstFeatures />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesApifirstGitOptions />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesApifirstIntegrationsInfo />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <FeaturesApifirstPlugins />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LayoutFooterContact
+                title="Getting Started with  Declarative Orchestration"
+                darkButtonText="Get started"
+                darkButtonHref="docs/getting-started"
+                purpleButtonText="Talk to us"
+                purpleButtonHref="https://kestra.io/demo"
+            />
+        </NuxtLazyHydrate>
     </div>
 </template>
 

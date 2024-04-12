@@ -21,7 +21,9 @@ export default {
         image: {
             href: "/retail/header.svg",
             alt: "Header",
-            style: 'image-retail'
+            style: 'image-retail',
+            width: '542px',
+            height: '598px'
         },
     },
     solutions: {
@@ -60,6 +62,8 @@ export default {
             alt: "Leroy Logo",
             href: "/retail/leroy-merlin.svg",
             subtitle: "Customer Success",
+            width: "127px",
+            height: "76px"
         },
         alt: "Leroy",
         title: "Leroy Merlin France enabling data mesh architecture and 900% increase in productivity with Kestra",
@@ -77,6 +81,8 @@ export default {
         image: {
             href: "/retail/architecture.svg",
             alt: "leroy architecture",
+            width: "722px",
+            height: "594px"
         },
     },
     ops: {

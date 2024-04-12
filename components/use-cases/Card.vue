@@ -24,7 +24,11 @@
                 :class="content.image.style"
                 data-aos="zoom-in"
             >
-                <img
+                <NuxtImg
+                    :width="content.image.width"
+                    :height="content.image.height"
+                    loading="lazy"
+                    format="webp"
                     class="zoom img-fluid"
                     :src="content.image.href"
                     :alt="content.image.alt"

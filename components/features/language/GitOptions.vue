@@ -9,7 +9,14 @@
                             up-to-date.</p>
                     </div>
                     <div class="img-bar">
-                        <img src="/landing/features/language/git-with-kestra.svg" alt="GitOps with Kestra">
+                        <NuxtImg
+                            loading="lazy"
+                            format="webp"
+                            width="492px"
+                            height="314px"
+                            src="/landing/features/language/git-with-kestra.svg"
+                            alt="GitOps with Kestra"
+                        />
                     </div>
                 </div>
                 <div class="options-item">

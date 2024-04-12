@@ -3,7 +3,14 @@
         <LayoutSection title="Benefits of the Integration">
             <div class="row justify-content-center align-items-center">
                 <div class="col-12 col-md-5" data-aos="fade-left">
-                    <img src="/terraform/use-cases/reliable-deployments.svg" class="w-100" alt="reliable deployments">
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        width="749px"
+                        src="/terraform/use-cases/reliable-deployments.svg"
+                        class="w-100"
+                        alt="reliable deployments"
+                    />
                 </div>
                 <div class="col-12 col-md-5">
                     <div class="row justify-content-center">
@@ -25,7 +32,14 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-5" data-aos="fade-right">
-                    <img src="/terraform/use-cases/version-control.svg" class="w-100" alt="version control">
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        width="750px"
+                        src="/terraform/use-cases/version-control.svg"
+                        class="w-100"
+                        alt="version control"
+                    />
                 </div>
             </div>
         </LayoutSection>
