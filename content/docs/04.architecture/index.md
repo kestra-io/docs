@@ -15,24 +15,24 @@ Here are the components and their interactions:
 1. **JDBC Backend**: this is the data storage layer used for orchestration metadata.
 
 2. **Server**: this is the central part of the system, composed of:
-   - **Webserver**: serves both an API and a User Interface.
-   - **Scheduler**: an essential part of the system that schedules workflows and handles all triggers except for the flow triggers (see below).
-   - **Executor**: another critical component responsible for the orchestration logic including flow triggers.
-   - **Worker**: this might be one or multiple processes that carry out the heavy computation of runnable tasks and polling triggers. For privacy reasons, workers are the only components that interact with the user's infrastructure, including the internal storage and external services.
+   - [**Webserver**](./08.webserver.md): serves both an API and a User Interface.
+   - [**Scheduler**](./06.scheduler.md): an essential part of the system that schedules workflows and handles all triggers except for the flow triggers (see below).
+   - [**Executor**](./04.executor.md): another critical component responsible for the orchestration logic including flow triggers.
+   - [**Worker**](./05.worker.md): this might be one or multiple processes that carry out the heavy computation of runnable tasks and polling triggers. For privacy reasons, workers are the only components that interact with the user's infrastructure, including the internal storage and external services.
 
 3. **User**: interacts with the system via UI and API.
 
 4. **User’s Infrastructure**: private infrastructure components that are part of the user’s environment, which Kestra interacts with:
-   - **Internal Storage**: can be any cloud storage system within the user's infrastructure (e.g. AWS S3, Google Cloud Storage, or Azure Blob Storage).
+   - [**Internal Storage**](./09.internal-storage.md): can be any cloud storage system within the user's infrastructure (e.g. AWS S3, Google Cloud Storage, or Azure Blob Storage).
    - **External Services**: third-party APIs or services outside of Kestra which Workers might interact with to process data within a given task.
 
 The arrows indicate the direction of communication. The JDBC Backend connects to the Server, which in turn interacts with the User's Infrastructure. The User interacts with the system through the API and UI.
 
 ### Scalability with JDBC
 
-The scalable design of the architecture allows you to run multiple instances of the Webserver, Executor, Worker and Scheduler to handle increased load. As your workload increases, more instances of the required components can be added to the system to distribute the load and maintain performance. At the time of writing, Scheduler is the only component that can only be run as a single instance, but this will change in the near future.
+The scalable design of the architecture allows you to run multiple instances of the [Webserver](./08.webserver.md), [Executor](./04.executor.md), [Worker](./05.worker.md) and [Scheduler](./06.scheduler.md) to handle increased load. As your workload increases, more instances of the required components can be added to the system to distribute the load and maintain performance. At the time of writing, [Scheduler](./06.scheduler.md) is the only component that can only be run as a single instance, but this will change in the near future.
 
-The JDBC Backend can be scaled too, either through clustering or sharding, to handle larger volumes of data and a higher number of requests from the Server components. Most cloud providers offer managed database services that can be scaled up and down as needed.
+The JDBC Backend can be scaled too, either through clustering or sharding, to handle larger volumes of data and a higher number of requests from the [Server components](./02.server-components.md). Most cloud providers offer managed database services that can be scaled up and down as needed.
 
 ---
 
@@ -49,18 +49,18 @@ This architecture is designed to provide enhanced scalability, high availability
 1. **Kafka**: this component serves as the messaging backend, which communicates between different components of the system and allows for robust scalability and fault tolerance.
 
 2. **Microservices**: This layer includes several services:
-   - **Webserver**: serves the API and User Interface for interaction with the system.
-   - **Scheduler**: schedules workflows and processes all triggers except for the flow triggers.
-   - **Executor**: handles the orchestration logic, including flow triggers.
-   - **Indexer**: indexes data from Kafka to Elasticsearch for quick retrieval and search.
-   - **Worker**: runs tasks and interacts with the user's infrastructure.
+   - [**Webserver**](./08.webserver.md): serves the API and User Interface for interaction with the system.
+   - [**Scheduler**](./06.scheduler.md): schedules workflows and processes all triggers except for the flow triggers.
+   - [**Executor**](./04.executor.md): handles the orchestration logic, including flow triggers.
+   - [**Indexer**](./07.indexer.md): indexes data from Kafka to Elasticsearch for quick retrieval and search.
+   - [**Worker**](./05.worker.md): runs tasks and interacts with the user's infrastructure.
 
 3. **User**: engages with the system through the Webserver's API and UI.
 
 4. **Elasticsearch**: acts as a search and UI backend, storing logs, execution history, and enabling fast data retrieval.
 
 5. **User’s Infrastructure**: private infrastructure components that are part of the user’s environment, which Kestra interacts with:
-   - **Internal Storage**: Cloud storage services where user's data is stored (e.g. AWS S3, Google Cloud Storage, or Azure Blob Storage).
+   - [**Internal Storage**](./09.internal-storage.md): Cloud storage services where user's data is stored (e.g. AWS S3, Google Cloud Storage, or Azure Blob Storage).
    - **External Services**: APIs or services that Workers might interact with during task processing.
 
 ### Scalability with Kafka and Elasticsearch
