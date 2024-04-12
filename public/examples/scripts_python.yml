@@ -1,4 +1,4 @@
-id: python_pip
+id: python_scripts
 namespace: dev
 
 description: This flow will install the pip package in a Docker container, and use kestra's Python library to generate outputs (number of downloads of the Kestra Docker image) and metrics (duration of the script).

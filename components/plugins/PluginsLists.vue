@@ -3,9 +3,9 @@
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
                 <h1 data-aos="fade-left">Plugins</h1>
-                <h4 data-aos="fade-right">Extend Kestra with our +400 plugins</h4>
+                <h4 data-aos="fade-right">Extend Kestra with our 400+ plugins</h4>
                 <div class="col-12 search-input position-relative">
-                    <input type="text" class="form-control form-control-lg" placeholder="Search across +400 of plugins" v-model="searchQuery">
+                    <input type="text" class="form-control form-control-lg" placeholder="Search across 400+ of plugins" v-model="searchQuery">
                     <Magnify class="search-icon" />
                 </div>
             </div>
