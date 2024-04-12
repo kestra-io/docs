@@ -2,7 +2,14 @@
     <div class="container-fluid">
         <div class="container">
             <div class="d-flex justify-content-center mb-3">
-                <img src="/landing/overview/orchestration-experience.svg" alt="Orchestration Experience">
+                <NuxtImg
+                    loading="lazy"
+                    format="webp"
+                    width="288px"
+                    height="77px"
+                    src="/landing/overview/orchestration-experience.svg"
+                    alt="Orchestration Experience"
+                />
             </div>
             <Section subtitle="Enhance Your Orchestration Experience with Kestra " subtitle-after="Enterprise Edition"
                      baseline="Elevate your orchestration capabilities with Kestra's Enterprise Edition. Designed for enhanced control and security.">

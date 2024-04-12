@@ -2,7 +2,11 @@
   <LayoutSection class="mb-5">
     <div class="row justify-content-center align-items-center">
       <div class="col-12 col-md-5 workflow-image mask text-center" data-aos="fade-left">
-        <img
+      <NuxtImg
+          loading="lazy"
+          format="webp"
+          width="431px"
+          height="347px"
           src="/landing/features/scheduling/workflow/workflow_1.svg"
           alt="Centralized Control"
           class="mw-100"
@@ -38,14 +42,22 @@
         </div>
       </div>
       <div class="col-12 col-md-5 workflow-image text-center" data-aos="fade-right">
-        <img
+      <NuxtImg
+          loading="lazy"
+          format="webp"
+          width="456px"
+          height="668px"
           src="/landing/features/scheduling/workflow/workflow_2.svg"
           alt="Event Driven"
           class="mw-100"
         />
       </div>
       <div class="col-12 col-md-5 workflow-image mask-1 text-center" data-aos="fade-left">
-        <img
+      <NuxtImg
+          loading="lazy"
+          format="webp"
+          width="508px"
+          height="385px"
           src="/landing/features/scheduling/workflow/workflow_3.svg"
           alt="Everything as code"
           class="mw-100"
@@ -154,7 +166,7 @@ p {
     z-index: 1;
     background: linear-gradient(180deg, rgba(98, 24, 255, 0.00) 0%, #6117FF 100%);
     filter: blur(100px);
-    
+
   }
   &::before {
     position: absolute;
@@ -167,7 +179,7 @@ p {
     z-index: 1;
     background: linear-gradient(180deg, rgba(98, 24, 255, 0.00) 0%, #6117FF 100%);
     filter: blur(70px);
-    
+
   }
 }
 @include media-breakpoint-down(lg) {

@@ -3,7 +3,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-right">
-                    <img data-aos="fade-left" src="/landing/community/contributors.png" class="mb-4 img-fluid"/>
+                    <NuxtImg
+                        width="286px"
+                        height="81px"
+                        loading="lazy"
+                        format="webp"
+                        data-aos="fade-left"
+                        src="/landing/community/contributors.png"
+                        class="mb-4 img-fluid"
+                    />
                     <h2 class="mb-4" data-aos="fade-left">Kestra is built in the open</h2>
                     <p data-aos="fade-right">
                         Inspire and get inspired. Join our community of maintainers and contributors and help us improve

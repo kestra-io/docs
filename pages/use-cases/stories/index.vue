@@ -6,12 +6,14 @@
                   content="Learn how we helped companies manage their critical operations." />
         </Head>
         <StoriesList :stories="stories" :total-stories="totalStories" @fetch-page-data="fetchStories" />
-        <LayoutFooterContact
-            title="Getting started with Kestra"
-            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-            darkButtonText="Read the docs"
-            purpleButtonText="Get started!"
-        />
+        <NuxtLazyHydrate when-visible>
+            <LayoutFooterContact
+                title="Getting started with Kestra"
+                subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+                darkButtonText="Read the docs"
+                purpleButtonText="Get started!"
+            />
+        </NuxtLazyHydrate>
     </div>
 </template>
 <script setup>

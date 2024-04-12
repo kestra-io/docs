@@ -17,7 +17,15 @@
                     </div>
                 </div>
                 <div class="col-md-6 order-0 order-md-1" data-aos="zoom-in">
-                    <img class="zoom img-fluid" src="/landing/features/declarative/header.svg" alt="A screenshot of the user interface of Kestra's application"/>
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        width="806px"
+                        height="601px"
+                        class="zoom img-fluid"
+                        src="/landing/features/declarative/header.svg"
+                        alt="A screenshot of the user interface of Kestra's application"
+                    />
                 </div>
             </div>
         </div>

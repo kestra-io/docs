@@ -4,7 +4,15 @@
             <div class="container pt-3">
                 <div class="row mb-0 mb-sm-5">
                     <div class="col-md-6" data-aos="fade-right">
-                        <img class="img-fluid" src="/landing/features/declarative/features_1.svg" alt="A YAML sample of code for declarative language and construction of Kestra's flows" />
+                        <NuxtImg
+                            loading="lazy"
+                            format="webp"
+                            width="508px"
+                            height="355px"
+                            class="img-fluid"
+                            src="/landing/features/declarative/features_1.svg"
+                            alt="A YAML sample of code for declarative language and construction of Kestra's flows"
+                        />
                     </div>
                     <div class="col-md-6 py-3 py-sm-5 px-2 px-sm-5" data-aos="fade-right">
                         <h3>YAML for Declarative Orchestration</h3>
@@ -42,7 +50,15 @@
                     </ul>
                 </div>
                 <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/features/declarative/features_2.svg" alt="Image of execution of a task on Kestra with event or time based triggering" />
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        width="569px"
+                        height="421px"
+                        class="img-fluid"
+                        src="/landing/features/declarative/features_2.svg"
+                        alt="Image of execution of a task on Kestra with event or time based triggering"
+                    />
                 </div>
             </div>
         </div>

@@ -2,7 +2,11 @@
   <div class="container plugin py-5">
     <div class="row">
       <div class="col-lg-6" data-aos="zoom-in">
-        <img
+      <NuxtImg
+          loading="lazy"
+          format="webp"
+          width="694px"
+          height="517px"
           class="img-fluid"
           src="/landing/features/scheduling/workflow/workflow_4.svg"
           alt="Logos of tools that integrate with Kestra such as Snowflake, Airbyte, DBT or Fivetran and Kestra at the center of It"

@@ -6,15 +6,25 @@
         </Head>
 
         <Header />
-        <Main />
-        <Features />
-        <Empower />
-        <HomePlugins />
-        <LayoutFooterContact
-            title="Getting Started with  Declarative Orchestration"
-            darkButtonText="Read the docs"
-            purpleButtonText="Get started"
-        />
+        <NuxtLazyHydrate when-visible>
+            <Main />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <Features />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <Empower />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <HomePlugins />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <LayoutFooterContact
+                title="Getting Started with  Declarative Orchestration"
+                darkButtonText="Read the docs"
+                purpleButtonText="Get started"
+            />
+        </NuxtLazyHydrate>
     </div>
 </template>
 

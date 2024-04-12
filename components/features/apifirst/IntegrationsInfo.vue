@@ -12,8 +12,15 @@
                     </p>
                 </div>
                 <div class="col-md-6 order-0 order-md-0 mask mb-3" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/features/apifirst/manage-code.svg"
-                         alt="High availability Schema">
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        width="568px"
+                        height="420px"
+                        class="img-fluid"
+                        src="/landing/features/apifirst/manage-code.svg"
+                        alt="High availability Schema"
+                    />
                 </div>
             </div>
             <div class="row mb-5 align-items-center">
@@ -28,8 +35,15 @@
                     </p>
                 </div>
                 <div class="col-md-6 order-0 order-md-1 mask-1" data-aos="fade-left">
-                    <img class="img-fluid" src="/landing/features/apifirst/development-flexibility.svg"
-                         alt="Docker Integration for Script Execution">
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        width="492px"
+                        height="314px"
+                        class="img-fluid"
+                        src="/landing/features/apifirst/development-flexibility.svg"
+                        alt="Docker Integration for Script Execution"
+                    />
                 </div>
             </div>
         </div>

@@ -1,9 +1,23 @@
 <template>
     <div class="position-relative container-fluid d-flex justify-content-center">
         <div class="position-relative">
-            <img src="/partners/background.svg" alt="Frame 922" />
+            <NuxtImg
+                width="774px"
+                height="725px"
+                loading="lazy"
+                format="webp"
+                src="/partners/background.svg"
+                alt="Frame 922"
+            />
             <div class="logo position-absolute start-50 translate-middle">
-                <img src="/partners/badge-partner.svg" alt="Become Kestra partner">
+                <NuxtImg
+                    width="268px"
+                    height="267px"
+                    loading="lazy"
+                    format="webp"
+                    src="/partners/badge-partner.svg"
+                    alt="Become Kestra partner"
+                />
             </div>
         </div>
         <div class="description position-absolute start-50 translate-middle text-center w-50">

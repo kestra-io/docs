@@ -12,12 +12,54 @@
               <h2>Kestra Integrates with:</h2>
             </div>
             <div>
-              <img src="/partners/integrate-with-logos/aws.svg" alt="AWS logo" />
-              <img src="/partners/integrate-with-logos/gcp.svg" alt="GCP logo" />
-              <img src="/partners/integrate-with-logos/azure.svg" alt="Microsoft Azure logo" />
-              <img src="/partners/integrate-with-logos/airbyte.svg" alt="Airbyte logo" />
-              <img src="/partners/integrate-with-logos/snowflake.svg" alt="snowflake logo" />
-              <img src="/partners/integrate-with-logos/fivetran.svg" alt="fivetran logo" />
+              <NuxtImg
+                  height="147px"
+                  width="147px"
+                  loading="lazy"
+                  format="webp"
+                  src="/partners/integrate-with-logos/aws.svg"
+                  alt="AWS logo"
+              />
+              <NuxtImg
+                  height="147px"
+                  width="147px"
+                  loading="lazy"
+                  format="webp"
+                  src="/partners/integrate-with-logos/gcp.svg"
+                  alt="GCP logo"
+              />
+              <NuxtImg
+                  height="147px"
+                  width="147px"
+                  loading="lazy"
+                  format="webp"
+                  src="/partners/integrate-with-logos/azure.svg"
+                  alt="Microsoft Azure logo"
+              />
+              <NuxtImg
+                  height="147px"
+                  width="147px"
+                  loading="lazy"
+                  format="webp"
+                  src="/partners/integrate-with-logos/airbyte.svg"
+                  alt="Airbyte logo"
+              />
+              <NuxtImg
+                  height="147px"
+                  width="147px"
+                  loading="lazy"
+                  format="webp"
+                  src="/partners/integrate-with-logos/snowflake.svg"
+                  alt="snowflake logo"
+              />
+              <NuxtImg
+                  height="147px"
+                  width="147px"
+                  loading="lazy"
+                  format="webp"
+                  src="/partners/integrate-with-logos/fivetran.svg"
+                  alt="fivetran logo"
+              />
               <div class="py-3"><p class="and-more">And more...</p></div>
             </div>
           </div>

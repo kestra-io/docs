@@ -5,8 +5,15 @@
                 <div class="card h-100" data-aos="fade-right">
                     <div class="card-body mx-2">
                         <div class="d-flex align-items-center gap-3">
-                            <img src="/landing/features/scheduling/automation/Icon_auto.svg" alt="BackFill pattern svg"
-                                 class="mb-2">
+                            <NuxtImg
+                                loading="lazy"
+                                format="webp"
+                                width="69px"
+                                height="69px"
+                                src="/landing/features/scheduling/automation/Icon_auto.svg"
+                                alt="BackFill pattern svg"
+                                class="mb-2"
+                            />
                             <h6 class="card-heading">Code in any language</h6>
                         </div>
                         <p class="card-para">
@@ -19,8 +26,15 @@
                 <div class="card h-100 d-flex" data-aos="fade-right">
                     <div class="card-body mx-2">
                         <div class="d-flex align-items-center gap-3">
-                            <img src="/landing/features/scheduling/automation/Icon_auto1.svg" alt="Tune-Based svg"
-                                 class="mb-2 ">
+                            <NuxtImg
+                                loading="lazy"
+                                format="webp"
+                                width="69px"
+                                height="69px"
+                                src="/landing/features/scheduling/automation/Icon_auto1.svg"
+                                alt="Tune-Based svg"
+                                 class="mb-2 "
+                            />
                             <h6 class="card-heading">Script Management with Embedded Code Editor</h6>
                         </div>
                         <p class="card-para">
@@ -33,8 +47,15 @@
                 <div class="card h-100 d-flex" data-aos="fade-right">
                     <div class="card-body mx-2">
                         <div class="d-flex align-items-center gap-3">
-                            <img src="/landing/features/scheduling/automation/Icon_auto2.svg" alt="Event-Driven svg"
-                                 class="mb-2">
+                            <NuxtImg
+                                loading="lazy"
+                                format="webp"
+                                width="69px"
+                                height="69px"
+                                src="/landing/features/scheduling/automation/Icon_auto2.svg"
+                                alt="Event-Driven svg"
+                                class="mb-2"
+                            />
                             <h6 class="card-heading">Separation of Concerns</h6>
                         </div>
                         <p class="card-para">
@@ -47,8 +68,15 @@
                 <div class="card h-100 d-flex" data-aos="fade-right">
                     <div class="card-body mx-2 ">
                         <div class="d-flex align-items-center gap-3">
-                            <img src="/landing/features/scheduling/automation/Icon_auto3.svg" alt="API-Based svg"
-                                 class="mb-2">
+                            <NuxtImg
+                                loading="lazy"
+                                format="webp"
+                                width="69px"
+                                height="69px"
+                                src="/landing/features/scheduling/automation/Icon_auto3.svg"
+                                alt="API-Based svg"
+                                class="mb-2"
+                            />
                             <h6 class="card-heading">Built-in Version Control with Git</h6>
                         </div>
                         <p class="card-para">
@@ -61,8 +89,15 @@
                 <div class="card h-100 d-flex " data-aos="fade-right">
                     <div class="card-body mx-2 ">
                         <div class="d-flex align-items-center gap-3">
-                            <img src="/landing/features/scheduling/automation/Icon_auto4.svg" alt="Subflow svg"
-                                 class="mb-2">
+                            <NuxtImg
+                                loading="lazy"
+                                format="webp"
+                                width="69px"
+                                height="69px"
+                                src="/landing/features/scheduling/automation/Icon_auto4.svg"
+                                alt="Subflow svg"
+                                class="mb-2"
+                            />
                             <h6 class="card-heading">Docker enabled by default</h6>
                         </div>
                         <p class="card-para">

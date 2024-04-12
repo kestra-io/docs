@@ -4,11 +4,21 @@
     </Head>
     <div class="main">
         <Header/>
-        <Feature/>
-        <Workflows/>
-        <Plugin/>
-        <Automation/>
-        <Footer/>
+        <NuxtLazyHydrate when-visible>
+            <Feature/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <Workflows/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <Plugin/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <Automation/>
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
+            <Footer/>
+        </NuxtLazyHydrate>
     </div>
 </template>
 <script setup>

@@ -17,7 +17,11 @@
                         data-aos="zoom-in"
                     >
                         <div class="card-body">
-                            <img
+                            <NuxtImg
+                                width="69px"
+                                height="69px"
+                                loading="lazy"
+                                format="webp"
                                 :src="item.icon"
                                 :alt="item.title"
                                 class="icon mb-2"
