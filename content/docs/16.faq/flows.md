@@ -56,7 +56,7 @@ You can also pass inputs to the flow using the `inputs` query parameter.
 
 ### API calls
 
-You can trigger a flow execution by calling the [API](../11.api-reference/index.md) directly. This is useful when you want to start a flow execution from another application or service.
+You can trigger a flow execution by calling the [API](../13.api-reference/index.md) directly. This is useful when you want to start a flow execution from another application or service.
 
 Let's use the following flow as example:
 
