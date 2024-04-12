@@ -1,5 +1,5 @@
 id: python_commands
-namespace: dev
+namespace: example
 
 description: This flow will install the pip package in a Docker container, and use kestra's Python library to generate outputs (number of downloads of the Kestra Docker image) and metrics (duration of the script).
 
@@ -12,6 +12,6 @@ tasks:
        image: python:slim
     warningOnStdErr: false
     beforeCommands:
-      - pip install requests kestra
+      - pip install requests
     commands:
       - python outputs_metrics.py

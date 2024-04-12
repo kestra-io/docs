@@ -1,5 +1,5 @@
 id: python_scripts
-namespace: dev
+namespace: example
 
 description: This flow will install the pip package in a Docker container, and use kestra's Python library to generate outputs (number of downloads of the Kestra Docker image) and metrics (duration of the script).
 
@@ -7,16 +7,12 @@ tasks:
   - id: outputs_metrics
     type: io.kestra.plugin.scripts.python.Script
     beforeCommands:
-      - pip install requests kestra
+      - pip install requests
     docker:
       image: python:slim
     warningOnStdErr: false
     script: |
-      from kestra import Kestra
       import requests
-      import time
-
-      start = time.perf_counter()
 
       def get_docker_image_downloads(image_name: str = "kestra/kestra"):
           """Queries the Docker Hub API to get the number of downloads for a specific Docker image."""
@@ -28,7 +24,3 @@ tasks:
           return downloads
 
       downloads = get_docker_image_downloads()
-      end = time.perf_counter()
-
-      Kestra.outputs({'downloads': downloads})
-      Kestra.timer('duration', end - start)
