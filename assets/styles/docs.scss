@@ -190,7 +190,7 @@ $bd-gutter-x: 3rem;
 }
 
 // For purposes of repositioning the plugin icons, resolves #981, #966.
-.bd-content > div > h2 > span {
+.bd-content > div > h2 > span:not(.badge) {
     display: none !important;
 }
 

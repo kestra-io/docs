@@ -189,21 +189,6 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
-  /api/v1/cluster/services:
-    get:
-      tags:
-      - Services
-      summary: Get all the services for teh Kestra cluster
-      operationId: findAll
-      responses:
-        "200":
-          description: findAll 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ClusterController.ApiServiceInstance'
   /api/v1/configs:
     get:
       tags:
@@ -440,6 +425,14 @@ paths:
       - Executions
       summary: Delete a list of executions
       operationId: deleteByIds
+      parameters:
+      - name: includeNonTerminated
+        in: query
+        description: Specificies whether to delete non-terminated executions
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       requestBody:
         content:
           application/json:
@@ -541,6 +534,13 @@ paths:
           nullable: true
           allOf:
           - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+      - name: includeNonTerminated
+        in: query
+        description: Specificies whether to delete non-terminated executions
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       responses:
         "200":
           description: deleteByQuery 200 response
@@ -3421,6 +3421,21 @@ paths:
                 type: object
                 additionalProperties:
                   $ref: '#/components/schemas/PluginIcon'
+  /api/v1/plugins/icons/groups:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins icons
+      operationId: pluginGroupIcons
+      responses:
+        "200":
+          description: pluginGroupIcons 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/PluginIcon'
   /api/v1/plugins/inputs:
     get:
       tags:
@@ -4446,6 +4461,11 @@ components:
           $ref: '#/components/schemas/WorkerGroup'
         logLevel:
           $ref: '#/components/schemas/Level'
+        labels:
+          title: The labels to pass to the execution created.
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
         stopAfter:
           title: List of execution states after which a trigger should be stopped
             (a.k.a. disabled).
@@ -5213,46 +5233,6 @@ components:
             $ref: '#/components/schemas/Class_Object_'
         sealed:
           type: boolean
-    ClusterController.ApiServerInstance:
-      required:
-      - hostname
-      - id
-      - type
-      - version
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/ServerInstance.Type'
-        version:
-          type: string
-        hostname:
-          type: string
-    ClusterController.ApiServiceInstance:
-      required:
-      - createdAt
-      - id
-      - server
-      - state
-      - type
-      - updatedAt
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/Service.ServiceType'
-        state:
-          $ref: '#/components/schemas/Service.ServiceState'
-        server:
-          $ref: '#/components/schemas/ClusterController.ApiServerInstance'
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
     CodeSigner:
       required:
       - signerCertPath
@@ -5713,6 +5693,7 @@ components:
       - id
       - inputs
       - labels
+      - metadata
       - namespace
       - originalId
       - outputs
@@ -5759,6 +5740,8 @@ components:
           $ref: '#/components/schemas/ExecutionTrigger'
         deleted:
           type: boolean
+        metadata:
+          $ref: '#/components/schemas/ExecutionMetadata'
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -5792,6 +5775,18 @@ components:
           type: string
         state:
           $ref: '#/components/schemas/State.Type'
+    ExecutionMetadata:
+      required:
+      - attemptNumber
+      - originalCreatedDate
+      type: object
+      properties:
+        attemptNumber:
+          type: integer
+          format: int32
+        originalCreatedDate:
+          type: string
+          format: date-time
     ExecutionRepositoryInterface.ChildFilter:
       type: string
       enum:
@@ -5975,6 +5970,8 @@ components:
             are similar to return values in programming languages.
           items:
             $ref: '#/components/schemas/Output'
+        retry:
+          $ref: '#/components/schemas/AbstractRetry'
     FlowController.TaskValidationType:
       type: string
       enum:
@@ -6869,6 +6866,10 @@ components:
           type: array
           items:
             type: string
+        taskRunners:
+          type: array
+          items:
+            type: string
         guides:
           type: array
           items:
@@ -7000,11 +7001,6 @@ components:
       - template
       - task
       - trigger
-    ServerInstance.Type:
-      type: string
-      enum:
-      - SERVER
-      - STANDALONE
     ServerType:
       type: string
       enum:
@@ -7012,26 +7008,6 @@ components:
       - INDEXER
       - SCHEDULER
       - STANDALONE
-      - WEBSERVER
-      - WORKER
-    Service.ServiceState:
-      type: string
-      enum:
-      - CREATED
-      - RUNNING
-      - ERROR
-      - DISCONNECTED
-      - TERMINATING
-      - TERMINATED_GRACEFULLY
-      - TERMINATED_FORCED
-      - NOT_RUNNING
-      - EMPTY
-    Service.ServiceType:
-      type: string
-      enum:
-      - EXECUTOR
-      - INDEXER
-      - SCHEDULER
       - WEBSERVER
       - WORKER
     ServicesCatalog:
@@ -7081,6 +7057,8 @@ components:
       - KILLED
       - CANCELLED
       - QUEUED
+      - RETRYING
+      - RETRIED
     StatsController.ByFlowStatisticRequest:
       type: object
       properties:

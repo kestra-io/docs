@@ -4,7 +4,7 @@ icon: /docs/icons/migration-guide.svg
 release: 0.11.0
 ---
 
-Since the release 0.11.0, Templates are deprecated and disabled by default. Please use subflows instead.
+Since 0.11.0, Templates are deprecated and disabled by default. Please use subflows instead.
 
 If you still rely on templates, you can re-enable them in your [configuration](../10.administrator-guide/01.configuration/04.others.md).
 

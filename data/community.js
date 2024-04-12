@@ -30,10 +30,10 @@ export default {
         cardGroup: "text-start",
         items: [
             {
-                title: "Showcasing your expertise",
+                title: "Showcase your expertise",
                 text:
                     "Writing sharpens your ability to convey complex technical ideas clearly and effectively. If " +
-                    "your draft shows promise, our team will guide you to refine it, making your message more impactful.",
+                    "your draft shows potential, our team will assist you to refine it, making your message more impactful.",
                 icon: "/shared/head-dots-horizontal-outline.svg",
             },
             {
@@ -53,12 +53,12 @@ export default {
         ],
     },
     write: {
-        tag: "What is the Write for <span class='text-gradient'>Kestra Program ?</span>",
+        tag: "What is the <span class='text-gradient'>Write for Kestra</span> Program ?",
         title: "What is the Write for the Kestra Program ?",
         titleClass: "title-sm",
         description:
             "Kestra, at its core, is a platform that empowers tech professionals with advanced orchestration " +
-            "and scheduling solutions. We're seeking writers who can share practical insights, showcase new trends, and " +
+            "and scheduling solutions. We're looking for writers who can share practical insights, showcase new trends, and " +
             "provide step-by-step tutorials relevant to our community. ",
         interests: {
             title: "We're interested in:",
@@ -81,8 +81,8 @@ export default {
                 {
                     title: "External Content",
                     description:
-                        "Do you want to share more about your usage of Kestra on your blog, on Medium, or any of " +
-                        "your current content platforms? We empower you to share your content across all your favorite " +
+                        "Do you want to share more about your experience of Kestra on your blog, Medium, or other " +
+                        " content platforms? We empower you to share your content across all of your favorite " +
                         "platforms!",
                 },
             ],
@@ -153,7 +153,7 @@ export default {
         title: "Start Writing For Kestra",
         cta: [
             {
-                text: "Join Us on Slack",
+                text: "Join us on Slack",
                 href: "/slack",
                 style: "btn-dark",
                 target: "_blank",

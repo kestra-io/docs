@@ -10,9 +10,9 @@ Follow the [Quickstart Guide](/docs/getting-started) to install Kestra and start
 
 Then, explore the following pages to start building more advanced workflows:
 - [Tutorial](./03.tutorial/index.md)
-- [Workflow components](./06.workflow-components/index.md)
-- [Concept docs](./07.concepts/index.md)
-- [Blueprints](https://kestra.io/blueprints).
+- [Workflow Components](./06.workflow-components/index.md)
+- [Concepts](./07.concepts/index.md)
+- [Blueprints](/blueprints)
 
 
 ::ChildCard{pageUrl="/docs/getting-started/"}

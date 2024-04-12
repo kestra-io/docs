@@ -117,21 +117,21 @@
                     and
                     complex organizations. These features include:</p>
                 <ul>
-                    <li><strong>Improved scalability</strong>: Enterprise Edition allows you to scale up your Kestra
+                    <li><strong>Improved scalability</strong>: Allows you to scale up your Kestra
                         deployment to handle a larger number of flows, tasks, and users.
                     </li>
-                    <li><strong>Enhanced security</strong>: Enterprise Edition offers additional security features such
+                    <li><strong>Enhanced security</strong>: Offers additional security features such
                         as encryption, access control, single sign-on (SSO) integration, fine-grained management
                         permissions, and audit logs.
                     </li>
-                    <li><strong>Dedicated support</strong>: With the Enterprise Edition, you'll have access to dedicated
+                    <li><strong>Dedicated support</strong>: You'll have access to dedicated
                         support from the Kestra team to help you resolve any issues and ensure a smooth deployment.
                     </li>
-                    <li><strong>Customizable dashboard</strong>: Enterprise Edition includes a customizable dashboard
+                    <li><strong>Customizable dashboard</strong>: Includes a customizable dashboard
                         that provides advanced monitoring and analytics capabilities for better insights into your data
                         workflows.
                     </li>
-                    <li><strong>User management</strong>: Enterprise Edition enables you to easily add and manage users,
+                    <li><strong>User management</strong>: Enables you to easily add and manage users,
                         ensuring that the right people have access to the appropriate resources and workflows within
                         your organization.
                     </li>
@@ -146,7 +146,7 @@
             <CustomDetails title="Are there additional costs associated with the Enterprise Edition?">
                 <p>Yes, there are additional licensing fees for using the Kestra Enterprise Edition. The fees depend on
                     the size of your organization and the specific features you require. To get more information about
-                    pricing, please get in touch with the Kestra team.</p>
+                    pricing, please <a target="_blank" href="/contact-us">get in touch</a> with the Kestra team.</p>
             </CustomDetails>
 
             <h2 data-aos="zoom-in">Miscellaneous</h2>
@@ -168,7 +168,7 @@
                     JavaScript, or Bash within your tasks to extend your flows' capabilities.</p>
             </CustomDetails>
             <CustomDetails title="How can I contribute to the Kestra project?">
-                <p>Contributions to the Kestra project are always welcome! You can contribute by submitting bug reports,
+                <p>Contributions to Kestra are always welcome! You can contribute by submitting bug reports,
                     feature requests, or pull requests on the <a href="https://github.com/kestra-io/kestra"
                                                                  target="_blank">GitHub repository</a>. You can also
                     join the community on <a target="_blank" href="https://kestra.io/slack">Slack</a> to discuss ideas
