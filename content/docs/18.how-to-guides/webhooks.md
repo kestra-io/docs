@@ -1,5 +1,5 @@
 ---
-title: Using Webhook
+title: How to Use Webhooks in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 

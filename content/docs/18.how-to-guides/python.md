@@ -1,9 +1,9 @@
 ---
-title: Using Python
+title: How to Use Python in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
-How to run Python code inside of your flow.
+Run Python code inside of your flow.
 
 You can execute Python code inside of a flow by either writing your Python inline or by executing a `.py` file. You can also get outputs and metrics from your Python code too.
 

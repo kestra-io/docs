@@ -1,9 +1,9 @@
 ---
-title: Using Secrets
+title: How to Use Secrets in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
-This page provides a deep dive into how you can use secrets in various Kestra use cases.
+A deep dive into how you can use secrets in various Kestra use cases.
 
 ## What are Secrets
 
