@@ -1,5 +1,5 @@
 <template>
-    <div class="container text-center mb-5">
+    <div class="container text-center mb-5 p-0">
         <div class="bg-dark-2">
             <div>
                 <h3 data-aos="fade-right">Get Kestra updates to your inbox</h3>
@@ -90,7 +90,7 @@
             border-radius: 0.5rem;
             border: $block-border;
             background: url("/landing/faq/newsletter-bg.svg") no-repeat top;
-            background-size: 100%;
+            background-size: cover;
 
             > div {
                 position: relative;
@@ -134,9 +134,6 @@
             margin-bottom: 0;
         }
 
-        @include media-breakpoint-down(sm) {
-            max-width: 80%
-        }
     }
 
 </style>
