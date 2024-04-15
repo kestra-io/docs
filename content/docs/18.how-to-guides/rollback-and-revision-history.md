@@ -1,9 +1,9 @@
 ---
-title: Rollback & Revision History
+title: How to Use Revision History & Rollback in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
-This page describes how you can use revision history to rollback to an older version of a flow.
+Use revision history to rollback to an older version of a flow.
 
 ## What is Revision History
 

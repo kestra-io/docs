@@ -1,9 +1,9 @@
 ---
-title: Using Inputs
+title: How to Use Inputs in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
-This page provides a deep dive into how you can use inputs in various use cases.
+Deep dive into how you can use inputs in various use cases.
 
 ## What are inputs
 
