@@ -173,6 +173,9 @@
     .bd-toc {
         transition: all ease 0.2s;
         transform: translateX(0);
+        @include media-breakpoint-down(lg) {
+            margin: $rem-1 0;
+        }
 
         &::-webkit-scrollbar {
             display: none;
