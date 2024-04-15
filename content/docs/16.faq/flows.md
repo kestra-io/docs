@@ -23,7 +23,7 @@ If you want to load a given local directory of flows to be loaded into Kestra (e
 
 That path should point to a directory containing YAML files with the flow definition. These files will be loaded to the Kestra repository at startup. Kestra will make sure to add flows to the right namespace, as declared in the flow YAML definition.
 
-For more information about the Kestra server CLI, check the [Administrator Guide](../10.administrator-guide/04.servers.md) section.
+For more information about the Kestra server CLI, check the [Administrator Guide](../09.administrator-guide/04.servers.md) section.
 
 ### Can I sync a local flows directory to be continuously loaded into Kestra?
 At the time of writing, there is no syncing of a flows directory to Kestra. However, we are aware of that need and we are working on a solution. You can follow up in [this GitHub issue](https://github.com/kestra-io/kestra/issues/2403).
@@ -45,7 +45,7 @@ You can trigger a flow manually from the Kestra UI by clicking the `Execute` but
 You can add a **Schedule trigger** to automatically launch a flow execution at a regular time interval.
 
 Alternatively, you can add a **Flow trigger** to automatically launch a flow execution when another flow execution is completed. This pattern is particularly helpful when you want to:
-- Implement a centralized namespace-level error handling strategy, e.g. to send a notification when any flow execution fails in a production namespace. Check the [Alerting & Monitoring](../10.administrator-guide/03.monitoring/index.md) section for more details.
+- Implement a centralized namespace-level error handling strategy, e.g. to send a notification when any flow execution fails in a production namespace. Check the [Alerting & Monitoring](../09.administrator-guide/03.monitoring/index.md) section for more details.
 - Decouple your flows by following an event-driven pattern, in a backwards direction (_backwards because the flow is triggered by the completion of another flow; this is in contrast to the [subflow pattern](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.subflow), where a parent flow starts the execution of child flows and waits for the completion of each of them_).
 
 Lastly, you can use the **Webhook trigger** to automatically launch a flow execution when a given HTTP request is received. You can leverage the `{{ trigger.body }}` variable to access the request body and the `{{ trigger.headers }}` variable to access the request headers in your flow.
@@ -56,7 +56,7 @@ You can also pass inputs to the flow using the `inputs` query parameter.
 
 ### API calls
 
-You can trigger a flow execution by calling the [API](../13.api-reference/index.md) directly. This is useful when you want to start a flow execution from another application or service.
+You can trigger a flow execution by calling the [API](../12.api-reference/index.md) directly. This is useful when you want to start a flow execution from another application or service.
 
 Let's use the following flow as example:
 
