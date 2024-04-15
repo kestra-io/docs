@@ -61,7 +61,7 @@ Inside of your Python code, write a file to the system. You'll need to add the `
 
 The examples below write a `.txt` file containing the number of downloads, similar the output we used earlier. We can then read the content of the file using the syntax `{{ outputs.{task_id}.outputFiles['{filename}'] }}`
 
-```yaml file=public/examples/scripts_output_files_python.yml
+```yaml file=public/examples/scripts_output-files-python.yml
 ```
 
 _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
