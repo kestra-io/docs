@@ -94,6 +94,7 @@
         },
         mounted() {
             window.addEventListener('scroll', this.handleScroll);
+            this.scrollToHash();
         },
         beforeDestroy() {
             window.removeEventListener('scroll', this.handleScroll);
@@ -133,6 +134,7 @@
             },
             menuNavigate(e) {
               document.getElementById(e.target.name).scrollIntoView();
+              window.location.hash = e.target.name;
               setTimeout(() => {
                 this.removeActiveTab();
                 e.target.classList.add('active');
@@ -153,7 +155,27 @@
                 }
               }
               return
-            }
+            },
+            scrollToHash() {
+                if (window.location.hash) {
+                  const targetId = decodeURIComponent(window.location.hash.substring(1));
+                  this.$nextTick(() => {
+                    const element = document.getElementById(targetId);
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                      setTimeout(() => {
+                        this.$nextTick(() => {
+                          const updatedElement = document.getElementById(targetId);
+                          if (updatedElement) {
+                            updatedElement.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        });
+                      }, 1000);
+                    }
+                  });
+                }
+            },
         },
         watch: {
             '$route.params': {
@@ -162,7 +184,7 @@
                 },
                 deep: true,
                 immediate: true
-            }
+            },
         }
     }
 </script>
