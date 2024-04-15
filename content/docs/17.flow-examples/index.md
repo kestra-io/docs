@@ -18,6 +18,4 @@ Following is a list of other examples that can be downloaded:
 - [Switch](./switch.md): Depending on the value passed as the input, the will flow branch to different tasks. If there is no matching value, the `defaults` task is used.
 - [Timeout](./timeout.md): This flow will always fail because of a timeout.
 - [Trigger flow](./trigger-flow.md): Flow that is triggered based on the execution of another flow.
-- [Webhook](./webhook.md): Example flow for a webhook trigger.
 - [Bash with files](./bash-with-files.md): This flow shows how to pass files between tasks.
-- [Python Pip](./python-pip.md): This flow will install the pip package, and use the Python Kestra library to generate outputs and metrics.
