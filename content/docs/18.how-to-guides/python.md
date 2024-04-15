@@ -5,13 +5,13 @@ icon: /docs/icons/tutorial.svg
 
 How to run Python code inside of your flow.
 
-You can execute Python code inside of a flow by either writing your Python inline or by executing a `.py` file. 
+You can execute Python code inside of a flow by either writing your Python inline or by executing a `.py` file. You can also get outputs and metrics from your Python code too.
 
-For this example, the flow will install the pip package, and use the Python Kestra library to generate outputs and metrics.
+In this example, the flow will install the required pip packages, make an API request to fetch data and use the Python Kestra library to generate outputs and metrics using this data.
 
 ## Scripts
 
-If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it inside of your flow. This allows you to keep everything in one place.
+If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly inside of your flow. This allows you to keep everything in one place.
 
 ```yaml file=public/examples/scripts_python.yml
 ```
@@ -25,7 +25,7 @@ If you would prefer to put your Python code in a `.py` file (e.g. your code is m
 ```yaml file=public/examples/commands_python.yml
 ```
 
-You'll need to add your Python code using the Editor or [sync it using Git](/docs/developer-guide/git) so Kestra can see it.
+You'll need to add your Python code using the Editor or [sync it using Git](/docs/developer-guide/git) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands).
 
@@ -53,11 +53,22 @@ Once your Python file has executed, you'll be able to access the outputs in late
 ```yaml file=public/examples/outputs_python.yml
 ```
 
+_This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
+
 ### File Output
+
+Inside of your Python code, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the file you're trying to access. In this case, we want to access `downloads.txt`. More information on the formats you can use for this property can be found [here](/docs/developer-guide/scripts/output-directory).
+
+The examples below write a `.txt` file containing the number of downloads, similar the output we used earlier. We can then read the content of the file using the syntax `{{ outputs.{task_id}.outputFiles['{filename}'] }}`
+
+```yaml file=public/examples/scripts_output_files_python.yml
+```
+
+_This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
 
 ## Handling Metrics
 
-You can also get [metrics](../08.developer-guide/07.scripts/outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Python code. In this example, we can use the `time` module to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab.
+You can also get [metrics](../08.developer-guide/07.scripts/outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Python code. In this example, we can use the `time` module to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
 
 ```python file=public/examples/metrics_python.py
 ```
