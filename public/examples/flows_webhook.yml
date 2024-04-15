@@ -3,10 +3,7 @@ namespace: io.kestra.demo.flows
 
 description: |
   Example flow for a webhook trigger.
-  To start this flow, just send a curl request:
-  ```bash
-  curl http://localhost:8080/api/v1/executions/webhook/io.kestra.demo.flows/webhook/1KERKzRQZSMtLdMdNI7Nkr
-  ```
+
   This endpoint doesn't need any login / password and is secured by `key` that is different for every flow
 
 tasks:
