@@ -1,5 +1,5 @@
 ---
-title: How to use the Pause and Resume in Kestra
+title: How to Use Pause and Resume in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
