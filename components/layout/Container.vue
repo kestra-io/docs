@@ -190,7 +190,7 @@
         a {
             border-left: 5px solid $purple-36;
             padding-left: calc($spacer * 0.6);
-            font-size: calc($font-size-base * 2.25);
+            font-size: calc($font-size-base * 1.87);
         }
     }
 
@@ -201,7 +201,7 @@
 
     :deep(h2 > a) {
         font-weight: 600;
-        line-height: 2.375;
+        line-height: 2.375rem;
         margin: 0;
     }
 
@@ -209,14 +209,14 @@
         color: $white !important;
         font-size: 1.5rem;
         font-weight: 600;
-        line-height: 2.375;
+        line-height: 2.375rem;
     }
 
     :deep(h4 > a ) {
         color: $white !important;
         font-size: 1.5rem;
         font-weight: 600;
-        line-height: 2.375;
+        line-height: 2.375rem;
     }
 
     .bd-main :deep(p > a), .bd-main :deep(ul a) {
