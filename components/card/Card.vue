@@ -31,6 +31,7 @@
                 </div>
             </div>
             <p v-if="description" class="card-text">{{description}}</p>
+            <p v-if="descriptionHtml" class="card-text" v-html="descriptionHtml" />
             <p v-if="$slots.descriptionHtml" class="card-text">
                 <slot name="descriptionHtml"></slot>
             </p>
@@ -57,6 +58,9 @@
               default: undefined,
             },
             description: {
+                default: undefined,
+            },
+            descriptionHtml: {
                 default: undefined,
             },
             number: {

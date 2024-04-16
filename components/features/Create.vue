@@ -1,186 +1,16 @@
 
 <template>
   <div class="container-fluid">
-    <Section subtitle="API-First Workflows as Code" subtitle-before="Simple">
+    <Section subtitle="Workflow Design and Management" subtitle-before="Seamless">
       <div class="container">
         <div class="row d-flex justify-content-center">
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Get started in minutes</h6>
-                <p class="card-para">
-                  Create and run your workflows from the embedded code editor using a simple,
-                  <a href="https://kestra.io/features/declarative-data-orchestration"
-                    class="highlight-underline">declarative configuration</a>.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Discover errors before it's too late</h6>
-                <p class="card-para">
-                  Kestra detects syntax errors while you type, helping you fix the issues before runtime.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Code in any language</h6>
-                <p class="card-para">
-                  Build your business logic in any language including Python, R, Julia, Shell, Powershell, and Node.js.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Everything as code</h6>
-                <p class="card-para">
-                  Deploy workflows as software for easier collaboration
-                  and tracking of changes.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">File detection triggers</h6>
-                <p class="card-para">
-                  Process new files as they come in using event-driven communication between applications.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Versioning</h6>
-                <p class="card-para">
-                  All workflows are automatically versioned, allowing you to easily compare changes and roll back when needed.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Modularity</h6>
-                <p class="card-para">
-                  Define your default task or plugin configuration, and use subflows to eliminate boilerplate code.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Data validation</h6>
-                <p class="card-para">
-                  Guarantee that your incoming and outgoing data adheres to the schema and quality constraints.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Create and run flows from the UI</h6>
-                <p class="card-para">
-                  Use embedded code editor with autocompletion and built-in documentation for rapid iterations.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Debugging</h6>
-                <p class="card-para">
-                  Troubleshoot any issues quickly by using the built-in syntax validation and live-updating topology view.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">No more deployment complexity</h6>
-                <p class="card-para">
-                  The embedded code editor, Git integration and CI/CD eliminate the need for packaging and deploying complex orchestration code.
-                </p>
-              </div>
-            </div>
+          <div class="col-12 col-md-6 col-lg-3 mb-4" v-for="cardItem in mainContent">
+              <Card
+                  :icon="cardItem.icon"
+                  :title="cardItem.title"
+                  :description="cardItem.description || null"
+                  :descriptionHtml="cardItem.descriptionHtml || null"
+              />
           </div>
         </div>
       </div>
@@ -188,11 +18,87 @@
   </div>
 </template>
 
+<script setup>
+    import RocketLaunch from "vue-material-design-icons/Typewriter.vue";
+    import TimelineCheckOutline from "vue-material-design-icons/TimelineCheckOutline.vue";
+    import Web from "vue-material-design-icons/Web.vue";
+    import CodeBrackets from "vue-material-design-icons/CodeBrackets.vue";
+    import SmokeDetectorVariantAlert from "vue-material-design-icons/SmokeDetectorVariantAlert.vue";
+    import Git from "vue-material-design-icons/Git.vue";
+    import ViewModuleOutline from "vue-material-design-icons/ViewModuleOutline.vue";
+    import ChartBar from "vue-material-design-icons/ChartBar.vue";
+    import FolderEditOutline from "vue-material-design-icons/FolderEditOutline.vue";
+    import BugCheckOutline from "vue-material-design-icons/BugCheckOutline.vue";
+    import Github from "vue-material-design-icons/Github.vue";
+
+    const mainContent = [
+      {
+        icon: RocketLaunch,
+        title: 'Get started in minutes',
+        descriptionHtml: `
+             Create and run your workflows from the embedded code editor using a simple,
+                  <a href="https://kestra.io/features/declarative-data-orchestration"
+                    class="highlight-underline">declarative configuration</a>.`,
+      },
+      {
+        icon: TimelineCheckOutline,
+        title: 'Discover errors before it\'s too late',
+        description: 'Kestra detects syntax errors while you type, helping you fix the issues before runtime.',
+      },
+      {
+        icon: Web,
+        title: 'Code in any language',
+        description: 'Build your business logic in any language including Python, R, Julia, Shell, Powershell, and Node.js.',
+      },
+      {
+        icon: CodeBrackets,
+        title: 'Everything as code',
+        description: 'Deploy workflows as software for easier collaboration and tracking of changes.',
+      },
+      {
+        icon: SmokeDetectorVariantAlert,
+        title: 'File detection triggers',
+        description: 'Process new files as they come in using event-driven communication between applications.',
+      },
+      {
+        icon: Git,
+        title: 'Versioning',
+        description: 'All workflows are automatically versioned, allowing you to easily compare changes and roll back when needed.',
+      },
+      {
+        icon: ViewModuleOutline,
+        title: 'Modularity',
+        description: 'Define your default task or plugin configuration, and use subflows to eliminate boilerplate code.',
+      },
+      {
+        icon: ChartBar,
+        title: 'Data validation',
+        description: 'Guarantee that your incoming and outgoing data adheres to the schema and quality constraints.',
+      },
+      {
+        icon: FolderEditOutline,
+        title: 'Versioning',
+        description: 'All workflows are automatically versioned, allowing you to easily compare changes and roll back when needed.',
+      },
+      {
+        icon: BugCheckOutline,
+        title: 'Versioning',
+        description: 'All workflows are automatically versioned, allowing you to easily compare changes and roll back when needed.',
+      },
+      {
+        icon: Github,
+        title: 'Versioning',
+        description: 'All workflows are automatically versioned, allowing you to easily compare changes and roll back when needed.',
+      },
+    ]
+</script>
+
 <script>
-import Section from "../layout/Section.vue";
-export default {
-  components: { Section },
-};
+    import Section from "../layout/Section.vue";
+    import Card from '../card/Card.vue';
+    export default {
+      components: { Section, Card },
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -206,6 +112,30 @@ export default {
             background: linear-gradient(90deg, #e151f7 24.82%, #5c47f5 76.81%) !important;
             background-clip: text !important;
             -webkit-background-clip: text !important;
+        }
+    }
+}
+
+:deep(.card) {
+    padding: 4rem 2rem 2rem !important;
+
+    .card-body {
+        gap: calc($spacer * 0.5) !important;
+        .title-block {
+            flex-direction: column;
+
+            .card-title {
+                line-height: 2rem;
+            }
+        }
+
+        .card-text {
+            line-height: calc($spacer * 1.375);
+
+            a {
+                color: $purple-36;
+                text-decoration: underline;
+            }
         }
     }
 }
@@ -233,35 +163,6 @@ export default {
     left: 19.6rem;
     top: 31rem;
     z-index: 0;
-  }
-}
-
-.highlight-underline {
-  text-decoration: underline;
-}
-
-.card {
-  background-color: $black-2;
-  color: $body-tertiary-color;
-  z-index: 99;
-  box-shadow: none !important;
-  border: 1px solid #3d3d3f;
-
-  &-body {
-    padding: 2.6rem 1.5rem 2rem 1.5rem;
-  }
-
-  &-heading {
-    font-size: $h4-font-size;
-    font-weight: 300;
-    line-height: 2rem;
-  }
-
-  &-para {
-    font-size: $font-size-sm;
-    font-weight: 400;
-    line-height: 1.3;
-    color: $white-1;
   }
 }
 </style>
