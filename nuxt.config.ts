@@ -51,18 +51,18 @@ export default defineNuxtConfig({
     content: {
         documentDriven: false,
         highlight: {
-            // preload: [
-            //     'bash',
-            //     'yaml',
-            //     'sql',
-            //     'java',
-            //     'dockerfile',
-            //     'hcl',
-            //     'python',
-            //     'twig',
-            //     'groovy',
-            //     'json5',
-            // ],
+            preload: [
+                'bash',
+                'yaml',
+                'sql',
+                'java',
+                'dockerfile',
+                'hcl',
+                'python',
+                'twig',
+                'groovy',
+                'json5',
+            ],
             theme: 'github-dark'
         },
         markdown: {
