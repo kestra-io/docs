@@ -1,6 +1,6 @@
 ---
 title: How to Use the Slack Events API in Kestra
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/slack.svg
 ---
 
 Trigger Kestra flows based on Slack events.
