@@ -123,7 +123,7 @@ kestra:
         - <optional>
 ```
 
-For more details, check the [Enterprise Edition Configuration](../11.configuration-guide/03.enterprise-edition.md) page.
+For more details, check the [Enterprise Edition Configuration](../10.configuration-guide/03.enterprise-edition.md) page.
 
 ::
 
