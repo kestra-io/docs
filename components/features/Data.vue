@@ -1,137 +1,77 @@
 <template>
   <div class="container-fluid">
-    <Section subtitle="and Everything from the UI" subtitle-before="Everything as Code">
+    <Section subtitle="Centralized Data Control for" subtitle-after="Improved Efficiency">
       <div class="container">
         <div class="row d-flex justify-content-center">
-
-
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
+            <div class="col-12 col-md-6 col-lg-3 mb-4" v-for="cardItem in mainContent">
+                <Card
+                    :icon="cardItem.icon"
+                    :title="cardItem.title"
+                    :description="cardItem.description"
                 />
-                <h6 class="card-heading">Everything as Code</h6>
-                <p class="card-para">
-                  Whether you build your workflows from a local IDE or from the UI, your entire workflow configuration is always managed as code and automatically versioned.
-                </p>
-              </div>
             </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Everything from the UI</h6>
-                <p class="card-para">
-                  Create, edit and run your workflows from the integrated code editor in the UI, without having to set up local development environment or managing heavy worker processes.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Built-in documentation</h6>
-                <p class="card-para">
-                 The built-in code editor includes a documentation for all tasks and triggers. An up-to-date description of properties, and hands-on examples are at your fingertips.
-                </p>
-              </div>
-            </div>
-          </div>
-
-
-        <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Autocompletion</h6>
-                <p class="card-para">
-                  The embedded code editor provides syntax highlighting and autocompletion for all task and trigger properties, significantly improving your productivity.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Syntax Validation</h6>
-                <p class="card-para">
-                    The embedded code editor provides real-time syntax validation as you type, ensuring that your workflows are always valid. No more surprises at runtime — you can catch errors early on.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Strongly Typed Inputs and Outputs</h6>
-                <p class="card-para">
-                  Declare data types for your inputs and outputs, and Kestra will enforce them, raising errors if the data doesn't match the expected types.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-3 mb-4">
-            <div class="card h-100" data-aos="fade-right">
-              <div class="card-body mx-2">
-                <img
-                  src="/landing/features/Iconbkg.svg"
-                  alt="BackFill pattern svg"
-                  class="mb-2"
-                />
-                <h6 class="card-heading">Seamlessly pass data between tasks</h6>
-                <p class="card-para">
-                  Kestra's internal storage allows to easily pass data between tasks while maintaining data privacy.
-                </p>
-              </div>
-            </div>
-          </div>
-
-
         </div>
       </div>
     </Section>
   </div>
 </template>
 
-<script>
-import Section from "../layout/Section.vue";
-export default {
-  components: { Section },
-};
+<script setup>
+  import CodeBrackets from "vue-material-design-icons/CodeBrackets.vue";
+  import ViewDashboard from "vue-material-design-icons/ViewDashboard.vue";
+  import TextBoxSearchOutline from "vue-material-design-icons/TextBoxSearchOutline.vue";
+  import FormatLetterEndsWith from "vue-material-design-icons/FormatLetterEndsWith.vue";
+  import FileCheckOutline from "vue-material-design-icons/FileCheckOutline.vue";
+  import ArrowCollapse from "vue-material-design-icons/ArrowCollapse.vue";
+  import KeyStar from "vue-material-design-icons/KeyStar.vue";
+
+  const mainContent = [
+    {
+      icon: CodeBrackets,
+      title: 'Everything as Code',
+      description: 'Whether you build your workflows from a local IDE or from the UI, your entire workflow configuration is always managed as code and automatically versioned.',
+    },
+    {
+      icon: ViewDashboard,
+      title: 'Everything from the UI',
+      description: 'Create, edit and run your workflows from the integrated code editor in the UI, without having to set up local development environment or managing heavy worker processes.',
+    },
+    {
+      icon: TextBoxSearchOutline,
+      title: 'Built-in documentation',
+      description: 'The built-in code editor includes a documentation for all tasks and triggers. An up-to-date description of properties, and hands-on examples are at your fingertips.',
+    },
+    {
+      icon: FormatLetterEndsWith,
+      title: 'Autocompletion',
+      description: 'The embedded code editor provides syntax highlighting and autocompletion for all task and trigger properties, significantly improving your productivity.',
+    },
+    {
+      icon: FileCheckOutline,
+      title: 'Syntax Validation',
+      description: 'The embedded code editor provides real-time syntax validation as you type, ensuring that your workflows are always valid. No more surprises at runtime — you can catch errors early on.',
+    },
+    {
+      icon: ArrowCollapse,
+      title: 'Strongly Typed Inputs and Outputs',
+      description: 'Declare data types for your inputs and outputs, and Kestra will enforce them, raising errors if the data doesn\'t match the expected types.',
+    },
+    {
+      icon: KeyStar,
+      title: 'Seamlessly pass data between tasks',
+      description: 'Kestra\'s internal storage allows to easily pass data between tasks while maintaining data privacy.',
+    },
+  ]
 </script>
+
+<script>
+  import Section from "../layout/Section.vue";
+  import Card from '../card/Card.vue';
+  export default {
+    components: { Section, Card },
+  };
+</script>
+
 
 <style lang="scss" scoped>
 @import "../../assets/styles/variable";
@@ -146,6 +86,31 @@ export default {
                 background: linear-gradient(90deg, #e151f7 24.82%, #5c47f5 76.81%) !important;
                 background-clip: text !important;
                 -webkit-background-clip: text !important;
+            }
+        }
+    }
+
+
+    :deep(.card) {
+        padding: 4rem 2rem 2rem !important;
+
+        .card-body {
+            gap: calc($spacer * 0.5) !important;
+            .title-block {
+                flex-direction: column;
+
+                .card-title {
+                    line-height: 2rem;
+                }
+            }
+
+            .card-text {
+                line-height: calc($spacer * 1.375);
+
+                a {
+                    color: $purple-36;
+                    text-decoration: underline;
+                }
             }
         }
     }
@@ -170,35 +135,6 @@ export default {
     left: 28.6rem;
     top: 21rem;
     z-index: 0;
-  }
-}
-
-.highlight-underline {
-  text-decoration: underline;
-}
-
-.card {
-  background-color: $black-2;
-  color: $body-tertiary-color;
-  z-index: 99;
-  box-shadow: none !important;
-  border: 1px solid #3d3d3f;
-
-  &-body {
-    padding: 2.6rem 1.5rem 2rem 1.5rem;
-  }
-
-  &-heading {
-    font-size: $h4-font-size;
-    font-weight: 300;
-    line-height: 2rem;
-  }
-
-  &-para {
-    font-size: $font-size-sm;
-    font-weight: 400;
-    line-height: 1.3;
-    color: $white-1;
   }
 }
 </style>
