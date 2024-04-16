@@ -5,10 +5,8 @@ title: Flow examples
 The example from Kestra's guided tour is a good starting point; it is available when running Kestra for the first time and can see here: [Example guided tour](./example-guided-tour.md).
 
 Following is a list of other examples that can be downloaded:
-- [Allow failure](./allow-failure.md): This flow will allow a failure of a task and will continue, passing the execution as `WARNING`.
 - [Disable simple](./disable-simple.md): This flow will never launch the `t2` task since it is disabled.
 - [Each nested](./each-nested.md): Example of an each expression to iterate over a list of values.
-- [Errors](./errors.md): This flow will always fail, this will be handled by the `errors` branch tasks (cleaning a resource for example). All kinds of tasks can be used on the `errors` branch.
 - [Multipleconditionlistener](./multiplecondition-listener.md): This flow will start only if `multiplecondition-flow-a` and `multiplecondition-flow-b` are successful during the last 24h. You need the two flows [multiplecondition-flow-a](/examples/flows_multiplecondition-flow-a.yml) and [multiplecondition-flow-b](/examples/flows_multiplecondition-flow-b.yml) for it to work.
 - [Parallel](./parallel.md): This flow will run three parallel tasks based on the `concurrent` property and will start the `last` task at the end.
 - [Pause](./pause.md): This flow shows how you can pause an execution to add a manual validation step.
