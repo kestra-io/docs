@@ -71,6 +71,7 @@
                                     <li data-aos="fade-left" data-aos-delay="400"><span>RBAC</span></li>
                                     <li data-aos="fade-left" data-aos-delay="400"><span>SSO</span></li>
                                     <li data-aos="fade-left" data-aos-delay="400"><span>Secrets Manager</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span>Encryption</span></li>
                                 </ul>
                                 <ul>
                                     <p class="category-title">Governance</p>
