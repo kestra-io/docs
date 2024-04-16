@@ -42,3 +42,8 @@ tasks:
       - id: default
         type: io.kestra.core.tasks.debugs.Return
         format: "{{task.id}} > {{taskrun.startDate}}"
+
+outputs:
+  - id: extracted
+    type: STRING
+    value: "{{ outputs.first ?? outputs.second1 ?? outputs.third1 ?? outputs.default }}"
