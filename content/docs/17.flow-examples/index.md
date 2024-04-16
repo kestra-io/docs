@@ -11,5 +11,3 @@ Following is a list of other examples that can be downloaded:
 - [Sequential](./sequential.md): This flow will start the two sequential tasks in parallel and those will launch tasks one after the other.
 - [Subflow](./subflow.md): This flow will launch a subflow passing parameters, waiting until the end of the flow and gathering the output of a task.
 - [Switch](./switch.md): Depending on the value passed as the input, the will flow branch to different tasks. If there is no matching value, the `defaults` task is used.
-- [Trigger flow](./trigger-flow.md): Flow that is triggered based on the execution of another flow.
-- [Bash with files](./bash-with-files.md): This flow shows how to pass files between tasks.
