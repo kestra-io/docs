@@ -6,8 +6,5 @@ The example from Kestra's guided tour is a good starting point; it is available 
 
 Following is a list of other examples that can be downloaded:
 - [Each nested](./each-nested.md): Example of an each expression to iterate over a list of values.
-- [Multipleconditionlistener](./multiplecondition-listener.md): This flow will start only if `multiplecondition-flow-a` and `multiplecondition-flow-b` are successful during the last 24h. You need the two flows [multiplecondition-flow-a](/examples/flows_multiplecondition-flow-a.yml) and [multiplecondition-flow-b](/examples/flows_multiplecondition-flow-b.yml) for it to work.
-- [Parallel](./parallel.md): This flow will run three parallel tasks based on the `concurrent` property and will start the `last` task at the end.
-- [Sequential](./sequential.md): This flow will start the two sequential tasks in parallel and those will launch tasks one after the other.
 - [Subflow](./subflow.md): This flow will launch a subflow passing parameters, waiting until the end of the flow and gathering the output of a task.
 - [Switch](./switch.md): Depending on the value passed as the input, the will flow branch to different tasks. If there is no matching value, the `defaults` task is used.
