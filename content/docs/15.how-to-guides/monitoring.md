@@ -3,7 +3,7 @@ title: How to Setup Monitoring in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
-Setup monitoring dashboards for Kestra.
+Setup Prometheus and Grafana for Kestra.
 
 We will look in detail at setting up monitoring dashboards for Kestra.
 

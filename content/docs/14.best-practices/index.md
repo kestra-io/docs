@@ -1,5 +1,5 @@
 ---
-title: Best practices
+title: Best Practices
 icon: /docs/icons/best-practices.svg
 ---
 
