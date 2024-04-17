@@ -25,7 +25,7 @@
   import AlertCircle from "vue-material-design-icons/AlertCircle.vue";
   import BellRing from "vue-material-design-icons/BellRing.vue";
   import ArrowCollapseAll from "vue-material-design-icons/ArrowCollapseAll.vue";
-  import Strategy from "vue-material-design-icons/Strategy.vue";
+  import RefreshCircle from "vue-material-design-icons/RefreshCircle.vue";
   import ArrangeSendBackward from "vue-material-design-icons/ArrangeSendBackward.vue";
   import LanguageJava from "vue-material-design-icons/LanguageJava.vue";
 
@@ -71,7 +71,7 @@
       description: 'Use our distributed mapping capabilities to easily process large amounts of data at scale.',
     },
     {
-      icon: Strategy,
+      icon: RefreshCircle,
       title: 'Micro-Batch CDC',
       description: 'Capture changed data at regular intervals and process them in micro-batches, reducing the complexity and maintenance costs of real-time systems.',
     },

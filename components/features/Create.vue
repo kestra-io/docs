@@ -77,18 +77,18 @@
       },
       {
         icon: FolderEditOutline,
-        title: 'Versioning',
-        description: 'All workflows are automatically versioned, allowing you to easily compare changes and roll back when needed.',
+        title: 'Create and run flows from the UI',
+        description: 'Use embedded code editor with autocompletion and built-in documentation for rapid iterations.',
       },
       {
         icon: BugCheckOutline,
-        title: 'Versioning',
-        description: 'All workflows are automatically versioned, allowing you to easily compare changes and roll back when needed.',
+        title: 'Debugging',
+        description: 'Troubleshoot any issues quickly by using the built-in syntax validation and live-updating topology view.',
       },
       {
         icon: Github,
-        title: 'Versioning',
-        description: 'All workflows are automatically versioned, allowing you to easily compare changes and roll back when needed.',
+        title: 'No more deployment complexity',
+        description: 'The embedded code editor, Git integration and CI/CD eliminate the need for packaging and deploying complex orchestration code.',
       },
     ]
 </script>
