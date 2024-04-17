@@ -21,7 +21,7 @@ Furthermore, Ansible plays a crucial role in their infrastructure management by 
 
 ## Challenges in Infrastructure Automation
 
-The organization operates more than 30 Kafka clusters, with each cluster requiring an average of 15 individual workflow deployments Their current approach rely heavily on manual execution of Ansible jobs through the command line interface (CLI). This translates to potentially 450 ongoing workflows across their Kafka infrastructure, with a new Kafka cluster every month, it’s significant time investment that could be significantly reduced with automation.
+The organization operates more than 30 Kafka clusters, with each cluster requiring an average of 15 individual workflow deployments. Their current approach rely heavily on manual execution of Ansible jobs through the command line interface (CLI). This translates to potentially 450 ongoing workflows across their Kafka infrastructure, with a new Kafka cluster every month, it’s significant time investment that could be significantly reduced with automation.
 
 ## Integrating Kestra for Centralized Orchestration
 
