@@ -214,9 +214,12 @@
 
     :deep(h4 > a ) {
         color: $white !important;
-        font-size: 1.5rem;
         font-weight: 600;
-        line-height: 2.375rem;
+    }
+
+    :deep(h5) {
+        color: $white !important;
+        font-weight: 600;
     }
 
     .bd-main :deep(p > a), .bd-main :deep(ul a) {
