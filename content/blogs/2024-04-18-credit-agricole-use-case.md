@@ -15,17 +15,17 @@ Crédit Agricole Group Infrastructure Platform (CA-GIP) is the IT production ent
 
 The team at CA-GIP use a combination of production ready tools to support its IT operations and enhance workflow efficiency across its extensive infrastructure. Central to their workflow automation is the use of GitLab CI and Jenkins, which are critical for their continuous integration processes. These tools allow the teams to test and deploy code rapidly, ensuring that new updates are both efficient and reliable, creating a high level of confidence in their releases. Additionally, they employs Argo Workflows, particularly useful for teams working across different technology stacks. This tool is specifically used for orchestrating Spark jobs.
 
-Furthermore, Ansible plays a crucial role in their infrastructure management by providing a robust platform for writing and maintaining scripts that streamline patch management and deployment processes. This is essential for maintaining the integrity and security of their systems, allowing for routine updates and management tasks to be executed smoothly and effectively. Traefik is another integral component of their technology stack, used to manage networks and proxies across various teams and applications. This tool ensures that network policies are automated and services across the organization’s platforms are reliably connected and secured, facilitating smooth and efficient service delivery and operational continuity. 
+Furthermore, Ansible plays a crucial role in their infrastructure management by providing a robust platform for writing and maintaining scripts that streamline patch management and deployment processes. This is essential for maintaining the integrity and security of their systems, allowing for routine updates and management tasks to be executed smoothly and effectively.
 
 ![Architecture](/blogs/2024-04-18-credit-agricole-use-case/architecture.png)
 
 ## Challenges in Infrastructure Automation
 
-The organization operates more than 30 Kafka clusters, with each cluster requiring an average of 15 individual workflow deployments. Their current approach rely heavily on manual execution of Ansible jobs through the command line interface (CLI). This translates to potentially 450 ongoing workflows across their Kafka infrastructure, with a new Kafka cluster every month, it’s significant time investment that could be significantly reduced with automation.
+The organization operates more than 30 Kafka clusters, with each cluster requiring an average of 15 individual workflow deployments. Their current approach rely heavily on manual execution of Ansible jobs through the command line interface (CLI). This translates to potentially 450 ongoing workflows across their Kafka infrastructure, with the additions of new Kafka clusters in the future it’s significant time investment that could be reduced with automation.
 
 ## Integrating Kestra for Centralized Orchestration
 
-Kestra provides a unified platform that facilitates the orchestration of workflows, replacing the manual processes with an automated, centralized approach. By integrating with existing tools like Git for version control, Kestra enhances traceability and collaboration across teams. Its capabilities extend to managing sensitive data through secure secret management practices, thus reinforcing the security framework. 
+Kestra provides a unified platform that facilitates the orchestration of workflows, replacing the manual processes with an automated, centralized approach. By integrating with existing tools like Git for version control, Kestra enhances traceability and collaboration across teams.
 
 - **Streamlined Workflow Management**: Kestra offers a centralized platform to manage and orchestrate workflows, eliminating the need for manual execution. This simplifies workflow creation, version control, and deployment.
 - **Version Control with Git**: Kestra integrates seamlessly with Git, allowing teams to leverage existing version control practices for their workflows. This ensures traceability, simplifies collaboration and facilitates rollbacks if necessary.
