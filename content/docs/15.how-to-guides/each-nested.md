@@ -1,5 +1,5 @@
 ---
-title: How to Use Each Expressions in Kestra.
+title: How to Use Each Expressions in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 

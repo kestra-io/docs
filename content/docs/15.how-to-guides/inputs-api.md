@@ -1,11 +1,11 @@
 ---
-title: How To Pass inputs via an API call in Kestra
+title: How To Pass Inputs via an API call in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
 Passing Inputs via an API Call
 
-## What are inputs
+## What are Inputs
 
 Inputs allow you to dynamically pass data to your execution at runtime. For a detailed overview of inputs, see the [Inputs](../06.workflow-components/06.inputs.md) documentation page.
 

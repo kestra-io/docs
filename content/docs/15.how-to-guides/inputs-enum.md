@@ -1,11 +1,11 @@
 ---
-title: How To Validate inputs with Enum Data Type in Kestra
+title: How To Validate Inputs with Enum Data Type in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
 Input validation with the Enum data type
 
-## What are inputs
+## What are Inputs
 
 Inputs allow you to dynamically pass data to your execution at runtime. For a detailed overview of inputs, see the [Inputs](../06.workflow-components/06.inputs.md) documentation page.
 
