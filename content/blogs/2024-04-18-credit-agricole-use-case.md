@@ -1,6 +1,6 @@
 ---
 title: "Credit Agricole automating and managing their infrastructure workflows with Kestra"
-description: "The Crédit Agricole Groupe Infrastructure Platform is using Kestra to automate their infrastructure automation"
+description: "The Crédit Agricole Groupe Infrastructure Platform is using Kestra to automate their infrastructure workflows"
 date: 2024-04-18T08:00:00
 category: Company News
 author:
@@ -9,7 +9,7 @@ author:
 image: /blogs/2024-04-18-credit-agricole-use-case.jpg
 ---
 
-Crédit Agricole Group Infrastructure Platform (CA-GIP) is the IT production entity of Crédit Agricole Group, acting as the central provider of IT services for the entire group.  They operate a private cloud environment and have many different needs regarding infrastructure operations, with a specific initial focus on patch management for private virtual machines (VMs), while ensuring high security and confidentiality. The initial need for a centralized orchestration tool to manage extensive infrastructures, including private cloud environments, has led CA-GIP towards Kestra. 
+Crédit Agricole Group Infrastructure Platform (CA-GIP) is the IT production entity of Crédit Agricole Group, acting as the central provider of IT services for the entire group. They operate a private cloud environment and have many different needs regarding infrastructure operations, with a specific initial focus on patch management for private virtual machines (VMs), while ensuring high security and confidentiality. The initial need for a centralized orchestration tool to manage extensive infrastructures, including private cloud environments, has led CA-GIP towards Kestra. 
 
 ## Infrastructure Provisioning
 
