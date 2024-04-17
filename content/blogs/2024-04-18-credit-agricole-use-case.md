@@ -33,10 +33,9 @@ Kestra provides a unified platform that facilitates the orchestration of workflo
 - **Ansible Playbook Integration**: Kestra's ability to run Ansible playbooks directly within workflows provides a bridge between existing automation practices and the centralized orchestration platform. This enables a smooth transition and leverages the existing expertise within the team.
 - **Leveraging Kestra’s Flexible Data Integration**: Kestra supports retrieving data from diverse sources – including HTTP APIs, MongoDB databases, and GitLab CI pipelines. This flexibility allows for seamless integration with existing infrastructure and data sources within Credit Agricole's environment.
 
+## What's Next 
 
-
-
-
+We are proud to be used by the Crédit Agricole Group Infrastructure Platform to automate their infrastructure management by ensuring that their infrastructure workflows are managed more effectively. Through Kestra, they are able to better orchestrate tasks, secure data management, and enhance overall workflow efficiency, supporting their ongoing IT and operational goals.
 
 --- 
 
