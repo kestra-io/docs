@@ -3,7 +3,7 @@ title: How to Use Multiple Condition Listener in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
-Guide on how to use multiple condition listeners together.
+Use multiple condition listeners together.
 
 This flow will start only if `multiplecondition-flow-a` and `multiplecondition-flow-b` are successful during the last 24h.
 
