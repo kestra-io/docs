@@ -9226,7 +9226,7 @@ paths:
         description: The schema needed
         required: true
         schema:
-          $ref: '#/components/schemas/Type_3'
+          $ref: '#/components/schemas/Type'
       responses:
         "200":
           description: inputSchemas 200 response
@@ -9248,9 +9248,7 @@ paths:
         description: The schema needed
         required: true
         schema:
-          oneOf:
-          - $ref: '#/components/schemas/Type_6'
-          - $ref: '#/components/schemas/Type_4'
+          $ref: '#/components/schemas/Type'
       responses:
         "200":
           description: inputSchemas_1 200 response
@@ -15290,7 +15288,7 @@ components:
           annotatedOwnerType:
             $ref: '#/components/schemas/AnnotatedType'
           type:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_4'
           annotations:
             type: array
             items:
@@ -16151,7 +16149,7 @@ components:
         superclass:
           $ref: '#/components/schemas/Class_Object_'
         genericSuperclass:
-          $ref: '#/components/schemas/Type'
+          $ref: '#/components/schemas/Type_5'
         package:
           $ref: '#/components/schemas/Package'
         packageName:
@@ -16163,7 +16161,7 @@ components:
         genericInterfaces:
           type: array
           items:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_6'
         componentType:
           $ref: '#/components/schemas/Class_Object_'
         modifiers:
@@ -16322,7 +16320,7 @@ components:
         superclass:
           $ref: '#/components/schemas/Class_String_'
         genericSuperclass:
-          $ref: '#/components/schemas/Type'
+          $ref: '#/components/schemas/Type_34'
         package:
           $ref: '#/components/schemas/Package'
         packageName:
@@ -16334,7 +16332,7 @@ components:
         genericInterfaces:
           type: array
           items:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_35'
         componentType:
           $ref: '#/components/schemas/Class_Object_'
         modifiers:
@@ -16684,11 +16682,11 @@ components:
           parameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_11'
           exceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_12'
     Constructor_Object_:
       type: object
       allOf:
@@ -16740,7 +16738,7 @@ components:
           genericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_27'
           exceptionTypes:
             type: array
             items:
@@ -16748,7 +16746,7 @@ components:
           genericExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_28'
           varArgs:
             type: boolean
           synthetic:
@@ -16983,11 +16981,11 @@ components:
           genericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_13'
           allGenericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_14'
           parameters:
             type: array
             items:
@@ -17009,7 +17007,7 @@ components:
           genericExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_16'
           varArgs:
             type: boolean
           synthetic:
@@ -17203,7 +17201,7 @@ components:
           type:
             $ref: '#/components/schemas/Class_Object_'
           genericType:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_29'
           root:
             $ref: '#/components/schemas/Field'
           trustedFinal:
@@ -17584,7 +17582,7 @@ components:
           pattern: "^[a-zA-Z0-9][.a-zA-Z0-9_-]*"
           type: string
         type:
-          $ref: '#/components/schemas/Type_1'
+          $ref: '#/components/schemas/Type'
         description:
           type: string
         required:
@@ -17790,7 +17788,7 @@ components:
           returnType:
             $ref: '#/components/schemas/Class_Object_'
           genericReturnType:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_21'
           sharedParameterTypes:
             type: array
             items:
@@ -17809,7 +17807,7 @@ components:
           genericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_22'
           exceptionTypes:
             type: array
             items:
@@ -17817,7 +17815,7 @@ components:
           genericExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_23'
           bridge:
             type: boolean
           varArgs:
@@ -17851,7 +17849,7 @@ components:
       - $ref: '#/components/schemas/AbstractRepository_MethodTypeSignature_'
       - properties:
           returnType:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_17'
     MethodTypeSignature:
       type: object
       properties:
@@ -18179,7 +18177,7 @@ components:
           type: string
         value: {}
         type:
-          $ref: '#/components/schemas/Type_2'
+          $ref: '#/components/schemas/Type'
     Package:
       type: object
       allOf:
@@ -18434,7 +18432,7 @@ components:
         realName:
           type: string
         parameterizedType:
-          $ref: '#/components/schemas/Type'
+          $ref: '#/components/schemas/Type_15'
         type:
           $ref: '#/components/schemas/Class_Object_'
         annotatedType:
@@ -18595,7 +18593,7 @@ components:
         genericSignature:
           type: string
         genericType:
-          $ref: '#/components/schemas/Type'
+          $ref: '#/components/schemas/Type_30'
         annotatedType:
           $ref: '#/components/schemas/AnnotatedType'
         accessor:
@@ -18614,7 +18612,7 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/Type'
+          $ref: '#/components/schemas/Type_7'
     Relation:
       required:
       - relationType
@@ -19275,22 +19273,33 @@ components:
         triggerContext:
           $ref: '#/components/schemas/Trigger'
     Type:
-      type: object
-      properties:
-        typeName:
-          type: string
+      type: string
+      enum:
+      - STRING
+      - ENUM
+      - INT
+      - FLOAT
+      - BOOLEAN
+      - DATETIME
+      - DATE
+      - TIME
+      - DURATION
+      - FILE
+      - JSON
+      - URI
+      - SECRET
     TypeSignature:
       type: object
     TypeVariable_Class_Object__:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
+      - $ref: '#/components/schemas/Type_1'
       - $ref: '#/components/schemas/AnnotatedElement'
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_3'
           genericDeclaration:
             $ref: '#/components/schemas/Class_Object_'
           name:
@@ -19302,13 +19311,13 @@ components:
     TypeVariable_Class_String__:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
+      - $ref: '#/components/schemas/Type_31'
       - $ref: '#/components/schemas/AnnotatedElement'
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_33'
           genericDeclaration:
             $ref: '#/components/schemas/Class_String_'
           name:
@@ -19320,13 +19329,13 @@ components:
     TypeVariable_Constructor_Object__:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
+      - $ref: '#/components/schemas/Type_24'
       - $ref: '#/components/schemas/AnnotatedElement'
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_26'
           genericDeclaration:
             $ref: '#/components/schemas/Constructor_Object_'
           name:
@@ -19338,13 +19347,13 @@ components:
     TypeVariable_GenericDeclaration_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
+      - $ref: '#/components/schemas/Type_8'
       - $ref: '#/components/schemas/AnnotatedElement'
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_10'
           genericDeclaration: {}
           name:
             type: string
@@ -19355,13 +19364,13 @@ components:
     TypeVariable_Method_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
+      - $ref: '#/components/schemas/Type_18'
       - $ref: '#/components/schemas/AnnotatedElement'
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_20'
           genericDeclaration:
             $ref: '#/components/schemas/Method'
           name:
@@ -19370,102 +19379,131 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/AnnotatedType'
-    Type_1:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
-    Type_2:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
+    Type_10:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_11:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_12:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_13:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_14:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_15:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_16:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_17:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_20:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_21:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_22:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_23:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_26:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_27:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_28:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_29:
+      type: object
+      properties:
+        typeName:
+          type: string
     Type_3:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_30:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_33:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_34:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_35:
+      type: object
+      properties:
+        typeName:
+          type: string
     Type_4:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
+      type: object
+      properties:
+        typeName:
+          type: string
     Type_5:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
+      type: object
+      properties:
+        typeName:
+          type: string
     Type_6:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_7:
+      type: object
+      properties:
+        typeName:
+          type: string
     Usage:
       required:
       - configurations
