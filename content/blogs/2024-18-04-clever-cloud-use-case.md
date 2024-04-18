@@ -9,7 +9,7 @@ author:
 image: /blogs/2024-18-04-clever-cloud-use-case.jpg
 ---
 
-Clever Cloud provides a Platform as a Service solution, based in Europe. Clever Cloud exists for one purpose: helping people and companies to deliver software and services faster. Their promise is to ensure that once an app is deployed, it stays up, no matter what (high traffic, security udpates, DDoS , application failure, hardware issues etc..). The PaaS helps development teams to put digital applications and services into production on a reliable infrastructure, with automatic scalability and transparent pricing. With monitoring data reaching 20TB weekly, Clever Cloud needed a robust solution to manage this influx without compromising system performance or storage efficiency.
+Clever Cloud provides a Platform as a Service solution, based in Europe. Clever Cloud exists for one purpose: helping people and companies to deliver software and services faster. Their promise is to ensure that once an app is deployed, it stays up, no matter what (high traffic, security updates, DDoS , application failure, hardware issues etc..). The PaaS helps development teams to put digital applications and services into production on a reliable infrastructure, with automatic scalability and transparent pricing. With monitoring data reaching 20TB weekly, Clever Cloud needed a robust solution to manage this influx without compromising system performance or storage efficiency.
 
 ## Managing Metrics and Data Volume at Scale
 
@@ -21,7 +21,7 @@ Initially, Clever Cloud faced stability issues due to the rapid growth of their 
 
 ## **Kestra's Role in Automating Data Offloading**
 
-Kestra has been chose for automating Clever Cloud’s data offloading. Kestra is used to automate data handling tasks, significantly reducing the manual effort required each month
+Kestra has been chosen for automating Clever Cloud’s data offloading. Kestra is used to automate data handling tasks, significantly reducing the manual effort required each month
 
 - **HTTP Request Handling**: Using **`io.kestra.plugin.fs.http.Request`** for initiating interactions with external data sources.
 - **Workflow Modularity**: Employing **`io.kestra.core.tasks.flows.Subflow`** to manage sub-workflows within the main archival process.
@@ -51,10 +51,10 @@ Lastly, the workflow includes monitoring and logging capabilities. Every operati
 
 ## What's Next
 
-If you want to learn more about their solution to offload billions of datapoints each month you can check [Clever Cloud blogpost](https://www.clever-cloud.com/blog/engineering/2024/04/04/metrics-offloading-billions-of-datapoints-each-month/)
+If you want to learn more about Clever Cloud’s solution to offload billions of datapoints each month you can check [their blogpost](https://www.clever-cloud.com/blog/engineering/2024/04/04/metrics-offloading-billions-of-datapoints-each-month/)
 
-We are very proud of the usage of Kestra at Clever Cloud, this integration led to significant improvements in handling data volume, maintaining system performance, and optimizing storage use. The success of this project has encouraged further exploration of automating other areas within Clever Cloud's infrastructure with Kestra. From our side we are working on a integration of Kestra into their platform.
+We are very proud of the usage of Kestra at Clever Cloud, this integration led to significant improvements in handling data volume, maintaining system performance, and optimizing storage use. The success of this project has encouraged further exploration of automating other areas within Clever Cloud's infrastructure with Kestra. From our side we are working on an integration of Kestra into their platform.
 
-Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
+Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
 Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
