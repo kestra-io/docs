@@ -9,11 +9,11 @@ author:
 image: /blogs/2024-18-04-clever-cloud-use-case.jpg
 ---
 
-Clever Cloud provides a Platform as a Service solution, based in Europe. Clever Cloud exists for one purpose: helping people and companies to deliver software and services faster. Their promise is to ensure that once an app is deployed, it stays up, no matter what (high traffic, security updates, DDoS , application failure, hardware issues etc..). The PaaS helps development teams to put digital applications and services into production on a reliable infrastructure, with automatic scalability and transparent pricing. With monitoring data reaching 20TB weekly, Clever Cloud needed a robust solution to manage this influx without compromising system performance or storage efficiency.
+Clever Cloud provides a Platform as a Service solution, based in Europe. Clever Cloud exists for one purpose: helping people and companies to deliver software and services faster. Their promise is to ensure that once an app is deployed, it stays up, no matter what (high traffic, security updates, DDoS , application failure, hardware issues etc..). The PaaS helps development teams to put digital applications and services into production on a reliable infrastructure, with automatic scalability and transparent pricing. With monitoring data reaching 20TB monthly, Clever Cloud needed a robust solution to manage this influx without compromising system performance or storage efficiency.
 
 ## Managing Metrics and Data Volume at Scale
 
-Clever Cloud use metrics to dynamically allocate resources within their infrastructure, ensuring that applications perform optimally. These metrics, critical for both customer-facing and internal applications, are stored into a time series database growing at a pace of 20TB per week. The database, which use **Warp10** on top of **FoundationDB**, efficiently handles hundreds of thousands of data points per second, meeting Clever Cloud's performance requirements. This setup supports the ingestion spikes of over 500,000 data points per second and processing reads exceeding 5,000,000 data points per second.
+Clever Cloud use metrics to dynamically allocate resources within their infrastructure, ensuring that applications perform optimally. These metrics, critical for both customer-facing and internal applications, are stored into a time series database growing at a pace of 20TB per month. The database, which use **Warp10** on top of **FoundationDB**, efficiently handles hundreds of thousands of data points per second, meeting Clever Cloud's performance requirements. This setup supports the ingestion spikes of over 500,000 data points per second and processing reads exceeding 5,000,000 data points per second.
 
 ## Challenges in Data Management
 
