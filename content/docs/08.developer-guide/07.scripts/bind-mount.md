@@ -35,7 +35,7 @@ First, make sure that your Kestra configuration in the [Docker Compose file](htt
           server:
             basic-auth:
               enabled: false
-              username: admin
+              username: "admin@kestra.io" # it must be a valid email address
               password: kestra
           repository:
             type: postgres
