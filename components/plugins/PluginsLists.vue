@@ -19,7 +19,7 @@
                     @click="setActiveCategory(category)"
                     class="m-1 rounded-button"
                 >
-                    {{ capitalize(category) }}
+                    {{ DONT_CAPITALIZE_CATEGORIES.includes(category) ? category : capitalize(category) }}
                 </button>
             </div>
             <div class="row my-4" data-aos="fade-right">
@@ -56,6 +56,7 @@
 <script setup>
     import Magnify from "vue-material-design-icons/Magnify.vue"
 
+    const DONT_CAPITALIZE_CATEGORIES = ["AI"];
     const currentPage = ref(1);
     const itemsPerPage = ref(40);
     const plugins = ref([]);

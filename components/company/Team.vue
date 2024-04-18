@@ -165,6 +165,28 @@
                         <a href="https://twitter.com/wrussell1999" target="_blank" class="me-2"><twitter /></a>
                     </span>
                 </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/pgrainger.png" alt="Paul Grainger"/>
+                    <div class="w-100">
+                        <div class="team-name">Paul Grainger</div>
+                        <div class="team-title font-small">Lead Field Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/paul-grainger-65653115/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/paulgrainger85" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>                
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/mpaunovic.png" alt="Miloš Paunović"/>
+                    <div class="w-100">
+                        <div class="team-name">Miloš Paunović</div>
+                        <div class="team-title font-small">Senior Frontend Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/paunovicmilos/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/MilosPaunovic" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>                    
             </div>
         </Section>
     </div>

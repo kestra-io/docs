@@ -15,13 +15,10 @@ First, make sure that your Kestra configuration in the [Docker Compose file](htt
   kestra:
     image: kestra/kestra:latest-full
     pull_policy: always
-    entrypoint: /bin/bash
     user: "root"
     env_file:
       - .env
-    command:
-      - -c
-      - /app/kestra server standalone --worker-thread=128
+    command: server standalone --worker-thread=128
     volumes:
       - kestra-data:/app/storage
       - /var/run/docker.sock:/var/run/docker.sock
@@ -38,7 +35,7 @@ First, make sure that your Kestra configuration in the [Docker Compose file](htt
           server:
             basic-auth:
               enabled: false
-              username: admin
+              username: "admin@kestra.io" # it must be a valid email address
               password: kestra
           repository:
             type: postgres
