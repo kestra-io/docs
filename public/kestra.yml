@@ -7030,15 +7030,17 @@ components:
       - MESSAGING
       - SCRIPT
       - TRANSFORMATION
-      - FLOW
       - BATCH
       - ALERTING
       - CLOUD
       - STORAGE
-      - MISC
+      - OTHER
       - TOOL
       - AI
       - CORE
+      - INGESTION
+      - BI
+      - DATA_QUALITY
     PluginUsage:
       type: object
       properties:
