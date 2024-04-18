@@ -15,13 +15,10 @@ First, make sure that your Kestra configuration in the [Docker Compose file](htt
   kestra:
     image: kestra/kestra:latest-full
     pull_policy: always
-    entrypoint: /bin/bash
     user: "root"
     env_file:
       - .env
-    command:
-      - -c
-      - /app/kestra server standalone --worker-thread=128
+    command: server standalone --worker-thread=128
     volumes:
       - kestra-data:/app/storage
       - /var/run/docker.sock:/var/run/docker.sock
