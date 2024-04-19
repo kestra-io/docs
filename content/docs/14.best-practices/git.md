@@ -7,7 +7,7 @@ This section describes best practices for Version Control with Git in Kestra.
 
 By default, **all Kestra flows are automatically versioned**. You don't need to use any additional version control system to track changes to your flows. Kestra automatically creates a new revision of a flow whenever you save it, and you can view the history of changes to a flow, compare changes between revisions, and restore a previous version at any time.
 
-However, if you want to use Git to track changes to your [Flows](../06.workflow-components/02.flow.md) and [Namespace Files](../08.developer-guide/03.namespace-files.md), you can do so using the built-in Git support in Kestra.
+However, if you want to use Git to track changes to your [Flows](../06.workflow-components/02.flow/index.md) and [Namespace Files](../08.developer-guide/03.namespace-files.md), you can do so using the built-in Git support in Kestra.
 
 There are multiple ways to use Git with Kestra:
 - The [git.Sync](https://kestra.io/plugins/plugin-git/tasks/io.kestra.plugin.git.sync) pattern allows you to implement GitOps and use Git as a single source of truth; this pattern is useful if you want to use Git as a single source of truth and avoid making changes to flows and Namespace Files from the UI
