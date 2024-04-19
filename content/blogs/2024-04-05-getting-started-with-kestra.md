@@ -9,6 +9,10 @@ author:
 image: /blogs/2024-04-05-getting-started-with-kestra.png
 ---
 
+<div class="video-container">
+<iframe width="100%" height="100%" src="https://www.youtube.com/embed/a2BZ7vOihjg?si=4vEZy7hekHoP4PD8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
 Kestra is an event driven data orchestration platform that’s highly flexible and easy to use. This guide is going to go through the basics and get you started building your own pipeline!
 
 Originating as a platform for data orchestration, Kestra finds itself well-equipped to manage all types of pipelines with its highly flexible interface and a huge range of plugins. Through this blog post, I’m going to show you how to get set up with Kestra and set up a simple workflow to run a Python script every hour and send the result as a Discord notification.
