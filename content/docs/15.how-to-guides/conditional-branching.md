@@ -1,9 +1,16 @@
-id: switch
-namespace: io.kestra.demo
+---
+title: How to use conditional branching
+icon: /docs/icons/tutorial.svg
+---
 
-description: |
-  Depending on the value passed as the input, the flow will branch to different tasks.
-  If no matching value, the `defaults` task is used.
+How to use the Switch task to branch the flow based on a value.
+
+
+Depending on the value passed as input, the will flow branch to different tasks. If there is no matching value, Kestra will use the `defaults` branch.
+
+```yaml
+id: switch
+namespace: example
 
 inputs:
   - id: string
@@ -47,3 +54,4 @@ outputs:
   - id: extracted
     type: STRING
     value: "{{ outputs.first ?? outputs.second1 ?? outputs.third1 ?? outputs.default }}"
+```

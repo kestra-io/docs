@@ -1,6 +1,13 @@
-id: each-nested
-namespace: io.kestra.demo
-description: Example of an each expression to iterate over a list of values.
+---
+title: How to loop over a list of values
+icon: /docs/icons/tutorial.svg
+---
+
+How to to iterate over a list of values in Kestra.
+
+```yaml
+id: each_nested
+namespace: example
 
 tasks:
   - id: 1_each
@@ -26,3 +33,5 @@ tasks:
   - id: 2_return
     type: io.kestra.core.tasks.debugs.Return
     format: "{{task.id}} > {{outputs['1-2-1_return'].s1['a a'].value}}"
+```
+
