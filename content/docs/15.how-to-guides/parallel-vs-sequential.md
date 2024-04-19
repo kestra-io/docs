@@ -1,5 +1,5 @@
 ---
-title: Parallel vs. Sequential Tasks
+title: Parallel vs. Sequential Tasks in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
