@@ -17,7 +17,7 @@ namespace: dev
 tasks:
   - id: http
     type: io.kestra.plugin.fs.http.Download
-    uri: https://raw.githubusercontent.com/kestra-io/examples/main/datasets/orders.csv
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
 ```
 
 This example automatically emits output metadata, such as the status `code`, file `uri` and request `headers` because those properties have been preconfigured on that plugin's task. However, in your custom script, you can decide what metadata you want to send to Kestra to make that metadata visible in the UI.
