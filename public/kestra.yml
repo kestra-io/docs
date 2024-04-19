@@ -548,39 +548,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BulkResponse'
-  /api/v1/executions/flow/{namespace}/{flowId}:
-    get:
-      tags:
-      - Executions
-      summary: Get flow information's for an execution
-      operationId: getFlowForExecution
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace of the flow
-        required: true
-        schema:
-          type: string
-      - name: flowId
-        in: path
-        description: The flow id
-        required: true
-        schema:
-          type: string
-      - name: revision
-        in: query
-        description: The flow revision
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      responses:
-        "200":
-          description: getFlowForExecution 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FlowForExecution'
   /api/v1/executions/kill/by-ids:
     delete:
       tags:
@@ -1589,26 +1556,6 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v1/executions/{executionId}/flow:
-    get:
-      tags:
-      - Executions
-      summary: Get flow information's for an execution
-      operationId: getFlowForExecutionById
-      parameters:
-      - name: executionId
-        in: path
-        description: The execution that you want flow information's
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getFlowForExecutionById 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FlowForExecution'
   /api/v1/executions/{executionId}/follow:
     get:
       tags:
@@ -6116,43 +6063,6 @@ components:
       enum:
       - TASKS
       - TRIGGERS
-    FlowForExecution:
-      required:
-      - deleted
-      - disabled
-      - id
-      - namespace
-      - tasks
-      type: object
-      properties:
-        id:
-          minLength: 1
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
-          type: string
-        namespace:
-          pattern: "^[a-z0-9][a-z0-9._-]*"
-          type: string
-        revision:
-          minimum: 1
-          type: integer
-          format: int32
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Input_Object_'
-        tasks:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskForExecution'
-        triggers:
-          type: array
-          items:
-            $ref: '#/components/schemas/AbstractTrigger'
-        disabled:
-          type: boolean
-        deleted:
-          type: boolean
     FlowGraph:
       required:
       - clusters
@@ -7120,15 +7030,17 @@ components:
       - MESSAGING
       - SCRIPT
       - TRANSFORMATION
-      - FLOW
       - BATCH
       - ALERTING
       - CLOUD
       - STORAGE
-      - MISC
+      - OTHER
       - TOOL
       - AI
       - CORE
+      - INGESTION
+      - BI
+      - DATA_QUALITY
     PluginUsage:
       type: object
       properties:
@@ -7427,21 +7339,6 @@ components:
         values:
           type: object
           additionalProperties: true
-    TaskForExecution:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          minLength: 1
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        type:
-          minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
-          type: string
     TaskRun:
       required:
       - attempts
