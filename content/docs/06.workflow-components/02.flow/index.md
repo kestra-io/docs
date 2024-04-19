@@ -54,11 +54,11 @@ taskDefaults:
 
 ### Task defaults
 
-You can also define `taskDefaults` in your flow. This is a list of default task properties that will be applied to each task of a certain type inside your flow. The [taskDefaults](./09.task-defaults.md) property can be handy to avoid repeating the same values when leveraging the same task multiple times.
+You can also define `taskDefaults` in your flow. This is a list of default task properties that will be applied to each task of a certain type inside your flow. The [taskDefaults](../09.task-defaults.md) property can be handy to avoid repeating the same values when leveraging the same task multiple times.
 
 ### Variables
 
-You can set [flow variables](./05.variables.md) that will be accessible by each task using `{{ vars.key }}`. Flow `variables` is a map of key/value pairs.
+You can set [flow variables](../05.variables.md) that will be accessible by each task using `{{ vars.key }}`. Flow `variables` is a map of key/value pairs.
 
 ### List of tasks
 
@@ -68,7 +68,7 @@ The most important part of a flow is the list of tasks that will be run sequenti
 
 By default, all flows are active and will execute whether or not a trigger has been set.
 
-You have the option to [disable a Flow](./16.disabled.md), which is particularly useful when you want to temporarily stop a Flow from executing e.g. when troubleshooting a failure.
+You have the option to [disable a Flow](../16.disabled.md), which is particularly useful when you want to temporarily stop a Flow from executing e.g. when troubleshooting a failure.
 
 ![enable disable flow](/docs/concepts/disable_flow.jpg)
 
@@ -84,14 +84,14 @@ There are two kinds of tasks in Kestra:
 
 ### Runnable Task
 
-[Runnable Tasks](../07.concepts/02.runnable-tasks.md) handle computational work in the flow. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by workers.
+[Runnable Tasks](../../07.concepts/02.runnable-tasks.md) handle computational work in the flow. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by workers.
 
 By default, Kestra only includes a few Runnable Tasks. However, many of them are available as [plugins](/plugins), and if you use our default Docker image, plenty of them will already be included.
 
 
 ### Flowable Task
 
-[Flowable Tasks](../07.concepts/01.flowable-tasks.md) only handle flow logic (branching, grouping, parallel processing, etc.) and start new tasks. For example, the [Switch task](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.switch) decides the next task to run based on some inputs.
+[Flowable Tasks](../../07.concepts/01.flowable-tasks.md) only handle flow logic (branching, grouping, parallel processing, etc.) and start new tasks. For example, the [Switch task](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.switch) decides the next task to run based on some inputs.
 
 A Flowable Task is handled by an executor and can be called very often. Because of that, these tasks cannot include intensive computations, unlike Runnable Tasks. Most of the common Flowable Tasks are available in the default Kestra installation.
 
@@ -108,7 +108,7 @@ The inputs can be declared as either optional or mandatory. If the flow has requ
 
 Inputs can have validation rules that are enforced at execution time.
 
-Inputs of type `FILE` will be uploaded to Kestra's [internal storage](../04.architecture/09.internal-storage.md) and made available for all tasks.
+Inputs of type `FILE` will be uploaded to Kestra's [internal storage](../../04.architecture/09.internal-storage.md) and made available for all tasks.
 
 Flow inputs can be seen in the **Overview** tab of the **Execution** page.
 
@@ -124,7 +124,7 @@ You can view:
 
 If an output is a file from the internal storage, it will be available to download.
 
-For more details on both task and flow outputs, see the [Outputs](./07.outputs.md) page.
+For more details on both task and flow outputs, see the [Outputs](../07.outputs.md) page.
 
 ## Revision
 
@@ -136,7 +136,7 @@ You can access old revisions inside the **Revisions** tab of the **Flows** page.
 
 ## Triggers
 
-[Triggers](./05.triggers/index.md) are a way to start a flow from external events. For example, a trigger might initiate a flow at a scheduled time or based on external events (webhooks, file creation, message in a broker, etc.).
+[Triggers](../05.triggers/index.md) are a way to start a flow from external events. For example, a trigger might initiate a flow at a scheduled time or based on external events (webhooks, file creation, message in a broker, etc.).
 
 
 ## Listeners (deprecated)
