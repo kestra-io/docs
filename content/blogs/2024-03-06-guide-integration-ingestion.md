@@ -204,7 +204,7 @@ Cloud storage: You can integrate with cloud storage services like Amazon S3, Goo
 
 ### API
 
-The [Snowflake SQL API](https://docs.snowflake.com/en/developer-guide/sql-api/index) is a REST API that you can use to access and update data in a Snowflake database. You can use this API to develop custom applications and integrations that:
+The [Snowflake SQL API](https://docs.snowflake.com/en/developer-guide/sql-api/index.md) is a REST API that you can use to access and update data in a Snowflake database. You can use this API to develop custom applications and integrations that:
 
 - Perform queries
 - Manage deployment (e.g. provision users and roles, create tables, etc...)
@@ -323,7 +323,7 @@ There are 39 leaf nodes in the above diagram. 39 different data sources that Big
 
 Let’s take a look at the work that might be involved in going from a great idea to production.
 
-## Nothing Stays Simple for Long 
+## Nothing Stays Simple for Long
 
 *Just to be clear, neither GCP nor BigQuery are being singled out as bad examples.*
 
