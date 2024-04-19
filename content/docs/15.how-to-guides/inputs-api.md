@@ -1,6 +1,6 @@
 ---
 title: How To Pass Inputs via an API call in Kestra
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/api.svg
 ---
 
 Passing Inputs via an API Call
