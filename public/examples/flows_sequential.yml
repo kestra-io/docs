@@ -1,5 +1,5 @@
 id: sequential
-namespace: io.kestra.demo
+namespace: example
 
 description: |
   This flow will start the 2 sequential tasks in parallel and those will launch tasks one after the other.

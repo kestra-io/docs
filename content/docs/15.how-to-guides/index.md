@@ -1,5 +1,5 @@
 ---
-title: How-to guides
+title: How-to Guides
 icon: /docs/icons/tutorial.svg
 ---
 

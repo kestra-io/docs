@@ -1,6 +1,6 @@
 ---
 title: How to Use Python in Kestra
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/python.svg
 ---
 
 Run Python code inside of your flow.

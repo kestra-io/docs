@@ -1,9 +1,9 @@
 ---
 title: How to Setup Monitoring in Kestra
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/grafana.svg
 ---
 
-Setup monitoring dashboards for Kestra.
+Setup Prometheus and Grafana for Kestra.
 
 We will look in detail at setting up monitoring dashboards for Kestra.
 
@@ -21,7 +21,7 @@ Once Kestra is up and running, you can check out the available metrics by going 
 
 Create a few flows and execute them to generate some metrics for visualization. You can also add triggers to the flows to check the metrics corresponding to executions happening on a regular basis.
 
-## Setting up prometheus
+## Setting up Prometheus
 
 Now that the metrics are available from Kestra, we need to setup Prometheus server to scrape these metrics, and store them in a timeseries DB.
 

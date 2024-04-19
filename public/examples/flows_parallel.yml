@@ -1,5 +1,5 @@
 id: parallel
-namespace: io.kestra.demo
+namespace: example
 
 description: |
   This flow will run 3 parallel tasks based on the `concurrent` property and will start the `last` task at the end.

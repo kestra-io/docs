@@ -80,7 +80,7 @@ You can think of flow outputs as **data contracts** between flows. The subflow d
 
 
 ### How to use the new subflow outputs
-Since the 0.15.0 release, the flow can produce `outputs` simply by defining them in the flow file. Here is an example of a flow that produces an output:
+Since 0.15.0, the flow can produce `outputs` simply by defining them in the flow file. Here is an example of a flow that produces an output:
 
 ```yaml
 id: flow_outputs

@@ -1,67 +1,13 @@
 ---
-title: How to Use Inputs in Kestra
+title: How To Validate Inputs with Enum Data Type in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
-Deep dive into how you can use inputs in various use cases.
+Input validation with the Enum data type
 
-## What are inputs
+## What are Inputs
 
 Inputs allow you to dynamically pass data to your execution at runtime. For a detailed overview of inputs, see the [Inputs](../06.workflow-components/06.inputs.md) documentation page.
-
-## Passing inputs via an API call
-
-Let's assume the following flow:
-
-```yaml
-id: inputs_demo
-namespace: dev
-
-inputs:
-  - id: user
-    type: STRING
-    defaults: Rick Astley
-
-tasks:
-  - id: hello
-    type: io.kestra.core.tasks.log.Log
-    message: Hey there, {{ inputs.user }}
-```
-
-To trigger that flow with a different input via an API call, you can use the form data:
-
-```yaml
-id: api_call
-namespace: dev
-tasks:
-  - id: basic_auth_api
-    type: io.kestra.plugin.fs.http.Request
-    uri: http://host.docker.internal:8080/api/v1/executions/dev/inputs_demo
-    method: POST
-    contentType: multipart/form-data
-    formData:
-      user: John Doe
-```
-
-The above example assumes you run Kestra locally in Docker. If you run Kestra in a different environment, replace `http://host.docker.internal:8080` with the correct URL.
-
-If you configured basic authentication for your Kestra instance, you can add the `basicAuthUser` and `basicAuthPassword` options to the `Request` task:
-
-```yaml
-id: api_call
-namespace: dev
-tasks:
-  - id: basic_auth_api
-    type: io.kestra.plugin.fs.http.Request
-    uri: http://host.docker.internal:8080/api/v1/executions/dev/inputs_demo
-    options:
-      basicAuthUser: admin
-      basicAuthPassword: admin
-    method: POST
-    contentType: multipart/form-data
-    formData:
-      user: John Doe
-```
 
 ## Input validation with Enum data type
 

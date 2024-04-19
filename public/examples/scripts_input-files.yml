@@ -1,10 +1,10 @@
-id: bash_with_files
+id: input_files
 namespace: example
 
 description: This flow shows how to pass files between inputs and tasks in Shell scripts.
 
 inputs:
-  - id: file
+  - id: my-file
     type: FILE
 
 tasks:
@@ -13,6 +13,6 @@ tasks:
     commands:
       - mv file.tmp output.tmp
     inputFiles:
-      file.tmp: "{{ inputs.file }}"
+      file.tmp: "{{ inputs['my-file'] }}"
     outputFiles:
       - "*.tmp"
