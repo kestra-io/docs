@@ -1,5 +1,5 @@
 ---
-title: How to use conditional branching
+title: How to Use Conditional Branching in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
