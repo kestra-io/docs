@@ -1,5 +1,5 @@
 ---
-title: How to Loop Vver a List of Values in Kestra
+title: How to Loop Over a List of Values in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
