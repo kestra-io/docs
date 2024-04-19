@@ -1,9 +1,11 @@
 ---
-title: How to loop over a list of values
+title: How to Loop Vver a List of Values in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
-How to to iterate over a list of values in Kestra.
+How to to iterate over a list of values in your flow.
+
+In this example, we can use `EachSequential` to iterate over a list of values.
 
 ```yaml
 id: each_nested
