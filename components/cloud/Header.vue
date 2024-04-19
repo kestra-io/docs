@@ -7,6 +7,9 @@
                     <h1 class="my-3">
                         Kestra <span class="text-gradient">Cloud</span> <br>Coming Soon
                     </h1>
+                    <span class="tag">
+                        Private Alpha
+                    </span>
                     <h6 class="fw-light lh-lg m-0">
                         Register now to be the first to know when we launch!
                     </h6>
@@ -96,6 +99,17 @@
                 h6 {
                     line-height: unset !important;
                 }
+            }
+
+            .tag {
+                max-width: fit-content;
+                border-radius: calc($spacer * 0.25);
+                color: $white;
+                background-color: #5A3ABC;
+                padding: calc($spacer * 0.3) calc($spacer * 0.25);
+                font-size: $font-size-md;
+                line-height: 1.5rem;
+                font-weight: 600;
             }
         }
 

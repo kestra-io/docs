@@ -66,7 +66,9 @@
                                     <NuxtLink class="dropdown-item" href="/cloud" @click="globalClick(true)">
                                         <CloudOutline />
                                         <p>
-                                            <span>Cloud Edition</span><br />
+                                            <span>Cloud Edition</span>
+                                            <span class="tag">Private Alpha</span>
+                                            <br />
                                             Register to the Cloud Edition
                                         </p>
                                     </NuxtLink>
@@ -790,6 +792,17 @@ export default {
                                 font-size: $font-size-sm;
                                 font-weight: 600;
                                 line-height: calc($spacer * 1.37);
+                            }
+
+                            .tag {
+                                border-radius: calc($spacer * 0.25);
+                                color: $white;
+                                background-color: #5A3ABC;
+                                padding: 0 calc($spacer * 0.25);
+                                margin-left: calc($spacer * 0.75);
+                                font-size: $font-size-xs;
+                                line-height: 1.5rem;
+                                margin-bottom: calc($spacer * 0.25);
                             }
 
                             mark {
