@@ -60,25 +60,25 @@
                                 <li data-aos="fade-left">
                                     <span>
                                         <strong>
-                                            All features from the Open-Source Edition and
+                                            All features from the Open Source Edition and
                                             more
                                         </strong>
                                     </span>
                                 </li>
                                 <ul>
                                     <p class="category-title">Security</p>
-                                    <li data-aos="fade-left" data-aos-delay="300"><span>Audit logs</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>RBAC</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>SSO</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Secrets Manager</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="300"><span><a href="/docs/enterprise/audit-logs">Audit Logs</a></span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span><a href="/docs/enterprise/rbac">Role-Based Access Control (RBAC)</a></span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span><a href="/docs/enterprise/sso">Single Sign-On (SSO)</a></span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span><a href="/docs/enterprise/secrets-manager">Secrets Manager</a></span></li>
                                     <li data-aos="fade-left" data-aos-delay="400"><span>Encryption</span></li>
                                 </ul>
                                 <ul>
                                     <p class="category-title">Governance</p>
-                                    <li data-aos="fade-left" data-aos-delay="300"><span>Multi Tenancy</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Namespace Management</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Custom blueprints</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Task Configuration</span></li>
+                                    <li data-aos="fade-left" data-aos-delay="300"><span><a href="/docs/enterprise/tenants">Multi Tenancy</a></span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span><a href="/docs/enterprise/namespace-management">Namespace Management</a></span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span><a href="/docs/enterprise/custom-blueprints">Custom Blueprints</a></span></li>
+                                    <li data-aos="fade-left" data-aos-delay="400"><span><a href="/docs/enterprise/centralized-task-configuration">Task Configuration</a></span></li>
                                 </ul>
                                 <ul>
                                     <p class="category-title">Scalability</p>

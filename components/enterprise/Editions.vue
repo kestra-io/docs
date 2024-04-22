@@ -12,7 +12,7 @@
                             <h4 class="card-title" data-aos="fade-right">Open-Source Edition</h4>
                             <p class="type" data-aos="fade-left">Free</p>
                             <NuxtLink href="/pricing" class="btn btn-animated btn-dark-animated w-100" data-aos="zoom-in">
-                                Get started
+                                Get Started
                             </NuxtLink>
                             <ul>
                                 <li data-aos="fade-right">Apache 2.0 license</li>
@@ -39,16 +39,16 @@
                                 Talk to Us
                             </NuxtLink>
                             <ul>
-                                <li data-aos="fade-left">All features from the Open-Source Edition and more</li>
+                                <li data-aos="fade-left">All features from the Open Source Edition and more</li>
                                 <li data-aos="fade-left" data-aos-delay="100">Scalable architecture with High-Availability</li>
-                                <li data-aos="fade-left" data-aos-delay="150">Multi-tenancy</li>
-                                <li data-aos="fade-left" data-aos-delay="200">Worker groups supporting distributed workers</li>
-                                <li data-aos="fade-left" data-aos-delay="250">Custom secrets backend (AWS Secret Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, Hashicorp Vault)</li>
-                                <li data-aos="fade-left" data-aos-delay="300">Audit logs</li>
-                                <li data-aos="fade-left" data-aos-delay="350">Single Sign-On (SSO)</li>
-                                <li data-aos="fade-left" data-aos-delay="400">Role-Based Access Control (RBAC)</li>
-                                <li data-aos="fade-left" data-aos-delay="450">Custom blueprints</li>
-                                <li data-aos="fade-left" data-aos-delay="500">Namespace-level management</li>
+                                <li data-aos="fade-left" data-aos-delay="150"><a href="/docs/enterprise/tenants">Multi-tenancy</a></li>
+                                <li data-aos="fade-left" data-aos-delay="200"><a href="/docs/enterprise/worker-group">Worker groups supporting distributed workers</a></li>
+                                <li data-aos="fade-left" data-aos-delay="250"><a href="/docs/enterprise/secrets-manager"></a>Custom secrets backend (AWS Secret Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, Hashicorp Vault)</a></li>
+                                <li data-aos="fade-left" data-aos-delay="300"><a href="/docs/enterprise/audit-logs">Audit Logs</a></li>
+                                <li data-aos="fade-left" data-aos-delay="350"><a href="/docs/enterprise/sso">Single Sign-On (SSO)</a></li>
+                                <li data-aos="fade-left" data-aos-delay="400"><a href="/docs/enterprise/rbac">Role-Based Access Control (RBAC)</a></li>
+                                <li data-aos="fade-left" data-aos-delay="450"><a href="/docs/enterprise/custom-blueprints">Custom Blueprints</a></li>
+                                <li data-aos="fade-left" data-aos-delay="500"><a href="/docs/enterprise/namespace-management">Namespace-level Management</a></li>
                                 <li data-aos="fade-left" data-aos-delay="550">Secure credential store</li>
                                 <li data-aos="fade-left" data-aos-delay="600">Built-in variable store</li>
                                 <li data-aos="fade-left" data-aos-delay="650">Centralized governance over task configuration</li>
