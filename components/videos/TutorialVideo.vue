@@ -12,7 +12,9 @@
         />
         <p class="category">{{video.category}}</p>
         <h3 class="title">{{video.title}}</h3>
-        <p class="video-info">57k views - 2 weeks ago</p>
+        <p class="video-info" v-if="video.publicationDate">
+            {{getYMD(video.publicationDate)}}
+        </p>
         <p class="canal-name">{{video.author}}</p>
     </div>
 </template>
@@ -25,6 +27,10 @@
         type: Object,
         required: true
       },
+      getYMD: {
+        type: Function,
+        required: true
+      }
     },
   };
 </script>
@@ -40,6 +46,7 @@
         iframe {
             border: 1px solid $black-6;
             border-radius: calc($spacer * 0.5);
+            width: 100%;
         }
 
         p {

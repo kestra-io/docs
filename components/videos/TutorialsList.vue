@@ -20,14 +20,12 @@
                         >
                             <button
                                 class="nav-link"
-                                :class="{ active: filter === cat.name }"
+                                :class="{ 'active': activeTag.name === cat.name }"
                                 id="home-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#home"
                                 type="button"
-                                role="tab"
-                                aria-controls="home"
-                                aria-selected="true"
+                                @click="setCatVideos(cat)"
                             >
                                 {{ cat.name }}
                             </button>
@@ -38,36 +36,42 @@
                             v-for="cat in categories"
                             :key="cat.name"
                             class="tab-pane fade"
-                            :class="{ 'show active': filter === cat.name }"
+                            :class="{ 'show active': activeTag.name === cat.name }"
                             :id="cat.name"
                             role="tabpanel"
                             :aria-labelledby="`${cat.name}-tab`"
                         >
                             <div class="tutorials-container">
-                                <div class="main">
-                                    <iframe
-                                        width="764"
-                                        height="424"
-                                        :src="videos[0].iframeUrl"
-                                        :title="videos[0].title"
-                                        frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        referrerpolicy="strict-origin-when-cross-origin"
-                                        allowfullscreen
-                                    />
-                                    <div class="info-block">
-                                        <div class="content">
-                                            <p class="category">{{videos[0].category}}</p>
-                                            <h3 class="title">{{videos[0].title}}</h3>
-                                            <p class="video-info">57k views - 2 weeks ago</p>
-                                            <p class="canal-name">{{videos[0].author}}</p>
+                                <div class="row" v-if="featuredVideo">
+                                    <div class="col-12 col-lg-8">
+                                        <iframe
+                                            width="764"
+                                            height="424"
+                                            :src="featuredVideo.iframeUrl"
+                                            :title="featuredVideo.title"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            referrerpolicy="strict-origin-when-cross-origin"
+                                            allowfullscreen
+                                        />
+                                    </div>
+                                    <div class="col-12 col-lg-4">
+                                        <div class="info-block">
+                                            <div class="content">
+                                                <p class="category">{{featuredVideo.category}}</p>
+                                                <h3 class="title">{{featuredVideo.title}}</h3>
+                                                <p class="video-info" v-if="featuredVideo.publicationDate">
+                                                    {{getYMD(featuredVideo.publicationDate)}}
+                                                </p>
+                                                <p class="canal-name">{{featuredVideo.author}}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tutorials-list">
-                                    <div class="row d-flex justify-content-center">
+                                    <div class="row">
                                         <div class="col-12 col-md-6 col-lg-4 mb-4" v-for="video in videos">
-                                            <VideosTutorialVideo :video="video"/>
+                                            <VideosTutorialVideo :video="video" :getYMD="getYMD"/>
                                         </div>
                                     </div>
                                 </div>
@@ -81,7 +85,6 @@
                             class="form-select bg-dark-2"
                             aria-label="Default select example"
                             v-model="itemsPerPage"
-                            @change="fetchPageData"
                         >
                             <option :value="10">10</option>
                             <option :value="25">25</option>
@@ -95,7 +98,7 @@
                             v-if="totalPages > 1"
                         />
                         <div class="d-flex align-items-baseline">
-                            <span class="total-pages">Total: {{ totalPlugins }}</span>
+                            <span class="total-pages">Total: {{ totalVideos }}</span>
                         </div>
                     </div>
                 </div>
@@ -104,12 +107,76 @@
     </div>
 </template>
 
+<script setup>
+  const config = useRuntimeConfig();
+  const activeTag = ref({ name: 'All videos' });
+  const videos = ref([]);
+  const totalPages = ref(0);
+  const totalVideos = ref(0);
+  const featuredVideo = ref(null);
+  const itemsPerPage = ref(25);
+  const currentPage = ref(1);
+
+  const {data: tutorialVideo} = await useAsyncData(`tutorial-videos`, () => {
+    return $fetch(`${config.public.apiUrl}/tutorial-videos?page=${currentPage.value}&size=${itemsPerPage.value}`);
+  });
+  const changePage = (pageNo) => {
+    currentPage.value = pageNo;
+    window.scrollTo(0, 0);
+  }
+
+  const setVideos = (data, total) => {
+    const videoData = data.map(item => ({ ...item, iframeUrl: embedUrl(item.url) }));
+    console.log(videoData);
+    featuredVideo.value = videoData.find((item) => item.isFeatured);
+    videos.value = videoData.filter((video) => !video.isFeatured);
+    totalVideos.value = total;
+    totalPages.value = Math.ceil(total / itemsPerPage.value);
+  }
+
+  const getYMD = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    const formattedMonth = month < 10 ? '0' + month : month;
+    const formattedDay = day < 10 ? '0' + day : day;
+
+    return `${formattedMonth}.${formattedDay}.${year}`;
+  }
+
+  const embedUrl = (url) => {
+    const videoId = url.split('v=')[1];
+    return "https://www.youtube.com/embed/" + videoId;
+  }
+
+  if(tutorialVideo.value) {
+    setVideos(tutorialVideo.value.results, tutorialVideo.value.total);
+  }
+
+  const setCatVideos = (tagVal) => {
+    activeTag.value = tagVal;
+  }
+
+  let timer;
+  watch([currentPage, itemsPerPage, activeTag], ([pageVal, itemVal, tagVal], [__, oldItemVal, oldTagVal]) => {
+    if(timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(async () => {
+      const category = activeTag.value.name !== 'All videos' ? activeTag.value.name: '';
+      const { data } = await useFetch(`${config.public.apiUrl}/tutorial-videos?page=${(itemVal != oldItemVal) || (tagVal.name != oldTagVal.name) ? 1 : pageVal}&size=${itemVal}&category=${category}`);
+      setVideos(data.value.results, data.value.total);
+    }, 500)
+  })
+</script>
+
 <script>
   export default {
     name: "TutorialsList",
     data() {
       return {
-        filter: "All videos",
         categories: [
           {
             name: "All videos",
@@ -124,19 +191,7 @@
             name: "Feature showcase",
           },
         ],
-        slug: "",
-        pageList: [],
-        itemsPerPage: 25,
-        pageNo: 1,
-        totalPages: 2,
-        totalPlugins: 39
       };
-    },
-    props: {
-      videos: {
-        type: Array,
-        default: []
-      },
     },
   };
 </script>
@@ -171,7 +226,7 @@
             color: $white;
             font-size: $font-size-md;
             font-weight: 400;
-
+            border-width: 0;
             &:hover, &:focus {
                 border-color: transparent;
             }
@@ -188,9 +243,7 @@
             font-weight: 700;
 
             &, &:hover, &:focus {
-                border-color: $purple-36;
-                border-width: 0 0 1px 0;
-                border-radius: 0;
+                border-bottom: 2px solid $purple-36;
             }
         }
     }
@@ -247,68 +300,61 @@
         flex-direction: column;
         gap: 2rem;
 
-        .main {
+        iframe {
+            border: 1px solid $black-6;
+            border-radius: calc($spacer * 0.5);
             width: 100%;
-            display: flex;
-            gap: 2rem;
 
-            iframe {
-                border: 1px solid $black-6;
-                border-radius: calc($spacer * 0.5);
+            @include media-breakpoint-down(lg) {
+
             }
+        }
 
-            .info-block {
+        .info-block {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            max-width: calc($spacer * 23.25);
+
+            .content {
                 display: flex;
-                align-items: center;
-                max-width: calc($spacer * 23.25);
+                flex-direction: column;
+                margin: 0 !important;
 
-                .content {
-                    display: flex;
-                    flex-direction: column;
+                p {
+                    margin: 0;
+                    font-size: $font-size-sm;
+                    line-height: calc($spacer * 1.375);
+                    font-weight: 400;
+                }
 
-                    p {
-                        margin: 0;
-                        font-size: $font-size-sm;
-                        line-height: calc($spacer * 1.375);
-                        font-weight: 400;
-                    }
+                p.category {
+                    color: $purple-36;
+                }
 
-                    p.category {
-                        color: $purple-36;
-                    }
+                h3.title {
+                    font-size: $h3-font-size;
+                    font-weight: 400;
+                    line-height: calc($spacer * 2.375);
+                    color: $white;
+                    margin: 0;
+                }
 
-                    h3.title {
-                        font-size: $h3-font-size;
-                        font-weight: 400;
-                        line-height: calc($spacer * 2.375);
-                        color: $white;
-                        margin: 0;
-                    }
+                p.video-info {
+                    color: $white-3;
+                }
 
-                    p.video-info {
-                        color: $white-3;
-                    }
-
-                    p.canal-name {
-                        color: $black-8;
-                    }
+                p.canal-name {
+                    color: $black-8;
                 }
             }
 
             @include media-breakpoint-down(lg) {
-                flex-direction: column;
-                .info-block {
-                    max-width: unset;
-
-                    .content {
-                        h3.title {
-                            line-height: unset;
-                        }
+                max-width: unset;
+                .content {
+                    h3.title {
+                        line-height: unset;
                     }
-                }
-
-                iframe {
-                    width: 100%;
                 }
             }
         }
