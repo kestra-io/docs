@@ -1,6 +1,7 @@
 ---
 title: "Building A New Liveness and Heartbeat Mechanism For Better Reliability"
 description: "In this episode of engineering stories, discover the benefits of the new heartbeat mechanism, and the problems it solves."
+date: 2024-04-22T17:00:00
 category: Engineering
 author:
   name: Florian Hussonnois
@@ -173,12 +174,8 @@ At Kestra, we think that deciding between Availability and Consistency of execut
 That’s why we have decided to introduce a new property called `kestra.server.workerTaskRestartStrategy` that accepts the following values:
 
 - `NEVER`: Tasks are never restarted on worker failure (i.e., tasks are run at most once).
-- `IMMEDIATELY`:
-    - Tasks are restarted immediately on worker failure, i.e., as soon as a worker is detected as `DISCONNECTED`.
-    - This strategy is used to reduce task recovery times at the risk of introducing duplicate executions (i.e., tasks are run at least once).
-    - 
-- `AFTER_TERMINATION_GRACE_PERIOD` (recommended) :
-    - Tasks are restarted on worker failure after the termination grace period is elapsed. This strategy should prefer to reduce the risk of task duplication (i.e., tasks are run exactly once in best effort).
+- `IMMEDIATELY`: Tasks are restarted immediately on worker failure, i.e., as soon as a worker is detected as `DISCONNECTED`. This strategy is used to reduce task recovery times at the risk of introducing duplicate executions (i.e., tasks are run at least once).
+- `AFTER_TERMINATION_GRACE_PERIOD`(recommended): Tasks are restarted on worker failure after the termination grace period is elapsed. This strategy should prefer to reduce the risk of task duplication (i.e., tasks are run exactly once in best effort).
 
 Finally, by using both that property and the `terminationGracePeriod` you can place the cursor between the guarantees that matter for your operations. For example, if you need to ensure the availability of your task executions, you may opt for the `IMMEDIATELY` strategy. This will be to the detriment of the consistency as duplicate task executions may happen in the event of failures. Instead, you could opt for the `AFTER_TERMINATION_GRACE_PERIOD` strategy to minimize the risk of duplicates, but increasing the end-to-end latency of an execution.
 
