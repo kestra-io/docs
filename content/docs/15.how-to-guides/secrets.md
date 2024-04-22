@@ -34,7 +34,7 @@ Lets say we save these contents into `.env_encoded` file.
 This can be achieved by manually changing the keys to be prefixed with `SECERT_`, and getting the base64 encoded values by using `base64` command in shell as follows:
 
 ```sh
-echo "actual_postgres_password" | base64
+echo -n "actual_postgres_password" | base64
 ```
 
 But there are some easy ways to do this. One way is to use the bash script for converting `.env` file into the desired format. The bash script will perform the following actions:
