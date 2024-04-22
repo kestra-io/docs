@@ -15605,10 +15605,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_AbstractBindingController.BindingDetail_'
       - $ref: '#/components/schemas/AbstractCollection_AbstractBindingController.BindingDetail_'
       - properties:
-          first:
-            $ref: '#/components/schemas/AbstractBindingController.BindingDetail'
-          last:
-            $ref: '#/components/schemas/AbstractBindingController.BindingDetail'
           empty:
             type: boolean
     ArrayList_ApiUser_:
@@ -15617,10 +15613,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_ApiUser_'
       - $ref: '#/components/schemas/AbstractCollection_ApiUser_'
       - properties:
-          first:
-            $ref: '#/components/schemas/ApiUser'
-          last:
-            $ref: '#/components/schemas/ApiUser'
           empty:
             type: boolean
     ArrayList_AuditLogController.AuditLogWithUser_:
@@ -15629,10 +15621,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_AuditLogController.AuditLogWithUser_'
       - $ref: '#/components/schemas/AbstractCollection_AuditLogController.AuditLogWithUser_'
       - properties:
-          first:
-            $ref: '#/components/schemas/AuditLogController.AuditLogWithUser'
-          last:
-            $ref: '#/components/schemas/AuditLogController.AuditLogWithUser'
           empty:
             type: boolean
     ArrayList_BlueprintController.BlueprintItem_:
@@ -15641,10 +15629,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_BlueprintController.BlueprintItem_'
       - $ref: '#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_'
       - properties:
-          first:
-            $ref: '#/components/schemas/BlueprintController.BlueprintItem'
-          last:
-            $ref: '#/components/schemas/BlueprintController.BlueprintItem'
           empty:
             type: boolean
     ArrayList_Blueprint_:
@@ -15653,10 +15637,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Blueprint_'
       - $ref: '#/components/schemas/AbstractCollection_Blueprint_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Blueprint'
-          last:
-            $ref: '#/components/schemas/Blueprint'
           empty:
             type: boolean
     ArrayList_ClusterController.ApiServiceInstance_:
@@ -15665,10 +15645,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_ClusterController.ApiServiceInstance_'
       - $ref: '#/components/schemas/AbstractCollection_ClusterController.ApiServiceInstance_'
       - properties:
-          first:
-            $ref: '#/components/schemas/ClusterController.ApiServiceInstance'
-          last:
-            $ref: '#/components/schemas/ClusterController.ApiServiceInstance'
           empty:
             type: boolean
     ArrayList_Execution_:
@@ -15677,10 +15653,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Execution_'
       - $ref: '#/components/schemas/AbstractCollection_Execution_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Execution'
-          last:
-            $ref: '#/components/schemas/Execution'
           empty:
             type: boolean
     ArrayList_Flow_:
@@ -15689,10 +15661,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Flow_'
       - $ref: '#/components/schemas/AbstractCollection_Flow_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Flow'
-          last:
-            $ref: '#/components/schemas/Flow'
           empty:
             type: boolean
     ArrayList_Group_:
@@ -15701,10 +15669,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Group_'
       - $ref: '#/components/schemas/AbstractCollection_Group_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Group'
-          last:
-            $ref: '#/components/schemas/Group'
           empty:
             type: boolean
     ArrayList_LogEntry_:
@@ -15713,10 +15677,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_LogEntry_'
       - $ref: '#/components/schemas/AbstractCollection_LogEntry_'
       - properties:
-          first:
-            $ref: '#/components/schemas/LogEntry'
-          last:
-            $ref: '#/components/schemas/LogEntry'
           empty:
             type: boolean
     ArrayList_MetricEntry_:
@@ -15725,10 +15685,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_MetricEntry_'
       - $ref: '#/components/schemas/AbstractCollection_MetricEntry_'
       - properties:
-          first:
-            $ref: '#/components/schemas/MetricEntry'
-          last:
-            $ref: '#/components/schemas/MetricEntry'
           empty:
             type: boolean
     ArrayList_NamespaceController.NamespaceWithDisabled_:
@@ -15737,10 +15693,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_NamespaceController.NamespaceWithDisabled_'
       - $ref: '#/components/schemas/AbstractCollection_NamespaceController.NamespaceWithDisabled_'
       - properties:
-          first:
-            $ref: '#/components/schemas/NamespaceController.NamespaceWithDisabled'
-          last:
-            $ref: '#/components/schemas/NamespaceController.NamespaceWithDisabled'
           empty:
             type: boolean
     ArrayList_Role_:
@@ -15749,10 +15701,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Role_'
       - $ref: '#/components/schemas/AbstractCollection_Role_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Role'
-          last:
-            $ref: '#/components/schemas/Role'
           empty:
             type: boolean
     ArrayList_SearchResult_Flow__:
@@ -15761,10 +15709,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_SearchResult_Flow__'
       - $ref: '#/components/schemas/AbstractCollection_SearchResult_Flow__'
       - properties:
-          first:
-            $ref: '#/components/schemas/SearchResult_Flow_'
-          last:
-            $ref: '#/components/schemas/SearchResult_Flow_'
           empty:
             type: boolean
     ArrayList_TaskRun_:
@@ -15773,10 +15717,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_TaskRun_'
       - $ref: '#/components/schemas/AbstractCollection_TaskRun_'
       - properties:
-          first:
-            $ref: '#/components/schemas/TaskRun'
-          last:
-            $ref: '#/components/schemas/TaskRun'
           empty:
             type: boolean
     ArrayList_Template_:
@@ -15785,10 +15725,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Template_'
       - $ref: '#/components/schemas/AbstractCollection_Template_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Template'
-          last:
-            $ref: '#/components/schemas/Template'
           empty:
             type: boolean
     ArrayList_Tenant_:
@@ -15797,10 +15733,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Tenant_'
       - $ref: '#/components/schemas/AbstractCollection_Tenant_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Tenant'
-          last:
-            $ref: '#/components/schemas/Tenant'
           empty:
             type: boolean
     ArrayList_TriggerController.Triggers_:
@@ -15809,10 +15741,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_TriggerController.Triggers_'
       - $ref: '#/components/schemas/AbstractCollection_TriggerController.Triggers_'
       - properties:
-          first:
-            $ref: '#/components/schemas/TriggerController.Triggers'
-          last:
-            $ref: '#/components/schemas/TriggerController.Triggers'
           empty:
             type: boolean
     ArrayList_Trigger_:
@@ -15821,10 +15749,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Trigger_'
       - $ref: '#/components/schemas/AbstractCollection_Trigger_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Trigger'
-          last:
-            $ref: '#/components/schemas/Trigger'
           empty:
             type: boolean
     AuditLog:
@@ -16187,8 +16111,6 @@ components:
           type: string
         canonicalName:
           type: string
-        unnamedClass:
-          type: boolean
         anonymousClass:
           type: boolean
         localClass:
@@ -16358,8 +16280,6 @@ components:
           type: string
         canonicalName:
           type: string
-        unnamedClass:
-          type: boolean
         anonymousClass:
           type: boolean
         localClass:
@@ -16502,30 +16422,6 @@ components:
           type: string
         hostname:
           type: string
-    ClusterController.ApiServiceInstance:
-      required:
-      - createdAt
-      - id
-      - server
-      - state
-      - type
-      - updatedAt
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/Service.ServiceType'
-        state:
-          $ref: '#/components/schemas/Service.ServiceState'
-        server:
-          $ref: '#/components/schemas/ClusterController.ApiServerInstance'
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
     CodeSigner:
       required:
       - signerCertPath
@@ -16904,8 +16800,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TemporalUnit'
-        positive:
-          type: boolean
         zero:
           type: boolean
         negative:
@@ -17625,13 +17519,10 @@ components:
     List_Object_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/SequencedCollection_Object_'
       - $ref: '#/components/schemas/Collection_Object_'
       - properties:
           empty:
             type: boolean
-          first: {}
-          last: {}
     Listener:
       required:
       - conditions
@@ -17929,51 +17820,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MetricAggregation'
-    MetricEntry:
-      required:
-      - deleted
-      - executionId
-      - flowId
-      - name
-      - namespace
-      - tags
-      - taskId
-      - taskRunId
-      - timestamp
-      - type
-      - value
-      type: object
-      properties:
-        namespace:
-          type: string
-        flowId:
-          type: string
-        taskId:
-          type: string
-          nullable: true
-        executionId:
-          type: string
-          nullable: true
-        taskRunId:
-          type: string
-          nullable: true
-        type:
-          type: string
-        name:
-          type: string
-        value:
-          type: number
-          format: double
-        timestamp:
-          type: string
-          format: date-time
-        tags:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        deleted:
-          type: boolean
     MiscController.BasicAuthCredentials:
       required:
       - password
@@ -18062,8 +17908,6 @@ components:
           $ref: '#/components/schemas/ModuleDescriptor'
         layer:
           $ref: '#/components/schemas/ModuleLayer'
-        nativeAccessEnabled:
-          type: boolean
         packages:
           type: array
           items:
@@ -18146,18 +17990,6 @@ components:
           type: string
         flowId:
           type: string
-    NamespaceController.NamespaceWithDisabled:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Namespace'
-      - required:
-        - deleted
-        - disabled
-        properties:
-          deleted:
-            type: boolean
-          disabled:
-            type: boolean
     NamespaceUsage:
       type: object
       properties:
@@ -18547,17 +18379,15 @@ components:
       - MESSAGING
       - SCRIPT
       - TRANSFORMATION
+      - FLOW
       - BATCH
       - ALERTING
       - CLOUD
       - STORAGE
-      - OTHER
+      - MISC
       - TOOL
       - AI
       - CORE
-      - INGESTION
-      - BI
-      - DATA_QUALITY
     PluginUsage:
       type: object
       properties:
@@ -18688,25 +18518,6 @@ components:
       - template
       - task
       - trigger
-    SearchResult_Flow_:
-      required:
-      - fragments
-      - model
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Flow'
-        fragments:
-          type: array
-          items:
-            type: string
-    SequencedCollection_Object_:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Collection_Object_'
-      - properties:
-          first: {}
-          last: {}
     ServerConfig:
       required:
       - liveness
@@ -19266,16 +19077,6 @@ components:
           nullable: true
           items:
             $ref: '#/components/schemas/State.Type'
-    TriggerController.Triggers:
-      required:
-      - abstractTrigger
-      - triggerContext
-      type: object
-      properties:
-        abstractTrigger:
-          $ref: '#/components/schemas/AbstractTrigger'
-        triggerContext:
-          $ref: '#/components/schemas/Trigger'
     Type:
       type: object
       properties:
