@@ -143,6 +143,7 @@ export default defineNuxtConfig({
         '/docs/administrator-guide/configuration': {redirect: '/docs/configuration-guide'},
         '/doc': {redirect: '/docs'},
         '/blog': {redirect: '/blogs'},
+        '/docs/plugin-developer-guide': {redirect: '/docs/developer-guide/plugins'},
         '/docs/plugin-library': {redirect: '/docs/getting-started/plugins'},
         '/docs/troubleshooting': {redirect: '/docs/faq/troubleshooting'},
         '/docs/developer-guide/best-practice': {redirect: '/docs/developer-guide/best-practices'},
