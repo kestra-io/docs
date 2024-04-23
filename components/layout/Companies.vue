@@ -92,6 +92,7 @@
                     { name: "ca", width: "63px", height: "45px" },
                     { name: "accredible", width: "167px", height: "27px" },
                     { name: "merkle", width: "140px", height: "19px" },
+                    { name: "renault", width: "135px", height: "33px" },
                 ]
                     .sort(() => .5 - Math.random())
             },
