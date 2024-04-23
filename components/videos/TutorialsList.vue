@@ -127,9 +127,13 @@
 
   const setVideos = (data, total) => {
     const videoData = data.map(item => ({ ...item, iframeUrl: embedUrl(item.url) }));
-    console.log(videoData);
-    featuredVideo.value = videoData.find((item) => item.isFeatured);
-    videos.value = videoData.filter((video) => !video.isFeatured);
+    if (activeTag.value.name === 'All videos') {
+      featuredVideo.value = videoData.find((item) => item.isFeatured);
+      videos.value = videoData.filter((video) => !video.isFeatured);
+    } else {
+      featuredVideo.value = null;
+      videos.value = [ ...videoData ];
+    }
     totalVideos.value = total;
     totalPages.value = Math.ceil(total / itemsPerPage.value);
   }
