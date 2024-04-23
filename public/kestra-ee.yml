@@ -19388,7 +19388,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Type_2:
       type: string
       enum:
@@ -19405,7 +19404,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Type_3:
       type: string
       enum:
@@ -19422,7 +19420,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Type_4:
       type: string
       enum:
@@ -19439,7 +19436,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Type_5:
       type: string
       enum:
@@ -19456,7 +19452,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Type_6:
       type: string
       enum:
@@ -19473,7 +19468,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Usage:
       required:
       - configurations
