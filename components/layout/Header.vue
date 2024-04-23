@@ -245,6 +245,15 @@
                                     </NuxtLink>
                                 </li>
                                 <li>
+                                    <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
+                                        <Video />
+                                        <p>
+                                            <span>Video tutorials</span><br />
+                                            Get started with our video tutorials
+                                        </p>
+                                    </NuxtLink>
+                                </li>
+                                <li>
                                     <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
                                         <Handshake />
                                         <p>
@@ -378,6 +387,7 @@ import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
 import AccountGroup from "vue-material-design-icons/AccountGroup.vue"
 import CommentQuestionOutline from "vue-material-design-icons/CommentQuestionOutline.vue"
 import PostOutline from "vue-material-design-icons/PostOutline.vue"
+import Video from "vue-material-design-icons/Video.vue"
 import Handshake from "vue-material-design-icons/Handshake.vue"
 import AccountStarOutline from "vue-material-design-icons/AccountStarOutline.vue"
 import Segment from "vue-material-design-icons/Segment.vue"
