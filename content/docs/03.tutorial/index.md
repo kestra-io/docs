@@ -7,6 +7,7 @@ Kestra is an open-source orchestrator designed to bring Infrastructure as Code (
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/videoseries?si=27rzEZFWtYMSbjXu&amp;list=PLEK3H8YwZn1oaSNybGnIfO03KC_jQVChL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
+
 You can use Kestra to:
 - run workflows **on-demand**, **event-driven** or based on a regular **schedule**
 - programmatically interact with any system or programming language
