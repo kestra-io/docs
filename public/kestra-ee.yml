@@ -1936,7 +1936,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BulkResponse'
-  /api/v1/executions/flow/{namespace}/{flowId}:
+  /api/v1/executions/flows/{namespace}/{flowId}:
     get:
       tags:
       - Executions
@@ -1969,7 +1969,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FlowForExecution'
-  /api/v1/executions/flow/{namespace}/{flowId}/{tenant}:
+  /api/v1/executions/flows/{namespace}/{flowId}/{tenant}:
     get:
       tags:
       - Executions
@@ -2470,6 +2470,80 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/executions/namespaces:
+    get:
+      tags:
+      - Executions
+      summary: Get all namespaces that have executable flows
+      operationId: listDistinctNamespace
+      responses:
+        "200":
+          description: listDistinctNamespace 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/v1/executions/namespaces/{namespace}/flows:
+    get:
+      tags:
+      - Executions
+      summary: Get all flow ids for a namespace
+      operationId: getFlowsByNamespace
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getFlowsByNamespace 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FlowForExecution'
+  /api/v1/executions/namespaces/{namespace}/flows/{tenant}:
+    get:
+      tags:
+      - Executions
+      summary: Get all flow ids for a namespace
+      operationId: getFlowsByNamespace_1
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getFlowsByNamespace_1 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FlowForExecution'
+  /api/v1/executions/namespaces/{tenant}:
+    get:
+      tags:
+      - Executions
+      summary: Get all namespaces that have executable flows
+      operationId: listDistinctNamespace_1
+      responses:
+        "200":
+          description: listDistinctNamespace_1 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
   /api/v1/executions/replay/by-ids:
     post:
       tags:
@@ -4933,10 +5007,10 @@ paths:
       tags:
       - Flows
       summary: List all distinct namespaces
-      operationId: listDistinctNamespace
+      operationId: listDistinctNamespace_2
       responses:
         "200":
-          description: listDistinctNamespace 200 response
+          description: listDistinctNamespace_2 200 response
           content:
             application/json:
               schema:
@@ -4948,10 +5022,10 @@ paths:
       tags:
       - Flows
       summary: List all distinct namespaces
-      operationId: listDistinctNamespace_1
+      operationId: listDistinctNamespace_3
       responses:
         "200":
-          description: listDistinctNamespace_1 200 response
+          description: listDistinctNamespace_3 200 response
           content:
             application/json:
               schema:
@@ -5615,7 +5689,7 @@ paths:
       tags:
       - Flows
       summary: Retrieve all flows from a given namespace
-      operationId: getFlowsByNamespace
+      operationId: getFlowsByNamespace_2
       parameters:
       - name: namespace
         in: path
@@ -5625,7 +5699,7 @@ paths:
           type: string
       responses:
         "200":
-          description: getFlowsByNamespace 200 response
+          description: getFlowsByNamespace_2 200 response
           content:
             application/json:
               schema:
@@ -6263,7 +6337,7 @@ paths:
       tags:
       - Flows
       summary: Retrieve all flows from a given namespace
-      operationId: getFlowsByNamespace_1
+      operationId: getFlowsByNamespace_3
       parameters:
       - name: namespace
         in: path
@@ -6273,7 +6347,7 @@ paths:
           type: string
       responses:
         "200":
-          description: getFlowsByNamespace_1 200 response
+          description: getFlowsByNamespace_3 200 response
           content:
             application/json:
               schema:
@@ -10374,10 +10448,10 @@ paths:
       tags:
       - Templates
       summary: List all distinct namespaces
-      operationId: listDistinctNamespace_2
+      operationId: listDistinctNamespace_4
       responses:
         "200":
-          description: listDistinctNamespace_2 200 response
+          description: listDistinctNamespace_4 200 response
           content:
             application/json:
               schema:
@@ -10389,10 +10463,10 @@ paths:
       tags:
       - Templates
       summary: List all distinct namespaces
-      operationId: listDistinctNamespace_3
+      operationId: listDistinctNamespace_5
       responses:
         "200":
-          description: listDistinctNamespace_3 200 response
+          description: listDistinctNamespace_5 200 response
           content:
             application/json:
               schema:
