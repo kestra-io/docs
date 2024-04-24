@@ -1936,6 +1936,72 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BulkResponse'
+  /api/v1/executions/flow/{namespace}/{flowId}:
+    get:
+      tags:
+      - Executions
+      summary: Get flow information's for an execution
+      operationId: getFlowForExecution
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the flow
+        required: true
+        schema:
+          type: string
+      - name: flowId
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: revision
+        in: query
+        description: The flow revision
+        schema:
+          type: integer
+          format: int32
+          nullable: true
+      responses:
+        "200":
+          description: getFlowForExecution 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowForExecution'
+  /api/v1/executions/flow/{namespace}/{flowId}/{tenant}:
+    get:
+      tags:
+      - Executions
+      summary: Get flow information's for an execution
+      operationId: getFlowForExecution_1
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the flow
+        required: true
+        schema:
+          type: string
+      - name: flowId
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: revision
+        in: query
+        description: The flow revision
+        schema:
+          type: integer
+          format: int32
+          nullable: true
+      responses:
+        "200":
+          description: getFlowForExecution_1 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowForExecution'
   /api/v1/executions/kill/by-ids:
     delete:
       tags:
@@ -3929,6 +3995,46 @@ paths:
               schema:
                 type: string
                 format: binary
+  /api/v1/executions/{executionId}/flow:
+    get:
+      tags:
+      - Executions
+      summary: Get flow information's for an execution
+      operationId: getFlowForExecutionById
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution that you want flow information's
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getFlowForExecutionById 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowForExecution'
+  /api/v1/executions/{executionId}/flow/{tenant}:
+    get:
+      tags:
+      - Executions
+      summary: Get flow information's for an execution
+      operationId: getFlowForExecutionById_1
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution that you want flow information's
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getFlowForExecutionById_1 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowForExecution'
   /api/v1/executions/{executionId}/follow:
     get:
       tags:
@@ -15053,6 +15159,33 @@ components:
       properties:
         empty:
           type: boolean
+    AbstractFlow:
+      required:
+      - deleted
+      - disabled
+      - id
+      - namespace
+      type: object
+      properties:
+        id:
+          minLength: 1
+          pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
+          type: string
+        namespace:
+          pattern: "^[a-z0-9][a-z0-9._-]*"
+          type: string
+        revision:
+          minimum: 1
+          type: integer
+          format: int32
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Input_Object_'
+        disabled:
+          type: boolean
+        deleted:
+          type: boolean
     AbstractGraph:
       type: object
       properties:
@@ -15172,6 +15305,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/State.Type'
+    AbstractTriggerForExecution:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          title: A unique ID for the whole flow.
+          minLength: 1
+          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
+          type: string
+        type:
+          title: The class name for this current trigger.
+          minLength: 1
+          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
+            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          type: string
     AbstractUser:
       required:
       - type
@@ -17248,86 +17398,87 @@ components:
           type: integer
           format: int64
     Flow:
-      required:
-      - deleted
-      - disabled
-      - id
-      - namespace
-      - tasks
       type: object
-      properties:
-        id:
-          minLength: 1
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
-          type: string
-        namespace:
-          pattern: "^[a-z0-9][a-z0-9._-]*"
-          type: string
-        revision:
-          minimum: 1
-          type: integer
-          format: int32
-        description:
-          type: string
-        labels:
-          type: object
-          allOf:
-          - anyOf:
-            - $ref: '#/components/schemas/List_Object_'
-            - $ref: '#/components/schemas/Map_Object.Object_'
-          - anyOf:
-            - $ref: '#/components/schemas/List_Object_'
-            - $ref: '#/components/schemas/Map_Object.Object_'
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Input_Object_'
-        variables:
-          type: object
-          additionalProperties: true
-        tasks:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/Task'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Task'
-        listeners:
-          type: array
-          deprecated: true
-          items:
-            $ref: '#/components/schemas/Listener'
-        triggers:
-          type: array
-          items:
-            $ref: '#/components/schemas/AbstractTrigger'
-        taskDefaults:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskDefault'
-        disabled:
-          type: boolean
-        deleted:
-          type: boolean
-        concurrency:
-          $ref: '#/components/schemas/Concurrency'
-        outputs:
-          title: Output values available and exposes to other flows.
-          type: array
-          description: Output values make information about the execution of your
-            Flow available and expose for other Kestra flows to use. Output values
-            are similar to return values in programming languages.
-          items:
-            $ref: '#/components/schemas/Output'
-        retry:
-          $ref: '#/components/schemas/AbstractRetry'
+      allOf:
+      - $ref: '#/components/schemas/AbstractFlow'
+      - required:
+        - deleted
+        - tasks
+        properties:
+          deleted:
+            type: boolean
+          description:
+            type: string
+          labels:
+            type: object
+            allOf:
+            - anyOf:
+              - $ref: '#/components/schemas/List_Object_'
+              - $ref: '#/components/schemas/Map_Object.Object_'
+            - anyOf:
+              - $ref: '#/components/schemas/List_Object_'
+              - $ref: '#/components/schemas/Map_Object.Object_'
+          variables:
+            type: object
+            additionalProperties: true
+          tasks:
+            minItems: 1
+            type: array
+            items:
+              $ref: '#/components/schemas/Task'
+          errors:
+            type: array
+            items:
+              $ref: '#/components/schemas/Task'
+          listeners:
+            type: array
+            deprecated: true
+            items:
+              $ref: '#/components/schemas/Listener'
+          triggers:
+            type: array
+            items:
+              $ref: '#/components/schemas/AbstractTrigger'
+          taskDefaults:
+            type: array
+            items:
+              $ref: '#/components/schemas/TaskDefault'
+          concurrency:
+            $ref: '#/components/schemas/Concurrency'
+          outputs:
+            title: Output values available and exposes to other flows.
+            type: array
+            description: Output values make information about the execution of your
+              Flow available and expose for other Kestra flows to use. Output values
+              are similar to return values in programming languages.
+            items:
+              $ref: '#/components/schemas/Output'
+          retry:
+            $ref: '#/components/schemas/AbstractRetry'
     FlowController.TaskValidationType:
       type: string
       enum:
       - TASKS
       - TRIGGERS
+    FlowForExecution:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AbstractFlow'
+      - required:
+        - deleted
+        - tasks
+        properties:
+          deleted:
+            type: boolean
+          tasks:
+            minItems: 1
+            type: array
+            items:
+              $ref: '#/components/schemas/TaskForExecution'
+          triggers:
+            type: array
+            items:
+              $ref: '#/components/schemas/AbstractTriggerForExecution'
     FlowGraph:
       required:
       - clusters
@@ -17456,6 +17607,7 @@ components:
       type: object
       allOf:
       - $ref: '#/components/schemas/Flow'
+      - $ref: '#/components/schemas/AbstractFlow'
       - required:
         - deleted
         properties:
@@ -19069,6 +19221,21 @@ components:
         values:
           type: object
           additionalProperties: true
+    TaskForExecution:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          minLength: 1
+          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
+          type: string
+        type:
+          minLength: 1
+          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
+            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          type: string
     TaskRun:
       required:
       - attempts
