@@ -11,9 +11,20 @@ A flow is a container for `tasks`, their `inputs`, `outputs`, handling of `error
 
 You can define a flow declaratively using a [YAML](https://en.wikipedia.org/wiki/YAML) file.
 
-A flow must have an identifier (`id`), a `namespace`, and a list of `tasks`.
+A flow must have:
+- identifier (`id`)
+- [`namespace`](/docs/workflow-components/namespace)
+- [list of `tasks`](/docs/workflow-components/tasks)
 
-Optionally, a flow can also have `inputs`, `outputs`, `variables`, `labels`, `descriptions`, `taskDefaults`, `errors` and `triggers`.
+Optionally, a flow can also have:
+- [`inputs`](/docs/workflow-components/inputs)
+- [`outputs`](/docs/workflow-components/outputs)
+- [`variables`](/docs/workflow-components/variables)
+- [`labels`](/docs/workflow-components/labels)
+- [`descriptions`](/docs/workflow-components/descriptions)
+- [`taskDefaults`](/docs/workflow-components/task-defaults)
+- [`errors`](/docs/workflow-components/errors)
+- [`triggers`](/docs/workflow-components/triggers)
 
 ## Flow sample
 

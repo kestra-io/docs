@@ -1,5 +1,5 @@
 ---
-title: Triggers & schedule
+title: Triggers & Schedule
 icon: /docs/icons/components.svg
 ---
 
