@@ -9302,6 +9302,36 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Plugin'
+  /api/v1/plugins/groups/subgroups:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins group by subgroups
+      operationId: subgroups
+      responses:
+        "200":
+          description: subgroups 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plugin'
+  /api/v1/plugins/groups/subgroups/{tenant}:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins group by subgroups
+      operationId: subgroups_1
+      responses:
+        "200":
+          description: subgroups_1 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plugin'
   /api/v1/plugins/icons:
     get:
       tags:
@@ -18757,6 +18787,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PluginSubGroup.PluginCategory'
+        subGroup:
+          type: string
     PluginIcon:
       type: object
       properties:
