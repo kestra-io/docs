@@ -7,6 +7,10 @@ Run Python code inside of your flow.
 
 You can execute Python code inside of a flow by either writing your Python inline or by executing a `.py` file. You can also get outputs and metrics from your Python code too.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/Xv16DUla6hA?si=sKYTpTJPL4p_MA1G" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 In this example, the flow will install the required pip packages, make an API request to fetch data and use the Python Kestra library to generate outputs and metrics using this data.
 
 ## Scripts
