@@ -78,12 +78,15 @@ Once this has executed, `duration` will be viewable under **Metrics**.
 
 ## Execute Flows in Python
 
-Inside of your Python code, you can execute flows. This is useful if you want to manage your orchestration directly in Python rather than using the Kestra flow editor.
+Inside of your Python code, you can execute flows. This is useful if you want to manage your orchestration directly in Python rather than using the Kestra flow editor. However, we recommend using [Subflows](/docs/workflow-components/subflows) to execute flows from other flows for a more integrated experience.
 
 You can trigger a flow execution by calling the `execute()` method. Here is an example for the same `python_scripts` flow in the namespace `example` as above:
 
 ```python
 from kestra import Flow
+
+os.environ["KESTRA_HOSTNAME"] = "http://host.docker.internal:8080" # Set this when executing this Python code inside Kestra 
+
 flow = Flow()
 flow.execute('example', 'python_scripts', {'greeting': 'hello from Python'})
 ```
