@@ -40,17 +40,12 @@
     import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue";
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
     import 'vue3-carousel/dist/carousel.css'
-    import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
     export default {
         components: {
             Section,
             TestimonialsItem,
             ArrowLeft,
             ArrowRight,
-            Carousel,
-            Slide,
-            Pagination,
-            Navigation,
         },
         data() {
             return {

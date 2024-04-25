@@ -186,13 +186,13 @@
             name: "All videos",
           },
           {
-            name: "Hands on Tutorials",
+            name: "Deep Dive Tutorials",
           },
           {
-            name: "101 Tutorials",
+            name: "Quick Start Tutorials",
           },
           {
-            name: "Feature showcase",
+            name: "Feature Highlight",
           },
         ],
       };
