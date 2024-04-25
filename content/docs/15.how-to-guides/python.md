@@ -75,3 +75,17 @@ You can also get [metrics](../08.developer-guide/07.scripts/outputs-metrics.md#o
 
 Once this has executed, `duration` will be viewable under **Metrics**.
 ![metrics](/docs/how-to-guides/python/metrics.png)
+
+## Execute Flows in Python
+
+Inside of your Python code, you can execute flows. This is useful if you want to manage your orchestration directly in Python rather than using the Kestra flow editor.
+
+You can trigger a flow execution by calling the `execute()` method. Here is an example for the same `python_scripts` flow in the namespace `example` as above:
+
+```python
+from kestra import Flow
+flow = Flow()
+flow.execute('example', 'python_scripts', {'greeting': 'hello from Python'})
+```
+
+Read more about it on the [execution page](/docs/workflow-components/execution).
