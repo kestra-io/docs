@@ -88,4 +88,4 @@ flow = Flow()
 flow.execute('example', 'python_scripts', {'greeting': 'hello from Python'})
 ```
 
-Read more about it on the [execution page](/docs/workflow-components/executions).
+Read more about it on the [execution page](/docs/workflow-components/execution).
