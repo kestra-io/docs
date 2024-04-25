@@ -15,20 +15,7 @@ A flow must have:
 - [namespace](/docs/workflow-components/namespace)
 - [list of tasks](/docs/workflow-components/tasks)
 
-Optionally, a flow can also have:
-- [inputs](/docs/workflow-components/inputs)
-- [outputs](/docs/workflow-components/outputs)
-- [variables](/docs/workflow-components/variables)
-- [triggers](/docs/workflow-components/triggers)
-- [labels](/docs/workflow-components/labels)
-- [taskDefaults](/docs/workflow-components/task-defaults)
-- [errors](/docs/workflow-components/errors)
-- [retries](/docs/workflow-components/retries)
-- [timeout](/docs/workflow-components/timeout)
-- [concurrency](/docs/workflow-components/concurrency)
-- [descriptions](/docs/workflow-components/descriptions)
-- [disabled](/docs/workflow-components/disabled)
-- [revision](/docs/concepts/revision)
+Flows can also have a variety of optional properties, which you can read more about below:
 
 ::ChildCard
 ::
