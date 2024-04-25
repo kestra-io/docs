@@ -1936,72 +1936,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BulkResponse'
-  /api/v1/executions/flows/{namespace}/{flowId}:
-    get:
-      tags:
-      - Executions
-      summary: Get flow information's for an execution
-      operationId: getFlowForExecution
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace of the flow
-        required: true
-        schema:
-          type: string
-      - name: flowId
-        in: path
-        description: The flow id
-        required: true
-        schema:
-          type: string
-      - name: revision
-        in: query
-        description: The flow revision
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      responses:
-        "200":
-          description: getFlowForExecution 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FlowForExecution'
-  /api/v1/executions/flows/{namespace}/{flowId}/{tenant}:
-    get:
-      tags:
-      - Executions
-      summary: Get flow information's for an execution
-      operationId: getFlowForExecution_1
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace of the flow
-        required: true
-        schema:
-          type: string
-      - name: flowId
-        in: path
-        description: The flow id
-        required: true
-        schema:
-          type: string
-      - name: revision
-        in: query
-        description: The flow revision
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      responses:
-        "200":
-          description: getFlowForExecution_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FlowForExecution'
   /api/v1/executions/kill/by-ids:
     delete:
       tags:
@@ -2470,80 +2404,6 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v1/executions/namespaces:
-    get:
-      tags:
-      - Executions
-      summary: Get all namespaces that have executable flows
-      operationId: listDistinctNamespace
-      responses:
-        "200":
-          description: listDistinctNamespace 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-  /api/v1/executions/namespaces/{namespace}/flows:
-    get:
-      tags:
-      - Executions
-      summary: Get all flow ids for a namespace
-      operationId: getFlowsByNamespace
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getFlowsByNamespace 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/FlowForExecution'
-  /api/v1/executions/namespaces/{namespace}/flows/{tenant}:
-    get:
-      tags:
-      - Executions
-      summary: Get all flow ids for a namespace
-      operationId: getFlowsByNamespace_1
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getFlowsByNamespace_1 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/FlowForExecution'
-  /api/v1/executions/namespaces/{tenant}:
-    get:
-      tags:
-      - Executions
-      summary: Get all namespaces that have executable flows
-      operationId: listDistinctNamespace_1
-      responses:
-        "200":
-          description: listDistinctNamespace_1 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
   /api/v1/executions/replay/by-ids:
     post:
       tags:
@@ -4069,46 +3929,6 @@ paths:
               schema:
                 type: string
                 format: binary
-  /api/v1/executions/{executionId}/flow:
-    get:
-      tags:
-      - Executions
-      summary: Get flow information's for an execution
-      operationId: getFlowForExecutionById
-      parameters:
-      - name: executionId
-        in: path
-        description: The execution that you want flow information's
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getFlowForExecutionById 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FlowForExecution'
-  /api/v1/executions/{executionId}/flow/{tenant}:
-    get:
-      tags:
-      - Executions
-      summary: Get flow information's for an execution
-      operationId: getFlowForExecutionById_1
-      parameters:
-      - name: executionId
-        in: path
-        description: The execution that you want flow information's
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getFlowForExecutionById_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FlowForExecution'
   /api/v1/executions/{executionId}/follow:
     get:
       tags:
@@ -5007,10 +4827,10 @@ paths:
       tags:
       - Flows
       summary: List all distinct namespaces
-      operationId: listDistinctNamespace_2
+      operationId: listDistinctNamespace
       responses:
         "200":
-          description: listDistinctNamespace_2 200 response
+          description: listDistinctNamespace 200 response
           content:
             application/json:
               schema:
@@ -5022,10 +4842,10 @@ paths:
       tags:
       - Flows
       summary: List all distinct namespaces
-      operationId: listDistinctNamespace_3
+      operationId: listDistinctNamespace_1
       responses:
         "200":
-          description: listDistinctNamespace_3 200 response
+          description: listDistinctNamespace_1 200 response
           content:
             application/json:
               schema:
@@ -5689,7 +5509,7 @@ paths:
       tags:
       - Flows
       summary: Retrieve all flows from a given namespace
-      operationId: getFlowsByNamespace_2
+      operationId: getFlowsByNamespace
       parameters:
       - name: namespace
         in: path
@@ -5699,7 +5519,7 @@ paths:
           type: string
       responses:
         "200":
-          description: getFlowsByNamespace_2 200 response
+          description: getFlowsByNamespace 200 response
           content:
             application/json:
               schema:
@@ -6337,7 +6157,7 @@ paths:
       tags:
       - Flows
       summary: Retrieve all flows from a given namespace
-      operationId: getFlowsByNamespace_3
+      operationId: getFlowsByNamespace_1
       parameters:
       - name: namespace
         in: path
@@ -6347,7 +6167,7 @@ paths:
           type: string
       responses:
         "200":
-          description: getFlowsByNamespace_3 200 response
+          description: getFlowsByNamespace_1 200 response
           content:
             application/json:
               schema:
@@ -10448,10 +10268,10 @@ paths:
       tags:
       - Templates
       summary: List all distinct namespaces
-      operationId: listDistinctNamespace_4
+      operationId: listDistinctNamespace_2
       responses:
         "200":
-          description: listDistinctNamespace_4 200 response
+          description: listDistinctNamespace_2 200 response
           content:
             application/json:
               schema:
@@ -10463,10 +10283,10 @@ paths:
       tags:
       - Templates
       summary: List all distinct namespaces
-      operationId: listDistinctNamespace_5
+      operationId: listDistinctNamespace_3
       responses:
         "200":
-          description: listDistinctNamespace_5 200 response
+          description: listDistinctNamespace_3 200 response
           content:
             application/json:
               schema:
@@ -15233,33 +15053,6 @@ components:
       properties:
         empty:
           type: boolean
-    AbstractFlow:
-      required:
-      - deleted
-      - disabled
-      - id
-      - namespace
-      type: object
-      properties:
-        id:
-          minLength: 1
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
-          type: string
-        namespace:
-          pattern: "^[a-z0-9][a-z0-9._-]*"
-          type: string
-        revision:
-          minimum: 1
-          type: integer
-          format: int32
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Input_Object_'
-        disabled:
-          type: boolean
-        deleted:
-          type: boolean
     AbstractGraph:
       type: object
       properties:
@@ -15379,23 +15172,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/State.Type'
-    AbstractTriggerForExecution:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          title: A unique ID for the whole flow.
-          minLength: 1
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        type:
-          title: The class name for this current trigger.
-          minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
-          type: string
     AbstractUser:
       required:
       - type
@@ -15829,10 +15605,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_AbstractBindingController.BindingDetail_'
       - $ref: '#/components/schemas/AbstractCollection_AbstractBindingController.BindingDetail_'
       - properties:
-          first:
-            $ref: '#/components/schemas/AbstractBindingController.BindingDetail'
-          last:
-            $ref: '#/components/schemas/AbstractBindingController.BindingDetail'
           empty:
             type: boolean
     ArrayList_ApiUser_:
@@ -15841,10 +15613,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_ApiUser_'
       - $ref: '#/components/schemas/AbstractCollection_ApiUser_'
       - properties:
-          first:
-            $ref: '#/components/schemas/ApiUser'
-          last:
-            $ref: '#/components/schemas/ApiUser'
           empty:
             type: boolean
     ArrayList_AuditLogController.AuditLogWithUser_:
@@ -15853,10 +15621,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_AuditLogController.AuditLogWithUser_'
       - $ref: '#/components/schemas/AbstractCollection_AuditLogController.AuditLogWithUser_'
       - properties:
-          first:
-            $ref: '#/components/schemas/AuditLogController.AuditLogWithUser'
-          last:
-            $ref: '#/components/schemas/AuditLogController.AuditLogWithUser'
           empty:
             type: boolean
     ArrayList_BlueprintController.BlueprintItem_:
@@ -15865,10 +15629,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_BlueprintController.BlueprintItem_'
       - $ref: '#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_'
       - properties:
-          first:
-            $ref: '#/components/schemas/BlueprintController.BlueprintItem'
-          last:
-            $ref: '#/components/schemas/BlueprintController.BlueprintItem'
           empty:
             type: boolean
     ArrayList_Blueprint_:
@@ -15877,10 +15637,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Blueprint_'
       - $ref: '#/components/schemas/AbstractCollection_Blueprint_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Blueprint'
-          last:
-            $ref: '#/components/schemas/Blueprint'
           empty:
             type: boolean
     ArrayList_ClusterController.ApiServiceInstance_:
@@ -15889,10 +15645,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_ClusterController.ApiServiceInstance_'
       - $ref: '#/components/schemas/AbstractCollection_ClusterController.ApiServiceInstance_'
       - properties:
-          first:
-            $ref: '#/components/schemas/ClusterController.ApiServiceInstance'
-          last:
-            $ref: '#/components/schemas/ClusterController.ApiServiceInstance'
           empty:
             type: boolean
     ArrayList_Execution_:
@@ -15901,10 +15653,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Execution_'
       - $ref: '#/components/schemas/AbstractCollection_Execution_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Execution'
-          last:
-            $ref: '#/components/schemas/Execution'
           empty:
             type: boolean
     ArrayList_Flow_:
@@ -15913,10 +15661,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Flow_'
       - $ref: '#/components/schemas/AbstractCollection_Flow_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Flow'
-          last:
-            $ref: '#/components/schemas/Flow'
           empty:
             type: boolean
     ArrayList_Group_:
@@ -15925,10 +15669,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Group_'
       - $ref: '#/components/schemas/AbstractCollection_Group_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Group'
-          last:
-            $ref: '#/components/schemas/Group'
           empty:
             type: boolean
     ArrayList_LogEntry_:
@@ -15937,10 +15677,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_LogEntry_'
       - $ref: '#/components/schemas/AbstractCollection_LogEntry_'
       - properties:
-          first:
-            $ref: '#/components/schemas/LogEntry'
-          last:
-            $ref: '#/components/schemas/LogEntry'
           empty:
             type: boolean
     ArrayList_MetricEntry_:
@@ -15949,10 +15685,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_MetricEntry_'
       - $ref: '#/components/schemas/AbstractCollection_MetricEntry_'
       - properties:
-          first:
-            $ref: '#/components/schemas/MetricEntry'
-          last:
-            $ref: '#/components/schemas/MetricEntry'
           empty:
             type: boolean
     ArrayList_NamespaceController.NamespaceWithDisabled_:
@@ -15961,10 +15693,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_NamespaceController.NamespaceWithDisabled_'
       - $ref: '#/components/schemas/AbstractCollection_NamespaceController.NamespaceWithDisabled_'
       - properties:
-          first:
-            $ref: '#/components/schemas/NamespaceController.NamespaceWithDisabled'
-          last:
-            $ref: '#/components/schemas/NamespaceController.NamespaceWithDisabled'
           empty:
             type: boolean
     ArrayList_Role_:
@@ -15973,10 +15701,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Role_'
       - $ref: '#/components/schemas/AbstractCollection_Role_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Role'
-          last:
-            $ref: '#/components/schemas/Role'
           empty:
             type: boolean
     ArrayList_SearchResult_Flow__:
@@ -15985,10 +15709,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_SearchResult_Flow__'
       - $ref: '#/components/schemas/AbstractCollection_SearchResult_Flow__'
       - properties:
-          first:
-            $ref: '#/components/schemas/SearchResult_Flow_'
-          last:
-            $ref: '#/components/schemas/SearchResult_Flow_'
           empty:
             type: boolean
     ArrayList_TaskRun_:
@@ -15997,10 +15717,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_TaskRun_'
       - $ref: '#/components/schemas/AbstractCollection_TaskRun_'
       - properties:
-          first:
-            $ref: '#/components/schemas/TaskRun'
-          last:
-            $ref: '#/components/schemas/TaskRun'
           empty:
             type: boolean
     ArrayList_Template_:
@@ -16009,10 +15725,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Template_'
       - $ref: '#/components/schemas/AbstractCollection_Template_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Template'
-          last:
-            $ref: '#/components/schemas/Template'
           empty:
             type: boolean
     ArrayList_Tenant_:
@@ -16021,10 +15733,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Tenant_'
       - $ref: '#/components/schemas/AbstractCollection_Tenant_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Tenant'
-          last:
-            $ref: '#/components/schemas/Tenant'
           empty:
             type: boolean
     ArrayList_TriggerController.Triggers_:
@@ -16033,10 +15741,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_TriggerController.Triggers_'
       - $ref: '#/components/schemas/AbstractCollection_TriggerController.Triggers_'
       - properties:
-          first:
-            $ref: '#/components/schemas/TriggerController.Triggers'
-          last:
-            $ref: '#/components/schemas/TriggerController.Triggers'
           empty:
             type: boolean
     ArrayList_Trigger_:
@@ -16045,10 +15749,6 @@ components:
       - $ref: '#/components/schemas/AbstractList_Trigger_'
       - $ref: '#/components/schemas/AbstractCollection_Trigger_'
       - properties:
-          first:
-            $ref: '#/components/schemas/Trigger'
-          last:
-            $ref: '#/components/schemas/Trigger'
           empty:
             type: boolean
     AuditLog:
@@ -16411,8 +16111,6 @@ components:
           type: string
         canonicalName:
           type: string
-        unnamedClass:
-          type: boolean
         anonymousClass:
           type: boolean
         localClass:
@@ -16582,8 +16280,6 @@ components:
           type: string
         canonicalName:
           type: string
-        unnamedClass:
-          type: boolean
         anonymousClass:
           type: boolean
         localClass:
@@ -16726,30 +16422,6 @@ components:
           type: string
         hostname:
           type: string
-    ClusterController.ApiServiceInstance:
-      required:
-      - createdAt
-      - id
-      - server
-      - state
-      - type
-      - updatedAt
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          $ref: '#/components/schemas/Service.ServiceType'
-        state:
-          $ref: '#/components/schemas/Service.ServiceState'
-        server:
-          $ref: '#/components/schemas/ClusterController.ApiServerInstance'
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
     CodeSigner:
       required:
       - signerCertPath
@@ -17128,8 +16800,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TemporalUnit'
-        positive:
-          type: boolean
         zero:
           type: boolean
         negative:
@@ -17472,87 +17142,86 @@ components:
           type: integer
           format: int64
     Flow:
+      required:
+      - deleted
+      - disabled
+      - id
+      - namespace
+      - tasks
       type: object
-      allOf:
-      - $ref: '#/components/schemas/AbstractFlow'
-      - required:
-        - deleted
-        - tasks
-        properties:
-          deleted:
-            type: boolean
-          description:
-            type: string
-          labels:
-            type: object
-            allOf:
-            - anyOf:
-              - $ref: '#/components/schemas/List_Object_'
-              - $ref: '#/components/schemas/Map_Object.Object_'
-            - anyOf:
-              - $ref: '#/components/schemas/List_Object_'
-              - $ref: '#/components/schemas/Map_Object.Object_'
-          variables:
-            type: object
-            additionalProperties: true
-          tasks:
-            minItems: 1
-            type: array
-            items:
-              $ref: '#/components/schemas/Task'
-          errors:
-            type: array
-            items:
-              $ref: '#/components/schemas/Task'
-          listeners:
-            type: array
-            deprecated: true
-            items:
-              $ref: '#/components/schemas/Listener'
-          triggers:
-            type: array
-            items:
-              $ref: '#/components/schemas/AbstractTrigger'
-          taskDefaults:
-            type: array
-            items:
-              $ref: '#/components/schemas/TaskDefault'
-          concurrency:
-            $ref: '#/components/schemas/Concurrency'
-          outputs:
-            title: Output values available and exposes to other flows.
-            type: array
-            description: Output values make information about the execution of your
-              Flow available and expose for other Kestra flows to use. Output values
-              are similar to return values in programming languages.
-            items:
-              $ref: '#/components/schemas/Output'
-          retry:
-            $ref: '#/components/schemas/AbstractRetry'
+      properties:
+        id:
+          minLength: 1
+          pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
+          type: string
+        namespace:
+          pattern: "^[a-z0-9][a-z0-9._-]*"
+          type: string
+        revision:
+          minimum: 1
+          type: integer
+          format: int32
+        description:
+          type: string
+        labels:
+          type: object
+          allOf:
+          - anyOf:
+            - $ref: '#/components/schemas/List_Object_'
+            - $ref: '#/components/schemas/Map_Object.Object_'
+          - anyOf:
+            - $ref: '#/components/schemas/List_Object_'
+            - $ref: '#/components/schemas/Map_Object.Object_'
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Input_Object_'
+        variables:
+          type: object
+          additionalProperties: true
+        tasks:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        listeners:
+          type: array
+          deprecated: true
+          items:
+            $ref: '#/components/schemas/Listener'
+        triggers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AbstractTrigger'
+        taskDefaults:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskDefault'
+        disabled:
+          type: boolean
+        deleted:
+          type: boolean
+        concurrency:
+          $ref: '#/components/schemas/Concurrency'
+        outputs:
+          title: Output values available and exposes to other flows.
+          type: array
+          description: Output values make information about the execution of your
+            Flow available and expose for other Kestra flows to use. Output values
+            are similar to return values in programming languages.
+          items:
+            $ref: '#/components/schemas/Output'
+        retry:
+          $ref: '#/components/schemas/AbstractRetry'
     FlowController.TaskValidationType:
       type: string
       enum:
       - TASKS
       - TRIGGERS
-    FlowForExecution:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/AbstractFlow'
-      - required:
-        - deleted
-        - tasks
-        properties:
-          deleted:
-            type: boolean
-          tasks:
-            minItems: 1
-            type: array
-            items:
-              $ref: '#/components/schemas/TaskForExecution'
-          triggers:
-            type: array
-            items:
-              $ref: '#/components/schemas/AbstractTriggerForExecution'
     FlowGraph:
       required:
       - clusters
@@ -17681,7 +17350,6 @@ components:
       type: object
       allOf:
       - $ref: '#/components/schemas/Flow'
-      - $ref: '#/components/schemas/AbstractFlow'
       - required:
         - deleted
         properties:
@@ -17851,13 +17519,10 @@ components:
     List_Object_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/SequencedCollection_Object_'
       - $ref: '#/components/schemas/Collection_Object_'
       - properties:
           empty:
             type: boolean
-          first: {}
-          last: {}
     Listener:
       required:
       - conditions
@@ -18155,51 +17820,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MetricAggregation'
-    MetricEntry:
-      required:
-      - deleted
-      - executionId
-      - flowId
-      - name
-      - namespace
-      - tags
-      - taskId
-      - taskRunId
-      - timestamp
-      - type
-      - value
-      type: object
-      properties:
-        namespace:
-          type: string
-        flowId:
-          type: string
-        taskId:
-          type: string
-          nullable: true
-        executionId:
-          type: string
-          nullable: true
-        taskRunId:
-          type: string
-          nullable: true
-        type:
-          type: string
-        name:
-          type: string
-        value:
-          type: number
-          format: double
-        timestamp:
-          type: string
-          format: date-time
-        tags:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        deleted:
-          type: boolean
     MiscController.BasicAuthCredentials:
       required:
       - password
@@ -18288,8 +17908,6 @@ components:
           $ref: '#/components/schemas/ModuleDescriptor'
         layer:
           $ref: '#/components/schemas/ModuleLayer'
-        nativeAccessEnabled:
-          type: boolean
         packages:
           type: array
           items:
@@ -18372,18 +17990,6 @@ components:
           type: string
         flowId:
           type: string
-    NamespaceController.NamespaceWithDisabled:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Namespace'
-      - required:
-        - deleted
-        - disabled
-        properties:
-          deleted:
-            type: boolean
-          disabled:
-            type: boolean
     NamespaceUsage:
       type: object
       properties:
@@ -18773,17 +18379,15 @@ components:
       - MESSAGING
       - SCRIPT
       - TRANSFORMATION
+      - FLOW
       - BATCH
       - ALERTING
       - CLOUD
       - STORAGE
-      - OTHER
+      - MISC
       - TOOL
       - AI
       - CORE
-      - INGESTION
-      - BI
-      - DATA_QUALITY
     PluginUsage:
       type: object
       properties:
@@ -18914,25 +18518,6 @@ components:
       - template
       - task
       - trigger
-    SearchResult_Flow_:
-      required:
-      - fragments
-      - model
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Flow'
-        fragments:
-          type: array
-          items:
-            type: string
-    SequencedCollection_Object_:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Collection_Object_'
-      - properties:
-          first: {}
-          last: {}
     ServerConfig:
       required:
       - liveness
@@ -19295,21 +18880,6 @@ components:
         values:
           type: object
           additionalProperties: true
-    TaskForExecution:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          minLength: 1
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        type:
-          minLength: 1
-          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
-            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
-          type: string
     TaskRun:
       required:
       - attempts
@@ -19507,16 +19077,6 @@ components:
           nullable: true
           items:
             $ref: '#/components/schemas/State.Type'
-    TriggerController.Triggers:
-      required:
-      - abstractTrigger
-      - triggerContext
-      type: object
-      properties:
-        abstractTrigger:
-          $ref: '#/components/schemas/AbstractTrigger'
-        triggerContext:
-          $ref: '#/components/schemas/Trigger'
     Type:
       type: object
       properties:
@@ -19629,7 +19189,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Type_2:
       type: string
       enum:
@@ -19646,7 +19205,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Type_3:
       type: string
       enum:
@@ -19663,7 +19221,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Type_4:
       type: string
       enum:
@@ -19680,7 +19237,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Type_5:
       type: string
       enum:
@@ -19697,7 +19253,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Type_6:
       type: string
       enum:
@@ -19714,7 +19269,6 @@ components:
       - JSON
       - URI
       - SECRET
-      - ARRAY
     Usage:
       required:
       - configurations
