@@ -47,7 +47,8 @@ Optionally, a flow can also have:
 | `concurrency` | The flow level `concurrency` property allows you to control the number of concurrent executions of a given flow by setting the `limit` key. |
 | `description` | A markdown description of the flow, providing a simple way of documenting your workflows. That description is automatically rendered on the flow's page in the UI. |
 | `disabled` | Set it to true to temporarily disable any new executions of the flow. This is useful when you want to stop a flow from running (even manually) without deleting it. Once you set this property to true, nobody will be able to trigger any execution of that flow, whether from the UI or via an API call, until the flow is reenabled by setting this property back to false (default behavior) or by simply deleting this property in your flow configuration.            |
-| `revision` | The flow version, handled internally by Kestra, and incremented upon each modification. You should not manually set it.                                                                                                                                                                                                                                                                                                                                                     |
+| `revision` | The flow version, handled internally by Kestra, and incremented upon each modification. You should not manually set it.
+| `listeners` | The list of listeners (deprecated). |                                                                                                                                                                                                                                                                                                                                                     |
 ::
 
 ## Examples
