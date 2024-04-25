@@ -1,15 +1,9 @@
 <template>
     <div class="video-container">
-        <iframe
-            width="366"
-            height="212"
-            :src="video.iframeUrl"
-            :title="video.title"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-        />
+        <div class="thumbnail">
+            <NuxtImg loading="lazy" format="webp" class="thumbnail-img" :src="video.thumbnail" :alt="video.title" />
+            <NuxtImg loading="lazy" class="youtube-icon" src="/landing/tutorial-videos/youtube-icon.svg" alt="youtube icon" />
+        </div>
         <p class="category">{{video.category}}</p>
         <h3 class="title">{{video.title}}</h3>
         <p class="video-info" v-if="video.publicationDate">
@@ -20,8 +14,10 @@
 </template>
 
 <script>
+  import Youtube from "vue-material-design-icons/Youtube.vue";
   export default {
     name: "TutorialVideo",
+    components: {Youtube},
     props: {
       video: {
         type: Object,
@@ -42,11 +38,30 @@
         display: flex;
         flex-direction: column;
         gap:  calc($spacer * 0.25);
+        cursor: pointer;
 
-        iframe {
+        .thumbnail {
             border: 1px solid $black-6;
             border-radius: calc($spacer * 0.5);
-            width: 100%;
+            position: relative;
+            overflow: hidden;
+            height: 225px;
+            .thumbnail-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .youtube-icon {
+                position: absolute;
+                top: calc(50% - 25px);
+                right: calc(50% - 35px);
+                width: 70px;
+                color: #ff0000;
+                font-size: 120px;
+                path {
+                    background-color: white;
+                }
+            }
         }
 
         p {

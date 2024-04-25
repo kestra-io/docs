@@ -71,7 +71,13 @@
                                 <div class="tutorials-list">
                                     <div class="row">
                                         <div class="col-12 col-md-6 col-lg-4 mb-4" v-for="video in videos">
-                                            <VideosTutorialVideo :video="video" :getYMD="getYMD"/>
+                                            <VideosTutorialVideo
+                                                :video="video"
+                                                :getYMD="getYMD"
+                                                @click="openVideoModal(video)"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#youtube-video"
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -104,6 +110,35 @@
                 </div>
             </div>
         </div>
+        <div
+            v-on="{
+                'show.bs.modal': () => (videoVisible = true),
+                'hidden.bs.modal': () => (videoVisible = false),
+            }"
+            class="modal fade"
+            tabindex="-1"
+            id="youtube-video"
+            aria-labelledby="youtube-video"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="video-responsive">
+                            <iframe
+                                v-if="videoVisible"
+                                :src="`${visibleVideoData.iframeUrl}?autoplay=1`"
+                                :title="visibleVideoData.title"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -114,6 +149,8 @@
   const totalPages = ref(0);
   const totalVideos = ref(0);
   const featuredVideo = ref(null);
+  const videoVisible = ref(false);
+  const visibleVideoData = ref({});
   const itemsPerPage = ref(25);
   const currentPage = ref(1);
 
@@ -123,6 +160,9 @@
   const changePage = (pageNo) => {
     currentPage.value = pageNo;
     window.scrollTo(0, 0);
+  }
+  const openVideoModal = (video) => {
+    visibleVideoData.value = video;
   }
 
   const setVideos = (data, total) => {
@@ -206,6 +246,10 @@
 
     ::deep(main) {
         position: absolute;
+    }
+
+    .modal-body {
+        background-color: $black-2;
     }
 
     .right-side-bar {
