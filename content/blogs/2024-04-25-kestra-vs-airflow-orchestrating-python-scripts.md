@@ -1,6 +1,6 @@
 ---
-title: "Kestra vs Airflow for orchestrating Python scripts"
-description: "This blog compares Kestra and Airflow for the fundamental task of orchestrating Python scripts."
+title: "What Are The Differences Between Kestra and Airflow to Orchestrate Python"
+description: "Discover what make Kestra and Airflow differents for the fundamental task of orchestrating Python scripts."
 date: 2024-04-25T10:00:00
 category: Solutions
 author:
@@ -149,4 +149,4 @@ Kestra, on the other hand, has been developed taking such real-world scenarios i
 
 Join the [Slack community](https://kestra.io/slack) where developers share ideas, request new features, and help each other out!
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
-Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give us a star if you like the project.
+Check the code in our [GitHub repository](https://github.com/kestra-io/kestra) and give a star if you like the project.
