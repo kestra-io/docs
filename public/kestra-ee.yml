@@ -9450,9 +9450,7 @@ paths:
         description: The schema needed
         required: true
         schema:
-          oneOf:
-          - $ref: '#/components/schemas/Type_4'
-          - $ref: '#/components/schemas/Type_2'
+          $ref: '#/components/schemas/Type_3'
       responses:
         "200":
           description: inputSchemas 200 response
@@ -9474,7 +9472,9 @@ paths:
         description: The schema needed
         required: true
         schema:
-          $ref: '#/components/schemas/Type_3'
+          oneOf:
+          - $ref: '#/components/schemas/Type_6'
+          - $ref: '#/components/schemas/Type_4'
       responses:
         "200":
           description: inputSchemas_1 200 response
@@ -18449,7 +18449,7 @@ components:
           type: string
         value: {}
         type:
-          $ref: '#/components/schemas/Type_6'
+          $ref: '#/components/schemas/Type_2'
     Package:
       type: object
       allOf:
