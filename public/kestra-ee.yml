@@ -5008,6 +5008,13 @@ paths:
       - Flows
       summary: List all distinct namespaces
       operationId: listDistinctNamespace_2
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
       responses:
         "200":
           description: listDistinctNamespace_2 200 response
@@ -5023,6 +5030,13 @@ paths:
       - Flows
       summary: List all distinct namespaces
       operationId: listDistinctNamespace_3
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
       responses:
         "200":
           description: listDistinctNamespace_3 200 response
@@ -17516,10 +17530,10 @@ components:
           labels:
             type: object
             allOf:
-            - anyOf:
+            - oneOf:
               - $ref: '#/components/schemas/List_Object_'
               - $ref: '#/components/schemas/Map_Object.Object_'
-            - anyOf:
+            - oneOf:
               - $ref: '#/components/schemas/List_Object_'
               - $ref: '#/components/schemas/Map_Object.Object_'
           variables:
