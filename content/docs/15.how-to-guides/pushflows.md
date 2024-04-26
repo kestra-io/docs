@@ -68,8 +68,6 @@ tasks:
 
 Given that the `dryRun` property is set to `true`, the task will only output modifications without pushing any flows to Git yet:
 
-TODO screen shot
-
 ![git1](/docs/how-to-guides/pushflows/git1.png)
 
 ## Pushing a single flow to Git
