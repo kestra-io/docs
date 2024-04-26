@@ -3,7 +3,7 @@ title: Role-Based Access Control (RBAC)
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how to manage access and permissions to your instance.
+How to manage access and permissions to your instance.
 
 ## Overview
 
