@@ -1,12 +1,12 @@
 ---
-title: How to Use the AwsBatchTaskRunner to Deploy Tasks on AWS ECS Fargate
+title: How to Run Tasks on AWS ECS Fargate
 icon: /docs/icons/tutorial.svg
 version: ">= 0.16.0"
 ---
 
-This guide shows how to set up AWS Batch to run your tasks on AWS ECS Fargate using the `AwsBatchScriptRunner` in Kestra.
+How to use `AwsBatchScriptRunner` to run your tasks on AWS ECS Fargate.
 
-# Before you begin
+## Before you begin
 
 Before you start, you need to have the following:
 1. An AWS account.
@@ -18,7 +18,7 @@ There are two versions of this tutorial:
 
 ---
 
-# Terraform setup
+## Terraform setup
 
 Follow the instructions specified in the [aws-batch/README.md](https://github.com/kestra-io/terraform-deployments/tree/main/aws-batch) within the [terraform-deployments](https://github.com/kestra-io/terraform-deployments) repository to provision all necessary resources using Terraform.
 
@@ -30,9 +30,9 @@ Here is a list of resources that will be created:
 
 ---
 
-# AWS Management Console setup
+## AWS Management Console setup
 
-## Create the `ecsTaskExecutionRole` IAM role
+### Create the `ecsTaskExecutionRole` IAM role
 
 To use AWS Batch, we need an Execution Role that will allow AWS Batch to create and manage resources on our behalf.
 
@@ -66,7 +66,7 @@ Make sure to copy the ARN of the role. You will need it later.
 
 ![role_arn](/docs/how-to-guides/taskrunner-aws-batch/batch3.png)
 
-## AWS Batch setup
+### AWS Batch setup
 
 Go to the AWS Batch console.
 
@@ -86,35 +86,35 @@ You should see the following text recommending the use of Fargate:
 
 We will follow that advice and use Fargate for this tutorial.
 
-## Step 1: Select Orchestration type
+### Step 1: Select Orchestration type
 
 Select Fargate and click on Next.
 
-## Step 2: Create a compute environment
+### Step 2: Create a compute environment
 
 Add a name for your compute environment — here, we chose "kestra". You can keep the default settings for everything. Select the VPC and subnets you want to use — you can use the default VPC and subnets and the default VPC security group. Then, click on Next.
 
 ![img_2.png](/docs/how-to-guides/taskrunner-aws-batch/batch5.png)
 
-## Step 3: Create a job queue
+### Step 3: Create a job queue
 
 Now we can create a job queue. Here, we also name it "kestra". You can keep the default settings. Then, click on Next:
 
 ![img_3.png](/docs/how-to-guides/taskrunner-aws-batch/batch6.png)
 
-## Step 4: Create a job definition
+### Step 4: Create a job definition
 
 Finally, create a job definition. Here, we name it also "kestra". Under Execution role, select the role we created earlier (`ecsTaskExecutionRole`). Besides that, you can keep default settings for everything else (we adjusted the image to ``ghcr.io/kestra-io/pydata:latest`` but that's totally optional). Then, click on Next:
 
 ![img_7.png](/docs/how-to-guides/taskrunner-aws-batch/batch7.png)
 
-## Step 5: Create a job
+### Step 5: Create a job
 
 Finally, create a job. Here, we name it "kestra". Then, click on Next for a final review:
 
 ![img_4.png](/docs/how-to-guides/taskrunner-aws-batch/batch8.png)
 
-## Step 6: Review and create
+### Step 6: Review and create
 
 Review your settings and click on Create resources:
 
@@ -124,7 +124,7 @@ Once you see this message, you are all set:
 
 ![img_9.png](/docs/how-to-guides/taskrunner-aws-batch/batch10.png)
 
-## Copy and apply the ARN to your Kestra configuration
+### Copy and apply the ARN to your Kestra configuration
 
 Copy the ARN of the compute environment and job queue. You will need to add these to your Kestra configuration.
 
