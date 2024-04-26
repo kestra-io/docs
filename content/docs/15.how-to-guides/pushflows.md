@@ -224,13 +224,13 @@ And here is a confirmation that all flows from the `dev` namespace and its child
 
 Here is a simple table to illustrate how flows are mapped to files in the Git repository:
 
-| Flow          | Source namespace in the flow code | Git directory path               |
+| Flow          | Source namespace | Git directory path               |
 |---------------|-----------------------------------|----------------------------------|
-| hello_world   | namespace: dev                    | flows/hello_world.yml            |
-| flow1         | namespace: dev                    | flows/flow1.yml                  |
-| flow2         | namespace: dev                    | flows/flow2.yml                  |
-| hello_world_1 | namespace: dev.tutorial           | flows/tutorial/hello_world_1.yml |
-| hello_world_2 | namespace: dev.tutorial           | flows/tutorial/hello_world_2.yml |
+| hello_world   | dev                    | flows/hello_world.yml            |
+| flow1         | dev                    | flows/flow1.yml                  |
+| flow2         | dev                    | flows/flow2.yml                  |
+| hello_world_1 | dev.tutorial           | flows/tutorial/hello_world_1.yml |
+| hello_world_2 | dev.tutorial           | flows/tutorial/hello_world_2.yml |
 
 You can see that each child namespace is represented as a subfolder in the Git repository, and all flows are neatly organized in their respective directories.
 
