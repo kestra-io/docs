@@ -37,6 +37,7 @@ We use your personal information for various purposes, including:
 -   To monitor and analyze usage and trends of our Website
 -   To maintain the security and integrity of our Website
 -   To comply with legal obligations and protect our rights
+-   To promote your open source usage of Kestra towards our community
 
 ## How do we share your information?
 
