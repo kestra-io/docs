@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row content mt-5 mb-2">
                 <div class="col-12">
-                    <h1 data-aos="fade-left title">Video tutorials</h1>
+                    <h1 data-aos="fade-left title">Video Tutorials</h1>
                     <h4 data-aos="fade-right" class="fw-normal">
                         Get started with our video tutorials
                     </h4>

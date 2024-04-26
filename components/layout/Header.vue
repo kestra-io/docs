@@ -250,7 +250,7 @@
                                     <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
                                         <Video />
                                         <p>
-                                            <span>Video tutorials</span><br />
+                                            <span>Video Tutorials</span><br />
                                             Get started with our video tutorials
                                         </p>
                                     </NuxtLink>
@@ -268,7 +268,7 @@
                                     <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
                                         <BookOpenVariant />
                                         <p>
-                                            <span>Customers stories</span><br />
+                                            <span>Customers Stories</span><br />
                                             Learn how Enterprises orchestrate their business-critical workflows
                                         </p>
                                     </NuxtLink>
@@ -298,7 +298,7 @@
                                 <NuxtLink class="dropdown-item" href="/about-us" @click="globalClick(true)">
                                     <Domain />
                                     <p>
-                                        <span>About us</span><br />
+                                        <span>About Us</span><br />
                                         Read about our story and meet our team
                                     </p>
                                 </NuxtLink>
