@@ -12,11 +12,11 @@ The `PushFlows` task is a powerful integration that allows you to **push your co
 
 The process is simple: you can **build your flows** in a development namespace using all **productivity features of the Kestra UI** (_such as the built-in code editor, autocompletion, syntax validation, documentation, blueprint examples, live-updating topology view, output previews, replays, execution and revision history_) and then **push them to Git** after you have tested and validated them.
 
-The task allows you to easily push one or more flows from a given namespace (and optionally also child namespaces) to Git. 
+The task allows you to easily push one or more flows from a given namespace (and optionally also child namespaces) to any Git-based Version Control System. 
 
-Additionally, the `dryRun` property will help you see what files will be added, modified, or deleted based on the Git version without overwriting the files in Git yet.
+Additionally, the `dryRun` property will help you see what files will be added, modified, or deleted version without overwriting the files on Git yet.
 
-Let's look at a few common patterns to better understand how you can leverage the `PushFlows` task in your workflows.
+Let's look at a few common patterns of using the `PushFlows` task.
 
 ## Before you begin
 
@@ -27,7 +27,7 @@ Before you start using the `PushFlows` task, make sure you have the following pr
 
 ## Using the `dryRun` property
 
-Let's start by creating a single `hello_world` flow in the `dev` namespace and pushing it to a Git repository. We'll set the `dryRun` property to `true` to confirm the changes before pushing them to Git.
+Let's start by creating a single `hello_world` flow in the `dev` namespace and pushing it to a Git repository. We'll initially set the `dryRun` property to `true` to validate the changes before committing them to Git.
 
 ```yaml
 id: hello_world
@@ -36,12 +36,12 @@ namespace: dev
 inputs:
   - id: greeting
     type: STRING
-    defaults: hey
+    defaults: kestra
 
 tasks:
   - id: welcome
     type: io.kestra.core.tasks.log.Log
-    message: hi {{ inputs.greeting }}
+    message: welcome to {{ inputs.greeting }}
 ```
 
 Here is a system flow that will push the `hello_world` flow to a Git repository:
@@ -72,7 +72,7 @@ Given that the `dryRun` property is set to `true`, the task will only output mod
 
 ## Pushing a single flow to Git
 
-Let's not set the `dryRun` property to `false` and push the `hello_world` flow to the Git repository:
+Let's now set the `dryRun` property to `false` and push the `hello_world` flow to Git:
 
 ```yaml
 id: push_to_git
@@ -96,11 +96,11 @@ And here is what you should see in the Outputs tab:
 
 When you click on the commit URL from the logs or from the Outputs tab, you'll be redirected to the commit page on GitHub:
 
-![img.png](/docs/how-to-guides/pushflows/git4.png)
+![git_pushflows](/docs/how-to-guides/pushflows/git4.png)
 
-Now, you can create a pull request and merge the changes to the main branch!
+Now, you can create a pull request and merge the changes to the main branch.
 
-![img.png](/docs/how-to-guides/pushflows/git5_pr.png)
+![git_pushflows](/docs/how-to-guides/pushflows/git5_pr.png)
 
 ## Pushing all flows from a single namespace to Git
 
@@ -122,12 +122,12 @@ namespace: dev
 tasks:
   - id: test
     type: io.kestra.core.tasks.log.Log
-    message: this is the simplest dev-to-prod workflow ever
+    message: the simplest dev-to-prod workflow ever
 ```
 
-![img.png](/docs/how-to-guides/pushflows/git6_all_flows.png)
+![git_pushflows](/docs/how-to-guides/pushflows/git6_all_flows.png)
 
-Let's now adjust the system flow to push all flows from the `dev` namespace to the Git repository:
+Let's now adjust the system flow to push all flows from the `dev` namespace to the `develop` branch:
 
 ```yaml
 id: push_to_git
@@ -149,16 +149,16 @@ tasks:
 
 Again, we can set the `dryRun` property to `true` to see what files will be added, modified, or deleted based on the Git version without overwriting the files in Git yet:
 
-![img.png](/docs/how-to-guides/pushflows/git7.png)
+![git_pushflows](/docs/how-to-guides/pushflows/git7.png)
 
-Now if you change the `dryRun` property to `false` and run the system flow again, you should see all 3 flows being pushed to the `flows` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
+Now if you change the `dryRun` property to `false` and run the system flow again, you should see all three flows being pushed to the `flows` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
 
-![img.png](/docs/how-to-guides/pushflows/git8.png)
+![git_pushflows](/docs/how-to-guides/pushflows/git8.png)
 
 
 ## Pushing all flows including child namespaces
 
-Finally, we get to the fun part of pushing all flows from the `dev` namespace **including all child namespaces** to the Git repository. Kestra will automatically create a subfolder for each child namespace and push the flows there to keep everything organized.
+Finally, we get to the fun part of pushing all flows from the `dev` namespace **including all child namespaces**. Kestra will automatically create a subfolder for each child namespace and push the flows there to keep everything organized.
 
 Let's create two more flows in the `dev.tutorial` namespace:
 
@@ -194,7 +194,7 @@ tasks:
     message: hello on {{ inputs.greeting }}
 ```
 
-To include all child namespaces in our Git commit, we only need to set the `includeChildNamespaces` property to `true`:
+To include all child namespaces in our Git commit, we only need to add the `includeChildNamespaces` property, set to `true`:
 
 ```yaml
 id: push_to_git
@@ -216,11 +216,11 @@ tasks:
     
 When you run this final system flow, you should see the following output:
 
-![img.png](/docs/how-to-guides/pushflows/git9.png)
+![git_pushflows](/docs/how-to-guides/pushflows/git9.png)
 
 And here is a confirmation that all flows from the `dev` namespace and its child namespaces have been pushed to the Git repository:
 
-![img.png](/docs/how-to-guides/pushflows/git10.png)
+![git_pushflows](/docs/how-to-guides/pushflows/git10.png)
 
 Here is a simple table to illustrate how flows are mapped to files in the Git repository:
 
@@ -244,4 +244,4 @@ You can see that each child namespace is represented as a subfolder in the Git r
 - If you omit the `targetNamespace`, the `sourceNamespace` will be used as the `targetNamespace` by default. The `targetNamespace` is an optional mechanism to help you prepare your development flows to be merged into the production branch/namespace. If you set the `targetNamespace`, the `sourceNamespace` in the source code will be overwritten by the `targetNamespace` so that you can seamlessy sync the flows to production.
 - If you try to add the Personal Access Token (PAT) directly in your source code in the `password` property, you will get an error message. This is a safety mechanism to prevent you and your users from accidentally exposing your PAT in the source code. You should store the PAT as a Kestra Secret, environment variable, namespace variable or as a SECRET-type input in your flow. 
 
-![img.png](credential_detected.png)
+![git_pushflows](/docs/how-to-guides/pushflows/git11_credential_detected.png)
