@@ -6,35 +6,38 @@
                 <img src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
             </NuxtLink>
 
-            <div class="download-logos" v-if="showDownloadLogos">
-                <NuxtImg
-                    width="24px"
-                    height="24px"
-                    loading="lazy"
-                    format="webp"
-                    class="close-icon"
-                    src="/landing/header-menu/window-close.svg"
-                    alt="close"
-                    @click="closeDownloadLogosModal"
-                />
-                <p class="title">Looking for our logo?</p>
-                <NuxtImg
-                    width="236px"
-                    height="123px"
-                    loading="lazy"
-                    format="webp"
-                    class="img-fluid"
-                    src="/landing/header-menu/download-logo.svg"
-                    alt="Looking for our logo"
-                />
-                <a
-                    download
-                    class="btn btn-animated btn-purple-animated mt-2"
-                    href="/Kestra logo kit-20240422T105102Z-001.zip"
-                >
-                    Download Logo Pack
-                </a>
+            <div class="download-logos-container" v-if="showDownloadLogos" @click="closeDownloadLogosModal">
+                <div class="download-logos" @click.stop>
+                    <NuxtImg
+                        width="24px"
+                        height="24px"
+                        loading="lazy"
+                        format="webp"
+                        class="close-icon"
+                        src="/landing/header-menu/window-close.svg"
+                        alt="close"
+                        @click="closeDownloadLogosModal"
+                    />
+                    <p class="title">Looking for our logo?</p>
+                    <NuxtImg
+                        width="236px"
+                        height="123px"
+                        loading="lazy"
+                        format="webp"
+                        class="img-fluid"
+                        src="/landing/header-menu/download-logo.svg"
+                        alt="Looking for our logo"
+                    />
+                    <a
+                        download
+                        class="btn btn-animated btn-purple-animated mt-2"
+                        href="/Kestra logo kit-20240422T105102Z-001.zip"
+                    >
+                        Download Logo Pack
+                    </a>
+                </div>
             </div>
+
 
             <div class="nav-items d-flex align-items-center">
                 <a @click="globalClick(true)" href="#" class="btn btn-sm  icon-button p-0 d-lg-none"
@@ -560,33 +563,49 @@ export default {
         }
     }
 
-    .download-logos {
-        position: absolute;
-        top: 119%;
-        left: 14%;
-        border-radius: calc($border-radius-lg * 2);
-        border: 1px solid $black-6;
-        display: flex;
-        flex-direction: column;
-        gap: $spacer;
-        padding: calc($spacer * 2);
-        background-color: rgba(45, 45, 46, 0.93);
-        transition-duration: 1s;
+    .download-logos-container {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        z-index: 4;
+        .download-logos {
+            position: fixed;
+            top: 100%;
+            left: 14%;
+            border-radius: calc($border-radius-lg * 2);
+            border: 1px solid $black-6;
+            display: flex;
+            flex-direction: column;
+            gap: $spacer;
+            padding: calc($spacer * 2);
+            background-color: rgba(45, 45, 46, 0.93);
+            transition-duration: 1s;
+            z-index: 5;
 
-        p.title {
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 24px;
-            color: $white;
-        }
+            @include media-breakpoint-down(lg) {
+                left: 5%;
+                top: 110%;
+            }
 
-        .close-icon {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            cursor: pointer;
+            p.title {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+                color: $white;
+            }
+
+            .close-icon {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                cursor: pointer;
+            }
         }
     }
+
 
     .container-xl {
         @include media-breakpoint-down(lg) {
