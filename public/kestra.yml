@@ -6020,7 +6020,6 @@ components:
     ExecutionMetadata:
       required:
       - attemptNumber
-      - executionStartedBy
       - originalCreatedDate
       type: object
       properties:
@@ -6030,8 +6029,6 @@ components:
         originalCreatedDate:
           type: string
           format: date-time
-        executionStartedBy:
-          type: string
     ExecutionRepositoryInterface.ChildFilter:
       type: string
       enum:
