@@ -1814,23 +1814,6 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
       responses:
         "204":
           description: On success
