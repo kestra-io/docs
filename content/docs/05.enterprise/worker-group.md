@@ -3,6 +3,8 @@ title: Worker Group
 icon: /docs/icons/admin.svg
 ---
 
+How to configure Worker Groups in Kestra Enterprise Edition.
+
 Worker Group is a set of workers that can be targeted specifically for a task execution or a polling trigger evaluation.
 
 

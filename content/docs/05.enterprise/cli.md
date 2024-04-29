@@ -3,7 +3,7 @@ title: Kestra EE CLI
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how you can interact with Kestra Enterprise Edition using the CLI.
+How to interact with Kestra Enterprise Edition using the CLI.
 
 ## Authentication
 

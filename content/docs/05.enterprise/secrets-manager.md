@@ -3,6 +3,8 @@ title: Secrets Manager
 icon: /docs/icons/admin.svg
 ---
 
+How to configure the secrets manager.
+
 Kestra integrates with various secret managers to provide secure storage and handling of sensitive data.
 
 ::alert{type="info"}

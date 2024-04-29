@@ -3,7 +3,7 @@ title: Worker Isolation
 icon: /docs/icons/admin.svg
 ---
 
-Learn how to configure worker isolation in Kestra.
+How to configure worker isolation in Kestra.
 
 ## Java security
 

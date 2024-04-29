@@ -3,7 +3,7 @@ title: Kestra EE API
 icon: /docs/icons/admin.svg
 ---
 
-How you can interact with Kestra Enterprise Edition using the API.
+How to interact with Kestra Enterprise Edition using the API.
 
 ## Authentication
 

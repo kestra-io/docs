@@ -3,7 +3,7 @@ title: API Tokens
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how you can manage API tokens in Kestra.
+How to manage API tokens in Kestra.
 
 ## What is an API token
 
