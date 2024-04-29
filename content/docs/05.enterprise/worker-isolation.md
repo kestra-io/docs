@@ -5,6 +5,10 @@ icon: /docs/icons/admin.svg
 
 How to configure worker isolation in Kestra.
 
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
+::
+
 ## Java security
 
 By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases, but when you are using a shared Kestra instance between multiple teams, since the worker shares the same file system, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy/tasks/io.kestra.plugin.scripts.groovy.eval), [Jython](/plugins/plugin-script-jython/tasks/io.kestra.plugin.scripts.jython.eval), etc...

@@ -5,6 +5,10 @@ icon: /docs/icons/admin.svg
 
 How to interact with Kestra Enterprise Edition using the API.
 
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
+::
+
 ## Authentication
 
 To authenticate with the Kestra API, you will need to create an [API token](/docs/enterprise/api-tokens). You can create it directly from the Kestra UI.

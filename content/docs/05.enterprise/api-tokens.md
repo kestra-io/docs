@@ -5,9 +5,13 @@ icon: /docs/icons/admin.svg
 
 How to manage API tokens in Kestra.
 
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
+::
+
 ## What is an API token
 
-API tokens are used to authenticate API requests to the Kestra API. You can create an API token for a user or a [service account](./service-accounts.md).
+API tokens are used to authenticate API requests to the Kestra API. You can create an API token for a user or a [service account](/docs/enterprise/service-accounts).
 
 ## Where you can use API tokens
 
@@ -16,8 +20,8 @@ API tokens are used anytime you want to grant programmatic access to the Kestra 
 Currently, we support API tokens as authentication mechanism for the following services:
 1. [GitHub Actions](https://github.com/kestra-io/deploy-action)
 2. [Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)
-3. [Kestra CLI](./cli.md)
-4. [Kestra API](./api.md)
+3. [Kestra CLI](/docs/enterprise/cli)
+4. [Kestra API](/docs/enterprise/api)
 
 ## How to create an API token
 

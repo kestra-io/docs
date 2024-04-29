@@ -5,6 +5,10 @@ icon: /docs/icons/admin.svg
 
 How to manage access and permissions to your instance.
 
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
+::
+
 ## Overview
 
 Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to manage access to workflows and resources by
