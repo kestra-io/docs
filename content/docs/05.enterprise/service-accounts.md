@@ -29,7 +29,9 @@ Finally, you can generate an API token for the service account by clicking on th
 
 ![service_account_create](/docs/user-interface-guide/service_account_create.png)
 
-Note how you can configure the token to expire after a certain period of time, or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
+::alert{type="info"}
+**Note:** You can configure the token to expire after a certain period of time, or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
+::
 
 Once you confirm the API token creation via the **Generate** button, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location as it will not be displayed again.
 
@@ -37,7 +39,7 @@ Once you confirm the API token creation via the **Generate** button, the token w
 
 ## Users vs. Service Accounts vs. API Tokens
 
-You can create an **API token** also for a regular **User**. While Service Accounts are generally recommended for programmatic API access to Kestra from CI/CD or other external applications, it's often useful to create an API token for a regular user, so that programmatic actions performed by that user can be tracked and audited.
+You can create an **API token** for a regular **User** as well. While Service Accounts are recommended for programmatic API access to Kestra from CI/CD or other external applications, it's often useful to create an API token for a regular user, so that programmatic actions performed by that user can be tracked and audited.
 
 ![service_account_create_3](/docs/user-interface-guide/service_account_create_3.png)
 
