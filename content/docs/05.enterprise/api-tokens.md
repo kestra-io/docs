@@ -31,12 +31,13 @@ Then, go to the `API Tokens` tab and click on the `Create` button:
 
 ![api-token](/docs/enterprise/api-token.png)
 
-
 Fill in the form with the required information including the `Name`, `Description` and `Max age`, and click `Generate`:
 
 ![api-token2](/docs/enterprise/api-token2.png)
 
-Note how you can configure the token to expire after a certain period of time, or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
+::alert{type="info"}
+**Note:** you can configure the token to expire after a certain period of time, or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
+::
 
 Once you confirm the API token creation via the **Generate** button, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location as it will not be displayed again.
 
