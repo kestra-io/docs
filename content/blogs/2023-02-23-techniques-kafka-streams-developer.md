@@ -124,7 +124,7 @@ Our first assumption was that `all()` returns an object (Flow in our case), as t
 - Fetch all the data from RocksDB
 - Deserialize the data from RocksDB that is stored as byte, and map it to concrete Java POJO
 
-So each time we call the `all()` method, all values are deserialized, which can lead to high CPU usage and latency on your stream. We are talking about all [flow revisions](/docs/workflow-components/revision) on our cluster. The last revision had 2.5K flows, but we don't see people creating a lot of revisions. Imagine 100K `byte[]` to deserialize to POJO for every call. 🤯
+So each time we call the `all()` method, all values are deserialized, which can lead to high CPU usage and latency on your stream. We are talking about all [flow revisions](/docs/concepts/revision) on our cluster. The last revision had 2.5K flows, but we don't see people creating a lot of revisions. Imagine 100K `byte[]` to deserialize to POJO for every call. 🤯
 
 Since we only need the last revision in our use case, we create an in-memory Map with all the flows using the following:
 
