@@ -35,7 +35,7 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 ## Handling Outputs
 
-If you want to get a variable or file from your Python code, you can use an [output](../06.workflow-components/07.outputs.md).
+If you want to get a variable or file from your Python code, you can use an [output](/docs/workflow-components/outputs).
 
 You'll need to install the [`kestra` python module](https://pypi.org/project/kestra/) in order to pass your variables to Kestra.
 
@@ -72,7 +72,7 @@ _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.ke
 
 ## Handling Metrics
 
-You can also get [metrics](../08.developer-guide/07.scripts/outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Python code. In this example, we can use the `time` module to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
+You can also get [metrics](/docs/developer-guide/scripts/outputs-metrics#outputs-and-metrics-in-script-and-commands-tasks) from your Python code. In this example, we can use the `time` module to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
 
 ```python file=public/examples/metrics_python.py
 ```

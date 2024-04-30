@@ -25,7 +25,7 @@ While building Kestra, we wanted to rely only on the queue as a database for our
 
 ## Same Kafka Topic for Source and Destination
 
-In Kestra, we have a [Kafka topic](https://kafka.apache.org/intro#intro_concepts_and_terms) for the current flow [execution](../docs/07.concepts/execution.md). That topic is both the source and the destination. We update the current execution to add some information and send it back to Kafka for further processing.
+In Kestra, we have a [Kafka topic](https://kafka.apache.org/intro#intro_concepts_and_terms) for the current flow [execution](/docs/workflow-components/execution). That topic is both the source and the destination. We update the current execution to add some information and send it back to Kafka for further processing.
 
 Initially, we were unsure if this design was possible with Kafka. We [asked](https://twitter.com/tchiotludo/status/1252197729406783488) Matthias J. Sax, one of the primary maintainers of Kafka Streams, who responded on [Stack Overflow](https://stackoverflow.com/questions/61316312/does-kafka-stream-with-same-sink-source-topics-with-join-is-supported).
 
@@ -101,7 +101,7 @@ This way, you will have a fully distributed system thanks to Kafka without the p
 
 ## Partitions to Detect Dead Kafka Consumers
 
-In Kestra, [workers](../docs/08.architecture.md#worker) are Kafka Consumers that process tasks submitted to it and will handle all the computing (connect and query a database, fetch data from external services, etc.) and are long-running processes. We need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
+In Kestra, [workers](/docs/architecture/worker) are Kafka Consumers that process tasks submitted to it and will handle all the computing (connect and query a database, fetch data from external services, etc.) and are long-running processes. We need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
 
 Thanks to the Kafka consumer mechanism, we can know the specific partitions affected by a died consumer. We use these features to detect dead workers:
 - We create a `UUID` on startup for the worker.
@@ -118,13 +118,13 @@ Et voilà! We have detection of dead consumers using just the Kafka API. 🎉
 
 ## Beware of State Store `all()`
 
-We use a [GlobalKTable](https://kafka.apache.org/31/documentation/streams/developer-guide/dsl-api.html#streams_concepts_globalktable) to detect [flow triggers](../docs/08.developer-guide/08.triggers/02.flow.md). For all the flows on the cluster, we test all the flow's [conditions](../docs/08.developer-guide/10.conditions.md) to find matching flows. For this, we are using an API to fetch all flows from a `GlobalKTable` using `store.all()` that returns all the flows from RocksDB (internal database from Kafka Stream).
+We use a [GlobalKTable](https://kafka.apache.org/31/documentation/streams/developer-guide/dsl-api.html#streams_concepts_globalktable) to detect [flow triggers](/docs/workflow-components/triggers#flow-trigger). For all the flows on the cluster, we test all the flow's [conditions](/docs/developer-guide/conditions) to find matching flows. For this, we are using an API to fetch all flows from a `GlobalKTable` using `store.all()` that returns all the flows from RocksDB (internal database from Kafka Stream).
 
 Our first assumption was that `all()` returns an object (Flow in our case), as the API return Object, but we discovered that the `all()` method will:
 - Fetch all the data from RocksDB
 - Deserialize the data from RocksDB that is stored as byte, and map it to concrete Java POJO
 
-So each time we call the `all()` method, all values are deserialized, which can lead to high CPU usage and latency on your stream. We are talking about all [flow revisions](../docs/07.concepts/flow.md#revision) on our cluster. The last revision had 2.5K flows, but we don't see people creating a lot of revisions. Imagine 100K `byte[]` to deserialize to POJO for every call. 🤯
+So each time we call the `all()` method, all values are deserialized, which can lead to high CPU usage and latency on your stream. We are talking about all [flow revisions](/docs/concepts/revision) on our cluster. The last revision had 2.5K flows, but we don't see people creating a lot of revisions. Imagine 100K `byte[]` to deserialize to POJO for every call. 🤯
 
 Since we only need the last revision in our use case, we create an in-memory Map with all the flows using the following:
 

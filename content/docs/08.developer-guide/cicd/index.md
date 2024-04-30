@@ -32,7 +32,7 @@ Kestra CLI provides several [commands](./04.helpers.md) for validating and deplo
 ```
 
 ::alert{type="info"}
-Note that the `--api-token` option is available only in the Enterprise Edition. Check the [API Tokens](../../05.enterprise/api-tokens.md) page for more details.
+Note that the `--api-token` option is available only in the Enterprise Edition. Check the [API Tokens](/docs/enterprise/api-tokens) page for more details.
 ::
 
 If you run Kestra in a Docker container, you can access the CLI as follows:
@@ -69,7 +69,7 @@ For all available CLI options on both `flow validate` and `flow namespace update
 
 #### Templates (deprecated)
 
-[Templates](../../10.migration-guide/templates.md) can be validated and deployed in the same way as flows:
+[Templates](/docs/migration-guide/templates) can be validated and deployed in the same way as flows:
 
 ```bash
 ./kestra template validate path-to-template-directory
@@ -145,7 +145,7 @@ Note that we configured this webhook to be sent upon a push event to the default
 
 ### Deploy flows from a GitHub Action
 
-The official Kestra's [GitHub Actions](./01.github-action.md) leverage the same CLI commands to:
+The official Kestra's [GitHub Actions](/docs/developer-guide/cicd/github-action) leverage the same CLI commands to:
 1. Validate flows and templates using the [Validate Action](https://github.com/marketplace/actions/kestra-validate-action)
 2. Deploy flows and templates using the [Deploy Action](https://github.com/marketplace/actions/kestra-deploy-action).
 
@@ -195,7 +195,7 @@ jobs:
 Note that this example uses GitHub repository **secrets** to store the host name, user name and password to your Kestra instance. Make sure to add those secrets to your repository before using this workflow.
 
 ::alert{type="info"}
-Here is a modified version of the same workflow but this time using an [API token](../../05.enterprise/api-tokens.md) instead of a `user` name and `password`:
+Here is a modified version of the same workflow but this time using an [API token](/docs/enterprise/api-tokens) instead of a `user` name and `password`:
 
 ```yaml
 name: Kestra CI/CD
@@ -238,14 +238,14 @@ jobs:
 
 ### Deploy flows from a GitLab CI/CD
 
-GitLab CI/CD follows a similar pattern to the GitHub Actions example. See the [GitLab](./02.gitlab.md) section for more details.
+GitLab CI/CD follows a similar pattern to the GitHub Actions example. See the [GitLab](/docs/developer-guide/cicd/gitlab) section for more details.
 
 
 ### Deploy flows from Terraform
 
 While Terraform might be more challenging to understand at first, we highly recommend this option, as it provides the highest degree of flexibility. Using Kestra and Terraform together, your flows can be deployed along with other infrastructure resources in your stack, making it easier to adopt Infrastructure as Code.
 
-The [Terraform CI/CD](./03.terraform.md) page provides a more detailed explanation, but here is a simple Terraform configuration that you can use to automate the deployment of flows stored in a `flows` directory:
+The [Terraform CI/CD](/docs/terraform) page provides a more detailed explanation, but here is a simple Terraform configuration that you can use to automate the deployment of flows stored in a `flows` directory:
 
 ```hcl
 terraform {

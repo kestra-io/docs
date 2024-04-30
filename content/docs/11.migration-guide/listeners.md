@@ -4,7 +4,7 @@ icon: /docs/icons/migration-guide.svg
 release: 0.12.0
 ---
 
-Listeners are deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../06.workflow-components/05.triggers/flow-trigger.md) instead.
+Listeners are deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](/docs/workflow-components/triggers#flow-trigger) instead.
 
 ## Why listeners are deprecated
 

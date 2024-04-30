@@ -54,7 +54,7 @@ Flow validation is also now performed in the editor before you save your flow so
 
 In Kestra, the number of flows you develop can grow quickly, and maintaining them can get challenging. CI/CD pipelines are a great way to automate your flows’ validation and deployment.
 
-This was one of the most requested features by the Kestra community. Earlier, we only supported Terraform to manage your flow and templates definitions. We have now added support for GitHub Actions. [Read more](../docs/08.developer-guide/cicd/index.md) about how to use CI/CD with Kestra. This documentation page also provides an example Gitlab CI/CD workflow using the Kestra CLI.
+This was one of the most requested features by the Kestra community. Earlier, we only supported Terraform to manage your flow and templates definitions. We have now added support for GitHub Actions. [Read more](/docs/developer-guide/cicd) about how to use CI/CD with Kestra. This documentation page also provides an example Gitlab CI/CD workflow using the Kestra CLI.
 
 If you wonder how to get access to all the existing flows and templates of your running Kestra instance, we added an **Export All** button for flows and templates in the Settings page.
 

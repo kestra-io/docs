@@ -7,7 +7,7 @@ Passing Inputs via an API Call
 
 ## What are Inputs
 
-Inputs allow you to dynamically pass data to your execution at runtime. For a detailed overview of inputs, see the [Inputs](../06.workflow-components/06.inputs.md) documentation page.
+Inputs allow you to dynamically pass data to your execution at runtime. For a detailed overview of inputs, see the [Inputs](/docs/workflow-components/inputs) documentation page.
 
 ## Example
 

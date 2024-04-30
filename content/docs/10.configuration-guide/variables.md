@@ -43,11 +43,11 @@ kestra:
 
 ## `kestra.variables.disable-handlebars`
 
-By default, [deprecated handlebars](../07.concepts/expression/08.deprecated-handlebars.md) feature is disabled, it can be enabled by setting this option to `true`.
+By default, [deprecated handlebars](/docs/concepts/expression/deprecated-handlebars) feature is disabled, it can be enabled by setting this option to `true`.
 
 ## `kestra.variables.recursive-rendering`
 
-Flag enabling the pre-0.14.0 [template recursive rendering](../10.migration-guide/recursive-rendering.md) behavior and giving administrators more time to migrate deployed flows. Defaults to `false`.
+Flag enabling the pre-0.14.0 [template recursive rendering](/docs/migration-guide/recursive-rendering) behavior and giving administrators more time to migrate deployed flows. Defaults to `false`.
 
 ## `kestra.variables.cache-enabled`
 

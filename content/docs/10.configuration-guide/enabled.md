@@ -7,7 +7,7 @@ Often, some features get deprecated or disabled by default in Kestra. This page 
 
 
 ## `kestra.templates`
-Templates are marked as [deprecated](../10.migration-guide/templates.md) and disabled by default starting from the 0.11.0 release. You can re-enable them with this configuration:
+Templates are marked as [deprecated](/docs/migration-guide/templates) and disabled by default starting from the 0.11.0 release. You can re-enable them with this configuration:
 
 ```yaml
 kestra:

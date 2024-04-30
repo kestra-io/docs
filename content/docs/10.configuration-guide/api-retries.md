@@ -18,7 +18,7 @@ Here are the available retry configuration options:
 Note that those retries are only applied to API calls made to internal storage (like S3 or GCS) and to secrets managers (like Vault or AWS Secrets Manager). They are not applied to tasks.
 ::
 
-In order to globally configure retries for tasks, you can use the [task defaults](../06.workflow-components/09.task-defaults.md) with a global scope tied to the main `io.kestra` plugin path as follows:
+In order to globally configure retries for tasks, you can use the [task defaults](/docs/workflow-components/task-defaults) with a global scope tied to the main `io.kestra` plugin path as follows:
 
 ```yaml
 - type: io.kestra
