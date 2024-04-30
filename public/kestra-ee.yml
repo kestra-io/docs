@@ -18411,7 +18411,7 @@ components:
       type: object
     Namespace:
       required:
-      - allowedNamespaces
+      - allowedTriggers
       - deleted
       - description
       - id
@@ -18420,11 +18420,6 @@ components:
       - workerGroup
       type: object
       properties:
-        allowedTriggers:
-          type: array
-          deprecated: true
-          items:
-            $ref: '#/components/schemas/Namespace.AllowedTrigger'
         id:
           pattern: "^[a-z0-9][a-z0-9._-]*"
           type: string
@@ -18437,21 +18432,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TaskDefault'
-        allowedNamespaces:
+        allowedTriggers:
           type: array
           items:
-            $ref: '#/components/schemas/Namespace.AllowedNamespace'
+            $ref: '#/components/schemas/Namespace.AllowedTrigger'
         workerGroup:
           $ref: '#/components/schemas/WorkerGroup'
         deleted:
           type: boolean
-    Namespace.AllowedNamespace:
-      required:
-      - namespace
-      type: object
-      properties:
-        namespace:
-          type: string
     Namespace.AllowedTrigger:
       required:
       - flowId
