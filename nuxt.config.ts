@@ -148,7 +148,7 @@ export default defineNuxtConfig({
         '/docs/troubleshooting': {redirect: '/docs/faq/troubleshooting'},
         '/docs/developer-guide/best-practice': {redirect: '/docs/developer-guide/best-practices'},
         '/docs/workflow-components/flow-trigger': {redirect: '/docs/workflow-components/triggers'},
-        '/docs/workflow-components/triggers/**': {redirect: '/docs/workflow-components/triggers},
+        '/docs/workflow-components/triggers/**': {redirect: '/docs/workflow-components/triggers'},
         '/docs/workflow-components/flow': {redirect: '/docs/workflow-components'},
         '/docs/workflow-components/flow-properties': {redirect: '/docs/workflow-components'},
         '/docs/flow-examples/**': {redirect: '/docs/how-to-guides'},
