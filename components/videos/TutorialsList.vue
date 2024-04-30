@@ -117,12 +117,19 @@
             }"
             class="modal fade"
             tabindex="-1"
+            role="dialog"
             id="youtube-video"
+            ref="youtubeVideoModal"
             aria-labelledby="youtube-video"
             aria-hidden="true"
         >
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" @click="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <div class="modal-body">
                         <div class="video-responsive">
                             <iframe
@@ -143,9 +150,11 @@
 </template>
 
 <script setup>
+  const {$bootstrap} = useNuxtApp()
   const config = useRuntimeConfig();
   const activeTag = ref({ name: 'All videos' });
   const videos = ref([]);
+  const youtubeVideoModal = ref(null);
   const totalPages = ref(0);
   const totalVideos = ref(0);
   const featuredVideo = ref(null);
@@ -161,6 +170,16 @@
     currentPage.value = pageNo;
     window.scrollTo(0, 0);
   }
+
+  const closeModal = () => {
+    if (youtubeVideoModal.value) {
+      const modal = $bootstrap.Modal.getInstance(youtubeVideoModal.value);
+      if (modal) {
+        modal.hide();
+      }
+    }
+  }
+
   const openVideoModal = (video) => {
     visibleVideoData.value = video;
   }
@@ -246,6 +265,20 @@
 
     ::deep(main) {
         position: absolute;
+    }
+
+    .modal-header {
+        background-color: $black-2;
+        border-bottom-color: $black-2;
+        padding-bottom: 0;
+        padding-top: 5px;
+        display: flex;
+        justify-content: flex-end;
+        button {
+            background: transparent;
+            border: none;
+            color: $white;
+        }
     }
 
     .modal-body {
