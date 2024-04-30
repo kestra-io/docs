@@ -13985,6 +13985,74 @@ paths:
       responses:
         "204":
           description: On success
+  /api/v1/tenants/{id}/logo:
+    post:
+      tags:
+      - Tenants
+      summary: Set a tenant logo
+      operationId: setLogo
+      parameters:
+      - name: id
+        in: path
+        description: The tenant id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                logo:
+                  type: string
+                  description: The logo file
+                  format: binary
+            encoding:
+              logo:
+                contentType: application/octet-stream
+        required: true
+      responses:
+        "200":
+          description: setLogo 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTenant'
+  /api/v1/tenants/{id}/logo/{tenant}:
+    post:
+      tags:
+      - Tenants
+      summary: Set a tenant logo
+      operationId: setLogo_1
+      parameters:
+      - name: id
+        in: path
+        description: The tenant id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                logo:
+                  type: string
+                  description: The logo file
+                  format: binary
+            encoding:
+              logo:
+                contentType: application/octet-stream
+        required: true
+      responses:
+        "200":
+          description: setLogo_1 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTenant'
   /api/v1/tenants/{id}/{tenant}:
     get:
       tags:
@@ -15664,6 +15732,18 @@ components:
           items:
             $ref: '#/components/schemas/AbstractUser.GroupIdentifier'
       description: A User Service Account.
+    ApiTenant:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Tenant'
+      - required:
+        - deleted
+        - logo
+        properties:
+          deleted:
+            type: boolean
+          logo:
+            type: string
     ApiUser:
       type: object
       allOf:
@@ -17128,7 +17208,7 @@ components:
         tenants:
           type: array
           items:
-            $ref: '#/components/schemas/Tenant'
+            $ref: '#/components/schemas/ApiTenant'
     CurrentUserController.UserDetailsRequest:
       required:
       - email
