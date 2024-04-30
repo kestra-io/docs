@@ -44,4 +44,10 @@
         `ChildCard-${hash(currentPage)}`,
         () => queryContent(currentPage + "/").find()
     );
+    console.log(navigation);
+    // if (currentPage == "/docs/faq") {
+    //   navigation.value = navigation.value.map(item => {
+    //     return { ...item, icon: item.icon ? item.icon : '/docs/icons/faq.svg'}
+    //   })
+    // }
 </script>

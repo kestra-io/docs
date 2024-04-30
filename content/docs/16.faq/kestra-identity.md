@@ -1,6 +1,9 @@
 ---
 title: Kestra Identity
+icon: /docs/icons/faq.svg
 ---
+
+Common questions about the identity.
 
 ![Create flow](/docs/tutorial/logos/kestra-logo.png)
 
