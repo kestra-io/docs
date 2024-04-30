@@ -26,7 +26,7 @@ If you want to stick to a specific Kestra version, you can pin the [Docker image
 - `kestra/kestra:v0.15.0` includes the 0.15 release without any plugins
 - `kestra/kestra:v0.15.0-full` includes the 0.15 release with all plugins.
 
-Note that you can always create a custom image with your own plugins and package dependencies, as explained in the [Docker installation](../02.installation/02.docker.md).
+Note that you can always create a custom image with your own plugins and package dependencies, as explained in the [Docker installation](/docs/installation/docker).
 
 ## Migrating a Standalone Installation
 If you use a manual standalone installation with Java, you can download the Kestra binary for a specific version from the Assets menu of a specific [Release](https://github.com/kestra-io/kestra/releases) page. The image below shows how you can download the binary for the 0.14.1 release.
@@ -83,7 +83,7 @@ In Kestra, every worker that died unexpectedly will be detected by the executor,
 
 ## Where can I find migration guides
 
-The [Migrations section](../10.migration-guide/index.md) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
+The [Migrations section](/docs/migration-guide) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
 
 For all breaking changes, the migration guides are linked in the [release notes](https://github.com/kestra-io/kestra/releases).
 

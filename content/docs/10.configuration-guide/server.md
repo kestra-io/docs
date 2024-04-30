@@ -19,7 +19,7 @@ kestra:
 ```
 
 HTTP Basic Authentication is disabled by default - you can enable it in your Kestra configuration, as shown above. If you need more fine-grained control over user and access management, the Enterprise Edition provides additional authentication mechanisms, including features such as SSO and RBAC. For more details, see
-the [Authentication page](../05.enterprise/authentication.md).
+the [Authentication page](/docs/enterprise/authentication).
 
 ## Delete configuration files
 

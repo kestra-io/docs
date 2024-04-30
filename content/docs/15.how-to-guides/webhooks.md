@@ -11,7 +11,7 @@ Webhooks are HTTP requests that are triggered by an event. These are useful for 
 
 ## Using Webhooks in Kestra
 
-You can use webhooks to trigger an execution of your flow in Kestra. To do this, we can make a [trigger](../06.workflow-components/05.triggers/index.md) with the type `io.kestra.core.models.triggers.types.Webhook`.
+You can use webhooks to trigger an execution of your flow in Kestra. To do this, we can make a [trigger](/docs/workflow-components/triggers) with the type `io.kestra.core.models.triggers.types.Webhook`.
 
 Once we've done this, we can add a `key` property, which can be random as this will be used to trigger the webhook. In the example, the `key` is set to `1KERKzRQZSMtLdMdNI7Nkr` which is what we put at the end of our webhook URL to trigger it.
 

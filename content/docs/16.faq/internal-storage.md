@@ -102,13 +102,13 @@ tasks:
     script: "{{ read('scripts/hello.py') }}"
 ```
 
-The same syntax applies to SQL queries, configuration files, and many more. Check the [Namespace Files](../08.developer-guide/03.namespace-files.md) documentation for more details.
+The same syntax applies to SQL queries, configuration files, and many more. Check the [Namespace Files](/docs/developer-guide/namespace-files) documentation for more details.
 
 ---
 
 ## How to read a file from the internal storage as a JSON object?
 
-There is a [Pebble function](../07.concepts/expression/04.function.md#json) called `{{ json(myvar) }}` and a [Pebble transformation filter](../07.concepts/expression/03.filter/json.md) that you can apply using `{{ myvar | json }}`.
+There is a [Pebble function](/docs/concepts/expression/function#json) called `{{ json(myvar) }}` and a [Pebble transformation filter](/docs/concepts/expression/filter/json) that you can apply using `{{ myvar | json }}`.
 
 ### The `json()` function
 

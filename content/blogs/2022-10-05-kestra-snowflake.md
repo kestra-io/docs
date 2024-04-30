@@ -26,7 +26,7 @@ The platform enables organizations to avoid large-scale licensing costs commonly
 
 Data warehouse workloads are typically part of a larger technological stack. To streamline operations, orchestration, and scheduling of data pipelines are crucial. This is where Kestra comes into play.
 
-Kestra is designed to orchestrate and schedule scalable data workflows, thereby enhancing DataOps teams' productivity. It can construct, operate, manage, and monitor a [variety of complex workflows](../docs/03.tutorial/05.flowable) sequentially or in parallel.
+Kestra is designed to orchestrate and schedule scalable data workflows, thereby enhancing DataOps teams' productivity. It can construct, operate, manage, and monitor a [variety of complex workflows](/docs/tutorial/flowable) sequentially or in parallel.
 
 Kestra can execute workflows based on event-based, time-based, and API-based scheduling, giving complete control.
 Snowflake already offers many cost optimization processes like data compression and auto-scaling. However, Kestra makes it simpler to [download](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.download), [upload](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.upload), and [query](/plugins/plugin-jdbc-snowflake/tasks/io.kestra.plugin.jdbc.snowflake.query) data by integrating with Snowflake's storage and compute resources.
