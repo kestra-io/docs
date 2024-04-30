@@ -72,3 +72,15 @@ micronaut:
       host-header: Host
       protocol-header: X-Forwarded-Proto
 ```
+
+
+## Configuring CORS
+In case you run into issues related to CORS policy, say while calling the webhook API from a JS application, you can enable the processing of CORS requests with the following configuration:
+```yaml
+micronaut:
+  server:
+    cors:
+      enabled: true
+```
+
+For more detailed changes like allowing only specific origins or specific methods, you can refer [this guide](https://docs.micronaut.io/latest/guide/index.html#corsConfiguration).
