@@ -144,7 +144,7 @@ durability and reliability of task executions.
 
 ### For Kestra versions prior to 0.16.0
 
-Prior to Kestra 0.16.0, the liveness mechanism was only supported by **Workers** ([JDBC deployment mode](../04.architecture/index.md#architecture-with-jdbc-backend)).
+Prior to Kestra 0.16.0, the liveness mechanism was only supported by **Workers** ([JDBC deployment mode](/docs/architecture#architecture-with-jdbc-backend)).
 A **Worker** was either `UP` or `DEAD`. `Executors` was responsible to detect unhealthy workers as follows:
 
 * If the last received Heartbeat for a `Worker` is older than `heartbeat-missed * frequency`, then the `Worker` is
@@ -177,7 +177,7 @@ defaultValue: 3
 ## Worker Task Restart Strategy
 
 Starting with Kestra `0.16.0`, you can configure the strategy to be used by `Executors` when a `Worker` is
-detected as unhealthy regarding uncompleted tasks ([JDBC deployment mode](../04.architecture/index.md#architecture-with-jdbc-backend)).
+detected as unhealthy regarding uncompleted tasks ([JDBC deployment mode](/docs/architecture#architecture-with-jdbc-backend)).
 
 ### `kestra.server.workerTaskRestartStrategy`
 
