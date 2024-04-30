@@ -21,10 +21,10 @@ Add a title, description, and the contents of the flow. You can add as many tags
 
 ![New Custom Blueprint](/docs/user-interface-guide/blueprint-org-2.png)
 
-You can edit the Blueprint anytime, for example, to add new tasks or expand the documentation.
+You can edit Blueprints at anytime, for example, to add new tasks or expand the documentation.
 
 ### Benefits of Custom Blueprints
 
-This feature significantly helps code reusability and facilitates collaboration within a team because sharing your code and documentation is finally painless.
+This feature significantly helps code reusability and facilitates collaboration within a team because sharing your code and documentation is now painless.
 
 Once you reach a certain scale with many internal Blueprints, the search and filtering by tags will ensure that your Blueprints remain easy to find.
