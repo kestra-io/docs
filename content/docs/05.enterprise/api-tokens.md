@@ -3,11 +3,15 @@ title: API Tokens
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how you can manage API tokens in Kestra.
+How to manage API tokens in Kestra.
+
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
+::
 
 ## What is an API token
 
-API tokens are used to authenticate API requests to the Kestra API. You can create an API token for a user or a [service account](./service-accounts.md).
+API tokens are used to authenticate API requests to the Kestra API. You can create an API token for a user or a [service account](/docs/enterprise/service-accounts).
 
 ## Where you can use API tokens
 
@@ -16,8 +20,8 @@ API tokens are used anytime you want to grant programmatic access to the Kestra 
 Currently, we support API tokens as authentication mechanism for the following services:
 1. [GitHub Actions](https://github.com/kestra-io/deploy-action)
 2. [Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)
-3. [Kestra CLI](./cli.md)
-4. [Kestra API](./api.md)
+3. [Kestra CLI](/docs/enterprise/cli)
+4. [Kestra API](/docs/enterprise/api)
 
 ## How to create an API token
 
@@ -27,12 +31,13 @@ Then, go to the `API Tokens` tab and click on the `Create` button:
 
 ![api-token](/docs/enterprise/api-token.png)
 
-
 Fill in the form with the required information including the `Name`, `Description` and `Max age`, and click `Generate`:
 
 ![api-token2](/docs/enterprise/api-token2.png)
 
-Note how you can configure the token to expire after a certain period of time, or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
+::alert{type="info"}
+**Note:** you can configure the token to expire after a certain period of time, or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
+::
 
 Once you confirm the API token creation via the **Generate** button, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location as it will not be displayed again.
 

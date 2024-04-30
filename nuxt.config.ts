@@ -145,6 +145,7 @@ export default defineNuxtConfig({
         '/blog': {redirect: '/blogs'},
         '/docs/plugin-developer-guide': {redirect: '/docs/developer-guide/plugins'},
         '/docs/plugin-library': {redirect: '/docs/getting-started/plugins'},
+        '/docs/enterprise/setup-page': {redirect: '/docs/enterprise/setup'},
         '/docs/troubleshooting': {redirect: '/docs/faq/troubleshooting'},
         '/docs/developer-guide/best-practice': {redirect: '/docs/developer-guide/best-practices'},
         '/docs/workflow-components/flow-trigger': {redirect: '/docs/workflow-components/triggers'},

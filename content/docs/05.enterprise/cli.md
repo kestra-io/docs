@@ -3,11 +3,15 @@ title: Kestra EE CLI
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how you can interact with Kestra Enterprise Edition using the CLI.
+How to interact with Kestra Enterprise Edition using the CLI.
+
+::alert{type="info"}
+This feature requires a [commercial license](https://kestra.io/pricing).
+::
 
 ## Authentication
 
-The Kestra CLI uses the same authentication as the [Kestra API](./api.md). You can use the `--api-token` option to authenticate with the API.
+The Kestra CLI uses the same authentication as the [Kestra API](/docs/enterprise/api). You can use the `--api-token` option to authenticate with the API.
 
 ```shell
 kestra-ee --api-token <your-api-token> --help

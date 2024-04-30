@@ -3,12 +3,13 @@ title: Worker Group
 icon: /docs/icons/admin.svg
 ---
 
-Worker Group is a set of workers that can be targeted specifically for a task execution or a polling trigger evaluation.
-
+How to configure Worker Groups in Kestra Enterprise Edition.
 
 ::alert{type="info"}
 This feature requires a [commercial license](https://kestra.io/pricing).
 ::
+
+Worker Group is a set of workers that can be targeted specifically for a task execution or a polling trigger evaluation.
 
 To assign a worker group, the task or the polling trigger must define the `workerGroup.key` property with the key of the worker group to target. A default worker group can also be configured at the namespace level.
 
