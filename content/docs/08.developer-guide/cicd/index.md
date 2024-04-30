@@ -145,7 +145,7 @@ Note that we configured this webhook to be sent upon a push event to the default
 
 ### Deploy flows from a GitHub Action
 
-The official Kestra's [GitHub Actions](./01.github-action.md) leverage the same CLI commands to:
+The official Kestra's [GitHub Actions](/docs/developer-guide/cicd/github-action) leverage the same CLI commands to:
 1. Validate flows and templates using the [Validate Action](https://github.com/marketplace/actions/kestra-validate-action)
 2. Deploy flows and templates using the [Deploy Action](https://github.com/marketplace/actions/kestra-deploy-action).
 
@@ -238,14 +238,14 @@ jobs:
 
 ### Deploy flows from a GitLab CI/CD
 
-GitLab CI/CD follows a similar pattern to the GitHub Actions example. See the [GitLab](/docs/developer-guide/gitlab) section for more details.
+GitLab CI/CD follows a similar pattern to the GitHub Actions example. See the [GitLab](/docs/developer-guide/cicd/gitlab) section for more details.
 
 
 ### Deploy flows from Terraform
 
 While Terraform might be more challenging to understand at first, we highly recommend this option, as it provides the highest degree of flexibility. Using Kestra and Terraform together, your flows can be deployed along with other infrastructure resources in your stack, making it easier to adopt Infrastructure as Code.
 
-The [Terraform CI/CD](/docs/developer-guide/terraform) page provides a more detailed explanation, but here is a simple Terraform configuration that you can use to automate the deployment of flows stored in a `flows` directory:
+The [Terraform CI/CD](/docs/terraform) page provides a more detailed explanation, but here is a simple Terraform configuration that you can use to automate the deployment of flows stored in a `flows` directory:
 
 ```hcl
 terraform {
