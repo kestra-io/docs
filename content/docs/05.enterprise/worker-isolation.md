@@ -48,7 +48,7 @@ kestra:
 This is a list of classes that can't create any threads. Others plugins will be authorized.
 
 ::alert{type="warning"}
-Currently, all the official Kestra plugins are safe to be whitelisted **except** [all scripts plugins](/plugins/plugin-script-groovy) since they allow custom code to be created that can be read and written on the file system. These must not be added to the `forbidden-class-prefix`.
+Currently, all the official Kestra plugins are safe to be whitelisted **except** [all scripts plugins](/plugins/plugin-script-groovy) since they allow custom code to be created that can be read and written on the file system. Do not add these to the `forbidden-class-prefix`.
 ::
 
 
