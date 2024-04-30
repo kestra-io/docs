@@ -17,7 +17,6 @@ yarn.lock
 ## Plugins
 content/plugins/**/*
 !content/plugins/index.md
-public/examples.zip
 
 ## Nuxt
 node_modules
