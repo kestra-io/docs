@@ -80,4 +80,4 @@ The first task is to use the `TerraformInstaller@1` to install Terraform when th
 
 ![image-green-pipeline](/docs/developer-guide/ci-cd/az-devops-image-green-pipleine.png)
 
-You can find the specification of the [Kestra Terraform provider in the corresponding documentation](/docs/developer-guide/terraform)
+You can find the specification of the [Kestra Terraform provider in the corresponding documentation](/docs/terraform)
