@@ -19,7 +19,7 @@ Kestra is a powerful orchestration engine with a rich set of plugins. Kestra sea
 
 ## Use case
 
-In this blog post, we will develop a data pipeline that has data about [products](https://raw.githubusercontent.com/kestra-io/datasets/main/csv/products.csv) and [orders](https://raw.githubusercontent.com/kestra-io/datasets/main/csv/products.csv). We start with both the data sets being present as CSV files. Our final aim is to join these two data sets and have detailed orders, where each order record has complete product information, in the CSV format.
+In this blog post, we will develop a data pipeline that has data about [products](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv) and [orders](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv). We start with both the data sets being present as CSV files. Our final aim is to join these two data sets and have detailed orders, where each order record has complete product information, in the CSV format.
 
 In the actual world, dimension data like products would be present in databases like RDS or DynamoDB, while fact data like orders will be present on file systems like S3. Taking this into consideration, we will have a data preparation phase where we would load the products CSV file onto DynamoDB, and orders CSV file onto S3 using Kestra.
 
@@ -71,7 +71,7 @@ namespace: dev
 tasks:
   - id: http_download_products
     type: io.kestra.plugin.fs.http.Download
-    uri: https://raw.githubusercontent.com/kestra-io/datasets/main/csv/products.csv
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv
   - id: csv_reader_products
     type: io.kestra.plugin.serdes.csv.CsvReader
     from: "{{ outputs.http_download_products.uri }}"
@@ -88,7 +88,7 @@ tasks:
       product: "{{ taskrun.items }}"
   - id: http_download_orders
     type: io.kestra.plugin.fs.http.Download
-    uri: https://raw.githubusercontent.com/kestra-io/datasets/main/csv/orders.csv
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
   - id: s3_upload_orders
     type: io.kestra.plugin.aws.s3.Upload
     accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"

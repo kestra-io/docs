@@ -227,7 +227,7 @@ temp_path = f"s3://{bucket_name}/{glue_table}_tmp/"
 
 wr.catalog.delete_table_if_exists(database=glue_database, table=glue_table)
 
-df = pd.read_csv("https://raw.githubusercontent.com/kestra-io/datasets/main/csv/fruit.csv")
+df = pd.read_csv("https://huggingface.co/datasets/kestra/datasets/raw/main/csv/fruit.csv")
 df = df[~df["fruit"].isin(["Blueberry", "Banana"])]
 df = df.drop_duplicates(subset=["fruit"], ignore_index=True, keep="first")
 
