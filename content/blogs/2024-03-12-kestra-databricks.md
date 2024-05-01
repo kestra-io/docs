@@ -78,7 +78,7 @@ namespace: dev
 tasks:
   - id: http_download
     type: io.kestra.plugin.fs.http.Download
-    uri: "https://raw.githubusercontent.com/kestra-io/datasets/main/csv/orders.csv"
+    uri: "https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv"
   - id: uploadFile
     type: io.kestra.plugin.databricks.dbfs.Upload
     authentication:

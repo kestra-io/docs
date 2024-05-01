@@ -76,7 +76,7 @@ LOAD httpfs;
 
 -- create table from a remote CSV file
 CREATE TABLE orders AS
-SELECT * FROM read_csv_auto('https://raw.githubusercontent.com/kestra-io/datasets/main/csv/orders.csv');
+SELECT * FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv');
 
 -- create another table
 CREATE TABLE bestsellers as
