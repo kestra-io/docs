@@ -2,6 +2,7 @@
 title: How to configure SSL in Kestra UI
 icon: /docs/icons/padlock.svg
 ---
+Configure secure access via https to the Kestra UI.
 
 This guide will walk through the steps to configure secure access via https to the Kestra UI. 
 
