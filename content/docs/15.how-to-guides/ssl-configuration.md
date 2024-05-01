@@ -27,7 +27,9 @@ While self-signed certificates encrypt traffic, they are considered unsuitable f
 # Create a folder which will be later mounted to the kestra container
 mkdir -p /app/ssl
 cd /app/ssl 
+```
 
+```bash
 # Create CA in PEM format along with private key
 openssl req -x509 -sha256 -days 365 -newkey rsa:4096 \
   -keyout cacert.key -out cacert.pem \
@@ -136,4 +138,6 @@ Ensure that you expose the secure port of the connection if different from the d
           tasks:
             tmp-dir:
               path: /tmp/kestra-wd/tmp
+          ports:
+            - "8443:8443"
 ```
