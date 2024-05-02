@@ -8,13 +8,13 @@ tasks:
     type: io.kestra.plugin.scripts.node.Script
     beforeCommands:
       - npm install requestify
-      - npm i @kestra-io/libs
+      - npm install @kestra-io/libs
     docker:
       image: node:slim
     warningOnStdErr: false
     script: |
       function GetDockerImageDownloads(imageName){
-        //Queries the Docker Hub API to get the number of downloads for a specific Docker image.
+        // Queries the Docker Hub API to get the number of downloads for a specific Docker image.
         const Kestra = require("@kestra-io/libs");
         const requestify = require('requestify');
         var url = `https://hub.docker.com/v2/repositories/${imageName}/`

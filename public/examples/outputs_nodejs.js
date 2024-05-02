@@ -1,7 +1,8 @@
+const requestify = require('requestify');
+const Kestra = require('@kestra-io/libs');
+
 function GetDockerImageDownloads(imageName){
-  //Queries the Docker Hub API to get the number of downloads for a specific Docker image.
-  const Kestra = require('@kestra-io/libs');
-  const requestify = require('requestify');
+  // Queries the Docker Hub API to get the number of downloads for a specific Docker image.
   var url = `https://hub.docker.com/v2/repositories/${imageName}/`
   console.log(url) 
   requestify.get(url)

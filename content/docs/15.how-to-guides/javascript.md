@@ -5,7 +5,7 @@ icon: /docs/icons/nodejs.svg
 
 Run JavaScript code inside of your flow.
 
-You can execute NodeJs code inside of a flow by either writing your NodeJS inline or by executing a `.js` file. You can also get outputs and metrics from your NodeJS code too.
+You can execute NodeJS code inside of a flow by either writing your NodeJS inline or by executing a `.js` file. You can also get outputs and metrics from your NodeJS code too.
 
 ## Scripts
 
@@ -37,7 +37,7 @@ You'll need to install the [`@kestra-io/libs` npm package](https://npm.io/packag
 npm install @kestra-io/libs
 ```
 
-Here is the sample flow which outputs the `pull_count` from the http response.
+Here is an example flow which outputs the `pull_count` from the http response.
 
 ```yaml file=public/examples/scripts_outputs_nodejs.yml
 ```
@@ -60,7 +60,7 @@ _This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kest
 
 ## Handling Metrics
 
-You can also get [metrics](/docs/developer-guide/scripts/outputs-metrics#outputs-and-metrics-in-script-and-commands-tasks) from your NodeJS code. In this example, we can use the `time` module to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
+You can also get [metrics](/docs/developer-guide/scripts/outputs-metrics#outputs-and-metrics-in-script-and-commands-tasks) from your NodeJS code. In this example, we can use the `Date` class to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
 
 ```javascript file=public/examples/metrics_nodejs.js
 ```
