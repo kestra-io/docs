@@ -36,7 +36,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MiscController.BasicAuthCredentials'
+              $ref: "#/components/schemas/MiscController.BasicAuthCredentials"
         required: true
       responses:
         "200":
@@ -51,7 +51,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MiscController.BasicAuthCredentials'
+              $ref: "#/components/schemas/MiscController.BasicAuthCredentials"
         required: true
       responses:
         "200":
@@ -105,7 +105,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_BlueprintController.BlueprintItem_'
+                $ref: "#/components/schemas/PagedResults_BlueprintController.BlueprintItem_"
   /api/v1/blueprints/community/tags:
     get:
       tags:
@@ -127,7 +127,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BlueprintController.BlueprintTagItem'
+                  $ref: "#/components/schemas/BlueprintController.BlueprintTagItem"
   /api/v1/blueprints/community/{id}:
     get:
       tags:
@@ -147,7 +147,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BlueprintController.BlueprintItemWithFlow'
+                $ref: "#/components/schemas/BlueprintController.BlueprintItemWithFlow"
   /api/v1/blueprints/community/{id}/flow:
     get:
       tags:
@@ -201,7 +201,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MiscController.Configuration'
+                $ref: "#/components/schemas/MiscController.Configuration"
   /api/v1/configs/{tenant}:
     get:
       tags:
@@ -214,7 +214,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MiscController.Configuration'
+                $ref: "#/components/schemas/MiscController.Configuration"
   /api/v1/editor/marketplace/resource/{publisher}/{extension}/{version}:
     get:
       tags:
@@ -297,7 +297,7 @@ paths:
         description: Type of request
         required: true
         schema:
-          $ref: '#/components/schemas/MarketplaceRequestType'
+          $ref: "#/components/schemas/MarketplaceRequestType"
       responses:
         "200":
           description: marketplaceGet 200 response
@@ -316,7 +316,7 @@ paths:
         description: Type of request
         required: true
         schema:
-          $ref: '#/components/schemas/MarketplaceRequestType'
+          $ref: "#/components/schemas/MarketplaceRequestType"
       responses:
         "200":
           description: marketplacePost 200 response
@@ -336,7 +336,7 @@ paths:
         description: Type of request
         required: true
         schema:
-          $ref: '#/components/schemas/MarketplaceRequestType'
+          $ref: "#/components/schemas/MarketplaceRequestType"
       - name: path
         in: path
         description: Additional path
@@ -362,7 +362,7 @@ paths:
         description: Type of request
         required: true
         schema:
-          $ref: '#/components/schemas/MarketplaceRequestType'
+          $ref: "#/components/schemas/MarketplaceRequestType"
       - name: path
         in: path
         description: Additional path
@@ -418,7 +418,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_Execution_'
+                $ref: "#/components/schemas/PagedResults_Execution_"
   /api/v1/executions/by-ids:
     delete:
       tags:
@@ -447,13 +447,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
         "422":
           description: Deleted with errors
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkErrorResponse'
+                $ref: "#/components/schemas/BulkErrorResponse"
   /api/v1/executions/by-query:
     delete:
       tags:
@@ -499,7 +499,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Duration'
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -512,7 +512,7 @@ paths:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/State.Type'
+            $ref: "#/components/schemas/State.Type"
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
@@ -533,7 +533,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
       - name: includeNonTerminated
         in: query
         description: Specificies whether to delete non-terminated executions
@@ -547,7 +547,40 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
+  /api/v1/executions/flows/{namespace}/{flowId}:
+    get:
+      tags:
+      - Executions
+      summary: Get flow information's for an execution
+      operationId: getFlowForExecution
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the flow
+        required: true
+        schema:
+          type: string
+      - name: flowId
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: revision
+        in: query
+        description: The flow revision
+        schema:
+          type: integer
+          format: int32
+          nullable: true
+      responses:
+        "200":
+          description: getFlowForExecution 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlowForExecution"
   /api/v1/executions/kill/by-ids:
     delete:
       tags:
@@ -568,13 +601,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
         "422":
           description: Killed with errors
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkErrorResponse'
+                $ref: "#/components/schemas/BulkErrorResponse"
   /api/v1/executions/kill/by-query:
     delete:
       tags:
@@ -620,7 +653,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Duration'
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -633,7 +666,7 @@ paths:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/State.Type'
+            $ref: "#/components/schemas/State.Type"
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
@@ -654,7 +687,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
       responses:
         "200":
           description: killByQuery 200 response
@@ -672,7 +705,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExecutionController.SetLabelsByIdsRequest'
+              $ref: "#/components/schemas/ExecutionController.SetLabelsByIdsRequest"
         required: true
       responses:
         "200":
@@ -680,13 +713,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
         "422":
           description: Killed with errors
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkErrorResponse'
+                $ref: "#/components/schemas/BulkErrorResponse"
   /api/v1/executions/labels/by-query:
     post:
       tags:
@@ -732,7 +765,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Duration'
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -745,7 +778,7 @@ paths:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/State.Type'
+            $ref: "#/components/schemas/State.Type"
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
@@ -766,14 +799,14 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
       requestBody:
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/Label'
+                $ref: "#/components/schemas/Label"
         required: true
       responses:
         "200":
@@ -782,6 +815,43 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/executions/namespaces:
+    get:
+      tags:
+      - Executions
+      summary: Get all namespaces that have executable flows
+      operationId: listDistinctNamespace
+      responses:
+        "200":
+          description: listDistinctNamespace 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/v1/executions/namespaces/{namespace}/flows:
+    get:
+      tags:
+      - Executions
+      summary: Get all flow ids for a namespace
+      operationId: getFlowsByNamespace
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getFlowsByNamespace 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlowForExecution"
   /api/v1/executions/replay/by-ids:
     post:
       tags:
@@ -802,13 +872,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
         "422":
           description: Replayed with errors
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkErrorResponse'
+                $ref: "#/components/schemas/BulkErrorResponse"
   /api/v1/executions/replay/by-query:
     post:
       tags:
@@ -855,7 +925,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Duration'
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -868,7 +938,7 @@ paths:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/State.Type'
+            $ref: "#/components/schemas/State.Type"
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
@@ -889,7 +959,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
       responses:
         "200":
           description: replayByQuery 200 response
@@ -917,13 +987,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
         "422":
           description: Restarted with errors
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkErrorResponse'
+                $ref: "#/components/schemas/BulkErrorResponse"
   /api/v1/executions/restart/by-query:
     post:
       tags:
@@ -969,7 +1039,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Duration'
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -982,7 +1052,7 @@ paths:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/State.Type'
+            $ref: "#/components/schemas/State.Type"
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
@@ -1003,14 +1073,14 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
       responses:
         "200":
           description: restartByQuery 200 response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
   /api/v1/executions/resume/by-ids:
     post:
       tags:
@@ -1031,13 +1101,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
         "422":
           description: Resumed with errors
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkErrorResponse'
+                $ref: "#/components/schemas/BulkErrorResponse"
   /api/v1/executions/resume/by-query:
     post:
       tags:
@@ -1083,7 +1153,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Duration'
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -1096,7 +1166,7 @@ paths:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/State.Type'
+            $ref: "#/components/schemas/State.Type"
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
@@ -1117,7 +1187,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
       responses:
         "200":
           description: resumeByQuery 200 response
@@ -1194,7 +1264,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Duration'
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -1207,7 +1277,7 @@ paths:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/State.Type'
+            $ref: "#/components/schemas/State.Type"
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
@@ -1228,14 +1298,14 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
       responses:
         "200":
           description: find 200 response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_Execution_'
+                $ref: "#/components/schemas/PagedResults_Execution_"
   /api/v1/executions/trigger/{namespace}/{id}:
     post:
       tags:
@@ -1329,7 +1399,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                $ref: "#/components/schemas/Execution"
     put:
       tags:
       - Executions
@@ -1360,7 +1430,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                $ref: "#/components/schemas/Execution"
     post:
       tags:
       - Executions
@@ -1391,7 +1461,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                $ref: "#/components/schemas/Execution"
   /api/v1/executions/{executionId}:
     get:
       tags:
@@ -1411,7 +1481,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                $ref: "#/components/schemas/Execution"
     delete:
       tags:
       - Executions
@@ -1458,7 +1528,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExecutionController.EvalResult'
+                $ref: "#/components/schemas/ExecutionController.EvalResult"
   /api/v1/executions/{executionId}/file:
     get:
       tags:
@@ -1513,7 +1583,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FileMetas'
+                $ref: "#/components/schemas/FileMetas"
   /api/v1/executions/{executionId}/file/preview:
     get:
       tags:
@@ -1556,6 +1626,26 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/executions/{executionId}/flow:
+    get:
+      tags:
+      - Executions
+      summary: Get flow information's for an execution
+      operationId: getFlowForExecutionById
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution that you want flow information's
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getFlowForExecutionById 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlowForExecution"
   /api/v1/executions/{executionId}/follow:
     get:
       tags:
@@ -1575,7 +1665,7 @@ paths:
           content:
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/Event_Execution_'
+                $ref: "#/components/schemas/Event_Execution_"
   /api/v1/executions/{executionId}/graph:
     get:
       tags:
@@ -1595,7 +1685,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlowGraph'
+                $ref: "#/components/schemas/FlowGraph"
   /api/v1/executions/{executionId}/kill:
     delete:
       tags:
@@ -1643,7 +1733,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/Label'
+                $ref: "#/components/schemas/Label"
         required: true
       responses:
         "404":
@@ -1683,7 +1773,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                $ref: "#/components/schemas/Execution"
   /api/v1/executions/{executionId}/restart:
     post:
       tags:
@@ -1710,7 +1800,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                $ref: "#/components/schemas/Execution"
   /api/v1/executions/{executionId}/resume:
     post:
       tags:
@@ -1724,6 +1814,23 @@ paths:
         required: true
         schema:
           type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  description: The inputs of type file
+                  nullable: true
+                  items:
+                    type: string
+                    format: binary
+            encoding:
+              files:
+                contentType: application/octet-stream
+        required: true
       responses:
         "204":
           description: On success
@@ -1746,7 +1853,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExecutionController.StateRequest'
+              $ref: "#/components/schemas/ExecutionController.StateRequest"
         required: true
       responses:
         "200":
@@ -1754,7 +1861,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                $ref: "#/components/schemas/Execution"
   /api/v1/executions/{namespace}/{id}:
     post:
       tags:
@@ -1826,7 +1933,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/Flow'
+              $ref: "#/components/schemas/Flow"
           application/x-yaml:
             schema:
               type: string
@@ -1839,8 +1946,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                - $ref: '#/components/schemas/Flow'
-                - $ref: '#/components/schemas/FlowWithSource'
+                - $ref: "#/components/schemas/Flow"
+                - $ref: "#/components/schemas/FlowWithSource"
               example: null
   /api/v1/flows/delete/by-ids:
     delete:
@@ -1854,7 +1961,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/IdWithNamespace'
+                $ref: "#/components/schemas/IdWithNamespace"
         required: true
       responses:
         "200":
@@ -1862,7 +1969,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
   /api/v1/flows/delete/by-query:
     delete:
       tags:
@@ -1896,7 +2003,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
   /api/v1/flows/disable/by-ids:
     post:
       tags:
@@ -1909,7 +2016,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/IdWithNamespace'
+                $ref: "#/components/schemas/IdWithNamespace"
         required: true
       responses:
         "200":
@@ -1917,7 +2024,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
   /api/v1/flows/disable/by-query:
     post:
       tags:
@@ -1951,16 +2058,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
   /api/v1/flows/distinct-namespaces:
     get:
       tags:
       - Flows
       summary: List all distinct namespaces
-      operationId: listDistinctNamespace
+      operationId: listDistinctNamespace_1
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
       responses:
         "200":
-          description: listDistinctNamespace 200 response
+          description: listDistinctNamespace_1 200 response
           content:
             application/json:
               schema:
@@ -1979,7 +2093,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/IdWithNamespace'
+                $ref: "#/components/schemas/IdWithNamespace"
         required: true
       responses:
         "200":
@@ -1987,7 +2101,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
   /api/v1/flows/enable/by-query:
     post:
       tags:
@@ -2021,7 +2135,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
   /api/v1/flows/export/by-ids:
     post:
       tags:
@@ -2034,7 +2148,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/IdWithNamespace'
+                $ref: "#/components/schemas/IdWithNamespace"
         required: true
       responses:
         "200":
@@ -2110,7 +2224,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlowGraph'
+                $ref: "#/components/schemas/FlowGraph"
   /api/v1/flows/import:
     post:
       tags:
@@ -2193,7 +2307,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_Flow_'
+                $ref: "#/components/schemas/PagedResults_Flow_"
   /api/v1/flows/source:
     get:
       tags:
@@ -2243,7 +2357,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_SearchResult_Flow__'
+                $ref: "#/components/schemas/PagedResults_SearchResult_Flow__"
   /api/v1/flows/validate:
     post:
       tags:
@@ -2264,7 +2378,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ValidateConstraintViolation'
+                  $ref: "#/components/schemas/ValidateConstraintViolation"
   /api/v1/flows/validate/task:
     post:
       tags:
@@ -2277,7 +2391,7 @@ paths:
         description: Type of task
         required: true
         schema:
-          $ref: '#/components/schemas/FlowController.TaskValidationType'
+          $ref: "#/components/schemas/FlowController.TaskValidationType"
       requestBody:
         content:
           application/x-yaml:
@@ -2290,13 +2404,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidateConstraintViolation'
+                $ref: "#/components/schemas/ValidateConstraintViolation"
   /api/v1/flows/{namespace}:
     get:
       tags:
       - Flows
       summary: Retrieve all flows from a given namespace
-      operationId: getFlowsByNamespace
+      operationId: getFlowsByNamespace_1
       parameters:
       - name: namespace
         in: path
@@ -2306,13 +2420,13 @@ paths:
           type: string
       responses:
         "200":
-          description: getFlowsByNamespace 200 response
+          description: getFlowsByNamespace_1 200 response
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Flow'
+                  $ref: "#/components/schemas/Flow"
     post:
       tags:
       - Flows
@@ -2341,7 +2455,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/Flow'
+                $ref: "#/components/schemas/Flow"
           application/x-yaml:
             schema:
               type: string
@@ -2357,10 +2471,10 @@ paths:
                 oneOf:
                 - type: array
                   items:
-                    $ref: '#/components/schemas/Flow'
+                    $ref: "#/components/schemas/Flow"
                 - type: array
                   items:
-                    $ref: '#/components/schemas/FlowWithSource'
+                    $ref: "#/components/schemas/FlowWithSource"
               example: null
   /api/v1/flows/{namespace}/{id}:
     get:
@@ -2431,7 +2545,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/Flow'
+              $ref: "#/components/schemas/Flow"
           application/x-yaml:
             schema:
               type: string
@@ -2444,8 +2558,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                - $ref: '#/components/schemas/Flow'
-                - $ref: '#/components/schemas/FlowWithSource'
+                - $ref: "#/components/schemas/Flow"
+                - $ref: "#/components/schemas/FlowWithSource"
               example: null
     delete:
       tags:
@@ -2501,7 +2615,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlowTopologyGraph'
+                $ref: "#/components/schemas/FlowTopologyGraph"
   /api/v1/flows/{namespace}/{id}/graph:
     get:
       tags:
@@ -2542,7 +2656,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlowGraph'
+                $ref: "#/components/schemas/FlowGraph"
   /api/v1/flows/{namespace}/{id}/revisions:
     get:
       tags:
@@ -2570,7 +2684,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/FlowWithSource'
+                  $ref: "#/components/schemas/FlowWithSource"
   /api/v1/flows/{namespace}/{id}/tasks/{taskId}:
     get:
       tags:
@@ -2609,7 +2723,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: "#/components/schemas/Task"
   /api/v1/flows/{namespace}/{id}/{taskId}:
     patch:
       tags:
@@ -2639,7 +2753,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Task'
+              $ref: "#/components/schemas/Task"
         required: true
       responses:
         "200":
@@ -2647,7 +2761,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Flow'
+                $ref: "#/components/schemas/Flow"
   /api/v1/logs/search:
     get:
       tags:
@@ -2703,7 +2817,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Level'
+          - $ref: "#/components/schemas/Level"
       - name: startDate
         in: query
         description: The start datetime
@@ -2724,7 +2838,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_LogEntry_'
+                $ref: "#/components/schemas/PagedResults_LogEntry_"
   /api/v1/logs/{executionId}:
     get:
       tags:
@@ -2744,7 +2858,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Level'
+          - $ref: "#/components/schemas/Level"
       - name: taskRunId
         in: query
         description: The taskrun id
@@ -2772,7 +2886,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/LogEntry'
+                  $ref: "#/components/schemas/LogEntry"
     delete:
       tags:
       - Logs
@@ -2791,7 +2905,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Level'
+          - $ref: "#/components/schemas/Level"
       - name: taskRunId
         in: query
         description: The taskrun id
@@ -2833,7 +2947,7 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Level'
+          - $ref: "#/components/schemas/Level"
       - name: taskRunId
         in: query
         description: The taskrun id
@@ -2880,14 +2994,14 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Level'
+          - $ref: "#/components/schemas/Level"
       responses:
         "200":
           description: follow_1 200 response
           content:
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/Event_LogEntry_'
+                $ref: "#/components/schemas/Event_LogEntry_"
   /api/v1/metrics/aggregates/{namespace}/{flowId}/{metric}:
     get:
       tags:
@@ -2940,7 +3054,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetricAggregations'
+                $ref: "#/components/schemas/MetricAggregations"
   /api/v1/metrics/aggregates/{namespace}/{flowId}/{taskId}/{metric}:
     get:
       tags:
@@ -2999,7 +3113,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetricAggregations'
+                $ref: "#/components/schemas/MetricAggregations"
   /api/v1/metrics/names/{namespace}/{flowId}:
     get:
       tags:
@@ -3146,7 +3260,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_MetricEntry_'
+                $ref: "#/components/schemas/PagedResults_MetricEntry_"
   /api/v1/namespaces/{namespace}/files:
     get:
       tags:
@@ -3289,7 +3403,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/FileAttributes'
+                  $ref: "#/components/schemas/FileAttributes"
     post:
       tags:
       - Files
@@ -3390,7 +3504,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FileAttributes'
+                $ref: "#/components/schemas/FileAttributes"
   /api/v1/plugins:
     get:
       tags:
@@ -3405,7 +3519,22 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Plugin'
+                  $ref: "#/components/schemas/Plugin"
+  /api/v1/plugins/groups/subgroups:
+    get:
+      tags:
+      - Plugins
+      summary: Get plugins group by subgroups
+      operationId: subgroups
+      responses:
+        "200":
+          description: subgroups 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Plugin"
   /api/v1/plugins/icons:
     get:
       tags:
@@ -3420,7 +3549,7 @@ paths:
               schema:
                 type: object
                 additionalProperties:
-                  $ref: '#/components/schemas/PluginIcon'
+                  $ref: "#/components/schemas/PluginIcon"
   /api/v1/plugins/icons/groups:
     get:
       tags:
@@ -3435,7 +3564,7 @@ paths:
               schema:
                 type: object
                 additionalProperties:
-                  $ref: '#/components/schemas/PluginIcon'
+                  $ref: "#/components/schemas/PluginIcon"
   /api/v1/plugins/inputs:
     get:
       tags:
@@ -3450,7 +3579,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/InputType'
+                  $ref: "#/components/schemas/InputType"
   /api/v1/plugins/inputs/{type}:
     get:
       tags:
@@ -3465,14 +3594,14 @@ paths:
         description: The schema needed
         required: true
         schema:
-          $ref: '#/components/schemas/Type_3'
+          $ref: "#/components/schemas/Type_3"
       responses:
         "200":
           description: inputSchemas 200 response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DocumentationWithSchema'
+                $ref: "#/components/schemas/DocumentationWithSchema"
   /api/v1/plugins/schemas/{type}:
     get:
       tags:
@@ -3487,7 +3616,7 @@ paths:
         description: The schema needed
         required: true
         schema:
-          $ref: '#/components/schemas/SchemaType'
+          $ref: "#/components/schemas/SchemaType"
       responses:
         "200":
           description: schemas 200 response
@@ -3522,7 +3651,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DocumentationWithSchema'
+                $ref: "#/components/schemas/DocumentationWithSchema"
   /api/v1/stats/executions/daily:
     post:
       tags:
@@ -3533,7 +3662,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StatsController.StatisticRequest'
+              $ref: "#/components/schemas/StatsController.StatisticRequest"
         required: true
       responses:
         "200":
@@ -3543,7 +3672,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DailyExecutionStatistics'
+                  $ref: "#/components/schemas/DailyExecutionStatistics"
   /api/v1/stats/executions/daily/group-by-flow:
     post:
       tags:
@@ -3554,7 +3683,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StatsController.ByFlowStatisticRequest'
+              $ref: "#/components/schemas/StatsController.ByFlowStatisticRequest"
         required: true
       responses:
         "200":
@@ -3568,7 +3697,7 @@ paths:
                   additionalProperties:
                     type: array
                     items:
-                      $ref: '#/components/schemas/DailyExecutionStatistics'
+                      $ref: "#/components/schemas/DailyExecutionStatistics"
   /api/v1/stats/executions/latest/group-by-flow:
     post:
       tags:
@@ -3579,7 +3708,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StatsController.LastExecutionsRequest'
+              $ref: "#/components/schemas/StatsController.LastExecutionsRequest"
         required: true
       responses:
         "200":
@@ -3589,7 +3718,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Execution'
+                  $ref: "#/components/schemas/Execution"
   /api/v1/stats/logs/daily:
     post:
       tags:
@@ -3600,7 +3729,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StatsController.LogStatisticRequest'
+              $ref: "#/components/schemas/StatsController.LogStatisticRequest"
         required: true
       responses:
         "200":
@@ -3610,7 +3739,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/LogStatistics'
+                  $ref: "#/components/schemas/LogStatistics"
   /api/v1/stats/taskruns/daily:
     post:
       tags:
@@ -3621,7 +3750,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StatsController.StatisticRequest'
+              $ref: "#/components/schemas/StatsController.StatisticRequest"
         required: true
       responses:
         "200":
@@ -3631,7 +3760,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DailyExecutionStatistics'
+                  $ref: "#/components/schemas/DailyExecutionStatistics"
   /api/v1/taskruns/search:
     get:
       tags:
@@ -3702,7 +3831,7 @@ paths:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/State.Type'
+            $ref: "#/components/schemas/State.Type"
       - name: labels
         in: query
         description: A labels filter as a list of 'key:value'
@@ -3723,14 +3852,14 @@ paths:
         schema:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/ExecutionRepositoryInterface.ChildFilter'
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
       responses:
         "200":
           description: findTaskRun 200 response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_TaskRun_'
+                $ref: "#/components/schemas/PagedResults_TaskRun_"
   /api/v1/templates:
     post:
       tags:
@@ -3741,7 +3870,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Template'
+              $ref: "#/components/schemas/Template"
         required: true
       responses:
         "200":
@@ -3749,7 +3878,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Template'
+                $ref: "#/components/schemas/Template"
   /api/v1/templates/delete/by-ids:
     delete:
       tags:
@@ -3762,7 +3891,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/IdWithNamespace'
+                $ref: "#/components/schemas/IdWithNamespace"
         required: true
       responses:
         "200":
@@ -3770,7 +3899,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
   /api/v1/templates/delete/by-query:
     delete:
       tags:
@@ -3796,16 +3925,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BulkResponse'
+                $ref: "#/components/schemas/BulkResponse"
   /api/v1/templates/distinct-namespaces:
     get:
       tags:
       - Templates
       summary: List all distinct namespaces
-      operationId: listDistinctNamespace_1
+      operationId: listDistinctNamespace_2
       responses:
         "200":
-          description: listDistinctNamespace_1 200 response
+          description: listDistinctNamespace_2 200 response
           content:
             application/json:
               schema:
@@ -3824,7 +3953,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/IdWithNamespace'
+                $ref: "#/components/schemas/IdWithNamespace"
         required: true
       responses:
         "200":
@@ -3939,7 +4068,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_Template_'
+                $ref: "#/components/schemas/PagedResults_Template_"
   /api/v1/templates/validate:
     post:
       tags:
@@ -3960,7 +4089,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ValidateConstraintViolation'
+                  $ref: "#/components/schemas/ValidateConstraintViolation"
   /api/v1/templates/{namespace}:
     post:
       tags:
@@ -3990,7 +4119,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/Template'
+                $ref: "#/components/schemas/Template"
         required: true
       responses:
         "200":
@@ -4000,7 +4129,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Template'
+                  $ref: "#/components/schemas/Template"
   /api/v1/templates/{namespace}/{id}:
     get:
       tags:
@@ -4026,7 +4155,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Template'
+                $ref: "#/components/schemas/Template"
     put:
       tags:
       - Templates
@@ -4049,7 +4178,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Template'
+              $ref: "#/components/schemas/Template"
         required: true
       responses:
         "200":
@@ -4057,7 +4186,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Template'
+                $ref: "#/components/schemas/Template"
     delete:
       tags:
       - Templates
@@ -4089,7 +4218,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Trigger'
+              $ref: "#/components/schemas/Trigger"
         required: true
       responses:
         "200":
@@ -4097,7 +4226,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trigger'
+                $ref: "#/components/schemas/Trigger"
   /api/v1/triggers/backfill/delete:
     put:
       tags:
@@ -4108,7 +4237,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Trigger'
+              $ref: "#/components/schemas/Trigger"
         required: true
       responses:
         "200":
@@ -4116,7 +4245,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trigger'
+                $ref: "#/components/schemas/Trigger"
   /api/v1/triggers/backfill/pause:
     put:
       tags:
@@ -4127,7 +4256,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Trigger'
+              $ref: "#/components/schemas/Trigger"
         required: true
       responses:
         "200":
@@ -4135,7 +4264,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trigger'
+                $ref: "#/components/schemas/Trigger"
   /api/v1/triggers/backfill/unpause:
     put:
       tags:
@@ -4146,7 +4275,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Trigger'
+              $ref: "#/components/schemas/Trigger"
         required: true
       responses:
         "200":
@@ -4154,7 +4283,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trigger'
+                $ref: "#/components/schemas/Trigger"
   /api/v1/triggers/search:
     get:
       tags:
@@ -4204,7 +4333,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_TriggerController.Triggers_'
+                $ref: "#/components/schemas/PagedResults_TriggerController.Triggers_"
   /api/v1/triggers/{namespace}/{flowId}:
     get:
       tags:
@@ -4260,7 +4389,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_Trigger_'
+                $ref: "#/components/schemas/PagedResults_Trigger_"
   /api/v1/triggers/{namespace}/{flowId}/{triggerId}/unlock:
     post:
       tags:
@@ -4292,7 +4421,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trigger'
+                $ref: "#/components/schemas/Trigger"
   /api/v1/usages/all:
     get:
       tags:
@@ -4305,7 +4434,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usage'
+                $ref: "#/components/schemas/Usage"
   /api/v1/usages/all/{tenant}:
     get:
       tags:
@@ -4318,7 +4447,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usage'
+                $ref: "#/components/schemas/Usage"
 components:
   schemas:
     AbstractCollection_BlueprintController.BlueprintItem_:
@@ -4371,6 +4500,33 @@ components:
       properties:
         empty:
           type: boolean
+    AbstractFlow:
+      required:
+      - deleted
+      - disabled
+      - id
+      - namespace
+      type: object
+      properties:
+        id:
+          minLength: 1
+          pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
+          type: string
+        namespace:
+          pattern: "^[a-z0-9][a-z0-9._-]*"
+          type: string
+        revision:
+          minimum: 1
+          type: integer
+          format: int32
+        inputs:
+          type: array
+          items:
+            $ref: "#/components/schemas/Input_Object_"
+        disabled:
+          type: boolean
+        deleted:
+          type: boolean
     AbstractGraph:
       type: object
       properties:
@@ -4381,25 +4537,25 @@ components:
         error:
           type: boolean
     AbstractList_BlueprintController.BlueprintItem_:
-      $ref: '#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_'
+      $ref: "#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_"
     AbstractList_Execution_:
-      $ref: '#/components/schemas/AbstractCollection_Execution_'
+      $ref: "#/components/schemas/AbstractCollection_Execution_"
     AbstractList_Flow_:
-      $ref: '#/components/schemas/AbstractCollection_Flow_'
+      $ref: "#/components/schemas/AbstractCollection_Flow_"
     AbstractList_LogEntry_:
-      $ref: '#/components/schemas/AbstractCollection_LogEntry_'
+      $ref: "#/components/schemas/AbstractCollection_LogEntry_"
     AbstractList_MetricEntry_:
-      $ref: '#/components/schemas/AbstractCollection_MetricEntry_'
+      $ref: "#/components/schemas/AbstractCollection_MetricEntry_"
     AbstractList_SearchResult_Flow__:
-      $ref: '#/components/schemas/AbstractCollection_SearchResult_Flow__'
+      $ref: "#/components/schemas/AbstractCollection_SearchResult_Flow__"
     AbstractList_TaskRun_:
-      $ref: '#/components/schemas/AbstractCollection_TaskRun_'
+      $ref: "#/components/schemas/AbstractCollection_TaskRun_"
     AbstractList_Template_:
-      $ref: '#/components/schemas/AbstractCollection_Template_'
+      $ref: "#/components/schemas/AbstractCollection_Template_"
     AbstractList_TriggerController.Triggers_:
-      $ref: '#/components/schemas/AbstractCollection_TriggerController.Triggers_'
+      $ref: "#/components/schemas/AbstractCollection_TriggerController.Triggers_"
     AbstractList_Trigger_:
-      $ref: '#/components/schemas/AbstractCollection_Trigger_'
+      $ref: "#/components/schemas/AbstractCollection_Trigger_"
     AbstractMetricEntry_Object_:
       required:
       - name
@@ -4421,9 +4577,9 @@ components:
       type: object
       properties:
         tree:
-          $ref: '#/components/schemas/MethodTypeSignature'
+          $ref: "#/components/schemas/MethodTypeSignature"
         reifier:
-          $ref: '#/components/schemas/Reifier'
+          $ref: "#/components/schemas/Reifier"
     AbstractRetry:
       type: object
     AbstractTrigger:
@@ -4436,7 +4592,7 @@ components:
         minLogLevel:
           deprecated: true
           allOf:
-          - $ref: '#/components/schemas/Level'
+          - $ref: "#/components/schemas/Level"
         id:
           title: A unique ID for the whole flow.
           minLength: 1
@@ -4454,24 +4610,41 @@ components:
           title: List of conditions in order to limit the flow trigger.
           type: array
           items:
-            $ref: '#/components/schemas/Condition'
+            $ref: "#/components/schemas/Condition"
         disabled:
           type: boolean
         workerGroup:
-          $ref: '#/components/schemas/WorkerGroup'
+          $ref: "#/components/schemas/WorkerGroup"
         logLevel:
-          $ref: '#/components/schemas/Level'
+          $ref: "#/components/schemas/Level"
         labels:
           title: The labels to pass to the execution created.
           type: array
           items:
-            $ref: '#/components/schemas/Label'
+            $ref: "#/components/schemas/Label"
         stopAfter:
           title: List of execution states after which a trigger should be stopped
             (a.k.a. disabled).
           type: array
           items:
-            $ref: '#/components/schemas/State.Type'
+            $ref: "#/components/schemas/State.Type"
+    AbstractTriggerForExecution:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          title: A unique ID for the whole flow.
+          minLength: 1
+          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
+          type: string
+        type:
+          title: The class name for this current trigger.
+          minLength: 1
+          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
+            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          type: string
     AccessibleObject:
       type: object
       properties:
@@ -4483,41 +4656,41 @@ components:
         annotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         declaredAnnotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         root:
-          $ref: '#/components/schemas/AccessibleObject'
+          $ref: "#/components/schemas/AccessibleObject"
     AnnotatedElement:
       type: object
       properties:
         annotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         declaredAnnotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
     AnnotatedType:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AnnotatedElement'
+      - $ref: "#/components/schemas/AnnotatedElement"
       - properties:
           annotatedOwnerType:
-            $ref: '#/components/schemas/AnnotatedType'
+            $ref: "#/components/schemas/AnnotatedType"
           type:
-            $ref: '#/components/schemas/Type'
+            $ref: "#/components/schemas/Type"
           annotations:
             type: array
             items:
-              $ref: '#/components/schemas/Annotation'
+              $ref: "#/components/schemas/Annotation"
           declaredAnnotations:
             type: array
             items:
-              $ref: '#/components/schemas/Annotation'
+              $ref: "#/components/schemas/Annotation"
     Annotation:
       type: object
     AnnotationType:
@@ -4528,12 +4701,16 @@ components:
     ArrayListTotal_BlueprintController.BlueprintItem_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_BlueprintController.BlueprintItem_'
-      - $ref: '#/components/schemas/AbstractList_BlueprintController.BlueprintItem_'
-      - $ref: '#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_'
+      - $ref: "#/components/schemas/ArrayList_BlueprintController.BlueprintItem_"
+      - $ref: "#/components/schemas/AbstractList_BlueprintController.BlueprintItem_"
+      - $ref: "#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_"
       - required:
         - total
         properties:
+          first:
+            $ref: "#/components/schemas/BlueprintController.BlueprintItem"
+          last:
+            $ref: "#/components/schemas/BlueprintController.BlueprintItem"
           empty:
             type: boolean
           total:
@@ -4542,12 +4719,16 @@ components:
     ArrayListTotal_Execution_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_Execution_'
-      - $ref: '#/components/schemas/AbstractList_Execution_'
-      - $ref: '#/components/schemas/AbstractCollection_Execution_'
+      - $ref: "#/components/schemas/ArrayList_Execution_"
+      - $ref: "#/components/schemas/AbstractList_Execution_"
+      - $ref: "#/components/schemas/AbstractCollection_Execution_"
       - required:
         - total
         properties:
+          first:
+            $ref: "#/components/schemas/Execution"
+          last:
+            $ref: "#/components/schemas/Execution"
           empty:
             type: boolean
           total:
@@ -4556,12 +4737,16 @@ components:
     ArrayListTotal_Flow_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_Flow_'
-      - $ref: '#/components/schemas/AbstractList_Flow_'
-      - $ref: '#/components/schemas/AbstractCollection_Flow_'
+      - $ref: "#/components/schemas/ArrayList_Flow_"
+      - $ref: "#/components/schemas/AbstractList_Flow_"
+      - $ref: "#/components/schemas/AbstractCollection_Flow_"
       - required:
         - total
         properties:
+          first:
+            $ref: "#/components/schemas/Flow"
+          last:
+            $ref: "#/components/schemas/Flow"
           empty:
             type: boolean
           total:
@@ -4570,12 +4755,16 @@ components:
     ArrayListTotal_LogEntry_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_LogEntry_'
-      - $ref: '#/components/schemas/AbstractList_LogEntry_'
-      - $ref: '#/components/schemas/AbstractCollection_LogEntry_'
+      - $ref: "#/components/schemas/ArrayList_LogEntry_"
+      - $ref: "#/components/schemas/AbstractList_LogEntry_"
+      - $ref: "#/components/schemas/AbstractCollection_LogEntry_"
       - required:
         - total
         properties:
+          first:
+            $ref: "#/components/schemas/LogEntry"
+          last:
+            $ref: "#/components/schemas/LogEntry"
           empty:
             type: boolean
           total:
@@ -4584,12 +4773,16 @@ components:
     ArrayListTotal_MetricEntry_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_MetricEntry_'
-      - $ref: '#/components/schemas/AbstractList_MetricEntry_'
-      - $ref: '#/components/schemas/AbstractCollection_MetricEntry_'
+      - $ref: "#/components/schemas/ArrayList_MetricEntry_"
+      - $ref: "#/components/schemas/AbstractList_MetricEntry_"
+      - $ref: "#/components/schemas/AbstractCollection_MetricEntry_"
       - required:
         - total
         properties:
+          first:
+            $ref: "#/components/schemas/MetricEntry"
+          last:
+            $ref: "#/components/schemas/MetricEntry"
           empty:
             type: boolean
           total:
@@ -4598,12 +4791,16 @@ components:
     ArrayListTotal_SearchResult_Flow__:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_SearchResult_Flow__'
-      - $ref: '#/components/schemas/AbstractList_SearchResult_Flow__'
-      - $ref: '#/components/schemas/AbstractCollection_SearchResult_Flow__'
+      - $ref: "#/components/schemas/ArrayList_SearchResult_Flow__"
+      - $ref: "#/components/schemas/AbstractList_SearchResult_Flow__"
+      - $ref: "#/components/schemas/AbstractCollection_SearchResult_Flow__"
       - required:
         - total
         properties:
+          first:
+            $ref: "#/components/schemas/SearchResult_Flow_"
+          last:
+            $ref: "#/components/schemas/SearchResult_Flow_"
           empty:
             type: boolean
           total:
@@ -4612,12 +4809,16 @@ components:
     ArrayListTotal_TaskRun_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_TaskRun_'
-      - $ref: '#/components/schemas/AbstractList_TaskRun_'
-      - $ref: '#/components/schemas/AbstractCollection_TaskRun_'
+      - $ref: "#/components/schemas/ArrayList_TaskRun_"
+      - $ref: "#/components/schemas/AbstractList_TaskRun_"
+      - $ref: "#/components/schemas/AbstractCollection_TaskRun_"
       - required:
         - total
         properties:
+          first:
+            $ref: "#/components/schemas/TaskRun"
+          last:
+            $ref: "#/components/schemas/TaskRun"
           empty:
             type: boolean
           total:
@@ -4626,12 +4827,16 @@ components:
     ArrayListTotal_Template_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_Template_'
-      - $ref: '#/components/schemas/AbstractList_Template_'
-      - $ref: '#/components/schemas/AbstractCollection_Template_'
+      - $ref: "#/components/schemas/ArrayList_Template_"
+      - $ref: "#/components/schemas/AbstractList_Template_"
+      - $ref: "#/components/schemas/AbstractCollection_Template_"
       - required:
         - total
         properties:
+          first:
+            $ref: "#/components/schemas/Template"
+          last:
+            $ref: "#/components/schemas/Template"
           empty:
             type: boolean
           total:
@@ -4640,12 +4845,16 @@ components:
     ArrayListTotal_TriggerController.Triggers_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_TriggerController.Triggers_'
-      - $ref: '#/components/schemas/AbstractList_TriggerController.Triggers_'
-      - $ref: '#/components/schemas/AbstractCollection_TriggerController.Triggers_'
+      - $ref: "#/components/schemas/ArrayList_TriggerController.Triggers_"
+      - $ref: "#/components/schemas/AbstractList_TriggerController.Triggers_"
+      - $ref: "#/components/schemas/AbstractCollection_TriggerController.Triggers_"
       - required:
         - total
         properties:
+          first:
+            $ref: "#/components/schemas/TriggerController.Triggers"
+          last:
+            $ref: "#/components/schemas/TriggerController.Triggers"
           empty:
             type: boolean
           total:
@@ -4654,12 +4863,16 @@ components:
     ArrayListTotal_Trigger_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_Trigger_'
-      - $ref: '#/components/schemas/AbstractList_Trigger_'
-      - $ref: '#/components/schemas/AbstractCollection_Trigger_'
+      - $ref: "#/components/schemas/ArrayList_Trigger_"
+      - $ref: "#/components/schemas/AbstractList_Trigger_"
+      - $ref: "#/components/schemas/AbstractCollection_Trigger_"
       - required:
         - total
         properties:
+          first:
+            $ref: "#/components/schemas/Trigger"
+          last:
+            $ref: "#/components/schemas/Trigger"
           empty:
             type: boolean
           total:
@@ -4668,81 +4881,121 @@ components:
     ArrayList_BlueprintController.BlueprintItem_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_BlueprintController.BlueprintItem_'
-      - $ref: '#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_'
+      - $ref: "#/components/schemas/AbstractList_BlueprintController.BlueprintItem_"
+      - $ref: "#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_"
       - properties:
+          first:
+            $ref: "#/components/schemas/BlueprintController.BlueprintItem"
+          last:
+            $ref: "#/components/schemas/BlueprintController.BlueprintItem"
           empty:
             type: boolean
     ArrayList_Execution_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_Execution_'
-      - $ref: '#/components/schemas/AbstractCollection_Execution_'
+      - $ref: "#/components/schemas/AbstractList_Execution_"
+      - $ref: "#/components/schemas/AbstractCollection_Execution_"
       - properties:
+          first:
+            $ref: "#/components/schemas/Execution"
+          last:
+            $ref: "#/components/schemas/Execution"
           empty:
             type: boolean
     ArrayList_Flow_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_Flow_'
-      - $ref: '#/components/schemas/AbstractCollection_Flow_'
+      - $ref: "#/components/schemas/AbstractList_Flow_"
+      - $ref: "#/components/schemas/AbstractCollection_Flow_"
       - properties:
+          first:
+            $ref: "#/components/schemas/Flow"
+          last:
+            $ref: "#/components/schemas/Flow"
           empty:
             type: boolean
     ArrayList_LogEntry_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_LogEntry_'
-      - $ref: '#/components/schemas/AbstractCollection_LogEntry_'
+      - $ref: "#/components/schemas/AbstractList_LogEntry_"
+      - $ref: "#/components/schemas/AbstractCollection_LogEntry_"
       - properties:
+          first:
+            $ref: "#/components/schemas/LogEntry"
+          last:
+            $ref: "#/components/schemas/LogEntry"
           empty:
             type: boolean
     ArrayList_MetricEntry_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_MetricEntry_'
-      - $ref: '#/components/schemas/AbstractCollection_MetricEntry_'
+      - $ref: "#/components/schemas/AbstractList_MetricEntry_"
+      - $ref: "#/components/schemas/AbstractCollection_MetricEntry_"
       - properties:
+          first:
+            $ref: "#/components/schemas/MetricEntry"
+          last:
+            $ref: "#/components/schemas/MetricEntry"
           empty:
             type: boolean
     ArrayList_SearchResult_Flow__:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_SearchResult_Flow__'
-      - $ref: '#/components/schemas/AbstractCollection_SearchResult_Flow__'
+      - $ref: "#/components/schemas/AbstractList_SearchResult_Flow__"
+      - $ref: "#/components/schemas/AbstractCollection_SearchResult_Flow__"
       - properties:
+          first:
+            $ref: "#/components/schemas/SearchResult_Flow_"
+          last:
+            $ref: "#/components/schemas/SearchResult_Flow_"
           empty:
             type: boolean
     ArrayList_TaskRun_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_TaskRun_'
-      - $ref: '#/components/schemas/AbstractCollection_TaskRun_'
+      - $ref: "#/components/schemas/AbstractList_TaskRun_"
+      - $ref: "#/components/schemas/AbstractCollection_TaskRun_"
       - properties:
+          first:
+            $ref: "#/components/schemas/TaskRun"
+          last:
+            $ref: "#/components/schemas/TaskRun"
           empty:
             type: boolean
     ArrayList_Template_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_Template_'
-      - $ref: '#/components/schemas/AbstractCollection_Template_'
+      - $ref: "#/components/schemas/AbstractList_Template_"
+      - $ref: "#/components/schemas/AbstractCollection_Template_"
       - properties:
+          first:
+            $ref: "#/components/schemas/Template"
+          last:
+            $ref: "#/components/schemas/Template"
           empty:
             type: boolean
     ArrayList_TriggerController.Triggers_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_TriggerController.Triggers_'
-      - $ref: '#/components/schemas/AbstractCollection_TriggerController.Triggers_'
+      - $ref: "#/components/schemas/AbstractList_TriggerController.Triggers_"
+      - $ref: "#/components/schemas/AbstractCollection_TriggerController.Triggers_"
       - properties:
+          first:
+            $ref: "#/components/schemas/TriggerController.Triggers"
+          last:
+            $ref: "#/components/schemas/TriggerController.Triggers"
           empty:
             type: boolean
     ArrayList_Trigger_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_Trigger_'
-      - $ref: '#/components/schemas/AbstractCollection_Trigger_'
+      - $ref: "#/components/schemas/AbstractList_Trigger_"
+      - $ref: "#/components/schemas/AbstractCollection_Trigger_"
       - properties:
+          first:
+            $ref: "#/components/schemas/Trigger"
+          last:
+            $ref: "#/components/schemas/Trigger"
           empty:
             type: boolean
     Backfill:
@@ -4767,14 +5020,15 @@ components:
           title: Whether the backfill is paused.
           type: boolean
         inputs:
-          title: The inputs to pass to the backfilled executions.
-          type: object
-          additionalProperties: true
+          allOf:
+          - type: object
+            additionalProperties: true
+          - title: The inputs to pass to the backfilled executions.
         labels:
           title: The labels to pass to the backfilled executions.
           type: array
           items:
-            $ref: '#/components/schemas/Label'
+            $ref: "#/components/schemas/Label"
         previousNextExecutionDate:
           title: The nextExecutionDate before the backfill was created.
           type: string
@@ -4809,7 +5063,7 @@ components:
     BlueprintController.BlueprintItemWithFlow:
       type: object
       allOf:
-      - $ref: '#/components/schemas/BlueprintController.BlueprintItem'
+      - $ref: "#/components/schemas/BlueprintController.BlueprintItem"
       - properties:
           flow:
             type: string
@@ -4835,7 +5089,7 @@ components:
         invalids:
           type: array
           items:
-            $ref: '#/components/schemas/ManualConstraintViolation_String_'
+            $ref: "#/components/schemas/ManualConstraintViolation_String_"
     BulkResponse:
       type: object
       properties:
@@ -4850,7 +5104,7 @@ components:
         type:
           type: string
         encodings:
-          $ref: '#/components/schemas/Iterator_String_'
+          $ref: "#/components/schemas/Iterator_String_"
         encoded:
           type: array
           items:
@@ -4859,7 +5113,7 @@ components:
         certificates:
           type: array
           items:
-            $ref: '#/components/schemas/Certificate'
+            $ref: "#/components/schemas/Certificate"
     Certificate:
       required:
       - type
@@ -4873,7 +5127,7 @@ components:
             type: string
             format: byte
         publicKey:
-          $ref: '#/components/schemas/PublicKey'
+          $ref: "#/components/schemas/PublicKey"
     ClassLoader:
       type: object
       properties:
@@ -4882,17 +5136,17 @@ components:
         registeredAsParallelCapable:
           type: boolean
         parent:
-          $ref: '#/components/schemas/ClassLoader'
+          $ref: "#/components/schemas/ClassLoader"
         unnamedModule:
-          $ref: '#/components/schemas/Module'
+          $ref: "#/components/schemas/Module"
         definedPackages:
           type: array
           items:
-            $ref: '#/components/schemas/Package'
+            $ref: "#/components/schemas/Package"
         packages:
           type: array
           items:
-            $ref: '#/components/schemas/Package'
+            $ref: "#/components/schemas/Package"
         defaultAssertionStatus:
           type: boolean
     Class_ConstraintValidator_Annotation.Object__:
@@ -4913,34 +5167,34 @@ components:
         name:
           type: string
         classLoader:
-          $ref: '#/components/schemas/ClassLoader'
+          $ref: "#/components/schemas/ClassLoader"
         classLoader0:
-          $ref: '#/components/schemas/ClassLoader'
+          $ref: "#/components/schemas/ClassLoader"
         module:
-          $ref: '#/components/schemas/Module'
+          $ref: "#/components/schemas/Module"
         classData: {}
         typeParameters:
           type: array
           items:
-            $ref: '#/components/schemas/TypeVariable_Class_Object__'
+            $ref: "#/components/schemas/TypeVariable_Class_Object__"
         superclass:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         genericSuperclass:
-          $ref: '#/components/schemas/Type'
+          $ref: "#/components/schemas/Type"
         package:
-          $ref: '#/components/schemas/Package'
+          $ref: "#/components/schemas/Package"
         packageName:
           type: string
         interfaces:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         genericInterfaces:
           type: array
           items:
-            $ref: '#/components/schemas/Type'
+            $ref: "#/components/schemas/Type"
         componentType:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         modifiers:
           type: integer
           format: int32
@@ -4949,19 +5203,21 @@ components:
           items:
             type: object
         enclosingMethod:
-          $ref: '#/components/schemas/Method'
+          $ref: "#/components/schemas/Method"
         enclosingConstructor:
-          $ref: '#/components/schemas/Constructor_Object_'
+          $ref: "#/components/schemas/Constructor_Object_"
         declaringClass:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         enclosingClass:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         simpleName:
           type: string
         typeName:
           type: string
         canonicalName:
           type: string
+        unnamedClass:
+          type: boolean
         anonymousClass:
           type: boolean
         localClass:
@@ -4971,41 +5227,41 @@ components:
         classes:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         fields:
           type: array
           items:
-            $ref: '#/components/schemas/Field'
+            $ref: "#/components/schemas/Field"
         methods:
           type: array
           items:
-            $ref: '#/components/schemas/Method'
+            $ref: "#/components/schemas/Method"
         constructors:
           type: array
           items:
-            $ref: '#/components/schemas/Constructor_Object_'
+            $ref: "#/components/schemas/Constructor_Object_"
         declaredClasses:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         declaredFields:
           type: array
           items:
-            $ref: '#/components/schemas/Field'
+            $ref: "#/components/schemas/Field"
         recordComponents:
           type: array
           items:
-            $ref: '#/components/schemas/RecordComponent'
+            $ref: "#/components/schemas/RecordComponent"
         declaredMethods:
           type: array
           items:
-            $ref: '#/components/schemas/Method'
+            $ref: "#/components/schemas/Method"
         declaredConstructors:
           type: array
           items:
-            $ref: '#/components/schemas/Constructor_Object_'
+            $ref: "#/components/schemas/Constructor_Object_"
         protectionDomain:
-          $ref: '#/components/schemas/ProtectionDomain'
+          $ref: "#/components/schemas/ProtectionDomain"
         rawAnnotations:
           type: array
           items:
@@ -5017,7 +5273,7 @@ components:
             type: string
             format: byte
         constantPool:
-          $ref: '#/components/schemas/ConstantPool'
+          $ref: "#/components/schemas/ConstantPool"
         enum:
           type: boolean
         record:
@@ -5033,35 +5289,35 @@ components:
         annotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         declaredAnnotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         annotationType:
-          $ref: '#/components/schemas/AnnotationType'
+          $ref: "#/components/schemas/AnnotationType"
         declaredAnnotationMap:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         annotatedSuperclass:
-          $ref: '#/components/schemas/AnnotatedType'
+          $ref: "#/components/schemas/AnnotatedType"
         annotatedInterfaces:
           type: array
           items:
-            $ref: '#/components/schemas/AnnotatedType'
+            $ref: "#/components/schemas/AnnotatedType"
         nestHost:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         nestMembers:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         hidden:
           type: boolean
         permittedSubclasses:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         sealed:
           type: boolean
     Class_Payload_:
@@ -5082,34 +5338,34 @@ components:
         name:
           type: string
         classLoader:
-          $ref: '#/components/schemas/ClassLoader'
+          $ref: "#/components/schemas/ClassLoader"
         classLoader0:
-          $ref: '#/components/schemas/ClassLoader'
+          $ref: "#/components/schemas/ClassLoader"
         module:
-          $ref: '#/components/schemas/Module'
+          $ref: "#/components/schemas/Module"
         classData: {}
         typeParameters:
           type: array
           items:
-            $ref: '#/components/schemas/TypeVariable_Class_String__'
+            $ref: "#/components/schemas/TypeVariable_Class_String__"
         superclass:
-          $ref: '#/components/schemas/Class_String_'
+          $ref: "#/components/schemas/Class_String_"
         genericSuperclass:
-          $ref: '#/components/schemas/Type'
+          $ref: "#/components/schemas/Type"
         package:
-          $ref: '#/components/schemas/Package'
+          $ref: "#/components/schemas/Package"
         packageName:
           type: string
         interfaces:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         genericInterfaces:
           type: array
           items:
-            $ref: '#/components/schemas/Type'
+            $ref: "#/components/schemas/Type"
         componentType:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         modifiers:
           type: integer
           format: int32
@@ -5118,19 +5374,21 @@ components:
           items:
             type: object
         enclosingMethod:
-          $ref: '#/components/schemas/Method'
+          $ref: "#/components/schemas/Method"
         enclosingConstructor:
-          $ref: '#/components/schemas/Constructor_Object_'
+          $ref: "#/components/schemas/Constructor_Object_"
         declaringClass:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         enclosingClass:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         simpleName:
           type: string
         typeName:
           type: string
         canonicalName:
           type: string
+        unnamedClass:
+          type: boolean
         anonymousClass:
           type: boolean
         localClass:
@@ -5140,41 +5398,41 @@ components:
         classes:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         fields:
           type: array
           items:
-            $ref: '#/components/schemas/Field'
+            $ref: "#/components/schemas/Field"
         methods:
           type: array
           items:
-            $ref: '#/components/schemas/Method'
+            $ref: "#/components/schemas/Method"
         constructors:
           type: array
           items:
-            $ref: '#/components/schemas/Constructor_Object_'
+            $ref: "#/components/schemas/Constructor_Object_"
         declaredClasses:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         declaredFields:
           type: array
           items:
-            $ref: '#/components/schemas/Field'
+            $ref: "#/components/schemas/Field"
         recordComponents:
           type: array
           items:
-            $ref: '#/components/schemas/RecordComponent'
+            $ref: "#/components/schemas/RecordComponent"
         declaredMethods:
           type: array
           items:
-            $ref: '#/components/schemas/Method'
+            $ref: "#/components/schemas/Method"
         declaredConstructors:
           type: array
           items:
-            $ref: '#/components/schemas/Constructor_Object_'
+            $ref: "#/components/schemas/Constructor_Object_"
         protectionDomain:
-          $ref: '#/components/schemas/ProtectionDomain'
+          $ref: "#/components/schemas/ProtectionDomain"
         rawAnnotations:
           type: array
           items:
@@ -5186,7 +5444,7 @@ components:
             type: string
             format: byte
         constantPool:
-          $ref: '#/components/schemas/ConstantPool'
+          $ref: "#/components/schemas/ConstantPool"
         enum:
           type: boolean
         record:
@@ -5202,35 +5460,35 @@ components:
         annotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         declaredAnnotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         annotationType:
-          $ref: '#/components/schemas/AnnotationType'
+          $ref: "#/components/schemas/AnnotationType"
         declaredAnnotationMap:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         annotatedSuperclass:
-          $ref: '#/components/schemas/AnnotatedType'
+          $ref: "#/components/schemas/AnnotatedType"
         annotatedInterfaces:
           type: array
           items:
-            $ref: '#/components/schemas/AnnotatedType'
+            $ref: "#/components/schemas/AnnotatedType"
         nestHost:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         nestMembers:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         hidden:
           type: boolean
         permittedSubclasses:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         sealed:
           type: boolean
     CodeSigner:
@@ -5240,9 +5498,9 @@ components:
       type: object
       properties:
         signerCertPath:
-          $ref: '#/components/schemas/CertPath'
+          $ref: "#/components/schemas/CertPath"
         timestamp:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: "#/components/schemas/Timestamp"
     CodeSource:
       type: object
       properties:
@@ -5254,11 +5512,11 @@ components:
         certificates:
           type: array
           items:
-            $ref: '#/components/schemas/Certificate'
+            $ref: "#/components/schemas/Certificate"
         codeSigners:
           type: array
           items:
-            $ref: '#/components/schemas/CodeSigner'
+            $ref: "#/components/schemas/CodeSigner"
     Collection_Object_:
       type: object
       properties:
@@ -5276,7 +5534,7 @@ components:
           type: integer
           format: int32
         behavior:
-          $ref: '#/components/schemas/Concurrency.Behavior'
+          $ref: "#/components/schemas/Concurrency.Behavior"
     Concurrency.Behavior:
       type: string
       enum:
@@ -5320,60 +5578,60 @@ components:
         groups:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Payload_'
+            $ref: "#/components/schemas/Class_Payload_"
         validationAppliesTo:
-          $ref: '#/components/schemas/ConstraintTarget'
+          $ref: "#/components/schemas/ConstraintTarget"
         constraintValidatorClasses:
           type: array
           items:
-            $ref: '#/components/schemas/Class_ConstraintValidator_Annotation.Object__'
+            $ref: "#/components/schemas/Class_ConstraintValidator_Annotation.Object__"
         attributes:
           type: object
           additionalProperties: true
         composingConstraints:
           type: array
           items:
-            $ref: '#/components/schemas/ConstraintDescriptor_Object_'
+            $ref: "#/components/schemas/ConstraintDescriptor_Object_"
         reportAsSingleViolation:
           type: boolean
         valueUnwrapping:
-          $ref: '#/components/schemas/ValidateUnwrappedValue'
+          $ref: "#/components/schemas/ValidateUnwrappedValue"
     ConstraintDescriptor_Object_:
       type: object
       properties:
         annotation:
-          $ref: '#/components/schemas/Annotation'
+          $ref: "#/components/schemas/Annotation"
         messageTemplate:
           type: string
         groups:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
         payload:
           type: array
           items:
-            $ref: '#/components/schemas/Class_Payload_'
+            $ref: "#/components/schemas/Class_Payload_"
         validationAppliesTo:
-          $ref: '#/components/schemas/ConstraintTarget'
+          $ref: "#/components/schemas/ConstraintTarget"
         constraintValidatorClasses:
           type: array
           items:
-            $ref: '#/components/schemas/Class_ConstraintValidator_Annotation.Object__'
+            $ref: "#/components/schemas/Class_ConstraintValidator_Annotation.Object__"
         attributes:
           type: object
           additionalProperties: true
         composingConstraints:
           type: array
           items:
-            $ref: '#/components/schemas/ConstraintDescriptor_Annotation_'
+            $ref: "#/components/schemas/ConstraintDescriptor_Annotation_"
         reportAsSingleViolation:
           type: boolean
         valueUnwrapping:
-          $ref: '#/components/schemas/ValidateUnwrappedValue'
+          $ref: "#/components/schemas/ValidateUnwrappedValue"
     ConstraintTarget:
       type: string
       enum:
@@ -5385,22 +5643,22 @@ components:
     ConstructorRepository:
       type: object
       allOf:
-      - $ref: '#/components/schemas/GenericDeclRepository_MethodTypeSignature_'
-      - $ref: '#/components/schemas/AbstractRepository_MethodTypeSignature_'
+      - $ref: "#/components/schemas/GenericDeclRepository_MethodTypeSignature_"
+      - $ref: "#/components/schemas/AbstractRepository_MethodTypeSignature_"
       - properties:
           parameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           exceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
     Constructor_Object_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Executable'
-      - $ref: '#/components/schemas/AccessibleObject'
+      - $ref: "#/components/schemas/Executable"
+      - $ref: "#/components/schemas/AccessibleObject"
       - required:
         - declaringClass
         - modifiers
@@ -5410,16 +5668,16 @@ components:
         - slot
         properties:
           genericInfo:
-            $ref: '#/components/schemas/ConstructorRepository'
+            $ref: "#/components/schemas/ConstructorRepository"
           root:
-            $ref: '#/components/schemas/Constructor_Object_'
+            $ref: "#/components/schemas/Constructor_Object_"
           annotationBytes:
             type: array
             items:
               type: string
               format: byte
           declaringClass:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
           name:
             type: string
           modifiers:
@@ -5428,40 +5686,40 @@ components:
           typeParameters:
             type: array
             items:
-              $ref: '#/components/schemas/TypeVariable_Constructor_Object__'
+              $ref: "#/components/schemas/TypeVariable_Constructor_Object__"
           sharedParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           sharedExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           parameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           parameterCount:
             type: integer
             format: int32
           genericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           exceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           genericExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           varArgs:
             type: boolean
           synthetic:
             type: boolean
           constructorAccessor:
-            $ref: '#/components/schemas/ConstructorAccessor'
+            $ref: "#/components/schemas/ConstructorAccessor"
           slot:
             type: integer
             format: int32
@@ -5480,17 +5738,17 @@ components:
           declaredAnnotations:
             type: array
             items:
-              $ref: '#/components/schemas/Annotation'
+              $ref: "#/components/schemas/Annotation"
           parameterAnnotations:
             type: array
             items:
               type: array
               items:
-                $ref: '#/components/schemas/Annotation'
+                $ref: "#/components/schemas/Annotation"
           annotatedReturnType:
-            $ref: '#/components/schemas/AnnotatedType'
+            $ref: "#/components/schemas/AnnotatedType"
           annotatedReceiverType:
-            $ref: '#/components/schemas/AnnotatedType'
+            $ref: "#/components/schemas/AnnotatedType"
     DailyExecutionStatistics:
       required:
       - duration
@@ -5503,12 +5761,48 @@ components:
           type: string
           format: date-time
         duration:
-          $ref: '#/components/schemas/DailyExecutionStatistics.Duration'
+          $ref: "#/components/schemas/DailyExecutionStatistics.Duration"
         executionCounts:
-          type: object
-          additionalProperties:
-            type: integer
-            format: int64
+          properties:
+            CREATED:
+              type: integer
+              format: int64
+            RUNNING:
+              type: integer
+              format: int64
+            PAUSED:
+              type: integer
+              format: int64
+            RESTARTED:
+              type: integer
+              format: int64
+            KILLING:
+              type: integer
+              format: int64
+            SUCCESS:
+              type: integer
+              format: int64
+            WARNING:
+              type: integer
+              format: int64
+            FAILED:
+              type: integer
+              format: int64
+            KILLED:
+              type: integer
+              format: int64
+            CANCELLED:
+              type: integer
+              format: int64
+            QUEUED:
+              type: integer
+              format: int64
+            RETRYING:
+              type: integer
+              format: int64
+            RETRIED:
+              type: integer
+              format: int64
         groupBy:
           type: string
     DailyExecutionStatistics.Duration:
@@ -5521,13 +5815,13 @@ components:
       type: object
       properties:
         min:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         avg:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         max:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         sum:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         count:
           type: integer
           format: int64
@@ -5547,14 +5841,16 @@ components:
         markdown:
           type: string
         schema:
-          $ref: '#/components/schemas/Schema'
+          $ref: "#/components/schemas/Schema"
     Duration:
       type: object
       properties:
         units:
           type: array
           items:
-            $ref: '#/components/schemas/TemporalUnit'
+            $ref: "#/components/schemas/TemporalUnit"
+        positive:
+          type: boolean
         zero:
           type: boolean
         negative:
@@ -5569,7 +5865,7 @@ components:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/Execution'
+          $ref: "#/components/schemas/Execution"
         id:
           type: string
         name:
@@ -5577,12 +5873,12 @@ components:
         comment:
           type: string
         retry:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
     Event_LogEntry_:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/LogEntry'
+          $ref: "#/components/schemas/LogEntry"
         id:
           type: string
         name:
@@ -5590,11 +5886,11 @@ components:
         comment:
           type: string
         retry:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
     Executable:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AccessibleObject'
+      - $ref: "#/components/schemas/AccessibleObject"
       - properties:
           annotationBytes:
             type: array
@@ -5602,9 +5898,9 @@ components:
               type: string
               format: byte
           genericInfo:
-            $ref: '#/components/schemas/ConstructorRepository'
+            $ref: "#/components/schemas/ConstructorRepository"
           declaringClass:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
           name:
             type: string
           modifiers:
@@ -5613,34 +5909,34 @@ components:
           typeParameters:
             type: array
             items:
-              $ref: '#/components/schemas/TypeVariable_GenericDeclaration_'
+              $ref: "#/components/schemas/TypeVariable_GenericDeclaration_"
           sharedParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           sharedExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           parameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           parameterCount:
             type: integer
             format: int32
           genericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           allGenericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           parameters:
             type: array
             items:
-              $ref: '#/components/schemas/Parameter'
+              $ref: "#/components/schemas/Parameter"
           typeAnnotationBytes0:
             type: array
             items:
@@ -5654,11 +5950,11 @@ components:
           exceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           genericExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           varArgs:
             type: boolean
           synthetic:
@@ -5668,23 +5964,23 @@ components:
             items:
               type: array
               items:
-                $ref: '#/components/schemas/Annotation'
+                $ref: "#/components/schemas/Annotation"
           declaredAnnotations:
             type: array
             items:
-              $ref: '#/components/schemas/Annotation'
+              $ref: "#/components/schemas/Annotation"
           annotatedReturnType:
-            $ref: '#/components/schemas/AnnotatedType'
+            $ref: "#/components/schemas/AnnotatedType"
           annotatedReceiverType:
-            $ref: '#/components/schemas/AnnotatedType'
+            $ref: "#/components/schemas/AnnotatedType"
           annotatedParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/AnnotatedType'
+              $ref: "#/components/schemas/AnnotatedType"
           annotatedExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/AnnotatedType'
+              $ref: "#/components/schemas/AnnotatedType"
     Execution:
       required:
       - deleted
@@ -5716,7 +6012,7 @@ components:
         taskRunList:
           type: array
           items:
-            $ref: '#/components/schemas/TaskRun'
+            $ref: "#/components/schemas/TaskRun"
         inputs:
           type: object
           additionalProperties: true
@@ -5726,22 +6022,22 @@ components:
         labels:
           type: array
           items:
-            $ref: '#/components/schemas/Label'
+            $ref: "#/components/schemas/Label"
         variables:
           type: object
           additionalProperties: true
         state:
-          $ref: '#/components/schemas/State'
+          $ref: "#/components/schemas/State"
         parentId:
           type: string
         originalId:
           type: string
         trigger:
-          $ref: '#/components/schemas/ExecutionTrigger'
+          $ref: "#/components/schemas/ExecutionTrigger"
         deleted:
           type: boolean
         metadata:
-          $ref: '#/components/schemas/ExecutionMetadata'
+          $ref: "#/components/schemas/ExecutionMetadata"
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -5764,7 +6060,7 @@ components:
         executionLabels:
           type: array
           items:
-            $ref: '#/components/schemas/Label'
+            $ref: "#/components/schemas/Label"
     ExecutionController.StateRequest:
       required:
       - state
@@ -5774,7 +6070,7 @@ components:
         taskRunId:
           type: string
         state:
-          $ref: '#/components/schemas/State.Type'
+          $ref: "#/components/schemas/State.Type"
     ExecutionMetadata:
       required:
       - attemptNumber
@@ -5822,15 +6118,15 @@ components:
         dailyExecutionsCount:
           type: array
           items:
-            $ref: '#/components/schemas/DailyExecutionStatistics'
+            $ref: "#/components/schemas/DailyExecutionStatistics"
         dailyTaskRunsCount:
           type: array
           items:
-            $ref: '#/components/schemas/DailyExecutionStatistics'
+            $ref: "#/components/schemas/DailyExecutionStatistics"
     Field:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AccessibleObject'
+      - $ref: "#/components/schemas/AccessibleObject"
       - required:
         - declaringClass
         - modifiers
@@ -5839,7 +6135,7 @@ components:
         - type
         properties:
           declaringClass:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
           name:
             type: string
           modifiers:
@@ -5850,19 +6146,19 @@ components:
           synthetic:
             type: boolean
           type:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
           genericType:
-            $ref: '#/components/schemas/Type'
+            $ref: "#/components/schemas/Type"
           root:
-            $ref: '#/components/schemas/Field'
+            $ref: "#/components/schemas/Field"
           trustedFinal:
             type: boolean
           declaredAnnotations:
             type: array
             items:
-              $ref: '#/components/schemas/Annotation'
+              $ref: "#/components/schemas/Annotation"
           annotatedType:
-            $ref: '#/components/schemas/AnnotatedType'
+            $ref: "#/components/schemas/AnnotatedType"
     FieldTypeSignature:
       type: object
     FileAttributes:
@@ -5877,7 +6173,7 @@ components:
           type: integer
           format: int64
         type:
-          $ref: '#/components/schemas/FileAttributes.FileType'
+          $ref: "#/components/schemas/FileAttributes.FileType"
         size:
           type: integer
           format: int64
@@ -5897,86 +6193,87 @@ components:
           type: integer
           format: int64
     Flow:
-      required:
-      - deleted
-      - disabled
-      - id
-      - namespace
-      - tasks
       type: object
-      properties:
-        id:
-          minLength: 1
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
-          type: string
-        namespace:
-          pattern: "^[a-z0-9][a-z0-9._-]*"
-          type: string
-        revision:
-          minimum: 1
-          type: integer
-          format: int32
-        description:
-          type: string
-        labels:
-          type: object
-          allOf:
-          - anyOf:
-            - $ref: '#/components/schemas/List_Object_'
-            - $ref: '#/components/schemas/Map_Object.Object_'
-          - anyOf:
-            - $ref: '#/components/schemas/List_Object_'
-            - $ref: '#/components/schemas/Map_Object.Object_'
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Input_Object_'
-        variables:
-          type: object
-          additionalProperties: true
-        tasks:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/Task'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Task'
-        listeners:
-          type: array
-          deprecated: true
-          items:
-            $ref: '#/components/schemas/Listener'
-        triggers:
-          type: array
-          items:
-            $ref: '#/components/schemas/AbstractTrigger'
-        taskDefaults:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskDefault'
-        disabled:
-          type: boolean
-        deleted:
-          type: boolean
-        concurrency:
-          $ref: '#/components/schemas/Concurrency'
-        outputs:
-          title: Output values available and exposes to other flows.
-          type: array
-          description: Output values make information about the execution of your
-            Flow available and expose for other Kestra flows to use. Output values
-            are similar to return values in programming languages.
-          items:
-            $ref: '#/components/schemas/Output'
-        retry:
-          $ref: '#/components/schemas/AbstractRetry'
+      allOf:
+      - $ref: "#/components/schemas/AbstractFlow"
+      - required:
+        - deleted
+        - tasks
+        properties:
+          deleted:
+            type: boolean
+          description:
+            type: string
+          labels:
+            type: object
+            allOf:
+            - oneOf:
+              - $ref: "#/components/schemas/List_Object_"
+              - $ref: "#/components/schemas/Map_Object.Object_"
+            - oneOf:
+              - $ref: "#/components/schemas/List_Object_"
+              - $ref: "#/components/schemas/Map_Object.Object_"
+          variables:
+            type: object
+            additionalProperties: true
+          tasks:
+            minItems: 1
+            type: array
+            items:
+              $ref: "#/components/schemas/Task"
+          errors:
+            type: array
+            items:
+              $ref: "#/components/schemas/Task"
+          listeners:
+            type: array
+            deprecated: true
+            items:
+              $ref: "#/components/schemas/Listener"
+          triggers:
+            type: array
+            items:
+              $ref: "#/components/schemas/AbstractTrigger"
+          taskDefaults:
+            type: array
+            items:
+              $ref: "#/components/schemas/TaskDefault"
+          concurrency:
+            $ref: "#/components/schemas/Concurrency"
+          outputs:
+            title: Output values available and exposes to other flows.
+            type: array
+            description: Output values make information about the execution of your
+              Flow available and expose for other Kestra flows to use. Output values
+              are similar to return values in programming languages.
+            items:
+              $ref: "#/components/schemas/Output"
+          retry:
+            $ref: "#/components/schemas/AbstractRetry"
     FlowController.TaskValidationType:
       type: string
       enum:
       - TASKS
       - TRIGGERS
+    FlowForExecution:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/AbstractFlow"
+      - required:
+        - deleted
+        - tasks
+        properties:
+          deleted:
+            type: boolean
+          tasks:
+            minItems: 1
+            type: array
+            items:
+              $ref: "#/components/schemas/TaskForExecution"
+          triggers:
+            type: array
+            items:
+              $ref: "#/components/schemas/AbstractTriggerForExecution"
     FlowGraph:
       required:
       - clusters
@@ -5988,15 +6285,15 @@ components:
         nodes:
           type: array
           items:
-            $ref: '#/components/schemas/AbstractGraph'
+            $ref: "#/components/schemas/AbstractGraph"
         edges:
           type: array
           items:
-            $ref: '#/components/schemas/FlowGraph.Edge'
+            $ref: "#/components/schemas/FlowGraph.Edge"
         clusters:
           type: array
           items:
-            $ref: '#/components/schemas/FlowGraph.Cluster'
+            $ref: "#/components/schemas/FlowGraph.Cluster"
         flowables:
           type: array
           items:
@@ -6011,7 +6308,7 @@ components:
       type: object
       properties:
         cluster:
-          $ref: '#/components/schemas/AbstractGraph'
+          $ref: "#/components/schemas/AbstractGraph"
         nodes:
           type: array
           items:
@@ -6036,7 +6333,7 @@ components:
         target:
           type: string
         relation:
-          $ref: '#/components/schemas/Relation'
+          $ref: "#/components/schemas/Relation"
     FlowNode:
       required:
       - id
@@ -6064,11 +6361,11 @@ components:
         nodes:
           type: array
           items:
-            $ref: '#/components/schemas/FlowNode'
+            $ref: "#/components/schemas/FlowNode"
         edges:
           type: array
           items:
-            $ref: '#/components/schemas/FlowTopologyGraph.Edge'
+            $ref: "#/components/schemas/FlowTopologyGraph.Edge"
     FlowTopologyGraph.Edge:
       required:
       - relation
@@ -6081,7 +6378,7 @@ components:
         target:
           type: string
         relation:
-          $ref: '#/components/schemas/FlowRelation'
+          $ref: "#/components/schemas/FlowRelation"
     FlowUsage:
       type: object
       properties:
@@ -6104,7 +6401,8 @@ components:
     FlowWithSource:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Flow'
+      - $ref: "#/components/schemas/Flow"
+      - $ref: "#/components/schemas/AbstractFlow"
       - required:
         - deleted
         properties:
@@ -6118,29 +6416,29 @@ components:
         bounds:
           type: array
           items:
-            $ref: '#/components/schemas/FieldTypeSignature'
+            $ref: "#/components/schemas/FieldTypeSignature"
         name:
           type: string
     GenericDeclRepository_MethodTypeSignature_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractRepository_MethodTypeSignature_'
+      - $ref: "#/components/schemas/AbstractRepository_MethodTypeSignature_"
       - properties:
           typeParameters:
             type: array
             items:
-              $ref: '#/components/schemas/TypeVariable_GenericDeclaration_'
+              $ref: "#/components/schemas/TypeVariable_GenericDeclaration_"
     HostUsage:
       type: object
       properties:
         uuid:
           type: string
         hardware:
-          $ref: '#/components/schemas/HostUsage.Hardware'
+          $ref: "#/components/schemas/HostUsage.Hardware"
         os:
-          $ref: '#/components/schemas/HostUsage.Os'
+          $ref: "#/components/schemas/HostUsage.Os"
         jvm:
-          $ref: '#/components/schemas/HostUsage.Jvm'
+          $ref: "#/components/schemas/HostUsage.Jvm"
     HostUsage.Hardware:
       type: object
       properties:
@@ -6211,7 +6509,7 @@ components:
           pattern: "^[a-zA-Z0-9][.a-zA-Z0-9_-]*"
           type: string
         type:
-          $ref: '#/components/schemas/Type_1'
+          $ref: "#/components/schemas/Type_1"
         description:
           type: string
         required:
@@ -6252,10 +6550,13 @@ components:
     List_Object_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Collection_Object_'
+      - $ref: "#/components/schemas/SequencedCollection_Object_"
+      - $ref: "#/components/schemas/Collection_Object_"
       - properties:
           empty:
             type: boolean
+          first: {}
+          last: {}
     Listener:
       required:
       - conditions
@@ -6268,12 +6569,12 @@ components:
         conditions:
           type: array
           items:
-            $ref: '#/components/schemas/Condition'
+            $ref: "#/components/schemas/Condition"
         tasks:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/Task'
+            $ref: "#/components/schemas/Task"
     LogEntry:
       required:
       - attemptNumber
@@ -6314,7 +6615,7 @@ components:
           type: string
           format: date-time
         level:
-          $ref: '#/components/schemas/Level'
+          $ref: "#/components/schemas/Level"
         thread:
           type: string
         message:
@@ -6332,10 +6633,22 @@ components:
           type: string
           format: date-time
         counts:
-          type: object
-          additionalProperties:
-            type: integer
-            format: int64
+          properties:
+            ERROR:
+              type: integer
+              format: int64
+            WARN:
+              type: integer
+              format: int64
+            INFO:
+              type: integer
+              format: int64
+            DEBUG:
+              type: integer
+              format: int64
+            TRACE:
+              type: integer
+              format: int64
         groupBy:
           type: string
     ManualConstraintViolation_String_:
@@ -6349,13 +6662,13 @@ components:
             type: object
         executableReturnValue: {}
         constraintDescriptor:
-          $ref: '#/components/schemas/ConstraintDescriptor_Annotation_'
+          $ref: "#/components/schemas/ConstraintDescriptor_Annotation_"
         message:
           type: string
         rootBean:
           type: string
         rootBeanClass:
-          $ref: '#/components/schemas/Class_String_'
+          $ref: "#/components/schemas/Class_String_"
         leafBean: {}
         propertyPath:
           type: array
@@ -6381,8 +6694,8 @@ components:
     Method:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Executable'
-      - $ref: '#/components/schemas/AccessibleObject'
+      - $ref: "#/components/schemas/Executable"
+      - $ref: "#/components/schemas/AccessibleObject"
       - required:
         - declaringClass
         - modifiers
@@ -6392,16 +6705,16 @@ components:
         - returnType
         properties:
           genericInfo:
-            $ref: '#/components/schemas/MethodRepository'
+            $ref: "#/components/schemas/MethodRepository"
           root:
-            $ref: '#/components/schemas/Method'
+            $ref: "#/components/schemas/Method"
           annotationBytes:
             type: array
             items:
               type: string
               format: byte
           declaringClass:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
           name:
             type: string
           modifiers:
@@ -6410,38 +6723,38 @@ components:
           typeParameters:
             type: array
             items:
-              $ref: '#/components/schemas/TypeVariable_Method_'
+              $ref: "#/components/schemas/TypeVariable_Method_"
           returnType:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
           genericReturnType:
-            $ref: '#/components/schemas/Type'
+            $ref: "#/components/schemas/Type"
           sharedParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           sharedExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           parameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           parameterCount:
             type: integer
             format: int32
           genericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           exceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Class_Object_'
+              $ref: "#/components/schemas/Class_Object_"
           genericExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           bridge:
             type: boolean
           varArgs:
@@ -6451,48 +6764,48 @@ components:
           default:
             type: boolean
           methodAccessor:
-            $ref: '#/components/schemas/MethodAccessor'
+            $ref: "#/components/schemas/MethodAccessor"
           defaultValue: {}
           declaredAnnotations:
             type: array
             items:
-              $ref: '#/components/schemas/Annotation'
+              $ref: "#/components/schemas/Annotation"
           parameterAnnotations:
             type: array
             items:
               type: array
               items:
-                $ref: '#/components/schemas/Annotation'
+                $ref: "#/components/schemas/Annotation"
           annotatedReturnType:
-            $ref: '#/components/schemas/AnnotatedType'
+            $ref: "#/components/schemas/AnnotatedType"
     MethodAccessor:
       type: object
     MethodRepository:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ConstructorRepository'
-      - $ref: '#/components/schemas/GenericDeclRepository_MethodTypeSignature_'
-      - $ref: '#/components/schemas/AbstractRepository_MethodTypeSignature_'
+      - $ref: "#/components/schemas/ConstructorRepository"
+      - $ref: "#/components/schemas/GenericDeclRepository_MethodTypeSignature_"
+      - $ref: "#/components/schemas/AbstractRepository_MethodTypeSignature_"
       - properties:
           returnType:
-            $ref: '#/components/schemas/Type'
+            $ref: "#/components/schemas/Type"
     MethodTypeSignature:
       type: object
       properties:
         formalTypeParameters:
           type: array
           items:
-            $ref: '#/components/schemas/FormalTypeParameter'
+            $ref: "#/components/schemas/FormalTypeParameter"
         parameterTypes:
           type: array
           items:
-            $ref: '#/components/schemas/TypeSignature'
+            $ref: "#/components/schemas/TypeSignature"
         returnType:
-          $ref: '#/components/schemas/ReturnType'
+          $ref: "#/components/schemas/ReturnType"
         exceptionTypes:
           type: array
           items:
-            $ref: '#/components/schemas/FieldTypeSignature'
+            $ref: "#/components/schemas/FieldTypeSignature"
     MetricAggregation:
       required:
       - date
@@ -6519,7 +6832,52 @@ components:
         aggregations:
           type: array
           items:
-            $ref: '#/components/schemas/MetricAggregation'
+            $ref: "#/components/schemas/MetricAggregation"
+    MetricEntry:
+      required:
+      - deleted
+      - executionId
+      - flowId
+      - name
+      - namespace
+      - tags
+      - taskId
+      - taskRunId
+      - timestamp
+      - type
+      - value
+      type: object
+      properties:
+        namespace:
+          type: string
+        flowId:
+          type: string
+        taskId:
+          type: string
+          nullable: true
+        executionId:
+          type: string
+          nullable: true
+        taskRunId:
+          type: string
+          nullable: true
+        type:
+          type: string
+        name:
+          type: string
+        value:
+          type: number
+          format: double
+        timestamp:
+          type: string
+          format: date-time
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        deleted:
+          type: boolean
     MiscController.BasicAuthCredentials:
       required:
       - password
@@ -6547,9 +6905,9 @@ components:
         isTemplateEnabled:
           type: boolean
         environment:
-          $ref: '#/components/schemas/MiscController.Environment'
+          $ref: "#/components/schemas/MiscController.Environment"
         preview:
-          $ref: '#/components/schemas/MiscController.Preview'
+          $ref: "#/components/schemas/MiscController.Preview"
         isBasicAuthEnabled:
           type: boolean
     MiscController.Environment:
@@ -6582,11 +6940,13 @@ components:
         name:
           type: string
         classLoader:
-          $ref: '#/components/schemas/ClassLoader'
+          $ref: "#/components/schemas/ClassLoader"
         descriptor:
-          $ref: '#/components/schemas/ModuleDescriptor'
+          $ref: "#/components/schemas/ModuleDescriptor"
         layer:
-          $ref: '#/components/schemas/ModuleLayer'
+          $ref: "#/components/schemas/ModuleLayer"
+        nativeAccessEnabled:
+          type: boolean
         packages:
           type: array
           items:
@@ -6594,11 +6954,11 @@ components:
         annotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         declaredAnnotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
     ModuleDescriptor:
       type: object
       properties:
@@ -6610,7 +6970,7 @@ components:
       type: object
       properties:
         servicesCatalog:
-          $ref: '#/components/schemas/ServicesCatalog'
+          $ref: "#/components/schemas/ServicesCatalog"
     Month:
       type: string
       enum:
@@ -6643,11 +7003,11 @@ components:
           type: string
         value: {}
         type:
-          $ref: '#/components/schemas/Type_2'
+          $ref: "#/components/schemas/Type_2"
     Package:
       type: object
       allOf:
-      - $ref: '#/components/schemas/NamedPackage'
+      - $ref: "#/components/schemas/NamedPackage"
       - properties:
           specificationTitle:
             type: string
@@ -6666,11 +7026,11 @@ components:
           annotations:
             type: array
             items:
-              $ref: '#/components/schemas/Annotation'
+              $ref: "#/components/schemas/Annotation"
           declaredAnnotations:
             type: array
             items:
-              $ref: '#/components/schemas/Annotation'
+              $ref: "#/components/schemas/Annotation"
     PagedResults_BlueprintController.BlueprintItem_:
       required:
       - results
@@ -6678,7 +7038,7 @@ components:
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_BlueprintController.BlueprintItem_'
+          $ref: "#/components/schemas/ArrayListTotal_BlueprintController.BlueprintItem_"
         total:
           type: integer
           format: int64
@@ -6689,7 +7049,7 @@ components:
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_Execution_'
+          $ref: "#/components/schemas/ArrayListTotal_Execution_"
         total:
           type: integer
           format: int64
@@ -6700,7 +7060,7 @@ components:
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_Flow_'
+          $ref: "#/components/schemas/ArrayListTotal_Flow_"
         total:
           type: integer
           format: int64
@@ -6711,7 +7071,7 @@ components:
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_LogEntry_'
+          $ref: "#/components/schemas/ArrayListTotal_LogEntry_"
         total:
           type: integer
           format: int64
@@ -6722,7 +7082,7 @@ components:
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_MetricEntry_'
+          $ref: "#/components/schemas/ArrayListTotal_MetricEntry_"
         total:
           type: integer
           format: int64
@@ -6733,7 +7093,7 @@ components:
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_SearchResult_Flow__'
+          $ref: "#/components/schemas/ArrayListTotal_SearchResult_Flow__"
         total:
           type: integer
           format: int64
@@ -6744,7 +7104,7 @@ components:
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_TaskRun_'
+          $ref: "#/components/schemas/ArrayListTotal_TaskRun_"
         total:
           type: integer
           format: int64
@@ -6755,7 +7115,7 @@ components:
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_Template_'
+          $ref: "#/components/schemas/ArrayListTotal_Template_"
         total:
           type: integer
           format: int64
@@ -6766,7 +7126,7 @@ components:
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_TriggerController.Triggers_'
+          $ref: "#/components/schemas/ArrayListTotal_TriggerController.Triggers_"
         total:
           type: integer
           format: int64
@@ -6777,7 +7137,7 @@ components:
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_Trigger_'
+          $ref: "#/components/schemas/ArrayListTotal_Trigger_"
         total:
           type: integer
           format: int64
@@ -6790,7 +7150,7 @@ components:
         namePresent:
           type: boolean
         declaringExecutable:
-          $ref: '#/components/schemas/Executable'
+          $ref: "#/components/schemas/Executable"
         modifiers:
           type: integer
           format: int32
@@ -6799,11 +7159,11 @@ components:
         realName:
           type: string
         parameterizedType:
-          $ref: '#/components/schemas/Type'
+          $ref: "#/components/schemas/Type"
         type:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         annotatedType:
-          $ref: '#/components/schemas/AnnotatedType'
+          $ref: "#/components/schemas/AnnotatedType"
         implicit:
           type: boolean
         synthetic:
@@ -6813,11 +7173,11 @@ components:
         declaredAnnotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         annotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
     PermissionCollection:
       type: object
       properties:
@@ -6877,7 +7237,9 @@ components:
         categories:
           type: array
           items:
-            $ref: '#/components/schemas/PluginSubGroup.PluginCategory'
+            $ref: "#/components/schemas/PluginSubGroup.PluginCategory"
+        subGroup:
+          type: string
     PluginIcon:
       type: object
       properties:
@@ -6894,15 +7256,17 @@ components:
       - MESSAGING
       - SCRIPT
       - TRANSFORMATION
-      - FLOW
       - BATCH
       - ALERTING
       - CLOUD
       - STORAGE
-      - MISC
+      - OTHER
       - TOOL
       - AI
       - CORE
+      - INGESTION
+      - BI
+      - DATA_QUALITY
     PluginUsage:
       type: object
       properties:
@@ -6921,47 +7285,47 @@ components:
       type: object
       properties:
         codeSource:
-          $ref: '#/components/schemas/CodeSource'
+          $ref: "#/components/schemas/CodeSource"
         classLoader:
-          $ref: '#/components/schemas/ClassLoader'
+          $ref: "#/components/schemas/ClassLoader"
         principals:
           type: array
           items:
-            $ref: '#/components/schemas/Principal'
+            $ref: "#/components/schemas/Principal"
         permissions:
-          $ref: '#/components/schemas/PermissionCollection'
+          $ref: "#/components/schemas/PermissionCollection"
     PublicKey:
-      $ref: '#/components/schemas/Key'
+      $ref: "#/components/schemas/Key"
     RecordComponent:
       type: object
       properties:
         name:
           type: string
         type:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
         genericSignature:
           type: string
         genericType:
-          $ref: '#/components/schemas/Type'
+          $ref: "#/components/schemas/Type"
         annotatedType:
-          $ref: '#/components/schemas/AnnotatedType'
+          $ref: "#/components/schemas/AnnotatedType"
         accessor:
-          $ref: '#/components/schemas/Method'
+          $ref: "#/components/schemas/Method"
         annotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         declaredAnnotations:
           type: array
           items:
-            $ref: '#/components/schemas/Annotation'
+            $ref: "#/components/schemas/Annotation"
         declaringRecord:
-          $ref: '#/components/schemas/Class_Object_'
+          $ref: "#/components/schemas/Class_Object_"
     Reifier:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/Type'
+          $ref: "#/components/schemas/Type"
     Relation:
       required:
       - relationType
@@ -6969,7 +7333,7 @@ components:
       type: object
       properties:
         relationType:
-          $ref: '#/components/schemas/RelationType'
+          $ref: "#/components/schemas/RelationType"
         value:
           type: string
     RelationType:
@@ -7001,6 +7365,25 @@ components:
       - template
       - task
       - trigger
+    SearchResult_Flow_:
+      required:
+      - fragments
+      - model
+      type: object
+      properties:
+        model:
+          $ref: "#/components/schemas/Flow"
+        fragments:
+          type: array
+          items:
+            type: string
+    SequencedCollection_Object_:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/Collection_Object_"
+      - properties:
+          first: {}
+          last: {}
     ServerType:
       type: string
       enum:
@@ -7018,7 +7401,7 @@ components:
       type: object
       properties:
         duration:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         startDate:
           type: string
           format: date-time
@@ -7027,11 +7410,11 @@ components:
           format: date-time
           nullable: true
         current:
-          $ref: '#/components/schemas/State.Type'
+          $ref: "#/components/schemas/State.Type"
         histories:
           type: array
           items:
-            $ref: '#/components/schemas/State.History'
+            $ref: "#/components/schemas/State.History"
     State.History:
       required:
       - date
@@ -7039,7 +7422,7 @@ components:
       type: object
       properties:
         state:
-          $ref: '#/components/schemas/State.Type'
+          $ref: "#/components/schemas/State.Type"
         date:
           type: string
           format: date-time
@@ -7075,7 +7458,7 @@ components:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/ExecutionRepositoryInterface.FlowFilter'
+            $ref: "#/components/schemas/ExecutionRepositoryInterface.FlowFilter"
         startDate:
           type: string
           format: date-time
@@ -7094,7 +7477,7 @@ components:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/ExecutionRepositoryInterface.FlowFilter'
+            $ref: "#/components/schemas/ExecutionRepositoryInterface.FlowFilter"
     StatsController.LogStatisticRequest:
       type: object
       properties:
@@ -7110,7 +7493,7 @@ components:
         logLevel:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Level'
+          - $ref: "#/components/schemas/Level"
         startDate:
           type: string
           format: date-time
@@ -7157,15 +7540,15 @@ components:
         description:
           type: string
         retry:
-          $ref: '#/components/schemas/AbstractRetry'
+          $ref: "#/components/schemas/AbstractRetry"
         timeout:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         disabled:
           type: boolean
         workerGroup:
-          $ref: '#/components/schemas/WorkerGroup'
+          $ref: "#/components/schemas/WorkerGroup"
         logLevel:
-          $ref: '#/components/schemas/Level'
+          $ref: "#/components/schemas/Level"
         allowFailure:
           type: boolean
     TaskDefault:
@@ -7182,6 +7565,29 @@ components:
         values:
           type: object
           additionalProperties: true
+    TaskForExecution:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          minLength: 1
+          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
+          type: string
+        type:
+          minLength: 1
+          pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
+            p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: "#/components/schemas/TaskForExecution"
+        inputs:
+          type: array
+          items:
+            $ref: "#/components/schemas/Input_Object_"
     TaskRun:
       required:
       - attempts
@@ -7217,12 +7623,12 @@ components:
         attempts:
           type: array
           items:
-            $ref: '#/components/schemas/TaskRunAttempt'
+            $ref: "#/components/schemas/TaskRunAttempt"
         outputs:
           type: object
           additionalProperties: true
         state:
-          $ref: '#/components/schemas/State'
+          $ref: "#/components/schemas/State"
         iteration:
           type: integer
           format: int32
@@ -7235,9 +7641,9 @@ components:
           type: array
           deprecated: true
           items:
-            $ref: '#/components/schemas/AbstractMetricEntry_Object_'
+            $ref: "#/components/schemas/AbstractMetricEntry_Object_"
         state:
-          $ref: '#/components/schemas/State'
+          $ref: "#/components/schemas/State"
     Template:
       required:
       - deleted
@@ -7261,18 +7667,18 @@ components:
           minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/Task'
+            $ref: "#/components/schemas/Task"
         errors:
           type: array
           items:
-            $ref: '#/components/schemas/Task'
+            $ref: "#/components/schemas/Task"
         deleted:
           type: boolean
     TemporalUnit:
       type: object
       properties:
         duration:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         durationEstimated:
           type: boolean
         dateBased:
@@ -7289,11 +7695,11 @@ components:
           type: string
           format: date-time
         signerCertPath:
-          $ref: '#/components/schemas/CertPath'
+          $ref: "#/components/schemas/CertPath"
     Trigger:
       type: object
       allOf:
-      - $ref: '#/components/schemas/TriggerContext'
+      - $ref: "#/components/schemas/TriggerContext"
       - properties:
           executionId:
             type: string
@@ -7301,7 +7707,7 @@ components:
           executionCurrentState:
             nullable: true
             allOf:
-            - $ref: '#/components/schemas/State.Type'
+            - $ref: "#/components/schemas/State.Type"
           updatedDate:
             type: string
             format: date-time
@@ -7343,12 +7749,22 @@ components:
         backfill:
           nullable: true
           allOf:
-          - $ref: '#/components/schemas/Backfill'
+          - $ref: "#/components/schemas/Backfill"
         stopAfter:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/State.Type'
+            $ref: "#/components/schemas/State.Type"
+    TriggerController.Triggers:
+      required:
+      - abstractTrigger
+      - triggerContext
+      type: object
+      properties:
+        abstractTrigger:
+          $ref: "#/components/schemas/AbstractTrigger"
+        triggerContext:
+          $ref: "#/components/schemas/Trigger"
     Type:
       type: object
       properties:
@@ -7359,92 +7775,92 @@ components:
     TypeVariable_Class_Object__:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
-      - $ref: '#/components/schemas/AnnotatedElement'
+      - $ref: "#/components/schemas/Type"
+      - $ref: "#/components/schemas/AnnotatedElement"
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           genericDeclaration:
-            $ref: '#/components/schemas/Class_Object_'
+            $ref: "#/components/schemas/Class_Object_"
           name:
             type: string
           annotatedBounds:
             type: array
             items:
-              $ref: '#/components/schemas/AnnotatedType'
+              $ref: "#/components/schemas/AnnotatedType"
     TypeVariable_Class_String__:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
-      - $ref: '#/components/schemas/AnnotatedElement'
+      - $ref: "#/components/schemas/Type"
+      - $ref: "#/components/schemas/AnnotatedElement"
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           genericDeclaration:
-            $ref: '#/components/schemas/Class_String_'
+            $ref: "#/components/schemas/Class_String_"
           name:
             type: string
           annotatedBounds:
             type: array
             items:
-              $ref: '#/components/schemas/AnnotatedType'
+              $ref: "#/components/schemas/AnnotatedType"
     TypeVariable_Constructor_Object__:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
-      - $ref: '#/components/schemas/AnnotatedElement'
+      - $ref: "#/components/schemas/Type"
+      - $ref: "#/components/schemas/AnnotatedElement"
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           genericDeclaration:
-            $ref: '#/components/schemas/Constructor_Object_'
+            $ref: "#/components/schemas/Constructor_Object_"
           name:
             type: string
           annotatedBounds:
             type: array
             items:
-              $ref: '#/components/schemas/AnnotatedType'
+              $ref: "#/components/schemas/AnnotatedType"
     TypeVariable_GenericDeclaration_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
-      - $ref: '#/components/schemas/AnnotatedElement'
+      - $ref: "#/components/schemas/Type"
+      - $ref: "#/components/schemas/AnnotatedElement"
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           genericDeclaration: {}
           name:
             type: string
           annotatedBounds:
             type: array
             items:
-              $ref: '#/components/schemas/AnnotatedType'
+              $ref: "#/components/schemas/AnnotatedType"
     TypeVariable_Method_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
-      - $ref: '#/components/schemas/AnnotatedElement'
+      - $ref: "#/components/schemas/Type"
+      - $ref: "#/components/schemas/AnnotatedElement"
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: "#/components/schemas/Type"
           genericDeclaration:
-            $ref: '#/components/schemas/Method'
+            $ref: "#/components/schemas/Method"
           name:
             type: string
           annotatedBounds:
             type: array
             items:
-              $ref: '#/components/schemas/AnnotatedType'
+              $ref: "#/components/schemas/AnnotatedType"
     Type_1:
       type: string
       enum:
@@ -7461,6 +7877,7 @@ components:
       - JSON
       - URI
       - SECRET
+      - ARRAY
     Type_2:
       type: string
       enum:
@@ -7477,6 +7894,7 @@ components:
       - JSON
       - URI
       - SECRET
+      - ARRAY
     Type_3:
       type: string
       enum:
@@ -7493,6 +7911,7 @@ components:
       - JSON
       - URI
       - SECRET
+      - ARRAY
     Usage:
       required:
       - configurations
@@ -7518,11 +7937,11 @@ components:
         instanceUuid:
           type: string
         serverType:
-          $ref: '#/components/schemas/ServerType'
+          $ref: "#/components/schemas/ServerType"
         version:
           type: string
         zoneId:
-          $ref: '#/components/schemas/ZoneId'
+          $ref: "#/components/schemas/ZoneId"
         uri:
           type: string
           nullable: true
@@ -7535,17 +7954,17 @@ components:
           type: string
           format: date-time
         host:
-          $ref: '#/components/schemas/HostUsage'
+          $ref: "#/components/schemas/HostUsage"
         configurations:
-          $ref: '#/components/schemas/ConfigurationUsage'
+          $ref: "#/components/schemas/ConfigurationUsage"
         plugins:
           type: array
           items:
-            $ref: '#/components/schemas/PluginUsage'
+            $ref: "#/components/schemas/PluginUsage"
         flows:
-          $ref: '#/components/schemas/FlowUsage'
+          $ref: "#/components/schemas/FlowUsage"
         executions:
-          $ref: '#/components/schemas/ExecutionUsage'
+          $ref: "#/components/schemas/ExecutionUsage"
     ValidateConstraintViolation:
       required:
       - constraints
@@ -7594,11 +8013,11 @@ components:
         id:
           type: string
         rules:
-          $ref: '#/components/schemas/ZoneRules'
+          $ref: "#/components/schemas/ZoneRules"
     ZoneOffset:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ZoneId'
+      - $ref: "#/components/schemas/ZoneId"
       - properties:
           totalSeconds:
             type: integer
@@ -7606,7 +8025,7 @@ components:
           id:
             type: string
           rules:
-            $ref: '#/components/schemas/ZoneRules'
+            $ref: "#/components/schemas/ZoneRules"
     ZoneOffsetTransition:
       type: object
       properties:
@@ -7620,11 +8039,11 @@ components:
           type: string
           format: date-time
         offsetBefore:
-          $ref: '#/components/schemas/ZoneOffset'
+          $ref: "#/components/schemas/ZoneOffset"
         offsetAfter:
-          $ref: '#/components/schemas/ZoneOffset'
+          $ref: "#/components/schemas/ZoneOffset"
         duration:
-          $ref: '#/components/schemas/Duration'
+          $ref: "#/components/schemas/Duration"
         gap:
           type: boolean
         overlap:
@@ -7632,7 +8051,7 @@ components:
         validOffsets:
           type: array
           items:
-            $ref: '#/components/schemas/ZoneOffset'
+            $ref: "#/components/schemas/ZoneOffset"
     ZoneOffsetTransitionRule:
       required:
       - dayOfMonthIndicator
@@ -7645,25 +8064,25 @@ components:
       type: object
       properties:
         month:
-          $ref: '#/components/schemas/Month'
+          $ref: "#/components/schemas/Month"
         dayOfMonthIndicator:
           type: integer
           format: int32
         dayOfWeek:
-          $ref: '#/components/schemas/DayOfWeek'
+          $ref: "#/components/schemas/DayOfWeek"
         localTime:
           type: string
           format: partial-time
         midnightEndOfDay:
           type: boolean
         timeDefinition:
-          $ref: '#/components/schemas/ZoneOffsetTransitionRule.TimeDefinition'
+          $ref: "#/components/schemas/ZoneOffsetTransitionRule.TimeDefinition"
         standardOffset:
-          $ref: '#/components/schemas/ZoneOffset'
+          $ref: "#/components/schemas/ZoneOffset"
         offsetBefore:
-          $ref: '#/components/schemas/ZoneOffset'
+          $ref: "#/components/schemas/ZoneOffset"
         offsetAfter:
-          $ref: '#/components/schemas/ZoneOffset'
+          $ref: "#/components/schemas/ZoneOffset"
     ZoneOffsetTransitionRule.TimeDefinition:
       type: string
       enum:
@@ -7678,8 +8097,8 @@ components:
         transitions:
           type: array
           items:
-            $ref: '#/components/schemas/ZoneOffsetTransition'
+            $ref: "#/components/schemas/ZoneOffsetTransition"
         transitionRules:
           type: array
           items:
-            $ref: '#/components/schemas/ZoneOffsetTransitionRule'
+            $ref: "#/components/schemas/ZoneOffsetTransitionRule"
