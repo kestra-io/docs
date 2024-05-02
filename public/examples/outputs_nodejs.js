@@ -8,7 +8,6 @@ function GetDockerImageDownloads(imageName){
   requestify.get(url)
     .then(function(response) {
       result = JSON.parse(response.body);
-      console.log(result['pull_count']);
       Kestra.outputs({"pull_count": result['pull_count']})
       return result['pull_count'];
     })
