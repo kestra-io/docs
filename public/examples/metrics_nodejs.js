@@ -16,7 +16,8 @@ function GetDockerImageDownloads(imageName){
     })
 }
 
-start = Date.now();
+start = new Date().getTime();
 GetDockerImageDownloads("kestra/kestra")
-end = Date.now();
+end = new Date().getTime();
+duration = (end - start) / 1000
 Kestra.timer('duration', end - start);
