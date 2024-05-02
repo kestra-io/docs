@@ -55,3 +55,12 @@ kestra:
     tmp-dir:
       path: /home/kestra/tmp
 ```
+
+**Note:** The `tmp-dir` path must be aligned to the volume path otherwise Kestra will not know what directory to mount for the `tmp` directory. 
+```yaml
+volumes:
+  - kestra-data:/app/storage
+  - /var/run/docker.sock:/var/run/docker.sock
+  - /home/kestra:/home/kestra
+```
+In this example, `/home/kestra:/home/kestra` matches the tasks `tmp-dir`.
