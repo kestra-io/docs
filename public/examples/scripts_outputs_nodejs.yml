@@ -1,0 +1,34 @@
+id: js_outputs_scripts
+namespace: example
+
+description: This flow will install the npm package in a Docker container, and use kestra's NodeJS library to generate outputs (number of downloads of the Kestra Docker image).
+
+tasks:
+  - id: nodejs_outputs
+    type: io.kestra.plugin.scripts.node.Script
+    beforeCommands:
+      - npm install requestify
+      - npm install @kestra-io/libs
+    docker:
+      image: node:slim
+    warningOnStdErr: false
+    script: |
+      const requestify = require('requestify');
+      const Kestra = require("@kestra-io/libs");
+      
+      function GetDockerImageDownloads(imageName){
+        // Queries the Docker Hub API to get the number of downloads for a specific Docker image.
+        var url = `https://hub.docker.com/v2/repositories/${imageName}/`
+        console.log(url) 
+        requestify.get(url)
+          .then(function(response) {
+            result = JSON.parse(response.body);
+            Kestra.outputs({"pull_count": result['pull_count']})
+            return result['pull_count'];
+          })
+          .catch(function(error) {
+            console.log(error);
+          })
+      }
+
+      GetDockerImageDownloads("kestra/kestra")

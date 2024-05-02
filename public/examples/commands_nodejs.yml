@@ -1,0 +1,17 @@
+id: js_commands
+namespace: example
+
+description: This flow will install the npm package in a Docker container, and use kestra's NodeJS Commands task to run the script.
+
+tasks:
+  - id: run_nodejs_commands
+    type: io.kestra.plugin.scripts.node.Commands
+    namespaceFiles:
+      enabled: true
+    docker:
+       image: node:slim
+    warningOnStdErr: false
+    beforeCommands:
+      - npm install requestify
+    commands:
+      - node docker_image_downloads.js

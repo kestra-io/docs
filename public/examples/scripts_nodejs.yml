@@ -1,0 +1,32 @@
+id: js_scripts
+namespace: example
+
+description: This flow will install the npm package in a Docker container, and use kestra's NodeJS Script task to run the script.
+
+tasks:
+  - id: run_nodejs_script
+    type: io.kestra.plugin.scripts.node.Script
+    beforeCommands:
+      - npm install requestify
+    docker:
+      image: node:slim
+    warningOnStdErr: false
+    script: |
+      const requestify = require('requestify');
+      
+      function GetDockerImageDownloads(imageName){
+        // Queries the Docker Hub API to get the number of downloads for a specific Docker image.
+        var url = `https://hub.docker.com/v2/repositories/${imageName}/`
+        console.log(url) 
+        requestify.get(url)
+          .then(function(response) {
+            result = JSON.parse(response.body);
+            console.log(result['pull_count']);
+            return result['pull_count'];
+          })
+          .catch(function(error) {
+            console.log(error);
+          })
+      }
+
+      GetDockerImageDownloads("kestra/kestra")
