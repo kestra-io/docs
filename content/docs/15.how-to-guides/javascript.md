@@ -37,7 +37,6 @@ You'll need to install the [`@kestra-io/libs` npm package](https://npm.io/packag
 npm install @kestra-io/libs
 ```
 
-
 ### Variable Output
 
 You'll need to use the `Kestra` class to pass your variables to Kestra as outputs. Using the `outputs` method, you can pass a dictionary of variables where the `key` is the name of the output you'll reference in Kestra.
