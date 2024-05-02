@@ -7,6 +7,15 @@ Run JavaScript code inside of your flow.
 
 You can execute NodeJS code inside of a flow by either writing your NodeJS inline or by executing a `.js` file. You can also get outputs and metrics from your NodeJS code too.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/kNMIGUdPxRw?si=TRc9RiV-hEn9pt0V" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
+In this example, the flow will install the required npm packages, make an API request to fetch data and use the NodeJS Kestra Library to generate outputs and metrics using this data.
+
+
 ## Scripts
 
 If you want to write a short amount of NodeJS code to perform a task, you can use the `io.kestra.plugin.scripts.node.Script` type to write it directly inside of your flow. This allows you to keep everything in one place.
