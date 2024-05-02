@@ -63,4 +63,4 @@ volumes:
   - /var/run/docker.sock:/var/run/docker.sock
   - /home/kestra:/home/kestra
 ```
-In this example, `/home/kestra:/home/kestra` matches the tasks `tmp-dir`.
+In this example, `/home/kestra:/home/kestra` matches the tasks `tmp-dir` field.
