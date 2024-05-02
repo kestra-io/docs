@@ -7531,6 +7531,10 @@ components:
           pattern: "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*(\\.\\\
             p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
           type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskForExecution'
         inputs:
           type: array
           items:
