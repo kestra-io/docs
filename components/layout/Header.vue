@@ -13,7 +13,7 @@
                    data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
                     <Magnify />
                 </a>
-                <button class="navbar-toggler d-flex d-lg-none align-items-center gap-2" @click="globalClick(false)" type="button" aria-controls="main-header"
+                <button class="navbar-toggler d-flex d-lg-none align-items-center gap-2" @click="globalClick(isOpen)" type="button" aria-controls="main-header"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="menu-text">{{ isOpen ? "Close" : "Menu" }}</span>
                     <Segment v-if="!isOpen" />
@@ -430,7 +430,6 @@ export default {
             transparentHeader: false,
             transparentClass: false,
             isOpen: false,
-
         }
     },
     collapse: undefined,
