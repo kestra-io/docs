@@ -37,10 +37,6 @@ You'll need to install the [`@kestra-io/libs` npm package](https://npm.io/packag
 npm install @kestra-io/libs
 ```
 
-Here is an example flow which outputs the `pull_count` from the http response.
-
-```yaml file=public/examples/scripts_outputs_nodejs.yml
-```
 
 ### Variable Output
 
