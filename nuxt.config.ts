@@ -160,6 +160,7 @@ export default defineNuxtConfig({
         '/docs/workflow-components/flow-properties': {redirect: '/docs/workflow-components/flow'},
         '/docs/concepts/expression/02a.expression-types': {redirect: '/docs/concepts/expression/expression-types'},
         '/docs/concepts/expression/02b.expression-usage': {redirect: '/docs/concepts/expression/expression-usage'},
+        '/docs/how-to-guides/errors': {redirect: '/docs/workflow-components/errors'},
         '/docs/flow-examples/**': {redirect: '/docs/how-to-guides'},
         '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
     },
