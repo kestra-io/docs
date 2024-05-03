@@ -1,13 +1,11 @@
 ---
-title: How to Make a HTTP Request in Kestra
+title: How to Make HTTP Requests in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
-How to make a HTTP Request inside of your flow.
+How to make HTTP Requests inside of your flow.
 
-You can make HTTP Requests directly inside of a flow as well as get outputs from the responses.
-
-In this guide, we'll walk you through what HTTP Requests are and how you can make the 4 most common ones inside of Kestra.
+You can make HTTP Requests directly inside of a flow as well as get outputs from the responses. In this guide, we'll walk you through what HTTP Requests are and how you can use the most common request methods inside of Kestra.
 
 ## What is a HTTP Request?
 
