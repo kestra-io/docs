@@ -1,4 +1,4 @@
-id: http_request_example
+id: http_post_request_example
 namespace: example
 description: Make a HTTP Request and Handle the Output
 
@@ -6,7 +6,7 @@ inputs:
   - id: payload
     type: JSON
     defaults: |
-      [{"name": "Bob", "job": "Developer"}]
+      {"name": "Bob", "job": "Developer"}
 
 tasks:
   - id: send_data
