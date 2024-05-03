@@ -5,6 +5,10 @@ icon: /docs/icons/tutorial.svg
 
 How to make a HTTP Request inside of your flow.
 
+You can make HTTP Requests directly inside of a flow as well as get outputs from the responses.
+
+In this guide, we'll walk you through what HTTP Requests are and how you can make the 4 most common ones inside of Kestra.
+
 ## What is a HTTP Request?
 
 Hypertext Transfer Protocol (better known as HTTP) requests are messages sent between a client and server to request something. 
@@ -182,9 +186,7 @@ As we can see, the response body is showing our updated title field.
 
 ### DELETE Request
 
-We can also remove a product from the list by using a DELETE Request. By adding an input, we can change which product we will remove by asking for the `id` at execution.
-
-![http_delete_outputs](/docs/how-to-guides/http/http_delete_input.png)
+We can also remove a product from the list by using a DELETE Request. This example is very similar to the GET Request as we don't need to provide a body.
 
 ```yaml
 id: http_delete_request_example
@@ -207,5 +209,11 @@ tasks:
     message: "{{ outputs.send_data.body }}"
 
 ```
+
+By adding an input, we can change which product we will remove by asking for the `id` at execution.
+
+![http_delete_outputs](/docs/how-to-guides/http/http_delete_input.png)
+
+As expected, we get the desired output:
 
 ![http_delete_outputs](/docs/how-to-guides/http/http_delete_outputs.png)
