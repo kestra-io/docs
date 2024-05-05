@@ -3,11 +3,17 @@ title: Managing pip package dependencies
 icon: /docs/icons/best-practices.svg
 ---
 
-When you have python commands or python scripts to execute in the task, you need to install pip dependencies required to execute your python code. If you use python docker image, and install pip package dependencies as part of your `beforeCommands`, these packages will be downloaded and installed each time you run your task. This can be pretty time consuming and will lead to increased duration for your executions. This page describes some of the best ways to manage pip package dependencies for your flows.
+Learn how to manage pip package dependencies in your flows.
 
-## Using custom docker image
+## Motivation
 
-Instead of using the python docker image, and installing pip package dependencies using `beforeCommands`, you can create a customer docker image with python and the required pip package dependencies. As all the pip packages would be part of this custom docker image, you need not download and install the pip package dependencies during each execution. This would prevent the load on the execution, and the execution time will be dedicated to only the processing of the python code.
+Your Python code may require some `pip` package dependencies. The way you manage these dependencies can have an impact on the execution time of your flows.
+
+If you install `pip` packages within `beforeCommands`, these packages will be downloaded and installed each time you run your task. This can lead to increased duration of your workflow executions. The following sections describe several ways to manage pip package dependencies in your flows.
+
+## Using a custom Docker image
+
+Instead of using the Python Docker image, and installing pip package dependencies using `beforeCommands`, you can create a customer Docker image with Python and the required pip package dependencies. As all the pip packages would be part of this custom Docker image, you need not download and install the pip package dependencies during each execution. This would prevent the load on the execution, and the execution time will be dedicated to only the processing of the Python code.
 
 ## Install pip package dependencies at server startup
 
@@ -17,9 +23,9 @@ This is another way of preventing the overload of downloading and installing pip
 pip install requests pandas polars && ./kestra server standalone --worker-thread=16
 ```
 
-In case you want to run Kestra using docker, you can make the changes in the docker-compose.yml file to install the pip package dependencies, and then start the Kestra server.
+In case you want to run Kestra using Docker, you can make the changes in the `docker-compose.yml` file to install the pip package dependencies, and then start the Kestra server.
 
-In either of these Kestra server installations, you will need to run the Python tasks using the `RUNNER` process so that the python code has access to the pip package dependencies installed in the Kestra server process.
+In either of these Kestra server installations, you will need to run the Python tasks using the `RUNNER` process so that the Python code has access to the pip package dependencies installed in the Kestra server process.
 
 ## Using cache files
 
