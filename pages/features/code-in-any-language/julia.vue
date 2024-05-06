@@ -90,7 +90,7 @@
       title: 'Integration with Docker, Seamless Environment Management',
       description: 'Simplify managing environments for Julia scripts with Kestra’s Docker integration. Ensure your scripts execute in isolated and consistent settings to enhance reproducibility and scalability. Manage everything from Kestra\'s intuitive editor, making environment management straightforward and effective.',
       source: '/landing/features/language/julia/scripts/docker.svg',
-      imgWidth: '567px',
+      imgWidth: '568px',
       imgHeight: '420px',
     },
     {

@@ -90,7 +90,7 @@
       title: 'Integration with Docker, Seamless Environment Management',
       description: 'Managing environments for R scripts is straightforward with Kestra’s Docker integration. Containerize each part of your R workflow to ensure isolated and consistent settings, directly from Kestra\'s intuitive editor. This integration simplifies handling environment inconsistencies and boosts reproducibility.',
       source: '/landing/features/language/r/scripts/docker.svg',
-      imgWidth: '567px',
+      imgWidth: '568px',
       imgHeight: '420px',
     },
     {

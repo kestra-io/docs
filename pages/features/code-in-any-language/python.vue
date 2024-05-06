@@ -97,8 +97,8 @@
       title: 'Integration with Docker, Seamless Environment Management',
       description: 'Managing environments for Python scripts doesn\'t have to be complicated. With Kestra’s Docker integration, each part of your Python workflow can be containerized, ensuring that they run in isolated and consistent settings. From Kestra\'s intuitive editor, you can control Docker containers, manage dependencies, and scale your scripts across multiple environments without ever leaving the platform. This integration simplifies environment inconsistencies and enhances reproducibility.',
       source: '/landing/features/language/python/scripts/docker.svg',
-      imgWidth: '627px',
-      imgHeight: '460px',
+      imgWidth: '568px',
+      imgHeight: '420px',
     },
     {
       title: 'Embedded Python Scripts for Simplicity',

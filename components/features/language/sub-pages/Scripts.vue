@@ -70,7 +70,7 @@
                 .title {
                     text-align: center;
                     font-size: 50px;
-                    font-weight: 600;
+                    font-weight: 500;
                     text-align: center;
                     color: $white;
 
@@ -111,7 +111,6 @@
 
                 & > img {
                     z-index: 10;
-                    width: 100%;
                 }
 
                 &::after {
@@ -146,6 +145,11 @@
             .mask-1 {
 
                 background-image: url(/landing/features/mask.svg);
+
+                & > img {
+                    z-index: 10;
+                    width: 100%;
+                }
 
                 &::before {
                     width: 9rem;

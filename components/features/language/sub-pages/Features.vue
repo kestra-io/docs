@@ -45,13 +45,12 @@
     @import "../../../../assets/styles/variable";
 
     .container {
-        padding: calc($spacer * 4) 0;
         background-image: url('/landing/features/scheduling/masking.svg');
         position: relative;
         z-index: 99;
 
         h2 {
-            font-weight: 600;
+            font-weight: 500;
             font-size: 50px;
             font-family: $font-family-sans-serif;
         }
