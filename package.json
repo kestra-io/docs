@@ -20,7 +20,7 @@
     "@popperjs/core": "^2.11.8",
     "@vue-flow/background": "^1.2.0",
     "@vue-flow/controls": "^1.1.1",
-    "@vue-flow/core": "^1.33.4",
+    "@vue-flow/core": "^1.33.6",
     "aos": "^2.3.4",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
