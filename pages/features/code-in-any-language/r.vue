@@ -81,7 +81,7 @@
   const rScripts = [
     {
       title: 'Embrace GitOps best practices for your R scripts',
-      description: 'Kestra takes Python script orchestration to the next level by embracing Continuous Integration/Continuous Deployment (CI/CD) and GitOps principles. Manage your Python workflows with the same rigor as your application code: version control, automated testing, and consistent, repeatable deployment environments. Kestra  lets you define workflows in YAML, ensuring that your orchestration is as maintainable and scalable as your applications.',
+      description: 'Kestra takes R script orchestration to the next level by embracing Continuous Integration/Continuous Deployment (CI/CD) and GitOps principles. Manage your R workflows with the same rigor as your application code: version control, automated testing, and consistent, repeatable deployment environments. Kestra  lets you define workflows in YAML, ensuring that your orchestration is as maintainable and scalable as your applications.',
       source: '/landing/features/language/git-with-kestra.svg',
       imgWidth: '520px',
       imgHeight: '282px',
