@@ -6398,6 +6398,11 @@ components:
           additionalProperties:
             type: integer
             format: int64
+        taskRunnerTypeCount:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
     FlowWithSource:
       type: object
       allOf:
