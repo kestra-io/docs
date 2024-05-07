@@ -56,9 +56,8 @@ Let's create a module that will define a Kestra flow that will sync data from Ai
 .
 └── airbyte_sync/
     ├── main.tf
-    ├── variables.tf
     ├── tasks.yml
-    └── outputs.tf
+    └── variables.tf
 ```
 
 ### `main.tf`
@@ -178,8 +177,35 @@ tasks:
 %{ endfor ~}
 ```
 
+Using the module will look like this :
+
+```hcl
+module "stripe_events_incremental" {
+  source      = "../../../modules/airbyte_sync"
+  flow_id     = "stripe_events"
+  priority    = "high"
+  namespace   = local.namespace
+  description = "Stripe Events"
+  airbyte_connections = [
+    {
+      name = "stripe_events_incremental"
+      id   = module.airbyte_connection_stripe_offical.connection_id
+    }
+  ]
+  max_sync_duration = "PT30M"
+  airbyte_url       = var.airbyte_url
+  trigger           = module.stripe_events_hourly_trigger.trigger_content
+}
+```
+
 ## Subflows vs Terraform templating
 
+Subflows are a way to encapsulate logic and make it reusable across your codebase. However, they are not meant to be used for templating purposes.
 
+Terraform templating is a way to define flows in a more modular way, and to expose only the variables that are meant to be changed.
 
-## Example
+## Conclusion
+
+Terraform templating is a powerful way to define flows in a modular way, and to expose only the variables that are meant to be changed.
+
+It is a great way to make your codebase more maintainable and to facilitate onboarding for users unfamiliar with Kestra syntax.
