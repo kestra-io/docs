@@ -70,8 +70,9 @@ jar {
                 "X-Kestra-Description": project.description,
                 "X-Kestra-Version": project.version
         )
+    }
 }
-}
+```
 
 ## Develop Fetch Task
 
