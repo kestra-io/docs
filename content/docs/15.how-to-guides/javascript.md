@@ -71,6 +71,8 @@ The examples below write a `.txt` file containing the number of downloads, simil
 ```yaml file=public/examples/scripts_outputs-files_nodejs.yml
 ```
 
+We can also preview our file directly in the Outputs tab as well.
+
 ![outputs](/docs/how-to-guides/nodejs/outputs.png)
 
 _This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kestra.plugin.scripts.node.Commands`._
