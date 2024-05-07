@@ -80,7 +80,7 @@ jar {
 
 In `src/main/java/io/kestra/plugin/pokemon`, we will create a new class `Pokemon.java`. This will be used to map the JSON output of the pokemon API to the Java class. We only need to add the fields that we are interested in, and ignore the rest.
 
-::collapse{title="Here is how the Pokemon.java file should look like"}
+::collapse{title="Here is how the Pokemon.java file should look"}
 ```java
 package io.kestra.plugin.pokemon;
 
