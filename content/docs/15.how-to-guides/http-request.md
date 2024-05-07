@@ -9,9 +9,9 @@ You can make HTTP Requests directly inside of a flow as well as get outputs from
 
 ## What is a HTTP Request?
 
-Hypertext Transfer Protocol (better known as HTTP) requests are messages sent between a client and server to request something. 
+Hypertext Transfer Protocol (better known as HTTP) [requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#http_requests) are messages sent between a client and server to request something. 
 
-Requests can sending or requesting data, with common ones known as GET, POST, PUT and DELETE requests. We can use these directly inside of Kestra to interact with 3rd party systems to make our workflows more powerful.
+Requests can send or request data, with common methods known as GET, POST, PUT and DELETE requests. We can use these directly inside of Kestra to interact with 3rd party systems to make our workflows more powerful.
 
 | Request Method | Description |
 | - | - |
@@ -22,17 +22,40 @@ Requests can sending or requesting data, with common ones known as GET, POST, PU
 
 There are many other request methods too, which you can read more about on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
 
-### Request Headers
+When you make a request, you will receive a [response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#http_responses) from the server with the answer.
 
-Each request also has a set of Request Headers which can provide additional information for the request, such as what client the user is using, as well as the type of content that we might be sending with our request. You can read more about HTTP Headers on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/)
+### Status Code
 
-### Request Body
+When you make a request, you'll receive a response with a status code. This will tell you if your request was successful or not. A few common codes include:
 
-Lastly, requests can also have a Request Body which contains all the data we want to send as part of our request. For example, if you wanted to add a user to a system, you would include their information inside of the body like name and email. These are fundamental for GET and PUT requests which are used for creating and updating data on other systems. You can read more about the Request Body on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/API/Request/body)
+| Status Codes | Description |
+| - | - |
+| 100 - 199 | Informational |
+| 200 - 299 | Successful |
+| 300 - 399 | Redirection |
+| 400 - 499 | Client error |
+| 500 - 599 | Server error |
+
+A few common ones you might have seen include:
+- 200: OK - Request was successful.
+- 404: Not Found - Request reached the server but the resource wasn't found. A common one you see when you go to a page on a website that doesn't exist.
+- 500: Internal Server Error - Request reached the server but the server was unable to process it. Usually means the server has thrown an error.
+
+You can read the full list of status codes on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+
+### Headers
+
+Each request also has a set of Request Headers which can provide additional information for the request, such as what client the user is using, as well as the type of content that we might be sending with our request. You can read more about HTTP Headers on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/) The response will also have headers following the same structure. 
+
+### Body
+
+Lastly, requests can also have a Request Body which contains all the data we want to send as part of our request. For example, if you wanted to add a user to a system, you would include their information inside of the body like name and email. These are fundamental for POST and PUT requests which are used for creating and updating data on other systems, but other methods like GET don't have them. You can read more about the Request Body on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/API/Request/body)
+
+When you receive your [response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#body_2), it might have a body, for example a GET Request. This is helpful as you can receive data which you can use in your workflows, such as a JSON.
 
 ## How can I make HTTP Requests?
 
-You can make requests by putting a URL directly into your browser, especially for GET and DELETE requests, but it can be challenging to specify the body as well as headers for POST and PUT requests. There's a variety of tools that can make this easier such as cURL and Postman. 
+You can make requests by putting a URL directly into your browser, especially for GET and DELETE requests, but it can be challenging to specify the body and headers for POST and PUT requests. There's a variety of tools that can make this easier such as [cURL](https://curl.se/) and [Postman](https://www.postman.com/). 
 
 In the example below, we can use Postman to make a POST Request to [dummyjson.com](https://dummyjson.com) which will give us some dummy data. We can use the `/products/add` route to add a new product by providing a body like this:
 
