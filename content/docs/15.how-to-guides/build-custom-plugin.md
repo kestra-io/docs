@@ -9,7 +9,7 @@ In this tutorial, we will be building a custom plugin in Kestra.
 
 We will be building a plugin that fetches the data for a given pokemon. We will use the API provided by [PokeAPI.co](https://pokeapi.co/) to fetch the pokemon's details: `https://pokeapi.co/api/v2/pokemon/{pokemon_name}`.
 
-The API provides the detailed information about any pokemon. We would be fetching a few fields from this information like the ability names, base experience, height and the move names, and showcase it in the output of our plugin. The plugin task would accept the pokemon name, and return these selected fields in the output. This is how the task should look like:
+The API provides detailed information about any pokemon. We will fetch a few fields like the ability names, base experience, height and move names, and showcase it in the output of our plugin. The plugin task will accept the pokemon name, and return the selected fields in the output. This is how the task should look:
 
 ```yaml
 id: fetch_details
@@ -70,7 +70,7 @@ jar {
                 "X-Kestra-Description": project.description,
                 "X-Kestra-Version": project.version
         )
-    }
+}
 }
 
 ## Develop Fetch Task
