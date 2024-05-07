@@ -60,25 +60,24 @@ The first thing we need to configure is the plugin name and the class package.
     `implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'` 
    c. Change the `jar` section to the following:
 
-    ```groovy
-    jar {
-        manifest {
-            attributes(
-                    "X-Kestra-Name": project.name,
-                    "X-Kestra-Title": "Pokemon",
-                    "X-Kestra-Group": project.group + ".pokemon",
-                    "X-Kestra-Description": project.description,
-                    "X-Kestra-Version": project.version
-            )
-        }
+```groovy
+jar {
+    manifest {
+        attributes(
+                "X-Kestra-Name": project.name,
+                "X-Kestra-Title": "Pokemon",
+                "X-Kestra-Group": project.group + ".pokemon",
+                "X-Kestra-Description": project.description,
+                "X-Kestra-Version": project.version
+        )
     }
-    ```
+}
 
 ## Develop Fetch Task
 
 ### Create Pokemon class
 
-In `src/main/java/io/kestra/plugin/pokemon`, we will create a new class `Pokemon.java`. This will be used to map the JSON output of the pokemon API to the Java class. We can put in only those fields that we are interested in, and ignore the rest.
+In `src/main/java/io/kestra/plugin/pokemon`, we will create a new class `Pokemon.java`. This will be used to map the JSON output of the pokemon API to the Java class. We only need to add the fields that we are interested in, and ignore the rest.
 
 ::collapse{title="Here is how the Pokemon.java file should look like"}
 ```java
@@ -257,7 +256,7 @@ Let us refactor the file names from `ExampleRunnerTest.java` and `ExampleTest.ja
 
 Let us use a relevant flow in `pokemonFetch.yaml`.
 
-::collapse{title="Here is how the pokemonFetch.yaml should look like"}
+::collapse{title="Here is how the pokemonFetch.yaml should look"}
 ```yaml
 id: pokemonFetch
 namespace: io.kestra.plugin
@@ -274,7 +273,7 @@ tasks:
 
 Let us now amend the `FetchRunnerTest.java`. In this test, we try to load the flow file `pokemonFetch.yaml`, and run this flow. We then test if all the tasks in this flow were executed.
 
-::collapse{title="Here are the contents of FetchRunnerTest.java file"}
+::collapse{title="Contents of FetchRunnerTest.java"}
 ```java
 package io.kestra.plugin.pokemon;
 
@@ -331,9 +330,9 @@ class FetchRunnerTest {
 ```
 ::
 
-Let us now test the actual logic of the plugin in `FetchTest.java`. Here, we are creating the input and invoking the logic present in the task, and then verifying the output as returned by the task.
+Let’s test the actual logic of the plugin in `FetchTest.java`. Here, we are creating the input and invoking the logic present in the task, and then verifying the output returned by the task.
 
-::collapse{title="Here are the contents of FetchTest.java file"}
+::collapse{title="Contents of FetchTest.java"}
 ```java
 package io.kestra.plugin.pokemon;
 
@@ -378,7 +377,7 @@ class FetchTest {
 
 ### Running the tests
 
-You can run the tests from Intellij IDE, or from terminal using the command:
+You can run the tests from Intellij IDE, or from the terminal using the command:
 
 ```bash
 ./gradlew test
