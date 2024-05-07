@@ -8,7 +8,7 @@ Run JavaScript code inside of your flow.
 You can execute NodeJS code inside of a flow by either writing your NodeJS inline or by executing a `.js` file. You can also get outputs and metrics from your NodeJS code too.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/kNMIGUdPxRw?si=TRc9RiV-hEn9pt0V" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/nACf-2mnonk?si=OzJP7gtN-AbGrkr_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -59,6 +59,21 @@ Once your NodeJS file has executed, you'll be able to access the outputs in late
 
 ```yaml file=public/examples/outputs_nodejs.yml
 ```
+
+_This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kestra.plugin.scripts.node.Commands`._
+
+### File Output
+
+Inside of your JavaScript code, write a file to the system. You'll need to add `outputFiles` property to your flow and list the file you're trying to access. In this case, we want to access `downloads.txt`. More information on the formats you can use for this property can be found [here](/docs/developer-guide/scripts/output-directory).
+
+The example below write a `.txt` file containing the number of downloads, similar the output we used earlier. We can then read the content of the file using the syntax `{{ outputs.{task_id}.outputFiles['{filename}'] }}`
+
+```yaml file=public/examples/scripts_outputs-files_nodejs.yml
+```
+
+We can also preview our file directly in the Outputs tab as well.
+
+![outputs](/docs/how-to-guides/nodejs/outputs.png)
 
 _This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kestra.plugin.scripts.node.Commands`._
 
