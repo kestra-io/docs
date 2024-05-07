@@ -121,7 +121,7 @@ class Move {
 
 We will refactor the java file from `Example.java` to `Fetch.java`.
 
-In this file, we will put in the appropriate schema for the plugin, and for the inputs and output of the plugin. This will help in generating proper documentation for the plugin. We will also put in examples so that any user can get help in understanding how to use the plugin.
+In this file, we will put in the appropriate schema for the plugin, including the inputs and output of the plugin. This will help us generate documentation for the plugin too. Also, we will include a few examples to help users understand how to use the plugin.
 
 The class should extend `Task` and implement `RunnableTask` for it to be considered as a plugin task. The `RunnableTask` has a generic representing the output class. The output class should implement `io.kestra.core.models.tasks.Output`.
 
@@ -257,7 +257,7 @@ Let us refactor the file names from `ExampleRunnerTest.java` and `ExampleTest.ja
 
 Let us use a relevant flow in `pokemonFetch.yaml`.
 
-::collapse{title="Here is how the pokemonFetch.yaml should look"}
+::collapse{title="Contents of pokemonFetch.yaml"}
 ```yaml
 id: pokemonFetch
 namespace: io.kestra.plugin
