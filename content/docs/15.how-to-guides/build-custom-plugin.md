@@ -19,7 +19,7 @@ pokemon: pikachu
 
 ## Requirements
 
-You would need the following installed on your machine before proceeding:
+You will need the following installed on your machine before proceeding:
 * [Java](https://java.com) 21 or later.
 * [IntelliJ IDEA](https://www.jetbrains.com/idea/) (or any other Java IDE, we provide only help for IntelliJ IDEA).
 * [Gradle](https://gradle.org/) (included most of the time with the IDE).
@@ -120,7 +120,7 @@ class Move {
 
 We will refactor the java file from `Example.java` to `Fetch.java`.
 
-In this file, we will put in the appropriate schema for the plugin, and for the inputs and output of the plugin. This will help in generating proper documentation for the plugin. We would also put in examples so that any user can get help in understanding how to use the plugin.
+In this file, we will put in the appropriate schema for the plugin, and for the inputs and output of the plugin. This will help in generating proper documentation for the plugin. We will also put in examples so that any user can get help in understanding how to use the plugin.
 
 The class should extend `Task` and implement `RunnableTask` for it to be considered as a plugin task. The `RunnableTask` has a generic representing the output class. The output class should implement `io.kestra.core.models.tasks.Output`.
 
