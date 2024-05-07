@@ -1,5 +1,5 @@
 ---
-title: How To Validate Inputs with Enum Data Type in Kestra
+title: How to Validate Inputs with Enum Data Type in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 

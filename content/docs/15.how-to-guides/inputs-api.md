@@ -1,5 +1,5 @@
 ---
-title: How To Pass Inputs via an API call in Kestra
+title: How to Pass Inputs via an API call in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
