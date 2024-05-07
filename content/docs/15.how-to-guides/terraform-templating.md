@@ -79,6 +79,8 @@ resource "kestra_flow" "airbyte_sync" {
       airbyte-url         = var.airbyte_url
       airbyte-connections = var.airbyte_connections
       MAX_DURATION        = var.max_sync_duration
+      late-maximum-delay  = var.late_maximum_delay
+      cron-expression     = var.cron_expression
     }),
     var.trigger,
   ])
@@ -144,6 +146,17 @@ variable "priority" {
   default     = null
   description = "Priority tag to apply to the flow"
 }
+
+variable "cron_expression" {
+  type        = string
+  description = "Cron expression or supported expression like : @hourly"
+  default     = null
+}
+
+variable "late_maximum_delay" {
+  type        = string
+  description = "Allow to disable auto-backfill : if the schedule didn't start after this delay, the execution will be skip."
+}
 ```
 
 
@@ -173,9 +186,16 @@ tasks:
     %{ if length(MAX_DURATION) > 0}
     maxDuration: "${MAX_DURATION}"
     %{ endif }
-
 %{ endfor ~}
+
+triggers:
+  - id: cron_trigger
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "${cron-expression}"
+    lateMaximumDelay: "${late-maximum-delay}"
 ```
+
+## Using the module
 
 Using the module will look like this :
 
@@ -192,9 +212,10 @@ module "stripe_events_incremental" {
       id   = module.airbyte_connection_stripe_offical.connection_id
     }
   ]
-  max_sync_duration = "PT30M"
-  airbyte_url       = var.airbyte_url
-  trigger           = module.stripe_events_hourly_trigger.trigger_content
+  max_sync_duration   = "PT30M"
+  airbyte_url         = var.airbyte_url
+  cron_expression     = "@hourly"
+  late_maximum_delay  = "PT1H"
 }
 ```
 
