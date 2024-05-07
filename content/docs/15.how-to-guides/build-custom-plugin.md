@@ -3,6 +3,8 @@ title: How to Build Custom Plugin in Kestra
 icon: /docs/icons/tutorial.svg
 ---
 
+Build your own Custom Plugin for Kestra.
+
 In this tutorial, we will be building a custom plugin in Kestra.
 
 ## Use-case for Custom Plugin
@@ -420,6 +422,6 @@ tasks:
 
 On executing the flow, you can go to the `Outputs` tab, and check out the output.
 
-![custom_plugin_output]((/docs/how-to-guides/build-custom-plugin/custom_plugin_output.png))
+![custom_plugin_output](/docs/how-to-guides/build-custom-plugin/custom_plugin_output.png)
 
 You are now all set to build more plugins and explore Kestra to its fullest!
