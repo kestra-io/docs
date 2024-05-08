@@ -62,6 +62,7 @@ Depending on your Node.js and OS version, you may encounter the following error:
 
 In this case, you must switch to the OpenSSL legacy provider via `export NODE_OPTIONS=--openssl-legacy-provider`.
 
+If you are using an Apple Silicon Mac, use Node version 20 or higher.
 
 ## License
 Apache 2.0 © [Kestra Technologies](https://kestra.io)
