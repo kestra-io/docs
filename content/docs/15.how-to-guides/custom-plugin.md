@@ -1,6 +1,6 @@
 ---
 title: How to Build Custom Plugin in Kestra
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/plugins.svg
 ---
 
 Build your own Custom Plugin for Kestra.
