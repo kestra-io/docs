@@ -33,7 +33,7 @@
             description: 'Dive deeper to discover how Kestra optimizes Python script execution across diverse environments.',
             imageSource: '/landing/features/language/card-pages/python-card.svg',
             imageAlt: 'Python Scripts',
-            pageHref: '/python'
+            pageHref: '/features/code-in-any-language/python'
           },
           {
             id: 2,
@@ -41,7 +41,7 @@
             description: 'Discover Kestra\'s powerful orchestration capabilities for R scripts, simplifying complex data analytics.',
             imageSource: '/landing/features/language/card-pages/r-card.svg',
             imageAlt: '/R Scripts',
-            pageHref: '/r'
+            pageHref: '/features/code-in-any-language/r'
           },
           {
             id: 3,
@@ -49,7 +49,7 @@
             description: 'Learn about Kestra’s support for Julia, optimizing high-performance numerical analysis and computational projects.',
             imageSource: '/landing/features/language/card-pages/julia-card.svg',
             imageAlt: 'Julia Scripts',
-            pageHref: '/julia'
+            pageHref: '/features/code-in-any-language/julia'
           },
         ],
       };
