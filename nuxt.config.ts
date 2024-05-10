@@ -166,6 +166,7 @@ export default defineNuxtConfig({
         '/docs/faq/flows': {redirect: '/docs/workflow-components/flows#faq'},
         '/docs/faq/variables': {redirect: '/docs/workflow-components/variables#faq'},
         '/docs/faq/enterprise': {redirect: '/docs/enterprise/faq'},
+        '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
         '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
     },
 
