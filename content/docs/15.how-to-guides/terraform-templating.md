@@ -221,7 +221,7 @@ module "stripe_events_incremental" {
 
 ## Subflows vs Terraform templating
 
-[Subflows](/docs/workflow-components/subflows) are a way to encapsulate logic and make it reusable across your codebase. However, they are not meant to be used for templating purposes.
+[Subflows](../04.workflow-components/10.subflows.md) are a way to encapsulate logic and make it reusable across your codebase. However, they are not meant to be used for templating purposes.
 
 Terraform templating is a way to define flows in a more modular way, and to expose only the variables that are meant to be changed.
 

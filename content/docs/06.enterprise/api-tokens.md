@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 How to manage API tokens in Kestra.
 
 ::alert{type="info"}
-This feature requires a [commercial license](https://kestra.io/pricing).
+This feature requires a [commercial license](/pricing).
 ::
 
 ## What is an API token

@@ -57,7 +57,7 @@ triggers:
 ```
 
 ::alert{type="warning"}
-Note that the **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](https://kestra.io/docs/concepts/secret) to store it securely.
+Note that the **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](../05.concepts/04.secret.md) to store it securely.
 ::
 
 Now, the only part left is to create a simple app that will listen to Slack events and will forward them to your Kestra flow via the Webhook trigger.
@@ -84,7 +84,7 @@ modal token set --token-id ak-zzzzzzzzz --token-secret as-zzzzzzzzz
 ```
 
 
-Now, create the following flow in Kestra and replace the token ID and token secret with the ones you got from Modal. You can use Kestra's [Secrets](https://kestra.io/docs/concepts/secret) to store those securely. Also, make sure to replace `your_kestra_host` with your Kestra host URL in the `slack.py` file.
+Now, create the following flow in Kestra and replace the token ID and token secret with the ones you got from Modal. You can use Kestra's [Secrets](../05.concepts/04.secret.md) to store those securely. Also, make sure to replace `your_kestra_host` with your Kestra host URL in the `slack.py` file.
 
 
 ```yaml

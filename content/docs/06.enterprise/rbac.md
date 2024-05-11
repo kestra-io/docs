@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 How to manage access and permissions to your instance.
 
 ::alert{type="info"}
-This feature requires a [commercial license](https://kestra.io/pricing).
+This feature requires a [commercial license](/pricing).
 ::
 
 ## Overview
@@ -181,7 +181,7 @@ This role can be assigned to any User, Service Account or Group. This allows you
 When using multi-tenancy, Kestra assigns by default the Admin Role to the user who created the tenant.
 
 ::alert{type="info"}
-If you see an error when creating a new User or Service Account, it might be caused by a limit of your license. In that case, [reach out to us](https://kestra.io/contact-us) to validate and optionally upgrade your license.
+If you see an error when creating a new User or Service Account, it might be caused by a limit of your license. In that case, [reach out to us](/contact-us) to validate and optionally upgrade your license.
 ::
 
 ::collapse{title="Creating a User with an Admin Role"}

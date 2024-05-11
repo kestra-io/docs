@@ -7,7 +7,7 @@ How you can use secrets in various Kestra use cases.
 
 ## What are Secrets
 
-Secrets are sensitive information that you do not want to reveal to the world. This could be your passwords, access keys, tokens, or even personal information like SSN number. For a detailed overview of sercets, see the [Secrets](/docs/concepts/secrets) documentation page.
+Secrets are sensitive information that you do not want to reveal to the world. This could be your passwords, access keys, tokens, or even personal information like SSN number. For a detailed overview of sercets, see the [Secrets](../05.concepts/04.secret.md) documentation page.
 
 ## Using Secrets in Kestra
 

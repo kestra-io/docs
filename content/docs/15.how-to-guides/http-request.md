@@ -15,7 +15,7 @@ You can make HTTP Requests directly inside of a flow as well as get outputs from
 
 ## What is a HTTP Request?
 
-Hypertext Transfer Protocol (better known as HTTP) [requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#http_requests) are messages sent between a client and server to request something. 
+Hypertext Transfer Protocol (better known as HTTP) [requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#http_requests) are messages sent between a client and server to request something.
 
 Requests can send or request data, with common methods known as GET, POST, PUT and DELETE requests. We can use these directly inside of Kestra to interact with 3rd party systems to make our workflows more powerful.
 
@@ -102,11 +102,11 @@ While these tools are very useful for testing APIs, it can be challenging to aut
 
 This is where Kestra comes into enable us to automate requests with other tasks! Below, we'll cover how you can make a `GET`, `POST`, `PUT`, and `DELETE` request directly in your flow.
 
-To make a request, you can use the task type `io.kestra.plugin.fs.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](https://kestra.io/plugins/plugin-fs/tasks/http/io.kestra.plugin.fs.http.request)
+To make a request, you can use the task type `io.kestra.plugin.fs.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](/plugins/plugin-fs/tasks/http/io.kestra.plugin.fs.http.request)
 
 ### GET Request
 
-Making a `GET` Request in Kestra is super useful if you want to fetch up-to-date data from a server and then perform computation directly on it without needing to manually intervene. 
+Making a `GET` Request in Kestra is super useful if you want to fetch up-to-date data from a server and then perform computation directly on it without needing to manually intervene.
 
 In this example, our flow is making a `GET` Request to collect a JSON of products and print the output to the logs:
 
@@ -171,7 +171,7 @@ tasks:
 
 ```
 
-We can define the request body as an input so it's easier to remember what it is, change it when we execute and to use in multiple places if we decide to make multiple requests with the same body. 
+We can define the request body as an input so it's easier to remember what it is, change it when we execute and to use in multiple places if we decide to make multiple requests with the same body.
 
 When we execute this as a `POST` request, this is the response we receive using the same Render Expression option in the Outputs page:
 
