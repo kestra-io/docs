@@ -215,168 +215,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MiscController.Configuration'
-  /api/v1/editor/marketplace/resource/{publisher}/{extension}/{version}:
-    get:
-      tags:
-      - Marketplace
-      summary: Marketplace extensions resources operations
-      operationId: marketplaceResource
-      parameters:
-      - name: publisher
-        in: path
-        description: Publisher id
-        required: true
-        schema:
-          type: string
-      - name: extension
-        in: path
-        description: Extension name
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        description: Extension version
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: marketplaceResource 200 response
-          content:
-            application/json:
-              schema:
-                type: string
-  /api/v1/editor/marketplace/resource/{publisher}/{extension}/{version}/{path}:
-    get:
-      tags:
-      - Marketplace
-      summary: Marketplace extensions resources operations
-      operationId: marketplaceResource_1
-      parameters:
-      - name: publisher
-        in: path
-        description: Publisher id
-        required: true
-        schema:
-          type: string
-      - name: extension
-        in: path
-        description: Extension name
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        description: Extension version
-        required: true
-        schema:
-          type: string
-      - name: path
-        in: path
-        description: Path of the resource
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: marketplaceResource_1 200 response
-          content:
-            application/json:
-              schema:
-                type: string
-  /api/v1/editor/marketplace/{type}:
-    get:
-      tags:
-      - Marketplace
-      summary: Marketplace extensions operations
-      operationId: marketplaceGet
-      parameters:
-      - name: type
-        in: path
-        description: Type of request
-        required: true
-        schema:
-          $ref: '#/components/schemas/MarketplaceRequestType'
-      responses:
-        "200":
-          description: marketplaceGet 200 response
-          content:
-            application/json:
-              schema:
-                type: string
-    post:
-      tags:
-      - Marketplace
-      summary: Marketplace extensions operations
-      operationId: marketplacePost
-      parameters:
-      - name: type
-        in: path
-        description: Type of request
-        required: true
-        schema:
-          $ref: '#/components/schemas/MarketplaceRequestType'
-      responses:
-        "200":
-          description: marketplacePost 200 response
-          content:
-            application/json:
-              schema:
-                type: string
-  /api/v1/editor/marketplace/{type}/{path}:
-    get:
-      tags:
-      - Marketplace
-      summary: Marketplace extensions operations
-      operationId: marketplaceGet_1
-      parameters:
-      - name: type
-        in: path
-        description: Type of request
-        required: true
-        schema:
-          $ref: '#/components/schemas/MarketplaceRequestType'
-      - name: path
-        in: path
-        description: Additional path
-        required: true
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: marketplaceGet_1 200 response
-          content:
-            application/json:
-              schema:
-                type: string
-    post:
-      tags:
-      - Marketplace
-      summary: Marketplace extensions operations
-      operationId: marketplacePost_1
-      parameters:
-      - name: type
-        in: path
-        description: Type of request
-        required: true
-        schema:
-          $ref: '#/components/schemas/MarketplaceRequestType'
-      - name: path
-        in: path
-        description: Additional path
-        required: true
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: marketplacePost_1 200 response
-          content:
-            application/json:
-              schema:
-                type: string
   /api/v1/executions:
     get:
       tags:
@@ -6177,8 +6015,6 @@ components:
         size:
           type: integer
           format: int64
-        readOnly:
-          type: boolean
     FileAttributes.FileType:
       type: string
       enum:
@@ -6685,17 +6521,6 @@ components:
       properties:
         empty:
           type: boolean
-    MarketplaceRequestType:
-      type: string
-      enum:
-      - NLS
-      - SERVICE
-      - SEARCH
-      - SERVICEPPE
-      - CACHE
-      - ITEM
-      - PUBLISHER
-      - CONTROL
     Method:
       type: object
       allOf:
