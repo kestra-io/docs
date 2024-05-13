@@ -26,11 +26,7 @@
                 <div class="bd-content">
                     <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions"
                                             :version="page.version"/>
-                    <SchemaToHtml :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'">
-                        <template v-slot:markdown="{ content }">
-                            <MDC :value="content" tag="article" />
-                        </template>
-                    </SchemaToHtml>
+                    <Markdown :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'"/>
                     <ContentRendererMarkdown
                         class="bd-markdown"
                         :value="page"
@@ -50,7 +46,7 @@
   import NavSideBar from "~/components/docs/NavSideBar.vue";
   import Breadcrumb from "~/components/layout/Breadcrumb.vue";
   import NavToc from "~/components/docs/NavToc.vue";
-  import {SchemaToHtml} from '@kestra-io/ui-libs'
+  import {Markdown} from '@kestra-io/ui-libs'
   import {hash} from "ohash";
   import {recursivePages, generatePageNames} from "~/utils/navigation.js";
 
@@ -126,6 +122,7 @@
       throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
     }
     page = pluginInformation?.value;
+    console.log(pluginInformation.value);
   } else {
     const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
       try {
@@ -283,22 +280,12 @@
     :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
         color: $white-3;
         text-decoration: none !important;
-        border-radius: 0.25rem;
-        padding: 0 calc($spacer / 4);
     }
 
     :deep(.code-block), :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
         border: $block-border;
         background-color: $black-2 !important;
     }
-
-    :deep(p > strong > code) {
-        color: $white-3;
-        text-decoration: none !important;
-        border-radius: 0.25rem;
-        padding: 0 calc($spacer / 4);
-    }
-
 
     :deep(li > mark) {
         background-color: $link-color;
