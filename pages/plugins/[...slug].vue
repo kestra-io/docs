@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-    import PluginContainer from "~/components/layout/Container.vue";
+  import PluginContainer from "~/components/layout/PluginContainer.vue";
 </script>
 
 <style lang="scss" scoped>

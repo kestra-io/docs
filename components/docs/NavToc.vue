@@ -143,7 +143,7 @@
             activateMenuItem(item, index, linkArray, removeActiveTab) {
               if (item && item.id) {
                 const childrenLinkPosition = document.querySelector(`#${item.id}`)?.getBoundingClientRect();
-                const prevChildrenLinkPosition = index ? document.querySelector(`#${linkArray[index - 1].id}`).getBoundingClientRect().top : undefined;
+                const prevChildrenLinkPosition = index ? document.querySelector(`#${linkArray[index - 1].id}`)?.getBoundingClientRect().top : undefined;
                 if (childrenLinkPosition?.top <= 160  && childrenLinkPosition?.top > 0) {
                   let activeTapItem = document.querySelector(`.right-menu a[name='${item.id}']`);
                   if (!activeTapItem.classList.contains('active')) {
