@@ -131,7 +131,10 @@ export default defineNuxtConfig({
     vite: {
         build: {
             rollupOptions: {
-                external: ['shiki/onig.wasm'],
+                external: [
+                    'shiki/onig.wasm',
+                    '@kestra-io/ui-libs'
+                ],
             }
         },
         optimizeDeps: {
