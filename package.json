@@ -50,7 +50,7 @@
     "@nuxt/devtools": "^1.0.8",
     "@nuxt/image": "^1.4.0",
     "@nuxtjs/mdc": "npm:@nuxtjs/mdc-edge@0.6.2-28517347.0c8167c",
-    "@nuxtjs/sitemap": "^5.1.2",
+    "@nuxtjs/sitemap": "^5.1.5",
     "@types/node": "^20.11.6",
     "nuxt": "^3.10.3",
     "nuxt-gtag": "^2.0.5",
