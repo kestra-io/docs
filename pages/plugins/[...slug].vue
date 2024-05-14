@@ -14,4 +14,4 @@
     :deep(.bd-markdown > h2 > a > span ) {
         display: inline !important;
     }
-</style>nav-link dropdown-toggle
+</style>
