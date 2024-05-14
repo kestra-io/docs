@@ -285,7 +285,7 @@
                                         <img src="/landing/header-menu/platform-blueprints.svg" alt="Platform Overview"/>
                                     </div>
                                     <p>
-                                        <span class="title">Explore your blueprints</span>
+                                        <span class="title">Explore blueprints</span>
                                         <ChevronRight class="d-none d-lg-inline-flex"/>
                                     </p>
                                 </NuxtLink>
