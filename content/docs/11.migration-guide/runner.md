@@ -4,11 +4,11 @@ icon: /docs/icons/migration-guide.svg
 release: 0.18.0
 ---
 
-The `runner` property in Kestra script tasks is deprecated. Instead, use the `taskRunner` property.
+The `runner` property in script tasks will be deprecated in Kestra 0.18.0. Use the `taskRunner` property instead.
 
 ## Task Runners Before Kestra 0.16.0
 
-Previously, the `runner` property allowed script tasks to execute in a local processes or Docker containers. Here’s an example of a script task configured with the `runner` property:
+The `runner` property allowed script tasks to run in local processes or Docker containers. Here’s an example of a script task configured with the `runner` property:
 
 ```yaml
 - id: script_task
@@ -58,7 +58,7 @@ Kestra 0.16.0 introduced the `taskRunner` property, offering broader execution o
 
 ### Why the Change?
 
-The `runner` property was limited to a few predefined options, and extending it required modifications to the core script plugin. By moving to `taskRunner`, each environment type is a plugin, which simplifies maintenance and customization. You can create your own Task Runner plugins and if you'd like, you can contribute them to kestra.
+The `runner` property was limited to a few predefined options, and extending it required modifications to the core script plugin. By transitioning to the `taskRunner`, each environment type is a plugin, which simplifies maintenance and customization. You can create your own Task Runner plugins and if you'd like, you can contribute them to kestra.
 
 We envision task runners as a pluggable system allowing you to **orchestrate any code anywhere** without having to worry about the underlying infrastructure.
 
@@ -97,13 +97,15 @@ tasks:
 ```
 ::
 
+::alert{type="info"}
 Note how the `containerImage` replaces the nested `docker.image` property.
+::
 
 ### Steps for Migration
 
-1. **Review Existing Tasks**: Identify all script tasks using the `runner` property.
+1. **Review Existing Tasks**: Identify all script tasks using the `runner` or `docker` properties.
 2. **Choose Suitable `taskRunner`**: Select the appropriate `taskRunner` type based on your execution environment. The `DockerTaskRunner` is the default.
-3. **Update Your Configuration**: Replace the `runner` property with `taskRunner` and adjust the configuration to match the new structure.
+3. **Update Your Configuration**: Replace the `runner` property with `taskRunner` and adjust the configuration to match the new structure, including replacing the `docker.image` with `containerImage`.
 4. **Test Changes**: Validate the updated configurations in a development or staging environment before deploying to production.
 
 ## Support for Legacy `runner` Property
