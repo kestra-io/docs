@@ -69,7 +69,7 @@ Data scientists rely on data stored in Vertical database for training their mode
 
 With Kestra they run query on the Vertica database to get training data, and clone the data scientist repository from GitHub containing model logic and binaries. Then they use Docker to build and install Python and R dependencies needed from the model. Finally, take the result of the model inference and insert the output back into the Vertical database.
 
-With plugins such as Docker.build, Git.Clone, Python.commands, etc. it’s easy to streamline such end-to-end pipelines in Kestra.
+With plugins such as [Docker.build](https://kestra.io/plugins/plugin-docker/tasks/io.kestra.plugin.docker.build), [Git.Clone](https://kestra.io/plugins/plugin-git/tasks/io.kestra.plugin.git.clone), [Python.commands](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands), etc. it’s easy to streamline such end-to-end pipelines in Kestra.
 
 In addition, scheduling the retrain of the model regularly is made easy thanks to scheduling and retry strategies offered by Kestra out of the box.
 
@@ -83,8 +83,6 @@ In addition, scheduling the retrain of the model regularly is made easy thanks t
 We are very proud to be used in such an important way. Political Data has partnered with progressive campaigns, labor unions, and advocacy groups for more than 30 years to help them win on Election Day and we are very proud of their usage at Kestra.
 
 We can't way to see their progress using Kestra, their software Engineering team is working on new implementations and new integrations and we are looking forward for their advancements!
-
-And remember! Every election is determined by the people who show up!
 
 Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
