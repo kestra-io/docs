@@ -19,6 +19,9 @@
             <FeaturesLanguagePlugins />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
+            <FeaturesLanguageAgnosticOrchestration />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
             <LayoutFooterContact
                 title="Getting Started with  Declarative Orchestration"
                 darkButtonText="Get started"

@@ -6,7 +6,7 @@ release: 0.11.0
 
 Since 0.11.0, Templates are deprecated and disabled by default. Please use subflows instead.
 
-If you still rely on templates, you can re-enable them in your [configuration](/docs/configuration-guide/enabled#kestratemplates).
+If you still rely on templates, you can re-enable them in your [configuration](../10.configuration-guide/enabled.md#kestratemplates).
 
 ## Why templates are deprecated
 
@@ -162,7 +162,7 @@ You can look at both a flow with a template task and a flow with a subflow task 
 
 ![template-vs-subflow](/docs/migration-guide/template-vs-subflow.png)
 
-If you still have questions about migrating from templates to subflows, reach out via our [Community Slack](https://kestra.io/slack).
+If you still have questions about migrating from templates to subflows, reach out via our [Community Slack](/slack).
 
 ---
 

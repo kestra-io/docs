@@ -140,7 +140,7 @@ You can look at both a flow with a listener and a flow with a Flow trigger side 
 
 ![listeners-vs-flow-triggers](/docs/migration-guide/listeners-vs-flow-triggers.png)
 
-If you still have questions about migrating from listeners to flow triggers, reach out via our [Community Slack](https://kestra.io/slack).
+If you still have questions about migrating from listeners to flow triggers, reach out via our [Community Slack](/slack).
 
 ---
 

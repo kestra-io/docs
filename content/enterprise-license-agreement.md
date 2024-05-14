@@ -85,7 +85,7 @@ The right to use the Solution is granted to You only upon full payment of the pr
 
 a. **Installation of the Solution**
 
-You shall install the Solution on Your IT Infrastructure under Your sole responsibility, in compliance with the Solution installation procedures set forth in the terms and conditions of installation accessible at the following address: [https://KESTRA.io/docs/](https://kestra.io/docs/).
+You shall install the Solution on Your IT Infrastructure under Your sole responsibility, in compliance with the Solution installation procedures set forth in the terms and conditions of installation accessible at the following address: [https://KESTRA.io/docs/](/docs/).
 
 b. **Selection of Users**
 

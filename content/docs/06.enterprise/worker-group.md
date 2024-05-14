@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 How to configure Worker Groups in Kestra Enterprise Edition.
 
 ::alert{type="info"}
-This feature requires a [commercial license](https://kestra.io/pricing).
+This feature requires a [commercial license](/pricing).
 ::
 
 Worker Group is a set of workers that can be targeted specifically for a task execution or a polling trigger evaluation.

@@ -61,7 +61,7 @@ print(mapped_data)  # Possible output: {'user_uuid': 123, 'name': 'John David Do
 
 The code we write isn’t for the computer. It’s for us. It’s for humans.
 
-If the coding language was meant for the computer, we would all be writing in pure binary instead of these abstract and symbolic languages. The code is the interface that we designed to be able to program the computer. 
+If the coding language was meant for the computer, we would all be writing in pure binary instead of these abstract and symbolic languages. The code is the interface that we designed to be able to program the computer.
 
 One of the key reasons Python is so widely used is its readability. It’s at the same time so close to English while being objective, explicit, unambiguous, (relatively) static, internally consistent, and robust.
 
@@ -91,7 +91,7 @@ A broad set of Python frameworks has been developed to cover almost every aspect
 
 ## Declare your flows, code your logic and stop wasting time
 
-With Kestra we’re definitely in the same mindset: we’ve built our DSL with [YAML](https://kestra.io/blogs/2023-12-01-yaml-pitfalls) - an even simpler markup language to describe workflows. We have made the realization that orchestration logic is tied to basic concepts: 
+With Kestra we’re definitely in the same mindset: we’ve built our DSL with [YAML](https://kestra.io/blogs/2023-12-01-yaml-pitfalls) - an even simpler markup language to describe workflows. We have made the realization that orchestration logic is tied to basic concepts:
 
 - Declare a sequence of tasks
 - Declare upstream and/or downstream dependencies
@@ -99,10 +99,10 @@ With Kestra we’re definitely in the same mindset: we’ve built our DSL with [
 
 Using YAML enables language-agnostic declarative orchestration. As mentioned above, we can't rely on a single programming language to handle all our computing tasks. Enabling a company-wide orchestration platform requires a language that is easy to learn and that can be simultaneously used by engineers across different tech stacks and domain experts with no programming experience.
 
-Being language-agnostic has the advantage of letting the business logic be described in any language. 
+Being language-agnostic has the advantage of letting the business logic be described in any language.
 In this advent, mixing the declarative semantics of YAML with the freedom of Python is probably the best mix to create smart and scalable workflows.
 
-With Kestra, we’ve built several features to allow developers to handle their Python codes while making the orchestration of it seamless. 
+With Kestra, we’ve built several features to allow developers to handle their Python codes while making the orchestration of it seamless.
 
 For example, Kestra allows to pull of Git repositories containing a whole Python project. Then it’s easy to run Python main commands and describe the orchestration of scripts easily.
 
@@ -111,7 +111,7 @@ For example, Kestra allows to pull of Git repositories containing a whole Python
 
 ![Kestra Flow Git clone with Python](/blogs/2024-03-27-python-business-logic/git-clone-flow.png)
 
-We even went further by allowing to write Python scripts directly in an embedded VS Code editor, while connecting these scripts easily in the orchestration logic.
+We even went further by allowing to write Python scripts directly in an embedded Code editor, while connecting these scripts easily in the orchestration logic.
 
 ![VS Code in Kestra](/blogs/2024-03-27-python-business-logic/vs-code-python.png)
 

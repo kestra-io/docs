@@ -163,6 +163,12 @@ export default defineNuxtConfig({
         '/docs/how-to-guides/errors': {redirect: '/docs/workflow-components/errors'},
         '/docs/how-to-guides/python-pip': {redirect: '/docs/how-to-guides/python'},
         '/docs/flow-examples/**': {redirect: '/docs/how-to-guides'},
+        '/docs/faq/troubleshooting': {redirect: '/docs/installation/troubleshooting'},
+        '/docs/faq/flows': {redirect: '/docs/workflow-components/flows#faq'},
+        '/docs/faq/variables': {redirect: '/docs/workflow-components/variables#faq'},
+        '/docs/faq/enterprise': {redirect: '/docs/enterprise/faq'},
+        '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
+        '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
         '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
     },
 

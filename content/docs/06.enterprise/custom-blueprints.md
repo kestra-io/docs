@@ -6,10 +6,10 @@ icon: /docs/icons/kestra.svg
 How to create and manage Custom Blueprints.
 
 ::alert{type="info"}
-This feature requires a [commercial license](https://kestra.io/pricing).
+This feature requires a [commercial license](/pricing).
 ::
 
-On top of the publicly available [Community Blueprints](/docs/concepts/blueprints), you can create custom Blueprints only available to your organization. You can use them to share, centralize, and document commonly used workflows in your team.
+On top of the publicly available [Community Blueprints](../05.concepts/07.blueprints.md), you can create custom Blueprints only available to your organization. You can use them to share, centralize, and document commonly used workflows in your team.
 
 You can think of Custom Blueprints as your team's internal App Store, offering a wide range of integrations and validated workflow patterns tailored to your needs.
 

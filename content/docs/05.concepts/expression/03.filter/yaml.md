@@ -11,7 +11,7 @@ YAML filters are used to turn YAML strings into objects.
 
 This filter, added in [kestra 0.16.0](https://github.com/kestra-io/kestra/pull/3283), is used to parse a YAML string into an object. That object can then be transformed using Pebble templating engine.
 
-The filter is useful when working with the [TemplatedTask](https://kestra.io/plugins/tasks/templating/io.kestra.core.tasks.templating.templatedtask) added in [#3191](https://github.com/kestra-io/kestra/pull/3191).
+The filter is useful when working with the [TemplatedTask](/plugins/tasks/templating/io.kestra.core.tasks.templating.templatedtask) added in [#3191](https://github.com/kestra-io/kestra/pull/3191).
 
 
 ```twig

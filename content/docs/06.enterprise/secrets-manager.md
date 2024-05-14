@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 How to configure the secrets manager.
 
 ::alert{type="info"}
-This feature requires a [commercial license](https://kestra.io/pricing).
+This feature requires a [commercial license](/pricing).
 ::
 
 Kestra integrates with various secret managers to provide secure storage and handling of sensitive data.

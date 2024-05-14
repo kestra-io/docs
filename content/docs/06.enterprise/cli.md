@@ -6,7 +6,7 @@ icon: /docs/icons/admin.svg
 How to interact with Kestra Enterprise Edition using the CLI.
 
 ::alert{type="info"}
-This feature requires a [commercial license](https://kestra.io/pricing).
+This feature requires a [commercial license](/pricing).
 ::
 
 ## Authentication
