@@ -74,6 +74,7 @@ With plugins such as Docker.build, Git.Clone, Python.commands, etc. it’s easy 
 In addition, scheduling the retrain of the model regularly is made easy thanks to scheduling and retry strategies offered by Kestra out of the box.
 
 >“Kestra is the fast, stable, and reliable orchestration platform we were looking for” 
+
 > “I’ve been really enjoying Kestra so far! It’s been much simpler to use than building Airflow DAGs or using Prefect, the plugins are incredibly handy, and my CTO understands declarative YAML much better than Python”
 *Sophia Alice, Data Engineer*
 
