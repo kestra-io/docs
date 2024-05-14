@@ -36,7 +36,7 @@ At Kestra, we believe that solving complex orchestration challenges requires a b
 
 Kestra allows users to work in their preferred environment, whether coding from a local IDE or building flows from the UI. This approach also helps maintain consistency and control over the workflows, as the configurations done via UI are translated into declarative code, which is automatically versioned.
 
-Kestra UI offers an embedded Visual Studio code editor allowing you to seamlessly orchestrate business logic written in any language without the pain of packaging and deploying code. The embedded editor helps you write workflow code that follows best practices thanks to autocompletion, code autoformatting, built-in documentation, verified blueprint examples and continuous syntax validation powered by Kestra's [open-source VS Code extension](https://marketplace.visualstudio.com/items?itemName=kestra-io.kestra).
+Kestra UI offers an embedded code editor allowing you to seamlessly orchestrate business logic written in any language without the pain of packaging and deploying code. The embedded editor helps you write workflow code that follows best practices thanks to autocompletion, code autoformatting, built-in documentation, verified blueprint examples and continuous syntax validation powered by Kestra's [open-source VS Code extension](https://marketplace.visualstudio.com/items?itemName=kestra-io.kestra).
 
 ![code](/blogs/2023-12-14-orchestration-problems-and-complexity/editor.png)
 

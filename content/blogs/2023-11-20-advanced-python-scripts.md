@@ -248,9 +248,9 @@ To start using it, click on the `Editor` tab in the sidebar navigation, and choo
 
 ![Image 11 - Kestra editor tab](/blogs/2023-11-20-advanced-python-scripts/11.png)
 
-After a couple of seconds of initializations, you'll be presented with a familiar-looking interface - well, at least if you've used [Visual Studio Code](https://levelup.gitconnected.com/kestra-visual-studio-code-extension-your-favourite-data-orchestration-platform-just-got-better-ba87c35fe678) before:
+After a couple of seconds of initializations, you'll be presented with a familiar-looking interface:
 
-![Image 12 - Contents of the embedded VSCode editor](/blogs/2023-11-20-advanced-python-scripts/12.png)
+![Image 12 - Contents of the embedded Code editor](/blogs/2023-11-20-advanced-python-scripts/12.png)
 
 The contents of the `_flows` folder are a topic to discuss some other time, so leave it untouched. Everything you do Python-wise will have to be stored in a new folder named, let's say `scripts`.
 

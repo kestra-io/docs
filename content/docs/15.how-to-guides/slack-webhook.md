@@ -142,7 +142,7 @@ tasks:
 ```
 
 ::alert{type="info"}
-If you don't like adding the Python script inline in the YAML file, you can enable `namespaceFiles` and add the Python code in the embedded VS Code Editor in a separate file e.g. called `slack.py` and reference it in the flow as shown below:
+If you don't like adding the Python script inline in the YAML file, you can enable `namespaceFiles` and add the Python code in the embedded Code Editor in a separate file e.g. called `slack.py` and reference it in the flow as shown below:
 ```yaml
 id: slack_app
 namespace: prod
