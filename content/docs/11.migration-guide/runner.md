@@ -18,14 +18,6 @@ The `runner` property allowed script tasks to run in local processes or Docker c
     image: python:3.11
 ```
 
-And here is the equivalent task using the `taskRunner` property:
-```yaml
-- id: script_task
-  type: io.kestra.plugin.scripts.python.Commands
-  containerImage: python:3.11
-  taskRunner:
-    type: io.kestra.core.models.script.types.DockerTaskRunner
-```
 
 ::collapse{title="Full example of a task with a DOCKER runner"}
 ```yaml
@@ -52,27 +44,27 @@ tasks:
 ```
 ::
 
+And here is the equivalent task using the `taskRunner` property:
+```yaml
+- id: script_task
+  type: io.kestra.plugin.scripts.python.Commands
+  containerImage: python:3.11
+  taskRunner:
+    type: io.kestra.core.models.script.types.DockerTaskRunner # ✅ the runner is now a plugin
+```
+
+::alert{type="info"}
+Note how the `containerImage` replaces the nested `docker.image` property.
+
+Since the task runners can deploy containers to multiple environments (incl. Kubernetes, AWS Fargate, GCP CloudRun and more) rather than only Docker, the `containerImage` is now a top-level property of the script task rather than nested under `docker`.
+::
+
+
 ## Transition to `taskRunner` in Kestra 0.16.0 and Beyond
 
-Kestra 0.16.0 introduced the `taskRunner` property, offering broader execution options, such as Kubernetes, AWS Batch, Azure Batch, and Google Batch. This approach decouples the execution environment configuration from the script tasks, making it easier to manage and extend.
+Kestra 0.16.0 introduced the `taskRunner` property, offering broader execution options, such as Kubernetes, AWS Batch, Azure Batch, and Google Batch. This approach decouples the execution environment configuration from the script tasks, making it easier to manage and extend. Below is an updated example of the same script task, but this time using the `taskRunner` property.
 
-### Why the Change?
-
-The `runner` property was limited to a few predefined options, and extending it required modifications to the core script plugin. By transitioning to the `taskRunner`, each environment type is a plugin, which simplifies maintenance and customization. You can create your own Task Runner plugins and if you'd like, you can contribute them to kestra.
-
-We envision task runners as a pluggable system allowing you to **orchestrate any code anywhere** without having to worry about the underlying infrastructure.
-
-### Advantages of Using `taskRunner`
-
-- **Flexibility**: Configure various environments easily using plugins.
-- **Decoupling**: Separate the script task configuration from execution environment details.
-- **Scalability**: Easily add new environments as plugins without having to change anything in your business logic.
-
-### How to Adapt to the New `taskRunner` Property
-
-Here is an example of migrating a Docker runner script task to use `taskRunner`:
-
-::collapse{title="Updated script task using `taskRunner`"}
+::collapse{title="Updated script task using a task runner"}
 ```yaml
 id: python_in_container
 namespace: dev.task_runners
@@ -97,9 +89,18 @@ tasks:
 ```
 ::
 
-::alert{type="info"}
-Note how the `containerImage` replaces the nested `docker.image` property.
-::
+### Why the Change?
+
+The `runner` property was limited to a few predefined options, and extending it required modifications to the core script plugin. By transitioning to the `taskRunner`, each environment type is a plugin, which simplifies maintenance and customization. You can create your own Task Runner plugins and if you'd like, you can contribute them to kestra.
+
+We envision task runners as a pluggable system allowing you to **orchestrate any code anywhere** without having to worry about the underlying infrastructure.
+
+### Advantages of Using `taskRunner`
+
+- **Flexibility**: Configure various environments easily using plugins.
+- **Decoupling**: Separate the script task configuration from execution environment details.
+- **Scalability**: Easily add new environments as plugins without having to change anything in your business logic.
+
 
 ### Steps for Migration
 
