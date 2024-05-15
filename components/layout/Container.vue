@@ -116,8 +116,32 @@
         if (pluginInformation?.value?.error) {
             throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
         }
-
         page = pluginInformation.value;
+
+        const updateObject = function(obj) {
+            if (typeof obj !== 'object' || obj === null) {
+                return obj;
+            }
+
+            if (Array.isArray(obj)) {
+                return obj.map(updateObject);
+            }
+
+            let newObj = { ...obj };
+            for (const key in newObj) {
+                if (newObj.tag === 'binding') {
+                    newObj.children = [{
+                        type: 'text',
+                        value: newObj.props.value ? "{{ " + newObj.props.value + " }}" : ""
+                    }];
+                    newObj.tag = 'span'
+                }
+                newObj[key] = updateObject(newObj[key]);
+            }
+            return newObj;
+        }
+        page = updateObject(pluginInformation.value);
+
     } else {
         const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
             try {
