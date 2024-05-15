@@ -74,7 +74,6 @@ Task Runners also simplify configuration management by allowing you to centrally
 For example, you can centrally manage your AWS credentials for the AwsBatchTaskRunner plugin:
 
 ```yaml
-yamlCopier le code
 taskDefaults:
   - type: io.kestra.plugin.aws
     values:
