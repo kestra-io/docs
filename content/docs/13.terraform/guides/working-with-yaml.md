@@ -1,5 +1,6 @@
 ---
 title: Working with Yaml
+icon: /docs/icons/terraform.svg
 ---
 
 
