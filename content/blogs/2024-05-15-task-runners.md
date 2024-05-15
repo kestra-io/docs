@@ -107,7 +107,7 @@ Kestra's Task Runners provide a robust, efficient, and cost-effective solution f
 
 By optimizing workloads, reducing costs, and improving speed, Task Runners empower businesses to handle their data processing needs more effectively. Whether you are in data analytics, financial services, healthcare, or software development, Task Runners provide the flexibility and efficiency you need to stay competitive in today’s data-driven world.
 
-Ready to see Task Runners in action? [Read our documentation](https://kestra.io/docs/concepts/task-runners) and start optimizing your workflows today!
+Ready to see Task Runners in action? [Read our documentation](https://kestra.io/docs/concepts/task-runners)!
 
 Join the [Slack community](https://kestra.io/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
