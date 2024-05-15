@@ -9,7 +9,7 @@ author:
 image: /blogs/
 ---
 
-Efficiently managing  is crucial for businesses striving to stay competitive. In the past, handling compute-intensive tasks has meant maintaining always-on servers, which can be both inefficient and costly. Kestra's Task Runners offer an amazing solution by dynamically provisioning compute instances in the cloud. This feature ensures that your data processing tasks receive the resources they need precisely when they need them, optimizing your workloads, reducing costs, and improving processing speed.
+Efficiently managing infrastructure is crucial for businesses striving to stay competitive. In the past, handling compute-intensive tasks has meant maintaining always-on servers, which can be both inefficient and costly. Kestra's Task Runners offer an amazing solution that dynamically compute instances in the cloud. This feature ensures that your data processing tasks receive the resources they need precisely when they need them, optimizing your workloads, reducing costs, and improving processing speed.
 
 ---
 
