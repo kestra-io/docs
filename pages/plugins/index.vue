@@ -2,7 +2,7 @@
     <Head>
         <Title>Hundreds of Plugins For All Your Orchestrations Needs</Title>
         <Meta name="description"
-              content="Connect Kestra with tools you arlready know and love"/>
+              content="Connect Kestra with tools you already know and love"/>
     </Head>
     <PluginsLists :plugins="pluginsList" :categories="categories" />
     <LayoutFooterContact
