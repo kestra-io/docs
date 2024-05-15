@@ -26,7 +26,7 @@
                 <div class="bd-content">
                     <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions"
                                             :version="page.version"/>
-                    <Markdown :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'"/>
+                    <SchemaToHtml :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'"/>
                     <ContentRendererMarkdown
                         class="bd-markdown"
                         :value="page"
@@ -46,7 +46,7 @@
   import NavSideBar from "~/components/docs/NavSideBar.vue";
   import Breadcrumb from "~/components/layout/Breadcrumb.vue";
   import NavToc from "~/components/docs/NavToc.vue";
-  import {Markdown} from '@kestra-io/ui-libs'
+  import {SchemaToHtml} from '@kestra-io/ui-libs'
   import {hash} from "ohash";
   import {recursivePages, generatePageNames} from "~/utils/navigation.js";
 
