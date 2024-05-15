@@ -16,7 +16,7 @@
                     <Card
                         :icon="TooltipQuestion"
                         title="Ask a question"
-                        description="Get stuck? The #help channel is here to support you."
+                        description="Got stuck? The #help channel is here to support you."
                     />
                 </div>
 
