@@ -4,7 +4,7 @@ icon: /docs/icons/migration-guide.svg
 release: 0.18.0
 ---
 
-The `runner` property in script tasks will be deprecated in Kestra 0.18.0. Use the `taskRunner` property instead.
+The `runner` property in script tasks will be deprecated in Kestra 0.18.0. Use [the `taskRunner` property](../05.concepts/09.task-runners/index.md) instead.
 
 ## Task Runners Before Kestra 0.16.0
 
@@ -62,7 +62,7 @@ Since the task runners can deploy containers to multiple environments (incl. Kub
 
 ## Transition to `taskRunner` in Kestra 0.16.0 and Beyond
 
-Kestra 0.16.0 introduced the `taskRunner` property, offering broader execution options, such as Kubernetes, AWS Batch, Azure Batch, and Google Batch. This approach decouples the execution environment configuration from the script tasks, making it easier to manage and extend. Below is an updated example of the same script task, but this time using the `taskRunner` property.
+Kestra 0.16.0 introduced the `taskRunner` property, offering [broader execution options](../05.concepts/09.task-runners/05.types/index.md), such as Kubernetes, AWS Batch, Azure Batch, and Google Batch. This approach decouples the execution environment configuration from the script tasks, making it easier to manage and extend. Below is an updated example of the same script task, but this time using the `taskRunner` property.
 
 ::collapse{title="Updated script task using a task runner"}
 ```yaml
