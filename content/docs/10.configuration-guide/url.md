@@ -67,7 +67,7 @@ On some reverse proxies, such as Nginx, you need to disable buffering to enable 
 
 Here is a working configuration:
 
-```nginx
+```bash
 location / {
     proxy_pass  http://localhost:<kestra_port>;
     proxy_http_version 1.1;
@@ -98,7 +98,7 @@ micronaut:
 
 Then, modify your above nginx configuration to the following
 
-```nginx
+```bash
 server {
     listen 80;
     server_name mycompany.com;
