@@ -129,6 +129,7 @@
         },
         methods: {
             focusSearch() {
+                document.querySelector('#search-input').value = '';
                 document.querySelector('#search-input').focus();
                 this.search();
             },
