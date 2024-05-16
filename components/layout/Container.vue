@@ -200,6 +200,7 @@
             border-left: 5px solid $purple-36;
             padding-left: calc($spacer * 0.6);
             font-size: calc($font-size-base * 1.87);
+            display: block;
         }
     }
 
