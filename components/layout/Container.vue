@@ -22,7 +22,7 @@
                     </h1>
                 </div>
 
-                <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4 right-menu" />
+                <NavToc :page="page" class="my-md-0 my-4 right-menu" />
 
                 <div class="bd-content">
                     <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions" :version="page.version" />
@@ -32,6 +32,7 @@
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
                     />
+                    <HelpfulVote />
                     <PrevNext v-if="prevNext" :navigation="navigation" />
                 </div>
             </ContentRenderer>
@@ -44,6 +45,7 @@
     import NavSideBar from "~/components/docs/NavSideBar.vue";
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
     import NavToc from "~/components/docs/NavToc.vue";
+    import HelpfulVote from "~/components/docs/HelpfulVote.vue";
     import {hash} from "ohash";
     import {recursivePages, generatePageNames} from "~/utils/navigation.js";
 
