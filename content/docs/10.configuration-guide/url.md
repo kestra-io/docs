@@ -67,7 +67,7 @@ On some reverse proxies, such as Nginx, you need to disable buffering to enable 
 
 Here is a working configuration:
 
-```nginx
+```bash
 location / {
     proxy_pass  http://localhost:<kestra_port>;
     proxy_http_version 1.1;
@@ -86,3 +86,38 @@ location / {
 }
 ```
 
+Should you wish to access Kestra via a separate context path via the reverse proxy, a change will be required in the Micronaut settings of Kestra.
+
+For instance, say I wish to access the Kestra UI through mycompany.com/kestra, add the following configuration to your Kestra startup configuration:
+
+```yaml
+micronaut:
+  server:
+    context-path: "/kestra"
+```
+
+Then, modify your above nginx configuration to the following
+
+```bash
+server {
+    listen 80;
+    server_name mycompany.com;
+
+    location /kestra {
+        proxy_pass  http://<kestra-hostname>:<kestra-port>/kestra;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_read_timeout 600s;
+        proxy_redirect    off;
+        proxy_set_header  Host             $http_host;
+        proxy_set_header  X-Real-IP        $remote_addr;
+        proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Protocol $scheme;
+
+        # Needed for SSE
+        proxy_buffering off;
+        proxy_cache off;
+    }
+}
+```
