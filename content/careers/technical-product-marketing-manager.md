@@ -7,7 +7,7 @@ type: Marketing
 **About Us:** At Kestra, our mission is to simplify orchestration, unify disparate tools, and improve alignment between engineers and business users. In an era where companies struggle with complex, rigid, and specialized tools, Kestra offers an open-source, event-driven orchestration platform that streamlines business-critical operations. Our platform brings structure, clarity, and collaboration, enabling businesses to build reliable workflows and manage them with confidence.
 
 ## Job Description
-We are seeking a Senior Technical Product Marketing Manager who is a self-starter and can work autonomously to join our marketing team. In this role, you will be crucial in bridging the gap between our product and marketing efforts. You will translate complex technical features into engaging and accessible content that resonates with our technical audience. This position requires a blend of technical expertise and creative skills to effectively communicate the value of our products.
+We are looking for a Technical Product Marketing Manager who is a self-starter and can work autonomously to join our marketing team. In this role, you will be crucial in bridging the gap between our product and marketing efforts. You will translate complex technical features into engaging and accessible content that resonates with our technical audience. This position requires a blend of technical expertise and creative skills to effectively communicate the value of our products.
 
 **Key Responsibilities:**
 - Collaborate with the product and engineering teams to understand new features and updates.
@@ -19,7 +19,7 @@ We are seeking a Senior Technical Product Marketing Manager who is a self-starte
 - Analyze and report on the performance of marketing campaigns, using insights to optimize future efforts.
 
 ## Qualifications
-- Proven experience in a senior technical product marketing role, preferably within the data engineering or software development industry.
+- Proven experience in a technical product marketing role, preferably within the data engineering or software development industry.
 - Strong technical background with the ability to understand and articulate complex product features.
 - Exceptional writing and communication skills with a portfolio of relevant work.
 - Experience creating diverse content types, including blog posts, social media content, and video tutorials.
@@ -39,6 +39,3 @@ We are seeking a Senior Technical Product Marketing Manager who is a self-starte
 - Opportunity to work on industry-leading products and make a significant impact on our growth.
 - Competitive salary and benefits package.
 - Flexible remote work environment.
-
-**How to Apply:**
-Interested candidates are invited to submit their resume, and optionally also a cover letter, and a portfolio showcasing their relevant work.
