@@ -153,7 +153,7 @@
                 align-items: center;
                 display: flex;
                 &.scrolling {
-                    animation: auto-scroll 30s linear infinite;
+                    animation: auto-scroll 60s linear infinite;
                 }
             }
 
