@@ -2,8 +2,8 @@
     <div>
         <NuxtLoadingIndicator />
         <LayoutSearch />
-        <LayoutAnnounce v-if="topBanner !== 'ok' && false" />
-        <div class="wrapper" :class="{'announce': topBanner !== 'ok' && false}">
+        <LayoutAnnounce v-if="content.showTopBanner" :content="content" :alertHide="alertHide"/>
+        <div class="wrapper" :class="{'announce': content.showTopBanner}">
             <LayoutHeader />
             <main >
                 <slot />
@@ -18,6 +18,17 @@
     import {useNuxtApp} from "#app/nuxt.js";
 
     export default defineComponent({
+        data() {
+            return {
+              content: {
+                text: 'Kestra raises $3 million to grow',
+                href: '/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator',
+                linkText: 'Learn more',
+                background: '#8405FF',
+                showTopBanner: false,
+              },
+            };
+        },
         setup() {
             const nuxtApp = useNuxtApp();
 
@@ -34,6 +45,11 @@
 
             return {topBanner}
         },
+        methods: {
+            alertHide() {
+                this.content.showTopBanner = false;
+            },
+        }
     })
 </script>
 

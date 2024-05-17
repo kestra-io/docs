@@ -1,9 +1,9 @@
 <template>
     <div class="fixed-top">
         <div class="announce">
-            <div class="alert alert-primary">
+            <div class="alert alert-primary" :style="`background-color: ${content.background}`">
                 <p class="text-truncate">
-                    🚀 New! <strong>Kestra raises $3 million to grow</strong> <NuxtLink href="/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator">Learn more</NuxtLink>
+                    🚀 New! <strong>{{content.text}}</strong> <NuxtLink :href="content.href">{{content.linkText}}</NuxtLink>
                 </p>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="alertHide">
                     <span aria-hidden="true">&times;</span>
@@ -14,12 +14,16 @@
 </template>
 <script>
     export default {
-        methods: {
-            alertHide() {
-                let cookieRef = useCookie('top-banner', {watch: true});
-                cookieRef.value = "ok";
-            }
-        }
+        props: {
+            content: {
+                type: Object,
+                required: true,
+            },
+            alertHide: {
+                type: Function,
+                required: true,
+            },
+        },
     }
 </script>
 
