@@ -7,12 +7,12 @@ type: Marketing
 **About Us:** At Kestra, our mission is to simplify orchestration, unify disparate tools, and improve alignment between engineers and business users. In an era where companies struggle with complex, rigid, and specialized tools, Kestra offers an open-source, event-driven orchestration platform that streamlines business-critical operations. Our platform brings structure, clarity, and collaboration, enabling businesses to build reliable workflows and manage them with confidence.
 
 ## Job Description
-We are looking for a Technical Product Marketing Manager who is a self-starter and can work autonomously to join our marketing team. In this role, you will be crucial in bridging the gap between our product and marketing efforts. You will translate complex technical features into engaging and accessible content that resonates with our technical audience. This position requires a blend of technical expertise and creative skills to effectively communicate the value of our products.
+We are looking for a Technical Product Marketing Manager to join our marketing team. You will bridge the gap between our product and marketing efforts. You will translate complex technical features into engaging and accessible content that resonates with our technical audience. This position requires a blend of technical expertise and creative skills to effectively communicate the value of our products.
 
 **Key Responsibilities:**
 - Collaborate with the product and engineering teams to understand new features and updates.
 - Create and manage content such as social media posts, blog articles, video tutorials, and technical documentation based on product specifications and pull requests.
-- Develop and execute comprehensive marketing strategies to promote new features and product updates.
+- Develop and execute comprehensive marketing strategies to promote new features and product launches.
 - Use our products regularly to gain a deep understanding of their functionality and use cases.
 - Craft messaging that clearly communicates technical details and benefits to a technical audience.
 - Work closely with other members of the GTM team to ensure consistency in messaging and branding across all channels.
