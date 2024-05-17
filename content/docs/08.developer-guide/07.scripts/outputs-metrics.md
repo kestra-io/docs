@@ -24,9 +24,8 @@ This example automatically emits output metadata, such as the status `code`, fil
 
 ### Outputs and metrics in Script and Commands tasks
 
-The [Scripts Plugin](https://github.com/kestra-io/plugin-scripts)  provides convenient methods to send outputs and metrics to the Kestra backend during flow Execution. Under the hood, Kestra tracks outputs and metrics from script tasks by searching standard output and standard error for `::{}::` or `{}` patterns that allow you to specify outputs and metrics using a JSON request payload:
-- `{}` for single-line JSON objects
-- `::{}::` for multi-line JSON objects.
+The [Scripts Plugin](https://github.com/kestra-io/plugin-scripts)  provides convenient methods to send outputs and metrics to the Kestra backend during flow Execution. Under the hood, Kestra tracks outputs and metrics from script tasks by searching standard output and standard error for `::{}::` patterns that allow you to specify outputs and metrics using a JSON request payload:
+- `::{}::` for JSON objects.
 
 > Note that `outputs` require a **dictionary**, while `metrics` expect a **list of dictionaries**.
 
@@ -100,8 +99,7 @@ tasks:
   - id: py
     type: io.kestra.plugin.scripts.python.Script
     warningOnStdErr: false
-    docker:
-      image: ghcr.io/kestra-io/pydata:latest
+    containerImage: ghcr.io/kestra-io/pydata:latest
     script: |
       import timeit
       from kestra import Kestra
@@ -153,8 +151,23 @@ echo '::{"metrics":[{"name":"count","type":"counter","value":1,"tags":{"tag1":"i
 # 3. send a timer with tags
 echo '::{"metrics":[{"name":"time","type":"timer","value":2.12,"tags":{"tag1":"i","tag2":"destroy"}}]}::'
 ```
-
 The JSON payload should be provided without any spaces.
+
+Here is a comprehensive example in a flow:
+
+```yaml
+id: shell_script
+namespace: example
+
+tasks:
+  - id: shell_script
+    type: io.kestra.plugin.scripts.shell.Script
+    containerImage: ubuntu
+    script: |
+      echo '{"outputs":{"test":"value","int":2,"bool":true,"float":3.65}}'
+      echo '::{"metrics":[{"name":"count","type":"counter","value":1,"tags":{"tag1":"i","tag2":"win"}}]}::'
+      echo '::{"metrics":[{"name":"time","type":"timer","value":2.12,"tags":{"tag1":"i","tag2":"destroy"}}]}::'
+```
 
 ---
 
