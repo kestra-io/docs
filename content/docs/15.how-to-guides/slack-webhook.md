@@ -1,5 +1,5 @@
 ---
-title: How to Use the Slack Events API in Kestra
+title: Slack Events API
 icon: /docs/icons/slack.svg
 ---
 

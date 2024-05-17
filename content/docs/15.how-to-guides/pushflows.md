@@ -1,5 +1,5 @@
 ---
-title: How to Use the PushFlows Task
+title: PushFlows Task
 icon: /docs/icons/tutorial.svg
 version: ">= 0.17.0"
 ---

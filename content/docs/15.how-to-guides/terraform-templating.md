@@ -1,5 +1,5 @@
 ---
-title: Leverage Terraform for flow modularity
+title: Terraform Modules
 icon: /docs/icons/terraform.svg
 ---
 

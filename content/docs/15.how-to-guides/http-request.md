@@ -1,5 +1,5 @@
 ---
-title: How to Make HTTP Requests in Kestra
+title: HTTP Requests
 icon: /docs/icons/tutorial.svg
 ---
 

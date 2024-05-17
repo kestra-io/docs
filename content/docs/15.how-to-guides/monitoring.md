@@ -1,5 +1,5 @@
 ---
-title: How to Setup Monitoring in Kestra
+title: Monitoring with Grafana & Prometheus
 icon: /docs/icons/grafana.svg
 ---
 
