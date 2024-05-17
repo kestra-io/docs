@@ -22,7 +22,7 @@
                     </h1>
                 </div>
 
-                <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4 right-menu" />
+                <NavToc :page="page" class="my-md-0 my-4 right-menu" />
 
                 <div class="bd-content">
                     <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions" :version="page.version" />
@@ -32,6 +32,7 @@
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
                     />
+                    <HelpfulVote />
                     <PrevNext v-if="prevNext" :navigation="navigation" />
                 </div>
             </ContentRenderer>
@@ -44,6 +45,7 @@
     import NavSideBar from "~/components/docs/NavSideBar.vue";
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
     import NavToc from "~/components/docs/NavToc.vue";
+    import HelpfulVote from "~/components/docs/HelpfulVote.vue";
     import {hash} from "ohash";
     import {recursivePages, generatePageNames} from "~/utils/navigation.js";
 
@@ -114,8 +116,32 @@
         if (pluginInformation?.value?.error) {
             throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
         }
-
         page = pluginInformation.value;
+
+        const updateObject = function(obj) {
+            if (typeof obj !== 'object' || obj === null) {
+                return obj;
+            }
+
+            if (Array.isArray(obj)) {
+                return obj.map(updateObject);
+            }
+
+            let newObj = { ...obj };
+            for (const key in newObj) {
+                if (newObj.tag === 'binding') {
+                    newObj.children = [{
+                        type: 'text',
+                        value: newObj.props.value ? "{{ " + newObj.props.value + " }}" : ""
+                    }];
+                    newObj.tag = 'span'
+                }
+                newObj[key] = updateObject(newObj[key]);
+            }
+            return newObj;
+        }
+        page = updateObject(pluginInformation.value);
+
     } else {
         const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
             try {
@@ -198,6 +224,7 @@
             border-left: 5px solid $purple-36;
             padding-left: calc($spacer * 0.6);
             font-size: calc($font-size-base * 1.87);
+            display: block;
         }
     }
 

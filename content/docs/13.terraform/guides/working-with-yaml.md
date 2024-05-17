@@ -1,5 +1,6 @@
 ---
 title: Working with Yaml
+icon: /docs/icons/terraform.svg
 ---
 
 
@@ -32,7 +33,7 @@ resource "kestra_flow" "example" {
   flow_id = "my-flow"
   content = <<EOT
 inputs:
-  - id: my-value
+  - name: my-value
     type: STRING
     required: true
 
@@ -51,7 +52,7 @@ Better will be to use a [file function](https://www.terraform.io/docs/language/f
 
 ```yaml
 inputs:
-  - id: my-value
+  - name: my-value
     type: STRING
     required: true
 

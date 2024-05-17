@@ -101,48 +101,52 @@ tasks:
       MODAL_TOKEN_SECRET: "{{ secret('MODAL_TOKEN_SECRET') }}"
     inputFiles:
       slack.py: |
-        from fastapi import FastAPI, Request
+        import logging
+        from fastapi import FastAPI, Request, BackgroundTasks
         from fastapi.responses import JSONResponse
         from modal import Image, Stub, asgi_app
+        import requests
 
         web_app = FastAPI()
         stub = Stub("slack_app")
 
         image = Image.debian_slim().pip_install("requests")
 
+        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger(__name__)
 
-        @web_app.post("/slack/events")
-        async def slack_events(request: Request):
-            import requests
-
-            json_data = await request.json()
-
-            # Slack URL Verification Challenge
-            if "challenge" in json_data:
-                return JSONResponse(content={"challenge": json_data["challenge"]})
-
+        def process_event(event):
             # TODO adjust the URL below to your Kestra Webhook URL
             url = "http://your_kestra_host:8080/api/v1/executions/webhook/prod/slack_events/superStrongSecretKey42"
-            headers = {
-                "Content-Type": "application/json",
-            }
+            headers = {"Content-Type": "application/json"}
+            response = requests.post(url, headers=headers, json=event)
+            logger.info(f"Forwarding event response: {response.status_code} - {response.text}")
 
-            response = requests.post(url, headers=headers, json=json_data)
-            print(response.text)
+        @web_app.post("/slack/events")
+        async def slack_events(request: Request, background_tasks: BackgroundTasks):
+            json_data = await request.json()
 
-            return JSONResponse(
-                content={"status": response.status_code, "response": response.text}
-            )
+            if "challenge" in json_data:
+                logger.info("Received Slack challenge event")
+                return JSONResponse(content={"challenge": json_data["challenge"]})
 
+            logger.info(f"Received event: {json_data}")
+
+            # Process the event asynchronously
+            background_tasks.add_task(process_event, json_data)
+
+            # Respond immediately to Slack
+            logger.info("Responding immediately to Slack")
+            return JSONResponse(content={"status": "ok"})
 
         @stub.function(image=image)
         @asgi_app()
         def fastapi_app():
-            return web_app
+            return web_app      
 ```
 
 ::alert{type="info"}
-If you don't like adding the Python script inline in the YAML file, you can enable `namespaceFiles` and add the Python code in the embedded VS Code Editor in a separate file e.g. called `slack.py` and reference it in the flow as shown below:
+If you don't like adding the Python script inline in the YAML file, you can enable `namespaceFiles` and add the Python code in the embedded Code Editor in a separate file e.g. called `slack.py` and reference it in the flow as shown below:
 ```yaml
 id: slack_app
 namespace: prod

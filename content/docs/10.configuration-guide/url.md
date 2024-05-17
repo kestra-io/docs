@@ -43,7 +43,7 @@ micronaut:
 Make sure to check the [Micronaut HttpClient Configuration](https://docs.micronaut.io/latest/guide/configurationreference.html#io.micronaut.http.client.DefaultHttpClientConfiguration) for more information on how to configure the `DefaultHttpClientConfiguration` in your `config.yml` file.
 
 
-Some features within Kestra's embedded VS Code editor require network communication to work, such as the auto-update mechanism, querying and installing extensions, and telemetry. For these features to work properly in a proxy environment, you might need to adjust some firewall rules to allow communication with Microsoft's VS Code editor. For example, Kestra's editor needs access to the `*.vscode-unpkg.net` domain when behind a proxy/firewall combination in order to load web extensions. If you are behind a firewall that needs to allow specific domains used by VS Code, make sure to allow communication to go through common hostnames such as `*.vscode-unpkg.net`. We recommend whitelisting the following URLs to make the VS Code editor work:
+Some features within Kestra's embedded Code editor require network communication to work, such as the auto-update mechanism, querying and installing extensions, and telemetry. For these features to work properly in a proxy environment, you might need to adjust some firewall rules to allow communication with the Code editor. For example, Kestra's editor needs access to the `*.vscode-unpkg.net` domain when behind a proxy/firewall combination in order to load web extensions. If you are behind a firewall that needs to allow specific domains used by VS Code, make sure to allow communication to go through common hostnames such as `*.vscode-unpkg.net`. We recommend whitelisting the following URLs to make the VS Code editor work:
 - api.kestra.io
 - kestra-io.vscode-unpkg.net
 - proxzima.vscode-unpkg.net
@@ -67,7 +67,7 @@ On some reverse proxies, such as Nginx, you need to disable buffering to enable 
 
 Here is a working configuration:
 
-```nginx
+```bash
 location / {
     proxy_pass  http://localhost:<kestra_port>;
     proxy_http_version 1.1;
@@ -86,3 +86,38 @@ location / {
 }
 ```
 
+Should you wish to access Kestra via a separate context path via the reverse proxy, a change will be required in the Micronaut settings of Kestra.
+
+For instance, say I wish to access the Kestra UI through mycompany.com/kestra, add the following configuration to your Kestra startup configuration:
+
+```yaml
+micronaut:
+  server:
+    context-path: "/kestra"
+```
+
+Then, modify your above nginx configuration to the following
+
+```bash
+server {
+    listen 80;
+    server_name mycompany.com;
+
+    location /kestra {
+        proxy_pass  http://<kestra-hostname>:<kestra-port>/kestra;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_read_timeout 600s;
+        proxy_redirect    off;
+        proxy_set_header  Host             $http_host;
+        proxy_set_header  X-Real-IP        $remote_addr;
+        proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Protocol $scheme;
+
+        # Needed for SSE
+        proxy_buffering off;
+        proxy_cache off;
+    }
+}
+```

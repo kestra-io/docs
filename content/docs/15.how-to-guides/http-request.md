@@ -102,7 +102,7 @@ While these tools are very useful for testing APIs, it can be challenging to aut
 
 This is where Kestra comes into enable us to automate requests with other tasks! Below, we'll cover how you can make a `GET`, `POST`, `PUT`, and `DELETE` request directly in your flow.
 
-To make a request, you can use the task type `io.kestra.plugin.fs.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](/plugins/plugin-fs/tasks/http/io.kestra.plugin.fs.http.request)
+To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](/plugins/plugin-fs/tasks/http/io.kestra.plugin.fs.http.request)
 
 ### GET Request
 
@@ -117,7 +117,7 @@ description: Make a HTTP Request and Handle the Output
 
 tasks:
   - id: send_data
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://dummyjson.com/products
     method: GET
     contentType: application/json
@@ -159,7 +159,7 @@ inputs:
 
 tasks:
   - id: send_data
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://dummyjson.com/products/add
     method: POST
     contentType: application/json
@@ -196,7 +196,7 @@ inputs:
 
 tasks:
   - id: send_data
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://dummyjson.com/products/1
     method: PUT
     contentType: application/json
@@ -226,7 +226,7 @@ inputs:
 
 tasks:
   - id: send_data
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: "https://dummyjson.com/products/{{ inputs.product_id }}"
     method: DELETE
     contentType: application/json

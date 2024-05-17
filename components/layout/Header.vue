@@ -30,19 +30,6 @@
                             <ChevronDown />
                         </a>
                         <ul class="dropdown-menu product-menu">
-                            <div class="submenu-item d-none d-lg-block">
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/overview" @click="globalClick(true)">
-                                        <div class="submenu-img">
-                                            <NuxtImg width="200px" loading="lazy" src="/landing/header-menu/platform-overview.webp" alt="Platform Overview"/>
-                                        </div>
-                                        <p>
-                                            <span>Platform Overview</span><br />
-                                            Powerful capabilities from the UI
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                            </div>
                             <div class="d-flex flex-column gap-3 py-lg-0 py-1">
                                 <li class="d-lg-none">
                                     <NuxtLink class="dropdown-item" href="/overview" @click="globalClick(true)">
@@ -79,6 +66,21 @@
                                         <p>
                                             <span>Enterprise Edition</span><br />
                                             Security and Governance for Enterprise Needs
+                                        </p>
+                                    </NuxtLink>
+                                </li>
+                                <li>
+                                    <NuxtLink
+                                        class="d-block d-sm-inline-block mn-sm-0 btn btn-animated btn-purple-animated w-100 submenu-btn"
+                                        href="/overview"
+                                        @click="globalClick(true)"
+                                    >
+                                        <div class="submenu-btn-img">
+                                            <img src="/landing/header-menu/platform-overview.svg" alt="Platform Overview"/>
+                                        </div>
+                                        <p>
+                                            <span class="title">Platform overview</span>
+                                            <ChevronRight class="d-none d-lg-inline-flex"/>
                                         </p>
                                     </NuxtLink>
                                 </li>
@@ -212,86 +214,82 @@
                             Resources
                             <ChevronDown />
                         </a>
-                        <ul class="dropdown-menu resources-menu">
-                            <div class="submenu-item d-none d-lg-block">
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/blueprints" @click="globalClick(true)">
-                                        <div class="submenu-img">
-                                            <p>+200 blueprints</p>
-                                            <NuxtImg width="320px" height="143px" loading="lazy" src="/landing/header-menu/platform-blueprints.webp" alt="Blueprints"/>
-                                        </div>
-                                        <p>
-                                            <span>Blueprints</span><br />
-                                            Explore the Blueprints library
-                                        </p>
-                                    </NuxtLink>
-                                </li>
+                        <ul class="dropdown-menu resources-menu flex-column">
+                            <div class="d-flex flex-column flex-lg-row">
+                                <div class="d-flex flex-column aside-menu py-lg-0 py-1">
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
+                                            <PostOutline />
+                                            <p>
+                                                <span>Blog</span><br />
+                                                Company news, product updates, and engineering deep dives
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
+                                            <Video />
+                                            <p>
+                                                <span>Video Tutorials</span><br />
+                                                Get started with our video tutorials
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/community" @click="globalClick(true)">
+                                            <AccountGroup />
+                                            <p>
+                                                <span>Community Overview</span><br />
+                                                Ask any questions and share your feedback
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                </div>
+                                <div class="d-flex flex-column aside-menu py-lg-0 py-1">
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
+                                            <BookOpenVariant />
+                                            <p>
+                                                <span>Customers Stories</span><br />
+                                                Learn how Enterprises orchestrate their business-critical workflows
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
+                                            <Handshake />
+                                            <p>
+                                                <span>Partners</span><br />
+                                                Use our partner ecosystem to accelerate your Kesra adoption
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/faq" @click="globalClick(true)">
+                                            <CommentQuestionOutline />
+                                            <p>
+                                                <span>FAQ</span><br />
+                                                FAQ about the product and the company
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                </div>
                             </div>
-                            <div class="d-flex flex-column aside-menu py-lg-0 py-1">
-                                <li class="d-lg-none">
-                                    <NuxtLink class="dropdown-item" href="/blueprints" @click="globalClick(true)">
-                                        <Ballot />
-                                        <p>
-                                            <span>Blueprints</span><br />
-                                             Explore the Blueprints library
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
-                                        <PostOutline />
-                                        <p>
-                                            <span>Blog</span><br />
-                                            Company news, product updates, and engineering deep dives
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
-                                        <Video />
-                                        <p>
-                                            <span>Video Tutorials</span><br />
-                                            Get started with our video tutorials
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
-                                        <Handshake />
-                                        <p>
-                                            <span>Partners</span><br />
-                                            Use our partner ecosystem to accelerate your Kesra adoption
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
-                                        <BookOpenVariant />
-                                        <p>
-                                            <span>Customers Stories</span><br />
-                                            Learn how Enterprises orchestrate their business-critical workflows
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/community" @click="globalClick(true)">
-                                        <AccountGroup />
-                                        <p>
-                                            <span>Community Overview</span><br />
-                                            Ask any questions and share your feedback
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/faq" @click="globalClick(true)">
-                                        <CommentQuestionOutline />
-                                        <p>
-                                            <span>FAQ</span><br />
-                                            FAQ about the product and the company
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                            </div>
+                            <li class="w-100">
+                                <NuxtLink
+                                    class="d-block d-sm-inline-block mn-sm-0 btn btn-animated btn-purple-animated w-100 submenu-btn"
+                                    href="/blueprints"
+                                    @click="globalClick(true)"
+                                >
+                                    <div class="submenu-btn-img">
+                                        <img src="/landing/header-menu/platform-blueprints.svg" alt="Platform Overview"/>
+                                    </div>
+                                    <p>
+                                        <span class="title">Explore blueprints</span>
+                                        <ChevronRight class="d-none d-lg-inline-flex"/>
+                                    </p>
+                                </NuxtLink>
+                            </li>
                         </ul>
                         <ul class="dropdown-menu">
                             <li>
@@ -418,6 +416,7 @@ import Earth from "vue-material-design-icons/Earth.vue"
 
 <script>
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
+import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
 import GithubButton from "../layout/GithubButton.vue";
 
 export default {
@@ -850,6 +849,13 @@ export default {
                     }
                 }
 
+                .product-menu {
+                    width: 24.375rem !important;
+                    @include media-breakpoint-down(lg) {
+                        width: 100% !important;
+                    }
+                }
+
                 .product-menu,
                 .resources-menu {
                     align-items: flex-start;
@@ -927,9 +933,62 @@ export default {
                                     left: 8%;
                                 }
                             }
+
+
+                        }
+                    }
+
+                    .submenu-btn {
+                        height: 5.375rem !important;
+                        display: flex !important;
+                        align-items: center;
+                        justify-content: flex-end;
+                        position: relative;
+                        padding: 0 !important;
+                        padding-right: $spacer !important;
+                        border-radius: calc($spacer * 0.5);
+                        .submenu-btn-img {
+                            position: absolute;
+                            left: -4.25rem;
+                            top: -1rem;
+                        }
+
+                        p {
+                            display: flex;
+                            justify-content: flex-end;
+                            align-items: center;
+                            margin: 0;
+
+                            span.material-design-icon {
+                                width: 1.875rem !important;
+                                height: 1.875rem !important;
+                                display: block !important;
+                                :deep(.material-design-icon__svg) {
+                                    width: 1.875rem !important;
+                                    height: 1.875rem !important;
+                                    bottom: 0 !important;
+                                }
+                            }
+
+                            span.title {
+                                font-weight: 600;
+                                font-size: $font-size-base;
+                            }
                         }
                     }
                 }
+
+                .resources-menu {
+                    .submenu-btn {
+                        padding-right: calc($spacer * 3.158) !important;
+
+                        .submenu-btn-img {
+                            left: 1.265rem !important;
+                            top: -1.938rem;
+                        }
+                    }
+                }
+
 
                 .solutions-menu {
                     gap: 1rem;
