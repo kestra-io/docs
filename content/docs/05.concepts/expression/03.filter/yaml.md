@@ -492,7 +492,7 @@ tasks:
 ::collapse{title="Sample code for testing the nindent filter"}
 
 ```yaml
-id: indent_filter
+id: nindent_filter
 namespace: dev
 
 labels:
