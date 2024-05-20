@@ -7064,6 +7064,10 @@ components:
           type: array
           items:
             type: string
+        aliases:
+          type: array
+          items:
+            type: string
         categories:
           type: array
           items:
@@ -7096,7 +7100,6 @@ components:
       - CORE
       - INGESTION
       - BI
-      - DATA_QUALITY
     PluginUsage:
       type: object
       properties:
