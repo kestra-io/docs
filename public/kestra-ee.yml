@@ -9296,6 +9296,13 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/SchemaType'
+      - name: arrayOf
+        in: query
+        description: If schema should be an array of requested type
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       responses:
         "200":
           description: schemas 200 response
@@ -9319,6 +9326,13 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/SchemaType'
+      - name: arrayOf
+        in: query
+        description: If schema should be an array of requested type
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       responses:
         "200":
           description: schemas_1 200 response
@@ -18938,6 +18952,7 @@ components:
       - template
       - task
       - trigger
+      - taskdefault
     SearchResult_Flow_:
       required:
       - fragments
