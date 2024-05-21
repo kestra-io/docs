@@ -1,13 +1,11 @@
 ---
 title: Role-Based Access Control (RBAC)
 icon: /docs/icons/admin.svg
+editions: ["EE"]
 ---
 
 How to manage access and permissions to your instance.
 
-::alert{type="info"}
-This feature requires a [commercial license](/pricing).
-::
 
 ## Overview
 

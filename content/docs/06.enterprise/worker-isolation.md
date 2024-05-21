@@ -1,13 +1,11 @@
 ---
 title: Worker Isolation
 icon: /docs/icons/admin.svg
+editions: ["EE"]
 ---
 
 How to configure worker isolation in Kestra.
 
-::alert{type="info"}
-This feature requires a [commercial license](/pricing).
-::
 
 ## Java security
 
