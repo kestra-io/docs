@@ -14,7 +14,7 @@ The `PushFlows` task allows you to commit and push your saved flows to a Git rep
 
 ## How it works
 
-The `PushFlows` task is a powerful integration that allows you to **push your code to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
+The [PushFlows](/plugins/plugin-git/tasks/io.kestra.plugin.git.PushFlows) task is a powerful integration that allows you to **push your code to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 
 The process is simple: you can **build your flows** in a development namespace using all **productivity features of the Kestra UI** (_such as the built-in code editor, autocompletion, syntax validation, documentation, blueprint examples, live-updating topology view, output previews, replays, execution and revision history_) and then **push them to Git** after you have tested and validated them.
 
@@ -29,7 +29,7 @@ Let's look at a few common patterns of using the `PushFlows` task.
 Before you start using the `PushFlows` task, make sure you have the following prerequisites in place:
 1. A Git repository where you want to push your flows.
 2. A Personal Access Token (PAT) for Git authentication.
-3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](https://kestra.io/docs/concepts/secret) within the Kestra instance.
+3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](../05.concepts/04.secret.md) within the Kestra instance.
 
 ## Using the `dryRun` property
 
@@ -59,9 +59,9 @@ namespace: system
 tasks:
   - id: commit_and_push
     type: io.kestra.plugin.git.PushFlows
-    username: anna-geller
+    username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
-    url: https://github.com/anna-geller/flows
+    url: https://github.com/git_username/flows
     branch: develop
     flows:
       - hello_world
@@ -93,20 +93,20 @@ tasks:
 
 You should see the following log message:
 
-![img_2.png](/docs/how-to-guides/pushflows/git2.png)
+![git2.png](/docs/how-to-guides/pushflows/git2.png)
 
 And here is what you should see in the Outputs tab:
 
-![img_2.png](/docs/how-to-guides/pushflows/git3.png)
+![git3.png](/docs/how-to-guides/pushflows/git3.png)
 
 
 When you click on the commit URL from the logs or from the Outputs tab, you'll be redirected to the commit page on GitHub:
 
-![git_pushflows](/docs/how-to-guides/pushflows/git4.png)
+![git4.png](/docs/how-to-guides/pushflows/git4.png)
 
 Now, you can create a pull request and merge the changes to the main branch.
 
-![git_pushflows](/docs/how-to-guides/pushflows/git5_pr.png)
+![git5_pr.png](/docs/how-to-guides/pushflows/git5_pr.png)
 
 ## Pushing all flows from a single namespace to Git
 
@@ -131,7 +131,7 @@ tasks:
     message: the simplest dev-to-prod workflow ever
 ```
 
-![git_pushflows](/docs/how-to-guides/pushflows/git6_all_flows.png)
+![git6_all_flows.png](/docs/how-to-guides/pushflows/git6_all_flows.png)
 
 Let's now adjust the system flow to push all flows from the `dev` namespace to the `develop` branch:
 
@@ -142,9 +142,9 @@ namespace: system
 tasks:
   - id: commit_and_push
     type: io.kestra.plugin.git.PushFlows
-    username: anna-geller
+    username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
-    url: https://github.com/anna-geller/flows
+    url: https://github.com/git_username/flows
     branch: develop
     sourceNamespace: dev
     targetNamespace: prod
@@ -155,11 +155,11 @@ tasks:
 
 Again, we can set the `dryRun` property to `true` to see what files will be added, modified, or deleted based on the Git version without overwriting the files in Git yet:
 
-![git_pushflows](/docs/how-to-guides/pushflows/git7.png)
+![git7.png](/docs/how-to-guides/pushflows/git7.png)
 
 Now if you change the `dryRun` property to `false` and run the system flow again, you should see all three flows being pushed to the `flows` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
 
-![git_pushflows](/docs/how-to-guides/pushflows/git8.png)
+![git8.png](/docs/how-to-guides/pushflows/git8.png)
 
 
 ## Pushing all flows including child namespaces
@@ -209,9 +209,9 @@ namespace: system
 tasks:
   - id: commit_and_push
     type: io.kestra.plugin.git.PushFlows
-    username: anna-geller
+    username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
-    url: https://github.com/anna-geller/flows
+    url: https://github.com/git_username/flows
     branch: develop
     sourceNamespace: dev
     targetNamespace: prod
@@ -222,11 +222,11 @@ tasks:
 
 When you run this final system flow, you should see the following output:
 
-![git_pushflows](/docs/how-to-guides/pushflows/git9.png)
+![git9.png](/docs/how-to-guides/pushflows/git9.png)
 
 And here is a confirmation that all flows from the `dev` namespace and its child namespaces have been pushed to the Git repository:
 
-![git_pushflows](/docs/how-to-guides/pushflows/git10.png)
+![git10.png](/docs/how-to-guides/pushflows/git10.png)
 
 Here is a simple table to illustrate how flows are mapped to files in the Git repository:
 
@@ -250,4 +250,4 @@ You can see that each child namespace is represented as a subfolder in the Git r
 - If you omit the `targetNamespace`, the `sourceNamespace` will be used as the `targetNamespace` by default. The `targetNamespace` is an optional mechanism to help you prepare your development flows to be merged into the production branch/namespace. If you set the `targetNamespace`, the `sourceNamespace` in the source code will be overwritten by the `targetNamespace` so that you can seamlessy sync the flows to production.
 - If you try to add the Personal Access Token (PAT) directly in your source code in the `password` property, you will get an error message. This is a safety mechanism to prevent you and your users from accidentally exposing your PAT in the source code. You should store the PAT as a Kestra Secret, environment variable, namespace variable or as a SECRET-type input in your flow.
 
-![git_pushflows](/docs/how-to-guides/pushflows/git11_credential_detected.png)
+![git11_credential_detected.png](/docs/how-to-guides/pushflows/git11_credential_detected.png)
