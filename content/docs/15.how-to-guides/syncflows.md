@@ -42,7 +42,7 @@ tasks:
 
 Given that the `dryRun` property is set to `true`, the task will only output modifications without pushing any flows to Git yet:
 
-![git1](/docs/how-to-guides/pushflows/git1.png)
+![git1](/docs/how-to-guides/syncflows/git1.png)
 
 The files listed are the same ones we added in the [PushFlows guide](pushflows.md).
 
@@ -63,11 +63,11 @@ tasks:
 
 You should see the same flows from the earlier log now inside of Kestra:
 
-![git2.png](/docs/how-to-guides/pushflows/git2.png)
+![git2.png](/docs/how-to-guides/syncflows/git2.png)
 
 We can also see a full list inside of the Outputs tab too:
 
-![git3.png](/docs/how-to-guides/pushflows/git3.png)
+![git3.png](/docs/how-to-guides/syncflows/git3.png)
 
 ## Sync all flows including child namespaces
 
@@ -92,8 +92,8 @@ tasks:
 
 Similar to earlier, we can see all of our flows, including the ones from the `tutorial` child namespace were synced into Kestra:
 
-![git4.png](/docs/how-to-guides/pushflows/git4.png)
+![git4.png](/docs/how-to-guides/syncflows/git4.png)
 
 We can also verify this with the Outputs tab too:
 
-![git5.png](/docs/how-to-guides/pushflows/git5.png)
+![git5.png](/docs/how-to-guides/syncflows/git5.png)
