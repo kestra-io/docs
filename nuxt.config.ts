@@ -8,8 +8,14 @@ export default defineNuxtConfig({
         'nuxt-gtag',
         'nuxt-multi-cache',
         'vue3-carousel-nuxt',
-        'nuxt-lazy-hydrate'
+        'nuxt-lazy-hydrate',
+        '@nuxtjs/mdc'
     ],
+    mdc: {
+        components: {
+            prose: false, // Disable predefined prose components
+        },
+    },
     sitemap: {
         sitemaps: {
             default: {
@@ -73,9 +79,9 @@ export default defineNuxtConfig({
                 'remark-flexible-markers': {
                     markerClassName: 'type-mark',
                 },
-                'remark-code-import': {
-                    rootDir: process.cwd()
-                },
+                // 'remark-code-import': {
+                //     rootDir: process.cwd()
+                // },
             }
         },
     },
@@ -206,6 +212,7 @@ export default defineNuxtConfig({
     },
 
     devtools: {
+        enabled: true,
         timeline: {
             enabled: true
         }
