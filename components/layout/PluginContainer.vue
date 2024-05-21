@@ -26,7 +26,11 @@
                 <div class="bd-content">
                     <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions"
                                             :version="page.version"/>
-                    <SchemaToHtml :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'"/>
+                    <SchemaToHtml :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'">
+                        <template v-slot:markdown="{ content }">
+                        <MDC :value="content" tag="article" />
+                        </template>
+                    </SchemaToHtml>
                     <ContentRendererMarkdown
                         class="bd-markdown"
                         :value="page"
@@ -280,12 +284,22 @@
     :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
         color: $white-3;
         text-decoration: none !important;
+        border-radius: 0.25rem;
+        padding: 0 calc($spacer / 4);
     }
 
     :deep(.code-block), :deep(p > code), :deep(li > code), :deep(a > code), :deep(table code) {
         border: $block-border;
         background-color: $black-2 !important;
     }
+
+    :deep(p > strong > code) {
+        color: $white-3;
+        text-decoration: none !important;
+        border-radius: 0.25rem;
+        padding: 0 calc($spacer / 4);
+    }
+
 
     :deep(li > mark) {
         background-color: $link-color;
