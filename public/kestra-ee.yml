@@ -18234,6 +18234,8 @@ components:
       - properties:
           tenants:
             $ref: '#/components/schemas/TenantConfiguration'
+          secretsEnabled:
+            type: boolean
     MiscController.Environment:
       required:
       - color
