@@ -4,7 +4,7 @@ icon: /docs/icons/tutorial.svg
 version: ">= 0.17.0"
 ---
 
-The `PushFlows` task allows you to commit and push your saved flows to a Git repository.
+Push your Flows to a Git Repository.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/OPlNKQZFeho?si=ZvRQfLjnhjDYk1qN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -98,7 +98,6 @@ You should see the following log message:
 And here is what you should see in the Outputs tab:
 
 ![git3.png](/docs/how-to-guides/pushflows/git3.png)
-
 
 When you click on the commit URL from the logs or from the Outputs tab, you'll be redirected to the commit page on GitHub:
 

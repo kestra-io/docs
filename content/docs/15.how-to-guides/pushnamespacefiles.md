@@ -4,13 +4,13 @@ icon: /docs/icons/tutorial.svg
 version: ">= 0.17.0"
 ---
 
-The `PushNamespaceFils` task allows you to commit and push your saved files inside of your namespace to a Git repository.
+Push files in your namespace to a Git Repository.
 
 ## How it works
 
 The [PushNamespaceFiles](/plugins/plugin-git/tasks/io.kestra.plugin.git.PushNamespaceFiles) task is a powerful integration that allows you to **push your namespace files to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 
-The process is simple: you can **build your flows** in a development namespace using all **productivity features of the Kestra UI** (_such as the built-in code editor, autocompletion, syntax validation, documentation, blueprint examples, live-updating topology view, output previews, replays, execution and revision history_) and then **push them to Git** after you have tested and validated them.
+The process is simple: you can **build your flows and files** in a development namespace using all **productivity features of the Kestra UI** (_such as the built-in code editor, autocompletion, syntax validation, documentation, blueprint examples, live-updating topology view, output previews, replays, execution and revision history_) and then **push them to Git** after you have tested and validated them.
 
 The task allows you to easily push one or more files from a given namespace (and optionally also child namespaces) to any Git-based Version Control System.
 
@@ -21,7 +21,7 @@ Let's look at a few common patterns of using the `PushNamespaceFiles` task.
 ## Before you begin
 
 Before you start using the `PushNamespaceFiles` task, make sure you have the following prerequisites in place:
-1. A Git repository where you want to push your flows.
+1. A Git repository where you want to push your files.
 2. A Personal Access Token (PAT) for Git authentication.
 3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](../05.concepts/04.secret.md) within the Kestra instance.
 
@@ -54,7 +54,7 @@ tasks:
     dryRun: true 
 ```
 
-Given that the `dryRun` property is set to `true`, the task will only output modifications without pushing any flows to Git yet:
+Given that the `dryRun` property is set to `true`, the task will only output modifications without pushing any files to Git yet:
 
 ![git1](/docs/how-to-guides/pushnamespacefiles/git1.png)
 
@@ -91,7 +91,7 @@ Now, you can create a pull request and merge the changes to the main branch.
 
 ## Pushing all files from a single namespace to Git
 
-To see how you can push all flows from a given namespace to Git, let's create two more files in the `dev` namespace:
+To see how you can push all files from a given namespace to Git, let's create two more files in the `dev` namespace:
 
 `example.sh` file:
 ```sh
@@ -105,7 +105,7 @@ console.log("Hello, World")
 
 ![git6_all_files.png](/docs/how-to-guides/pushnamespacefiles/git6_all_files.png)
 
-Let's now adjust the system flow to push all flows from the `dev` namespace to the `develop` branch:
+Let's now adjust the system flow to push all files from the `dev` namespace to the `dev` branch:
 
 ```yaml
 id: push_to_git
@@ -117,7 +117,7 @@ tasks:
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
     url: https://github.com/git_username/scripts
-    branch: develop
+    branch: dev
     namespace: dev
     gitDirectory: _files
     commitMessage: "push all namespace files and create a PR" 
