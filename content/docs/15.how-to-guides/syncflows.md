@@ -20,7 +20,7 @@ Before you start using the `SyncFlows` task, make sure you have the following pr
 
 ## Using the `dryRun` property
 
-Here is a system flow that will sync the `git` namespace with flows from the repository.
+Here is a system flow that will sync the `git` namespace with flows from the repository in the `flows` directory.
 
 ```yaml
 id: sync_flows_from_git
@@ -161,3 +161,9 @@ Once we've done this, we can press save and test it by committing something to o
 We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date with your Git repository.
 
 If you also want to sync your files, check out our guide on how to set that up [here](syncnamespacefiles.md)!
+
+## Extra notes
+
+- The `branch` property allows you to specify the branch to which files should be synced from.
+- The `gitDirectory` property allows you to specify the directory to which flows should be synced from. If not set, flows will be synced from the Git directory named `_flows` and will optionally also include subdirectories named after the child namespaces. If you prefer, you can specify an arbitrary path, e.g. `kestra/flows`, allowing you to sync flows to that specific Git directory.
+- If you try to add the Personal Access Token (PAT) directly in your source code in the `password` property, you will get an error message. This is a safety mechanism to prevent you and your users from accidentally exposing your PAT in the source code. You should store the PAT as a Kestra Secret, environment variable, namespace variable or as a SECRET-type input in your flow.

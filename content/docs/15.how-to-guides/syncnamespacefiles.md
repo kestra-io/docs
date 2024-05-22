@@ -19,7 +19,7 @@ Before you start using the `SyncNamespaceFiles` task, make sure you have the fol
 
 ## Using the `dryRun` property
 
-Here is a system flow that will sync the `git` namespace with files from the repository.
+Here is a system flow that will sync the `git` namespace with files from the repository in the `_files` directory.
 
 ```yaml
 id: sync_files_from_git
