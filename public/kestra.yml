@@ -1163,6 +1163,7 @@ paths:
         required: true
         schema:
           type: string
+          nullable: true
       - name: labels
         in: query
         description: The labels as a list of 'key:value'
@@ -1189,19 +1190,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
       responses:
         "409":
           description: if the flow is disabled
@@ -1656,19 +1649,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
       responses:
         "204":
           description: On success
@@ -1745,19 +1730,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
       responses:
         "409":
           description: if the flow is disabled
