@@ -126,6 +126,8 @@ tasks:
 
 Again, we can set the `dryRun` property to `true` to see what files will be added, modified, or deleted based on the Git version without overwriting the files in Git yet:
 
+![git7.png](/docs/how-to-guides/pushnamespacefiles/git7.png)
+
 Now if you change the `dryRun` property to `false` and run the system flow again, you should see all three files being pushed to the `_files` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
 
-![git7.png](/docs/how-to-guides/pushnamespacefiles/git7.png)
+![git8.png](/docs/how-to-guides/pushnamespacefiles/git8.png)
