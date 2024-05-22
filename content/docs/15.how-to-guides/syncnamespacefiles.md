@@ -18,3 +18,116 @@ Before you start using the `PushFlows` task, make sure you have the following pr
 3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](https://kestra.io/docs/concepts/secret) within the Kestra instance.
 
 ## Using the `dryRun` property
+
+Here is a system flow that will sync the `git` namespace with files from the repository.
+
+```yaml
+id: sync_files_from_git
+namespace: system
+
+tasks:
+  - id: sync_files
+    type: io.kestra.plugin.git.SyncNamespaceFiles
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    url: https://github.com/git_username/scripts
+    branch: main
+    namespace: git
+    gitDirectory: _files
+    dryRun: true  
+```
+
+Given that the `dryRun` property is set to `true`, the task will only output changes from the Git repository without syncing any files to Kestra yet:
+
+![git1](/docs/how-to-guides/syncnamespacefiles/git1.png)
+
+The files listed are the same ones we added in the [PushNamespaceFiles guide](pushnamespacefiles.md).
+
+## Sync all files to a single namespace from Git
+
+Let's now set the `dryRun` property to `false` and sync the repository with Kestra:
+
+```yaml
+id: sync_files_from_git
+namespace: system
+
+tasks:
+  - id: sync_files
+    type: io.kestra.plugin.git.SyncNamespaceFiles
+    ...
+    dryRun: false
+```
+
+You should see the same files from the earlier log now inside of Kestra:
+
+![git2](/docs/how-to-guides/syncnamespacefiles/git2.png)
+
+We can also see a full list inside of the Outputs tab too:
+
+![git3](/docs/how-to-guides/syncnamespacefiles/git3.png)
+
+## Set up a schedule
+
+A common use case for this task is to setup a routine schedule to keep Kestra in sync with the Git repository. To do this, we can simply use a [Schedule trigger](../04.workflow-components/07.triggers.md#schedule-trigger). This example has a cron expression to execute once every hour:
+
+```yaml
+id: sync_files_from_git
+namespace: system
+
+tasks:
+  - id: sync_files
+    type: io.kestra.plugin.git.SyncNamespaceFiles
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    url: https://github.com/git_username/scripts
+    branch: main
+    namespace: git
+    gitDirectory: _files
+
+triggers:
+  - id: every_full_hour
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "* 0 * * *"
+```
+
+## Automatically sync when a change is pushed to Git
+
+We can also automate the syncing process by adding a [Webhook trigger](../04.workflow-components/07.triggers.md#webhook-trigger) and creating a Webhook on our GitHub repository to trigger our flow every time something is pushed to the repository. This is useful for keeping Kestra always in sync with the repository.
+
+```yaml
+id: sync_files_from_git
+namespace: system
+
+tasks:
+  - id: sync_files
+    type: io.kestra.plugin.git.SyncNamespaceFiles
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    url: https://github.com/git_username/scipts
+    branch: main
+    namespace: git
+    gitDirectory: _files
+
+triggers:
+  - id: gh_webhook
+    type: io.kestra.core.models.triggers.types.Webhook
+    key: abcdefg
+```
+
+To setup this webhook, go to the Settings for your GitHub repository and head to Webhooks and create a new Webhook:
+
+![webhook1.png](/docs/how-to-guides/syncflows/webhook1.png)
+
+For the Payload URL, your URL will follow the following format:
+
+```
+https://{your_hostname}/api/v1/executions/webhook/system/sync_files_from_git/abcdefg
+```
+
+This will require your host name to be publicly accessible. If you want to test this without having to deploy Kestra first, you can use a tool like [ngrok](https://ngrok.com/) to tunnel Kestra so GitHub can see it. As we're putting the secret in the URL, we can leave the Secret field blank.
+
+Once we've done this, we can press save and test it by committing something to our Git repository.
+
+![webhook2.png](/docs/how-to-guides/syncflows/webhook2.png)
+
+We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date with your Git repository.

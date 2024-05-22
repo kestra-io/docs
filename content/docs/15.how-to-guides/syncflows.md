@@ -33,14 +33,14 @@ tasks:
     type: io.kestra.plugin.git.SyncFlows
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
-    url: https://github.com/kestra-io/flows 
+    url: https://github.com/git_username/flows 
     branch: main
     targetNamespace: git
     gitDirectory: flows
     dryRun: true  
 ```
 
-Given that the `dryRun` property is set to `true`, the task will only output modifications without pushing any flows to Git yet:
+Given that the `dryRun` property is set to `true`, the task will only output changes from the Git repository without syncing any flows to Kestra yet:
 
 ![git1](/docs/how-to-guides/syncflows/git1.png)
 
@@ -78,7 +78,7 @@ id: sync_flows_from_git
 namespace: system
 
 tasks:
-  - id: git
+  - id: sync_flows
     type: io.kestra.plugin.git.SyncFlows
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
@@ -99,18 +99,18 @@ We can also verify this with the Outputs tab too:
 
 ## Set up a schedule
 
-A common use case for this task is to setup a routine schedule to keep Kestra in sync with the Git repository. To do this, we can simply use a Schedule trigger. This example has a cron expression to execute once every hour:
+A common use case for this task is to setup a routine schedule to keep Kestra in sync with the Git repository. To do this, we can simply use a [Schedule trigger](../04.workflow-components/07.triggers.md#schedule-trigger). This example has a cron expression to execute once every hour:
 
 ```yaml
 id: sync_flows_from_git
 namespace: system
 
 tasks:
-  - id: git
+  - id: sync_flows
     type: io.kestra.plugin.git.SyncFlows
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
-    url: https://github.com/kestra-io/flows
+    url: https://github.com/git_username/flows
     branch: main
     targetNamespace: git
     gitDirectory: flows
@@ -123,14 +123,14 @@ triggers:
 
 ## Automatically sync when a change is pushed to Git
 
-We can also automate the syncing process by adding a [Webhook trigger](../04.workflow-components/07.triggers.md#webhook-trigger) and creating a Webhook on our GitHub repository.
+We can also automate the syncing process by adding a [Webhook trigger](../04.workflow-components/07.triggers.md#webhook-trigger) and creating a Webhook on our GitHub repository to trigger our flow every time something is pushed to the repository. This is useful for keeping Kestra always in sync with the repository.
 
 ```yaml
 id: sync_flows_from_git
 namespace: system
 
 tasks:
-  - id: git
+  - id: sync_flows
     type: io.kestra.plugin.git.SyncFlows
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
@@ -140,11 +140,11 @@ tasks:
 
 triggers:
   - id: gh_webhook
-    type: io.kestra.plugin.core.trigger.Schedule
-    secret: abcdefg
+    type: io.kestra.core.models.triggers.types.Webhook
+    key: abcdefg
 ```
 
-Inside of GitHub, go to the Settings for your repository and head to Webhooks and create a new Webhook:
+To setup this webhook, go to the Settings for your GitHub repository and head to Webhooks and create a new Webhook:
 
 ![webhook1.png](/docs/how-to-guides/syncflows/webhook1.png)
 
@@ -154,10 +154,10 @@ For the Payload URL, your URL will follow the following format:
 https://{your_hostname}/api/v1/executions/webhook/system/sync_flows_from_git/abcdefg
 ```
 
-This will require your host name to be publicly accessible. If you want to test this without having to deploy, you can use a tool like [ngrok](https://ngrok.com/) to tunnel Kestra so GitHub can see it. As we're putting the secret in the URL, we can leave the Secret field blank.
+This will require your host name to be publicly accessible. If you want to test this without having to deploy Kestra first, you can use a tool like [ngrok](https://ngrok.com/) to tunnel Kestra so GitHub can see it. As we're putting the secret in the URL, we can leave the Secret field blank.
 
 Once we've done this, we can press save and test it by committing something to our Git repository.
 
 ![webhook2.png](/docs/how-to-guides/syncflows/webhook2.png)
 
-We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date.
+We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date with your Git repository.
