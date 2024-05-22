@@ -150,31 +150,31 @@
                             <div class="dropdown-column">
                                 <p class="column-caption">Use Cases</p>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/modern-data-stack"
+                                    <NuxtLink class="dropdown-item" href="/use-cases/kestra-data-engineers"
                                               @click="globalClick(true)">
                                         <AxisArrow />
                                         <p>
-                                            <span>Modern Data Stack Integration</span><br />
-                                            Integrate leading data tools with Kestra
+                                            <span>For Data Engineers</span><br />
+                                            Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/change-data-capture"
+                                    <NuxtLink class="dropdown-item" href="/use-cases/kestra-software-engineers"
                                               @click="globalClick(true)">
                                         <Reload />
                                         <p>
-                                            <span>Change Data Capture</span><br />
-                                            Leverage Kestra's Change Data Capture capabilities
+                                            <span>For Software Engineers</span><br />
+                                            Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/ci-cd" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" href="/use-cases/kestra-platform-engineers" @click="globalClick(true)">
                                         <Cogs/>
                                         <p>
-                                            <span>CI/CD for Kestra Workflows</span><br/>
-                                            Treat your workflow as code and embrace CI/CD practices
+                                            <span>For Platform Engineers for the titles then</span><br/>
+                                            Automate, Scale, Provision and Optimize Your Infrastructure
                                         </p>
                                     </NuxtLink>
                                 </li>
