@@ -83,7 +83,7 @@
         h1 {
             font-size: $font-size-4xl;
             margin-bottom: 16px;
-            font-weight: 600;
+            font-weight: 500;
 
             @include media-breakpoint-down(sm) {
                 font-size: 1.875rem;
