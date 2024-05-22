@@ -3264,19 +3264,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
       responses:
         "409":
           description: if the flow is disabled
@@ -3285,7 +3277,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Execution'
   /api/v1/executions/trigger/{namespace}/{id}/{tenant}:
     post:
       tags:
@@ -3331,19 +3325,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
       responses:
         "409":
           description: if the flow is disabled
@@ -3352,7 +3338,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Execution'
   /api/v1/executions/webhook/{namespace}/{id}/{key}:
     get:
       tags:
@@ -4227,18 +4215,10 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
+              type: array
+              items:
+                type: string
+                format: binary
         required: true
       responses:
         "204":
@@ -4268,18 +4248,10 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
+              type: array
+              items:
+                type: string
+                format: binary
         required: true
       responses:
         "204":
@@ -4426,19 +4398,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
       responses:
         "409":
           description: if the flow is disabled
@@ -4447,7 +4411,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Execution'
   /api/v1/executions/{namespace}/{id}/{tenant}:
     post:
       tags:
@@ -4493,19 +4459,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
       responses:
         "409":
           description: if the flow is disabled
@@ -4514,7 +4472,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Execution'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Execution'
   /api/v1/executions/{tenant}:
     get:
       tags:
