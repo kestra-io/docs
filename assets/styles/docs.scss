@@ -215,8 +215,10 @@ $bd-gutter-x: 3rem;
     .video-container {
         position: relative;
         padding-top: 35.25%;
-        background-color: $black-3;
+        background-color: $black-2;
         height: 28.351rem;
+        border-radius: calc($spacer / 2);
+        border: 1px solid $black-3;
         @media only screen and (max-width: 1919px) {
             padding-top: 56.25%;
             height: auto;
