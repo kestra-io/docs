@@ -6,6 +6,12 @@ version: ">= 0.17.0"
 
 Sync files from a Git Repository to Kestra.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/AbxaDtINcr8?si=IeCvWT-0PWl5Jq8t" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
 The [SyncNamespaceFiles](/plugins/plugin-git/tasks/io.kestra.plugin.git.syncnamespacefiles) task is a powerful integration that allows you to **sync your code with Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 
 The process is simple: you can sync your files from a Git repository on a schedule or anytime you push a change to a given Git branch. The task allows you to easily sync one or more files from a given namespace.
