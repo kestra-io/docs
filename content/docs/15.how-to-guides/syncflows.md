@@ -6,6 +6,9 @@ version: ">= 0.17.0"
 
 Sync flows from a Git Repository to Kestra.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/YbIuqYWLrpA?si=4g11iHE4qm0VdKMv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 The [SyncFlows](/plugins/plugin-git/tasks/io.kestra.plugin.git.SyncFlows) task is a powerful integration that allows you to **sync your code with Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 
