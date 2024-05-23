@@ -1,15 +1,15 @@
 <template>
     <div class="row card-group mb-2">
-        <NuxtLink :href="item._path" class="col-12 col-md-6 mb-4" v-for="item in navigation" :key="item._path">
+        <NuxtLink :href="item._path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in navigation" :key="item._path">
             <div class="card">
-                <div class="card-body">
-                    <div>
+                <div class="card-body d-flex">
                         <span class="card-icon">
                             <img :src="item.icon" :alt="item.title" />
                         </span>
+                    <div>
                         <h4 class="card-title">{{ item.title }}</h4>
+                        <p class="card-text">{{ item.description }}</p>
                     </div>
-                    <p class="card-text">{{ item.description }}</p>
                 </div>
             </div>
         </NuxtLink>
@@ -45,3 +45,15 @@
         () => queryContent(currentPage + "/").find()
     );
 </script>
+
+<style lang="scss" scoped>
+    @import "../../assets/styles/_variable.scss";
+
+    .card-title {
+        font-size: $font-size-xl !important;
+    }
+
+    .card-text {
+        font-size: $font-size-sm !important;
+    }
+</style>
