@@ -641,11 +641,11 @@ export default {
         max-width: 100%;
 
         @include media-breakpoint-down(lg) {
-            max-height: calc(100vh - 67px);
+            max-height: calc(100vh + 4.1rem);
             overflow-y: auto;
             overflow-x: hidden;
             background-color: $black-2;
-            height: calc(100vh - 4.3rem);
+            height: calc(100vh - 3.3rem);
         }
 
         ul.navbar-nav {
