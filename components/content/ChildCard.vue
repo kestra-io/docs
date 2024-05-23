@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body d-flex">
                         <span class="card-icon">
-                            <img :src="item.icon" :alt="item.title" />
+                            <img :src="item.icon" :alt="item.title" width="50px" height="50px"/>
                         </span>
                     <div>
                         <h4 class="card-title">{{ item.title }}</h4>
@@ -55,5 +55,13 @@
 
     .card-text {
         font-size: $font-size-sm !important;
+    }
+
+    .card-icon {
+        img {
+            max-width: unset;
+            width: 48px !important;
+            height: 48px !important;
+        }
     }
 </style>
