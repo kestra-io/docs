@@ -76,7 +76,7 @@
                                         @click="globalClick(true)"
                                     >
                                         <div class="submenu-btn-img">
-                                            <img src="/landing/header-menu/platform-overview.svg" alt="Platform Overview"/>
+                                            <img width="176px" src="/landing/header-menu/platform-overview.png" alt="Platform Overview"/>
                                         </div>
                                         <p>
                                             <span class="title">Platform overview</span>
@@ -282,7 +282,7 @@
                                     @click="globalClick(true)"
                                 >
                                     <div class="submenu-btn-img">
-                                        <img src="/landing/header-menu/platform-blueprints.svg" alt="Platform Overview"/>
+                                        <img width="238px" src="/landing/header-menu/platform-blueprints.png" alt="Platform Overview"/>
                                     </div>
                                     <p>
                                         <span class="title">Explore blueprints</span>
@@ -745,7 +745,7 @@ export default {
                         width: 100% !important;
                         box-shadow: none;
                         border: 0;
-                        padding: 0 $spacer calc($spacer / 2) !important;
+                        padding: 0 $spacer $spacer !important;
                         display: none;
 
                         li {
@@ -977,11 +977,18 @@ export default {
 
                 .resources-menu {
                     .submenu-btn {
-                        padding-right: calc($spacer * 3.158) !important;
+
+                        @include media-breakpoint-up(sm) {
+                            padding-right: calc($spacer * 3.158) !important;
+                        }
 
                         .submenu-btn-img {
                             left: 1.265rem !important;
                             top: -1.938rem;
+
+                            @include media-breakpoint-down(sm) {
+                                left: -7.265rem !important;
+                            }
                         }
                     }
                 }
