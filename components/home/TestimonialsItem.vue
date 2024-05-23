@@ -30,16 +30,7 @@
     @import "../../assets/styles/variable";
     .card {
         border: $block-border;
-        height: calc($spacer * 18.617);
-        max-height: calc($spacer * 18.617);
-        @include media-breakpoint-down(xl) {
-            height: calc($spacer * 22);
-            max-height: calc($spacer * 22);
-        }
-        @include media-breakpoint-down(md) {
-            height: calc($spacer * 20);
-            max-height: calc($spacer * 20);
-        }
+
         .card-body {
             padding: $rem-2;
             text-align: left;

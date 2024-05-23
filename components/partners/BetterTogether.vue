@@ -5,19 +5,19 @@
             subtitle-after="Kestra"
         >
             <div class="row">
-                <div class="col-md-4 testimonials-item">
+                <div class="col-12 col-md-4 col-lg-4 mb-4 testimonials-item">
                     <TestimonialsItem
                         :item="testimonialData[0]"
                         data-aos="fade-left"
                     />
                 </div>
-                <div class="col-md-4 testimonials-item">
+                <div class="col-12 col-md-4 col-lg-4 mb-4 testimonials-item">
                     <TestimonialsItem
                         :item="testimonialData[1]"
                         data-aos="zoom-in"
                     />
                 </div>
-                <div class="col-md-4 testimonials-item">
+                <div class="col-12 col-md-4 col-lg-4 mb-4 testimonials-item">
                     <TestimonialsItem
                         :item="testimonialData[2]"
                         data-aos="fade-right"
@@ -74,10 +74,5 @@ export default {
       @include media-breakpoint-up(md) {
         border-bottom: $block-border;
       }
-    }
-
-    .row {
-        align-items: center;
-        justify-content: center;
     }
 </style>
