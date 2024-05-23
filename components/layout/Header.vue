@@ -536,13 +536,14 @@ export default {
         @include media-breakpoint-down(lg) {
             padding-left: 0;
             padding-right: 0;
+            padding-top: calc($spacer / 2);
 
             .navbar-brand {
-                margin: 0 0 $spacer $spacer;
+                margin: 0 0 calc($spacer * 0.75) $spacer;
             }
 
             .nav-items {
-                margin: 0 $spacer $spacer 0;
+                margin: 0 $spacer calc($spacer * 0.75) 0;
 
                 span.menu-text {
                     margin-top: calc($spacer * 0.2);
@@ -560,7 +561,7 @@ export default {
 
         @include media-breakpoint-down(lg) {
             padding: 0;
-            padding-top: $spacer;
+            padding-top: 0;
             background-color: $black-9;
         }
 
@@ -582,11 +583,6 @@ export default {
                     }
                 }
             }
-        }
-
-        @include media-breakpoint-down(lg) {
-            padding: 0;
-            padding-top: $spacer;
         }
 
         .navbar-brand {
