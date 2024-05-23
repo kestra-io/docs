@@ -110,7 +110,7 @@ tasks:
 
 triggers:
   - id: gh_webhook
-    type: io.kestra.core.models.triggers.types.Webhook
+    type: io.kestra.plugin.core.trigger.Webhook
     key: abcdefg
 ```
 
