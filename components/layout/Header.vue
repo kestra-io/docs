@@ -76,7 +76,7 @@
                                         @click="globalClick(true)"
                                     >
                                         <div class="submenu-btn-img">
-                                            <img src="/landing/header-menu/platform-overview.svg" alt="Platform Overview"/>
+                                            <img width="176px" src="/landing/header-menu/platform-overview.png" alt="Platform Overview"/>
                                         </div>
                                         <p>
                                             <span class="title">Platform overview</span>
@@ -215,7 +215,7 @@
                             <ChevronDown />
                         </a>
                         <ul class="dropdown-menu resources-menu flex-column">
-                            <div class="d-flex flex-column flex-lg-row">
+                            <div class="d-flex flex-column flex-lg-row gap-3 gap-lg-0">
                                 <div class="d-flex flex-column aside-menu py-lg-0 py-1">
                                     <li>
                                         <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
@@ -275,14 +275,14 @@
                                     </li>
                                 </div>
                             </div>
-                            <li class="w-100">
+                            <li class="w-100 mt-3 mt-lg-0">
                                 <NuxtLink
                                     class="d-block d-sm-inline-block mn-sm-0 btn btn-animated btn-purple-animated w-100 submenu-btn"
                                     href="/blueprints"
                                     @click="globalClick(true)"
                                 >
                                     <div class="submenu-btn-img">
-                                        <img src="/landing/header-menu/platform-blueprints.svg" alt="Platform Overview"/>
+                                        <img width="238px" src="/landing/header-menu/platform-blueprints.png" alt="Platform Overview"/>
                                     </div>
                                     <p>
                                         <span class="title">Explore blueprints</span>
@@ -641,11 +641,11 @@ export default {
         max-width: 100%;
 
         @include media-breakpoint-down(lg) {
-            max-height: calc(100vh - 67px);
+            max-height: calc(100vh + 4.1rem);
             overflow-y: auto;
             overflow-x: hidden;
             background-color: $black-2;
-            height: calc(100vh - 4.3rem);
+            height: calc(100vh - 3.3rem);
         }
 
         ul.navbar-nav {
@@ -722,6 +722,7 @@ export default {
                     @include media-breakpoint-down(lg) {
                         display: block;
                         border-radius: 0;
+                        background-color: $black-2;
                     }
                 }
 
@@ -744,7 +745,7 @@ export default {
                         width: 100% !important;
                         box-shadow: none;
                         border: 0;
-                        padding: 0 $spacer !important;
+                        padding: 0 $spacer $spacer !important;
                         display: none;
 
                         li {
@@ -976,11 +977,18 @@ export default {
 
                 .resources-menu {
                     .submenu-btn {
-                        padding-right: calc($spacer * 3.158) !important;
+
+                        @include media-breakpoint-up(sm) {
+                            padding-right: calc($spacer * 3.158) !important;
+                        }
 
                         .submenu-btn-img {
                             left: 1.265rem !important;
                             top: -1.938rem;
+
+                            @include media-breakpoint-down(sm) {
+                                left: -7.265rem !important;
+                            }
                         }
                     }
                 }
