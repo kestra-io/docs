@@ -215,7 +215,7 @@
                             <ChevronDown />
                         </a>
                         <ul class="dropdown-menu resources-menu flex-column">
-                            <div class="d-flex flex-column flex-lg-row">
+                            <div class="d-flex flex-column flex-lg-row gap-3 gap-lg-0">
                                 <div class="d-flex flex-column aside-menu py-lg-0 py-1">
                                     <li>
                                         <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
@@ -275,7 +275,7 @@
                                     </li>
                                 </div>
                             </div>
-                            <li class="w-100">
+                            <li class="w-100 mt-3 mt-lg-0">
                                 <NuxtLink
                                     class="d-block d-sm-inline-block mn-sm-0 btn btn-animated btn-purple-animated w-100 submenu-btn"
                                     href="/blueprints"
@@ -722,6 +722,7 @@ export default {
                     @include media-breakpoint-down(lg) {
                         display: block;
                         border-radius: 0;
+                        background-color: $black-2;
                     }
                 }
 
@@ -744,7 +745,7 @@ export default {
                         width: 100% !important;
                         box-shadow: none;
                         border: 0;
-                        padding: 0 $spacer !important;
+                        padding: 0 $spacer calc($spacer / 2) !important;
                         display: none;
 
                         li {
