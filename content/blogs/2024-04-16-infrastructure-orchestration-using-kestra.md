@@ -30,10 +30,10 @@ namespace: dev
 
 tasks:
   - id: setup
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: local_files
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         inputs:
           inventory.ini: |
             localhost ansible_connection=local
@@ -60,7 +60,7 @@ tasks:
           - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-The flow has tasks that are part of the [WorkingDirectory task](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.workingdirectory) allowing us to reuse the file system across the tasks. In the first task within the WorkingDorectory, we create the `inventory.ini` and `myplaybook.yml` files. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The second task is the [AnsibleCLI task](https://kestra.io/plugins/plugin-ansible/tasks/cli/io.kestra.plugin.ansible.cli.ansiblecli) that is based on the docker runner, and spins up the `cytopia/ansible:latest-tools` docker image. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
+The flow has tasks that are part of the [WorkingDirectory task](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.WorkingDirectory) allowing us to reuse the file system across the tasks. In the first task within the WorkingDorectory, we create the `inventory.ini` and `myplaybook.yml` files. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The second task is the [AnsibleCLI task](https://kestra.io/plugins/plugin-ansible/tasks/cli/io.kestra.plugin.ansible.cli.ansiblecli) that is based on the docker runner, and spins up the `cytopia/ansible:latest-tools` docker image. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
 
 ## Using Terraform as IaC
 

@@ -123,7 +123,7 @@ tasks:
     contentType: application/json
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 
 ```
@@ -166,7 +166,7 @@ tasks:
     body: "{{ inputs.payload }}"
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 
 ```
@@ -203,7 +203,7 @@ tasks:
     body: "{{ inputs.payload }}"
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 ```
 
@@ -232,7 +232,7 @@ tasks:
     contentType: application/json
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 
 ```

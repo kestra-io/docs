@@ -78,7 +78,7 @@ namespace: blueprint
 
 tasks:
   - id: git
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: clone_repository
         type: io.kestra.plugin.git.Clone

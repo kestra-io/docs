@@ -12,5 +12,5 @@ tasks:
 
 errors:
   - id: happen
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: This flow has failed

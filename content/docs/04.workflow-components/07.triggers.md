@@ -36,7 +36,7 @@ Following trigger properties can be set.
 
 ## Trigger Variables
 
-Triggers allow you to access trigger metadata through expressions e.g. `{{ trigger.date }}` to access the current date of the [Schedule trigger](/plugins/core/triggers/io.kestra.core.models.triggers.types.schedule), `{{ trigger.uri }}` to access the file or message from any file detection or message arrival event, as well as `{{ trigger.rows }}` for all Query triggers e.g. the [PostgreSQL Query](/plugins/plugin-jdbc-postgres/triggers/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
+Triggers allow you to access trigger metadata through expressions e.g. `{{ trigger.date }}` to access the current date of the [Schedule trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Schedule), `{{ trigger.uri }}` to access the file or message from any file detection or message arrival event, as well as `{{ trigger.rows }}` for all Query triggers e.g. the [PostgreSQL Query](/plugins/plugin-jdbc-postgres/triggers/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
 
 ::alert{type="warning"}
 Note that the above-mentioned **templated variables** are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
@@ -51,11 +51,11 @@ id: hourlyFlow
 namespace: example
 tasks:
   - id: important-task
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: If this runs for longer than 1h, next Executions will be queued rather than being started immediately
 triggers:
   - id: hourly
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "@hourly"
 ```
 
@@ -69,12 +69,12 @@ You can pass a list of conditions; in this case, all the conditions must match t
 
 Available conditions include:
 
-- [ExecutionFlowCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.executionflowcondition)
-- [ExecutionNamespaceCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.executionnamespacecondition)
-- [ExecutionStatusCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.executionstatuscondition)
-- [FlowCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.flowcondition)
-- [FlowNamespaceCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.flownamespacecondition)
-- [VariableCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.variablecondition)
+- [ExecutionFlowCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionFlowCondition)
+- [ExecutionNamespaceCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionNamespaceCondition)
+- [ExecutionStatusCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionStatusCondition)
+- [FlowCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.FlowCondition)
+- [FlowNamespaceCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.FlowNamespaceCondition)
+- [VariableCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExpressionCondition)
 
 
 ## Schedule Trigger
@@ -82,14 +82,14 @@ Available conditions include:
 The Schedule trigger generates new executions on a regular cadence based on a Cron expression or custom scheduling conditions.
 
 ```yaml
-type: "io.kestra.core.models.triggers.types.Schedule"
+type: "io.kestra.plugin.core.trigger.Schedule"
 ```
 
 Kestra is able to trigger flows based on a Schedule (aka the time). If you need to wait for another system to be ready and cannot use any event mechanism, you can schedule one or more time the current flow.
 
 Kestra will optionally handle schedule [backfills](/docs/concepts/backfill) if any executions are missed.
 
-Check the [Schedule task](/plugins/core/triggers/io.kestra.core.models.triggers.types.schedule) documentation for the list of the task properties and outputs.
+Check the [Schedule task](/plugins/core/triggers/io.kestra.plugin.core.trigger.Schedule) documentation for the list of the task properties and outputs.
 
 
 ::collapse{title="Example"}
@@ -99,7 +99,7 @@ Check the [Schedule task](/plugins/core/triggers/io.kestra.core.models.triggers.
 ```yaml
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/15 * * * *"
 ```
 
@@ -108,10 +108,10 @@ triggers:
 ```yaml
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 11 * * 1"
     conditions:
-      - type: io.kestra.core.models.conditions.types.DayWeekInMonthCondition
+      - type: io.kestra.plugin.core.condition.DayWeekInMonthCondition
         date: "{{ trigger.date }}"
         dayOfWeek: "MONDAY"
         dayInMonth: "FIRST"
@@ -138,13 +138,12 @@ This condition will be evaluated and `{{ trigger.previous }}` and `{{ trigger.ne
 
 The list of core conditions that can be used are:
 
- - [DateTimeBetweenCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.datetimebetweencondition)
- - [DayWeekCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.dayweekcondition)
- - [DayWeekInMonthCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.dayweekinmonthcondition)
- - [NotCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.notcondition)
- - [OrCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.orcondition)
- - [WeekendCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.weekendcondition)
- - [DayWeekInMonthCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.dayweekinmonthcondition)
+ - [DateTimeBetweenCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.DateTimeBetweenCondition)
+ - [DayWeekCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.DayWeekCondition)
+ - [DayWeekInMonthCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.DayWeekInMonthCondition)
+ - [NotCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.NotCondition)
+ - [OrCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.OrCondition)
+ - [WeekendCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.WeekendCondition)
 
 ### Recover Missed Schedules
 
@@ -156,7 +155,7 @@ Kestra 0.15 introduced a new configuration allowing you to choose whether you wa
 kestra:
   plugins:
     configurations:
-      - type: io.kestra.core.models.triggers.types.Schedule
+      - type: io.kestra.plugin.core.trigger.Schedule
         values:
           # available options: LAST | NONE | ALL -- default: ALL
           recoverMissedSchedules: NONE
@@ -172,7 +171,7 @@ Note that this is a global configuration that will apply to all flows, unless ot
 ```yaml
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/15 * * * *"
     recoverMissedSchedules: NONE
 ```
@@ -185,12 +184,12 @@ In this example, the `recoverMissedSchedules` is set to `NONE`, which means that
 Flow triggers allows you to trigger a flow after another flow execution, enabling event-driven patterns.
 
 ```yaml
-type: "io.kestra.core.models.triggers.types.Flow"
+type: "io.kestra.plugin.core.trigger.Flow"
 ```
 
 Kestra is able to trigger one flow after another one. This allows the chaining of flows without the need to update the base flows. With this capacity, you can break responsibility between different flows to different teams.
 
-Check the [Flow trigger](/plugins/core/triggers/io.kestra.core.models.triggers.types.flow) documentation for the list of all properties.
+Check the [Flow trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Flow) documentation for the list of all properties.
 
 ::collapse{title="Example"}
 
@@ -206,48 +205,48 @@ inputs:
 
 tasks:
   - id: onlyNoInput
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "v1: {{trigger.executionId}}"
 
 triggers:
   - id: listenFlow
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     inputs:
       fromParent: '{{ outputs.myTask.uri }}'
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
         namespace: io.kestra.tests
         flowId: trigger-flow
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - SUCCESS
 ```
 
-> This flow will be triggered after the successful execution of both flows `flow-a` and `flow-b` during the current day. When the conditions are met, the counter is reset and can be re-triggered during the same day. See [MultipleCondition](/plugins/core/conditions/io.kestra.core.models.conditions.types.multiplecondition) for more details
+> This flow will be triggered after the successful execution of both flows `flow-a` and `flow-b` during the current day. When the conditions are met, the counter is reset and can be re-triggered during the same day. See [MultipleCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.MultipleCondition) for more details
 ```yaml
 id: trigger-multiplecondition-listener
 namespace: io.kestra.tests
 
 tasks:
   - id: onlyListener
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "let's go "
 
 triggers:
   - id: multipleListenFlow
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
       - id: multiple
-        type: io.kestra.core.models.conditions.types.MultipleCondition
+        type: io.kestra.plugin.core.condition.MultipleCondition
         window: P1D
         windowAdvance: P0D
         conditions:
           flow-a:
-            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
             namespace: io.kestra.tests
             flowId: trigger-multiplecondition-flow-a
           flow-b:
-            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
             namespace: io.kestra.tests
             flowId: trigger-multiplecondition-flow-b
 
@@ -262,7 +261,7 @@ In order to use that URL, you have to add a secret `key` that will secure your w
 
 
 ```yaml
-type: "io.kestra.core.models.triggers.types.Webhook"
+type: "io.kestra.plugin.core.trigger.Webhook"
 ```
 
 A Webhook trigger allows triggering a flow from a webhook URL.
@@ -273,14 +272,14 @@ At trigger creation a key must be set that will be used on the URL that triggers
 ```yaml
 triggers:
   - id: webhook
-    type: io.kestra.core.models.triggers.types.Webhook
+    type: io.kestra.plugin.core.trigger.Webhook
     key: 4wjtkzwVGBM9yKnjm3yv8r
 ```
 > After the trigger is created, the key must be explicitly set in the webhook URL. You can launch the flow using the following URL
  `/api/v1/executions/webhook/{namespace}/{flowId}/4wjtkzwVGBM9yKnjm3yv8r`.
 ::
 
-Check the [Webhook task](/plugins/core/triggers/io.kestra.core.models.triggers.types.webhook) documentation for the list of the task properties and outputs.
+Check the [Webhook task](/plugins/core/triggers/io.kestra.plugin.core.trigger.Webhook) documentation for the list of the task properties and outputs.
 
 ## Polling Triggers
 
@@ -302,7 +301,7 @@ tasks:
   type: io.kestra.plugin.jdbc.postgresql.Query
   sql: DELETE * FROM my_table
 - id: log
-  type: io.kestra.core.tasks.log.Log
+  type: io.kestra.plugin.core.log.Log
   message: {{trigger.rows}}
 
 triggers:
@@ -333,7 +332,7 @@ tasks:
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/1 * * * *"
     disabled: true
 ```
@@ -382,12 +381,12 @@ namespace: production
 
 tasks:
  - id: important_task
-   type: io.kestra.core.tasks.log.Log
+   type: io.kestra.plugin.core.log.Log
    message: if this fails, we want to stop the flow from running until we fix it
 
 triggers:
  - id: stopAfter
-   type: io.kestra.core.models.triggers.types.Schedule
+   type: io.kestra.plugin.core.trigger.Schedule
    cron: "0 9 * * *"
    stopAfter:
      - FAILED

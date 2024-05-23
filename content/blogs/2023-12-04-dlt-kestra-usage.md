@@ -134,7 +134,7 @@ I’ve used a [schedule trigger](https://kestra.io/docs/developer-guide/triggers
 ```yaml
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9-18 * * 1-5"
 ```
 
