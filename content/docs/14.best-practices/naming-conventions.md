@@ -43,12 +43,14 @@ tasks:
     beforeCommands:
       - pip install polars
     warningOnStdErr: false
+    outputFiles:
+      - "products.csv"
     script: |
       import polars as pl
       data = {{outputs.fetch_products.body | jq('.products') | first}}
       df = pl.from_dicts(data)
       df.glimpse()
-      df.select(["brand", "price"]).write_csv("{{outputDir}}/products.csv")
+      df.select(["brand", "price"]).write_csv("products.csv")
 
   - id: sql_query
     type: io.kestra.plugin.jdbc.duckdb.Query
@@ -96,12 +98,14 @@ tasks:
     beforeCommands:
       - pip install polars
     warningOnStdErr: false
+    outputFiles:
+      - "products.csv"
     script: |
       import polars as pl
       data = {{outputs.fetchProducts.body | jq('.products') | first}}
       df = pl.from_dicts(data)
       df.glimpse()
-      df.select(["brand", "price"]).write_csv("{{outputDir}}/products.csv")
+      df.select(["brand", "price"]).write_csv("products.csv")
 
   - id: sqlQuery
     type: io.kestra.plugin.jdbc.duckdb.Query
