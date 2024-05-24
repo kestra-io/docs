@@ -70,7 +70,7 @@ id: data_preparation
 namespace: dev
 tasks:
   - id: http_download_products
-    type: io.kestra.plugin.fs.http.Download
+    type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv
   - id: csv_reader_products
     type: io.kestra.plugin.serdes.csv.CsvToIon
@@ -87,7 +87,7 @@ tasks:
     inputs:
       product: "{{ taskrun.items }}"
   - id: http_download_orders
-    type: io.kestra.plugin.fs.http.Download
+    type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
   - id: s3_upload_orders
     type: io.kestra.plugin.aws.s3.Upload

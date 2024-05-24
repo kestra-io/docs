@@ -376,7 +376,7 @@ tasks:
       This task will greet a `user` from a flow.
 
   - id: api
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.api_url }}"
 
 pluginDefaults:
