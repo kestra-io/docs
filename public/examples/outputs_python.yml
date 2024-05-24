@@ -15,5 +15,5 @@ tasks:
       - python outputs_metrics.py
 
   - id: log_downloads
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "Number of downloads: {{ outputs.outputs_metrics.vars.downloads }}"

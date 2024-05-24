@@ -206,7 +206,7 @@ description: Based on https://demo.kestra.io/ui/blueprints/community/202
 
 tasks:
   - id: clean_up_storage
-    type: io.kestra.core.tasks.storages.Purge
+    type: io.kestra.plugin.core.storage.Purge
     endDate: "{{ trigger.date | dateAdd(-1, 'MONTHS') }}"
     purgeExecution: true
     purgeLog: true
@@ -237,7 +237,7 @@ errors:
 
 triggers:
   - id: monthly
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 1 * *" # every month at 9am on the 1st day of the month
 ```
 
@@ -282,13 +282,13 @@ The trigger is only slightly more involved: it needs two pieces of information: 
 ```yaml
 triggers:
   - id: failed_prod_workflows
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
           - WARNING
-      - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
+      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
         namespace: payroll
         prefix: false
 ```
@@ -324,7 +324,7 @@ description: |
 will be triggered.
 tasks:
   - id: say_hello
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: This should have triggered the sentry_execution_example flow.
   - id: bash_will_fail
     type: io.kestra.plugin.scripts.shell.Commands
@@ -348,13 +348,13 @@ tasks:
   level: ERROR
 triggers:
   - id: failed_prod_workflows
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
           - WARNING
-      - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
+      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
         namespace: trig
         prefix: false        
  # namespace must match exactly
@@ -415,7 +415,7 @@ Finally, let’s look at a production quality example using **SentryAlert** and 
 
 ### `SentryAlert` Production Example
 
-The flow below is a production-quality example using the `SentryAlert` task to send an issue when the `get_files` task throws an error. This example uses `secrets`, `variables`, and `taskDefaults` for the DB connection values and the Sentry DSN.
+The flow below is a production-quality example using the `SentryAlert` task to send an issue when the `get_files` task throws an error. This example uses `secrets`, `variables`, and `pluginDefaults` for the DB connection values and the Sentry DSN.
 
 ```yaml
 id: gen_postgresql_error_sentry_alert
@@ -423,7 +423,7 @@ namespace: sentry_article
 description: Generate an error so we can send a SentryAlert
 errors:
   - id: log_msg_on_err
-    type: io.kestra.core.tasks.log.Log    
+    type: io.kestra.plugin.core.log.Log    
     message: "Something bad happened while running {{execution.id}} {{task.id}}"
   - id: send_sentry_alert_on_failure
     type: io.kestra.plugin.notifications.sentry.SentryAlert
@@ -453,12 +453,12 @@ tasks:
   fetch: true
 
 - id: use_files
-  type: io.kestra.core.tasks.log.Log
+  type: io.kestra.plugin.core.log.Log
   message: Number of rows returned is "{{get_files.outputs.size}}"
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/05 * * * *"
     # every 5 minutes
 
@@ -466,7 +466,7 @@ variables:
     db_host: "host.docker.internal"
     db_name: "summ_dev"
 
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.jdbc.postgresql.Query
     values:
       username: "{{ secret('PG_USERNAM') }}"
@@ -493,12 +493,12 @@ tasks:
     sql: select not_a_real_column from not_a_real_table;
     fetch: true
   - id: use_files
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Number of rows returned is "{{get_files.outputs.size}}"
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/30 * * * *"
     # every 30 minutes
 
@@ -506,7 +506,7 @@ variables:
     db_host: "host.docker.internal"
     db_name: "summ_dev"
 
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.jdbc.postgresql.Query
     values:
       username: "{{ secret('PG_USERNAME') }}"
@@ -530,13 +530,13 @@ tasks:
 
 triggers:
   - id: failed_prod_workflows
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
           - WARNING
-      - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
+      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
         namespace: sentry_trig # needs to match the namespace of the flow above
         prefix: false
 ```

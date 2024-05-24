@@ -31,12 +31,12 @@ variables:
 
 tasks:
   - id: parse_date
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "{{ render(vars.trigger_var) }}" # this will print the recursively-rendered variable
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/1 * * * *"
 ```
 

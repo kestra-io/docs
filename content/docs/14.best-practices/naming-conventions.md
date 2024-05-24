@@ -67,7 +67,7 @@ outputs:
 
 triggers:
   - id: daily_at_9am
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
 ```
 
@@ -120,7 +120,7 @@ outputs:
 
 triggers:
   - id: dailyAt9am
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
 ```
 

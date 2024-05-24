@@ -38,7 +38,7 @@ tasks:
       ORDER  BY  avg_salary  DESC;
     store:  true
   -  id:  export_result
-    type:  io.kestra.plugin.serdes.csv.CsvWriter
+    type:  io.kestra.plugin.serdes.csv.IonToCsv
     from:  "{{  outputs.average_salary_by_position.uri  }}"
 ```
 
@@ -71,7 +71,7 @@ In this task, we supply the downloaded CSV file as input and run a SQL query to 
 
 ```yaml
 id:  export_result
-    type:  io.kestra.plugin.serdes.csv.CsvWriter
+    type:  io.kestra.plugin.serdes.csv.IonToCsv
     from:  "{{  outputs.average_salary_by_position.uri  }}"
 ```
 

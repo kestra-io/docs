@@ -90,7 +90,7 @@ namespace: prod
 
 tasks:
   - id: github-ci-cd
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: clone-repository
         type: io.kestra.plugin.git.Clone
@@ -116,7 +116,7 @@ tasks:
 
 triggers:
   - id: github
-    type: io.kestra.core.models.triggers.types.Webhook
+    type: io.kestra.plugin.core.trigger.Webhook
     key: "yourSecretKey1234"
 ```
 

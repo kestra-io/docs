@@ -199,7 +199,7 @@ tasks:
 
 triggers:
   - id: every_midnight
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 0 * * *" # = @daily
 ```
 

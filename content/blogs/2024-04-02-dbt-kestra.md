@@ -47,7 +47,7 @@ namespace: dev
 
 tasks:
   - id: dbt
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: cloneRepository
       type: io.kestra.plugin.git.Clone
@@ -83,7 +83,7 @@ inputs:
 
 tasks:
   - id: git
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: clone_repository
         type: io.kestra.plugin.git.Clone
@@ -128,7 +128,7 @@ namespace: dev
 
 tasks:
   - id: dbt
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: cloneRepository
       type: io.kestra.plugin.git.Clone
@@ -156,7 +156,7 @@ namespace: blueprint
 
 tasks:
   - id: data-ingestion
-    type: io.kestra.core.tasks.flows.Parallel
+    type: io.kestra.plugin.core.flow.Parallel
     tasks:
       - id: salesforce
         type: io.kestra.plugin.airbyte.connections.Sync
@@ -171,7 +171,7 @@ tasks:
         connectionId: e3b1ce92-547c-436f-b1e8-23b6936c12ef
 
   - id: dbt
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: cloneRepository
       type: io.kestra.plugin.git.Clone
@@ -202,7 +202,7 @@ tasks:
             target: dev
         sa.json: "{{ secret('GCP_CREDS') }}"
 
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.airbyte.connections.Sync
     values:
       url: <http://host.docker.internal:8000/>

@@ -99,7 +99,7 @@ Here I use the If task to only send a mail if the safety score is less than 0.5.
 
 ```yaml
 - id: safety-belt
-  type: io.kestra.core.tasks.flows.If
+  type: io.kestra.plugin.core.flow.If
   condition: "{{outputs['ask-for-jokes'].predictions[0].safetyAttributes[0].scores[0] < 5}}"
   then:
   - id: send-by-email
@@ -112,7 +112,7 @@ Last but not least, to have it executed each day at 9 AM, we can add a Schedule 
 ```yaml
 triggers:
   - id: daily
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
 ```
 
@@ -128,7 +128,7 @@ variables:
   serviceAccount: <your-sa>
 triggers:
   - id: daily
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
 tasks:
   - id: ask-for-jokes
@@ -141,7 +141,7 @@ tasks:
     - author: user
       content: Please tell me a joke
   - id: safety-belt
-    type: io.kestra.core.tasks.flows.If
+    type: io.kestra.plugin.core.flow.If
     condition: "{{outputs['ask-for-jokes'].predictions[0].safetyAttributes[0].scores[0] < 5}}"
     then:
     - id: send-by-email

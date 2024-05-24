@@ -81,7 +81,7 @@ jq -r '.name' /tmp/query.json
     WHERE shippedDate = '{{ now() }}'
     AND shippedCountry = 'FR'
 - id: "return"
-  type: "io.kestra.core.tasks.debugs.Return"
+  type: "io.kestra.plugin.core.debug.Return"
   format: "{{ outputs.query.row.name }}"
 ```
 

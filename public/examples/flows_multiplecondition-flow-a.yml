@@ -6,5 +6,5 @@ description: |
 
 tasks:
   - id: only
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "from parents: {{execution.id}}"

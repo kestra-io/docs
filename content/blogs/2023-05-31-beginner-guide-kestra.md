@@ -137,7 +137,7 @@ tasks:
     uri: "{{inputs.csvUrl}}"
 
   - id: CsvToJson
-    type: io.kestra.plugin.serdes.json.JsonWriter
+    type: io.kestra.plugin.serdes.json.IonToJson
     from: "{{ outputs.downloadCsv.uri }}"
 ```
 
