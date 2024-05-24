@@ -4,14 +4,11 @@
             <div class="alert alert-primary" :style="`background-color: ${content.background}`">
                 <Carousel :autoplay="5000" :wrap-around="true" :transition="2500" :itemsToShow="3">
                     <Slide v-for="slide in content.data" :key="slide" v-bind:key="slide?.id">
-                                <p class="text-truncate">
-                                    🚀 New! <strong>{{slide.text}}</strong> <NuxtLink :href="slide.href">{{slide.linkText}}</NuxtLink>
-                                </p>
+                        <p class="text-truncate">
+                            🚀 New! <strong>{{slide.text}}</strong> <NuxtLink :href="slide.href">{{slide.linkText}}</NuxtLink>
+                        </p>
                     </Slide>
                 </Carousel>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="alertHide">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
         </div>
     </div>

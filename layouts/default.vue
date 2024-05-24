@@ -2,8 +2,8 @@
     <div>
         <NuxtLoadingIndicator />
         <LayoutSearch />
-        <LayoutAnnounce v-if="content.showTopBanner" :content="content" :alertHide="alertHide"/>
-        <div class="wrapper" :class="{'announce': content.showTopBanner}">
+        <LayoutAnnounce v-if="content.data.length > 0" :content="content" :alertHide="alertHide"/>
+        <div class="wrapper" :class="{'announce': content.data.length > 0}">
             <LayoutHeader />
             <main >
                 <slot />
@@ -22,7 +22,6 @@
             return {
               content: {
                 background: '#8405FF',
-                showTopBanner: true,
                 data: [
                   {
                     id: 1,
