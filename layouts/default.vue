@@ -2,8 +2,8 @@
     <div>
         <NuxtLoadingIndicator />
         <LayoutSearch />
-        <LayoutAnnounce v-if="content.data.length > 0" :content="content" :alertHide="alertHide"/>
-        <div class="wrapper" :class="{'announce': content.data.length > 0}">
+        <LayoutAnnounce v-if="content &&  content.length > 0" :content="content" />
+        <div class="wrapper" :class="{'announce': content && content.length > 0}">
             <LayoutHeader />
             <main >
                 <slot />
@@ -14,41 +14,26 @@
     </div>
 </template>
 
+<script setup>
+  const config = useRuntimeConfig();
+  const content = ref(null);
+
+  const {data: bannerMessages} = await useAsyncData(`banner-messages`, () => {
+    return $fetch(`${config.public.apiUrl}/banner-messages`);
+  });
+
+  if(bannerMessages.value) {
+    content.value = bannerMessages.value.results;
+    console.log(content.value);
+  }
+</script>
+
 <script>
     import {useNuxtApp} from "#app/nuxt.js";
 
     export default defineComponent({
-        data() {
-            return {
-              content: {
-                background: '#8405FF',
-                data: [
-                  {
-                    id: 1,
-                    text: 'Kestra raises $5 million to grow',
-                    href: '/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator',
-                    linkText: 'Learn more',
-                  },
-                  {
-                    id: 2,
-                    text: 'Kestra raises $15 million to grow',
-                    href: '/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator',
-                    linkText: 'Learn more',
-                  },
-                  {
-                    id: 3,
-                    text: 'Kestra raises $30 million to grow',
-                    href: '/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator',
-                    linkText: 'Learn more',
-                  },
-                ]
-              },
-            };
-        },
         setup() {
             const nuxtApp = useNuxtApp();
-
-            const topBanner = useCookie('top-banner', {watch: true});
 
             nuxtApp.hook("page:start", () => {
                 document.querySelector('body').classList.add("loading");
@@ -58,14 +43,7 @@
             nuxtApp.hook("page:finish", () => {
                 document.querySelector('body').classList.remove("loading");
             });
-
-            return {topBanner}
         },
-        methods: {
-            alertHide() {
-                this.content.showTopBanner = false;
-            },
-        }
     })
 </script>
 

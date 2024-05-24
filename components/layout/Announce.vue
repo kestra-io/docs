@@ -1,11 +1,11 @@
 <template>
     <div class="fixed-top">
         <div class="announce">
-            <div class="alert alert-primary" :style="`background-color: ${content.background}`">
+            <div class="alert alert-primary">
                 <Carousel :autoplay="5000" :wrap-around="true" :transition="2500" :itemsToShow="3">
-                    <Slide v-for="slide in content.data" :key="slide" v-bind:key="slide?.id">
+                    <Slide v-for="slide in content" :key="slide" v-bind:key="slide?.id">
                         <p class="text-truncate">
-                            🚀 New! <strong>{{slide.text}}</strong> <NuxtLink :href="slide.href">{{slide.linkText}}</NuxtLink>
+                            <strong>{{slide.text}}</strong> <NuxtLink :href="slide.href">{{slide.linkText}}</NuxtLink>
                         </p>
                     </Slide>
                 </Carousel>
