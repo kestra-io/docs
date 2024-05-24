@@ -46,7 +46,7 @@ inputs:
 
 tasks:
   - id: welcome
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: welcome to {{ inputs.greeting }}
 ```
 
@@ -116,7 +116,7 @@ id: flow1
 namespace: dev
 tasks:
   - id: test
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: this is too easy
 ```
 
@@ -126,7 +126,7 @@ id: flow2
 namespace: dev
 tasks:
   - id: test
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: the simplest dev-to-prod workflow ever
 ```
 
@@ -179,7 +179,7 @@ inputs:
 
 tasks:
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: hello on {{ inputs.greeting }}
 ```
 
@@ -195,7 +195,7 @@ inputs:
 
 tasks:
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: hello on {{ inputs.greeting }}
 ```
 

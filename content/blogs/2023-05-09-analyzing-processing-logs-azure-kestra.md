@@ -46,7 +46,7 @@ tasks:
     valueDeserializer: JSON
 
   - id: write_json
-    type: io.kestra.plugin.serdes.json.JsonWriter
+    type: io.kestra.plugin.serdes.json.IonToJson
     newLine: true
     from: "{{ outputs.consume.uri }}"
 

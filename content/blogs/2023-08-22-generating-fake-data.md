@@ -94,7 +94,7 @@ labels:
 
 tasks:
   - id: working_dir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
 
       - id: clone
@@ -110,19 +110,19 @@ tasks:
           - python dataset/produce/main.py --date {{ trigger.date ?? now() | date("yyyy-MM-dd")}}
 
       - id: file_outputs
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         description: This task allows to expose all CSV files created by the Python script task above to downstream tasks and flows.
         outputs:
           - '*.csv'
 
       - id: run_date
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: '{{ trigger.date ?? now() | date("yyyy-MM-dd")}}'
 
 
 triggers:
   - id: schedule_every_day
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 10 * * *"
     backfill:
       start: 2023-07-10T10:00:00Z
@@ -173,15 +173,15 @@ tasks:
 triggers:
 
   - id: get_data
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     inputs:
       orders_data: "{{ outputs.file_outputs.uris['orders.csv'] }}"
       order_date: "{{ outputs.run_date.value }}"
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
         namespace: shiny_rocks
         flowId: produce_data
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - SUCCESS
 ```
@@ -217,7 +217,7 @@ tasks:
     valueRender: FORMATTED_VALUE
 
   - id: write_csv
-    type: io.kestra.plugin.serdes.csv.CsvWriter
+    type: io.kestra.plugin.serdes.csv.IonToCsv
     description: Write CSV into Kestra internal storage
     from: "{{ outputs.read_gsheet.uris.marketing }}"
 
@@ -236,7 +236,7 @@ tasks:
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 10 * * *
 ```
 
@@ -254,7 +254,7 @@ labels:
 
 tasks:
   - id: workingdir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: cloneRepository
         type: io.kestra.plugin.git.Clone
@@ -262,7 +262,7 @@ tasks:
         branch: main
 
       - id: profile
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         inputs:
           profiles.yml: |
             shiny_rocks_dbt:
@@ -291,30 +291,30 @@ tasks:
 
 triggers:
   - id: multiple-listen-flow
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - SUCCESS
       - id: multiple
-        type: io.kestra.core.models.conditions.types.MultipleCondition
+        type: io.kestra.plugin.core.condition.MultipleCondition
         window: P1D
         windowAdvance: P0D
         conditions:
           orders:
-            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
             namespace: shiny_rocks
             flowId: load_orders_bigquery
           payments:
-            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
             namespace: shiny_rocks
             flowId: load_payments_bigquery
           services:
-            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
             namespace: shiny_rocks
             flowId: load_services_bigquery
           marketing_investments:
-            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
             namespace: shiny_rocks
             flowId: marketing_investments_to_bigquery
 ```
@@ -356,16 +356,16 @@ tasks:
 
 
   - id: to_csv
-    type: io.kestra.plugin.serdes.csv.CsvWriter
+    type: io.kestra.plugin.serdes.csv.IonToCsv
     from: "{{ outputs.get_data.uri }}"
 
 
   - id: working_dir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
 
       - id: files
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         inputs:
           data.csv : "{{ outputs.to_csv.uri }}"
 
@@ -388,7 +388,7 @@ tasks:
           ggsave(plot, "plot.png")
 
       - id: output
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         outputs:
           - plot.png
 
@@ -407,12 +407,12 @@ tasks:
 triggers:
 
   - id: get_data
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
         namespace: shiny_rocks
         flowId: dbt_run
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - SUCCESS
 ```

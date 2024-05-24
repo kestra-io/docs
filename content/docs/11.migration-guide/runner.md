@@ -26,7 +26,7 @@ namespace: dev
 
 tasks:
   - id: working_directory
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: clone_repository
         type: io.kestra.plugin.git.Clone
@@ -71,7 +71,7 @@ namespace: dev.task_runners
 
 tasks:
   - id: working_directory
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: clone_repository
         type: io.kestra.plugin.git.Clone

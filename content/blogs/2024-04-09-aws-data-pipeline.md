@@ -47,7 +47,7 @@ inputs:
 
 tasks:
   - id: json
-    type: io.kestra.plugin.serdes.json.JsonWriter
+    type: io.kestra.plugin.serdes.json.IonToJson
     from: "{{ inputs.product }}"
 
   - id: "put_item"
@@ -73,10 +73,10 @@ tasks:
     type: io.kestra.plugin.fs.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv
   - id: csv_reader_products
-    type: io.kestra.plugin.serdes.csv.CsvReader
+    type: io.kestra.plugin.serdes.csv.CsvToIon
     from: "{{ outputs.http_download_products.uri }}"
   - id: for_each_product
-    type: io.kestra.core.tasks.flows.ForEachItem
+    type: io.kestra.plugin.core.flow.ForEachItem
     items: "{{ outputs.csv_reader_products.uri }}"
     batch:
       rows: 1
@@ -170,7 +170,7 @@ tasks:
       select o.order_id, o.customer_name, o.customer_email, p.id as product_id, p.name as product_name, p.category as product_category, p.brand as product_brand, o.price, o.quantity, o.total from orders o join products p on o.product_id = p.id
     store: true
   - id: csv_writer_detailed_orders
-    type: io.kestra.plugin.serdes.csv.CsvWriter
+    type: io.kestra.plugin.serdes.csv.IonToCsv
     from: "{{ outputs.join_orders_and_products.uri }}"
   - id: s3_upload_detailed_orders
     type: io.kestra.plugin.aws.s3.Upload

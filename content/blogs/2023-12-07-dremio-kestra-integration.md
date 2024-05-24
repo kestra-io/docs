@@ -73,7 +73,7 @@ Let's look at a practical application of Kestra and Dremio for data lakehouse or
    - The query results are fetched for downstream use into Kestra's internal storage as a file serialized in the Amazon Ion format.
 
 3. **Convert Ion to CSV**:
-   - The `io.kestra.plugin.serdes.csv.CsvWriter` task converts the Ion file into a CSV file. This task saves us many lines of code to transform between data formats because the Polars library, used in the next task, does not support Amazon Ion files as input [yet](https://github.com/pola-rs/polars/issues/12069).
+   - The `io.kestra.plugin.serdes.csv.IonToCsv` task converts the Ion file into a CSV file. This task saves us many lines of code to transform between data formats because the Polars library, used in the next task, does not support Amazon Ion files as input [yet](https://github.com/pola-rs/polars/issues/12069).
 
 4. **Processing Data with Python**:
    - The `io.kestra.plugin.scripts.python.Script` task utilizes a Docker image with [Polars](https://www.pola.rs/).
@@ -100,7 +100,7 @@ variables:
 
 tasks:
   - id: wdir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: cloneRepository
       type: io.kestra.plugin.git.Clone
@@ -136,7 +136,7 @@ tasks:
     store: true
 
   - id: to_csv
-    type: io.kestra.plugin.serdes.csv.CsvWriter
+    type: io.kestra.plugin.serdes.csv.IonToCsv
     from: "{{ outputs.query.uri }}"
 
   - id: python

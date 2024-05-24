@@ -46,7 +46,7 @@ id: getting_started
 namespace: example
 tasks:
   - id: hello_world
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Hello World!
 ```
 
@@ -81,7 +81,7 @@ id: getting_started
 namespace: example
 tasks:
   - id: hello_world
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Hello World!
 ```
 
@@ -137,7 +137,7 @@ With this change made, we can add an additional task that uses this variable to 
 
 ```yaml
 - id: python_output
-  type: io.kestra.core.tasks.log.Log
+  type: io.kestra.plugin.core.log.Log
   message: "Number of stars: {{ outputs.python_script.vars.gh_stars }}"
 ```
 
@@ -225,7 +225,7 @@ tasks:
       - python scripts/api_example.py
 
   - id: python_output
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "Number of stars: {{ outputs.python_script.vars.gh_stars }}"
 
   - id: send_notification
@@ -259,7 +259,7 @@ This cron schedule expression will execute it at minute 0 of every hour so we ca
 ```yaml
 triggers:
   - id: hour_trigger
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: 0 * * * *
 ```
 
@@ -296,7 +296,7 @@ tasks:
       - python scripts/api_example.py
 
   - id: python_output
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "Number of stars: {{ outputs.python_script.vars.gh_stars }}"
 
   - id: send_notification
@@ -308,7 +308,7 @@ tasks:
 
 triggers:
   - id: hour_trigger
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: 0 * * * *
 ```
 

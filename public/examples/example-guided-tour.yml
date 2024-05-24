@@ -19,7 +19,7 @@ tasks:
     # The message is passed using the 'format' attribute.
     # We use Pebble expressions defined with curly brackets to access the input variables.
   - id: hello
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Hey there, {{ inputs.user }}!
 
     # This task extracts data from an API.
@@ -58,7 +58,7 @@ tasks:
 triggers:
   # Here we use the 'Schedule' trigger to run the flow every minute.
   - id: everyMinute
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/1 * * * *"
     inputs:
       name: Kestra pro user

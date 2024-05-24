@@ -18,5 +18,5 @@ tasks:
 
 errors:
   - id: never-happen
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: Never happened {{task.id}}

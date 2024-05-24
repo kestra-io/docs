@@ -35,10 +35,10 @@ namespace: dev
 
 tasks:
   - id: wdir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: pip
-      type: io.kestra.core.tasks.storages.LocalFiles
+      type: io.kestra.plugin.core.storage.LocalFiles
       inputs:
         requirements.txt: |
           kestra>=0.6.0
@@ -83,7 +83,7 @@ description: process CSV file from S3 trigger
 
 tasks:
   - id: wdir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: cloneRepo
         type: io.kestra.plugin.git.Clone
@@ -91,7 +91,7 @@ tasks:
         branch: main
 
       - id: local
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         inputs:
           data.csv: "{{ trigger.objects | jq('.[].uri') | first }}"
 
@@ -105,7 +105,7 @@ tasks:
           - python scripts/clean_messy_dataset.py
 
       - id: output
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         outputs:
           - "*.csv"
           - "*.parquet"
@@ -138,7 +138,7 @@ Using the previous example, note how the `LocalFiles` can be used to output any 
 
 ```yaml
       - id: output
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         outputs:
           - "*.csv"
           - "*.parquet"

@@ -69,12 +69,12 @@ This approach allows you to maintain consistent development and production envir
 
 ## Centralized Configuration Management
 
-Task Runners also simplify configuration management by allowing you to centrally govern your settings. Using the taskDefaults property, you can manage task runner configurations and credentials at the namespace level. This centralization ensures consistency and simplifies the management of complex deployments.
+Task Runners also simplify configuration management by allowing you to centrally govern your settings. Using the pluginDefaults property, you can manage task runner configurations and credentials at the namespace level. This centralization ensures consistency and simplifies the management of complex deployments.
 
 For example, you can centrally manage your AWS credentials for the AwsBatchTaskRunner plugin:
 
 ```yaml
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.aws
     values:
       accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"

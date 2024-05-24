@@ -39,7 +39,7 @@ namespace: dev
 
 tasks:
   - id: working_dir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: python_script
         type: io.kestra.plugin.scripts.python.Script
