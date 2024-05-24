@@ -106,7 +106,7 @@ inputs:
 ```yaml
 tasks:
   - id: downloadCsv
-    type: io.kestra.plugin.fs.http.Download
+    type: io.kestra.plugin.core.http.Download
     uri: "{{inputs.csvUrl}}"
 ```
 
@@ -133,7 +133,7 @@ inputs:
 
 tasks:
   - id: downloadCsv
-    type: io.kestra.plugin.fs.http.Download
+    type: io.kestra.plugin.core.http.Download
     uri: "{{inputs.csvUrl}}"
 
   - id: CsvToJson

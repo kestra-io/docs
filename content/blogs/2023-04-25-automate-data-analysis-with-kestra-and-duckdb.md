@@ -20,7 +20,7 @@ namespace:  demo
 description:  Analyse  data  salaries.
 tasks:
   -  id:  download_csv
-    type:  io.kestra.plugin.fs.http.Download
+    type:  io.kestra.plugin.core.http.Download
     description:  Data  Job  salaries  from  2020  to  2023  (source  ai-jobs.net)
     uri:  https://gist.githubusercontent.com/Ben8t/f182c57f4f71f350a54c65501d30687e/raw/940654a8ef6010560a44ad4ff1d7b24c708ebad4/salary-data.csv
 
