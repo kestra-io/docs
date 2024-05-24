@@ -7,13 +7,13 @@ release: 0.17.0
 Many core plugins have been renamed in Kestra 0.17.0, and `taskDefaults` are now `pluginDefaults`. While these are non-breaking changes, we recommend updating your flows to use the new names.
 
 ## Why the Change?
-Multiple plugin types have been moved to a new package structure under `io.kestra.plugin.core` to make the plugin system more consistent and intuitive. 
+Multiple plugin types have been moved to a new package structure under `io.kestra.plugin.core` to make the plugin system more consistent and intuitive.
 
 ::alert{type="warning"}
 We've also renamed `taskDefaults` to `pluginDefaults` to highlight that you can set default values for all plugins (_including triggers, task runners and more_), not just tasks.
 ::
 
-All of these are non-breaking changes as we leverage **aliases** for backward compatibility. You will see a friendly warning in the UI code editor if you use the old names. 
+All of these are non-breaking changes as we leverage **aliases** for backward compatibility. You will see a friendly warning in the UI code editor if you use the old names.
 
 ![renamed-core-plugins](/docs/migration-guide/renamed-core-plugins.png)
 
@@ -75,13 +75,9 @@ Below you can see the full list of renamed plugins:
 | `io.kestra.plugin.core.flow.Subflow`                          | `io.kestra.core.tasks.flows.Subflow`                                 |
 | `io.kestra.plugin.core.flow.Switch`                           | `io.kestra.core.tasks.flows.Switch`                                  |
 | `io.kestra.plugin.core.flow.Template`                         | `io.kestra.core.tasks.flows.Template`                                |
-| `io.kestra.plugin.core.flow.WaitFor`                          | `io.kestra.core.tasks.flows.Worker`                                  |
 | `io.kestra.plugin.core.flow.WorkingDirectory`                 | `io.kestra.core.tasks.flows.WorkingDirectory`                        |
 | `io.kestra.plugin.core.log.Fetch`                             | `io.kestra.core.tasks.log.Fetch`                                     |
 | `io.kestra.plugin.core.log.Log`                               | `io.kestra.core.tasks.log.Log`                                       |
-| `io.kestra.plugin.core.scripts.Bash`                          | `io.kestra.core.tasks.scripts.Bash`                                  |
-| `io.kestra.plugin.core.scripts.Node`                          | `io.kestra.core.tasks.scripts.Node`                                  |
-| `io.kestra.plugin.core.scripts.Python`                        | `io.kestra.core.tasks.scripts.Python`                                |
 | `io.kestra.plugin.core.state.Delete`                          | `io.kestra.core.tasks.states.Delete`                                 |
 | `io.kestra.plugin.core.state.Get`                             | `io.kestra.core.tasks.states.Get`                                    |
 | `io.kestra.plugin.core.state.Set`                             | `io.kestra.core.tasks.states.Set`                                    |
