@@ -17,7 +17,7 @@ namespace: example
 
 tasks:
   - id: parent
-    type: io.kestra.core.tasks.flows.Parallel
+    type: io.kestra.plugin.core.flow.Parallel
     concurrent: 3
     tasks:
       - id: t1
@@ -57,7 +57,7 @@ tasks:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
   - id: last
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 
 ```
@@ -75,10 +75,10 @@ description: |
 
 tasks:
   - id: parent
-    type: io.kestra.core.tasks.flows.Parallel
+    type: io.kestra.plugin.core.flow.Parallel
     tasks:
       - id: seq1
-        type: io.kestra.core.tasks.flows.Sequential
+        type: io.kestra.plugin.core.flow.Sequential
         tasks:
           - id: t1
             type: io.kestra.plugin.scripts.shell.Commands
@@ -99,7 +99,7 @@ tasks:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
       - id: seq2
-        type: io.kestra.core.tasks.flows.Sequential
+        type: io.kestra.plugin.core.flow.Sequential
         tasks:
           - id: t4
             type: io.kestra.plugin.scripts.shell.Commands
@@ -120,7 +120,7 @@ tasks:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
   - id: last
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 

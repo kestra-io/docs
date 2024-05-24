@@ -26,7 +26,7 @@ inputs:
 
 tasks:
   - id: hello
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Hey there, {{ inputs.user }}
 ```
 

@@ -27,19 +27,19 @@ Then, make sure to also add the following task defaults to your configuration to
 kestra:
   tasks:
     defaults:
-    - type: io.kestra.core.models.conditions.types.DateTimeBetweenCondition
+    - type: io.kestra.plugin.core.condition.DateTimeBetweenCondition
       values:
         date: "{{ now() }}"
-    - type: io.kestra.core.models.conditions.types.DayWeekCondition
+    - type: io.kestra.plugin.core.condition.DayWeekCondition
       values:
         date: "{{ now(format="iso_local_date") }}"
-    - type: io.kestra.core.models.conditions.types.DayWeekInMonthCondition
+    - type: io.kestra.plugin.core.condition.DayWeekInMonthCondition
       values:
         date: "{{ now(format="iso_local_date") }}"
-    - type: io.kestra.core.models.conditions.types.TimeBetweenCondition
+    - type: io.kestra.plugin.core.condition.TimeBetweenCondition
       values:
         date: "{{ now(format='iso_offset_time') }}"
-    - type: io.kestra.core.models.conditions.types.WeekendCondition
+    - type: io.kestra.plugin.core.condition.WeekendCondition
       values:
         date: "{{ now(format='iso_local_date') }}"
 ```
@@ -72,7 +72,7 @@ listeners:
         channel: "#general"
         executionId: "{{ execution.id }}"
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
           - WARNING
@@ -86,7 +86,7 @@ The next section shows how you can accomplish the same using Flow triggers.
 
 ## Flow trigger ✅
 
-To migrate from a listener to a Flow trigger, create a new flow. Add a trigger of type `io.kestra.core.models.triggers.types.Flow` and move the condition e.g. `ExecutionStatusCondition` to the trigger conditions. Finally, move the list of tasks from listeners to `tasks` in the flow.
+To migrate from a listener to a Flow trigger, create a new flow. Add a trigger of type `io.kestra.plugin.core.trigger.Flow` and move the condition e.g. `ExecutionStatusCondition` to the trigger conditions. Finally, move the list of tasks from listeners to `tasks` in the flow.
 
 The example below will explain it better than words:
 
@@ -104,14 +104,14 @@ tasks:
 
 triggers:
   - id: execution_status_events
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
           - WARNING
 
-      - type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
+      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
         namespace: prod
         flowId: demo
 ```
@@ -161,7 +161,7 @@ listeners:
         type: io.kestra.plugin.notifications.slack.SlackExecution
         url: https://hooks.slack.com/services/XXX/YYY/ZZZ
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
 ```

@@ -47,12 +47,12 @@ namespace: prod
 
 tasks:
   - id: process_slack_event
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ trigger.body }}"
 
 triggers:
   - id: slack_event
-    type: io.kestra.core.models.triggers.types.Webhook
+    type: io.kestra.plugin.core.trigger.Webhook
     key: superStrongSecretKey42
 ```
 
@@ -229,7 +229,7 @@ namespace: prod
 
 tasks:
   - id: if_app_mention
-    type: io.kestra.core.tasks.flows.If
+    type: io.kestra.plugin.core.flow.If
     condition: "{{ trigger.body.event.type == 'app_mention' }}"
     then:
       - id: gpt
@@ -248,12 +248,12 @@ tasks:
           {"channel":"{{ trigger.body.event.channel }}","text":"{{ outputs.gpt.choices[0].message.content }}"}
     else:
       - id: other_events
-        type: io.kestra.core.tasks.log.Log
+        type: io.kestra.plugin.core.log.Log
         message: "{{ trigger.body }}"
 
 triggers:
   - id: slack_event
-    type: io.kestra.core.models.triggers.types.Webhook
+    type: io.kestra.plugin.core.trigger.Webhook
     key: superStrongSecretKey42
 ```
 

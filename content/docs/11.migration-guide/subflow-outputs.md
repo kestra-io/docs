@@ -20,7 +20,7 @@ namespace: dev
 
 tasks:
   - id: mytask
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: this is a task output used as a final flow output
 ```
 
@@ -32,7 +32,7 @@ namespace: dev
 
 tasks:
   - id: subflow
-    type: io.kestra.core.tasks.flows.Subflow
+    type: io.kestra.plugin.core.flow.Subflow
     flowId: flow_outputs
     namespace: dev
     wait: true
@@ -40,7 +40,7 @@ tasks:
       final: "{{ outputs.mytask.value }}"
 
   - id: log
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 
@@ -56,11 +56,11 @@ To keep the old behavior with the `outputs` property, you can set the following 
 kestra:
   plugins:
     configurations:
-      - type: io.kestra.core.tasks.flows.Subflow
+      - type: io.kestra.plugin.core.flow.Subflow
         values:
           outputs:
             enabled: true # for backward-compatibility -- false by default
-      - type: io.kestra.core.tasks.flows.Flow
+      - type: io.kestra.plugin.core.flow.Flow
         values:
           outputs:
             enabled: true # for backward-compatibility -- false by default
@@ -88,7 +88,7 @@ namespace: dev
 
 tasks:
   - id: mytask
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: this is a task output used as a final flow output
 
 outputs:
@@ -111,13 +111,13 @@ namespace: dev
 
 tasks:
   - id: subflow
-    type: io.kestra.core.tasks.flows.Subflow
+    type: io.kestra.plugin.core.flow.Subflow
     flowId: flow_outputs
     namespace: dev
     wait: true
 
   - id: log_subflow_output
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 

@@ -56,7 +56,7 @@ inputs:
 
 tasks:
   - id: mytask
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: task that needs the secret to connect to an external system
 
 outputs:

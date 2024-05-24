@@ -30,27 +30,27 @@ inputs:
 
 tasks:
   - id: conditional_branching
-    type: io.kestra.core.tasks.flows.Switch
+    type: io.kestra.plugin.core.flow.Switch
     value: "{{ inputs.use_case }}"
     cases:
       Data pipelines:
         - id: data_pipelines
-          type: io.kestra.core.tasks.log.Log
+          type: io.kestra.plugin.core.log.Log
           message: Managing important data products
 
       Microservices:
         - id: microservices
-          type: io.kestra.core.tasks.log.Log
+          type: io.kestra.plugin.core.log.Log
           message: Orchestrating critical applications
 
       Business processes:
         - id: business_processes
-          type: io.kestra.core.tasks.log.Log
+          type: io.kestra.plugin.core.log.Log
           message: Orchestrating critical applications
 
       Marketing automation:
         - id: marketing_automation
-          type: io.kestra.core.tasks.log.Log
+          type: io.kestra.plugin.core.log.Log
           message: Orchestrating critical applications
 ```
 

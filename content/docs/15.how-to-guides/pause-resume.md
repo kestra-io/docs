@@ -20,10 +20,10 @@ namespace: dev
 
 tasks:
   - id: pause
-    type: io.kestra.core.tasks.flows.Pause
+    type: io.kestra.plugin.core.flow.Pause
 
   - id: after_pause
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Execution has been resumed!
 ```
 

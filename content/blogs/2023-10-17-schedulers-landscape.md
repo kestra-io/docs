@@ -95,7 +95,7 @@ Here's how you can schedule a flow to run every 15 minutes.
 ```yaml
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/15 * * * *"
 
 ```
@@ -107,7 +107,7 @@ Kestra also supports named expressions, which can simplify your configuration.
 ```yaml
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "@hourly"
 
 ```
@@ -139,7 +139,7 @@ If you need the flow to make up for missed runs from a specific date, you can co
 ```yaml
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/15 * * * *"
     backfill:
       start: 2023-10-17T14:00:00Z

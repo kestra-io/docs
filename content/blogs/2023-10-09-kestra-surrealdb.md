@@ -159,7 +159,7 @@ We assume you already have [Kestra installed](https://medium.com/geekculture/int
 ### Flow #1: Retrieve Data from SurrealDB
 The latest version of Kestra comes with a SurrealDB plugin you can access through `io.kestra.plugin.surrealdb.Query`. It's used to run SurrealQL commands, and expects you to provide values of the QL statement along with the database connection information.
 
-The neat part about Kestra is that you can use `taskDefaults` to set default values for a certain type of plugin. It's a good idea to use it, especially if you plan to use one plugin type multiple times.
+The neat part about Kestra is that you can use `pluginDefaults` to set default values for a certain type of plugin. It's a good idea to use it, especially if you plan to use one plugin type multiple times.
 
 To start, go under "Flows" and create a new flow. Paste the following code:
 
@@ -173,7 +173,7 @@ tasks:
       SELECT * FROM employee;
     fetchType: STORE
 
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.surrealdb.Query
     values:
       host: host.docker.internal
@@ -183,7 +183,7 @@ taskDefaults:
       password: root
 ```
 
-Long story short, we're running a simple `SELECT` statement and storing all of the records in a file (`fetchType: STORE`). The `taskDefaults` section provides a default set of reusable values for the SurrealDB plugin, which are the database connection parameters.
+Long story short, we're running a simple `SELECT` statement and storing all of the records in a file (`fetchType: STORE`). The `pluginDefaults` section provides a default set of reusable values for the SurrealDB plugin, which are the database connection parameters.
 
 Note how we're using host: `host.docker.internal` instead of the local database address. That's because we're running Kestra in a Docker container, and this is a workaround to allow it access to your computer's local host:
 
@@ -233,7 +233,7 @@ tasks:
       SELECT * FROM employee;
     fetchType: STORE
 
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.surrealdb.Query
     values:
       host: host.docker.internal
@@ -339,7 +339,7 @@ tasks:
       ;
     fetchType: STORE
 
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.surrealdb.Query
     values:
       host: host.docker.internal

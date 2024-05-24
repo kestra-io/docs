@@ -190,7 +190,7 @@ tasks:
 
 triggers:
   - id: cron_trigger
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "${cron-expression}"
     lateMaximumDelay: "${late-maximum-delay}"
 ```
