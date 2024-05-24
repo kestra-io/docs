@@ -18,5 +18,5 @@ tasks:
       - node outputs_nodejs.js
 
   - id: log_downloads
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "Number of downloads: {{ outputs.run_nodejs_commands.vars.pull_count }}"

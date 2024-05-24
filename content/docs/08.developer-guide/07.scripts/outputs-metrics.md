@@ -190,10 +190,10 @@ id: outputsInputs
 namespace: dev
 tasks:
     - id: passOutput
-      type: io.kestra.core.tasks.debugs.Return
+      type: io.kestra.plugin.core.debug.Return
       format: "hello world!"
     - id: takeInput
-      type: io.kestra.core.tasks.debugs.Return
+      type: io.kestra.plugin.core.debug.Return
       format: "data from previous task - {{ outputs.passOutput.value }}"
 ```
 

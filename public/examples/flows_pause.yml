@@ -6,7 +6,7 @@ description:
 
 tasks:
   - id: pause
-    type: io.kestra.core.tasks.flows.Pause
+    type: io.kestra.plugin.core.flow.Pause
     tasks:
       - id: wait-manual
         type: io.kestra.plugin.scripts.shell.Commands
@@ -15,5 +15,5 @@ tasks:
           - echo "trigger {{task.id}} after manual restart"
 
   - id: last
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "Manually pause cancel, the flow continue"

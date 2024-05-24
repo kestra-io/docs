@@ -29,7 +29,7 @@ Based on previous observations, here are some recommendations.
 
 While it is possible to code a flow with any number of tasks, it is not recommended to have a lot of tasks on the same flow.
 
-A flow can be comprised of manually generated tasks or dynamic ones. While [EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.eachsequential) and [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.eachparallel) are really powerful tasks to loop over the result of a previous task, there are some drawbacks. If the task you are looping over is too large, you can easily end up with hundreds of tasks created. If, for example, you were using a pattern with Each inside Each (nested looping), it would take only a flow with 20 TaskRuns X 20 TaskRuns to reach 400 TaskRuns.
+A flow can be comprised of manually generated tasks or dynamic ones. While [EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential) and [EachParallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachParallel) are really powerful tasks to loop over the result of a previous task, there are some drawbacks. If the task you are looping over is too large, you can easily end up with hundreds of tasks created. If, for example, you were using a pattern with Each inside Each (nested looping), it would take only a flow with 20 TaskRuns X 20 TaskRuns to reach 400 TaskRuns.
 
 ::alert{type="warning"}
 Based on our observations, we have seen that in cases where there are **more than 100** tasks on a flow, we see a decrease in performance and longer executions.
@@ -42,7 +42,7 @@ Some tasks allow you to fetch results on outputs to be reused on the next tasks.
 While this is powerful, this **is not intended to be used to transport a lot of data!**
 For example, with the [Query](/plugins/plugin-gcp/tasks/bigquery/io.kestra.plugin.gcp.bigquery.query) task from BigQuery, there is a property `fetch` that allows fetching a result-set as an output attribute.
 
-Imagine a big table with many MB or even GB of data. If you use `fetch`, the output will be stored in the execution context and will need to be serialized on each task state change! This is not the idea behind `fetch`, it serves mostly to query a few rows to use it on a [Switch](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.switch) task for example, or an [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.eachparallel) task to loop over.
+Imagine a big table with many MB or even GB of data. If you use `fetch`, the output will be stored in the execution context and will need to be serialized on each task state change! This is not the idea behind `fetch`, it serves mostly to query a few rows to use it on a [Switch](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Switch) task for example, or an [EachParallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachParallel) task to loop over.
 
 ::alert{type="info"}
 In most cases, there is another property called `stores` that can handle a large volume of data. When an output is stored, it uses Kestra's internal storage, and only the URL of the stored file is stored in the execution context.
@@ -50,7 +50,7 @@ In most cases, there is another property called `stores` that can handle a large
 
 
 ## Parallel Task
-Using the [EachParallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.eachparallel) task or the [Parallel](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.parallel) task is a convenient way to optimize flow duration, but keep in mind that, by default, **all parallel tasks are launched at the same time** (unless you specify the `concurrent` property). The only limit will be the number of worker threads you have configured.
+Using the [EachParallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachParallel) task or the [Parallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel) task is a convenient way to optimize flow duration, but keep in mind that, by default, **all parallel tasks are launched at the same time** (unless you specify the `concurrent` property). The only limit will be the number of worker threads you have configured.
 
 Keep this in mind, because you cannot allow parallel tasks to reach the limit of external systems, such as connection limits or quotas.
 

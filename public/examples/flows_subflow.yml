@@ -9,7 +9,7 @@ inputs:
 
 tasks:
   - id: launch
-    type: io.kestra.core.tasks.flows.Subflow
+    type: io.kestra.plugin.core.flow.Subflow
     namespace: example
     flowId: switch
     inputs:

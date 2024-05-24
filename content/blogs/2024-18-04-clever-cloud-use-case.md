@@ -24,8 +24,8 @@ Initially, Clever Cloud faced stability issues due to the rapid growth of their 
 Kestra has been chosen for automating Clever Cloud’s data offloading. Kestra is used to automate data handling tasks, significantly reducing the manual effort required each month
 
 - **HTTP Request Handling**: Using **`io.kestra.plugin.fs.http.Request`** for initiating interactions with external data sources.
-- **Workflow Modularity**: Employing **`io.kestra.core.tasks.flows.Subflow`** to manage sub-workflows within the main archival process.
-- **Parallel and Sequential Task Management**: Utilizing **`io.kestra.core.tasks.flows.EachParallel`** and **`io.kestra.core.tasks.flows.EachSequential`** to optimize task execution based on dependencies.
+- **Workflow Modularity**: Employing **`io.kestra.plugin.core.flow.Subflow`** to manage sub-workflows within the main archival process.
+- **Parallel and Sequential Task Management**: Utilizing **`io.kestra.plugin.core.flow.EachParallel`** and **`io.kestra.plugin.core.flow.EachSequential`** to optimize task execution based on dependencies.
 
 ## Advanced Data Offloading Techniques
 
@@ -39,9 +39,9 @@ Clever Cloud's main workflow, is triggered to manage the vast volumes of data ge
 
 The workflow begins with the data fetching and compression stage. Here, the HFiles extension of Warp10 selects batches of data from the time series database based on predefined criteria like specific time ranges. This data is then compressed on-the-fly, significantly reducing the volume and making it more manageable for subsequent processing.
 
-Once the data is prepared, the workflow transitions into parallel processing. This stage sees multiple instances of the data compression task running concurrently, with each instance handling a different data segment. This parallelization, orchestrated by Kestra's **`io.kestra.core.tasks.flows.EachParallel`**, is reducing the time taken to process large datasets by distributing the workload efficiently across resources.
+Once the data is prepared, the workflow transitions into parallel processing. This stage sees multiple instances of the data compression task running concurrently, with each instance handling a different data segment. This parallelization, orchestrated by Kestra's **`io.kestra.plugin.core.flow.EachParallel`**, is reducing the time taken to process large datasets by distributing the workload efficiently across resources.
 
-Throughout the workflow, a error handling mechanism is engaged. Should any data compression task encounter issues, **`io.kestra.core.tasks.flows.EachSequential`** is used to manage retries effectively. This ensures that temporary issues are rectified quickly without manual intervention. For persistent failures, an auxiliary workflow is triggered to alert the operations team via Slack, ensuring that they are informed and can take necessary action.
+Throughout the workflow, a error handling mechanism is engaged. Should any data compression task encounter issues, **`io.kestra.plugin.core.flow.EachSequential`** is used to manage retries effectively. This ensures that temporary issues are rectified quickly without manual intervention. For persistent failures, an auxiliary workflow is triggered to alert the operations team via Slack, ensuring that they are informed and can take necessary action.
 
 Following the compression and validation of the data, the workflow proceeds to the data offloading stage. The compressed data is transferred to Clever Cloud’s **Cellar object storage** for long-term preservation. Post-transfer, data originally stored in hot storage is deleted to free up space and maintain system performance.
 

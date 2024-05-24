@@ -445,7 +445,7 @@ tasks:
     bucket: "{{vars.bucket}}"
   
   - id: check
-    type: io.kestra.core.tasks.flows.If
+    type: io.kestra.plugin.core.flow.If
     condition: "{{outputs.listObjects.objects}}"
     then:
       - id: ingestToDataLake
@@ -532,7 +532,7 @@ tasks:
 
 triggers:
   - id: hourlySchedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "@hourly"
     disabled: true
 ```
@@ -562,11 +562,11 @@ tasks:
     bucket: "{{vars.bucket}}"
 
   - id: check
-    type: io.kestra.core.tasks.flows.If
+    type: io.kestra.plugin.core.flow.If
     condition: "{{outputs.listObjects.objects}}"
     then:
     - id: processNewObjects
-      type: io.kestra.core.tasks.flows.WorkingDirectory
+      type: io.kestra.plugin.core.flow.WorkingDirectory
       tasks:
         - id: git
           type: io.kestra.plugin.git.Clone
@@ -622,7 +622,7 @@ tasks:
 
 triggers:
   - id: hourlySchedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "@hourly"
 ```
 
@@ -655,7 +655,7 @@ variables:
 
 tasks:
   - id: wdir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: git
         type: io.kestra.plugin.git.Clone
