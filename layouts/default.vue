@@ -21,11 +21,28 @@
         data() {
             return {
               content: {
-                text: 'Kestra raises $3 million to grow',
-                href: '/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator',
-                linkText: 'Learn more',
                 background: '#8405FF',
-                showTopBanner: false,
+                showTopBanner: true,
+                data: [
+                  {
+                    id: 1,
+                    text: 'Kestra raises $5 million to grow',
+                    href: '/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator',
+                    linkText: 'Learn more',
+                  },
+                  {
+                    id: 2,
+                    text: 'Kestra raises $15 million to grow',
+                    href: '/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator',
+                    linkText: 'Learn more',
+                  },
+                  {
+                    id: 3,
+                    text: 'Kestra raises $30 million to grow',
+                    href: '/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator',
+                    linkText: 'Learn more',
+                  },
+                ]
               },
             };
         },

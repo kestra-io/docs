@@ -2,9 +2,13 @@
     <div class="fixed-top">
         <div class="announce">
             <div class="alert alert-primary" :style="`background-color: ${content.background}`">
-                <p class="text-truncate">
-                    🚀 New! <strong>{{content.text}}</strong> <NuxtLink :href="content.href">{{content.linkText}}</NuxtLink>
-                </p>
+                <Carousel :autoplay="5000" :wrap-around="true" :transition="2500" :itemsToShow="3">
+                    <Slide v-for="slide in content.data" :key="slide" v-bind:key="slide?.id">
+                                <p class="text-truncate">
+                                    🚀 New! <strong>{{slide.text}}</strong> <NuxtLink :href="slide.href">{{slide.linkText}}</NuxtLink>
+                                </p>
+                    </Slide>
+                </Carousel>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="alertHide">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -73,6 +77,16 @@
                 font-size: 24px;
                 color: var(--bs-white);
             }
+        }
+    }
+
+    :deep(.carousel > .carousel__viewport > .carousel__track) {
+        .carousel__slide {
+            opacity: 0.5;
+        }
+
+        .carousel__slide--active {
+            opacity: 1;
         }
     }
 </style>
