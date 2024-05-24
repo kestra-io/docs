@@ -37,7 +37,7 @@
                             <span>tasks:</span><br/>
                             <div class="ms-1">
                                 <span class="ms-1">- id:</span> extract_from_api<br/>
-                                <span class="ms-3">type:</span> io.kestra.plugin.fs.http.Request<br/>
+                                <span class="ms-3">type:</span> io.kestra.plugin.core.http.Request<br/>
                                 <span class="ms-3">uri:</span> https://dummyjson.com/products<br/>
                                 <br/>
                                 <span class="ms-1">- id:</span> python_transform<br/>

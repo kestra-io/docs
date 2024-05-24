@@ -33,7 +33,7 @@ inputs:
 
 tasks:
   - id: fetch_products
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.api_endpoint }}"
 
   - id: transform_in_python
@@ -86,7 +86,7 @@ inputs:
 
 tasks:
   - id: fetchProducts
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.apiEndpoint }}"
 
   - id: transformInPython

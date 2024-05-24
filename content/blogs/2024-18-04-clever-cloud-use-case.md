@@ -23,7 +23,7 @@ Initially, Clever Cloud faced stability issues due to the rapid growth of their 
 
 Kestra has been chosen for automating Clever Cloud’s data offloading. Kestra is used to automate data handling tasks, significantly reducing the manual effort required each month
 
-- **HTTP Request Handling**: Using **`io.kestra.plugin.fs.http.Request`** for initiating interactions with external data sources.
+- **HTTP Request Handling**: Using **`io.kestra.plugin.core.http.Request`** for initiating interactions with external data sources.
 - **Workflow Modularity**: Employing **`io.kestra.plugin.core.flow.Subflow`** to manage sub-workflows within the main archival process.
 - **Parallel and Sequential Task Management**: Utilizing **`io.kestra.plugin.core.flow.EachParallel`** and **`io.kestra.plugin.core.flow.EachSequential`** to optimize task execution based on dependencies.
 
