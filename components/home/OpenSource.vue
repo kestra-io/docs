@@ -19,7 +19,7 @@
                 <div class="metrics">
                     <div class="counter-box text-center">
                         <h5 class="mb-0 mt-2">
-                            <CountTo :endVal="metrics ? metrics.stars : 0" :duration="4000"></CountTo>
+                            <CountTo :endVal="stargazers || 0" :duration="4000"></CountTo>
                         </h5>
                         <p>Stars</p>
                     </div>
@@ -80,6 +80,7 @@
     import BugOutline from "vue-material-design-icons/BugOutline.vue";
     import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue";
     import {useApi} from "~/composables/useApi.js";
+    import axios from "axios";
 
     export default {
         components: {
@@ -101,6 +102,7 @@
                 contributorsRand: undefined,
                 metrics: undefined,
                 imgPoss: [],
+                stargazers: undefined,
             };
         },
 
@@ -117,6 +119,11 @@
                 this.contributors = []
                 this.metrics = {}
             }
+        },
+
+        async mounted() {
+          const response = await axios.get('/api/github')
+          this.stargazers = response.data.stargazers;
         },
 
         methods: {
