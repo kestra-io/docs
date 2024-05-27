@@ -100,6 +100,10 @@
         },
     })
 
+    if (slug.value.endsWith(".md")) {
+        await navigateTo(slug.value.substring(0, slug.value.length - 3));
+    }
+
     if (props.type === 'plugins') {
         const parts = slug.value.split('/');
         let pageUrl;
