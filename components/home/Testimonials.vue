@@ -71,6 +71,7 @@
                         link: "https://www.linkedin.com/in/julien-henrion-b007b416/",
                         designation: "Head of Data Engineering @ Leroy Merlin",
                         alt: "Picture of Julien testimony",
+                        imgName: 'leroymerlin',
                     },
                     {
                         profile: "/landing/home/testimonials/patrick.jpeg",
@@ -79,6 +80,7 @@
                         link: "https://www.linkedin.com/in/simon-barbier-4b97a5192/",
                         designation: "Product Manager @ CleverConnect",
                         alt: "Picture of Patrick testimony",
+                        imgName: 'cleverconnect',
                     },
                     {
                         profile: "/landing/home/testimonials/mourad.jpg",
@@ -87,6 +89,7 @@
                         link: "https://au.linkedin.com/in/ohad-srur-11b06225",
                         designation: "Co-Founder @ EduBI Analytics",
                         alt: "Picture of Ohad testimony",
+                        imgName: 'analytics',
                     },
                     {
                         profile: "/landing/home/testimonials/ousama.jpg",
@@ -95,6 +98,7 @@
                         link: "https://es.linkedin.com/in/rub%C3%A9n-bonil-mart%C3%ADnez-2b49a44b",
                         designation: "Software Architect @ Quadis",
                         alt: "Picture of Ruben testimony",
+                        imgName: 'quadis',
                     },
                     {
                         profile: "/landing/home/testimonials/michael.jpeg",
@@ -103,6 +107,7 @@
                         link: "https://www.linkedin.com/in/michael-reynolds-a0a32a28/",
                         designation: "Lead Research Engineer @ Two Six Labs",
                         alt: "Picture of Michael testimony",
+                        imgName: 'twosix',
                     },
                     {
                         profile: "/landing/home/testimonials/yohann.jpeg",
@@ -111,6 +116,7 @@
                         link: "https://www.linkedin.com/in/yohann-n%C3%A9d%C3%A9lec-9b367685/",
                         designation: "Tech Lead, Bioinformatician",
                         alt: "Picture of Yohann testimony",
+                        imgName: 'bioinformatician'
                     },
                     {
                         profile: "/landing/home/testimonials/samuelb.jpg",
@@ -119,6 +125,7 @@
                         link: "https://www.linkedin.com/in/noelle-chubb-a68141134",
                         designation: "Political Scientist @ IDEA Public Schools",
                         alt: "Picture of Noelle testimony",
+                        imgName: 'ideaPublicSchools'
                     },
                     {
                         profile: "/landing/home/testimonials/danielt.jpg",
@@ -127,6 +134,7 @@
                         link: "https://www.linkedin.com/in/hamrio/",
                         designation: "IT Project Manager @ Airpaz",
                         alt: "Picture of Daniel testimony",
+                        imgName: 'airpazz',
                     },
                     {
                         profile: "/landing/home/testimonials/alex.jpg",
@@ -135,6 +143,7 @@
                         link: "https://www.linkedin.com/in/cristianpinella/",
                         designation: "Data Leader @ Treinta",
                         alt: "Picture of Alex testimony",
+                        imgName: 'treinta',
                     },
                     {
                         profile: "/landing/home/testimonials/antoineb.jpg",
@@ -143,6 +152,7 @@
                         link: "https://www.linkedin.com/in/antoineballiet/",
                         designation: "Data & Analytics Engineer @ Gorgias",
                         alt: "Picture of Antoine testimony",
+                        imgName: 'gorgias',
                     },
                     {
                         profile: "/landing/home/testimonials/antoineb.jpg",
@@ -151,6 +161,7 @@
                         link: "https://www.linkedin.com/in/jake-kruse-608471174/",
                         designation: "Research Assistant @ GeoDS Lab",
                         alt: "Picture of Jake testimony",
+                        imgName: 'geoDSLab'
                     }
                 ],
             };
@@ -212,6 +223,7 @@
         }
 
         .carousel--item {
+            height: 100%;
             padding: 0 8px;
         }
 
