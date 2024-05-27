@@ -2,10 +2,10 @@
     <div class="fixed-top">
         <div class="announce">
             <div class="alert alert-primary">
-                <Carousel :autoplay="5000" :wrap-around="true" :transition="2500" :itemsToShow="3">
-                    <Slide v-for="slide in content" :key="slide" v-bind:key="slide?.id">
-                        <p class="text-truncate">
-                            <strong>{{slide.text}}</strong> <NuxtLink :href="slide.href">{{slide.linkText}}</NuxtLink>
+                <Carousel :autoplay="4500" :wrap-around="true" :transition="2000" :itemsToShow="3" v-model="currentSlide">
+                    <Slide v-for="(slide, index) in content" :key="slide" v-bind:key="slide?.id">
+                        <p class="text-truncate" @click="slideTo(index)">
+                            {{slide.text}} <NuxtLink :href="slide.href">{{slide.linkText}}</NuxtLink>
                         </p>
                     </Slide>
                 </Carousel>
@@ -24,6 +24,15 @@
             alertHide: {
                 type: Function,
                 required: true,
+            },
+        },
+        data: () => ({
+            currentSlide: 0,
+        }),
+        methods: {
+            slideTo(val) {
+              console.log(val);
+              this.currentSlide = val
             },
         },
     }
@@ -51,13 +60,16 @@
             border-radius: 0;
             border: 0;
             text-align: center;
-            background: $black-3;
+            backdrop-filter: blur(0.625rem);
+            background-color: rgba(17, 17, 19, 0.65);
             color: var(--bs-white);
             padding: calc($spacer * 0.938) 0.5rem;
+            border-bottom: $block-border;
             margin-bottom: 0;
             position: relative;
             z-index: 1;
             overflow: hidden;
+            transition: max-height .5s linear, color .5s linear;
 
             &::after {
                 content: "";
@@ -65,23 +77,36 @@
                 height: 16rem;
                 width: 15rem;
                 bottom: 32%;
-                right: 60%;
+                left: -25%;
                 z-index: -1;
                 background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
                 filter: blur(80px);
+                animation-name: example;
+                animation-direction: normal, alternate;
+                animation-duration: 6.5s;
+                animation-iteration-count: infinite;
+            }
+
+            @keyframes example  {
+                60% {
+                    transform: translateX(233vw);
+                }
+                to {
+                    transform: translateX(233vw);
+                }
             }
 
             a {
                 text-decoration: underline;
                 color: $purple-36;
-                font-weight: 400;
+                font-weight: 400 !important;
                 margin-left: $spacer;
             }
 
             p {
                 margin-bottom: 0;
-                font-size: 12px;
-                font-weight: 400;
+                font-size: 0.875rem;
+                font-weight: 400 !important;
                 line-height: 18px;
             }
 

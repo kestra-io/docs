@@ -22,7 +22,7 @@
     return $fetch(`${config.public.apiUrl}/banner-messages`);
   });
 
-  if(bannerMessages.value) {
+  if(bannerMessages.value && bannerMessages.value.results) {
     content.value = bannerMessages.value.results;
   }
 </script>
