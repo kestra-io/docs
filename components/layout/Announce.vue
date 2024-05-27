@@ -2,7 +2,14 @@
     <div class="fixed-top">
         <div class="announce">
             <div class="alert alert-primary">
-                <Carousel :autoplay="4500" :wrap-around="true" :transition="2000" :itemsToShow="3" v-model="currentSlide">
+                <Carousel
+                    :autoplay="4500"
+                    :wrap-around="true"
+                    :transition="2000"
+                    v-model="currentSlide"
+                    :breakpoints="breakpoints"
+                    :settings="settings"
+                >
                     <Slide v-for="(slide, index) in content" :key="slide" v-bind:key="slide?.id">
                         <p class="text-truncate" @click="slideTo(index)">
                             {{slide.text}} <NuxtLink :href="slide.href">{{slide.linkText}}</NuxtLink>
@@ -28,6 +35,24 @@
         },
         data: () => ({
             currentSlide: 0,
+            settings: {
+              itemsToShow: 1,
+              snapAlign: 'center',
+            },
+            breakpoints: {
+              768: {
+                itemsToShow: 1,
+                snapAlign: 'start',
+              },
+              1024: {
+                itemsToShow: 2,
+                snapAlign: 'center',
+              },
+              1500: {
+                itemsToShow: 3,
+                snapAlign: 'center',
+              },
+            },
         }),
         methods: {
             slideTo(val) {
@@ -70,6 +95,11 @@
             z-index: 1;
             overflow: hidden;
             transition: max-height .5s linear, color .5s linear;
+            height: 3rem;
+
+            @include media-breakpoint-down(sm) {
+                padding: calc($spacer / 2);
+            }
 
             &::after {
                 content: "";
@@ -108,6 +138,7 @@
                 font-size: 0.875rem;
                 font-weight: 400 !important;
                 line-height: 18px;
+                white-space: pre-wrap;
             }
 
             button {
