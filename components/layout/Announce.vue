@@ -13,6 +13,7 @@
         </div>
     </div>
 </template>
+
 <script>
     export default {
         props: {
@@ -50,19 +51,38 @@
             border-radius: 0;
             border: 0;
             text-align: center;
-            background: $primary;
+            background: $black-3;
             color: var(--bs-white);
-            padding: 0.5rem 0.5rem;
+            padding: calc($spacer * 0.938) 0.5rem;
             margin-bottom: 0;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+
+            &::after {
+                content: "";
+                position: absolute;
+                height: 16rem;
+                width: 15rem;
+                bottom: 32%;
+                right: 60%;
+                z-index: -1;
+                background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+                filter: blur(80px);
+            }
 
             a {
                 text-decoration: underline;
-                color: var(--bs-white);
+                color: $purple-36;
+                font-weight: 400;
+                margin-left: $spacer;
             }
 
             p {
                 margin-bottom: 0;
-                margin-right: 15px
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 18px;
             }
 
             button {

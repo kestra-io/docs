@@ -24,7 +24,6 @@
 
   if(bannerMessages.value) {
     content.value = bannerMessages.value.results;
-    console.log(content.value);
   }
 </script>
 
