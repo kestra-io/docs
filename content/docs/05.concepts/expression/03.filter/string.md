@@ -16,6 +16,7 @@ Each section below represents a built-in filter.
 - [lower](#lower)
 - [replace](#replace)
 - [sha256](#sha256)
+- [startsWith](#startswith)
 - [slugify](#slugify)
 - [substringAfter](#substringafter)
 - [substringAfterLast](#substringafterlast)
@@ -208,6 +209,31 @@ The `sha256` filter returns the SHA-256 hash of the given UTF-8 String.
 The above example will output the following:
 ```
 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+```
+
+---
+
+## startsWith
+
+The `startsWith()` filter returns `true` if the input string starts with the specified prefix. This filter is useful for string comparisons and conditional logic in your workflows.
+
+```yaml
+id: compare_strings
+namespace: dev
+
+inputs:
+  - id: myvalue
+    type: STRING
+    defaults: "hello world!"
+
+tasks:
+  - id: log_true
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ inputs.myvalue | startsWith('hello') }}"
+
+  - id: log_false
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ inputs.myvalue | startsWith('Hello') }}"
 ```
 
 ---
