@@ -201,7 +201,7 @@ Based on the filled Statistic Report(s) to be provided by You every quarter KEST
 
 In case a Statistic Report reveals any non-compliance of Your usage, You agree to pay within 30 days of written notification any underpaid Subscription fees at the then applicable fees. If You do not pay, KESTRA may terminate for breach  the technical support, licenses and this Agreement.
 
-**14 - Limitation of liability**
+**12 - Limitation of liability**
 
 NEITHER PARTY SHALL BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, OR ANY LOSS OF PROFITS, REVENUE, DATA, OR DATA USE.
 
@@ -213,7 +213,7 @@ The liability section shall survive the termination or expiration of the Agreeme
 
 Any claim made by a Party hereunder must be made in writing, giving full particulars of the subject matter in question, within twenty-four (24) months after the date on which such Party became aware of the circumstances giving rise to this claim. It is recognized that any claim for damages made by a Party under this document will always be subject to that Party's general obligation to limit its losses.
 
-**15 - Confidentiality**
+**13 - Confidentiality**
 
 Each of the Parties undertakes to keep strictly confidential all documents and information of a legal, commercial, industrial, strategic, technical or financial nature relating to the other Party or held by the latter of which it may have become aware during the conclusion and performance of the Agreement and not to disclose them without the prior written consent of the other Party.
 
@@ -228,7 +228,7 @@ This obligation of confidentiality extends to all employees, collaborators, trai
 
 This obligation shall continue to apply for a period of 5 years following the termination or expiration of the Agreement.
 
-**16 - Personal Data**
+**14 - Personal Data**
 
 As part of their contractual relations and to the extent applicable, each Party undertakes to comply with the applicable regulations on personal data processing and, in particular, the General Data Protection Regulation (regulation EU 2016/679 of the European Parliament and of the Council of 27 April 2016) and to the French Data Protection Act of 6 January 1978 (hereinafter referred together as the “**Applicable Regulation**”).
 
@@ -238,32 +238,32 @@ Personal data are retained during the duration strictly necessary for the purpos
 
 The processing may result in the exercise by each Party’s contact person of their rights under the Applicable Regulation. In such event, You may send such request to : [dpo@KESTRA.io](mailto:xxxx@xxxx.com)
 
-**17 - Commercial references**
+**15 - Commercial references**
 
 The Parties expressly authorize each other to use their respective name, brand and logo, as well as the references of their websites, as commercial references, on any medium and in any form whatsoever, for the term of the Agreement.
 
-**18 - Force majeure**
+**16 - Force majeure**
 
 Neither Party shall be liable for failure to meet the contractual obligations under this Agreement due to an event that is outside the control of that Party, including, without limitation, strikes, lockouts, labor disputes, acts of God, fire, floods, riots, wars and government actions (“Force Majeure”). This limitation of liability shall be valid only for the period of duration of Force Majeure. The Party involved in an event of Force Majeure shall take all reasonable measures and actions to limit or minimize the consequences of such an event and inform immediately in writing the other Party on the intervention and on the cessation of such circumstance.
 
-**19 - Termination for breach**
+**17 - Termination for breach**
 
 In the event of a material breach by either Party  of any of its obligations under the Agreement, the other Party may terminate the Agreement -(which, for the avoidance of doubt, will result in the termination of the applicable Order) after having given formal notice in writing with acknowledgement of receipt to the defaulting Party thirty (30) days in advance.
 
 Termination of the Agreement by either Party shall be without prejudice to any other rights or remedies which either Party may have by virtue of any breach of the terms of this Agreement.
 
-**20 - Effects of the end of the Agreement**
+**18 - Effects of the end of the Agreement**
 
 The termination or expiration  of the Agreement, for any reason whatsoever , will result in:
 
 - the ending of the relationship of the Parties and termination of any rights or licences granted under or pursuant to this Agreement,
 - the survival of the sections 14 “*Limitation of Liability*” 15 "*Confidentiality*" and the present article
 
-**21 - Assignment**
+**19 - Assignment**
 
 KESTRA may assign this Agreement, either wholly or in part, without Your written consent to an Affiliate or a separate division within its organization, or in connection with a merger, acquisition, divestiture, corporate reorganization, or sale of all or substantially all of its assets not involving a direct competitor of the other party.
 
-**22 - Intuitu personae**
+**20 - Intuitu personae**
 
 This Agreement shall be deemed to have been entered into in consideration of the person of the Parties and as such, the Parties shall not delegate or assign any of their rights under this Agreement, or entrust to a third party the performance of all or part of their obligations, without the prior written consent of the other Party.
 
@@ -271,13 +271,13 @@ As an exception to the foregoing, KESTRA reserves the right to use subcontractor
 
 The Parties expressly acknowledge and agree that, in the event that such subcontractors are required to process personal data, the provisions of the "*Personal Data*" article shall apply.
 
-**23 - Relationship between the Parties**
+**21 - Relationship between the Parties**
 
 It is expressly agreed that neither Party may rely on the provisions of the Agreement to claim, in any way, the status of agent, representative or employee of the other Party, nor undertake the other Party's obligations to third parties, beyond the services provided for herein.
 
 No special legal structure is hereby formed between the Parties, each retaining its own autonomy, responsibilities and customer base.
 
-**24 - Independence of the Agreement, Severability and Amendments**
+**22 - Independence of the Agreement, Severability and Amendments**
 
 The contractual documents represent the entirety of the undertakings between the Parties. It replaces and cancels any previous oral or written undertaking relating to the subject matter of the Agreement.
 
@@ -285,15 +285,15 @@ The invalidity or unenforceability of any of the provisions of the Agreement sha
 
 Any modification or amendment to the Agreement shall be subject to a written and signed agreement between the Parties.
 
-**25 - Non-waiver**
+**23 - Non-waiver**
 
 The failure or waiver by a Party to exercise or assert any right under the Agreement shall in no event be deemed a waiver of such right for the future, such waiver being effective only with respect to the event in question.
 
-**26 - Electronic Signature**
+**24 - Electronic Signature**
 
 It is understood between the Parties that the Agreement may be signed by any electronic means, the Parties recognizing the reliability of the process, thus giving it the same legal value as a handwritten signature within the meaning of the law.
 
-**27 - Applicable law and venue of the dispute**
+**25 - Applicable law and venue of the dispute**
 
 The Agreement shall be governed by and construed in accordance with **French law**, excluding its conflict of laws’ rules. It is agreed that the language of the proceedings can be English.
 
