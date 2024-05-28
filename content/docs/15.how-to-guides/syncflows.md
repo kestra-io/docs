@@ -36,11 +36,11 @@ tasks:
     type: io.kestra.plugin.git.SyncFlows
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
-    url: https://github.com/git_username/flows 
+    url: https://github.com/git_username/flows
     branch: main
     targetNamespace: git
     gitDirectory: flows
-    dryRun: true  
+    dryRun: true
 ```
 
 Given that the `dryRun` property is set to `true`, the task will only output changes from the Git repository without syncing any flows to Kestra yet:
@@ -85,7 +85,7 @@ tasks:
     type: io.kestra.plugin.git.SyncFlows
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
-    url: https://github.com/kestra-io/flows 
+    url: https://github.com/kestra-io/flows
     branch: main
     targetNamespace: git
     gitDirectory: flows
@@ -102,7 +102,7 @@ We can also verify this with the Outputs tab too:
 
 ## Set up a schedule
 
-A common use case for this task is to setup a routine schedule to keep Kestra in sync with the Git repository. To do this, we can simply use a [Schedule trigger](../04.workflow-components/07.triggers.md#schedule-trigger). This example has a cron expression to execute once every hour:
+A common use case for this task is to setup a routine schedule to keep Kestra in sync with the Git repository. To do this, we can simply use a [Schedule trigger](../04.workflow-components/07.triggers/index.md#schedule-trigger). This example has a cron expression to execute once every hour:
 
 ```yaml
 id: sync_flows_from_git
@@ -126,7 +126,7 @@ triggers:
 
 ## Automatically sync when a change is pushed to Git
 
-We can also automate the syncing process by adding a [Webhook trigger](../04.workflow-components/07.triggers.md#webhook-trigger) and creating a Webhook on our GitHub repository to trigger our flow every time something is pushed to the repository. This is useful for keeping Kestra always in sync with the repository.
+We can also automate the syncing process by adding a [Webhook trigger](../04.workflow-components/07.triggers/index.md#webhook-trigger) and creating a Webhook on our GitHub repository to trigger our flow every time something is pushed to the repository. This is useful for keeping Kestra always in sync with the repository.
 
 ```yaml
 id: sync_flows_from_git
