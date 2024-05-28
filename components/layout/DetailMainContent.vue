@@ -23,6 +23,7 @@
                     </div>
                     <div class="col-md-6 ps-2 ps-sm-5 pe-2 ps-sm-5 d-flex flex-column justify-content-center" data-aos="fade-left">
                         <h3>{{ item.title }}</h3>
+                        <p v-if="item.description">{{ item.description }}</p>
                         <div class="content" v-html="item.content" />
                     </div>
                 </div>

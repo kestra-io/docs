@@ -114,7 +114,7 @@
                   description: 'Automate the setup and deployment of infrastructure components, reducing manual effort and errors.',
                   imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
                   imageAlt: 'Provisioning',
-                  pageHref: '#'
+                  pageHref: '/use-cases/provisioning-and-deployment'
                 },
                 {
                   id: 3,

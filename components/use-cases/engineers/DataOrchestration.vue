@@ -44,7 +44,6 @@
 
     .container-fluid {
         color: var(--bs-white);
-        padding: 0;
 
         .container {
             padding: 4rem 0;
@@ -60,9 +59,9 @@
             font-style: normal;
             font-weight: 400;
             line-height: 4rem;
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 font-size: 1.875rem;
-                line-height: 2.563rem;
+                line-height: unset;
             }
 
             @include media-breakpoint-down(lg) {
