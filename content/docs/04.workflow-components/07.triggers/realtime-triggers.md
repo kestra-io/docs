@@ -33,9 +33,9 @@ Using Real-time Triggers, you can orchestrate **business-critical processes** an
 
 In addition, real-time triggers can be used for **real-time data orchestration** using our Change Data Capture (CDC) plugins. For example, you can use the [Debezium Postgres](/plugins/plugin-debezium-postgres/triggers/io.kestra.plugin.debezium.postgres.realtimetrigger) plugin to listen to changes in a database table and start a workflow execution as soon as a new row is inserted, updated, or deleted.
 
-## Triggers vs. Real-time Triggers
+## When to use Triggers vs. Real-time Triggers
 
-The table below compares Triggers with Real-time Triggers:
+The table below compares Triggers with Real-time Triggers to help you choose the right trigger type for your use case:
 
 | Criteria             | Trigger                                                               | Real-time Trigger                                                                               |
 |----------------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
