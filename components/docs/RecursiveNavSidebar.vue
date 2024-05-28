@@ -20,14 +20,14 @@
             <ul class="list-unstyled mb-0">
                 <li :class="{['depth-' + depthLevel]: true}" >
                     <NuxtLink
-                        v-if="isPage(item)"
+                        v-if="isPage(item) && !item.hideSidebar"
                         :class="getClass(item, depthLevel, false)"
                         :href="item._path">
                            {{ item.emoji }}
                             {{ item.title }}
                     </NuxtLink>
                     <NuxtLink
-                        v-else
+                        v-else-if="!item.hideSidebar"
                         :class="getClass(item, depthLevel, true)"
                         class="disabled"
                         @click="toggle(item._path, isPage(item))" data-bs-toggle="collapse"
@@ -38,14 +38,14 @@
                     </NuxtLink>
                     <template v-if="filterChildren(item).length > 0">
                         <chevron-down
-                            v-if="isShow(item._path)"
+                            v-if="isShow(item._path) && !item.hideSidebar"
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
                             :data-bs-target="'#'+pathToId(item._path)"
                             role="button"
                         />
                         <chevron-right
-                            v-else
+                            v-else-if="!item.hideSidebar"
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
                             :data-bs-target="'#'+pathToId(item._path)"
