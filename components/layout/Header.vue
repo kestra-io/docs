@@ -1218,7 +1218,7 @@ export default {
 
 .wrapper.announce {
     nav {
-        top: 40px;
+        top: 3rem;
     }
 }
 </style>
