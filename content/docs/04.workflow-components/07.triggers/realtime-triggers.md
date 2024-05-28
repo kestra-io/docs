@@ -31,7 +31,7 @@ Using Real-time Triggers, you can orchestrate **business-critical processes** an
 - reacting to stock price changes,
 - shipping and delivery notifications.
 
-In addition, real-time triggers can be used for **real-time data orchestration** using our Change Data Capture (CDC) plugins. For example, you can use the [Debezium Postgres](/plugins/plugin-debezium-postgres/triggers/io.kestra.plugin.debezium.postgres.realtimetrigger) plugin to listen to changes in a database table and start a workflow execution as soon as a new row is inserted, updated, or deleted.
+In addition, real-time triggers can be used for **data orchestration**, especially for **Change Data Capture** use cases. For example, you can use the [Debezium Postgres](/plugins/plugin-debezium-postgres/triggers/io.kestra.plugin.debezium.postgres.realtimetrigger) plugin to listen to changes in a database table and start a workflow execution as soon as a new row is inserted, updated, or deleted.
 
 ## When to use Triggers vs. Real-time Triggers
 
@@ -71,3 +71,10 @@ triggers:
     queueUrl: https://sqs.eu-north-1.amazonaws.com/123456789/MyQueue
 ```
 
+## Comparison with Real-time Data Processing Engines
+
+It's important to note that Kestra's real-time triggers are not intended to be used as a replacement for real-time data processing engines such as Apache Flink.
+
+Flink excels at **stateful** streaming applications and complex SQL transformations over real-time data streams.
+
+In contrast, Kestra's real-time triggers are **stateless**, meaning they trigger one workflow execution per event. They are designed primarily to react to events in real-time to orchestrate business-critical processes.
