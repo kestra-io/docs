@@ -71,7 +71,7 @@ This approach allows you to maintain consistent development and production envir
 
 Task Runners also simplify configuration management by allowing you to centrally govern your settings. Using the pluginDefaults property, you can manage task runner configurations and credentials at the namespace level. This centralization ensures consistency and simplifies the management of complex deployments.
 
-For example, you can centrally manage your AWS credentials for the AwsBatchTaskRunner plugin:
+For example, you can centrally manage your AWS credentials for the AWS Batch task runner plugin:
 
 ```yaml
 pluginDefaults:
