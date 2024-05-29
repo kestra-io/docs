@@ -71,6 +71,7 @@
     }
 
     .announce {
+        transition: all ease 0.8s;
         width: 100%;
 
         opacity: 1;

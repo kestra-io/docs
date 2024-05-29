@@ -2,8 +2,8 @@
     <div>
         <NuxtLoadingIndicator />
         <LayoutSearch />
-        <LayoutAnnounce v-if="content &&  content.length > 0" :content="content" />
-        <div class="wrapper" :class="{'announce': content && content.length > 0}">
+        <LayoutAnnounce v-if="showAnnounce" :content="content" />
+        <div class="wrapper" :class="{'announce': showAnnounce}">
             <LayoutHeader />
             <main >
                 <slot />
@@ -15,8 +15,11 @@
 </template>
 
 <script setup>
+  import { ref, watch, onMounted } from 'vue';
   const config = useRuntimeConfig();
   const content = ref(null);
+  const showAnnounce = ref(false);
+  const route = useRoute();
 
   const {data: bannerMessages} = await useAsyncData(`banner-messages`, () => {
     return $fetch(`${config.public.apiUrl}/banner-messages`);
@@ -25,6 +28,24 @@
   if(bannerMessages.value && bannerMessages.value.results) {
     content.value = bannerMessages.value.results;
   }
+
+  const checkDisplayingAnnounce = (content, path) => {
+    if (content && content.length > 0 && path === '/') {
+      setTimeout(() => {
+        showAnnounce.value = true;
+      }, 1000);
+    } else {
+      showAnnounce.value = false;
+    }
+  }
+
+  onMounted(() => {
+    checkDisplayingAnnounce(content.value, route.path);
+  });
+
+  watch([() => route.path, content], ([newPath, newContent]) => {
+    checkDisplayingAnnounce(newContent, newPath)
+  });
 </script>
 
 <script>
