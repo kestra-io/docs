@@ -50,7 +50,7 @@ And here is the equivalent task using the `taskRunner` property:
   type: io.kestra.plugin.scripts.python.Commands
   containerImage: python:3.11
   taskRunner:
-    type: io.kestra.core.models.script.types.DockerTaskRunner # ✅ the runner is now a plugin
+    type: io.kestra.plugin.scripts.runner.docker.Docker # ✅ the runner is now a plugin
 ```
 
 ::alert{type="info"}
@@ -83,7 +83,7 @@ tasks:
         containerImage: ghcr.io/kestra-io/pydata:latest
         warningOnStdErr: false
         taskRunner:
-          type: io.kestra.plugin.scripts.runner.docker.DockerTaskRunner
+          type: io.kestra.plugin.scripts.runner.docker.Docker
         commands:
           - python etl/get_users_from_api.py
 ```
@@ -105,7 +105,7 @@ We envision task runners as a pluggable system allowing you to **orchestrate any
 ### Steps for Migration
 
 1. **Review Existing Tasks**: Identify all script tasks using the `runner` or `docker` properties.
-2. **Choose Suitable `taskRunner`**: Select the appropriate `taskRunner` type based on your execution environment. The `DockerTaskRunner` is the default.
+2. **Choose Suitable `taskRunner`**: Select the appropriate `taskRunner` type based on your execution environment. The Docker task runner is the default.
 3. **Update Your Configuration**: Replace the `runner` property with `taskRunner` and adjust the configuration to match the new structure, including replacing the `docker.image` with `containerImage`.
 4. **Test Changes**: Validate the updated configurations in a development or staging environment before deploying to production.
 
