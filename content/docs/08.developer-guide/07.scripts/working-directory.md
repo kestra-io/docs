@@ -36,15 +36,12 @@ namespace: dev
 tasks:
   - id: wdir
     type: io.kestra.plugin.core.flow.WorkingDirectory
-    tasks:
-    - id: pip
-      type: io.kestra.plugin.core.storage.LocalFiles
-      inputs:
-        requirements.txt: |
+    inputFiles:
+      requirements.txt: |
           kestra>=0.6.0
           pandas>=1.3.5
           requests>=2.31.0
-
+    tasks:
     - id: pythonScript
       type: io.kestra.plugin.scripts.python.Script
       docker:
@@ -84,16 +81,16 @@ description: process CSV file from S3 trigger
 tasks:
   - id: wdir
     type: io.kestra.plugin.core.flow.WorkingDirectory
+    inputFiles:
+      data.csv: "{{ trigger.objects | jq('.[].uri') | first }}"
+    outputFiles:
+      - "*.csv"
+      - "*.parquet"
     tasks:
       - id: cloneRepo
         type: io.kestra.plugin.git.Clone
         url: https://github.com/kestra-io/examples
         branch: main
-
-      - id: local
-        type: io.kestra.plugin.core.storage.LocalFiles
-        inputs:
-          data.csv: "{{ trigger.objects | jq('.[].uri') | first }}"
 
       - id: python
         type: io.kestra.plugin.scripts.python.Commands
@@ -103,12 +100,6 @@ tasks:
         warningOnStdErr: false
         commands:
           - python scripts/clean_messy_dataset.py
-
-      - id: output
-        type: io.kestra.plugin.core.storage.LocalFiles
-        outputs:
-          - "*.csv"
-          - "*.parquet"
 
 triggers:
   - id: waitForS3object
