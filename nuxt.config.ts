@@ -54,7 +54,7 @@ export default defineNuxtConfig({
         },
         documentDriven: false,
         highlight: {
-            preload: [
+            langs: [
                 'bash',
                 'yaml',
                 'sql',
