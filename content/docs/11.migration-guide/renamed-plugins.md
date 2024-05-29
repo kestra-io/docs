@@ -144,7 +144,7 @@ We've also renamed the task runners to make them more readable and easier to use
 | `io.kestra.plugin.aws.runner.AwsBatchTaskRunner`              | `io.kestra.plugin.aws.runner.Batch`             |
 | `io.kestra.plugin.azure.runner.AzureBatchTaskRunner`          | `io.kestra.plugin.azure.runner.Batch`           |
 | `io.kestra.plugin.gcp.runner.GcpBatchTaskRunner`              | `io.kestra.plugin.gcp.runner.Batch`             |
-| `io.kestra.plugin.gcp.runner.GcpCloudRunTaskRunner`           | `io.kestra.plugin.aws.runner.Batch`             |
+| `io.kestra.plugin.gcp.runner.GcpCloudRunTaskRunner`           | `io.kestra.plugin.gcp.runner.CloudRun`          |
 
 ## Renamed Redis Triggers and Tasks
 
