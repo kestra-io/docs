@@ -131,3 +131,5 @@ The table shows full paths of the renamed serialization tasks:
 | `io.kestra.plugin.serdes.parquet.ParquetToIon` | `io.kestra.plugin.serdes.parquet.ParquetReader` |
 | `io.kestra.plugin.serdes.parquet.IonToParquet` | `io.kestra.plugin.serdes.parquet.ParquetWriter` |
 
+## Renamed Task Runners
+
