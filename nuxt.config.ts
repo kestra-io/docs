@@ -49,6 +49,9 @@ export default defineNuxtConfig({
     ],
 
     content: {
+        navigation: {
+            fields: ['hideSidebar'],
+        },
         documentDriven: false,
         highlight: {
             preload: [
