@@ -9865,6 +9865,48 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Execution'
+  /api/v1/stats/generate-reports:
+    get:
+      operationId: generate
+      parameters:
+      - name: from
+        in: query
+        description: The start date
+        schema:
+          type: string
+          format: date
+          nullable: true
+      responses:
+        "200":
+          description: generate 200 response
+          content:
+            application/octet-stream:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: byte
+  /api/v1/stats/generate-reports/{tenant}:
+    get:
+      operationId: generate_1
+      parameters:
+      - name: from
+        in: query
+        description: The start date
+        schema:
+          type: string
+          format: date
+          nullable: true
+      responses:
+        "200":
+          description: generate_1 200 response
+          content:
+            application/octet-stream:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: byte
   /api/v1/stats/logs/daily:
     post:
       tags:
@@ -19122,6 +19164,47 @@ components:
           type: string
         state:
           $ref: '#/components/schemas/Service.ServiceState'
+    ServiceUsage:
+      required:
+      - dailyStatistics
+      type: object
+      properties:
+        dailyStatistics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceUsage.DailyServiceStatistics'
+    ServiceUsage.DailyServiceStatistics:
+      required:
+      - type
+      - values
+      type: object
+      properties:
+        type:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceUsage.DailyStatistics'
+    ServiceUsage.DailyStatistics:
+      required:
+      - avg
+      - date
+      - max
+      - min
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        min:
+          type: integer
+          format: int64
+        max:
+          type: integer
+          format: int64
+        avg:
+          type: integer
+          format: int64
     ServicesCatalog:
       type: object
     SetupConfiguration:
@@ -19848,6 +19931,8 @@ components:
             $ref: '#/components/schemas/NamespaceUsage'
           tenants:
             $ref: '#/components/schemas/TenantUsage'
+          services:
+            $ref: '#/components/schemas/ServiceUsage'
     Usage_2:
       type: object
       allOf:
@@ -19865,6 +19950,8 @@ components:
             $ref: '#/components/schemas/NamespaceUsage'
           tenants:
             $ref: '#/components/schemas/TenantUsage'
+          services:
+            $ref: '#/components/schemas/ServiceUsage'
     Usage_3:
       type: object
       allOf:
@@ -19882,6 +19969,8 @@ components:
             $ref: '#/components/schemas/NamespaceUsage'
           tenants:
             $ref: '#/components/schemas/TenantUsage'
+          services:
+            $ref: '#/components/schemas/ServiceUsage'
     Usage_4:
       type: object
       allOf:
@@ -19899,6 +19988,8 @@ components:
             $ref: '#/components/schemas/NamespaceUsage'
           tenants:
             $ref: '#/components/schemas/TenantUsage'
+          services:
+            $ref: '#/components/schemas/ServiceUsage'
     UserController.UpdatePasswordRequest:
       required:
       - newPassword
