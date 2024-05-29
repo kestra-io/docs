@@ -31,11 +31,9 @@
 
   const checkDisplayingAnnounce = (content, path) => {
     if (content && content.length > 0 && path === '/') {
-      setTimeout(() => {
         showAnnounce.value = true;
-      }, 1000);
     } else {
-      showAnnounce.value = false;
+        showAnnounce.value = false;
     }
   }
 

@@ -553,7 +553,6 @@ export default {
     }
     nav {
         background: $black-4;
-        transition: all ease 0.8s;
         transform: translateY(0);
         max-height: 100%;
         width: 100vw;
