@@ -23,21 +23,22 @@ For example, an environment variable with the name `KESTRA_MY_ENV` can be access
 
 You can also set global variables directly in the configuration file. These variables will be accessible in all flows across the instance.
 
-For example, the following variable will be accessible in a flow using `{{ globals.environment_name }}`:
+For example, the following variable will be accessible in a flow using `{{ globals.host }}`:
+
+```yaml
+kestra:
+  variables:
+    globals:
+      host: pg.db.prod
+```
+
+Keep in mind that if a variable is in camel case, it will be transformed into hyphenated case. For example, the global variable shown below will be accessible in flows with `{{ globals['my-var'] }}` or `{{ globals['environment-name'] }}`:
 
 ```yaml
 kestra:
   variables:
     globals:
       environment_name: dev
-```
-
-Keep in mind that if a variable is in camel case, it will be transformed into hyphenated case. For example, the global variable shown below will be accessible in flows with `{{ globals['my-var'] }}`:
-
-```yaml
-kestra:
-  variables:
-    globals:
       myVar: my variable
 ```
 

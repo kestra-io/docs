@@ -1,5 +1,5 @@
 ---
-title: How to Pass Inputs via an API call in Kestra
+title: Pass Inputs via an API call
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -26,7 +26,7 @@ inputs:
 
 tasks:
   - id: hello
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Hey there, {{ inputs.user }}
 ```
 
@@ -37,7 +37,7 @@ id: input_api
 namespace: dev
 tasks:
   - id: basic_auth_api
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: http://host.docker.internal:8080/api/v1/executions/dev/inputs_demo
     method: POST
     contentType: multipart/form-data
@@ -54,7 +54,7 @@ id: api_call
 namespace: dev
 tasks:
   - id: basic_auth_api
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: http://host.docker.internal:8080/api/v1/executions/dev/inputs_demo
     options:
       basicAuthUser: admin

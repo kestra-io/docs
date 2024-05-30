@@ -82,7 +82,7 @@ variables:
 tasks:
 
   - id: auth-tableau-api
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://tableau.example.com/api/3.22/auth/signin
     body: |
       {
@@ -93,7 +93,7 @@ tasks:
       }
 
   - id: add_tag
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://tableau.example.com/api/api-version/sites/site-id/workbooks/workbook-id/tags
     method: PUT
     headers:
@@ -155,7 +155,7 @@ tasks:
       product_id: 01a2e3c1db15f340d329d18c689ed922
 
   - id: create_war_room_slack
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     method: POST
     uri: https://slack.com/api/conversations.create
     headers:
@@ -164,7 +164,7 @@ tasks:
       name: war_room
 
   - id: invite_users
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     method: POST
     uri: https://slack.com/api/conversations.invite
     headers:

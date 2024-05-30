@@ -1,5 +1,5 @@
 ---
-title: How to Use Secrets in Kestra
+title: Secrets
 icon: /docs/icons/tutorial.svg
 ---
 

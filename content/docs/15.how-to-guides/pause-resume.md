@@ -1,5 +1,5 @@
 ---
-title: How to Use Pause and Resume in Kestra
+title: Pause and Resume
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -20,10 +20,10 @@ namespace: dev
 
 tasks:
   - id: pause
-    type: io.kestra.core.tasks.flows.Pause
+    type: io.kestra.plugin.core.flow.Pause
 
   - id: after_pause
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Execution has been resumed!
 ```
 
@@ -47,3 +47,70 @@ This feature is useful when you have multiple paused workflows and want to resum
 Make sure to select only workflows in the `PAUSED` state, as the `Resume` button will not work if you select workflows in other states.
 ::
 
+
+### Manual Approval Process
+
+Below, you can see an example of a workflow that sends a Slack message requesting approval for a vacation request to a manager. The workflow execution is paused until the manager resumes it with custom input values. Those input values indicate whether the request was approved and the reason for the decision.
+
+```yaml
+id: vacation_approval_process
+namespace: release
+
+inputs:
+  - id: request.name
+    type: STRING
+    defaults: Rick Astley
+
+  - id: request.start_date
+    type: DATE
+    defaults: 2024-07-01
+
+  - id: request.end_date
+    type: DATE
+    defaults: 2024-07-07
+
+  - id: slack_webhook_uri
+    type: URI
+    defaults: https://reqres.in/api/slack
+
+tasks:
+  - id: sendApprovalRequest
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ inputs.slack_webhook_uri }}"
+    payload: |
+      {
+        "channel": "#vacation",
+        "text": "Validate holiday request for {{ inputs.request.name }}. To approve the request, click on the `Resume` button here http://localhost:28080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
+      }
+
+  - id: waitForApproval
+    type: io.kestra.plugin.core.flow.Pause
+    onResume:
+      - id: approved
+        description: Approve the request?
+        type: BOOLEAN
+        defaults: true
+      - id: reason
+        description: Reason for approval or rejection?
+        type: STRING
+        defaults: Approved
+
+  - id: approve
+    type: io.kestra.plugin.core.http.Request
+    uri: https://reqres.in/api/products
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.request }}"
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: Status is {{ outputs.waitForApproval.onResume.reason }}. Process finished with {{ outputs.approve.body }}
+```
+
+When you click on the `Resume` button in the UI, you will be prompted to provide the approval status and the reason for their decision. The workflow will then continue with the provided input values.
+
+![pause_resume_1](/docs/how-to-guides/pause-resume/pause_resume_1.png)
+
+After the Execution has been resumed, any downstream task can access the `onResume` inputs using the `outputs` of the `Pause` task:
+
+![pause_resume_2](/blogs/2024-06-04-release-0-17/pause-resume/pause_resume_2.png)

@@ -33,7 +33,7 @@ inputs:
 
 tasks:
   - id: fetch_products
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.api_endpoint }}"
 
   - id: transform_in_python
@@ -43,12 +43,14 @@ tasks:
     beforeCommands:
       - pip install polars
     warningOnStdErr: false
+    outputFiles:
+      - "products.csv"
     script: |
       import polars as pl
       data = {{outputs.fetch_products.body | jq('.products') | first}}
       df = pl.from_dicts(data)
       df.glimpse()
-      df.select(["brand", "price"]).write_csv("{{outputDir}}/products.csv")
+      df.select(["brand", "price"]).write_csv("products.csv")
 
   - id: sql_query
     type: io.kestra.plugin.jdbc.duckdb.Query
@@ -67,7 +69,7 @@ outputs:
 
 triggers:
   - id: daily_at_9am
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
 ```
 
@@ -86,7 +88,7 @@ inputs:
 
 tasks:
   - id: fetchProducts
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.apiEndpoint }}"
 
   - id: transformInPython
@@ -96,12 +98,14 @@ tasks:
     beforeCommands:
       - pip install polars
     warningOnStdErr: false
+    outputFiles:
+      - "products.csv"
     script: |
       import polars as pl
       data = {{outputs.fetchProducts.body | jq('.products') | first}}
       df = pl.from_dicts(data)
       df.glimpse()
-      df.select(["brand", "price"]).write_csv("{{outputDir}}/products.csv")
+      df.select(["brand", "price"]).write_csv("products.csv")
 
   - id: sqlQuery
     type: io.kestra.plugin.jdbc.duckdb.Query
@@ -120,7 +124,7 @@ outputs:
 
 triggers:
   - id: dailyAt9am
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
 ```
 

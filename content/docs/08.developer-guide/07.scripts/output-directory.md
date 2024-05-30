@@ -3,7 +3,7 @@ title: Output directory
 icon: /docs/icons/dev.svg
 ---
 
-If you want to generate files in your script to make them available for download and use in downstream tasks, you can leverage either the `outputFiles` property or the `outputDir` expression.
+If you want to generate files in your script to make them available for download and use in downstream tasks, you can leverage either the `outputFiles` property.
 
 ## Generating outputs from a script task using `outputFiles`
 
@@ -36,6 +36,10 @@ The subsequent task can access the output file by leveraging the syntax `{{outpu
 
 ## Generating outputs from a script task using `{{outputDir}}`
 
+::alert{type="info"}
+From 0.17.0, `outputDir` has been depreciated. Use the `outputFiles` property instead.
+::
+
 This is an alternative to the `outputFiles` property. Files stored in the `outputDir` directory will be persisted in Kestra's internal storage. Here is an example:
 
 ```yaml
@@ -58,9 +62,3 @@ tasks:
 ```
 
 The first task creates a file `'myfile.txt'` and the next task can access it by leveraging the syntax `{{outputs.yourTaskId.outputFiles['yourFileName.fileExtension']}}`.
-
-## Which one should you use?
-
-The `outputFiles` property is the recommended way to generate outputs from a script task, as it decouples the orchestration logic (output generation) from your business logic (the script itself). This allows you to use plain Python scripts without having to worry about Kestra-specific templating syntax.
-
-The `outputDir` expression is useful if you want to generate files with dynamic names. For example, if you want to generate a file with a timestamp of the current schedule or execution time in its name, you can use the `outputDir` expression to generate a file with a name such as `myfile-currentExecutionDate.txt`. The expression to accomplish this would be `"{{outputDir}}/myfile-{{trigger.date ?? execution.startDate | date('yyyyMMdd')}}.txt"`.

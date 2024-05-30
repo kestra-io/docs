@@ -138,7 +138,7 @@ inputs:
 
 tasks:
   - id: true_or_false
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ inputs.mybool }}"
 ```
 
@@ -208,7 +208,7 @@ inputs:
 
 tasks:
   - id: print_values
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: |
       mybool: {{ inputs.mybool }}
       mybool_explicit: {{ inputs.mybool_explicit }}
@@ -335,7 +335,7 @@ To sum up multi-line strings, the `|` character preserves newlines as they are, 
 
 ## ⚡️ Using YAML in Kestra Flows
 
-You can apply what you've learned about YAML to define `tasks`, `inputs`, `labels`, `taskDefaults`, `triggers`, and the flow structure of a Kestra workflow.
+You can apply what you've learned about YAML to define `tasks`, `inputs`, `labels`, `pluginDefaults`, `triggers`, and the flow structure of a Kestra workflow.
 
 Here is a flow example combining everything you've learned so far:
 
@@ -376,10 +376,10 @@ tasks:
       This task will greet a `user` from a flow.
 
   - id: api
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.api_url }}"
 
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.scripts.shell.Commands
     values:
       env:
@@ -389,7 +389,7 @@ taskDefaults:
 
 triggers:
   - id: hourly_schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     disabled: true # boolean to temporarily disable the schedule
     cron: "@hourly" # special character @ requires using quotes
 ```
@@ -401,7 +401,7 @@ In this example:
 - The `tasks` property is a **list of tasks**, each with its `id` and `type`. The tasks will be executed in the order they are defined in the list.
 - The first task prints a `message` with a template variable `{{ inputs.user }}` and has a **multi-line** `description` property for an arbitrarily long markdown description to document the task.
 - The second task makes an HTTP request to the `api_url` defined in the `inputs`.
-- The `taskDefaults` property is a **list of default values** for all tasks of a specific type. In this example, all `Shell` tasks will have the same `env` and `docker` properties to avoid repeating them in each task.
+- The `pluginDefaults` property is a **list of default values** for all tasks of a specific type. In this example, all `Shell` tasks will have the same `env` and `docker` properties to avoid repeating them in each task.
 - The `triggers` property is a **list of triggers** that can be used to automatically start the flow. In this example, the flow has a `Schedule` trigger that runs the flow every hour. The `disabled` **boolean** property is used to temporarily disable the trigger.
 
 ---

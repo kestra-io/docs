@@ -5,7 +5,7 @@ description: This flow will allow a failure of a task (imagine a flaky unit test
 
 tasks:
   - id: first
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 
   - id: allow_failure
@@ -16,5 +16,5 @@ tasks:
       - exit 1
 
   - id: last
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "{{task.id}} > {{taskrun.startDate}}"

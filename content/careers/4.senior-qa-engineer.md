@@ -7,7 +7,7 @@ We are seeking a talented Senior QA Engineer to ensure the quality and reliabili
 
 ## What you will do:
 
-- *QA Strategy and Implementation:** Develop and implement comprehensive QA strategies, including manual and automated testing plans that cover front-end interfaces, back-end logic and Kestra flow end-to-end tests.
+- **QA Strategy and Implementation:** Develop and implement comprehensive QA strategies, including manual and automated testing plans that cover front-end interfaces, back-end logic and Kestra flow end-to-end tests.
 - **Automation Development:** Leverage your knowledge of QA automation tools and frameworks, enhancing our testing processes.
 - **Integration Testing:** Conduct thorough integration testing, focusing on both the backend and front-end components of our solutions, to identify and rectify potential issues.
 - **Cross-functional Teamwork:** Collaborate with our product and engineering teams, providing critical feedback from testing and ensuring that quality considerations are integrated throughout the development process.

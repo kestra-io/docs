@@ -2,8 +2,8 @@
     <div>
         <NuxtLoadingIndicator />
         <LayoutSearch />
-        <LayoutAnnounce v-if="topBanner !== 'ok' && false" />
-        <div class="wrapper" :class="{'announce': topBanner !== 'ok' && false}">
+        <LayoutAnnounce v-if="showAnnounce" :content="content" />
+        <div class="wrapper" :class="{'announce': showAnnounce}">
             <LayoutHeader />
             <main >
                 <slot />
@@ -14,14 +14,46 @@
     </div>
 </template>
 
+<script setup>
+  import { ref, watch, onMounted } from 'vue';
+  const config = useRuntimeConfig();
+  const content = ref(null);
+  const showAnnounce = ref(false);
+  const route = useRoute();
+
+  const {data: bannerMessages} = await useAsyncData(`banner-messages`, () => {
+    return $fetch(`${config.public.apiUrl}/banner-messages`);
+  });
+
+  if(bannerMessages.value && bannerMessages.value.results) {
+    content.value = bannerMessages.value.results;
+  }
+
+  const checkDisplayingAnnounce = (content, path) => {
+    if (content && content.length > 0 && path === '/') {
+      setTimeout(() => {
+        showAnnounce.value = true;
+      }, 1000);
+    } else {
+      showAnnounce.value = false;
+    }
+  }
+
+  onMounted(() => {
+    checkDisplayingAnnounce(content.value, route.path);
+  });
+
+  watch([() => route.path, content], ([newPath, newContent]) => {
+    checkDisplayingAnnounce(newContent, newPath)
+  });
+</script>
+
 <script>
     import {useNuxtApp} from "#app/nuxt.js";
 
     export default defineComponent({
         setup() {
             const nuxtApp = useNuxtApp();
-
-            const topBanner = useCookie('top-banner', {watch: true});
 
             nuxtApp.hook("page:start", () => {
                 document.querySelector('body').classList.add("loading");
@@ -31,8 +63,6 @@
             nuxtApp.hook("page:finish", () => {
                 document.querySelector('body').classList.remove("loading");
             });
-
-            return {topBanner}
         },
     })
 </script>

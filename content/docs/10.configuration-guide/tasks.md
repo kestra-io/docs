@@ -14,7 +14,7 @@ You can provide task defaults that will be applied to each task on your cluster 
 kestra:
   tasks:
     defaults:
-    - type: io.kestra.core.tasks.log.Log
+    - type: io.kestra.plugin.core.log.Log
       values:
         level: ERROR
 ```

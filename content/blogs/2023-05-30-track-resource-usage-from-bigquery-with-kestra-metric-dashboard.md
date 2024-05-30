@@ -33,7 +33,7 @@ tasks:
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 * * * *"
 ```
 

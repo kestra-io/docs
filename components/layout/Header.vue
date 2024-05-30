@@ -76,7 +76,7 @@
                                         @click="globalClick(true)"
                                     >
                                         <div class="submenu-btn-img">
-                                            <img src="/landing/header-menu/platform-overview.svg" alt="Platform Overview"/>
+                                            <img width="176px" src="/landing/header-menu/platform-overview.png" alt="Platform Overview"/>
                                         </div>
                                         <p>
                                             <span class="title">Platform overview</span>
@@ -215,7 +215,7 @@
                             <ChevronDown />
                         </a>
                         <ul class="dropdown-menu resources-menu flex-column">
-                            <div class="d-flex flex-column flex-lg-row">
+                            <div class="d-flex flex-column flex-lg-row gap-3 gap-lg-0">
                                 <div class="d-flex flex-column aside-menu py-lg-0 py-1">
                                     <li>
                                         <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
@@ -275,14 +275,14 @@
                                     </li>
                                 </div>
                             </div>
-                            <li class="w-100">
+                            <li class="w-100 mt-3 mt-lg-0">
                                 <NuxtLink
                                     class="d-block d-sm-inline-block mn-sm-0 btn btn-animated btn-purple-animated w-100 submenu-btn"
                                     href="/blueprints"
                                     @click="globalClick(true)"
                                 >
                                     <div class="submenu-btn-img">
-                                        <img src="/landing/header-menu/platform-blueprints.svg" alt="Platform Overview"/>
+                                        <img width="238px" src="/landing/header-menu/platform-blueprints.png" alt="Platform Overview"/>
                                     </div>
                                     <p>
                                         <span class="title">Explore blueprints</span>
@@ -341,7 +341,7 @@
                         <GithubButton :small="true" />
 
                         <NuxtLink @click="globalClick(true)"
-                                  class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-sm me-0 me-sm-2 d-inline-block d-lg-none d-xxl-inline-block talk-us"
+                                  class="d-none mb-1 mn-sm-0 btn btn-sm me-0 me-sm-2 d-lg-inline-block talk-us"
                                   href="/demo">
                             <span>
                                 <CalendarOutline />
@@ -536,13 +536,14 @@ export default {
         @include media-breakpoint-down(lg) {
             padding-left: 0;
             padding-right: 0;
+            padding-top: calc($spacer / 2);
 
             .navbar-brand {
-                margin: 0 0 $spacer $spacer;
+                margin: 0 0 calc($spacer * 0.75) $spacer;
             }
 
             .nav-items {
-                margin: 0 $spacer $spacer 0;
+                margin: 0 $spacer calc($spacer * 0.75) 0;
 
                 span.menu-text {
                     margin-top: calc($spacer * 0.2);
@@ -552,7 +553,7 @@ export default {
     }
     nav {
         background: $black-4;
-        transition: all ease 0.2s;
+        transition: all ease 0.8s;
         transform: translateY(0);
         max-height: 100%;
         width: 100vw;
@@ -560,7 +561,7 @@ export default {
 
         @include media-breakpoint-down(lg) {
             padding: 0;
-            padding-top: $spacer;
+            padding-top: 0;
             background-color: $black-9;
         }
 
@@ -582,11 +583,6 @@ export default {
                     }
                 }
             }
-        }
-
-        @include media-breakpoint-down(lg) {
-            padding: 0;
-            padding-top: $spacer;
         }
 
         .navbar-brand {
@@ -645,11 +641,11 @@ export default {
         max-width: 100%;
 
         @include media-breakpoint-down(lg) {
-            max-height: calc(100vh - 67px);
+            max-height: calc(100vh + 4.1rem);
             overflow-y: auto;
             overflow-x: hidden;
             background-color: $black-2;
-            height: calc(100vh - 4.3rem);
+            height: calc(100vh - 3.3rem);
         }
 
         ul.navbar-nav {
@@ -726,6 +722,7 @@ export default {
                     @include media-breakpoint-down(lg) {
                         display: block;
                         border-radius: 0;
+                        background-color: $black-2;
                     }
                 }
 
@@ -748,7 +745,7 @@ export default {
                         width: 100% !important;
                         box-shadow: none;
                         border: 0;
-                        padding: 0 $spacer !important;
+                        padding: 0 $spacer $spacer !important;
                         display: none;
 
                         li {
@@ -980,11 +977,18 @@ export default {
 
                 .resources-menu {
                     .submenu-btn {
-                        padding-right: calc($spacer * 3.158) !important;
+
+                        @include media-breakpoint-up(sm) {
+                            padding-right: calc($spacer * 3.158) !important;
+                        }
 
                         .submenu-btn-img {
                             left: 1.265rem !important;
                             top: -1.938rem;
+
+                            @include media-breakpoint-down(sm) {
+                                left: -7.265rem !important;
+                            }
                         }
                     }
                 }
@@ -1214,7 +1218,7 @@ export default {
 
 .wrapper.announce {
     nav {
-        top: 40px;
+        top: 3rem;
     }
 }
 </style>

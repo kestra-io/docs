@@ -170,7 +170,7 @@ The workflow below demonstrates a simple use case where there are:
 
 ![dag](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/dag.png)
 
-Here is a workflow example that uses the [new DAG task](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.dag):
+Here is a workflow example that uses the [new DAG task](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Dag):
 
 ```yaml
 id: magicDAG

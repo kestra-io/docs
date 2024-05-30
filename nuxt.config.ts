@@ -55,9 +55,12 @@ export default defineNuxtConfig({
     ],
 
     content: {
+        navigation: {
+            fields: ['hideSidebar'],
+        },
         documentDriven: false,
         highlight: {
-            preload: [
+            langs: [
                 'bash',
                 'yaml',
                 'sql',
@@ -175,6 +178,7 @@ export default defineNuxtConfig({
         '/docs/faq/enterprise': {redirect: '/docs/enterprise/faq'},
         '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
         '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
+        '/videos': {redirect: '/tutorial-videos'},
         '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
     },
 

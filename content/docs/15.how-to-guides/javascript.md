@@ -1,5 +1,5 @@
 ---
-title: How to Use JavaScript in Kestra
+title: JavaScript
 icon: /docs/icons/nodejs.svg
 ---
 

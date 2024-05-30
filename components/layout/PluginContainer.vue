@@ -28,7 +28,7 @@
                                             :version="page.version"/>
                     <SchemaToHtml :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'">
                         <template v-slot:markdown="{ content }">
-                        <MDC :value="content" tag="article" />
+                            <MDC :value="content" tag="article" />
                         </template>
                     </SchemaToHtml>
                     <ContentRendererMarkdown
@@ -192,7 +192,9 @@
             }
 
             h1 {
-                max-width: calc($spacer * 43.7);
+                @media only screen and (min-width: 1920px) {
+                    max-width: 71.25rem;
+                }
             }
         }
 
@@ -205,7 +207,9 @@
 
         .bd-content {
             margin: 0 auto;
-            max-width: calc($spacer * 43.7);
+            @media only screen and (min-width: 1920px) {
+                max-width:71.25rem
+            }
         }
 
         .title {

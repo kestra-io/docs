@@ -100,6 +100,10 @@
         },
     })
 
+    if (slug.value.endsWith(".md")) {
+        await navigateTo(slug.value.substring(0, slug.value.length - 3));
+    }
+
     if (props.type === 'plugins') {
         const parts = slug.value.split('/');
         let pageUrl;
@@ -188,6 +192,9 @@
             }
             h1 {
                 max-width: calc($spacer * 43.7);
+                @media only screen and (min-width: 1920px) {
+                    max-width: 71.25rem;
+                }
             }
         }
         .bd-main {
@@ -199,6 +206,9 @@
         .bd-content {
             margin: 0 auto;
             max-width: calc($spacer * 43.7);
+            @media only screen and (min-width: 1920px) {
+                max-width: 71.25rem;
+            }
         }
         .title {
             font-size: $h2-font-size;

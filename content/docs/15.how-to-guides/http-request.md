@@ -1,5 +1,5 @@
 ---
-title: How to Make HTTP Requests in Kestra
+title: HTTP Requests
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -102,7 +102,7 @@ While these tools are very useful for testing APIs, it can be challenging to aut
 
 This is where Kestra comes into enable us to automate requests with other tasks! Below, we'll cover how you can make a `GET`, `POST`, `PUT`, and `DELETE` request directly in your flow.
 
-To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](/plugins/plugin-fs/tasks/http/io.kestra.plugin.fs.http.request)
+To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](/plugins/plugin-fs/tasks/http/io.kestra.plugin.core.http.Request)
 
 ### GET Request
 
@@ -123,7 +123,7 @@ tasks:
     contentType: application/json
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 
 ```
@@ -166,7 +166,7 @@ tasks:
     body: "{{ inputs.payload }}"
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 
 ```
@@ -203,7 +203,7 @@ tasks:
     body: "{{ inputs.payload }}"
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 ```
 
@@ -232,7 +232,7 @@ tasks:
     contentType: application/json
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 
 ```
