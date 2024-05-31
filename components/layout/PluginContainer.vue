@@ -28,7 +28,7 @@
                                             :version="page.version"/>
                     <SchemaToHtml :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'">
                         <template v-slot:markdown="{ content }">
-                        <MDC :value="content" tag="article" />
+                            <MDC :value="content" tag="article" />
                         </template>
                     </SchemaToHtml>
                     <ContentRendererMarkdown
