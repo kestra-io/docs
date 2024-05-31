@@ -1163,6 +1163,7 @@ paths:
         required: true
         schema:
           type: string
+          nullable: true
       - name: labels
         in: query
         description: The labels as a list of 'key:value'
@@ -1189,19 +1190,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
       responses:
         "409":
           description: if the flow is disabled
@@ -1656,19 +1649,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
       responses:
         "204":
           description: On success
@@ -1745,19 +1730,11 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  description: The inputs of type file
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                contentType: application/octet-stream
-        required: true
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
       responses:
         "409":
           description: if the flow is disabled
@@ -3455,6 +3432,13 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/SchemaType'
+      - name: arrayOf
+        in: query
+        description: If schema should be an array of requested type
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       responses:
         "200":
           description: schemas 200 response
@@ -6038,6 +6022,11 @@ components:
         properties:
           deleted:
             type: boolean
+          taskDefaults:
+            type: array
+            deprecated: true
+            items:
+              $ref: '#/components/schemas/PluginDefault'
           description:
             type: string
           labels:
@@ -6070,10 +6059,10 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/AbstractTrigger'
-          taskDefaults:
+          pluginDefaults:
             type: array
             items:
-              $ref: '#/components/schemas/TaskDefault'
+              $ref: '#/components/schemas/PluginDefault'
           concurrency:
             $ref: '#/components/schemas/Concurrency'
           outputs:
@@ -6230,6 +6219,11 @@ components:
             type: integer
             format: int64
         triggerTypeCount:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+        taskRunnerTypeCount:
           type: object
           additionalProperties:
             type: integer
@@ -7064,12 +7058,30 @@ components:
           type: array
           items:
             type: string
+        aliases:
+          type: array
+          items:
+            type: string
         categories:
           type: array
           items:
             $ref: '#/components/schemas/PluginSubGroup.PluginCategory'
         subGroup:
           type: string
+    PluginDefault:
+      required:
+      - forced
+      - type
+      - values
+      type: object
+      properties:
+        type:
+          type: string
+        forced:
+          type: boolean
+        values:
+          type: object
+          additionalProperties: true
     PluginIcon:
       type: object
       properties:
@@ -7096,7 +7108,6 @@ components:
       - CORE
       - INGESTION
       - BI
-      - DATA_QUALITY
     PluginUsage:
       type: object
       properties:
@@ -7195,6 +7206,7 @@ components:
       - template
       - task
       - trigger
+      - plugindefault
     SearchResult_Flow_:
       required:
       - fragments
@@ -7381,20 +7393,6 @@ components:
           $ref: '#/components/schemas/Level'
         allowFailure:
           type: boolean
-    TaskDefault:
-      required:
-      - forced
-      - type
-      - values
-      type: object
-      properties:
-        type:
-          type: string
-        forced:
-          type: boolean
-        values:
-          type: object
-          additionalProperties: true
     TaskForExecution:
       required:
       - id
