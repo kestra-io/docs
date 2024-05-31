@@ -57,7 +57,7 @@ Or think about the push from development to production. With the **PushFlows** t
 
 ### Regular Updates to Production
 
->If you have a production environment that needs to be updated regularly with changes from your development branch. By scheduling SyncFlows to run every hour, you ensure that your production environment is always current, without needing to manually intervene every time there’s a change.
+If you have a production environment that needs to be updated regularly with changes from your development branch. By scheduling SyncFlows to run every hour, you ensure that your production environment is always current, without needing to manually intervene every time there’s a change.
 
 ## Flexibility in Version Control
 
