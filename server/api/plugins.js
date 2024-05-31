@@ -42,10 +42,16 @@ function toNuxtBlocks(data, type) {
 const generateNavTocChildren = (properties) => {
     const children = [];
 
-    for (const key in properties) {
-        if (properties.hasOwnProperty(key)) {
-            children.push({id: key, depth: 3, text: properties[key].name ?  properties[key].name : key })
-        }
+    const sortedKeys = Object.keys(properties).sort((a, b) => {
+        return (properties[b].$required || false) - (properties[a].$required || false);
+    });
+
+    for (const key of sortedKeys) {
+        children.push({
+            id: key,
+            depth: 3,
+            text: properties[key].name ? properties[key].name : key,
+        });
     }
 
     return children;
@@ -61,17 +67,16 @@ const navTocData = (pageData) => {
         depth: 2,
         text: 'Examples',
     }];
-
-    for (const key in pageData) {
-        if (pageData.hasOwnProperty(key) && key !== 'examples' && key.split('')[0] !== '$') {
+    for(const [key, value] of Object.entries(pageData)) {
+        if (key !== 'examples' && key.split('')[0] !== '$') {
             const data = {
                 id: key,
                 depth: 2,
                 text: capitalizeFirstLetter(key),
             }
 
-            if (Object.keys(pageData[key]).length > 0) {
-                data.children = generateNavTocChildren(pageData[key]);
+            if (Object.keys(value).length > 0) {
+                data.children = generateNavTocChildren(value);
             }
 
             links.push(data)
