@@ -54,7 +54,6 @@ const generateNavTocChildren = (properties) => {
     }
 
     children.sort((a, b) => b.required - a.required);
-    console.log('children', children);
     return children.map(({ required, ...rest }) => rest);
 }
 
@@ -63,7 +62,6 @@ function capitalizeFirstLetter(str) {
 }
 
 const navTocData = (pageData) => {
-    console.log('pageData', pageData);
     const links = [{
         id: 'examples',
         depth: 2,

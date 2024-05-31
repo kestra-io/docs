@@ -126,7 +126,6 @@
       throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
     }
     page = pluginInformation?.value;
-    console.log(pluginInformation.value);
   } else {
     const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
       try {
