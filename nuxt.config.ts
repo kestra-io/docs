@@ -79,9 +79,6 @@ export default defineNuxtConfig({
                 'remark-flexible-markers': {
                     markerClassName: 'type-mark',
                 },
-                // 'remark-code-import': {
-                //     rootDir: process.cwd()
-                // },
             }
         },
     },
