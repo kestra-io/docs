@@ -345,7 +345,7 @@ As a reminder, terms with a capital letter in the Agreement and/or this Appendix
 
 **Scope**
 
-Provided that You have purchased the Enterprise Support and have paid the applicable Fees as set forth in the Order Form, KESTRA will provide the support and maintenance services described in this Appendix during the Period indicated in the Order Form. If the Enterprise Support is not included in the Order Form, You will receive Standard Support included in the price of the Solution. The details of the Enterprise Support, as described under the “Support” and “Included matters” articles, can be found here.
+Provided that You have paid the applicable licence Fees as set forth in the Order Form, KESTRA will provide You the support and maintenance services described in this Appendix during the Period indicated in the Order Form.. The details of the  Support, as described under the “Support” and “Included matters” articles, can be found below.
 
 **Support**
 
