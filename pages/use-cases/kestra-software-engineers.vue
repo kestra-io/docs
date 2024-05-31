@@ -9,7 +9,7 @@
         </Head>
 
         <UseCasesEngineersHeader
-            title="Software Engineers"
+            titleHtml="Kestra for<br><span>Software Engineers</span>"
             description="Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment"
             imageSrc="/landing/usecases/software-engineers/header-hero.svg"
         />

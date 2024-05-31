@@ -6,7 +6,7 @@
                     <span>Kestra's Capabilities</span><br>
                     {{title}}
                 </h2>
-                <div class="row d-flex justify-content-center">
+                <div class="row d-flex">
                     <div class="col-12 col-md-6 col-lg-4 mb-4" v-for="item in dataOrchestration" v-bind:key="item.id">
                         <a class="page-item" :href="item.pageHref">
                             <img

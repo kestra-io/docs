@@ -4,16 +4,18 @@
             <div class="row">
                 <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
                     <div>
-                        <h1 data-aos="fade-right">
-                            Kestra for<br>
-                            <span>{{title}}</span>
-                        </h1>
+                        <h1 data-aos="fade-right" v-if="titleHtml" v-html="titleHtml" />
                         <p data-aos="fade-left" class="baseline">
                             {{description}}
                         </p>
-                        <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
-                            Get started
-                        </NuxtLink>
+                        <div class="cta">
+                            <NuxtLink :href="darkButtonHref" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in" v-if="darkButtonText">
+                                {{darkButtonText}}
+                            </NuxtLink>
+                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                                Get started
+                            </NuxtLink>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6 order-0 order-lg-1">
@@ -24,7 +26,7 @@
                         class="mt-md-0"
                         data-aos="zoom-in"
                         :src="imageSrc"
-                        alt="Data Engineers"
+                        :alt="imageAlt"
                     />
                 </div>
             </div>
@@ -35,7 +37,7 @@
 <script>
   export default {
     props: {
-      title: {
+      titleHtml: {
         type: String,
         required: true,
       },
@@ -46,6 +48,18 @@
       imageSrc: {
         type: String,
         required: true,
+      },
+      imageAlt: {
+        type: String,
+        required: true,
+      },
+      darkButtonText: {
+        type: String,
+        required: false,
+      },
+      darkButtonHref: {
+        type: String,
+        required: false,
       },
     },
   }
@@ -60,6 +74,7 @@
         padding-top: 80px;
         margin-top: -80px;
         position: relative;
+        overflow: hidden;
 
         &::after {
             content: "";
@@ -89,7 +104,7 @@
                 font-size: 1.875rem;
             }
 
-            span {
+            :deep(span) {
                 background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
                 background-clip: text;
                 -webkit-background-clip: text;

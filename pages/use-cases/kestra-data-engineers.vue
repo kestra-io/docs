@@ -6,7 +6,7 @@
         </Head>
 
         <UseCasesEngineersHeader
-            title="Data Engineers"
+            titleHtml="Kestra for<br><span>Data Engineers</span>"
             description="Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data"
             imageSrc="/landing/usecases/data-engineers/header-hero.svg"
         />
