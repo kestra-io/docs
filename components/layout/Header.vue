@@ -150,7 +150,7 @@
                             <div class="dropdown-column">
                                 <p class="column-caption">Use Cases</p>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/kestra-data-engineers"
+                                    <NuxtLink class="dropdown-item" href="/use-cases/data-engineers"
                                               @click="globalClick(true)">
                                         <ChartBar />
                                         <p>
@@ -160,7 +160,7 @@
                                     </NuxtLink>
                                 </li>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/kestra-software-engineers"
+                                    <NuxtLink class="dropdown-item" href="/use-cases/software-engineers"
                                               @click="globalClick(true)">
                                         <Graph />
                                         <p>
@@ -170,7 +170,7 @@
                                     </NuxtLink>
                                 </li>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/kestra-platform-engineers" @click="globalClick(true)">
+                                    <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers" @click="globalClick(true)">
                                         <ServerNetworkOutline/>
                                         <p>
                                             <span>For Platform Engineers</span><br/>

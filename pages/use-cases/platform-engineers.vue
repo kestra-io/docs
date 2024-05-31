@@ -106,41 +106,25 @@
                   id: 2,
                   title: 'Provisioning and Deployment',
                   description: 'Automate the setup and deployment of infrastructure components, reducing manual effort and errors.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
+                  imageSource: '/landing/usecases/monitoring/provisioning-deployment.svg',
                   imageAlt: 'Provisioning',
                   pageHref: '/use-cases/provisioning-and-deployment'
                 },
                 {
                   id: 3,
-                  title: 'Infrastructure Monitoring',
-                  description: 'Automate monitoring and alerting processes, ensuring your infrastructure is always performing optimally.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
-                  imageAlt: 'Infrastructure Monitoring',
-                  pageHref: '#'
+                  title: 'Disaster Recovery',
+                  description: 'Automate backup and recovery processes to ensure your infrastructure can quickly recover from failures.',
+                  imageSource: '/landing/usecases/monitoring/disaster-recovery.svg',
+                  imageAlt: 'Compliance Audits',
+                  pageHref: '/use-cases/disaster-recovery'
                 },
                 {
                   id: 4,
-                  title: 'Disaster Recovery',
-                  description: 'Automate backup and recovery processes to ensure your infrastructure can quickly recover from failures.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
-                  imageAlt: 'Disaster Recovery',
-                  pageHref: '#'
-                },
-                {
-                  id: 5,
-                  title: 'Configuration Management',
-                  description: 'Use Kestra to maintain consistent configuration across all your environments, reducing configuration drift.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
-                  imageAlt: 'Configuration Management',
-                  pageHref: '#'
-                },
-                {
-                  id: 6,
-                  title: 'Compliance Audits',
-                  description: 'Automate compliance checks and audits, ensuring your infrastructure meets regulatory requirements.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
-                  imageAlt: 'Compliance Audits',
-                  pageHref: '#'
+                  title: 'Infrastructure Monitoring',
+                  description: 'Automate monitoring and alerting processes, ensuring your infrastructure is always performing optimally.',
+                  imageSource: '/landing/usecases/provisioning-and-deployment/infrastructure-monitoring.svg',
+                  imageAlt: 'Monitoring',
+                  pageHref: '/use-cases/monitoring'
                 },
               ],
             }

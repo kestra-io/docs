@@ -101,51 +101,27 @@
               dataOrchestration: [
                 {
                   id: 1,
-                  title: 'Microservice Management',
-                  description: 'Simplify the orchestration of microservices, ensuring efficient communication and coordination.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
-                  imageAlt: 'Microservice Management',
-                  pageHref: '#'
+                  title: "Microservice Management",
+                  description: "Simplify the orchestration of microservices, ensuring efficient communication and coordination.",
+                  imageSource: "/landing/usecases/databases/microservice-management.svg",
+                  imageAlt: "Microservice Management",
+                  pageHref: "/use-cases/microservices-orchestration"
                 },
                 {
                   id: 2,
-                  title: 'Configuration Management',
-                  description: 'Use Kestra to maintain consistent configuration across all your environments, reducing configuration drift.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
-                  imageAlt: 'Configuration Management',
-                  pageHref: '#'
+                  title: 'Database Management',
+                  description: 'Orchestrate database migrations, backups, and restorations seamlessly within your development pipeline.',
+                  imageSource: '/landing/usecases/microservices-orchestration/database-management.svg',
+                  imageAlt: 'Database Management',
+                  pageHref: '/use-cases/databases-managament'
                 },
                 {
                   id: 3,
-                  title: 'Automated Testing',
-                  description: 'Integrate automated testing workflows to run unit tests, integration tests, and end-to-end tests, ensuring code quality and reliability.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
-                  imageAlt: 'Automated Testing',
-                  pageHref: '#'
-                },
-                {
-                  id: 4,
-                  title: 'Database Management',
-                  description: 'Orchestrate database migrations, backups, and restorations seamlessly within your development pipeline.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
-                  imageAlt: 'Database Management',
-                  pageHref: '#'
-                },
-                {
-                  id: 5,
                   title: 'API Orchestration',
                   description: 'Manage and automate API deployments, scaling, and monitoring to ensure high availability and performance.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
-                  imageAlt: 'API Orchestration',
-                  pageHref: '#'
-                },
-                {
-                  id: 6,
-                  title: 'Business Process Automation',
-                  description: 'Streamline and automate various business processes such as employee onboarding, approval workflows, and data synchronization.',
-                  imageSource: '/landing/usecases/software-engineers/kestras-capabilities .svg',
-                  imageAlt: 'Business Process Automation',
-                  pageHref: '#'
+                  imageSource: '/landing/usecases/microservices-orchestration/api-orchestration.svg',
+                  imageAlt: 'Provisioning',
+                  pageHref: '/use-cases/provisioning-and-deployment'
                 },
               ],
             }
