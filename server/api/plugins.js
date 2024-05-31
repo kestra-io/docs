@@ -2,17 +2,90 @@ import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 import url from "node:url";
 import {camelToKebabCase} from "~/utils/url.js";
 
-function toNuxtContent(parsedMarkdown) {
+function toNuxtContent(parsedMarkdown, type) {
     return {
         body: {
             toc: parsedMarkdown.toc,
             ...parsedMarkdown.body
         },
+        pluginType: type,
         description: parsedMarkdown.data.description,
         title: parsedMarkdown.data.title,
         icon: `data:image/svg+xml;base64,${parsedMarkdown.data.icon}` ?? null
     };
 }
+
+function toNuxtBlocks(data, type) {
+    const { $schema, required, title, description, $examples, $deprecated, $beta, $metrics, ...pageData } = data;
+
+    if ($examples) {
+        pageData.examples = $examples;
+    }
+
+    if ($metrics) {
+        pageData.metrics = $metrics;
+    }
+    return {
+        body: {
+            children: pageData,
+            toc: {
+                links: navTocData(pageData)
+            },
+        },
+        pluginType: type,
+        description,
+        deprecated: $deprecated,
+        title,
+    };
+}
+
+const generateNavTocChildren = (properties) => {
+    const children = [];
+
+    for (const key in properties) {
+        if (properties.hasOwnProperty(key)) {
+            children.push({
+                id: key,
+                depth: 3,
+                text: properties[key].name ?  properties[key].name : key,
+                required: properties[key].$required || false
+            })
+        }
+    }
+
+    children.sort((a, b) => b.required - a.required);
+    return children.map(({ required, ...rest }) => rest);
+}
+
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+const navTocData = (pageData) => {
+    const links = [{
+        id: 'examples',
+        depth: 2,
+        text: 'Examples',
+    }];
+
+    for (const key in pageData) {
+        if (pageData.hasOwnProperty(key) && key !== 'examples' && key.split('')[0] !== '$') {
+            const data = {
+                id: key,
+                depth: 2,
+                text: capitalizeFirstLetter(key),
+            }
+
+            if (Object.keys(pageData[key]).length > 0) {
+                data.children = generateNavTocChildren(pageData[key]);
+            }
+
+            links.push(data)
+        }
+    }
+
+    return links;
+};
 
 function generateSubMenu(baseUrl, group, items) {
     return generateSubMenuWithGroupProvider(baseUrl, () => group, items);
@@ -73,20 +146,29 @@ export default defineEventHandler(async (event) => {
         const page = requestUrl.searchParams.get("page");
         const type = requestUrl.searchParams.get("type");
         const config = useRuntimeConfig();
-
         if (type === 'definitions') {
             let pageData = await $fetch(`${config.public.apiUrl}/plugins/definitions/${page}`);
 
-            const parsedMarkdown = await parseMarkdown(pageData.markdown);
+            if (pageData.schema.outputs && pageData.schema.outputs.properties) {
+                pageData.schema.properties.outputs = pageData.schema.outputs.properties;
+            }
 
-            return toNuxtContent(parsedMarkdown);
+            if (pageData.schema.definitions && Object.keys(pageData.schema.definitions).length) {
+                pageData.schema.properties.definitions = pageData.schema.definitions;
+            }
+
+            if (pageData.schema['examples']) {
+                pageData.schema.properties.examples = pageData.schema['examples']
+            }
+
+            return toNuxtBlocks(pageData.schema.properties, type);
         }
         if (type === 'plugin') {
             let pageData = await $fetch(`${config.public.apiUrl}/plugins/${page}`);
 
             const parsedMarkdown = await parseMarkdown(pageData.body);
 
-            return toNuxtContent(parsedMarkdown);
+            return toNuxtContent(parsedMarkdown, type);
         }
         if (type === 'navigation') {
             const plugins = await $fetch(`${config.public.apiUrl}/plugins`);
