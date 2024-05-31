@@ -13,7 +13,7 @@ We are excited to introduce a fully redesigned version control integration that 
 
 ## Simplify Your Workflow with New Git Tasks
 
-With our new Git tasks, committing and pushing your saved flows to a Git repository is as simple as adding a few YAML lines. The **PushFlows** task makes this a reality, allowing you to effortlessly move your flows from a development environment to a Git repository. The result? You save valuable time and reduce the risk of human error.
+With our new Git tasks, committing and pushing your saved work to a Git repository is as simple as adding a few YAML lines. The **PushFlows** task makes this a reality, allowing you to effortlessly move all your work from a development environment to a Git repository. The result? You save valuable time and reduce the risk of human error.
 
 For example, when you’ve developed a new data pipeline flow, with PushFlows, you can push this flow to your Git repository with just a few lines of configuration. This ensures your code is versioned and safely stored, ready for review and deployment.
 
