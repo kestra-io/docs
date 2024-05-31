@@ -44,11 +44,17 @@ const generateNavTocChildren = (properties) => {
 
     for (const key in properties) {
         if (properties.hasOwnProperty(key)) {
-            children.push({id: key, depth: 3, text: properties[key].name ?  properties[key].name : key })
+            children.push({
+                id: key,
+                depth: 3,
+                text: properties[key].name ?  properties[key].name : key,
+                required: properties[key].$required || false
+            })
         }
     }
 
-    return children;
+    children.sort((a, b) => b.required - a.required);
+    return children.map(({ required, ...rest }) => rest);
 }
 
 function capitalizeFirstLetter(str) {
