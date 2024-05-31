@@ -9,7 +9,7 @@
         </Head>
 
         <UseCasesEngineersHeader
-            title="Platform Engineers"
+            titleHtml="Kestra for<br><span>Platform Engineers</span>"
             description="Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
             imageSrc="/landing/usecases/platform-engineers/header-hero.svg"
         />

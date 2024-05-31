@@ -77,6 +77,8 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                position: relative;
+                z-index: 3;
 
                 .title {
                     font-size: 3.125rem;
