@@ -1,5 +1,5 @@
 ---
-title: "GitOps Superpowers for Your Version Control"
+title: "Unlock GitOps Superpowers For All your Workflows"
 description: "Our latest version control integration introduces new Git tasks that bring enhanced flexibility and control to your workflows"
 date: 2024-06-05T08:00:00
 category: Solutions
