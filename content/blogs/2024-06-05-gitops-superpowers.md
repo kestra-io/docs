@@ -14,7 +14,7 @@ We are excited to introduce a fully redesigned version control integration that 
 
 ## Simplify Your Workflow with New Git Tasks
 
-Whith those new features to our Git tasks, committing and pushing your saved flows to a Git repository is as simple as clicking a button. With the new **PushFlows** task, this is now a reality. This feature allows you to effortlessly move your flows from a development environment to a Git repository. The result? You save valuable time and reduce the risk of human error.
+Whith those new features to our Git tasks, committing and pushing your saved flows to a Git repository is as simple as adding a few YAML lines. With the new **PushFlows** task, this is now a reality. This feature allows you to effortlessly move your flows from a development environment to a Git repository. The result? You save valuable time and reduce the risk of human error.
 
 But we didn't stop there. We also introduced the **SyncFlows** task, which automatically checks for changes in your Git branch and deploys them to your Kestra namespaces. This continuous synchronization means you no longer need to manually update your production environment. Whether you schedule it to run hourly or trigger it whenever changes are merged into a specific Git branch, SyncFlows ensures that your environments are always up-to-date and consistent.
 
@@ -56,7 +56,7 @@ Kestra supports various patterns to suit different workflows and preferences, en
 
 **Outcome**: Simplified and Automated Operations
 
-Implementing the Git Sync pattern ensures that your flows and namespace files in Kestra are always synchronized with the versions in Git. T
+Implementing the Git Sync pattern ensures that your flows and namespace files in Kestra are always synchronized with the versions in Git. 
 
 
 **Outcome**: Flexibility and Control
