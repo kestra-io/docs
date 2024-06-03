@@ -45,12 +45,6 @@ One of the standout features of our new Git tasks is the `dryrun` mode. Dry-run 
 
 With the `PushFlows` task, you can commit and push changes from a development environment to a Git repository and then use `SyncFlows` to sync these changes to production after review. This ensures that only reviewed and approved changes make it to the production environment.
 
-
-
-## Flexibility in Version Control
-
-Whether you prefer using a built-in editor or an external IDE, our new Git tasks offer the flexibility to suit your workflow. For those who enjoy the convenience of a graphical interface, the **Git Push** pattern allows you to edit flows and namespace files directly from the UI and commit changes regularly. On the other hand, if you are managing CI/CD pipelines independently, our tools integrate seamlessly with platforms like GitHub Actions or Terraform, allowing you to maintain Git as your single source of truth.
-
 ## There is a Git Pattern for Every Case
 
 Kestra supports various patterns to suit different workflows and preferences, ensuring that you can choose the one that best fits your needs:
@@ -59,6 +53,9 @@ Kestra supports various patterns to suit different workflows and preferences, en
 2. **Git Push**: Perfect for those who prefer using the built-in editor and regularly committing changes to Git. This pattern allows for easy updates and version control directly from the UI.
 3. **CI/CD**: Suitable for teams with established CI/CD pipelines. Manage your CI/CD process independently using tools like GitHub Actions or Terraform, while keeping Git as your single source of truth.
 
+## Flexibility in Version Control
+
+Whether you prefer using a built-in editor or an external IDE, our new Git tasks offer the flexibility to suit your workflow. For those who enjoy the convenience of a graphical interface, the **Git Push** pattern allows you to edit flows and namespace files directly from the UI and commit changes regularly. On the other hand, if you are managing CI/CD pipelines independently, our tools integrate seamlessly with platforms like GitHub Actions or Terraform, allowing you to maintain Git as your single source of truth.
 
 ## Get Started with GitOps for Your Automation Pipelines
 
