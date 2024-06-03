@@ -1,5 +1,5 @@
 ---
-title: Plugins Discovery Mechanism
+title: Plugin Discovery Mechanism
 icon: /docs/icons/migration-guide.svg
 release: 0.17.0
 ---
@@ -22,13 +22,13 @@ to reduce Micronaut's exposure outside the Kestra core.
 Unfortunately, we've had to introduce some minor breaking-changes to the way custom plugins should be built.
 Here are the changes required to migrate to Kestra 0.17.0.
 
-## Micronaut dependencies
+## Micronaut Dependencies
 
 For most plugin implementations, all Micronaut libs can be removed from the `compileOnly` dependencies in the `build.gradle` file.
 
 However, Micronaut is still required to use the utility classes provided by Kestra for running unit-tests.
 
-## Kestra's annotation processor
+## Kestra's Annotation Processor
 
 Kestra requires a new annotation processor to be configured in the `build.gradle` file of your project (or `pom.xml` for Maven).
 
@@ -38,7 +38,7 @@ annotationProcessor group: "io.kestra", name: "processor", version: kestraVersio
 
 The role of this processor is to automatically manage the `META-INF/services` file needed by Java to discover your plugins.
 
-## Custom Validations
+## Custom Validators
 
 Kestra allows you to develop a custom constraint validator using the standard Java API for bean validation (i.e., JSR-380), which is used to validate the properties of custom tasks.
 
