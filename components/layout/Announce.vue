@@ -71,11 +71,9 @@
     }
 
     .announce {
-        transition: all ease 0.8s;
         width: 100%;
-
         opacity: 1;
-        transition: all 0.2s ease;
+
         &.hidden {
             opacity: 0;
             display: none;
