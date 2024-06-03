@@ -1,6 +1,6 @@
 ---
 title: "Using Realtime Triggers in Kestra"
-description: "Learn how to use realtime triggers in Kestra to immediately react to events"
+description: "Learn how to use realtime triggers in Kestra to react to events as they happen"
 date: 2024-06-06T08:00:00
 category: Solutions
 author:
@@ -8,13 +8,13 @@ author:
   image: "smantri"
 ---
 
-Kestra introduced **Realtime Triggers** in their 0.17.0 release. Realtime triggers is a powerful feature using which you can immediately react to events without waiting for a certain duration or for accumulating certain number of events. With this feature, Kestra triggers an execution of the flow immediately with every incoming event. In this blog post, we will see a detailed example of how you can leverage realtime trigger in the real world scenario.
+Kestra 0.17.0 introduced the concept of **Realtime Triggers**, which allows you to react to events instantly without polling. With this feature, Kestra triggers the execution of a flow immediately for every incoming event. This post demonstrates how you can leverage real-time triggers in a real-world scenario.
 
 ## Need for Realtime Triggers
 
 Before 0.17.0 release, Kestra had support for Triggers only. Triggers in Kestra can listen to external events and start a workflow execution when the event occurs. Most of these triggers poll external systems for new events at regular intervals e.g. every second. This works well for data processing use cases. However, business-critical workflows often require reacting to events as they happen with millisecond latency and this is where Realtime Triggers come into play.
 
-At present, Kestra supports Realtime Triggers for most of the queuing systems like Apache Kafka, Apache Pulsar, AMQP queues (RabbitMQ), and MQTT. It also supports realtime triggers for cloud-based queuing services like AWS SQS, GCP Pub/Sub and Azure Eventhubs. Not only this, Kestra can now capture realtime events for change data capture using Debezium for MySQL, Postgres and SQLServer.
+Kestra supports Realtime Triggers for most of the queuing systems like Apache Kafka, Apache Pulsar, AMQP queues (RabbitMQ), and MQTT. It also supports Realtime Triggers for cloud-based queuing services like AWS SQS, GCP Pub/Sub and Azure Eventhubs. Kestra can also capture real-time events for change data capture using Debezium for MySQL, Postgres, and SQLServer.
 
 ## Using Realtime Triggers
 
@@ -189,11 +189,11 @@ triggers:
     groupId: kestraConsumer
 ```
 
-Once the Kestra flow is saved, we can run the python script, and see the flow executions getting triggered for each order event. We can then move to MongoDB and check if we get the detailed orders in the collection. You can note that the execution gets triggered immediately as the order event lands on the Kafka topic, thus serving the purpose of reacting to the events in realtime.
+Once the Kestra flow is saved, we can run the Python script and see the flow executions getting triggered for each order event. We can then move to MongoDB and check if we get the detailed orders in the collection. You can note that the execution gets triggered immediately as the order event lands on the Kafka topic, thus reacting to the events in real time.
 
 ## Conclusion
 
-As can be seen from the blog, Kestra has now become even more powerful with the Realtime Trigger feature. However, its important to note that Kestra's Realtime Triggers are not intended to be used as a replacement for real-time data processing engines such as Apache Flink, Apache Beam or Google Dataflow. Those data processing engines excel at stateful streaming applications and complex SQL transformations over real-time data streams. In contrast, Kestra's Realtime Triggers are stateless, meaning they trigger one workflow execution per event. They are designed primarily to react to events in real time to orchestrate business-critical processes.
+As you can see, Real-Time Triggers offer a powerful solution for low-latency automation and orchestration use cases. They are fast and easy to set up, as everything else in Kestra 🚀
 
 Join the Slack [community](https://kestra.io/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://twitter.com/kestra_io) for the latest news.
