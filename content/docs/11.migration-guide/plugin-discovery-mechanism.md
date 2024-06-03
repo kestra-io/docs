@@ -16,11 +16,11 @@ However, we have repeatedly encountered some limitations in maintaining the back
 
 Thanks to this new implementation, we reduced the number of dependencies required for developing custom plugins, and these plugins now load twice as fast as before.
 
-Finally, this change is part of a wider effort to improve the developer experience around plugins, and
-to reduce Micronaut's exposure outside the Kestra core.
+Finally, this change is part of a wider effort to improve the developer experience around plugins, and to reduce Micronaut's exposure outside the Kestra core.
 
 Unfortunately, we've had to introduce some minor breaking-changes to the way custom plugins should be built.
-Here are the changes required to migrate to Kestra 0.17.0.
+
+Below are the changes required to migrate to Kestra 0.17.0.
 
 ## Micronaut Dependencies
 
@@ -43,13 +43,10 @@ The role of this processor is to automatically manage the `META-INF/services` fi
 Kestra allows you to develop a custom constraint validator using the standard Java API for bean validation (i.e., JSR-380), which is used to validate the properties of custom tasks.
 
 ::alert{type="warning"}
-The custom validator must now implement the standard `jakarta.validation.ConstraintValidator`
-instead of the interface provided by Micronaut: `io.micronaut.validation.validator.constraints.ConstraintValidator`.
+The custom validator must now implement the standard `jakarta.validation.ConstraintValidator` instead of the interface provided by Micronaut: `io.micronaut.validation.validator.constraints.ConstraintValidator`.
 ::
 
-In addition, custom validation annotation should now strictly adhere to the Java bean specification:
-
-Here is a migration example:
+In addition, custom validation annotation should now strictly adhere to the Java bean specification — see the example below.
 
 Kestra 0.16.6 and before:
 
