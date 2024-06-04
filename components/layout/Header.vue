@@ -150,31 +150,31 @@
                             <div class="dropdown-column">
                                 <p class="column-caption">Use Cases</p>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/modern-data-stack"
+                                    <NuxtLink class="dropdown-item" href="/use-cases/data-engineers"
                                               @click="globalClick(true)">
-                                        <AxisArrow />
+                                        <ChartBar />
                                         <p>
-                                            <span>Modern Data Stack Integration</span><br />
-                                            Integrate leading data tools with Kestra
+                                            <span>For Data Engineers</span><br />
+                                            Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/change-data-capture"
+                                    <NuxtLink class="dropdown-item" href="/use-cases/software-engineers"
                                               @click="globalClick(true)">
-                                        <Reload />
+                                        <Graph />
                                         <p>
-                                            <span>Change Data Capture</span><br />
-                                            Leverage Kestra's Change Data Capture capabilities
+                                            <span>For Software Engineers</span><br />
+                                            Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment
                                         </p>
                                     </NuxtLink>
                                 </li>
                                 <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/ci-cd" @click="globalClick(true)">
-                                        <Cogs/>
+                                    <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers" @click="globalClick(true)">
+                                        <ServerNetworkOutline/>
                                         <p>
-                                            <span>CI/CD for Kestra Workflows</span><br/>
-                                            Treat your workflow as code and embrace CI/CD practices
+                                            <span>For Platform Engineers</span><br/>
+                                            Automate, Scale, Provision and Optimize Your Infrastructure
                                         </p>
                                     </NuxtLink>
                                 </li>
@@ -385,12 +385,12 @@ import Domain from "vue-material-design-icons/Domain.vue"
 import CalendarOutline from "vue-material-design-icons/CalendarOutline.vue"
 import CodeNotEqualVariant from "vue-material-design-icons/CodeNotEqualVariant.vue"
 import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
-import Cogs from "vue-material-design-icons/Cogs.vue"
+import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
 import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
 import Slack from "vue-material-design-icons/Slack.vue"
-import Reload from "vue-material-design-icons/Reload.vue"
+import Graph from "vue-material-design-icons/Graph.vue"
 import Ballot from "vue-material-design-icons/Ballot.vue"
-import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
+import ChartBar from "vue-material-design-icons/ChartBar.vue"
 import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
 import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
 import Sync from "vue-material-design-icons/Sync.vue"
@@ -715,7 +715,7 @@ export default {
                 .dropdown-menu {
                     --bs-dropdown-link-hover-bg: $black-4;
                     --bs-dropdown-link-active-bg: $black-4;
-                    padding: $spacer;
+                    padding: $spacer $spacer calc($spacer * 2.5) !important;
                     border-radius: $spacer;
                     border: 1px solid $black-6;
                     background-color: $menu-dropdown-bg;
