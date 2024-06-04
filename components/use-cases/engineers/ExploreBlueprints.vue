@@ -122,7 +122,7 @@
             p {
                 text-align: center;
                 font-size: calc($font-size-base * 2.25);
-                font-weight: 600;
+                font-weight: 500;
                 color: $white;
                 margin: 0;
             }

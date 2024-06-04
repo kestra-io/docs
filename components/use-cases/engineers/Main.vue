@@ -47,17 +47,16 @@
 
     :deep(.feature-img-left) {
         &::before {
-            background-size: 62% 100%;
-            z-index: 0;
+            background-size: 62% 100% !important;
+            z-index: 0 !important;
         }
     }
 
     :deep(.feature-img-right) {
         &::before {
-            background-size: 45% 100%;
-            right: -3%;
-            right: -3%;
-            z-index: 0;
+            background-size: 45% 100% !important;
+            right: -3% !important;
+            z-index: 0 !important;
         }
     }
 
