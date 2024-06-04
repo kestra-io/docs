@@ -6,7 +6,7 @@
                     <span>Kestra's Capabilities</span><br>
                     {{title}}
                 </h2>
-                <div class="row d-flex">
+                <div class="row d-flex justify-content-center">
                     <div class="col-12 col-md-6 col-lg-4 mb-4" v-for="item in dataOrchestration" v-bind:key="item.id">
                         <a class="page-item" :href="item.pageHref">
                             <img
@@ -44,6 +44,7 @@
 
     .container-fluid {
         color: var(--bs-white);
+        padding: 0;
 
         .container {
             padding: 4rem 0;
@@ -59,9 +60,9 @@
             font-style: normal;
             font-weight: 400;
             line-height: 4rem;
-            @include media-breakpoint-down(md) {
+            @include media-breakpoint-down(sm) {
                 font-size: 1.875rem;
-                line-height: unset;
+                line-height: 2.563rem;
             }
 
             @include media-breakpoint-down(lg) {
