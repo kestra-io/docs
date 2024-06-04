@@ -10,8 +10,6 @@
             description="Automate disaster recovery processes, secure your data, and ensure business continuity."
             imageSrc="/landing/usecases/disaster-recovery/header-hero.svg"
             imageAlt="Monitoring"
-            darkButtonText="Talk to Us"
-            dakButtonHref="docs/getting-started"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersMain
@@ -171,7 +169,7 @@
                 },
                 {
                   title: 'Automated Failover  and Restoration',
-                  img: '/landing/usecases/disaster-recovery/automated-failover.svg',
+                  img: '/landing/usecases/databases/quick-recovery.svg',
                   imgAlt: 'Automated Failover  and Restoration',
                   imgWidth: '604px',
                   imgHeight: '477px',

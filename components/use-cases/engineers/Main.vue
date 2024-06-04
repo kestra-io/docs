@@ -45,6 +45,22 @@
         }
     }
 
+    :deep(.feature-img-left) {
+        &::before {
+            background-size: 62% 100%;
+            z-index: 0;
+        }
+    }
+
+    :deep(.feature-img-right) {
+        &::before {
+            background-size: 45% 100%;
+            right: -3%;
+            right: -3%;
+            z-index: 0;
+        }
+    }
+
     :deep(.main) {
         div.row  {
             border-bottom: 1px solid #FFFFFF1A;
