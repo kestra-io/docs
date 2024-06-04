@@ -50,6 +50,15 @@
                                     </NuxtLink>
                                 </li>
                                 <li>
+                                    <NuxtLink class="dropdown-item" href="/enterprise" @click="globalClick(true)">
+                                        <Security />
+                                        <p>
+                                            <span>Enterprise Edition</span><br />
+                                            Security and Governance for Enterprise Needs
+                                        </p>
+                                    </NuxtLink>
+                                </li>
+                                <li>
                                     <NuxtLink class="dropdown-item" href="/cloud" @click="globalClick(true)">
                                         <CloudOutline />
                                         <p>
@@ -60,14 +69,6 @@
                                         </p>
                                     </NuxtLink>
                                 </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/enterprise" @click="globalClick(true)">
-                                        <Security />
-                                        <p>
-                                            <span>Enterprise Edition</span><br />
-                                            Security and Governance for Enterprise Needs
-                                        </p>
-                                    </NuxtLink>
                                 </li>
                                 <li>
                                     <NuxtLink
@@ -175,19 +176,6 @@
                                         <p>
                                             <span>CI/CD for Kestra Workflows</span><br/>
                                             Treat your workflow as code and embrace CI/CD practices
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                            </div>
-                            <div class="dropdown-column">
-                                <p class="column-caption">Industries</p>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/retail" @click="globalClick(true)">
-                                        <BasketOutline />
-                                        <p>
-                                            <span>Retail</span><br />
-                                            Elevate your Kestra use through our
-                                            partner ecosystem
                                         </p>
                                     </NuxtLink>
                                 </li>
