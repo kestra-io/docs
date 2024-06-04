@@ -9,8 +9,8 @@
                             {{description}}
                         </p>
                         <div class="cta">
-                            <NuxtLink :href="darkButtonHref" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in" v-if="darkButtonText">
-                                {{darkButtonText}}
+                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
+                                Talk to Us
                             </NuxtLink>
                             <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Get started
@@ -53,14 +53,6 @@
         type: String,
         required: true,
       },
-      darkButtonText: {
-        type: String,
-        required: false,
-      },
-      darkButtonHref: {
-        type: String,
-        required: false,
-      },
     },
   }
 </script>
@@ -98,7 +90,7 @@
         h1 {
             font-size: $font-size-4xl;
             margin-bottom: 16px;
-            font-weight: 500;
+            font-weight: 600;
 
             @include media-breakpoint-down(sm) {
                 font-size: 1.875rem;

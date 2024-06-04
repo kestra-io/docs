@@ -10,8 +10,6 @@
             description="Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
             imageSrc="/landing/usecases/provisioning-and-deployment/header-hero.svg"
             imageAlt="Provisioning and Deployment"
-            darkButtonText="Talk to Us"
-            dakButtonHref="docs/getting-started"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersMain
@@ -175,7 +173,7 @@
                 },
                 {
                   title: 'Configuration Management and Compliance',
-                  img: '/landing/usecases/provisioning-and-deployment/management-compliance.svg',
+                  img: '/landing/usecases/databases/quick-recovery.svg',
                   imgAlt: 'Configuration Management and Compliance',
                   imgWidth: '604px',
                   imgHeight: '477px',

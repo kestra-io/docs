@@ -10,8 +10,6 @@
             description="Automate, orchestrate, and Optimize Your Microservices."
             imageSrc="/landing/usecases/microservices-orchestration/header-hero.svg"
             imageAlt="Microservices"
-            darkButtonText="Talk to Us"
-            dakButtonHref="docs/getting-started"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersMain

@@ -9,9 +9,7 @@
             titleHtml="Databases  <br> Management"
             description="Automate  your database management tasks within the development pipeline using Kestra."
             imageSrc="/landing/usecases/databases/header-hero.svg"
-            imageAlt="Databases "
-            darkButtonText="Talk to Us"
-            dakButtonHref="docs/getting-started"
+            imageAlt="Databases"
         />
         <NuxtLazyHydrate when-visible>
             <UseCasesEngineersMain
