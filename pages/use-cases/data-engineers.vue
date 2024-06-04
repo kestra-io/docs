@@ -41,12 +41,6 @@
 </template>
 
 <script>
-    import FileCodeOutline from "vue-material-design-icons/FileCodeOutline.vue";
-    import ArrowDecisionAutoOutline from "vue-material-design-icons/ArrowDecisionAutoOutline.vue";
-    import ToyBrickOutline from "vue-material-design-icons/ToyBrickOutline.vue";
-    import Connection from "vue-material-design-icons/Connection.vue";
-    import OpenInApp from "vue-material-design-icons/OpenInApp.vue";
-    import CloudCheckOutline from "vue-material-design-icons/CloudCheckOutline.vue";
     import Section from "~/components/layout/Section.vue";
 
     export default {

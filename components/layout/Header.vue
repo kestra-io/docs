@@ -179,6 +179,19 @@
                                     </NuxtLink>
                                 </li>
                             </div>
+                            <div class="dropdown-column">
+                                <p class="column-caption">Industries</p>
+                                <li>
+                                    <NuxtLink class="dropdown-item" href="/use-cases/retail" @click="globalClick(true)">
+                                        <BasketOutline />
+                                        <p>
+                                            <span>Retail</span><br />
+                                            Elevate your Kestra use through our
+                                            partner ecosystem
+                                        </p>
+                                    </NuxtLink>
+                                </li>
+                            </div>
                         </ul>
                     </li>
                     <li class="nav-item">
