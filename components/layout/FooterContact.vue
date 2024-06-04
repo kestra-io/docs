@@ -12,12 +12,11 @@
                     v-if="darkButtonText"
                     :href="darkButtonHref"
                     class="btn btn-animated btn-dark-animated mt-2 me-sm-3 me-1"
-                    target="_blank"
                     :data-aos="animationType('zoom-in')"
                 >
                     {{darkButtonText}}
                 </NuxtLink>
-                <NuxtLink v-if="darkButtonHref" :href="purpleButtonHref"  class="btn btn-animated btn-purple-animated mt-2" target="_blank" :data-aos="animationType('zoom-in')">
+                <NuxtLink v-if="darkButtonHref" :href="purpleButtonHref"  class="btn btn-animated btn-purple-animated mt-2" :data-aos="animationType('zoom-in')">
                     {{purpleButtonText}}
                 </NuxtLink>
             </div>
