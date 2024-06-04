@@ -69,7 +69,6 @@
                                         </p>
                                     </NuxtLink>
                                 </li>
-                                </li>
                                 <li>
                                     <NuxtLink
                                         class="d-block d-sm-inline-block mn-sm-0 btn btn-animated btn-purple-animated w-100 submenu-btn"
