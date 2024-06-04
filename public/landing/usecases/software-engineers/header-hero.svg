@@ -5,7 +5,7 @@
 </g>
 <path d="M697.538 363.901L701.901 354.5L713.821 361.382L697.538 363.901Z" fill="#30AD9B"/>
 <g opacity="0.7" filter="url(#filter1_f_11125_8916)">
-<rect width="248.955" height="261.974" transform="matrix(-0.999351 -0.0360302 -0.0360302 0.999351 674.695 169.089)" fill="url(#paint0_linear_11125_8916)"/>
+<rect width="173.104" height="182.156" transform="matrix(-0.999351 -0.0360302 -0.0360302 0.999351 635.356 207.605)" fill="url(#paint0_linear_11125_8916)"/>
 </g>
 <path d="M369.121 455.191L150.076 328.258L374.777 191.342L592.319 321.261L369.121 455.191Z" stroke="#30AD9B" stroke-linejoin="round" stroke-dasharray="5.11 5.11"/>
 <g style="mix-blend-mode:overlay" filter="url(#filter2_f_11125_8916)">
@@ -326,10 +326,10 @@
 <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_11125_8916"/>
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_11125_8916" result="shape"/>
 </filter>
-<filter id="filter1_f_11125_8916" x="229.263" y="-27.0803" width="632.631" height="645.172" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter1_f_11125_8916" x="418.601" y="164.168" width="253.955" height="262.675" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="93.5996" result="effect1_foregroundBlur_11125_8916"/>
+<feGaussianBlur stdDeviation="18.6" result="effect1_foregroundBlur_11125_8916"/>
 </filter>
 <filter id="filter2_f_11125_8916" x="226.998" y="70.9339" width="196.282" height="196.282" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
@@ -706,7 +706,7 @@
 <feBlend mode="soft-light" in2="BackgroundImageFix" result="effect1_dropShadow_11125_8916"/>
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_11125_8916" result="shape"/>
 </filter>
-<linearGradient id="paint0_linear_11125_8916" x1="124.478" y1="0" x2="124.478" y2="261.974" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_11125_8916" x1="86.552" y1="0" x2="86.552" y2="182.156" gradientUnits="userSpaceOnUse">
 <stop stop-color="#6218FF" stop-opacity="0"/>
 <stop offset="1" stop-color="#6117FF"/>
 </linearGradient>
