@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-12 col-md-5 d-flex align-items-center">
                     <div class="schedule-demo">
-                        <h1>Connect with our Product <span>Specialists</span></h1>
+                        <h1>Connect with <br>our Product <span>Specialists</span></h1>
                         <p class="description"> Evaluate Kestra Enterprise, made for organizations seeking to secure production workloads with high-security standards and enterprise support</p>
                     </div>
                 </div>
