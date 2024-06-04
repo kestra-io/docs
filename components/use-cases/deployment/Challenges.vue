@@ -83,7 +83,7 @@
                 .title {
                     font-size: 3.125rem;
                     margin-bottom: $rem-1;
-                    font-weight: 600;
+                    font-weight: 500;
                     line-height: 3.438rem;
 
                     :deep(span), span {
