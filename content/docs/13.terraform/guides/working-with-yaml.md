@@ -1,6 +1,5 @@
 ---
 title: Working with Yaml
-icon: /docs/icons/terraform.svg
 ---
 
 
@@ -39,7 +38,7 @@ inputs:
 
 tasks:
   - id: t2
-    type: io.kestra.plugin.core.log.Log
+    type: io.kestra.core.tasks.log.Log
     message: first {{task.id}}
     level: TRACE
 EOT
@@ -58,7 +57,7 @@ inputs:
 
 tasks:
   - id: t2
-    type: io.kestra.plugin.core.log.Log
+    type: io.kestra.core.tasks.log.Log
     message: first {{task.id}}
     level: TRACE
 EOT
@@ -138,14 +137,14 @@ Create 2 yaml files:
 
 ```yaml
 id: t1
-type: io.kestra.plugin.core.log.Log
+type: io.kestra.core.tasks.log.Log
 message: first {{task.id}}
 level: TRACE
 ```
 
 ```yaml
 id: t2
-type: io.kestra.plugin.core.log.Log
+type: io.kestra.core.tasks.log.Log
 message: second {{task.id}}
 level: TRACE
 ```
