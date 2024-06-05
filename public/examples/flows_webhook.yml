@@ -1,4 +1,4 @@
-id: webhook
+id: webhook_example
 namespace: io.kestra.demo.flows
 
 description: |
@@ -13,7 +13,7 @@ tasks:
 
 
 triggers:
-  - id: webhook
+  - id: webhook_trigger
     type: io.kestra.plugin.core.trigger.Webhook
     # the required key to start this flow - might be passed as a secret
     key: 1KERKzRQZSMtLdMdNI7Nkr
