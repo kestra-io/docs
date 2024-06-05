@@ -4,9 +4,6 @@
         <NuxtLazyHydrate when-visible>
             <EnterpriseBusinessByUs/>
         </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <EnterpriseBusinessDetails/>
-        </NuxtLazyHydrate>
         <HomeTestimonials/>
     </div>
 </template>
