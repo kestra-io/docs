@@ -30,7 +30,7 @@
                             <ChevronDown />
                         </a>
                         <ul class="dropdown-menu product-menu">
-                            <div class="d-flex flex-column gap-3 py-lg-0 py-1">
+                            <div class="d-flex flex-column w-100 gap-3 py-lg-0 py-1">
                                 <li class="d-lg-none">
                                     <NuxtLink class="dropdown-item" href="/overview" @click="globalClick(true)">
                                         <ViewDashboardOutline />
@@ -461,16 +461,20 @@ export default {
             }
         },
         mouseOver(event) {
+          if (window.innerWidth > 991) {
             let element = this.mouseElement(event.target);
 
             element.classList.add('show');
             element.nextElementSibling.classList.add('show');
+          }
         },
         mouseOut(event) {
+          if (window.innerWidth > 991) {
             let element = this.mouseElement(event.target);
 
             element.classList.remove('show');
             element.nextElementSibling.classList.remove('show');
+          }
         },
         handleScroll() {
             if (this.transparentHeader) {
