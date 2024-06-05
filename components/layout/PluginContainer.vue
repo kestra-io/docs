@@ -2,45 +2,43 @@
     <div class="container-fluid bd-gutter bd-layout">
         <NavSideBar :type="type" :navigation="navigation"/>
         <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
-            <ContentRenderer :value="page">
-                <div class="bd-title">
-                    <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames"/>
-                    <h1 v-if="page && getPageTitle()" class="py-0 title">
-                        <NuxtImg
-                            v-if="getPageIcon()"
-                            :src="page.pluginType === 'definitions' ? getPageIcon() : page.icon"
-                            :alt="getPageTitle()"
-                            width="40px"
-                            height="40px"
-                            loading="lazy"
-                            format="webp"
-                            quality="80"
-                            densities="x1 x2"
-                            class="me-3 page-icon"
-                        />
-                        <span v-html="transformTitle(getPageTitle())"></span>
-                    </h1>
-                </div>
-                <NavToc :rate-helpful="true" :page="page && page" class="my-md-0 my-4 right-menu"/>
-
-                <div class="bd-content">
-                    <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions"
-                                            :version="page.version"/>
-                    <SchemaToHtml :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'">
-                        <template v-slot:markdown="{ content }">
-                        <MDC :value="content" tag="article" />
-                        </template>
-                    </SchemaToHtml>
-                    <ContentRendererMarkdown
-                        class="bd-markdown"
-                        :value="page"
-                        data-bs-spy="scroll"
-                        data-bs-target="#nav-toc"
-                        v-else
+            <div class="bd-title">
+                <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames"/>
+                <h1 v-if="page && getPageTitle()" class="py-0 title">
+                    <NuxtImg
+                        v-if="getPageIcon()"
+                        :src="page.pluginType === 'definitions' ? getPageIcon() : page.icon"
+                        :alt="getPageTitle()"
+                        width="40px"
+                        height="40px"
+                        loading="lazy"
+                        format="webp"
+                        quality="80"
+                        densities="x1 x2"
+                        class="me-3 page-icon"
                     />
-                    <PrevNext v-if="prevNext" :navigation="navigation"/>
-                </div>
-            </ContentRenderer>
+                    <span v-html="transformTitle(getPageTitle())"></span>
+                </h1>
+            </div>
+            <NavToc :rate-helpful="true" :page="page && page" class="my-md-0 my-4 right-menu"/>
+
+            <div class="bd-content">
+                <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions"
+                                        :version="page.version"/>
+                <SchemaToHtml :page="page" :getPageName="getPageName" v-if="page.pluginType === 'definitions'">
+                    <template v-slot:markdown="{ content }">
+                        <MDC :value="content" tag="article" />
+                    </template>
+                </SchemaToHtml>
+                <ContentRendererMarkdown
+                    class="bd-markdown"
+                    :value="page"
+                    data-bs-spy="scroll"
+                    data-bs-target="#nav-toc"
+                    v-else
+                />
+                <PrevNext v-if="prevNext" :navigation="navigation"/>
+            </div>
         </article>
     </div>
 </template>
@@ -191,7 +189,9 @@
             }
 
             h1 {
-                max-width: calc($spacer * 43.7);
+                @media only screen and (min-width: 1920px) {
+                    max-width: 71.25rem;
+                }
             }
         }
 
@@ -204,7 +204,9 @@
 
         .bd-content {
             margin: 0 auto;
-            max-width: calc($spacer * 43.7);
+            @media only screen and (min-width: 1920px) {
+                max-width:71.25rem
+            }
         }
 
         .title {
