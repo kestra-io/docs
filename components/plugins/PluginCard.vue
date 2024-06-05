@@ -1,16 +1,17 @@
 <template>
     <NuxtLink :href="`/plugins/${plugin.name}`">
-        <div class="plugin d-flex align-items-center gap-2 bg-dark-2">
+        <div class="plugin d-flex align-items-center gap-2 bg-dark-2" ref="root" data-bs-toogle="tooltip" data-bs-html="true" :title="tooltipContent">
             <div class="icon-content">
                 <img :src="`/icons/${plugin.group}.svg`" :alt="plugin.title">
             </div>
             <h6>
-                {{ plugin.title.length > 150 ? plugin.title.substring(0, 150) + '...' : plugin.title }}
+                {{ pluginTitle(plugin.title) }}
             </h6>
         </div>
     </NuxtLink>
 </template>
 <script setup>
+    const {$bootstrap} = useNuxtApp()
     const props = defineProps({
         plugin: {
             type: Object,
@@ -21,6 +22,50 @@
             default: undefined
         },
     });
+
+    const pluginTitle = (title) => {
+        const titleCase = title[0].toUpperCase() + title.slice(1);
+        return titleCase.length > 150 ? titleCase.substring(0, 150) + '...' : titleCase;
+    }
+
+    // const root = ref(null)
+    // const tooltipContent = ref("");
+    //
+    // onMounted(() => {
+    //     if (process.client) {
+    //         new $bootstrap.Tooltip(root.value);
+    //     }
+    // });
+    //
+    // onBeforeUnmount(() => {
+    //     if (process.client) {
+    //         const tooltip = $bootstrap.Tooltip.getInstance(root.value);
+    //         if (tooltip) {
+    //             tooltip.dispose();
+    //         }
+    //     }
+    // });
+
+    // if (props.plugin) {
+    //     const plugin = props.plugin;
+    //     if (plugin.tasks) {
+    //         tooltipContent.value += "<p>Tasks</p>"
+    //         tooltipContent.value += "<ul>";
+    //         plugin.tasks.forEach(task => {
+    //             tooltipContent.value += `<li>${task}</li>`
+    //         })
+    //         tooltipContent.value += "</ul>"
+    //     }
+    //     if (plugin.triggers) {
+    //
+    //     }
+    //     if (plugin.conditions) {
+    //
+    //     }
+    //     if (plugin.taskRunners) {
+    //
+    //     }
+    // }
 </script>
 
 
