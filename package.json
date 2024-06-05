@@ -55,6 +55,7 @@
     "nuxt": "^3.11.2",
     "nuxt-gtag": "^2.0.6",
     "nuxt-multi-cache": "^3.1.1",
+    "shiki": "^1.1.7",
     "remark-code-import": "file:./utils/remark-code-import",
     "remark-flexible-markers": "^1.2.1",
     "rss": "^1.2.2",
