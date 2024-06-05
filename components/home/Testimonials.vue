@@ -3,9 +3,9 @@
         <div class="container">
             <Section
                 subtitle-before="Loved"
-                subtitle="by the"
+                subtitle="by"
             >
-                <p class="subtitle" data-aos="fade-right">open-source community</p>
+                <p class="subtitle" data-aos="fade-right">our users</p>
                 <div  data-aos="fade-left">
                     <Carousel v-bind="settings" :breakpoints="breakpoints">
                         <Slide v-for="slide in testimonialData" :key="slide">
