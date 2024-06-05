@@ -28,44 +28,50 @@
         return titleCase.length > 150 ? titleCase.substring(0, 150) + '...' : titleCase;
     }
 
-    // const root = ref(null)
-    // const tooltipContent = ref("");
-    //
-    // onMounted(() => {
-    //     if (process.client) {
-    //         new $bootstrap.Tooltip(root.value);
-    //     }
-    // });
-    //
-    // onBeforeUnmount(() => {
-    //     if (process.client) {
-    //         const tooltip = $bootstrap.Tooltip.getInstance(root.value);
-    //         if (tooltip) {
-    //             tooltip.dispose();
-    //         }
-    //     }
-    // });
+    const root = ref(null)
+    const tooltipContent = ref("");
 
-    // if (props.plugin) {
-    //     const plugin = props.plugin;
-    //     if (plugin.tasks) {
-    //         tooltipContent.value += "<p>Tasks</p>"
-    //         tooltipContent.value += "<ul>";
-    //         plugin.tasks.forEach(task => {
-    //             tooltipContent.value += `<li>${task}</li>`
-    //         })
-    //         tooltipContent.value += "</ul>"
-    //     }
-    //     if (plugin.triggers) {
-    //
-    //     }
-    //     if (plugin.conditions) {
-    //
-    //     }
-    //     if (plugin.taskRunners) {
-    //
-    //     }
-    // }
+    onMounted(() => {
+        if (process.client) {
+            new $bootstrap.Tooltip(root.value);
+        }
+    });
+
+    onBeforeUnmount(() => {
+        if (process.client) {
+            const tooltip = $bootstrap.Tooltip.getInstance(root.value);
+            if (tooltip) {
+                tooltip.dispose();
+            }
+        }
+    });
+
+    const generateCategoryList = (categoryItems) => {
+        let list = ``;
+        categoryItems.forEach(item => {
+            list += `<li>${item}</li>`
+        });
+        return list;
+    };
+
+    const creatingTooltipContainer = (categoryItems, categoryName) => {
+      if (categoryItems && categoryItems.length > 0) {
+        tooltipContent.value += `
+            <p>${categoryName}</p>
+            <ul>
+              ${generateCategoryList(categoryItems)}
+            </ul>
+        `
+      }
+    };
+
+    if (props.plugin) {
+        const plugin = props.plugin;
+        creatingTooltipContainer(plugin.tasks, 'Tasks');
+        creatingTooltipContainer(plugin.triggers, 'Triggers');
+        creatingTooltipContainer(plugin.conditions, 'Conditions');
+        creatingTooltipContainer(plugin.taskRunners, 'TaskRunners');
+    }
 </script>
 
 
