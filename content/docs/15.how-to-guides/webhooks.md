@@ -25,11 +25,11 @@ The format of the Webhook URL follows
 where:
 - `your_hostname` is the domain or IP of your server, e.g. example.com
 - `namespace` is `io.kestra.demo.flows`
-- `flow_id` is `webhook`
+- `flow_id` is `webhook_example`
 - `key` is `1KERKzRQZSMtLdMdNI7Nkr`
 
 With this information, you can test your flow by running the following command in the terminal to trigger the flow:
 
 ```bash
-curl http://localhost:8080/api/v1/executions/webhook/io.kestra.demo.flows/webhook/1KERKzRQZSMtLdMdNI7Nkr
+curl http://localhost:8080/api/v1/executions/webhook/io.kestra.demo.flows/webhook_example/1KERKzRQZSMtLdMdNI7Nkr
 ```
