@@ -20,9 +20,9 @@
     :deep(thead) {
         border-bottom: none !important;
         th {
-            font-size: $font-size-lg;
+            font-size: $font-size-md;
             font-weight: 600;
-            line-height: 1.875rem;
+            line-height: 1.25rem;
             padding: calc($spacer * 0.5) $spacer $spacer;
             background-color: transparent;
             border-bottom: 4px solid #8B8B8D !important;
@@ -34,7 +34,7 @@
     :deep(tbody) {
         tr {
             td {
-                font-size: $h6-font-size;
+                font-size: $font-size-sm;
                 padding: calc($spacer * 1.5) $spacer $spacer !important;
                 font-weight: 400;
                 color: $white;
