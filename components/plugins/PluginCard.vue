@@ -68,10 +68,20 @@
       });
     }
 
-    const generateCategoryList = (categoryItems) => {
-        let list = ``;
+    function generateCategoryLink(item, categoryName) {
+      const title = pluginTitle(props.plugin.title).toLowerCase();
+
+      return `plugins/${title}/${categoryName.toLowerCase()}/${item}`
+    }
+
+    const generateCategoryList = (categoryItems, categoryName) => {
+      let list = ``;
         categoryItems.forEach(item => {
-            list += `<li>${item}</li>`
+            list += `
+              <li>
+                <a href="${generateCategoryLink(item, categoryName)}">${item}</a>
+              </li>
+            `
         });
         return list;
     };
@@ -81,7 +91,7 @@
             tooltipContent.value += `
             <p>${categoryName}</p>
             <ul>
-              ${generateCategoryList(categoryItems)}
+              ${generateCategoryList(categoryItems, categoryName)}
             </ul>
         `
         }
