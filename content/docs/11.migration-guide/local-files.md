@@ -4,8 +4,12 @@ icon: /docs/icons/migration-guide.svg
 release: 0.17.0
 ---
 
-`LocalFiles` and `outputDir` were depreciated in Kestra 0.17.0. Here is why:
 
+Migrate from `LocalFiles` and `outputDir` to `inputFiles` and `outputFiles`.
+
+## Overview
+
+The `LocalFiles` and `outputDir` are deprecated due to overlapping functionality that already exists using `inputFiles` and `outputFiles` on the `WorkingDirectory` and [script](https://kestra.io/docs/developer-guide/scripts) tasks.
 1. **outputDir**: the `{{ outputDir }}` expression has been deprecated due to overlapping functionality available through the `outputFiles` property which is more flexible.
 2. **LocalFiles**: the `LocalFiles` feature was initially introduced to allow injecting additional files into the script task's `WorkingDirectory`. However, this feature was confusing as there is nothing local about these files, and with the introduction of `inputFiles` to the `WorkingDirectory`, it became redundant. We recommend using the `inputFiles` property instead of `LocalFiles` to inject files into the script task's `WorkingDirectory`. The example below demonstrates how to do that:
 
