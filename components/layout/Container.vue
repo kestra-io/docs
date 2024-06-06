@@ -322,8 +322,8 @@
 
     :deep(table) {
         td, th {
-            background-color: $black-2;
-            border: $block-border;
+            background-color: transparent;
+            border-bottom: 1px solid #3D3D3F;
             color: $white;
 
             a {
