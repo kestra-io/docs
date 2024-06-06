@@ -10,14 +10,14 @@ Triggers can be scheduled, event-based or webhook-based.
 ## Trigger types
 Kestra supports both **scheduled** and **external** events.
 
-Kestra core provides three types of triggers:
+Kestra core provides four types of triggers:
 
-* [Schedule trigger](#schedule-trigger) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
-* [Flow trigger](#flow-triggerflow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
-* [Webhook trigger](#webhook-trigger) allows you to execute your flow based on an HTTP request emitted by a webhook.
+* [Schedule trigger](./schedule-trigger.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
+* [Flow trigger](./flow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
+* [Webhook trigger](./webhook-triggers.md) allows you to execute your flow based on an HTTP request emitted by a webhook.
 * [Realtime trigger](./realtime-triggers.md) allows you to execute your flow when events happen with millisecond latency.
 
-Many other triggers are available from the plugins, such as triggers based on file detection events, e.g. the [S3 trigger](/plugins/plugin-aws/triggers/s3/io.kestra.plugin.aws.s3.trigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/triggers/sqs/io.kestra.plugin.aws.sqs.trigger) or [Kafka trigger](/plugins/plugin-kafka/triggers/io.kestra.plugin.kafka.trigger).
+Many other triggers are available from the plugins, such as triggers based on file detection events, e.g. the [S3 trigger](/plugins/plugin-aws/triggers/s3/io.kestra.plugin.aws.s3.trigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/triggers/sqs/io.kestra.plugin.aws.sqs.realtimetrigger) or [Kafka trigger](/plugins/plugin-kafka/triggers/io.kestra.plugin.kafka.trigger).
 
 
 ### Trigger Common Properties
@@ -31,7 +31,6 @@ Following trigger properties can be set.
 |`description`| The description of the trigger.                                     |
 |`disabled`| Set it to `true` to disable execution of the trigger.               |
 |`workerGroup.key`| To execute this trigger on a specific Worker Group (EE) |
-
 
 ---
 
@@ -77,243 +76,6 @@ Available conditions include:
 - [FlowNamespaceCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.FlowNamespaceCondition)
 - [VariableCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExpressionCondition)
 
-
-## Schedule Trigger
-
-The Schedule trigger generates new executions on a regular cadence based on a Cron expression or custom scheduling conditions.
-
-```yaml
-type: "io.kestra.plugin.core.trigger.Schedule"
-```
-
-Kestra is able to trigger flows based on a Schedule (aka the time). If you need to wait for another system to be ready and cannot use any event mechanism, you can schedule one or more time the current flow.
-
-Kestra will optionally handle schedule [backfills](/docs/concepts/backfill) if any executions are missed.
-
-Check the [Schedule task](/plugins/core/triggers/io.kestra.plugin.core.trigger.Schedule) documentation for the list of the task properties and outputs.
-
-
-::collapse{title="Example"}
-
-> A schedule that runs every quarter of an hour.
-
-```yaml
-triggers:
-  - id: schedule
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "*/15 * * * *"
-```
-
-> A schedule that runs only the first monday of every month at 11 AM.
->
-```yaml
-triggers:
-  - id: schedule
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 11 * * 1"
-    conditions:
-      - type: io.kestra.plugin.core.condition.DayWeekInMonthCondition
-        date: "{{ trigger.date }}"
-        dayOfWeek: "MONDAY"
-        dayInMonth: "FIRST"
-```
-
-::alert{type="warning"}
-Schedules **cannot overlap**. This means that we **cannot have any concurrent schedules**. If the previous schedule is not ended when the next one must start, the scheduler will wait until the end of the previous one. The same applies during backfills.
-::
-
-::alert{type="info"}
-Most of the time, schedule execution will depend on the `trigger.date` (looking at files for today, SQL query with the schedule date in the where clause, ...). This works well but prevents you from executing your flow manually (since these variables are only available during the schedule).
-
-You can use this expression to make your **manual execution work**: `{{ trigger.date ?? execution.startDate | date("yyyy-MM-dd") }}`. It will use the current date if there is no schedule date making it possible to start the flow manually.
-::
-::
-
-### Schedule Conditions
-
-When the `cron` is not sufficient to determine the date you want to schedule your flow, you can use `conditions` to add additional conditions, (for example, only the first day of the month, only the weekend, ...).
-
-You **must** use the `{{ trigger.date }}` expression on the property `date` of the current schedule.
-
-This condition will be evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` will reflect the date **with** the conditions applied.
-
-The list of core conditions that can be used are:
-
- - [DateTimeBetweenCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.DateTimeBetweenCondition)
- - [DayWeekCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.DayWeekCondition)
- - [DayWeekInMonthCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.DayWeekInMonthCondition)
- - [NotCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.NotCondition)
- - [OrCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.OrCondition)
- - [WeekendCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.WeekendCondition)
-
-### Recover Missed Schedules
-
-If a schedule is missed, Kestra will automatically recover it by default. This means that if the Kestra server is down, the missed schedules will be executed as soon as the server is back up. However, this behavior is not always desirable, e.g. during a planned maintenance window. In Kestra 0.15 and higher, this behavior can be disabled by setting the `recoverMissedSchedules` configuration to `NONE`.
-
-Kestra 0.15 introduced a new configuration allowing you to choose whether you want to recover missed schedules or not:
-
-```yaml
-kestra:
-  plugins:
-    configurations:
-      - type: io.kestra.plugin.core.trigger.Schedule
-        values:
-          # available options: LAST | NONE | ALL -- default: ALL
-          recoverMissedSchedules: NONE
-```
-
-The `recoverMissedSchedules` configuration can be set to `ALL`, `NONE` or `LAST`:
-- `ALL`: Kestra will recover all missed schedules. This is the **default** value.
-- `NONE`: Kestra will not recover any missed schedules.
-- `LAST`: Kestra will recover only the last missed schedule for each flow.
-
-Note that this is a global configuration that will apply to all flows, unless other behavior is explicitly defined within the flow definition:
-
-```yaml
-triggers:
-  - id: schedule
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "*/15 * * * *"
-    recoverMissedSchedules: NONE
-```
-
-In this example, the `recoverMissedSchedules` is set to `NONE`, which means that Kestra will not recover any missed schedules for this specific flow regardless of the global configuration.
-
-
-## Flow Trigger
-
-Flow triggers allows you to trigger a flow after another flow execution, enabling event-driven patterns.
-
-```yaml
-type: "io.kestra.plugin.core.trigger.Flow"
-```
-
-Kestra is able to trigger one flow after another one. This allows the chaining of flows without the need to update the base flows. With this capacity, you can break responsibility between different flows to different teams.
-
-Check the [Flow trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Flow) documentation for the list of all properties.
-
-::collapse{title="Example"}
-
-This flow will be triggered after each successful execution of the flow `io.kestra.tests.trigger-flow` and forward the `uri` output of the `my-task` task.
-```yaml
-id: trigger-flow-listener
-namespace: io.kestra.tests
-revision: 1
-
-inputs:
-  - id: fromParent
-    type: STRING
-
-tasks:
-  - id: onlyNoInput
-    type: io.kestra.plugin.core.debug.Return
-    format: "v1: {{trigger.executionId}}"
-
-triggers:
-  - id: listenFlow
-    type: io.kestra.plugin.core.trigger.Flow
-    inputs:
-      fromParent: '{{ outputs.myTask.uri }}'
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-        namespace: io.kestra.tests
-        flowId: trigger-flow
-      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
-        in:
-          - SUCCESS
-```
-
-> This flow will be triggered after the successful execution of both flows `flow-a` and `flow-b` during the current day. When the conditions are met, the counter is reset and can be re-triggered during the same day. See [MultipleCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.MultipleCondition) for more details
-```yaml
-id: trigger-multiplecondition-listener
-namespace: io.kestra.tests
-
-tasks:
-  - id: onlyListener
-    type: io.kestra.plugin.core.debug.Return
-    format: "let's go "
-
-triggers:
-  - id: multipleListenFlow
-    type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - id: multiple
-        type: io.kestra.plugin.core.condition.MultipleCondition
-        window: P1D
-        windowAdvance: P0D
-        conditions:
-          flow-a:
-            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-            namespace: io.kestra.tests
-            flowId: trigger-multiplecondition-flow-a
-          flow-b:
-            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-            namespace: io.kestra.tests
-            flowId: trigger-multiplecondition-flow-b
-
-```
-::
-
-## Webhook Trigger
-
-Webhook triggers generates a unique URL that you can use to automatically create new executions based on events in another application such as GitHub or Amazon EventBridge.
-
-In order to use that URL, you have to add a secret `key` that will secure your webhook URL.
-
-
-```yaml
-type: "io.kestra.plugin.core.trigger.Webhook"
-```
-
-A Webhook trigger allows triggering a flow from a webhook URL.
-At trigger creation a key must be set that will be used on the URL that triggers the flow: `/api/v1/executions/webhook/{namespace}/{flowId}/{key}`. We advise to use a non-easy to find or remember key like a generated sequence of characters. Kestra accepts `GET`, `POST` and `PUT` requests on this URL The whole request body and headers will be available as variables.
-
-::collapse{title="Example"}
-> Add a trigger to the current flow:
-```yaml
-triggers:
-  - id: webhook
-    type: io.kestra.plugin.core.trigger.Webhook
-    key: 4wjtkzwVGBM9yKnjm3yv8r
-```
-> After the trigger is created, the key must be explicitly set in the webhook URL. You can launch the flow using the following URL
- `/api/v1/executions/webhook/{namespace}/{flowId}/4wjtkzwVGBM9yKnjm3yv8r`.
-::
-
-Check the [Webhook task](/plugins/core/triggers/io.kestra.plugin.core.trigger.Webhook) documentation for the list of the task properties and outputs.
-
-## Polling Triggers
-
-Polling triggers are a type of triggers that are provided by our plugins. They allow polling an external system for the presence of data. In case data is ready to be processed, a flow execution is started.
-
-Kestra provides polling triggers for a wide variety of external systems: databases, message brokers, ftp, ...
-
-Polling triggers will poll the external system at a fixed interval defined by the `interval` property, the triggered flow will have the outputs of the polling trigger available on the `trigger` variable.
-
-::collapse{title="Example"}
-For example, the following flow will be triggered when rows are available on the `my_table` PostgreSQL table, and when triggered, it will delete the rows (to avoid processing them again on the next poll) and log them.
-
-```yaml
-id: jdbc-trigger
-namespace: io.kestra.tests
-
-tasks:
-- id: update
-  type: io.kestra.plugin.jdbc.postgresql.Query
-  sql: DELETE * FROM my_table
-- id: log
-  type: io.kestra.plugin.core.log.Log
-  message: {{trigger.rows}}
-
-triggers:
-  - id: watch
-    type: io.kestra.plugin.jdbc.postgresql.Trigger
-    interval: "PT5M"
-    sql: "SELECT * FROM my_table"
-```
-::
-
-Polling triggers can be evaluated on a specific Worker Group (EE), thanks to the `workerGroup.key` property.
 
 ## Unlocking, enabling and disabling triggers
 
@@ -432,6 +194,6 @@ Let's break down the above example:
 
 ## Locked triggers
 
-[Flow](#flow-trigger), [Schedule](#schedule-trigger) and [Polling triggers](#polling-triggers) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
+[Flow](./flow-trigger.md), [Schedule](./schedule-trigger.md) and [Polling triggers](#polling-triggers) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
 
 To see a list of triggers and inspect their current status, go to the **Administration -> Triggers** section in the Kestra UI. From here, you can unlock a trigger if it is locked. Keep in mind that there is a risk or concurrent trigger evaluation or flow execution for this trigger if you unlock it manually.
