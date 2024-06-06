@@ -33,9 +33,23 @@
     const tooltipContent = ref("");
 
     onMounted(() => {
-        if (process.client) {
-            new $bootstrap.Tooltip(root.value);
-        }
+      if (process.client) {
+        new $bootstrap.Tooltip(root.value, {
+          trigger: 'manual',
+          boundary: 'window'
+        });
+
+        root.value.addEventListener('mouseenter', () => {
+          const tooltip = $bootstrap.Tooltip.getInstance(root.value);
+          if (tooltip) {
+            removeAllTooltips();
+            tooltip.show();
+            tooltip.tip.addEventListener('mouseleave', () => {
+              tooltip.hide();
+            });
+          }
+        });
+      }
     });
 
     onBeforeUnmount(() => {
@@ -46,6 +60,13 @@
             }
         }
     });
+
+    function removeAllTooltips() {
+      const tooltips = document.querySelectorAll('.tooltip');
+      tooltips.forEach(tooltip => {
+        tooltip.parentNode.removeChild(tooltip);
+      });
+    }
 
     const generateCategoryList = (categoryItems) => {
         let list = ``;

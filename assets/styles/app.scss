@@ -575,4 +575,10 @@ blockquote.blockquote {
     }
 }
 
+.tooltip-inner {
+    text-align: left !important;
+    max-height: 20rem;
+    overflow: auto;
+}
+
 @import "./docs";
