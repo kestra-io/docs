@@ -1,6 +1,7 @@
 <template>
     <NuxtLink :href="`/plugins/${plugin.name}`">
-        <div class="plugin d-flex align-items-center gap-2 bg-dark-2" ref="root" data-bs-toogle="tooltip" data-bs-html="true" :title="tooltipContent">
+        <div class="plugin d-flex align-items-center gap-2 bg-dark-2" ref="root" data-bs-toogle="tooltip"
+             data-bs-html="true" :title="tooltipContent" data-bs-custom-class="custom-tooltip" :data-bs-delay="{'hide': 500}">
             <div class="icon-content">
                 <img :src="`/icons/${plugin.group}.svg`" :alt="plugin.title">
             </div>
@@ -55,14 +56,14 @@
     };
 
     const creatingTooltipContainer = (categoryItems, categoryName) => {
-      if (categoryItems && categoryItems.length > 0) {
-        tooltipContent.value += `
+        if (categoryItems && categoryItems.length > 0) {
+            tooltipContent.value += `
             <p>${categoryName}</p>
             <ul>
               ${generateCategoryList(categoryItems)}
             </ul>
         `
-      }
+        }
     };
 
     if (props.plugin) {

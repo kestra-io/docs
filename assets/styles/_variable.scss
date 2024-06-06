@@ -205,3 +205,10 @@ $rem-10: 10rem;
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
 
+$tooltip-max-width: 250px;
+
+.tooltip-inner {
+    text-align: left !important;
+    max-height: 20rem;
+    overflow: auto;
+}
