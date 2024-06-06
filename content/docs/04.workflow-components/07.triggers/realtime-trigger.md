@@ -1,5 +1,5 @@
 ---
-title: Realtime Triggers
+title: Realtime Trigger
 icon: /docs/icons/flow.svg
 version: ">= 0.17.0"
 ---
