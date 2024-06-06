@@ -12,9 +12,10 @@ Kestra supports both **scheduled** and **external** events.
 
 Kestra core provides three types of triggers:
 
-* [Schedule trigger](./schedule-trigger.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
-* [Flow trigger](./flow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
-* [Webhook trigger](./webhook-trigger.md) allows you to execute your flow based on an HTTP request emitted by a webhook.
+* [Schedule trigger](#schedule-trigger) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
+* [Flow trigger](#flow-triggerflow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
+* [Webhook trigger](#webhook-trigger) allows you to execute your flow based on an HTTP request emitted by a webhook.
+* [Realtime trigger](./realtime-triggers.md) allows you to execute your flow when events happen with millisecond latency.
 
 Many other triggers are available from the plugins, such as triggers based on file detection events, e.g. the [S3 trigger](/plugins/plugin-aws/triggers/s3/io.kestra.plugin.aws.s3.trigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/triggers/sqs/io.kestra.plugin.aws.sqs.trigger) or [Kafka trigger](/plugins/plugin-kafka/triggers/io.kestra.plugin.kafka.trigger).
 
