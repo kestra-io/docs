@@ -62,7 +62,8 @@ To help you migrate your flows, here's a few examples of how you might update yo
 
 ### `outputDir`
 
-Before:
+#### Before
+Previously, you would specify `{{ outputDir }}` as you save the file.
 
 ```yaml
 id: getting_started_output
@@ -92,7 +93,8 @@ tasks:
       df.select(["brand", "price"]).write_csv("{{outputDir}}/products.csv")
 ```
 
-After:
+#### After
+Now you can remove this, and just specify the file name in the `outputFiles` properties.
 
 ```yaml
 id: getting_started_output
@@ -126,7 +128,8 @@ tasks:
 
 ### `LocalFiles`
 
-Before:
+#### Before
+Previously, you would add a separate `LocalFiles` task inside of the `WorkingDirectory` task to specify your inputs for later tasks.
 
 ```yaml
 id: pip
@@ -159,7 +162,9 @@ tasks:
         print(f"Kestra methods: {methods}")
 ```
 
-After:
+#### After
+
+In 0.17.0, you can specify your input files by using the `inputFiles` property from the `WorkingDirectory` task, removing the need for the `LocalFiles` task all together.
 
 ```yaml
 id: pip
