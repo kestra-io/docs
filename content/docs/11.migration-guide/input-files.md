@@ -1,5 +1,5 @@
 ---
-title: Depreciation of LocalFiles and outputDir
+title: Deprecation of LocalFiles and outputDir
 icon: /docs/icons/migration-guide.svg
 release: 0.17.0
 ---
