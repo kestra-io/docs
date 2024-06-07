@@ -42,18 +42,8 @@ micronaut:
 
 Make sure to check the [Micronaut HttpClient Configuration](https://docs.micronaut.io/latest/guide/configurationreference.html#io.micronaut.http.client.DefaultHttpClientConfiguration) for more information on how to configure the `DefaultHttpClientConfiguration` in your `config.yml` file.
 
-
-Some features within Kestra's embedded Code editor require network communication to work, such as the auto-update mechanism, querying and installing extensions, and telemetry. For these features to work properly in a proxy environment, you might need to adjust some firewall rules to allow communication with the Code editor. For example, Kestra's editor needs access to the `*.vscode-unpkg.net` domain when behind a proxy/firewall combination in order to load web extensions. If you are behind a firewall that needs to allow specific domains used by VS Code, make sure to allow communication to go through common hostnames such as `*.vscode-unpkg.net`. We recommend whitelisting the following URLs to make the VS Code editor work:
-- api.kestra.io
-- kestra-io.vscode-unpkg.net
-- proxzima.vscode-unpkg.net
-- az764295.vo.msecnd.net
-- marketplace.visualstudio.com.
-
 Another way to authenticate is to provide the `micronaut.http.client.proxy-authorization: Basic <base64-encoded username:password>` and
 `micronaut.http.services.*.proxy-authorization: Basic <base64-encoded username:password>` so that the password is not displayed in plain text in the config file.
-
-Check the [Network Connections in Visual Studio Code](https://code.visualstudio.com/docs/setup/network) for more information.
 
 ---
 
