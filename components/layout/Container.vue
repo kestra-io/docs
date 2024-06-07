@@ -164,15 +164,15 @@
 
     useContentHead(page);
 
-    const {description, title, icon} = page;
+    const {description, title, ogImage} = page;
     const {origin} = useRequestURL()
     useHead({
       meta: [
         {property: 'og:title', content: title},
         {property: 'og:description', content: description},
-        {property: 'og:image', content: '/icons/io.kestra.plugin.core.svg'},
+        {property: 'og:image', content: ogImage},
         {property: 'og:image:alt', content: title},
-        {property: 'og:url', content: icon},
+        {property: 'og:url', content: ogImage},
       ],
     })
 </script>
