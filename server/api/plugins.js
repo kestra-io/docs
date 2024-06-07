@@ -1,7 +1,6 @@
 import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 import url from "node:url";
 import {camelToKebabCase} from "~/utils/url.js";
-import {aw} from "../../.output/public/_nuxt/DDuKEP5a";
 
 function toNuxtContent(parsedMarkdown, pluginGroup) {
     return {
