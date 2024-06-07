@@ -35,7 +35,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
-                                    Embedded Visual Studio Code editor
+                                    Embedded Code editor
                                 </p>
                             </div>
                         </div>
