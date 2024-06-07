@@ -138,6 +138,9 @@ export default defineNuxtConfig({
     },
 
     nitro: {
+        experimental: {
+            wasm: true
+        },
         prerender: {
             routes: ['/rss.xml'],
         },
