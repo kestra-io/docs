@@ -121,7 +121,6 @@
             throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
         }
         page = pluginInformation.value;
-
         const updateObject = function(obj) {
             if (typeof obj !== 'object' || obj === null) {
                 return obj;
@@ -171,7 +170,7 @@
       meta: [
         {property: 'og:title', content: title},
         {property: 'og:description', content: description},
-        {property: 'og:image', content: icon},
+        {property: 'og:image', content: '/icons/io.kestra.plugin.core.svg'},
         {property: 'og:image:alt', content: title},
         {property: 'og:url', content: icon},
       ],

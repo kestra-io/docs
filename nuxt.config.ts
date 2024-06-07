@@ -35,11 +35,6 @@ export default defineNuxtConfig({
                 {rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml', title: 'Sitemap'},
                 {rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml', title: 'Blog Articles RSS'}
             ],
-            meta: [
-                {name: 'msapplication-TileColor', content: '#2c0059'},
-                {name: 'theme-color', content: '#2c0059'},
-                {property: 'og:image', content: '/og-image.png'}
-            ],
         }
     },
 
