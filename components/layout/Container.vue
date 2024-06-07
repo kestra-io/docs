@@ -166,13 +166,14 @@
 
     const {description, title, ogImage} = page;
     const {origin} = useRequestURL()
+    console.log(process.env.NUXT_PUBLIC_SITE_URL);
     useHead({
       meta: [
         {property: 'og:title', content: title},
         {property: 'og:description', content: description},
-        {property: 'og:image', content: ogImage},
+        {property: 'og:image', content: `https://kestra.io/${ogImage}`},
         {property: 'og:image:alt', content: title},
-        {property: 'og:url', content: ogImage},
+        {property: 'og:url', content: 'https://kestra.io'},
       ],
     })
 </script>
