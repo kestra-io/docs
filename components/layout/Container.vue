@@ -170,9 +170,9 @@
       meta: [
         {property: 'og:title', content: title},
         {property: 'og:description', content: description},
-        {property: 'og:image', content: `${ogImage}.svg`},
+        {property: 'og:image', content: `https://kestra.io/${ogImage}.svg`},
         {property: 'og:image:alt', content: title},
-        {property: 'og:url', content: `${ogImage}.svg`},
+        {property: 'og:url', content: 'https://kestra.io'},
       ],
     })
 </script>
