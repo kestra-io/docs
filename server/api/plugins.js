@@ -2,7 +2,7 @@ import {parseMarkdown} from '@nuxtjs/mdc/runtime'
 import url from "node:url";
 import {camelToKebabCase} from "~/utils/url.js";
 
-function toNuxtContent(parsedMarkdown) {
+function toNuxtContent(parsedMarkdown, pluginGroup) {
     return {
         body: {
             toc: parsedMarkdown.toc,
@@ -10,7 +10,8 @@ function toNuxtContent(parsedMarkdown) {
         },
         description: parsedMarkdown.data.description,
         title: parsedMarkdown.data.title,
-        icon: `data:image/svg+xml;base64,${parsedMarkdown.data.icon}` ?? null
+        icon: `data:image/svg+xml;base64,${parsedMarkdown.data.icon}` ?? null,
+        ogImage: `icons/${pluginGroup}`
     };
 }
 
@@ -73,20 +74,22 @@ export default defineEventHandler(async (event) => {
         const page = requestUrl.searchParams.get("page");
         const type = requestUrl.searchParams.get("type");
         const config = useRuntimeConfig();
+        const plugins = await $fetch(`${config.public.apiUrl}/plugins`);
+        const pluginGroup = plugins.find(plugin => plugin.name === page)?.group;
 
         if (type === 'definitions') {
             let pageData = await $fetch(`${config.public.apiUrl}/plugins/definitions/${page}`);
 
             const parsedMarkdown = await parseMarkdown(pageData.markdown);
 
-            return toNuxtContent(parsedMarkdown);
+            return toNuxtContent(parsedMarkdown, pluginGroup);
         }
         if (type === 'plugin') {
             let pageData = await $fetch(`${config.public.apiUrl}/plugins/${page}`);
 
             const parsedMarkdown = await parseMarkdown(pageData.body);
 
-            return toNuxtContent(parsedMarkdown);
+            return toNuxtContent(parsedMarkdown, pluginGroup);
         }
         if (type === 'navigation') {
             const plugins = await $fetch(`${config.public.apiUrl}/plugins`);
