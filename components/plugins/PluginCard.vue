@@ -1,7 +1,7 @@
 <template>
     <NuxtLink :href="`/plugins/${plugin.name}`">
         <div class="plugin d-flex align-items-center gap-2 bg-dark-2" ref="root" data-bs-toogle="tooltip"
-             data-bs-html="true" :title="tooltipContent" data-bs-custom-class="plugin-tooltip">
+             data-bs-html="true" data-bs-custom-class="plugin-tooltip" :data-bs-original-title="plugin.tooltipContent">
             <div class="icon-content">
                 <img :src="`/icons/${plugin.group}.svg`" :alt="plugin.title">
             </div>
@@ -29,8 +29,7 @@
         return titleCase.length > 150 ? titleCase.substring(0, 150) + '...' : titleCase;
     }
 
-    const root = ref(null)
-    const tooltipContent = ref("");
+    const root = ref(null);
 
     onMounted(() => {
       if (process.client) {
@@ -66,43 +65,6 @@
       tooltips.forEach(tooltip => {
         tooltip.parentNode.removeChild(tooltip);
       });
-    }
-
-    function generateCategoryLink(item, categoryName) {
-      const title = pluginTitle(props.plugin.title).toLowerCase();
-
-      return `plugins/${title}/${categoryName.toLowerCase()}/${item}`
-    }
-
-    const generateCategoryList = (categoryItems, categoryName) => {
-      let list = ``;
-        categoryItems.forEach(item => {
-            list += `
-              <li>
-                <a href="${generateCategoryLink(item, categoryName)}">${item}</a>
-              </li>
-            `
-        });
-        return list;
-    };
-
-    const creatingTooltipContainer = (categoryItems, categoryName) => {
-        if (categoryItems && categoryItems.length > 0) {
-            tooltipContent.value += `
-            <p>${categoryName}</p>
-            <ul>
-              ${generateCategoryList(categoryItems, categoryName)}
-            </ul>
-        `
-        }
-    };
-
-    if (props.plugin) {
-        const plugin = props.plugin;
-        creatingTooltipContainer(plugin.tasks, 'Tasks');
-        creatingTooltipContainer(plugin.triggers, 'Triggers');
-        creatingTooltipContainer(plugin.conditions, 'Conditions');
-        creatingTooltipContainer(plugin.taskRunners, 'TaskRunners');
     }
 </script>
 
