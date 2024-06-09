@@ -23,7 +23,7 @@ This post will dive into one of our customer's dedicated plugins. They combined 
 
 The company has a homegrown data quality platform in place that effectively centralizes all data metrics at the broader corporation level.
 
-Meanwhile, some teams have opted to use Soda for conducting analytics tests on Big Query tables. This decision however requires the aggregation of these test metrics into the internal data quality platform, which serves as the hub for all consolidated data. 
+Meanwhile, some teams have opted to use Soda for conducting analytics tests on Big Query tables. This decision however requires the aggregation of these test metrics into the internal data quality platform, which serves as the hub for all consolidated data.
 
 In order to seamlessly integrate Soda tests into this data quality platform, the team decided to build a custom plugin. Even though Kestra already provides a Soda plugin to run tests through the Soda Python library, they needed support for consuming and producing Kafka messages, which their data quality platform relies on to communicate with external services. On top of that, their custom plugin covers functionality to interact with their internal APIs via HTTP.
 
@@ -47,7 +47,7 @@ Once the Flow was designed in YAML, converting it to Java was straightforward, a
 
 ![java to yaml](/blogs/2023-12-11-custom-plugin/java_to_yaml.png)
 
-## Building components 
+## Building components
 
 There are two notable approaches here:
 
@@ -56,7 +56,7 @@ There are two notable approaches here:
 
 Choosing one or the other depends on the situation and the developer's expertise. Both provide straightforward ways to create custom modular components in your workflows.
 
-Alternatively, you could build custom Python scripts (especially using the [embedded VS Code Editor](https://kestra.io/docs/developer-guide/namespace-files)) and use them to build parametrized workflows. By designing a subflow with a Python script task, the team can encapsulate the business logic and expose only a few YAML parameters to execute the underlying script.
+Alternatively, you could build custom Python scripts (especially using the [embedded Code Editor](https://kestra.io/docs/developer-guide/namespace-files)) and use them to build parametrized workflows. By designing a subflow with a Python script task, the team can encapsulate the business logic and expose only a few YAML parameters to execute the underlying script.
 
 ![flow subflow](/blogs/2023-12-11-custom-plugin/flow_subflow.jpg)
 

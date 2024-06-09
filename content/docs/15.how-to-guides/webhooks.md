@@ -1,5 +1,5 @@
 ---
-title: How to Use Webhooks in Kestra
+title: Webhooks
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -11,7 +11,7 @@ Webhooks are HTTP requests that are triggered by an event. These are useful for 
 
 ## Using Webhooks in Kestra
 
-You can use webhooks to trigger an execution of your flow in Kestra. To do this, we can make a [trigger](/docs/workflow-components/triggers#webhook-trigger) with the type `io.kestra.core.models.triggers.types.Webhook`.
+You can use webhooks to trigger an execution of your flow in Kestra. To do this, we can make a [trigger](../04.workflow-components/07.triggers/index.md#webhook-trigger) with the type `io.kestra.plugin.core.trigger.Webhook`.
 
 Once we've done this, we can add a `key` property, which can be random as this will be used to trigger the webhook. In the example, the `key` is set to `1KERKzRQZSMtLdMdNI7Nkr` which is what we put at the end of our webhook URL to trigger it.
 
@@ -23,13 +23,13 @@ The format of the Webhook URL follows
 
 `https://{your_hostname}/api/v1/executions/webhook/{namespace}/{flow_id}/{key}`
 where:
-- `your_hostname` is the domain or IP of your server, e.g. example.com 
+- `your_hostname` is the domain or IP of your server, e.g. example.com
 - `namespace` is `io.kestra.demo.flows`
-- `flow_id` is `webhook`
+- `flow_id` is `webhook_example`
 - `key` is `1KERKzRQZSMtLdMdNI7Nkr`
 
 With this information, you can test your flow by running the following command in the terminal to trigger the flow:
 
 ```bash
-curl http://localhost:8080/api/v1/executions/webhook/io.kestra.demo.flows/webhook/1KERKzRQZSMtLdMdNI7Nkr
+curl http://localhost:8080/api/v1/executions/webhook/io.kestra.demo.flows/webhook_example/1KERKzRQZSMtLdMdNI7Nkr
 ```

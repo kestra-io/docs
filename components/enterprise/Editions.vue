@@ -19,7 +19,7 @@
                                 <li data-aos="fade-right" data-aos-delay="100">Powerful orchestration engine</li>
                                 <li data-aos="fade-right" data-aos-delay="150">Declarative workflows as code and from the UI</li>
                                 <li data-aos="fade-right" data-aos-delay="200">Event-driven automations</li>
-                                <li data-aos="fade-right" data-aos-delay="250">Embedded Visual Studio code editor</li>
+                                <li data-aos="fade-right" data-aos-delay="250">Embedded code editor</li>
                                 <li data-aos="fade-right" data-aos-delay="300">Embedded documentation</li>
                                 <li data-aos="fade-right" data-aos-delay="350">Live-updating topology view</li>
                                 <li data-aos="fade-right" data-aos-delay="400">Access to 400+ plugins</li>
@@ -330,7 +330,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Namespace-level management for secrets, variables and task confiiguration</td>
+                                    <td>Namespace-level management for secrets, variables and task configuration</td>
                                     <td></td>
                                     <td>
                                         <img src="/landing/enterprise/check.svg" alt="Check"/>

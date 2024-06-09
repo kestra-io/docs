@@ -1,13 +1,11 @@
 ---
 title: Worker Isolation
 icon: /docs/icons/admin.svg
+editions: ["EE"]
 ---
 
 How to configure worker isolation in Kestra.
 
-::alert{type="info"}
-This feature requires a [commercial license](https://kestra.io/pricing).
-::
 
 ## Java security
 
@@ -23,7 +21,7 @@ kestra:
       forbidden-paths:
         - /etc/
       authorized-class-prefix:
-        - io.kestra.core.tasks
+        - io.kestra.plugin.core
         - io.kestra.plugin.gcp
 ```
 
@@ -53,7 +51,7 @@ Currently, all the official Kestra plugins are safe to be whitelisted **except**
 
 
 ## Scripting isolation
-For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) and other script tasks in the core, we advise you to force `DOCKER` isolation and to configure global cluster `taskDefaults`:
+For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) and other script tasks in the core, we advise you to force `DOCKER` isolation and to configure global cluster `pluginDefaults`:
 
 ```yaml
 kestra:

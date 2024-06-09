@@ -1,5 +1,5 @@
 ---
-title: How to Use Python in Kestra
+title: Python
 icon: /docs/icons/python.svg
 ---
 
@@ -65,7 +65,7 @@ _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.ke
 
 Inside of your Python code, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the file you're trying to access. In this case, we want to access `downloads.txt`. More information on the formats you can use for this property can be found [here](/docs/developer-guide/scripts/output-directory).
 
-The examples below write a `.txt` file containing the number of downloads, similar the output we used earlier. We can then read the content of the file using the syntax `{{ outputs.{task_id}.outputFiles['{filename}'] }}`
+The example below write a `.txt` file containing the number of downloads, similar the output we used earlier. We can then read the content of the file using the syntax `{{ outputs.{task_id}.outputFiles['{filename}'] }}`
 
 ```yaml file=public/examples/scripts_output-files-python.yml
 ```

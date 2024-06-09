@@ -38,22 +38,6 @@
             </template>
 
             <div class="d-none d-lg-block pt-4 bd-social-list">
-                <div class="ms-4 mb-3" v-if="rateHelpful">
-                    <p class="mb-0">Was this page helpful?</p>
-                    <div class="d-flex" v-if="!showThankYou">
-                        <button class="bg-transparent border-0 text-white" @click="ratePage(true)">
-                            <ThumbUpOutline />
-                            Yes
-                        </button>
-                        <button class="bg-transparent border-0 text-white" @click="ratePage(false)">
-                            <ThumbDownOutline />
-                            No
-                        </button>
-                    </div>
-                    <div v-else>
-                        <span class="text-white">Thank you!</span>
-                    </div>
-                </div>
                 <CommonSocialsList :page="page" />
             </div>
         </div>
@@ -75,10 +59,6 @@
             page: {
                 type: Object,
                 required: true
-            },
-            rateHelpful: {
-                type: Boolean,
-                required: false
             },
         },
         data() {
@@ -103,12 +83,6 @@
             closeToc() {
                 this.tableOfContentsExpanded = false;
                 document.getElementById('tocContents').classList.remove("show");
-            },
-            ratePage(isHelpful) {
-              const result = posthog.capture('helpful', {"positive": isHelpful});
-              if (result) {
-                this.showThankYou = true;
-              }
             },
             handleScroll() {
               if (window.scrollY === 0) {

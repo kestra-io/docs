@@ -10,9 +10,11 @@ This page describes common naming conventions to keep your flows and tasks well-
 Kestra doesn't _enforce_ any naming convention. For example, if you want to use the URL-style naming including hyphens, Kestra supports that. However, keep in mind that IDs for flows, tasks, inputs, outputs and triggers must match the `"^[a-zA-Z0-9][a-zA-Z0-9_-]*"` regex pattern. This means that:
 
 - you can't use any special characters except for hyphens ``-`` and underscores ``_``
-- when using hyphens, you need to follow the format `"{{ outputs.task_id[your-custom-value].attribute }}"` when referencing that ID in output expressions; the square brackets `[]` in  `[your-custom-value]` is called the subscript notation and it enables using special characters such as spaces or hyphens in task identifiers or output attributes.
+- when using hyphens, you need to follow the format `"{{ outputs.task_id[your-custom-value].attribute }}"` when referencing that ID in output expressions; the square brackets `[]` in  `[your-custom-value]` is called the subscript notation and it enables using special characters such as spaces or hyphens (as in the `kebab-case` notation) in task identifiers or output attributes.
 
-We recommend using the snake case or camel case conventions shown below, as they allow you to avoid the subscript notation and make your flows easier to read.
+::alert{type="info"}
+We recommend using the `snake_case` or `camelCase` conventions over the `kebab-case`, as they allow you to avoid the subscript notation and make your flows easier to read.
+::
 
 ## Snake case
 
@@ -31,7 +33,7 @@ inputs:
 
 tasks:
   - id: fetch_products
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.api_endpoint }}"
 
   - id: transform_in_python
@@ -41,12 +43,14 @@ tasks:
     beforeCommands:
       - pip install polars
     warningOnStdErr: false
+    outputFiles:
+      - "products.csv"
     script: |
       import polars as pl
       data = {{outputs.fetch_products.body | jq('.products') | first}}
       df = pl.from_dicts(data)
       df.glimpse()
-      df.select(["brand", "price"]).write_csv("{{outputDir}}/products.csv")
+      df.select(["brand", "price"]).write_csv("products.csv")
 
   - id: sql_query
     type: io.kestra.plugin.jdbc.duckdb.Query
@@ -65,7 +69,7 @@ outputs:
 
 triggers:
   - id: daily_at_9am
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
 ```
 
@@ -84,7 +88,7 @@ inputs:
 
 tasks:
   - id: fetchProducts
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.apiEndpoint }}"
 
   - id: transformInPython
@@ -94,12 +98,14 @@ tasks:
     beforeCommands:
       - pip install polars
     warningOnStdErr: false
+    outputFiles:
+      - "products.csv"
     script: |
       import polars as pl
       data = {{outputs.fetchProducts.body | jq('.products') | first}}
       df = pl.from_dicts(data)
       df.glimpse()
-      df.select(["brand", "price"]).write_csv("{{outputDir}}/products.csv")
+      df.select(["brand", "price"]).write_csv("products.csv")
 
   - id: sqlQuery
     type: io.kestra.plugin.jdbc.duckdb.Query
@@ -118,7 +124,7 @@ outputs:
 
 triggers:
   - id: dailyAt9am
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
 ```
 

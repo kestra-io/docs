@@ -1,5 +1,5 @@
 ---
-title: How to Use the Slack Events API in Kestra
+title: Slack Events API
 icon: /docs/icons/slack.svg
 ---
 
@@ -47,17 +47,17 @@ namespace: prod
 
 tasks:
   - id: process_slack_event
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ trigger.body }}"
 
 triggers:
   - id: slack_event
-    type: io.kestra.core.models.triggers.types.Webhook
+    type: io.kestra.plugin.core.trigger.Webhook
     key: superStrongSecretKey42
 ```
 
 ::alert{type="warning"}
-Note that the **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](https://kestra.io/docs/concepts/secret) to store it securely.
+Note that the **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](../05.concepts/04.secret.md) to store it securely.
 ::
 
 Now, the only part left is to create a simple app that will listen to Slack events and will forward them to your Kestra flow via the Webhook trigger.
@@ -84,7 +84,7 @@ modal token set --token-id ak-zzzzzzzzz --token-secret as-zzzzzzzzz
 ```
 
 
-Now, create the following flow in Kestra and replace the token ID and token secret with the ones you got from Modal. You can use Kestra's [Secrets](https://kestra.io/docs/concepts/secret) to store those securely. Also, make sure to replace `your_kestra_host` with your Kestra host URL in the `slack.py` file.
+Now, create the following flow in Kestra and replace the token ID and token secret with the ones you got from Modal. You can use Kestra's [Secrets](../05.concepts/04.secret.md) to store those securely. Also, make sure to replace `your_kestra_host` with your Kestra host URL in the `slack.py` file.
 
 
 ```yaml
@@ -101,48 +101,52 @@ tasks:
       MODAL_TOKEN_SECRET: "{{ secret('MODAL_TOKEN_SECRET') }}"
     inputFiles:
       slack.py: |
-        from fastapi import FastAPI, Request
+        import logging
+        from fastapi import FastAPI, Request, BackgroundTasks
         from fastapi.responses import JSONResponse
         from modal import Image, Stub, asgi_app
+        import requests
 
         web_app = FastAPI()
         stub = Stub("slack_app")
 
         image = Image.debian_slim().pip_install("requests")
 
+        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger(__name__)
 
-        @web_app.post("/slack/events")
-        async def slack_events(request: Request):
-            import requests
-
-            json_data = await request.json()
-
-            # Slack URL Verification Challenge
-            if "challenge" in json_data:
-                return JSONResponse(content={"challenge": json_data["challenge"]})
-
+        def process_event(event):
             # TODO adjust the URL below to your Kestra Webhook URL
             url = "http://your_kestra_host:8080/api/v1/executions/webhook/prod/slack_events/superStrongSecretKey42"
-            headers = {
-                "Content-Type": "application/json",
-            }
+            headers = {"Content-Type": "application/json"}
+            response = requests.post(url, headers=headers, json=event)
+            logger.info(f"Forwarding event response: {response.status_code} - {response.text}")
 
-            response = requests.post(url, headers=headers, json=json_data)
-            print(response.text)
+        @web_app.post("/slack/events")
+        async def slack_events(request: Request, background_tasks: BackgroundTasks):
+            json_data = await request.json()
 
-            return JSONResponse(
-                content={"status": response.status_code, "response": response.text}
-            )
+            if "challenge" in json_data:
+                logger.info("Received Slack challenge event")
+                return JSONResponse(content={"challenge": json_data["challenge"]})
 
+            logger.info(f"Received event: {json_data}")
+
+            # Process the event asynchronously
+            background_tasks.add_task(process_event, json_data)
+
+            # Respond immediately to Slack
+            logger.info("Responding immediately to Slack")
+            return JSONResponse(content={"status": "ok"})
 
         @stub.function(image=image)
         @asgi_app()
         def fastapi_app():
-            return web_app
+            return web_app      
 ```
 
 ::alert{type="info"}
-If you don't like adding the Python script inline in the YAML file, you can enable `namespaceFiles` and add the Python code in the embedded VS Code Editor in a separate file e.g. called `slack.py` and reference it in the flow as shown below:
+If you don't like adding the Python script inline in the YAML file, you can enable `namespaceFiles` and add the Python code in the embedded Code Editor in a separate file e.g. called `slack.py` and reference it in the flow as shown below:
 ```yaml
 id: slack_app
 namespace: prod
@@ -225,7 +229,7 @@ namespace: prod
 
 tasks:
   - id: if_app_mention
-    type: io.kestra.core.tasks.flows.If
+    type: io.kestra.plugin.core.flow.If
     condition: "{{ trigger.body.event.type == 'app_mention' }}"
     then:
       - id: gpt
@@ -244,12 +248,12 @@ tasks:
           {"channel":"{{ trigger.body.event.channel }}","text":"{{ outputs.gpt.choices[0].message.content }}"}
     else:
       - id: other_events
-        type: io.kestra.core.tasks.log.Log
+        type: io.kestra.plugin.core.log.Log
         message: "{{ trigger.body }}"
 
 triggers:
   - id: slack_event
-    type: io.kestra.core.models.triggers.types.Webhook
+    type: io.kestra.plugin.core.trigger.Webhook
     key: superStrongSecretKey42
 ```
 

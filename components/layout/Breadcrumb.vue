@@ -62,6 +62,10 @@
             font-size: 0.55rem;
         }
 
+        @media only screen and (min-width: 1920px) {
+            max-width: 71.25rem;
+        }
+
         span {
             &:before {
                 content: '/';

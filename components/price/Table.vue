@@ -225,7 +225,7 @@ const tableData = ref([
     },
     {
         id: 32,
-        title: "Namespace-level management for secrets, variables and task confiiguration",
+        title: "Namespace-level management for secrets, variables and task configuration",
         isOpenSource: false,
         isEnterprise: true,
     },

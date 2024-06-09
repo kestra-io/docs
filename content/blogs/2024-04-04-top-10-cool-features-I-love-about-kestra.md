@@ -17,7 +17,7 @@ While Kestra provides all the features that any orchestration tool in the market
 
 ## 10. Output Preview
 
-Multiple orchestration tasks generate data, either by fetching it from external systems, or by performing actions on top of the existing data. These resultant data sets are stored internally by the orchestration engines. As part of the orchestration steps, these data sets are uploaded to file systems like S3 and Blob Storage, and used for further processing. But many times, you want to check the contents of the data sets being produced to ensure you are getting the desired results. The only choice you are left with is to download the data from the tool's internal storage onto your local machine. Soon, your local machine is cluttered with these regularly downloaded files. 
+Multiple orchestration tasks generate data, either by fetching it from external systems, or by performing actions on top of the existing data. These resultant data sets are stored internally by the orchestration engines. As part of the orchestration steps, these data sets are uploaded to file systems like S3 and Blob Storage, and used for further processing. But many times, you want to check the contents of the data sets being produced to ensure you are getting the desired results. The only choice you are left with is to download the data from the tool's internal storage onto your local machine. Soon, your local machine is cluttered with these regularly downloaded files.
 
 Kestra provides an extremely smart and easy to use feature of previewing these data sets. You can go to the Outputs tab, and the data sets that are downloaded to internal storage are available with Download and Preview option. The [Preview option](https://kestra.io/docs/workflow-components/outputs#outputs-preview) is one of my favorites giving me quick access to look at the output file contents. This is how the Preview of the data set looks like:
 
@@ -25,13 +25,13 @@ Kestra provides an extremely smart and easy to use feature of previewing these d
 
 ## 9. Editor
 
-Kestra comes with an in-built [VSCode editor](https://kestra.io/docs/getting-started/ui#editor). For any coding that you need to do, you need not go anywhere outside this tool. You have the well-equipped VS Code editor right there within Kestra itself. It also comes with the Kestra extension installed out of the box, and is flexible to also install any other extensions of your choice. This comes in very handy when you want to write scripts to be used within your orchestration flow.
+Kestra comes with an embedded [Code editor](https://kestra.io/docs/getting-started/ui#editor). For any coding that you need to do, you need not go anywhere outside this tool. You have the well-equipped Code editor right there within Kestra itself. It also comes with the Kestra extension installed out of the box, and is flexible to also install any other extensions of your choice. This comes in very handy when you want to write scripts to be used within your orchestration flow.
 
 ![vscode_editor](/blogs/2024-04-04-top-10-cool-features-I-love-about-kestra/vscode_editor.png)
 
 ## 8. Autocompletion
 
-When you become used to Kestra, you create the new flow and start typing out your tasks. While you know that you want to write the task pertaining to certain third-party plugins, it can become difficult to memorize the actual task type. But going to the plugin documentation every time just to get the task type is pretty time-consuming and exhausting. 
+When you become used to Kestra, you create the new flow and start typing out your tasks. While you know that you want to write the task pertaining to certain third-party plugins, it can become difficult to memorize the actual task type. But going to the plugin documentation every time just to get the task type is pretty time-consuming and exhausting.
 
 Kestra has an elegant solution to this problem. After typing out `task: `, you can start typing out any part of the type content, like the plugin name, and you will get auto-suggestions containing what you have typed. This has saved multiple minutes of my time on a daily basis.
 
@@ -52,17 +52,17 @@ tasks:
     executionId: "{{trigger.executionId}}"
 triggers:
   - id: watch-failed-flows
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
-      - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
+      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
         namespace: prod
         prefix: true
 ```
 
-You can read more about it on this [page](https://kestra.io/plugins/core/triggers/io.kestra.core.models.triggers.types.flow).
+You can read more about it on this [page](https://kestra.io/plugins/core/triggers/io.kestra.plugin.core.trigger.Flow).
 
 ## 6. Backfill
 
@@ -123,7 +123,7 @@ tasks:
   - id: "redshift_insert_into_products"
     type: "io.kestra.plugin.jdbc.redshift.Query"
     sql: |
-      insert into products values 
+      insert into products values
       (1,'streamline turn-key systems','Electronics','gomez'),
       (2,'morph viral applications','Household','wolfe'),
       (3,'expedite front-end schemas','Household','davis-martinez'),
@@ -134,7 +134,7 @@ tasks:
     sql: |
       select o.order_id, o.customer_name, o.customer_email, p.id as product_id, p.name as product_name, p.category as product_category, p.brand as product_brand, o.price, o.quantity, o.total from orders o join products p on o.product_id = p.id
     store: true
-taskDefaults:
+pluginDefaults:
   - type: "io.kestra.plugin.jdbc.redshift.Query"
     values:
       url: jdbc:redshift://<redshift-cluster>.eu-central-1.redshift.amazonaws.com:5439/dev

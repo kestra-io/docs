@@ -161,7 +161,7 @@ description: Clone SQLMesh project and run the project, and query with DuckDB
 
 tasks:
   - id: working_dir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     
       - id: git_clone
@@ -189,7 +189,7 @@ tasks:
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "30 6 * * *"
 ```
 
@@ -205,7 +205,7 @@ namespace: blueprint
 
 tasks:
   - id: dbt
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: cloneRepository
       type: io.kestra.plugin.git.Clone
@@ -232,7 +232,7 @@ tasks:
           target: dev
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "30 6 * * *"
 ```
 

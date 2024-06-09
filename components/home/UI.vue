@@ -6,7 +6,7 @@
                 subtitle-before="All-Inclusive"
                 subtitle="Dashboard"
             >
-                <div class="row mb-5">
+                <div class="row mb-5 align-items-center">
                     <div class="col-lg-8">
                         <NuxtImg width="100%" loading="lazy" format="webp" v-if="active === 1" src="/landing/home/ui-1.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
                         <NuxtImg width="100%" loading="lazy" format="webp" v-if="active === 2" src="/landing/home/ui-2.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
@@ -35,7 +35,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
-                                    Embedded Visual Studio Code editor
+                                    Embedded Code editor
                                 </p>
                             </div>
                         </div>

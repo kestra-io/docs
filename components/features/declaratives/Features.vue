@@ -24,7 +24,7 @@
                             <div style="margin-left: 20px;">
                                 <span>- id:</span> greeting<br />
                                 <div style="margin-left: 20px;">
-                                    <span>type:</span> io.kestra.core.tasks.log.Log<br />
+                                    <span>type:</span> io.kestra.plugin.core.log.Log<br />
                                     <span>message:</span> Hello from a declarative workflow!<br />
                                 </div>
                             </div>
@@ -32,7 +32,7 @@
                             <div style="margin-left: 20px;">
                                 <span>- id:</span> schedule<br />
                                 <div style="margin-left: 20px;">
-                                    <span>type:</span> io.kestra.core.models.triggers.types.Schedule<br />
+                                    <span>type:</span> io.kestra.plugin.core.trigger.Schedule<br />
                                     <span>cron:</span> "@hourly"
                                 </div>
                             </div>

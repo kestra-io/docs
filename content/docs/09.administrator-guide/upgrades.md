@@ -7,7 +7,7 @@ Kestra is a fast-evolving project. This section will guide you through the proce
 
 ## Where you can find the release changelog
 
-You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level eplanation of the changes, you can also check release [blog posts](https://kestra.io/blogs).
+You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level eplanation of the changes, you can also check release [blog posts](/blogs).
 
 ## How to identify breaking changes in a release
 
@@ -26,7 +26,7 @@ If you want to stick to a specific Kestra version, you can pin the [Docker image
 - `kestra/kestra:v0.15.0` includes the 0.15 release without any plugins
 - `kestra/kestra:v0.15.0-full` includes the 0.15 release with all plugins.
 
-Note that you can always create a custom image with your own plugins and package dependencies, as explained in the [Docker installation](/docs/installation/docker).
+Note that you can always create a custom image with your own plugins and package dependencies, as explained in the [Docker installation](../02.installation/02.docker.md).
 
 ## Migrating a Standalone Installation
 If you use a manual standalone installation with Java, you can download the Kestra binary for a specific version from the Assets menu of a specific [Release](https://github.com/kestra-io/kestra/releases) page. The image below shows how you can download the binary for the 0.14.1 release.
@@ -90,10 +90,10 @@ For all breaking changes, the migration guides are linked in the [release notes]
 ## How to stay informed about new releases
 
 You can get notified about new releases in the following ways:
-1. Subscribe to notifications in the `#announcements` channel in the [Slack](https://kestra.io/slack) community.
+1. Subscribe to notifications in the `#announcements` channel in the [Slack](/slack) community.
 2. Follow us on [Twitter](https://twitter.com/kestra_io)
 3. Follow us on [LinkedIn](https://www.linkedin.com/company/kestra/)
-4. Subscribe to the [Kestra newsletter](https://kestra.io/blogs)
+4. Subscribe to the [Kestra newsletter](/blogs)
 5. Subscribe to Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
 
 ![release_notification_github](/docs/administrator-guide/release_notifications_github.png)
@@ -153,7 +153,7 @@ Flyway then exit.
 ## Getting help
 
 If you have any questions about the upgrade process:
-- if you are a [Kestra Enterprise](https://kestra.io/enterprise) customer, please submit a [Support Ticket](https://support.kestra.io/)
-- reach out to us [via Slack](https://kestra.io/slack).
+- if you are a [Kestra Enterprise](/enterprise) customer, please submit a [Support Ticket](https://support.kestra.io/)
+- reach out to us [via Slack](/slack).
 
-We understand that upgrades can be difficult. If you need more help, [reach out to us](https://kestra.io/contact-us) and we'll help you with the migration based on your specific environment and use case.
+We understand that upgrades can be difficult. If you need more help, [reach out to us](/contact-us) and we'll help you with the migration based on your specific environment and use case.

@@ -182,7 +182,7 @@ Now create a new GitHub repository and copy both files to it. You should end up 
 And that's it! You're now ready to create a new Kestra flow.
 
 ### Writing and Running the Kestra Flow
-We've created a new Kestra flow that uses the `io.kestra.core.tasks.flows.WorkingDirectory` plugin.
+We've created a new Kestra flow that uses the `io.kestra.plugin.core.flow.WorkingDirectory` plugin.
 
 You'll want to use the `io.kestra.plugin.git.Clone` plugin to clone a GitHub repository locally (to Kestra). Just remember to specify your GitHub repo URL in this task.
 
@@ -194,7 +194,7 @@ namespace: dev
 
 tasks:
   - id: workingDirectory
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: cloneRepository
       type: io.kestra.plugin.git.Clone
@@ -248,9 +248,9 @@ To start using it, click on the `Editor` tab in the sidebar navigation, and choo
 
 ![Image 11 - Kestra editor tab](/blogs/2023-11-20-advanced-python-scripts/11.png)
 
-After a couple of seconds of initializations, you'll be presented with a familiar-looking interface - well, at least if you've used [Visual Studio Code](https://levelup.gitconnected.com/kestra-visual-studio-code-extension-your-favourite-data-orchestration-platform-just-got-better-ba87c35fe678) before:
+After a couple of seconds of initializations, you'll be presented with a familiar-looking interface:
 
-![Image 12 - Contents of the embedded VSCode editor](/blogs/2023-11-20-advanced-python-scripts/12.png)
+![Image 12 - Contents of the embedded Code editor](/blogs/2023-11-20-advanced-python-scripts/12.png)
 
 The contents of the `_flows` folder are a topic to discuss some other time, so leave it untouched. Everything you do Python-wise will have to be stored in a new folder named, let's say `scripts`.
 
@@ -282,7 +282,7 @@ namespace: dev
 
 tasks:
   - id: workingDirectory
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: pythonScript
         type: io.kestra.plugin.scripts.python.Script

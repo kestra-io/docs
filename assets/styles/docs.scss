@@ -213,10 +213,22 @@ $bd-gutter-x: 3rem;
 
 
     .video-container {
-        padding-top: 56.25%;
         position: relative;
+        padding-top: 35.25%;
+        background-color: $black-2;
+        height: 28.351rem;
+        border-radius: calc($spacer / 2);
+        border: 1px solid $black-3;
+        @media only screen and (max-width: 1919px) {
+            padding-top: 56.25%;
+            height: auto;
+            background-color: transparent;
+        }
 
         iframe {
+            margin: auto;
+            max-width: 43.7rem;
+            max-height: 24.351rem;
             position: absolute;
             top: 0;
             left: 0;

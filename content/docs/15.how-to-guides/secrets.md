@@ -1,5 +1,5 @@
 ---
-title: How to Use Secrets in Kestra
+title: Secrets
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -7,7 +7,9 @@ How you can use secrets in various Kestra use cases.
 
 ## What are Secrets
 
-Secrets are sensitive information that you do not want to reveal to the world. This could be your passwords, access keys, tokens, or even personal information like SSN number. For a detailed overview of sercets, see the [Secrets](/docs/concepts/secrets) documentation page.
+Secrets are sensitive information that you do not want to reveal to the world. This could be your passwords, access keys, tokens, or even personal information like SSN number. For a detailed overview of sercets, see the [Secrets](../05.concepts/04.secret.md) documentation page. Through this guide, we'll show you how to add secrets to your Kestra server by providing a `.env` file to the server.
+
+If you're looking for a much easier experience for managing secrets directly in the Kestra UI, you should check out the [Enterprise Edition](/enterprise) where you can manage secrets by namespaces seamlessly without needing to touch the server configuration.
 
 ## Using Secrets in Kestra
 

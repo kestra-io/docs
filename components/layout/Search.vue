@@ -13,6 +13,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="facets overflow-x-auto overflow-y-hidden bg-dark-2 p-0">
+                        <div class="facet" :class="{'facet-active': selectedFacet === undefined}" @click="() => selectFacet(undefined)">
+                            <span>All</span>
+                            <span>({{ allSum }})</span>
+                        </div>
+                        <div class="facet" v-for="(result, key, index) in searchFacets" @click="() => selectFacet(key)" :class="{'facet-active': selectedFacet === key}" :key="index">
+                            <span>{{key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()}}</span>
+                            <span>({{ result }})</span>
+                        </div>
+                    </div>
                     <div v-if="!loading">
                         <div class="row" v-if="searchResults && searchResults.length === 0">
                             <div class="col-12 not-found-content d-flex flex-column justify-content-center bg-dark-2">
@@ -67,16 +77,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="facets overflow-x-auto overflow-y-hidden bg-dark-2 p-0">
-                        <div class="facet" :class="{'facet-active': selectedFacet === undefined}" @click="() => selectFacet(undefined)">
-                            <span>All</span>
-                            <span>({{ allSum }})</span>
-                        </div>
-                        <div class="facet" v-for="(result, key, index) in searchFacets" @click="() => selectFacet(key)" :class="{'facet-active': selectedFacet === key}" :key="index">
-                            <span>{{key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()}}</span>
-                            <span>({{ result }})</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -129,6 +129,7 @@
         },
         methods: {
             focusSearch() {
+                document.querySelector('#search-input').value = '';
                 document.querySelector('#search-input').focus();
                 this.search();
             },

@@ -1,13 +1,10 @@
 ---
 title: Kestra EE CLI
 icon: /docs/icons/admin.svg
+editions: ["EE"]
 ---
 
 How to interact with Kestra Enterprise Edition using the CLI.
-
-::alert{type="info"}
-This feature requires a [commercial license](https://kestra.io/pricing).
-::
 
 ## Authentication
 

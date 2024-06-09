@@ -121,7 +121,16 @@
             width: 100%;
             color: $white;
             @include media-breakpoint-down(lg) {
-                font-size: $font-size-sm
+                background-color: $black-3;
+                font-size: $font-size-sm;
+                border-radius: 0.5rem;
+                border: 1px solid $black-6;
+
+                :deep(.material-design-icon__svg) {
+                    path {
+                        color: $white;
+                    }
+                }
             }
         }
 

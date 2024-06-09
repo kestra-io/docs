@@ -1,5 +1,6 @@
 ---
 title: Working with Yaml
+icon: /docs/icons/terraform.svg
 ---
 
 
@@ -32,13 +33,13 @@ resource "kestra_flow" "example" {
   flow_id = "my-flow"
   content = <<EOT
 inputs:
-  - id: my-value
+  - name: my-value
     type: STRING
     required: true
 
 tasks:
   - id: t2
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: first {{task.id}}
     level: TRACE
 EOT
@@ -51,13 +52,13 @@ Better will be to use a [file function](https://www.terraform.io/docs/language/f
 
 ```yaml
 inputs:
-  - id: my-value
+  - name: my-value
     type: STRING
     required: true
 
 tasks:
   - id: t2
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: first {{task.id}}
     level: TRACE
 EOT
@@ -137,14 +138,14 @@ Create 2 yaml files:
 
 ```yaml
 id: t1
-type: io.kestra.core.tasks.log.Log
+type: io.kestra.plugin.core.log.Log
 message: first {{task.id}}
 level: TRACE
 ```
 
 ```yaml
 id: t2
-type: io.kestra.core.tasks.log.Log
+type: io.kestra.plugin.core.log.Log
 message: second {{task.id}}
 level: TRACE
 ```

@@ -31,8 +31,7 @@
                                         the UI</span>
                                 </li>
                                 <li data-aos="fade-right" data-aos-delay="100"><span>Event-driven automations</span></li>
-                                <li data-aos="fade-right" data-aos-delay="150"><span>Embedded Visual Studio code
-                                        editor</span></li>
+                                <li data-aos="fade-right" data-aos-delay="150"><span>Embedded code editor</span></li>
                                 <li data-aos="fade-right" data-aos-delay="200"><span>Embedded documentation</span></li>
                                 <li data-aos="fade-right" data-aos-delay="250"><span>Live-updating topology view</span></li>
                                 <li data-aos="fade-right" data-aos-delay="300"><span>Access to 400+ plugins</span></li>
@@ -71,7 +70,6 @@
                                     <li data-aos="fade-left" data-aos-delay="400"><span>RBAC</span></li>
                                     <li data-aos="fade-left" data-aos-delay="400"><span>SSO</span></li>
                                     <li data-aos="fade-left" data-aos-delay="400"><span>Secrets Manager</span></li>
-                                    <li data-aos="fade-left" data-aos-delay="400"><span>Encryption</span></li>
                                 </ul>
                                 <ul>
                                     <p class="category-title">Governance</p>

@@ -1,5 +1,5 @@
 ---
-title: How to Use Multiple Condition Listener in Kestra
+title: Multiple Condition Listener
 icon: /docs/icons/tutorial.svg
 ---
 
