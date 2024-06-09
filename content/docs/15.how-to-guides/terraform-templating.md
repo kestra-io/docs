@@ -164,6 +164,8 @@ variable "late_maximum_delay" {
 
 ```yaml
 tasks:
+# Here we leverage the Terraform templating capabilities to generate the tasks
+# Using jinja-like syntax, we can loop over the list of connections and generate tasks for each of them
 %{ for connection in airbyte-connections ~}
 
   - id: "trigger_${connection.name}"
@@ -227,9 +229,9 @@ It is now easy to instantiate the module in your `main.tf` file, and to expose o
 - `max_sync_duration`: the maximum duration to wait for logs
 - `airbyte_url`: the Airbyte URL of the instance
 - `cron_expression`: the cron expression to trigger the flow
-- `late_maximum_delay`: the maximum delay to wait for the flow to start, in case of missed schedul
+- `late_maximum_delay`: the maximum delay to wait for the flow to start, in case of missed schedules (backfill)
 
-## Sublfow example: easily query and display results for a give Postgres database
+## Sublfow example: query and display results for a given Postgres database
 
 Subflows are a way to encapsulate logic and make it reusable across your codebase.
 
@@ -263,37 +265,53 @@ tasks:
       {%- endfor -%}
       \n
     {% endfor %}"
+
+# To make it easier to use the results in another flow
+# we expose the query result by using `outputs`
+outputs:
+- id: query_result
+  value: "{{ outputs.query_data.rows }}"
+  type: JSON
 ```
 
 You can either execute this sublow as is, or use it in another flow to avoid repeating the same logic.
 
 Executing the subflow will prompt you to enter the SQL query you want to execute :
 
-![Subflow execution](content/docs/15.how-to-guides/assets/execute_sublow_query_my_postgres.png)
+![Subflow execution](/docs/terraform-templating-guide/01-execute_sublow_query_my_postgres.png)
 
 ## Using the subflow in a flow
 
 ```yaml
   - id: query_last_job
-    type: io.kestra.core.tasks.flows.Flow
+    type: io.kestra.core.tasks.flows.Subflow
     namespace: prod.subflows
     flowId: query_my_postgres_database
     inputs:
       sqlQuery: "SELECT * FROM public.jobs ORDER BY created_at desc limit 1"
     wait: true
     transmitFailed: true
+
+  - id: use_result
+    type: io.kestra.core.tasks.debugs.Return
+    # Use the query result from the subflow
+    format: "{{ outputs.query_last_job.outputs.query_result }}"
 ```
 
 1. Connection details are stored in the subflow, and only the SQL query is exposed to the user.
 1. Subflow natively displays results in logs for easy debugging.
+1. Outputs of the subflow can be used in the parent flow by using `outputs.query_data.rows` in the `show-result` task.
 
 > Note: `wait: true` will wait for the subflow to finish before continuing the flow execution. `transmitFailed: true` will transmit the failed status of the subflow to the parent flow.
 
+Parent flow logs will display tasks from subflow directly:
+![Subflow execution from parent flow](/docs/terraform-templating-guide/02-execute_sublow_from_parent_flow.png)
+
 ## Subflows vs Terraform templating
 
-Subflows are a way to encapsulate logic and make it reusable across your codebase. However, they are not meant to be used for templating purposes.
+Subflows hide unnecessary details to their users, abstracting connection details, logging and such for a given set of tasks.
 
-Terraform templating is a way to define flows in a more modular way, and to expose only the variables that are meant to be changed.
+Modules helps you define logic of the tasks to be executed, and expose only the variables that are meant to be changed.
 
 ## Conclusion
 
