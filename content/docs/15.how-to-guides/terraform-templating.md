@@ -78,7 +78,7 @@ resource "kestra_flow" "airbyte_sync" {
       description         = var.description
       airbyte-url         = var.airbyte_url
       airbyte-connections = var.airbyte_connections
-      MAX_DURATION        = var.max_sync_duration
+      max-duration        = var.max_sync_duration
       late-maximum-delay  = var.late_maximum_delay
       cron-expression     = var.cron_expression
     }),
@@ -183,8 +183,8 @@ tasks:
       type: constant
       interval: PT1M
       maxAttempt: 5
-    %{ if length(MAX_DURATION) > 0}
-    maxDuration: "${MAX_DURATION}"
+    %{ if length(max-duration) > 0}
+    maxDuration: "${max-duration}"
     %{ endif }
 %{ endfor ~}
 
@@ -218,6 +218,76 @@ module "stripe_events_incremental" {
   late_maximum_delay  = "PT1H"
 }
 ```
+
+It is now easy to instantiate the module in your `main.tf` file, and to expose only the variables that are meant to be changed:
+- `flow_id`: the flow id
+- `namespace`: the namespace to save the flow in
+- `description`: the description
+- `airbyte_connections`: the list of Airbyte connections to trigger in a linear order
+- `max_sync_duration`: the maximum duration to wait for logs
+- `airbyte_url`: the Airbyte URL of the instance
+- `cron_expression`: the cron expression to trigger the flow
+- `late_maximum_delay`: the maximum delay to wait for the flow to start, in case of missed schedul
+
+## Sublfow example: easily query and display results for a give Postgres database
+
+Subflows are a way to encapsulate logic and make it reusable across your codebase.
+
+Here is an example of a subflow that will query a Cloud SQL instance:
+
+```yaml
+id: query_my_postgres_database
+namespace: prod.subflows
+description: "Query Postgres database and display results in logs"
+
+inputs:
+- id: sqlQuery
+  type: STRING
+  defaults: "SELECT * FROM public.jobs ORDER BY created_at desc limit 1" # SQL query example
+
+tasks:
+- id: query_data
+  type: io.kestra.plugin.jdbc.postgresql.Query
+  url: jdbc:postgresql://MY_HOST/MY_DATABASE
+  username: MY_USER
+  password: "{{ secrets.get('my-postgres-password') }}"
+  sql: "{{ inputs.sqlQuery }}"
+  fetch: true
+
+- id: show-result
+  type: io.kestra.core.tasks.log.Log
+  message: |
+    {% for row in outputs.query_data.rows %}
+      {%- for key in row.keySet() -%}
+        {{key}} : {{row.get(key)}} |
+      {%- endfor -%}
+      \n
+    {% endfor %}"
+```
+
+You can either execute this sublow as is, or use it in another flow to avoid repeating the same logic.
+
+Executing the subflow will prompt you to enter the SQL query you want to execute :
+
+![Subflow execution](content/docs/15.how-to-guides/assets/execute_sublow_query_my_postgres.png)
+
+## Using the subflow in a flow
+
+```yaml
+  - id: query_last_job
+    type: io.kestra.core.tasks.flows.Flow
+    namespace: prod.subflows
+    flowId: query_my_postgres_database
+    inputs:
+      sqlQuery: "SELECT * FROM public.jobs ORDER BY created_at desc limit 1"
+    wait: true
+    transmitFailed: true
+```
+
+1. Connection details are stored in the subflow, and only the SQL query is exposed to the user.
+1. Subflow natively displays results in logs for easy debugging.
+
+> Note: `wait: true` will wait for the subflow to finish before continuing the flow execution. `transmitFailed: true` will transmit the failed status of the subflow to the parent flow.
 
 ## Subflows vs Terraform templating
 
