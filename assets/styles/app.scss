@@ -574,5 +574,27 @@ blockquote.blockquote {
         display: none;
     }
 }
+.plugin-tooltip {
+    .tooltip-inner {
+        text-align: left !important;
+        max-height: 20rem;
+        overflow: auto;
+        background-color: var(--bs-body-color);
+
+        &::-webkit-scrollbar {
+            width: 2px;
+            height: 2px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: var(--card-bg);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--bs-primary);
+            border-radius: 0px;
+        }
+    }
+}
 
 @import "./docs";
