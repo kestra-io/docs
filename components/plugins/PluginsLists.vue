@@ -82,6 +82,11 @@
             allTriggers = [...allTriggers, ...(plugin.triggers ?? [])];
             allConditions = [...allConditions, ...(plugin.conditions ?? [])];
             allTaskRunners = [...allTaskRunners, ...(plugin.taskRunners ?? [])];
+            plugin.tooltipContent = '',
+            creatingTooltipContainer(plugin, plugin.tasks, 'Tasks');
+            creatingTooltipContainer(plugin, plugin.triggers, 'Triggers');
+            creatingTooltipContainer(plugin, plugin.conditions, 'Conditions');
+            creatingTooltipContainer(plugin, plugin.taskRunners, 'TaskRunners');
         });
 
         totalPlugins.value = (new Set(allTasks)).size +
@@ -93,6 +98,33 @@
     if(props.categories) {
         categories.value = ['All Categories', ...props.categories];
     }
+
+    function generateCategoryLink(title, item, categoryName) {
+      return `plugins/${title}/${categoryName.toLowerCase()}/${item}`
+    }
+
+    function generateCategoryList (plugin, categoryItems, categoryName) {
+      let list = ``;
+      categoryItems.forEach(item => {
+        list += `
+              <li>
+                <a href="${generateCategoryLink(plugin.title, item, categoryName)}">${item}</a>
+              </li>
+            `
+      });
+      return list;
+    };
+
+    function creatingTooltipContainer (plugin, categoryItems, categoryName) {
+      if (categoryItems && categoryItems.length > 0) {
+        plugin.tooltipContent += `
+            <p>${categoryName}</p>
+            <ul>
+              ${generateCategoryList(plugin, categoryItems, categoryName)}
+            </ul>
+        `
+      }
+    };
 
     const setActiveCategory = (category) => {
         activeCategory.value = category
