@@ -164,4 +164,100 @@ triggers:
 
 When any message is published into the `logs` Pub/Sub topic, this flow will get triggered immediately.
 
+## Azure Event Hubs
+
+For this, we will create an Event Hub and a container for checkpoint storage. For this,
+
+1. Go to [Event Hubs](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.EventHub%2Fnamespaces) in the Azure portal.
+2. Click on "Create". We will be creating a Event Hubs namespace.
+3. On the Create Namespace page, choose an appropriate Subscription and Resource Group.
+4. Put an appropriate Namespace name, Location, Pricing tier and Throughput units.
+5. Click on "Review + Create". Once the validation is successful, click on "Create".
+6. Once the Event Hub namespace is created, click on the namespace.
+7. Once on that particular namespace's page, click on "+ Event Hub" button to create an Event Hub.
+8. Put an appropriate Name for the Event Hub. You can change the remaining settings as per your requirements.
+9. Click on "Review + Create". Once the validation is successful, click on "Create".
+10. On the particular Event Hub namespace page, you can now see the newly created Event Hub.
+11. On the namespace page, click on "Shared access policies" from the left menu bar.
+12. Click on the "RootManageSharedAccessKey".
+13. In the popup page that appears, you can copy the "Connection string–primary key" to be used later in the Kestra flow. With this, the Event Hub is created.
+
+![event_hubs_create_namespace_1](/docs/how-to-guides/realtime-triggers/event_hubs_create_namespace_1.png)
+
+![event_hubs_create_namespace_2](/docs/how-to-guides/realtime-triggers/event_hubs_create_namespace_2.png)
+
+![event_hubs_create_namespace_3](/docs/how-to-guides/realtime-triggers/event_hubs_create_namespace_3.png)
+
+![event_hubs_create_namespace_4](/docs/how-to-guides/realtime-triggers/event_hubs_create_namespace_4.png)
+
+![event_hubs_create_event_hub_1](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_1.png)
+
+![event_hubs_create_event_hub_2](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_2.png)
+
+![event_hubs_create_event_hub_3](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_3.png)
+
+![event_hubs_create_event_hub_4](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_4.png)
+
+![event_hubs_create_event_hub_5](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_5.png)
+
+![event_hubs_create_event_hub_6](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_6.png)
+
+14. We will now proceed to create the container. Go to [Storage accounts](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts) page.
+15. Click on "Create storage account".
+16. On the Create storage account page, choose an appropriate Subscription and Resource Group.
+17. Put an appropriate Storage account name, Region, Performance and Redundancy.
+18. Click on "Review + Create". Once the validation is successful, click on "Create".
+19. Once the storage account is created, click on the storage account name.
+20. On the storage account page, navigate from the left menu bar to the "Data storage", and then to "Containers".
+21. Click on the "+ Container" button to create a container.
+22. Put an appropriate name for the container, and click on "Create".
+23. Once the container is created, navigate to "Access keys" under "Security + networking" from the left menu bar.
+24. For key1, click on the "Show" button for the connection string and note it down to be used later in the Kestra flow.
+
+![azure_create_storage_account_1](/docs/how-to-guides/realtime-triggers/azure_create_storage_account_1.png)
+
+![azure_create_storage_account_2](/docs/how-to-guides/realtime-triggers/azure_create_storage_account_2.png)
+
+![azure_create_storage_account_3](/docs/how-to-guides/realtime-triggers/azure_create_storage_account_3.png)
+
+![azure_create_container_1](/docs/how-to-guides/realtime-triggers/azure_create_container_1.png)
+
+![azure_create_container_2](/docs/how-to-guides/realtime-triggers/azure_create_container_2.png)
+
+![azure_create_container_3](/docs/how-to-guides/realtime-triggers/azure_create_container_3.png)
+
+![azure_create_container_4](/docs/how-to-guides/realtime-triggers/azure_create_container_4.png)
+
+![azure_create_container_5](/docs/how-to-guides/realtime-triggers/azure_create_container_5.png)
+
+Now that all the setup is ready in Azure, start the Kestra cluster with the environment variables "SECRET_EVENTHUBS_CONNECTION" and "SECRET_BLOB_CONNECTION" containing the base64 encoded value for the Event Hubs connection string and Blob connection string respectively.
+
+The Kestra flow with the Azure Event Hub Realtime Trigger will look as follows:
+
+```yaml
+id: TriggerFromAzureEventHubs
+namespace: company.team
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello there! I received {{ trigger.body }} from Azure EventHubs!
+triggers:
+  - id: readFromEventHubs
+    type: "io.kestra.plugin.azure.eventhubs.RealtimeTrigger"
+    eventHubName: kestra
+    namespace: kestra-namespace
+    connectionString: "{{ secret('EVENTHUBS_CONNECTION') }}"
+    bodyDeserializer: JSON
+    consumerGroup: "$Default"
+    checkpointStoreProperties:
+      containerName: kestralogs
+      connectionString: "{{ secret('BLOB_CONNECTION') }}"
+```
+
+On the particular Event Hubs page, you can click on "Generate Data" under "Features" from the left menu bar. Choose an appropriate Content Type from the drop down, and put the payload that you want to push to the Event Hub. When you click on the "Send" button on the bottom, the payload will be pushed on to the Event Hub. Also, the flow will be triggered immediately, and you could see the corresponding execution present in Kestra.
+
+![event_hubs_generate_data_1](/docs/how-to-guides/realtime-triggers/event_hubs_generate_data_1.png)
+
+![event_hubs_generate_data_2](/docs/how-to-guides/realtime-triggers/event_hubs_generate_data_2.png)
+
 This is how you can leverage the realtime triggers to react to events in real time to orchestrate business-critical processes.
