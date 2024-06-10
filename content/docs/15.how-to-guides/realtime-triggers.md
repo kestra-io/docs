@@ -169,7 +169,7 @@ When any message is published into the `logs` Pub/Sub topic, this flow will get 
 For this, we will create an Event Hub and a container for checkpoint storage. For this,
 
 1. Go to [Event Hubs](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.EventHub%2Fnamespaces) in the Azure portal.
-2. Click on "Create". We will be creating a Event Hubs namespace.
+2. Click on "Create". We will be creating an Event Hubs namespace.
 3. On the Create Namespace page, choose an appropriate Subscription and Resource Group.
 4. Put an appropriate Namespace name, Location, Pricing tier and Throughput units.
 5. Click on "Review + Create". Once the validation is successful, click on "Create".
@@ -202,17 +202,17 @@ For this, we will create an Event Hub and a container for checkpoint storage. Fo
 
 ![event_hubs_create_event_hub_6](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_6.png)
 
-14. We will now proceed to create the container. Go to [Storage accounts](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts) page.
+14. Let's now create the container. Go to [Storage accounts](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts) page.
 15. Click on "Create storage account".
-16. On the Create storage account page, choose an appropriate Subscription and Resource Group.
-17. Put an appropriate Storage account name, Region, Performance and Redundancy.
+16. On the "Create storage account" page, choose an appropriate Subscription and Resource Group.
+17. Put an appropriate Storage account name, Region, Performance, and Redundancy.
 18. Click on "Review + Create". Once the validation is successful, click on "Create".
 19. Once the storage account is created, click on the storage account name.
 20. On the storage account page, navigate from the left menu bar to the "Data storage", and then to "Containers".
 21. Click on the "+ Container" button to create a container.
-22. Put an appropriate name for the container, and click on "Create".
+22. Put an appropriate name for the container, and click "Create".
 23. Once the container is created, navigate to "Access keys" under "Security + networking" from the left menu bar.
-24. For key1, click on the "Show" button for the connection string and note it down to be used later in the Kestra flow.
+24. For the key, click on the "Show" button for the connection string and note it down to be used later in the Kestra flow.
 
 ![azure_create_storage_account_1](/docs/how-to-guides/realtime-triggers/azure_create_storage_account_1.png)
 
@@ -230,7 +230,7 @@ For this, we will create an Event Hub and a container for checkpoint storage. Fo
 
 ![azure_create_container_5](/docs/how-to-guides/realtime-triggers/azure_create_container_5.png)
 
-Now that all the setup is ready in Azure, start the Kestra cluster with the environment variables "SECRET_EVENTHUBS_CONNECTION" and "SECRET_BLOB_CONNECTION" containing the base64 encoded value for the Event Hubs connection string and Blob connection string respectively.
+Now that all the setup is ready in Azure, start the Kestra cluster with the environment variables "SECRET_EVENTHUBS_CONNECTION" and "SECRET_BLOB_CONNECTION" containing the base64-encoded value for the Event Hubs connection string and Blob connection string, respectively.
 
 The Kestra flow with the Azure Event Hub Realtime Trigger will look as follows:
 
@@ -254,7 +254,7 @@ triggers:
       connectionString: "{{ secret('BLOB_CONNECTION') }}"
 ```
 
-On the particular Event Hubs page, you can click on "Generate Data" under "Features" from the left menu bar. Choose an appropriate Content Type from the drop down, and put the payload that you want to push to the Event Hub. When you click on the "Send" button on the bottom, the payload will be pushed on to the Event Hub. Also, the flow will be triggered immediately, and you could see the corresponding execution present in Kestra.
+On the particular Event Hubs page, you can click on "Generate Data" under "Features" from the left menu bar. Choose an appropriate Content-Type from the drop-down, and put the payload you want to push to the Event Hub. When you click on the "Send" button on the bottom, the payload will be pushed to the Event Hub. Also, the flow will be triggered immediately, and you can see the corresponding execution in Kestra.
 
 ![event_hubs_generate_data_1](/docs/how-to-guides/realtime-triggers/event_hubs_generate_data_1.png)
 
