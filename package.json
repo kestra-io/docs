@@ -24,6 +24,7 @@
     "aos": "^2.3.4",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "canvas": "^2.11.2",
     "dagre": "^0.8.5",
     "dayjs": "^1.11.11",
     "highlight-words-core": "^1.2.2",

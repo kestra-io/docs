@@ -103,10 +103,11 @@
     if (slug.value.endsWith(".md")) {
         await navigateTo(slug.value.substring(0, slug.value.length - 3));
     }
-
+    let pageName;
     if (props.type === 'plugins') {
-        const parts = slug.value.split('/');
         let pageUrl;
+        const parts = slug.value.split('/');
+        pageName = parts[2];
         if (parts.length > 3) {
             pageUrl = `/api/plugins?page=${parts[parts.length - 1].replace(/.md$/, "")}&type=definitions`
         } else {
@@ -171,7 +172,7 @@
         meta: [
             {property: 'og:title', content: title},
             {property: 'og:description', content: description},
-            {property: 'og:image', content: `/${ogImage}.svg`},
+            {property: 'og:image', content: `http://localhost:3001/api/pluginimage?page=${pageName}`},
             {property: 'og:image:alt', content: title},
             {property: 'og:url', content: 'https://kestra.io'},
         ],
