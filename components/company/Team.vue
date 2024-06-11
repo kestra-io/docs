@@ -191,7 +191,7 @@
                     <img class="img-fluid team-member" src="/landing/company/teams/dlavoie.png" alt="Daniel Lavoie"/>
                     <div class="w-100">
                         <div class="team-name">Daniel Lavoie</div>
-                        <div class="team-title font-small">Senior Cloud Engineer</div>
+                        <div class="team-title font-small">Platform Engineer</div>
                     </div>
                     <span>
                         <a href="https://www.linkedin.com/in/daniel-lavoie-50253855/" target="_blank" class="me-2"><linkedin /></a>
