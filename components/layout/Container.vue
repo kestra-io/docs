@@ -172,7 +172,7 @@
         meta: [
             {property: 'og:title', content: title},
             {property: 'og:description', content: description},
-            {property: 'og:image', content: `http://localhost:3001/api/pluginimage?page=${pageName}`},
+            {property: 'og:image', content: `/api/pluginimage?page=${pageName}`},
             {property: 'og:image:alt', content: title},
             {property: 'og:url', content: 'https://kestra.io'},
         ],
