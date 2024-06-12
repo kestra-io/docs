@@ -12,7 +12,7 @@
                     </div>
                     <div class="vertical-line"></div>
                     <div class="info-item">
-                        <h3>“What was delivered in weeks in now completed <br> in days with full control for a great partnership.”</h3>
+                        <h3>“What was delivered in weeks is now completed <br> in days with full control for a great partnership.”</h3>
                     </div>
                     <div class="vertical-line"></div>
                     <div class="info-item align-items-start">
