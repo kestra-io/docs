@@ -1,7 +1,8 @@
 <template>
     <div>
         <DemoHeaders/>
-        <HomeTestimonials/>
+        <DemoCompanies/>
+        <DemoBusinessByUs/>
     </div>
 </template>
 <script setup>
