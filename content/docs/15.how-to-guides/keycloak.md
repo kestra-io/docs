@@ -55,12 +55,12 @@ kestra:
       name: Editor
       description: Default Editor role
       permissions:
-        FLOWS: ["CREATES", "READS", "UPDATES", "DELETES"]
-        EXECUTIONS:
-          - CREATES
-          - READS
-          - UPDATES
-          - DELETES
+        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
+        EXECUTION:
+          - CREATE
+          - READ
+          - UPDATE
+          - DELETE
 ```
 
 > Note: depending of the KeyCloak configuration you might want to tune the issuer url.
