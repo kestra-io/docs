@@ -29,14 +29,6 @@
         <NuxtLazyHydrate when-visible>
             <FeaturesEnterpriseEdition/>
         </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <LayoutFooterContact
-                title="New to Kestra?"
-                subtitle="Use blueprints to kickstart your first workflows."
-                purpleButtonText="Get started with Kestra"
-                purpleButtonHref="https://github.com/kestra-io/kestra"
-            />
-        </NuxtLazyHydrate>
     </div>
 </template>
 

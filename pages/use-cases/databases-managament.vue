@@ -38,7 +38,7 @@
             <LayoutFooterContact
                 title="Ready to take your Infrastructure to the next level ?"
                 purpleButtonText="Get Started"
-                purpleButtonHref="https://github.com/kestra-io/kestra"
+                purpleButtonHref="h/docs/getting-started/quickstart"
                 darkButtonText="Talk to Us"
                 darkButtonHref="/demo"
             />
