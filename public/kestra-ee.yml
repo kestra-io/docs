@@ -6203,6 +6203,26 @@ paths:
                 - $ref: '#/components/schemas/Flow'
                 - $ref: '#/components/schemas/FlowWithSource'
               example: null
+  /api/v1/forgotten-password:
+    get:
+      summary: Send an email to reset a password.
+      description: "Send an email to reset a password. Note that whatever the username\
+        \ is found or not, the response will always be 200 to avoid leaking information."
+      operationId: forgottenPassword
+      parameters:
+      - name: username
+        in: query
+        description: User that has forgotten his password
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: forgottenPassword 200 response
+          content:
+            application/json:
+              schema:
+                type: string
   /api/v1/groups:
     post:
       tags:
@@ -9370,6 +9390,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Plugin'
+  /api/v1/reset-password:
+    post:
+      summary: Change a password for given token.
+      description: "Change a password for given token. If password does not match\
+        \ security policy, use can still retry."
+      operationId: resetPassword
+      requestBody:
+        description: An object containing the token and the new password.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthController.ResetPasswordRequest'
+        required: true
+      responses:
+        "200":
+          description: resetPassword 200 response
+          content:
+            application/json:
+              schema:
+                type: string
   /api/v1/roles:
     post:
       tags:
@@ -16057,10 +16097,22 @@ components:
       properties:
         loginPassword:
           type: boolean
+        mailsEnabled:
+          type: boolean
         oauths:
           type: array
           items:
             type: string
+    AuthController.ResetPasswordRequest:
+      required:
+      - password
+      - token
+      type: object
+      properties:
+        token:
+          type: string
+        password:
+          type: string
     Backfill:
       title: A backfill configuration.
       required:
