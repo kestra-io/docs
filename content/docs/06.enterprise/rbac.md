@@ -40,20 +40,19 @@ In short, Roles encapsulate permission boundaries that can be attached to Users,
 ### Permissions
 
 A Permission is a resource that can be accessed by a User or Group. Supported Permissions:
-
-- `FLOWS`
-- `BLUEPRINTS`
-- `TEMPLATES`
-- `NAMESPACES`
-- `EXECUTIONS`
-- `USERS`
-- `GROUPS`
-- `ROLES`
-- `BINDINGS`
-- `AUDITLOGS`
-- `SECRETS`
+- `FLOW`
+- `BLUEPRINT`
+- `TEMPLATE`
+- `NAMESPACE`
+- `EXECUTION`
+- `USER`
+- `GROUP`
+- `ROLE`
+- `BINDING`
+- `AUDITLOG`
+- `SECRET`
 - `IMPERSONATE`
-- `SETTINGS`
+- `SETTING`
 - `INFRASTRUCTURE`
 
 ### Actions
