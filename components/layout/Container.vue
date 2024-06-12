@@ -41,6 +41,7 @@
 </template>
 
 <script setup>
+    import { defineOgImage } from '~/utils/ogImage';
     import PrevNext from "~/components/layout/PrevNext.vue";
     import NavSideBar from "~/components/docs/NavSideBar.vue";
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
@@ -166,15 +167,21 @@
     useContentHead(page);
 
     const {description, title} = page;
-    const {origin} = useRequestURL()
+    const {origin} = useRequestURL();
+
+    const ogImageHTML = defineOgImage({type: props.type, icon: page.icon, title, description});
+
+    const base64Image = btoa(ogImageHTML);
+
+    const ogImageUrl = `data:image/svg+xml;base64,${base64Image}`;
+
     useHead({
         meta: [
-            {name: 'twitter:card', content: 'summary_large_image'},
-            {name: 'twitter:site', content: '@kestra_io'},
-            {name: 'twitter:title', content: title},
-            {name: 'twitter:description', content: description},
-            {name: 'twitter:image', content: `${origin}/landing/home/header-bg.png`},
-            {name: 'twitter:image:alt', content: title}
+          {property: 'og:title', content: title},
+          {property: 'og:description', content: description},
+          { property: 'og:image', content: ogImageUrl },
+          {property: 'og:image:alt', content: title},
+          {property: 'og:url', content: 'https://kestra.io'},
         ]
     })
 </script>
