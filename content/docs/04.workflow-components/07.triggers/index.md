@@ -71,11 +71,16 @@ Available conditions include:
 
 - [ExecutionFlowCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionFlowCondition)
 - [ExecutionNamespaceCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionNamespaceCondition)
+- [ExecutionLabelsCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.executionlabelscondition)
 - [ExecutionStatusCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionStatusCondition)
+- [ExecutionOutputsCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.executionoutputscondition)
 - [FlowCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.FlowCondition)
 - [FlowNamespaceCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.FlowNamespaceCondition)
-- [VariableCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExpressionCondition)
+- [ExpressionCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExpressionCondition)
+- [HasRetryAttemptCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.hasretryattemptcondition)
+- [MultipleCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.multiplecondition)
 
+You can also find datetime related conditions [here](./schedule-trigger.md#schedule-conditions).
 
 ## Unlocking, enabling and disabling triggers
 
