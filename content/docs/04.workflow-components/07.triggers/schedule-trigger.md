@@ -69,6 +69,8 @@ The list of core conditions that can be used are:
  - [NotCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.NotCondition)
  - [OrCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.OrCondition)
  - [WeekendCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.WeekendCondition)
+ - [PublicHolidayCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.publicholidaycondition)
+ - [TimeBetweenCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.timebetweencondition)
 
 ### Recover Missed Schedules
 
