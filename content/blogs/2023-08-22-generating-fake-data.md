@@ -104,16 +104,12 @@ tasks:
       - id: python
         type: io.kestra.plugin.scripts.python.Commands
         warningOnStdErr: false
-        beforeCommands:
-          - pip install -r dataset/produce/requirements.txt
-        commands:
-          - python dataset/produce/main.py --date {{ trigger.date ?? now() | date("yyyy-MM-dd")}}
-
-      - id: file_outputs
-        type: io.kestra.plugin.core.storage.LocalFiles
-        description: This task allows to expose all CSV files created by the Python script task above to downstream tasks and flows.
-        outputs:
+        outputFiles:
           - '*.csv'
+        beforeCommands:
+          - pip install -r scripts/produce/requirements.txt
+        commands:
+          - python scripts/produce/produce_data.py --date {{ trigger.date ?? now() | date("yyyy-MM-dd")}}
 
       - id: run_date
         type: io.kestra.plugin.core.debug.Return
