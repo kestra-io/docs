@@ -38,6 +38,23 @@ Following trigger properties can be set.
 
 Triggers allow you to access trigger metadata through expressions e.g. `{{ trigger.date }}` to access the current date of the [Schedule trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Schedule), `{{ trigger.uri }}` to access the file or message from any file detection or message arrival event, as well as `{{ trigger.rows }}` for all Query triggers e.g. the [PostgreSQL Query](/plugins/plugin-jdbc-postgres/triggers/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
 
+This example will log the date when the trigger executes the flow:
+```yaml
+id: variables
+namespace: example
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "Hello World on {{ trigger.date }}! 🚀"
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@hourly"
+
+```
+
 ::alert{type="warning"}
 Note that the above-mentioned **templated variables** are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
 
