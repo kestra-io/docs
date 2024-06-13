@@ -1,128 +1,26 @@
-import nodeHtmlToImage from 'node-html-to-image'
+import sharp from "sharp";
 
 export default defineEventHandler(async (event) => {
-    const config = useRuntimeConfig();
-    const page = getRouterParam(event, 'cls.png').substring(0, getRouterParam(event, 'cls.png').lastIndexOf("."));
-    const plugins = await $fetch(`${config.public.apiUrl}/plugins`);
-    const plugin = plugins.find(plugin => plugin.name === page);
-    const title = plugin?.title;
-    const logoPath = `${config.public.siteUrl}/icons/${plugin?.group}.svg`;
-    const backgroundPath = `${config.public.siteUrl}/og-bg.svg`;
-    const kestraLogo= `${config.public.siteUrl}/logo-white.svg`;
+
+    let svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none" stroke="#ff0000">
+
+          <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+        
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+        
+          <g id="SVGRepo_iconCarrier"> <path d="M10.5 21L12 18M14.5 21L16 18M6.5 21L8 18M8.8 15C6.14903 15 4 12.9466 4 10.4137C4 8.31435 5.6 6.375 8 6C8.75283 4.27403 10.5346 3 12.6127 3C15.2747 3 17.4504 4.99072 17.6 7.5C19.0127 8.09561 20 9.55741 20 11.1402C20 13.2719 18.2091 15 16 15L8.8 15Z" stroke="#ff0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> </g>
+        
+        </svg>`
+    const svgBuffer = Buffer.from(svgString);
+    const processedImageBuffer = await sharp(svgBuffer)
+        .toFormat('png')
+        .toBuffer();
 
 
-    const html =  `
-        </div>
-            <html>
-            <head>
-                <style>
-                    body {
-                      width: 1200px;
-                      height: 675px;
-                    }
-                    
-                    .og-container {
-                      background-image: url('${backgroundPath}');
-                      background-size: cover;
-                      background-repeat: no-repeat;
-                      background-color: #1b0f29;
-                      padding: 108px;
-                      width: 100%;
-                      height: 100%;
-                      display: flex;
-                      gap: 82px;
-                    }
-                    
-                    .og-content {
-                      width: 514px;
-                      display: flex;
-                      flex-direction: column;
-                      gap: 47.86px;
-                    }
-                    
-                    .kestra-logo-block {
-                      display: flex;
-                      flex-direction: column;
-                      gap: 15px;
-                    }
-                    
-                    .kestra-logo {
-                      width: 278px;
-                      height: 64px;
-                    }
-                    
-                    .og-content-type {
-                      font-family: Source Code Pro;
-                      font-size: 32px;
-                      font-weight: 600;
-                      line-height: 53px;
-                      color: #CD88FF; 
-                      margin: 0; 
-                      text-transform: capitalize;
-                    }
-                    
-                    .title-block {
-                      display: flex;
-                      flex-direction: column;
-                      gap: 38.64px;
-                    }
-                    
-                    .page-title {
-                      font-family:  Public Sans;
-                      font-size: 75px; 
-                      font-weight: 600;
-                      line-height: 74px;
-                      color: #FFFFFF;
-                      margin: 0;
-                    }
-                    
-                    .page-description {
-                      font-family:  Public Sans;
-                      font-size: 29px;
-                      font-weight: 600; 
-                      line-height: 44px; 
-                      color: #FFFFFF; 
-                      margin: 0;
-                    }
-                    
-                    .page-icon-block {
-                      display: flex;
-                      justify-content: flex-end;
-                      align-items: center;
-                      margin-bottom: 150px;
-                    }
-                    
-                    .page-icon {
-                      width: 425px; 
-                      height: 425px;
-                    }
-                </style>
-            </head>
-            <body>
-               <div class="og-container">
-                <div class="og-content">
-                  <div class="kestra-logo-block">
-                      <img class="kestra-logo" src="${kestraLogo}">
-                      <p class="og-content-type">Plugins</p>
-                  </div>
-                  <div class="title-block">
-                    <h1 class="page-title">${title || ''}</h1>
-                    <p  class="page-description">${plugin.description || ''}</p>
-                  </div>
-                </div>
-                <div class="page-icon-block">
-                  <img class="page-icon" src="${logoPath}">
-                </div>
-              </div>
-            </body>
-        </html>
-    `;
-
-    const ogImage = await nodeHtmlToImage({
-        html
+    event.node.res.writeHead(200, {
+        'Content-Type': 'image/jpeg',
+        'Content-Length': processedImageBuffer.length
     });
 
-
-    event.node.res.writeHead(200, { 'Content-Type': 'image/png' });
-    event.node.res.end(ogImage, 'binary');
+    event.node.res.end(processedImageBuffer);
 })
