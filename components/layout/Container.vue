@@ -103,10 +103,11 @@
     if (slug.value.endsWith(".md")) {
         await navigateTo(slug.value.substring(0, slug.value.length - 3));
     }
-
+    let pageName;
     if (props.type === 'plugins') {
         const parts = slug.value.split('/');
         let pageUrl;
+        pageName = parts[2];
         if (parts.length > 3) {
             pageUrl = `/api/plugins?page=${parts[parts.length - 1].replace(/.md$/, "")}&type=definitions`
         } else {
@@ -166,15 +167,15 @@
     useContentHead(page);
 
     const {description, title} = page;
-    const {origin} = useRequestURL()
+    const {origin} = useRequestURL();
+
     useHead({
         meta: [
-            {name: 'twitter:card', content: 'summary_large_image'},
-            {name: 'twitter:site', content: '@kestra_io'},
-            {name: 'twitter:title', content: title},
-            {name: 'twitter:description', content: description},
-            {name: 'twitter:image', content: `${origin}/landing/home/header-bg.png`},
-            {name: 'twitter:image:alt', content: title}
+          {property: 'og:title', content: title},
+          {property: 'og:description', content: description},
+          {property: 'og:image', content: `/api/pluginimage?page=${pageName}`},
+          {property: 'og:image:alt', content: title},
+          {property: 'og:url', content: 'https://kestra.io'},
         ]
     })
 </script>
