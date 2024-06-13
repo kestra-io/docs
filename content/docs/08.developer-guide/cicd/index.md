@@ -163,7 +163,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: validate-all flows
-        uses: kestra-io/validate-action@develop
+        uses: kestra-io/validate-action@master
         with:
           directory: ./flows/prod
           resource: flow
@@ -209,7 +209,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: validate-all flows
-        uses: kestra-io/validate-action@develop
+        uses: kestra-io/validate-action@master
         with:
           directory: ./flows/prod
           resource: flow
