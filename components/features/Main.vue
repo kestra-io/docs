@@ -35,7 +35,7 @@
                                     Support for data-mesh:
                                     <span>
                                         thanks to the simple
-                                         <a href="https://kestra.io/demo" target="_blank" data-aos="zoom-in">
+                                         <a href="/demo" data-aos="zoom-in">
                                             YAML interface.
                                          </a>
                                         built-in documentation and blueprints, domain experts can build their own workflows, too.

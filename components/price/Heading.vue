@@ -51,7 +51,7 @@
 
                                 <NuxtLink
                                     class="d-block w-100 d-sm-inline-block mb-1 mn-sm-0 btn btn-animated btn-purple-animated"
-                                    href="https://kestra.io/demo">
+                                    href="/demo">
                                     Talk to Us
                                 </NuxtLink>
                             </div>
