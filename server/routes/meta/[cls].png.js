@@ -1,18 +1,14 @@
-import url from "node:url";
 import nodeHtmlToImage from 'node-html-to-image'
 
 export default defineEventHandler(async (event) => {
-    const runtimeConfig = useRuntimeConfig();
-
-    const requestUrl = new url.URL("http://localhost" + event.node.req.url);
-    const page = requestUrl.searchParams.get("page");
     const config = useRuntimeConfig();
+    const page = getRouterParam(event, 'cls.png').substring(0, getRouterParam(event, 'cls.png').lastIndexOf("."));
     const plugins = await $fetch(`${config.public.apiUrl}/plugins`);
     const plugin = plugins.find(plugin => plugin.name === page);
     const title = plugin?.title;
-    const logoPath = `${runtimeConfig.public.siteUrl}/icons/${plugin?.group}.svg`;
-    const backgroundPath = `${runtimeConfig.public.siteUrl}/og-bg.svg`;
-    const kestraLogo= `${runtimeConfig.public.siteUrl}/logo-white.svg`;
+    const logoPath = `${config.public.siteUrl}/icons/${plugin?.group}.svg`;
+    const backgroundPath = `${config.public.siteUrl}/og-bg.svg`;
+    const kestraLogo= `${config.public.siteUrl}/logo-white.svg`;
 
 
     const html =  `
@@ -127,5 +123,6 @@ export default defineEventHandler(async (event) => {
     });
 
 
-    return  ogImage
-});
+    event.node.res.writeHead(200, { 'Content-Type': 'image/png' });
+    event.node.res.end(ogImage, 'binary');
+})
