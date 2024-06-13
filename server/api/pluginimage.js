@@ -1,5 +1,5 @@
 import url from "node:url";
-import nodeHtmlToImage from 'node-html-to-image'
+// import nodeHtmlToImage from 'node-html-to-image'
 
 export default defineEventHandler(async (event) => {
     const runtimeConfig = useRuntimeConfig();
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
 
     const html =  `
-    </div>
+        </div>
             <html>
             <head>
                 <style>
@@ -122,10 +122,10 @@ export default defineEventHandler(async (event) => {
         </html>
     `;
 
-    const ogImage = await nodeHtmlToImage({
-        html
-    });
-
-
-    return  ogImage
+    // const ogImage = await nodeHtmlToImage({
+    //     html
+    // });
+    //
+    //
+    // return  ogImage
 });
