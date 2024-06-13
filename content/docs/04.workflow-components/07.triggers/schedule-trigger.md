@@ -72,6 +72,26 @@ The list of core conditions that can be used are:
  - [PublicHolidayCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.publicholidaycondition)
  - [TimeBetweenCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.timebetweencondition)
 
+Here's an example using the `DayWeekCondition`:
+
+```yaml
+id: conditions
+namespace: triggers
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: This will execute only on Thursday!
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@hourly"
+    conditions:
+      - type: io.kestra.plugin.core.condition.DayWeekCondition
+        dayOfWeek: "THURSDAY"
+```
+
 ### Recover Missed Schedules
 
 If a schedule is missed, Kestra will automatically recover it by default. This means that if the Kestra server is down, the missed schedules will be executed as soon as the server is back up. However, this behavior is not always desirable, e.g. during a planned maintenance window. In Kestra 0.15 and higher, this behavior can be disabled by setting the `recoverMissedSchedules` configuration to `NONE`.
