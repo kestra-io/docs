@@ -104,16 +104,24 @@
         await navigateTo(slug.value.substring(0, slug.value.length - 3));
     }
 
-    let pageName;
+    const {origin} = useRequestURL()
+
+    let ogImage = `${origin}/landing/home/header-bg.png`;
+
     if (props.type === 'plugins') {
         const parts = slug.value.split('/');
-        let pageUrl;
-        pageName = parts[2];
+        let pageName;
+        let pageType;
+
         if (parts.length > 3) {
-            pageUrl = `/api/plugins?page=${parts[parts.length - 1].replace(/.md$/, "")}&type=definitions`
+            pageName = parts[parts.length - 1].replace(/.md$/, "");
+            pageType = 'definitions';
         } else {
-            pageUrl = `/api/plugins?page=${parts[2]}&type=plugin`
+            pageName = parts[2];
+            pageType = 'plugin';
         }
+
+        let pageUrl = `/api/plugins?page=${pageName}&type=${pageType}`
 
         const {data: pluginInformation} = await useAsyncData(`Container-${hash(pageUrl)}`, () => {
             return $fetch(pageUrl)
@@ -148,6 +156,7 @@
         }
         page = updateObject(pluginInformation.value);
 
+      ogImage = `${origin}/meta/${pageName}.svg?type=${pageType}`
     } else {
         const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
             try {
@@ -157,10 +166,11 @@
             }
         });
         page = data.value;
-
-        if (error && error.value) {
+         if (error && error.value) {
             throw error.value;
         }
+
+
     }
 
     const {navigation, pageList, pageNames} = await fetchNavigation();
@@ -168,12 +178,12 @@
     useContentHead(page);
 
     const {description, title} = page;
-    const {origin} = useRequestURL()
+
     useHead({
       meta: [
         {property: 'og:title', content: title},
         {property: 'og:description', content: description},
-        {property: 'og:image', content: `${origin}/meta/${pageName}.svg`},
+        {property: 'og:image', content: ogImage},
         {property: 'og:image:type', content: "image/svg+xml"},
         {property: 'og:image:alt', content: title},
         {property: 'og:url', content: 'https://kestra.io'},
