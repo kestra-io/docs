@@ -9394,7 +9394,7 @@ paths:
     post:
       summary: Change a password for given token.
       description: "Change a password for given token. If password does not match\
-        \ security policy, use can still retry."
+        \ password policy, use can still retry."
       operationId: resetPassword
       requestBody:
         description: An object containing the token and the new password.
