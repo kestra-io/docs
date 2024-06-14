@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-    const cls = getRouterParam(event, 'cls.png').substring(0, getRouterParam(event, 'cls.png').lastIndexOf("."));
+    const cls = getRouterParam(event, 'cls.svg').substring(0, getRouterParam(event, 'cls.svg').lastIndexOf("."));
     const config = useRuntimeConfig();
     const plugins = await $fetch(`${config.public.apiUrl}/plugins`);
     const plugin = plugins.find(plugin => plugin.name === cls);
