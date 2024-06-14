@@ -1,6 +1,5 @@
 export default defineEventHandler(async (event) => {
-
-    let svgString = `<svg xmlns="http://www.w3.org/2000/svg" style="-webkit-user-select: none;"  width="1200" height="625">
+    return `<svg xmlns="http://www.w3.org/2000/svg" style="-webkit-user-select: none;"  width="1200" height="625">
         <rect  width="1200" height="625" fill="#0e0e0e" />
         <foreignObject x="0" y="0" width="1200" height="625">
             <div xmlns="http://www.w3.org/1999/xhtml" style="width: 1200px; height: 625px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #ffffff; padding: 20px;">
@@ -13,10 +12,4 @@ export default defineEventHandler(async (event) => {
         </foreignObject>
     </svg>`;
 
-
-    event.node.res.writeHead(200, {
-        'Content-Type': 'image/svg+xml',
-    });
-
-    event.node.res.end(svgString);
 })
