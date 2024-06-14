@@ -1,26 +1,31 @@
-import sharp from "sharp";
-
 export default defineEventHandler(async (event) => {
+    const cls = getRouterParam(event, 'cls.png').substring(0, getRouterParam(event, 'cls.png').lastIndexOf("."));
+    const config = useRuntimeConfig();
+    const plugins = await $fetch(`${config.public.apiUrl}/plugins`);
+    const plugin = plugins.find(plugin => plugin.name === cls);
+    const { title, description} = plugin;
+    const icon = `https://kestra.io/icons/${plugin?.group}.svg`;
 
-    let svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none" stroke="#ff0000">
-
-          <g id="SVGRepo_bgCarrier" stroke-width="0"/>
-        
-          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-        
-          <g id="SVGRepo_iconCarrier"> <path d="M10.5 21L12 18M14.5 21L16 18M6.5 21L8 18M8.8 15C6.14903 15 4 12.9466 4 10.4137C4 8.31435 5.6 6.375 8 6C8.75283 4.27403 10.5346 3 12.6127 3C15.2747 3 17.4504 4.99072 17.6 7.5C19.0127 8.09561 20 9.55741 20 11.1402C20 13.2719 18.2091 15 16 15L8.8 15Z" stroke="#ff0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> </g>
-        
-        </svg>`
+    let svgString = `<svg xmlns="http://www.w3.org/2000/svg" style="-webkit-user-select: none;"  width="1200" height="625">
+        <rect  width="1200" height="625" fill="#0e0e0e" />
+        <foreignObject x="0" y="0" width="1200" height="625">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="width: 1200px; height: 625px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-image: url('http://localhost:3001/og-bg.svg'); background-size: cover; background-position: center; color: #ffffff; padding: 20px;">
+                <div style="width: 278.6px; height: 64.34px; position: absolute; top: 108.04px; left: 200.64px; transform: translate(-50%, -50%); background-image: url('https://kestra.io/logo-white.svg'); background-size: 100% 100%; color: #ffffff; padding: 20px;"></div>
+                <div style="width: 425px; height: 425px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); background-image: url('${icon}'); background-size: cover; background-position: center; color: #ffffff; padding: 20px;"></div>
+                <div style="position: absolute; top: 187.88px; left: 55.64px;">
+                  <p style="font-family: Source Code Pro; font-size: 31.69px; font-weight: 600; line-height: 52.76px; color: #CD88FF; margin: 0; text-transform: capitalize;">Plugin</p>
+                  <h1 style="width: 562.89px; font-family:  Public Sans; font-size: 75px; font-weight: 600; line-height: 74px; color: #FFFFFF; margin-top: 47.86px">${title}</h1>
+                  <p  style="width: 562.89px; font-family:  Public Sans; font-size: 29px; font-weight: 600; line-height: 44px; color: #FFFFFF; margin-top: 38.68px">${description}</p>
+                </div>
+            </div>
+        </foreignObject>
+    </svg>`;
     const svgBuffer = Buffer.from(svgString);
-    const processedImageBuffer = await sharp(svgBuffer)
-        .toFormat('png')
-        .toBuffer();
 
 
     event.node.res.writeHead(200, {
-        'Content-Type': 'image/jpeg',
-        'Content-Length': processedImageBuffer.length
+        'Content-Type': 'image/svg+xml',
     });
 
-    event.node.res.end(processedImageBuffer);
+    event.node.res.end(svgBuffer);
 })
