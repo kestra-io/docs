@@ -145,21 +145,21 @@ onMounted(() => {
                 position: absolute;
                 content: "";
                 z-index: -2;
-                width: 15.6rem;
+                width: 30.6rem;
                 height: 15.6rem;
                 background: linear-gradient(180deg, #6218FF 0%, #6117FF 100%);
-                filter: blur(70px);
+                filter: blur(95px);
             }
 
 
             &::after {
-                right: 25rem;
-                bottom: 9.375rem;
+                right: 10rem;
+                bottom: 7.375rem;
             }
 
             &::before {
-                left: 27.3rem;
-                top: 2rem;
+                left: 16.3rem;
+                top: 4rem;
             }
 
 
@@ -168,13 +168,14 @@ onMounted(() => {
                     width: 10rem;
                     height: 10rem;
                 }
+
                 &::after {
-                    right: 23rem;
-                    bottom: 9.375rem
+                    right: 21rem;
+                    bottom: 12.375rem;
                 }
 
                 &::before {
-                    left: 23rem;
+                    left: 21rem;
                 }
             }
 
@@ -207,54 +208,49 @@ onMounted(() => {
                     content: "";
                     z-index: -2;
                     width: 15.6rem;
-                    height: 15.6rem;
+                    height: 24.6rem;
                     background: linear-gradient(180deg, #7021ff 0%, #6305bf 100%);
                     filter: blur(50px);
                 }
 
                 &::after {
-                    left: 27.6rem;
-                    bottom: 4.87rem;
+                    left: 25.6rem;
+                    bottom: 3.87rem;
                 }
 
                 &::before {
-                    right: 24.875rem;
-                    top: 0.625rem;
+                    right: 22.875rem;
+                    top: 1.625rem;
                 }
 
                 @include media-breakpoint-down(xxl) {
                     &::after {
-                        left: 16.6rem;
-                        bottom: 6.87rem;
+                        left: 13.6rem;
+                        bottom: 8.87rem;
                     }
 
                     &::before {
-                        right: 15.875rem;
+                        right: 12.875rem;
                     }
                 }
 
                 @include media-breakpoint-down(lg) {
-                    &::after, &::before {
-                        width: 10rem;
-                        height: 10rem;
-                    }
-
                     &::after {
-                        left: 11.6rem;
+                        left: 7.6rem;
                     }
 
                     &::before {
-                        right: 11.8rem;
+                        right: 6.8rem;
                     }
                 }
 
                 @include media-breakpoint-down(md) {
                     &::after {
-                        left: 22rem;
+                        left: 6rem;
                     }
 
                     &::before {
-                        right: 22rem;
+                        right: 14rem;
                     }
                 }
 
