@@ -5,11 +5,11 @@ export default defineEventHandler(async (event) => {
     const plugin = plugins.find(plugin => plugin.name === cls);
     const { title, description} = plugin;
     const icon = `https://kestra.io/icons/${plugin?.group}.svg`;
-
+    const originHost = event.req.headers.host || 'https://kestra.io';
     let svgString = `<svg xmlns="http://www.w3.org/2000/svg" style="-webkit-user-select: none;"  width="1200" height="625">
         <rect  width="1200" height="625" fill="#0e0e0e" />
         <foreignObject x="0" y="0" width="1200" height="625">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="width: 1200px; height: 625px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #ffffff; padding: 20px;">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="width: 1200px; height: 625px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-image: url('https://${originHost}/og-bg.svg'); background-size: cover; background-position: center; color: #ffffff; padding: 20px;">
                 <div style="width: 278.6px; height: 64.34px; position: absolute; top: 108.04px; left: 200.64px; transform: translate(-50%, -50%); background-image: url('https://kestra.io/logo-white.svg'); background-size: 100% 100%; color: #ffffff; padding: 20px;"></div>
                 <div style="width: 425px; height: 425px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); background-image: url('${icon}'); background-size: cover; background-position: center; color: #ffffff; padding: 20px;"></div>
                 <div style="position: absolute; top: 187.88px; left: 55.64px;">
