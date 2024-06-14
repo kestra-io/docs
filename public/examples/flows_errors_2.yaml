@@ -6,7 +6,8 @@ description: This flow will always fail. The `errors` branch tasks are executed 
 tasks:
 - id: failed
   type: io.kestra.plugin.scripts.shell.Commands
-  runner: PROCESS
+  taskRunner:
+    type: io.kestra.plugin.core.runner.Process
   commands:
   - "exit 1"
 
