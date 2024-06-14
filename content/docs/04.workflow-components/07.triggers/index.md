@@ -5,7 +5,7 @@ icon: /docs/icons/flow.svg
 
 Trigger is a mechanism that automates the execution of a flow.
 
-Triggers can be scheduled, event-based or webhook-based.
+Triggers can be scheduled or event-based.
 
 ## Trigger types
 Kestra supports both **scheduled** and **external** events.
