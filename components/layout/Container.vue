@@ -170,14 +170,14 @@
     const {description, title} = page;
     const {origin} = useRequestURL();
     useHead({
-        meta: [
-          {property: 'og:title', content: title},
-          {property: 'og:description', content: description},
-          {property: 'og:image', content: `${origin}/meta/${pageName}.svg`},
-          {property: 'og:image:type', content: "image/svg+xml"},
-          {property: 'og:image:alt', content: title},
-          {property: 'og:url', content: 'https://kestra.io'},
-        ]
+      meta: [
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:site', content: '@kestra_io' },
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:description', content: description },
+        { name: 'twitter:image', content: `${origin}/landing/home/header-bg.png` },
+        { name: 'twitter:image:alt', content: title }
+      ]
     })
 </script>
 <style lang="scss" scoped>
