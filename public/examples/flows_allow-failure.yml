@@ -10,7 +10,8 @@ tasks:
 
   - id: allow_failure
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     allowFailure: true
     commands:
       - exit 1
