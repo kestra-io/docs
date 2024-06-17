@@ -43,9 +43,13 @@
         return $fetch(`${config.public.apiUrl}/blueprints/tags`)
     })
 
-    const {data: blueprintInformations} = await useAsyncData('blueprints-informations', () => {
+    const {data: blueprintInformations, error} = await useAsyncData('blueprints-informations', () => {
         return $fetch(`/api/blueprint?query=${route.params.id}`)
     })
+
+    if (error && error.value) {
+      throw createError({statusCode: 404, message: 'Page not found', data: error, fatal: true})
+    }
 
     page.value = blueprintInformations.value.page
     relatedBlueprints.value = blueprintInformations.value.relatedBlueprints
