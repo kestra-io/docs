@@ -138,9 +138,6 @@ export default defineNuxtConfig({
     },
 
     nitro: {
-        experimental: {
-            wasm: true
-        },
         prerender: {
             routes: ['/rss.xml'],
         },
@@ -183,7 +180,7 @@ export default defineNuxtConfig({
     },
 
     build: {
-        transpile: ['vue3-count-to'],
+        transpile: ['vue3-count-to', '@kestra-io/ui-libs'],
         extractCSS: true
     },
 
@@ -212,7 +209,6 @@ export default defineNuxtConfig({
     },
 
     devtools: {
-        enabled: true,
         timeline: {
             enabled: true
         }

@@ -384,41 +384,30 @@ import Flash from "vue-material-design-icons/Flash.vue"
 import Domain from "vue-material-design-icons/Domain.vue"
 import CalendarOutline from "vue-material-design-icons/CalendarOutline.vue"
 import CodeNotEqualVariant from "vue-material-design-icons/CodeNotEqualVariant.vue"
-import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
 import Cogs from "vue-material-design-icons/Cogs.vue"
 import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
 import Slack from "vue-material-design-icons/Slack.vue"
 import Reload from "vue-material-design-icons/Reload.vue"
-import Ballot from "vue-material-design-icons/Ballot.vue"
 import AxisArrow from "vue-material-design-icons/AxisArrow.vue"
-import ChartDonut from "vue-material-design-icons/ChartDonut.vue"
 import BookOpenVariant from "vue-material-design-icons/BookOpenVariant.vue"
 import Sync from "vue-material-design-icons/Sync.vue"
-import BasketOutline from "vue-material-design-icons/BasketOutline.vue"
-import BankOutline from "vue-material-design-icons/BankOutline.vue"
-import PillMultiple from "vue-material-design-icons/PillMultiple.vue"
 import Translate from "vue-material-design-icons/Translate.vue"
 import Earth from "vue-material-design-icons/Earth.vue"
-</script>
-
-<script>
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
 import GithubButton from "../layout/GithubButton.vue";
+</script>
 
+<script>
 export default {
-    components: {
-        ChevronDown,
-        GithubButton
-    },
     data() {
         return {
             transparentHeader: false,
             transparentClass: false,
             isOpen: false,
+            collapse: undefined
         }
     },
-    collapse: undefined,
     created() {
         const route = useRoute();
         this.transparentHeader = route.meta.transparentHeader === true;
