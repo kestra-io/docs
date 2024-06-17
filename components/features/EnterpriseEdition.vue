@@ -19,14 +19,12 @@
           </p>
         </div>
 
-        <div class="text-center rounded">
-          <NuxtLink href="/enterprise">
-            <button class="btn btn-dark mx-2 mt-2">Learn more</button>
+        <div class="text-center rounded cta">
+          <NuxtLink href="/enterprise" class="btn btn-dark mx-2 mt-2">
+              Learn more
           </NuxtLink>
-          <NuxtLink href="/demo">
-            <button class="btn btn-animated btn-purple-animated mx-2 mt-2">
+          <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2">
               Talk to Us
-            </button>
           </NuxtLink>
         </div>
       </div>
@@ -68,7 +66,11 @@ export default {
     z-index: 0;
   }
 }
-
+.cta {
+    position: relative;
+    z-index: 10;
+    margin: auto;
+}
 .btn-dark {
   background-color: $black-4;
   border: 1px solid $black-6;

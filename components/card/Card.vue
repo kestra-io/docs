@@ -19,6 +19,10 @@
                 <span v-if="number" class="card-icon">
                     <p class="number">{{number}}</p>
                 </span>
+                <div v-if="cardInfo" class="card-info">
+                    <h4 v-if="cardInfo.title" class="card-title">{{cardInfo.title}}</h4>
+                    <p v-if="cardInfo.description" class="card-text">{{cardInfo.description}}</p>
+                </div>
                 <h4 v-if="title" class="card-title">{{title}}</h4>
                 <h4 v-if="titleHtml" class="card-title" v-html="titleHtml"></h4>
             </div>
@@ -71,7 +75,10 @@
             },
             style: {
               default: null,
-            }
+            },
+            cardInfo: {
+              default: null,
+            },
         },
     };
 </script>
@@ -114,6 +121,21 @@
             color: $white-1;
             font-size: $font-size-sm;
             font-weight: 400;
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: calc($spacer / 2);
+
+            .card-title {
+                margin: 0;
+            }
+
+            .card-text {
+                text-align: start;
+            }
         }
 
         .card-icon {

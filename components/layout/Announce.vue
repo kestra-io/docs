@@ -56,7 +56,6 @@
         }),
         methods: {
             slideTo(val) {
-              console.log(val);
               this.currentSlide = val
             },
         },

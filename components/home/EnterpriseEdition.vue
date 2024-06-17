@@ -7,8 +7,8 @@
                     <h2>Take Kestra to the next level with the <span>Enterprise Edition</span></h2>
                     <p class="description">Ensure scalability and high availability with managed Kafka and Elasticsearch integrated into the Enterprise Edition to eliminate single point of failure.</p>
                     <div class="d-flex align-items-center justify-content-center">
-                        <NuxtLink href="/enterprise" class="btn btn-animated btn-dark-animated me-2" data-aos="zoom-in">Learn more</NuxtLink>
-                        <NuxtLink href="/contact-us" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">Talk to Us</NuxtLink>
+                        <NuxtLink href="/enterprise" class="btn btn-animated btn-dark-animated me-2 z-10" data-aos="zoom-in">Learn more</NuxtLink>
+                        <NuxtLink href="/contact-us" class="btn btn-animated btn-purple-animated z-10" data-aos="zoom-in">Talk to Us</NuxtLink>
                     </div>
                 </div>
             </div>
