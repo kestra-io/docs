@@ -8,8 +8,9 @@ tasks:
     type: io.kestra.plugin.scripts.node.Commands
     namespaceFiles:
       enabled: true
-    docker:
-       image: node:slim
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: node:slim
     warningOnStdErr: false
     beforeCommands:
       - npm install requestify

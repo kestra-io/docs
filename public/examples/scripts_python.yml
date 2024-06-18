@@ -8,8 +8,9 @@ tasks:
     type: io.kestra.plugin.scripts.python.Script
     beforeCommands:
       - pip install requests
-    docker:
-      image: python:slim
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: python:slim
     warningOnStdErr: false
     script: |
       import requests

@@ -9,8 +9,9 @@ tasks:
     beforeCommands:
       - npm install requestify
       - npm install @kestra-io/libs
-    docker:
-      image: node:slim
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: node:slim
     warningOnStdErr: false
     script: |
       const requestify = require('requestify');
