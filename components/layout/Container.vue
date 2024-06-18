@@ -156,7 +156,7 @@
         }
         page = updateObject(pluginInformation.value);
 
-      ogImage = `${origin}/meta/${pageName}.svg?type=${pageType}`
+        ogImage = `${origin}/meta/plugins/${pageName}.svg?type=${pageType}`
     } else {
         const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
             try {
@@ -166,11 +166,12 @@
             }
         });
         page = data.value;
-         if (error && error.value) {
+        if (error && error.value) {
             throw error.value;
         }
-
-
+        const iconPath = page.icon?.split('/');
+        const pageName = iconPath && iconPath[iconPath?.length - 1]?.split('.')[0];
+        ogImage = `${origin}/meta/docs/${pageName || 'default'}.svg?title=${page.title || ''}`
     }
 
     const {navigation, pageList, pageNames} = await fetchNavigation();
