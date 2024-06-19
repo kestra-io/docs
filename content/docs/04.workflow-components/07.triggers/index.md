@@ -111,7 +111,8 @@ namespace: example
 tasks:
   - id: sleep
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     commands:
       - sleep 30
 

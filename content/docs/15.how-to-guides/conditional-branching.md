@@ -38,7 +38,8 @@ tasks:
           tasks:
             - id: failed
               type: io.kestra.plugin.scripts.shell.Commands
-              runner: PROCESS
+              taskRunner:
+                type: io.kestra.plugin.core.runner.Process
               commands:
                 - 'exit 1'
           errors:

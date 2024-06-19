@@ -51,7 +51,7 @@ Currently, all the official Kestra plugins are safe to be whitelisted **except**
 
 
 ## Scripting isolation
-For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) and other script tasks in the core, we advise you to force `DOCKER` isolation and to configure global cluster `pluginDefaults`:
+For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) and other script tasks in the core, we advise you to force `io.kestra.plugin.scripts.runner.docker.Docker` isolation and to configure global cluster `pluginDefaults`:
 
 ```yaml
 kestra:
@@ -60,9 +60,9 @@ kestra:
       - type: io.kestra.plugin.scripts.shell.Commands
         forced: true
         values:
-          docker:
-            image: ubuntu:latest
-          runner: DOCKER
+          containerImage: ubuntu:latest
+          taskRunner:
+            type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
 
 ::alert{type="warning"}
