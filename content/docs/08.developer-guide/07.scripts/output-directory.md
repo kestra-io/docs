@@ -15,7 +15,8 @@ namespace: dev
 tasks:
   - id: python_output
     type: io.kestra.plugin.scripts.python.Script
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     outputFiles:
       - "*.txt"
     script: |
@@ -25,7 +26,8 @@ tasks:
 
   - id: read_output
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     commands:
       - cat {{outputs.python_output.outputFiles['myfile.txt']}}
 ```
@@ -48,7 +50,8 @@ namespace: dev
 tasks:
   - id: python_output
     type: io.kestra.plugin.scripts.python.Script
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     script: |
       f = open("{{outputDir}}/myfile.txt", "a")
       f.write("Hi, this is output from a script 👋")
@@ -56,7 +59,8 @@ tasks:
 
   - id: read_output
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     commands:
       - cat {{outputs.python_output.outputFiles['myfile.txt']}}
 ```
