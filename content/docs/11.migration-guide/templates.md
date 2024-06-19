@@ -42,7 +42,8 @@ tasks:
           - echo "Hello from 2" >> out/output2.txt
           - echo "Hello from 3" >> out/output3.txt
           - echo "Hello from 4" >> out/output4.txt
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
       - id: out
         type: io.kestra.plugin.core.storage.LocalFiles
         outputs:
@@ -58,7 +59,8 @@ tasks:
         type: io.kestra.plugin.scripts.shell.Commands
         commands:
           - cat "{{taskrun.value}}"
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
 ```
 
 You can trigger it in a flow using the `io.kestra.plugin.core.flow.Template` task:
