@@ -22,37 +22,43 @@ tasks:
     tasks:
       - id: t1
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t2
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t3
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t4
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t5
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t6
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
@@ -82,19 +88,22 @@ tasks:
         tasks:
           - id: t1
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
           - id: t2
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
           - id: t3
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
@@ -103,19 +112,22 @@ tasks:
         tasks:
           - id: t4
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
           - id: t5
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
           - id: t6
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'

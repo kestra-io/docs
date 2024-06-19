@@ -100,7 +100,8 @@ tasks:
       - id: validate-flows
         type: io.kestra.plugin.scripts.shell.Commands
         description: "Validate flows from Git before deploying them."
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         warningOnStdErr: false
         commands:
           - /app/kestra flow validate flows/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
@@ -108,7 +109,8 @@ tasks:
       - id: deploy-flows
         type: io.kestra.plugin.scripts.shell.Commands
         description: "Deply flows to a Kestra namespace."
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         warningOnStdErr: false
         commands:
           - /app/kestra flow namespace update prod flows/prod/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"

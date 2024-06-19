@@ -59,7 +59,8 @@ namespace: prod.monitoring
 tasks:
   - id: fail
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     commands:
       - exit 1
 
@@ -125,7 +126,8 @@ namespace: prod
 tasks:
   - id: fail
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     commands:
       - exit 1
 ```
