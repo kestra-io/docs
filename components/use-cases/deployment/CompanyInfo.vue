@@ -107,7 +107,7 @@
 
         h1 {
             font-size: $h2-font-size;
-            font-weight: 600;
+            font-weight: 500;
 
             @include media-breakpoint-down(sm) {
                 font-size: 1.875rem;

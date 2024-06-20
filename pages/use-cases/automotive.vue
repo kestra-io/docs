@@ -41,6 +41,7 @@
                 logoPath="/landing/usecases/automotive/car-hatchback.svg"
                 logoAlt="car hatchback"
                 strokeColor="#E3262F"
+                :unlockContent="unlockContent"
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
@@ -132,6 +133,16 @@
                 personRole: 'Team Lead',
                 logo: '/landing/companies/quadis.svg',
                 logoAlt: 'Quadis',
+              },
+              unlockContent: {
+                leftContent: [
+                  { title: 'Plugin Ecosystem', description: 'Capabilities for real-time data processing and decision-making, critical for time-sensitive automotive operations.' },
+                  { title: 'Monitoring and Alerting', description: 'Kestra’s intuitive interface and comprehensive documentation make it easy for automotive engineers to quickly build and deploy powerful workflows.' },
+                ],
+                rightContent: [
+                  { title: 'Real-Time Processing', description: 'Extensive plugin support for various data sources and destinations, allowing seamless integration with existing automotive systems.' },
+                  { title: 'Quick to Learn, Easy to Master', description: 'Robust monitoring and alerting features that ensure proactive issue resolution, minimizing operational disruptions.' },
+                ]
               }
             }
         },

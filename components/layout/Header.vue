@@ -187,7 +187,7 @@
                                         <BasketOutline />
                                         <p>
                                             <span>For Retail</span><br />
-                                            Elevate your Kestra use through our partner ecosystem
+                                            Empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales
                                         </p>
                                     </NuxtLink>
                                 </li>
@@ -197,7 +197,7 @@
                                         <PillMultiple />
                                         <p>
                                             <span>For Healthcare</span><br />
-                                            Ask any questions and share your feedback
+                                            Streamline data processing, accelerate research, and enhance collaboration in healthcare
                                         </p>
                                     </NuxtLink>
                                 </li>
@@ -207,7 +207,7 @@
                                         <p>
                                             <span>For Automotive
                                             </span><br/>
-                                            Ask any questions and share your feedback
+                                            Ensure seamless operations and optimized performance across all processes.
                                         </p>
                                     </NuxtLink>
                                 </li>

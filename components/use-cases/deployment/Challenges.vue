@@ -72,6 +72,7 @@
         .container {
             padding-top: calc($spacer * 5.625);
             padding-bottom: calc($spacer * 5.625);
+            background: #111113 url('/retail/header-mask.svg') 100% 100%;
 
             .title-block {
                 display: flex;
@@ -131,6 +132,9 @@
                     background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
                 }
 
+                :deep(.card-title) {
+                    text-align: left;
+                }
             }
         }
     }

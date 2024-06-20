@@ -23,11 +23,11 @@
                     class="col-12 col-lg-5 mb-4 z-2"
                     data-aos="zoom-in"
                 >
-                    <div class="unlock-content">
-                        <p class="content-title">Plugin Ecosystem</p>
-                        <p class="content-description">Capabilities for real-time data processing and decision-making, critical for time-sensitive automotive operations.</p>
-                        <p class="content-title">Monitoring and Alerting</p>
-                        <p class="content-description">Kestra’s intuitive interface and comprehensive documentation make it easy for automotive engineers to quickly build and deploy powerful workflows.</p>
+                    <div class="unlock-content text-end">
+                        <template v-for="info in unlockContent.leftContent">
+                            <p class="content-title">{{info.title}}</p>
+                            <p class="content-description">{{info.description}}</p>
+                        </template>
                     </div>
                 </div>
                 <div
@@ -40,11 +40,11 @@
                     class="col-12 col-lg-5 mb-4 z-2"
                     data-aos="zoom-in"
                 >
-                    <div class="unlock-content">
-                        <p class="content-description">Extensive plugin support for various data sources and destinations, allowing seamless integration with existing automotive systems.</p>
-                        <p class="content-title">Real-Time Processing</p>
-                        <p class="content-description">Robust monitoring and alerting features that ensure proactive issue resolution, minimizing operational disruptions.</p>
-                        <p class="content-title">Quick to Learn, Easy to Master</p>
+                    <div class="unlock-content text-start">
+                        <template v-for="info in unlockContent.rightContent">
+                            <p class="content-description">{{info.description}}</p>
+                            <p class="content-title">{{info.title}}</p>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -73,6 +73,10 @@
       },
       strokeColor: {
         type: String,
+        required: true,
+      },
+      unlockContent: {
+        type: Object,
         required: true,
       },
     },
@@ -152,7 +156,7 @@
                 .content-title {
                     font-family: Public Sans;
                     font-size: $h2-font-size;
-                    font-weight: 600;
+                    font-weight: 500;
                     line-height: 50px;
                     margin: 0;
                     @include media-breakpoint-down(lg) {

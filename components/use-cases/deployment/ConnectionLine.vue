@@ -88,9 +88,6 @@
         return { top: connectionCircleOffsetTop, bottom: connectionCircleOffsetBottom, circleN };
       },
       connectionCircleAnimation ({ top, bottom, circleN }) {
-        console.log('top', top);
-        console.log('bottom', bottom);
-        console.log('window.scrollY', window.scrollY);
         if (window.scrollY >= top && window.scrollY <= bottom) {
           this[`showFilterCircle${circleN}`] = true;
         }else {

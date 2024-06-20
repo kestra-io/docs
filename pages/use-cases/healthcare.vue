@@ -28,9 +28,9 @@
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <UseCasesDeploymentBusinessByUs
-                percent="500"
-                percentText="In workflow delivery "
-                mainInfoHtml="“Kestra adapts to any tool thanks to it’s plugin and <br> it’s easy for anyone to understand”"
+                percent="200"
+                percentText="Increased productivity"
+                mainInfoHtml=" “Kestra strong observability, ease of development,<br> and flexibility make it a versatile solution for<br> managing data pipelines in the field of genomics.”"
                 :companyInfo="companyInfo"
             />
         </NuxtLazyHydrate>
@@ -39,8 +39,9 @@
                 title="Automotive Ecosystem"
                 description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
                 logoPath="/landing/usecases/healthcare/heart-pulse.svg"
-                logoAlt="car hatchback"
+                logoAlt="heart pulse"
                 strokeColor="#3991FF"
+                :unlockContent="unlockContent"
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
@@ -128,10 +129,20 @@
                 },
               ],
               companyInfo: {
-                personName: 'Ruben Boniz Martinez',
-                personRole: 'Team Lead',
-                logo: '/landing/companies/quadis.svg',
-                logoAlt: 'Quadis',
+                personName: 'Yohann Nédélec',
+                personRole: 'Tech Lead',
+                logo: '/landing/companies/sophia-genetics.svg',
+                logoAlt: 'Sophia Genetics',
+              },
+              unlockContent: {
+                leftContent: [
+                  { title: 'Accelerate Data Processing', description: 'Kestra facilitates seamless data sharing and workflow coordination among bioinformaticians, data scientists, and IT teams.' },
+                  { title: 'Improve Data Accuracy and Reliability', description: 'Kestra prioritizes data security and compliance, ensuring all information is handled according to the highest standards for trust and reliability in your healthcare operations.' },
+                ],
+                rightContent: [
+                  { title: 'Enhance Collaboration', description: 'Whether dealing with genomic sequences, patient records, or research data, Kestra ensures that your data is processed swiftly and accurately.' },
+                  { title: 'Secure and Compliant Data Handling', description: 'Manual data processing is prone to errors and inconsistencies. Kestra’s automation capabilities minimize these risks by ensuring that data is handled consistently and accurately.' },
+                ]
               }
             }
         },
