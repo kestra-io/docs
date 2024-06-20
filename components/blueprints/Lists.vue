@@ -86,9 +86,8 @@ if (!activeTag.value) {
 
   activeTag.value = { name: 'All tags' };
   if (blueprintInformations && blueprintInformations.value) {
-    await navigateTo(`/blueprints/all tags/${route.params.slug}`);
-  } else {
-
+    let tag = tags.value.find(f => f?.id == blueprintInformations.value.page.tags[0]);
+    await navigateTo(`/blueprints/${tag.name || 'all tags'}/${route.params.slug}`);
   }
 }
 const { data: blueprintsData, error } = await useAsyncData('blueprints', () => {
