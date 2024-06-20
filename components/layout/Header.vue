@@ -179,6 +179,39 @@
                                     </NuxtLink>
                                 </li>
                             </div>
+                            <div class="dropdown-column">
+                                <p class="column-caption">Industries</p>
+                                <li>
+                                    <NuxtLink class="dropdown-item" href="/use-cases/retail"
+                                              @click="globalClick(true)">
+                                        <BasketOutline />
+                                        <p>
+                                            <span>For Retail</span><br />
+                                            Elevate your Kestra use through our partner ecosystem
+                                        </p>
+                                    </NuxtLink>
+                                </li>
+                                <li>
+                                    <NuxtLink class="dropdown-item" href="/use-cases/healthcare"
+                                              @click="globalClick(true)">
+                                        <PillMultiple />
+                                        <p>
+                                            <span>For Healthcare</span><br />
+                                            Ask any questions and share your feedback
+                                        </p>
+                                    </NuxtLink>
+                                </li>
+                                <li>
+                                    <NuxtLink class="dropdown-item" href="/use-cases/automotive" @click="globalClick(true)">
+                                        <PillMultiple/>
+                                        <p>
+                                            <span>For Automotive
+                                            </span><br/>
+                                            Ask any questions and share your feedback
+                                        </p>
+                                    </NuxtLink>
+                                </li>
+                            </div>
                         </ul>
                     </li>
                     <li class="nav-item">
