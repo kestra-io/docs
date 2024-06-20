@@ -39,15 +39,18 @@
     const description = ref()
     const flowAsMd = ref("")
 
+    const categorySlug = route.fullPath?.split('/')[2];
     const {data: tags} = await useAsyncData('blueprints-tags', () => {
         return $fetch(`${config.public.apiUrl}/blueprints/tags`)
     })
+
+    const activeTag = tags.value.find(f => f?.name?.toLowerCase() == decodeURIComponent(categorySlug));
 
     const {data: blueprintInformations, error} = await useAsyncData('blueprints-informations', () => {
         return $fetch(`/api/blueprint?query=${route.params.id}`)
     })
 
-    if (error && error.value) {
+    if ((error && error.value) || (!activeTag && decodeURIComponent(categorySlug) !== 'all tags')) {
       throw createError({statusCode: 404, message: 'Page not found', data: error, fatal: true})
     }
 

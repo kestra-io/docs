@@ -14,7 +14,7 @@
         <button
             v-for="tag in tags"
             :key="tag.name"
-            :class="{ 'active': tag.name === activeTag.name }"
+            :class="{ 'active': tag.name === activeTag?.name }"
             @click="setTagBlueprints(tag)"
             class="m-1 rounded-button"
         >
@@ -75,14 +75,27 @@ const setTagBlueprints = async (tagVal) => {
 
 if(route.query.page) currentPage.value = parseInt(route.query.page)
 if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
-if(route.params.slug) activeTag.value = tags.value.find(f => f.name.toLowerCase() == route.params.slug.toLowerCase())
-if(route.query.q) searchQuery.value = route.query.q
+if(route.params.slug) activeTag.value = tags.value.find(f => f?.name?.toLowerCase() == route.params.slug.toLowerCase())
+if(route.query.q) searchQuery.value = route.query.q;
 
+if (!activeTag.value) {
+  const id = route.params.slug?.split('-')[0];
+  const {data: blueprintInformations} = await useAsyncData('blueprints-informations', () => {
+    return $fetch(`/api/blueprint?query=${id}`)
+  })
+
+  activeTag.value = { name: 'All tags' };
+  if (blueprintInformations && blueprintInformations.value) {
+    await navigateTo(`/blueprints/all tags/${route.params.slug}`);
+  } else {
+
+  }
+}
 const { data: blueprintsData, error } = await useAsyncData('blueprints', () => {
     return $fetch(`${config.public.apiUrl}/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.params.slug && route.params.slug !== 'all tags' ? `&tags=${activeTag.value.id}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
 })
 
-if (error && error.value) {
+if ((error && error.value) || !activeTag) {
   throw createError({statusCode: 404, message: 'Page not found', data: error, fatal: true})
 }
 
@@ -102,7 +115,7 @@ const changePage = (pageNo) => {
 };
 
 const generateCardHref = (blueprint) => {
-  return `/blueprints/${activeTag.value.name}/${blueprint.id}-${slugify(blueprint.title)}`
+  return `/blueprints/${activeTag.value.name.toLowerCase()}/${blueprint.id}-${slugify(blueprint.title)}`
 }
 
 let timer;
