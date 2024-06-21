@@ -81,7 +81,6 @@
 
     .container-fluid {
         background-size: 100% 100%;
-        padding: 6rem 0;
         position: relative;
         overflow: hidden;
 
@@ -97,17 +96,21 @@
             background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
         }
 
+        .container {
+            padding: 6rem 0;
+            border-top: $block-border;
+        }
+
         h1, p {
             color: $white;
             font-family: $font-family-sans-serif;
-            font-weight: 300;
+            font-weight: 500;
             padding-bottom: 0;
             margin: 0;
         }
 
         h1 {
             font-size: $h2-font-size;
-            font-weight: 500;
 
             @include media-breakpoint-down(sm) {
                 font-size: 1.875rem;
@@ -123,7 +126,6 @@
 
         p {
             font-size: $h5-font-size;
-            font-weight: 500;
             @include media-breakpoint-down(sm) {
                 font-size: $h6-font-size;
             }
