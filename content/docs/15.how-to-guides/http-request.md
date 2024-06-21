@@ -112,7 +112,7 @@ In this example, our flow is making a `GET` Request to collect a JSON of product
 
 ```yaml
 id: http_get_request_example
-namespace: example
+namespace: company.team
 description: Make a HTTP Request and Handle the Output
 
 tasks:
@@ -148,7 +148,7 @@ Using our `POST` Request example from earlier, we can recreate it directly in Ke
 
 ```yaml
 id: http_post_request_example
-namespace: example
+namespace: company.team
 description: Make a HTTP Request and Handle the Output
 
 inputs:
@@ -185,7 +185,7 @@ Similar to our `POST` Request, we can change the `method` property to `PUT`. As 
 
 ```yaml
 id: http_put_request_example
-namespace: example
+namespace: company.team
 description: Make a HTTP Request and Handle the Output
 
 inputs:
@@ -217,7 +217,7 @@ We can also remove a product from the list by using a `DELETE` Request. This exa
 
 ```yaml
 id: http_delete_request_example
-namespace: example
+namespace: company.team
 description: Make a HTTP Request and Handle the Output
 
 inputs:

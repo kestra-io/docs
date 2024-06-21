@@ -157,7 +157,7 @@ Here is a comprehensive example in a flow:
 
 ```yaml
 id: shell_script
-namespace: example
+namespace: company.team
 
 tasks:
   - id: shell_script

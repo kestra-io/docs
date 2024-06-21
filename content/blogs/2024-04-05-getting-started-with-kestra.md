@@ -43,7 +43,7 @@ To help visualise it, here's an example:
 
 ```yaml
 id: getting_started
-namespace: example
+namespace: company.team
 tasks:
   - id: hello_world
     type: io.kestra.plugin.core.log.Log
@@ -78,7 +78,7 @@ The first time you launch Kestra in your browser, it will ask you if you want to
 
 ```yaml
 id: getting_started
-namespace: example
+namespace: company.team
 tasks:
   - id: hello_world
     type: io.kestra.plugin.core.log.Log
@@ -99,7 +99,7 @@ Now let’s test this by saving our flow and executing it! Our flow should look 
 
 ```yaml
 id: api_example
-namespace: example
+namespace: company.team
 tasks:
   - id: python_script
     type: io.kestra.plugin.scripts.python.Commands
@@ -200,7 +200,7 @@ Before we execute our flow, let’s recap and check out the full flow together. 
 
 ```yaml
 id: api_example
-namespace: example
+namespace: company.team
 
 inputs:
   - id: kestra_logo
@@ -271,7 +271,7 @@ With that configured, we now have our fully functioning flow that can make an AP
 
 ```yaml
 id: api_example
-namespace: example
+namespace: company.team
 
 inputs:
   - id: kestra_logo

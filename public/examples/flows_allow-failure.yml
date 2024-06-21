@@ -1,5 +1,5 @@
 id: allow_failure
-namespace: example
+namespace: company.team
 
 description: This flow will allow a failure of a task (imagine a flaky unit test) and will continue processing the last task, leaving the execution in a `WARNING` state.
 

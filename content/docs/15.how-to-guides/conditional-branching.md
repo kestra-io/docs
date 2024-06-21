@@ -10,7 +10,7 @@ Depending on the value passed as input, the will flow branch to different tasks.
 
 ```yaml
 id: switch
-namespace: example
+namespace: company.team
 
 inputs:
   - id: string

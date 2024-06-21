@@ -9,7 +9,7 @@ In this example, we can use `EachSequential` to iterate over a list of values.
 
 ```yaml
 id: each_nested
-namespace: example
+namespace: company.team
 
 tasks:
   - id: 1_each

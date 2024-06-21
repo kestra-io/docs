@@ -1,5 +1,5 @@
 id: errors
-namespace: example
+namespace: company.team
 
 description: This flow will always fail. The `errors` branch tasks are executed on flow failure in parallel.
 

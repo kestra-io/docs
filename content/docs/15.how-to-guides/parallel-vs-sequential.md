@@ -13,7 +13,7 @@ The addition of the Parallel task with the `concurrent` property set to 3 ensure
 
 ```yaml
 id: parallel
-namespace: example
+namespace: company.team
 
 tasks:
   - id: parent
@@ -74,7 +74,7 @@ This flow will start two sequential task groups in parallel. The addition of the
 
 ```yaml
 id: sequential
-namespace: example
+namespace: company.team
 
 description: |
   This flow will start the 2 sequential tasks in parallel and those will launch tasks one after the other.

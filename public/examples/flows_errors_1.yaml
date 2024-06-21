@@ -1,5 +1,5 @@
 id: errors
-namespace: example
+namespace: company.team
 
 description: This will always fail
 
