@@ -1,6 +1,7 @@
 ---
 title: KeyCloak SSO
 icon: /docs/icons/tutorial.svg
+editions: ["EE"]
 ---
 
 Setup KeyCloak SSO
