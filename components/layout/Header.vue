@@ -65,7 +65,7 @@
                                             <span>Cloud Edition</span>
                                             <span class="tag">Private Alpha</span>
                                             <br />
-                                            Register to the Cloud Edition
+                                            Register for the Cloud Edition
                                         </p>
                                     </NuxtLink>
                                 </li>
