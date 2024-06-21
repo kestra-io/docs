@@ -5,6 +5,47 @@ icon: /docs/icons/best-practices.svg
 
 This page describes common naming conventions to keep your flows and tasks well-organized and consistent.
 
+## Namespace Naming Conventions
+
+We recommend using the `company.team` naming convention for namespaces to maintain a well-organized and consistent structure across your workflows. This pattern helps in the following ways:
+1. Centralized governance for credentials
+2. Sharing configurations across namespaces
+3. Simplified Git sync
+
+### Why we recommend a `company.team` namespace structure
+
+By having **a root namespace named after your company**, you can centrally govern [plugin defaults](../04.workflow-components/09.task-defaults.md), [variables](../04.workflow-components/04.variables.md) and [secrets](../05.concepts/04.secret.md) and share that configuration across all other namespaces under the company root.
+
+Adhering to this naming convention also simplifies [Git operations](../08.developer-guide/04.git.md). You can maintain a single flow that synchronizes all workflows with Git across all namespaces under the parent namespace named after your company.
+
+The next level of namespaces should be named after your team (e.g., `company.team`). This structure allows for centralized governance and visibility at the team level before further dividing into projects, systems, or other logical hierarchies. When syncing your code with Git, that nested structure will be reflected as nested directories in your Git repository.
+
+### Example Namespace Structure
+
+Here is an example of how you might structure your namespaces:
+
+- `mycompany`
+  - `mycompany.marketing`
+    - `mycompany.marketing.projectA`
+    - `mycompany.marketing.projectB`
+  - `mycompany.sales`
+    - `mycompany.sales.projectC`
+    - `mycompany.sales.projectD`
+
+### Should you use environment-specific namespaces?
+
+We generally recommend against using environment-specific namespaces (e.g., `dev`, `prod`, `staging`) because it can lead to several issues such as:
+- **Dev and prod not fully separated**: a development workflow running out of memory could impact the production instance.
+- **Duplication of configurations**: you may end up duplicating configurations across environments, which can lead to inconsistencies.
+
+It's recommended to use separate Kestra instances to separate dev and prod environments.
+
+### Summary
+
+The `company.team` namespace structure  will help you to facilitate a logical, easy to maintain hierarchy, and will make it easy to sync your workflows with Git. To reliably separate dev and prod environments, use separate Kestra instances or tenants.
+
+---
+
 ## Subscript notation and valid characters in IDs
 
 Kestra doesn't _enforce_ any naming convention. For example, if you want to use the URL-style naming including hyphens, Kestra supports that. However, keep in mind that IDs for flows, tasks, inputs, outputs and triggers must match the `"^[a-zA-Z0-9][a-zA-Z0-9_-]*"` regex pattern. This means that:
