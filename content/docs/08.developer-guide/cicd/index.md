@@ -32,7 +32,10 @@ Kestra CLI provides several [commands](./04.helpers.md) for validating and deplo
 ```
 
 ::alert{type="info"}
-Note that the `--api-token` option is available only in the Enterprise Edition. Check the [API Tokens](/docs/enterprise/api-tokens) page for more details.
+Note that the `--api-token` option is available only in the [Enterprise Edition](/docs/enterprise/api-tokens). In the open-source version, you can leverage the basic authentication using the `--user` flag:
+```bash
+./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --user=KESTRA_USER:KESTRA_PASSWORD
+```
 ::
 
 If you run Kestra in a Docker container, you can access the CLI as follows:
