@@ -1,5 +1,5 @@
 id: disable_task
-namespace: dev
+namespace: company.team
 
 description: |
   This flow will never launch the `skipped` task because that task is disabled.

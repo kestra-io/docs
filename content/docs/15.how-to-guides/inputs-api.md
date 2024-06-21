@@ -17,7 +17,7 @@ Let's assume the following flow:
 
 ```yaml
 id: inputs_demo
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: user
@@ -34,7 +34,7 @@ This flow has the input `user` which we can modify via an API call. We can do th
 
 ```yaml
 id: input_api
-namespace: dev
+namespace: company.team
 tasks:
   - id: basic_auth_api
     type: io.kestra.plugin.core.http.Request
@@ -51,7 +51,7 @@ If you configured basic authentication for your Kestra instance, you can add the
 
 ```yaml
 id: api_call
-namespace: dev
+namespace: company.team
 tasks:
   - id: basic_auth_api
     type: io.kestra.plugin.core.http.Request

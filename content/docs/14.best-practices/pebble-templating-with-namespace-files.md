@@ -14,7 +14,7 @@ You can write the script inline in your flow, and use pebble templating as part 
 
 ```yaml
 id: pebble_templeting_inline
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: uri
@@ -75,7 +75,7 @@ You can pass the arguments to this script using pebble templates. The pebble tem
 
 ```yaml
 id: myscript
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: uri

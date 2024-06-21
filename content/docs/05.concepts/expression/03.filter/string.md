@@ -219,7 +219,7 @@ The `startsWith()` filter returns `true` if the input string starts with the spe
 
 ```yaml
 id: compare_strings
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: myvalue

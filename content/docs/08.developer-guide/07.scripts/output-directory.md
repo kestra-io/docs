@@ -11,7 +11,7 @@ The `outputFiles` property allows to specify a list of files to be persisted in 
 
 ```yaml
 id: output_text_files
-namespace: dev
+namespace: company.team
 tasks:
   - id: python_output
     type: io.kestra.plugin.scripts.python.Script
@@ -46,7 +46,7 @@ This is an alternative to the `outputFiles` property. Files stored in the `outpu
 
 ```yaml
 id: output_text_files
-namespace: dev
+namespace: company.team
 tasks:
   - id: python_output
     type: io.kestra.plugin.scripts.python.Script

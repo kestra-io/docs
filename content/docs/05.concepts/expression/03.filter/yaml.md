@@ -22,7 +22,7 @@ The filter is useful when working with the [TemplatedTask](/plugins/tasks/templa
 
 ```yaml
 id: yaml_filter
-namespace: dev
+namespace: company.team
 
 labels:
   label: value
@@ -239,7 +239,7 @@ nindent(amount, prefix=" ")
 
 ```yaml
 id: templated_task
-namespace: dev
+namespace: company.team
 
 labels:
   my-label: "will-be-sent-to-k8s"
@@ -302,7 +302,7 @@ tasks:
 
 ```yaml
 id: indent_filter
-namespace: dev
+namespace: company.team
 
 labels:
   label: value
@@ -493,7 +493,7 @@ tasks:
 
 ```yaml
 id: nindent_filter
-namespace: dev
+namespace: company.team
 
 labels:
   label: value

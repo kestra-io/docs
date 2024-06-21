@@ -13,7 +13,7 @@ Many tasks from Kestra plugins emit certain outputs by default. You can inspect 
 
 ```yaml
 id: download
-namespace: dev
+namespace: company.team
 tasks:
   - id: http
     type: io.kestra.plugin.core.http.Download
