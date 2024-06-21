@@ -8,23 +8,18 @@
                         <p data-aos="fade-left" class="baseline">
                             {{description}}
                         </p>
-                        <div class="cta">
-                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
+                        <div class="cta d-flex gap-3 flex-wrap">
+                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
                                 Talk to Us
                             </NuxtLink>
-                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                            <NuxtLink href="/docs/getting-started/quickstart" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Get started
                             </NuxtLink>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 order-0 order-lg-1">
-                    <NuxtImg
-                        width="603px"
-                        loading="lazy"
-                        format="webp"
-                        class="mt-md-0"
-                        data-aos="zoom-in"
+                    <img
                         :src="imageSrc"
                         :alt="imageAlt"
                     />

@@ -179,6 +179,39 @@
                                     </NuxtLink>
                                 </li>
                             </div>
+                            <div class="dropdown-column">
+                                <p class="column-caption">Industries</p>
+                                <li>
+                                    <NuxtLink class="dropdown-item" href="/use-cases/retail"
+                                              @click="globalClick(true)">
+                                        <BasketOutline />
+                                        <p>
+                                            <span>For Retail</span><br />
+                                            Empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales
+                                        </p>
+                                    </NuxtLink>
+                                </li>
+                                <li>
+                                    <NuxtLink class="dropdown-item" href="/use-cases/healthcare"
+                                              @click="globalClick(true)">
+                                        <PillMultiple />
+                                        <p>
+                                            <span>For Healthcare</span><br />
+                                            Streamline data processing, accelerate research, and enhance collaboration in healthcare
+                                        </p>
+                                    </NuxtLink>
+                                </li>
+                                <li>
+                                    <NuxtLink class="dropdown-item" href="/use-cases/automotive" @click="globalClick(true)">
+                                        <PillMultiple/>
+                                        <p>
+                                            <span>For Automotive
+                                            </span><br/>
+                                            Ensure seamless operations and optimized performance across all processes.
+                                        </p>
+                                    </NuxtLink>
+                                </li>
+                            </div>
                         </ul>
                     </li>
                     <li class="nav-item">
