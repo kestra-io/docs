@@ -15331,6 +15331,10 @@ components:
       properties:
         type:
           $ref: '#/components/schemas/UserType'
+        groupList:
+          type: array
+          items:
+            $ref: '#/components/schemas/AbstractUser.GroupIdentifier'
         groups:
           type: array
           items:
@@ -15349,10 +15353,6 @@ components:
         email:
           pattern: "^$|^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$"
           type: string
-        groupList:
-          type: array
-          items:
-            $ref: '#/components/schemas/AbstractUser.GroupIdentifier'
     AbstractUser.GroupIdentifier:
       required:
       - groupId
