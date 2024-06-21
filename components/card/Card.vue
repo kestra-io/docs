@@ -10,6 +10,14 @@
                                 <stop offset="0.015625" stop-color="#F2D5FF"/>
                                 <stop offset="1" stop-color="#CB5AFF"/>
                             </linearGradient>
+                            <linearGradient id="featureiconsgradientRed" x1="17.9873" y1="0.5" x2="17.9873" y2="35.5" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#E3262F"/>
+                                <stop offset="1" stop-color="#ED5D63"/>
+                            </linearGradient>
+                            <linearGradient id="featureiconsgradientBlue" x1="9.76058" y1="9.99753" x2="38.9" y2="39.0887" gradientUnits="userSpaceOnUse">
+                                <stop offset="0.015625" stop-color="#A7EAFF"/>
+                                <stop offset="1" stop-color="#10C2FB"/>
+                            </linearGradient>
                         </defs>
                     </svg>
                 </span>

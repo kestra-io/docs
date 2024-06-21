@@ -3,7 +3,7 @@
     <Section>
       <div class="container">
         <div class="text-center pb-3">
-          <img src="/landing/features/Frame.svg" />
+          <img :src="logoPath" class="z-1 position-relative"/>
         </div>
         <div class="heading mx-auto">
           <h2 class="title text-center">
@@ -36,6 +36,13 @@
 import Section from "../layout/Section.vue";
 export default {
   components: { Section },
+  props: {
+    logoPath: {
+      type: String,
+      required: false,
+      default: () => '/landing/features/Frame.svg',
+    }
+  }
 };
 </script>
 
@@ -82,9 +89,15 @@ export default {
   color: #fff;
   font-weight: 300;
   max-width: 700px;
+  p {
+      position: relative;
+      z-index: 1;
+  }
 }
 
 .heading {
+  position: relative;
+  z-index: 1;
   max-width: 610px;
   font-size: $font-size-3xl !important;
 
