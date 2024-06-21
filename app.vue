@@ -19,7 +19,7 @@ useHead({
     titleTemplate: (titleChunk) => {
         return titleChunk &&
             titleChunk != "Kestra, Open Source Declarative Data Orchestration"
-            ? `${titleChunk}`
+            ? `${titleChunk} | Kestra`
             : "Kestra, Open Source Declarative Data Orchestration";
     },
 });
