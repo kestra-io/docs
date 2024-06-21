@@ -29,7 +29,7 @@ A typical template has an ID, a namespace, and a list of tasks. Here is an examp
 
 ```yaml
 id: mytemplate
-namespace: dev
+namespace: company.team
 tasks:
   - id: workingDir
     type: io.kestra.plugin.core.flow.WorkingDirectory
@@ -67,7 +67,7 @@ You can trigger it in a flow using the `io.kestra.plugin.core.flow.Template` tas
 
 ```yaml
 id: templatedFlow
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: first
@@ -76,7 +76,7 @@ tasks:
 
   - id: template
     type: io.kestra.plugin.core.flow.Template
-    namespace: dev
+    namespace: company.team
     templateId: mytemplate
 
   - id: last
@@ -103,11 +103,11 @@ See the example below showing how you can invoke a subflow from a parent flow:
 
 ```yaml
 id: parentFlow
-namespace: dev
+namespace: company.team
 tasks:
   - id: subflow
     type: io.kestra.plugin.core.flow.Subflow
-    namespace: dev
+    namespace: company.team
     flowId: mytemplate
 ```
 
@@ -115,7 +115,7 @@ And here is a complete example showing how a template task can be migrated to a 
 
 ```yaml
 id: parentFlow
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: first
@@ -124,7 +124,7 @@ tasks:
 
   - id: subflow
     type: io.kestra.plugin.core.flow.Subflow
-    namespace: dev
+    namespace: company.team
     flowId: mytemplate
 
   - id: last
@@ -136,7 +136,7 @@ If your subflow has input parameters and you want to override them when calling 
 
 ```yaml
 id: parentFlow
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: first
@@ -145,7 +145,7 @@ tasks:
 
   - id: subflow
     type: io.kestra.plugin.core.flow.Subflow
-    namespace: dev
+    namespace: company.team
     flowId: mytemplate
     inputs:
       myIntegerParameter: 42
@@ -182,7 +182,7 @@ Below is a flow sample that will include a template:
 
 ```yaml
 id: with-template
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: store
@@ -192,7 +192,7 @@ inputs:
 tasks:
   - id: render-template
     type: io.kestra.plugin.core.flow.Template
-    namespace: dev
+    namespace: company.team
     templateId: template-example
     args:
       renamedStore: "{{ inputs.store }}"
@@ -202,7 +202,7 @@ If the template is defined like so:
 
 ```yaml
 id: template-example
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: task-defined-by-template
@@ -214,7 +214,7 @@ It will result in a flow similar to the following:
 
 ```yaml
 id: with-template
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: render-template

@@ -26,7 +26,7 @@ Kestra has a plugin support for [Ansible CLI](https://kestra.io/plugins/plugin-a
 
 ```yaml
 id: ansible
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: ansible_task
@@ -69,7 +69,7 @@ Kestra supports [Terraform plugin](https://kestra.io/plugins/plugin-terraform) m
 
 ```yaml
 id: terraform-cli
-namespace: dev
+namespace: company.team
 tasks:
   - id: terraform-s3-bukcet-creation
     type: io.kestra.plugin.terraform.cli.TerraformCLI

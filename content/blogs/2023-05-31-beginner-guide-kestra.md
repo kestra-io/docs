@@ -76,7 +76,7 @@ As you can see, once you scale, the idea is to group them and build a comprehens
 
 ```yaml
 id: kestra_download_csv
-namespace: io.kestra.downloads
+namespace: company.team
 description: My first flow is a CSV Download and transform the results into JSON
 ```
 **The second step introduces the concept of flows.**
@@ -123,7 +123,7 @@ tasks:
 
 ```yaml
 id: kestra_download_csv
-namespace: io.kestra.downloads
+namespace: company.team
 description: My first flow is a CSV Download and transform the results into JSON
 
 inputs:

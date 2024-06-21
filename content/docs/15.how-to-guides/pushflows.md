@@ -37,7 +37,7 @@ Let's start by creating a single `hello_world` flow in the `dev` namespace and p
 
 ```yaml
 id: hello_world
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: greeting
@@ -65,7 +65,7 @@ tasks:
     branch: develop
     flows:
       - hello_world
-    sourcenamespace: dev
+    sourcenamespace: company.team
     targetNamespace: prod
     gitDirectory: flows
     commitMessage: "changes to kestra flows"
@@ -113,7 +113,7 @@ To see how you can push all flows from a given namespace to Git, let's create tw
 
 ```yaml
 id: flow1
-namespace: dev
+namespace: company.team
 tasks:
   - id: test
     type: io.kestra.plugin.core.log.Log
@@ -123,7 +123,7 @@ tasks:
 The `flow2` flow is just a copy of the `flow1` with a different flow ID and message:
 ```yaml
 id: flow2
-namespace: dev
+namespace: company.team
 tasks:
   - id: test
     type: io.kestra.plugin.core.log.Log
@@ -145,7 +145,7 @@ tasks:
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
     url: https://github.com/git_username/flows
     branch: develop
-    sourcenamespace: dev
+    sourcenamespace: company.team
     targetNamespace: prod
     gitDirectory: flows
     commitMessage: "push all development flows to Git and create a PR"
@@ -170,7 +170,7 @@ Let's create two more flows in the `dev.tutorial` namespace:
 1. `hello_world_1` flow:
 ```yaml
 id: hello_world_1
-namespace: dev.tutorial
+namespace: company.team.tutorial
 
 inputs:
   - id: greeting
@@ -186,7 +186,7 @@ tasks:
 2. `hello_world_2` flow:
 ```yaml
 id: hello_world_2
-namespace: dev.tutorial
+namespace: company.team.tutorial
 
 inputs:
   - id: greeting
@@ -212,7 +212,7 @@ tasks:
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
     url: https://github.com/git_username/flows
     branch: develop
-    sourcenamespace: dev
+    sourcenamespace: company.team
     targetNamespace: prod
     gitDirectory: flows
     commitMessage: "push all flows"

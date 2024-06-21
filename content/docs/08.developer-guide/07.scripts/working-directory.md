@@ -31,7 +31,7 @@ For example, the `inputs` property can be used to add input files that might be 
 
 ```yaml
 id: pip
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: wdir

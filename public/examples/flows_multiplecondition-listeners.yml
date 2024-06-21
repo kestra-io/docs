@@ -1,5 +1,5 @@
 id: multiplecondition-listener
-namespace: io.kestra.demo
+namespace: company.team
 
 description: |
   This flow will start only if `multiplecondition-flow-a` and `multiplecondition-flow-b` are successful during the last 24h.
@@ -23,9 +23,9 @@ triggers:
         conditions:
           flow-a:
             type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-            namespace: io.kestra.demo
+            namespace: company.team
             flowId: multiplecondition-flow-a
           flow-b:
             type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-            namespace: io.kestra.demo
+            namespace: company.team
             flowId: multiplecondition-flow-b

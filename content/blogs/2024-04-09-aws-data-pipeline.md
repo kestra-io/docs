@@ -39,7 +39,7 @@ In order to upload the product records, we will call the PutItem task on DynamoD
 
 ```yaml
 id: product_upload
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: product
@@ -67,7 +67,7 @@ The main data preparation flow, `data_preparation`, would download the products 
 
 ```yaml
 id: data_preparation
-namespace: dev
+namespace: company.team
 tasks:
   - id: http_download_products
     type: io.kestra.plugin.core.http.Download
@@ -107,7 +107,7 @@ We will now proceed to the data pipeline. We need to load the products from Dyna
 
 ```yaml
 id: aws_data_pipeline
-namespace: dev
+namespace: company.team
 tasks:
   - id: "redshift_create_table_products"
     type: "io.kestra.plugin.jdbc.redshift.Query"

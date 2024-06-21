@@ -1,5 +1,5 @@
 id: pause
-namespace: io.kestra.demo
+namespace: company.team
 
 description:
   This flow show how you can pause an execution in order to add a manual validation step.

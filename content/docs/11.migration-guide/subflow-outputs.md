@@ -16,7 +16,7 @@ Let's say you have a following subflow (aka child flow) with a task `mytask` gen
 
 ```yaml
 id: flow_outputs
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: mytask
@@ -28,13 +28,13 @@ To access this output in a different task within the same flow, you would use th
 
 ```yaml
 id: parent_flow
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: subflow
     type: io.kestra.plugin.core.flow.Subflow
     flowId: flow_outputs
-    namespace: dev
+    namespace: company.team
     wait: true
     outputs: # 🚨 this property is deprecated in Kestra 0.15.0
       final: "{{ outputs.mytask.value }}"
@@ -84,7 +84,7 @@ Since 0.15.0, the flow can produce `outputs` simply by defining them in the flow
 
 ```yaml
 id: flow_outputs
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: mytask
@@ -107,13 +107,13 @@ Here is how you can access the flow output in the parent flow:
 
 ```yaml
 id: parent_flow
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: subflow
     type: io.kestra.plugin.core.flow.Subflow
     flowId: flow_outputs
-    namespace: dev
+    namespace: company.team
     wait: true
 
   - id: log_subflow_output

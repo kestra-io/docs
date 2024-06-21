@@ -43,7 +43,7 @@ For example, you can Launch a `dbt build` command on a  dbt project hosted on 
 ```yaml
 
 id: dbt_build
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: dbt
@@ -74,7 +74,7 @@ You can also install a custom dbt version and run `dbt deps` and `dbt build`�
 
 ```yaml
 id: dbt_custom_dependencies
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: dbt_version
@@ -124,7 +124,7 @@ Here is how you can use this flag:
 
 ```yaml
 id: dbt
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: dbt

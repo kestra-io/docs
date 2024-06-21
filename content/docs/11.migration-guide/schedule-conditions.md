@@ -18,7 +18,7 @@ To make the change clear, here is how scheduling conditions were defined before 
 
 ```yaml
 id: beverage_order
-namespace: dev
+namespace: company.team
 
 inputs:
   - name: beverage
@@ -68,7 +68,7 @@ Here is the same flow with the `scheduleConditions` property replaced by `condit
 
 ```yaml
 id: beverage_order
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: beverage

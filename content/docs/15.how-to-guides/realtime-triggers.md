@@ -26,7 +26,7 @@ You can use the Apache Kafka [RealtimeTrigger](https://kestra.io/plugins/plugin-
 
 ```yaml
 id: kafka
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: log
@@ -72,7 +72,7 @@ You can use the Apache Pulsar [RealtimeTrigger](https://kestra.io/plugins/plugin
 
 ```yaml
 id: pulsar
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: log
@@ -109,7 +109,7 @@ You can use the AWS SQS [RealtimeTrigger](https://kestra.io/plugins/plugin-aws/t
 
 ```yaml
 id: aws-sqs
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: log
@@ -147,7 +147,7 @@ You can use the GCP Pub/Sub [RealtimeTrigger](https://kestra.io/plugins/plugin-g
 
 ```yaml
 id: gcp-pubsub
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: log

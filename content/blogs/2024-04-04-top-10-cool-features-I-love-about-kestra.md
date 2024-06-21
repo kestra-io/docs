@@ -108,7 +108,7 @@ You can even set the task defaults globally or on a namespace level to ensure th
 
 ```yaml
 id: redshift_data_pipeline
-namespace: dev
+namespace: company.team
 tasks:
   - id: "redshift_create_table_products"
     type: "io.kestra.plugin.jdbc.redshift.Query"

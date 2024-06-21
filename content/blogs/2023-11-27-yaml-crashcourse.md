@@ -30,7 +30,7 @@ Here is a simple YAML example:
 
 ```yaml
 id: myflow
-namespace: development
+namespace: company.teamelopment
 description: this is a simple Kestra flow
 tasks:
   - this is a list of tasks
@@ -57,7 +57,7 @@ For example, the following YAML snippet defining which [Namespace Files](https:/
 
 ```yaml
 id: namespace_files
-namespace: dev
+namespace: company.team
 tasks:
   - id: python_and_sql
     type: io.kestra.plugin.scripts.python.Commands
@@ -81,7 +81,7 @@ YAML supports single-line comments initiated with `#`, which are ignored by the 
 ```yaml
 # This is a comment in my flow
 id: myflow
-namespace: development
+namespace: company.teamelopment
 ```
 
 ---
@@ -129,7 +129,7 @@ You can try it out using the following flow:
 
 ```yaml
 id: boolean_test
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: mybool
@@ -163,7 +163,7 @@ Here is an example you can use to validate how Kestra parses various data types:
 
 ```yaml
 id: explicit_data_types
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: mybool
@@ -234,7 +234,7 @@ Strings in YAML don't need to be quoted unless they contain special characters l
 
 ```yaml
 simple_key: simple value
-quoted_value: "namespace: dev" # string with a colon has to be quoted
+quoted_value: "namespace: company.team" # string with a colon has to be quoted
 "quoted key": the key contains a space so it has to be quoted
 ```
 
@@ -341,7 +341,7 @@ Here is a flow example combining everything you've learned so far:
 
 ```yaml
 id: getting_started
-namespace: dev
+namespace: company.team
 
 description: >
   This flow has two tasks: one prints a message,
