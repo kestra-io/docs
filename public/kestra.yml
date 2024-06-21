@@ -7701,6 +7701,7 @@ components:
       - URI
       - SECRET
       - ARRAY
+      - MULTISELECT
     Type_2:
       type: string
       enum:
@@ -7718,6 +7719,7 @@ components:
       - URI
       - SECRET
       - ARRAY
+      - MULTISELECT
     Type_3:
       type: string
       enum:
@@ -7735,6 +7737,7 @@ components:
       - URI
       - SECRET
       - ARRAY
+      - MULTISELECT
     Usage:
       required:
       - configurations
