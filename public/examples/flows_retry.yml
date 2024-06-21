@@ -1,5 +1,5 @@
 id: retry
-namespace: io.kestra.demo
+namespace: company.team
 description:
   This flow will be retry 4 times and will success at the 5th attempts
 

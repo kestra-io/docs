@@ -48,7 +48,7 @@ Once the secret key is set, you can use an `input` and `output` of type `SECRET`
 
 ```yaml
 id: my_secret_flow
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: secret

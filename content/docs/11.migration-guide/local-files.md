@@ -64,7 +64,7 @@ Previously, you would specify `{{ outputDir }}` as you save the file.
 
 ```yaml
 id: getting_started_output
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: api_url
@@ -95,7 +95,7 @@ Now you can remove this, and just specify the file name in the `outputFiles` pro
 
 ```yaml
 id: getting_started_output
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: api_url
@@ -130,7 +130,7 @@ Previously, you would add a separate `LocalFiles` task inside of the `WorkingDir
 
 ```yaml
 id: pip
-namespace: dev
+namespace: company.team
 tasks:
   - id: wdir
     type: io.kestra.plugin.core.flow.WorkingDirectory
@@ -165,7 +165,7 @@ In 0.17.0, you can specify your input files by using the `inputFiles` property f
 
 ```yaml
 id: pip
-namespace: dev
+namespace: company.team
 tasks:
   - id: wdir
     type: io.kestra.plugin.core.flow.WorkingDirectory

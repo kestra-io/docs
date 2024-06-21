@@ -88,7 +88,7 @@ Here is a more comprehensive example in a flow:
 
 ```yaml
 id: outputsMetricsPython
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: attempts
@@ -187,7 +187,7 @@ Outputs can be used to pass data between tasks. One task can generate some outpu
 
 ```yaml
 id: outputsInputs
-namespace: dev
+namespace: company.team
 tasks:
     - id: passOutput
       type: io.kestra.plugin.core.debug.Return

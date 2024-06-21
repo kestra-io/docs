@@ -31,7 +31,7 @@ You can provide conditions to determine when your Flow should be executed. Along
 This flow will be triggered after each successful execution of the flow `io.kestra.tests.trigger-flow` and forward the `uri` output of the `my-task` task.
 ```yaml
 id: trigger-flow-listener
-namespace: io.kestra.tests
+namespace: company.team
 revision: 1
 
 inputs:
@@ -50,7 +50,7 @@ triggers:
       fromParent: '{{ outputs.myTask.uri }}'
     conditions:
       - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-        namespace: io.kestra.tests
+        namespace: company.team
         flowId: trigger-flow
       - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
@@ -59,7 +59,7 @@ triggers:
 Parent flow:
 ```yaml
 id: trigger-flow
-namespace: io.kestra.tests
+namespace: company.team
 
 tasks:
   - id: myTask
@@ -73,7 +73,7 @@ This flow will be triggered after the successful execution of both flows `flow-a
 
 ```yaml
 id: trigger-multiplecondition-listener
-namespace: io.kestra.tests
+namespace: company.team
 
 tasks:
   - id: onlyListener
@@ -91,18 +91,18 @@ triggers:
         conditions:
           flow-a:
             type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-            namespace: io.kestra.tests
+            namespace: company.team
             flowId: trigger-multiplecondition-flow-a
           flow-b:
             type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-            namespace: io.kestra.tests
+            namespace: company.team
             flowId: trigger-multiplecondition-flow-b
 ```
 
 Simply execute the two flows below to trigger `trigger-multiplecondition-listener`:
 ```yaml
 id: trigger-multiplecondition-flow-a
-namespace: io.kestra.tests
+namespace: company.team
 
 tasks:
   - id: hello
@@ -112,7 +112,7 @@ tasks:
 
 ```yaml
 id: trigger-multiplecondition-flow-b
-namespace: io.kestra.tests
+namespace: company.team
 
 tasks:
   - id: hello

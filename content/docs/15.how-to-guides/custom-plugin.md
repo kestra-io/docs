@@ -262,7 +262,7 @@ Let us use a relevant flow in `pokemonFetch.yaml`.
 ::collapse{title="Contents of pokemonFetch.yaml"}
 ```yaml
 id: pokemonFetch
-namespace: io.kestra.plugin
+namespace: company.team
 
 tasks:
 - id: fetch-pikachu
@@ -412,7 +412,7 @@ Here is a sample flow:
 
 ```yaml
 id: pokemonFetch
-namespace: io.kestra.plugin
+namespace: company.team
 
 tasks:
 - id: fetch-pikachu

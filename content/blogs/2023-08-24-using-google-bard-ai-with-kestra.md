@@ -29,7 +29,7 @@ Let’s first call the text completion API to ask Bard to tell me a joke, this c
 
 ```yaml
 id: bard-jokes
-namespace: dev
+namespace: company.team
 tasks:
   - id: ask-for-jokes
     type: io.kestra.plugin.gcp.vertexai.TextCompletion
@@ -51,7 +51,7 @@ Text completion is handy but limited. To mimic a conversational style, consider 
 
 ```yaml
 id: bard-jokes
-namespace: dev
+namespace: company.team
 tasks:
   - id: ask-for-jokes
     type: io.kestra.plugin.gcp.vertexai.ChatCompletion
@@ -122,7 +122,7 @@ The full YAML source of the workflow looks as follows, before executing it, you 
 
 ```yaml
 id: bard-jokes
-namespace: dev
+namespace: company.team
 variables:
   projectId: <your-project-id>
   serviceAccount: <your-sa>

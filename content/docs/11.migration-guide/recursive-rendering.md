@@ -24,7 +24,7 @@ Here is a simple usage example:
 
 ```yaml
 id: render_variables_recursively
-namespace: dev
+namespace: company.team
 
 variables:
   trigger_var: "{{ trigger.date ?? execution.startDate | date('yyyy-MM-dd') }}"

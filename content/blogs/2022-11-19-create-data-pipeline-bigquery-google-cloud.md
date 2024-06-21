@@ -226,7 +226,7 @@ Similarly, Kestra can trigger a flow when a new file is uploaded to a specific G
 
 ```yaml
 id: gcs-listen
-namespace: io.kestra.sandbox
+namespace: company.team
 tasks:
   - id: each
     type: io.kestra.plugin.core.flow.EachSequential

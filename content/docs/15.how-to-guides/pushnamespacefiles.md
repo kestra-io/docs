@@ -50,7 +50,7 @@ tasks:
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
     url: https://github.com/git_username/scripts
     branch: dev 
-    namespace: dev
+    namespace: company.team
     files:
       - "example.py"
     gitDirectory: _files
@@ -122,7 +122,7 @@ tasks:
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
     url: https://github.com/git_username/scripts
     branch: dev
-    namespace: dev
+    namespace: company.team
     gitDirectory: _files
     commitMessage: "push all namespace files and create a PR" 
     dryRun: true 

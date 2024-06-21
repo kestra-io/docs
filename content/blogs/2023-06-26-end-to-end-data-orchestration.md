@@ -75,7 +75,7 @@ Here is a copy of that Blueprint. Make sure that you copy the ID of each connect
 
 ```yaml
 id: airbyteDbtCore
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: data-ingestion

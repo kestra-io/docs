@@ -16,7 +16,7 @@ For example, the following flow will be triggered when rows are available on the
 
 ```yaml
 id: jdbc-trigger
-namespace: io.kestra.tests
+namespace: company.team
 
 tasks:
 - id: update

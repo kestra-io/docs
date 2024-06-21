@@ -163,7 +163,7 @@ Both CloudQuery and [Kestra](https://github.com/kestra-io/kestra) follow a dec
 
 ```yaml
 id: hackernews_to_motherduck
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: daily_sync

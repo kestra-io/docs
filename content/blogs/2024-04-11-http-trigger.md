@@ -74,7 +74,7 @@ This will allow him to trigger a discussion with end stakeholders. How much do t
 
 ```yaml
 id: tableau-governance
-namespace: dev
+namespace: company.team
 
 variables:
   workbook_luid: 6345964502
@@ -136,7 +136,7 @@ Here is an example of Kestra flow that listens to [Grafana](https://grafana.com/
 
 ```yaml
 id: war-room-setup
-namespace: dev
+namespace: company.team
 
 tasks:
 

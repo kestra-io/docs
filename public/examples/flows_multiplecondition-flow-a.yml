@@ -1,5 +1,5 @@
 id: multiplecondition-flow-a
-namespace: io.kestra.demo
+namespace: company.team
 
 description: |
   This flow will start `multiplecondition-listener` if `MultipleCondition` is validated

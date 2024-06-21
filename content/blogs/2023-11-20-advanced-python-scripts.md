@@ -190,7 +190,7 @@ Further, we're using a `io.kestra.plugin.scripts.python.Commands` task instead o
 
 ```yaml
 id: pythonScriptFromGit
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: workingDirectory
@@ -278,7 +278,7 @@ Here's the full source code:
 
 ```yaml
 id: pythonScriptFromEditor
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: workingDirectory

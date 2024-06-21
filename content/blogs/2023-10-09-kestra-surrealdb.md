@@ -165,7 +165,7 @@ To start, go under "Flows" and create a new flow. Paste the following code:
 
 ```yaml
 id: surreal-flow
-namespace: dev
+namespace: company.team
 tasks:
   - id: selectFromSurreal
     type: io.kestra.plugin.surrealdb.Query
@@ -214,7 +214,7 @@ There's nothing to save here, so you can remove the `fetchType` argument. The on
 
 ```yaml
 id: surreal-flow
-namespace: dev
+namespace: company.team
 tasks:
   - id: insertToSurreal
     type: io.kestra.plugin.surrealdb.Query
@@ -297,7 +297,7 @@ Here's the full contents of the YAML flow file:
 
 ```yaml
 id: surreal-flow
-namespace: dev
+namespace: company.team
 tasks:
   - id: createEmployee
     type: io.kestra.plugin.surrealdb.Query

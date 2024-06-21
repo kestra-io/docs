@@ -72,7 +72,7 @@ Here's the full source code for creating a new schema:
 
 ```yaml
 id: weaviate-create-schema
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: weaviateClusterUrl
@@ -132,7 +132,7 @@ Here's the full source code:
 
 ```yaml
 id: weaviate-insert
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: weaviateClusterUrl
@@ -181,7 +181,7 @@ The `io.kestra.plugin.weaviate.Query` plugin allows you to run a query command s
 
 ```yaml
 id: weaviate-get
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: weaviateClusterUrl

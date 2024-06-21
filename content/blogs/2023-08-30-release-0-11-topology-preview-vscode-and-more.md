@@ -65,7 +65,7 @@ Finally, here is a simple flow example rendering a markdown file:
 
 ```yaml
 id: release_post
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: render_markdown
@@ -156,7 +156,7 @@ From this release on, you can set a secret or environment variable name and that
 
 ```yaml
 id: webhook
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: message
@@ -191,7 +191,7 @@ To do that, add a `cache` to your `WorkingDirectory` task. The `cache` property 
 
 ```yaml
 id: node_cached_dependencies
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: working_dir
@@ -276,7 +276,7 @@ AWS CLI is useful for automating tasks on Amazon Web Services. With the [AWS CLI
 
 ```yaml
 id: awsCLIlistECSclusters
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: aws
@@ -463,7 +463,7 @@ Below is a simple example:
 
 ```yaml
 id: telegram
-namespace: dev
+namespace: company.team
 tasks:
   - id: telegram_notification
     type: io.kestra.plugin.notifications.telegram.TelegramSend
