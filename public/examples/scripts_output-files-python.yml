@@ -1,5 +1,5 @@
 id: python_output_files
-namespace: example
+namespace: company.team
 
 tasks:
   - id: outputs_metrics

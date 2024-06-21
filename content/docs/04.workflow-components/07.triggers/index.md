@@ -41,7 +41,7 @@ Triggers allow you to access trigger metadata through expressions e.g. `{{ trigg
 This example will log the date when the trigger executes the flow:
 ```yaml
 id: variables
-namespace: example
+namespace: company.team
 
 tasks:
   - id: hello
@@ -65,7 +65,7 @@ Triggers restrict parallel execution for a given trigger ID to one active run. F
 
 ```yaml
 id: hourlyFlow
-namespace: example
+namespace: company.team
 tasks:
   - id: important-task
     type: io.kestra.plugin.core.log.Log
@@ -106,7 +106,7 @@ If you want to temporarily disable a trigger, you could do so by setting the `di
 
 ```yaml
 id: hello_world
-namespace: example
+namespace: company.team
 
 tasks:
   - id: sleep
@@ -186,7 +186,7 @@ The example below shows how to use the `stopAfter` property with the HTTP trigge
 
 ```yaml
 id: http
-namespace: example
+namespace: company.team
 
 tasks:
   - id: slack

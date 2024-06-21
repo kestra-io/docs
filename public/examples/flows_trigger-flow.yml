@@ -1,5 +1,5 @@
 id: trigger_flow
-namespace: example
+namespace: company.team
 description: Trigger a flow once another flow is finished successfully
 
 inputs:
