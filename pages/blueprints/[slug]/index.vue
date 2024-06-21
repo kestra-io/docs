@@ -30,7 +30,7 @@
   const slug = route?.params?.slug;
 
   if (slug && slug !== 'all tags') {
-    const filterName = tags.value.find(f => f.name.toLowerCase() == slug.toLowerCase())?.name;
+    const filterName = tags.value.find(f => f.name.toLowerCase().replace('-', ' ') == slug.toLowerCase().replace('-', ' '))?.name;
     metaTitle.value = `${filterName} template for your workflows - Kestra`;
     metaDescription.value = `Get started with our ${filterName} blueprints to create your workflows with confidence.`;
   }

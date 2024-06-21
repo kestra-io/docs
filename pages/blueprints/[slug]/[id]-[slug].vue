@@ -44,13 +44,13 @@
         return $fetch(`${config.public.apiUrl}/blueprints/tags`)
     })
 
-    const activeTag = tags.value.find(f => f?.name?.toLowerCase() == decodeURIComponent(categorySlug));
+    const activeTag = tags.value.find(f => f?.name?.toLowerCase() == categorySlug.replace('-', ' '));
 
     const {data: blueprintInformations, error} = await useAsyncData('blueprints-informations', () => {
         return $fetch(`/api/blueprint?query=${route.params.id}`)
     })
 
-    if ((error && error.value) || (!activeTag && decodeURIComponent(categorySlug) !== 'all tags')) {
+    if ((error && error.value) || (!activeTag && categorySlug !== 'all-tags')) {
       throw createError({statusCode: 404, message: 'Page not found', data: error, fatal: true})
     }
 
