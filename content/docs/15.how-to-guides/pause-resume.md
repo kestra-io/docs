@@ -16,7 +16,7 @@ Here are common scenarios where the Pause and Resume feature is particularly use
 
 ```yaml
 id: pause_resume
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: pause

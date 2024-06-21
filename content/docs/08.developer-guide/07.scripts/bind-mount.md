@@ -59,7 +59,7 @@ With that setting, you can point the script task to any script on your local fil
 
 ```yaml
 id: pythonVolume
-namespace: dev
+namespace: company.team
 tasks:
   - id: anyPythonScript
     type: io.kestra.plugin.scripts.python.Commands

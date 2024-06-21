@@ -82,7 +82,7 @@ Let us use these secrets in a Kestra flow. In the following Kestra flow, we will
 
 ```yaml
 id: postgres-to-s3
-namespace: dev
+namespace: company.team
 tasks:
   - id: fetch
     type: io.kestra.plugin.jdbc.postgresql.Query

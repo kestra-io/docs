@@ -35,7 +35,7 @@ Here is a sample flow demonstrating how the `venv` folder can be cached:
 
 ```yaml
 id: python_cached_dependencies
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: working_dir

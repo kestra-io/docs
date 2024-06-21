@@ -1,5 +1,5 @@
 id: timeout
-namespace: dev
+namespace: company.team
 description: This flow will always fail because of a timeout.
 
 tasks:
