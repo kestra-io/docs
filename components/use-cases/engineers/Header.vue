@@ -12,7 +12,7 @@
                             <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
                                 Talk to Us
                             </NuxtLink>
-                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                            <NuxtLink href="/docs/getting-started/quickstart" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Get started
                             </NuxtLink>
                         </div>

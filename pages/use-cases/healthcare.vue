@@ -24,6 +24,7 @@
                 logoPath="/landing/companies/sophia-genetics.svg"
                 logoAlt="Sophia Genetics"
                 logoWidth="208px"
+                storeLink="/blogs/2023-09-25-genomic-data-workflow-sophia-genetics-kestra"
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>

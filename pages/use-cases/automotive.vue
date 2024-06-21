@@ -24,6 +24,7 @@
                 logoPath="/landing/companies/quadis.svg"
                 logoAlt="Quadis"
                 logoWidth="208px"
+                storeLink="/blogs/2024-06-13-quadis"
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>

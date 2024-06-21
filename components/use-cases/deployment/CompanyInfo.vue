@@ -19,7 +19,7 @@
                             {{description}}
                         </p>
                         <div class="cta">
-                            <NuxtLink href="/demo" class="btn btn-dark me-3" data-aos="zoom-in">
+                            <NuxtLink :href="storeLink" class="btn btn-dark me-3" data-aos="zoom-in">
                                 Read the Story
                             </NuxtLink>
                         </div>
@@ -33,6 +33,7 @@
                         class="mt-md-0 position-relative z-2 company-image mb-3"
                         data-aos="zoom-in"
                         :src="imageSrc"
+                        :href="storeLink"
                         :alt="imageAlt"
                     />
                 </div>
@@ -69,6 +70,10 @@
         required: true,
       },
       logoWidth: {
+        type: String,
+        required: true,
+      },
+      storeLink: {
         type: String,
         required: true,
       },
