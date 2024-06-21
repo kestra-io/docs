@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="`/blueprints/${blueprint.id}-${slugify(blueprint.title)}`">
+    <NuxtLink :href="href">
         <div class="card bg-dark-2">
             <div class="card-body d-flex flex-column justify-content-between gap-3">
                 <div>
@@ -34,6 +34,10 @@
             tags: {
                 type: Array,
                 default: []
+            },
+            href: {
+              type: String,
+              required: true
             }
         },
         computed: {
