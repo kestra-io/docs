@@ -50,7 +50,7 @@ With Kestra 0.9.0, we're thrilled to introduce new plugins that extend the capab
 
 ```yaml
 id: gitPython
-namespace: prod
+namespace: company.team
 
 tasks:
   - id: GitHub

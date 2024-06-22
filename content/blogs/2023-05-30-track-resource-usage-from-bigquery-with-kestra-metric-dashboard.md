@@ -19,7 +19,7 @@ In the example below, we create a [Kestra](https://github.com/kestra-io/kestra) 
 
 ```yaml
 id: query_events
-namespace: sales
+namespace: company.sales
 
 tasks:
 

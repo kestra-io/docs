@@ -30,7 +30,7 @@ Here is a simple YAML example:
 
 ```yaml
 id: myflow
-namespace: company.teamelopment
+namespace: company.team
 description: this is a simple Kestra flow
 tasks:
   - this is a list of tasks
@@ -81,7 +81,7 @@ YAML supports single-line comments initiated with `#`, which are ignored by the 
 ```yaml
 # This is a comment in my flow
 id: myflow
-namespace: company.teamelopment
+namespace: company.team
 ```
 
 ---

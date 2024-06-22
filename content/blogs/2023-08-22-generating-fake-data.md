@@ -17,7 +17,6 @@ Shiny Rocks is a fictional company creating smartphones. "Those shiny rocks in o
 
 ![architecture](/blogs/2023-08-22-generating-fake-data/architecture.png)
 
-
 ![topology](/blogs/2023-08-22-generating-fake-data/screenshot_topology.png)
 
 You can find the whole use case in our [live demo in the shiny_rocks namespace](https://demo.kestra.io/ui/flows?namespace=shiny_rocks).
@@ -84,7 +83,7 @@ We declare a scheduling trigger every day with a backfill property allowing us t
 
 ```yaml
 id: produce_data
-namespace: shiny_rocks
+namespace: shiny_rocks.analytics
 description: |
   This flow generate Shiny Rocks fictional data. Three datasets are created: `orders`, `payments` and `services`.
   Like in reality, those data change everyday.
@@ -131,7 +130,7 @@ Note, this is just our choice for this demo. Kestra integrates with Snowflake, A
 
 ```yaml
 id: load_orders_bigquery
-namespace: shiny_rocks
+namespace: shiny_rocks.analytics
 description: |
   When data are generated upstream, this flow ingest the `orders` data into Google Cloud Storage and BigQuery.
 
@@ -175,7 +174,7 @@ triggers:
       order_date: "{{ outputs.run_date.value }}"
     conditions:
       - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-        namespace: shiny_rocks
+        namespace: shiny_rocks.analytics
         flowId: produce_data
       - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
@@ -192,7 +191,7 @@ The following Flow directly reads the Google Spreadsheet and loads it into a pro
 
 ```yaml
 id: marketing_investments_to_bigquery
-namespace: shiny_rocks
+namespace: shiny_rocks.analytics
 description: |
   The marketing teams manage their investments into a Google Spreadsheet, hence we load those data into BigQuery for further processing and join with other data.
 
@@ -241,7 +240,7 @@ This Flow is triggered when the three upstream dependencies are in success on th
 
 ```yaml
 id: dbt_run
-namespace: shiny_rocks
+namespace: shiny_rocks.analytics
 description: |
   Whenever all data are loaded in BigQuery, this flow will run a dbt job to transform data.
 
@@ -299,19 +298,19 @@ triggers:
         conditions:
           orders:
             type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-            namespace: shiny_rocks
+            namespace: shiny_rocks.analytics
             flowId: load_orders_bigquery
           payments:
             type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-            namespace: shiny_rocks
+            namespace: shiny_rocks.analytics
             flowId: load_payments_bigquery
           services:
             type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-            namespace: shiny_rocks
+            namespace: shiny_rocks.analytics
             flowId: load_services_bigquery
           marketing_investments:
             type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-            namespace: shiny_rocks
+            namespace: shiny_rocks.analytics
             flowId: marketing_investments_to_bigquery
 ```
 
@@ -326,7 +325,7 @@ Delivers this chart via email to the marketing team, ensuring they're always upd
 
 ```yaml
 id: marketing_roi_chart
-namespace: shiny_rocks
+namespace: shiny_rocks.analytics
 description: |
   After dbt transformation, we use marketing data joined to orders to create a plot of marketing ROI.
   The flow first query data from BigQuery and then run a Python script to read data and create a chart out of it.
@@ -406,7 +405,7 @@ triggers:
     type: io.kestra.plugin.core.trigger.Flow
     conditions:
       - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
-        namespace: shiny_rocks
+        namespace: shiny_rocks.analytics
         flowId: dbt_run
       - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:

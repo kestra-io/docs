@@ -76,7 +76,7 @@ Here's an example using the `DayWeekCondition`:
 
 ```yaml
 id: conditions
-namespace: triggers
+namespace: company.team
 
 tasks:
   - id: hello

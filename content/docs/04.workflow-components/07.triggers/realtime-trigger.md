@@ -66,7 +66,7 @@ To use Realtime Triggers, simply choose the `RealtimeTrigger` as a trigger type 
 
 ```yaml
 id: sqs
-namespace: realtime
+namespace: company.team
 
 tasks:
   - id: log

@@ -194,7 +194,7 @@ Search for [blueprints](../docs/04.user-interface-guide/blueprints.md) with the 
 
 ```yaml
 id: build_github_container_image
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: build

@@ -201,7 +201,7 @@ This flow, [Purge execution data including logs, metrics and outputs on a schedu
 
 ```yaml
 id: purge_storage
-namespace: sentry_article
+namespace: company.team
 description: Based on https://demo.kestra.io/ui/blueprints/community/202
 
 tasks:
@@ -250,20 +250,20 @@ This task demonstrates a really cool feature of Kestra: triggers that trigger ot
 If you have just one flow with some non-zero likelihood of failure - you add a `SentryAlert` like the examples above. But what do you do when you have 10 or 20 flows? You definitely do not want to have to maintain 20 individual `SentryAlert` tasks. **That’s when you use the `SentryExecution` task because any other flow can trigger it.**
 
 
-Let’s imagine three flows, **foo**, **bar** and **baz** all related to your company’s payroll; you need to know if any one of these falls over. Each one of these three flows has the same namespace: **payroll**.
+Let’s imagine three flows, **foo**, **bar** and **baz** all related to your company’s payroll; you need to know if any one of these falls over. Each one of these three flows has the same namespace: **company.payroll**.
 
 ```yaml
 id: foo
-namespace: payroll
+namespace: company.payroll
 
 id: bar
-namespace: payroll
+namespace: company.payroll
 
 id: baz
-namespace: payroll
+namespace: company.payroll
 ```
 
-Now we create a fourth flow using the SentryExecution task that will be triggered when any flow with the **payroll** namespace fails. This flow has two parts, the task and the trigger.
+Now we create a fourth flow using the SentryExecution task that will be triggered when any flow with the **company.payroll** namespace fails. This flow has two parts, the task and the trigger.
 
 The task is straightforward. All you need to provide is the **DSN** and the **Level**: 
 
@@ -289,7 +289,7 @@ triggers:
           - FAILED
           - WARNING
       - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
-        namespace: payroll
+        namespace: company.payroll
         prefix: false
 ```
 
@@ -318,7 +318,7 @@ Here’s a full set:
 
 ```yaml
 id: task_to_trigger_another_trigger
-namespace: trig
+namespace: company.team
 description: |
   This flow will always fail. When it does, the sentry_execution_example flow 
 will be triggered.
@@ -336,7 +336,7 @@ tasks:
 ### A flow using SentryExecution
 ```yaml
 id: sentry_execution_example
-namespace: does_not_really_matter
+namespace: company.team
 description: Waits for another flow with the namespace specified below to fail or 
 warn, and then sends a Sentry issue.
 tasks:
@@ -355,10 +355,11 @@ triggers:
           - FAILED
           - WARNING
       - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
-        namespace: trig
+        namespace: company.payroll
         prefix: false        
  # namespace must match exactly
 ```
+
 ### The JSON sent to Sentry
 
 ```json
@@ -419,7 +420,7 @@ The flow below is a production-quality example using the `SentryAlert` task to s
 
 ```yaml
 id: gen_postgresql_error_sentry_alert
-namespace: sentry_article
+namespace: company.team
 description: Generate an error so we can send a SentryAlert
 errors:
   - id: log_msg_on_err
@@ -483,7 +484,7 @@ First, the flow that will fail:
 
 ```yaml
 id: sentry_execution_task_example
-namespace: sentry_trig
+namespace: company.payroll
 description: |
   This flow will always fail. When it does, the sentry_execution_trigger_example flow will be triggered.
 
@@ -517,7 +518,7 @@ This is the SentryExecution flow that waits for the above flow to fail:
 
 ```yaml
 id: sentry_execution_trigger_example
-namespace: sentry_article
+namespace: company.team
 description: Waits for another flow with the namespace specified below to fail or warn, and then sends a Sentry issue.
 
 tasks:
@@ -537,7 +538,7 @@ triggers:
           - FAILED
           - WARNING
       - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
-        namespace: sentry_trig # needs to match the namespace of the flow above
+        namespace: company.payroll # needs to match the namespace of the flow above
         prefix: false
 ```
 

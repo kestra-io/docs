@@ -43,13 +43,13 @@ Multiple instances of orchestration requires flow dependencies. For example, you
 
 ```yaml
 id: send-failure-alert
-namespace: prod
+namespace: company.team
 tasks:
   - id: send-alert
     type: io.kestra.plugin.notifications.slack.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#failures"
-    executionId: "{{trigger.executionId}}"
+    executionId: "{{ trigger.executionId }}"
 triggers:
   - id: watch-failed-flows
     type: io.kestra.plugin.core.trigger.Flow
@@ -58,7 +58,7 @@ triggers:
         in:
           - FAILED
       - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
-        namespace: prod
+        namespace: company.team
         prefix: true
 ```
 

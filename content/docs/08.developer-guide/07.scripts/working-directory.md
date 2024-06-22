@@ -75,7 +75,7 @@ Consider the following example flow that runs when a new object with the prefix 
 
 ```yaml
 id: s3TriggerCommands
-namespace: blueprint
+namespace: company.team
 description: process CSV file from S3 trigger
 
 tasks:
