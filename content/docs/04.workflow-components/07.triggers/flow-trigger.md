@@ -3,7 +3,7 @@ title: Flow Trigger
 icon: /docs/icons/flow.svg
 ---
 
-## Flow Trigger
+Trigger flows from another flow execution.
 
 Flow triggers allows you to trigger a flow after another flow execution, enabling event-driven patterns.
 

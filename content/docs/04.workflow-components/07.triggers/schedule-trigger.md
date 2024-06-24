@@ -3,7 +3,7 @@ title: Schedule Trigger
 icon: /docs/icons/flow.svg
 ---
 
-## Schedule Trigger
+Schedule flows with cron expressions.
 
 The Schedule trigger generates new executions on a regular cadence based on a Cron expression or custom scheduling conditions.
 
