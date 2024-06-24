@@ -37,7 +37,7 @@ Here's an illustrative flow that implements data modeling on daily sales data an
 
 ```yaml
 id: modelization
-namespace: org.example
+namespace: company.team
 description: This flow aggregates daily sales data and calculates average sales for each product category.
 tasks:
   - id: aggregate-sales
@@ -203,7 +203,7 @@ The BigQuery [**Trigger**](/plugins/plugin-gcp/triggers/bigquery/io.kestra.plugi
 
 ```yaml
 id: Trigger_flow
-namespace: com.kestra.sandbox
+namespace: company.team
 revision: 1
 tasks:
   - id: each

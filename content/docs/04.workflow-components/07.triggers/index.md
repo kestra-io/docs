@@ -164,7 +164,7 @@ The `stopAfter` property can be used to pause a schedule trigger after a failed 
 
 ```yaml
 id: business_critical_flow
-namespace: production
+namespace: company.team
 
 tasks:
  - id: important_task

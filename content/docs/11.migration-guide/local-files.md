@@ -15,7 +15,7 @@ The `LocalFiles` and `outputDir` are deprecated due to overlapping functionality
 
 ```yaml
 id: apiJSONtoMongoDB
-namespace: release
+namespace: company.team
 
 tasks:
   - id: inlineScript

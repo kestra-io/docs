@@ -32,7 +32,7 @@ Adding automation here is the way to go. Being able to trigger any workflow base
 
 ```yaml
 id: http_stock_alert
-namespace: warehouse
+namespace: company.team
 
 tasks:
   - id: send_whatsapp_message

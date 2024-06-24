@@ -74,7 +74,7 @@ Here's how you can implement a Git workflow for dbt with Snowflake:
 ```yaml
 yamlCopy code
 id: dbt_snowflake
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: git

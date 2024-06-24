@@ -257,7 +257,7 @@ Using the `gcloud` [CLI task](https://kestra.io/plugins/plugin-gcp#cli), you can
 
 ```yaml
 id: gcloudCLI
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: hello
@@ -295,7 +295,7 @@ This release also introduces the `az` [CLI task](https://kestra.io/plugins/plugi
 
 ```yaml
 id: azureCLI
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: listAzureRegions
@@ -315,7 +315,7 @@ You can use the new Spark CLI to orchestrate Spark jobs. The [blueprint](https:/
 
 ```yaml
 id: gitSpark
-namespace: blueprint
+namespace: company.team
 
 tasks:
 - id: working_directory
@@ -336,7 +336,7 @@ Similarly to `SparkCLI`, the new [DbtCLI task](https://kestra.io/plugins/plugin-
 
 ```yaml
 id: dbtGitDockerDuckDB
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: dbt
@@ -413,7 +413,7 @@ Our community member, [Antoine Balliet](https://github.com/aballiet), contribute
 
 ```yaml
 id: bigquery_to_gsheets
-namespace: blueprint
+namespace: company.team
 tasks:
   - id: reverseETL
     type: io.kestra.plugin.hightouch.Sync
