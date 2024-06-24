@@ -6,7 +6,6 @@ version: ">= 0.17.0"
 
 React to events as they happen with millisecond latency.
 
-
 [Triggers](./index.md) in Kestra can listen to external events and start a workflow execution when the event occurs. Most of these triggers **poll** external systems for new events **at regular intervals** e.g. every second. This works well for data processing use cases. However, business-critical workflows often require reacting to events as they happen with **millisecond latency** and this is where **Realtime Triggers** come into play.
 
 <div class="video-container">

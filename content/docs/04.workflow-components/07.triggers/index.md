@@ -8,6 +8,7 @@ Trigger is a mechanism that automates the execution of a flow.
 Triggers can be scheduled or event-based.
 
 ## Trigger types
+
 Kestra supports both **scheduled** and **external** events.
 
 Kestra core provides four types of triggers:

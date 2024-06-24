@@ -3,7 +3,7 @@ title: Webhook Trigger
 icon: /docs/icons/flow.svg
 ---
 
-## Webhook Trigger
+Trigger flows based on web-based events.
 
 Webhook triggers generates a unique URL that you can use to automatically create new executions based on events in another application such as GitHub or Amazon EventBridge.
 
