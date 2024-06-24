@@ -156,7 +156,7 @@ Using SQLMesh in Kestra is straightforward. The following example shows how you 
 
 ```yaml
 id: sqlmesh
-namespace: blueprint
+namespace: company.team
 description: Clone SQLMesh project and run the project, and query with DuckDB
 
 tasks:
@@ -201,7 +201,7 @@ In a similar fashion, orchestrating a dbt project with Kestra can be done in few
 
 ```yaml
 id: dbt_duckdb
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: dbt

@@ -92,7 +92,7 @@ Here is the full workflow code for this example:
 
 ```yaml
 id: dremio_sql_python
-namespace: dremio
+namespace: dremio.analytics
 
 variables:
   user: rick.astley@kestra.io

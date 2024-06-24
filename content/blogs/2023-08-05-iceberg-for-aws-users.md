@@ -428,7 +428,7 @@ We can create a scheduled data pipeline that will check for new files in S3 ever
 
 ```yaml
 id: ingestToDataLakeInlinePython
-namespace: blueprint
+namespace: company.team
 
 variables:
   bucket: kestraio
@@ -545,7 +545,7 @@ Once you push [your script to Git](https://github.com/kestra-io/scripts/blob/mai
 
 ```yaml
 id: ingestToDataLakeGit
-namespace: blueprint
+namespace: company.team
 
 variables:
   bucket: kestraio
@@ -645,7 +645,7 @@ You can see here a significant advantage of Kestra: a separation of concerns bet
 
 ```yaml
 id: ingestToDataLakeEventDriven
-namespace: blueprint
+namespace: company.team
 
 variables:
   sourcePrefix: inbox

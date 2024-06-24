@@ -16,7 +16,7 @@ Here is a sample Kestra flow code that downloads a CSV file containing tech sala
 ```yaml
 
 id:  salaries_analysis
-namespace:  demo
+namespace:  company.team
 description:  Analyse  data  salaries.
 tasks:
   -  id:  download_csv

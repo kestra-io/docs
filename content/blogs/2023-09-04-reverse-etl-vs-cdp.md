@@ -117,7 +117,7 @@ Hightouch leverages real-time syncing mechanisms, ensuring that data from wareho
 
 ```yaml
 id: test-hightouch
-namespace: blueprint
+namespace: company.team
 tasks:
   - id: hightouch
     type: io.kestra.plugin.hightouch.Sync

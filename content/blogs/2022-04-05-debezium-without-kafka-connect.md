@@ -71,7 +71,7 @@ Kestra also allows for iterative changes to pipelines without causing disruption
 
 ```yaml
 id: debezium-mysql
-namespace: com.kestra.lde
+namespace: company.team
 
 tasks:
   - id: capture
