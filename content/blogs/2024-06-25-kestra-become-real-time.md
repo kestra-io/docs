@@ -2,11 +2,11 @@
 title: "Kestra Becomes the First Real-Time Orchestration Platform"
 description: ""
 date: 2024-06-25T17:00:00
-category: Solutions
+category: Company News
 author:
   name: emmanuel Darras
   image: "edarras"
-image: /blogs/
+image: /blogs/2024-06-25-kestra-become-real-time.jpg
 ---
 
 Today, we are thrilled to announce Kestra's Realtime Triggers, an innovative feature that sets a new standard for real-time orchestration. This powerful feature is designed to provide everything you need to build and operate real-time workflows efficiently. Kestra’s Realtime Triggers include powerful integrations with various messaging systems such as Kafka, Pulsar, AMQP, MQTT, AWS SQS, Google Pub/Sub, Azure Event Hubs, NATS, Redis, and SQL databases. This ensures seamless connectivity and robust real-time processing capabilities.
