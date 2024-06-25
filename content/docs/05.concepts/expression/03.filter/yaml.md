@@ -5,11 +5,10 @@ icon: /docs/icons/expression.svg
 
 YAML filters are used to turn YAML strings into objects.
 
----
 
 ## yaml
 
-This filter, added in [kestra 0.16.0](https://github.com/kestra-io/kestra/pull/3283), is used to parse a YAML string into an object. That object can then be transformed using Pebble templating engine.
+This filter, added in [kestra 0.16.0](https://github.com/kestra-io/kestra/pull/3283), is used to parse a YAML string into an object. That object can then be transformed using the Pebble templating engine.
 
 The filter is useful when working with the [TemplatedTask](/plugins/tasks/templating/io.kestra.plugin.core.templating.TemplatedTask) added in [#3191](https://github.com/kestra-io/kestra/pull/3191).
 
@@ -207,8 +206,6 @@ tasks:
 ```
 ::
 
----
-
 ## indent
 
 When constructing YAML from multiple objects, this filter can apply indentation to strings, adding `amount` number of spaces before each line except for the first line.
@@ -220,8 +217,6 @@ The syntax:
 ```twig
 indent(amount, prefix=" ")
 ```
-
----
 
 ## nindent
 

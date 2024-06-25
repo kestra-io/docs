@@ -11,8 +11,6 @@ Each section below represents a built-in filter.
 - [number](#number)
 - [numberFormat](#numberformat)
 
----
-
 ## abs
 
 The `abs` filter is used to obtain the absolute value.
@@ -22,8 +20,6 @@ The `abs` filter is used to obtain the absolute value.
 
 {# output: 7 #}
 ```
-
----
 
 ## number
 
@@ -47,8 +43,6 @@ The `number` filter return a parsed number from a string. If no type is passed, 
   - `BIGDECIMAL`
   - `BIGINTEGER`
 
----
-
 ## numberFormat
 
 The `numberFormat` filter is used to format a decimal number. Behind the scenes it uses `java.text.DecimalFormat`.
@@ -62,8 +56,6 @@ The above example will output the following:
 
 **Arguments**
 - format
-
----
 
 ## replace
 
