@@ -17,17 +17,6 @@
             />
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <UseCasesDeploymentCompanyInfo
-                titleHtml="Sophia Genetics, reducing its Processing Time From Days to Minutes with Kestra"
-                description="Sophia Genetics implemented Kestra to automate their genetic data processing, achieving a  reduction in processing time and significantly increasing accuracy, leading to improved patient outcomes and more efficient research processes. Kestra transforms genomic sequence analysis operations by saving time and improving data accuracy."
-                imageSrc="/landing/usecases/healthcare/visual.svg"
-                logoPath="/landing/companies/sophia-genetics.svg"
-                logoAlt="Sophia Genetics"
-                logoWidth="208px"
-                storeLink="/blogs/2023-09-25-genomic-data-workflow-sophia-genetics-kestra"
-            />
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
             <UseCasesDeploymentBusinessByUs
                 percent="200"
                 percentText="Increased productivity"
