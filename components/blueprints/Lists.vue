@@ -114,7 +114,8 @@ const changePage = (pageNo) => {
 };
 
 const generateCardHref = (blueprint) => {
-  return `/blueprints/${activeTag.value.name.toLowerCase().replace(' ', '-')}/${blueprint.id}-${slugify(blueprint.title)}`
+  let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
+  return `/blueprints/${tag.name.replace(' ', '-') || 'all-tags'}/${blueprint.id}-${slugify(blueprint.title)}`
 }
 
 let timer;
