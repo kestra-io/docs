@@ -33,13 +33,6 @@
                     <div class="line-separator"></div>
                     <div class="counter-box text-center">
                         <h5 class="mb-0 mt-2">
-                            <CountTo :endVal="metrics ? metrics.issues : 0" :duration="4000"></CountTo>
-                        </h5>
-                        <p>Issues</p>
-                    </div>
-                    <div class="line-separator"></div>
-                    <div class="counter-box text-center">
-                        <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo>
                         </h5>
                         <p>Pull Requests</p>
