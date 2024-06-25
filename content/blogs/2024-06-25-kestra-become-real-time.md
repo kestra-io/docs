@@ -13,7 +13,9 @@ Today, we are thrilled to announce Kestra's Realtime Triggers, an innovative fea
 
 With Realtime Triggers, you can react to events as they happen and automate any business process instantly. Additionally, Kestra simplifies the configuration and management of these workflows, making it an ideal choice for developers and business users.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zJLNTn2N3bA?si=pG5H7TciAbWPDh5f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/zJLNTn2N3bA?si=pG5H7TciAbWPDh5f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Addressing Real-Time Challenges
 
