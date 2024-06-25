@@ -80,7 +80,7 @@ tasks:
     items: "{{ outputs.csv_reader_products.uri }}"
     batch:
       rows: 1
-    namespace: prod
+    namespace: company.team
     flowId: product_upload
     wait: true
     transmitFailed: true

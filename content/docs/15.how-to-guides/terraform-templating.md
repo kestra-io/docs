@@ -239,7 +239,7 @@ Here is an example of a subflow that will query a Cloud SQL instance:
 
 ```yaml
 id: query_my_postgres_database
-namespace: prod.subflows
+namespace: company.team
 description: "Query Postgres database and display results in logs"
 
 inputs:
@@ -285,7 +285,7 @@ Executing the subflow will prompt you to enter the SQL query you want to execute
 ```yaml
   - id: query_last_job
     type: io.kestra.core.tasks.flows.Subflow
-    namespace: prod.subflows
+    namespace: company.team
     flowId: query_my_postgres_database
     inputs:
       sqlQuery: "SELECT * FROM public.jobs ORDER BY created_at desc limit 1"
