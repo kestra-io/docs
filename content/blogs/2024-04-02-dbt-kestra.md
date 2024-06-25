@@ -152,7 +152,7 @@ Here is an example using Kestra declarative syntax to run data ingestion pipelin
 
 ```yaml
 id: airbyteSyncParallelWithDbt
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: data-ingestion
