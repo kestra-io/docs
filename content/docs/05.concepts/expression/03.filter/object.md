@@ -74,9 +74,10 @@ to be used as the separator between items.
 ## keys
 
 The `keys` filter will return the keys from a collection, or list of index of an array.
+
 ```twig
 {{ {'this': 'foo', 'that': 'bar'} | keys }}
-{# will output the key from this map '['this', 'that']' #}
+{# will output the keys from this map '['this', 'that']' #}
 
 
 {{ [0, 1, 3] | keys }}
@@ -85,10 +86,22 @@ The `keys` filter will return the keys from a collection, or list of index of an
 
 ## values
 
-The `values` filter will return the values from a map.
+The `values` filter will return the values from a map:
+
 ```twig
-{{ {'this': 'foo', 'that': 'bar'} | keys }}
-{# will output the key from this map '['foo', 'bar']' #}
+{{ {'this': 'foo', 'that': 'bar'} | values }}
+{# will output the values from this map '['foo', 'bar']' #}
+```
+
+Here is how you can test that expression in a flow:
+
+```yaml
+id: expression
+namespace: company.myteam
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ {'this': 'foo', 'that': 'bar'} | values }}"
 ```
 
 ## last
