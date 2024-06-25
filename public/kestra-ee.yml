@@ -322,46 +322,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResults_AuditLogController.AuditLogWithUser_'
-  /api/v1/auditlogs/{id}/diff:
-    get:
-      tags:
-      - Audit Logs
-      summary: Get the diff of an audit log
-      operationId: diff
-      parameters:
-      - name: id
-        in: path
-        description: The id of the audit log
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: diff 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuditLogDiff'
-  /api/v1/auditlogs/{id}/diff/{tenant}:
-    get:
-      tags:
-      - Audit Logs
-      summary: Get the diff of an audit log
-      operationId: diff_1
-      parameters:
-      - name: id
-        in: path
-        description: The id of the audit log
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: diff_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuditLogDiff'
   /api/v1/auths:
     get:
       tags:
@@ -16076,8 +16036,6 @@ components:
       - deleted
       - detail
       - id
-      - patchApply
-      - patchRevert
       - type
       - userId
       type: object
@@ -16095,14 +16053,6 @@ components:
           type: string
         deleted:
           type: boolean
-        patchApply:
-          type: array
-          items:
-            type: object
-        patchRevert:
-          type: array
-          items:
-            type: object
     AuditLogController.AuditLogWithUser:
       required:
       - auditLog
@@ -16142,18 +16092,6 @@ components:
           type: string
         permission:
           $ref: '#/components/schemas/Permission'
-        id:
-          type: string
-    AuditLogDiff:
-      required:
-      - after
-      - before
-      type: object
-      properties:
-        before:
-          type: string
-        after:
-          type: string
     AuthController.Auth:
       type: object
       properties:
