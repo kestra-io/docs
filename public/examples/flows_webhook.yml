@@ -1,5 +1,5 @@
 id: webhook_example
-namespace: company.team.flows
+namespace: company.team
 
 description: |
   Example flow for a webhook trigger.

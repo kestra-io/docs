@@ -54,7 +54,7 @@ Below, you can see an example of a workflow that sends a Slack message requestin
 
 ```yaml
 id: vacation_approval_process
-namespace: release
+namespace: company.team
 
 inputs:
   - id: request.name

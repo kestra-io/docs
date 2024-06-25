@@ -15,7 +15,7 @@ Let's now look at how to use the `ENUM` input type and the `Switch` task to vali
 
 ```yaml
 id: orchestrate_everything
-namespace: blueprints
+namespace: company.team
 
 inputs:
   - id: use_case
