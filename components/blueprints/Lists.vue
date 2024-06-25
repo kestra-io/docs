@@ -69,7 +69,11 @@ if(props.tags) {
 const setTagBlueprints = async (tagVal) => {
   if (activeTag.value.name !== tagVal.name) {
     activeTag.value = tagVal;
-    await navigateTo(`/blueprints/${tagVal.name.replace(' ', '-')}`);
+    if (tagVal.name === 'All tags') {
+      await navigateTo(`/blueprints`);
+    }else {
+      await navigateTo(`/blueprints/${tagVal.name.replace(' ', '-')}`);
+    }
   }
 }
 
@@ -87,7 +91,7 @@ if (!activeTag.value) {
   activeTag.value = { name: 'All tags' };
   if (blueprintInformations && blueprintInformations.value) {
     let tag = tags.value.find(f => f?.id == blueprintInformations.value.page.tags[0]);
-    await navigateTo(`/blueprints/${tag.name.replace(' ', '-') || 'all-tags'}/${route.params.slug}`);
+    await navigateTo(`/blueprints/${tag.name.replace(' ', '-')}/${route.params.slug}`);
   }
 }
 const { data: blueprintsData, error } = await useAsyncData('blueprints', () => {
@@ -115,7 +119,7 @@ const changePage = (pageNo) => {
 
 const generateCardHref = (blueprint) => {
   let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
-  return `/blueprints/${tag.name.replace(' ', '-') || 'all-tags'}/${blueprint.id}-${slugify(blueprint.title)}`
+  return `/blueprints/${tag.name.replace(' ', '-')}/${blueprint.id}-${slugify(blueprint.title)}`
 }
 
 let timer;
