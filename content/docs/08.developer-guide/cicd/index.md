@@ -89,7 +89,7 @@ The CLI commands explained above can be used in a Shell script within a flow. Th
 
 ```yaml
 id: ci-cd
-namespace: prod
+namespace: company.team
 
 tasks:
   - id: github-ci-cd
