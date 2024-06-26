@@ -1,5 +1,6 @@
 ---
 title: Kestra Enterprise
+editions: ["EE"]
 ---
 
 How to configure Kestra Enterprise Edition.
