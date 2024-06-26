@@ -1,6 +1,7 @@
 ---
 title: Version Control
 icon: /docs/icons/best-practices.svg
+version: ">= 0.14.0"
 ---
 
 This section describes best practices for Version Control with Git in Kestra.

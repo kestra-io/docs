@@ -2,6 +2,7 @@
 title: Service Accounts
 icon: /docs/icons/admin.svg
 editions: ["EE"]
+version: ">= 0.15.0"
 ---
 
 How to create and manage Service Accounts.

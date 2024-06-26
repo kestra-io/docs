@@ -2,6 +2,7 @@
 title: Worker Group
 icon: /docs/icons/admin.svg
 editions: ["EE"]
+version: ">= 0.10.0"
 ---
 
 How to configure Worker Groups in Kestra Enterprise Edition.
