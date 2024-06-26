@@ -156,6 +156,7 @@ export default defineNuxtConfig({
         '/docs/workflow-components/realtime-triggers': {redirect: '/docs/workflow-components/realtime-trigger'},
         '/docs/workflow-components/triggers/conditions': {redirect: '/docs/workflow-components/triggers#conditions'},
         '/docs/workflow-components/flow-properties': {redirect: '/docs/workflow-components/flow'},
+        '/docs/workflow-components/task-defaults': {redirect: '/docs/workflow-components/plugin-defaults'},
         '/docs/concepts/expression/02a.expression-types': {redirect: '/docs/concepts/expression/expression-types'},
         '/docs/concepts/expression/02b.expression-usage': {redirect: '/docs/concepts/expression/expression-usage'},
         '/docs/how-to-guides/errors': {redirect: '/docs/workflow-components/errors'},

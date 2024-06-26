@@ -2,6 +2,7 @@
 title: API Tokens
 icon: /docs/icons/admin.svg
 editions: ["EE"]
+version: ">= 0.15.0"
 ---
 
 How to manage API tokens in Kestra.

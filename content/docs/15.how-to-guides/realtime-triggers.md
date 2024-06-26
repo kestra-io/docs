@@ -1,6 +1,7 @@
 ---
 title: Realtime Triggers
 icon: /docs/icons/plugins.svg
+version: ">= 0.17.0"
 ---
 
 Realtime Triggers react to events as they happen with millisecond latency.
