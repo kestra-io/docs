@@ -1,6 +1,7 @@
 ---
 title: Elasticsearch Configuration
 icon: /docs/icons/admin.svg
+editions: ["EE"]
 ---
 
 Configure Kestra to use Elasticsearch as a repository and indexer.
