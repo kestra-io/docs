@@ -13973,7 +13973,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Trigger'
   /api/v1/triggers/backfill/delete:
-    put:
+    post:
       tags:
       - Triggers
       summary: Delete a backfill
@@ -13991,8 +13991,102 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Trigger'
+  /api/v1/triggers/backfill/delete/by-query:
+    post:
+      tags:
+      - Triggers
+      summary: Delete backfill for given triggers
+      operationId: deleteBackfillByQuery
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: deleteBackfillByQuery 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/backfill/delete/by-query/{tenant}:
+    post:
+      tags:
+      - Triggers
+      summary: Delete backfill for given triggers
+      operationId: deleteBackfillByQuery_1
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: deleteBackfillByQuery_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/backfill/delete/by-triggers:
+    post:
+      tags:
+      - Triggers
+      summary: Delete backfill for given triggers
+      operationId: deleteBackfillByIds
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Trigger'
+        required: true
+      responses:
+        "200":
+          description: deleteBackfillByIds 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/backfill/delete/by-triggers/{tenant}:
+    post:
+      tags:
+      - Triggers
+      summary: Delete backfill for given triggers
+      operationId: deleteBackfillByIds_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Trigger'
+        required: true
+      responses:
+        "200":
+          description: deleteBackfillByIds_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/triggers/backfill/delete/{tenant}:
-    put:
+    post:
       tags:
       - Triggers
       summary: Delete a backfill
@@ -14029,6 +14123,100 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Trigger'
+  /api/v1/triggers/backfill/pause/by-query:
+    post:
+      tags:
+      - Triggers
+      summary: Pause backfill for given triggers
+      operationId: pauseBackfillByQuery
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: pauseBackfillByQuery 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/backfill/pause/by-query/{tenant}:
+    post:
+      tags:
+      - Triggers
+      summary: Pause backfill for given triggers
+      operationId: pauseBackfillByQuery_1
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: pauseBackfillByQuery_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/backfill/pause/by-triggers:
+    post:
+      tags:
+      - Triggers
+      summary: Pause backfill for given triggers
+      operationId: pauseBackfillByIds
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Trigger'
+        required: true
+      responses:
+        "200":
+          description: pauseBackfillByIds 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/backfill/pause/by-triggers/{tenant}:
+    post:
+      tags:
+      - Triggers
+      summary: Pause backfill for given triggers
+      operationId: pauseBackfillByIds_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Trigger'
+        required: true
+      responses:
+        "200":
+          description: pauseBackfillByIds_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/triggers/backfill/pause/{tenant}:
     put:
       tags:
@@ -14067,6 +14255,100 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Trigger'
+  /api/v1/triggers/backfill/unpause/by-query:
+    post:
+      tags:
+      - Triggers
+      summary: Unpause backfill for given triggers
+      operationId: unpauseBackfillByQuery
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: unpauseBackfillByQuery 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/backfill/unpause/by-query/{tenant}:
+    post:
+      tags:
+      - Triggers
+      summary: Unpause backfill for given triggers
+      operationId: unpauseBackfillByQuery_1
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: unpauseBackfillByQuery_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/backfill/unpause/by-triggers:
+    post:
+      tags:
+      - Triggers
+      summary: Unpause backfill for given triggers
+      operationId: unpauseBackfillByIds
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Trigger'
+        required: true
+      responses:
+        "200":
+          description: unpauseBackfillByIds 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/backfill/unpause/by-triggers/{tenant}:
+    post:
+      tags:
+      - Triggers
+      summary: Unpause backfill for given triggers
+      operationId: unpauseBackfillByIds_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Trigger'
+        required: true
+      responses:
+        "200":
+          description: unpauseBackfillByIds_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/triggers/backfill/unpause/{tenant}:
     put:
       tags:
@@ -14186,6 +14468,204 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResults_TriggerController.Triggers_'
+  /api/v1/triggers/set-disabled/by-query:
+    post:
+      tags:
+      - Triggers
+      summary: Delete backfill for given triggers
+      operationId: setDisabledByQuery
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      - name: disabled
+        in: query
+        description: The disabled state
+        required: true
+        schema:
+          type: boolean
+          default: true
+      responses:
+        "200":
+          description: setDisabledByQuery 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/set-disabled/by-query/{tenant}:
+    post:
+      tags:
+      - Triggers
+      summary: Delete backfill for given triggers
+      operationId: setDisabledByQuery_1
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      - name: disabled
+        in: query
+        description: The disabled state
+        required: true
+        schema:
+          type: boolean
+          default: true
+      responses:
+        "200":
+          description: setDisabledByQuery_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/set-disabled/by-triggers:
+    post:
+      tags:
+      - Triggers
+      summary: Delete backfill for given triggers
+      operationId: setDisabledByIds
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerController.SetDisabledRequest'
+        required: true
+      responses:
+        "200":
+          description: setDisabledByIds 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/set-disabled/by-triggers/{tenant}:
+    post:
+      tags:
+      - Triggers
+      summary: Delete backfill for given triggers
+      operationId: setDisabledByIds_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerController.SetDisabledRequest'
+        required: true
+      responses:
+        "200":
+          description: setDisabledByIds_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/unlock/by-query:
+    post:
+      tags:
+      - Triggers
+      summary: Unlock triggers by query parameters
+      operationId: unlockByQuery
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: unlockByQuery 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/unlock/by-query/{tenant}:
+    post:
+      tags:
+      - Triggers
+      summary: Unlock triggers by query parameters
+      operationId: unlockByQuery_1
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      responses:
+        "200":
+          description: unlockByQuery_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/unlock/by-triggers:
+    post:
+      tags:
+      - Triggers
+      summary: Unlock given triggers
+      operationId: unlockByIds
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Trigger'
+        required: true
+      responses:
+        "200":
+          description: unlockByIds 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/triggers/unlock/by-triggers/{tenant}:
+    post:
+      tags:
+      - Triggers
+      summary: Unlock given triggers
+      operationId: unlockByIds_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Trigger'
+        required: true
+      responses:
+        "200":
+          description: unlockByIds_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/triggers/{namespace}/{flowId}:
     get:
       tags:
@@ -18516,6 +18996,18 @@ components:
           nullable: true
           items:
             $ref: '#/components/schemas/State.Type'
+    TriggerController.SetDisabledRequest:
+      required:
+      - disabled
+      - triggers
+      type: object
+      properties:
+        triggers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trigger'
+        disabled:
+          type: boolean
     TriggerController.Triggers:
       required:
       - abstractTrigger
