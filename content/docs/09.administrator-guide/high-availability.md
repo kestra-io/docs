@@ -1,6 +1,7 @@
 ---
 title: High Availability
 icon: /docs/icons/admin.svg
+editions: ["EE"]
 ---
 
 Kestra is designed to be highly available and fault-tolerant. This section describes how to configure Kestra for high availability.

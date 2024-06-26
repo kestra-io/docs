@@ -1,6 +1,7 @@
 ---
 title: Kafka Configuration
 icon: /docs/icons/admin.svg
+editions: ["EE"]
 ---
 
 Configure Kestra Enterprise Edition to use Kafka as a queue.
