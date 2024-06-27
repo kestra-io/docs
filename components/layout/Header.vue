@@ -524,6 +524,9 @@ export default {
                 if (this.$refs.navbar.classList.contains("open")) {
                     this.collapse.hide();
                     this.isOpen = false;
+                    document.body.style.overflow = 'unset';
+                    document.body.style.position = 'unset';
+                    document.body.style.width = 'unset';
                 }
                 const element = document.querySelector('.nav-link.show');
                 if (element) {
@@ -531,7 +534,10 @@ export default {
                   element.nextElementSibling.classList.remove('show');
                 }
             } else {
-                this.collapse.toggle();
+              document.body.style.overflow = 'hidden';
+              document.body.style.position = 'fixed';
+              document.body.style.width = '100%';
+              this.collapse.toggle();
                 this.isOpen = !this.isOpen;
             }
         },
@@ -1104,7 +1110,7 @@ export default {
         @include media-breakpoint-down(lg) {
             display: flex;
             width: 100%;
-            padding: 2rem;
+            padding: 2rem 2rem 4rem;
 
             li {
                 display: flex;
