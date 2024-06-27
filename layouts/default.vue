@@ -67,7 +67,16 @@
 
 
 <style lang="scss">
+    @import "../assets/styles/variable";
+
     .wrapper.announce {
         margin-top: 30px;
+        nav {
+            .navbar-collapse {
+                @include media-breakpoint-down(lg) {
+                    height: calc(100vh - 6.3rem);
+                }
+            }
+        }
     }
 </style>
