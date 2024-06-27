@@ -1,9 +1,9 @@
 ---
-title: Variables Configuration
+title: Variables
 icon: /docs/icons/admin.svg
 ---
 
-This section lists how you can configure variables usage in Kestra.
+How to configure variables usage in Kestra.
 
 ## `kestra.variables.env-vars-prefix`
 

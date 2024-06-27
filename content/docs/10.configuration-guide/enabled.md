@@ -1,7 +1,9 @@
 ---
-title: Enabled Configuration
+title: Enabled
 icon: /docs/icons/admin.svg
 ---
+
+How to manage deprecated or disabled features.
 
 Often, some features get deprecated or disabled by default in Kestra. This page describes how you can enable them.
 

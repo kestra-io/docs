@@ -1,7 +1,9 @@
 ---
-title: Environment Configuration
+title: Environment
 icon: /docs/icons/admin.svg
 ---
+
+How to configure the environment UI display.
 
 Here are the configuration options for the environment UI display.
 

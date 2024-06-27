@@ -1,9 +1,9 @@
 ---
-title: Logging Configuration
+title: Logging
 icon: /docs/icons/admin.svg
 ---
 
-Here you will find the necessary information for configuring the logging of your Kestra cluster.
+Configure the logging of your Kestra cluster.
 
 You can change the log behavior in Kestra by adjusting the following configuration parameters:
 

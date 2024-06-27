@@ -1,9 +1,9 @@
 ---
-title: JVM Configuration
+title: JVM
 icon: /docs/icons/admin.svg
 ---
 
-This section describes the configuration options for the JVM.
+How to configure options for the JVM.
 
 All JVM options can be passed in an environment variable named `JAVA_OPTS`. You can use it to change all JVM options available, such as memory, encoding, etc.
 

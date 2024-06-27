@@ -1,9 +1,9 @@
 ---
-title: Webserver Configuration
+title: Webserver
 icon: /docs/icons/admin.svg
 ---
 
-This section describes the configuration options for the webserver.
+How to configure options for the webserver.
 
 
 ## `kestra.webserver.google-analytics`: Google Analytics ID
