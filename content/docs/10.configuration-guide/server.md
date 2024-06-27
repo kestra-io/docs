@@ -1,9 +1,9 @@
 ---
-title: Server Configuration
+title: Server
 icon: /docs/icons/admin.svg
 ---
 
-This section describes the configuration options for the Kestra Server.
+How to configure options for the Kestra Server.
 
 ## HTTP Basic Authentication
 

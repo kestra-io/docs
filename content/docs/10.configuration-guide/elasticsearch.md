@@ -1,5 +1,5 @@
 ---
-title: Elasticsearch Configuration
+title: Elasticsearch
 icon: /docs/icons/admin.svg
 editions: ["EE"]
 ---

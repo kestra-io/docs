@@ -1,9 +1,9 @@
 ---
-title: URL Configuration
+title: URL
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how you can configure the URL of your Kestra webserver.
+How to configure the URL of your Kestra webserver.
 
 ## URL Configuration
 Some notification services require a URL configuration defined in order to add links from the alert message. Use a full URI here with a trailing `/` (without ui or api).

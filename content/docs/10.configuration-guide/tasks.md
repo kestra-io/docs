@@ -1,9 +1,9 @@
 ---
-title: Tasks Configuration
+title: Tasks
 icon: /docs/icons/admin.svg
 ---
 
-This section eplains various configuration options for tasks in Kestra.
+How to configuration various options for tasks in Kestra.
 
 ## Task Defaults
 

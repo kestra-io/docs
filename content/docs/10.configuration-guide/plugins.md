@@ -1,9 +1,9 @@
 ---
-title: Plugins Configuration
+title: Plugins
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how you can configure plugins in Kestra.
+How to configure plugins in Kestra.
 
 Configuration of Maven repositories used by the command `kestra plugins install`.
 
