@@ -1,5 +1,5 @@
 ---
-title: Usage Configuration
+title: Usage
 icon: /docs/icons/admin.svg
 ---
 

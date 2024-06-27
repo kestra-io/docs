@@ -1,9 +1,9 @@
 ---
-title: API Retries Configuration
+title: API Retries
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how you can configure retries for internal storage and secrets API calls.
+How you can configure retries for internal storage and secrets API calls.
 
 Kestra uses external storage and secrets so that your private data and secrets are stored in a secure way in your private infrastructure. These external systems communicate with Kestra through APIs. Those API calls, however, might eperience transient failures. To handle these transient failures, Kestra allows you to configure retries.
 

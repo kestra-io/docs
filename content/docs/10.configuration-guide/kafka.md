@@ -1,5 +1,5 @@
 ---
-title: Kafka Configuration
+title: Kafka
 icon: /docs/icons/admin.svg
 editions: ["EE"]
 ---

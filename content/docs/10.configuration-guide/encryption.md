@@ -1,6 +1,7 @@
 ---
-title: Encryption Configuration
+title: Encryption
 icon: /docs/icons/admin.svg
+version: ">= 0.15.0"
 ---
 
 Kestra 0.15.0 and later supports encryption of sensitive data.
