@@ -107,7 +107,7 @@
               })
             },
             menuNavigate(e) {
-              document.getElementById(e.target.name).scrollIntoView();
+              this.scrollIntoView(e.target.name);
               window.location.hash = e.target.name;
               setTimeout(() => {
                 this.removeActiveTab();
@@ -133,23 +133,29 @@
             scrollToHash() {
                 if (window.location.hash) {
                   const targetId = decodeURIComponent(window.location.hash.substring(1));
-                  this.$nextTick(() => {
-                    const element = document.getElementById(targetId);
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth' });
-                    } else {
-                      setTimeout(() => {
-                        this.$nextTick(() => {
-                          const updatedElement = document.getElementById(targetId);
-                          if (updatedElement) {
-                            updatedElement.scrollIntoView({ behavior: 'smooth' });
-                          }
-                        });
-                      }, 1000);
-                    }
-                  });
+                  this.scrollIntoView(targetId);
                 }
             },
+            scrollIntoView(id) {
+              const element = document.getElementById(id);
+              this.$nextTick(() => {
+                if (element) {
+                  const offset = element.getBoundingClientRect().top + window.scrollY;
+                  setTimeout(() => {
+                    window.scrollTo({ top: offset - 70 });
+                  }, 100);
+                } else {
+                  setTimeout(() => {
+                    this.$nextTick(() => {
+                      const updatedElement = document.getElementById(targetId);
+                      if (updatedElement) {
+                        updatedElement.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    });
+                  }, 1000);
+                }
+              });
+            }
         },
         watch: {
             '$route.params': {
