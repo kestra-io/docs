@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/dkhan.jpg" alt="David Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/dkhan.png" alt="David Picture"/>
                     <div class="w-100">
                         <div class="team-name">David Khan</div>
                         <div class="team-title font-small">Sales Leader</div>
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/fhussonnois.jpg" alt="Florian Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/fhussonnois.png" alt="Florian Picture"/>
                     <div class="w-100">
                         <div class="team-name">Florian Hussonnois</div>
                         <div class="team-title font-small">Lead Software Engineer</div>
