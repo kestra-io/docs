@@ -524,6 +524,7 @@ export default {
                 if (this.$refs.navbar.classList.contains("open")) {
                     this.collapse.hide();
                     this.isOpen = false;
+                    document.body.style.overflow = 'unset';
                 }
                 const element = document.querySelector('.nav-link.show');
                 if (element) {
@@ -531,7 +532,8 @@ export default {
                   element.nextElementSibling.classList.remove('show');
                 }
             } else {
-                this.collapse.toggle();
+              document.body.style.overflow = 'hidden';
+              this.collapse.toggle();
                 this.isOpen = !this.isOpen;
             }
         },
