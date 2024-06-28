@@ -18,8 +18,7 @@ Kestra will optionally handle schedule [backfills](/docs/concepts/backfill) if a
 Check the [Schedule task](/plugins/core/triggers/io.kestra.plugin.core.trigger.Schedule) documentation for the list of the task properties and outputs.
 
 
-## Example
-> A schedule that runs every quarter of an hour.
+## ExampleA schedule that runs every quarter of an hour.
 
 ```yaml
 triggers:
@@ -28,8 +27,8 @@ triggers:
     cron: "*/15 * * * *"
 ```
 
-> A schedule that runs only the first monday of every month at 11 AM.
->
+A schedule that runs only the first monday of every month at 11 AM.
+
 ```yaml
 triggers:
   - id: schedule
@@ -40,6 +39,16 @@ triggers:
         date: "{{ trigger.date }}"
         dayOfWeek: "MONDAY"
         dayInMonth: "FIRST"
+```
+
+A schedule that runs daily at midnight US Eastern time.
+
+```yaml
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+    timezone: America/New_York
 ```
 
 ::alert{type="warning"}
@@ -53,7 +62,7 @@ You can use this expression to make your **manual execution work**: `{{ trigger.
 ::
 
 
-### Schedule Conditions
+## Schedule Conditions
 
 When the `cron` is not sufficient to determine the date you want to schedule your flow, you can use `conditions` to add additional conditions, (for example, only the first day of the month, only the weekend, ...).
 
@@ -92,7 +101,7 @@ triggers:
         dayOfWeek: "THURSDAY"
 ```
 
-### Recover Missed Schedules
+## Recover Missed Schedules
 
 If a schedule is missed, Kestra will automatically recover it by default. This means that if the Kestra server is down, the missed schedules will be executed as soon as the server is back up. However, this behavior is not always desirable, e.g. during a planned maintenance window. In Kestra 0.15 and higher, this behavior can be disabled by setting the `recoverMissedSchedules` configuration to `NONE`.
 
