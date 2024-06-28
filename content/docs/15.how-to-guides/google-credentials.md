@@ -13,6 +13,40 @@ Inside of Google Cloud, head to `IAM` and then `Service Accounts`. In here you c
 
 Once you've done that, you can go to `Keys` and click on `Add Key`. From the dropdown, select `Create New Key`. Select the Key type as `JSON` and click on `Create`. Download this as we'll need this in a second.
 
+For more information on Google Cloud Service Accounts, check out the [documentation](https://cloud.google.com/iam/docs/service-account-overview).
+
+## Configuring a task with a Service Account
+
+Inside of Kestra, you can paste the service account JSON directly to the task property. This is useful for testing purposes:
+
+```yaml
+id: "upload"
+type: "io.kestra.plugin.googleworkspace.drive.Upload"
+from: "{{ inputs.file }}"
+parents:
+ - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
+name: "My awesome CSV"
+contentType: "text/csv"
+mimeType: "application/vnd.google-apps.spreadsheet"
+serviceAccount: |
+  {
+    "type": "service_account",
+    "project_id": "...",
+    "private_key_id": "...",
+    "private_key": "...",
+    "client_email": "...",
+    "client_id": "...",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://oauth2.googleapis.com/token"
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "...", 
+    "universe_domain": "googleapis.com"
+  }
+```
+
+::alert{type="warning"}
+This is not recommended as you might expose your key. We'd recommend using [secrets](#add-service-account-as-a-secret) to store your Service Account JSON.
+::
+
 ## Add Service Account as a Secret
 
 We can add our Service Account with the `serviceAccount` property to any of our Google Cloud or Workspaces tasks. To do this, we'll need to add it as a secret to Kestra. There's a number of ways to add secrets, but we're going to add it directly to our Docker Compose file. If you want to look at alternative ways, check out the [secrets page](../05.concepts/04.secret.md).
