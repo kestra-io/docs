@@ -1,13 +1,13 @@
 ---
-title: Google Service Account 
+title: Google Service Accounts 
 icon: /docs/icons/tutorial.svg
 ---
 
-Setup Google Service Account inside of Kestra.
+Setup a Google Service Account inside of Kestra.
 
-When you're using Google Cloud, you're going to need to authenticate inside of Kestra. 
+When you're using Google Cloud, you're going to need to authenticate inside of Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly inside of Kestra.
 
-## Create Service Account
+## Create Service Account inside of Google Cloud
 
 Inside of Google Cloud, head to `IAM` and then `Service Accounts`. In here you can add the specific roles to the service account before creating it (this will depend on your use case).
 
