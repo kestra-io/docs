@@ -99,7 +99,7 @@ id: "upload"
 type: "io.kestra.plugin.googleworkspace.drive.Upload"
 from: "{{ inputs.file }}"
 parents:
- - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
+  - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
 name: "My awesome CSV"
 contentType: "text/csv"
 mimeType: "application/vnd.google-apps.spreadsheet"
@@ -136,6 +136,10 @@ pluginDefaults:
     values:
       serviceAccount: "{{ secret('GOOGLE_SA') }}"
 ```
+
+## Configuring Secrets in the Enterprise Edition
+
+In Kestra Enterprise Edition, secrets can be managed directly from the UI meaning there's no need to encode them in base64. To learn more about this, check out the [secrets page](../05.concepts/04.secret.md#secrets-in-the-enterprise-edition).
 
 ## `GOOGLE_APPLICATION_CREDENTIALS`
 
