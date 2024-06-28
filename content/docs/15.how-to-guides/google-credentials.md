@@ -126,7 +126,7 @@ tasks:
     type: "io.kestra.plugin.googleworkspace.drive.Upload"
     from: "{{ inputs.file }}"
     parents:
-    - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
+      - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
     name: "My awesome CSV"
     contentType: "text/csv"
     mimeType: "application/vnd.google-apps.spreadsheet"
