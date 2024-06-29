@@ -64,7 +64,7 @@ Let us now enable the Google Sheets API in the GCP console.
 
 ![enable_google_sheets_api](/docs/how-to-guides/google-spreadsheets/enable_google_sheets_api.png)
 
-With this, we are all set to access the Google Spreadsheet from Kestra flow. Here is how the Kestra flow would look like:
+With this, we are all set to access the Google Sheet from Kestra flow. Here is how the Kestra flow would look like:
 
 ```yaml
 id: gsheet
