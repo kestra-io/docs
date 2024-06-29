@@ -31,7 +31,16 @@
                         :value="page"
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
+                        v-if="!pluginData"
                     />
+                    <div class="bd-markdown" v-else>
+                        <ContentParentPlugin
+                            :pageIcon="page.icon"
+                            :pageTitle="page.title"
+                            :pluginData="pluginData"
+                            v-if="pluginData"
+                        />
+                    </div>
                     <HelpfulVote />
                     <PrevNext v-if="prevNext" :navigation="navigation" />
                 </div>
@@ -46,6 +55,9 @@
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
     import NavToc from "~/components/docs/NavToc.vue";
     import HelpfulVote from "~/components/docs/HelpfulVote.vue";
+    import {ContentParentPlugin} from '@kestra-io/ui-libs'
+    const config = useRuntimeConfig();
+    const pluginData = ref(null);
     import {hash} from "ohash";
     import {recursivePages, generatePageNames} from "~/utils/navigation.js";
 
@@ -53,6 +65,14 @@
 
     const route = useRoute()
     const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
+    const plugins = computed(async () => await $fetch(`${config.public.apiUrl}/plugins`));
+
+    const pluginsData = await plugins.value;
+
+    if (pluginsData && pluginsData.length && route.params.slug.length === 1) {
+      pluginData.value = pluginsData.find((item) => item.name === route.params.slug[0]);
+    }
+
     let page;
 
     const fetchNavigation = async () => {
@@ -242,6 +262,7 @@
         border-top: 1px solid $black-6;
         padding-top: calc($spacer * 3.125);
         margin-bottom: 2rem;
+        text-transform: capitalize;
 
         a {
             border-left: 5px solid $purple-36;
