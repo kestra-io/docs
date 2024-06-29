@@ -11,7 +11,7 @@ You can use any Google Spreadsheet for this tutorial. In case you do not have Go
 2. Create a new Google Spreadsheet.
 3. Navigate to the `File` menu on the top, and select `Import` option.
 4. Navigate to the `Upload` tab, and click on the `Browse` button.
-5. Select the recently created `orders.csv` file, and click on `Open` button at the buttom of the popup.
+5. Select the recently created `orders.csv` file, and click on `Open` button at the bottom of the popup.
 6. On the `Import file` popup, choose the import location as `Replace spreadsheet` and separator type as `Detect automatically`. In this case, it does not matter whether you check or uncheck the box `Convert text to numbers, dates, and formulas`. Click on `Import data` button.
 7. The contents of the file will be populated in the spreadsheet.
 8. You can put an appropriate title to the spreadsheet, and name the sheet containing the order records as `orders`.
@@ -24,7 +24,7 @@ You can use any Google Spreadsheet for this tutorial. In case you do not have Go
 
 ![sheet_uploaded_data](/docs/how-to-guides/google-spreadsheets/sheet_uploaded_data.png)
 
-Now that we have the spreadsheet ready, let us proceed to assign appropriate authorization for the spreadsheet. For this, 
+Now that we have the spreadsheet ready, let us proceed to assign appropriate authorization for the spreadsheet. For this:
 
 1. Go to the GCP console, navigate to the [IAM service](https://console.cloud.google.com/iam-admin/iam).
 2. Select `Service accounts` from the left navigation menu.
@@ -35,7 +35,7 @@ Now that we have the spreadsheet ready, let us proceed to assign appropriate aut
 
 ![create_service_account_2](/docs/how-to-guides/google-spreadsheets/create_service_account_2.png)
 
-The new service account has been created. Lets add a key to the service account.
+The new service account has been created. Let's add a key to the service account.
 
 1. Click on the corresponding service account from the Service Accounts page.
 2. Navigate to `Keys` tab, and click on `Add Key` -> `Create new key`.
@@ -57,7 +57,7 @@ We will now provide access to the spreadsheet for the service account.
 4. You can give the `Viewer` access to the service account.
 5. Click on `Done`.
 
-Let us now enable Google Sheets API in the GCP console.
+Let us now enable the Google Sheets API in the GCP console.
 
 1. On the GCP console, search for `Google Sheets API` service, or directly navigate to one using [this link](https://console.cloud.google.com/marketplace/product/google/sheets.googleapis.com).
 2. Check whether the Google Sheets API is already enabled. If not, you will see an `Enable` button on the page. Click on the `Enable` button.
