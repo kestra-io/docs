@@ -4,7 +4,7 @@ icon: /docs/icons/migration-guide.svg
 release: 0.17.0
 ---
 
-How to migrate to `volume-enabled` to the plugin configuration.
+How to migrate `volume-enabled` to the plugin configuration.
 
 The docker volume mount by setting the property `kestra.tasks.scripts.docker.volume-enabled` to `true` has been deprecated since 0.17.0. It is now recommended to use the plugin configuration `volume-enabled` for the Docker runner plugin.
 
