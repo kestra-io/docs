@@ -280,7 +280,7 @@
                                             <Handshake />
                                             <p>
                                                 <span>Partners</span><br />
-                                                Use our partner ecosystem to accelerate your Kesra adoption
+                                                Use our partner ecosystem to accelerate your Kestra adoption
                                             </p>
                                         </NuxtLink>
                                     </li>
