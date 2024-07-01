@@ -1,6 +1,7 @@
 ---
 title: Filter
 icon: /docs/icons/expression.svg
+hideSidebar: true
 ---
 
 Filters can be used in expressions to perform some transformations on variables such as formatting a date, converting a string to uppercase, or joining a list of strings.
