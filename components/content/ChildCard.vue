@@ -39,10 +39,11 @@
     }
 
     currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage;
+    const currentPageDir = currentPage.split('/').reverse()[0];
 
     const {data: navigation} = await useAsyncData(
         `ChildCard-${hash(currentPage)}`,
-        () => queryContent(currentPage + "/").find()
+        () => queryContent(currentPage + "/").where({ _dir: currentPageDir}).find()
     );
 </script>
 
