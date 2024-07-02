@@ -55,8 +55,10 @@ export default {
         class="fade-bottom"
         ref="words"
         v-for="word in current.text.split(' ')"
-        >{{ word + " " }}</span
-    >
+        >
+        {{ word + " " }}
+        <span>Platform</span>
+    </span>
 </template>
 
 <style scoped lang="scss">
@@ -67,10 +69,14 @@ export default {
     animation-fill-mode: both;
     animation-name: fadeInBottom;
 
+    span {
+        color: #FFF !important;
+    }
+
     @keyframes fadeInBottom {
         from {
             opacity: 0;
-            transform: translateY(50%);
+            transform: translateX(-50%);
         }
         to {
             opacity: 1;
