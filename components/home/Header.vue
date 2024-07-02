@@ -3,8 +3,8 @@
         <div class="hero container">
             <div class="text-block">
                 <h1 data-aos="zoom-in">
-                    <text-scroller :texts="scrollingTexts" /><br />Everything
-                    Everywhere <br />All at Once.
+                    <text-scroller :texts="scrollingTexts" /><br />Platform
+                    <br />for All Engineers.
                 </h1>
 
                 <div class="buttons">
@@ -86,9 +86,9 @@ export default {
         return {
             videoVisible: false,
             scrollingTexts: [
-                { text: "Orchestrate", color: "#E500EA" },
-                { text: "Automate", color: "#4281FF" },
-                { text: "Schedule", color: "#9D40FB" },
+                { text: "Orchestration", color: "#E500EA" },
+                { text: "Automation", color: "#4281FF" },
+                { text: "Scheduling", color: "#9D40FB" },
             ],
         };
     },
