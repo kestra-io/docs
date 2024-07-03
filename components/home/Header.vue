@@ -3,9 +3,8 @@
         <div class="hero container">
             <div class="text-block">
                 <h1 data-aos="zoom-in">
-                    Unified <br/>
-                    <text-scroller :texts="scrollingTexts" /><br />
-                    for All Engineers.
+                    <text-scroller :texts="scrollingTexts" /><br />Platform
+                    <br />for All Engineers.
                 </h1>
 
                 <div class="buttons">
@@ -34,7 +33,7 @@
             <Companies class="mt-4 mb-4 pb-4 companies container" />
 
 
-
+        
         </div>
     </div>
     <div
