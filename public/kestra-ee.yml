@@ -16690,7 +16690,7 @@ components:
         providers:
           type: array
           items:
-            $ref: '#/components/schemas/IdentityProvider'
+            $ref: '#/components/schemas/AbstractUser.TenantIdentityProvider'
     AbstractUser.GroupIdentifier:
       required:
       - groupId
@@ -16710,6 +16710,14 @@ components:
       enum:
       - OWNER
       - MEMBER
+    AbstractUser.TenantIdentityProvider:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/IdentityProvider'
+      - properties:
+          tenantId:
+            type: string
+            nullable: true
     AbstractUserController.PasswordRequest:
       required:
       - password
@@ -18892,6 +18900,7 @@ components:
       - description
       - id
       - name
+      - provider
       type: object
       properties:
         id:
@@ -18902,6 +18911,8 @@ components:
           type: string
         deleted:
           type: boolean
+        provider:
+          $ref: '#/components/schemas/IdentityProvider'
     GroupMembership:
       type: object
       properties:
@@ -18983,16 +18994,14 @@ components:
           type: string
     IdentityProvider:
       required:
-      - activate
+      - attributes
       - externalId
-      - tenantId
       type: object
       properties:
+        attributes:
+          type: object
+          additionalProperties: true
         externalId:
-          type: string
-        activate:
-          type: boolean
-        tenantId:
           type: string
     InputType:
       required:
@@ -20441,6 +20450,10 @@ components:
             type: string
           name:
             $ref: '#/components/schemas/Name'
+          groups:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserGroup'
     SearchRequest:
       type: object
       allOf:
@@ -21537,6 +21550,22 @@ components:
           type: string
         newPassword:
           type: string
+    UserGroup:
+      type: object
+      properties:
+        value:
+          type: string
+        ref:
+          type: string
+        display:
+          type: string
+        type:
+          $ref: '#/components/schemas/UserGroup.Type'
+    UserGroup.Type:
+      type: string
+      enum:
+      - DIRECT
+      - INDIRECT
     UserType:
       type: string
       enum:
