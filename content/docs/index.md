@@ -6,7 +6,7 @@ Kestra is an open-source **infinitely-scalable orchestration platform** enabling
 
 Thanks to hundreds of [built-in plugins](/plugins) and embedded Code editor with Git and Terraform integrations, Kestra makes scheduled and event-driven data pipelines effortless.
 
-Follow the [Quickstart Guide](/docs/getting-started) to install Kestra and start orchestrating your first workflows.
+Follow the [Quickstart Guide](./01.getting-started/01.quickstart.md) to install Kestra and start orchestrating your first workflows.
 
 Then, explore the following pages to start building more advanced workflows:
 - [Tutorial](/docs/tutorial)
@@ -14,9 +14,8 @@ Then, explore the following pages to start building more advanced workflows:
 - [Concepts](/docs/concepts)
 - [Blueprints](/blueprints)
 
-
 <div class="video-container">
-<iframe width="100%" height="100%" src="https://www.youtube.com/embed/a2BZ7vOihjg?si=4vEZy7hekHoP4PD8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/feC6-KQLYyA?si=BTVeAthx3ZxE2e3c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
