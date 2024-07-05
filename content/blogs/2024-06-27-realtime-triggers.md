@@ -36,15 +36,17 @@ In addition, Realtime Triggers can be used for data orchestration, especially fo
 
 Let us now see Realtime Trigger in action. We will take an example from ecommerce domain, and use RealtimeTrigger with Apacke Kafka. Let us say, we have an incoming stream of `order` events, each event being generated when the order is placed by the customer. We will use a simulation code to generate this stream of order events. Each order corresponds to a single product, and contains the `product_id` which can be used to reference the product. We have the product details present in Cassandra. With every incoming order event, we want to create a `detailed_order` record by appending the product information to the record, and insert this detailed order into MongoDB. Let us understand this in more detail.
 
-The order event is as follows:
+### Hugging Face & Data Model
+
+We will be using the Kestra's data sets powered by [Hugging Face](https://huggingface.co/). We will fetch the orders data from [orders.csv](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv), and generate JSON events from it as follows:
 
 ```json
 {"order_id": "1", "customer_name": "Kelly Olsen", "customer_email": "jenniferschneider@example.com", "product_id": "20", "price": "166.89", "quantity": "1", "total": "166.89"}
 ```
 
-The event has all the order details like order_id, customer_name, customer_email, etc. It also has product_id corresponding to the order. We will be using [orders.csv](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv) to generate these events.
+The event has all the order details like order_id, customer_name, customer_email, etc. It also has product_id corresponding to the order.
 
-The product details are present in Cassandra as follows:
+We will be using [products.csv](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv) to populate the data in Cassandra. The product details are present in Cassandra as follows:
 
 ```csv
  product_id | brand                                    | product_category | product_name
@@ -59,7 +61,7 @@ The product details are present in Cassandra as follows:
          20 |      envisioneer cross-media convergence |      Electronics |           wolfe
 ```
 
-We will be using [products.csv](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv) to populate this data. We want to enrich the event by putting the product information to it, and generate the detailed record as follows:
+In the flow, we want to enrich the order event by putting the product information to it, and generate the detailed record as follows:
 
 ```json
 {
