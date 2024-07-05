@@ -3320,109 +3320,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FileAttributes'
-  /api/v1/namespaces/{namespace}/kv:
-    get:
-      tags:
-      - KV
-      summary: List all keys for a namespace
-      operationId: list_1
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: list_1 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/KVEntry'
-  /api/v1/namespaces/{namespace}/kv/{key}:
-    get:
-      tags:
-      - KV
-      summary: Get value for a key
-      operationId: get_1
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      - name: key
-        in: path
-        description: The key
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: get_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KVController.TypedValue'
-    put:
-      tags:
-      - KV
-      summary: Puts a key-value pair in store
-      operationId: put
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      - name: key
-        in: path
-        description: The key
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          text/plain:
-            schema:
-              type: string
-          application/json:
-            schema:
-              type: string
-        required: true
-      responses:
-        "200":
-          description: put 200 response
-    delete:
-      tags:
-      - KV
-      summary: Delete a key-value pair
-      operationId: delete_4
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      - name: key
-        in: path
-        description: The key
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: delete_4 200 response
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/v1/plugins:
     get:
       tags:
@@ -4116,7 +4013,7 @@ paths:
       tags:
       - Templates
       summary: Delete a template
-      operationId: delete_5
+      operationId: delete_4
       parameters:
       - name: namespace
         in: path
@@ -5540,10 +5437,6 @@ components:
         size:
           type: integer
           format: int64
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
     FileAttributes.FileType:
       type: string
       enum:
@@ -5872,44 +5765,6 @@ components:
         required:
           type: boolean
         defaults: {}
-    KVController.KVType:
-      type: string
-      enum:
-      - STRING
-      - NUMBER
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - DURATION
-      - JSON
-    KVController.TypedValue:
-      required:
-      - type
-      - value
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/KVController.KVType'
-        value: {}
-    KVEntry:
-      required:
-      - creationDate
-      - expirationDate
-      - key
-      - updateDate
-      type: object
-      properties:
-        key:
-          type: string
-        creationDate:
-          type: string
-          format: date-time
-        updateDate:
-          type: string
-          format: date-time
-        expirationDate:
-          type: string
-          format: date-time
     Label:
       required:
       - key
