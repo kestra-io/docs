@@ -8945,6 +8945,212 @@ paths:
                   type: array
                   items:
                     type: string
+  /api/v1/namespaces/{namespace}/kv:
+    get:
+      tags:
+      - KV
+      summary: List all keys for a namespace
+      operationId: list_2
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: list_2 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KVEntry'
+  /api/v1/namespaces/{namespace}/kv/{key}:
+    get:
+      tags:
+      - KV
+      summary: Get value for a key
+      operationId: get_2
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The key
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: get_2 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KVController.TypedValue'
+    put:
+      tags:
+      - KV
+      summary: Puts a key-value pair in store
+      operationId: put
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The key
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: put 200 response
+    delete:
+      tags:
+      - KV
+      summary: Delete a key-value pair
+      operationId: delete_14
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The key
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: delete_14 200 response
+          content:
+            application/json:
+              schema:
+                type: boolean
+  /api/v1/namespaces/{namespace}/kv/{key}/{tenant}:
+    get:
+      tags:
+      - KV
+      summary: Get value for a key
+      operationId: get_3
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The key
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: get_3 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KVController.TypedValue'
+    put:
+      tags:
+      - KV
+      summary: Puts a key-value pair in store
+      operationId: put_1
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The key
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: put_1 200 response
+    delete:
+      tags:
+      - KV
+      summary: Delete a key-value pair
+      operationId: delete_15
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The key
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: delete_15 200 response
+          content:
+            application/json:
+              schema:
+                type: boolean
+  /api/v1/namespaces/{namespace}/kv/{tenant}:
+    get:
+      tags:
+      - KV
+      summary: List all keys for a namespace
+      operationId: list_3
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: list_3 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KVEntry'
   /api/v1/namespaces/{namespace}/secrets:
     get:
       tags:
@@ -9690,7 +9896,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_14
+      operationId: delete_16
       parameters:
       - name: id
         in: path
@@ -9750,7 +9956,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_15
+      operationId: delete_17
       parameters:
       - name: id
         in: path
@@ -10815,7 +11021,7 @@ paths:
       tags:
       - Templates
       summary: Delete a template
-      operationId: delete_16
+      operationId: delete_18
       parameters:
       - name: namespace
         in: path
@@ -10833,7 +11039,7 @@ paths:
         "204":
           description: On success
         "200":
-          description: delete_16 200 response
+          description: delete_18 200 response
   /api/v1/templates/{namespace}/{id}/{tenant}:
     get:
       tags:
@@ -10895,7 +11101,7 @@ paths:
       tags:
       - Templates
       summary: Delete a template
-      operationId: delete_17
+      operationId: delete_19
       parameters:
       - name: namespace
         in: path
@@ -10913,7 +11119,7 @@ paths:
         "204":
           description: On success
         "200":
-          description: delete_17 200 response
+          description: delete_19 200 response
   /api/v1/templates/{namespace}/{tenant}:
     post:
       tags:
@@ -11224,7 +11430,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_18
+      operationId: delete_20
       parameters:
       - name: id
         in: path
@@ -11259,7 +11465,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_19
+      operationId: delete_21
       parameters:
       - name: id
         in: path
@@ -11294,7 +11500,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_20
+      operationId: delete_22
       parameters:
       - name: id
         in: path
@@ -11669,7 +11875,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_21
+      operationId: delete_23
       parameters:
       - name: id
         in: path
@@ -12032,7 +12238,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_22
+      operationId: delete_24
       parameters:
       - name: id
         in: path
@@ -12092,7 +12298,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_23
+      operationId: delete_25
       parameters:
       - name: id
         in: path
@@ -12548,7 +12754,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_24
+      operationId: delete_26
       parameters:
       - name: id
         in: path
@@ -12608,7 +12814,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_25
+      operationId: delete_27
       parameters:
       - name: id
         in: path
@@ -12668,7 +12874,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_26
+      operationId: delete_28
       parameters:
       - name: id
         in: path
@@ -13204,7 +13410,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_27
+      operationId: delete_29
       parameters:
       - name: id
         in: path
@@ -13681,7 +13887,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_28
+      operationId: delete_30
       parameters:
       - name: id
         in: path
@@ -13735,7 +13941,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_29
+      operationId: delete_31
       parameters:
       - name: id
         in: path
@@ -13791,7 +13997,7 @@ paths:
       tags:
       - Tenants
       summary: Get a tenant
-      operationId: get_2
+      operationId: get_4
       parameters:
       - name: id
         in: path
@@ -13801,7 +14007,7 @@ paths:
           type: string
       responses:
         "200":
-          description: get_2 200 response
+          description: get_4 200 response
           content:
             application/json:
               schema:
@@ -13835,7 +14041,7 @@ paths:
       tags:
       - Tenants
       summary: Delete a tenant
-      operationId: delete_30
+      operationId: delete_32
       parameters:
       - name: id
         in: path
@@ -13919,7 +14125,7 @@ paths:
       tags:
       - Tenants
       summary: Get a tenant
-      operationId: get_3
+      operationId: get_5
       parameters:
       - name: id
         in: path
@@ -13929,7 +14135,7 @@ paths:
           type: string
       responses:
         "200":
-          description: get_3 200 response
+          description: get_5 200 response
           content:
             application/json:
               schema:
@@ -13963,7 +14169,7 @@ paths:
       tags:
       - Tenants
       summary: Delete a tenant
-      operationId: delete_31
+      operationId: delete_33
       parameters:
       - name: id
         in: path
@@ -15283,7 +15489,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_32
+      operationId: delete_34
       parameters:
       - name: id
         in: path
@@ -15575,7 +15781,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_33
+      operationId: delete_35
       parameters:
       - name: id
         in: path
@@ -17232,6 +17438,10 @@ components:
         size:
           type: integer
           format: int64
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
     FileAttributes.FileType:
       type: string
       enum:
@@ -17582,6 +17792,44 @@ components:
         required:
           type: boolean
         defaults: {}
+    KVController.KVType:
+      type: string
+      enum:
+      - STRING
+      - NUMBER
+      - BOOLEAN
+      - DATETIME
+      - DATE
+      - DURATION
+      - JSON
+    KVController.TypedValue:
+      required:
+      - type
+      - value
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/KVController.KVType'
+        value: {}
+    KVEntry:
+      required:
+      - creationDate
+      - expirationDate
+      - key
+      - updateDate
+      type: object
+      properties:
+        key:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        updateDate:
+          type: string
+          format: date-time
+        expirationDate:
+          type: string
+          format: date-time
     Label:
       required:
       - key
@@ -18250,6 +18498,7 @@ components:
       - BINDING
       - AUDITLOG
       - SECRET
+      - KVSTORE
       - IMPERSONATE
       - SETTING
       - INFRASTRUCTURE
@@ -18419,6 +18668,8 @@ components:
             AUDITLOG:
               $ref: '#/components/schemas/List_Action_'
             SECRET:
+              $ref: '#/components/schemas/List_Action_'
+            KVSTORE:
               $ref: '#/components/schemas/List_Action_'
             IMPERSONATE:
               $ref: '#/components/schemas/List_Action_'
