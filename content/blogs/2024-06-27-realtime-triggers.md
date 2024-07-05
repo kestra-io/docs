@@ -44,7 +44,7 @@ We will be using the Kestra's data sets powered by [Hugging Face](https://huggin
 {"order_id": "1", "customer_name": "Kelly Olsen", "customer_email": "jenniferschneider@example.com", "product_id": "20", "price": "166.89", "quantity": "1", "total": "166.89"}
 ```
 
-The event has all the order details like order_id, customer_name, customer_email, etc. It also has product_id corresponding to the order.
+The event has all the order details like `order_id`, `customer_name`, `customer_email`, etc. It also has `product_id` corresponding to the order.
 
 We will be using [products.csv](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv) to populate the data in Cassandra. The product details are present in Cassandra as follows:
 
