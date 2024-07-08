@@ -17,19 +17,6 @@ Next to all bug fixes and enhancements, you can find a dedicated section called 
 ⚠️ Note that `Breaking Changes` are **always** included as the last section of the [release notes](https://github.com/kestra-io/kestra/releases). Make sure to inspect that part of the release notes before upgrading to a new version.
 ::
 
-## How to minimise downtime when updating Kestra
-
-If running Kestra in separate components you should:
-- Stop the executors and the scheduler
-- Stop the workers - there is a graceful shutdown (which can be configured but I'm not sure we already document how to configure this) and automatic task resubmission.
-- Stop the webserver (and the indexer using EE and Kafka)
-
-Normally, there is a graceful shutdown on all components so you will not lose anything. Once this is done, you can update and restart everything in the opposite order (or any order as all components are independent).
-
-::alert{type="info"}
-The webserver host the API so it's the one that must be stopped then started immediately to avoid potential downtime. Once this has been done, you can restart the other components so flow executions can start again.
-::
-
 ## How to stick to a specific Kestra version
 
 If you want to stick to a specific Kestra version, you can pin the [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) to a specific release. Here are some examples:
