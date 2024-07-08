@@ -35,7 +35,7 @@ curl http://localhost:8080/api/v1/executions/webhook/company.team/webhook_exampl
 
 ## Webhooks in Kestra EE
 
-Let us leverage Kestra Secrets to store the webhook key. From the left navigation menu on the Kestra UI, navigate to `Namespaces`. Click on the namespace under which you want to create the flow with the webhook trigger. We will use `company.team` namespace for this example. On the corresponding namespace page, navigate to the `Secrets` tab. Click on `New secret` button at the top, and create a new secret with `Key` as `WEBHOOK_KEY` (you may choose any appropriate name) and `Secret` as the webhook key value. Let us use `1KERKzRQZSMtLdMdNI7Nkr` for this example. Save the secret.
+Let us leverage Kestra Secrets to store the webhook key. From the left navigation menu on the Kestra UI, navigate to `Namespaces`. Click on the namespace under which you want to create the flow with the webhook trigger. We will use `company.team` namespace for this example. On the corresponding namespace page, navigate to the `Secrets` tab. Click on the `New secret` button at the top, and create a new secret with `Key` as `WEBHOOK_KEY` (you may choose any appropriate name) and `Secret` as the webhook key value. Let us use `1KERKzRQZSMtLdMdNI7Nkr` for this example. Once you've done that, save the secret.
 
 ![navigate_to_secrets](/docs/how-to-guides/webhooks/navigate_to_secrets.png)
 
