@@ -31,7 +31,7 @@
                             </button>
                             <span>id:</span> api_python_sql
                             <br />
-                            <span>namespace:</span> dev
+                            <span>namespace:</span> company.team
                             <br />
                             <br />
                             <span>tasks:</span><br/>
