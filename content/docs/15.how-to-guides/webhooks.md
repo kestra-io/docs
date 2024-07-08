@@ -41,7 +41,7 @@ Let us leverage Kestra Secrets to store the webhook key. From the left navigatio
 
 ![assign_secret_value](/docs/how-to-guides/webhooks/assign_secret_value.png)
 
-Now, we will create the flow in the same namespace under which we have defined the `WEBHOOK_KEY` secret. The flow will use the webhook trigger, and will be as follows:
+Now, we will create the flow in the same namespace under which we have defined the `WEBHOOK_KEY` secret. The flow will use the webhook trigger, like this:
 
 ```yaml file=public/examples/flows_webhook_ee.yml
 ```
