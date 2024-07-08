@@ -54,7 +54,7 @@ The format of the Webhook URL follows:
 where:
 - `your_hostname` is the domain or IP of your server, e.g. example.com
 - `tenant_id` is the tenant ID belonging to your Kestra EE account
-- `namespace` is `io.kestra.demo.flows``
+- `namespace` is `company.team``
 - `flow_id` is `webhook_ee_example`
 - `key` is `1KERKzRQZSMtLdMdNI7Nkr`
 
