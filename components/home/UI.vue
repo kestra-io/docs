@@ -1,6 +1,6 @@
 <template>
     <div class="bg-dark-4">
-        <div class="container">
+        <div class="container ui-container">
             <Section
                 class="dark"
                 subtitle-before="All-Inclusive"
@@ -149,6 +149,13 @@
             &:hover {
                 background: $black-4 !important;
             }
+        }
+    }
+
+    .ui-container {
+        :deep(.material-design-icon__svg) {
+            width: 24px !important;
+            height: 24px !important;
         }
     }
 </style>
