@@ -92,7 +92,7 @@
                         <HomeConnectionLine :lineN="3" :strokeDasharray="strokeDasharray3"/>
                     </div>
                     <h3>Schedule your workflows</h3>
-                    <p><p>Configure your workflows to run on a schedule, in response to event-based triggers, via webhooks, through APIs, or in real-time with milliseconds latency.</p>
+                    <p>Configure your workflows to run on a schedule, in response to event-based triggers, via webhooks, through APIs, or in real-time with milliseconds latency.</p>
                 </div>
                 <div class="col-md-6">
                     <div class="img-container">
