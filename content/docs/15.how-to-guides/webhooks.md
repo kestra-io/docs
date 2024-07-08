@@ -15,11 +15,10 @@ You can use webhooks to trigger an execution of your flow in Kestra. To do this,
 
 Once we've done this, we can add a `key` property, which can be random as this will be used to trigger the webhook. In the example, the `key` is set to `1KERKzRQZSMtLdMdNI7Nkr` which is what we put at the end of our webhook URL to trigger it.
 
-
 ```yaml file=public/examples/flows_webhook.yml
 ```
 
-The format of the Webhook URL follows
+The format of the Webhook URL follows:
 
 `https://{your_hostname}/api/v1/executions/webhook/{namespace}/{flow_id}/{key}`
 where:
@@ -31,5 +30,36 @@ where:
 With this information, you can test your flow by running the following command in the terminal to trigger the flow:
 
 ```bash
-curl http://localhost:8080/api/v1/executions/webhook/io.kestra.demo.flows/webhook_example/1KERKzRQZSMtLdMdNI7Nkr
+curl http://localhost:8080/api/v1/executions/webhook/company.team/webhook_example/1KERKzRQZSMtLdMdNI7Nkr
+```
+
+## Webhooks in Kestra EE
+
+Let us leverage Kestra Secrets to store the webhook key. From the left navigation menu on the Kestra UI, navigate to `Namespaces`. Click on the namespace under which you want to create the flow with the webhook trigger. We will use `company.team` namespace for this example. On the corresponding namespace page, navigate to the `Secrets` tab. Click on `New secret` button at the top, and create a new secret with `Key` as `WEBHOOK_KEY` (you may choose any appropriate name) and `Secret` as the webhook key value. Let us use `1KERKzRQZSMtLdMdNI7Nkr` for this example. Save the secret.
+
+![navigate_to_secrets](/docs/how-to-guides/webhooks/navigate_to_secrets.png)
+
+![assign_secret_value](/docs/how-to-guides/webhooks/assign_secret_value.png)
+
+Now, we will create the flow in the same namespace under which we have defined the `WEBHOOK_KEY` secret. The flow will use the webhook trigger, and will be as follows:
+
+```yaml file=public/examples/flows_webhook_ee.yml
+```
+
+Note that in the `triggers` section of the flow, we have referenced the secret in the `key` as `{{ secret('WEBHOOK_KEY') }}` instead of directly putting in the webhook key.
+
+The format of the Webhook URL follows:
+
+`https://{your_hostname}/api/v1/{tenant_id}/executions/webhook/{namespace}/{flow_id}/{key}`
+where:
+- `your_hostname` is the domain or IP of your server, e.g. example.com
+- `tenant_id` is the tenant ID belonging to your Kestra EE account
+- `namespace` is `io.kestra.demo.flows``
+- `flow_id` is `webhook_ee_example`
+- `key` is `1KERKzRQZSMtLdMdNI7Nkr`
+
+With this information, you can test your flow by running the following command in the terminal to trigger the flow:
+
+```bash
+curl http://my.kestra.clod/api/v1/my_tenant/executions/webhook/company.team/webhook_eE_example/1KERKzRQZSMtLdMdNI7Nkr
 ```
