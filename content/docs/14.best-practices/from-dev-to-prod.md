@@ -10,7 +10,7 @@ Common patterns to deploy your flows from development to production environments
 
 One best practice with Kestra is to have one development instance where users can write their flow directly in UI. This instance can be seen as a "sandbox" where flows can be tested and executed without the fear to break critical business operations.
 
-We usually encourage to type of development environment:
+We usually encourage two types of development environment:
 - installing Kestra on local desktop (usually with Docker Compose installation)
 - installing Kestra on a Kubernetes cluster accessible by users and separated from production matters.
 
