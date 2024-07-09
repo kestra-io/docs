@@ -21,7 +21,7 @@ The production instance should be safeguarded. Especially as this environment su
 
 One common best practice here is to limit the access of the production environment. In this case, there two elements to consider:
 - Users access
-- Flows deployment
+- Flow deployments
 
 
 ### User Access
