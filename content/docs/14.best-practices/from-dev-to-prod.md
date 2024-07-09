@@ -17,7 +17,7 @@ We usually encourage two types of development environment:
 
 ## Production Environment
 
-The production instance should be a bit safeguarded. Indeed, this environment support critical operations and potentially engage your responsabilities for end users.
+The production instance should be safeguarded. Especially as this environment supports critical operations and engages your responsibilities for end users.
 
 One common best practice here is to limit the access of the productio environment. In this advent, there two elements to consider:
 - Users access
