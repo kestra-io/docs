@@ -19433,9 +19433,7 @@ components:
           groups:
             $ref: '#/components/schemas/GroupUsage'
           users:
-            type: array
-            items:
-              $ref: '#/components/schemas/UserUsage'
+            $ref: '#/components/schemas/UserUsage'
           roles:
             $ref: '#/components/schemas/RoleUsage'
           namespaces:
@@ -19452,9 +19450,7 @@ components:
           groups:
             $ref: '#/components/schemas/GroupUsage'
           users:
-            type: array
-            items:
-              $ref: '#/components/schemas/UserUsage'
+            $ref: '#/components/schemas/UserUsage'
           roles:
             $ref: '#/components/schemas/RoleUsage'
           namespaces:
@@ -19471,9 +19467,7 @@ components:
           groups:
             $ref: '#/components/schemas/GroupUsage'
           users:
-            type: array
-            items:
-              $ref: '#/components/schemas/UserUsage'
+            $ref: '#/components/schemas/UserUsage'
           roles:
             $ref: '#/components/schemas/RoleUsage'
           namespaces:
@@ -19490,9 +19484,7 @@ components:
           groups:
             $ref: '#/components/schemas/GroupUsage'
           users:
-            type: array
-            items:
-              $ref: '#/components/schemas/UserUsage'
+            $ref: '#/components/schemas/UserUsage'
           roles:
             $ref: '#/components/schemas/RoleUsage'
           namespaces:
@@ -19519,31 +19511,22 @@ components:
       - SUPER_ADMIN
     UserUsage:
       required:
-      - globalRolesCount
-      - groupsCount
-      - namespaceRolesCount
-      - namespacesCount
-      - username
+      - apiKeyCount
+      - basicAuthCount
+      - count
+      - oidcCount
       type: object
       properties:
-        username:
-          type: string
-        domain:
-          type: string
-        auths:
-          type: array
-          items:
-            type: string
-        groupsCount:
-          type: integer
-          format: int32
-        globalRolesCount:
+        count:
           type: integer
           format: int64
-        namespaceRolesCount:
+        apiKeyCount:
           type: integer
           format: int64
-        namespacesCount:
+        oidcCount:
+          type: integer
+          format: int64
+        basicAuthCount:
           type: integer
           format: int64
     ValidateConstraintViolation:
