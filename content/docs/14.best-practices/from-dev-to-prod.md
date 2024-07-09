@@ -38,18 +38,15 @@ Choosing one way or the other depends of your preferences and your current deplo
 
 One recurring pattern is moving flows from the development to the production instance through version control system and CI/CD.
 
-IMAGE FROM DEV TO PROD
-
 When users have developed flows, they will usually commit changes to a version control system (Git). Then, upon validated pull request, the CI/CD engine will deploy the corresponding flows to the production instance.
 
 The way users can commit flow changes to Git can be addressed with the following patterns:
-- UI export/copy paste
-- Git.Push 
+- Export or copy-paste flows from the user interface
+- Using the [`git.PushFlows` task](https://kestra.io/plugins/plugin-git/tasks/io.kestra.plugin.git.pushflows)
 
 The way CI/CD deploy flows to production instance can be addressed with the following patterns:
 - GitHub Action, GitLab CI/CD, Jenkins, Azure DevOps, etc.
 - Terraform deployment
 - Kestra CLI
 
-
-## Deploy from Dev to Prod
+You can find more about CI/CD pattern with Kestra [here](../08.developer-guide/cicd/index.md).
