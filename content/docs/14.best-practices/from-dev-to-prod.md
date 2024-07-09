@@ -33,7 +33,7 @@ For open-source users it's usually a good idea to have a restricted instance, me
 
 ### Flows Deployment
 
-Kestra offers many strategies to deploy flows to an instance. Through the UI directly, through Git operations, through Terraform or through the API directly.
+Kestra offers many strategies to deploy flows to an instance. Through the UI directly, Git operations, Terraform or the API directly.
 Choosing one way or the other depends of your preferences and your current deployment patterns.
 
 One recurring pattern is moving flows from the development to the production instance through version control system and CI/CD.
