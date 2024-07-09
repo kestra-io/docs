@@ -3,7 +3,7 @@ title: Moving from Development to Production
 icon: /docs/icons/best-practices.svg
 ---
 
-This page describes common patterns to deploy your flows from development to production environments.
+Common patterns to deploy your flows from development to production environments.
 
 
 ## Development Environment
