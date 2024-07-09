@@ -26,7 +26,7 @@ One common best practice here is to limit the access of the production environme
 
 ### User Access
 
-For Kestra Enterprise users, this is streamlined with RBAC and SSO features. With role policies such as "Admin" or "Viewer", one administrator can manage all user access with fine-grain control over all Kestra resources. You can learn more in the dedicated documentation.
+For Kestra Enterprise users, this is streamlined with RBAC and SSO features. With role policies such as "Admin" or "Viewer", one administrator can manage all user access with fine-grain control over all Kestra resources. You can learn more in the [dedicated documentation](../06.enterprise/index.md).
 
 For open-source users it's usually a good idea to have a restricted instance, meaning an instance only accessible by CI/CD and administrators.
 
