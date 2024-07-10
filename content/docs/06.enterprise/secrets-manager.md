@@ -145,3 +145,32 @@ Additionally, you can configure the following properties:
 - **Namespace**: `kestra.secret.vault.namespace` is an optional configuration available on [Vault Enterprise Pro](https://learn.hashicorp.com/vault/operations/namespaces) allowing you to set a global namespace for the Vault server instance.
 - **Engine Version**: `kestra.secret.vault.engine-version` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
 - **Root Engine**: `kestra.secret.vault.root-engine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
+
+
+## JDBC (Postgres, H2, MySQL) Secret Manager
+
+Kestra also supports internal secret backend. For the JDBC backend (H2, Postgres or MySQL), the following configuration allows you to set secret backend:
+
+```yaml
+kestra:
+  secret:
+    type: jdbc
+    jdbc:
+      secret: "your-secret-key"
+```
+
+Your secret key should be encrypted. You can find an example of [encryption key here](../10.configuration-guide/encryption.md).
+
+## Elastic Secret Manager
+
+For Kestra instance deployed using the Kafka/Elastic backend, the secret backend can be configured like this:
+
+```yaml
+kestra:  
+  secret:
+    type: elasticsearch
+    elasticsearch:
+      secret: "your-secret-key"
+```
+
+Your secret key should be encrypted. You can find an example of [encryption key here](../10.configuration-guide/encryption.md).
