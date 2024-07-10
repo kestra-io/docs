@@ -13,36 +13,88 @@
             :title="story.title"
             :meta-description="story.description"
             :hero-image="story.heroImage"
+            :logo="story.logo"
+            :kpi1="story.kpi1"
+            :kpi2="story.kpi2"
+            :kpi3="story.kpi3"
         />
 
         <NuxtLazyHydrate when-visible>
             <div class="container">
-                <div class="story-container">
-                    <ContentRendererMarkdown class="bd-markdown" :value="content1" />
-                    <div class="d-flex flex-wrap gap-4 my-5">
-                        <div class="card task-card">
-                            <div class="card-body">
-                                <div ref="root" class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" title="Kestra">
-                                    <img src="/landing/usecases/stories/monograme-kestra.svg" alt="Kestra">
+                <div class="row">
+                    <div class="col-md-8 mb-4">
+                        <div class="story-container">
+                            <ContentRendererMarkdown class="bd-markdown" :value="content" />
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="story-info">
+                            <div class="mx-auto">
+                                <NuxtImg
+                                    height="112"
+                                    loading="lazy"
+                                    format="webp"
+                                    :src="story.logo"
+                                    :alt="story.logo"
+                                />
+                            </div>
+                            <div class="info-block">
+                                <p class="title">
+                                    Industry
+                                </p>
+                                <p class="subtitle">{{story.industry}}</p>
+                            </div>
+                            <div class="info-block">
+                                <p class="title">
+                                    Headquarters
+                                </p>
+                                <p class="subtitle">{{story.headquarter}}</p>
+                            </div>
+                            <div class="info-block">
+                                <p class="title">
+                                    Solution
+                                </p>
+                                <p class="subtitle">{{story.solution}}</p>
+                            </div>
+                            <div>
+                                <p>Data Stack</p>
+                                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                    <div class="card task-card">
+                                        <div class="card-body">
+                                            <div ref="root" class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" title="Kestra">
+                                                <img src="/landing/usecases/stories/monograme-kestra.svg" alt="Kestra">
+                                            </div>
+                                            <p class="card-title">Kestra</p>
+                                        </div>
+                                    </div>
+                                    <div class="card task-card" v-for="task in story.tasks" :key="task">
+                                        <div class="card-body">
+                                            <CommonTaskIcon :cls="task" />
+                                            <p class="card-title">{{generateTagName(task)}}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p class="card-title">Kestra</p>
                             </div>
                         </div>
-                        <div class="card task-card" v-for="task in story.tasks" :key="task">
-                            <div class="card-body">
-                                <CommonTaskIcon :cls="task" />
-                                <p class="card-title">{{generateTagName(task)}}</p>
+                        <div class="ready-bar btn-animated btn-purple-animated">
+                            <div class="d-flex flex-column px-5">
+                                <p>Ready to explore Kestra solutions?</p>
+                                <NuxtLink
+                                    href="/demo"
+                                    class="btn text-white btn-animated btn-purple-animated mt-2"
+                                >
+                                    Talk to Us
+                                </NuxtLink>
                             </div>
                         </div>
                     </div>
-
-                    <ContentRendererMarkdown class="bd-markdown" :value="content2" />
                 </div>
                 <div class="section-content">
                     <LayoutSection subtitle-before="Similar" subtitle="Kestra" subtitle-after="Stories" v-if="related">
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-4" v-for="(story, index) in related.results"
                                  :key="index">
+
                                 <StoriesCard :story="story" />
                             </div>
                         </div>
@@ -72,8 +124,7 @@
     const config = useRuntimeConfig();
     const slug = (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
     const story = ref({})
-    const content1 = ref('')
-    const content2 = ref('')
+    const content = ref('')
     const root = ref(null)
 
     onMounted(() => {
@@ -92,7 +143,7 @@
     });
 
     const {data} = await useAsyncData('stories', () => {
-        return $fetch(`${config.public.apiUrl}/customer-stories/${route.params.id}`)
+        return $fetch(`${config.public.apiUrl}/customer-stories-v2/${route.params.id}`)
     })
 
     if (data.value === null) {
@@ -101,8 +152,7 @@
 
     story.value = data.value;
 
-    content1.value = await parseMarkdown(story.value.content_1, {});
-    content2.value = await parseMarkdown(story.value.content_2, {});
+    content.value = await parseMarkdown(story.value.content, {});
 
     useHead({
         meta: [
@@ -122,7 +172,7 @@
     })
 
     const {data: related} = await useAsyncData('related-stories', () => {
-        return $fetch(`${config.public.apiUrl}/customer-stories?size=3`)
+        return $fetch(`${config.public.apiUrl}/customer-stories-v2?size=3`)
     })
 
     const generateTagName = (task) => {
@@ -136,17 +186,8 @@
     @import "../../../assets/styles/variable";
 
     .story-container {
-        max-width: 55rem;
-        margin: 0 auto calc($spacer * 5.6);
+        margin-top: 182px;
 
-        :deep(.bd-markdown:first-child) {
-            p:first-of-type {
-                padding: calc($spacer * 2);
-                border: 1px solid $black-6;
-                background-color: $black-2;
-                border-radius: calc($spacer / 2);
-            }
-        }
 
         :deep(.bd-markdown) {
             p {
@@ -157,24 +198,17 @@
             h3 {
                 margin-top: calc($spacer * 4.12);
                 margin-bottom: 3rem;
-                border-left: 5px solid $purple-36;
                 padding-left: calc($spacer * 0.6) !important;
                 font-size: calc($font-size-base * 2.25);
                 line-height: calc($spacer * 2.3);
             }
 
             h2 {
-                border-top: 1px solid $black-6;
-                margin-top: 3rem !important;
-                margin-top: calc($spacer * 4.12);
-                margin-bottom: 3rem;
+                margin-top: auto;
+                padding-top: 3rem;
+                margin-bottom: 1rem;
                 font-size: calc($font-size-base * 2.25);
                 line-height: calc($spacer * 2.3);
-
-                a {
-                    border-left: 5px solid $purple-36;
-                    padding-left: calc($spacer * 0.6) !important;
-                }
             }
 
 
@@ -186,7 +220,46 @@
 
     }
 
+    .story-info {
+        margin-top: 182px;
+        padding: calc($spacer * 2);
+        border: 1px solid $black-6;
+        background-color: $black-2;
+        border-radius: calc($spacer / 2);
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
 
+        .info-block {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .title {
+                font-size: $h6-font-size;
+                font-weight: 600;
+                color: $white;
+                margin: 0;
+            }
+
+            .subtitle {
+                font-size: $h6-font-size;
+                font-weight: 300;
+                color: $white-1;
+                margin: 0;
+            }
+        }
+    }
+
+
+    .ready-bar {
+        margin-top: 2rem;
+        padding: 2rem;
+        &, &::after {
+            border-radius: 8px;
+            background: $black-4 !important;
+        }
+    }
     p, ul > li {
         line-height: 1.5rem;
     }
@@ -256,7 +329,8 @@
 
 
     .task-card {
-        background-color: $black-2;
+        background-color: $black-3;
+        min-width: 9rem;
         :deep(.icon-wrapper) {
             width: 42px;
             height: 42px;
