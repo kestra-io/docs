@@ -44,19 +44,18 @@
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/qsinig.png" alt="Quentin Sinig Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/dkhan.png" alt="David Picture"/>
                     <div class="w-100">
-                        <div class="team-name">Quentin Sinig</div>
-                        <div class="team-title font-small">VP Go-to-Market</div>
+                        <div class="team-name">David Khan</div>
+                        <div class="team-title font-small">Sales Leader</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/quentinsinig/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/quentin-js" target="_blank" class="me-2"><github /></a>
+                        <a href="https://www.linkedin.com/in/david-khan-40399419/" target="_blank" class="me-2"><linkedin /></a>
                     </span>
                 </div>
 
                 <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/fhussonnois.jpg" alt="Quentin Sinig Picture"/>
+                    <img class="img-fluid team-member" src="/landing/company/teams/fhussonnois.png" alt="Florian Picture"/>
                     <div class="w-100">
                         <div class="team-name">Florian Hussonnois</div>
                         <div class="team-title font-small">Lead Software Engineer</div>
@@ -65,17 +64,6 @@
                         <a href="https://www.linkedin.com/in/florian-hussonnois/" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/fhussonnois" target="_blank" class="me-2"><github /></a>
                         <a href="https://twitter.com/fhussonnois" target="_blank" class="me-2"><twitter /></a>
-                    </span>
-                </div>
-
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/dkhan.jpg" alt="Quentin Sinig Picture"/>
-                    <div class="w-100">
-                        <div class="team-name">David Khan</div>
-                        <div class="team-title font-small">Sales Leader</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/david-khan-40399419/" target="_blank" class="me-2"><linkedin /></a>
                     </span>
                 </div>
 
@@ -186,7 +174,29 @@
                         <a href="https://www.linkedin.com/in/paunovicmilos/" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/MilosPaunovic" target="_blank" class="me-2"><github /></a>
                     </span>
-                </div>                    
+                </div>      
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/dlavoie.png" alt="Daniel Lavoie"/>
+                    <div class="w-100">
+                        <div class="team-name">Daniel Lavoie</div>
+                        <div class="team-title font-small">Platform Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/daniel-lavoie-50253855/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/daniellavoie" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>       
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/smuntean.png" alt="Stefan Muntean"/>
+                    <div class="w-100">
+                        <div class="team-name">Stefan Muntean</div>
+                        <div class="team-title font-small">Senior QA Engineer</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/stefan-muntean-270b63b7/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/smunteankestra" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>                                             
             </div>
         </Section>
     </div>

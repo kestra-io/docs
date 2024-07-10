@@ -1,5 +1,5 @@
 ---
-title: How to Use Conditional Branching in Kestra
+title: Conditional Branching
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -10,7 +10,7 @@ Depending on the value passed as input, the will flow branch to different tasks.
 
 ```yaml
 id: switch
-namespace: example
+namespace: company.team
 
 inputs:
   - id: string
@@ -18,36 +18,37 @@ inputs:
 
 tasks:
   - id: parent-seq
-    type: io.kestra.core.tasks.flows.Switch
+    type: io.kestra.plugin.core.flow.Switch
     value: "{{inputs.string}}"
     cases:
       FIRST:
         - id: first
-          type: io.kestra.core.tasks.debugs.Return
+          type: io.kestra.plugin.core.debug.Return
           format: "{{task.id}} > {{taskrun.startDate}}"
       SECOND:
         - id: second1
-          type: io.kestra.core.tasks.debugs.Return
+          type: io.kestra.plugin.core.debug.Return
           format: "{{task.id}} > {{taskrun.startDate}}"
         - id: second2
-          type: io.kestra.core.tasks.debugs.Return
+          type: io.kestra.plugin.core.debug.Return
           format: "{{task.id}} > {{taskrun.startDate}}"
       THIRD:
         - id: third1
-          type: io.kestra.core.tasks.flows.Sequential
+          type: io.kestra.plugin.core.flow.Sequential
           tasks:
             - id: failed
               type: io.kestra.plugin.scripts.shell.Commands
-              runner: PROCESS
+              taskRunner:
+                type: io.kestra.plugin.core.runner.Process
               commands:
                 - 'exit 1'
           errors:
             - id: error1
-              type: io.kestra.core.tasks.debugs.Return
+              type: io.kestra.plugin.core.debug.Return
               format: "Error Trigger ! {{task.id}}"
     defaults:
       - id: default
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: "{{task.id}} > {{taskrun.startDate}}"
 
 outputs:

@@ -1,13 +1,14 @@
 id: python_outputs
-namespace: example
+namespace: company.team
 
 tasks:
   - id: outputs_metrics
     type: io.kestra.plugin.scripts.python.Commands
     namespaceFiles:
       enabled: true
-    docker:
-      image: python:slim
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: python:slim
     warningOnStdErr: false
     beforeCommands:
       - pip install requests kestra
@@ -15,5 +16,5 @@ tasks:
       - python outputs_metrics.py
 
   - id: log_downloads
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "Number of downloads: {{ outputs.outputs_metrics.vars.downloads }}"

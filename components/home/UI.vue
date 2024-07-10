@@ -1,12 +1,12 @@
 <template>
     <div class="bg-dark-4">
-        <div class="container">
+        <div class="container ui-container">
             <Section
                 class="dark"
                 subtitle-before="All-Inclusive"
                 subtitle="Dashboard"
             >
-                <div class="row mb-5">
+                <div class="row mb-5 align-items-center">
                     <div class="col-lg-8">
                         <NuxtImg width="100%" loading="lazy" format="webp" v-if="active === 1" src="/landing/home/ui-1.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
                         <NuxtImg width="100%" loading="lazy" format="webp" v-if="active === 2" src="/landing/home/ui-2.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
@@ -149,6 +149,13 @@
             &:hover {
                 background: $black-4 !important;
             }
+        }
+    }
+
+    .ui-container {
+        :deep(.material-design-icon__svg) {
+            width: 24px !important;
+            height: 24px !important;
         }
     }
 </style>

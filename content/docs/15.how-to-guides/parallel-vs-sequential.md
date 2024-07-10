@@ -1,5 +1,5 @@
 ---
-title: Parallel vs. Sequential Tasks in Kestra
+title: Parallel vs. Sequential Tasks
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -13,51 +13,57 @@ The addition of the Parallel task with the `concurrent` property set to 3 ensure
 
 ```yaml
 id: parallel
-namespace: example
+namespace: company.team
 
 tasks:
   - id: parent
-    type: io.kestra.core.tasks.flows.Parallel
+    type: io.kestra.plugin.core.flow.Parallel
     concurrent: 3
     tasks:
       - id: t1
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t2
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t3
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t4
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t5
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
       - id: t6
         type: io.kestra.plugin.scripts.shell.Commands
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
   - id: last
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 
 ```
@@ -68,59 +74,65 @@ This flow will start two sequential task groups in parallel. The addition of the
 
 ```yaml
 id: sequential
-namespace: example
+namespace: company.team
 
 description: |
   This flow will start the 2 sequential tasks in parallel and those will launch tasks one after the other.
 
 tasks:
   - id: parent
-    type: io.kestra.core.tasks.flows.Parallel
+    type: io.kestra.plugin.core.flow.Parallel
     tasks:
       - id: seq1
-        type: io.kestra.core.tasks.flows.Sequential
+        type: io.kestra.plugin.core.flow.Sequential
         tasks:
           - id: t1
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
           - id: t2
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
           - id: t3
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
       - id: seq2
-        type: io.kestra.core.tasks.flows.Sequential
+        type: io.kestra.plugin.core.flow.Sequential
         tasks:
           - id: t4
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
           - id: t5
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
           - id: t6
             type: io.kestra.plugin.scripts.shell.Commands
-            runner: PROCESS
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
             commands:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
   - id: last
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "{{task.id}} > {{taskrun.startDate}}"
 ```
 

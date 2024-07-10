@@ -32,7 +32,10 @@ Kestra CLI provides several [commands](./04.helpers.md) for validating and deplo
 ```
 
 ::alert{type="info"}
-Note that the `--api-token` option is available only in the Enterprise Edition. Check the [API Tokens](/docs/enterprise/api-tokens) page for more details.
+Note that the `--api-token` option is available only in the [Enterprise Edition](/docs/enterprise/api-tokens). In the open-source version, you can leverage the basic authentication using the `--user` flag:
+```bash
+./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --user=KESTRA_USER:KESTRA_PASSWORD
+```
 ::
 
 If you run Kestra in a Docker container, you can access the CLI as follows:
@@ -86,11 +89,11 @@ The CLI commands explained above can be used in a Shell script within a flow. Th
 
 ```yaml
 id: ci-cd
-namespace: prod
+namespace: company.team
 
 tasks:
   - id: github-ci-cd
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: clone-repository
         type: io.kestra.plugin.git.Clone
@@ -100,7 +103,8 @@ tasks:
       - id: validate-flows
         type: io.kestra.plugin.scripts.shell.Commands
         description: "Validate flows from Git before deploying them."
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         warningOnStdErr: false
         commands:
           - /app/kestra flow validate flows/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
@@ -108,7 +112,8 @@ tasks:
       - id: deploy-flows
         type: io.kestra.plugin.scripts.shell.Commands
         description: "Deply flows to a Kestra namespace."
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         warningOnStdErr: false
         commands:
           - /app/kestra flow namespace update prod flows/prod/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
@@ -116,7 +121,7 @@ tasks:
 
 triggers:
   - id: github
-    type: io.kestra.core.models.triggers.types.Webhook
+    type: io.kestra.plugin.core.trigger.Webhook
     key: "yourSecretKey1234"
 ```
 
@@ -163,7 +168,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: validate-all flows
-        uses: kestra-io/validate-action@develop
+        uses: kestra-io/validate-action@master
         with:
           directory: ./flows/prod
           resource: flow
@@ -209,7 +214,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: validate-all flows
-        uses: kestra-io/validate-action@develop
+        uses: kestra-io/validate-action@master
         with:
           directory: ./flows/prod
           resource: flow

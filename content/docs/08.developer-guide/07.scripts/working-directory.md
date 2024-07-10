@@ -31,20 +31,17 @@ For example, the `inputs` property can be used to add input files that might be 
 
 ```yaml
 id: pip
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: wdir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
-    tasks:
-    - id: pip
-      type: io.kestra.core.tasks.storages.LocalFiles
-      inputs:
-        requirements.txt: |
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    inputFiles:
+      requirements.txt: |
           kestra>=0.6.0
           pandas>=1.3.5
           requests>=2.31.0
-
+    tasks:
     - id: pythonScript
       type: io.kestra.plugin.scripts.python.Script
       docker:
@@ -78,22 +75,22 @@ Consider the following example flow that runs when a new object with the prefix 
 
 ```yaml
 id: s3TriggerCommands
-namespace: blueprint
+namespace: company.team
 description: process CSV file from S3 trigger
 
 tasks:
   - id: wdir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    inputFiles:
+      data.csv: "{{ trigger.objects | jq('.[].uri') | first }}"
+    outputFiles:
+      - "*.csv"
+      - "*.parquet"
     tasks:
       - id: cloneRepo
         type: io.kestra.plugin.git.Clone
         url: https://github.com/kestra-io/examples
         branch: main
-
-      - id: local
-        type: io.kestra.core.tasks.storages.LocalFiles
-        inputs:
-          data.csv: "{{ trigger.objects | jq('.[].uri') | first }}"
 
       - id: python
         type: io.kestra.plugin.scripts.python.Commands
@@ -103,12 +100,6 @@ tasks:
         warningOnStdErr: false
         commands:
           - python scripts/clean_messy_dataset.py
-
-      - id: output
-        type: io.kestra.core.tasks.storages.LocalFiles
-        outputs:
-          - "*.csv"
-          - "*.parquet"
 
 triggers:
   - id: waitForS3object
@@ -138,7 +129,7 @@ Using the previous example, note how the `LocalFiles` can be used to output any 
 
 ```yaml
       - id: output
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         outputs:
           - "*.csv"
           - "*.parquet"

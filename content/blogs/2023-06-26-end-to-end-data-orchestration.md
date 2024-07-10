@@ -75,11 +75,11 @@ Here is a copy of that Blueprint. Make sure that you copy the ID of each connect
 
 ```yaml
 id: airbyteDbtCore
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: data-ingestion
-    type: io.kestra.core.tasks.flows.Parallel
+    type: io.kestra.plugin.core.flow.Parallel
     tasks:
       - id: psyduck
         type: io.kestra.plugin.airbyte.connections.Sync
@@ -98,7 +98,7 @@ tasks:
         connectionId: 39c38950-b0b9-4fce-a303-06ced3dbfa75
 
   - id: dbt
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: cloneRepository
         type: io.kestra.plugin.git.Clone
@@ -122,7 +122,7 @@ tasks:
                   extensions:
                     - parquet
               target: dev
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.airbyte.connections.Sync
     values:
       url: http://host.docker.internal:8000/
@@ -142,7 +142,7 @@ The topology view shows the duration of each task. The entire flow, executing fo
 ```yaml
 triggers:
   - id: everyMinute
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/1 * * * *"
 ```
 

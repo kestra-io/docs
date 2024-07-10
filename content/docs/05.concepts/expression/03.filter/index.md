@@ -21,7 +21,7 @@ To apply a filter on a section of code, wrap it with the `filter` tag:
 
 ```twig
 {% filter lower | title %}
-	hello<br>
+	hello
 {% endfilter %}
 ```
 

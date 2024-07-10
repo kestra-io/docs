@@ -10,20 +10,21 @@
                 <div v-if="index % 2 !== 0" class="row feature-img-right position-relative py-4">
                     <div class="col-md-6 ps-2 ps-sm-5 pe-2 ps-sm-5 order-1 order-md-0 d-flex flex-column justify-content-center" data-aos="fade-left">
                         <h3>{{ item.title }}</h3>
-                        <p v-html="item.content" />
+                        <div class="content" v-html="item.content" />
                     </div>
                     <div class="col-md-6 order-0 order-md-1" data-aos="fade-right">
-                        <NuxtImg :width="item.imgWidth" :height="item.imgHeight" loading="lazy" format="webp" class="img-fluid" :src="item.img" :alt="item.imgAlt" />
+                        <NuxtImg :width="item.imgWidth" :height="item.imgHeight" loading="lazy"  class="img-fluid" :src="item.img" :alt="item.imgAlt" />
                     </div>
                 </div>
 
                 <div v-else class="row feature-img-left position-relative py-4">
                     <div class="col-md-6" data-aos="fade-right">
-                        <NuxtImg :width="item.imgWidth" :height="item.imgHeight" loading="lazy" format="webp" class="img-fluid" :src="item.img" :alt="item.imgAlt" />
+                        <NuxtImg :width="item.imgWidth" :height="item.imgHeight" loading="lazy"  class="img-fluid" :src="item.img" :alt="item.imgAlt" />
                     </div>
                     <div class="col-md-6 ps-2 ps-sm-5 pe-2 ps-sm-5 d-flex flex-column justify-content-center" data-aos="fade-left">
                         <h3>{{ item.title }}</h3>
-                        <p v-html="item.content" />
+                        <p v-if="item.description">{{ item.description }}</p>
+                        <div class="content" v-html="item.content" />
                     </div>
                 </div>
             </template>
@@ -81,8 +82,10 @@
         margin-bottom: $rem-1;
     }
 
-    p {
+    .content {
         font-size: $font-size-md;
+        color: $white;
+
         :deep(ul) {
             display: flex;
             flex-direction: column;

@@ -1,5 +1,5 @@
 id: js_outputs_files_scripts
-namespace: example
+namespace: company.team
 
 description: This flow will install the npm package in a Docker container, and use kestra's NodeJS library to generate outputs (number of downloads of the Kestra Docker image).
 
@@ -8,8 +8,9 @@ tasks:
     type: io.kestra.plugin.scripts.node.Script
     beforeCommands:
       - npm install requestify
-    docker:
-      image: node:slim
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: node:slim
     warningOnStdErr: false
     outputFiles:
       - downloads.txt

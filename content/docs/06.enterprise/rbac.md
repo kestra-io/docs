@@ -1,13 +1,10 @@
 ---
 title: Role-Based Access Control (RBAC)
 icon: /docs/icons/admin.svg
+editions: ["EE"]
 ---
 
 How to manage access and permissions to your instance.
-
-::alert{type="info"}
-This feature requires a [commercial license](/pricing).
-::
 
 ## Overview
 
@@ -30,12 +27,12 @@ e.g. `CREATE`).
 The **Role** itself does not grant any permissions to anyone.
 
 Through the **Access** UI page, you will be able to attach a Role to a User, Service Account or Group, which will create a **Binding**.
+
 This Binding will grant the permissions defined by that Role to the User, Service Account, or Group.
 
-A Binding can be optionally limited to a specific namespaces.
-When a Binding is tied to a namespace, it also automatically grants permissions to all child namespaces.
+A Binding can be optionally limited to a specific namespaces. When a Binding is tied to a namespace, it also automatically grants permissions to all child namespaces. For example, a Role attached to the `prod` namespace will automatically grant access to the `prod.engineering` namespace as well.
 
-For example, a Role attached to the `prod` namespace will automatically grant access to the `prod.engineering` namespace as well.
+Note that you can [configure a default role](../10.configuration-guide/03.enterprise-edition.md#default-role-from-configuration) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](05.sso.md).
 
 In short, Roles encapsulate permission boundaries that can be attached to Users, Service Accounts or Groups across tenants and namespaces.
 ::
@@ -43,24 +40,25 @@ In short, Roles encapsulate permission boundaries that can be attached to Users,
 ### Permissions
 
 A Permission is a resource that can be accessed by a User or Group. Supported Permissions:
-- `FLOWS`
-- `BLUEPRINTS`
-- `TEMPLATES`
-- `NAMESPACES`
-- `EXECUTIONS`
-- `USERS`
-- `GROUPS`
-- `ROLES`
-- `BINDINGS`
-- `AUDITLOGS`
-- `SECRETS`
+- `FLOW`
+- `BLUEPRINT`
+- `TEMPLATE`
+- `NAMESPACE`
+- `EXECUTION`
+- `USER`
+- `GROUP`
+- `ROLE`
+- `BINDING`
+- `AUDITLOG`
+- `SECRET`
 - `IMPERSONATE`
-- `SETTINGS`
-- `WORKERS`
+- `SETTING`
+- `INFRASTRUCTURE`
 
 ### Actions
 
 An Action is a specific operation that can be performed on a Permission. Supported Actions:
+
 - `CREATE`
 - `READ`
 - `UPDATE`
@@ -94,9 +92,8 @@ Here's a table summarizing the key differences between an Admin and a Super Admi
 
 ### Super Admin
 
-Super Admin is a type of user that works outside the box. Without any Role or Binding, it has access to manage tenants, users, roles, groups and access within a Kestra Enterprise instance.
+Without any Role or Binding, Super Admin has access to manage tenants, users, roles, groups and access within a Kestra Enterprise instance.
 
-The purpose of the Super Admin is to allow an easy management of your instance.
 
 ::collapse{title="More information"}
 
@@ -266,7 +263,6 @@ Groups are a useful mechanism for providing the same roles to multiple Users or 
 #### What happens if you delete a Group?
 
 All Users and Service Accounts assigned to that Group will lose permissions that were binds to the groups. However Users and Services Accounts will still exist.
-
 
 ## RBAC FAQ
 

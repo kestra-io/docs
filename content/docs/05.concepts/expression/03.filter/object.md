@@ -20,8 +20,6 @@ Each section below represents a built-in filter.
 - [sort](#sort)
 - [split](#split)
 
----
-
 ## chunk
 
 The `chunk` filter returns partitions of `size` from a list.
@@ -33,8 +31,6 @@ The `chunk` filter returns partitions of `size` from a list.
 **Arguments**
 - `size`: the size of the chunk
 
----
-
 ## className
 
 The `className` filter return a string with the current class name.
@@ -43,8 +39,6 @@ The `className` filter return a string with the current class name.
 {{ "12.3" | number | className }}
 {# will output: java.lang.Float #}
 ```
-
----
 
 ## first
 
@@ -57,8 +51,6 @@ The `first` filter will return the first item of a collection, or the first lett
 {{ 'Mitch' | first }}
 {# will output 'M' #}
 ```
-
----
 
 ## join
 
@@ -79,22 +71,38 @@ to be used as the separator between items.
 **Arguments**
 - separator
 
----
-
 ## keys
 
 The `keys` filter will return the keys from a collection, or list of index of an array.
+
 ```twig
 {{ {'this': 'foo', 'that': 'bar'} | keys }}
-{# will output the key from this map '['this', 'that']' #}
+{# will output the keys from this map '['this', 'that']' #}
 
 
 {{ [0, 1, 3] | keys }}
 {# will output the key from this array '[0, 1, 2]' #}
-
 ```
 
----
+## values
+
+The `values` filter will return the values from a map:
+
+```twig
+{{ {'this': 'foo', 'that': 'bar'} | values }}
+{# will output the values from this map '['foo', 'bar']' #}
+```
+
+Here is how you can test that expression in a flow:
+
+```yaml
+id: expression
+namespace: company.myteam
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ {'this': 'foo', 'that': 'bar'} | values }}"
+```
 
 ## last
 
@@ -110,12 +118,10 @@ The `last` filter will return the last item of a collection, or the last letter 
 The `length` filter returns the number of items of collection, map or the length of a string:
 
 ```twig
-{% if users|length > 10 %}
+{% if users | length > 10 %}
     ...
 {% endif %}
 ```
-
----
 
 ## merge
 
@@ -124,17 +130,12 @@ The `merge` filter merge items of type Map, List or Array:
 {{ [1, 2] | merge([3, 4]) }}
 ```
 
----
-
-
 ## reverse
 
 The `reverse` filter reverses a List:
 ```twig
 {% for user in users | reverse %} {{ user }} {% endfor %}
 ```
-
----
 
 ## rsort
 
@@ -144,8 +145,6 @@ The `rsort` filter will sort a list in reversed order. The items of the list mus
 	{{ user.name }}
 {% endfor %}
 ```
-
----
 
 ## slice
 
@@ -163,8 +162,6 @@ The `slice` filter returns a portion of a list, array, or string.
 - `fromIndex`: 0-based and inclusive
 - `toIndex`: 0-based and exclusive
 
----
-
 ## sort
 
 The `sort` filter will sort a list. The items of the list must implement `Comparable`.
@@ -173,8 +170,6 @@ The `sort` filter will sort a list. The items of the list must implement `Compar
 	{{ user.name }}
 {% endfor %}
 ```
-
----
 
 ## split
 

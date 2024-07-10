@@ -1,27 +1,28 @@
 id: errors
-namespace: example
+namespace: company.team
 
 description: This flow will always fail. The `errors` branch tasks are executed on flow failure in parallel.
 
 tasks:
 - id: failed
   type: io.kestra.plugin.scripts.shell.Commands
-  runner: PROCESS
+  taskRunner:
+    type: io.kestra.plugin.core.runner.Process
   commands:
   - "exit 1"
 
 errors:
   - id: parallel
-    type: io.kestra.core.tasks.flows.Parallel
+    type: io.kestra.plugin.core.flow.Parallel
     tasks:
       - id: error1
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: "running error {{task.id}}"
 
       - id: error2
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: "running error {{task.id}}"
 
       - id: error3
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: "running error {{task.id}}"

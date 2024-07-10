@@ -18,7 +18,7 @@ To make the change clear, here is how scheduling conditions were defined before 
 
 ```yaml
 id: beverage_order
-namespace: dev
+namespace: company.team
 
 inputs:
   - name: beverage
@@ -27,7 +27,7 @@ inputs:
 
 tasks:
   - id: order_beverage
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://reqres.in/api/products
     method: POST
     contentType: application/json
@@ -35,24 +35,24 @@ tasks:
       beverage: "{{inputs.beverage}}"
 
   - id: set_labels
-    type: io.kestra.core.tasks.executions.Labels
+    type: io.kestra.plugin.core.execution.Labels
     labels:
       date: "{{trigger.date ?? execution.startDate | date('yyyy-MM-dd')}}"
       beverage: "{{inputs.beverage}}"
 
 triggers:
   - id: workday
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
     scheduleConditions:
-      - type: io.kestra.core.models.conditions.types.NotCondition
+      - type: io.kestra.plugin.core.condition.NotCondition
         conditions:
-          - type: io.kestra.core.models.conditions.types.WeekendCondition
+          - type: io.kestra.plugin.core.condition.WeekendCondition
   - id: weekend
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 20 * * *"
     scheduleConditions:
-      - type: io.kestra.core.models.conditions.types.WeekendCondition
+      - type: io.kestra.plugin.core.condition.WeekendCondition
     inputs:
       beverage: beer
 ```
@@ -68,7 +68,7 @@ Here is the same flow with the `scheduleConditions` property replaced by `condit
 
 ```yaml
 id: beverage_order
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: beverage
@@ -77,7 +77,7 @@ inputs:
 
 tasks:
   - id: order_beverage
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://reqres.in/api/products
     method: POST
     contentType: application/json
@@ -85,25 +85,25 @@ tasks:
       beverage: "{{inputs.beverage}}"
 
   - id: set_labels
-    type: io.kestra.core.tasks.executions.Labels
+    type: io.kestra.plugin.core.execution.Labels
     labels:
       date: "{{trigger.date ?? execution.startDate | date('yyyy-MM-dd')}}"
       beverage: "{{inputs.beverage}}"
 
 triggers:
   - id: workday
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 * * *"
     conditions:
-      - type: io.kestra.core.models.conditions.types.NotCondition
+      - type: io.kestra.plugin.core.condition.NotCondition
         conditions:
-          - type: io.kestra.core.models.conditions.types.WeekendCondition
+          - type: io.kestra.plugin.core.condition.WeekendCondition
 
   - id: weekend
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 20 * * *"
     conditions:
-      - type: io.kestra.core.models.conditions.types.WeekendCondition
+      - type: io.kestra.plugin.core.condition.WeekendCondition
     inputs:
       beverage: beer
 ```

@@ -11,11 +11,9 @@ Temporals filters are used to format dates and timestamps.
 - [timestampMicro](#timestampmicro)
 - [timestampNano](#timestampnano)
 
----
-
 ## date
 
-The `date` filter formats a date in a variety of formats. It can handle old-school `java.util.Date`,
+The `date` filter formats a date in a variety of formats. It can handle `java.util.Date`,
 Java 8 `java.time` constructs like `OffsetDateTime` and timestamps in milliseconds from the epoch.
 The filter will construct a `java.text.SimpleDateFormat` or `java.time.format.DateTimeFormatter` using the provided
 pattern and then use this newly created format to format the provided date object. If you don't provide a pattern,
@@ -77,11 +75,9 @@ Format can be:
 - `timeZone`:  the timezone to use
 - `locale`: the locale to use
 
----
-
 ## dateAdd
 
-The `dateAdd` filter add some unit and formats a date with the same behavior than [date](#date) filters.
+The `dateAdd` filter adds a unit and formats a date with the same behavior as [date](#date) filters.
 
 ```twig
 {{ user.birthday | dateAdd(-1, 'DAYS') }}
@@ -110,10 +106,6 @@ The `dateAdd` filter add some unit and formats a date with the same behavior tha
 - timeZone [date](#date)
 - locale [date](#date)
 
----
-
-
----
 
 ## timestamp
 
@@ -128,7 +120,6 @@ The `timestamp` filter will convert a date to a unix timestamps in second. You c
 - existingFormat
 - timeZone
 
----
 
 ## timestampMicro
 
@@ -143,8 +134,6 @@ The `timestampMicro` filter will convert a date to a unix timestamps in microsec
 - existingFormat
 - timeZone
 
----
-
 ## timestampNano
 
 The `timestampNano` filter will convert a date to a unix timestamps in nanosecond. You can convert a string with `existingFormat` and change `timeZone` with same arguments from [date](#date) filter.
@@ -158,4 +147,3 @@ The `timestampNano` filter will convert a date to a unix timestamps in nanosecon
 - existingFormat
 - timeZone
 
----

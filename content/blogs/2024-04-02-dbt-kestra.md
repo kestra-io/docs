@@ -43,11 +43,11 @@ For example, you can Launch a `dbt build` command on a  dbt project hosted on 
 ```yaml
 
 id: dbt_build
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: dbt
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: cloneRepository
       type: io.kestra.plugin.git.Clone
@@ -74,7 +74,7 @@ You can also install a custom dbt version and run `dbt deps` and `dbt build`�
 
 ```yaml
 id: dbt_custom_dependencies
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: dbt_version
@@ -83,7 +83,7 @@ inputs:
 
 tasks:
   - id: git
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: clone_repository
         type: io.kestra.plugin.git.Clone
@@ -124,11 +124,11 @@ Here is how you can use this flag:
 
 ```yaml
 id: dbt
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: dbt
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: cloneRepository
       type: io.kestra.plugin.git.Clone
@@ -152,11 +152,11 @@ Here is an example using Kestra declarative syntax to run data ingestion pipelin
 
 ```yaml
 id: airbyteSyncParallelWithDbt
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: data-ingestion
-    type: io.kestra.core.tasks.flows.Parallel
+    type: io.kestra.plugin.core.flow.Parallel
     tasks:
       - id: salesforce
         type: io.kestra.plugin.airbyte.connections.Sync
@@ -171,7 +171,7 @@ tasks:
         connectionId: e3b1ce92-547c-436f-b1e8-23b6936c12ef
 
   - id: dbt
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: cloneRepository
       type: io.kestra.plugin.git.Clone
@@ -202,7 +202,7 @@ tasks:
             target: dev
         sa.json: "{{ secret('GCP_CREDS') }}"
 
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.airbyte.connections.Sync
     values:
       url: <http://host.docker.internal:8000/>

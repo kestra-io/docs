@@ -1,5 +1,5 @@
 ---
-title: How to Make HTTP Requests in Kestra
+title: HTTP Requests
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -102,7 +102,7 @@ While these tools are very useful for testing APIs, it can be challenging to aut
 
 This is where Kestra comes into enable us to automate requests with other tasks! Below, we'll cover how you can make a `GET`, `POST`, `PUT`, and `DELETE` request directly in your flow.
 
-To make a request, you can use the task type `io.kestra.plugin.fs.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](/plugins/plugin-fs/tasks/http/io.kestra.plugin.fs.http.request)
+To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation.](/plugins/plugin-fs/tasks/http/io.kestra.plugin.core.http.Request)
 
 ### GET Request
 
@@ -112,18 +112,18 @@ In this example, our flow is making a `GET` Request to collect a JSON of product
 
 ```yaml
 id: http_get_request_example
-namespace: example
+namespace: company.team
 description: Make a HTTP Request and Handle the Output
 
 tasks:
   - id: send_data
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://dummyjson.com/products
     method: GET
     contentType: application/json
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 
 ```
@@ -148,7 +148,7 @@ Using our `POST` Request example from earlier, we can recreate it directly in Ke
 
 ```yaml
 id: http_post_request_example
-namespace: example
+namespace: company.team
 description: Make a HTTP Request and Handle the Output
 
 inputs:
@@ -159,14 +159,14 @@ inputs:
 
 tasks:
   - id: send_data
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://dummyjson.com/products/add
     method: POST
     contentType: application/json
     body: "{{ inputs.payload }}"
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 
 ```
@@ -185,7 +185,7 @@ Similar to our `POST` Request, we can change the `method` property to `PUT`. As 
 
 ```yaml
 id: http_put_request_example
-namespace: example
+namespace: company.team
 description: Make a HTTP Request and Handle the Output
 
 inputs:
@@ -196,14 +196,14 @@ inputs:
 
 tasks:
   - id: send_data
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://dummyjson.com/products/1
     method: PUT
     contentType: application/json
     body: "{{ inputs.payload }}"
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 ```
 
@@ -217,7 +217,7 @@ We can also remove a product from the list by using a `DELETE` Request. This exa
 
 ```yaml
 id: http_delete_request_example
-namespace: example
+namespace: company.team
 description: Make a HTTP Request and Handle the Output
 
 inputs:
@@ -226,13 +226,13 @@ inputs:
 
 tasks:
   - id: send_data
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: "https://dummyjson.com/products/{{ inputs.product_id }}"
     method: DELETE
     contentType: application/json
 
   - id: print_status
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.send_data.body }}"
 
 ```

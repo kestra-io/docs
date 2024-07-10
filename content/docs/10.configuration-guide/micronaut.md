@@ -1,9 +1,9 @@
 ---
-title: Micronaut Configuration
+title: Micronaut
 icon: /docs/icons/admin.svg
 ---
 
-This page describes Micronaut configuration options for Kestra.
+How to configure Micronaut options for Kestra.
 
 As Kestra is a Java-based application built with Micronaut, you can configure any Micronaut configuration options.
 We will not explain all the possible configuration options, these are available [here](https://docs.micronaut.io/latest/guide/index.html). However, we will provide some tips on the most useful options:

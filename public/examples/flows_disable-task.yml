@@ -1,5 +1,5 @@
 id: disable_task
-namespace: dev
+namespace: company.team
 
 description: |
   This flow will never launch the `skipped` task because that task is disabled.
@@ -7,17 +7,17 @@ description: |
 
 tasks:
   - id: first
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: first {{task.id}}
     logLevel: TRACE
 
   - id: skipped
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     disabled: true
     format: second {{task.type}}
     logLevel: WARN
 
   - id: last
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: the name of the flow is {{flow.id}}
     logLevel: ERROR

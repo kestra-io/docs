@@ -19,12 +19,12 @@ tasks:
     # The message is passed using the 'format' attribute.
     # We use Pebble expressions defined with curly brackets to access the input variables.
   - id: hello
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Hey there, {{ inputs.user }}!
 
     # This task extracts data from an API.
   - id: api
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://dummyjson.com/products
 
     # This task runs a Python script.
@@ -35,12 +35,14 @@ tasks:
     beforeCommands:
       - pip install polars
     warningOnStdErr: false
+    outputFiles:
+      - "products.csv"
     script: |
       import polars as pl
       data = {{outputs.api.body | jq('.products') | first}}
       df = pl.from_dicts(data)
       df.glimpse()
-      df.select(["brand", "price"]).write_csv("{{outputDir}}/products.csv")
+      df.select(["brand", "price"]).write_csv("products.csv")
 
     # Run a DuckDB query.
   - id: sqlQuery
@@ -58,7 +60,7 @@ tasks:
 triggers:
   # Here we use the 'Schedule' trigger to run the flow every minute.
   - id: everyMinute
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/1 * * * *"
     inputs:
       name: Kestra pro user

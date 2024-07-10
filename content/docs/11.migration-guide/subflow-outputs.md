@@ -16,11 +16,11 @@ Let's say you have a following subflow (aka child flow) with a task `mytask` gen
 
 ```yaml
 id: flow_outputs
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: mytask
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: this is a task output used as a final flow output
 ```
 
@@ -28,19 +28,19 @@ To access this output in a different task within the same flow, you would use th
 
 ```yaml
 id: parent_flow
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: subflow
-    type: io.kestra.core.tasks.flows.Subflow
+    type: io.kestra.plugin.core.flow.Subflow
     flowId: flow_outputs
-    namespace: dev
+    namespace: company.team
     wait: true
     outputs: # 🚨 this property is deprecated in Kestra 0.15.0
       final: "{{ outputs.mytask.value }}"
 
   - id: log
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 
@@ -56,11 +56,11 @@ To keep the old behavior with the `outputs` property, you can set the following 
 kestra:
   plugins:
     configurations:
-      - type: io.kestra.core.tasks.flows.Subflow
+      - type: io.kestra.plugin.core.flow.Subflow
         values:
           outputs:
             enabled: true # for backward-compatibility -- false by default
-      - type: io.kestra.core.tasks.flows.Flow
+      - type: io.kestra.plugin.core.flow.Flow
         values:
           outputs:
             enabled: true # for backward-compatibility -- false by default
@@ -84,11 +84,11 @@ Since 0.15.0, the flow can produce `outputs` simply by defining them in the flow
 
 ```yaml
 id: flow_outputs
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: mytask
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: this is a task output used as a final flow output
 
 outputs:
@@ -107,17 +107,17 @@ Here is how you can access the flow output in the parent flow:
 
 ```yaml
 id: parent_flow
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: subflow
-    type: io.kestra.core.tasks.flows.Subflow
+    type: io.kestra.plugin.core.flow.Subflow
     flowId: flow_outputs
-    namespace: dev
+    namespace: company.team
     wait: true
 
   - id: log_subflow_output
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 

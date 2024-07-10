@@ -182,7 +182,7 @@ Now create a new GitHub repository and copy both files to it. You should end up 
 And that's it! You're now ready to create a new Kestra flow.
 
 ### Writing and Running the Kestra Flow
-We've created a new Kestra flow that uses the `io.kestra.core.tasks.flows.WorkingDirectory` plugin.
+We've created a new Kestra flow that uses the `io.kestra.plugin.core.flow.WorkingDirectory` plugin.
 
 You'll want to use the `io.kestra.plugin.git.Clone` plugin to clone a GitHub repository locally (to Kestra). Just remember to specify your GitHub repo URL in this task.
 
@@ -190,11 +190,11 @@ Further, we're using a `io.kestra.plugin.scripts.python.Commands` task instead o
 
 ```yaml
 id: pythonScriptFromGit
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: workingDirectory
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
     - id: cloneRepository
       type: io.kestra.plugin.git.Clone
@@ -278,11 +278,11 @@ Here's the full source code:
 
 ```yaml
 id: pythonScriptFromEditor
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: workingDirectory
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: pythonScript
         type: io.kestra.plugin.scripts.python.Script

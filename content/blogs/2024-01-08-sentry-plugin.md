@@ -201,12 +201,12 @@ This flow, [Purge execution data including logs, metrics and outputs on a schedu
 
 ```yaml
 id: purge_storage
-namespace: sentry_article
+namespace: company.team
 description: Based on https://demo.kestra.io/ui/blueprints/community/202
 
 tasks:
   - id: clean_up_storage
-    type: io.kestra.core.tasks.storages.Purge
+    type: io.kestra.plugin.core.storage.Purge
     endDate: "{{ trigger.date | dateAdd(-1, 'MONTHS') }}"
     purgeExecution: true
     purgeLog: true
@@ -237,7 +237,7 @@ errors:
 
 triggers:
   - id: monthly
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 1 * *" # every month at 9am on the 1st day of the month
 ```
 
@@ -250,20 +250,20 @@ This task demonstrates a really cool feature of Kestra: triggers that trigger ot
 If you have just one flow with some non-zero likelihood of failure - you add a `SentryAlert` like the examples above. But what do you do when you have 10 or 20 flows? You definitely do not want to have to maintain 20 individual `SentryAlert` tasks. **That’s when you use the `SentryExecution` task because any other flow can trigger it.**
 
 
-Let’s imagine three flows, **foo**, **bar** and **baz** all related to your company’s payroll; you need to know if any one of these falls over. Each one of these three flows has the same namespace: **payroll**.
+Let’s imagine three flows, **foo**, **bar** and **baz** all related to your company’s payroll; you need to know if any one of these falls over. Each one of these three flows has the same namespace: **company.payroll**.
 
 ```yaml
 id: foo
-namespace: payroll
+namespace: company.payroll
 
 id: bar
-namespace: payroll
+namespace: company.payroll
 
 id: baz
-namespace: payroll
+namespace: company.payroll
 ```
 
-Now we create a fourth flow using the SentryExecution task that will be triggered when any flow with the **payroll** namespace fails. This flow has two parts, the task and the trigger.
+Now we create a fourth flow using the SentryExecution task that will be triggered when any flow with the **company.payroll** namespace fails. This flow has two parts, the task and the trigger.
 
 The task is straightforward. All you need to provide is the **DSN** and the **Level**: 
 
@@ -282,14 +282,14 @@ The trigger is only slightly more involved: it needs two pieces of information: 
 ```yaml
 triggers:
   - id: failed_prod_workflows
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
           - WARNING
-      - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
-        namespace: payroll
+      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
+        namespace: company.payroll
         prefix: false
 ```
 
@@ -318,13 +318,13 @@ Here’s a full set:
 
 ```yaml
 id: task_to_trigger_another_trigger
-namespace: trig
+namespace: company.team
 description: |
   This flow will always fail. When it does, the sentry_execution_example flow 
 will be triggered.
 tasks:
   - id: say_hello
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: This should have triggered the sentry_execution_example flow.
   - id: bash_will_fail
     type: io.kestra.plugin.scripts.shell.Commands
@@ -336,7 +336,7 @@ tasks:
 ### A flow using SentryExecution
 ```yaml
 id: sentry_execution_example
-namespace: does_not_really_matter
+namespace: company.team
 description: Waits for another flow with the namespace specified below to fail or 
 warn, and then sends a Sentry issue.
 tasks:
@@ -348,17 +348,18 @@ tasks:
   level: ERROR
 triggers:
   - id: failed_prod_workflows
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
           - WARNING
-      - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
-        namespace: trig
+      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
+        namespace: company.payroll
         prefix: false        
  # namespace must match exactly
 ```
+
 ### The JSON sent to Sentry
 
 ```json
@@ -415,15 +416,15 @@ Finally, let’s look at a production quality example using **SentryAlert** and 
 
 ### `SentryAlert` Production Example
 
-The flow below is a production-quality example using the `SentryAlert` task to send an issue when the `get_files` task throws an error. This example uses `secrets`, `variables`, and `taskDefaults` for the DB connection values and the Sentry DSN.
+The flow below is a production-quality example using the `SentryAlert` task to send an issue when the `get_files` task throws an error. This example uses `secrets`, `variables`, and `pluginDefaults` for the DB connection values and the Sentry DSN.
 
 ```yaml
 id: gen_postgresql_error_sentry_alert
-namespace: sentry_article
+namespace: company.team
 description: Generate an error so we can send a SentryAlert
 errors:
   - id: log_msg_on_err
-    type: io.kestra.core.tasks.log.Log    
+    type: io.kestra.plugin.core.log.Log    
     message: "Something bad happened while running {{execution.id}} {{task.id}}"
   - id: send_sentry_alert_on_failure
     type: io.kestra.plugin.notifications.sentry.SentryAlert
@@ -453,12 +454,12 @@ tasks:
   fetch: true
 
 - id: use_files
-  type: io.kestra.core.tasks.log.Log
+  type: io.kestra.plugin.core.log.Log
   message: Number of rows returned is "{{get_files.outputs.size}}"
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/05 * * * *"
     # every 5 minutes
 
@@ -466,7 +467,7 @@ variables:
     db_host: "host.docker.internal"
     db_name: "summ_dev"
 
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.jdbc.postgresql.Query
     values:
       username: "{{ secret('PG_USERNAM') }}"
@@ -483,7 +484,7 @@ First, the flow that will fail:
 
 ```yaml
 id: sentry_execution_task_example
-namespace: sentry_trig
+namespace: company.payroll
 description: |
   This flow will always fail. When it does, the sentry_execution_trigger_example flow will be triggered.
 
@@ -493,12 +494,12 @@ tasks:
     sql: select not_a_real_column from not_a_real_table;
     fetch: true
   - id: use_files
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Number of rows returned is "{{get_files.outputs.size}}"
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/30 * * * *"
     # every 30 minutes
 
@@ -506,7 +507,7 @@ variables:
     db_host: "host.docker.internal"
     db_name: "summ_dev"
 
-taskDefaults:
+pluginDefaults:
   - type: io.kestra.plugin.jdbc.postgresql.Query
     values:
       username: "{{ secret('PG_USERNAME') }}"
@@ -517,7 +518,7 @@ This is the SentryExecution flow that waits for the above flow to fail:
 
 ```yaml
 id: sentry_execution_trigger_example
-namespace: sentry_article
+namespace: company.team
 description: Waits for another flow with the namespace specified below to fail or warn, and then sends a Sentry issue.
 
 tasks:
@@ -530,14 +531,14 @@ tasks:
 
 triggers:
   - id: failed_prod_workflows
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
           - WARNING
-      - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
-        namespace: sentry_trig # needs to match the namespace of the flow above
+      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
+        namespace: company.payroll # needs to match the namespace of the flow above
         prefix: false
 ```
 

@@ -3,15 +3,15 @@ title: Leverage Terraform for flow modularity
 icon: /docs/icons/terraform.svg
 ---
 
-Scale your codebase using Terraform to template and define flows.
+Scale your codebase using Terraform to template and define flows
 
 ## Introduction
 
-This guide will show you how to leverage terraform in your Kestra codebase and its powerful templating features brought by HCL (Hashicorp Configuration Language).
+This article will show you how to leverage terraform in your Kestra codebase and its powerful templating features brought by HCL (Hashicorp Configuration Language).
 
 In order to make your codebase easy to use for users unfamiliar with Kestra syntax, you may want to encapsulate most of the logic and DSL (Domain-specific programming language) into [Terraform modules](https://developer.hashicorp.com/terraform/language/modules).
 
-This quick guide, will show you how templating capbilities brought by Terraform can help you :
+This quick tutorial, will show you how templating capbilities brought by Terraform can help you :
 
 - DRY (Do Not Repeat Yourself) your codebase
 - Facilitate onboarding on Kestra
@@ -46,11 +46,11 @@ They only expose variables that are meant to be changed for usage purpose.
 
 Inside a module, you can define a `main.tf` file that will define the resources to be created.
 
-## Creating a module
+## Creating a module, example with Airbyte
 
 Let's create a module that will define a Kestra flow that will sync data from Airbyte.
 
-Here is a tree structure of a terraform module:
+# tree structure of a terraform module :
 
 ```
 .
@@ -78,7 +78,7 @@ resource "kestra_flow" "airbyte_sync" {
       description         = var.description
       airbyte-url         = var.airbyte_url
       airbyte-connections = var.airbyte_connections
-      MAX_DURATION        = var.max_sync_duration
+      max-duration        = var.max_sync_duration
       late-maximum-delay  = var.late_maximum_delay
       cron-expression     = var.cron_expression
     }),
@@ -87,7 +87,7 @@ resource "kestra_flow" "airbyte_sync" {
 }
 ```
 
-### `variables.tf`
+## `variables.tf`
 
 ```hcl
 variable "airbyte_connections" {
@@ -160,10 +160,12 @@ variable "late_maximum_delay" {
 ```
 
 
-### `tasks.yml`
+## `tasks.yml`
 
 ```yaml
 tasks:
+# Here we leverage the Terraform templating capabilities to generate the tasks
+# Using jinja-like syntax, we can loop over the list of connections and generate tasks for each of them
 %{ for connection in airbyte-connections ~}
 
   - id: "trigger_${connection.name}"
@@ -183,8 +185,8 @@ tasks:
       type: constant
       interval: PT1M
       maxAttempt: 5
-    %{ if length(MAX_DURATION) > 0}
-    maxDuration: "${MAX_DURATION}"
+    %{ if length(max-duration) > 0}
+    maxDuration: "${max-duration}"
     %{ endif }
 %{ endfor ~}
 
@@ -197,7 +199,7 @@ triggers:
 
 ## Using the module
 
-Using the module will look like this:
+Using the module will look like this :
 
 ```hcl
 module "stripe_events_incremental" {
@@ -219,11 +221,97 @@ module "stripe_events_incremental" {
 }
 ```
 
+It is now easy to instantiate the module in your `main.tf` file, and to expose only the variables that are meant to be changed:
+- `flow_id`: the flow id
+- `namespace`: the namespace to save the flow in
+- `description`: the description
+- `airbyte_connections`: the list of Airbyte connections to trigger in a linear order
+- `max_sync_duration`: the maximum duration to wait for logs
+- `airbyte_url`: the Airbyte URL of the instance
+- `cron_expression`: the cron expression to trigger the flow
+- `late_maximum_delay`: the maximum delay to wait for the flow to start, in case of missed schedules (backfill)
+
+## Sublfow example: query and display results for a given Postgres database
+
+Subflows are a way to encapsulate logic and make it reusable across your codebase.
+
+Here is an example of a subflow that will query a Cloud SQL instance:
+
+```yaml
+id: query_my_postgres_database
+namespace: company.team
+description: "Query Postgres database and display results in logs"
+
+inputs:
+- id: sqlQuery
+  type: STRING
+  defaults: "SELECT * FROM public.jobs ORDER BY created_at desc limit 1" # SQL query example
+
+tasks:
+- id: query_data
+  type: io.kestra.plugin.jdbc.postgresql.Query
+  url: jdbc:postgresql://MY_HOST/MY_DATABASE
+  username: MY_USER
+  password: "{{ secrets.get('my-postgres-password') }}"
+  sql: "{{ inputs.sqlQuery }}"
+  fetch: true
+
+- id: show-result
+  type: io.kestra.core.tasks.log.Log
+  message: |
+    {% for row in outputs.query_data.rows %}
+      {%- for key in row.keySet() -%}
+        {{key}} : {{row.get(key)}} |
+      {%- endfor -%}
+      \n
+    {% endfor %}"
+
+# To make it easier to use the results in another flow
+# we expose the query result by using `outputs`
+outputs:
+- id: query_result
+  value: "{{ outputs.query_data.rows }}"
+  type: JSON
+```
+
+You can either execute this sublow as is, or use it in another flow to avoid repeating the same logic.
+
+Executing the subflow will prompt you to enter the SQL query you want to execute :
+
+![Subflow execution](/docs/terraform-templating-guide/01-execute_sublow_query_my_postgres.png)
+
+## Using the subflow in a flow
+
+```yaml
+  - id: query_last_job
+    type: io.kestra.core.tasks.flows.Subflow
+    namespace: company.team
+    flowId: query_my_postgres_database
+    inputs:
+      sqlQuery: "SELECT * FROM public.jobs ORDER BY created_at desc limit 1"
+    wait: true
+    transmitFailed: true
+
+  - id: use_result
+    type: io.kestra.core.tasks.debugs.Return
+    # Use the query result from the subflow
+    format: "{{ outputs.query_last_job.outputs.query_result }}"
+```
+
+1. Connection details are stored in the subflow, and only the SQL query is exposed to the user.
+1. Subflow natively displays results in logs for easy debugging.
+1. Outputs of the subflow can be used in the parent flow by using `outputs.query_data.rows` in the `show-result` task.
+
+> Note: `wait: true` will wait for the subflow to finish before continuing the flow execution. `transmitFailed: true` will transmit the failed status of the subflow to the parent flow.
+
+Parent flow logs will display tasks from subflow directly:
+![Subflow execution from parent flow](/docs/terraform-templating-guide/02-execute_sublow_from_parent_flow.png)
+
 ## Subflows vs Terraform templating
 
-[Subflows](../04.workflow-components/10.subflows.md) are a way to encapsulate logic and make it reusable across your codebase. However, they are not meant to be used for templating purposes.
+Subflows hide unnecessary details to their users, abstracting connection details, logging and such for a given set of tasks.
 
-Terraform templating is a way to define flows in a more modular way, and to expose only the variables that are meant to be changed.
+Modules helps you define logic of the tasks to be executed, and expose only the variables that are meant to be changed.
 
 ## Conclusion
 

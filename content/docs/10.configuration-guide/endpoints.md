@@ -1,9 +1,9 @@
 ---
-title: Endpoints Configuration
+title: Endpoints
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how you can configure the Micronaut management endpoints in Kestra.
+How you can configure the Micronaut management endpoints in Kestra.
 
 Management endpoints can be set up from the [Micronaut endpoint configuration](https://docs.micronaut.io/latest/guide/index.html#endpointConfiguration). You can also secure all endpoints with basic authentication using this additional configuration:
 

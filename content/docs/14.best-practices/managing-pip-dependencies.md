@@ -35,15 +35,16 @@ Here is a sample flow demonstrating how the `venv` folder can be cached:
 
 ```yaml
 id: python_cached_dependencies
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: working_dir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: python_script
         type: io.kestra.plugin.scripts.python.Script
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
         warningOnStdErr: false
         beforeCommands:
           - python -m venv venv

@@ -428,7 +428,7 @@ We can create a scheduled data pipeline that will check for new files in S3 ever
 
 ```yaml
 id: ingestToDataLakeInlinePython
-namespace: blueprint
+namespace: company.team
 
 variables:
   bucket: kestraio
@@ -445,7 +445,7 @@ tasks:
     bucket: "{{vars.bucket}}"
   
   - id: check
-    type: io.kestra.core.tasks.flows.If
+    type: io.kestra.plugin.core.flow.If
     condition: "{{outputs.listObjects.objects}}"
     then:
       - id: ingestToDataLake
@@ -532,7 +532,7 @@ tasks:
 
 triggers:
   - id: hourlySchedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "@hourly"
     disabled: true
 ```
@@ -545,7 +545,7 @@ Once you push [your script to Git](https://github.com/kestra-io/scripts/blob/mai
 
 ```yaml
 id: ingestToDataLakeGit
-namespace: blueprint
+namespace: company.team
 
 variables:
   bucket: kestraio
@@ -562,11 +562,11 @@ tasks:
     bucket: "{{vars.bucket}}"
 
   - id: check
-    type: io.kestra.core.tasks.flows.If
+    type: io.kestra.plugin.core.flow.If
     condition: "{{outputs.listObjects.objects}}"
     then:
     - id: processNewObjects
-      type: io.kestra.core.tasks.flows.WorkingDirectory
+      type: io.kestra.plugin.core.flow.WorkingDirectory
       tasks:
         - id: git
           type: io.kestra.plugin.git.Clone
@@ -622,7 +622,7 @@ tasks:
 
 triggers:
   - id: hourlySchedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "@hourly"
 ```
 
@@ -645,7 +645,7 @@ You can see here a significant advantage of Kestra: a separation of concerns bet
 
 ```yaml
 id: ingestToDataLakeEventDriven
-namespace: blueprint
+namespace: company.team
 
 variables:
   sourcePrefix: inbox
@@ -655,7 +655,7 @@ variables:
 
 tasks:
   - id: wdir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: git
         type: io.kestra.plugin.git.Clone

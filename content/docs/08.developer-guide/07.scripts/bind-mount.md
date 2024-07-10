@@ -50,7 +50,7 @@ First, make sure that your Kestra configuration in the [Docker Compose file](htt
               path: /tmp/kestra-wd/tmp
           plugins:
             configurations:
-              - type: io.kestra.plugin.scripts.runner.docker.DockerTaskRunner
+              - type: io.kestra.plugin.scripts.runner.docker.Docker
                 values:
                   volume-enabled: true # 👈 this is the relevant setting
 ```
@@ -59,7 +59,7 @@ With that setting, you can point the script task to any script on your local fil
 
 ```yaml
 id: pythonVolume
-namespace: dev
+namespace: company.team
 tasks:
   - id: anyPythonScript
     type: io.kestra.plugin.scripts.python.Commands

@@ -1,5 +1,5 @@
 ---
-title: How to Loop Over a List of Values in Kestra
+title: Loop Over a List of Values
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -9,31 +9,31 @@ In this example, we can use `EachSequential` to iterate over a list of values.
 
 ```yaml
 id: each_nested
-namespace: example
+namespace: company.team
 
 tasks:
   - id: 1_each
-    type: io.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.plugin.core.flow.EachSequential
     value: '["s1", "s2", "s3"]'
     tasks:
       - id: 1-1_return
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
       - id: 1-2_each
-        type: io.kestra.core.tasks.flows.EachSequential
+        type: io.kestra.plugin.core.flow.EachSequential
         value: '["a a", "b b"]'
         tasks:
           - id: 1-2-1_return
-            type: io.kestra.core.tasks.debugs.Return
+            type: io.kestra.plugin.core.debug.Return
             format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
           - id: 1-2-2_return
-            type: io.kestra.core.tasks.debugs.Return
+            type: io.kestra.plugin.core.debug.Return
             format: "{{task.id}} > {{ outputs['1-2-1_return'].s1[taskrun.value].value }} >> get {{ outputs['1-2-1_return']['s1'][taskrun.value].value }} > {{taskrun.startDate}}"
       - id: 1-3_return
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: "{{task.id}} > {{ outputs['1-1_return'][taskrun.value].value }} > {{taskrun.startDate}}"
   - id: 2_return
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "{{task.id}} > {{outputs['1-2-1_return'].s1['a a'].value}}"
 ```
 

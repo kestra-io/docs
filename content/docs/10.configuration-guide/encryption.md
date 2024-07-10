@@ -1,6 +1,7 @@
 ---
-title: Encryption Configuration
+title: Encryption
 icon: /docs/icons/admin.svg
+version: ">= 0.15.0"
 ---
 
 Kestra 0.15.0 and later supports encryption of sensitive data.
@@ -48,7 +49,7 @@ Once the secret key is set, you can use an `input` and `output` of type `SECRET`
 
 ```yaml
 id: my_secret_flow
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: secret
@@ -56,7 +57,7 @@ inputs:
 
 tasks:
   - id: mytask
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: task that needs the secret to connect to an external system
 
 outputs:

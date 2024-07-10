@@ -43,26 +43,26 @@ Multiple instances of orchestration requires flow dependencies. For example, you
 
 ```yaml
 id: send-failure-alert
-namespace: prod
+namespace: company.team
 tasks:
   - id: send-alert
     type: io.kestra.plugin.notifications.slack.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#failures"
-    executionId: "{{trigger.executionId}}"
+    executionId: "{{ trigger.executionId }}"
 triggers:
   - id: watch-failed-flows
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - FAILED
-      - type: io.kestra.core.models.conditions.types.ExecutionNamespaceCondition
-        namespace: prod
+      - type: io.kestra.plugin.core.condition.ExecutionNamespaceCondition
+        namespace: company.team
         prefix: true
 ```
 
-You can read more about it on this [page](https://kestra.io/plugins/core/triggers/io.kestra.core.models.triggers.types.flow).
+You can read more about it on this [page](https://kestra.io/plugins/core/triggers/io.kestra.plugin.core.trigger.Flow).
 
 ## 6. Backfill
 
@@ -108,7 +108,7 @@ You can even set the task defaults globally or on a namespace level to ensure th
 
 ```yaml
 id: redshift_data_pipeline
-namespace: dev
+namespace: company.team
 tasks:
   - id: "redshift_create_table_products"
     type: "io.kestra.plugin.jdbc.redshift.Query"
@@ -134,7 +134,7 @@ tasks:
     sql: |
       select o.order_id, o.customer_name, o.customer_email, p.id as product_id, p.name as product_name, p.category as product_category, p.brand as product_brand, o.price, o.quantity, o.total from orders o join products p on o.product_id = p.id
     store: true
-taskDefaults:
+pluginDefaults:
   - type: "io.kestra.plugin.jdbc.redshift.Query"
     values:
       url: jdbc:redshift://<redshift-cluster>.eu-central-1.redshift.amazonaws.com:5439/dev

@@ -37,7 +37,7 @@ Here's an illustrative flow that implements data modeling on daily sales data an
 
 ```yaml
 id: modelization
-namespace: org.example
+namespace: company.team
 description: This flow aggregates daily sales data and calculates average sales for each product category.
 tasks:
   - id: aggregate-sales
@@ -80,7 +80,7 @@ tasks:
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 0 * * *"
 
 ```
@@ -199,18 +199,18 @@ tasks:
 Kestra also allows you to create dynamic data pipelines that can be triggered based on external events. For example, your data pipeline might need to start when a new table is ingested into BigQuery, or when a file is uploaded into a Google Cloud Storage (GCS) bucket. Kestra supports such event-driven workflows via trigger plugins for BigQuery and GCS.
 
 ### BigQuery Trigger ###
-The BigQuery [**Trigger**](/plugins/plugin-gcp/triggers/bigquery/io.kestra.plugin.gcp.bigquery.trigger) will check for new data in a specified BigQuery table and, when found, invoke a flow for each new row with loop ([EachSequential](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.eachsequential) task). Here's how you could set up such a flow:
+The BigQuery [**Trigger**](/plugins/plugin-gcp/triggers/bigquery/io.kestra.plugin.gcp.bigquery.trigger) will check for new data in a specified BigQuery table and, when found, invoke a flow for each new row with loop ([EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential) task). Here's how you could set up such a flow:
 
 ```yaml
 id: Trigger_flow
-namespace: com.kestra.sandbox
+namespace: company.team
 revision: 1
 tasks:
   - id: each
-    type: io.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.plugin.core.flow.EachSequential
     tasks:
       - id: return
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: "{{taskrun.value}}"
     value: "{{ trigger.rows }}"
 triggers:
@@ -226,13 +226,13 @@ Similarly, Kestra can trigger a flow when a new file is uploaded to a specific G
 
 ```yaml
 id: gcs-listen
-namespace: io.kestra.sandbox
+namespace: company.team
 tasks:
   - id: each
-    type: io.kestra.core.tasks.flows.EachSequential
+    type: io.kestra.plugin.core.flow.EachSequential
     tasks:
       - id: return
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: "{{taskrun.value}}"
     value: "{{ trigger.blobs | jq '[].uri' }}"
 triggers:

@@ -45,7 +45,7 @@
                 darkButtonText="Get started"
                 darkButtonHref="docs/getting-started"
                 purpleButtonText="Talk to us"
-                purpleButtonHref="https://kestra.io/demo"
+                purpleButtonHref="/demo"
             />
         </NuxtLazyHydrate>
     </div>

@@ -3,7 +3,7 @@
     <Section>
       <div class="container">
         <div class="text-center pb-3">
-          <img src="/landing/features/Frame.svg" />
+          <img :src="logoPath" class="z-1 position-relative"/>
         </div>
         <div class="heading mx-auto">
           <h2 class="title text-center">
@@ -19,14 +19,12 @@
           </p>
         </div>
 
-        <div class="text-center rounded">
-          <NuxtLink href="/enterprise">
-            <button class="btn btn-dark mx-2 mt-2">Learn more</button>
+        <div class="text-center rounded cta">
+          <NuxtLink href="/enterprise" class="btn btn-dark mx-2 mt-2">
+              Learn more
           </NuxtLink>
-          <NuxtLink href="/demo">
-            <button class="btn btn-animated btn-purple-animated mx-2 mt-2">
+          <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2">
               Talk to Us
-            </button>
           </NuxtLink>
         </div>
       </div>
@@ -38,6 +36,13 @@
 import Section from "../layout/Section.vue";
 export default {
   components: { Section },
+  props: {
+    logoPath: {
+      type: String,
+      required: false,
+      default: () => '/landing/features/Frame.svg',
+    }
+  }
 };
 </script>
 
@@ -68,7 +73,11 @@ export default {
     z-index: 0;
   }
 }
-
+.cta {
+    position: relative;
+    z-index: 10;
+    margin: auto;
+}
 .btn-dark {
   background-color: $black-4;
   border: 1px solid $black-6;
@@ -80,9 +89,15 @@ export default {
   color: #fff;
   font-weight: 300;
   max-width: 700px;
+  p {
+      position: relative;
+      z-index: 1;
+  }
 }
 
 .heading {
+  position: relative;
+  z-index: 1;
   max-width: 610px;
   font-size: $font-size-3xl !important;
 

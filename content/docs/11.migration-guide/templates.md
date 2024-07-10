@@ -29,10 +29,10 @@ A typical template has an ID, a namespace, and a list of tasks. Here is an examp
 
 ```yaml
 id: mytemplate
-namespace: dev
+namespace: company.team
 tasks:
   - id: workingDir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: bash
         type: io.kestra.plugin.scripts.shell.Commands
@@ -42,43 +42,45 @@ tasks:
           - echo "Hello from 2" >> out/output2.txt
           - echo "Hello from 3" >> out/output3.txt
           - echo "Hello from 4" >> out/output4.txt
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
       - id: out
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         outputs:
           - out/**
   - id: each
-    type: io.kestra.core.tasks.flows.EachParallel
+    type: io.kestra.plugin.core.flow.EachParallel
     value: "{{outputs.out.uris | jq('.[]')}}"
     tasks:
       - id: path
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: "{{taskrun.value}}"
       - id: contents
         type: io.kestra.plugin.scripts.shell.Commands
         commands:
           - cat "{{taskrun.value}}"
-        runner: PROCESS
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
 ```
 
-You can trigger it in a flow using the `io.kestra.core.tasks.flows.Template` task:
+You can trigger it in a flow using the `io.kestra.plugin.core.flow.Template` task:
 
 ```yaml
 id: templatedFlow
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: first
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: first task
 
   - id: template
-    type: io.kestra.core.tasks.flows.Template
-    namespace: dev
+    type: io.kestra.plugin.core.flow.Template
+    namespace: company.team
     templateId: mytemplate
 
   - id: last
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: last task
 ```
 
@@ -94,18 +96,18 @@ In our example, we can create a new flow called `mytemplate` in a namespace `dev
 
 Then, to create a child flow (a subflow), you only need to change the following values in the `templatedFlow`:
 
-- Change the `io.kestra.core.tasks.flows.Template` task type to `io.kestra.core.tasks.flows.Subflow`
+- Change the `io.kestra.plugin.core.flow.Template` task type to `io.kestra.plugin.core.flow.Subflow`
 - Change the `templateId` to `flowId`.
 
 See the example below showing how you can invoke a subflow from a parent flow:
 
 ```yaml
 id: parentFlow
-namespace: dev
+namespace: company.team
 tasks:
   - id: subflow
-    type: io.kestra.core.tasks.flows.Subflow
-    namespace: dev
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.team
     flowId: mytemplate
 ```
 
@@ -113,20 +115,20 @@ And here is a complete example showing how a template task can be migrated to a 
 
 ```yaml
 id: parentFlow
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: first
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: first task
 
   - id: subflow
-    type: io.kestra.core.tasks.flows.Subflow
-    namespace: dev
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.team
     flowId: mytemplate
 
   - id: last
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: last task
 ```
 
@@ -134,23 +136,23 @@ If your subflow has input parameters and you want to override them when calling 
 
 ```yaml
 id: parentFlow
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: first
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: first task
 
   - id: subflow
-    type: io.kestra.core.tasks.flows.Subflow
-    namespace: dev
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.team
     flowId: mytemplate
     inputs:
       myIntegerParameter: 42
       myStringParameter: hello world!
 
   - id: last
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: last task
 ```
 
@@ -172,7 +174,7 @@ Templates are lists of tasks that can be shared between flows. You can define a 
 
 All tasks in a template will be executed sequentially; you can provide the same tasks that are found in a *standard* flow, including an *errors* branch.
 
-Templates can have arguments passed via the `args` property — see the [Template Task documentation](/plugins/core/tasks/flows/io.kestra.core.tasks.flows.template).
+Templates can have arguments passed via the `args` property — see the [Template Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Template).
 
 ### Example
 
@@ -180,7 +182,7 @@ Below is a flow sample that will include a template:
 
 ```yaml
 id: with-template
-namespace: dev
+namespace: company.team
 
 inputs:
   - id: store
@@ -189,8 +191,8 @@ inputs:
 
 tasks:
   - id: render-template
-    type: io.kestra.core.tasks.flows.Template
-    namespace: dev
+    type: io.kestra.plugin.core.flow.Template
+    namespace: company.team
     templateId: template-example
     args:
       renamedStore: "{{ inputs.store }}"
@@ -200,11 +202,11 @@ If the template is defined like so:
 
 ```yaml
 id: template-example
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: task-defined-by-template
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "{{ parent.outputs.args.renamedStore }}"
 ```
 
@@ -212,14 +214,14 @@ It will result in a flow similar to the following:
 
 ```yaml
 id: with-template
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: render-template
-    type: io.kestra.core.tasks.flows.Sequential
+    type: io.kestra.plugin.core.flow.Sequential
     tasks:
       - id: task-defined-by-template
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: "{{ inputs.store }}"
 ```
 

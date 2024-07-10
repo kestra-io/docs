@@ -330,7 +330,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Namespace-level management for secrets, variables and task confiiguration</td>
+                                    <td>Namespace-level management for secrets, variables and task configuration</td>
                                     <td></td>
                                     <td>
                                         <img src="/landing/enterprise/check.svg" alt="Check"/>

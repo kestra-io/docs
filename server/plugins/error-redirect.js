@@ -1,5 +1,3 @@
-import querystring from 'node:querystring';
-
 export default defineNitroPlugin((nitroApp) => {
     nitroApp.hooks.hook("beforeResponse", async (event, { body }) => {
         const requestUrl = getRequestURL(event)
@@ -15,16 +13,16 @@ export default defineNitroPlugin((nitroApp) => {
 
             if (originalUrl.endsWith("/")) {
                 redirectUrl = originalUrl.substring(0, originalUrl.length - 1);
-            } else {
-                try {
-                    const result = await $fetch(`${config.public.apiUrl}/redirects?${querystring.stringify({from: originalUrl})}`);
+            }
 
-                    if (result && result.to && result.to !== originalUrl) {
-                        redirectUrl = result.to;
-                    }
-                } catch (e) {
-                    console.error(e);
+            try {
+                const result = await $fetch(`${config.public.apiUrl}/redirects?${new URLSearchParams({from: originalUrl}).toString()}`);
+
+                if (result && result.to && result.to !== originalUrl) {
+                    redirectUrl = result.to;
                 }
+            } catch (e) {
+                console.error(e);
             }
 
             if (redirectUrl) {

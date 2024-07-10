@@ -3,11 +3,13 @@ title: Kestra Enterprise Licence Agreement
 description: Software license agreement
 ---
 
-## SOFTWARE LICENSE AGREEMENT TERMS & CONDITIONS
+# SOFTWARE LICENSE AGREEMENT
 
-*This software license agreement (the “Agreement”) is between Kestra Technologies, a French simplified joint stock company (“Kestra,” “we,” “us,” or “our”) and the legal entity identified in the Order (“You”). This Agreement sets forth the terms and conditions that govern order(s) placed by You under the Agreement.*
+## TERMS & CONDITIONS
 
-## WHEREAS:
+This software license agreement (the “Agreement”) is between Kestra Technologies, a French simplified joint stock company (“Kestra,” “we,” “us,” or “our”) and the legal entity identified in the Order (“You”). This Agreement sets forth the terms and conditions that govern order(s) placed by You under the Agreement.
+
+### **WHEREAS:**
 
 KESTRA edits, delivers, maintains and provides support for a data orchestration and scheduling technology solution owned by KESTRA that facilitates the monitoring and management of complex computing flows (the "**Solution**").
 
@@ -25,15 +27,15 @@ The Parties declare that they have had the time and opportunity to exchange all 
 
 ## **IT HAS BEEN AGREED AS FOLLOWS:**
 
-## **1 - Purpose**
+**1 - Purpose**
 
 The purpose of this Agreement is to set forth the terms and conditions under which KESTRA shall, subject to the payment of Subscription Fees, grant to You access and use of the Solution.
 
-## **2 - Contractual documents**
+**2 - Contractual documents**
 
 The contractual documents are, to the exclusion of all others and in order of decreasing legal value:
 
-- The OrderYou have placed,
+- The Order You have placed,
 - Appendix 1 : Enterprise Support ;
 - These terms and conditions (the Agreement)
 
@@ -44,7 +46,7 @@ In case of contradiction :
 
 The contractual documents express the entire agreement of the Parties as of the date of their signature. They supersede any prior agreement, letter, offer or other written or oral document having the same purpose.
 
-## **3 - Term**
+**3 - Term**
 
 The Agreement is concluded for an initial strict period such as defined in the Order as from its signature by the Parties (“Initial Period”). You hereby understand that You cannot terminate for convenience this Agreement.
 
@@ -52,7 +54,7 @@ It will then be tacitly renewed for successive periods of the same duration (tog
 
 A "**Period**" refers to the subscription period stated in the Order, and each subsequent period thereafter, unless terminated by one of the Parties in accordance with the provisions of this Agreement.
 
-## **4 - License to use the Solution**
+**4 - License to use the Solution**
 
 1. **Scope of the License**
 
@@ -68,9 +70,10 @@ You are not permitted to:
 - Use the Solution to provide third party training on the content and/or functionality of the Solution, except for training your licensed Users;
 - Cause or permit reverse engineering (unless required by law for interoperability), disassembly or decompilation of the Solution;
 - disclose results of any Solution benchmark tests without KESTRA’s prior written consent.
-1. **Purpose of the License**
 
-The Solution will be used by You for the purpose of its use as mentioned in Appendix 1.
+2. **Purpose of the License**
+
+The Solution will be used by You for the purpose of its use as mentioned in Appendix 1 and the applicable Order.
 
 The License is granted for the sole purpose of using the Solution by You, according to the terms and conditions presented in the “*Scope of the License*” article, for its own needs and only by the Users authorized by You.
 
@@ -81,25 +84,25 @@ Consequently, You and the Users are prohibited from:
 
 The right to use the Solution is granted to You only upon full payment of the price sets forth calculated in accordance with the terms specified in the Order Form.
 
-## **5 - Granting of the License**
+**5 - Granting of the License**
 
-a. **Installation of the Solution**
+1. **Installation of the Solution**
 
-You shall install the Solution on Your IT Infrastructure under Your sole responsibility, in compliance with the Solution installation procedures set forth in the terms and conditions of installation accessible at the following address: [https://KESTRA.io/docs/](/docs/).
+You shall install the Solution on Your IT Infrastructure under Your sole responsibility, in compliance with the Solution installation procedures set forth in the terms and conditions of installation accessible at the following address: [https://KESTRA.io/docs/](https://kestra.io/docs/).
 
-b. **Selection of Users**
+2. **Selection of Users**
 
 It is also Your responsibility to designate, among the Users, who will be in charge of the use and administration of the Solution.
 
 It is Your responsibility to use the Solution in strict compliance with the terms and conditions of this Agreement. In case of doubt of license usage, You shall contact KESTRA as soon as possible to commercially rectify its usage.
 
-c. **Access and confidentiality**
+3. **Access and confidentiality**
 
 Each User exclusively accesses the Solution through a secure authentication system determined and set by You.
 
 You are also responsible for implementing and enforcing strict policies and procedures to ensure the confidentiality and integrity of User credentials.
 
-d. **Contractual warranties**
+4. **Contractual warranties**
 
 KESTRA warrants that the Solution will, during the Initial Period , substantially operate as described in the applicable Solution technical and functional documentation set forth under Appendix 1.
 
@@ -107,39 +110,37 @@ KESTRA does not warrant that the Solution will perform error-free or uninterrupt
 
 For any breach of the warranties, Your exclusive remedy, and KESTRA’s entire liability, shall be the correction of program errors of the Solution that cause breach of the warranty, or if KESTRA cannot substantially correct a breach in a commercially reasonable manner, You may end the Solution license and recover the Subscription fees paid to KESTRA on pro rata basis calculated from the date of notification of the breach of the warranty.
 
-## **6 - Maintenance and technical support**
+**6 - Maintenance and technical support**
 
 Subject to the payment of the applicable Services, the maintenance and technical support provided by KESTRA are specified in Appendix 1.
 
-## **7 - Hosting**
+**7 - Hosting**
 
 KESTRA does not host the Solution or the data collected by it. The hosting remains under Your own responsibility. Hence, You grant KESTRA, a worldwide license limited to the duration of the Agreement to host, copy, transmit and display Your Data necessary for KESTRA to provide the Solution in accordance with the Agreement.
 
-## **8 - Financial conditions**
+**8 - Financial conditions**
 
-a. **Pricing**
+1. **Pricing**
 
 From the Effective date of the Agreement, You undertake to pay KESTRA the Subscription Fees set forth in the Order Form.
 
-b. **Invoicing and payment**
+2. **Invoicing and payment**
 
 Subscription Fees shall be calculated and invoiced as set out in the Order Form. The above prices will be the subject of invoices by KESTRA, communicated to You by any written means, and in particular by email, in accordance with the provisions set forth in the Order Form.
 
-c. **Late payments and payment incidents**
+3. **Late payments and payment incidents**
 
-You are hereby informed and expressly agrees that any delay in payment of all or part of an amount due on its due date shall automatically, without prior notice, result in the invoicing to KESTRA of late payment interest at the rate of 3 times the legal interest rate, based on the amount of the entire amount owed by You and a flat-rate indemnity of 40 euros for collection costs.
+In the absence of payment of an amount due on its due date within thirty (30) calendar days following receipt by You of a formal notice by registered letter with acknowledgement of receipt, which has remained without effect, KESTRA reserves the right to (i) suspend the Agreement, (ii) demand immediate payment of all amounts due by You, and/or (iii) terminate the Agreement, under the conditions set forth in "*Termination for breach*" section.
 
-In addition, in the absence of payment of an amount due on its due date within thirty (30) calendar days following receipt by You of a formal notice by registered letter with acknowledgement of receipt, which has remained without effect, KESTRA reserves the right to (i) suspend the Agreement, (ii) demand immediate payment of all amounts due by You, and/or (iii) terminate the Agreement, under the conditions set forth in "*Termination for breach*" section.
-
-d. **Taxes and other charges**
+4. **Taxes and other charges**
 
 Each Party shall be responsible for the due and proper payment of all taxes assessed on, levied, imposed by any government or any local state and/or national fiscal authority of any country or otherwise due in respect of its own profit, whether actual or assumed, and income and property arising in connection with this Agreement and/or its performance.
 
-## **9 - Your obligations and warranties**
+**9 - Your obligations and warranties**
 
 Without prejudice to the other obligations provided for in the Agreement, You undertake to comply with the following obligations:
 
-a. You shall be solely responsible for ensuring the proper use of the Solution.
+1. You shall be solely responsible for ensuring the proper use of the Solution.
 
 In particular, You shall be responsible for:
 
@@ -148,17 +149,17 @@ In particular, You shall be responsible for:
 - ensuring at all times that Your infrastructures take into account the conditions of use of the Solution and, where applicable, take the necessary measures to ensure that Your computer infrastructure is compatible with the requirements mentioned in the terms of the installation of the Solution ;
 - having qualified and trained personnel available to use the Solution, in order to use it in accordance with the instructions provided by KESTRA.
 
-b. You agree to maintain the Statistics Report mentioned in Appendix 1 and You shall not delete any data that allows KESTRA to calculate the usages performed via the Solution on Your IT infrastructure as described in Appendix 1.
+2. You agree to maintain the Statistics Report mentioned in Appendix 1 and You shall not delete any data that allows KESTRA to calculate the usages performed via the Solution on Your IT infrastructure as described in Appendix 1.
 
-c. You are solely responsible for the use of the Solution by You and your Users.
+3. You are solely responsible for the use of the Solution by You and your Users.
 
-d. You expressly acknowledge and agree that the Solution interconnects with third-party software (the “**Third Party Softwares**”), as described in Appendix 1, for which KESTRA is not responsible.
+4. You expressly acknowledge and agree that the Solution interconnects with third-party software (the “**Third Party Softwares**”), as described in Appendix 1, for which KESTRA is not responsible.
 
-e. You undertake, in your use of the Solution, to comply with the laws and regulations in force and not to infringe the rights of third parties or public order.
+5. You undertake, in your use of the Solution, to comply with the laws and regulations in force and not to infringe the rights of third parties or public order.
 
 You warrant against any misuse, non-compliant or illicit use that Users may make of the Solution, in particular against infringement of the laws and regulations in force. You are thus exclusively responsible for putting in place all procedures intended to prevent or remedy the commission of such acts.
 
-f. You are solely responsible for the content of the data, comments and information exchanged through the Solution (the "**Content**").
+6. You are solely responsible for the content of the data, comments and information exchanged through the Solution (the "**Content**").
 
 You warrant to KESTRA that it has all necessary rights and permissions to distribute such Content. You undertake to ensure that such Content is lawful, does not infringe public order, public morality or third party rights, does not violate any legislative or regulatory provision and, more generally, is in no way likely to give rise to civil or criminal liability on the part of KESTRA.
 
@@ -170,9 +171,9 @@ You shall not distribute, in particular and without this list being exhaustive:
 - Content that is harmful to the computer systems of third parties (such as viruses, worms, Trojan horses, etc.),
 - and more generally, Content likely to infringe the rights of third parties or to be prejudicial to third parties, in any manner or form whatsoever.
 
-## **10 - Intellectual property**
+**10 - Intellectual property**
 
-a. **Rights granted**
+1. **Rights granted**
 
 You expressly acknowledge that the Agreement does not assign any intellectual property rights over the Solution, which remains the exclusive property of KESTRA. Title and all Intellectual Property Rights in and to the Solution, new versions of the Solution, Solution maintenance releases, modifications, updates and other changes to the Solution shall be and remain the property of KESTRA or any third party from whom KESTRA has licensed the same.
 
@@ -184,7 +185,7 @@ Where applicable, the Parties shall only be granted a license to use the element
 
 Your content and Your data shall remain in Your exclusive property.
 
-b. **Intellectual Property Rights Infringement**
+2. **Intellectual Property Rights Infringement**
 
 Subject to this Agreement, KESTRA will (i) defend, or at its option settle, any claim, demand, action or legal proceeding (“Claim”) made or brought against You by a third party alleging that the use of the Solution as contemplated hereunder directly infringes the intellectual property rights of such third party, and (ii) pay (a) any final judgment or award directly resulting from such Claim to the extent such judgment or award is based upon such alleged infringement or (b) those damages agreed to by KESTRA in a monetary settlement of such Claim.
 
@@ -192,39 +193,15 @@ KESTRA’s obligations to defend or indemnify will not apply to the extent that 
 
 THIS SECTION 10.2 SETS FORTH THE ENTIRE OBLIGATION OF KESTRA AND YOUR EXCLUSIVE REMEDY AGAINST KESTRA FOR ANY CLAIM UNDER THIS SECTION.
 
-## **11 - Audit rights**
+**11 - Usage compliance**
 
-In addition to the day to day follow up of the usage of the Solution as set forth under the Convention of proof section, KESTRA shall have the right to audit Your premises and/or IT infrastructure on site or remotely in order to ensure that You are in compliance with the usage of the licences granted by KESTRA.
+You hereby agree that the Solution embeds Statistic Report that monitor and track Your usage such as further detailed under Appendix 1.
 
-In the course of such an audit, KESTRA or the auditor appointed by KESTRA shall not be entitled to access Your business secrets, strategic information or information which You have undertaken to keep confidential.
+Based on the filled Statistic Report(s) to be provided by You every quarter KESTRA can vet and evaluate  Your usage of the solution in order to ensure that You are in full compliance with the declared usage of the licences granted by KESTRA. It is your responsibility to proactively provide such Statistic Report(s) every quarter. Any non communication of a Statistic Report will be construed as a non compliance.
 
-KESTRA shall also have the right to audit You to verify that You are fulfilling the terms and conditions agreed in this Agreement, especially in relation to the payment of the Subscription Fees.
+In case a Statistic Report reveals any non-compliance of Your usage, You agree to pay within 30 days of written notification any underpaid Subscription fees at the then applicable fees. If You do not pay, KESTRA may terminate for breach  the technical support, licenses and this Agreement.
 
-You are obliged to collaborate during such audits and to contribute with commercially reasonable efforts to arranging an audit, provided that You have been informed about the schedules and the needed documents at least ten (10) business days before. You shall, at the KESTRA’s prior request, share, during such audit, all applicable documents in relation to Your use of the Solution.
-
-Each Party shall independently carry the costs in relation to such audits mentioned above.
-
-In case the audit reveals any non-compliance You agree to pay within 60 days of written notification any underpaid Subscription fees at the then applicable fees. If You do not pay, KESTRA can end the technical support, licenses and this Agreement.
-
-## **12 - Convention of proof**
-
-The Parties expressly acknowledge and agree that the data collected on KESTRA’s IT infrastructure  environment:
-
-(i) are proof of the reality of the operations carried out under the Agreement,
-
-(ii) constitute the principal method of proof accepted between the Parties, in particular for the calculation of the amounts due to KESTRA in accordance with the Audit section.
-
-To this end, You agree that KESTRA install a statistics report (the “**Statistic Report**”), as mentioned in Appendix ****1 and in the “*Statistic Report and accessibility*” article, for the purpose of recovering data in order to obtain in real time the data necessary to calculate the amount due to KESTRA.
-
-## **13 - Statistic Report accessibility**
-
-In the event that the Statistics Report is not accessible, or the data collected is considered by KESTRA as incorrect, KESTRA shall notify You of this incorrectness
-
-The Statistics Report must be restored by You if You are the cause of the inaccessibility, or otherwise by KESTRA, within the 30 (thirty) days following the notification.
-
-If the inaccessibility persists, You expressly agree that KESTRA can audit the Solution in accordance with the Audit section.
-
-## **14 - Limitation of liability**
+**12 - Limitation of liability**
 
 NEITHER PARTY SHALL BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, OR ANY LOSS OF PROFITS, REVENUE, DATA, OR DATA USE.
 
@@ -236,7 +213,7 @@ The liability section shall survive the termination or expiration of the Agreeme
 
 Any claim made by a Party hereunder must be made in writing, giving full particulars of the subject matter in question, within twenty-four (24) months after the date on which such Party became aware of the circumstances giving rise to this claim. It is recognized that any claim for damages made by a Party under this document will always be subject to that Party's general obligation to limit its losses.
 
-## **15 - Confidentiality**
+**13 - Confidentiality**
 
 Each of the Parties undertakes to keep strictly confidential all documents and information of a legal, commercial, industrial, strategic, technical or financial nature relating to the other Party or held by the latter of which it may have become aware during the conclusion and performance of the Agreement and not to disclose them without the prior written consent of the other Party.
 
@@ -251,7 +228,7 @@ This obligation of confidentiality extends to all employees, collaborators, trai
 
 This obligation shall continue to apply for a period of 5 years following the termination or expiration of the Agreement.
 
-## **16 - Personal Data**
+**14 - Personal Data**
 
 As part of their contractual relations and to the extent applicable, each Party undertakes to comply with the applicable regulations on personal data processing and, in particular, the General Data Protection Regulation (regulation EU 2016/679 of the European Parliament and of the Council of 27 April 2016) and to the French Data Protection Act of 6 January 1978 (hereinafter referred together as the “**Applicable Regulation**”).
 
@@ -261,31 +238,32 @@ Personal data are retained during the duration strictly necessary for the purpos
 
 The processing may result in the exercise by each Party’s contact person of their rights under the Applicable Regulation. In such event, You may send such request to : [dpo@KESTRA.io](mailto:xxxx@xxxx.com)
 
-## **17 - Commercial references**
+**15 - Commercial references**
 
 The Parties expressly authorize each other to use their respective name, brand and logo, as well as the references of their websites, as commercial references, on any medium and in any form whatsoever, for the term of the Agreement.
 
-## **18 - Force majeure**
+**16 - Force majeure**
 
 Neither Party shall be liable for failure to meet the contractual obligations under this Agreement due to an event that is outside the control of that Party, including, without limitation, strikes, lockouts, labor disputes, acts of God, fire, floods, riots, wars and government actions (“Force Majeure”). This limitation of liability shall be valid only for the period of duration of Force Majeure. The Party involved in an event of Force Majeure shall take all reasonable measures and actions to limit or minimize the consequences of such an event and inform immediately in writing the other Party on the intervention and on the cessation of such circumstance.
 
-## **19 - Termination for breach**
+**17 - Termination for breach**
 
-In the event of a material breach by one of the Parties of any of its obligations under the Agreement, the latter shall be terminated as of right thirty (30) days after receipt by the defaulting Party of a formal notice, which has remained without effect, or if the breach cannot be remedied, by registered letter with acknowledgement of receipt, stating the latter's intention to apply this clause, without prejudice to any damages which may be claimed from the Party in breach.
+In the event of a material breach by either Party  of any of its obligations under the Agreement, the other Party may terminate the Agreement -(which, for the avoidance of doubt, will result in the termination of the applicable Order) after having given formal notice in writing with acknowledgement of receipt to the defaulting Party thirty (30) days in advance.
 
 Termination of the Agreement by either Party shall be without prejudice to any other rights or remedies which either Party may have by virtue of any breach of the terms of this Agreement.
 
-## **20 - Effects of the end of the Agreement**
+**18 - Effects of the end of the Agreement**
 
-The end of the Agreement, for whatever the cause, will result in the termination of the License and the billing to You of the number of Tenants excess of the defined Level in respect of the year in which the Agreement ended, for any reason whatsoever.
+The termination or expiration  of the Agreement, for any reason whatsoever , will result in:
 
-The end of the Agreement also has no effect on the provisions of the Agreement which are intended to continue beyond the end of the Agreement, and in particular the articles "*Intellectual Property*", “*Limitation of Liability*” and "*Confidentiality*" and the present article.
+- the ending of the relationship of the Parties and termination of any rights or licences granted under or pursuant to this Agreement,
+- the survival of the sections 14 “*Limitation of Liability*” 15 "*Confidentiality*" and the present article
 
-## **21 - Assignment**
+**19 - Assignment**
 
 KESTRA may assign this Agreement, either wholly or in part, without Your written consent to an Affiliate or a separate division within its organization, or in connection with a merger, acquisition, divestiture, corporate reorganization, or sale of all or substantially all of its assets not involving a direct competitor of the other party.
 
-## **22 - Intuitu personae**
+**20 - Intuitu personae**
 
 This Agreement shall be deemed to have been entered into in consideration of the person of the Parties and as such, the Parties shall not delegate or assign any of their rights under this Agreement, or entrust to a third party the performance of all or part of their obligations, without the prior written consent of the other Party.
 
@@ -293,13 +271,13 @@ As an exception to the foregoing, KESTRA reserves the right to use subcontractor
 
 The Parties expressly acknowledge and agree that, in the event that such subcontractors are required to process personal data, the provisions of the "*Personal Data*" article shall apply.
 
-## **23 - Relationship between the Parties**
+**21 - Relationship between the Parties**
 
 It is expressly agreed that neither Party may rely on the provisions of the Agreement to claim, in any way, the status of agent, representative or employee of the other Party, nor undertake the other Party's obligations to third parties, beyond the services provided for herein.
 
 No special legal structure is hereby formed between the Parties, each retaining its own autonomy, responsibilities and customer base.
 
-## **24 - Independence of the Agreement, Severability and Amendments**
+**22 - Independence of the Agreement, Severability and Amendments**
 
 The contractual documents represent the entirety of the undertakings between the Parties. It replaces and cancels any previous oral or written undertaking relating to the subject matter of the Agreement.
 
@@ -307,21 +285,21 @@ The invalidity or unenforceability of any of the provisions of the Agreement sha
 
 Any modification or amendment to the Agreement shall be subject to a written and signed agreement between the Parties.
 
-## **25 - Non-waiver**
+**23 - Non-waiver**
 
 The failure or waiver by a Party to exercise or assert any right under the Agreement shall in no event be deemed a waiver of such right for the future, such waiver being effective only with respect to the event in question.
 
-## **26 - Electronic Signature**
+**24 - Electronic Signature**
 
 It is understood between the Parties that the Agreement may be signed by any electronic means, the Parties recognizing the reliability of the process, thus giving it the same legal value as a handwritten signature within the meaning of the law.
 
-## **27 - Applicable law and venue of the dispute**
+**25 - Applicable law and venue of the dispute**
 
 The Agreement shall be governed by and construed in accordance with **French law**, excluding its conflict of laws’ rules. It is agreed that the language of the proceedings can be English.
 
 In the event of a dispute between the Parties concerning its validity, interpretation or performance, the Parties shall endeavour to settle their dispute amicably within a maximum period of 30 calendar days. In case such amicable settlement fails the absence of an agreement within one month of the first notification by any means in writing sent by one Party to the other concerning the dispute concerned, the plaintiff can lodge a complaint before latter shall be subject to the exclusive jurisdiction of the courts of Paris (France), even in the event of multiple defendants and third-party claims.
 
---------------
+∞∞∞∞
 
 **APPENDIX 1**
 
@@ -351,13 +329,9 @@ As a reminder, terms with a capital letter in the Agreement and/or this Appendix
 
 **KESTRA Open Source:** An open-source software under the Apache license, whose sources are available at the following address: [https://github.com/KESTRA-io/KESTRA](https://github.com/kestra-io/kestra). This software contains the core of the KESTRA Solution (hereinafter referred to as "**Community Edition**").
 
-**License**: The non-exclusive, personal and non-transferable license to use the Enterprise Edition of the Solution granted by KESTRA to You.
-
 **Official KESTRA Plugins:** Open-source software under the Apache license, whose sources are available at the following address: [https://github.com/KESTRA-io](https://github.com/kestra-io), which adds connectivity features to the Community Edition or Enterprise Edition (hereinafter referred to as "**Official Plugins**").
 
-**Solution**: A support solution provided by KESTRA as a platform to orchestrate and schedule and helps you build, run, schedule, and monitor pipelines.
-
-**Statistics Report:** KESTRA, using the license key, automatically generates precise statistics reports, including open source usage trackers plus enterprise usages tracker (numbers of groups, numbers of Tenants, number of namespaces, number of roles, each user with hashed username and number of authorisation). KESTRA warrants that these statistics reports are completely anonymized and will not contain any your personal data (email of users). All personal data will be hashed (irreversible encryption based on MD5) and securely transmitted from instance to KESTRA servers by HTTPS protocol on server https://api.KESTRA.io . With this count, KESTRA will be able to invoice according to the model defined in the Order Form.
+**Statistics Report:** KESTRA, using the license key, automatically generates precise statistics reports, including open source usage trackers plus enterprise usages tracker (numbers of groups, numbers of Tenants, number of namespaces, number of roles, each user with hashed username and number of authorisation). KESTRA warrants that these statistics reports are completely anonymized and will not contain any your personal data (email of users). All personal data will be hashed (irreversible encryption based on MD5) and securely transmitted from instance to KESTRA servers by HTTPS protocol on server https://api.KESTRA.io .
 
 **“Tenant”** allows a single instance of Kestra to support and serve multiple independent groups of users, known as tenants. Each tenant has its own isolated data, configurations, and user access rights, but they all share the same underlying infrastructure and codebase.
 
@@ -371,7 +345,7 @@ As a reminder, terms with a capital letter in the Agreement and/or this Appendix
 
 **Scope**
 
-Provided that You have purchased the Enterprise Support and have paid the applicable Fees as set forth in the Order Form, KESTRA will provide the support and maintenance services described in this Appendix during the Period indicated in the Order Form. If the Enterprise Support is not included in the Order Form, You will receive Standard Support included in the price of the Solution. The details of the Enterprise Support, as described under the “Support” and “Included matters” articles, can be found here.
+Provided that You have paid the applicable licence Fees as set forth in the Order Form, KESTRA will provide You the support and maintenance services described in this Appendix during the Period indicated in the Order Form.. The details of the  Support, as described under the “Support” and “Included matters” articles, can be found below.
 
 **Support**
 

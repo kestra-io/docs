@@ -1,13 +1,11 @@
 ---
 title: Kestra EE API
 icon: /docs/icons/admin.svg
+editions: ["EE"]
 ---
 
 How to interact with Kestra Enterprise Edition using the API.
 
-::alert{type="info"}
-This feature requires a [commercial license](/pricing).
-::
 
 ## Authentication
 

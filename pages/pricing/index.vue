@@ -14,7 +14,7 @@
         <LayoutFooterContact
             title="Ready to Get Started with Kestra?"
             purpleButtonText="Talk to Us"
-            purpleButtonHref="https://kestra.io/demo"
+            purpleButtonHref="/demo"
         />
     </div>
 </template>

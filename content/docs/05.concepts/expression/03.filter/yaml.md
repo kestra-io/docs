@@ -5,13 +5,12 @@ icon: /docs/icons/expression.svg
 
 YAML filters are used to turn YAML strings into objects.
 
----
 
 ## yaml
 
-This filter, added in [kestra 0.16.0](https://github.com/kestra-io/kestra/pull/3283), is used to parse a YAML string into an object. That object can then be transformed using Pebble templating engine.
+This filter, added in [kestra 0.16.0](https://github.com/kestra-io/kestra/pull/3283), is used to parse a YAML string into an object. That object can then be transformed using the Pebble templating engine.
 
-The filter is useful when working with the [TemplatedTask](/plugins/tasks/templating/io.kestra.core.tasks.templating.templatedtask) added in [#3191](https://github.com/kestra-io/kestra/pull/3191).
+The filter is useful when working with the [TemplatedTask](/plugins/tasks/templating/io.kestra.plugin.core.templating.TemplatedTask) added in [#3191](https://github.com/kestra-io/kestra/pull/3191).
 
 
 ```twig
@@ -22,7 +21,7 @@ The filter is useful when working with the [TemplatedTask](/plugins/tasks/templa
 
 ```yaml
 id: yaml_filter
-namespace: dev
+namespace: company.team
 
 labels:
   label: value
@@ -146,7 +145,7 @@ variables:
 
 tasks:
   - id: yaml_filter
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ "string" | yaml }}
       {{ 1 | yaml }}
@@ -157,7 +156,7 @@ tasks:
       {{ {"key": "value", "object": {"a":"b"}} | yaml }}
 
   - id: yaml_kestra
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     disabled: false
     message: |
       ---
@@ -196,18 +195,16 @@ tasks:
 
 
   - id: yaml_function
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ yaml(vars.yaml) }}
 
   - id: yaml2yaml
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ yaml(vars.yaml) | yaml }}
 ```
 ::
-
----
 
 ## indent
 
@@ -220,8 +217,6 @@ The syntax:
 ```twig
 indent(amount, prefix=" ")
 ```
-
----
 
 ## nindent
 
@@ -239,7 +234,7 @@ nindent(amount, prefix=" ")
 
 ```yaml
 id: templated_task
-namespace: dev
+namespace: company.team
 
 labels:
   my-label: "will-be-sent-to-k8s"
@@ -275,7 +270,7 @@ variables:
 
 tasks:
   - id: dynamic
-    type: io.kestra.core.tasks.templating.TemplatedTask
+    type: io.kestra.plugin.core.templating.TemplatedTask
     spec: |
       id: "{{ flow.namespace | slugify }}-{{ flow.id | slugify }}"
       type: io.kestra.plugin.kubernetes.PodCreate
@@ -302,7 +297,7 @@ tasks:
 
 ```yaml
 id: indent_filter
-namespace: dev
+namespace: company.team
 
 labels:
   label: value
@@ -385,7 +380,7 @@ variables:
 tasks:
   - id: debug
     description: "Debug task run"
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     level: INFO
     message: |
       {
@@ -403,87 +398,87 @@ tasks:
       }
 
   - id: inputs-string
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.string | indent(2)) == "" + inputs.string  }} - {{ inputs.string | indent(2) }}
 
   - id: inputs-int
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.int | indent(2)) == "" + inputs.int  }} - {{ inputs.int | indent(2) }}
 
   - id: inputs-bool
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.bool | indent(2)) == "" + inputs.bool  }} - {{ inputs.bool | indent(2) }}
 
   - id: inputs-float
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.float | indent(2)) == "" + inputs.float  }} - {{ inputs.float | indent(2) }}
 
   - id: inputs-instant
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.instant | indent(2)) == "" + inputs.instant  }} - {{ inputs.instant | indent(2) }}
 
   - id: inputs-date
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.date | indent(2)) == "" + inputs.date  }} - {{ inputs.date | indent(2) }}
 
   - id: inputs-json
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.json | indent(2)) == "" + inputs.json  }} - {{ inputs.json | indent(2) }}
 
   - id: inputs-uri
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.uri | indent(2)) == "" + inputs.uri  }} - {{ inputs.uri | indent(2) }}
 
   - id: variables-inputNull
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (null | indent(2)) == "" }} - {{ (null | indent(2)) }}
 
   - id: variables-inputEmpty
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ ("" | indent(2)) == "" }} - {{ ("" | indent(2)) }}
 
   - id: variables-inputEmptyLines
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputEmptyLines | indent(2)) == vars.indentEmptyLines }} - {{ (vars.inputEmptyLines | indent(2)) }}
 
   - id: variables-inputString
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputString | indent(2)) == vars.indentString }} - {{ (vars.inputString | indent(2)) }}
 
   - id: variables-inputInteger
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputInteger | indent(2)) == vars.indentInteger }} - {{ (vars.inputInteger | indent(2)) }}
 
   - id: variables-inputStringWithCRLF
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputStringWithCRLF | indent(2)) == vars.indentStringWithCRLF }} - {{ (vars.inputStringWithCRLF | indent(2)) }}
 
   - id: variables-inputStringWithLF
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputStringWithLF | indent(2)) == vars.indentStringWithLF }} - {{ (vars.inputStringWithLF | indent(2)) }}
 
   - id: variables-inputStringWithCR
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputStringWithCR | indent(2)) == vars.indentStringWithCR }} - {{ (vars.inputStringWithCR | indent(2)) }}
 
   - id: variables-inputWithTab
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputWithTab | indent(2)) == vars.indentWithTab }} - {{ (vars.inputWithTab | indent(2, "\t")) }}
 ```
@@ -492,8 +487,8 @@ tasks:
 ::collapse{title="Sample code for testing the nindent filter"}
 
 ```yaml
-id: indent_filter
-namespace: dev
+id: nindent_filter
+namespace: company.team
 
 labels:
   label: value
@@ -577,7 +572,7 @@ variables:
 tasks:
   - id: debug
     description: "Debug task run"
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     level: INFO
     # disabled: true
     message: |
@@ -596,87 +591,87 @@ tasks:
       }
 
   - id: inputs-string
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.string | nindent(2)) == "" + inputs.string  }} - {{ inputs.string | nindent(2) }}
 
   - id: inputs-int
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.int | nindent(2)) == "" + inputs.int  }} - {{ inputs.int | nindent(2) }}
 
   - id: inputs-bool
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.bool | nindent(2)) == "" + inputs.bool  }} - {{ inputs.bool | nindent(2) }}
 
   - id: inputs-float
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.float | nindent(2)) == "" + inputs.float  }} - {{ inputs.float | nindent(2) }}
 
   - id: inputs-instant
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.instant | nindent(2)) == "" + inputs.instant  }} - {{ inputs.instant | nindent(2) }}
 
   - id: inputs-date
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.date | nindent(2)) == "" + inputs.date  }} - {{ inputs.date | nindent(2) }}
 
   - id: inputs-json
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.json | nindent(2)) == "" + inputs.json  }} - {{ inputs.json | nindent(2) }}
 
   - id: inputs-uri
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (inputs.uri | nindent(2)) == "" + inputs.uri  }} - {{ inputs.uri | nindent(2) }}
 
   - id: variables-inputNull
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (null | nindent(2)) == "" }} - {{ (null | nindent(2)) }}
 
   - id: variables-inputEmpty
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ ("" | nindent(2)) == "" }} - {{ ("" | nindent(2)) }}
 
   - id: variables-inputEmptyLines
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputEmptyLines | nindent(2)) == vars.nindentEmptyLines }} - {{ (vars.inputEmptyLines | nindent(2)) }}
 
   - id: variables-inputString
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputString | nindent(2)) == vars.nindentString }} - {{ (vars.inputString | nindent(2)) }}
 
   - id: variables-inputInteger
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputInteger | nindent(2)) == vars.nindentInteger }} - {{ (vars.inputInteger | nindent(2)) }}
 
   - id: variables-inputStringWithCRLF
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputStringWithCRLF | nindent(2)) == vars.nindentStringWithCRLF }} - {{ (vars.inputStringWithCRLF | nindent(2)) }}
 
   - id: variables-inputStringWithLF
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputStringWithLF | nindent(2)) == vars.nindentStringWithLF }} - {{ (vars.inputStringWithLF | nindent(2)) }}
 
   - id: variables-inputStringWithCR
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputStringWithCR | nindent(2)) == vars.nindentStringWithCR }} - {{ (vars.inputStringWithCR | nindent(2)) }}
 
   - id: variables-inputWithTab
-    type: "io.kestra.core.tasks.log.Log"
+    type: "io.kestra.plugin.core.log.Log"
     message: |
       {{ (vars.inputWithTab | nindent(2)) == vars.nindentWithTab }} - {{ (vars.inputWithTab | nindent(2, "\t")) }}
 ```

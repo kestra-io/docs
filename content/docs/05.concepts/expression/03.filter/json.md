@@ -5,8 +5,6 @@ icon: /docs/icons/expression.svg
 
 JSON filters are used to manipulate JSON objects, often API responses.
 
----
-
 ## json
 
 The `json` filter will convert any variable to json string.
@@ -21,8 +19,6 @@ The `json` filter will convert any variable to json string.
 {{ "foo" | json }}
 {# results in: '"foo"' #}
 ```
-
----
 
 ## jq
 

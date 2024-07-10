@@ -3,9 +3,9 @@
         <div class="header-container">
             <div class="header container d-flex flex-column align-items-center gap-3">
                 <h1 data-aos="fade-left">Plugins</h1>
-                <h4 data-aos="fade-right">Extend Kestra with our 400+ plugins</h4>
+                <h4 data-aos="fade-right">Extend Kestra with our +{{totalPlugins}} plugins</h4>
                 <div class="col-12 search-input position-relative">
-                    <input type="text" class="form-control form-control-lg" placeholder="Search across 400+ of plugins" v-model="searchQuery">
+                    <input type="text" class="form-control form-control-lg" :placeholder="`Search across +${totalPlugins} of plugins`" v-model="searchQuery">
                     <Magnify class="search-icon" />
                 </div>
             </div>
@@ -26,10 +26,10 @@
                 <div class="col-lg-3 col-md-4 mb-3" v-for="plugin in plugins" :key="plugin.id">
                     <PluginsPluginCard :plugin="plugin" />
                 </div>
-                <div v-if="!totalPlugins" class="alert alert-warning mb-0" role="alert">
+                <div v-if="!totalGroups" class="alert alert-warning mb-0" role="alert">
                     No results found for the current search
                 </div>
-                <div class="d-flex justify-content-between pagination-container" v-if="totalPlugins > itemsPerPage">
+                <div class="d-flex justify-content-between pagination-container" v-if="totalGroups > itemsPerPage">
                     <div class="items-per-page">
                         <select class="form-select bg-dark-2" aria-label="Default select example" v-model="itemsPerPage">
                             <option :value="20">20</option>
@@ -44,7 +44,7 @@
                             v-if="totalPages > 1"
                         />
                         <div class="d-flex align-items-baseline">
-                            <span class="total-pages">Total: {{ totalPlugins }}</span>
+                            <span class="total-pages">Total: {{ totalGroups }}</span>
                         </div>
                     </div>
                 </div>
@@ -64,14 +64,67 @@
     const categories = ref([]);
     const props = defineProps(["plugins","categories"]);
     const totalPages = ref(0);
+    const totalGroups = ref(0);
     const totalPlugins = ref(0);
     const searchQuery = ref('');
     const route = useRoute();
     const router = useRouter();
 
+    if(props.plugins) {
+        let allTasks = [];
+        let allTriggers = [];
+        let allConditions = [];
+        let allTaskRunners = [];
+
+        // avoid duplicate across groups and subgroups
+        props.plugins.forEach(plugin => {
+            allTasks = [...allTasks, ...(plugin.tasks ?? [])];
+            allTriggers = [...allTriggers, ...(plugin.triggers ?? [])];
+            allConditions = [...allConditions, ...(plugin.conditions ?? [])];
+            allTaskRunners = [...allTaskRunners, ...(plugin.taskRunners ?? [])];
+            plugin.tooltipContent = '',
+            creatingTooltipContainer(plugin, plugin.tasks, 'Tasks');
+            creatingTooltipContainer(plugin, plugin.triggers, 'Triggers');
+            creatingTooltipContainer(plugin, plugin.conditions, 'Conditions');
+            creatingTooltipContainer(plugin, plugin.taskRunners, 'TaskRunners');
+        });
+
+        totalPlugins.value = (new Set(allTasks)).size +
+            (new Set(allTriggers)).size +
+            (new Set(allConditions)).size +
+            (new Set(allTaskRunners)).size;
+    }
+
     if(props.categories) {
         categories.value = ['All Categories', ...props.categories];
     }
+
+    function generateCategoryLink(title, item, categoryName) {
+      return `plugins/${title}/${categoryName.toLowerCase()}/${item}`
+    }
+
+    function generateCategoryList (plugin, categoryItems, categoryName) {
+      let list = ``;
+      categoryItems.forEach(item => {
+        list += `
+              <li>
+                <a href="${generateCategoryLink(plugin.title, item, categoryName)}">${item}</a>
+              </li>
+            `
+      });
+      return list;
+    };
+
+    function creatingTooltipContainer (plugin, categoryItems, categoryName) {
+      if (categoryItems && categoryItems.length > 0) {
+        plugin.tooltipContent += `
+            <p>${categoryName}</p>
+            <ul>
+              ${generateCategoryList(plugin, categoryItems, categoryName)}
+            </ul>
+        `
+      }
+    };
 
     const setActiveCategory = (category) => {
         activeCategory.value = category
@@ -83,15 +136,19 @@
 
     const setPlugins = (allPlugins, total) => {
         plugins.value = allPlugins
-        totalPlugins.value = total;
+        totalGroups.value = total;
         totalPages.value = Math.ceil(total / itemsPerPage.value)
     };
 
     const setSearchPlugins = (search, allPlugins) => {
         let searchPluginsList = [...allPlugins];
+        const searchLowercase = search.toLowerCase()
         return searchPluginsList.filter((item) => {
-            const itemTitle = item.title.toLowerCase();
-            return itemTitle.includes(search.toLowerCase());
+            return item?.title.toLowerCase().includes(searchLowercase) ||
+                (item.tasks ?? []).some(task => task.toLowerCase().includes(searchLowercase)) ||
+                (item.triggers ?? []).some(trigger => trigger.toLowerCase().includes(searchLowercase)) ||
+                (item.conditions ?? []).some(condition => condition.toLowerCase().includes(searchLowercase)) ||
+                (item.taskRunners ?? []).some(taskRunner => taskRunner.toLowerCase().includes(searchLowercase))
         });
     };
 
@@ -100,6 +157,7 @@
         const endIndex = startIndex + itemsPerPage.value;
 
         const pluginsData = props.plugins.slice(startIndex, endIndex);
+
         setPlugins(pluginsData, props.plugins.length);
     }
 
@@ -127,7 +185,7 @@
             page = 1;
             currentPage.value = page;
             searchResults = searchResults.filter((item) => {
-                if (item.categories.includes(categoryVal)) {
+                if (item.categories?.includes(categoryVal)) {
                     return item;
                 }
             })

@@ -91,7 +91,7 @@ The following example from [a Blueprint library](https://demo.kestra.io/ui/bluep
 
 ```yaml
 id: aws_lambda
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: parallel
@@ -132,7 +132,7 @@ Here is a simple usage example:
 
 ```yaml
 id: aws_event_bridge
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: send_events
@@ -160,7 +160,7 @@ The [following Blueprint example](https://demo.kestra.io/ui/blueprints/community
 
 ```yaml
 id: aws_kinesis
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: sign_in_events
@@ -194,7 +194,7 @@ Search for [blueprints](../docs/04.user-interface-guide/blueprints.md) with the 
 
 ```yaml
 id: build_github_container_image
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: build
@@ -230,7 +230,7 @@ Here is how you can use this flag:
 
 ```yaml
 id: dbt
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: dbt

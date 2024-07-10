@@ -1,5 +1,5 @@
 ---
-title: How to Use Python in Kestra
+title: Python
 icon: /docs/icons/python.svg
 ---
 

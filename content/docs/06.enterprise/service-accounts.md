@@ -1,13 +1,12 @@
 ---
 title: Service Accounts
 icon: /docs/icons/admin.svg
+editions: ["EE"]
+version: ">= 0.15.0"
 ---
 
 How to create and manage Service Accounts.
 
-::alert{type="info"}
-This feature requires a [commercial license](/pricing).
-::
 
 A Service Account represents an **application** that can access Kestra. It is not tied to a specific person, and does not have personal information (such as the first name, last name or email) attached to it. Instead, it only has a name, an optional description, an optional allocation to a group, and a list of Roles that grant it permissions to access specific resources.
 

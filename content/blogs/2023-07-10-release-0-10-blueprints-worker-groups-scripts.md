@@ -54,7 +54,7 @@ These tasks are useful for scripts that can be written inline in the YAML flow d
 
 ```yaml
 id: pythonScript
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: workingDir
@@ -93,7 +93,7 @@ The `Commands` tasks can be wrapped in a `WorkingDirectory` task for seamless in
 
 ```yaml
 id: gitPython
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: directory
@@ -130,7 +130,7 @@ Labels can help you filter your flows and executions across multiple criteria. H
 
 ```yaml
 id: flowWithLabels
-namespace: dev
+namespace: company.team
 
 labels:
   environment: production
@@ -170,11 +170,11 @@ The workflow below demonstrates a simple use case where there are:
 
 ![dag](/blogs/2023-07-10-release-0-10-blueprints-worker-groups-scripts/dag.png)
 
-Here is a workflow example that uses the [new DAG task](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.dag):
+Here is a workflow example that uses the [new DAG task](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Dag):
 
 ```yaml
 id: magicDAG
-namespace: dev
+namespace: company.team
 tasks:
   - id: dag
     type: io.kestra.core.tasks.flows.Dag
@@ -226,7 +226,7 @@ The example below uses the `secret()` function to retrieve the value of a Slack 
 
 ```yaml
 id: getSecret
-namespace: dev
+namespace: company.team
 tasks:
   - id: secret
     type: io.kestra.core.tasks.debugs.Return
@@ -251,7 +251,7 @@ Imagine you want to execute a task on a worker with access to a Spark cluster. T
 
 ```yaml
 id: gpuTask
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: hello

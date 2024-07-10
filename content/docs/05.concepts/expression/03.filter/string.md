@@ -16,6 +16,7 @@ Each section below represents a built-in filter.
 - [lower](#lower)
 - [replace](#replace)
 - [sha256](#sha256)
+- [startsWith](#startswith)
 - [slugify](#slugify)
 - [substringAfter](#substringafter)
 - [substringAfterLast](#substringafterlast)
@@ -110,8 +111,6 @@ The above example will output the following:
 Article Title
 ```
 
----
-
 ## default
 
 The `default` filter will render a default value if and only if the object being filtered is empty.
@@ -130,8 +129,6 @@ Note that the default filter will suppress any `AttributeNotFoundException` exce
 
 **Arguments**
 - default
-
----
 
 ## escapeChar
 
@@ -163,8 +160,6 @@ echo '{{ inputs.param | escapeChar('shell') }}'
 
 - `type`: escape sequence type `single`, `double`, or `shell`
 
----
-
 ## lower
 
 The `lower` filter makes an entire string lower case.
@@ -177,8 +172,6 @@ The above example will output the following:
 ```twig
 this is a loud sentence
 ```
-
----
 
 ## replace
 
@@ -195,8 +188,6 @@ The `replace` filter formats a given string by replacing the placeholders (place
 - `replace_pairs`: an object with key the search string and value the replace string
 - `regexp`: use regexp for search and replace pattern (default is `false`)
 
----
-
 ## sha256
 
 The `sha256` filter returns the SHA-256 hash of the given UTF-8 String.
@@ -210,7 +201,28 @@ The above example will output the following:
 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
 ```
 
----
+## startsWith
+
+The `startsWith()` filter returns `true` if the input string starts with the specified prefix. This filter is useful for string comparisons and conditional logic in your workflows.
+
+```yaml
+id: compare_strings
+namespace: company.team
+
+inputs:
+  - id: myvalue
+    type: STRING
+    defaults: "hello world!"
+
+tasks:
+  - id: log_true
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ inputs.myvalue | startsWith('hello') }}"
+
+  - id: log_false
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ inputs.myvalue | startsWith('Hello') }}"
+```
 
 ## slugify
 
@@ -221,11 +233,9 @@ The `slugify` filter removes non-word characters (alphanumerics and underscores)
 {# will output 'joel-is-a-slug' #}
 ```
 
----
-
 ## substringAfter
 
-The `substringAfter` filter returns the  substring before the first occurrence of a separator. The separator is not returned.
+The `substringAfter` filter returns the substring before the first occurrence of a separator. The separator is not returned.
 
 ```twig
 {{ 'a.b.c' | substringAfter('.') }}
@@ -234,8 +244,6 @@ The `substringAfter` filter returns the  substring before the first occurrence o
 
 **Arguments**
 - `separator`: the string to search for
-
----
 
 ## substringAfterLast
 
@@ -249,8 +257,6 @@ The `substringAfterLast` filter returns the substring after the last occurrence 
 **Arguments**
 - `separator`: the string to search for
 
----
-
 ## substringBefore
 
 The `substringBefore` filter returns the  substring before the first occurrence of a separator. The separator is not returned.
@@ -261,8 +267,6 @@ The `substringBefore` filter returns the  substring before the first occurrence 
 
 **Arguments**
 - `separator`: the string to search for
-
----
 
 ## substringBeforeLast
 
@@ -276,21 +280,17 @@ The `substringBeforeLast` filter returns the substring before the last occurrenc
 **Arguments**
 - `separator`: the string to search for
 
-
----
-
 ## trim
 
 The `trim` filter is used to trim whitespace off the beginning and end of a string.
 ```twig
 {{ "    This text has too much whitespace.    " | trim }}
 ```
+
 The above example will output the following:
 ```twig
 This text has too much whitespace.
 ```
-
----
 
 ## upper
 
@@ -299,16 +299,15 @@ The `upper` filter makes an entire string upper case.
 ```twig
 {{ "this is a quiet sentence." | upper }}
 ```
+
 The above example will output the following:
 ```twig
 THIS IS A QUIET SENTENCE.
 ```
 
----
-
 ## urldecode
 
-The `urlencode` translates a string into `application/x-www-form-urlencoded` format using the "UTF-8" encoding scheme.
+The `urldecode` translates a string into `application/x-www-form-urlencoded` format using the "UTF-8" encoding scheme.
 
 ```twig
 {{ "The+string+%C3%BC%40foo-bar" | urldecode }}
@@ -318,8 +317,6 @@ The above example will output the following:
 ```twig
 The string ü@foo-bar
 ```
-
----
 
 ## urlencode
 
