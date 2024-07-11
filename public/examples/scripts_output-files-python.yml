@@ -1,13 +1,14 @@
 id: python_output_files
-namespace: example
+namespace: company.team
 
 tasks:
   - id: outputs_metrics
     type: io.kestra.plugin.scripts.python.Script
     beforeCommands:
       - pip install requests
-    docker:
-      image: python:slim
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: python:slim
     warningOnStdErr: false
     outputFiles:
       - downloads.txt
@@ -32,6 +33,7 @@ tasks:
 
   - id: log_downloads
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     commands:
       - cat {{outputs.outputs_metrics.outputFiles['downloads.txt']}}

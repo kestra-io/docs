@@ -31,7 +31,7 @@ Kestra started in 2019 with this [initial commit](https://github.com/kestra-io/k
 ![Initial commit](/blogs/2022-02-01-kestra-opensource/initial-commit.jpg)
 
 
-To provide a bit of a background: I was working for Leroy Merlin as a consultant. We needed to build a new cloud-based data platform from scratch (destination: mostly Google Cloud Platform). We tried a [lot of things](../blogs/2022-02-22-leroy-merlin-usage-kestra) and failed with some of our attempts. The **biggest setback was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed simply due to the Airflow scheduler), performance issues (unable to handle a light workload), and a lack of features (scaling, data processing). After many tests (Google Composer, Open source Airflow on Kubernetes), the decision was final: **Airflow was rejected by Leroy Merlin**.
+To provide a bit of a background: I was working for Leroy Merlin as a consultant. We needed to build a new cloud-based data platform from scratch (destination: mostly Google Cloud Platform). We tried a [lot of things](/blogs/2022-02-22-leroy-merlin-usage-kestra) and failed with some of our attempts. The **biggest setback was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed simply due to the Airflow scheduler), performance issues (unable to handle a light workload), and a lack of features (scaling, data processing). After many tests (Google Composer, Open source Airflow on Kubernetes), the decision was final: **Airflow was rejected by Leroy Merlin**.
 
 I did some research on the orchestrator ecosystem; most are **proprietary and license based** (far from my mindset), some are open source (at this time, only Apache Airflow seemed to be active — and it was rejected). I was really surprised by this discovery and faced this challenge from a co-worker:
 > If you think Airflow is bad, do better!
@@ -81,16 +81,16 @@ jq -r '.name' /tmp/query.json
     WHERE shippedDate = '{{ now() }}'
     AND shippedCountry = 'FR'
 - id: "return"
-  type: "io.kestra.core.tasks.debugs.Return"
+  type: "io.kestra.plugin.core.debug.Return"
   format: "{{ outputs.query.row.name }}"
 ```
 
 Kestra avoids the rigmarole of installing the software on the system, handling dependencies and conflicts, dealing with Python, etc. — just install a plugin (a simple jar) and speak directly with your database.
 
-We have a [number of plugins](/plugins/) and the process of [developing your own](../docs/09.plugin-developer-guide/index.md) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/contact-us) if you require help or support).
+We have a [number of plugins](/plugins/) and the process of [developing your own](/docs/developer-guide/plugins) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/contact-us) if you require help or support).
 
 ## First Public Release *and* Production Ready!
-First public release doesn't mean that Kestra is not production ready. In fact, it has been **used in production since August 2020 at Leroy Merlin** — take a deeper look at the [case study](../blogs/2022-02-22-leroy-merlin-usage-kestra.md) if you want more detail. Here are some figures to give a picture of Kestra’s credentials:
+First public release doesn't mean that Kestra is not production ready. In fact, it has been **used in production since August 2020 at Leroy Merlin** — take a deeper look at the [case study](/blogs/2022-02-22-leroy-merlin-usage-kestra) if you want more detail. Here are some figures to give a picture of Kestra’s credentials:
 - **4 clusters** one for every environment
 - **200+ users/developers**
 - **2000+ flows** in production

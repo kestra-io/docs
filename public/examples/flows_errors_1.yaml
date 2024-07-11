@@ -1,12 +1,13 @@
 id: errors
-namespace: example
+namespace: company.team
 
 description: This will always fail
 
 tasks:
   - id: failed_task
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
+    taskRunner: 
+      type: io.kestra.plugin.core.runner.Process
     commands:
       - "exit 1"
 

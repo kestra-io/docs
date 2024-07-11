@@ -19,22 +19,22 @@
                         <li>Explore our orchestration building blocks:</li>
                         <ul>
                             <li>
-                                <NuxtLink href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.if">
+                                <NuxtLink href="/plugins/core/tasks/flows/io.kestra.plugin.core.flow.If">
                                     If Conditions
                                 </NuxtLink>
                             </li>
                             <li>
-                                <NuxtLink href="plugins/core/tasks/flows/io.kestra.core.tasks.flows.switch">
+                                <NuxtLink href="plugins/core/tasks/flows/io.kestra.plugin.core.flow.Switch">
                                     Switch Cases
                                 </NuxtLink>
                             </li>
                             <li>
-                                <NuxtLink href="plugins/core/tasks/flows/io.kestra.core.tasks.flows.sequential">
+                                <NuxtLink href="plugins/core/tasks/flows/io.kestra.plugin.core.flow.Sequential">
                                     Sequential Steps
                                 </NuxtLink>
                             </li>
                             <li>
-                                <NuxtLink href="plugins/core/tasks/flows/io.kestra.core.tasks.flows.parallel">
+                                <NuxtLink href="plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel">
                                     Parallel Execution
                                 </NuxtLink>
                             </li>
@@ -86,7 +86,7 @@
                     </ul>
                     <ul>
                         <li>
-                            <NuxtLink href="/plugins/core/tasks/flows/io.kestra.core.tasks.flows.flow">
+                            <NuxtLink href="/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Flow">
                                 Sub Flow Plugin
                             </NuxtLink>
                         </li>

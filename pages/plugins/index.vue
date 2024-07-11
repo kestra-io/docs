@@ -2,7 +2,7 @@
     <Head>
         <Title>Hundreds of Plugins For All Your Orchestrations Needs</Title>
         <Meta name="description"
-              content="Connect Kestra with tools you arlready know and love"/>
+              content="Connect Kestra with tools you already know and love"/>
     </Head>
     <PluginsLists :plugins="pluginsList" :categories="categories" />
     <LayoutFooterContact
@@ -17,7 +17,7 @@
 <script setup>
     const config = useRuntimeConfig();
 
-    const {data: plugins} = await useFetch(`${config.public.apiUrl}/plugins`);
+    const {data: plugins} = await useFetch(`${config.public.apiUrl}/plugins/subgroups`);
 
     const pluginsList = computed(() => {
         return plugins.value

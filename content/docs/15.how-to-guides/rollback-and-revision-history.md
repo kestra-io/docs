@@ -1,5 +1,5 @@
 ---
-title: How to Use Revision History & Rollback in Kestra
+title: Revision History & Rollback
 icon: /docs/icons/tutorial.svg
 ---
 

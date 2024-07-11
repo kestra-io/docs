@@ -1,6 +1,7 @@
 ---
 title: High Availability
 icon: /docs/icons/admin.svg
+editions: ["EE"]
 ---
 
 Kestra is designed to be highly available and fault-tolerant. This section describes how to configure Kestra for high availability.
@@ -14,7 +15,7 @@ Highly available systems are designed to guarantee continuous operation, even in
 In Kestra, high availability is achieved by running multiple instances of all components, such as the `webserver` hosting the API, the `scheduler`, the `executor`, the `indexer` and the `workers`. This ensures that if one instance fails, the system can continue to operate without interruption.
 
 ::alert{type="info"}
-Note that you need to deploy Kestra using the [Kafka and Elasticsearch architecture](../04.architecture/index.md#architecture-with-kafka-and-elasticsearch-backend). This architecture is designed to be highly available and fault-tolerant.
+Note that you need to deploy Kestra using the [Kafka and Elasticsearch architecture](/docs/architecture#architecture-with-kafka-and-elasticsearch-backend). This architecture is designed to be highly available and fault-tolerant.
 ::
 
 ## Scaling the components

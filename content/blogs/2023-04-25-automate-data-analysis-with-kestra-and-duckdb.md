@@ -16,11 +16,11 @@ Here is a sample Kestra flow code that downloads a CSV file containing tech sala
 ```yaml
 
 id:  salaries_analysis
-namespace:  demo
+namespace:  company.team
 description:  Analyse  data  salaries.
 tasks:
   -  id:  download_csv
-    type:  io.kestra.plugin.fs.http.Download
+    type:  io.kestra.plugin.core.http.Download
     description:  Data  Job  salaries  from  2020  to  2023  (source  ai-jobs.net)
     uri:  https://gist.githubusercontent.com/Ben8t/f182c57f4f71f350a54c65501d30687e/raw/940654a8ef6010560a44ad4ff1d7b24c708ebad4/salary-data.csv
 
@@ -38,7 +38,7 @@ tasks:
       ORDER  BY  avg_salary  DESC;
     store:  true
   -  id:  export_result
-    type:  io.kestra.plugin.serdes.csv.CsvWriter
+    type:  io.kestra.plugin.serdes.csv.IonToCsv
     from:  "{{  outputs.average_salary_by_position.uri  }}"
 ```
 
@@ -71,7 +71,7 @@ In this task, we supply the downloaded CSV file as input and run a SQL query to 
 
 ```yaml
 id:  export_result
-    type:  io.kestra.plugin.serdes.csv.CsvWriter
+    type:  io.kestra.plugin.serdes.csv.IonToCsv
     from:  "{{  outputs.average_salary_by_position.uri  }}"
 ```
 

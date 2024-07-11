@@ -24,23 +24,23 @@ Here is a simple usage example:
 
 ```yaml
 id: render_variables_recursively
-namespace: dev
+namespace: company.team
 
 variables:
   trigger_var: "{{ trigger.date ?? execution.startDate | date('yyyy-MM-dd') }}"
 
 tasks:
   - id: parse_date
-    type: io.kestra.core.tasks.debugs.Return
+    type: io.kestra.plugin.core.debug.Return
     format: "{{ render(vars.trigger_var) }}" # this will print the recursively-rendered variable
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/1 * * * *"
 ```
 
-Check the [`render()` function's documentation](../07.concepts/expression/04.function.md#render) for more details about how to use that function and when to use it.
+Check the [`render()` function's documentation](/docs/concepts/expression/function#render) for more details about how to use that function and when to use it.
 
 ---
 

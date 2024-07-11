@@ -26,41 +26,36 @@ Kestra has a plugin support for [Ansible CLI](https://kestra.io/plugins/plugin-a
 
 ```yaml
 id: ansible
-namespace: dev
+namespace: company.team
 
 tasks:
-  - id: setup
-    type: io.kestra.core.tasks.flows.WorkingDirectory
-    tasks:
-      - id: local_files
-        type: io.kestra.core.tasks.storages.LocalFiles
-        inputs:
-          inventory.ini: |
-            localhost ansible_connection=local
-          myplaybook.yml: |
-            ---
-            - name: create s3 bucket
-              hosts: localhost
-              connection: local
-              tasks:
-              - name: create a simple s3 bucket
-                amazon.aws.s3_bucket:
-                  name: <bucket-name>
-                  state: present
-                  region: eu-central-1
-                  access_key: "{{ secret('AWS_ACCESS_KEY_ID') | trim }}"
-                  secret_key: "{{ secret('AWS_SECRET_KEY_ID') | trim }}"
-      - id: ansible_task
-        type: io.kestra.plugin.ansible.cli.AnsibleCLI
-        docker:
-          image: cytopia/ansible:latest-tools
-        beforeCommands:
-          - pip install boto3
-        commands:
-          - ansible-playbook -i inventory.ini myplaybook.yml
+  - id: ansible_task
+    type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    docker:
+      image: cytopia/ansible:latest-tools
+    inputFiles:
+      inventory.ini: |
+        localhost ansible_connection=local
+      myplaybook.yml: |
+        ---
+        - name: create s3 bucket
+          hosts: localhost
+          connection: local
+          tasks:
+          - name: create a simple s3 bucket
+            amazon.aws.s3_bucket:
+              name: <bucket-name>
+              state: present
+              region: eu-central-1
+              access_key: "{{ secret('AWS_ACCESS_KEY_ID') | trim }}"
+              secret_key: "{{ secret('AWS_SECRET_KEY_ID') | trim }}"
+    beforeCommands:
+      - pip install boto3
+    commands:
+      - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-The flow has tasks that are part of the [WorkingDirectory task](https://kestra.io/plugins/core/tasks/flows/io.kestra.core.tasks.flows.workingdirectory) allowing us to reuse the file system across the tasks. In the first task within the WorkingDorectory, we create the `inventory.ini` and `myplaybook.yml` files. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The second task is the [AnsibleCLI task](https://kestra.io/plugins/plugin-ansible/tasks/cli/io.kestra.plugin.ansible.cli.ansiblecli) that is based on the docker runner, and spins up the `cytopia/ansible:latest-tools` docker image. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
+The flow has tasks that are part of the [WorkingDirectory task](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.WorkingDirectory) allowing us to reuse the file system across the tasks. In the first task within the WorkingDorectory, we create the `inventory.ini` and `myplaybook.yml` files. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The second task is the [AnsibleCLI task](https://kestra.io/plugins/plugin-ansible/tasks/cli/io.kestra.plugin.ansible.cli.ansiblecli) that is based on the docker runner, and spins up the `cytopia/ansible:latest-tools` docker image. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
 
 ## Using Terraform as IaC
 
@@ -74,7 +69,7 @@ Kestra supports [Terraform plugin](https://kestra.io/plugins/plugin-terraform) m
 
 ```yaml
 id: terraform-cli
-namespace: dev
+namespace: company.team
 tasks:
   - id: terraform-s3-bukcet-creation
     type: io.kestra.plugin.terraform.cli.TerraformCLI

@@ -32,7 +32,7 @@ Adding automation here is the way to go. Being able to trigger any workflow base
 
 ```yaml
 id: http_stock_alert
-namespace: warehouse
+namespace: company.team
 
 tasks:
   - id: send_whatsapp_message
@@ -74,7 +74,7 @@ This will allow him to trigger a discussion with end stakeholders. How much do t
 
 ```yaml
 id: tableau-governance
-namespace: dev
+namespace: company.team
 
 variables:
   workbook_luid: 6345964502
@@ -82,7 +82,7 @@ variables:
 tasks:
 
   - id: auth-tableau-api
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://tableau.example.com/api/3.22/auth/signin
     body: |
       {
@@ -93,7 +93,7 @@ tasks:
       }
 
   - id: add_tag
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     uri: https://tableau.example.com/api/api-version/sites/site-id/workbooks/workbook-id/tags
     method: PUT
     headers:
@@ -136,7 +136,7 @@ Here is an example of Kestra flow that listens to [Grafana](https://grafana.com/
 
 ```yaml
 id: war-room-setup
-namespace: dev
+namespace: company.team
 
 tasks:
 
@@ -155,7 +155,7 @@ tasks:
       product_id: 01a2e3c1db15f340d329d18c689ed922
 
   - id: create_war_room_slack
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     method: POST
     uri: https://slack.com/api/conversations.create
     headers:
@@ -164,7 +164,7 @@ tasks:
       name: war_room
 
   - id: invite_users
-    type: io.kestra.plugin.fs.http.Request
+    type: io.kestra.plugin.core.http.Request
     method: POST
     uri: https://slack.com/api/conversations.invite
     headers:

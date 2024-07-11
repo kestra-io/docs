@@ -10,6 +10,14 @@
                                 <stop offset="0.015625" stop-color="#F2D5FF"/>
                                 <stop offset="1" stop-color="#CB5AFF"/>
                             </linearGradient>
+                            <linearGradient id="featureiconsgradientRed" x1="17.9873" y1="0.5" x2="17.9873" y2="35.5" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#E3262F"/>
+                                <stop offset="1" stop-color="#ED5D63"/>
+                            </linearGradient>
+                            <linearGradient id="featureiconsgradientBlue" x1="9.76058" y1="9.99753" x2="38.9" y2="39.0887" gradientUnits="userSpaceOnUse">
+                                <stop offset="0.015625" stop-color="#A7EAFF"/>
+                                <stop offset="1" stop-color="#10C2FB"/>
+                            </linearGradient>
                         </defs>
                     </svg>
                 </span>
@@ -19,6 +27,10 @@
                 <span v-if="number" class="card-icon">
                     <p class="number">{{number}}</p>
                 </span>
+                <div v-if="cardInfo" class="card-info">
+                    <h4 v-if="cardInfo.title" class="card-title">{{cardInfo.title}}</h4>
+                    <p v-if="cardInfo.description" class="card-text">{{cardInfo.description}}</p>
+                </div>
                 <h4 v-if="title" class="card-title">{{title}}</h4>
                 <h4 v-if="titleHtml" class="card-title" v-html="titleHtml"></h4>
             </div>
@@ -71,7 +83,10 @@
             },
             style: {
               default: null,
-            }
+            },
+            cardInfo: {
+              default: null,
+            },
         },
     };
 </script>
@@ -114,6 +129,21 @@
             color: $white-1;
             font-size: $font-size-sm;
             font-weight: 400;
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: calc($spacer / 2);
+
+            .card-title {
+                margin: 0;
+            }
+
+            .card-text {
+                text-align: start;
+            }
         }
 
         .card-icon {

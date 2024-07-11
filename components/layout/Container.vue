@@ -22,7 +22,7 @@
                     </h1>
                 </div>
 
-                <NavToc :rate-helpful="true" :page="page" class="my-md-0 my-4 right-menu" />
+                <NavToc :page="page" class="my-md-0 my-4 right-menu" />
 
                 <div class="bd-content">
                     <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions" :version="page.version" />
@@ -32,6 +32,7 @@
                         data-bs-spy="scroll"
                         data-bs-target="#nav-toc"
                     />
+                    <HelpfulVote />
                     <PrevNext v-if="prevNext" :navigation="navigation" />
                 </div>
             </ContentRenderer>
@@ -44,6 +45,7 @@
     import NavSideBar from "~/components/docs/NavSideBar.vue";
     import Breadcrumb from "~/components/layout/Breadcrumb.vue";
     import NavToc from "~/components/docs/NavToc.vue";
+    import HelpfulVote from "~/components/docs/HelpfulVote.vue";
     import {hash} from "ohash";
     import {recursivePages, generatePageNames} from "~/utils/navigation.js";
 
@@ -64,6 +66,13 @@
                 `NavSideBar-${hash(props.type)}`,
                 () => fetchContentNavigation(queryBuilder)
             );
+
+            if (navigationFetch.data && navigationFetch.data.value && props.type === 'docs' && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
+              navigationFetch.data.value[0].children.splice(navigationFetch.data.value[0].children.length - 3, 0 , {
+                title: "Videos Tutorials",
+                _path: "/tutorial-videos",
+              });
+            }
         }
 
         const navigation = navigationFetch.data;
@@ -91,14 +100,28 @@
         },
     })
 
+    if (slug.value.endsWith(".md")) {
+        await navigateTo(slug.value.substring(0, slug.value.length - 3));
+    }
+
+    const {origin} = useRequestURL()
+
+    let ogImage = `${origin}/landing/home/header-bg.png`;
+
     if (props.type === 'plugins') {
         const parts = slug.value.split('/');
-        let pageUrl;
+        let pageName;
+        let pageType;
+
         if (parts.length > 3) {
-            pageUrl = `/api/plugins?page=${parts[parts.length - 1].replace(/.md$/, "")}&type=definitions`
+            pageName = parts[parts.length - 1].replace(/.md$/, "");
+            pageType = 'definitions';
         } else {
-            pageUrl = `/api/plugins?page=${parts[2]}&type=plugin`
+            pageName = parts[2];
+            pageType = 'plugin';
         }
+
+        let pageUrl = `/api/plugins?page=${pageName}&type=${pageType}`
 
         const {data: pluginInformation} = await useAsyncData(`Container-${hash(pageUrl)}`, () => {
             return $fetch(pageUrl)
@@ -107,8 +130,33 @@
         if (pluginInformation?.value?.error) {
             throw createError({statusCode: 404, message: pluginInformation?.value?.message, fatal: true})
         }
-
         page = pluginInformation.value;
+
+        const updateObject = function(obj) {
+            if (typeof obj !== 'object' || obj === null) {
+                return obj;
+            }
+
+            if (Array.isArray(obj)) {
+                return obj.map(updateObject);
+            }
+
+            let newObj = { ...obj };
+            for (const key in newObj) {
+                if (newObj.tag === 'binding') {
+                    newObj.children = [{
+                        type: 'text',
+                        value: newObj.props.value ? "{{ " + newObj.props.value + " }}" : ""
+                    }];
+                    newObj.tag = 'span'
+                }
+                newObj[key] = updateObject(newObj[key]);
+            }
+            return newObj;
+        }
+        page = updateObject(pluginInformation.value);
+
+        ogImage = `${origin}/meta/plugins/${pageName}.svg?type=${pageType}`
     } else {
         const {data, error} = await useAsyncData(`Container-${hash(slug.value)}`, () => {
             try {
@@ -118,10 +166,12 @@
             }
         });
         page = data.value;
-
         if (error && error.value) {
             throw error.value;
         }
+        const iconPath = page.icon?.split('/');
+        const pageName = iconPath && iconPath[iconPath?.length - 1]?.split('.')[0];
+        ogImage = `${origin}/meta/docs/${pageName || 'default'}.svg?title=${page.title || ''}`
     }
 
     const {navigation, pageList, pageNames} = await fetchNavigation();
@@ -129,16 +179,16 @@
     useContentHead(page);
 
     const {description, title} = page;
-    const {origin} = useRequestURL()
+
     useHead({
-        meta: [
-            {name: 'twitter:card', content: 'summary_large_image'},
-            {name: 'twitter:site', content: '@kestra_io'},
-            {name: 'twitter:title', content: title},
-            {name: 'twitter:description', content: description},
-            {name: 'twitter:image', content: `${origin}/landing/home/header-bg.png`},
-            {name: 'twitter:image:alt', content: title}
-        ]
+      meta: [
+        {property: 'og:title', content: title},
+        {property: 'og:description', content: description},
+        {property: 'og:image', content: ogImage},
+        {property: 'og:image:type', content: "image/svg+xml"},
+        {property: 'og:image:alt', content: title},
+        {property: 'og:url', content: 'https://kestra.io'},
+      ]
     })
 </script>
 <style lang="scss" scoped>
@@ -155,6 +205,9 @@
             }
             h1 {
                 max-width: calc($spacer * 43.7);
+                @media only screen and (min-width: 1920px) {
+                    max-width: 71.25rem;
+                }
             }
         }
         .bd-main {
@@ -166,6 +219,9 @@
         .bd-content {
             margin: 0 auto;
             max-width: calc($spacer * 43.7);
+            @media only screen and (min-width: 1920px) {
+                max-width: 71.25rem;
+            }
         }
         .title {
             font-size: $h2-font-size;
@@ -191,6 +247,7 @@
             border-left: 5px solid $purple-36;
             padding-left: calc($spacer * 0.6);
             font-size: calc($font-size-base * 1.87);
+            display: block;
         }
     }
 
@@ -278,8 +335,8 @@
 
     :deep(table) {
         td, th {
-            background-color: $black-2;
-            border: $block-border;
+            background-color: transparent;
+            border-bottom: 1px solid #3D3D3F;
             color: $white;
 
             a {

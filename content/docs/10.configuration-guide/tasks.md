@@ -1,9 +1,9 @@
 ---
-title: Tasks Configuration
+title: Tasks
 icon: /docs/icons/admin.svg
 ---
 
-This section eplains various configuration options for tasks in Kestra.
+How to configuration various options for tasks in Kestra.
 
 ## Task Defaults
 
@@ -14,7 +14,7 @@ You can provide task defaults that will be applied to each task on your cluster 
 kestra:
   tasks:
     defaults:
-    - type: io.kestra.core.tasks.log.Log
+    - type: io.kestra.plugin.core.log.Log
       values:
         level: ERROR
 ```
@@ -55,3 +55,12 @@ kestra:
     tmp-dir:
       path: /home/kestra/tmp
 ```
+
+**Note:** The `tmp-dir` path must be aligned to the volume path otherwise Kestra will not know what directory to mount for the `tmp` directory. 
+```yaml
+volumes:
+  - kestra-data:/app/storage
+  - /var/run/docker.sock:/var/run/docker.sock
+  - /home/kestra:/home/kestra
+```
+In this example, `/home/kestra:/home/kestra` matches the tasks `tmp-dir` field.

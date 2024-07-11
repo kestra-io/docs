@@ -1,9 +1,9 @@
 ---
-title: Variables Configuration
+title: Variables
 icon: /docs/icons/admin.svg
 ---
 
-This section lists how you can configure variables usage in Kestra.
+How to configure variables usage in Kestra.
 
 ## `kestra.variables.env-vars-prefix`
 
@@ -23,31 +23,28 @@ For example, an environment variable with the name `KESTRA_MY_ENV` can be access
 
 You can also set global variables directly in the configuration file. These variables will be accessible in all flows across the instance.
 
-For example, the following variable will be accessible in a flow using `{{ globals.environment_name }}`:
+For example, the following variable will be accessible in a flow using `{{ globals.host }}`:
+
+```yaml
+kestra:
+  variables:
+    globals:
+      host: pg.db.prod
+```
+
+Keep in mind that if a variable is in camel case, it will be transformed into hyphenated case. For example, the global variable shown below will be accessible in flows with `{{ globals['my-var'] }}` or `{{ globals['environment-name'] }}`:
 
 ```yaml
 kestra:
   variables:
     globals:
       environment_name: dev
-```
-
-Keep in mind that if a variable is in camel case, it will be transformed into hyphenated case. For example, the global variable shown below will be accessible in flows with `{{ globals['my-var'] }}`:
-
-```yaml
-kestra:
-  variables:
-    globals:
       myVar: my variable
 ```
 
-## `kestra.variables.disable-handlebars`
-
-By default, [deprecated handlebars](../07.concepts/expression/08.deprecated-handlebars.md) feature is disabled, it can be enabled by setting this option to `true`.
-
 ## `kestra.variables.recursive-rendering`
 
-Flag enabling the pre-0.14.0 [template recursive rendering](../10.migration-guide/recursive-rendering.md) behavior and giving administrators more time to migrate deployed flows. Defaults to `false`.
+Flag enabling the pre-0.14.0 [template recursive rendering](../11.migration-guide/recursive-rendering.md) behavior and giving administrators more time to migrate deployed flows. Defaults to `false`.
 
 ## `kestra.variables.cache-enabled`
 

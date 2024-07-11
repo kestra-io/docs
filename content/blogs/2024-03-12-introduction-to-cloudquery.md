@@ -163,7 +163,7 @@ Both CloudQuery and [Kestra](https://github.com/kestra-io/kestra) follow a dec
 
 ```yaml
 id: hackernews_to_motherduck
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: daily_sync
@@ -199,7 +199,7 @@ tasks:
 
 triggers:
   - id: every_midnight
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 0 * * *" # = @daily
 ```
 

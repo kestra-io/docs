@@ -1,5 +1,5 @@
 ---
-title: How to Use Secrets in Kestra
+title: Secrets
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -7,7 +7,9 @@ How you can use secrets in various Kestra use cases.
 
 ## What are Secrets
 
-Secrets are sensitive information that you do not want to reveal to the world. This could be your passwords, access keys, tokens, or even personal information like SSN number. For a detailed overview of sercets, see the [Secrets](../07.concepts/04.secrets.md) documentation page.
+Secrets are sensitive information that you do not want to reveal to the world. This could be your passwords, access keys, tokens, or even personal information like SSN number. For a detailed overview of sercets, see the [Secrets](../05.concepts/04.secret.md) documentation page. Through this guide, we'll show you how to add secrets to your Kestra server by providing a `.env` file to the server.
+
+If you're looking for a much easier experience for managing secrets directly in the Kestra UI, you should check out the [Enterprise Edition](/enterprise) where you can manage secrets by namespaces seamlessly without needing to touch the server configuration.
 
 ## Using Secrets in Kestra
 
@@ -34,7 +36,7 @@ Lets say we save these contents into `.env_encoded` file.
 This can be achieved by manually changing the keys to be prefixed with `SECERT_`, and getting the base64 encoded values by using `base64` command in shell as follows:
 
 ```sh
-echo "actual_postgres_password" | base64
+echo -n "actual_postgres_password" | base64
 ```
 
 But there are some easy ways to do this. One way is to use the bash script for converting `.env` file into the desired format. The bash script will perform the following actions:
@@ -80,7 +82,7 @@ Let us use these secrets in a Kestra flow. In the following Kestra flow, we will
 
 ```yaml
 id: postgres-to-s3
-namespace: dev
+namespace: company.team
 tasks:
   - id: fetch
     type: io.kestra.plugin.jdbc.postgresql.Query

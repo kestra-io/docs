@@ -49,9 +49,12 @@ export default defineNuxtConfig({
     ],
 
     content: {
+        navigation: {
+            fields: ['hideSidebar'],
+        },
         documentDriven: false,
         highlight: {
-            preload: [
+            langs: [
                 'bash',
                 'yaml',
                 'sql',
@@ -78,7 +81,6 @@ export default defineNuxtConfig({
     },
 
     router: {
-        trailingSlash: false,
         options: {
             strict: true
         }
@@ -145,8 +147,30 @@ export default defineNuxtConfig({
         '/blog': {redirect: '/blogs'},
         '/docs/plugin-developer-guide': {redirect: '/docs/developer-guide/plugins'},
         '/docs/plugin-library': {redirect: '/docs/getting-started/plugins'},
-        '/docs/troubleshooting': {redirect: '/docs/faq/troubleshooting'},
-        '/docs/developer-guide/best-practice': {redirect: '/docs/developer-guide/best-practices'},
+        '/docs/enterprise/setup-page': {redirect: '/docs/enterprise/setup'},
+        '/docs/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
+        '/docs/developer-guide/best-practice': {redirect: '/docs/best-practices'},
+        '/docs/developer-guide/best-practices': {redirect: '/docs/best-practices'},
+        '/docs/best-practice': {redirect: '/docs/best-practices'},
+        '/docs/workflow-components/trigger': {redirect: '/docs/workflow-components/triggers'},
+        '/docs/workflow-components/realtime-triggers': {redirect: '/docs/workflow-components/realtime-trigger'},
+        '/docs/workflow-components/triggers/conditions': {redirect: '/docs/workflow-components/triggers#conditions'},
+        '/docs/workflow-components/flow-properties': {redirect: '/docs/workflow-components/flow'},
+        '/docs/workflow-components/task-defaults': {redirect: '/docs/workflow-components/plugin-defaults'},
+        '/docs/concepts/expression/02a.expression-types': {redirect: '/docs/concepts/expression/expression-types'},
+        '/docs/concepts/expression/02b.expression-usage': {redirect: '/docs/concepts/expression/expression-usage'},
+        '/docs/how-to-guides/errors': {redirect: '/docs/workflow-components/errors'},
+        '/docs/how-to-guides/python-pip': {redirect: '/docs/how-to-guides/python'},
+        '/docs/how-to-guides/google-spreadsheets': {redirect: '/docs/how-to-guides/google-sheets'},
+        '/docs/flow-examples/**': {redirect: '/docs/how-to-guides'},
+        '/docs/installation/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
+        '/docs/faq/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
+        '/docs/faq/flows': {redirect: '/docs/workflow-components/flows#faq'},
+        '/docs/faq/variables': {redirect: '/docs/workflow-components/variables#faq'},
+        '/docs/faq/enterprise': {redirect: '/docs/enterprise/faq'},
+        '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
+        '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
+        '/videos': {redirect: '/tutorial-videos'},
         '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
     },
 

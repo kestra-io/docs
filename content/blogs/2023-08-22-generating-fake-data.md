@@ -17,7 +17,6 @@ Shiny Rocks is a fictional company creating smartphones. "Those shiny rocks in o
 
 ![architecture](/blogs/2023-08-22-generating-fake-data/architecture.png)
 
-
 ![topology](/blogs/2023-08-22-generating-fake-data/screenshot_topology.png)
 
 You can find the whole use case in our [live demo in the shiny_rocks namespace](https://demo.kestra.io/ui/flows?namespace=shiny_rocks).
@@ -84,7 +83,7 @@ We declare a scheduling trigger every day with a backfill property allowing us t
 
 ```yaml
 id: produce_data
-namespace: shiny_rocks
+namespace: shiny_rocks.analytics
 description: |
   This flow generate Shiny Rocks fictional data. Three datasets are created: `orders`, `payments` and `services`.
   Like in reality, those data change everyday.
@@ -94,7 +93,7 @@ labels:
 
 tasks:
   - id: working_dir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
 
       - id: clone
@@ -104,25 +103,21 @@ tasks:
       - id: python
         type: io.kestra.plugin.scripts.python.Commands
         warningOnStdErr: false
-        beforeCommands:
-          - pip install -r dataset/produce/requirements.txt
-        commands:
-          - python dataset/produce/main.py --date {{ trigger.date ?? now() | date("yyyy-MM-dd")}}
-
-      - id: file_outputs
-        type: io.kestra.core.tasks.storages.LocalFiles
-        description: This task allows to expose all CSV files created by the Python script task above to downstream tasks and flows.
-        outputs:
+        outputFiles:
           - '*.csv'
+        beforeCommands:
+          - pip install -r scripts/produce/requirements.txt
+        commands:
+          - python scripts/produce/produce_data.py --date {{ trigger.date ?? now() | date("yyyy-MM-dd")}}
 
       - id: run_date
-        type: io.kestra.core.tasks.debugs.Return
+        type: io.kestra.plugin.core.debug.Return
         format: '{{ trigger.date ?? now() | date("yyyy-MM-dd")}}'
 
 
 triggers:
   - id: schedule_every_day
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 10 * * *"
     backfill:
       start: 2023-07-10T10:00:00Z
@@ -135,7 +130,7 @@ Note, this is just our choice for this demo. Kestra integrates with Snowflake, A
 
 ```yaml
 id: load_orders_bigquery
-namespace: shiny_rocks
+namespace: shiny_rocks.analytics
 description: |
   When data are generated upstream, this flow ingest the `orders` data into Google Cloud Storage and BigQuery.
 
@@ -173,15 +168,15 @@ tasks:
 triggers:
 
   - id: get_data
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     inputs:
       orders_data: "{{ outputs.file_outputs.uris['orders.csv'] }}"
       order_date: "{{ outputs.run_date.value }}"
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
-        namespace: shiny_rocks
+      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+        namespace: shiny_rocks.analytics
         flowId: produce_data
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - SUCCESS
 ```
@@ -196,7 +191,7 @@ The following Flow directly reads the Google Spreadsheet and loads it into a pro
 
 ```yaml
 id: marketing_investments_to_bigquery
-namespace: shiny_rocks
+namespace: shiny_rocks.analytics
 description: |
   The marketing teams manage their investments into a Google Spreadsheet, hence we load those data into BigQuery for further processing and join with other data.
 
@@ -217,7 +212,7 @@ tasks:
     valueRender: FORMATTED_VALUE
 
   - id: write_csv
-    type: io.kestra.plugin.serdes.csv.CsvWriter
+    type: io.kestra.plugin.serdes.csv.IonToCsv
     description: Write CSV into Kestra internal storage
     from: "{{ outputs.read_gsheet.uris.marketing }}"
 
@@ -236,7 +231,7 @@ tasks:
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 10 * * *
 ```
 
@@ -245,7 +240,7 @@ This Flow is triggered when the three upstream dependencies are in success on th
 
 ```yaml
 id: dbt_run
-namespace: shiny_rocks
+namespace: shiny_rocks.analytics
 description: |
   Whenever all data are loaded in BigQuery, this flow will run a dbt job to transform data.
 
@@ -254,7 +249,7 @@ labels:
 
 tasks:
   - id: workingdir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
       - id: cloneRepository
         type: io.kestra.plugin.git.Clone
@@ -262,7 +257,7 @@ tasks:
         branch: main
 
       - id: profile
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         inputs:
           profiles.yml: |
             shiny_rocks_dbt:
@@ -291,31 +286,31 @@ tasks:
 
 triggers:
   - id: multiple-listen-flow
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - SUCCESS
       - id: multiple
-        type: io.kestra.core.models.conditions.types.MultipleCondition
+        type: io.kestra.plugin.core.condition.MultipleCondition
         window: P1D
         windowAdvance: P0D
         conditions:
           orders:
-            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
-            namespace: shiny_rocks
+            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+            namespace: shiny_rocks.analytics
             flowId: load_orders_bigquery
           payments:
-            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
-            namespace: shiny_rocks
+            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+            namespace: shiny_rocks.analytics
             flowId: load_payments_bigquery
           services:
-            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
-            namespace: shiny_rocks
+            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+            namespace: shiny_rocks.analytics
             flowId: load_services_bigquery
           marketing_investments:
-            type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
-            namespace: shiny_rocks
+            type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+            namespace: shiny_rocks.analytics
             flowId: marketing_investments_to_bigquery
 ```
 
@@ -330,7 +325,7 @@ Delivers this chart via email to the marketing team, ensuring they're always upd
 
 ```yaml
 id: marketing_roi_chart
-namespace: shiny_rocks
+namespace: shiny_rocks.analytics
 description: |
   After dbt transformation, we use marketing data joined to orders to create a plot of marketing ROI.
   The flow first query data from BigQuery and then run a Python script to read data and create a chart out of it.
@@ -356,16 +351,16 @@ tasks:
 
 
   - id: to_csv
-    type: io.kestra.plugin.serdes.csv.CsvWriter
+    type: io.kestra.plugin.serdes.csv.IonToCsv
     from: "{{ outputs.get_data.uri }}"
 
 
   - id: working_dir
-    type: io.kestra.core.tasks.flows.WorkingDirectory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
     tasks:
 
       - id: files
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         inputs:
           data.csv : "{{ outputs.to_csv.uri }}"
 
@@ -388,7 +383,7 @@ tasks:
           ggsave(plot, "plot.png")
 
       - id: output
-        type: io.kestra.core.tasks.storages.LocalFiles
+        type: io.kestra.plugin.core.storage.LocalFiles
         outputs:
           - plot.png
 
@@ -407,12 +402,12 @@ tasks:
 triggers:
 
   - id: get_data
-    type: io.kestra.core.models.triggers.types.Flow
+    type: io.kestra.plugin.core.trigger.Flow
     conditions:
-      - type: io.kestra.core.models.conditions.types.ExecutionFlowCondition
-        namespace: shiny_rocks
+      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+        namespace: shiny_rocks.analytics
         flowId: dbt_run
-      - type: io.kestra.core.models.conditions.types.ExecutionStatusCondition
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - SUCCESS
 ```

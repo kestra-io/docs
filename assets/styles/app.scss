@@ -148,7 +148,7 @@ blockquote.blockquote {
         left: -50%;
         top: -300%;
         width: 200%;
-        height: 700%;
+        height: 760%;
         animation: rotate 6s linear infinite;
     }
 
@@ -367,6 +367,13 @@ blockquote.blockquote {
 
         .material-design-icon {
             margin-top: -10px;
+            width: 42px;
+            height: 42px;
+        }
+
+        .material-design-icon__svg {
+            width: 42px;
+            height: 42px;
         }
     }
 
@@ -572,6 +579,28 @@ blockquote.blockquote {
 @include media-breakpoint-up(lg) {
     .mobile {
         display: none;
+    }
+}
+.plugin-tooltip {
+    .tooltip-inner {
+        text-align: left !important;
+        max-height: 20rem;
+        overflow: auto;
+        background-color: var(--bs-body-color);
+
+        &::-webkit-scrollbar {
+            width: 2px;
+            height: 2px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: var(--card-bg);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--bs-primary);
+            border-radius: 0px;
+        }
     }
 }
 

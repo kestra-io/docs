@@ -65,7 +65,7 @@ Finally, here is a simple flow example rendering a markdown file:
 
 ```yaml
 id: release_post
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: render_markdown
@@ -156,7 +156,7 @@ From this release on, you can set a secret or environment variable name and that
 
 ```yaml
 id: webhook
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: message
@@ -191,7 +191,7 @@ To do that, add a `cache` to your `WorkingDirectory` task. The `cache` property 
 
 ```yaml
 id: node_cached_dependencies
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: working_dir
@@ -257,7 +257,7 @@ Using the `gcloud` [CLI task](https://kestra.io/plugins/plugin-gcp#cli), you can
 
 ```yaml
 id: gcloudCLI
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: hello
@@ -276,7 +276,7 @@ AWS CLI is useful for automating tasks on Amazon Web Services. With the [AWS CLI
 
 ```yaml
 id: awsCLIlistECSclusters
-namespace: dev
+namespace: company.team
 
 tasks:
   - id: aws
@@ -295,7 +295,7 @@ This release also introduces the `az` [CLI task](https://kestra.io/plugins/plugi
 
 ```yaml
 id: azureCLI
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: listAzureRegions
@@ -315,7 +315,7 @@ You can use the new Spark CLI to orchestrate Spark jobs. The [blueprint](https:/
 
 ```yaml
 id: gitSpark
-namespace: blueprint
+namespace: company.team
 
 tasks:
 - id: working_directory
@@ -336,7 +336,7 @@ Similarly to `SparkCLI`, the new [DbtCLI task](https://kestra.io/plugins/plugin-
 
 ```yaml
 id: dbtGitDockerDuckDB
-namespace: blueprint
+namespace: company.team
 
 tasks:
   - id: dbt
@@ -413,7 +413,7 @@ Our community member, [Antoine Balliet](https://github.com/aballiet), contribute
 
 ```yaml
 id: bigquery_to_gsheets
-namespace: blueprint
+namespace: company.team
 tasks:
   - id: reverseETL
     type: io.kestra.plugin.hightouch.Sync
@@ -463,7 +463,7 @@ Below is a simple example:
 
 ```yaml
 id: telegram
-namespace: dev
+namespace: company.team
 tasks:
   - id: telegram_notification
     type: io.kestra.plugin.notifications.telegram.TelegramSend

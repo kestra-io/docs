@@ -1,5 +1,5 @@
 id: bash_with_files
-namespace: example
+namespace: company.team
 
 description: This flow shows how to pass files between inputs and tasks in Shell scripts.
 

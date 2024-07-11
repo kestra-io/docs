@@ -71,7 +71,7 @@ Kestra also allows for iterative changes to pipelines without causing disruption
 
 ```yaml
 id: debezium-mysql
-namespace: com.kestra.lde
+namespace: company.team
 
 tasks:
   - id: capture
@@ -88,7 +88,7 @@ tasks:
         row['contactName'] = "*".repeat(row['contactName'].length);
       }
   - id: jsonWriter
-    type: io.kestra.plugin.serdes.json.JsonWriter
+    type: io.kestra.plugin.serdes.json.IonToJson
     from: "{{ outputs.fileTransform.uri }}"
   - id: load
     type: io.kestra.plugin.gcp.bigquery.Load

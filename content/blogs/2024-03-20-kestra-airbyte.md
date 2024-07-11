@@ -95,7 +95,7 @@ Now, create a flow on the Kestra UI. We will be using the [Sync task](https://ke
 
 ```yaml
 id: airbyte-sync
-namespace: dev
+namespace: company.team
 tasks:
   - id: "sync"
     type: "io.kestra.plugin.airbyte.connections.Sync"
@@ -115,7 +115,7 @@ The flow should look as follows:
 
 ```yaml
 id: airbyte-check-status
-namespace: dev
+namespace: company.team
 tasks:
   - id: "check_status"
     type: "io.kestra.plugin.airbyte.connections.CheckStatus"

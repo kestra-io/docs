@@ -4,19 +4,19 @@ description: Review our Enterprise agreement
 ---
 # Kestra Enterprise Agreement #
 
-**Please read these terms carefully. If you do not agree to be bound by these terms, you must not use the Kestra Solution. Your continued use of the Solution implies acceptance of these terms.** 
+**Please read these terms carefully. If you do not agree to be bound by these terms, you must not use the Kestra Solution. Your continued use of the Solution implies acceptance of these terms.**
 
-**The Kestra Enterprise Agreement will, along with the other documents incorporated herein by reference, constitute the agreement (the “Agreement") between Kestra Technologies with a principal place of business located at  81 rue du Pré-Catelan 59119 La Madeleine, France (“Kestra”), and you and any entity that you represent or are acting on behalf of ("Customer") regarding the access and use of Kestra Solution (as defined below) and delivery of related services, each to the extent identified in the Order.**  
+**The Kestra Enterprise Agreement will, along with the other documents incorporated herein by reference, constitute the agreement (the “Agreement") between Kestra Technologies with a principal place of business located at  81 rue du Pré-Catelan 59119 La Madeleine, France (“Kestra”), and you and any entity that you represent or are acting on behalf of ("Customer") regarding the access and use of Kestra Solution (as defined below) and delivery of related services, each to the extent identified in the Order.**
 
-**Customer and Kestra are the “Parties” and individually a “Party” whereas:** 
+**Customer and Kestra are the “Parties” and individually a “Party” whereas:**
 
-Kestra edits, delivers, maintains and provides support for a data orchestration and scheduling solution that facilitates the monitoring and management of complex computing flows (the "Solution"). 
+Kestra edits, delivers, maintains and provides support for a data orchestration and scheduling solution that facilitates the monitoring and management of complex computing flows (the "Solution").
 
 The functional and technical characteristics of the Solution are described in Appendix 1.
 
-The Client has expressed an interest in using the “Enterprise Edition” of the Solution for its business and deploying it directly to its IT infrastructure in an "Self-Hosted" license type. 
+The Client has expressed an interest in using the “Enterprise Edition” of the Solution for its business and deploying it directly to its IT infrastructure in an "Self-Hosted" license type.
 
-To this end, the Client has submitted to Kestra an order form (the “**Order Form** ”) reproduced above and specifying the items ordered by the Client, which Kestra has accepted. 
+To this end, the Client has submitted to Kestra an order form (the “**Order Form** ”) reproduced above and specifying the items ordered by the Client, which Kestra has accepted.
 
 In this context, the Client declares that it has received from Kestra, prior to the signing of the Order Form, all advice, instructions and details necessary for it to enter into this agreement in full knowledge of the facts, that it has sufficient knowledge of the Kestra’s competences, and that it has, prior to the signing of the Order Form, sufficiently exchanged with Kestra to ensure that these correspond to the Client's expectations, needs and constraints.
 
@@ -26,7 +26,7 @@ The Parties declare that they have had the time and opportunity to exchange all 
 
 ## IT HAS BEEN AGREED AS FOLLOWS: ##
 
-### 1. Purpose 
+### 1. Purpose
 The purpose of this Agreement is to set forth the legal conditions under which Kestra shall provide the Solution to the Client.
 
 ### 2. Contractual documents
@@ -56,9 +56,9 @@ A "Period" refers to a twelve (12) months period starting from the signature dat
 ### 4. License to use the Solution
 
 - #### 4.1 Scope of the License
-Kestra grants the Client a non-exclusive, personal and non-transferable license (the “**License**”) to use the Enterprise Edition of the Solution, in its existing version at the date of the Agreement and in any future versions, for the purposes of use in the context of its business and within the limits of the specific parameters specified in Appendix 1, for the users that the Client has previously authorized to use the Solution (the “**Users**”). 
+Kestra grants the Client a non-exclusive, personal and non-transferable license (the “**License**”) to use the Enterprise Edition of the Solution, in its existing version at the date of the Agreement and in any future versions, for the purposes of use in the context of its business and within the limits of the specific parameters specified in Appendix 1, for the users that the Client has previously authorized to use the Solution (the “**Users**”).
 
-This License is granted for the sole purpose of integrating and using the Solution in the Client's IT infrastructure as specified in Appendix 1. 
+This License is granted for the sole purpose of integrating and using the Solution in the Client's IT infrastructure as specified in Appendix 1.
 
 - #### 4.2 Purpose of the License
 The Solution will be used by the Client for the purpose of its use as mentioned in Appendix 1.
@@ -73,9 +73,9 @@ Consequently, the Client and the Users are prohibited from:
 
 The right to use the Solution is granted to the Client only upon full payment of the price calculated in accordance with the terms specified in the Order Form.
 
-- #### 4.3 Implementation of the License 
+- #### 4.3 Implementation of the License
 - **4.3.1 Installation and deployment of the Solution**
-The Client shall deploy and install the Solution on its IT infrastructure under its sole responsibility, under the conditions and within the limits agreed to herein and in accordance with the Solution installation procedures set forth in the terms of the installation of the Solution accessible at the following address: [https://Kestra.io/docs/](https://kestra.io/docs/).
+The Client shall deploy and install the Solution on its IT infrastructure under its sole responsibility, under the conditions and within the limits agreed to herein and in accordance with the Solution installation procedures set forth in the terms of the installation of the Solution accessible at the following address: [https://Kestra.io/docs/](/docs/).
 
 - **4.3.2 Selection of Users**
 It is also the Client's responsibility to designate, among the Users, who will be in charge of the use and administration of the Solution.
@@ -85,16 +85,16 @@ It undertakes to ensure that Users do not allow any third party to use them in t
 The Client undertakes to contact Kestra without delay, by any useful written means and in particular by email, if it appears that the Solution has been used without the knowledge of its User.
 
 - **4.3.3 Access and confidentiality**
-Each User accesses the Solution by entering his login and password. 
+Each User accesses the Solution by entering his login and password.
 
-The password of each User is strictly personal and confidential. 
+The password of each User is strictly personal and confidential.
 
 Each User is responsible for maintaining the confidentiality of his login and password, as well as for their use. The Client is also responsible for ensuring that the Users maintain the confidentiality of their connection identifiers and/or passwords.
 
 In the event of loss or theft of the User ID and password, the Client shall be solely responsible for any adverse consequences of such loss or theft and shall promptly notify Kestra by email.
 
-### 5. Maintenance and technical support 
-The maintenance and technical support provided by Kestra are specified in Appendix 1. 
+### 5. Maintenance and technical support
+The maintenance and technical support provided by Kestra are specified in Appendix 1.
 
 ### 6. Hosting
 Kestra does not host the Solution or the data collected by it. The hosting is the sole responsibility of the Client.
@@ -102,27 +102,27 @@ Kestra does not host the Solution or the data collected by it. The hosting is th
 ### 7. Financial Conditions
 
 - #### 7.1 Pricing ####
-In consideration of the implementation of the Solution, the Client undertakes to pay Kestra the prices specified in the Order Form. 
+In consideration of the implementation of the Solution, the Client undertakes to pay Kestra the prices specified in the Order Form.
 
 - #### 7.2 Invoicing and payment ####
 The above prices will be the subject of invoices by Kestra, communicated to the Client by any written means, and in particular by email, in accordance with the provisions set forth in the Order Form.
 
 - #### 7.3Late payments and payment incidents ####
 The Client is hereby informed and expressly agrees that any delay in payment of all or part of an amount due on its due date shall automatically, without prior notice, result in the invoicing to Kestra of late payment interest at the rate of 3 times the legal interest rate, based on the amount of the entire amount owed by the Client and a flat-rate indemnity of 40 euros for collection costs.
- 
+
 In addition, in the absence of payment of an amount due on its due date within thirty (30) calendar days following receipt by the Client of a formal notice by registered letter with acknowledgement of receipt, which has remained without effect, Kestra reserves the right to (i) suspend the Agreement, (ii) demand immediate payment of all amounts due by the Client, and/or (iii) terminate the Agreement, under the conditions set forth in "Termination for breach" section.
 
-### 8. Modification of the Solution 
+### 8. Modification of the Solution
 Any request for modification of the Solution provided to the Client during the course of the Agreement, and/or modification of the parameters agreed in the Order Form, and/or a new order shall be subject to a new Order Form accepted and signed by the Parties. The provisions of the Agreement that have not been modified by the said amendment shall remain unchanged.
 
 ### 9. Escrow
 At the Client’s request, the source programs, as well as the technical design and implementation documentation for the Solution, could be deposited by Kestra with a third-party escrow agent selected by Kestra and at the expense of the Client.
 
-If applicable, the price of the escrow should be mentioned in the Order Form. 
+If applicable, the price of the escrow should be mentioned in the Order Form.
 
 The Client shall have access to the source programs of the Solution under the control of the third-party escrow agent in the event of a major failure on the part of Kestra.
 
-The following are considered to be major failures by Kestra, the judicial liquidation of Kestra, in the absence of any buyer. 
+The following are considered to be major failures by Kestra, the judicial liquidation of Kestra, in the absence of any buyer.
 
 In the event of access to the source programs, they shall be duplicated under the sole responsibility of the Client and at its expense. The Client may only use the source programs within the limits of the License granted to it hereunder.
 
@@ -131,7 +131,7 @@ The Parties shall enter into an escrow agreement with the third party escrow age
 ### 10. Obligations and warranty of the Client
 Without prejudice to the other obligations provided for in the Agreement, the Client undertakes to comply with the following obligations:
 
-- **10.1** The Client shall be solely responsible for ensuring the proper use of the Solution. 
+- **10.1** The Client shall be solely responsible for ensuring the proper use of the Solution.
 
 In particular, it shall be responsible for:
 - having IT equipment in good working order and in good working condition;
@@ -139,7 +139,7 @@ In particular, it shall be responsible for:
 - ensuring at all times that its infrastructures take into account the conditions of use of the Solution and, where applicable, take the necessary measures to ensure that its computer infrastructure is compatible with the requirements mentioned in the terms of the installation of the Solution ;
 - having qualified and trained personnel available to use the Solution, in order to use it in accordance with the instructions provided by Kestra.
 
-- **10.2** The Client agrees to maintain the statistics report mentioned in Appendix 1 and shall not delete any data that allows Kestra to calculate the usages performed via the Solution on the Client’s IT infrastructure as described in Appendix 1. 
+- **10.2** The Client agrees to maintain the statistics report mentioned in Appendix 1 and shall not delete any data that allows Kestra to calculate the usages performed via the Solution on the Client’s IT infrastructure as described in Appendix 1.
 
 - **10.3** The Client undertakes to provide Kestra with all documents, materials, data and information necessary for Kestra to perform its obligations under the Agreement.
 
@@ -151,7 +151,7 @@ More generally, the Client undertakes to cooperate actively with Kestra with a v
 
 - **10.5** The Client expressly acknowledges and agrees that the Solution interconnects with third-party software (the “**Third Party Softwares**”), as described in Appendix 1, for which Kestra is not responsible.
 
-- **10.6** The Client undertakes, in its use of the Solution, to comply with the laws and regulations in force and not to infringe the rights of third parties or public order. 
+- **10.6** The Client undertakes, in its use of the Solution, to comply with the laws and regulations in force and not to infringe the rights of third parties or public order.
 
 It guarantees against any misuse, non-compliant or illicit use that Users may make of the Solution, in particular against infringement of the laws and regulations in force. The Client is thus exclusively responsible for putting in place all procedures intended to prevent or remedy the commission of such acts.
 
@@ -175,7 +175,7 @@ infringing Content,
 
 - **11.1** Kestra undertakes to provide the Solution with care and diligence, and in accordance with the best practices of its profession, it being specified that it has an obligation of reinforced means, to the exclusion of any obligation of result, which the Client expressly acknowledges and accepts.
 
-- **11.2** Kestra undertakes to implement the necessary measures to ensure that the Solution complies with the Order Form. 
+- **11.2** Kestra undertakes to implement the necessary measures to ensure that the Solution complies with the Order Form.
 
 - **11.3** Kestra shall not be liable for temporary difficulties or impossibilities to access the Solution due to circumstances beyond its control, force majeure, or due to disruptions of the telecommunications networks, or improper use or failure to update the Solution by the Client according to the Appendix 1.
 
@@ -190,7 +190,7 @@ infringing Content,
 - **11.8** In any event, the liability that may be incurred by Kestra hereunder shall be limited to direct damages suffered by the Client and shall be expressly limited to the total amount of the price received by Kestra for the Period during which the event giving rise to liability occurred.
 
 ### 12. Intellectual property
-The Client expressly acknowledges that the Agreement does not grant it any intellectual property rights to the Solution, which remains the exclusive property of Kestra. The Client is only granted a License to use the Solution under the conditions defined in the “License to use the Solution” article, to the exclusion of any other use. 
+The Client expressly acknowledges that the Agreement does not grant it any intellectual property rights to the Solution, which remains the exclusive property of Kestra. The Client is only granted a License to use the Solution under the conditions defined in the “License to use the Solution” article, to the exclusion of any other use.
 
 Consequently, any disassembly, decompilation, decryption, extraction, reuse, copying and more generally any act of reproduction, representation, distribution and use of any of the elements composing the Solution, in whole or in part, without Kestra’s authorization, are strictly prohibited and may be subject to legal proceedings.
 
@@ -214,9 +214,9 @@ The Parties expressly acknowledge and agree that the data collected on Kestra’
 To this end, the Client agrees that Kestra install a statistics report (the “Statistic Report”), as mentioned in Appendix 1 and in the “Statistic Report and Audit” article, for the purpose of recovering data in order to obtain in real time the data necessary to calculate the amount due to Kestra.
 
 ### 15. Statistic Report and Audit
-In the event that the Statistics Report is not accessible, or the data collected is considered by Kestra as suspect,  Kestra shall notify the Client of this malfunction. 
+In the event that the Statistics Report is not accessible, or the data collected is considered by Kestra as suspect,  Kestra shall notify the Client of this malfunction.
 
-The Statistics Report must be restored by the Client if the Client is the cause of the malfunction, or otherwise by Kestra, within the 30 (thirty) days following the notification. 
+The Statistics Report must be restored by the Client if the Client is the cause of the malfunction, or otherwise by Kestra, within the 30 (thirty) days following the notification.
 
 If the malfunction persists, the Client expressly agrees that Kestra can audit the Solution and documents related to the Solution database to verify, no more than once per calendar year, the calculation of the price due pursuant to the "Financial conditions" article, by any professional of its choice, at the Client's premises, during working hours, at any time during the performance of this Agreement and for a period of 3 months after the end of the Agreement, provided that the Client must give Kestra at least 8 days' written notice.
 
@@ -236,13 +236,13 @@ Each of the Parties undertakes to keep strictly confidential all documents and i
 
 This obligation of confidentiality does not extend to documents and information:
 - (i) of which the receiving Party was already aware,
-- (ii) which were already public at the time of their communication or which would become public without breach of the Agreement, 
+- (ii) which were already public at the time of their communication or which would become public without breach of the Agreement,
 - (iii) which would have been lawfully received from a third party,
 - (iv) the disclosure of which would be required by the judicial authorities, pursuant to laws and regulations or in order to establish the rights of a Party under the Agreement.
 
 This obligation of confidentiality extends to all employees, collaborators, trainees, managers and agents of the Parties as well as to their affiliated counsels and co-contractors, to whom documents or confidential information may only be transmitted if they are bound by the same obligation of confidentiality as that provided for herein.
 
-This obligation shall continue to apply for a period of 5 years following the end of the Agreement. 
+This obligation shall continue to apply for a period of 5 years following the end of the Agreement.
 
 ### 18. Social regulations
 Kestra shall provide the Client prior to signing the Agreement and as often as the Client requests:
@@ -262,19 +262,19 @@ The Party prevented from doing so shall, as far as possible, inform the other Pa
 
 If, as a result of force majeure, the affected Party is prevented from fulfilling only part of its contractual obligations, it shall remain responsible for the performance of those obligations not affected by the force majeure and for its payment obligations.
 
-As soon as the case of force majeure ceases, the Party prevented must immediately inform the other Party and resume performance of the affected obligations within a reasonable period of time. However, if such event extends beyond one (1) month, either Party may terminate the Agreement with immediate effect by sending written notice through registered mail with acknowledgement of receipt to the other Party. 
+As soon as the case of force majeure ceases, the Party prevented must immediately inform the other Party and resume performance of the affected obligations within a reasonable period of time. However, if such event extends beyond one (1) month, either Party may terminate the Agreement with immediate effect by sending written notice through registered mail with acknowledgement of receipt to the other Party.
 
 ### 20. Termination for breach
 In the event of a breach by one of the Parties of any of its obligations under the Agreement, the latter shall be terminated as of right fifteen (15) days after receipt by the defaulting Party of a formal notice, which has remained without effect, or if the breach cannot be remedied, by registered letter with acknowledgement of receipt, stating the latter's intention to apply this clause, without prejudice to any damages which may be claimed from the Party in breach.
 
 
 ### 21. Effects of the end of the Agreement
-The end of the Agreement, whatever the cause, will result in the termination of the License and the billing to the Client of the number of tasks in excess of the defined Level in respect of the year in which the Agreement ended, for any reason whatsoever. 
+The end of the Agreement, whatever the cause, will result in the termination of the License and the billing to the Client of the number of tasks in excess of the defined Level in respect of the year in which the Agreement ended, for any reason whatsoever.
 
 The end of the Agreement also has no effect on the provisions of the Agreement which are intended to continue beyond the end of the Agreement, and in particular the articles "Intellectual Property" and "Confidentiality", ”Prohibition of poaching” and the present article.
 
 ### 22. Intuitu personae
-This Agreement shall be deemed to have been entered into in consideration of the person of the Parties and as such, the Parties shall not delegate or assign any of their rights under this Agreement, or entrust to a third party the performance of all or part of their obligations, without the prior written consent of the other Party. 
+This Agreement shall be deemed to have been entered into in consideration of the person of the Parties and as such, the Parties shall not delegate or assign any of their rights under this Agreement, or entrust to a third party the performance of all or part of their obligations, without the prior written consent of the other Party.
 
 As an exception to the foregoing, Kestra reserves the right to use subcontractors to perform the services. In such an event, Kestra shall notify the Client and undertake to ensure that its subcontractors comply with the same contractual obligations as those to which it is subject under this Agreement. Kestra shall in any event remain solely responsible for the proper performance of the services with respect to the Client.
 
@@ -291,7 +291,7 @@ It is expressly agreed that neither Party may rely on the provisions of the Agre
 No special legal structure is hereby formed between the Parties, each retaining its own autonomy, responsibilities and customer base.
 
 ### 25. Independence of the Agreement, Severability and Amendments
-The contractual documents represent the entirety of the undertakings between the Parties. It replaces and cancels any previous oral or written undertaking relating to the subject matter of the Agreement. 
+The contractual documents represent the entirety of the undertakings between the Parties. It replaces and cancels any previous oral or written undertaking relating to the subject matter of the Agreement.
 
 The invalidity or unenforceability of any of the provisions of the Agreement shall not invalidate the other provisions, which shall retain their force and scope. The Parties shall then come together to agree in good faith on the necessary amendments so that each of them is in an economic situation comparable to that which would have resulted from the application of the invalidated clause.
 

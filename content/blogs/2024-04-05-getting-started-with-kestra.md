@@ -43,10 +43,10 @@ To help visualise it, here's an example:
 
 ```yaml
 id: getting_started
-namespace: example
+namespace: company.team
 tasks:
   - id: hello_world
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Hello World!
 ```
 
@@ -78,10 +78,10 @@ The first time you launch Kestra in your browser, it will ask you if you want to
 
 ```yaml
 id: getting_started
-namespace: example
+namespace: company.team
 tasks:
   - id: hello_world
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: Hello World!
 ```
 
@@ -99,7 +99,7 @@ Now let’s test this by saving our flow and executing it! Our flow should look 
 
 ```yaml
 id: api_example
-namespace: example
+namespace: company.team
 tasks:
   - id: python_script
     type: io.kestra.plugin.scripts.python.Commands
@@ -137,7 +137,7 @@ With this change made, we can add an additional task that uses this variable to 
 
 ```yaml
 - id: python_output
-  type: io.kestra.core.tasks.log.Log
+  type: io.kestra.plugin.core.log.Log
   message: "Number of stars: {{ outputs.python_script.vars.gh_stars }}"
 ```
 
@@ -200,7 +200,7 @@ Before we execute our flow, let’s recap and check out the full flow together. 
 
 ```yaml
 id: api_example
-namespace: example
+namespace: company.team
 
 inputs:
   - id: kestra_logo
@@ -225,7 +225,7 @@ tasks:
       - python scripts/api_example.py
 
   - id: python_output
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "Number of stars: {{ outputs.python_script.vars.gh_stars }}"
 
   - id: send_notification
@@ -259,7 +259,7 @@ This cron schedule expression will execute it at minute 0 of every hour so we ca
 ```yaml
 triggers:
   - id: hour_trigger
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: 0 * * * *
 ```
 
@@ -271,7 +271,7 @@ With that configured, we now have our fully functioning flow that can make an AP
 
 ```yaml
 id: api_example
-namespace: example
+namespace: company.team
 
 inputs:
   - id: kestra_logo
@@ -296,7 +296,7 @@ tasks:
       - python scripts/api_example.py
 
   - id: python_output
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "Number of stars: {{ outputs.python_script.vars.gh_stars }}"
 
   - id: send_notification
@@ -308,7 +308,7 @@ tasks:
 
 triggers:
   - id: hour_trigger
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: 0 * * * *
 ```
 

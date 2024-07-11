@@ -31,13 +31,13 @@
                             </button>
                             <span>id:</span> api_python_sql
                             <br />
-                            <span>namespace:</span> dev
+                            <span>namespace:</span> company.team
                             <br />
                             <br />
                             <span>tasks:</span><br/>
                             <div class="ms-1">
                                 <span class="ms-1">- id:</span> extract_from_api<br/>
-                                <span class="ms-3">type:</span> io.kestra.plugin.fs.http.Request<br/>
+                                <span class="ms-3">type:</span> io.kestra.plugin.core.http.Request<br/>
                                 <span class="ms-3">uri:</span> https://dummyjson.com/products<br/>
                                 <br/>
                                 <span class="ms-1">- id:</span> python_transform<br/>
@@ -63,7 +63,7 @@
                             <span>triggers:</span><br/>
                             <div class="ms-1">
                                 <span class="ms-1">- id:</span> daily<br/>
-                                <span class="ms-3">type:</span> io.kestra.core.models.triggers.types.Schedule<br/>
+                                <span class="ms-3">type:</span> io.kestra.plugin.core.trigger.Schedule<br/>
                                 <span class="ms-3">cron:</span> "@daily"<br/>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                         <HomeConnectionLine :lineN="3" :strokeDasharray="strokeDasharray3"/>
                     </div>
                     <h3>Schedule your workflows</h3>
-                    <p>Configure your workflows to run on a schedule, in response to event-based triggers, via webhooks, or through APIs.</p>
+                    <p>Configure your workflows to run on a schedule, via webhooks, APIs, event-based triggers, or in real-time with millisecond latency.</p>
                 </div>
                 <div class="col-md-6">
                     <div class="img-container">
@@ -113,7 +113,7 @@
                     </div>
                     <h3>Execute your workflows</h3>
                     <p>
-                        When a workflow is triggered, Kestra orchestrates the execution of each step, ensuring that data is processed correctly and dependencies are satisfied.
+                        When a workflow is triggered, Kestra orchestrates the execution of each step, ensuring that data is processed correctly and dependencies are satisfied. With built-in scalability, Kestra handles growing workloads, and offers robust retry options to ensure reliable execution even in the face of failures.
                     </p>
                 </div>
             </div>

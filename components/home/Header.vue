@@ -3,8 +3,8 @@
         <div class="hero container">
             <div class="text-block">
                 <h1 data-aos="zoom-in">
-                    <text-scroller :texts="scrollingTexts" /><br />Everything
-                    Everywhere <br />All at Once.
+                    <text-scroller :texts="scrollingTexts" /><br />Platform
+                    <br />for All Engineers.
                 </h1>
 
                 <div class="buttons">
@@ -33,24 +33,7 @@
             <Companies class="mt-4 mb-4 pb-4 companies container" />
 
 
-            <div data-aos="zoom-in" class="activity-list container bg-dark-2 d-flex align-items-center justify-content-between">
-                <div>
-                    <p class="count">+80 Million</p>
-                    <p class="description">workflows executed</p>
-                </div>
-                <div>
-                    <p class="count">+20,000</p>
-                    <p class="description">active users</p>
-                </div>
-                <div>
-                    <p class="count">+150,000</p>
-                    <p class="description">DEPLOYMENTS</p>
-                </div>
-                <div>
-                    <p class="count">+250</p>
-                    <p class="description">Contributors</p>
-                </div>
-            </div>
+        
         </div>
     </div>
     <div
@@ -72,7 +55,7 @@
                             v-if="videoVisible"
                             width="560"
                             height="315"
-                            src="https://www.youtube.com/embed/h-P0eK2xN58?autoplay=1"
+                            src="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
                             title="YouTube video player"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -103,9 +86,9 @@ export default {
         return {
             videoVisible: false,
             scrollingTexts: [
-                { text: "Orchestrate", color: "#E500EA" },
-                { text: "Automate", color: "#4281FF" },
-                { text: "Schedule", color: "#9D40FB" },
+                { text: "Orchestration", color: "#E500EA" },
+                { text: "Automation", color: "#4281FF" },
+                { text: "Scheduling", color: "#9D40FB" },
             ],
         };
     },

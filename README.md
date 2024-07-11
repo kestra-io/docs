@@ -24,14 +24,12 @@
 <a href="https://www.youtube.com/@kestra-io"><img height="25" src="https://kestra.io/youtube.svg" alt="youtube" /></a> &nbsp;
 </p>
 
-<br />
 <p align="center">
-    <a href="https://www.youtube.com/watch?v=h-P0eK2xN58&ab_channel=Kestra" target="_blank">
+    <a href="https://go.kestra.io/video/product-overview" target="_blank">
         <img src="https://kestra.io/startvideo.png" alt="Get started in 4 minutes with Kestra" width="640px" />
     </a>
 </p>
 <p align="center" style="color:grey;"><i>Get started with Kestra in 4 minutes.</i></p>
-
 
 # Kestra documentation
 
@@ -62,6 +60,7 @@ Depending on your Node.js and OS version, you may encounter the following error:
 
 In this case, you must switch to the OpenSSL legacy provider via `export NODE_OPTIONS=--openssl-legacy-provider`.
 
+If you are using an Apple Silicon Mac, use Node version 20 or higher.
 
 ## License
 Apache 2.0 © [Kestra Technologies](https://kestra.io)

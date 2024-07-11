@@ -12,26 +12,32 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
+    .table-responsive {
+        padding: 0;
+        margin: calc($spacer * 2) 0 calc($spacer * 4);
+    }
+
     :deep(thead) {
         border-bottom: none !important;
         th {
             font-size: $font-size-md;
-            font-weight: 700;
-            line-height: 1.5rem;
-            padding: 1.375rem 2.9rem;
-            background-color: $black-2;
-            border: 1px solid $black-3;
-            border-bottom: none !important;
+            font-weight: 600;
+            line-height: 1.25rem;
+            padding: calc($spacer * 0.5) $spacer $spacer;
+            background-color: transparent;
+            border-bottom: 4px solid #8B8B8D !important;
             border-top: none;
+            color: $white;
         }
     }
 
     :deep(tbody) {
         tr {
             td {
-                font-size: $font-size-base;
-                padding: 1.3rem 2.5rem;
-                border: 1px solid #1d1d1e;
+                font-size: $font-size-sm;
+                padding: calc($spacer * 1.5) $spacer $spacer !important;
+                font-weight: 400;
+                color: $white;
             }
         }
     }

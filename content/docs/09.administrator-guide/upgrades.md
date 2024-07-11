@@ -7,7 +7,7 @@ Kestra is a fast-evolving project. This section will guide you through the proce
 
 ## Where you can find the release changelog
 
-You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level eplanation of the changes, you can also check release [blog posts](https://kestra.io/blogs).
+You can find the release changelog on the main repository's [Releases](https://github.com/kestra-io/kestra/releases) page. The changelog includes a full list of changes, new features, and bug fixes for each release, as well as any breaking changes that may require your attention. For a high-level eplanation of the changes, you can also check release [blog posts](/blogs).
 
 ## How to identify breaking changes in a release
 
@@ -15,6 +15,19 @@ Next to all bug fixes and enhancements, you can find a dedicated section called 
 
 ::alert{type="warning"}
 ⚠️ Note that `Breaking Changes` are **always** included as the last section of the [release notes](https://github.com/kestra-io/kestra/releases). Make sure to inspect that part of the release notes before upgrading to a new version.
+::
+
+## How to minimise downtime when updating Kestra
+
+If running Kestra in separate components you should:
+- Stop the executors and the scheduler
+- Stop the workers - there is a graceful shutdown (which can be configured but I'm not sure we already document how to configure this) and automatic task resubmission.
+- Stop the webserver (and the indexer using EE and Kafka)
+
+Normally, there is a graceful shutdown on all components so you will not lose anything. Once this is done, you can update and restart everything in the opposite order (or any order as all components are independent).
+
+::alert{type="info"}
+The webserver host the API so it's the one that must be stopped then started immediately to avoid potential downtime. Once this has been done, you can restart the other components so flow executions can start again.
 ::
 
 ## How to stick to a specific Kestra version
@@ -83,17 +96,17 @@ In Kestra, every worker that died unexpectedly will be detected by the executor,
 
 ## Where can I find migration guides
 
-The [Migrations section](../10.migration-guide/index.md) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
+The [Migrations section](/docs/migration-guide) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
 
 For all breaking changes, the migration guides are linked in the [release notes](https://github.com/kestra-io/kestra/releases).
 
 ## How to stay informed about new releases
 
 You can get notified about new releases in the following ways:
-1. Subscribe to notifications in the `#announcements` channel in the [Slack](https://kestra.io/slack) community.
+1. Subscribe to notifications in the `#announcements` channel in the [Slack](/slack) community.
 2. Follow us on [Twitter](https://twitter.com/kestra_io)
 3. Follow us on [LinkedIn](https://www.linkedin.com/company/kestra/)
-4. Subscribe to the [Kestra newsletter](https://kestra.io/blogs)
+4. Subscribe to the [Kestra newsletter](/blogs)
 5. Subscribe to Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
 
 ![release_notification_github](/docs/administrator-guide/release_notifications_github.png)
@@ -153,7 +166,7 @@ Flyway then exit.
 ## Getting help
 
 If you have any questions about the upgrade process:
-- if you are a [Kestra Enterprise](https://kestra.io/enterprise) customer, please submit a [Support Ticket](https://support.kestra.io/)
-- reach out to us [via Slack](https://kestra.io/slack).
+- if you are a [Kestra Enterprise](/enterprise) customer, please submit a [Support Ticket](https://support.kestra.io/)
+- reach out to us [via Slack](/slack).
 
-We understand that upgrades can be difficult. If you need more help, [reach out to us](https://kestra.io/contact-us) and we'll help you with the migration based on your specific environment and use case.
+We understand that upgrades can be difficult. If you need more help, [reach out to us](/contact-us) and we'll help you with the migration based on your specific environment and use case.

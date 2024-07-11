@@ -1,5 +1,5 @@
 ---
-title: How To Validate Inputs with Enum Data Type in Kestra
+title: Validate Inputs with Enum Data Type
 icon: /docs/icons/tutorial.svg
 ---
 
@@ -7,7 +7,7 @@ Input validation with the Enum data type
 
 ## What are Inputs
 
-Inputs allow you to dynamically pass data to your execution at runtime. For a detailed overview of inputs, see the [Inputs](../06.workflow-components/06.inputs.md) documentation page.
+Inputs allow you to dynamically pass data to your execution at runtime. For a detailed overview of inputs, see the [Inputs](/docs/workflow-components/inputs) documentation page.
 
 ## Input validation with Enum data type
 
@@ -15,7 +15,7 @@ Let's now look at how to use the `ENUM` input type and the `Switch` task to vali
 
 ```yaml
 id: orchestrate_everything
-namespace: blueprints
+namespace: company.team
 
 inputs:
   - id: use_case
@@ -30,27 +30,27 @@ inputs:
 
 tasks:
   - id: conditional_branching
-    type: io.kestra.core.tasks.flows.Switch
+    type: io.kestra.plugin.core.flow.Switch
     value: "{{ inputs.use_case }}"
     cases:
       Data pipelines:
         - id: data_pipelines
-          type: io.kestra.core.tasks.log.Log
+          type: io.kestra.plugin.core.log.Log
           message: Managing important data products
 
       Microservices:
         - id: microservices
-          type: io.kestra.core.tasks.log.Log
+          type: io.kestra.plugin.core.log.Log
           message: Orchestrating critical applications
 
       Business processes:
         - id: business_processes
-          type: io.kestra.core.tasks.log.Log
+          type: io.kestra.plugin.core.log.Log
           message: Orchestrating critical applications
 
       Marketing automation:
         - id: marketing_automation
-          type: io.kestra.core.tasks.log.Log
+          type: io.kestra.plugin.core.log.Log
           message: Orchestrating critical applications
 ```
 

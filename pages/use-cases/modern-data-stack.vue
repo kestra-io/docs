@@ -45,7 +45,7 @@
                 darkButtonText="Talk to Us"
                 darkButtonHref="/demo"
                 purpleButtonText="Get Started"
-                purpleButtonHref="https://github.com/kestra-io/kestra"
+                purpleButtonHref="/docs/getting-started/quickstart"
             />
         </NuxtLazyHydrate>
     </div>
@@ -116,7 +116,7 @@
                     },
                     {
                         title: 'Connectivity',
-                        text: 'Connect to popular data sources and cloud services such as AWS, GCP, Microsoft Azure, Snowflake, and more.',
+                        text: 'Connect to popular data sources and cloud services such as AWS, GCP, Azure, Snowflake, and more.',
                         icon: shallowRef(Connection)
                     },
                     {

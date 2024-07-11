@@ -19,7 +19,7 @@ In the example below, we create a [Kestra](https://github.com/kestra-io/kestra) 
 
 ```yaml
 id: query_events
-namespace: sales
+namespace: company.sales
 
 tasks:
 
@@ -33,7 +33,7 @@ tasks:
 
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 * * * *"
 ```
 

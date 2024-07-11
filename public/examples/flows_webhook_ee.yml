@@ -1,0 +1,18 @@
+id: webhook_ee_example
+namespace: company.team
+
+description: |
+  Example flow for a webhook trigger in Kestra EE.
+
+  This endpoint doesn't need any login / password and is secured by `key` that is different for every flow
+
+tasks:
+  - id: out
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ trigger | json }}"
+
+triggers:
+  - id: webhook_trigger
+    type: io.kestra.plugin.core.trigger.Webhook
+    # the required key to start this flow - might be passed as a secret
+    key: "{{ secret('WEBHOOK_KEY') }}"

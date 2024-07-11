@@ -1,9 +1,9 @@
 ---
-title: Plugins Configuration
+title: Plugins
 icon: /docs/icons/admin.svg
 ---
 
-This page describes how you can configure plugins in Kestra.
+How to configure plugins in Kestra.
 
 Configuration of Maven repositories used by the command `kestra plugins install`.
 
@@ -31,11 +31,11 @@ Here is an example of how to enable outputs for `Subflow` and `Flow` tasks:
 kestra:
   plugins:
     configurations:
-      - type: io.kestra.core.tasks.flows.Subflow
+      - type: io.kestra.plugin.core.flow.Subflow
         values:
           outputs:
             enabled: true # for backward-compatibility -- false by default
-      - type: io.kestra.core.tasks.flows.Flow
+      - type: io.kestra.plugin.core.flow.Flow
         values:
           outputs:
             enabled: true # for backward-compatibility -- false by default
@@ -51,7 +51,7 @@ You can also set default values for a plugin. For example, starting from Kestra 
 kestra:
   plugins:
     configurations:
-      - type: io.kestra.core.models.triggers.types.Schedule
+      - type: io.kestra.plugin.core.trigger.Schedule
         values:
           # Available options: LAST | NONE | ALL. The default is ALL
           recoverMissedSchedules: NONE
@@ -69,7 +69,7 @@ Note that this is a global configuration that will apply to all flows, unless ex
 ```yaml
 triggers:
   - id: schedule
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/15 * * * *"
     recoverMissedSchedules: NONE
 ```

@@ -18,7 +18,7 @@ To make the change clear, here is how inputs were defined before Kestra 0.15.0:
 
 ```yaml
 id: myflow
-namespace: dev
+namespace: company.team
 inputs:
   - name: beverage
     type: STRING
@@ -34,7 +34,7 @@ Here is how inputs are defined after Kestra 0.15.0:
 
 ```yaml
 id: myflow
-namespace: dev
+namespace: company.team
 inputs:
   - id: beverage
     type: STRING

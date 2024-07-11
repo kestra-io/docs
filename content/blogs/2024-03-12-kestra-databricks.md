@@ -49,7 +49,7 @@ The following code snippet creates the Databricks Compute cluster.
 
 ```yaml
 id: databricks-create-cluster
-namespace: dev
+namespace: company.team
 tasks:
   - id: "create-cluster"
     type: "io.kestra.plugin.databricks.cluster.CreateCluster"
@@ -74,11 +74,11 @@ The following code snippet will first download a CSV file from the HTTP URL into
 
 ```yaml
 id: databricks-upload
-namespace: dev
+namespace: company.team
 tasks:
   - id: http_download
-    type: io.kestra.plugin.fs.http.Download
-    uri: "https://raw.githubusercontent.com/kestra-io/datasets/main/csv/orders.csv"
+    type: io.kestra.plugin.core.http.Download
+    uri: "https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv"
   - id: uploadFile
     type: io.kestra.plugin.databricks.dbfs.Upload
     authentication:
@@ -100,7 +100,7 @@ The following code snippet will create the table, and load the data from the CSV
 
 ```yaml
 id: databricks-load-table
-namespace: dev
+namespace: company.team
 tasks:
   - id: load-table-from-dbfs
     type: io.kestra.plugin.databricks.sql.Query
@@ -118,7 +118,7 @@ The following code snippet will query the orders table to get the top 10 orders.
 
 ```yaml
 id: databricks-query
-namespace: dev
+namespace: company.team
 tasks:
   - id: query-top-10-orders
     type: io.kestra.plugin.databricks.sql.Query
@@ -140,7 +140,7 @@ The following code snippet will delete the cluster from your Databricks workspac
 
 ```yaml
 id: databricks-delete-cluster
-namespace: dev
+namespace: company.team
 tasks:
   - id: "delete_cluster"
     type: "io.kestra.plugin.databricks.cluster.DeleteCluster"
