@@ -1,11 +1,42 @@
 <template>
     <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{open: isOpen}">
         <div class="container-xl">
-            <NuxtLink class="navbar-brand" href="/" @click="logoClick">
+            <NuxtLink class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
                 <img class="icon" src="/icon.svg" alt="Kestra, Open source declarative data orchestration" />
                 <img src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
             </NuxtLink>
 
+            <div class="download-logos-container" v-if="showDownloadLogos" @click="closeDownloadLogosModal">
+                <div class="download-logos" @click.stop>
+                    <NuxtImg
+                        width="24px"
+                        height="24px"
+                        loading="lazy"
+                        format="webp"
+                        class="close-icon"
+                        src="/landing/header-menu/window-close.svg"
+                        alt="close"
+                        @click="closeDownloadLogosModal"
+                    />
+                    <p class="title">Looking for our logo?</p>
+                    <NuxtImg
+                        width="236px"
+                        height="123px"
+                        loading="lazy"
+                        format="webp"
+                        class="img-fluid"
+                        src="/landing/header-menu/download-logo.svg"
+                        alt="Looking for our logo"
+                    />
+                    <a
+                        download
+                        class="btn btn-animated btn-purple-animated mt-2"
+                        href="/kestra-logo-kit.zip"
+                    >
+                        Download Logo Pack
+                    </a>
+                </div>
+            </div>
 
 
             <div class="nav-items d-flex align-items-center">
@@ -449,6 +480,7 @@ export default {
             transparentHeader: false,
             transparentClass: false,
             isOpen: false,
+            showDownloadLogos: false,
         }
     },
     collapse: undefined,
@@ -549,7 +581,14 @@ export default {
                 });
             }
             this.globalClick(true);
-        }
+        },
+        showDownloadLogosModal(event) {
+          event.preventDefault();
+          this.showDownloadLogos = true;
+        },
+        closeDownloadLogosModal() {
+          this.showDownloadLogos = false;
+        },
     },
 }
 </script>
@@ -562,6 +601,51 @@ export default {
             overflow: hidden !important;
         }
     }
+
+    .download-logos-container {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        z-index: 4;
+        .download-logos {
+            position: fixed;
+            top: 100%;
+            left: 14%;
+            border-radius: calc($border-radius-lg * 2);
+            border: 1px solid $black-6;
+            display: flex;
+            flex-direction: column;
+            gap: $spacer;
+            padding: calc($spacer * 2);
+            background-color: rgba(45, 45, 46, 0.93);
+            transition-duration: 1s;
+            z-index: 5;
+
+            @include media-breakpoint-down(lg) {
+                left: 5%;
+                top: 110%;
+            }
+
+            p.title {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+                color: $white;
+            }
+
+            .close-icon {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                cursor: pointer;
+            }
+        }
+    }
+
+
     .container-xl {
         @include media-breakpoint-down(lg) {
             padding-left: 0;
