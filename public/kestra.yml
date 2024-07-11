@@ -4449,6 +4449,21 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/triggers/restart:
+    post:
+      tags:
+      - Triggers
+      summary: Restart a trigger
+      operationId: restart_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trigger'
+        required: true
+      responses:
+        "200":
+          description: restart_1 200 response
   /api/v1/triggers/search:
     get:
       tags:
@@ -4654,6 +4669,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResults_Trigger_'
+  /api/v1/triggers/{namespace}/{flowId}/{triggerId}/restart:
+    post:
+      tags:
+      - Triggers
+      summary: Restart a trigger
+      operationId: restart_2
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      - name: flowId
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: triggerId
+        in: path
+        description: The trigger id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: restart_2 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/triggers/{namespace}/{flowId}/{triggerId}/unlock:
     post:
       tags:
