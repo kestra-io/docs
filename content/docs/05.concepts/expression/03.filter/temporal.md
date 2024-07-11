@@ -138,7 +138,6 @@ The `timestampMicro` filter will convert a date to a unix timestamps in microsec
 
 The `timestampNano` filter will convert a date to a unix timestamps in nanosecond. You can convert a string with `existingFormat` and change `timeZone` with same arguments from [date](#date) filter.
 
-
 ```twig
 {{ now() | timestampNano(timeZone="Europe/Paris") }}
 ```
@@ -147,3 +146,35 @@ The `timestampNano` filter will convert a date to a unix timestamps in nanosecon
 - existingFormat
 - timeZone
 
+# Temporal Filters in action
+
+Let us create a sample flow to understand the temporal filters.
+
+```yaml
+id: temporal-dates
+namespace: company.myteam
+
+tasks:
+  - id: print_status
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Present timestamp: {{ now() }}"
+      - "Formatted timestamp: {{ now() | date('yyyy-MM-dd') }}"
+      - "Previous day: {{ now() | dateAdd(-1, 'DAYS') }}"
+      - "Next day: {{ now() | dateAdd(1, 'DAYS') }}"
+      - "Different timezone: {{ now() | timestamp(timeZone='Asia/Kolkata') }}"
+      - "Different timezone (in macro): {{ now() | timestampMicro(timeZone='Asia/Kolkata') }}"
+      - "Different timezone (in nano): {{ now() | timestampNano(timeZone='Asia/Kolkata') }}"
+```
+
+The logs of this flow will be:
+
+```
+Present timestamp: 2024-07-09T06:17:01.171193Z
+Formatted timestamp: 2024-07-09
+Previous day: 2024-07-08T06:17:01.174686Z
+Next day: 2024-07-10T06:17:01.176138Z
+Different timezone: 1720505821
+Different timezone (in macro): 1720505821000180275
+Different timezone (in nano): 1720505821182413000
+```
