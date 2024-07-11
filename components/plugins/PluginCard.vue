@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :href="`/plugins/${plugin.name}`">
+    <NuxtLink :href="`/plugins/${plugin.name}#${pluginTagName(plugin.name, plugin.title)}`">
         <div class="plugin d-flex align-items-center gap-2 bg-dark-2" ref="root" data-bs-toogle="tooltip"
              data-bs-html="true" data-bs-custom-class="plugin-tooltip" :data-bs-original-title="plugin.tooltipContent">
             <div class="icon-content">
@@ -28,6 +28,8 @@
         const titleCase = title[0].toUpperCase() + title.slice(1);
         return titleCase.length > 150 ? titleCase.substring(0, 150) + '...' : titleCase;
     }
+
+    const pluginTagName = (pluginName, title) => pluginName.toLowerCase() !== title.toLowerCase() ? title.toLowerCase() : '';
 
     const root = ref(null);
 
