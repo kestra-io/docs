@@ -207,18 +207,18 @@
               text-align: center;
               font-family: $font-family-sans-serif;
               font-style: normal;
+              :deep(h5) {
+                  color: $white !important;
+                  font-size: 48.09px;
+                  font-weight: 600;
+                  display: block;
+              }
               :deep(p) {
                   color: #ABABB2;
                   text-transform: uppercase;
                   font-size: 11.61px;
                   font-weight: 500;
                   margin: 0;
-                  strong {
-                      color: $white !important;
-                      font-size: 48.09px;
-                      font-weight: 600;
-                      display: block;
-                  }
               }
           }
       }
