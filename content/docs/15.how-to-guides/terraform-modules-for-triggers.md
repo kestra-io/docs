@@ -13,6 +13,8 @@ Managing triggers and schedules can be a **tedious task**, especially when you h
 
 This guide will show you how to use Terraform to define triggers and schedules for your flows with modularity.
 
+Note: we created the repo [kestra-flows-template](https://github.com/kestra-io/kestra-flows-template) for you to directly start from a very scalable codebase.
+
 ## Code structure
 
 ```
@@ -32,7 +34,8 @@ This guide will show you how to use Terraform to define triggers and schedules f
 
 ```
 
-We will leverage `null_resource` or `terraform_data` to create reusable resources to DRY (Do not Repeat Yourself) your trigger definitions.
+We will leverage `null_resource` to create reusable resources to DRY (Do not Repeat Yourself) your trigger definitions.
+With Terraform version >= 1.4, you can directly use `terraform_data` if preferred. For backward compatbility we will use `null_resource`.
 
 ## Example of Cron schedule implementation
 
@@ -77,7 +80,7 @@ variable "cron_name" {
 
 variable "late_maximum_delay" {
   type        = string
-  description = "Allow to disable auto-backfill : if the schedule didn't start after this delay, the execution will be skip."
+  description = "Allow to disable auto-backfill : if the schedule didn't start after this delay, the execution will be skipped."
 }
 ```
 
@@ -97,5 +100,16 @@ module "trigger_purge" {
   cron_name          = "weekly_kestra_purge"
   late_maximum_delay = "PT1H"
 }
+
+
+module "my_flow_module" {
+  source = "../../../../modules/my_flow_module"
+  trigger = module.trigger_purge.trigger_content
+}
 ```
 
+Module `my_flow_module` will use the trigger defined in `trigger_purge` module.
+
+## Scaling your codebase with Terraform trigger modules
+
+You can check here an example [using cron trigger using fully terraform](https://github.com/kestra-io/kestra-flows-template/blob/b6937f9d95970a4e909687eb64936f5ea3f02c1c/environment/production/dbt/jaffle_shop_classic.tf#L28).
