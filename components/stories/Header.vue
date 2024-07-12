@@ -163,6 +163,7 @@
 
       .hero-image {
           width: 100%;
+          border-radius: calc($spacer * 0.25);
       }
 
       :deep(.hero.hero-sm) {
