@@ -21,6 +21,20 @@
 
         <NuxtLazyHydrate when-visible>
             <div class="container">
+                <div class="business-container">
+                    <div class="business-by-us">
+                        <div class="info-content">
+                            <div class="info-item w-75">
+                                <h3>{{story.quote}}</h3>
+                            </div>
+                            <div class="vertical-line"></div>
+                            <div class="info-item">
+                                <p>{{story.quotePerson}}</p>
+                                <span>Head of Data Engineering</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-8 mb-4">
                         <div class="story-container">
@@ -31,7 +45,8 @@
                         <div class="story-info">
                             <div class="mx-auto">
                                 <NuxtImg
-                                    height="112"
+                                    width="112"
+                                    height="68"
                                     loading="lazy"
                                     format="webp"
                                     :src="story.logo"
@@ -186,9 +201,6 @@
     @import "../../../assets/styles/variable";
 
     .story-container {
-        margin-top: 182px;
-
-
         :deep(.bd-markdown) {
             p {
                 font-size: $h6-font-size;
@@ -221,7 +233,6 @@
     }
 
     .story-info {
-        margin-top: 182px;
         padding: calc($spacer * 2);
         border: 1px solid $black-6;
         background-color: $black-2;
@@ -334,6 +345,95 @@
         :deep(.icon-wrapper) {
             width: 42px;
             height: 42px;
+        }
+    }
+
+    .business-container {
+        margin-top: 182px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: calc($spacer * 1.625);
+        background-color: $black-2;
+        border-radius: calc($spacer * 0.5);
+        border: 1px solid #252526;
+        overflow: hidden;
+        position: relative;
+        z-index: 10;
+
+        &::after,
+        &::before {
+            content: "";
+            position: absolute;
+            width: 18rem;
+            height: 18rem;
+            background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+            filter: blur(60px);
+            z-index: 0;
+        }
+        &::after {
+            left: 80%;
+            top: -43%;
+        }
+
+        &::before {
+            right: 77%;
+            bottom: -15%;
+        }
+
+        .business-by-us {
+            .info-content {
+                position: relative;
+                z-index: 10;
+                display: flex;
+                gap: 2rem;
+                justify-content: center;
+                align-items: center;
+
+                @include media-breakpoint-down(lg) {
+                    flex-direction: column;
+                }
+
+                .vertical-line {
+                    background-color: #FFFFFF30;
+                    min-height: calc($spacer * 6.875);
+                    width: 1px;
+                    @include media-breakpoint-down(lg) {
+                        height: 1px;
+                        min-height: 1px;
+                        width: 100%;
+                    }
+                }
+
+                .info-item {
+                    display: flex;
+                    flex-direction: column;
+                    gap: calc($spacer * 0.5);
+                    align-items: center;
+
+                    h3 , p  {
+                        margin: 0;
+                        font-weight: 600;
+                        color: $white;
+                    }
+
+                    h3 {
+                        font-size: $h3-font-size;
+                        line-height: 48px;
+                        margin-top: 0 !important;
+                    }
+
+                    p, span {
+                        font-size: $font-size-lg;
+                        line-height: 30px;
+                    }
+
+                    span {
+                        color: $purple;
+                        font-weight: 400;
+                    }
+                }
+            }
         }
     }
 </style>
