@@ -3,11 +3,11 @@ title: Synchronous Executions API
 icon: /docs/icons/tutorial.svg
 ---
 
-There are use-cases wher you want to trigger the flow, and get the flow's output in the API's response. In other words, you want the Executions API to behave synchronously.
+There are many use cases where you may want to trigger the flow and get the flow's output in the API's response. In other words, you want the Executions API to behave synchronously.
 
 ## Executions API
 
-Firstly, let us take a quick look at the Executions API. Executions API is an API used to invoke a flow execution. Say you have the following flow:
+Executions API is capable of creating a parametrized flow execution. Say you have the following flow:
 
 ```yaml
 id: myflow
@@ -27,10 +27,10 @@ outputs:
 You invoke this flow using the Executions API as follows:
 
 ```
-% curl -X POST  http://localhost:8080/api/v1/executions/company.team/myflow
+curl -X POST  http://localhost:8080/api/v1/executions/company.team/myflow
 ```
 
-By default, the Executions API is asynchronous. It will invoke the execution of the flow, and return back with only the time at which the execution was invoked. The response you will get from the above API call will look like:
+By default, the Executions API is asynchronous. It will invoke the execution of the flow, and return immediately with a response that includes the Execution ID and the time at which the execution was created:
 
 ```json
 {
@@ -60,13 +60,13 @@ By default, the Executions API is asynchronous. It will invoke the execution of 
 
 ## Synchronous Executions API
 
-In case you would like the API to wait till the execution is complete, and return back with the outputs from the flow in the response, you can call the Executions API with `wait=true` query parameter. This would make the API call synchronous, and you will receive all the outputs in the response that are explicitly exposed in the flow. You can invoke the Executions API in synchronous fashion as follows:
+In order to wait for an execution to finish and return the outputs from the flow in the response, you can call the Executions API with the `wait=true` query parameter. This would make the API call synchronous, and you will receive all outputs in the response that are explicitly exposed in the flow. You can invoke the Executions API in a synchronous fashion as follows:
 
 ```
-% curl -X POST 'http://localhost:8080/api/v1/executions/company.team/myflow?wait=true'
+curl -X POST 'http://localhost:8080/api/v1/executions/company.team/myflow?wait=true'
 ```
 
-The output of this API invocation will be as follows:
+Here is the output of this API invocation:
 
 ```json
 {
@@ -162,6 +162,6 @@ The output of this API invocation will be as follows:
 }
 ```
 
-As you can see, the API waited for the execution to complete, and returns the outputs from the flow. It also contains the timeline of the complete lifecycle of the flow.
+As expected, the API response returned the outputs from the flow. It also contains all execution states.
 
-Note that you can use the same authentication mechanism for this API as applicable to the other APIs.
+You can use the same authentication mechanism for this API call as applicable to the other Kestra's APIs.
