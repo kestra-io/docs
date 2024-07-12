@@ -349,11 +349,12 @@
     }
 
     .business-container {
-        margin-top: 182px;
+        margin-top: calc($spacer * 11.3);
+        margin-bottom: calc($spacer * 2.8);
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: calc($spacer * 1.625);
+        padding: calc($spacer * 2);
         background-color: $black-2;
         border-radius: calc($spacer * 0.5);
         border: 1px solid #252526;
@@ -408,8 +409,6 @@
                 .info-item {
                     display: flex;
                     flex-direction: column;
-                    gap: calc($spacer * 0.5);
-                    align-items: center;
 
                     h3 , p  {
                         margin: 0;
@@ -423,12 +422,14 @@
                         margin-top: 0 !important;
                     }
 
-                    p, span {
+                    p {
                         font-size: $font-size-lg;
                         line-height: 30px;
                     }
 
                     span {
+                        font-size: $font-size-sm;
+                        line-height: 30px;
                         color: $purple;
                         font-weight: 400;
                     }
