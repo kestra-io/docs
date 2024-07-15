@@ -16071,6 +16071,12 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: workerId
+        in: query
+        description: The identifier of the worker currently evaluating the trigger
+        schema:
+          type: string
+          nullable: true
       responses:
         "200":
           description: search_6 200 response
@@ -16118,6 +16124,12 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      - name: workerId
+        in: query
+        description: The identifier of the worker currently evaluating the trigger
         schema:
           type: string
           nullable: true
