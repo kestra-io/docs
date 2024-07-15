@@ -11,7 +11,7 @@
                 <div class="col-12">
                     <StoriesRowCard :story="story" />
                 </div>
-                <div class="line"></div>
+                <div class="line" />
             </template>
         </div>
         <div class="d-flex justify-content-between my-5 pagination-container">
