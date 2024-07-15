@@ -1,11 +1,10 @@
 <template>
     <div class="container-fluid">
         <div class="hero hero-sm container">
-            <div class="mb-5 pb-5 row">
+            <div class="mb-5 pb-5 row align-items-center">
                 <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
                     <div>
                         <NuxtImg
-                            width="216"
                             height="56"
                             loading="lazy"
                             format="webp"
@@ -216,11 +215,17 @@
           justify-content: space-around;
           flex-flow: row wrap;
 
+          @include media-breakpoint-down(lg) {
+              flex-direction: column;
+              gap: 1rem;
+          }
+
           .line-separator {
               width: calc($spacer * 0.063);
               background-color: #242427;
-              @include media-breakpoint-down(xl) {
-                  display: none;
+              @include media-breakpoint-down(lg) {
+                  width: 100%;
+                  height: calc($spacer * 0.063);
               }
           }
 
@@ -230,14 +235,14 @@
               font-style: normal;
               :deep(h5) {
                   color: $white !important;
-                  font-size: 48.09px;
+                  font-size: 48.09px !important;
                   font-weight: 600;
                   display: block;
               }
               :deep(p) {
                   color: #ABABB2;
                   text-transform: uppercase;
-                  font-size: 11.61px;
+                  font-size: 11.61px !important;
                   font-weight: 500;
                   margin: 0;
               }
