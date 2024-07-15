@@ -92,7 +92,7 @@
                             </div>
                         </div>
                         <div class="ready-bar btn-animated btn-purple-animated">
-                            <div class="d-flex flex-column px-5">
+                            <div class="d-flex flex-column px-lg-5 px-0">
                                 <p>Ready to explore Kestra solutions?</p>
                                 <NuxtLink
                                     href="/demo"
@@ -361,6 +361,10 @@
         overflow: hidden;
         position: relative;
         z-index: 10;
+
+        @include media-breakpoint-down(lg) {
+            margin-top: 22.3rem;
+        }
 
         &::after,
         &::before {
