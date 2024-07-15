@@ -2626,6 +2626,12 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: triggerId
+        in: query
+        description: A trigger id filter
+        schema:
+          type: string
+          nullable: true
       - name: minLevel
         in: query
         description: The min log level filter
@@ -4504,12 +4510,6 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      - name: workerId
-        in: query
-        description: The identifier of the worker currently evaluating the trigger
         schema:
           type: string
           nullable: true
