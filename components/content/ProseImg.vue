@@ -1,5 +1,5 @@
 <template>
-    <span class="text-center d-block">
+    <span class="text-center d-block img-block">
         <NuxtImg
             :src="refinedSrc"
             :alt="alt"
