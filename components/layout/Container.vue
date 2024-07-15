@@ -345,7 +345,7 @@
         }
     }
 
-    .docs :deep(img:not(.page-icon)) {
-        width: 100%;
+    .docs :deep(.img-block) {
+        text-align: left !important;
     }
 </style>
