@@ -1,0 +1,11 @@
+id: shell_invoke_file
+namespace: company.team
+description: This flow runs the shell script file.
+
+tasks:
+  - id: shell_invoke_file_task
+    type: io.kestra.plugin.scripts.shell.Commands
+    namespaceFiles:
+      enabled: true
+    commands:
+      - sh hello.sh
