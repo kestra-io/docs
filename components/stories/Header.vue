@@ -5,7 +5,8 @@
                 <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
                     <div>
                         <NuxtImg
-                            height="100"
+                            width="216"
+                            height="56"
                             loading="lazy"
                             format="webp"
                             :src="logo"
@@ -117,16 +118,35 @@
       position: relative;
       overflow: hidden;
 
-      &::after {
+      &::after ,
+      &::before {
           content: "";
           position: absolute;
+          z-index: -147;
+          filter: blur(100px);
+          background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+      }
+
+      &::after {
           height: 34rem;
           width: 80%;
           bottom: -28%;
           left: 9%;
-          z-index: -147;
-          filter: blur(100px);
-          background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+      }
+
+      &::before {
+          height: 36rem;
+          width: 39rem;
+          bottom: 25%;
+          left: 51%;
+      }
+
+      @include media-breakpoint-down(lg) {
+          &::before {
+              width: 80%;
+              bottom: 45%;
+              left: 10%;
+          }
       }
 
       h1, p {
