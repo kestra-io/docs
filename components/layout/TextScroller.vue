@@ -59,13 +59,26 @@ export default {
     >
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
+@import "../../assets/styles/variable";
+
 .fade-bottom {
     white-space: pre-wrap;
     display: inline-block;
     animation-duration: 500ms;
     animation-fill-mode: both;
     animation-name: fadeInBottom;
+    font-weight: 800;
+    min-width: 160px;
+    text-align: right;
+
+    @include media-breakpoint-up(md) {
+        min-width: 170px;
+    }
+
+    @include media-breakpoint-up(lg) {
+        min-width: 280px;
+    }
 
     @keyframes fadeInBottom {
         from {
