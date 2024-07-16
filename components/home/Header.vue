@@ -3,10 +3,10 @@
         <div class="hero container">
             <div class="text-block">
                 <h1 data-aos="zoom-in">
-                    <text-scroller :texts="scrollingTexts" /><br />Platform
-                    <br />for All Engineers.
+                    <text-scroller :texts="scrollingTexts" /> Smarter Not Harder
                 </h1>
-
+                <p>Unified Orchestration Platform to Simplify Business-Critical Workflows
+                    <br>and Govern them as Code and from the UI.</p>
                 <div class="buttons">
                     <a
                         href="#"
@@ -27,14 +27,18 @@
                     </NuxtLink>
                 </div>
             </div>
+            <div class="img-block">
+                <img
+                    class="img-fluid headerimg"
+                    src="/landing/home/header.svg"
+                    alt="A screenshot of the user interface of Kestra's application"
+                />
+            </div>
+            <div class="companies-background">
+                <Companies class="mb-4 pb-4 companies container" />
+            </div>
         </div>
 
-        <div class="companies-background overflow-x-hidden">
-            <Companies class="mt-4 mb-4 pb-4 companies container" />
-
-
-        
-        </div>
     </div>
     <div
         v-on="{
@@ -86,9 +90,9 @@ export default {
         return {
             videoVisible: false,
             scrollingTexts: [
-                { text: "Orchestration", color: "#E500EA" },
-                { text: "Automation", color: "#4281FF" },
-                { text: "Scheduling", color: "#9D40FB" },
+                { text: "Orchestrate", color: "#E500EA" },
+                { text: "Automate", color: "#4281FF" },
+                { text: "Schedule", color: "#9D40FB" },
             ],
         };
     },
@@ -100,7 +104,12 @@ export default {
 
 .main {
     .text-block {
-        margin: 5rem 0;
+        margin: 5rem 0 1rem;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        gap: $spacer;
     }
 
     .hero {
@@ -109,6 +118,20 @@ export default {
         background-size: 130%;
         padding-bottom: 2rem;
         padding-top: 7rem;
+        position: relative;
+
+        &::before {
+            position: absolute;
+            content: "";
+            z-index: 0;
+            width: 15.6rem;
+            height: 50.6rem;
+            background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%);
+            filter: blur(95px);
+            right: -14rem;
+            top: -2rem;
+            transform: rotate(45deg);
+        }
 
     }
 
@@ -118,18 +141,32 @@ export default {
         max-width: 100%;
         font-size: 36px;
         font-weight: 600;
+        margin: 0;
+        padding: 0;
 
         @include media-breakpoint-up(md) {
-            font-size: 56px;
+            font-size: 40px;
         }
 
         @include media-breakpoint-up(lg) {
-            font-size: 76px;
+            font-size: 45px;
         }
 
         :deep(span) {
-            color: #e500ea;
+            background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 3.75rem;
         }
+    }
+
+    p {
+        max-width: fit-content;
+        text-align: center;
+        font-weight: 500;
+        font-size: $h6-font-size;
+        color: $white;
     }
 
     .buttons {
@@ -137,7 +174,34 @@ export default {
     }
 
     .companies {
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 4rem !important;
+
+        :deep(.companies-list-container) {
+            overflow: unset;
+            display: unset;
+            position: unset;
+
+            &::after , &::before {
+                content: none;
+                background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%) !important;
+            }
+        }
+
+        :deep(.companies-list.scrolling) {
+            animation: unset;
+            display: none;
+
+            &:first-child {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+
+                img {
+                    margin: 0;
+                }
+            }
+        }
     }
 
     .companies-title {
@@ -171,6 +235,17 @@ export default {
         background: url("/landing/home/container-bg.svg") no-repeat center;
         background-size: 100% 100%;
         padding-bottom: 4rem;
+        position: relative;
+        z-index: 10;
+        margin-top: -258px;
+
+        @include media-breakpoint-down(xxl) {
+            margin-top: -110px;
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-top: -56px;
+        }
     }
 
     .activity-list {
@@ -221,6 +296,18 @@ export default {
             flex-wrap: wrap;
             justify-content: center !important;
             gap: 25px;
+        }
+    }
+
+    .img-block {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+
+        img {
+            width: 100%;
+            position: relative;
+            z-index: 5;
         }
     }
 }
