@@ -8,30 +8,33 @@
                 <p>Unified Orchestration Platform to Simplify Business-Critical Workflows
                     <br>and Govern them as Code and from the UI.</p>
                 <div class="buttons">
+                    <NuxtLink
+                        href="/docs/getting-started"
+                        class="btn btn-animated btn-purple-animated me-2 mb-2"
+                        data-aos="zoom-in"
+                    >
+                        <img src="/landing/home/lightning-bolt.svg" alt="lightning">
+                        Get started
+                    </NuxtLink>
+
                     <a
                         href="#"
-                        class="btn btn-animated btn-dark-animated me-2 mb-2"
+                        class="btn btn-animated btn-dark-animated  mb-2"
                         data-aos="zoom-in"
                         data-bs-toggle="modal"
                         data-bs-target="#home-intro"
                     >
+                        <img src="/landing/home/play.svg" alt="play">
                         Watch video
                     </a>
 
-                    <NuxtLink
-                        href="/docs/getting-started"
-                        class="btn btn-animated btn-purple-animated mb-2"
-                        data-aos="zoom-in"
-                    >
-                        Get started
-                    </NuxtLink>
                 </div>
             </div>
             <div class="img-block">
                 <img
                     class="img-fluid headerimg"
                     src="/landing/home/header.svg"
-                    alt="A screenshot of the user interface of Kestra's application"
+                    alt="Smarter Not Harder"
                 />
             </div>
             <div class="companies-background">
