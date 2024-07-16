@@ -75,11 +75,6 @@ h2 {
 
 main {
     padding-top: 67px;
-
-    @include media-breakpoint-down(lg) {
-        padding-top: 60px;
-    }
-
     > div {
         overflow-x: hidden;
     }
