@@ -13,7 +13,7 @@
                         />
                         <p class="card-title mt-3 mb-2">{{ story.title }}</p>
                         <p class="card-meta-description">{{ story.quote }}</p>
-                        <p class="card-meta-quote">{{ story.quotePerson }} - </p>
+                        <p class="card-meta-quote">{{ story.quotePerson }}</p>
                         <div class="card-stories-info">
                             <div class="info-item">
                                 <img src="/stories/icons/multiple-checkbox.svg" alt="right icons" />

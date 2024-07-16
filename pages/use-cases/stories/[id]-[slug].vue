@@ -30,7 +30,6 @@
                             <div class="vertical-line"></div>
                             <div class="info-item">
                                 <p>{{story.quotePerson}}</p>
-                                <span>Head of Data Engineering</span>
                             </div>
                         </div>
                     </div>
