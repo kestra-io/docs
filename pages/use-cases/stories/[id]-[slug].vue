@@ -13,102 +13,36 @@
             :title="story.title"
             :meta-description="story.description"
             :hero-image="story.heroImage"
-            :logo="story.logo"
-            :kpi1="story.kpi1"
-            :kpi2="story.kpi2"
-            :kpi3="story.kpi3"
         />
 
         <NuxtLazyHydrate when-visible>
             <div class="container">
-                <div class="business-container">
-                    <div class="business-by-us">
-                        <div class="info-content">
-                            <div class="info-item w-75">
-                                <h3>{{story.quote}}</h3>
-                            </div>
-                            <div class="vertical-line"></div>
-                            <div class="info-item">
-                                <p>{{story.quotePerson}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8 mb-4">
-                        <div class="story-container">
-                            <ContentRendererMarkdown class="bd-markdown" :value="content" />
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="story-info">
-                            <div class="mx-auto">
-                                <NuxtImg
-                                    width="112"
-                                    height="68"
-                                    loading="lazy"
-                                    format="webp"
-                                    :src="story.logo"
-                                    :alt="story.logo"
-                                />
-                            </div>
-                            <div class="info-block">
-                                <p class="title">
-                                    Industry
-                                </p>
-                                <p class="subtitle">{{story.industry}}</p>
-                            </div>
-                            <div class="info-block">
-                                <p class="title">
-                                    Headquarters
-                                </p>
-                                <p class="subtitle">{{story.headquarter}}</p>
-                            </div>
-                            <div class="info-block">
-                                <p class="title">
-                                    Solution
-                                </p>
-                                <p class="subtitle">{{story.solution}}</p>
-                            </div>
-                            <div>
-                                <p>Data Stack</p>
-                                <div class="d-flex flex-wrap gap-2 justify-content-center">
-                                    <div class="card task-card">
-                                        <div class="card-body">
-                                            <div ref="root" class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" title="Kestra">
-                                                <img src="/landing/usecases/stories/monograme-kestra.svg" alt="Kestra">
-                                            </div>
-                                            <p class="card-title">Kestra</p>
-                                        </div>
-                                    </div>
-                                    <div class="card task-card" v-for="task in story.tasks" :key="task">
-                                        <div class="card-body">
-                                            <CommonTaskIcon :cls="task" />
-                                            <p class="card-title">{{generateTagName(task)}}</p>
-                                        </div>
-                                    </div>
+                <div class="story-container">
+                    <ContentRendererMarkdown class="bd-markdown" :value="content1" />
+                    <div class="d-flex flex-wrap gap-4 my-5">
+                        <div class="card task-card">
+                            <div class="card-body">
+                                <div ref="root" class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" title="Kestra">
+                                    <img src="/landing/usecases/stories/monograme-kestra.svg" alt="Kestra">
                                 </div>
+                                <p class="card-title">Kestra</p>
                             </div>
                         </div>
-                        <div class="ready-bar btn-animated btn-purple-animated">
-                            <div class="d-flex flex-column px-lg-5 px-0">
-                                <p>Ready to explore Kestra solutions?</p>
-                                <NuxtLink
-                                    href="/demo"
-                                    class="btn text-white btn-animated btn-purple-animated mt-2"
-                                >
-                                    Talk to Us
-                                </NuxtLink>
+                        <div class="card task-card" v-for="task in story.tasks" :key="task">
+                            <div class="card-body">
+                                <CommonTaskIcon :cls="task" />
+                                <p class="card-title">{{generateTagName(task)}}</p>
                             </div>
                         </div>
                     </div>
+
+                    <ContentRendererMarkdown class="bd-markdown" :value="content2" />
                 </div>
                 <div class="section-content">
                     <LayoutSection subtitle-before="Similar" subtitle="Kestra" subtitle-after="Stories" v-if="related">
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-4" v-for="(story, index) in related.results"
                                  :key="index">
-
                                 <StoriesCard :story="story" />
                             </div>
                         </div>
@@ -138,7 +72,8 @@
     const config = useRuntimeConfig();
     const slug = (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug);
     const story = ref({})
-    const content = ref('')
+    const content1 = ref('')
+    const content2 = ref('')
     const root = ref(null)
 
     onMounted(() => {
@@ -157,7 +92,7 @@
     });
 
     const {data} = await useAsyncData('stories', () => {
-        return $fetch(`${config.public.apiUrl}/customer-stories-v2/${route.params.id}`)
+        return $fetch(`${config.public.apiUrl}/customer-stories/${route.params.id}`)
     })
 
     if (data.value === null) {
@@ -166,7 +101,8 @@
 
     story.value = data.value;
 
-    content.value = await parseMarkdown(story.value.content, {});
+    content1.value = await parseMarkdown(story.value.content_1, {});
+    content2.value = await parseMarkdown(story.value.content_2, {});
 
     useHead({
         meta: [
@@ -186,7 +122,7 @@
     })
 
     const {data: related} = await useAsyncData('related-stories', () => {
-        return $fetch(`${config.public.apiUrl}/customer-stories-v2?size=3`)
+        return $fetch(`${config.public.apiUrl}/customer-stories?size=3`)
     })
 
     const generateTagName = (task) => {
@@ -200,6 +136,18 @@
     @import "../../../assets/styles/variable";
 
     .story-container {
+        max-width: 55rem;
+        margin: 0 auto calc($spacer * 5.6);
+
+        :deep(.bd-markdown:first-child) {
+            p:first-of-type {
+                padding: calc($spacer * 2);
+                border: 1px solid $black-6;
+                background-color: $black-2;
+                border-radius: calc($spacer / 2);
+            }
+        }
+
         :deep(.bd-markdown) {
             p {
                 font-size: $h6-font-size;
@@ -209,17 +157,24 @@
             h3 {
                 margin-top: calc($spacer * 4.12);
                 margin-bottom: 3rem;
+                border-left: 5px solid $purple-36;
                 padding-left: calc($spacer * 0.6) !important;
                 font-size: calc($font-size-base * 2.25);
                 line-height: calc($spacer * 2.3);
             }
 
             h2 {
-                margin-top: auto;
-                padding-top: 3rem;
-                margin-bottom: 1rem;
+                border-top: 1px solid $black-6;
+                margin-top: 3rem !important;
+                margin-top: calc($spacer * 4.12);
+                margin-bottom: 3rem;
                 font-size: calc($font-size-base * 2.25);
                 line-height: calc($spacer * 2.3);
+
+                a {
+                    border-left: 5px solid $purple-36;
+                    padding-left: calc($spacer * 0.6) !important;
+                }
             }
 
 
@@ -231,45 +186,7 @@
 
     }
 
-    .story-info {
-        padding: calc($spacer * 2);
-        border: 1px solid $black-6;
-        background-color: $black-2;
-        border-radius: calc($spacer / 2);
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
 
-        .info-block {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-
-            .title {
-                font-size: $h6-font-size;
-                font-weight: 600;
-                color: $white;
-                margin: 0;
-            }
-
-            .subtitle {
-                font-size: $h6-font-size;
-                font-weight: 300;
-                color: $white-1;
-                margin: 0;
-            }
-        }
-    }
-
-
-    .ready-bar {
-        margin-top: 2rem;
-        padding: 2rem;
-        &, &::after {
-            border-radius: 8px;
-            background: $black-4 !important;
-        }
-    }
     p, ul > li {
         line-height: 1.5rem;
     }
@@ -339,105 +256,10 @@
 
 
     .task-card {
-        background-color: $black-3;
-        min-width: 9rem;
+        background-color: $black-2;
         :deep(.icon-wrapper) {
             width: 42px;
             height: 42px;
-        }
-    }
-
-    .business-container {
-        margin-top: calc($spacer * 11.3);
-        margin-bottom: calc($spacer * 2.8);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: calc($spacer * 2);
-        background-color: $black-2;
-        border-radius: calc($spacer * 0.5);
-        border: 1px solid #252526;
-        overflow: hidden;
-        position: relative;
-        z-index: 10;
-
-        @include media-breakpoint-down(lg) {
-            margin-top: 22.3rem;
-        }
-
-        &::after,
-        &::before {
-            content: "";
-            position: absolute;
-            width: 18rem;
-            height: 18rem;
-            background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
-            filter: blur(60px);
-            z-index: 0;
-        }
-        &::after {
-            left: 80%;
-            top: -43%;
-        }
-
-        &::before {
-            right: 77%;
-            bottom: -15%;
-        }
-
-        .business-by-us {
-            .info-content {
-                position: relative;
-                z-index: 10;
-                display: flex;
-                gap: 2rem;
-                justify-content: center;
-                align-items: center;
-
-                @include media-breakpoint-down(lg) {
-                    flex-direction: column;
-                }
-
-                .vertical-line {
-                    background-color: #FFFFFF30;
-                    min-height: calc($spacer * 6.875);
-                    width: 1px;
-                    @include media-breakpoint-down(lg) {
-                        height: 1px;
-                        min-height: 1px;
-                        width: 100%;
-                    }
-                }
-
-                .info-item {
-                    display: flex;
-                    flex-direction: column;
-
-                    h3 , p  {
-                        margin: 0;
-                        font-weight: 600;
-                        color: $white;
-                    }
-
-                    h3 {
-                        font-size: $h3-font-size;
-                        line-height: 48px;
-                        margin-top: 0 !important;
-                    }
-
-                    p {
-                        font-size: $font-size-lg;
-                        line-height: 30px;
-                    }
-
-                    span {
-                        font-size: $font-size-sm;
-                        line-height: 30px;
-                        color: $purple;
-                        font-weight: 400;
-                    }
-                }
-            }
         }
     }
 </style>

@@ -1,65 +1,39 @@
 <template>
-    <div class="container-fluid">
-        <div class="hero hero-sm container">
-            <div class="mb-5 pb-5 row align-items-center">
-                <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
-                    <div>
-                        <NuxtImg
-                            height="56"
-                            loading="lazy"
-                            format="webp"
-                            :src="logo"
-                            :alt="logo"
-                        />
-                        <h1 v-if="title">{{title}}</h1>
-                        <p class="text-white baseline fs-4">{{ metaDescription }}</p>
-                        <div class="cta">
-                            <NuxtLink
-                                href="/demo"
-                                class="btn text-white btn-animated btn-purple-animated mt-2"
-                            >
-                                Talk to Us
-                            </NuxtLink>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 order-0 order-lg-1">
-                    <img
-                        class="hero-image"
-                        :src="heroImage"
-                        :alt="metaDescription"
-                    />
-                </div>
+  <div class="container-fluid">
+    <div class="hero container">
+      <div class="row">
+        <div class="col-md-6 align-items-center d-flex order-1 order-md-0">
+          <div class="text-white">
+            <h1 class="heading">{{ title }}</h1>
+            <p class="text-white baseline fs-4">{{ metaDescription }}</p>
+            <div class="cta">
+              <NuxtLink
+                  href="/demo"
+                  class="btn text-white btn-animated btn-purple-animated mt-2"
+                  data-aos="zoom-in"
+              >
+                Talk to Us
+              </NuxtLink>
             </div>
+          </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="row">
-
-            <Section
-                subtitle="Join the community"
-            >
-                <div class="metrics">
-                    <div class="counter-box text-center">
-                        <ContentRendererMarkdown :value="kpi1Content" />
-                    </div>
-                    <div class="line-separator"></div>
-                    <div class="counter-box text-center">
-                        <ContentRendererMarkdown :value="kpi2Content" />
-                    </div>
-                    <div class="line-separator"></div>
-                    <div class="counter-box text-center">
-                        <ContentRendererMarkdown :value="kpi3Content" />
-                    </div>
-                </div>
-            </Section>
+        <div
+            class="col-md-6 order-0 order-md-1 mt-3 img-container"
+            data-aos="zoom-in"
+        >
+          <img
+              class="zoom img-fluid headerimg"
+              :src="heroImage"
+              alt="A screenshot of the user interface of Kestra's application"
+          />
         </div>
+      </div>
+      <hr class="line" />
     </div>
+  </div>
 </template>
 
 <script setup>
-  import {parseMarkdown} from '@nuxtjs/mdc/runtime'
-
   const props = defineProps({
     slug: {
       type: String,
@@ -76,177 +50,71 @@
     heroImage: {
       type: String,
       required: true
-    },
-    logo: {
-      type: String,
-      required: true
-    },
-    kpi1: {
-      type: String,
-      required: true
-    },
-    kpi2: {
-      type: String,
-      required: true
-    },
-    kpi3: {
-      type: String,
-      required: true
     }
-  });
-  const kpi1Content = ref('');
-  const kpi2Content = ref('');
-  const kpi3Content = ref('');
+  })
 
-  const pagelist = ['/stories', props.slug];
-
-  kpi1Content.value = await parseMarkdown(props.kpi1, {});
-  kpi2Content.value = await parseMarkdown(props.kpi2, {});
-  kpi3Content.value = await parseMarkdown(props.kpi3, {});
-
+  const pagelist = ['/stories', props.slug]
 </script>
 
 <style scoped lang="scss">
   @import "../../assets/styles/variable";
 
   .container-fluid {
-      background: url("/landing/usecases/cicd/bg.svg") no-repeat center;
-      background-size: 100% 100%;
-      padding-top: 80px;
-      margin-top: -80px;
-      position: relative;
-      overflow: hidden;
+    background: $black-4;
+    color: var(--bs-white);
+    padding-top: 80px;
+    margin-top: -80px;
+    background-image: url(/landing/features/mask.svg);
+    background-repeat: no-repeat;
 
-      &::after ,
-      &::before {
-          content: "";
-          position: absolute;
-          z-index: -147;
-          filter: blur(100px);
-          background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
-      }
-
-      &::after {
-          height: 34rem;
-          width: 80%;
-          bottom: -28%;
-          left: 9%;
-      }
-
-      &::before {
-          height: 36rem;
-          width: 39rem;
-          bottom: 25%;
-          left: 51%;
-      }
-
-      @include media-breakpoint-down(lg) {
-          &::before {
-              width: 80%;
-              bottom: 45%;
-              left: 10%;
-          }
-      }
-
-      h1, p {
-          color: $white;
-          font-family: $font-family-sans-serif;
-          font-weight: 300;
-          padding-bottom: 0;
-      }
-
-      h1 {
-          font-size: $font-size-3xl;
-          margin-bottom: 16px;
-          font-weight: 500;
-
-          @include media-breakpoint-down(sm) {
-              font-size: 1.875rem;
-          }
-
-          :deep(span) {
-              background: linear-gradient(90deg, #E151F7 65.38%, #5C47F5 82.43%);
-              background-clip: text;
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
-          }
-      }
-
-      p {
-          font-size: $font-size-xl;
-
-          @include media-breakpoint-down(sm) {
-              font-size: $h6-font-size;
-          }
-      }
-
-      .hero-image {
-          width: 100%;
-          border-radius: calc($spacer * 0.25);
-      }
-
-      :deep(.hero.hero-sm) {
-          border-bottom: 1px solid #FFFFFF1A;
-      }
+    .line {
+      color: rgba(255, 255, 255, 0.1) !important;
+      height: 1px !important;
+    }
   }
 
-  .container {
-      position: relative;
-      :deep(section) {
-          padding: 4.156rem 0;
-          border-radius: 8px;
-          background: #111113;
-          position: absolute;
-          width: 100%;
-          top: -5.5rem;
-          .subtitle {
-              font-weight: 400;
-              font-size: $font-size-sm;
-          }
-          .main {
-              background-color: $black-2 !important;
-          }
-      }
-      .metrics {
-          padding-left: calc($spacer * 2);
-          padding-right: calc($spacer * 2);
-          margin: 0 auto;
-          display: flex;
-          justify-content: space-around;
-          flex-flow: row wrap;
+  .heading {
+    font-size: $font-size-4xl;
+    font-weight: 300;
+    line-height: 3.7rem;
+      margin-bottom: $spacer;
+    padding: 0;
+    @include media-breakpoint-down(lg) {
+      line-height: calc($font-size-base * 1.625);;
+    }
+  }
 
-          @include media-breakpoint-down(lg) {
-              flex-direction: column;
-              gap: 1rem;
-          }
+  .baseline {
+    font-weight: 300;
+    line-height: 2rem;
+    font-size: $font-size-xl;
+    padding: 0 !important;
+    margin-bottom: $spacer;
+    @include media-breakpoint-up(lg) {
+        max-width: 80%;
+    }
+  }
 
-          .line-separator {
-              width: calc($spacer * 0.063);
-              background-color: #242427;
-              @include media-breakpoint-down(lg) {
-                  width: 100%;
-                  height: calc($spacer * 0.063);
-              }
-          }
+  .btn {
+    border: 1px solid #3d3d3f !important;
+    background-color: $black-4 !important;
+  }
 
-          .counter-box {
-              text-align: center;
-              font-family: $font-family-sans-serif;
-              font-style: normal;
-              :deep(h5) {
-                  color: $white !important;
-                  font-size: 48.09px !important;
-                  font-weight: 600;
-                  display: block;
-              }
-              :deep(p) {
-                  color: #ABABB2;
-                  text-transform: uppercase;
-                  font-size: 11.61px !important;
-                  font-weight: 500;
-                  margin: 0;
-              }
-          }
-      }
+  .headerimg {
+    transform: scale(1.3);
+    z-index: 50;
+  }
+
+  .hero {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  :deep(.slug) {
+    margin-left: 0;
+    color: $purple;
+  }
+  :deep(.link) {
+    color: $purple;
   }
 </style>

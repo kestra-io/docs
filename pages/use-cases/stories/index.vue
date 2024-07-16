@@ -24,9 +24,9 @@
 
     const fetchStories = async ({currentPage, itemsPerPage}) => {
         const {data} = await useAsyncData('stories', () => {
-            return $fetch(`${config.public.apiUrl}/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`)
+            return $fetch(`${config.public.apiUrl}/customer-stories?page=${currentPage}&size=${itemsPerPage}`)
         })
-        stories.value = data.value.results;
+        stories.value = data.value.results.sort(() => Math.random() - 0.5);
         totalStories.value = data.value.total
     }
 
