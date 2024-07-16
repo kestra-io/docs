@@ -3,7 +3,7 @@
         <div class="hero container">
             <div class="text-block">
                 <h1 data-aos="zoom-in">
-                    <text-scroller :texts="scrollingTexts" /> Smarter Not Harder
+                    <text-scroller :texts="scrollingTexts" />Smarter Not Harder
                 </h1>
                 <p>Unified Orchestration Platform to Simplify Business-Critical Workflows
                     <br>and Govern them as Code and from the UI.</p>
@@ -149,10 +149,12 @@ export default {
 
         @include media-breakpoint-up(md) {
             font-size: 40px;
+
         }
 
         @include media-breakpoint-up(lg) {
             font-size: 45px;
+
         }
 
         :deep(span) {
@@ -160,7 +162,6 @@ export default {
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 3.75rem;
         }
     }
 
