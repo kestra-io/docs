@@ -383,12 +383,6 @@
 
                 <ul class="navbar-nav mb-2 mb-lg-0 nav-button nav-footer">
                     <li class="nav-item">
-                        <a href="/slack"
-                            class="btn btn-sm d-none d-lg-inline-block icon-button"
-                            target="_blank" title="Join our Slack">
-                            <Slack />
-                        </a>
-
                         <GithubButton :small="true" />
 
                         <NuxtLink @click="globalClick(true)"
