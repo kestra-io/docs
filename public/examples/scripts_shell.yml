@@ -12,4 +12,3 @@ tasks:
     script: |
       echo "The current execution is {{ execution.id }}"
       cat {{ outputs.http_download.uri }}
-
