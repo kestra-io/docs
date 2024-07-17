@@ -1,5 +1,5 @@
 ---
-title: Version 0.12.0
+title: 0.12.0
 icon: /docs/icons/migration-guide.svg
 release: 0.12.0
 ---
