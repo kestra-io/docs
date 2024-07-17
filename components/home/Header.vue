@@ -38,7 +38,7 @@
                 />
             </div>
             <div class="companies-background">
-                <Companies class="mb-4 pb-4 companies container" />
+                <HomeCompanies class="mb-4 pb-4 companies container" />
             </div>
         </div>
 
@@ -79,14 +79,12 @@
 import Console from "vue-material-design-icons/Console.vue";
 import PlayOutline from "vue-material-design-icons/PlayOutline.vue";
 
-import Companies from "~/components/layout/Companies.vue";
 import TextScroller from "~/components/layout/TextScroller.vue";
 
 export default {
     components: {
         Console,
         PlayOutline,
-        Companies,
         TextScroller,
     },
     data() {
@@ -180,32 +178,6 @@ export default {
     .companies {
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         padding-bottom: 4rem !important;
-
-        :deep(.companies-list-container) {
-            overflow: unset;
-            display: unset;
-            position: unset;
-
-            &::after , &::before {
-                content: none;
-                background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%) !important;
-            }
-        }
-
-        :deep(.companies-list.scrolling) {
-            animation: unset;
-            display: none;
-
-            &:first-child {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-
-                img {
-                    margin: 0;
-                }
-            }
-        }
     }
 
     .companies-title {
@@ -241,14 +213,14 @@ export default {
         padding-bottom: 4rem;
         position: relative;
         z-index: 10;
-        margin-top: -258px;
+        margin-top: -170px;
 
         @include media-breakpoint-down(xxl) {
-            margin-top: -110px;
+            margin-top: -80px;
         }
 
         @include media-breakpoint-down(md) {
-            margin-top: -56px;
+            margin-top: -40px;
         }
         :deep(.companies-container .companies img) {
             @include media-breakpoint-down(md) {
@@ -320,9 +292,12 @@ export default {
         justify-content: center;
 
         img {
-            width: 100%;
+            width: 80%;
             position: relative;
             z-index: 5;
+            @include media-breakpoint-down(md) {
+                width: 100%;
+            }
         }
     }
 }
