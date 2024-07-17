@@ -1,11 +1,11 @@
 ---
-title: Shell
+title: Shell Script
 icon: /docs/icons/tutorial.svg
 ---
 
-Run shell code inside of your flow.
+Run shell script inside of your flow.
 
-You can execute bash code inside of a flow by either writing your Shell commands inline or by executing a `.sh` file. You can get outputs and metrics from your Shell code too.
+You can execute bash script inside of a flow by either writing your Shell commands inline or by executing a `.sh` file. You can get outputs and metrics from your Shell script too.
 
 ## Scripts
 
@@ -23,7 +23,7 @@ You could also choose to provide the series of Shell commands in the task, and g
 ```yaml file=public/examples/commands_shell.yml
 ```
 
-You can also put out a Shell script in a separate `.sh` file, and invoke the script as a command. Say, we write a script file `hello.sh` as:
+You can also put a Shell script in a separate `.sh` file, and invoke the script as a command. For example, we have a script file called `hello.sh` that contains:
 
 ```bash
 echo "Hi there! This is an example of executing a Shell script file."
@@ -40,7 +40,7 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 ## Handling Outputs
 
-If you want to get a variable or file from your Shell code, you can use an [output](/docs/workflow-components/outputs).
+If you want to get a variable or file from your Shell script, you can use an [output](/docs/workflow-components/outputs).
 
 ### Variable Output
 
@@ -62,7 +62,7 @@ _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.ke
 
 ### File Output
 
-Inside of your Shell code, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](/docs/developer-guide/scripts/output-directory).
+Inside of your Shell script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](/docs/developer-guide/scripts/output-directory).
 
 The example below writes a `output.txt` file containing the "Hello world" text, similar the output we used earlier. We can then refer the file using the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and read the contents of the file using the `read()` function.
 
@@ -73,7 +73,7 @@ _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.ke
 
 ## Handling Metrics
 
-You can also get [metrics](/docs/developer-guide/scripts/outputs-metrics#outputs-and-metrics-in-script-and-commands-tasks) from your Shell code. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](/docs/developer-guide/scripts/outputs-metrics#outputs-and-metrics-in-script-and-commands-tasks) from your Shell script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
 
 ```python file=public/examples/metrics_shell.yml
 ```
