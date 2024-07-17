@@ -6,6 +6,7 @@ tasks:
   - id: http_download
     type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
   - id: shell_commands_task
     type: io.kestra.plugin.scripts.shell.Commands
     commands:
