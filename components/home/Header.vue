@@ -18,7 +18,7 @@
                     </NuxtLink>
 
                     <a
-                        href="#"
+                        href="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
                         class="btn btn-animated btn-dark-animated  mb-2"
                         data-aos="zoom-in"
                         data-bs-toggle="modal"
