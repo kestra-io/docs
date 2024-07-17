@@ -208,8 +208,6 @@ export default {
     }
 
     .companies-background {
-        background: url("/landing/home/container-bg.svg") no-repeat center;
-        background-size: 100% 100%;
         padding-bottom: 4rem;
         position: relative;
         z-index: 10;
