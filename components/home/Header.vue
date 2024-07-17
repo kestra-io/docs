@@ -143,7 +143,7 @@ export default {
         text-align: center;
         max-width: 100%;
         font-size: 36px;
-        font-weight: 600;
+        font-weight: 500;
         margin: 0;
         padding: 0;
 
@@ -249,6 +249,17 @@ export default {
 
         @include media-breakpoint-down(md) {
             margin-top: -56px;
+        }
+        :deep(.companies-container .companies img) {
+            @include media-breakpoint-down(md) {
+                max-height: 30px;
+                width: auto;
+            }
+            @include media-breakpoint-down(sm) {
+                max-height: 15px;
+                width: auto;
+            }
+
         }
     }
 

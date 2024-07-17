@@ -8,9 +8,7 @@
                             <NuxtImg
                                 loading="lazy"
                                 format="webp"
-                                data-aos="fade-up"
                                 :class="{'inverted': inverted}"
-                                :data-aos-delay="index*50"
                                 :src="'/landing/companies/' + img.name  + '.svg'"
                                 :alt="img.name"
                                 :width="img.width"
@@ -21,9 +19,7 @@
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
                             <NuxtImg
-                                data-aos="fade-up"
                                 :class="{'inverted': inverted}"
-                                :data-aos-delay="index*50"
                                 :src="'/landing/companies/' + img.name  + '.svg'"
                                 :alt="img.name"
                                 :width="img.width"
@@ -34,9 +30,7 @@
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
                             <NuxtImg
-                                data-aos="fade-up"
                                 :class="{'inverted': inverted}"
-                                :data-aos-delay="index*50"
                                 :src="'/landing/companies/' + img.name  + '.svg'"
                                 :alt="img.name"
                                 :width="img.width"
@@ -47,9 +41,7 @@
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
                             <NuxtImg
-                                data-aos="fade-up"
                                 :class="{'inverted': inverted}"
-                                :data-aos-delay="index*50"
                                 :src="'/landing/companies/' + img.name  + '.svg'"
                                 :alt="img.name"
                                 :width="img.width"
