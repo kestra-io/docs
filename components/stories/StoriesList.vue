@@ -7,9 +7,12 @@
     </div>
     <div class="list-container container px-md-0 pt-5">
         <div class="row mb-4">
-            <div class="col-12 col-md-4 mb-4" v-for="(story, index) in stories" :key="index">
-                <StoriesCard :story="story" />
-            </div>
+            <template v-for="(story, index) in stories" :key="index">
+                <div class="col-12">
+                    <StoriesRowCard :story="story" />
+                </div>
+                <div class="line" />
+            </template>
         </div>
         <div class="d-flex justify-content-between my-5 pagination-container">
             <div class="items-per-page">
@@ -55,6 +58,18 @@ const fetchPageData = () => {
     @import "../../assets/styles/variable";
     .list-container {
         background: url("/landing/usecases/stories/content-bg.svg") no-repeat top;
+
+        .row {
+            gap: 2rem;
+            align-items: center;
+
+            .line {
+                width: 100%;
+                height: 1px;
+                background-color: #FFFFFF1A;
+                padding: 0 0.5rem;
+            }
+        }
     }
     .header-container {
         background: url("/landing/usecases/header-bg.svg") no-repeat bottom;
