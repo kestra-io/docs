@@ -286,7 +286,8 @@ export default {
         }
     }
 
-    .img-block {
+    .img-block
+    {
         display: flex;
         width: 100%;
         justify-content: center;
