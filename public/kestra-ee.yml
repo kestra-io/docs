@@ -322,46 +322,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResults_AuditLogController.AuditLogWithUser_'
-  /api/v1/auditlogs/{id}/diff:
-    get:
-      tags:
-      - Audit Logs
-      summary: Get the diff of an audit log
-      operationId: diff
-      parameters:
-      - name: id
-        in: path
-        description: The id of the audit log
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: diff 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuditLogController.AuditLogDiff'
-  /api/v1/auditlogs/{id}/diff/{tenant}:
-    get:
-      tags:
-      - Audit Logs
-      summary: Get the diff of an audit log
-      operationId: diff_1
-      parameters:
-      - name: id
-        in: path
-        description: The id of the audit log
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: diff_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuditLogController.AuditLogDiff'
   /api/v1/auths:
     get:
       tags:
@@ -4583,7 +4543,6 @@ paths:
                 - $ref: '#/components/schemas/Flow'
                 - $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
   /api/v1/flows/delete/by-ids:
     delete:
       tags:
@@ -5571,7 +5530,6 @@ paths:
                   items:
                     $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
   /api/v1/flows/{namespace}/{id}:
     get:
       tags:
@@ -5658,7 +5616,6 @@ paths:
                 - $ref: '#/components/schemas/FlowWithSource'
                 - $ref: '#/components/schemas/Flow'
               example: null
-      deprecated: true
     delete:
       tags:
       - Flows
@@ -6004,7 +5961,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Flow'
-      deprecated: true
   /api/v1/flows/{namespace}/{id}/{taskId}/{tenant}:
     patch:
       tags:
@@ -6043,7 +5999,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Flow'
-      deprecated: true
   /api/v1/flows/{namespace}/{id}/{tenant}:
     get:
       tags:
@@ -6129,7 +6084,6 @@ paths:
                 - $ref: '#/components/schemas/FlowWithSource'
                 - $ref: '#/components/schemas/Flow'
               example: null
-      deprecated: true
     delete:
       tags:
       - Flows
@@ -6223,7 +6177,6 @@ paths:
                   items:
                     $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
   /api/v1/flows/{tenant}:
     post:
       tags:
@@ -6250,27 +6203,6 @@ paths:
                 - $ref: '#/components/schemas/Flow'
                 - $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
-  /api/v1/forgotten-password:
-    get:
-      summary: Send an email to reset a password.
-      description: "Send an email to reset a password. Note that whatever the username\
-        \ is found or not, the response will always be 200 to avoid leaking information."
-      operationId: forgottenPassword
-      parameters:
-      - name: username
-        in: query
-        description: User that has forgotten his password
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: forgottenPassword 200 response
-          content:
-            application/json:
-              schema:
-                type: string
   /api/v1/groups:
     post:
       tags:
@@ -6803,1388 +6735,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Group'
-  /api/v1/integrations/{integration}/scim/v2/Groups:
-    get:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Find by a combination of query parameters
-      operationId: query
-      parameters:
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: filter
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: sortBy
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: sortOrder
-        in: query
-        schema:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/SortOrder'
-      - name: startIndex
-        in: query
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      - name: count
-        in: query
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      responses:
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    post:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Create
-      operationId: create_8
-      parameters:
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/ScimUser'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScimGroup'
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-        "400":
-          description: Bad Request
-        "409":
-          description: Conflict
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: create_8 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-  /api/v1/integrations/{integration}/scim/v2/Groups/.search:
-    post:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Search
-      operationId: find_12
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/SearchRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SearchRequest'
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-  /api/v1/integrations/{integration}/scim/v2/Groups/.search/{tenant}:
-    post:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Search
-      operationId: find_13
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/SearchRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SearchRequest'
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-  /api/v1/integrations/{integration}/scim/v2/Groups/{id}:
-    get:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Find by id
-      operationId: getById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    put:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Update
-      operationId: update_4
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/ScimResource'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScimGroup'
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    delete:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Delete from the backing store
-      operationId: delete_8
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: delete_8 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-    patch:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Patch a portion of the backing store
-      operationId: patch
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/PatchRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchRequest'
-        required: true
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: patch 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-  /api/v1/integrations/{integration}/scim/v2/Groups/{id}/{tenant}:
-    get:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Find by id
-      operationId: getById_1
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    put:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Update
-      operationId: update_5
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/ScimResource'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScimGroup'
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    delete:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Delete from the backing store
-      operationId: delete_9
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: delete_9 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-    patch:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Patch a portion of the backing store
-      operationId: patch_1
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/PatchRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchRequest'
-        required: true
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: patch_1 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-  /api/v1/integrations/{integration}/scim/v2/Groups/{tenant}:
-    get:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Find by a combination of query parameters
-      operationId: query_1
-      parameters:
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: filter
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: sortBy
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: sortOrder
-        in: query
-        schema:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/SortOrder'
-      - name: startIndex
-        in: query
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      - name: count
-        in: query
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      responses:
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    post:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Create
-      operationId: create_9
-      parameters:
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/ScimUser'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScimGroup'
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-        "400":
-          description: Bad Request
-        "409":
-          description: Conflict
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: create_9 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-  /api/v1/integrations/{integration}/scim/v2/ResourceTypes:
-    get:
-      tags:
-      - SCIM-Configuration
-      description: Get All Resource Types
-      operationId: getAllResourceTypes
-      responses:
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ResourceType'
-  /api/v1/integrations/{integration}/scim/v2/ResourceTypes/{name}:
-    get:
-      tags:
-      - SCIM-Configuration
-      description: Get Resource Type by URN
-      operationId: getResourceType
-      parameters:
-      - name: name
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ResourceType'
-  /api/v1/integrations/{integration}/scim/v2/ResourceTypes/{name}/{tenant}:
-    get:
-      tags:
-      - SCIM-Configuration
-      description: Get Resource Type by URN
-      operationId: getResourceType_1
-      parameters:
-      - name: name
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ResourceType'
-  /api/v1/integrations/{integration}/scim/v2/ResourceTypes/{tenant}:
-    get:
-      tags:
-      - SCIM-Configuration
-      description: Get All Resource Types
-      operationId: getAllResourceTypes_1
-      responses:
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ResourceType'
-  /api/v1/integrations/{integration}/scim/v2/Schemas:
-    get:
-      tags:
-      - SCIM-Configuration
-      description: Get All Schemas
-      operationId: getAllSchemas
-      responses:
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Schema'
-  /api/v1/integrations/{integration}/scim/v2/Schemas/{tenant}:
-    get:
-      tags:
-      - SCIM-Configuration
-      description: Get All Schemas
-      operationId: getAllSchemas_1
-      responses:
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Schema'
-  /api/v1/integrations/{integration}/scim/v2/Schemas/{uri}:
-    get:
-      tags:
-      - SCIM-Configuration
-      description: Get Schemas by URN
-      operationId: getSchema
-      parameters:
-      - name: uri
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/Schema'
-  /api/v1/integrations/{integration}/scim/v2/Schemas/{uri}/{tenant}:
-    get:
-      tags:
-      - SCIM-Configuration
-      description: Get Schemas by URN
-      operationId: getSchema_1
-      parameters:
-      - name: uri
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/Schema'
-  /api/v1/integrations/{integration}/scim/v2/ServiceProviderConfig:
-    get:
-      tags:
-      - SCIM-Configuration
-      description: Get Service Provider Configuration
-      operationId: getServiceProviderConfiguration
-      responses:
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ServiceProviderConfiguration'
-  /api/v1/integrations/{integration}/scim/v2/ServiceProviderConfig/{tenant}:
-    get:
-      tags:
-      - SCIM-Configuration
-      description: Get Service Provider Configuration
-      operationId: getServiceProviderConfiguration_1
-      responses:
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ServiceProviderConfiguration'
-  /api/v1/integrations/{integration}/scim/v2/Users:
-    get:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Find by a combination of query parameters
-      operationId: query_2
-      parameters:
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: filter
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: sortBy
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: sortOrder
-        in: query
-        schema:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/SortOrder'
-      - name: startIndex
-        in: query
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      - name: count
-        in: query
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      responses:
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    post:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Create
-      operationId: create_10
-      parameters:
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/ScimUser'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScimUser'
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-        "400":
-          description: Bad Request
-        "409":
-          description: Conflict
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: create_10 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-  /api/v1/integrations/{integration}/scim/v2/Users/.search:
-    post:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Search
-      operationId: find_14
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/SearchRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SearchRequest'
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-  /api/v1/integrations/{integration}/scim/v2/Users/.search/{tenant}:
-    post:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Search
-      operationId: find_15
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/SearchRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SearchRequest'
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-  /api/v1/integrations/{integration}/scim/v2/Users/{id}:
-    get:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Find by id
-      operationId: getById_2
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    put:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Update
-      operationId: update_6
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/ScimResource'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScimUser'
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    delete:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Delete from the backing store
-      operationId: delete_10
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: delete_10 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-    patch:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Patch a portion of the backing store
-      operationId: patch_2
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/PatchRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchRequest'
-        required: true
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: patch_2 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-  /api/v1/integrations/{integration}/scim/v2/Users/{id}/{tenant}:
-    get:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Find by id
-      operationId: getById_3
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    put:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Update
-      operationId: update_7
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/ScimResource'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScimUser'
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    delete:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Delete from the backing store
-      operationId: delete_11
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: delete_11 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-    patch:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Patch a portion of the backing store
-      operationId: patch_3
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/PatchRequest'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchRequest'
-        required: true
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: patch_3 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
-  /api/v1/integrations/{integration}/scim/v2/Users/{tenant}:
-    get:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Find by a combination of query parameters
-      operationId: query_3
-      parameters:
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: filter
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: sortBy
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: sortOrder
-        in: query
-        schema:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/SortOrder'
-      - name: startIndex
-        in: query
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      - name: count
-        in: query
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      responses:
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: OK response
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-    post:
-      tags:
-      - SCIM
-      summary: "{@inheritDoc}"
-      description: Create
-      operationId: create_11
-      parameters:
-      - name: attributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      - name: excludedAttributes
-        in: query
-        schema:
-          type: string
-          nullable: true
-      requestBody:
-        content:
-          application/scim+json:
-            schema:
-              $ref: '#/components/schemas/ScimUser'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScimUser'
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            application/scim+json:
-              schema:
-                $ref: '#/components/schemas/ScimResource'
-        "400":
-          description: Bad Request
-        "409":
-          description: Conflict
-        "500":
-          description: Internal Server Error
-        "501":
-          description: Not Implemented
-        "200":
-          description: create_11 200 response
-          content:
-            application/scim+json:
-              schema:
-                type: object
-            application/json:
-              schema:
-                type: object
   /api/v1/license-info:
     get:
       tags:
@@ -8203,7 +6753,7 @@ paths:
       tags:
       - Logs
       summary: Search for logs
-      operationId: find_16
+      operationId: find_12
       parameters:
       - name: q
         in: query
@@ -8247,12 +6797,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: triggerId
-        in: query
-        description: A trigger id filter
-        schema:
-          type: string
-          nullable: true
       - name: minLevel
         in: query
         description: The min log level filter
@@ -8276,7 +6820,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_16 200 response
+          description: find_12 200 response
           content:
             application/json:
               schema:
@@ -8286,7 +6830,7 @@ paths:
       tags:
       - Logs
       summary: Search for logs
-      operationId: find_17
+      operationId: find_13
       parameters:
       - name: q
         in: query
@@ -8330,12 +6874,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: triggerId
-        in: query
-        description: A trigger id filter
-        schema:
-          type: string
-          nullable: true
       - name: minLevel
         in: query
         description: The min log level filter
@@ -8359,7 +6897,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_17 200 response
+          description: find_13 200 response
           content:
             application/json:
               schema:
@@ -8416,7 +6954,7 @@ paths:
       tags:
       - Logs
       summary: "Delete logs for a specific execution, taskrun or task"
-      operationId: delete_12
+      operationId: delete_8
       parameters:
       - name: executionId
         in: path
@@ -8452,7 +6990,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: delete_12 200 response
+          description: delete_8 200 response
   /api/v1/logs/{executionId}/download:
     get:
       tags:
@@ -8653,7 +7191,7 @@ paths:
       tags:
       - Logs
       summary: "Delete logs for a specific execution, taskrun or task"
-      operationId: delete_13
+      operationId: delete_9
       parameters:
       - name: executionId
         in: path
@@ -8689,7 +7227,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: delete_13 200 response
+          description: delete_9 200 response
   /api/v1/me:
     get:
       tags:
@@ -8708,7 +7246,7 @@ paths:
       - Auths
       summary: Updates details for the authenticated user. Returns user's updated
         information upon success.
-      operationId: patch_4
+      operationId: patch
       requestBody:
         content:
           application/json:
@@ -8717,7 +7255,7 @@ paths:
         required: true
       responses:
         "200":
-          description: patch_4 200 response
+          description: patch 200 response
           content:
             application/json:
               schema:
@@ -8842,7 +7380,7 @@ paths:
       - Auths
       summary: Updates details for the authenticated user. Returns user's updated
         information upon success.
-      operationId: patch_5
+      operationId: patch_1
       requestBody:
         content:
           application/json:
@@ -8851,7 +7389,7 @@ paths:
         required: true
       responses:
         "200":
-          description: patch_5 200 response
+          description: patch_1 200 response
           content:
             application/json:
               schema:
@@ -9379,7 +7917,7 @@ paths:
       tags:
       - Namespaces
       summary: Create a namespace
-      operationId: create_12
+      operationId: create_8
       requestBody:
         content:
           application/json:
@@ -9388,7 +7926,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_12 200 response
+          description: create_8 200 response
           content:
             application/json:
               schema:
@@ -9452,7 +7990,7 @@ paths:
       tags:
       - Namespaces
       summary: Search for namespaces
-      operationId: find_18
+      operationId: find_14
       parameters:
       - name: q
         in: query
@@ -9493,17 +8031,17 @@ paths:
           default: false
       responses:
         "200":
-          description: find_18 200 response
+          description: find_14 200 response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_NamespaceWithDisabled_'
+                $ref: '#/components/schemas/PagedResults_NamespaceController.NamespaceWithDisabled_'
   /api/v1/namespaces/search/{tenant}:
     get:
       tags:
       - Namespaces
       summary: Search for namespaces
-      operationId: find_19
+      operationId: find_15
       parameters:
       - name: q
         in: query
@@ -9544,11 +8082,11 @@ paths:
           default: false
       responses:
         "200":
-          description: find_19 200 response
+          description: find_15 200 response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_NamespaceWithDisabled_'
+                $ref: '#/components/schemas/PagedResults_NamespaceController.NamespaceWithDisabled_'
   /api/v1/namespaces/{id}:
     get:
       tags:
@@ -9573,7 +8111,7 @@ paths:
       tags:
       - Namespaces
       summary: Update a namespace
-      operationId: update_8
+      operationId: update_4
       parameters:
       - name: id
         in: path
@@ -9589,7 +8127,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_8 200 response
+          description: update_4 200 response
           content:
             application/json:
               schema:
@@ -9598,7 +8136,7 @@ paths:
       tags:
       - Namespaces
       summary: Delete a flow
-      operationId: delete_14
+      operationId: delete_10
       parameters:
       - name: id
         in: path
@@ -9719,7 +8257,7 @@ paths:
       tags:
       - Namespaces
       summary: Update a namespace
-      operationId: update_9
+      operationId: update_5
       parameters:
       - name: id
         in: path
@@ -9735,7 +8273,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_9 200 response
+          description: update_5 200 response
           content:
             application/json:
               schema:
@@ -9744,7 +8282,7 @@ paths:
       tags:
       - Namespaces
       summary: Delete a flow
-      operationId: delete_15
+      operationId: delete_11
       parameters:
       - name: id
         in: path
@@ -9907,7 +8445,7 @@ paths:
       tags:
       - Files
       summary: Delete a file or directory
-      operationId: delete_16
+      operationId: delete_12
       parameters:
       - name: namespace
         in: path
@@ -9924,7 +8462,7 @@ paths:
           format: uri
       responses:
         "200":
-          description: delete_16 200 response
+          description: delete_12 200 response
   /api/v1/namespaces/{namespace}/files/directory:
     get:
       tags:
@@ -10281,7 +8819,7 @@ paths:
       tags:
       - Files
       summary: Delete a file or directory
-      operationId: delete_17
+      operationId: delete_13
       parameters:
       - name: namespace
         in: path
@@ -10298,7 +8836,7 @@ paths:
           format: uri
       responses:
         "200":
-          description: delete_17 200 response
+          description: delete_13 200 response
   /api/v1/namespaces/{namespace}/inherited-secrets:
     get:
       tags:
@@ -10347,212 +8885,6 @@ paths:
                   type: array
                   items:
                     type: string
-  /api/v1/namespaces/{namespace}/kv:
-    get:
-      tags:
-      - KV
-      summary: List all keys for a namespace
-      operationId: list_2
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: list_2 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/KVEntry'
-  /api/v1/namespaces/{namespace}/kv/{key}:
-    get:
-      tags:
-      - KV
-      summary: Get value for a key
-      operationId: get_2
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      - name: key
-        in: path
-        description: The key
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: get_2 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KVController.TypedValue'
-    put:
-      tags:
-      - KV
-      summary: Puts a key-value pair in store
-      operationId: put
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      - name: key
-        in: path
-        description: The key
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          text/plain:
-            schema:
-              type: string
-          application/json:
-            schema:
-              type: string
-        required: true
-      responses:
-        "200":
-          description: put 200 response
-    delete:
-      tags:
-      - KV
-      summary: Delete a key-value pair
-      operationId: delete_18
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      - name: key
-        in: path
-        description: The key
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: delete_18 200 response
-          content:
-            application/json:
-              schema:
-                type: boolean
-  /api/v1/namespaces/{namespace}/kv/{key}/{tenant}:
-    get:
-      tags:
-      - KV
-      summary: Get value for a key
-      operationId: get_3
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      - name: key
-        in: path
-        description: The key
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: get_3 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KVController.TypedValue'
-    put:
-      tags:
-      - KV
-      summary: Puts a key-value pair in store
-      operationId: put_1
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      - name: key
-        in: path
-        description: The key
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          text/plain:
-            schema:
-              type: string
-          application/json:
-            schema:
-              type: string
-        required: true
-      responses:
-        "200":
-          description: put_1 200 response
-    delete:
-      tags:
-      - KV
-      summary: Delete a key-value pair
-      operationId: delete_19
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      - name: key
-        in: path
-        description: The key
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: delete_19 200 response
-          content:
-            application/json:
-              schema:
-                type: boolean
-  /api/v1/namespaces/{namespace}/kv/{tenant}:
-    get:
-      tags:
-      - KV
-      summary: List all keys for a namespace
-      operationId: list_3
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: list_3 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/KVEntry'
   /api/v1/namespaces/{namespace}/secrets:
     get:
       tags:
@@ -10716,7 +9048,7 @@ paths:
       tags:
       - Namespaces
       summary: Create a namespace
-      operationId: create_13
+      operationId: create_9
       requestBody:
         content:
           application/json:
@@ -10725,7 +9057,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_13 200 response
+          description: create_9 200 response
           content:
             application/json:
               schema:
@@ -10879,7 +9211,7 @@ paths:
         description: The schema needed
         required: true
         schema:
-          $ref: '#/components/schemas/Type_3'
+          $ref: '#/components/schemas/Type'
       responses:
         "200":
           description: inputSchemas 200 response
@@ -10901,9 +9233,7 @@ paths:
         description: The schema needed
         required: true
         schema:
-          oneOf:
-          - $ref: '#/components/schemas/Type_6'
-          - $ref: '#/components/schemas/Type_4'
+          $ref: '#/components/schemas/Type'
       responses:
         "200":
           description: inputSchemas_1 200 response
@@ -11040,32 +9370,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Plugin'
-  /api/v1/reset-password:
-    post:
-      summary: Change a password for given token.
-      description: "Change a password for given token. If password does not match\
-        \ password policy, use can still retry."
-      operationId: resetPassword
-      requestBody:
-        description: An object containing the token and the new password.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthController.ResetPasswordRequest'
-        required: true
-      responses:
-        "200":
-          description: resetPassword 200 response
-          content:
-            application/json:
-              schema:
-                type: string
   /api/v1/roles:
     post:
       tags:
       - Roles
       summary: Create a role
-      operationId: create_14
+      operationId: create_10
       requestBody:
         content:
           application/json:
@@ -11074,7 +9384,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_14 200 response
+          description: create_10 200 response
           content:
             application/json:
               schema:
@@ -11168,7 +9478,7 @@ paths:
       tags:
       - Roles
       summary: Search for roles
-      operationId: find_20
+      operationId: find_16
       parameters:
       - name: q
         in: query
@@ -11202,7 +9512,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_20 200 response
+          description: find_16 200 response
           content:
             application/json:
               schema:
@@ -11212,7 +9522,7 @@ paths:
       tags:
       - Roles
       summary: Search for roles
-      operationId: find_21
+      operationId: find_17
       parameters:
       - name: q
         in: query
@@ -11246,7 +9556,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_21 200 response
+          description: find_17 200 response
           content:
             application/json:
               schema:
@@ -11275,7 +9585,7 @@ paths:
       tags:
       - Roles
       summary: Update a role
-      operationId: update_10
+      operationId: update_6
       parameters:
       - name: id
         in: path
@@ -11291,7 +9601,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_10 200 response
+          description: update_6 200 response
           content:
             application/json:
               schema:
@@ -11300,7 +9610,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_20
+      operationId: delete_14
       parameters:
       - name: id
         in: path
@@ -11335,7 +9645,7 @@ paths:
       tags:
       - Roles
       summary: Update a role
-      operationId: update_11
+      operationId: update_7
       parameters:
       - name: id
         in: path
@@ -11351,7 +9661,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_11 200 response
+          description: update_7 200 response
           content:
             application/json:
               schema:
@@ -11360,7 +9670,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_21
+      operationId: delete_15
       parameters:
       - name: id
         in: path
@@ -11376,7 +9686,7 @@ paths:
       tags:
       - Roles
       summary: Create a role
-      operationId: create_15
+      operationId: create_11
       requestBody:
         content:
           application/json:
@@ -11385,7 +9695,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_15 200 response
+          description: create_11 200 response
           content:
             application/json:
               schema:
@@ -11884,7 +10194,7 @@ paths:
       tags:
       - Templates
       summary: Create a template
-      operationId: create_16
+      operationId: create_12
       requestBody:
         content:
           application/json:
@@ -11893,7 +10203,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_16 200 response
+          description: create_12 200 response
           content:
             application/json:
               schema:
@@ -12187,7 +10497,7 @@ paths:
       tags:
       - Templates
       summary: Search for templates
-      operationId: find_22
+      operationId: find_18
       parameters:
       - name: page
         in: query
@@ -12227,7 +10537,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_22 200 response
+          description: find_18 200 response
           content:
             application/json:
               schema:
@@ -12237,7 +10547,7 @@ paths:
       tags:
       - Templates
       summary: Search for templates
-      operationId: find_23
+      operationId: find_19
       parameters:
       - name: page
         in: query
@@ -12277,7 +10587,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_23 200 response
+          description: find_19 200 response
           content:
             application/json:
               schema:
@@ -12394,7 +10704,7 @@ paths:
       tags:
       - Templates
       summary: Update a template
-      operationId: update_12
+      operationId: update_8
       parameters:
       - name: namespace
         in: path
@@ -12416,7 +10726,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_12 200 response
+          description: update_8 200 response
           content:
             application/json:
               schema:
@@ -12425,7 +10735,7 @@ paths:
       tags:
       - Templates
       summary: Delete a template
-      operationId: delete_22
+      operationId: delete_16
       parameters:
       - name: namespace
         in: path
@@ -12443,7 +10753,7 @@ paths:
         "204":
           description: On success
         "200":
-          description: delete_22 200 response
+          description: delete_16 200 response
   /api/v1/templates/{namespace}/{id}/{tenant}:
     get:
       tags:
@@ -12474,7 +10784,7 @@ paths:
       tags:
       - Templates
       summary: Update a template
-      operationId: update_13
+      operationId: update_9
       parameters:
       - name: namespace
         in: path
@@ -12496,7 +10806,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_13 200 response
+          description: update_9 200 response
           content:
             application/json:
               schema:
@@ -12505,7 +10815,7 @@ paths:
       tags:
       - Templates
       summary: Delete a template
-      operationId: delete_23
+      operationId: delete_17
       parameters:
       - name: namespace
         in: path
@@ -12523,7 +10833,7 @@ paths:
         "204":
           description: On success
         "200":
-          description: delete_23 200 response
+          description: delete_17 200 response
   /api/v1/templates/{namespace}/{tenant}:
     post:
       tags:
@@ -12569,7 +10879,7 @@ paths:
       tags:
       - Templates
       summary: Create a template
-      operationId: create_17
+      operationId: create_13
       requestBody:
         content:
           application/json:
@@ -12578,7 +10888,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_17 200 response
+          description: create_13 200 response
           content:
             application/json:
               schema:
@@ -12588,7 +10898,7 @@ paths:
       tags:
       - Tenants
       summary: Create a tenant
-      operationId: create_18
+      operationId: create_14
       requestBody:
         content:
           application/json:
@@ -12597,7 +10907,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_18 200 response
+          description: create_14 200 response
           content:
             application/json:
               schema:
@@ -12607,7 +10917,7 @@ paths:
       tags:
       - Bindings
       summary: Create a binding
-      operationId: create_19
+      operationId: create_15
       requestBody:
         content:
           application/json:
@@ -12616,7 +10926,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_19 200 response
+          description: create_15 200 response
           content:
             application/json:
               schema:
@@ -12626,7 +10936,7 @@ paths:
       tags:
       - Bindings
       summary: Search for bindings
-      operationId: find_24
+      operationId: find_20
       parameters:
       - name: q
         in: query
@@ -12679,7 +10989,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_24 200 response
+          description: find_20 200 response
           content:
             application/json:
               schema:
@@ -12689,7 +10999,7 @@ paths:
       tags:
       - Bindings
       summary: Search for bindings
-      operationId: find_25
+      operationId: find_21
       parameters:
       - name: q
         in: query
@@ -12742,7 +11052,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_25 200 response
+          description: find_21 200 response
           content:
             application/json:
               schema:
@@ -12752,7 +11062,7 @@ paths:
       tags:
       - Bindings
       summary: Search for bindings
-      operationId: find_26
+      operationId: find_22
       parameters:
       - name: q
         in: query
@@ -12805,7 +11115,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_26 200 response
+          description: find_22 200 response
           content:
             application/json:
               schema:
@@ -12834,7 +11144,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_24
+      operationId: delete_18
       parameters:
       - name: id
         in: path
@@ -12869,7 +11179,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_25
+      operationId: delete_19
       parameters:
       - name: id
         in: path
@@ -12904,7 +11214,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_26
+      operationId: delete_20
       parameters:
       - name: id
         in: path
@@ -12920,7 +11230,7 @@ paths:
       tags:
       - Bindings
       summary: Create a binding
-      operationId: create_20
+      operationId: create_16
       requestBody:
         content:
           application/json:
@@ -12929,7 +11239,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_20 200 response
+          description: create_16 200 response
           content:
             application/json:
               schema:
@@ -12939,7 +11249,7 @@ paths:
       tags:
       - Bindings
       summary: Create a binding
-      operationId: create_21
+      operationId: create_17
       requestBody:
         content:
           application/json:
@@ -12948,7 +11258,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_21 200 response
+          description: create_17 200 response
           content:
             application/json:
               schema:
@@ -12958,7 +11268,7 @@ paths:
       tags:
       - Groups
       summary: Create a group
-      operationId: create_22
+      operationId: create_18
       requestBody:
         content:
           application/json:
@@ -12967,7 +11277,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_22 200 response
+          description: create_18 200 response
           content:
             application/json:
               schema:
@@ -13103,7 +11413,7 @@ paths:
       tags:
       - Groups
       summary: Search for groups
-      operationId: find_27
+      operationId: find_23
       parameters:
       - name: q
         in: query
@@ -13137,7 +11447,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_27 200 response
+          description: find_23 200 response
           content:
             application/json:
               schema:
@@ -13147,7 +11457,7 @@ paths:
       tags:
       - Groups
       summary: Search for groups
-      operationId: find_28
+      operationId: find_24
       parameters:
       - name: q
         in: query
@@ -13181,7 +11491,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_28 200 response
+          description: find_24 200 response
           content:
             application/json:
               schema:
@@ -13191,7 +11501,7 @@ paths:
       tags:
       - Groups
       summary: Search for groups
-      operationId: find_29
+      operationId: find_25
       parameters:
       - name: q
         in: query
@@ -13225,7 +11535,7 @@ paths:
             type: string
       responses:
         "200":
-          description: find_29 200 response
+          description: find_25 200 response
           content:
             application/json:
               schema:
@@ -13254,7 +11564,7 @@ paths:
       tags:
       - Groups
       summary: Update a group
-      operationId: update_14
+      operationId: update_10
       parameters:
       - name: id
         in: path
@@ -13270,7 +11580,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_14 200 response
+          description: update_10 200 response
           content:
             application/json:
               schema:
@@ -13279,7 +11589,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_27
+      operationId: delete_21
       parameters:
       - name: id
         in: path
@@ -13617,7 +11927,7 @@ paths:
       tags:
       - Groups
       summary: Update a group
-      operationId: update_15
+      operationId: update_11
       parameters:
       - name: id
         in: path
@@ -13633,7 +11943,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_15 200 response
+          description: update_11 200 response
           content:
             application/json:
               schema:
@@ -13642,7 +11952,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_28
+      operationId: delete_22
       parameters:
       - name: id
         in: path
@@ -13677,7 +11987,7 @@ paths:
       tags:
       - Groups
       summary: Update a group
-      operationId: update_16
+      operationId: update_12
       parameters:
       - name: id
         in: path
@@ -13693,7 +12003,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_16 200 response
+          description: update_12 200 response
           content:
             application/json:
               schema:
@@ -13702,7 +12012,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_29
+      operationId: delete_23
       parameters:
       - name: id
         in: path
@@ -13718,7 +12028,7 @@ paths:
       tags:
       - Groups
       summary: Create a group
-      operationId: create_23
+      operationId: create_19
       requestBody:
         content:
           application/json:
@@ -13727,7 +12037,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_23 200 response
+          description: create_19 200 response
           content:
             application/json:
               schema:
@@ -13737,7 +12047,7 @@ paths:
       tags:
       - Groups
       summary: Create a group
-      operationId: create_24
+      operationId: create_20
       requestBody:
         content:
           application/json:
@@ -13746,7 +12056,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_24 200 response
+          description: create_20 200 response
           content:
             application/json:
               schema:
@@ -13837,7 +12147,7 @@ paths:
       tags:
       - Roles
       summary: Create a role
-      operationId: create_25
+      operationId: create_21
       requestBody:
         content:
           application/json:
@@ -13846,7 +12156,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_25 200 response
+          description: create_21 200 response
           content:
             application/json:
               schema:
@@ -13982,6 +12292,400 @@ paths:
       tags:
       - Roles
       summary: Search for roles
+      operationId: find_26
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      responses:
+        "200":
+          description: find_26 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_Role_'
+  /api/v1/tenants/roles/search/{tenant}:
+    get:
+      tags:
+      - Roles
+      summary: Search for roles
+      operationId: find_27
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      responses:
+        "200":
+          description: find_27 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_Role_'
+  /api/v1/tenants/roles/search/{tenant}/{ressourceTenant}:
+    get:
+      tags:
+      - Roles
+      summary: Search for roles
+      operationId: find_28
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      responses:
+        "200":
+          description: find_28 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_Role_'
+  /api/v1/tenants/roles/{id}:
+    get:
+      tags:
+      - Roles
+      summary: Get a role
+      operationId: index_23
+      parameters:
+      - name: id
+        in: path
+        description: The role id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: index_23 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+    put:
+      tags:
+      - Roles
+      summary: Update a role
+      operationId: update_13
+      parameters:
+      - name: id
+        in: path
+        description: The role id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+        required: true
+      responses:
+        "200":
+          description: update_13 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+    delete:
+      tags:
+      - Roles
+      summary: Delete a role
+      operationId: delete_24
+      parameters:
+      - name: id
+        in: path
+        description: The role id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: On success
+  /api/v1/tenants/roles/{id}/{tenant}:
+    get:
+      tags:
+      - Roles
+      summary: Get a role
+      operationId: index_24
+      parameters:
+      - name: id
+        in: path
+        description: The role id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: index_24 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+    put:
+      tags:
+      - Roles
+      summary: Update a role
+      operationId: update_14
+      parameters:
+      - name: id
+        in: path
+        description: The role id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+        required: true
+      responses:
+        "200":
+          description: update_14 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+    delete:
+      tags:
+      - Roles
+      summary: Delete a role
+      operationId: delete_25
+      parameters:
+      - name: id
+        in: path
+        description: The role id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: On success
+  /api/v1/tenants/roles/{id}/{tenant}/{ressourceTenant}:
+    get:
+      tags:
+      - Roles
+      summary: Get a role
+      operationId: index_25
+      parameters:
+      - name: id
+        in: path
+        description: The role id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: index_25 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+    put:
+      tags:
+      - Roles
+      summary: Update a role
+      operationId: update_15
+      parameters:
+      - name: id
+        in: path
+        description: The role id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+        required: true
+      responses:
+        "200":
+          description: update_15 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+    delete:
+      tags:
+      - Roles
+      summary: Delete a role
+      operationId: delete_26
+      parameters:
+      - name: id
+        in: path
+        description: The role id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: On success
+  /api/v1/tenants/roles/{tenant}:
+    post:
+      tags:
+      - Roles
+      summary: Create a role
+      operationId: create_22
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+        required: true
+      responses:
+        "200":
+          description: create_22 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+  /api/v1/tenants/roles/{tenant}/{ressourceTenant}:
+    post:
+      tags:
+      - Roles
+      summary: Create a role
+      operationId: create_23
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+        required: true
+      responses:
+        "200":
+          description: create_23 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+  /api/v1/tenants/search:
+    get:
+      tags:
+      - Tenants
+      summary: Search for tenants
+      operationId: find_29
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      responses:
+        "200":
+          description: find_29 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResults_Tenant_'
+  /api/v1/tenants/search/{tenant}:
+    get:
+      tags:
+      - Tenants
+      summary: Search for tenants
       operationId: find_30
       parameters:
       - name: q
@@ -14020,407 +12724,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_Role_'
-  /api/v1/tenants/roles/search/{tenant}:
-    get:
-      tags:
-      - Roles
-      summary: Search for roles
-      operationId: find_31
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      responses:
-        "200":
-          description: find_31 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_Role_'
-  /api/v1/tenants/roles/search/{tenant}/{ressourceTenant}:
-    get:
-      tags:
-      - Roles
-      summary: Search for roles
-      operationId: find_32
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      responses:
-        "200":
-          description: find_32 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_Role_'
-  /api/v1/tenants/roles/{id}:
-    get:
-      tags:
-      - Roles
-      summary: Get a role
-      operationId: index_23
-      parameters:
-      - name: id
-        in: path
-        description: The role id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: index_23 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Role'
-    put:
-      tags:
-      - Roles
-      summary: Update a role
-      operationId: update_17
-      parameters:
-      - name: id
-        in: path
-        description: The role id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Role'
-        required: true
-      responses:
-        "200":
-          description: update_17 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Role'
-    delete:
-      tags:
-      - Roles
-      summary: Delete a role
-      operationId: delete_30
-      parameters:
-      - name: id
-        in: path
-        description: The role id
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: On success
-  /api/v1/tenants/roles/{id}/{tenant}:
-    get:
-      tags:
-      - Roles
-      summary: Get a role
-      operationId: index_24
-      parameters:
-      - name: id
-        in: path
-        description: The role id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: index_24 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Role'
-    put:
-      tags:
-      - Roles
-      summary: Update a role
-      operationId: update_18
-      parameters:
-      - name: id
-        in: path
-        description: The role id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Role'
-        required: true
-      responses:
-        "200":
-          description: update_18 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Role'
-    delete:
-      tags:
-      - Roles
-      summary: Delete a role
-      operationId: delete_31
-      parameters:
-      - name: id
-        in: path
-        description: The role id
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: On success
-  /api/v1/tenants/roles/{id}/{tenant}/{ressourceTenant}:
-    get:
-      tags:
-      - Roles
-      summary: Get a role
-      operationId: index_25
-      parameters:
-      - name: id
-        in: path
-        description: The role id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: index_25 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Role'
-    put:
-      tags:
-      - Roles
-      summary: Update a role
-      operationId: update_19
-      parameters:
-      - name: id
-        in: path
-        description: The role id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Role'
-        required: true
-      responses:
-        "200":
-          description: update_19 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Role'
-    delete:
-      tags:
-      - Roles
-      summary: Delete a role
-      operationId: delete_32
-      parameters:
-      - name: id
-        in: path
-        description: The role id
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: On success
-  /api/v1/tenants/roles/{tenant}:
-    post:
-      tags:
-      - Roles
-      summary: Create a role
-      operationId: create_26
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Role'
-        required: true
-      responses:
-        "200":
-          description: create_26 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Role'
-  /api/v1/tenants/roles/{tenant}/{ressourceTenant}:
-    post:
-      tags:
-      - Roles
-      summary: Create a role
-      operationId: create_27
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Role'
-        required: true
-      responses:
-        "200":
-          description: create_27 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Role'
-  /api/v1/tenants/search:
-    get:
-      tags:
-      - Tenants
-      summary: Search for tenants
-      operationId: find_33
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      responses:
-        "200":
-          description: find_33 200 response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResults_Tenant_'
-  /api/v1/tenants/search/{tenant}:
-    get:
-      tags:
-      - Tenants
-      summary: Search for tenants
-      operationId: find_34
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: page
-        in: query
-        description: The current page
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: size
-        in: query
-        description: The current page size
-        required: true
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sort
-        in: query
-        description: The sort of current page
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      responses:
-        "200":
-          description: find_34 200 response
-          content:
-            application/json:
-              schema:
                 $ref: '#/components/schemas/PagedResults_Tenant_'
   /api/v1/tenants/users:
     post:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_28
+      operationId: create_24
       requestBody:
         content:
           application/json:
@@ -14429,7 +12739,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_28 200 response
+          description: create_24 200 response
           content:
             application/json:
               schema:
@@ -14502,7 +12812,7 @@ paths:
       tags:
       - Users
       summary: Search for users
-      operationId: find_35
+      operationId: find_31
       parameters:
       - name: q
         in: query
@@ -14543,7 +12853,7 @@ paths:
           - $ref: '#/components/schemas/UserType'
       responses:
         "200":
-          description: find_35 200 response
+          description: find_31 200 response
           content:
             application/json:
               schema:
@@ -14553,7 +12863,7 @@ paths:
       tags:
       - Users
       summary: Search for users
-      operationId: find_36
+      operationId: find_32
       parameters:
       - name: q
         in: query
@@ -14594,7 +12904,7 @@ paths:
           - $ref: '#/components/schemas/UserType'
       responses:
         "200":
-          description: find_36 200 response
+          description: find_32 200 response
           content:
             application/json:
               schema:
@@ -14604,7 +12914,7 @@ paths:
       tags:
       - Users
       summary: Search for users
-      operationId: find_37
+      operationId: find_33
       parameters:
       - name: q
         in: query
@@ -14645,7 +12955,7 @@ paths:
           - $ref: '#/components/schemas/UserType'
       responses:
         "200":
-          description: find_37 200 response
+          description: find_33 200 response
           content:
             application/json:
               schema:
@@ -14793,7 +13103,7 @@ paths:
       tags:
       - Users
       summary: Update a standard user
-      operationId: update_20
+      operationId: update_16
       parameters:
       - name: id
         in: path
@@ -14814,7 +13124,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_33
+      operationId: delete_27
       parameters:
       - name: id
         in: path
@@ -15270,7 +13580,7 @@ paths:
       tags:
       - Users
       summary: Update a standard user
-      operationId: update_21
+      operationId: update_17
       parameters:
       - name: id
         in: path
@@ -15291,7 +13601,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_34
+      operationId: delete_28
       parameters:
       - name: id
         in: path
@@ -15324,7 +13634,7 @@ paths:
       tags:
       - Users
       summary: Update a standard user
-      operationId: update_22
+      operationId: update_18
       parameters:
       - name: id
         in: path
@@ -15345,7 +13655,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_35
+      operationId: delete_29
       parameters:
       - name: id
         in: path
@@ -15363,7 +13673,7 @@ paths:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_29
+      operationId: create_25
       requestBody:
         content:
           application/json:
@@ -15372,7 +13682,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_29 200 response
+          description: create_25 200 response
           content:
             application/json:
               schema:
@@ -15382,7 +13692,7 @@ paths:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_30
+      operationId: create_26
       requestBody:
         content:
           application/json:
@@ -15391,7 +13701,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_30 200 response
+          description: create_26 200 response
           content:
             application/json:
               schema:
@@ -15401,7 +13711,7 @@ paths:
       tags:
       - Tenants
       summary: Get a tenant
-      operationId: get_4
+      operationId: get_2
       parameters:
       - name: id
         in: path
@@ -15411,7 +13721,7 @@ paths:
           type: string
       responses:
         "200":
-          description: get_4 200 response
+          description: get_2 200 response
           content:
             application/json:
               schema:
@@ -15420,7 +13730,7 @@ paths:
       tags:
       - Tenants
       summary: Update a tenant
-      operationId: update_23
+      operationId: update_19
       parameters:
       - name: id
         in: path
@@ -15436,7 +13746,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_23 200 response
+          description: update_19 200 response
           content:
             application/json:
               schema:
@@ -15445,7 +13755,7 @@ paths:
       tags:
       - Tenants
       summary: Delete a tenant
-      operationId: delete_36
+      operationId: delete_30
       parameters:
       - name: id
         in: path
@@ -15529,7 +13839,7 @@ paths:
       tags:
       - Tenants
       summary: Get a tenant
-      operationId: get_5
+      operationId: get_3
       parameters:
       - name: id
         in: path
@@ -15539,7 +13849,7 @@ paths:
           type: string
       responses:
         "200":
-          description: get_5 200 response
+          description: get_3 200 response
           content:
             application/json:
               schema:
@@ -15548,7 +13858,7 @@ paths:
       tags:
       - Tenants
       summary: Update a tenant
-      operationId: update_24
+      operationId: update_20
       parameters:
       - name: id
         in: path
@@ -15564,7 +13874,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_24 200 response
+          description: update_20 200 response
           content:
             application/json:
               schema:
@@ -15573,7 +13883,7 @@ paths:
       tags:
       - Tenants
       summary: Delete a tenant
-      operationId: delete_37
+      operationId: delete_31
       parameters:
       - name: id
         in: path
@@ -15589,7 +13899,7 @@ paths:
       tags:
       - Tenants
       summary: Create a tenant
-      operationId: create_31
+      operationId: create_27
       requestBody:
         content:
           application/json:
@@ -15598,7 +13908,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_31 200 response
+          description: create_27 200 response
           content:
             application/json:
               schema:
@@ -15608,7 +13918,7 @@ paths:
       tags:
       - Triggers
       summary: Update a trigger
-      operationId: update_25
+      operationId: update_21
       requestBody:
         content:
           application/json:
@@ -15617,13 +13927,13 @@ paths:
         required: true
       responses:
         "200":
-          description: update_25 200 response
+          description: update_21 200 response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Trigger'
   /api/v1/triggers/backfill/delete:
-    post:
+    put:
       tags:
       - Triggers
       summary: Delete a backfill
@@ -15641,102 +13951,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Trigger'
-  /api/v1/triggers/backfill/delete/by-query:
-    post:
-      tags:
-      - Triggers
-      summary: Delete backfill for given triggers
-      operationId: deleteBackfillByQuery
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: deleteBackfillByQuery 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/backfill/delete/by-query/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Delete backfill for given triggers
-      operationId: deleteBackfillByQuery_1
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: deleteBackfillByQuery_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/backfill/delete/by-triggers:
-    post:
-      tags:
-      - Triggers
-      summary: Delete backfill for given triggers
-      operationId: deleteBackfillByIds
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Trigger'
-        required: true
-      responses:
-        "200":
-          description: deleteBackfillByIds 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/backfill/delete/by-triggers/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Delete backfill for given triggers
-      operationId: deleteBackfillByIds_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Trigger'
-        required: true
-      responses:
-        "200":
-          description: deleteBackfillByIds_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/triggers/backfill/delete/{tenant}:
-    post:
+    put:
       tags:
       - Triggers
       summary: Delete a backfill
@@ -15773,100 +13989,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Trigger'
-  /api/v1/triggers/backfill/pause/by-query:
-    post:
-      tags:
-      - Triggers
-      summary: Pause backfill for given triggers
-      operationId: pauseBackfillByQuery
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: pauseBackfillByQuery 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/backfill/pause/by-query/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Pause backfill for given triggers
-      operationId: pauseBackfillByQuery_1
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: pauseBackfillByQuery_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/backfill/pause/by-triggers:
-    post:
-      tags:
-      - Triggers
-      summary: Pause backfill for given triggers
-      operationId: pauseBackfillByIds
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Trigger'
-        required: true
-      responses:
-        "200":
-          description: pauseBackfillByIds 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/backfill/pause/by-triggers/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Pause backfill for given triggers
-      operationId: pauseBackfillByIds_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Trigger'
-        required: true
-      responses:
-        "200":
-          description: pauseBackfillByIds_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/triggers/backfill/pause/{tenant}:
     put:
       tags:
@@ -15905,100 +14027,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Trigger'
-  /api/v1/triggers/backfill/unpause/by-query:
-    post:
-      tags:
-      - Triggers
-      summary: Unpause backfill for given triggers
-      operationId: unpauseBackfillByQuery
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: unpauseBackfillByQuery 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/backfill/unpause/by-query/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Unpause backfill for given triggers
-      operationId: unpauseBackfillByQuery_1
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: unpauseBackfillByQuery_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/backfill/unpause/by-triggers:
-    post:
-      tags:
-      - Triggers
-      summary: Unpause backfill for given triggers
-      operationId: unpauseBackfillByIds
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Trigger'
-        required: true
-      responses:
-        "200":
-          description: unpauseBackfillByIds 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/backfill/unpause/by-triggers/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Unpause backfill for given triggers
-      operationId: unpauseBackfillByIds_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Trigger'
-        required: true
-      responses:
-        "200":
-          description: unpauseBackfillByIds_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/triggers/backfill/unpause/{tenant}:
     put:
       tags:
@@ -16018,36 +14046,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Trigger'
-  /api/v1/triggers/restart:
-    post:
-      tags:
-      - Triggers
-      summary: Restart a trigger
-      operationId: restart_2
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Trigger'
-        required: true
-      responses:
-        "200":
-          description: restart_2 200 response
-  /api/v1/triggers/restart/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Restart a trigger
-      operationId: restart_3
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Trigger'
-        required: true
-      responses:
-        "200":
-          description: restart_3 200 response
   /api/v1/triggers/search:
     get:
       tags:
@@ -16088,12 +14086,6 @@ paths:
       - name: namespace
         in: query
         description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      - name: workerId
-        in: query
-        description: The identifier of the worker currently evaluating the trigger
         schema:
           type: string
           nullable: true
@@ -16147,12 +14139,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: workerId
-        in: query
-        description: The identifier of the worker currently evaluating the trigger
-        schema:
-          type: string
-          nullable: true
       responses:
         "200":
           description: search_7 200 response
@@ -16160,210 +14146,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResults_TriggerController.Triggers_'
-  /api/v1/triggers/set-disabled/by-query:
-    post:
-      tags:
-      - Triggers
-      summary: Delete backfill for given triggers
-      operationId: setDisabledByQuery
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      - name: disabled
-        in: query
-        description: The disabled state
-        required: true
-        schema:
-          type: boolean
-          default: true
-      responses:
-        "200":
-          description: setDisabledByQuery 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/set-disabled/by-query/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Delete backfill for given triggers
-      operationId: setDisabledByQuery_1
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      - name: disabled
-        in: query
-        description: The disabled state
-        required: true
-        schema:
-          type: boolean
-          default: true
-      responses:
-        "200":
-          description: setDisabledByQuery_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/set-disabled/by-triggers:
-    post:
-      tags:
-      - Triggers
-      summary: Delete backfill for given triggers
-      operationId: setDisabledByIds
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TriggerController.SetDisabledRequest'
-        required: true
-      responses:
-        "200":
-          description: setDisabledByIds 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/set-disabled/by-triggers/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Delete backfill for given triggers
-      operationId: setDisabledByIds_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TriggerController.SetDisabledRequest'
-        required: true
-      responses:
-        "200":
-          description: setDisabledByIds_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/unlock/by-query:
-    post:
-      tags:
-      - Triggers
-      summary: Unlock triggers by query parameters
-      operationId: unlockByQuery
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: unlockByQuery 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/unlock/by-query/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Unlock triggers by query parameters
-      operationId: unlockByQuery_1
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      responses:
-        "200":
-          description: unlockByQuery_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/unlock/by-triggers:
-    post:
-      tags:
-      - Triggers
-      summary: Unlock given triggers
-      operationId: unlockByIds
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Trigger'
-        required: true
-      responses:
-        "200":
-          description: unlockByIds 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/unlock/by-triggers/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Unlock given triggers
-      operationId: unlockByIds_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Trigger'
-        required: true
-      responses:
-        "200":
-          description: unlockByIds_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/triggers/{namespace}/{flowId}:
     get:
       tags:
       - Triggers
       summary: Get all triggers for a flow
-      operationId: find_38
+      operationId: find_34
       parameters:
       - name: page
         in: query
@@ -16409,7 +14197,7 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_38 200 response
+          description: find_34 200 response
           content:
             application/json:
               schema:
@@ -16419,7 +14207,7 @@ paths:
       tags:
       - Triggers
       summary: Get all triggers for a flow
-      operationId: find_39
+      operationId: find_35
       parameters:
       - name: page
         in: query
@@ -16465,75 +14253,11 @@ paths:
           nullable: true
       responses:
         "200":
-          description: find_39 200 response
+          description: find_35 200 response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResults_Trigger_'
-  /api/v1/triggers/{namespace}/{flowId}/{triggerId}/restart:
-    post:
-      tags:
-      - Triggers
-      summary: Restart a trigger
-      operationId: restart_4
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace
-        required: true
-        schema:
-          type: string
-      - name: flowId
-        in: path
-        description: The flow id
-        required: true
-        schema:
-          type: string
-      - name: triggerId
-        in: path
-        description: The trigger id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: restart_4 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/triggers/{namespace}/{flowId}/{triggerId}/restart/{tenant}:
-    post:
-      tags:
-      - Triggers
-      summary: Restart a trigger
-      operationId: restart_5
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace
-        required: true
-        schema:
-          type: string
-      - name: flowId
-        in: path
-        description: The flow id
-        required: true
-        schema:
-          type: string
-      - name: triggerId
-        in: path
-        description: The trigger id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: restart_5 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/triggers/{namespace}/{flowId}/{triggerId}/unlock:
     post:
       tags:
@@ -16603,7 +14327,7 @@ paths:
       tags:
       - Triggers
       summary: Update a trigger
-      operationId: update_26
+      operationId: update_22
       requestBody:
         content:
           application/json:
@@ -16612,7 +14336,7 @@ paths:
         required: true
       responses:
         "200":
-          description: update_26 200 response
+          description: update_22 200 response
           content:
             application/json:
               schema:
@@ -16680,7 +14404,7 @@ paths:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_32
+      operationId: create_28
       requestBody:
         content:
           application/json:
@@ -16689,7 +14413,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_32 200 response
+          description: create_28 200 response
           content:
             application/json:
               schema:
@@ -16779,7 +14503,7 @@ paths:
       tags:
       - Users
       summary: Search for users
-      operationId: find_40
+      operationId: find_36
       parameters:
       - name: q
         in: query
@@ -16820,7 +14544,7 @@ paths:
           - $ref: '#/components/schemas/UserType'
       responses:
         "200":
-          description: find_40 200 response
+          description: find_36 200 response
           content:
             application/json:
               schema:
@@ -16830,7 +14554,7 @@ paths:
       tags:
       - Users
       summary: Search for users
-      operationId: find_41
+      operationId: find_37
       parameters:
       - name: q
         in: query
@@ -16871,7 +14595,7 @@ paths:
           - $ref: '#/components/schemas/UserType'
       responses:
         "200":
-          description: find_41 200 response
+          description: find_37 200 response
           content:
             application/json:
               schema:
@@ -16978,7 +14702,7 @@ paths:
       tags:
       - Users
       summary: Update a standard user
-      operationId: update_27
+      operationId: update_23
       parameters:
       - name: id
         in: path
@@ -16999,7 +14723,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_38
+      operationId: delete_32
       parameters:
       - name: id
         in: path
@@ -17270,7 +14994,7 @@ paths:
       tags:
       - Users
       summary: Update a standard user
-      operationId: update_28
+      operationId: update_24
       parameters:
       - name: id
         in: path
@@ -17291,7 +15015,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_39
+      operationId: delete_33
       parameters:
       - name: id
         in: path
@@ -17309,7 +15033,7 @@ paths:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_33
+      operationId: create_29
       requestBody:
         content:
           application/json:
@@ -17318,121 +15042,11 @@ paths:
         required: true
       responses:
         "200":
-          description: create_33 200 response
+          description: create_29 200 response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiUser'
-  /api/v1/{tenant}/security-integrations:
-    get:
-      tags:
-      - SecurityIntegrations
-      summary: List all security integrations.
-      operationId: list_4
-      responses:
-        "200":
-          description: list_4 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-    post:
-      tags:
-      - SecurityIntegrations
-      summary: Create a security integration.
-      operationId: create_34
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateSecurityIntegrationRequest'
-        required: true
-      responses:
-        "200":
-          description: create_34 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/{tenant}/security-integrations/{id}:
-    get:
-      tags:
-      - SecurityIntegrations
-      summary: Get a security integration.
-      operationId: index_36
-      parameters:
-      - name: id
-        in: path
-        description: The ID of security integration
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: index_36 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-    delete:
-      tags:
-      - SecurityIntegrations
-      summary: Delete the security integration.
-      operationId: delete_40
-      parameters:
-      - name: id
-        in: path
-        description: The ID of security integration
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: delete_40 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/{tenant}/security-integrations/{id}/disable:
-    post:
-      tags:
-      - SecurityIntegrations
-      summary: Disable the security integration.
-      operationId: disable
-      parameters:
-      - name: id
-        in: path
-        description: The ID of security integration
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: disable 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/{tenant}/security-integrations/{id}/enable:
-    post:
-      tags:
-      - SecurityIntegrations
-      summary: Enable the security integration.
-      operationId: enable
-      parameters:
-      - name: id
-        in: path
-        description: The ID of security integration
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: enable 200 response
-          content:
-            application/json:
-              schema:
-                type: object
 components:
   schemas:
     AbstractBindingController.BindingDetail:
@@ -17506,7 +15120,7 @@ components:
       properties:
         empty:
           type: boolean
-    AbstractCollection_NamespaceWithDisabled_:
+    AbstractCollection_NamespaceController.NamespaceWithDisabled_:
       type: object
       properties:
         empty:
@@ -17604,8 +15218,8 @@ components:
       $ref: '#/components/schemas/AbstractCollection_LogEntry_'
     AbstractList_MetricEntry_:
       $ref: '#/components/schemas/AbstractCollection_MetricEntry_'
-    AbstractList_NamespaceWithDisabled_:
-      $ref: '#/components/schemas/AbstractCollection_NamespaceWithDisabled_'
+    AbstractList_NamespaceController.NamespaceWithDisabled_:
+      $ref: '#/components/schemas/AbstractCollection_NamespaceController.NamespaceWithDisabled_'
     AbstractList_Role_:
       $ref: '#/components/schemas/AbstractCollection_Role_'
     AbstractList_SearchResult_Flow__:
@@ -17739,10 +15353,6 @@ components:
         email:
           pattern: "^$|^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$"
           type: string
-        providers:
-          type: array
-          items:
-            $ref: '#/components/schemas/AbstractUser.TenantIdentityProvider'
     AbstractUser.GroupIdentifier:
       required:
       - groupId
@@ -17762,14 +15372,6 @@ components:
       enum:
       - OWNER
       - MEMBER
-    AbstractUser.TenantIdentityProvider:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/IdentityProvider'
-      - properties:
-          tenantId:
-            type: string
-            nullable: true
     AbstractUserController.PasswordRequest:
       required:
       - password
@@ -17839,7 +15441,7 @@ components:
           annotatedOwnerType:
             $ref: '#/components/schemas/AnnotatedType'
           type:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_4'
           annotations:
             type: array
             items:
@@ -18064,12 +15666,12 @@ components:
           total:
             type: integer
             format: int64
-    ArrayListTotal_NamespaceWithDisabled_:
+    ArrayListTotal_NamespaceController.NamespaceWithDisabled_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/ArrayList_NamespaceWithDisabled_'
-      - $ref: '#/components/schemas/AbstractList_NamespaceWithDisabled_'
-      - $ref: '#/components/schemas/AbstractCollection_NamespaceWithDisabled_'
+      - $ref: '#/components/schemas/ArrayList_NamespaceController.NamespaceWithDisabled_'
+      - $ref: '#/components/schemas/AbstractList_NamespaceController.NamespaceWithDisabled_'
+      - $ref: '#/components/schemas/AbstractCollection_NamespaceController.NamespaceWithDisabled_'
       - required:
         - total
         properties:
@@ -18292,16 +15894,16 @@ components:
             $ref: '#/components/schemas/MetricEntry'
           empty:
             type: boolean
-    ArrayList_NamespaceWithDisabled_:
+    ArrayList_NamespaceController.NamespaceWithDisabled_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/AbstractList_NamespaceWithDisabled_'
-      - $ref: '#/components/schemas/AbstractCollection_NamespaceWithDisabled_'
+      - $ref: '#/components/schemas/AbstractList_NamespaceController.NamespaceWithDisabled_'
+      - $ref: '#/components/schemas/AbstractCollection_NamespaceController.NamespaceWithDisabled_'
       - properties:
           first:
-            $ref: '#/components/schemas/NamespaceWithDisabled'
+            $ref: '#/components/schemas/NamespaceController.NamespaceWithDisabled'
           last:
-            $ref: '#/components/schemas/NamespaceWithDisabled'
+            $ref: '#/components/schemas/NamespaceController.NamespaceWithDisabled'
           empty:
             type: boolean
     ArrayList_Role_:
@@ -18388,30 +15990,12 @@ components:
             $ref: '#/components/schemas/Trigger'
           empty:
             type: boolean
-    AttributeReference:
-      type: object
-      properties:
-        fullAttributeName:
-          type: string
-        fullyQualifiedAttributeName:
-          type: string
-        attributeBase:
-          type: string
-        urn:
-          type: string
-        attributeName:
-          type: string
-        subAttributeName:
-          type: string
     AuditLog:
       required:
-      - appliedPatch
       - date
       - deleted
       - detail
       - id
-      - ipAddress
-      - revertPatch
       - type
       - userId
       type: object
@@ -18427,28 +16011,8 @@ components:
           format: date-time
         userId:
           type: string
-        ipAddress:
-          type: string
         deleted:
           type: boolean
-        appliedPatch:
-          type: array
-          items:
-            type: object
-        revertPatch:
-          type: array
-          items:
-            type: object
-    AuditLogController.AuditLogDiff:
-      required:
-      - after
-      - before
-      type: object
-      properties:
-        before:
-          type: string
-        after:
-          type: string
     AuditLogController.AuditLogWithUser:
       required:
       - auditLog
@@ -18488,29 +16052,15 @@ components:
           type: string
         permission:
           $ref: '#/components/schemas/Permission'
-        id:
-          type: string
     AuthController.Auth:
       type: object
       properties:
         loginPassword:
           type: boolean
-        mailsEnabled:
-          type: boolean
         oauths:
           type: array
           items:
             type: string
-    AuthController.ResetPasswordRequest:
-      required:
-      - password
-      - token
-      type: object
-      properties:
-        token:
-          type: string
-        password:
-          type: string
     Backfill:
       title: A backfill configuration.
       required:
@@ -18546,30 +16096,6 @@ components:
           title: The nextExecutionDate before the backfill was created.
           type: string
           format: date-time
-    BaseResource_PatchRequest_:
-      type: object
-      properties:
-        schemas:
-          minItems: 1
-          type: array
-          items:
-            type: string
-    BaseResource_ScimResource_:
-      type: object
-      properties:
-        schemas:
-          minItems: 1
-          type: array
-          items:
-            type: string
-    BaseResource_SearchRequest_:
-      type: object
-      properties:
-        schemas:
-          minItems: 1
-          type: array
-          items:
-            type: string
     Binding:
       required:
       - deleted
@@ -18695,7 +16221,10 @@ components:
       properties:
         message:
           type: string
-        invalids: {}
+        invalids:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManualConstraintViolation_String_'
     BulkResponse:
       type: object
       properties:
@@ -18755,6 +16284,8 @@ components:
             $ref: '#/components/schemas/Package'
         defaultAssertionStatus:
           type: boolean
+    Class_ConstraintValidator_Annotation.Object__:
+      type: object
     Class_Object_:
       type: object
       properties:
@@ -18784,7 +16315,7 @@ components:
         superclass:
           $ref: '#/components/schemas/Class_Object_'
         genericSuperclass:
-          $ref: '#/components/schemas/Type'
+          $ref: '#/components/schemas/Type_5'
         package:
           $ref: '#/components/schemas/Package'
         packageName:
@@ -18796,7 +16327,7 @@ components:
         genericInterfaces:
           type: array
           items:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_6'
         componentType:
           $ref: '#/components/schemas/Class_Object_'
         modifiers:
@@ -18890,6 +16421,177 @@ components:
           type: array
           items:
             type: object
+        annotations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Annotation'
+        declaredAnnotations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Annotation'
+        annotationType:
+          $ref: '#/components/schemas/AnnotationType'
+        declaredAnnotationMap:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Annotation'
+        annotatedSuperclass:
+          $ref: '#/components/schemas/AnnotatedType'
+        annotatedInterfaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnnotatedType'
+        nestHost:
+          $ref: '#/components/schemas/Class_Object_'
+        nestMembers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_Object_'
+        hidden:
+          type: boolean
+        permittedSubclasses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_Object_'
+        sealed:
+          type: boolean
+    Class_Payload_:
+      type: object
+    Class_String_:
+      type: object
+      properties:
+        interface:
+          type: boolean
+        array:
+          type: boolean
+        primitive:
+          type: boolean
+        annotation:
+          type: boolean
+        synthetic:
+          type: boolean
+        name:
+          type: string
+        classLoader:
+          $ref: '#/components/schemas/ClassLoader'
+        classLoader0:
+          $ref: '#/components/schemas/ClassLoader'
+        module:
+          $ref: '#/components/schemas/Module'
+        classData: {}
+        typeParameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/TypeVariable_Class_String__'
+        superclass:
+          $ref: '#/components/schemas/Class_String_'
+        genericSuperclass:
+          $ref: '#/components/schemas/Type_34'
+        package:
+          $ref: '#/components/schemas/Package'
+        packageName:
+          type: string
+        interfaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_Object_'
+        genericInterfaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/Type_35'
+        componentType:
+          $ref: '#/components/schemas/Class_Object_'
+        modifiers:
+          type: integer
+          format: int32
+        signers:
+          type: array
+          items:
+            type: object
+        enclosingMethod:
+          $ref: '#/components/schemas/Method'
+        enclosingConstructor:
+          $ref: '#/components/schemas/Constructor_Object_'
+        declaringClass:
+          $ref: '#/components/schemas/Class_Object_'
+        enclosingClass:
+          $ref: '#/components/schemas/Class_Object_'
+        simpleName:
+          type: string
+        typeName:
+          type: string
+        canonicalName:
+          type: string
+        unnamedClass:
+          type: boolean
+        anonymousClass:
+          type: boolean
+        localClass:
+          type: boolean
+        memberClass:
+          type: boolean
+        classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_Object_'
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/Field'
+        methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/Method'
+        constructors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Constructor_Object_'
+        declaredClasses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_Object_'
+        declaredFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/Field'
+        recordComponents:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordComponent'
+        declaredMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/Method'
+        declaredConstructors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Constructor_Object_'
+        protectionDomain:
+          $ref: '#/components/schemas/ProtectionDomain'
+        rawAnnotations:
+          type: array
+          items:
+            type: string
+            format: byte
+        rawTypeAnnotations:
+          type: array
+          items:
+            type: string
+            format: byte
+        constantPool:
+          $ref: '#/components/schemas/ConstantPool'
+        enum:
+          type: boolean
+        record:
+          type: boolean
+        enumConstants:
+          type: array
+          items:
+            type: string
+        enumConstantsShared:
+          type: array
+          items:
+            type: string
         annotations:
           type: array
           items:
@@ -19071,6 +16773,75 @@ components:
         size:
           type: integer
           format: int32
+    ConstraintDescriptor_Annotation_:
+      type: object
+      properties:
+        annotation: {}
+        messageTemplate:
+          type: string
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_Object_'
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_Payload_'
+        validationAppliesTo:
+          $ref: '#/components/schemas/ConstraintTarget'
+        constraintValidatorClasses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_ConstraintValidator_Annotation.Object__'
+        attributes:
+          type: object
+          additionalProperties: true
+        composingConstraints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConstraintDescriptor_Object_'
+        reportAsSingleViolation:
+          type: boolean
+        valueUnwrapping:
+          $ref: '#/components/schemas/ValidateUnwrappedValue'
+    ConstraintDescriptor_Object_:
+      type: object
+      properties:
+        annotation:
+          $ref: '#/components/schemas/Annotation'
+        messageTemplate:
+          type: string
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_Object_'
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_Payload_'
+        validationAppliesTo:
+          $ref: '#/components/schemas/ConstraintTarget'
+        constraintValidatorClasses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class_ConstraintValidator_Annotation.Object__'
+        attributes:
+          type: object
+          additionalProperties: true
+        composingConstraints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConstraintDescriptor_Annotation_'
+        reportAsSingleViolation:
+          type: boolean
+        valueUnwrapping:
+          $ref: '#/components/schemas/ValidateUnwrappedValue'
+    ConstraintTarget:
+      type: string
+      enum:
+      - IMPLICIT
+      - RETURN_VALUE
+      - PARAMETERS
     ConstructorAccessor:
       type: object
     ConstructorRepository:
@@ -19082,11 +16853,11 @@ components:
           parameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_11'
           exceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_12'
     Constructor_Object_:
       type: object
       allOf:
@@ -19138,7 +16909,7 @@ components:
           genericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_27'
           exceptionTypes:
             type: array
             items:
@@ -19146,7 +16917,7 @@ components:
           genericExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_28'
           varArgs:
             type: boolean
           synthetic:
@@ -19199,23 +16970,6 @@ components:
           $ref: '#/components/schemas/Duration'
         extended:
           type: boolean
-    CreateSecurityIntegrationRequest:
-      required:
-      - description
-      - name
-      - type
-      type: object
-      properties:
-        name:
-          pattern: "^(?=.{1,63}$)[a-z0-9]+(?:-[a-z0-9]+)*$"
-          type: string
-          description: The name of security integration.
-        description:
-          type: string
-          description: The description of security integration.
-        type:
-          $ref: '#/components/schemas/SecurityIntegration.Type'
-      description: Create SecurityIntegration Request
     CrudEventType:
       type: string
       enum:
@@ -19347,7 +17101,7 @@ components:
         markdown:
           type: string
         schema:
-          $ref: '#/components/schemas/Schema_1'
+          $ref: '#/components/schemas/Schema'
     Duration:
       type: object
       properties:
@@ -19367,16 +17121,6 @@ components:
         nano:
           type: integer
           format: int32
-    Email:
-      type: object
-      properties:
-        type:
-          type: string
-        value:
-          type: string
-        primary:
-          type: boolean
-      description: "Scim core schema,"
     Event_Execution_:
       type: object
       properties:
@@ -19444,11 +17188,11 @@ components:
           genericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_13'
           allGenericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_14'
           parameters:
             type: array
             items:
@@ -19470,7 +17214,7 @@ components:
           genericExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_16'
           varArgs:
             type: boolean
           synthetic:
@@ -19664,7 +17408,7 @@ components:
           type:
             $ref: '#/components/schemas/Class_Object_'
           genericType:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_29'
           root:
             $ref: '#/components/schemas/Field'
           trustedFinal:
@@ -19693,10 +17437,6 @@ components:
         size:
           type: integer
           format: int64
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
     FileAttributes.FileType:
       type: string
       enum:
@@ -19710,17 +17450,6 @@ components:
         size:
           type: integer
           format: int64
-    Filter:
-      required:
-      - filter
-      type: object
-      properties:
-        filter:
-          type: string
-        expression:
-          $ref: '#/components/schemas/FilterExpression'
-    FilterExpression:
-      type: object
     Flow:
       type: object
       allOf:
@@ -19973,7 +17702,6 @@ components:
       - description
       - id
       - name
-      - provider
       type: object
       properties:
         id:
@@ -19984,24 +17712,6 @@ components:
           type: string
         deleted:
           type: boolean
-        provider:
-          $ref: '#/components/schemas/IdentityProvider'
-    GroupMembership:
-      type: object
-      properties:
-        value:
-          type: string
-        ref:
-          type: string
-        display:
-          type: string
-        type:
-          $ref: '#/components/schemas/GroupMembership.Type'
-    GroupMembership.Type:
-      type: string
-      enum:
-      - USER
-      - GROUP
     GroupUsage:
       type: object
       properties:
@@ -20065,23 +17775,6 @@ components:
           type: string
         id:
           type: string
-    IdentityProvider:
-      required:
-      - attributes
-      - externalId
-      - securityIntegrationId
-      - securityIntegrationName
-      type: object
-      properties:
-        attributes:
-          type: object
-          additionalProperties: true
-        externalId:
-          type: string
-        securityIntegrationId:
-          type: string
-        securityIntegrationName:
-          type: string
     InputType:
       required:
       - cls
@@ -20106,7 +17799,7 @@ components:
           pattern: "^[a-zA-Z0-9][.a-zA-Z0-9_-]*"
           type: string
         type:
-          $ref: '#/components/schemas/Type_1'
+          $ref: '#/components/schemas/Type'
         description:
           type: string
         required:
@@ -20114,44 +17807,6 @@ components:
         defaults: {}
     Iterator_String_:
       type: object
-    KVController.KVType:
-      type: string
-      enum:
-      - STRING
-      - NUMBER
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - DURATION
-      - JSON
-    KVController.TypedValue:
-      required:
-      - type
-      - value
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/KVController.KVType'
-        value: {}
-    KVEntry:
-      required:
-      - creationDate
-      - expirationDate
-      - key
-      - updateDate
-      type: object
-      properties:
-        key:
-          type: string
-        creationDate:
-          type: string
-          format: date-time
-        updateDate:
-          type: string
-          format: date-time
-        expirationDate:
-          type: string
-          format: date-time
     Key:
       type: object
       properties:
@@ -20298,27 +17953,35 @@ components:
               format: int64
         groupBy:
           type: string
+    ManualConstraintViolation_String_:
+      type: object
+      properties:
+        messageTemplate:
+          type: string
+        executableParameters:
+          type: array
+          items:
+            type: object
+        executableReturnValue: {}
+        constraintDescriptor:
+          $ref: '#/components/schemas/ConstraintDescriptor_Annotation_'
+        message:
+          type: string
+        rootBean:
+          type: string
+        rootBeanClass:
+          $ref: '#/components/schemas/Class_String_'
+        leafBean: {}
+        propertyPath:
+          type: array
+          items:
+            type: object
+        invalidValue: {}
     Map_Object.Object_:
       type: object
       properties:
         empty:
           type: boolean
-    Meta:
-      type: object
-      properties:
-        resourceType:
-          minLength: 1
-          type: string
-        created:
-          type: string
-          format: date-time
-        lastModified:
-          type: string
-          format: date-time
-        location:
-          type: string
-        version:
-          type: string
     Method:
       type: object
       allOf:
@@ -20355,7 +18018,7 @@ components:
           returnType:
             $ref: '#/components/schemas/Class_Object_'
           genericReturnType:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_21'
           sharedParameterTypes:
             type: array
             items:
@@ -20374,7 +18037,7 @@ components:
           genericParameterTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_22'
           exceptionTypes:
             type: array
             items:
@@ -20382,7 +18045,7 @@ components:
           genericExceptionTypes:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_23'
           bridge:
             type: boolean
           varArgs:
@@ -20416,7 +18079,7 @@ components:
       - $ref: '#/components/schemas/AbstractRepository_MethodTypeSignature_'
       - properties:
           returnType:
-            $ref: '#/components/schemas/Type'
+            $ref: '#/components/schemas/Type_17'
     MethodTypeSignature:
       type: object
       properties:
@@ -20670,54 +18333,49 @@ components:
       - OCTOBER
       - NOVEMBER
       - DECEMBER
-    Name:
-      type: object
-      properties:
-        familyName:
-          type: string
-        givenName:
-          type: string
-      description: "Scim core schema, [section 4.1.1](https://datatracker.ietf.org/doc/html/rfc7643#section-4.1.1)"
     NamedPackage:
       type: object
     Namespace:
+      required:
+      - allowedNamespaces
+      - deleted
+      - description
+      - id
+      - pluginDefaults
+      - variables
+      - workerGroup
       type: object
-      allOf:
-      - $ref: '#/components/schemas/Namespace_1'
-      - required:
-        - allowedNamespaces
-        - deleted
-        - description
-        - id
-        - pluginDefaults
-        - variables
-        - workerGroup
-        properties:
-          id:
-            pattern: "^[a-z0-9][a-z0-9._-]*"
-            type: string
-          deleted:
-            type: boolean
-          allowedTriggers:
-            type: array
-            deprecated: true
-            items:
-              $ref: '#/components/schemas/Namespace.AllowedTrigger'
-          description:
-            type: string
-          variables:
-            type: object
-            additionalProperties: true
-          pluginDefaults:
-            type: array
-            items:
-              $ref: '#/components/schemas/PluginDefault'
-          allowedNamespaces:
-            type: array
-            items:
-              $ref: '#/components/schemas/Namespace.AllowedNamespace'
-          workerGroup:
-            $ref: '#/components/schemas/WorkerGroup'
+      properties:
+        taskDefaults:
+          type: array
+          deprecated: true
+          items:
+            $ref: '#/components/schemas/PluginDefault'
+        allowedTriggers:
+          type: array
+          deprecated: true
+          items:
+            $ref: '#/components/schemas/Namespace.AllowedTrigger'
+        id:
+          pattern: "^[a-z0-9][a-z0-9._-]*"
+          type: string
+        description:
+          type: string
+        variables:
+          type: object
+          additionalProperties: true
+        pluginDefaults:
+          type: array
+          items:
+            $ref: '#/components/schemas/PluginDefault'
+        allowedNamespaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/Namespace.AllowedNamespace'
+        workerGroup:
+          $ref: '#/components/schemas/WorkerGroup'
+        deleted:
+          type: boolean
     Namespace.AllowedNamespace:
       required:
       - namespace
@@ -20735,44 +18393,24 @@ components:
           type: string
         flowId:
           type: string
+    NamespaceController.NamespaceWithDisabled:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Namespace'
+      - required:
+        - deleted
+        - disabled
+        properties:
+          deleted:
+            type: boolean
+          disabled:
+            type: boolean
     NamespaceUsage:
       type: object
       properties:
         count:
           type: integer
           format: int64
-    NamespaceWithDisabled:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Namespace'
-      - $ref: '#/components/schemas/Namespace_3'
-      - required:
-        - deleted
-        - disabled
-        - id
-        properties:
-          id:
-            pattern: "^[a-z0-9][a-z0-9._-]*"
-            type: string
-          deleted:
-            type: boolean
-          description:
-            type: string
-          variables:
-            type: object
-            additionalProperties: true
-          pluginDefaults:
-            type: array
-            items:
-              $ref: '#/components/schemas/PluginDefault'
-          allowedNamespaces:
-            type: array
-            items:
-              $ref: '#/components/schemas/Namespace.AllowedNamespace'
-          workerGroup:
-            $ref: '#/components/schemas/WorkerGroup'
-          disabled:
-            type: boolean
     Output:
       required:
       - id
@@ -20788,7 +18426,7 @@ components:
           type: string
         value: {}
         type:
-          $ref: '#/components/schemas/Type_2'
+          $ref: '#/components/schemas/Type'
     Package:
       type: object
       allOf:
@@ -20816,15 +18454,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Annotation'
-    PageRequest:
-      type: object
-      properties:
-        startIndex:
-          type: integer
-          format: int32
-        count:
-          type: integer
-          format: int32
     PagedResults_AbstractBindingController.BindingDetail_:
       required:
       - results
@@ -20946,14 +18575,14 @@ components:
         total:
           type: integer
           format: int64
-    PagedResults_NamespaceWithDisabled_:
+    PagedResults_NamespaceController.NamespaceWithDisabled_:
       required:
       - results
       - total
       type: object
       properties:
         results:
-          $ref: '#/components/schemas/ArrayListTotal_NamespaceWithDisabled_'
+          $ref: '#/components/schemas/ArrayListTotal_NamespaceController.NamespaceWithDisabled_'
         total:
           type: integer
           format: int64
@@ -21052,7 +18681,7 @@ components:
         realName:
           type: string
         parameterizedType:
-          $ref: '#/components/schemas/Type'
+          $ref: '#/components/schemas/Type_15'
         type:
           $ref: '#/components/schemas/Class_Object_'
         annotatedType:
@@ -21071,36 +18700,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Annotation'
-    PatchOperation:
-      type: object
-      properties:
-        operation:
-          $ref: '#/components/schemas/PatchOperation.Type'
-        path:
-          $ref: '#/components/schemas/PatchOperationPath'
-        value: {}
-    PatchOperation.Type:
-      type: string
-      enum:
-      - ADD
-      - REMOVE
-      - REPLACE
-    PatchOperationPath:
-      required:
-      - valuePathExpression
-      type: object
-      properties:
-        valuePathExpression:
-          $ref: '#/components/schemas/ValuePathExpression'
-    PatchRequest:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseResource_PatchRequest_'
-      - properties:
-          patchOperationList:
-            type: array
-            items:
-              $ref: '#/components/schemas/PatchOperation'
     Permission:
       type: string
       enum:
@@ -21115,7 +18714,6 @@ components:
       - BINDING
       - AUDITLOG
       - SECRET
-      - KVSTORE
       - IMPERSONATE
       - SETTING
       - INFRASTRUCTURE
@@ -21265,7 +18863,7 @@ components:
         genericSignature:
           type: string
         genericType:
-          $ref: '#/components/schemas/Type'
+          $ref: '#/components/schemas/Type_30'
         annotatedType:
           $ref: '#/components/schemas/AnnotatedType'
         accessor:
@@ -21284,7 +18882,7 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/Type'
+          $ref: '#/components/schemas/Type_7'
     Relation:
       required:
       - relationType
@@ -21303,38 +18901,6 @@ components:
       - ERROR
       - PARALLEL
       - DYNAMIC
-    ResourceType:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ScimResourceWithOptionalId'
-      - $ref: '#/components/schemas/ScimResource'
-      - $ref: '#/components/schemas/BaseResource_ScimResource_'
-      - properties:
-          id:
-            type: string
-          name:
-            minLength: 1
-            type: string
-          description:
-            type: string
-          endpoint:
-            minLength: 1
-            type: string
-          schemaUrn:
-            minLength: 1
-            type: string
-          schemaExtensions:
-            type: array
-            items:
-              $ref: '#/components/schemas/ResourceType.SchemaExtensionConfiguration'
-    ResourceType.SchemaExtensionConfiguration:
-      type: object
-      properties:
-        schemaUrn:
-          minLength: 1
-          type: string
-        required:
-          type: boolean
     ReturnType:
       type: object
     Role:
@@ -21377,8 +18943,6 @@ components:
               $ref: '#/components/schemas/List_Action_'
             SECRET:
               $ref: '#/components/schemas/List_Action_'
-            KVSTORE:
-              $ref: '#/components/schemas/List_Action_'
             IMPERSONATE:
               $ref: '#/components/schemas/List_Action_'
             SETTING:
@@ -21398,115 +18962,6 @@ components:
           type: integer
           format: int64
     Schema:
-      required:
-      - id
-      type: object
-      properties:
-        attributes:
-          maxItems: 65535
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/Schema.Attribute'
-        id:
-          maxLength: 65535
-          minLength: 1
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        meta:
-          $ref: '#/components/schemas/Meta'
-    Schema.Attribute:
-      type: object
-      properties:
-        attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Schema.Attribute'
-        urn:
-          type: string
-        name:
-          pattern: "\\p{Alpha}(-|_|\\p{Alnum})*"
-          type: string
-        type:
-          $ref: '#/components/schemas/Schema.Attribute.Type'
-        subAttributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Schema.Attribute'
-        multiValued:
-          type: boolean
-        description:
-          type: string
-        required:
-          type: boolean
-        canonicalValues:
-          type: array
-          items:
-            type: string
-        caseExact:
-          type: boolean
-        mutability:
-          $ref: '#/components/schemas/Schema.Attribute.Mutability'
-        returned:
-          $ref: '#/components/schemas/Schema.Attribute.Returned'
-        uniqueness:
-          $ref: '#/components/schemas/Schema.Attribute.Uniqueness'
-        referenceTypes:
-          type: array
-          items:
-            type: string
-        accessor:
-          $ref: '#/components/schemas/Schema.AttributeAccessor'
-        scimResourceIdReference:
-          type: boolean
-    Schema.Attribute.Mutability:
-      type: string
-      enum:
-      - IMMUTABLE
-      - READ_ONLY
-      - READ_WRITE
-      - WRITE_ONLY
-    Schema.Attribute.Returned:
-      type: string
-      enum:
-      - ALWAYS
-      - DEFAULT
-      - NEVER
-      - REQUEST
-    Schema.Attribute.Type:
-      type: string
-      enum:
-      - BINARY
-      - BOOLEAN
-      - COMPLEX
-      - DATE_TIME
-      - DECIMAL
-      - INTEGER
-      - REFERENCE
-      - STRING
-    Schema.Attribute.Uniqueness:
-      type: string
-      enum:
-      - GLOBAL
-      - NONE
-      - SERVER
-    Schema.AttributeAccessor:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/Class_Object_'
-    SchemaType:
-      type: string
-      enum:
-      - flow
-      - template
-      - task
-      - trigger
-      - plugindefault
-    Schema_1:
       type: object
       properties:
         properties:
@@ -21518,108 +18973,14 @@ components:
         definitions:
           type: object
           additionalProperties: true
-    ScimExtension:
-      type: object
-      properties:
-        urn:
-          type: string
-    ScimGroup:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ScimResource'
-      - $ref: '#/components/schemas/BaseResource_ScimResource_'
-      - properties:
-          displayName:
-            type: string
-          members:
-            type: array
-            items:
-              $ref: '#/components/schemas/GroupMembership'
-    ScimResource:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseResource_ScimResource_'
-      - required:
-        - meta
-        - resourceType
-        properties:
-          baseUrn:
-            type: string
-          extensions:
-            type: object
-            additionalProperties:
-              $ref: '#/components/schemas/ScimExtension'
-          meta:
-            $ref: '#/components/schemas/Meta'
-          id:
-            minLength: 1
-            type: string
-          externalId:
-            type: string
-          resourceType:
-            type: string
-    ScimResourceWithOptionalId:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ScimResource'
-      - $ref: '#/components/schemas/BaseResource_ScimResource_'
-      - properties:
-          id:
-            type: string
-    ScimUser:
-      type: object
-      description: "Scim core schema,"
-      allOf:
-      - $ref: '#/components/schemas/ScimResource'
-      - $ref: '#/components/schemas/BaseResource_ScimResource_'
-      - properties:
-          primaryEmailAddress:
-            nullable: true
-            allOf:
-            - $ref: '#/components/schemas/Email'
-          active:
-            type: boolean
-          emails:
-            type: array
-            items:
-              $ref: '#/components/schemas/Email'
-          userName:
-            type: string
-          name:
-            $ref: '#/components/schemas/Name'
-          groups:
-            type: array
-            items:
-              $ref: '#/components/schemas/UserGroup'
-    SearchRequest:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseResource_SearchRequest_'
-      - properties:
-          pageRequest:
-            $ref: '#/components/schemas/PageRequest'
-          sortRequest:
-            $ref: '#/components/schemas/SortRequest'
-          attributes:
-            type: array
-            items:
-              $ref: '#/components/schemas/AttributeReference'
-          excludedAttributes:
-            type: array
-            items:
-              $ref: '#/components/schemas/AttributeReference'
-          filter:
-            $ref: '#/components/schemas/Filter'
-          sortBy:
-            $ref: '#/components/schemas/AttributeReference'
-          sortOrder:
-            $ref: '#/components/schemas/SortOrder'
-          startIndex:
-            type: integer
-            format: int32
-          count:
-            type: integer
-            format: int32
+    SchemaType:
+      type: string
+      enum:
+      - flow
+      - template
+      - task
+      - trigger
+      - plugindefault
     SearchResult_Flow_:
       required:
       - fragments
@@ -21632,10 +18993,6 @@ components:
           type: array
           items:
             type: string
-    SecurityIntegration.Type:
-      type: string
-      enum:
-      - SCIM
     SequencedCollection_Action_:
       type: object
       allOf:
@@ -21807,78 +19164,6 @@ components:
           type: string
         state:
           $ref: '#/components/schemas/Service.ServiceState'
-    ServiceProviderConfiguration:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ScimResourceWithOptionalId'
-      - $ref: '#/components/schemas/ScimResource'
-      - $ref: '#/components/schemas/BaseResource_ScimResource_'
-      - properties:
-          id:
-            type: string
-          documentationUrl:
-            type: string
-          patch:
-            $ref: '#/components/schemas/ServiceProviderConfiguration.SupportedConfiguration'
-          bulk:
-            $ref: '#/components/schemas/ServiceProviderConfiguration.BulkConfiguration'
-          filter:
-            $ref: '#/components/schemas/ServiceProviderConfiguration.FilterConfiguration'
-          changePassword:
-            $ref: '#/components/schemas/ServiceProviderConfiguration.SupportedConfiguration'
-          sort:
-            $ref: '#/components/schemas/ServiceProviderConfiguration.SupportedConfiguration'
-          etag:
-            $ref: '#/components/schemas/ServiceProviderConfiguration.SupportedConfiguration'
-          authenticationSchemes:
-            type: array
-            items:
-              $ref: '#/components/schemas/ServiceProviderConfiguration.AuthenticationSchema'
-    ServiceProviderConfiguration.AuthenticationSchema:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ServiceProviderConfiguration.AuthenticationSchema.Type'
-        name:
-          type: string
-        description:
-          type: string
-        specUri:
-          type: string
-        documentationUri:
-          type: string
-    ServiceProviderConfiguration.AuthenticationSchema.Type:
-      type: string
-      enum:
-      - OAUTH
-      - OAUTH2
-      - OAUTH_BEARER
-      - HTTP_BASIC
-      - HTTP_DIGEST
-    ServiceProviderConfiguration.BulkConfiguration:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ServiceProviderConfiguration.SupportedConfiguration'
-      - properties:
-          maxOperations:
-            type: integer
-            format: int32
-          maxPayloadSize:
-            type: integer
-            format: int32
-    ServiceProviderConfiguration.FilterConfiguration:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ServiceProviderConfiguration.SupportedConfiguration'
-      - properties:
-          maxResults:
-            type: integer
-            format: int32
-    ServiceProviderConfiguration.SupportedConfiguration:
-      type: object
-      properties:
-        supported:
-          type: boolean
     ServiceUsage:
       required:
       - dailyStatistics
@@ -21957,18 +19242,6 @@ components:
           type: string
         tenant:
           $ref: '#/components/schemas/Tenant'
-    SortOrder:
-      type: string
-      enum:
-      - ASCENDING
-      - DESCENDING
-    SortRequest:
-      type: object
-      properties:
-        sortBy:
-          $ref: '#/components/schemas/AttributeReference'
-        sortOrder:
-          $ref: '#/components/schemas/SortOrder'
     State:
       required:
       - current
@@ -22306,9 +19579,6 @@ components:
             type: string
             format: date-time
             nullable: true
-          workerId:
-            type: string
-            nullable: true
     TriggerContext:
       required:
       - date
@@ -22344,18 +19614,6 @@ components:
           nullable: true
           items:
             $ref: '#/components/schemas/State.Type'
-    TriggerController.SetDisabledRequest:
-      required:
-      - disabled
-      - triggers
-      type: object
-      properties:
-        triggers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Trigger'
-        disabled:
-          type: boolean
     TriggerController.Triggers:
       required:
       - abstractTrigger
@@ -22367,24 +19625,54 @@ components:
         triggerContext:
           $ref: '#/components/schemas/Trigger'
     Type:
-      type: object
-      properties:
-        typeName:
-          type: string
+      type: string
+      enum:
+      - STRING
+      - ENUM
+      - INT
+      - FLOAT
+      - BOOLEAN
+      - DATETIME
+      - DATE
+      - TIME
+      - DURATION
+      - FILE
+      - JSON
+      - URI
+      - SECRET
+      - ARRAY
     TypeSignature:
       type: object
     TypeVariable_Class_Object__:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
+      - $ref: '#/components/schemas/Type_1'
       - $ref: '#/components/schemas/AnnotatedElement'
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_3'
           genericDeclaration:
             $ref: '#/components/schemas/Class_Object_'
+          name:
+            type: string
+          annotatedBounds:
+            type: array
+            items:
+              $ref: '#/components/schemas/AnnotatedType'
+    TypeVariable_Class_String__:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Type_31'
+      - $ref: '#/components/schemas/AnnotatedElement'
+      - properties:
+          bounds:
+            type: array
+            items:
+              $ref: '#/components/schemas/Type_33'
+          genericDeclaration:
+            $ref: '#/components/schemas/Class_String_'
           name:
             type: string
           annotatedBounds:
@@ -22394,13 +19682,13 @@ components:
     TypeVariable_Constructor_Object__:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
+      - $ref: '#/components/schemas/Type_24'
       - $ref: '#/components/schemas/AnnotatedElement'
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_26'
           genericDeclaration:
             $ref: '#/components/schemas/Constructor_Object_'
           name:
@@ -22412,13 +19700,13 @@ components:
     TypeVariable_GenericDeclaration_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
+      - $ref: '#/components/schemas/Type_8'
       - $ref: '#/components/schemas/AnnotatedElement'
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_10'
           genericDeclaration: {}
           name:
             type: string
@@ -22429,13 +19717,13 @@ components:
     TypeVariable_Method_:
       type: object
       allOf:
-      - $ref: '#/components/schemas/Type'
+      - $ref: '#/components/schemas/Type_18'
       - $ref: '#/components/schemas/AnnotatedElement'
       - properties:
           bounds:
             type: array
             items:
-              $ref: '#/components/schemas/Type'
+              $ref: '#/components/schemas/Type_20'
           genericDeclaration:
             $ref: '#/components/schemas/Method'
           name:
@@ -22444,114 +19732,131 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/AnnotatedType'
-    Type_1:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
-      - ARRAY
-      - MULTISELECT
-    Type_2:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
-      - ARRAY
-      - MULTISELECT
+    Type_10:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_11:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_12:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_13:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_14:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_15:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_16:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_17:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_20:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_21:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_22:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_23:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_26:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_27:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_28:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_29:
+      type: object
+      properties:
+        typeName:
+          type: string
     Type_3:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
-      - ARRAY
-      - MULTISELECT
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_30:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_33:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_34:
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_35:
+      type: object
+      properties:
+        typeName:
+          type: string
     Type_4:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
-      - ARRAY
-      - MULTISELECT
+      type: object
+      properties:
+        typeName:
+          type: string
     Type_5:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
-      - ARRAY
-      - MULTISELECT
+      type: object
+      properties:
+        typeName:
+          type: string
     Type_6:
-      type: string
-      enum:
-      - STRING
-      - ENUM
-      - INT
-      - FLOAT
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - TIME
-      - DURATION
-      - FILE
-      - JSON
-      - URI
-      - SECRET
-      - ARRAY
-      - MULTISELECT
+      type: object
+      properties:
+        typeName:
+          type: string
+    Type_7:
+      type: object
+      properties:
+        typeName:
+          type: string
     Usage:
       required:
       - configurations
@@ -22613,7 +19918,9 @@ components:
           groups:
             $ref: '#/components/schemas/GroupUsage'
           users:
-            $ref: '#/components/schemas/UserUsage'
+            type: array
+            items:
+              $ref: '#/components/schemas/UserUsage'
           roles:
             $ref: '#/components/schemas/RoleUsage'
           namespaces:
@@ -22630,7 +19937,9 @@ components:
           groups:
             $ref: '#/components/schemas/GroupUsage'
           users:
-            $ref: '#/components/schemas/UserUsage'
+            type: array
+            items:
+              $ref: '#/components/schemas/UserUsage'
           roles:
             $ref: '#/components/schemas/RoleUsage'
           namespaces:
@@ -22647,7 +19956,9 @@ components:
           groups:
             $ref: '#/components/schemas/GroupUsage'
           users:
-            $ref: '#/components/schemas/UserUsage'
+            type: array
+            items:
+              $ref: '#/components/schemas/UserUsage'
           roles:
             $ref: '#/components/schemas/RoleUsage'
           namespaces:
@@ -22664,7 +19975,9 @@ components:
           groups:
             $ref: '#/components/schemas/GroupUsage'
           users:
-            $ref: '#/components/schemas/UserUsage'
+            type: array
+            items:
+              $ref: '#/components/schemas/UserUsage'
           roles:
             $ref: '#/components/schemas/RoleUsage'
           namespaces:
@@ -22683,22 +19996,6 @@ components:
           type: string
         newPassword:
           type: string
-    UserGroup:
-      type: object
-      properties:
-        value:
-          type: string
-        ref:
-          type: string
-        display:
-          type: string
-        type:
-          $ref: '#/components/schemas/UserGroup.Type'
-    UserGroup.Type:
-      type: string
-      enum:
-      - DIRECT
-      - INDIRECT
     UserType:
       type: string
       enum:
@@ -22707,22 +20004,31 @@ components:
       - SUPER_ADMIN
     UserUsage:
       required:
-      - apiKeyCount
-      - basicAuthCount
-      - count
-      - oidcCount
+      - globalRolesCount
+      - groupsCount
+      - namespaceRolesCount
+      - namespacesCount
+      - username
       type: object
       properties:
-        count:
+        username:
+          type: string
+        domain:
+          type: string
+        auths:
+          type: array
+          items:
+            type: string
+        groupsCount:
+          type: integer
+          format: int32
+        globalRolesCount:
           type: integer
           format: int64
-        apiKeyCount:
+        namespaceRolesCount:
           type: integer
           format: int64
-        oidcCount:
-          type: integer
-          format: int64
-        basicAuthCount:
+        namespacesCount:
           type: integer
           format: int64
     ValidateConstraintViolation:
@@ -22755,15 +20061,12 @@ components:
           type: array
           items:
             type: string
-    ValuePathExpression:
-      required:
-      - attributePath
-      type: object
-      properties:
-        attributePath:
-          $ref: '#/components/schemas/AttributeReference'
-        attributeExpression:
-          $ref: '#/components/schemas/FilterExpression'
+    ValidateUnwrappedValue:
+      type: string
+      enum:
+      - DEFAULT
+      - UNWRAP
+      - SKIP
     WorkerGroup:
       type: object
       properties:
