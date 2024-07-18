@@ -4583,7 +4583,6 @@ paths:
                 - $ref: '#/components/schemas/Flow'
                 - $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
   /api/v1/flows/delete/by-ids:
     delete:
       tags:
@@ -5571,7 +5570,6 @@ paths:
                   items:
                     $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
   /api/v1/flows/{namespace}/{id}:
     get:
       tags:
@@ -5658,7 +5656,6 @@ paths:
                 - $ref: '#/components/schemas/FlowWithSource'
                 - $ref: '#/components/schemas/Flow'
               example: null
-      deprecated: true
     delete:
       tags:
       - Flows
@@ -6004,7 +6001,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Flow'
-      deprecated: true
   /api/v1/flows/{namespace}/{id}/{taskId}/{tenant}:
     patch:
       tags:
@@ -6043,7 +6039,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Flow'
-      deprecated: true
   /api/v1/flows/{namespace}/{id}/{tenant}:
     get:
       tags:
@@ -6129,7 +6124,6 @@ paths:
                 - $ref: '#/components/schemas/FlowWithSource'
                 - $ref: '#/components/schemas/Flow'
               example: null
-      deprecated: true
     delete:
       tags:
       - Flows
@@ -6223,7 +6217,6 @@ paths:
                   items:
                     $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
   /api/v1/flows/{tenant}:
     post:
       tags:
@@ -6250,7 +6243,6 @@ paths:
                 - $ref: '#/components/schemas/Flow'
                 - $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
   /api/v1/forgotten-password:
     get:
       summary: Send an email to reset a password.

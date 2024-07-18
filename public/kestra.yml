@@ -1764,7 +1764,6 @@ paths:
                 - $ref: '#/components/schemas/Flow'
                 - $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
   /api/v1/flows/delete/by-ids:
     delete:
       tags:
@@ -2292,7 +2291,6 @@ paths:
                   items:
                     $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
   /api/v1/flows/{namespace}/{id}:
     get:
       tags:
@@ -2378,7 +2376,6 @@ paths:
                 - $ref: '#/components/schemas/Flow'
                 - $ref: '#/components/schemas/FlowWithSource'
               example: null
-      deprecated: true
     delete:
       tags:
       - Flows
@@ -2580,7 +2577,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Flow'
-      deprecated: true
   /api/v1/logs/search:
     get:
       tags:
