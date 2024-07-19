@@ -56,10 +56,10 @@ The first thing we need to configure is the plugin name and the class package.
 
 1. Change in `settings.gradle` the `rootProject.name = 'plugin-template'` with the plugin name `rootProject.name = 'plugin-pokemon'`.
 2. Change the class package: by default, the template provides a package `io.kestra.plugin.templates`, just rename the `templates` folder in `src/main/java` & `src/test/java` to `pokemon`. And change the first line in `Example.java`, `ExampleRunnerTest.java` and `ExampleTest.java` to `package io.kestra.plugin.pokemon;`.
-3. In `build.gradle`: 
+3. In `build.gradle`:
    a. replace `description 'Plugin template for Kestra'` to the package name `description 'Plugin pokemon for Kestra'`.
    b. In the `dependencies` section, add a dependency which we will be using in our plugin task:
-    `implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'` 
+    `implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'`
    c. Change the `jar` section to the following:
 
 ```groovy
@@ -280,13 +280,13 @@ Let us now amend the `FetchRunnerTest.java`. In this test, we try to load the fl
 ```java
 package io.kestra.plugin.pokemon;
 
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import io.kestra.core.junit.annotations.KestraTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import io.kestra.core.models.executions.Execution;
 import io.kestra.core.repositories.LocalFlowRepositoryLoader;
 import io.kestra.core.runners.RunnerUtils;
-import io.kestra.runner.memory.MemoryRunner;
+import io.kestra.core.runners.StandAloneRunner;
 
 import jakarta.inject.Inject;
 import java.io.IOException;
@@ -305,10 +305,10 @@ import static org.hamcrest.Matchers.is;
  * configuration file in `src/test/resources/application.yml` that is only for the full runner
  * test to configure in-memory runner.
  */
-@MicronautTest
+@KestraTest
 class FetchRunnerTest {
     @Inject
-    protected MemoryRunner runner;
+    protected StandAloneRunner runner;
 
     @Inject
     protected RunnerUtils runnerUtils;
