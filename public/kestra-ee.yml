@@ -10574,7 +10574,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
+                  $ref: '#/components/schemas/ApiSecretMeta'
     put:
       tags:
       - Namespaces
@@ -10591,9 +10591,9 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties:
-                type: string
+              type: array
+              items:
+                $ref: '#/components/schemas/ApiSecretValue'
         required: true
       responses:
         "200":
@@ -10603,7 +10603,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
+                  $ref: '#/components/schemas/ApiSecretMeta'
   /api/v1/namespaces/{namespace}/secrets/{key}:
     delete:
       tags:
@@ -10681,7 +10681,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
+                  $ref: '#/components/schemas/ApiSecretMeta'
     put:
       tags:
       - Namespaces
@@ -10698,9 +10698,9 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties:
-                type: string
+              type: array
+              items:
+                $ref: '#/components/schemas/ApiSecretValue'
         required: true
       responses:
         "200":
@@ -10710,7 +10710,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
+                  $ref: '#/components/schemas/ApiSecretMeta'
   /api/v1/namespaces/{tenant}:
     post:
       tags:
@@ -17888,6 +17888,51 @@ components:
           type: array
           items:
             type: string
+    ApiSecretMeta:
+      required:
+      - description
+      - key
+      - tags
+      type: object
+      properties:
+        key:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiSecretTag'
+    ApiSecretTag:
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    ApiSecretValue:
+      required:
+      - description
+      - key
+      - tags
+      - value
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiSecretTag'
+        key:
+          minLength: 1
+          type: string
+        value:
+          minLength: 1
+          type: string
+        description:
+          type: string
     ApiServiceAccount:
       required:
       - description
