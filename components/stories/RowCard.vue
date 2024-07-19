@@ -81,6 +81,9 @@
 
             &-container {
                 gap: calc($spacer * 1.875);
+                @include media-breakpoint-down(lg) {
+                    flex-direction: column !important;
+                }
             }
 
             .card-img-top {
@@ -88,6 +91,9 @@
                 max-height: 375px;
                 border-radius: 4px;
                 border: 1px solid #404559;
+                @include media-breakpoint-down(lg) {
+                    height: auto;
+                }
             }
 
             .author {
@@ -110,6 +116,11 @@
             font-size: $h3-font-size;
             font-weight: 600;
             line-height: calc($spacer * 3);
+
+            @include media-breakpoint-down(lg) {
+                font-size: $font-size-xl;
+                line-height: calc($spacer * 1.8);
+            }
         }
 
         &-meta-description {
