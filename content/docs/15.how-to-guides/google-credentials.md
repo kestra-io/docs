@@ -76,7 +76,7 @@ while IFS='=' read -r key value; do
     echo "SECRET_$key=$(echo -n "$value" | base64)";
 done < .env > .env_encoded
 
-echo "SECRET_GCP_SA=$(base64 --input=sa.json)" >> .env_encoded
+echo "SECRET_GCP_SA=$(cat sa.json | base64)" >> .env_encoded
 ```
 
 You can then set the `.env_encoded` file inside of your `docker-compose.yml`:
