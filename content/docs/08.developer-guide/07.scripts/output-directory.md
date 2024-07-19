@@ -12,6 +12,7 @@ The `outputFiles` property allows to specify a list of files to be persisted in 
 ```yaml
 id: output_text_files
 namespace: company.team
+
 tasks:
   - id: python_output
     type: io.kestra.plugin.scripts.python.Script
@@ -29,7 +30,7 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
     commands:
-      - cat {{outputs.python_output.outputFiles['myfile.txt']}}
+      - cat {{ outputs.python_output.outputFiles['myfile.txt'] }}
 ```
 
 Note how the `outputFiles` property is used to specify the list of files to be persisted in Kestra's internal storage. The `outputFiles` property supports [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)).
@@ -47,6 +48,7 @@ This is an alternative to the `outputFiles` property. Files stored in the `outpu
 ```yaml
 id: output_text_files
 namespace: company.team
+
 tasks:
   - id: python_output
     type: io.kestra.plugin.scripts.python.Script
@@ -62,7 +64,7 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
     commands:
-      - cat {{outputs.python_output.outputFiles['myfile.txt']}}
+      - cat {{ outputs.python_output.outputFiles['myfile.txt'] }}
 ```
 
 The first task creates a file `'myfile.txt'` and the next task can access it by leveraging the syntax `{{outputs.yourTaskId.outputFiles['yourFileName.fileExtension']}}`.
