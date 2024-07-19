@@ -163,7 +163,7 @@ export default defineNuxtConfig({
       '/docs/concepts/expression/02b.expression-usage': {redirect: '/docs/concepts/expression/expression-usage'},
       '/docs/migration-guide/core-script-tasks': {redirect: '/docs/migration-guide/0.11.0/core-script-tasks'},
       '/docs/migration-guide/templates': {redirect: '/docs/migration-guide/0.11.0/templates'},
-      '/docs/migration-guide/listeners': {redirect; '/docs/migration-guide/0.12.0/listeners'},
+      '/docs/migration-guide/listeners': {redirect: '/docs/migration-guide/0.12.0/listeners'},
       '/docs/migration-guide/recursive-rendering': {redirect: '/docs/migration-guide/0.14.0/recursive-rendering'},
       '/docs/migration-guide/inputs-name': {redirect: '/docs/migration-guide/0.15.0/inputs-name'},
       '/docs/migration-guide/micronaut4': {redirect: '/docs/migration-guide/0.15.0/micronaut4'},
