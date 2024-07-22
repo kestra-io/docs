@@ -5,7 +5,7 @@ icon: /docs/icons/dev.svg
 
 ## Input Files
 
-You can provide input files to the task using the `inputFiles` property.
+You can pass additional files to any script or CLI task using the `inputFiles` property:
 
 ```yaml
 id: ansible
@@ -30,7 +30,7 @@ tasks:
       - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-You can also read the files from the namespace using [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files).
+You can also leverage [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files) as follows:
 
 ```yaml
 id: ansible
@@ -77,9 +77,10 @@ tasks:
 
       - id: python
         type: io.kestra.plugin.scripts.python.Commands
-        description: this script reads a file `data.csv` from S3 trigger
-        docker:
-          image: ghcr.io/kestra-io/pydata:latest
+        description: this script reads a file `data.csv` from the S3 trigger
+        taskRunner:
+          type: io.kestra.plugin.scripts.runner.docker.Docker
+        containerImage: ghcr.io/kestra-io/pydata:latest
         warningOnStdErr: false
         commands:
           - python scripts/clean_messy_dataset.py
@@ -161,9 +162,8 @@ tasks:
     outputFiles:
       - myfile.txt
     script: |
-      f = open("myfile.txt", "a")
-      f.write("Hi, this is output from a script 👋")
-      f.close()
+      with open("myfile.txt", "a") as f:
+          f.write("Hi, this is output from a script 👋")
 
   - id: read_output
     type: io.kestra.plugin.scripts.shell.Commands
