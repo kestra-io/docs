@@ -4,6 +4,7 @@
 
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
     import Check from "vue-material-design-icons/Check.vue";
+    import Mermaid from "~/components/content/Mermaid.vue";
 
     export default defineComponent({
         props: {
@@ -70,7 +71,12 @@
 </script>
 
 <template>
-    <div class="code-block mb-3" @mouseover="hoverCode" @mouseleave="isHoveringCode = false">
+    <template v-if="language === 'mermaid'">
+        <Mermaid>
+            {{code}}
+        </Mermaid>
+    </template>
+    <div class="code-block mb-3" @mouseover="hoverCode" @mouseleave="isHoveringCode = false" v-else>
         <div class="language" v-if="language">{{ language }}</div>
         <template v-if="isHoveringCode">
             <button ref="copyButton" class="copy">
