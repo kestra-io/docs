@@ -14,7 +14,7 @@ Manages a Kestra Namespace File.
 
 ```hcl
 resource "kestra_namespace_file" "example" {
-  namespace = "io.kestra.mynamespace"
+  namespace = "company.team"
   filename  = "/path/my-file.sh"
   content   = <<EOT
 #!/bin/bash
@@ -23,7 +23,7 @@ EOT
 }
 
 resource "kestra_namespace_file" "withsource" {
-  namespace = "io.kestra.mynamespace"
+  namespace = "company.team"
   filename  = "/path/my-file.sh"
   content   = file("./kestra/file.sh")
 }
