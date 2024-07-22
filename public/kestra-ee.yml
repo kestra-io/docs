@@ -220,6 +220,14 @@ paths:
           type: string
           format: date-time
           nullable: true
+      - name: details
+        in: query
+        description: A list of auditLog details
+        schema:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
       responses:
         "200":
           description: search 200 response
@@ -314,6 +322,14 @@ paths:
         schema:
           type: string
           format: date-time
+          nullable: true
+      - name: details
+        in: query
+        description: A list of auditLog details
+        schema:
+          type: object
+          additionalProperties:
+            type: string
           nullable: true
       responses:
         "200":
