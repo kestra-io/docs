@@ -15,8 +15,8 @@ Manages a Kestra Flow.
 
 ```hcl
 resource "kestra_flow" "example" {
-  namespace = "io.kestra.mynamespace"
-  flow_id   = "my-flow"
+  namespace = "company.team"
+  flow_id   = "myflow"
   content   = <<EOT
 inputs:
   - name: my-value
