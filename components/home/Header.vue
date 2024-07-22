@@ -13,7 +13,14 @@
                         class="btn btn-animated btn-purple-animated me-2 mb-2"
                         data-aos="zoom-in"
                     >
-                        <img src="/landing/home/lightning-bolt.svg" alt="lightning">
+                        <NuxtImg
+                            width="25px"
+                            height="25px"
+                            loading="lazy"
+                            format="webp"
+                            src="/landing/home/lightning-bolt.svg"
+                            alt="lightning"
+                        />
                         Get started
                     </NuxtLink>
 
@@ -24,14 +31,21 @@
                         data-bs-toggle="modal"
                         data-bs-target="#home-intro"
                     >
-                        <img src="/landing/home/play.svg" alt="play">
+                        <NuxtImg
+                            width="25px"
+                            height="25px"
+                            loading="lazy"
+                            format="webp"
+                            src="/landing/home/play.svg"
+                            alt="play"
+                        />
                         Watch video
                     </a>
 
                 </div>
             </div>
             <div class="img-block">
-                <img
+                <NuxtImg
                     class="img-fluid headerimg"
                     src="/landing/home/header.svg"
                     alt="Smarter Not Harder"
@@ -105,7 +119,7 @@ export default {
 
 .main {
     .text-block {
-        margin: 5rem 0 1rem;
+        margin: 4rem 0 1rem;
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -118,7 +132,7 @@ export default {
         center;
         background-size: 130%;
         padding-bottom: 2rem;
-        padding-top: 7rem;
+        padding-top: 5rem;
         position: relative;
 
         &::before {
