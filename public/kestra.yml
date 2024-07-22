@@ -7076,6 +7076,7 @@ components:
       enum:
       - STRING
       - ENUM
+      - SELECT
       - INT
       - FLOAT
       - BOOLEAN
