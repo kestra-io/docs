@@ -10591,9 +10591,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/ApiSecretValue'
+              $ref: '#/components/schemas/ApiSecretValue'
         required: true
       responses:
         "200":
@@ -10698,9 +10696,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/ApiSecretValue'
+              $ref: '#/components/schemas/ApiSecretValue'
         required: true
       responses:
         "200":
