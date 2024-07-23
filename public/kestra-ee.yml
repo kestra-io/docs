@@ -220,6 +220,14 @@ paths:
           type: string
           format: date-time
           nullable: true
+      - name: details
+        in: query
+        description: A list of auditLog details
+        schema:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
       responses:
         "200":
           description: search 200 response
@@ -314,6 +322,14 @@ paths:
         schema:
           type: string
           format: date-time
+          nullable: true
+      - name: details
+        in: query
+        description: A list of auditLog details
+        schema:
+          type: object
+          additionalProperties:
+            type: string
           nullable: true
       responses:
         "200":
@@ -10875,7 +10891,7 @@ paths:
         description: The schema needed
         required: true
         schema:
-          $ref: '#/components/schemas/Type_3'
+          $ref: '#/components/schemas/Type_1'
       responses:
         "200":
           description: inputSchemas 200 response
@@ -10898,8 +10914,8 @@ paths:
         required: true
         schema:
           oneOf:
-          - $ref: '#/components/schemas/Type_6'
           - $ref: '#/components/schemas/Type_4'
+          - $ref: '#/components/schemas/Type_2'
       responses:
         "200":
           description: inputSchemas_1 200 response
@@ -20147,7 +20163,7 @@ components:
           pattern: "^[a-zA-Z0-9][.a-zA-Z0-9_-]*"
           type: string
         type:
-          $ref: '#/components/schemas/Type_1'
+          $ref: '#/components/schemas/Type_5'
         description:
           type: string
         required:
@@ -20829,7 +20845,7 @@ components:
           type: string
         value: {}
         type:
-          $ref: '#/components/schemas/Type_2'
+          $ref: '#/components/schemas/Type_6'
     Package:
       type: object
       allOf:
