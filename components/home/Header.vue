@@ -2,7 +2,7 @@
     <div class="main">
         <div class="hero container">
             <div class="text-block">
-                <h1 data-aos="zoom-in">
+                <h1>
                     <text-scroller :texts="scrollingTexts" />Smarter Not Harder
                 </h1>
                 <p>Unified Orchestration Platform to Simplify Business-Critical Workflows
@@ -11,7 +11,6 @@
                     <NuxtLink
                         href="/docs/getting-started"
                         class="btn btn-animated btn-purple-animated me-2 mb-2"
-                        data-aos="zoom-in"
                     >
                         <NuxtImg
                             width="25px"
@@ -27,7 +26,6 @@
                     <a
                         href="https://www.youtube.com/embed/feC6-KQLYyA?si=PbjxwD94VAWSzSxN?autoplay=1"
                         class="btn btn-animated btn-dark-animated  mb-2"
-                        data-aos="zoom-in"
                         data-bs-toggle="modal"
                         data-bs-target="#home-intro"
                     >
