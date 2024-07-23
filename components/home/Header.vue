@@ -31,9 +31,6 @@
 
         <div class="companies-background overflow-x-hidden">
             <Companies class="mt-4 mb-4 pb-4 companies container" />
-
-
-        
         </div>
     </div>
     <div
