@@ -62,6 +62,7 @@ export default defineNuxtConfig({
               'sql',
               'java',
               'dockerfile',
+              'systemd',
               'hcl',
               'python',
               'twig',
