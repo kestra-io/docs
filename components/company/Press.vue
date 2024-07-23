@@ -13,7 +13,7 @@
 
             <div class="cta">
               <NuxtLink
-                  href="/docs/enterprise/kestra-identity"
+                  href="/docs/brand-assets"
                   class="btn btn-animated btn-purple-animated mt-2"
                   data-aos="zoom-in"
               >
