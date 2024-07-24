@@ -14,8 +14,8 @@ Use this data source to access information about an existing Kestra Flow
 
 ```hcl
 data "kestra_flow" "example" {
-  namespace = "company.team"
-  id        = "myflow"
+  namespace = "io.kestra.mynamespace"
+  id        = "my-flow"
 }
 ```
 
