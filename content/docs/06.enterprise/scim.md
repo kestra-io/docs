@@ -9,19 +9,19 @@ Sync users and groups from your Identity Provider to Kestra using SCIM.
 
 ## What is SCIM
 
-SCIM (System for Cross-domain Identity Management) is an open standard protocol designed to facilitate user identity management across multiple domains or IT systems.
+SCIM (System for Cross-domain Identity Management) is an open standard protocol designed to facilitate user identity management across multiple systems.
 
- It simplifies user provisioning, de-provisioning, and identity synchronization between identity providers (IdPs) such as Microsoft Entra ID or Okta, and service providers (SPs) such as Kestra. In Layman's terms, SCIM allows you to automatically keep your users and groups in sync between your IdP and Kestra.
+ It simplifies user provisioning, de-provisioning, and group synchronization between identity providers (IdPs) such as Microsoft Entra ID or Okta, and service providers (SPs) such as Kestra. In Layman's terms, SCIM allows you to automatically keep your users and groups in sync between your IdP and Kestra.
 
 Kestra relies explicitly on the SCIM 2.0 protocol for directory synchronization.
 
 ![scim.jpeg](/docs/enterprise/scim.jpeg)
 
-### Why Use SCIM
+### Benefits of a Directory Sync with SCIM
 
-1. **Automated Provisioning and De-provisioning**: SCIM allows you to automate provisioning and de-provisioning of users, creating a single source of truth (SSOT) of the user identity data. Instead of manually creating and managing users in Kestra, you can sync them from your IdP.
-2. **Consistency and Compliance**: with SCIM, you can ensure consistency of identity information across systems and stay compliant with security and regulatory requirements.
-3. **Scalability**: managing users at scale across many applications can be difficult without a standardized method for identity synchronization. SCIM provides a scalable solution for managing user identities.
+1. **Automated provisioning and de-provisioning**: SCIM allows you to automate provisioning and de-provisioning of users, creating a single source of truth (SSOT) of the user identity data. Instead of manually creating and managing users in Kestra, you can sync them from your IdP.
+2. **Consistency and compliance**: with SCIM, you can ensure consistency of identity information across systems and stay compliant with security and regulatory requirements.
+3. **Governance at scale**: managing users at scale across many applications can be difficult without a standardized method for identity synchronization. SCIM provides a scalable solution for managing user identities.
 
 ---
 
@@ -50,7 +50,7 @@ kestra:
 
 ![scim1](/docs/enterprise/scim1.png)
 
-The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to configure Microsoft Entra ID for user synchronization. Save those details as we will need them in the next steps.
+The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate Microsoft Entra ID with the SCIM integration in Kestra. Save those details as we will need them in the next steps.
 
 ![scim2](/docs/enterprise/scim2.png)
 
@@ -60,12 +60,12 @@ The endpoint should look as follows:
 https://your_kestra_host/api/v1/your_tenant/integrations/integration_id/scim/v2
 ```
 
-And the secret token will be a long string of characters that you will use to authenticate requests from Microsoft Entra ID to Kestra.
+The Secret Token will be a long string (ca. 200 characters) that will authenticate requests from Microsoft Entra ID to Kestra.
 
 ::alert{type="info"}
 Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests for that integration endpoint will be rejected.
 
-At first, disable the integration to configure your Microsoft Entra ID integration in the Azure portal, and then enable it once the configuration is complete.
+At first, you can disable the integration to configure your Microsoft Entra ID integration in the Azure portal, and then enable it once the configuration is complete.
 ![scim3](/docs/enterprise/scim3.png)
 ::
 
@@ -77,7 +77,7 @@ Note that when creating a new SCIM integration, Kestra will automatically create
    - `BINDINGS`: `CREATE`, `READ`, `UPDATE`, `DELETE`
   ![scim4](/docs/enterprise/scim4.png)
 
-2. Service Account with an API Token which you have seen displayed as a Secret Token for the integration:
+2. Service Account with an API Token which was previously displayed as a Secret Token for the integration:
   ![scim5](/docs/enterprise/scim5.png)
 
 
@@ -129,7 +129,7 @@ kestra:
 
 ![scim1](/docs/enterprise/scim1.png)
 
-The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to configure Okta Provisioning for user synchronization. Save those details as we will need them in the next steps.
+The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate Okta with the SCIM integration in Kestra. Save those details as we will need them in the next steps.
 
 ![scim2](/docs/enterprise/scim2.png)
 
@@ -139,7 +139,7 @@ The endpoint should look as follows:
 https://your_kestra_host/api/v1/your_tenant/integrations/integration_id/scim/v2
 ```
 
-And the secret token will be a long string of characters that you will use to authenticate requests from Okta to Kestra.
+The Secret Token will be a long string (ca. 200 characters) that will authenticate requests from Okta to Kestra.
 
 ::alert{type="info"}
 Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests for that integration endpoint will be rejected.
@@ -163,15 +163,15 @@ Note that when creating a new SCIM integration, Kestra will automatically create
 
 1. **Create an App Integration**:
    - Navigate to Okta Admin Console → Applications → Applications.
-   - Click on "Create App Integration" and then select
+   - Click on "Create App Integration" and then select:
      - Sign-in Method: OIDC - OpenID Connect
      - Application Type: Web Application
-   - Then on the next page
+   - Then on the next page:
        - Give your application a name, e.g. `Kestra`
        - Grant Type: Client Acting on behalf of itself → Client Credentials → True
        - Login
-           - Sign-in redirect URIs → http://<kestra-hostname>/oauth/callback/okta
-           - Sign-out redirect URIs → http://<kestra-hostname>/logout
+         - Sign-in redirect URIs → http://<kestra-hostname>/oauth/callback/okta
+         - Sign-out redirect URIs → http://<kestra-hostname>/logout
    - Once application is created, select it in the Applications view and take note of the client ID and client secret.
    ![okta1](/docs/enterprise/okta1.png)
 
@@ -197,7 +197,7 @@ Note that when creating a new SCIM integration, Kestra will automatically create
    - Select SCIM 2.0 Test App (OAuth Bearer Token)
    - in Sign-in options select Secure Web Authentication → user sets username/password
    - Click Done
-   - Select the integration you have just created, then enter the Provisioning tab. Fill in the Endpoint URL you obtained from Kestra into the `SCIM 2.0 Base Url` field. Enter the Secret Token generated in Kestra into the `OAuth Bearer Token` field.
+   - Select the integration you have just created, then enter the `Provisioning` tab. Fill in the Endpoint URL you obtained from Kestra into the `SCIM 2.0 Base Url` field. Enter the Secret Token generated in Kestra into the `OAuth Bearer Token` field.
    - Finally, click on the `Test API Credentials` to verify the connection.
     ![okta2](/docs/enterprise/okta2.png)
 
