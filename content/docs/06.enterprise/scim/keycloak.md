@@ -116,7 +116,8 @@ However, there are paid solutions such as [SCIM for Keycloak](https://scim-for-k
   ![scim-for-keycloak-5](/docs/enterprise/keycloak5.png)
    - Fill the `Authentication` with your Kestra `Secret Token`:
   ![scim-for-keycloak-6](/docs/enterprise/keycloak6.png)
-
+6. **Enable Provisioning**:
+   - Now that everything is configured, you can toggle the `Enabled` field on in the Kestra Provisioning Integration to start syncing users and groups from Keycloak to Kestra.
 
 
 ## Additional Resources

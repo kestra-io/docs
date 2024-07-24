@@ -115,7 +115,7 @@ When creating a new Provisioning Integration, Kestra will automatically create t
    - Perform a test to ensure the mappings are correct and data is syncing properly.
 
 5. **Enable Provisioning**:
-   - Enable the provisioning integration in the Kestra UI to begin automatic synchronization of users and groups from Okta to Kestra.
+   - Enable the provisioning integration toggle in the Kestra UI to begin automatic synchronization of users and groups from Okta to Kestra.
 
 ## Additional Resources
 

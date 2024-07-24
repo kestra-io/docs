@@ -87,7 +87,7 @@ When creating a new Provisioning Integration, Kestra will automatically create t
    - Test the configuration and ensure that users and groups are synchronized correctly.
 
 4. **Enable Provisioning**:
-   - Now that everything is configured, you can enable the provisioning integration in the Kestra UI to start syncing users and groups from Microsoft Entra ID to Kestra.
+   - Now that everything is configured, you can enable the provisioning integration toggle in the Kestra UI to start syncing users and groups from Microsoft Entra ID to Kestra.
 
 ## Additional Resources
 
