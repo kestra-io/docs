@@ -55,7 +55,7 @@ At first, you can disable the integration to configure your Okta SCIM integratio
 
 ### IAM Role and Service Account
 
-When creating a new SCIM integration, Kestra will automatically create two additional objects:
+When creating a new Provisioning Integration, Kestra will automatically create two additional objects:
 
 1. Role `SCIMProvisioner` with the following permissions:
    - `GROUPS`: `CREATE`, `READ` `UPDATE`, `DELETE`
