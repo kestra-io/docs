@@ -106,7 +106,8 @@ When creating a new Provisioning Integration, Kestra will automatically create t
    - Select SCIM 2.0 Test App (OAuth Bearer Token)
    - in Sign-in options select Secure Web Authentication → user sets username/password
    - Click Done
-   - Select the integration you have just created, then enter the `Provisioning` tab. Fill in the Endpoint URL you obtained from Kestra into the `SCIM 2.0 Base Url` field. Enter the Secret Token generated in Kestra into the `OAuth Bearer Token` field.
+   - Select the integration you have just created, then enter the `Provisioning` tab.
+   - Fill in the Endpoint URL you obtained from Kestra into the `SCIM 2.0 Base Url` field. Enter the Secret Token generated in Kestra into the `OAuth Bearer Token` field.
    - Finally, click on the `Test API Credentials` to verify the connection.
     ![okta2](/docs/enterprise/okta2.png)
 
