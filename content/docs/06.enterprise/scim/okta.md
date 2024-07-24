@@ -9,7 +9,7 @@ Sync Users and Groups from Okta to Kestra using SCIM.
 
 ## Prerequisites
 
-- **Okta Account**: you need an Okta account with administrative privileges to configure SCIM provisioning.
+- **Okta Account**: an account with administrative privileges to configure SCIM provisioning.
 - **Enable multi-tenancy in Kestra**: tenants MUST be enabled in Kestra to support SCIM provisioning. You can enable tenants by setting the `kestra.ee.tenants.enabled` configuration property to `true`:
 
 ```yaml
@@ -66,7 +66,9 @@ When creating a new SCIM integration, Kestra will automatically create two addit
 2. Service Account with an API Token which was previously displayed as a Secret Token for the integration:
   ![scim5](/docs/enterprise/scim5.png)
 
-### Okta SCIM Setup
+---
+
+## Okta SCIM Setup
 
 1. **Create an App Integration**:
    - Navigate to Okta Admin Console → Applications → Applications.

@@ -66,6 +66,7 @@ When creating a new SCIM integration, Kestra will automatically create two addit
 2. Service Account with an API Token which was previously displayed as a Secret Token for the integration:
   ![scim5](/docs/enterprise/scim5.png)
 
+---
 
 ## Microsoft Entra ID SCIM Setup
 
