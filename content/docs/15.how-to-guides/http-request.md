@@ -136,7 +136,7 @@ However if we want to view the outputs from tasks without needing to use Log tas
 
 ![http_get_outputs](/docs/how-to-guides/http/http_get_outputs.png)
 
-Here, we are using the [Render Expression](/docs/workflow-components/outputs#using-render-expression) option to allow us to view specific outputs by using an expression, like we would to output a dynamic value in a Log task, but after the flow has executed. This is very useful if you're trying to debug tasks and figure out what outputs were generated.
+Here, we are using the [Debug Outputs](/docs/workflow-components/outputs#using-render-expression) option to allow us to view specific outputs by using an expression, like we would to output a dynamic value in a Log task, but after the flow has executed. This is very useful if you're trying to debug tasks and figure out what outputs were generated.
 
 ### POST Request
 
@@ -173,7 +173,7 @@ tasks:
 
 We can define the request body as an input so it's easier to remember what it is, change it when we execute and to use in multiple places if we decide to make multiple requests with the same body.
 
-When we execute this as a `POST` request, this is the response we receive using the same Render Expression option in the Outputs page:
+When we execute this as a `POST` request, this is the response we receive using the same Debug Outputs option in the Outputs page:
 
 ![http_post_outputs](/docs/how-to-guides/http/http_post_outputs.png)
 
