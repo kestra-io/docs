@@ -72,7 +72,8 @@ tasks:
       Right-hand value: 'mydefault'
       Operator used: '??'
       This expression "{{ inputs.optional_input ?? 'mydefault' }}" will return 'mydefault'
-      because the coalesce-operator '??' returns the right-hand value if the left-hand value is null or undefined.
+      because the coalesce-operator '??' returns the right-hand value 
+      if the left-hand value is null or undefined.
       Only if you provide a value at runtime, that value will be used instead of 'mydefault'.
 
   - id: coalesce_undefined_input
@@ -83,7 +84,8 @@ tasks:
       Right-hand value: 'mydefault'
       Operator used: '??'
       The expression "{{ inputs.undefined_input ?? 'mydefault' }}" will return 'mydefault'
-      because the coalesce-operator '??' returns the right-hand value if the left-hand value is null or undefined.
+      because the coalesce-operator '??' returns the right-hand value 
+      if the left-hand value is null or undefined.
 
   - id: coalesce_only_undefined_input_1
     type: io.kestra.plugin.core.log.Log
@@ -93,7 +95,8 @@ tasks:
       Right-hand value: 'mydefault'
       Operator used: '???'
       The expression "{{ inputs.undefined_input ??? 'mydefault' }}" will return 'mydefault'
-      because he undefined-coalesce-operator '???' returns the right-hand value if the left-hand value is undefined.
+      because he undefined-coalesce-operator '???' returns the right-hand value 
+      if the left-hand value is undefined.
 
   - id: coalesce_only_undefined_input_2
     type: io.kestra.plugin.core.log.Log
@@ -103,7 +106,8 @@ tasks:
       Right-hand value: 'mydefault'
       Operator used: '???'
       The expression "{{ inputs.optional_input ??? 'mydefault' }}" will return "" i.e. no value aka null value
-      because optional_input is defined and the undefined-coalesce-operator '???' only returns the right-hand value if the left-hand value is undefined.
+      because optional_input is defined and the undefined-coalesce-operator '???' only returns the right-hand value 
+      if the left-hand value is undefined.
 
   - id: both_operators_combined
     type: io.kestra.plugin.core.log.Log
@@ -113,5 +117,6 @@ tasks:
       Right-hand value: 'other_default'
       Operator used: '??'
       The expression "{{ (inputs.optional_input ??? 'mydefault') ?? 'other_default' }}" will return 'other_default'
-      because the first expression using the undefined-coalesce-operator '???' will return null, and the coalesce-operator '??' will return the default value 'other_default'.
+      because the first expression using the undefined-coalesce-operator '???' will return null, 
+      and the coalesce-operator '??' will return the default value 'other_default'.
 ```
