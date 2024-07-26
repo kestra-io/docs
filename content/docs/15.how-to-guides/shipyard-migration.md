@@ -29,19 +29,19 @@ You can start the Kestra journey by following the [Quickstart Guide](/docs/getti
 
 - In Shipyard, for every fleet that you have created, also has a YAML equivalent configuration. You can get it from the UI as shown below, or also from the code versioninig system like Gitgub in case you maintained one.
 
-![shiypard_yaml_configuration](/docs/how-to-guides/shipyard-migration/shipyard_yaml_configuration)
+![shiypard_yaml_configuration](/docs/how-to-guides/shipyard-migration/shipyard_yaml_configuration.png)
 
 For every vessel that you have in the fleet, try to find a matching [Kestra Plugin](https://kestra.io/plugins). For example, the equivalent of **Amazon S3 - Delete Files** vessel in Shipyard will be [io.kestra.plugin.aws.s3.Delete](https://kestra.io/plugins/plugin-aws/tasks/s3/io.kestra.plugin.aws.s3.delete) and [io.kestra.plugin.aws.s3.DeleteList](https://kestra.io/plugins/plugin-aws/tasks/s3/io.kestra.plugin.aws.s3.deletelist).
 
 In the same fashion as you would configure a vessel, you can configure a task in Kestra. Use the built-it task documentation in the Kestra UI to help you configure all task properties (the **Source and documentation** view). You can easily find plugins directly within the built-in UI editor by using the auto-complete feature. Each task documentation comes with an example and a detailed description of every task property.
 
-![documentation_view](docs/how-to-guides/shipyard-migration/documentation_view)
+![documentation_view](docs/how-to-guides/shipyard-migration/documentation_view.png)
 
 There are no **connections** specified in Kestra. By default, all tasks are executed sequentially. To control the execution logic e.g. to run some tasks in parallel, wrap your tasks in [flowable tasks](https://kestra.io/plugins/core#flow). As always, the combination of our [core documentation](/docs/), [Plugin documentation](/plugins/) and [Blueprints](/blueprints/) will help you figure out how to do that.
 
 Once you have the fleet equivalent (i.e. a flow) ready in Kestra, you can use the **Source and topology view** to check if the flow has the connections as the vessels in your fleet.
 
-![topology_view](docs/how-to-guides/shipyard-migration/topology_view)
+![topology_view](docs/how-to-guides/shipyard-migration/topology_view.png)
 
 - You can now save and run your flow to ensure you get the same results as expected.
 
