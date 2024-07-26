@@ -47,11 +47,9 @@ You can now save and run your flow to ensure you get the same results as expecte
 
 ## Need Help?
 
-Explore the comprehensive Kestra [docs](https://kestra.io/docs) for detailed explanations of Kestra concepts.
-
 Check out our extensive [plugin library](https://kestra.io/plugins) for descriptions and examples of each plugin task.
 
 Use our [blueprints](https://kestra.io/blueprints) for guidance on creating various flows.
 
-For assistance, join our free [Slack community](https://kestra.io/slack) and ask your questions in the `#help` channel. We'll respond promptly.
+For assistance, join our free [Slack community](https://kestra.io/slack) and ask your questions in the `#help` channel. We respond to every message.
 
