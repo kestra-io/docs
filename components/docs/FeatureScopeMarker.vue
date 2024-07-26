@@ -1,7 +1,7 @@
 <template>
     <div class="mb-3">
-        <p class="fw-bold d-flex gap-2 flex-wrap">Available on:
-            <span v-for="edition in editions" class="badge d-flex align-items-center" :class="`bg-${editionInfo(edition).color}`">{{ editionInfo(edition).label }}</span>
+        <p class="fw-bold d-flex gap-2 flex-wrap" v-if="editions?.length || version">Available on:
+            <span v-if="edition" v-for="edition in editions" class="badge d-flex align-items-center" :class="`bg-${editionInfo(edition).color}`">{{ editionInfo(edition).label }}</span>
             <span v-if="version" class="badge d-flex align-items-center bg-body-tertiary">{{ version }}</span>
         </p>
     </div>
