@@ -5,26 +5,26 @@ icon: /docs/icons/admin.svg
 
 How to configuration various options for tasks in Kestra.
 
-## Task Defaults
+## Plugin Defaults
 
-### `kestra.tasks.defaults`
-You can provide task defaults that will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Task defaults allow ensuring a property is defined at a default value for these tasks.
+### `kestra.plugins.defaults`
+You can provide plugin defaults that will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults allow ensuring a property is defined at a default value for these tasks.
 
 ```yaml
 kestra:
-  tasks:
+  plugins:
     defaults:
     - type: io.kestra.plugin.core.log.Log
       values:
         level: ERROR
 ```
 
-Forced task defaults ensure a property is set cluster-wise for a task, and no task can override it.
-Forced task defaults can be handy to enforce security concerns, for example, by enforcing Shell tasks to run as Docker containers.
+Forced plugin defaults ensure a property is set cluster-wise for a task, and no task can override it.
+Forced plugin defaults can be handy to enforce security concerns, for example, by enforcing Shell tasks to run as Docker containers.
 
 ```yaml
 kestra:
-  tasks:
+  plugins:
     defaults:
       - type: io.kestra.plugin.scripts.shell.Script
         forced: true

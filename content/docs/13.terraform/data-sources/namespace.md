@@ -30,6 +30,6 @@ data "kestra_namespace" "example" {
 
 - `description` (String) The namespace friendly description.
 - `id` (String) The ID of this resource.
-- `task_defaults` (String) The namespace task defaults.
+- `plugin_defaults` (String) The namespace plugin defaults.
 - `tenant_id` (String) The tenant id.
 - `variables` (String) The namespace variables.
