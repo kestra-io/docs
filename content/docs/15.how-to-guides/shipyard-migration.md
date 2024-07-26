@@ -27,7 +27,7 @@ You can start the Kestra journey by following the [Quickstart Guide](/docs/getti
 
 ## How to Migrate
 
-In Shipyard, for every fleet that you have created, also has a YAML equivalent configuration. You can get it from the UI as shown below, or also from the code versioninig system like Gitgub in case you maintained one.
+In Shipyard, for every fleet that you have created, also has a YAML equivalent configuration. You can get it from the UI as shown below, or also from the version control system like Git in case you maintained one.
 
 ![shiypard_yaml_configuration](/docs/how-to-guides/shipyard-migration/shipyard_yaml_configuration.png)
 
