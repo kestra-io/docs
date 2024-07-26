@@ -27,7 +27,7 @@ You can start the Kestra journey by following the [Quickstart Guide](/docs/getti
 
 ## How to Migrate
 
-- In Shipyard, for every fleet that you have created, also has a YAML equivalent configuration. You can get it from the UI as shown below, or also from the code versioninig system like Gitgub in case you maintained one.
+In Shipyard, for every fleet that you have created, also has a YAML equivalent configuration. You can get it from the UI as shown below, or also from the code versioninig system like Gitgub in case you maintained one.
 
 ![shiypard_yaml_configuration](/docs/how-to-guides/shipyard-migration/shipyard_yaml_configuration.png)
 
@@ -43,7 +43,7 @@ Once you have the fleet equivalent (i.e. a flow) ready in Kestra, you can use th
 
 ![topology_view](docs/how-to-guides/shipyard-migration/topology_view.png)
 
-- You can now save and run your flow to ensure you get the same results as expected.
+You can now save and run your flow to ensure you get the same results as expected.
 
 ## Need Help?
 
