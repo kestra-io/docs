@@ -7,10 +7,10 @@
     </div>
     <div class="mb-3" v-if="deprecated">
         <p class="fw-bold d-flex gap-2 flex-wrap">Deprecated since:
+            <span v-if="deprecated.since" class="badge d-flex align-items-center bg-body-tertiary">{{ deprecated.since }}</span>
             <NuxtLink v-if="deprecated.migrationGuide" class="badge d-flex align-items-center bg-secondary text-white" :href="deprecated.migrationGuide">
                 Migration Guide
             </NuxtLink>
-            <span v-if="deprecated.since" class="badge d-flex align-items-center bg-body-tertiary">{{ deprecated.since }}</span>
         </p>
     </div>
 </template>
