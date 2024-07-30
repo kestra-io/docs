@@ -97,7 +97,7 @@ Additionally, you can configure the `kestra.secret.google-secret-manager.prefix`
 
 Kestra currently supports the [KV secrets engine - version 2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) as a secrets backend. If you consider alternative Vault secrets engines, please note the following:
 - The [Vault's database secrets engine](https://developer.hashicorp.com/vault/docs/secrets/databases), often referred to as "dynamic secrets", is not supported as we need long-term secret storage.
-- The [Vault Secrets Operator on Kubernetes](https://developer.hashicorp.com/vault/tutorials/kubernetes/vault-secrets-operator) creates a Kubernetes secret which is compatible with Kestra with some additional steps. If you are interested about this option, [reach out to us](https://kestra.io/demo) and we can advise how you can set this up. 
+- The [Vault Secrets Operator on Kubernetes](https://developer.hashicorp.com/vault/tutorials/kubernetes/vault-secrets-operator) creates a Kubernetes secret which is compatible with Kestra with some additional steps. If you are interested about this option, [reach out to us](https://kestra.io/demo) and we can advise how you can set this up.
 
 Follow the steps below to configure the [KV Secrets Engine - Version 2](https://www.vaultproject.io/docs/secrets/kv/kv-v2)  as your secrets backend.
 
