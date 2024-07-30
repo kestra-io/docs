@@ -23,7 +23,7 @@ You can build a custom plugin to run your tasks in any environment you wish, or 
 
 ## From Beta to General Availability
 
-We introduced task runners in Beta in Kestra 0.16.0, and since then, we've been improving their performance, stability, and usability. Among others, we've added the capability to **terminate remote workers when the execution is canceled from the UI**, integrated Task Runners into **additional CLI and script plugins**, improved **file handling** and **recovery from failures** in remote compute environments, and documented the feature extensively.
+We introduced task runners [in Beta in Kestra 0.16.0](./2024-04-12-release-0-16.md), and since then, we've been improving their performance, stability, and usability. Among others, we've added the capability to **terminate remote workers when the execution is canceled from the UI**, integrated Task Runners into **additional CLI and script plugins**, improved **file handling** and **recovery from failures** in remote compute environments, and documented the feature extensively.
 
 Thanks to feedback from over 80 users and many enhancements and bug fixes, Task Runners are now generally available and ready for production use at scale. **We are grateful to all our Beta testers** for their valuable input and suggestions.
 
@@ -49,7 +49,7 @@ One of the key benefits of Task Runners is their ability to run the same busines
 
 ### Consistent API with centralized configuration
 
-Whether you are developing locally in Docker or running production workloads in Kubernetes, Task Runners offer a **consistent API**, requiring **no changes to your business logic code** when moving your workflows from development to production. And with the centralized configuration through `pluginDefaults`, you can manage your task runner configuration and credentials in a single place for each environment without code duplication.
+Whether you are developing locally in Docker or running production workloads in Kubernetes, Task Runners offer a **consistent API**, requiring **no changes to your business logic code**. Thanks to `pluginDefaults`, you can manage your task runner configuration and credentials in a single place for each environment without code duplication.
 
 ## Next steps
 
