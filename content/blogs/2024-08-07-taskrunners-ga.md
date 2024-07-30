@@ -51,9 +51,27 @@ One of the key benefits of Task Runners is their ability to run the same busines
 
 Whether you are developing locally in Docker or running production workloads in Kubernetes, Task Runners offer a **consistent API**, requiring **no changes to your business logic code**. Thanks to `pluginDefaults`, you can manage your task runner configuration and credentials in a single place for each environment without code duplication.
 
+::alert{type="info"}
+Check the video below summarizing the key benefits of Task Runners.
+
+<div class="video-container">
+  <iframe src="https://youtu.be/edYa8WAMAdQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+::
+
 ## Next steps
 
-Embrace the scalability of dynamically-provisioned resources with Task Runners, now fully equipped to handle your most demanding data processing workflows. Try Task Runners in [Kestra 0.18.0](https://kestra.io/docs/getting-started/installation) today and let us know what you think.
+Embrace the scalability of dynamically-provisioned resources with Task Runners, now fully equipped to handle your most demanding data processing workflows.
+
+To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to-guides/index.md), [Blueprints](https://kestra.io/blueprints) and [Video Tutorials](https://www.youtube.com/playlist?list=PLEK3H8YwZn1pbL_nRKDqE3s7J8os_yc31) on how to use Task Runners with different cloud providers. The videos linked below will guide you through the process of setting up a Task Runner for your chosen cloud provider.
+
+<div class="video-container">
+  <iframe src="https://youtu.be/edYa8WAMAdQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://youtu.be/edYa8WAMAdQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://youtu.be/edYa8WAMAdQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+Try Task Runners in [Kestra 0.18.0](https://kestra.io/docs/getting-started/installation) today and let us know what you think!
 
 - If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 - If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
