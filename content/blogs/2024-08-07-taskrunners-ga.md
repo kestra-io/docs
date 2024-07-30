@@ -13,7 +13,7 @@ We are thrilled to announce the general availability of Task Runners, a major ad
 
 ## What are Task Runners
 
-Task Runners are plugins capable of executing your tasks in remote environments.
+Task Runners is an extensible, pluggable system capable of executing your tasks in arbitrary remote environments. All you have to do to offload your task execution to a remote environment is to specify the `taskRunner` type in your task configuration. You can build a custom plugin to run your tasks in any environment you wish, or you can use one of the managed plugins offered by [Kestra](https://kestra.io/), such as AWS Batch, Azure Batch, Google Batch, or Kubernetes.
 
 Many data processing tasks are computationally intensive and require a lot of resources (such as CPU, GPU, and memory). Instead of provisioning always-on servers, Task Runners can run your code on dynamically provisioned compute instances in the cloud, such as AWS ECS Fargate, Azure Batch, Google Batch, auto-scaled Kubernetes clusters, and more.
 
