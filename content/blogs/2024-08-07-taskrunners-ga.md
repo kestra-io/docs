@@ -1,6 +1,6 @@
 ---
 title: Task Runners are now Generally Available and Ready to Handle Your Most Demanding Workflows
-description: Run your code anywhere with dynamically-provisioned resources
+description: Run your code anywhere with dynamically-provisioned resources.
 date: 2024-08-07T13:00:00
 category: News & Products Updates
 author:
@@ -11,7 +11,7 @@ image: /blogs/2024-08-07-taskrunners-ga.png
 
 We are thrilled to announce the general availability of Task Runners, a major addition to Kestra's orchestration capabilities, allowing you to offload resource-intensive tasks to on-demand compute services. With task runners, you can guarantee that your workloads have enough resources while reducing compute costs.
 
-## What are Task Runners?
+## What are Task Runners
 
 Task Runners are plugins capable of executing your tasks in remote environments.
 
@@ -24,7 +24,7 @@ We introduced task runners in Beta in Kestra 0.16.0, and since then, we've been 
 
 Thanks to the feedback from over 80 users and a large number of enhancements and bug fixes, Task Runners are now generally available and ready for production use at scale. **We are immensely grateful to all our beta testers** for their valuable input and suggestions.
 
-*“Our pipelines were faster in GCP Batch service compared to Cloud Run Jobs, and they used even less memory and CPU. I attribute this to the simplified code, and simplified design of how Kestra Task Runners only poll VMs as a whole.” -* [Jack Perry, Data Engineer at Foundation Direct](https://jackskylord.medium.com/kestra-io-powerful-declarative-workflows-1dc79bce0b69)
+*“Our pipelines were faster in GCP Batch service compared to Cloud Run Jobs, and they used even less memory and CPU. I attribute this to the simplified code, and simplified design of how Kestra Task Runners only poll VMs as a whole.” -* [Jack P., Data Engineer at Foundation Direct](https://jackskylord.medium.com/kestra-io-powerful-declarative-workflows-1dc79bce0b69)
 
 ## Key Benefits of Task Runners
 
