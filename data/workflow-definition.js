@@ -5,7 +5,7 @@ export default {
             active: false,
             text: 'Manage your flows and scripts from the code editor',
             tabText: 'Local IDE',
-            imgHref: '/landing/overview/local-ide.svg',
+            imgHref: '/landing/overview/local-ide.png',
             imgAlt: 'Local IDE',
         },
         {
@@ -29,7 +29,7 @@ export default {
             active: false,
             text: 'Organize your code and configuration files with Namespaces',
             tabText: 'Stay Organized with Namespaces',
-            imgHref: '/landing/overview/stay-organized.svg',
+            imgHref: '/landing/overview/stay-organized.png',
             imgAlt: 'Stay Organized',
         },
         {
@@ -37,7 +37,7 @@ export default {
             active: false,
             text: 'Easily execute your workflows from the UI',
             tabText: 'Execute flows from the UI or via an API call',
-            imgHref: '/landing/overview/execute-flows.svg',
+            imgHref: '/landing/overview/execute-flows.png',
             imgAlt: 'Execute flows from the UI',
         },
     ]

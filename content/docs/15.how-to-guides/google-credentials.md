@@ -5,7 +5,7 @@ icon: /docs/icons/tutorial.svg
 
 Setup a Google Service Account inside of Kestra.
 
-When you're using Google Cloud, you're going to need to authenticate inside of Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly inside of Kestra.
+When you're using Google Cloud (and for some Google Workspace apps), you're going to need to authenticate inside of Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly inside of Kestra.
 
 ## Create Service Account inside of Google Cloud
 
@@ -144,3 +144,11 @@ In Kestra Enterprise Edition, secrets can be managed directly from the UI meanin
 ## `GOOGLE_APPLICATION_CREDENTIALS`
 
 While you can use the `GOOGLE_APPLICATION_CREDENTIALS` environment variable, this is not advised as you'll need to mount the JSON file to Docker which isn't always possible depending on how you've setup Kestra.
+
+## Google App Passwords
+
+For some Google applications, like Gmail, you won't use a service account for authenticating. Instead, you'll use a normal username and password associated with a Google account. However, this doesn't work if your account has 2 factor authenication enabled. In this case, you'll need to generate an **App Password**. You can do this by going to **Manage your Google Account**, then go to **Security**. Select the **App Passwords** option and you'll be able to Generate a new one. This can be used where you'd put your normal password to connect it to Kestra.
+
+::alert{type=info}
+If your account is associated with Google Workspaces, you might need your Administrator to enable App Passwords in the Admin Console.
+::

@@ -14,7 +14,7 @@ Use this data source to access information about an existing Namespace File
 
 ```hcl
 data "kestra_namespace_file" "example" {
-  namespace = "io.kestra.mynamespace"
+  namespace = "company.team"
   filename  = "myscript.py"
   content   = file("myscript.py")
 }
