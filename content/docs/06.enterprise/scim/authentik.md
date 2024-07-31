@@ -98,7 +98,7 @@ On the `Provider Configuration` screen:
 1. In the `Authentication flow` field, select “default-authentication-flow (Welcome to authentik!)”
 2. In the `Authorization flow` field, select “default-provider-authorization-explicit-consent (Authorize Application)”
 ![scim-for-authentik-5](/docs/enterprise/scim/authentik/authentik5.png)
-3. Keep the Client type as `Confidential` and under the `Redirect URIs/Origins (RegEx)`, enter your Kestra host's `/oauth/callback/authentik` endpoint in the format `http://<kestra_host>:<kestra_port>/oauth/callback/authentik` e.g. http://localhost:28080/oauth/callback/authentik and then Submit the Application:
+3. Keep the Client type as `Confidential` and under the `Redirect URIs/Origins (RegEx)`, enter your Kestra host's `/oauth/callback/authentik` endpoint in the format `http://<kestra_host>:<kestra_port>/oauth/callback/authentik` e.g. http://localhost:8080/oauth/callback/authentik and then `Submit` the Application:
 ![scim-for-authentik-6](/docs/enterprise/scim/authentik/authentik6.png)
 
 Note the `Client ID` and `Client Secret` as you will need these to configure Kestra in the next step.
@@ -120,7 +120,9 @@ With the above Client ID and Secret, add the following in the `micronaut` config
                     issuer: "http://localhost:9000/application/o/kestra/"
 ```
 
-Note the above `issuer` URL - if you named your application something other than `kestra`, you will need to update this accordingly: `http://localhost:9000/application/o/<application_name>/`.
+You may need to adjust the above `issuer` URL if you named your application something other than `kestra`. Make sure to update that URL to match your application name `http://localhost:9000/application/o/<application_name>/`.
+
+### Configure a Default Role for your SSO users in Kestra Settings
 
 To ensure that your SSO users have some initial permissions within Kestra UI, it's useful to set up a default role for them. You can do this by adding the following configuration under the `kestra.security` section:
 
@@ -150,32 +152,41 @@ kestra:
 ```
 
 ::alert{type="info"}
-⚠️ Make sure that your `default-role` is added under the `kestra.security` section, not under `micronaut.security`! Also, make sure that the `default-role` has the necessary permissions for your users to interact with Kestra. The above configuration is just an example and you might want to restrict the permissions boundaries for production use.
+⚠️ Make sure that your `default-role` is added under the `kestra.security` section, not under `micronaut.security`. Also, ensure that the `default-role` has the necessary permissions for your users to interact with Kestra. The above configuration is just an example and you might want to restrict the permissions boundaries for production use.
 ::
 
 ## authentik SCIM 2.0 Setup
 
-Configuring SCIM 2.0 requires a similar process to SSO — you'll need to create a new `Application`. Then, in Step 2, select `SCIM` as the Provider Type.
+Configuring SCIM 2.0 requires a similar process to SSO — you'll need to create a new `Application`. Then, in the second step, select `SCIM` as the Provider Type.
 
 ![scim-for-authentik-7](/docs/enterprise/scim/authentik/authentik7.png)
 
-In the Protocol settings, use the `URL` and `Secret Token` obtained from Kestra. If you are running authentik on a Mac with the [docker-compose setup](https://docs.goauthentik.io/docs/installation/docker-compose) setup, make sure to replace `localhost` in your Kestra's SCIM endpoint with `docker.for.mac.localhost` since otherwise the sync won't work. So your URL should look like `http://docker.for.mac.localhost:8080/api/v1/dev/integrations/zIRjRAMGvkammpeLVuyJl/scim/v2`.
+In the `Protocol settings` section, enter the `URL` and `Secret Token` obtained from Kestra.
+
+::alert{type="info"}
+If you are running authentik on a Mac machine with [docker-compose installer](https://docs.goauthentik.io/docs/installation/docker-compose), make sure to replace `localhost` in your Kestra's SCIM endpoint with `docker.for.mac.localhost` since otherwise the sync won't work. Your URL should look as follows: `http://docker.for.mac.localhost:8080/api/v1/dev/integrations/zIRjRAMGvkammpeLVuyJl/scim/v2`.
 
 ![scim-for-authentik-8](/docs/enterprise/scim/authentik/authentik8.png)
 
-## Test both SSO and SCIM
+## Test both SSO and SCIM by adding users and groups
 
-Create some new `users` and `groups` in the `Directory` settings. It's best if you use an email not tied to the default user at this stage.
+Create first `Users` and `Groups` in the `Directory` settings.
 
 ![scim-for-authentik-9](/docs/enterprise/scim/authentik/authentik9.png)
 
-It's best if you first create a group and then a user and assign the user to an existing group:
+Then, assign your user(s) to an existing group:
 
 ![scim-for-authentik-10](/docs/enterprise/scim/authentik/authentik10.png)
 
+You can set password for each authentik user to allow them to log in directly to Kestra with their username/email and password.
+
+![scim-for-authentik-11](/docs/enterprise/scim/authentik/authentik11.png)
+
 Once groups and users are created, they should be visible in the Kestra UI under the `IAM` → `Users` and `Groups` sections. It's best if you log in as the default admin user and attach a desired `Role` to each group to ensure that the users have the necessary permissions.
 
-Then, to verify that, log in as one of those new authentik users in a separate browser or incognito mode and verify that the user has the permissions you expect.
+![scim-for-authentik-12](/docs/enterprise/scim/authentik/authentik12.png)
+
+Then, to verify access, log in as one of those new authentik users in a separate browser or incognito mode and verify that the user has the permissions you expect.
 
 ---
 
