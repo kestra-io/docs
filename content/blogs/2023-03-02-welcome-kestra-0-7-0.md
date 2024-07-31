@@ -46,7 +46,7 @@ This works thanks to our validation based on a JSON Schema computed for each tas
 
 ### Improved Flow validation
 
-We have improved the flow validation in Kestra. Flows are now validated with Plugin Defaults, meaning no more issues when a mandatory field is set in plugin defaults and not directly in the flow definition.
+We have improved the flow validation in Kestra. Flows are now validated with Task Defaults, meaning no more issues when a mandatory field is set in task defaults and not directly in the flow definition.
 
 Flow validation is also now performed in the editor before you save your flow so it is no more possible to create invalid flows and templates.
 

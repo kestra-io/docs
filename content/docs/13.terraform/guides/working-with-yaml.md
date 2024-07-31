@@ -28,7 +28,7 @@ You can use simple terraform multiline string with [Heredoc String](https://www.
 
 ```hcl
 resource "kestra_flow" "example" {
-  namespace = "company.team"
+  namespace = "io.kestra.mynamespace"
   flow_id = "my-flow"
   content = <<EOT
 inputs:
@@ -38,7 +38,7 @@ inputs:
 
 tasks:
   - id: t2
-    type: io.kestra.plugin.core.log.Log
+    type: io.kestra.core.tasks.log.Log
     message: first {{task.id}}
     level: TRACE
 EOT
@@ -57,7 +57,7 @@ inputs:
 
 tasks:
   - id: t2
-    type: io.kestra.plugin.core.log.Log
+    type: io.kestra.core.tasks.log.Log
     message: first {{task.id}}
     level: TRACE
 EOT
@@ -65,8 +65,8 @@ EOT
 
 ```hcl
 resource "kestra_flow" "example" {
-  namespace = "company.team"
-  flow_id = "myflow"
+  namespace = "io.kestra.mynamespace"
+  flow_id = "my-flow"
   content = file("my-flow.yml")
 }
 ```
@@ -108,8 +108,8 @@ And finally create the resource invoking the `templatefile`:
 
 ```hcl
 resource "kestra_flow" "example" {
-  namespace = "company.team"
-  flow_id = "myflow"
+  namespace = "io.kestra.mynamespace"
+  flow_id = "my-flow"
   content = templatefile("my-flow.yaml", {})
 }
 ```
@@ -137,14 +137,14 @@ Create 2 yaml files:
 
 ```yaml
 id: t1
-type: io.kestra.plugin.core.log.Log
+type: io.kestra.core.tasks.log.Log
 message: first {{task.id}}
 level: TRACE
 ```
 
 ```yaml
 id: t2
-type: io.kestra.plugin.core.log.Log
+type: io.kestra.core.tasks.log.Log
 message: second {{task.id}}
 level: TRACE
 ```

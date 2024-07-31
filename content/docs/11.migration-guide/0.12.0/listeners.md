@@ -21,7 +21,7 @@ kestra:
     enabled: true
 ```
 
-Then, make sure to also add the following plugin defaults to your configuration to ensure that your conditions are working properly after the upgrade to any version after 0.12.0:
+Then, make sure to also add the following task defaults to your configuration to ensure that your conditions are working properly after the upgrade to any version after 0.12.0:
 
 ```yaml
 kestra:
@@ -44,7 +44,7 @@ kestra:
         date: "{{ now(format='iso_local_date') }}"
 ```
 
-Due to listeners' deprecation, we changed the default behavior of various `io.kestra.core.models.conditions`-type conditions to use the `{{trigger.date}}` as default value for the `date` property instead of using `"{{ now(format='iso_local_date') }}"`. To ensure that your conditions are working properly after the upgrade to any version after 0.12.0, you need to add the above plugin defaults to your Kestra configuration.
+Due to listeners' deprecation, we changed the default behavior of various `io.kestra.core.models.conditions`-type conditions to use the `{{trigger.date}}` as default value for the `date` property instead of using `"{{ now(format='iso_local_date') }}"`. To ensure that your conditions are working properly after the upgrade to any version after 0.12.0, you need to add the above task defaults to your Kestra configuration.
 
 ---
 

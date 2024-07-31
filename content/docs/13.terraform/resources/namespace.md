@@ -25,7 +25,7 @@ EOT
 - type: io.kestra.core.tasks.log.Log
   values:
     message: first {{flow.id}}
-- type: io.kestra.plugin.core.debug.Return
+- type: io.kestra.core.tasks.debugs.Return
   values:
     format: first {{flow.id}}
 EOT
@@ -42,7 +42,6 @@ EOT
 ### Optional
 
 - `description` (String) The namespace friendly description.
-- `plugin_defaults` (String) The namespace plugin defaults in yaml string.
 - `plugin_defaults` (String) The namespace plugin defaults in yaml string.
 - `variables` (String) The namespace variables in yaml string.
 

@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="container bd-gutter">
-            <div class=" mt-5" data-aos="fade-left">
+            <div class="grid gap-3 mt-5" data-aos="fade-left">
                 <button
                     v-for="category in categories"
                     :key="category"

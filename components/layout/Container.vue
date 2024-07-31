@@ -25,7 +25,7 @@
                 <NavToc :page="page" class="my-md-0 my-4 right-menu" />
 
                 <div class="bd-content">
-                    <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated" :editions="page.editions" :version="page.version" :deprecated="page.deprecated"/>
+                    <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions" :version="page.version" />
                     <ContentRendererMarkdown
                         class="bd-markdown"
                         :value="page"

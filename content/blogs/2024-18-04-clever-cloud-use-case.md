@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: "mproset"
-image: /blogs/2024-04-18-clever-cloud-use-case.jpg
+image: /blogs/2024-18-04-clever-cloud-use-case.jpg
 ---
 
 Clever Cloud provides a Platform as a Service solution, based in Europe. Clever Cloud exists for one purpose: helping people and companies to deliver software and services faster. Their promise is to ensure that once an app is deployed, it stays up, no matter what (high traffic, security updates, DDoS , application failure, hardware issues etc..). The PaaS helps development teams to put digital applications and services into production on a reliable infrastructure, with automatic scalability and transparent pricing. With monitoring data reaching 20TB monthly, Clever Cloud needed a robust solution to manage this influx without compromising system performance or storage efficiency.
@@ -47,7 +47,7 @@ Following the compression and validation of the data, the workflow proceeds to t
 
 Lastly, the workflow includes monitoring and logging capabilities. Every operation within the workflow is logged, and performance metrics are monitored. This allows tracking of the workflow’s execution, helping to identify and rectify any deviations or anomalies.
 
-![Clever cloud](/blogs/2024-04-18-clever-cloud-use-case/workflow.png)
+![Clever cloud](/blogs/2024-18-04-clever-cloud-use-case/workflow.png)
 
 ## What's Next
 

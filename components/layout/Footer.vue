@@ -76,7 +76,7 @@
                 <div class="flex-grow-1">
                     <p class="mb-0 d-none d-md-inline">
                         © {{  new Date().getFullYear() }} <NuxtLink href="/">Kestra Technologies</NuxtLink>.
-                        Developed with <Heart class="text-danger" /> on 🌎.
+                        Developed with <Heart class="text-danger" /> in the 🌎.
 
                     </p>
                 </div>
