@@ -145,3 +145,38 @@ Additionally, you can configure the following properties:
 - **Namespace**: `kestra.secret.vault.namespace` is an optional configuration available on [Vault Enterprise Pro](https://learn.hashicorp.com/vault/operations/namespaces) allowing you to set a global namespace for the Vault server instance.
 - **Engine Version**: `kestra.secret.vault.engine-version` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
 - **Root Engine**: `kestra.secret.vault.root-engine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
+
+## Default Tags
+
+For each secret manager, you can configure the default tags that will be added to all newly created or updated secrets.
+
+Configuration example:
+
+```yaml
+kestra:
+  secret:
+    <secret-type>:
+      # a map of default key/value tags
+      tags:
+        application: kestra-production
+```
+
+## Enable Caching
+
+If you use a secret manager provided by a cloud service provider, it may be worth enabling the secret cache to reduce
+the number of calls to the secret manager API. 
+
+Configuration example:
+
+```yaml
+kestra:
+  secret:
+    cache:
+      enabled: true
+      maximumSize: 1000
+      expireAfterWrite: 60s
+```
+
+* **`kestra.secret.cache.enabled`**: Specifies whether to enable caching for secrets.
+* **`kestra.secret.cache.maximumSize`**:  The maximum number of entries the cache may contain.
+* **`kestra.secret.cache.expireAfterWrite`**:  Specifies that each entry should be automatically removed from the cache once this duration has elapsed after the entry's creation.
