@@ -46,7 +46,7 @@ The Secret Token will be a long string (ca. 200 characters) that will authentica
 
 Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests for that integration endpoint will be rejected.
 
-![scim3](/docs/enterprise/scim/authentik/scim3.png)
+![scim3](/docs/enterprise/scim3.png)
 
 
 ::alert{type="info"}
@@ -61,10 +61,10 @@ When creating a new Provisioning Integration, Kestra will automatically create t
    - `GROUPS`: `CREATE`, `READ` `UPDATE`, `DELETE`
    - `USERS`: `CREATE`, `READ`, `UPDATE`
    - `BINDINGS`: `CREATE`, `READ`, `UPDATE`, `DELETE`
-  ![scim4](/docs/enterprise/scim/authentik/scim4.png)
+  ![scim4](/docs/enterprise/scim4.png)
 
 2. Service Account with an API Token which was previously displayed as a Secret Token for the integration:
-  ![scim5](/docs/enterprise/scim/authentik/scim5.png)
+  ![scim5](/docs/enterprise/scim5.png)
 
 ::alert{type="info"}
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
