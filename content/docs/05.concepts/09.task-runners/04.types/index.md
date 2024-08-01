@@ -1,7 +1,8 @@
 ---
 title: Task Runner Types
 icon: /docs/icons/dev.svg
-version: ">= 0.16.0"
+version: ">= 0.18.0"
+editions: ["OSS", "EE"]
 ---
 
 This section lists all task runners available in Kestra.
