@@ -45,13 +45,13 @@
                 content: "Get full access of all the Open source features and unlock the full potential with Enterprise only features"
             },
             { name: 'twitter:image:alt', content: "Get More Out of Your Data With the Enterprise Edition" },
-            { name: 'twitter:image', content: '/og-image.png' },
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
             { property: 'og:title', content: "Get More Out of Your Data With the Enterprise Edition" },
             {
               property: 'og:description',
               content: "Get full access of all the Open source features and unlock the full potential with Enterprise only features"
             },
-            { property: 'og:image', content: '/og-image.png' },
+            { property: 'og:image', content: `${origin}/og-image.png` },
             { property: 'og:image:type', content: "image/svg+xml" },
             { property: 'og:image:alt', content: "Get More Out of Your Data With the Enterprise Edition" },
         ]

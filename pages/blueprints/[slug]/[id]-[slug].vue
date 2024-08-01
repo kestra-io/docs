@@ -60,6 +60,7 @@
     descriptionAsMd.value = blueprintInformations.value.descriptionAsMd
     flowAsMd.value = blueprintInformations.value.flowAsMd
     description.value = blueprintInformations.value.metaDescription || descriptionAsMd?.value?.data?.description;
+    const { origin } = useRequestURL()
 
     useHead({
         meta: [
@@ -70,11 +71,11 @@
                 name: 'twitter:description',
                 content: description.value
             },
-            { name: 'twitter:image', content: '/og-image.png' },
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
             { name: 'twitter:image:alt', content: page.value.title },
             { property: 'og:title', content: page.value.title },
             { property: 'og:description', content: description.value },
-            { property: 'og:image', content: '/og-image.png' },
+            { property: 'og:image', content: `${origin}/og-image.png` },
             { property: 'og:image:type', content: "image/svg+xml" },
             { property: 'og:image:alt', content: page.value.title },
         ]
