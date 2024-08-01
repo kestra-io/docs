@@ -34,11 +34,16 @@
                 name: 'twitter:description',
                 content: "Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations."
             },
-            { name: 'twitter:image', content: `${origin}/terraform/header/background.svg` },
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
+            { name: 'twitter:image:alt', content: "Kestra Terraform Provider: Deploy All Your Workflows in a CI/CD Process" },
+            { property: 'og:title', content: "Kestra Terraform Provider: Deploy All Your Workflows in a CI/CD Process" },
             {
-                name: 'twitter:image:alt',
-                content: "Background Image for Terform-Provider"
-            }
+              property: 'og:description',
+              content: "Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations."
+            },
+            { property: 'og:image', content: `${origin}/og-image.png` },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: "Kestra Terraform Provider: Deploy All Your Workflows in a CI/CD Process" },
         ]
     })
 </script>

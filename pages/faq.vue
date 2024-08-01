@@ -190,8 +190,14 @@
             { name: 'twitter:site', content: '@kestra_io' },
             { name: 'twitter:title', content: "Frequently Asked Questions" },
             { name: 'twitter:description', content: "Get responses on all your common questions about Kestra" },
-            { name: 'twitter:image', content: `${origin}/landing/home/header-bg.png` },
-            { name: 'twitter:image:alt', content: "FAQ" }
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
+            { name: 'twitter:image:alt', content: "FAQ" },
+            { property: 'og:title', content: "Frequently Asked Questions" },
+            { property: 'og:description', content: "Get responses on all your common questions about Kestra" },
+            { property: 'og:image', content: `${origin}/og-image.png` },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: "Frequently Asked Questions" },
+            { property: 'og:url', content: `${origin}/faq` },
         ]
     })
 </script>

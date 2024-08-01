@@ -44,8 +44,13 @@
         name: 'twitter:description',
         content: "Separate your business logic from your orchestration logic with a versatile set of language-agnostic developer tools"
       },
-      { name: 'twitter:image', content: `${origin}/landing/features/declarative/header-bg.svg` },
-      { name: 'twitter:image:alt', content: "Declarative Data Orchestration with Kestra" }
+      { name: 'twitter:image', content: '/og-image.png' },
+      { name: 'twitter:image:alt', content: "Code in Any language with Kestra the Language Agnostic Platform" },
+      { property: 'og:title', content: "Code in Any language with Kestra the Language Agnostic Platform" },
+      { property: 'og:description', content: "Separate your business logic from your orchestration logic with a versatile set of language-agnostic developer tools" },
+      { property: 'og:image', content: '/og-image.png' },
+      { property: 'og:image:type', content: "image/svg+xml" },
+      { property: 'og:image:alt', content: "Code in Any language with Kestra the Language Agnostic Platform" },
     ]
   })
 </script>

@@ -70,6 +70,13 @@
                 name: 'twitter:description',
                 content: description.value
             },
+            { name: 'twitter:image', content: '/og-image.png' },
+            { name: 'twitter:image:alt', content: page.value.title },
+            { property: 'og:title', content: page.value.title },
+            { property: 'og:description', content: description.value },
+            { property: 'og:image', content: '/og-image.png' },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: page.value.title },
         ]
     })
 </script>

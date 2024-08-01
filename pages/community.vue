@@ -38,11 +38,16 @@
                 name: 'twitter:description',
                 content: "Connect with a vibrant community of data enthusiasts to learn, collaborate, and contribute to the evolution of data orchestration."
             },
-            { name: 'twitter:image', content: `${origin}/landing/community/header.svg` },
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
+            { name: 'twitter:image:alt', content: "Join a Thrilling Community of Data Enthusiasts"},
+            { property: 'og:title', content: "Join a Thrilling Community of Data Enthusiasts" },
             {
-                name: 'twitter:image:alt',
-                content: "Illustration of diverse people around Kestra's logo, symbolizing Kestra's thriving community"
-            }
+              property: 'og:description',
+              content: "Connect with a vibrant community of data enthusiasts to learn, collaborate, and contribute to the evolution of data orchestration."
+            },
+            { property: 'og:image', content: `${origin}/og-image.png` },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: "Join a Thrilling Community of Data Enthusiasts" },
         ]
     })
 
