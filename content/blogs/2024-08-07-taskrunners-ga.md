@@ -13,7 +13,7 @@ We are thrilled to announce the general availability of Task Runners, a major ad
 
 ## What are Task Runners
 
-Many data processing tasks are computationally intensive and require a lot of resources (such as CPU, GPU, and memory). Instead of provisioning always-on servers, Task Runners can run your code on dynamically provisioned compute resources.
+Many data processing tasks are computationally intensive and require a lot of resources (such as CPU, GPU, and memory). Instead of provisioning always-on servers, Task Runners can execute your code on dynamically provisioned compute resources.
 
 [Task Runners](../docs/05.concepts/09.task-runners/index.md) is an extensible, pluggable system capable of executing your tasks in arbitrary remote environments. All you have to do to offload your task execution to a remote environment is to specify the `taskRunner` type in your task configuration.
 
@@ -55,7 +55,7 @@ Whether you are developing locally in Docker or running production workloads in 
 Check the video below summarizing the key benefits of Task Runners.
 
 <div class="video-container">
-  <iframe src="https://youtu.be/edYa8WAMAdQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=2vu6XPUUeTQziWNq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 ::
 
@@ -66,9 +66,15 @@ Embrace the scalability of dynamically-provisioned resources with Task Runners, 
 To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to-guides/index.md), [Blueprints](https://kestra.io/blueprints) and [Video Tutorials](https://www.youtube.com/playlist?list=PLEK3H8YwZn1pbL_nRKDqE3s7J8os_yc31) on how to use Task Runners with different cloud providers. The videos linked below will guide you through the process of setting up a Task Runner for your chosen cloud provider.
 
 <div class="video-container">
-  <iframe src="https://youtu.be/edYa8WAMAdQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-  <iframe src="https://youtu.be/edYa8WAMAdQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-  <iframe src="https://youtu.be/edYa8WAMAdQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/U2TzypTbpI8?si=64eTuk-QhnGVU_3s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/kk084vVyZDM?si=TF7SqVaDUrwSX4uy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/nHzgPFbXIxY?si=TPh03i4XmRHNeW-b" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 Try Task Runners in [Kestra 0.18.0](https://kestra.io/docs/getting-started/installation) today and let us know what you think!
