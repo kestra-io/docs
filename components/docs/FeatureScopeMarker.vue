@@ -1,8 +1,16 @@
 <template>
     <div class="mb-3">
-        <p class="fw-bold d-flex gap-2 flex-wrap">Available on:
-            <span v-for="edition in editions" class="badge d-flex align-items-center" :class="`bg-${editionInfo(edition).color}`">{{ editionInfo(edition).label }}</span>
+        <p class="fw-bold d-flex gap-2 flex-wrap" v-if="editions?.length || version">Available on:
+            <span v-if="edition" v-for="edition in editions" class="badge d-flex align-items-center" :class="`bg-${editionInfo(edition).color}`">{{ editionInfo(edition).label }}</span>
             <span v-if="version" class="badge d-flex align-items-center bg-body-tertiary">{{ version }}</span>
+        </p>
+    </div>
+    <div class="mb-3" v-if="deprecated">
+        <p class="fw-bold d-flex gap-2 flex-wrap">Deprecated since:
+            <span v-if="deprecated.since" class="badge d-flex align-items-center bg-body-tertiary">{{ deprecated.since }}</span>
+            <NuxtLink v-if="deprecated.migrationGuide" class="badge d-flex align-items-center bg-secondary text-white" :href="deprecated.migrationGuide">
+                Migration Guide
+            </NuxtLink>
         </p>
     </div>
 </template>
@@ -30,7 +38,11 @@
             version: {
                 type: String,
                 default: undefined
-            }
+            },
+            deprecated: {
+              type: Object,
+              default: undefined
+            },
         },
         methods: {
             editionInfo(edition) {

@@ -49,4 +49,4 @@ provider "kestra" {
 - `password` (String, Sensitive) The BasicAuth password
 - `tenant_id` (String) The tenant id (EE)
 - `url` (String) The endpoint url without trailing slash
-- `username` (String) The BasicAuth username
+- `username` (String) The BasicAuth username or service account name

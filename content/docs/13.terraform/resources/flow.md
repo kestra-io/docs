@@ -14,8 +14,8 @@ Manages a Kestra Flow.
 
 ```hcl
 resource "kestra_flow" "example" {
-  namespace = "io.kestra.mynamespace"
-  flow_id   = "my-flow"
+  namespace = "company.team"
+  flow_id   = "myflow"
   content   = <<EOT
 inputs:
   - name: my-value
@@ -26,12 +26,12 @@ variables:
 
 tasks:
   - id: t2
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: first {{task.id}}
     level: TRACE
 
 pluginDefaults:
-  - type: io.kestra.core.tasks.log.Log
+  - type: io.kestra.plugin.core.log.Log
     values:
       message: third {{flow.id}}
 EOT
