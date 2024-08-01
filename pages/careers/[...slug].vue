@@ -46,11 +46,16 @@
                     name: 'twitter:description',
                     content: "Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of orchestration software"
                 },
-                { name: 'twitter:image', content: `${origin}/landing/careers/header.svg` },
+                { name: 'twitter:image', content: `${origin}/og-image.png` },
+                { name: 'twitter:image:alt', content: "About-Us" },
+                { property: 'og:title', content: "Join Us and Shape the Future of Orchestration Software" },
                 {
-                    name: 'twitter:image:alt',
-                    content: "A square with circles inside with emojis in It representing Kestra's inclusive and dynamic workplace culture"
-                }
+                  property: 'og:description',
+                  content: "Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of orchestration software"
+                },
+                { property: 'og:image', content: `${origin}/og-image.png` },
+                { property: 'og:image:type', content: "image/svg+xml" },
+                { property: 'og:image:alt', content: "Join Us and Shape the Future of Orchestration Software" },
             ]
         })
     } else {
@@ -74,7 +79,14 @@
                 { name: 'twitter:site', content: '@kestra_io' },
                 { name: 'twitter:title', content: data.value.title },
                 { name: 'twitter:description', content: data.value.description },
-                { name: 'twitter:image:alt', content: data.value.title }
+                { name: 'twitter:image:alt', content: data.value.title },
+                { name: 'twitter:image', content: `${origin}/og-image.png` },
+                { name: 'twitter:image:alt', content: "About-Us" },
+                { property: 'og:title', content: data.value.title },
+                { property: 'og:description', content: data.value.description },
+                { property: 'og:image', content: `${origin}/og-image.png` },
+                { property: 'og:image:type', content: "image/svg+xml" },
+                { property: 'og:image:alt', content: data.value.title },
             ]
         })
 

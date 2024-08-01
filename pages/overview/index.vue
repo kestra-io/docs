@@ -38,8 +38,14 @@
         name: 'twitter:description',
         content: "Orchestrate your business-critical applications. Take full advantage of the speed, and performance of Kestra's orchestration platform"
       },
-      {name: 'twitter:image', content: `${origin}/landing/home/header-bg.png`},
-      {name: 'twitter:image:alt', content: "FAQ"}
+      {name: 'twitter:image', content: `${origin}/og-image.png`},
+      {name: 'twitter:image:alt', content: "Kestra Platform Overview"},
+      { property: 'og:title', content: "Kestra Platform Overview" },
+      { property: 'og:description', content: "Orchestrate your business-critical applications. Take full advantage of the speed, and performance of Kestra's orchestration platform" },
+      { property: 'og:image', content: `${origin}/og-image.png` },
+      { property: 'og:image:type', content: "image/svg+xml" },
+      { property: 'og:image:alt', content: "Kestra Platform Overview" },
+      { property: 'og:url', content: `${origin}/overview` },
     ]
   })
 </script>
