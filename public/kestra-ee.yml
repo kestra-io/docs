@@ -19202,7 +19202,7 @@ components:
           type: string
         primary:
           type: boolean
-      description: Scim core schema.
+      description: "Scim core schema,"
     Event_Execution_:
       type: object
       properties:
@@ -20185,7 +20185,7 @@ components:
           type: string
         givenName:
           type: string
-      description: Scim core schema.
+      description: "Scim core schema, [section 4.1.1](https://datatracker.ietf.org/doc/html/rfc7643#section-4.1.1)"
     Namespace:
       type: object
       allOf:
@@ -20948,7 +20948,7 @@ components:
             type: string
     ScimUser:
       type: object
-      description: Scim core schema.
+      description: "Scim core schema,"
       allOf:
       - $ref: '#/components/schemas/ScimResource'
       - $ref: '#/components/schemas/BaseResource_ScimResource_'
