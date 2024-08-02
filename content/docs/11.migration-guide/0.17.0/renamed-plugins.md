@@ -134,17 +134,17 @@ The table shows full paths of the renamed serialization tasks:
 
 ## Renamed Task Runners
 
-We've also renamed the task runners to make them more readable and easier to use. For example, `io.kestra.plugin.aws.runner.AwsBatchTaskRunner` is now `io.kestra.plugin.aws.runner.Batch`. The updated names are as follows:
+We've also renamed the task runners to make them more readable and easier to use. For example, `io.kestra.plugin.aws.runner.AwsBatchTaskRunner` is now `io.kestra.plugin.ee.aws.runner.Batch`. The updated names are as follows:
 
 | Old Path Before Kestra 0.17.0                                 | New Path After Kestra 0.17.0                    |
 |---------------------------------------------------------------|-------------------------------------------------|
 | `io.kestra.core.models.tasks.runners.types.ProcessTaskRunner` | `io.kestra.plugin.core.runner.Process`          |
 | `io.kestra.plugin.scripts.runner.docker.DockerTaskRunner`     | `io.kestra.plugin.scripts.runner.docker.Docker` |
-| `io.kestra.plugin.kubernetes.runner.KubernetesTaskRunner`     | `io.kestra.plugin.kubernetes.runner.Kubernetes` |
-| `io.kestra.plugin.aws.runner.AwsBatchTaskRunner`              | `io.kestra.plugin.aws.runner.Batch`             |
-| `io.kestra.plugin.azure.runner.AzureBatchTaskRunner`          | `io.kestra.plugin.azure.runner.Batch`           |
-| `io.kestra.plugin.gcp.runner.GcpBatchTaskRunner`              | `io.kestra.plugin.gcp.runner.Batch`             |
-| `io.kestra.plugin.gcp.runner.GcpCloudRunTaskRunner`           | `io.kestra.plugin.gcp.runner.CloudRun`          |
+| `io.kestra.plugin.ee.kubernetes.runner.KubernetesTaskRunner`  | `io.kestra.plugin.ee.kubernetes.runner.Kubernetes` |
+| `io.kestra.plugin.ee.aws.runner.AwsBatchTaskRunner`           | `io.kestra.plugin.ee.aws.runner.Batch`             |
+| `io.kestra.plugin.ee.azure.runner.AzureBatchTaskRunner`       | `io.kestra.plugin.ee.azure.runner.Batch`           |
+| `io.kestra.plugin.ee.gcp.runner.GcpBatchTaskRunner`           | `io.kestra.plugin.ee.gcp.runner.Batch`             |
+| `io.kestra.plugin.ee.gcp.runner.GcpCloudRunTaskRunner`        | `io.kestra.plugin.ee.gcp.runner.CloudRun`          |
 
 ## Renamed Redis Triggers and Tasks
 
