@@ -21,11 +21,16 @@
                 name: 'twitter:description',
                 content: "Discover all our video tutorials, hands-on video, and more"
             },
-            { name: 'twitter:image', content: `${origin}/landing/careers/header.svg` },
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
+            { name: 'twitter:image:alt', content: "Get in Touch With the Team" },
+            { property: 'og:title', content: "All Things Kestra in Video" },
             {
-                name: 'twitter:image:alt',
+                property: 'og:description',
                 content: "Discover all our video tutorials, hands-on video, and more"
-            }
+            },
+            { property: 'og:image', content: `${origin}/og-image.png` },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: "All Things Kestra in Video" },
         ]
     })
 </script>

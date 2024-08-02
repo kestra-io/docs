@@ -49,8 +49,14 @@
                 name: 'twitter:description',
                 content: "Use declarative language to build simpler, faster, scalable and flexible data pipelines"
             },
-            { name: 'twitter:image', content: `${origin}/landing/home/header-bg.png` },
-            { name: 'twitter:image:alt', content: "kaestra" }
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
+            { name: 'twitter:image:alt', content: "kaestra" },
+            { property: 'og:title', content: "Kestra, Open Source Declarative Data Orchestration" },
+            { property: 'og:description', content: "Use declarative language to build simpler, faster, scalable and flexible data pipelines" },
+            { property: 'og:image', content: `${origin}/og-image.png` },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: "Kestra, Open Source Declarative Data Orchestration" },
+            { property: 'og:url', content: `${origin}` },
         ]
     })
 

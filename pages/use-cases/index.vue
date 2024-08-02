@@ -24,8 +24,16 @@
                 name: 'twitter:description',
                 content: "Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform"
             },
-            { name: 'twitter:image', content: `${origin}/landing/company/ui.png` },
-            { name: 'twitter:image:alt', content: "Picture of the user interface of Kestra on light mode" }
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
+            { name: 'twitter:image:alt', content: "Use cases & Usages for Modern Data Orchestration" },
+            { property: 'og:title', content: "Use cases & Usages for Modern Data Orchestration" },
+            {
+              property: 'og:description',
+              content: "Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform"
+            },
+            { property: 'og:image', content: `${origin}/og-image.png` },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: "Use cases & Usages for Modern Data Orchestration" },
         ]
     })
 </script>

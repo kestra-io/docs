@@ -39,8 +39,13 @@
                 name: 'twitter:description',
                 content: "Simplified Data Workflow Creation and Execution with YAML"
             },
-            { name: 'twitter:image', content: `${origin}/landing/features/declarative/header-bg.svg` },
-            { name: 'twitter:image:alt', content: "Declarative Data Orchestration with Kestra" }
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
+            { name: 'twitter:image:alt', content: "Declarative Data Orchestration with Kestra" },
+            { property: 'og:title', content: data.value.title },
+            { property: 'og:description', content: data.value.description },
+            { property: 'og:image', content: `${origin}/og-image.png` },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: data.value.title },
         ]
     })
 </script>

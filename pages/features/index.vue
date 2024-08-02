@@ -46,8 +46,16 @@
                 name: 'twitter:description',
                 content: "Create and Deploy all kinds Data Pipelines with Ease and Speed with Kestra |  Your All-in-One Solution for Orchestrating Workflows"
             },
-            { name: 'twitter:image', content: `${origin}/landing/features/header.png` },
-            { name: 'twitter:image:alt', content: "features" }
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
+            { name: 'twitter:image:alt', content: "features" },
+            { property: 'og:title', content: "Powerful Features for Reliable Data Workflows" },
+            {
+              property: 'og:description',
+              content: "Create and Deploy all kinds Data Pipelines with Ease and Speed with Kestra |  Your All-in-One Solution for Orchestrating Workflows"
+            },
+            { property: 'og:image', content: `${origin}/og-image.png` },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: "Powerful Features for Reliable Data Workflows" },
         ]
     })
 </script>
