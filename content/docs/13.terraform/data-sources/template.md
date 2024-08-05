@@ -13,7 +13,7 @@ Use this data source to access information about an existing Kestra Template
 
 ```hcl
 data "kestra_template" "example" {
-  namespace_ = "io.kestra.mynamespace"
+  namespace_ = "company.team"
   id         = "my-template"
 }
 ```

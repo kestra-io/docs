@@ -13,7 +13,7 @@ Manages a Kestra Role.
 
 ```hcl
 resource "kestra_role" "example" {
-  namespace   = "io.kestra.mynamespace"
+  namespace   = "company.team"
   name        = "Friendly name"
   description = "Friendly description"
 

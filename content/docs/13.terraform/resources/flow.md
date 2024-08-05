@@ -13,7 +13,7 @@ Manages a Kestra Flow.
 
 ```hcl
 resource "kestra_flow" "example" {
-  namespace = "io.kestra.mynamespace"
+  namespace = "company.team"
   flow_id   = "my-flow"
   content   = <<EOT
 inputs:

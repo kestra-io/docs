@@ -13,7 +13,7 @@ Use this data source to access information about an existing Kestra Namespace.
 
 ```hcl
 data "kestra_namespace" "example" {
-  namespace_id = "io.kestra.mynamespace"
+  namespace_id = "company.team"
 }
 ```
 
