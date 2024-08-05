@@ -1,5 +1,5 @@
 ---
-title: The runner property is deprecated in favor of taskRunner
+title: Deprecation of runner property in favor of taskRunner
 icon: /docs/icons/migration-guide.svg
 release: 0.18.0
 ---
