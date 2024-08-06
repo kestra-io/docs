@@ -132,11 +132,11 @@ You can disable or re-enable a trigger from the UI. Here is how you can do it:
 1. Go to the `Flows` page and click on the flow you want to disable the trigger for.
 2. Go to the `Triggers` tab and click on the `Enabled` toggle next to the trigger you want to disable. You can re-enable it by clicking the toggle again.
 
-![triggers_flow](/docs/workflow-components/triggers_flow.png)
+![triggers_flow](/docs/workflow-components/triggers/triggers_flow.png)
 
 If your trigger is locked due to an execution in progress, you can unlock it by clicking the `Unlock trigger` button.
 
-![trigger_unlock](/docs/workflow-components/trigger_unlock.png)
+![trigger_unlock](/docs/workflow-components/triggers/trigger_unlock.png)
 
 The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a process is stuck due to infrastructure issues. Note that manually unlocking triggers may result in multiple concurrent (potentially duplicated) executions — use it with caution.
 
@@ -144,7 +144,37 @@ The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a pr
 
 You can also disable, re-enable, or unlock triggers from the Administration page. Here is how you can do it:
 
-![triggers_administration](/docs/workflow-components/triggers_administration.png)
+![triggers_administration](/docs/workflow-components/triggers/triggers_administration.png)
+
+
+## Troubleshooting a trigger from the UI
+
+Let's say you misconfigured a trigger, and as a result, no Executions are created.
+
+The example flow below illustrates this scenario. Note how the `sqs_trigger` trigger is misconfigured with invalid AWS credentials:
+
+```yaml
+id: bad_trigger_example
+namespace: company.team
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello World!
+
+triggers:
+  - id: sqs_trigger
+    type: io.kestra.plugin.aws.sqs.Trigger
+    accessKeyId: "nonExistingKey"
+    secretKeyId: "nonExistingSecret"
+    region: "us-east-1"
+    queueUrl: "https://sqs.us-east-1.amazonaws.com/123456789/testQueue"
+    maxRecords: 10
+```
+
+When you add that flow to Kestra, you'll see that no Executions are created. To troubleshoot this, you can go to the `Triggers` tab on the Flow's page and **expand the logs** of the trigger that is causing the issue. You'll see a detailed error message that will help you identify the problem:
+
+![invalid_trigger_configuration](/docs/workflow-components/triggers/invalid_trigger_configuration.png)
 
 
 ## The ``stopAfter`` property
