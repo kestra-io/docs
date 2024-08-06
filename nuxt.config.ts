@@ -193,6 +193,8 @@ export default defineNuxtConfig({
       '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
       '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
       '/videos': {redirect: '/tutorial-videos'},
+      '/plugins/plugin-kubernetes/task-runners/io.kestra.plugin.kubernetes.runner.kubernetes': {redirect: '/plugins/plugin-ee-kubernetes/task-runners/io.kestra.plugin.ee.kubernetes.runner.kubernetes'},
+      '/plugins/plugin-kubernetes/task-runners/io.kestra.plugin.ee.kubernetes.runner.kubernetes': {redirect: '/plugins/plugin-ee-kubernetes/task-runners/io.kestra.plugin.ee.kubernetes.runner.kubernetes'},
       '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
   },
 
