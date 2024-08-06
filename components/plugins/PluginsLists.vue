@@ -5,7 +5,7 @@
                 <h1 data-aos="fade-left">Plugins</h1>
                 <h4 data-aos="fade-right">Extend Kestra with our +{{totalPlugins}} plugins</h4>
                 <div class="col-12 search-input position-relative">
-                    <input type="text" class="form-control form-control-lg" :placeholder="`Search across +${totalPlugins} of plugins`" v-model="searchQuery">
+                    <input type="text" class="form-control form-control-lg" :placeholder="`Search across ${totalPlugins}+ of plugins`" v-model="searchQuery">
                     <Magnify class="search-icon" />
                 </div>
             </div>
