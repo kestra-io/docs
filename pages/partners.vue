@@ -30,8 +30,16 @@
                 name: 'twitter:description',
                 content: "Whether you are building something new, upgrading a legacy stack, or re-platforming, you can trust Kestra and our partner ecosystem to make that journey a success.Discover the team and values behind our mission to empower data-driven organizations worldwide"
             },
-            { name: 'twitter:image', content: `${origin}/partners/badge-partner.svg` },
-            { name: 'twitter:image:alt', content: "Become Kestra partner" }
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
+            { name: 'twitter:image:alt', content: "Kestra Partners" },
+            { property: 'og:title', content: "Kestra Partners" },
+            {
+                property: 'og:description',
+                content: "Whether you are building something new, upgrading a legacy stack, or re-platforming, you can trust Kestra and our partner ecosystem to make that journey a success.Discover the team and values behind our mission to empower data-driven organizations worldwide"
+            },
+            { property: 'og:image', content: `${origin}/og-image.png` },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: "Kestra Partners" },
         ]
     })
 </script>

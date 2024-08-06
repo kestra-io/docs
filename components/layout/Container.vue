@@ -25,7 +25,7 @@
                 <NavToc :page="page" class="my-md-0 my-4 right-menu" />
 
                 <div class="bd-content">
-                    <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated" :editions="page.editions" :version="page.version" :deprecated="page.deprecated"/>
+                    <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page"/>
                     <ContentRendererMarkdown
                         class="bd-markdown"
                         :value="page"
@@ -106,7 +106,7 @@
 
     const {origin} = useRequestURL()
 
-    let ogImage = `${origin}/landing/home/header-bg.png`;
+    let ogImage = `${origin}/og-image.png`;
 
     if (props.type === 'plugins') {
         const parts = slug.value.split('/');
@@ -188,6 +188,12 @@
         {property: 'og:image:type', content: "image/svg+xml"},
         {property: 'og:image:alt', content: title},
         {property: 'og:url', content: 'https://kestra.io'},
+        {name: 'twitter:card', content: 'summary_large_image'},
+        {name: 'twitter:site', content: '@kestra_io'},
+        {name: 'twitter:title', content: title},
+        {name: 'twitter:description', content: description},
+        {name: 'twitter:image', content: ogImage},
+        {name: 'twitter:image:alt', content: title}
       ]
     })
 </script>
