@@ -9,6 +9,12 @@ Task Runner capabilities and supported plugins.
 
 [Task Runners](../05.concepts/09.task-runners/index.md) offer a powerful way to offload compute-intensive tasks to remote environments. 
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=WiXpLNPOwk3mekwh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+## Task Runner Types
+
 There are a number of task runner types. The [Docker](../05.concepts/09.task-runners/04.types/02.docker-task-runner.md) and [Process](../05.concepts/09.task-runners/04.types/01.process-task-runner.md) task runners are included in the Open Source edition. All other types require an [Enterprise Edition](./index.md) license or a [Kestra Cloud](/cloud) account.
 
 Enterprise Edition Task Runners:
