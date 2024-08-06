@@ -23,7 +23,7 @@
         data() {
             return {
                 editionLabelAndColorByPrefix: {
-                    OSS: {label: "Open-Source Edition", color: "primary"},
+                    OSS: {label: "Open Source Edition", color: "primary"},
                     EE: {label: "Enterprise Edition", color: "secondary"},
                     CLOUD_TEAM: {label: "Cloud Team plan", color: "success"},
                     CLOUD_PRO: {label: "Cloud Pro plan", color: "info"},
