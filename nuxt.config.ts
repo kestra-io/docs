@@ -10,7 +10,14 @@ export default defineNuxtConfig({
       'vue3-carousel-nuxt',
       'nuxt-lazy-hydrate'
   ],
-
+  target: 'server',
+  image: {
+    formats: {
+        webp: {
+            quality: 80
+        }
+    }
+  },
   sitemap: {
       sitemaps: {
           default: {
