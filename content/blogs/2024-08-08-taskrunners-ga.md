@@ -1,12 +1,12 @@
 ---
 title: Task Runners are now Generally Available and Ready to Handle Your Most Demanding Workflows
 description: Run your code anywhere with dynamically-provisioned resources.
-date: 2024-08-07T13:00:00
+date: 2024-08-08T13:00:00
 category: News & Products Updates
 author:
   name: Anna Geller
   image: ageller
-image: /blogs/2024-08-07-taskrunners-ga.png
+image: /blogs/2024-08-08-taskrunners-ga.png
 ---
 
 We are thrilled to announce the general availability of Task Runners, a major addition to Kestra's orchestration capabilities, allowing you to offload resource-intensive tasks to on-demand compute services. Task runners guarantee that your workflows have enough resources while reducing compute costs.
@@ -19,7 +19,7 @@ Many data processing tasks are computationally intensive and require a lot of re
 
 You can build a custom plugin to run your tasks in any environment you wish, or you can use one of the **managed plugins** offered by [Kestra](https://kestra.io/), such as AWS Batch, Azure Batch, Google Batch, or Kubernetes.
 
-![task_runner_plugins](/blogs/2024-08-07-taskrunners-ga/task_runner_plugins.png)
+![task_runner_plugins](/blogs/2024-08-08-taskrunners-ga/task_runner_plugins.png)
 
 ## From Beta to General Availability
 
@@ -41,7 +41,7 @@ Thanks to the built-in documentation and autocompletion, building workflows with
 
 Need help getting started? Check our blueprints collection and pick a pre-built workflow template that fits your use case. Many blueprints include automated setup to get started with the Task Runner that matches your environment. The [blueprint example below](https://kestra.io/blueprints/aws/225-run-multiple-python-scripts-in-parallel-on-aws-ecs-fargate-with-aws-batch) automates the setup of an AWS Batch environment to run multiple containerized Python scripts on AWS ECS Fargate.
 
-![task_runner_blueprints](/blogs/2024-08-07-taskrunners-ga/task_runner_blueprints.png)
+![task_runner_blueprints](/blogs/2024-08-08-taskrunners-ga/task_runner_blueprints.png)
 
 ### From development to production
 
