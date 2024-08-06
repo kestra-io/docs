@@ -4092,6 +4092,14 @@ paths:
         required: true
         schema:
           type: string
+      - name: subflows
+        in: query
+        description: The subflow tasks to display
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
       responses:
         "200":
           description: flowGraph 200 response
@@ -4112,6 +4120,14 @@ paths:
         required: true
         schema:
           type: string
+      - name: subflows
+        in: query
+        description: The subflow tasks to display
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
       responses:
         "200":
           description: flowGraph_1 200 response
@@ -19229,6 +19245,21 @@ components:
           type: string
         retry:
           $ref: "#/components/schemas/Duration"
+    ExecutableTask.SubflowId:
+      required:
+      - flowId
+      - namespace
+      - revision
+      type: object
+      properties:
+        namespace:
+          type: string
+        flowId:
+          type: string
+        revision:
+          type: integer
+          format: int32
+          nullable: true
     Execution:
       required:
       - deleted
@@ -21531,6 +21562,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Input_Object_"
+        subflowId:
+          $ref: "#/components/schemas/ExecutableTask.SubflowId"
     TaskRun:
       required:
       - attempts
