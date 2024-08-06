@@ -59,3 +59,56 @@ the output will be `1`.
 **Arguments**
 - `expression`: the jq expression to apply
 
+## Manipulating JSON payload
+
+Here is a detailed example having multiple JSON manipulations. In this example, we take a JSON payload as input, and perform multiple manipulations on it to derive different outputs.
+
+```yaml
+id: myflow
+namespace: company.myteam
+
+inputs:
+  - id: payload
+    type: JSON
+    defaults: |-
+      {
+        "name": "John Doe", 
+        "score": {
+          "English": 72,
+          "Maths": 88,
+          "French": 95,
+          "Spanish": 85,
+          "Science": 91
+        },
+        "address": {
+          "city": "Paris",
+          "country": "France"
+        },
+        "graduation_years": [2020, 2021, 2022, 2023]
+      }
+
+tasks:
+  - id: print_status
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Student name: {{ inputs.payload.name }}" # Extracting a value from a JSON payload
+      - "Score in languages: {{ inputs.payload.score.English + inputs.payload.score.French + inputs.payload.score.Spanish }}" # Extracting the numbers from JSON payload, and suming them up
+      - "Total subjects: {{ inputs.payload.score | length }}" # Counting the length of map
+      - "Total score: {{ inputs.payload.score | values | jq('reduce .[] as $num (0; .+$num)') | first }}" # logic to get all the values in the `score` map and add them to get the total score
+      - "Complete address: {{ inputs.payload.address.city }}, {{ inputs.payload.address.country | upper }}" # String concatenation, and conversion
+      - "Total years for graduation: {{ inputs.payload.graduation_years | length }}" # Counting the length of array
+      - "Started college in: {{ inputs.payload.graduation_years | first }}" # Getting the first value from an array
+      - "Completed college in: {{ inputs.payload.graduation_years | last }}" # Getting the last value from an array
+```
+
+This flow will log the following statements:
+
+```
+Student name: John Doe
+Score in languages: 252
+Total subjects: 5
+Total score: 431
+Complete address: Paris, FRANCE
+Total years for graduation: 4
+Started college in: 2020
+```

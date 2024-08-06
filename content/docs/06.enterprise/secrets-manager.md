@@ -172,7 +172,7 @@ Your secret key should be encrypted. You can find an example of [encryption key 
 For Kestra instance deployed using the Kafka/Elastic backend, the secret backend can be configured like this:
 
 ```yaml
-kestra:
+kestra:  
   secret:
     type: elasticsearch
     elasticsearch:
@@ -180,3 +180,38 @@ kestra:
 ```
 
 Your secret key should be encrypted. You can find an example of [encryption key here](../10.configuration-guide/encryption.md).
+
+## Default Tags
+
+For each secret manager, you can configure the default tags that will be added to all newly created or updated secrets.
+
+Configuration example:
+
+```yaml
+kestra:
+  secret:
+    <secret-type>:
+      # a map of default key/value tags
+      tags:
+        application: kestra-production
+```
+
+## Enable Caching
+
+If you use a secret manager provided by a cloud service provider, it may be worth enabling the secret cache to reduce
+the number of calls to the secret manager API.
+
+Configuration example:
+
+```yaml
+kestra:
+  secret:
+    cache:
+      enabled: true
+      maximumSize: 1000
+      expireAfterWrite: 60s
+```
+
+* **`kestra.secret.cache.enabled`**: Specifies whether to enable caching for secrets.
+* **`kestra.secret.cache.maximumSize`**:  The maximum number of entries the cache may contain.
+* **`kestra.secret.cache.expireAfterWrite`**:  Specifies that each entry should be automatically removed from the cache once this duration has elapsed after the entry's creation.
