@@ -21,8 +21,16 @@
                 name: 'twitter:description',
                 content: "Connect with our team for any questions or inquiries you may have. We're eager to assist you and provide the information you need about Kestra"
             },
-            { name: 'twitter:image', content: `${origin}/landing/company/contact-us.svg` },
-            { name: 'twitter:image:alt', content: "contact-us" }
+            { name: 'twitter:image', content: `${origin}/og-image.png` },
+            { name: 'twitter:image:alt', content: "Get in Touch With the Team" },
+            { property: 'og:title', content: "Get in Touch With the Team" },
+            {
+                property: 'og:description',
+              content: "Connect with our team for any questions or inquiries you may have. We're eager to assist you and provide the information you need about Kestra"
+            },
+            { property: 'og:image', content: `${origin}/og-image.png` },
+            { property: 'og:image:type', content: "image/svg+xml" },
+            { property: 'og:image:alt', content: "Get in Touch With the Team" },
         ]
     })
 
