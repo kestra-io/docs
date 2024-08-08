@@ -68,6 +68,10 @@ Embrace the scalability of dynamically-provisioned resources with Task Runners, 
 To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to-guides/index.md), [Blueprints](https://kestra.io/blueprints) and [Video Tutorials](https://www.youtube.com/playlist?list=PLEK3H8YwZn1pbL_nRKDqE3s7J8os_yc31) on how to use Task Runners. The videos linked below will guide you through the process of setting up a Task Runner for your chosen cloud provider.
 
 <div class="video-container">
+  <iframe src="https://www.youtube.com/embed/N-Bq-TWqxiw?si=2u4_xmm2vLivKLPO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+<div class="video-container">
   <iframe src="https://www.youtube.com/embed/U2TzypTbpI8?si=64eTuk-QhnGVU_3s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
