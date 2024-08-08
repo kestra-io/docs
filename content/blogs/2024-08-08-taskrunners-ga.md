@@ -72,14 +72,19 @@ To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to
 </div>
 
 <div class="video-container">
+  <iframe src="https://www.youtube.com/embed/nHzgPFbXIxY?si=TPh03i4XmRHNeW-b" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+<div class="video-container">
   <iframe src="https://www.youtube.com/embed/kk084vVyZDM?si=TF7SqVaDUrwSX4uy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/nHzgPFbXIxY?si=TPh03i4XmRHNeW-b" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/pxN8sCreUAA?si=u5nEZG2TrklFef8a" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Try Task Runners in [Kestra 0.18.0](https://kestra.io/docs/getting-started/installation) today and let us know what you think!
+
+Try Task Runners in [Kestra 0.18.0](/docs/getting-started/quickstart) today and let us know what you think!
 
 - If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 - If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
