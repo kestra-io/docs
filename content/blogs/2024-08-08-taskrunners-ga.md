@@ -11,7 +11,7 @@ image: /blogs/2024-08-08-taskrunners-ga.png
 
 We are thrilled to announce the general availability of Task Runners, a major addition to Kestra's orchestration capabilities, allowing you to offload resource-intensive tasks to on-demand compute services. Task runners guarantee that your workflows have enough resources while reducing compute costs.
 
-## Why do you need Task Runners
+## Why Task Runners?
 
 Many data processing tasks are computationally intensive and require a lot of resources (such as CPU, GPU, and memory). Instead of provisioning always-on servers, Task Runners can execute your code on dynamically provisioned containers in the cloud, such as AWS ECS Fargate, Azure Batch, Google Batch, Google Cloud Run, auto-scaled Kubernetes clusters, and more.
 
