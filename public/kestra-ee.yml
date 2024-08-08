@@ -20137,6 +20137,11 @@ components:
           type: string
         version:
           type: string
+        commitId:
+          type: string
+        commitDate:
+          type: string
+          format: date-time
         isTaskRunEnabled:
           type: boolean
         isAnonymousUsageEnabled:
