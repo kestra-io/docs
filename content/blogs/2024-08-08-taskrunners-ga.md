@@ -87,6 +87,9 @@ To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to
   <iframe width="560" height="315" src="https://www.youtube.com/embed/pxN8sCreUAA?si=u5nEZG2TrklFef8a" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/CC_CnH74qnk?si=_Pq-GBV2UadYlKxE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 Try Task Runners in [Kestra 0.18.0](/docs/getting-started/quickstart) today and let us know what you think!
 
