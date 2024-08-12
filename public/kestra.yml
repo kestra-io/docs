@@ -1878,7 +1878,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -1933,7 +1933,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -2010,7 +2010,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -2068,7 +2068,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -2182,7 +2182,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
