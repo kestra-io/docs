@@ -30,9 +30,8 @@ You can provide conditions to determine when your Flow should be executed. Along
 
 This flow will be triggered after each successful execution of the flow `io.kestra.tests.trigger-flow` and forward the `uri` output of the `my-task` task.
 ```yaml
-id: trigger-flow-listener
+id: trigger_flow_listener
 namespace: company.team
-revision: 1
 
 inputs:
   - id: fromParent
@@ -41,7 +40,7 @@ inputs:
 tasks:
   - id: onlyNoInput
     type: io.kestra.plugin.core.debug.Return
-    format: "v1: {{trigger.executionId}}"
+    format: "v1: {{ trigger.executionId }}"
 
 triggers:
   - id: listenFlow
@@ -51,14 +50,14 @@ triggers:
     conditions:
       - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
         namespace: company.team
-        flowId: trigger-flow
+        flowId: trigger_flow
       - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - SUCCESS
 ```
 Parent flow:
 ```yaml
-id: trigger-flow
+id: trigger_flow
 namespace: company.team
 
 tasks:

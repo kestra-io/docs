@@ -19,17 +19,24 @@ For example, the following flow will be triggered when rows are available on the
 id: jdbc-trigger
 namespace: company.team
 
+inputs:
+  - id: db_url
+    type: STRING
+
 tasks:
 - id: update
   type: io.kestra.plugin.jdbc.postgresql.Query
+  url: "{{ inputs.db_url }}"
   sql: DELETE * FROM my_table
+
 - id: log
   type: io.kestra.plugin.core.log.Log
-  message: {{trigger.rows}}
+  message: "{{ trigger.rows }}"
 
 triggers:
   - id: watch
     type: io.kestra.plugin.jdbc.postgresql.Trigger
+    url: myurl
     interval: "PT5M"
     sql: "SELECT * FROM my_table"
 ```
