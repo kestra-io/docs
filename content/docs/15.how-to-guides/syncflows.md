@@ -102,7 +102,7 @@ We can also verify this with the Outputs tab too:
 
 ## Set up a schedule
 
-A common use case for this task is to setup a routine schedule to keep Kestra in sync with the Git repository. To do this, we can simply use a [Schedule trigger](../04.workflow-components/07.triggers/schedule-trigger.md). This example has a cron expression to execute once every hour:
+A common use case for this task is to setup a routine schedule to keep Kestra in sync with the Git repository. To do this, we can simply use a [Schedule trigger](../04.workflow-components/07.triggers/01.schedule-trigger.md). This example has a cron expression to execute once every hour:
 
 ```yaml
 id: sync_flows_from_git
