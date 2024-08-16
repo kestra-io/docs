@@ -5,13 +5,19 @@ icon: /docs/icons/flow.svg
 
 Trigger is a mechanism that automates the execution of a flow.
 
-Triggers can be scheduled or event-based.
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/qDiQtsVEETs?si=BxrYa-Z1ntqsPvbu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
+Triggers can be scheduled or event-based providing lots of flexibility in how you can automate the execution of your workflows.
 
 ## Trigger types
 
 Kestra supports both **scheduled** and **external** events.
 
-Kestra core provides four types of triggers:
+Kestra provides five types of triggers:
 
 - [Schedule trigger](01.schedule-trigger.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
 - [Flow trigger](02.flow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
