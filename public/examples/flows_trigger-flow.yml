@@ -3,7 +3,7 @@ namespace: company.team
 description: Trigger a flow once another flow is finished successfully
 
 inputs:
-  - id: from-parent
+  - id: from_parent
     type: STRING
 
 tasks:
@@ -12,7 +12,7 @@ tasks:
     format: "children: {{inputs['from-parent']}}"
 
 triggers:
-  - id: listen-flow
+  - id: listen_flow
     type: io.kestra.plugin.core.trigger.Flow
     inputs:
       from-parent: '{{ outputs.only.value }}'
@@ -22,4 +22,4 @@ triggers:
           - SUCCESS
       - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
         namespace: company.team
-        flowId: multiplecondition-flow-a
+        flowId: multiplecondition_flow_a

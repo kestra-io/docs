@@ -194,6 +194,7 @@ export default defineNuxtConfig({
       '/docs/faq/internal-storage': {redirect: '/docs/developer-guide/storage#internal-storage-faq'},
       '/docs/faq': {redirect: '/docs/installation/troubleshooting'},
       '/videos': {redirect: '/tutorial-videos'},
+      '/community-guidelines': {redirect: '/docs/getting-started/community-guidelines'},
       '/api/events/**': {proxy: 'https://eu.posthog.com/**'},
   },
 

@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <div class="grid gap-3 mt-5" data-aos="fade-left">
+    <div class="mt-5" data-aos="fade-left">
         <button
             v-for="tag in tags"
             :key="tag.name"

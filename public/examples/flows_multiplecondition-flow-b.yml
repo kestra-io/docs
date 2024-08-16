@@ -1,10 +1,10 @@
-id: multiplecondition-flow-b
+id: multiplecondition_flow_b
 namespace: company.team
 
 description: |
-  This flow will start `multiplecondition-listener` if `MultipleCondition` is validated
+  This flow will start `multiplecondition_listener` if `MultipleCondition` is validated
 
 tasks:
   - id: only
     type: io.kestra.plugin.core.debug.Return
-    format: "from parents: {{execution.id}}"
+    format: "from parents: {{ execution.id }}"

@@ -86,7 +86,7 @@
                     </ul>
                     <ul>
                         <li>
-                            <NuxtLink href="/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Flow">
+                            <NuxtLink href="/plugins/core/tasks/flows/io.kestra.plugin.core.flow.SubFlow">
                                 Sub Flow Plugin
                             </NuxtLink>
                         </li>
