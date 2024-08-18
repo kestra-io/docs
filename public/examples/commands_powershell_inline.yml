@@ -1,0 +1,19 @@
+id: powershell_commands
+namespace: company.team
+tasks:
+  - id: http_download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: run_powershell
+    type: io.kestra.plugin.scripts.powershell.Commands
+    inputFiles:
+      orders.csv: "{{ read(outputs.http_download.uri) }}"
+      main.ps1: |
+        Write-Output "The current execution is {{ execution.id }}"
+
+        # Read the file
+        $content = Get-Content "orders.csv"
+        $content
+    commands:
+      - ./main.ps1
