@@ -46,7 +46,7 @@ If you want to get a variable or file from your Shell script, you can use an [ou
 
 You can put out the JSON outputs from the Shell commands / script using the `::{}::` pattern. Here is an example:
 
-```python file=public/examples/outputs_shell.yml
+```yaml file=public/examples/outputs_shell.yml
 ```
 
 All the output variables can be viewed in the Outputs tab of the execution.
@@ -58,7 +58,7 @@ You can refer to the outputs in another task as shown in the example below:
 ```yaml file=public/examples/outputs_shell_usage.yml
 ```
 
-_This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
+_This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kestra.plugin.scripts.shell.Commands`._
 
 ### File Output
 
@@ -69,13 +69,13 @@ The example below writes a `output.txt` file containing the "Hello world" text, 
 ```yaml file=public/examples/scripts_output-files-shell.yml
 ```
 
-_This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
+_This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kestra.plugin.scripts.shell.Commands`._
 
 ## Handling Metrics
 
 You can also get [metrics](/docs/developer-guide/scripts/outputs-metrics#outputs-and-metrics-in-script-and-commands-tasks) from your Shell script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
 
-```python file=public/examples/metrics_shell.yml
+```yaml file=public/examples/metrics_shell.yml
 ```
 
 Once this has executed, both the metrics can be viewed under **Metrics**.

@@ -1,0 +1,9 @@
+id: julia_commands
+namespace: company.team
+tasks:
+  - id: run_julia
+    type: io.kestra.plugin.scripts.julia.Commands
+    namespaceFiles:
+      enabled: true
+    commands:
+      - julia main.jl

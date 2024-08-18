@@ -1,0 +1,19 @@
+id: julia_commands
+namespace: company.team
+tasks:
+  - id: http_download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: run_julia
+    type: io.kestra.plugin.scripts.julia.Commands
+    inputFiles: 
+      orders.csv: "{{ read(outputs.http_download.uri) }}"
+      main.jl: |
+        println("The current execution is {{ execution.id }}")
+
+        # Read the file downloaded in `http_download` task
+        lines = readlines("orders.csv")
+        println(lines)
+    commands:
+      - julia main.jl

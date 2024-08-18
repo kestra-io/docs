@@ -1,0 +1,12 @@
+id: julia_metrics
+namespace: company.team
+description: This flow runs the Julia script, and puts out the metrics.
+
+tasks:
+  - id: julia_metrics_task
+    type: io.kestra.plugin.scripts.julia.Script
+    script: |
+      println("There are 20 products in the cart")
+      println("::{\"outputs\":{\"productCount\":20}}::")
+      println("::{\"metrics\":[{\"name\":\"productCount\",\"type\":\"counter\",\"value\":20}]}::")
+      println("::{\"metrics\":[{\"name\":\"purchaseTime\",\"type\":\"timer\",\"value\":32.44}]}::")
