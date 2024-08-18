@@ -1,0 +1,17 @@
+id: powershell_script
+namespace: company.team
+description: This flow runs the PowerShell script.
+
+tasks:
+  - id: http_download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: powershell_script_task
+    type: io.kestra.plugin.scripts.powershell.Script
+    script: |
+      Write-Output "The current execution is {{ execution.id }}"
+
+      # Read the file downloaded in `http_download` task
+      $content = Get-Content "{{ outputs.http_download.uri }}"
+      $content

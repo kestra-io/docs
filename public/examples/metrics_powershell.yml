@@ -1,0 +1,12 @@
+id: powershell_metrics
+namespace: company.team
+description: This flow runs the PowerShell script, and puts out the metrics.
+
+tasks:
+  - id: powershell_metrics_task
+    type: io.kestra.plugin.scripts.powershell.Script
+    script: |
+      Write-Output 'There are 20 products in the cart'
+      Write-Output '::{"outputs":{"productCount":20}}::'
+      Write-Output '::{"metrics":[{"name":"productCount","type":"counter","value":20}]}::'
+      Write-Output '::{"metrics":[{"name":"purchaseTime","type":"timer","value":32.44}]}::'
