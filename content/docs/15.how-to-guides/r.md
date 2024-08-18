@@ -5,7 +5,7 @@ icon: /docs/icons/r.svg
 
 Run R code inside of your flow.
 
-You can execute R code inside of a flow by either writing your R code inline or by executing a `.R` file. You can get outputs and metrics from your R code too.
+You can execute R code inside of a flow by either writing your R code inline or by executing an `.R` file. You can get outputs and metrics from your R code too.
 
 
 ## Scripts
@@ -19,7 +19,7 @@ You can read more about the Scripts type in the [Plugin documentation](/plugins/
 
 ## Commands
 
-If you would prefer to put your R code in a `.R` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.r.Commands` type:
+If you would prefer to put your R code in an `.R` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.r.Commands` type:
 
 ```yaml file=public/examples/commands_r.yml
 ```
