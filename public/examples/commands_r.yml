@@ -1,0 +1,9 @@
+id: r_commands
+namespace: company.team
+tasks:
+  - id: run_r
+    type: io.kestra.plugin.scripts.r.Commands
+    namespaceFiles:
+      enabled: true
+    commands:
+      - Rscript main.R
