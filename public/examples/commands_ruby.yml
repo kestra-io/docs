@@ -1,0 +1,9 @@
+id: ruby_commands
+namespace: company.team
+tasks:
+  - id: run_ruby
+    type: io.kestra.plugin.scripts.ruby.Commands
+    namespaceFiles:
+      enabled: true
+    commands:
+      - ruby main.rb
