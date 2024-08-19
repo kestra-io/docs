@@ -1,6 +1,6 @@
 ---
 title: Webhooks
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/webhook.svg
 ---
 
 How to use a webhook to trigger a flow.

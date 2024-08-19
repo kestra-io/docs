@@ -1,6 +1,6 @@
 ---
 title: Shell Script
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/bash.svg
 ---
 
 Run shell script inside of your flow.

@@ -1,6 +1,6 @@
 ---
 title: Google Sheets
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/gsheets.svg
 ---
 
 Learn step-by-step how to read data from a Google Sheet inside of a Kestra flow.
