@@ -3,7 +3,9 @@ title: Python, R, Node.js and Shell Scripts
 icon: /docs/icons/dev.svg
 ---
 
-Kestra is language agnostic. You can orchestrate custom business logic written in `Python`, `R`, `Julia`, `Ruby`,  `Node.js`, `Powershell` and `Shell` scripts, and you can also build custom plugins in Java.
+Kestra is language agnostic.
+
+You can orchestrate custom business logic written in `Python`, `R`, `Julia`, `Ruby`,  `Node.js`, `Powershell` and `Shell` scripts, and you can also build custom plugins in Java.
 
 By default, these tasks run in individual Docker containers (taskRunner type: `io.kestra.plugin.scripts.runner.docker.Docker`). You can overwrite that default behavior if you prefer that your scripts run in a local process (taskRunner type: `io.kestra.plugin.core.runner.Process`) instead.
 

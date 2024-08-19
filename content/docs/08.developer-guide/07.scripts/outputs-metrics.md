@@ -3,6 +3,8 @@ title: Outputs and metrics
 icon: /docs/icons/dev.svg
 ---
 
+Send Outputs and Metrics back to Kestra.
+
 Your scripts can send outputs and metrics to Kestra's backend during flow execution. This allows you to track custom metadata and visualize it across multiple executions of a flow.
 
 ## How to emit `outputs` and `metrics` from script tasks

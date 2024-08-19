@@ -3,6 +3,8 @@ title: Input and Output Files
 icon: /docs/icons/dev.svg
 ---
 
+Manage Input and Output files with your scripts.
+
 ## Input Files
 
 You can pass additional files to any script or CLI task using the `inputFiles` property:

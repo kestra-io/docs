@@ -3,6 +3,8 @@ title: Working Directory
 icon: /docs/icons/dev.svg
 ---
 
+Run multiple tasks in the same working directory sequentially.
+
 This task allows you to run multiple tasks sequentially in the same working directory. It is useful when you want to share files from Namespace Files or from a Git repository across multiple tasks.
 
 ## When to use the `WorkingDirectory` task
