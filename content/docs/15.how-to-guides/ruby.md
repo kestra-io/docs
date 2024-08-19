@@ -63,7 +63,7 @@ _This example works for both `io.kestra.plugin.scripts.ruby.Script` and `io.kest
 
 ### File Output
 
-Inside of your Ruby script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../08.developer-guide/07.scripts/output-directory.md).
+Inside of your Ruby script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../08.developer-guide/07.scripts/08.output-directory.md).
 
 The example below writes a `output.txt` file containing the "Hello World" text. We can then refer the file using the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and read the contents of the file using the `read()` function.
 
@@ -74,7 +74,7 @@ _This example works for both `io.kestra.plugin.scripts.ruby.Script` and `io.kest
 
 ## Handling Metrics
 
-You can also get [metrics](../08.developer-guide/07.scripts/outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Ruby script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../08.developer-guide/07.scripts/07.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Ruby script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
 
 ```yaml file=public/examples/metrics_ruby.yml
 ```
