@@ -3,7 +3,7 @@ title: Python, R, Node.js and Shell Scripts
 icon: /docs/icons/dev.svg
 ---
 
-Kestra is language agnostic.
+Kestra is language agnostic. Write your business logic in any language.
 
 You can orchestrate custom business logic written in `Python`, `R`, `Julia`, `Ruby`,  `Node.js`, `Powershell` and `Shell` scripts, and you can also build custom plugins in Java.
 
