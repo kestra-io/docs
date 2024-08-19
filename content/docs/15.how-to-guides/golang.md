@@ -1,11 +1,11 @@
 ---
-title: Golang
+title: Go
 icon: /docs/icons/golang.svg
 ---
 
-Run Golang code inside of your flow.
+Run Go code inside of your flow.
 
-There isn't an official Golang plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside of a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language. 
+There isn't an official Go plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside of a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language. 
 
 In this example, we're using the Docker Task Runner with the `golang:latest` image so that Go can be executed.
 
