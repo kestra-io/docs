@@ -1,6 +1,6 @@
 ---
-title: Kestra Secrets from a Helm Chart
-icon: /docs/icons/tutorial.svg
+title: Secrets from a Helm Chart
+icon: /docs/icons/helm.svg
 editions: ["OSS"]
 ---
 
