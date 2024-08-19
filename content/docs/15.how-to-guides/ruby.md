@@ -45,7 +45,7 @@ If you want to get a variable or file from your Ruby script, you can use an [out
 
 ### Variable Output
 
-You can put out the JSON outputs from the Ruby commands / script using the `::{}::` pattern. Here is an example:
+You can get the JSON outputs from the Ruby commands / script using the `::{}::` pattern. Here is an example:
 
 ```yaml file=public/examples/outputs_ruby.yml
 ```

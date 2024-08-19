@@ -45,7 +45,7 @@ If you want to get a variable or file from your R script, you can use an [output
 
 ### Variable Output
 
-You can put out the JSON outputs from the R commands / script using the `::{}::` pattern. Here is an example:
+You can get the JSON outputs from the R commands / script using the `::{}::` pattern. Here is an example:
 
 ```yaml file=public/examples/outputs_r.yml
 ```
