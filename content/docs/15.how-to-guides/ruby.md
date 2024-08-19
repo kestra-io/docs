@@ -30,7 +30,7 @@ The contents of the `main.rb` file can be:
 puts "Hello World"
 ```
 
-You'll need to add your Ruby code using the Editor or [sync it using Git](/docs/developer-guide/git) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You'll need to add your Ruby code using the Editor or [sync it using Git](../08.developer-guide/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 You can also have the Ruby code written inline.
 
@@ -41,7 +41,7 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 ## Handling Outputs
 
-If you want to get a variable or file from your Ruby script, you can use an [output](/docs/workflow-components/outputs).
+If you want to get a variable or file from your Ruby script, you can use an [output](../04.workflow-components/06.outputs.md).
 
 ### Variable Output
 
@@ -63,7 +63,7 @@ _This example works for both `io.kestra.plugin.scripts.ruby.Script` and `io.kest
 
 ### File Output
 
-Inside of your Ruby script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](/docs/developer-guide/scripts/output-directory).
+Inside of your Ruby script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../08.developer-guide/07.scripts/output-directory.md).
 
 The example below writes a `output.txt` file containing the "Hello World" text. We can then refer the file using the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and read the contents of the file using the `read()` function.
 
@@ -74,7 +74,7 @@ _This example works for both `io.kestra.plugin.scripts.ruby.Script` and `io.kest
 
 ## Handling Metrics
 
-You can also get [metrics](/docs/developer-guide/scripts/outputs-metrics#outputs-and-metrics-in-script-and-commands-tasks) from your Ruby script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../08.developer-guide/07.scripts/outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Ruby script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
 
 ```yaml file=public/examples/metrics_ruby.yml
 ```
