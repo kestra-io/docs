@@ -178,7 +178,8 @@
   if(route.params.slug) activeTag.value = { name: tags[route.params.slug] ? tags[route.params.slug] :  "All videos" }
 
   const {data: tutorialVideo} = await useAsyncData(`tutorial-videos`, () => {
-    return $fetch(`${config.public.apiUrl}/tutorial-videos?page=${currentPage.value}&size=${itemsPerPage.value}`);
+    const category = activeTag.value.name !== 'All videos' ? activeTag.value.name: '';
+    return $fetch(`${config.public.apiUrl}/tutorial-videos?page=${currentPage.value}&size=${itemsPerPage.value}&category=${category}`);
   });
 
   const changePage = (pageNo) => {
@@ -246,7 +247,7 @@
   }
 
   let timer;
-  watch([currentPage, itemsPerPage, activeTag], ([pageVal, itemVal, tagVal], [__, oldItemVal, oldTagVal]) => {
+  watch([currentPage, itemsPerPage], ([pageVal, itemVal], [__, oldItemVal, oldTagVal]) => {
     if(timer) {
       clearTimeout(timer);
     }
