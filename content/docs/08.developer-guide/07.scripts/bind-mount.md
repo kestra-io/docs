@@ -1,5 +1,5 @@
 ---
-title: Bind mount
+title: Bind Mount
 icon: /docs/icons/dev.svg
 ---
 

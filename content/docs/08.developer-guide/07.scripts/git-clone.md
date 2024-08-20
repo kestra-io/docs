@@ -1,5 +1,5 @@
 ---
-title: The Git Clone task
+title: Git Clone task
 icon: /docs/icons/dev.svg
 ---
 
@@ -7,7 +7,7 @@ Clone a Git repository and use the files in your tasks.
 
 This task allows you to clone a Git repository into a working directory and then use the files from that repository in downstream tasks.
 
-## The `Git` plugin
+## `Git` plugin
 
 To use the `io.kestra.plugin.git.Clone` task in your flow, make sure to add it as the first child task of the `WorkingDirectory` task. Otherwise, you’ll get an error: `Destination path "xyz" already exists and is not an empty directory`. This happens because you can only clone a GitHub repository into an empty working directory.
 
