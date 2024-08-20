@@ -5,6 +5,12 @@ icon: /docs/icons/golang.svg
 
 Run Go code inside of your flow.
 
+Go is a powerful programming language often used for cloud-native development, CLI utilities and more. As Go is complied, it's often much more performant than Python making it a great alternative for heavy compute workloads. Combining Go's and Kestra's performance, you can build incredibly fast workflows. 
+
+This guide is going to walk you through how to get Go running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
+
+## Configuring Go
+
 There isn't an official Go plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside of a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language. 
 
 In this example, we're using the Docker Task Runner with the `golang:latest` image so that Go can be executed.
