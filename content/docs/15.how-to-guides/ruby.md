@@ -5,10 +5,16 @@ icon: /docs/icons/ruby.svg
 
 Run Ruby code inside of your flow.
 
-You can execute Ruby code inside of a flow by either writing your Ruby code inline or by executing a `.rb` file. You can get outputs and metrics from your Ruby code too.
+Ruby is well known for web development but has many other powerful use cases too, such as automation, web scraping, data processing and command-line tools. With Kestra, you can effortlessly automate data ingestion, as well as manage complex automations. Kestra's robust orchestration capabilities ensure that your Ruby scripts run smoothly and efficiently, streamlining your data-driven projects.
+
+This guide is going to walk you through how to get Ruby running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
+
+## Executing Rudy inside Kestra
+
+Kestra has an official plugin for Ruby allowing you to execute R code inside of a flow by either writing your Ruby code inline or by executing an `.rb` file. You can get outputs and metrics from your Ruby code too.
 
 
-## Scripts
+### Scripts
 
 If you want to write a short amount of Ruby code to perform a task, you can use the `io.kestra.plugin.scripts.ruby.Script` type to write it directly inside of your flow. This allows you to keep everything in one place.
 
@@ -17,7 +23,7 @@ If you want to write a short amount of Ruby code to perform a task, you can use 
 
 You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-ruby/tasks/io.kestra.plugin.scripts.ruby.script)
 
-## Commands
+### Commands
 
 If you would prefer to put your Ruby code in a `.rb` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.ruby.Commands` type:
 

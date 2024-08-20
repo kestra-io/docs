@@ -5,10 +5,15 @@ icon: /docs/icons/powershell.svg
 
 Run PowerShell code inside of your flow.
 
+Powershell is commonly used for automating the management of systems and resources. With Kestra, you can effortlessly automate builds and tests for production systems, as well as manage cloud configurations and resources. Kestra's robust orchestration capabilities ensure that your Powershell scripts run smoothly and efficiently, streamlining your infrastructure.
+
+This guide is going to walk you through how to get Powershell running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
+
+## Executing Powershell inside Kestra
+
 You can execute PowerShell code inside of a flow by either writing your PowerShell code inline or by executing a `.ps1` file. You can get outputs and metrics from your PowerShell code too.
 
-
-## Scripts
+### Scripts
 
 If you want to write a short amount of PowerShell code to perform a task, you can use the `io.kestra.plugin.scripts.powershell.Script` type to write it directly inside of your flow. This allows you to keep everything in one place.
 
@@ -17,7 +22,7 @@ If you want to write a short amount of PowerShell code to perform a task, you ca
 
 You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-powershell/tasks/io.kestra.plugin.scripts.powershell.script)
 
-## Commands
+### Commands
 
 If you would prefer to put your PowerShell code in a `.ps1` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.powershell.Commands` type:
 

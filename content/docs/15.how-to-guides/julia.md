@@ -5,10 +5,15 @@ icon: /docs/icons/julia.svg
 
 Run Julia code inside of your flow.
 
-You can execute Julia code inside of a flow by either writing your Julia inline or by executing a `.jl` file. You can get outputs and metrics from your Julia code too.
+Julia is renowned for high-performance numerical analysis and computational science. Leverage Kestra to orchestrate your Julia scripts, enhancing their capabilities in large-scale analytics and machine learning applications. From data ingestion to complex numerical simulations, Kestra streamlines your Julia workflows, accelerating development and deployment.
 
+This guide is going to walk you through how to get Julia running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
 
-## Scripts
+## Executing Julia inside Kestra
+
+Kestra has an official plugin for Julia allowing you to execute Julia code inside of a flow by either writing your Julia inline or by executing a `.jl` file. You can get outputs and metrics from your Julia code too.
+
+### Scripts
 
 If you want to write a short amount of Julia code to perform a task, you can use the `io.kestra.plugin.scripts.julia.Script` type to write it directly inside of your flow. This allows you to keep everything in one place.
 
@@ -17,7 +22,7 @@ If you want to write a short amount of Julia code to perform a task, you can use
 
 You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-julia/tasks/io.kestra.plugin.scripts.julia.script)
 
-## Commands
+### Commands
 
 If you would prefer to put your Julia code in a `.jl` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.julia.Commands` type:
 
