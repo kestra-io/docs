@@ -125,9 +125,9 @@
                     <div class="card" data-aos="zoom-in">
                         <img src="/partners/partners-logos/ntico.svg" class="card-img-top" alt="Ntico's logo">
                         <div class="card-body">
-                            <p class="card-text">Consulting Partner</p>
+                            <p class="card-text"> Data Consulting Partner</p>
                             <h5 class="card-title">Ntico</h5>
-                            <a href="https://ntico.com/" target="_blank">Visit Ntico website <OpenInNew /></a>
+                            <a href="https://www.ntico.com/" target="_blank">Visit Ntico website <OpenInNew /></a>
                         </div>
                     </div>
                 </div>

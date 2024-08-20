@@ -16,6 +16,12 @@
                     </a>
                 </li>
                 <li>
+                    <a class="text-white" href="https://www.youtube.com/@kestra-io" target="_blank">
+                        <Youtube />
+                        YouTube
+                    </a>
+                </li>
+                <li>
                     <a class="text-white" href="https://github.com/kestra-io/kestra" target="_blank">
                         <Github />
                         GitHub
@@ -39,6 +45,7 @@
 </template>
 <script setup>
     import Slack from "vue-material-design-icons/Slack.vue";
+    import Youtube from "vue-material-design-icons/Youtube.vue";
     import Github from "vue-material-design-icons/Github.vue";
     import Linkedin from "vue-material-design-icons/Linkedin.vue";
     import Twitter from "vue-material-design-icons/Twitter.vue";

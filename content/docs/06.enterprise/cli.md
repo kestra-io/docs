@@ -11,13 +11,13 @@ How to interact with Kestra Enterprise Edition using the CLI.
 The Kestra CLI uses the same authentication as the [Kestra API](/docs/enterprise/api). You can use the `--api-token` option to authenticate with the API.
 
 ```shell
-kestra-ee --api-token <your-api-token> --help
+kestra --api-token <your-api-token> --help
 ```
 
-## kestra-ee
+## kestra
 
 ```bash
-Usage: kestra-ee [-hV] [COMMAND]
+Usage: kestra [-hV] [COMMAND]
 
 Options:
   -h, --help      Show this help message and exit.
@@ -36,10 +36,10 @@ Commands:
   tenants    handle tenants
 ```
 
-## kestra-ee auths
+## kestra auths
 
 ```bash
-Usage: kestra-ee auths [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
+Usage: kestra auths [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
                        [-p=<pluginsPath>] [COMMAND]
 handle auths
   -c, --config=<config>   Path to a configuration file
@@ -60,12 +60,12 @@ Commands:
   users  handle users
 ```
 
-Here is the list of available commands withing `kestra-ee auths`:
+Here is the list of available commands withing `kestra auths`:
 
-- `kestra-ee auths users`
+- `kestra auths users`
 
 ```bash
-Usage: kestra-ee auths users [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra auths users [-hVv] [--internal-log] [-c=<config>]
                              [-l=<logLevel>] [-p=<pluginsPath>] [COMMAND]
 handle users
   -c, --config=<config>   Path to a configuration file
@@ -94,10 +94,10 @@ Commands:
   set-type     Set type of a user between STANDARD and SUPER_ADMIN.
 ```
 
-- `kestra-ee auths users sync-access`
+- `kestra auths users sync-access`
 
 ```bash
-Usage: kestra-ee auths users sync-access [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra auths users sync-access [-hVv] [--internal-log] [-c=<config>]
        [-l=<logLevel>] [-p=<pluginsPath>]
 Sync users access with the default Tenant.
 This command is designed to be used when enabling multi-tenancy on an existing
@@ -120,10 +120,10 @@ be synchronized)
   -V, --version           Print version information and exit.
 ```
 
-- `kestra-ee auths users refresh`
+- `kestra auths users refresh`
 
 ```bash
-Usage: kestra-ee auths users refresh [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra auths users refresh [-hVv] [--internal-log] [-c=<config>]
                                      [-l=<logLevel>] [-p=<pluginsPath>]
 Refresh users to update their properties
   -c, --config=<config>   Path to a configuration file
@@ -142,10 +142,10 @@ Refresh users to update their properties
   -V, --version           Print version information and exit.
 ```
 
-- `kestra-ee auths users set-type`
+- `kestra auths users set-type`
 
 ```bash
-Usage: kestra-ee auths users set-type [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra auths users set-type [-hVv] [--internal-log] [-c=<config>]
                                       [-l=<logLevel>] [-p=<pluginsPath>] <user>
                                       <type>
 Set type of a user between STANDARD and SUPER_ADMIN.
@@ -168,10 +168,10 @@ Set type of a user between STANDARD and SUPER_ADMIN.
 ```
 
 
-- `kestra-ee auths users create`
+- `kestra auths users create`
 
 ```bash
-Usage: kestra-ee auths users create [-hVv] [--admin] [--internal-log]
+Usage: kestra auths users create [-hVv] [--admin] [--internal-log]
                           [--superadmin] [-c=<config>]
                           [-l=<logLevel>] [-p=<pluginsPath>]
                           [--tenant=<tenantId>] [--groups=<group>]...
@@ -207,30 +207,30 @@ Create a new users
 Example command to create a Super Admin user:
 
 ```shell
-kestra-ee auths users create --superadmin \
+kestra auths users create --superadmin \
   --tenant=default admin admin_password123
 ```
 
 Example command to create an Admin user:
 
 ```shell
-kestra-ee auths users create --admin \
+kestra auths users create --admin \
   --tenant=default admin admin_password123
 ```
 
 Example command to create a regular user:
 
 ```shell
-kestra-ee auths users create --tenant=default user user_password123
+kestra auths users create --tenant=default user user_password123
 ```
 
 
 ---
 
-## kestra-ee flow
+## kestra flow
 
 ```bash
-Usage: kestra-ee flow [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
+Usage: kestra flow [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
                       [-p=<pluginsPath>] [COMMAND]
 handle flows
   -c, --config=<config>   Path to a configuration file
@@ -255,10 +255,10 @@ Commands:
   export     export flows to a zip file
 ```
 
-- `kestra-ee flow namespace`
+- `kestra flow namespace`
 
 ```bash
-Usage: kestra-ee flow namespace [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra flow namespace [-hVv] [--internal-log] [-c=<config>]
                                 [-l=<logLevel>] [-p=<pluginsPath>] [COMMAND]
 handle namespace flows
   -c, --config=<config>   Path to a configuration file
@@ -279,10 +279,10 @@ Commands:
   update  handle namespace flows
 ```
 
-- `kestra-ee flow namespace update`
+- `kestra flow namespace update`
 
 ```bash
-Usage: kestra-ee flow namespace update [-hVv] [--[no-]delete] [--internal-log]
+Usage: kestra flow namespace update [-hVv] [--[no-]delete] [--internal-log]
                                        [-c=<config>] [-l=<logLevel>]
                                        [-p=<pluginsPath>] [--server=<server>]
                                        [--tenant=<tenantId>] [--user=<user:
@@ -317,10 +317,10 @@ handle namespace flows
 ```
 
 
-- `kestra-ee flow test`
+- `kestra flow test`
 
 ```bash
-Usage: kestra-ee flow test [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra flow test [-hVv] [--internal-log] [-c=<config>]
                            [-l=<logLevel>] [-p=<pluginsPath>] <file>
                            [<inputs>...]
 test a flow
@@ -345,10 +345,10 @@ test a flow
   -V, --version           Print version information and exit.
 ```
 
-- `kestra-ee flow dot`
+- `kestra flow dot`
 
 ```bash
-Usage: kestra-ee flow dot [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
+Usage: kestra flow dot [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
                           [-p=<pluginsPath>] <file>
 generate a dot graph from a file
       <file>              the flow file to display
@@ -368,10 +368,10 @@ generate a dot graph from a file
   -V, --version           Print version information and exit.
 ```
 
-- `kestra-ee flow export`
+- `kestra flow export`
 
 ```bash
-Usage: kestra-ee flow export [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra flow export [-hVv] [--internal-log] [-c=<config>]
                              [-l=<logLevel>] [--namespace=<namespace>]
                              [-p=<pluginsPath>] [--server=<server>]
                              [--tenant=<tenantId>] [--user=<user:password>]
@@ -405,10 +405,10 @@ export flows to a zip file
 ```
 
 
-- `kestra-ee flow validate`
+- `kestra flow validate`
 
 ```bash
-Usage: kestra-ee flow validate [-hVv] [--internal-log] [--local] [-c=<config>]
+Usage: kestra flow validate [-hVv] [--internal-log] [--local] [-c=<config>]
                                [-l=<logLevel>] [-p=<pluginsPath>]
                                [--server=<server>] [--tenant=<tenantId>]
                                [--user=<user:password>]
@@ -443,10 +443,10 @@ validate a flow
 
 ---
 
-## kestra-ee tenants
+## kestra tenants
 
 ```bash
-Usage: kestra-ee tenants [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
+Usage: kestra tenants [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
                          [-p=<pluginsPath>] [COMMAND]
 handle tenants
   -c, --config=<config>   Path to a configuration file
@@ -468,10 +468,10 @@ Commands:
 ```
 
 
-- `kestra-ee tenants create`
+- `kestra tenants create`
 
 ```bash
-Usage: kestra-ee tenants create [-hVv] [--internal-log]
+Usage: kestra tenants create [-hVv] [--internal-log]
                                 [--admin-username=<adminUser>] [-c=<config>]
                                 [-l=<logLevel>] [-p=<pluginsPath>] <tenantId>
                                 <tenantName>
@@ -499,10 +499,10 @@ create a tenant and assign admin roles to an existing admin user
 
 ---
 
-## kestra-ee plugins
+## kestra plugins
 
 ```bash
-Usage: kestra-ee plugins [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
+Usage: kestra plugins [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
                          [-p=<pluginsPath>] [COMMAND]
 handle plugins
   -c, --config=<config>   Path to a configuration file
@@ -525,10 +525,10 @@ Commands:
   doc      write documentation for all plugins currently installed
 ```
 
-- `kestra-ee plugins install`
+- `kestra plugins install`
 
 ```bash
-Usage: kestra-ee plugins install [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra plugins install [-hVv] [--internal-log] [-c=<config>]
                                  [-l=<logLevel>] [-p=<pluginsPath>]
                                  [--repositories=<repositories>]...
                                  [<dependencies>...]
@@ -553,10 +553,10 @@ install a plugin
   -V, --version             Print version information and exit.
 ```
 
-- `kestra-ee plugins list`
+- `kestra plugins list`
 
 ```bash
-Usage: kestra-ee plugins list [-hVv] [--core] [--internal-log] [-c=<config>]
+Usage: kestra plugins list [-hVv] [--core] [--internal-log] [-c=<config>]
                               [-l=<logLevel>] [-p=<pluginsPath>]
 list all plugins already installed
   -c, --config=<config>   Path to a configuration file
@@ -576,10 +576,10 @@ list all plugins already installed
   -V, --version           Print version information and exit.
 ```
 
-- `kestra-ee plugins doc`
+- `kestra plugins doc`
 
 ```bash
-Usage: kestra-ee plugins doc [-hVv] [--core] [--icons] [--internal-log]
+Usage: kestra plugins doc [-hVv] [--core] [--icons] [--internal-log]
                              [-c=<config>] [-l=<logLevel>] [-p=<pluginsPath>]
                              <output>
 write documentation for all plugins currently installed
@@ -605,10 +605,10 @@ write documentation for all plugins currently installed
 
 ---
 
-## kestra-ee server
+## kestra server
 
 ```bash
-Usage: kestra-ee server [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
+Usage: kestra server [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
                         [-p=<pluginsPath>] [COMMAND]
 handle servers
   -c, --config=<config>   Path to a configuration file
@@ -635,10 +635,10 @@ Commands:
   local       start a local server
 ```
 
-### kestra-ee server executor
+### kestra server executor
 
 ```bash
-Usage: kestra-ee server executor [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra server executor [-hVv] [--internal-log] [-c=<config>]
                                  [-l=<logLevel>] [-p=<pluginsPath>]
                                  [--port=<serverPort>]
                                  [--skip-executions=<skipExecutions>[,
@@ -665,10 +665,10 @@ start an executor
   -V, --version             Print version information and exit.
 ```
 
-### kestra-ee server indexer
+### kestra server indexer
 
 ```bash
-Usage: kestra-ee server indexer [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra server indexer [-hVv] [--internal-log] [-c=<config>]
                                 [-l=<logLevel>] [-p=<pluginsPath>]
                                 [--port=<serverPort>]
 start an indexer
@@ -689,10 +689,10 @@ start an indexer
   -V, --version             Print version information and exit.
 ```
 
-### kestra-ee server scheduler
+### kestra server scheduler
 
 ```bash
-Usage: kestra-ee server scheduler [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra server scheduler [-hVv] [--internal-log] [-c=<config>]
                                   [-l=<logLevel>] [-p=<pluginsPath>]
                                   [--port=<serverPort>]
 start an scheduler
@@ -713,10 +713,10 @@ start an scheduler
   -V, --version             Print version information and exit.
 ```
 
-### kestra-ee server standalone
+### kestra server standalone
 
 ```bash
-Usage: kestra-ee server standalone [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra server standalone [-hVv] [--internal-log] [-c=<config>]
                                    [-f=<flowPath>] [-l=<logLevel>]
                                    [-p=<pluginsPath>] [--port=<serverPort>]
                                    [--worker-thread=<workerThread>]
@@ -749,10 +749,10 @@ start a standalone server
                             the number of worker thread
 ```
 
-### kestra-ee server webserver
+### kestra server webserver
 
 ```bash
-Usage: kestra-ee server webserver [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra server webserver [-hVv] [--internal-log] [-c=<config>]
                                   [-l=<logLevel>] [-p=<pluginsPath>]
                                   [--port=<serverPort>]
 start the webserver
@@ -773,10 +773,10 @@ start the webserver
   -V, --version             Print version information and exit.
 ```
 
-### kestra-ee server worker
+### kestra server worker
 
 ```bash
-Usage: kestra-ee server worker [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra server worker [-hVv] [--internal-log] [-c=<config>]
                                [-g=<workerGroupKey>] [-l=<logLevel>]
                                [-p=<pluginsPath>] [--port=<serverPort>]
                                [-t=<thread>]
@@ -803,10 +803,10 @@ start a worker
   -V, --version             Print version information and exit.
 ```
 
-### kestra-ee server local
+### kestra server local
 
 ```bash
-Usage: kestra-ee server local [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra server local [-hVv] [--internal-log] [-c=<config>]
                               [-f=<flowPath>] [-l=<logLevel>]
                               [-p=<pluginsPath>] [--port=<serverPort>]
                               [--worker-thread=<workerThread>]
@@ -842,10 +842,10 @@ start a local server
 
 ---
 
-## kestra-ee sys
+## kestra sys
 
 ```bash
-Usage: kestra-ee sys [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
+Usage: kestra sys [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
                      [-p=<pluginsPath>] [COMMAND]
 handle systems maintenance
   -c, --config=<config>   Path to a configuration file
@@ -869,10 +869,10 @@ Commands:
   submit-queued-execution  Submit all queued execution to the executor
 ```
 
-### kestra-ee sys reindex
+### kestra sys reindex
 
 ```bash
-Usage: kestra-ee sys reindex [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra sys reindex [-hVv] [--internal-log] [-c=<config>]
                              [-l=<logLevel>] [-p=<pluginsPath>] [-t=<type>]
 reindex all records of a type: read them from the database then update them
   -c, --config=<config>   Path to a configuration file
@@ -893,10 +893,10 @@ reindex all records of a type: read them from the database then update them
   -V, --version           Print version information and exit.
 ```
 
-### kestra-ee sys database
+### kestra sys database
 
 ```bash
-Usage: kestra-ee sys database [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra sys database [-hVv] [--internal-log] [-c=<config>]
                               [-l=<logLevel>] [-p=<pluginsPath>] [COMMAND]
 manage Kestra database
   -c, --config=<config>   Path to a configuration file
@@ -919,10 +919,10 @@ Commands:
              will run Flyway then exit.
 ```
 
-### kestra-ee sys submit-queued-execution
+### kestra sys submit-queued-execution
 
 ```bash
-Usage: kestra-ee sys submit-queued-execution [-hVv] [--internal-log]
+Usage: kestra sys submit-queued-execution [-hVv] [--internal-log]
        [-c=<config>] [-l=<logLevel>] [-p=<pluginsPath>]
 Submit all queued execution to the executor
 All queued execution will be submitted to the executor. Warning, if there is
@@ -946,10 +946,10 @@ be queued again.
 
 ---
 
-## kestra-ee configs
+## kestra configs
 
 ```bash
-Usage: kestra-ee configs [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
+Usage: kestra configs [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
                          [-p=<pluginsPath>] [COMMAND]
 handle configs
   -c, --config=<config>   Path to a configuration file
@@ -970,10 +970,10 @@ Commands:
   properties  Display actual configurations properties.
 ```
 
-- `kestra-ee configs properties`:
+- `kestra configs properties`:
 
 ```bash
-Usage: kestra-ee configs properties [-hVv] [--internal-log] [-c=<config>]
+Usage: kestra configs properties [-hVv] [--internal-log] [-c=<config>]
                                     [-l=<logLevel>] [-p=<pluginsPath>]
 Display actual configurations properties.
   -c, --config=<config>   Path to a configuration file
@@ -995,10 +995,10 @@ Display actual configurations properties.
 
 ---
 
-## kestra-ee sys-ee
+## kestra sys-ee
 
 ```bash
-Usage: kestra-ee sys-ee [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
+Usage: kestra sys-ee [-hVv] [--internal-log] [-c=<config>] [-l=<logLevel>]
                         [-p=<pluginsPath>] [COMMAND]
 handle kestra ee systems maintenance
   -c, --config=<config>   Path to a configuration file
@@ -1022,10 +1022,10 @@ Commands:
                              runner.
 ```
 
-### kestra-ee sys-ee restore-flow-listeners
+### kestra sys-ee restore-flow-listeners
 
 ```bash
-Usage: kestra-ee sys-ee restore-flow-listeners [-hVv] [--internal-log]
+Usage: kestra sys-ee restore-flow-listeners [-hVv] [--internal-log]
        [-c=<config>] [-l=<logLevel>] [-p=<pluginsPath>] [--timeout=<timeout>]
 restore state-store for FlowListeners
 Mostly usefull in case of restore of flow queue, the state store need to be
@@ -1049,10 +1049,10 @@ init to avoid sending old revisions.
   -V, --version             Print version information and exit.
 ```
 
-### kestra-ee sys-ee restore-queue
+### kestra sys-ee restore-queue
 
 ```bash
-Usage: kestra-ee sys-ee restore-queue [-hVv] [--internal-log] [--no-flows]
+Usage: kestra sys-ee restore-queue [-hVv] [--internal-log] [--no-flows]
                                       [--no-namespaces] [--no-recreate]
                                       [--no-templates] [--no-triggers]
                                       [--no-triggers-execution-id]
@@ -1084,10 +1084,10 @@ repository to kafka in case of restore.
   -V, --version           Print version information and exit.
 ```
 
-### kestra-ee sys-ee reset-concurrency-limit
+### kestra sys-ee reset-concurrency-limit
 
 ```bash
-Usage: kestra-ee sys-ee reset-concurrency-limit [-hVv] [--internal-log]
+Usage: kestra sys-ee reset-concurrency-limit [-hVv] [--internal-log]
        [-c=<config>] [-l=<logLevel>] [-p=<pluginsPath>]
 Reset the concurrency limit stored on the Kafka runner.
 Use it only if some flow that has a concurrency limit hasn't started due to

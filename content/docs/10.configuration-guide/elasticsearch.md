@@ -62,7 +62,8 @@ kestra:
 ```
 
 ## `kestra.elasticsearch.indices`
-By default, a unique indices is used for all different datas, it could be useful to split index by day / week / month to avoid having large indices in ElasticSearch.
+By default, a unique indices is used for all different data, it could be useful to split the index by day / week / month to avoid having large indices in ElasticSearch.
+
 For now, `executions`, `logs` & `metrics` can be split, and we support all this split type:
 - `DAILY`
 - `WEEKLY`
@@ -80,6 +81,20 @@ kestra:
       metrics:
         alias: daily
 ```
+
+### Index Rotation
+
+When you enable index rotation, it creates an alias and one index per periodicity (day, week, etc.).
+
+It's safe to enable it on an existing instance however the alias will clash with the existing index so you should move the existing index, for example change `kestra_logs` to `kestra_logs-1` before switching to the alias.
+
+As indexes will be created with `name-periodicity` using the `-1` suffix, make sure you will still include the old data (until you make the decision to purge it).
+
+Be careful that not all indexes can be safely purged. You should only enable alias for historical data that keeps growing (like logs, metrics and executions).
+
+It's safe to disable aliases but in the case existing data would not be recovered anymore.
+
+It is totally safe to switch from one periodicity to another as the alias is for `name-*` so the periodicity is not important.
 
 ## `kestra.elasticsearch.client.trust-all-ssl`
 

@@ -98,13 +98,13 @@ Here is an image of adding secret via the UI in EE edition:
 
 ![secrets_ee](/blogs/2024-04-04-top-10-cool-features-I-love-about-kestra/secrets_ee.png)
 
-## 2. Task defaults
+## 2. Plugin defaults
 
 This is yet another powerful feature from the developer productivity perspective. Generally, you develop a pipeline related to some technology, and it is extremely likely that you use multiple tasks that correspond to the same technology. For example, in a flow that queries Redshift, it is very likely that you connect to Redshift to create the table in one task and then insert data into it in another task, and then query it for some purpose. In this case, you would just end up duplicating the Redshift connection information in all these tasks. This hampers the developer's productivity and leads to configuration duplication.
 
-In order to avoid this duplication, Kestra provides [task defaults](https://kestra.io/docs/workflow-components/task-defaults). Mention the task defaults once in the flow, and it gets referenced in all the tasks of the corresponding type.
+In order to avoid this duplication, Kestra provides [plugin defaults](https://kestra.io/docs/workflow-components/task-defaults). Mention the plugin defaults once in the flow, and it gets referenced in all the tasks of the corresponding type.
 
-You can even set the task defaults globally or on a namespace level to ensure that all flows using, e.g., the AWS plugin leverage the same credentials.
+You can even set the plugin defaults globally or on a namespace level to ensure that all flows using, e.g., the AWS plugin leverage the same credentials.
 
 ```yaml
 id: redshift_data_pipeline

@@ -75,6 +75,11 @@ h2 {
 
 main {
     padding-top: 67px;
+
+    @include media-breakpoint-down(lg) {
+        padding-top: 60px;
+    }
+
     > div {
         overflow-x: hidden;
     }
@@ -148,7 +153,7 @@ blockquote.blockquote {
         left: -50%;
         top: -300%;
         width: 200%;
-        height: 700%;
+        height: 760%;
         animation: rotate 6s linear infinite;
     }
 

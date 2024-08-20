@@ -25,7 +25,7 @@
                 <NavToc :page="page" class="my-md-0 my-4 right-menu" />
 
                 <div class="bd-content">
-                    <DocsFeatureScopeMarker v-if="page.editions || page.version" :editions="page.editions" :version="page.version" />
+                    <DocsFeatureScopeMarker v-if="page.editions || page.version || page.deprecated || page.release" :page="page"/>
                     <ContentRendererMarkdown
                         class="bd-markdown"
                         :value="page"
@@ -180,16 +180,22 @@
 
   const {description, title} = page;
 
-  useHead({
-    meta: [
-      {property: 'og:title', content: title},
-      {property: 'og:description', content: description},
-      {property: 'og:image', content: ogImage},
-      {property: 'og:image:type', content: "image/svg+xml"},
-      {property: 'og:image:alt', content: title},
-      {property: 'og:url', content: 'https://kestra.io'},
-    ]
-  })
+    useHead({
+      meta: [
+        {property: 'og:title', content: title},
+        {property: 'og:description', content: description},
+        {property: 'og:image', content: ogImage},
+        {property: 'og:image:type', content: "image/svg+xml"},
+        {property: 'og:image:alt', content: title},
+        {property: 'og:url', content: 'https://kestra.io'},
+        {name: 'twitter:card', content: 'summary_large_image'},
+        {name: 'twitter:site', content: '@kestra_io'},
+        {name: 'twitter:title', content: title},
+        {name: 'twitter:description', content: description},
+        {name: 'twitter:image', content: ogImage},
+        {name: 'twitter:image:alt', content: title}
+      ]
+    })
 </script>
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
@@ -345,7 +351,7 @@
         }
     }
 
-    .docs :deep(img:not(.page-icon)) {
-        width: 100%;
+    .docs :deep(.img-block) {
+        text-align: left !important;
     }
 </style>

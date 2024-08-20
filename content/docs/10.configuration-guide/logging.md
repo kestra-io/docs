@@ -20,23 +20,26 @@ logger:
 ```
 
 
-## `kestra.server.access-log`: Access Log configuration
-- `kestra.server.access-log.enabled`: enable access log from webserver (default `true`).
-- `kestra.server.access-log.name`: logger name (default `io.kestra.webserver.access`).
-- `kestra.server.access-log.format`: access log format (default `[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]`).
-- `kestra.server.access-log.filters`: list of regexp to define which log to include, use `.*` to enable all logs (default `- ".*\\[Url: /api/.*"`).
+## `micronaut.server.netty.access-logger`: Access Log configuration
+- `micronaut.server.netty.access-logger.enabled`: enable access log from webserver (default `true`).
+- `micronaut.server.netty.access-logger.name`: logger name (default `io.kestra.webserver.access`).
+- `micronaut.server.netty.access-logger.format`: access log format (default `"%{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}t | %r | status: %s | ip: %a | length: %b | duration: %D"`).
+- `micronaut.server.netty.access-logger.exclusions`: list of regexp to define which log to exclude.
 
 Here is the default values:
 
 ```yaml
-kestra:
+micronaut:
   server:
-    access-log:
-      enabled: true
-      name: io.kestra.webserver.access
-      format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
-      filters:
-        - ".*\\[Url: /api/.*"
+    netty:
+      access-logger:
+        enabled: true
+        name: io.kestra.webserver.access
+        format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
+        exclusions:
+          - /ui/.+
+          - /health
+          - /prometheus
 ```
 
 ## Log Format

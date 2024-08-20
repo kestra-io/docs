@@ -1,0 +1,22 @@
+id: golang_outputs_usage
+namespace: company.team
+
+tasks:
+  - id: go
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: golang:latest
+    inputFiles:
+      main.go: |
+        package main
+        import "fmt"
+        func main() {
+            fmt.Println("::{\"outputs\":{\"test\":\"value\",\"int\":2,\"bool\":true,\"float\":3.65}}::")
+        }
+    commands:
+      - go run main.go
+
+  - id: return
+    type: io.kestra.plugin.core.debug.Return
+    format: '{{ outputs.go.vars.test }}'

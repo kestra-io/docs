@@ -45,6 +45,12 @@
         `ChildCard-${hash(currentPage)}`,
         () => queryContent(currentPage + "/").where({ _dir: currentPageDir}).find()
     );
+
+    // if (currentPage == "/docs/faq") {
+    //   navigation.value = navigation.value.map(item => {
+    //     return { ...item, icon: item.icon ? item.icon : '/docs/icons/faq.svg'}
+    //   })
+    // }
 </script>
 
 <style lang="scss" scoped>

@@ -5,12 +5,12 @@
             <h1 data-aos="fade-left">Blueprints</h1>
             <h4 data-aos="fade-right">The first step is always the hardest. Explore blueprints to kick-start your next flow.</h4>
             <div class="col-12 search-input position-relative">
-                <input type="text" class="form-control form-control-lg" placeholder="Search across +180 of blueprints" v-model="searchQuery">
+                <input type="text" class="form-control form-control-lg" placeholder="Search across 180+ of blueprints" v-model="searchQuery">
                 <Magnify class="search-icon" />
             </div>
         </div>
     </div>
-    <div class="grid gap-3 mt-5" data-aos="fade-left">
+    <div class="mt-5" data-aos="fade-left">
         <button
             v-for="tag in tags"
             :key="tag.name"

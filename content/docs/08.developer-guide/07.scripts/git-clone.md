@@ -3,6 +3,8 @@ title: The Git Clone task
 icon: /docs/icons/dev.svg
 ---
 
+Clone a Git repository and use the files in your tasks.
+
 This task allows you to clone a Git repository into a working directory and then use the files from that repository in downstream tasks.
 
 ## The `Git` plugin

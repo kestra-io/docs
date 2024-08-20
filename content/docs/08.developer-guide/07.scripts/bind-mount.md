@@ -3,6 +3,8 @@ title: Bind mount
 icon: /docs/icons/dev.svg
 ---
 
+Use bind-mount to execute locally stored scripts.
+
 To run a script stored locally, you can bind-mount it to your Kestra container.
 
 ## Bind-mounting local scripts

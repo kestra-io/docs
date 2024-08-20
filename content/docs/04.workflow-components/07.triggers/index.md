@@ -5,18 +5,25 @@ icon: /docs/icons/flow.svg
 
 Trigger is a mechanism that automates the execution of a flow.
 
-Triggers can be scheduled or event-based.
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/qDiQtsVEETs?si=BxrYa-Z1ntqsPvbu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
+Triggers can be scheduled or event-based providing lots of flexibility in how you can automate the execution of your workflows.
 
 ## Trigger types
 
 Kestra supports both **scheduled** and **external** events.
 
-Kestra core provides four types of triggers:
+Kestra provides five types of triggers:
 
-* [Schedule trigger](./schedule-trigger.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
-* [Flow trigger](./flow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
-* [Webhook trigger](./webhook-triggers.md) allows you to execute your flow based on an HTTP request emitted by a webhook.
-* [Realtime trigger](./realtime-triggers.md) allows you to execute your flow when events happen with millisecond latency.
+- [Schedule trigger](01.schedule-trigger.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
+- [Flow trigger](02.flow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
+- [Webhook trigger](03.webhook-trigger.md) allows you to execute your flow based on an HTTP request emitted by a webhook.
+- [Polling trigger](04.polling-trigger.md) allows you to execute your flow by polling external systems for the presence of data.
+- [Realtime trigger](05.realtime-trigger.md) allows you to execute your flow when events happen with millisecond latency.
 
 Many other triggers are available from the plugins, such as triggers based on file detection events, e.g. the [S3 trigger](/plugins/plugin-aws/triggers/s3/io.kestra.plugin.aws.s3.trigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/triggers/sqs/io.kestra.plugin.aws.sqs.realtimetrigger) or [Kafka trigger](/plugins/plugin-kafka/triggers/io.kestra.plugin.kafka.trigger).
 
@@ -98,7 +105,7 @@ Available conditions include:
 - [ExecutionOutputsCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.executionoutputscondition)
 - [ExpressionCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExpressionCondition)
 
-You can also find datetime related conditions [on the Schedule trigger page](./schedule-trigger.md#schedule-conditions).
+You can also find datetime related conditions [on the Schedule trigger page](01.schedule-trigger.md#schedule-conditions).
 
 ## Unlocking, enabling and disabling triggers
 
@@ -132,11 +139,11 @@ You can disable or re-enable a trigger from the UI. Here is how you can do it:
 1. Go to the `Flows` page and click on the flow you want to disable the trigger for.
 2. Go to the `Triggers` tab and click on the `Enabled` toggle next to the trigger you want to disable. You can re-enable it by clicking the toggle again.
 
-![triggers_flow](/docs/workflow-components/triggers_flow.png)
+![triggers_flow](/docs/workflow-components/triggers/triggers_flow.png)
 
 If your trigger is locked due to an execution in progress, you can unlock it by clicking the `Unlock trigger` button.
 
-![trigger_unlock](/docs/workflow-components/trigger_unlock.png)
+![trigger_unlock](/docs/workflow-components/triggers/trigger_unlock.png)
 
 The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a process is stuck due to infrastructure issues. Note that manually unlocking triggers may result in multiple concurrent (potentially duplicated) executions — use it with caution.
 
@@ -144,7 +151,37 @@ The **Unlock trigger** functionality is useful for troubleshooting, e.g. if a pr
 
 You can also disable, re-enable, or unlock triggers from the Administration page. Here is how you can do it:
 
-![triggers_administration](/docs/workflow-components/triggers_administration.png)
+![triggers_administration](/docs/workflow-components/triggers/triggers_administration.png)
+
+
+## Troubleshooting a trigger from the UI
+
+Let's say you misconfigured a trigger, and as a result, no Executions are created.
+
+The example flow below illustrates this scenario. Note how the `sqs_trigger` trigger is misconfigured with invalid AWS credentials:
+
+```yaml
+id: bad_trigger_example
+namespace: company.team
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello World!
+
+triggers:
+  - id: sqs_trigger
+    type: io.kestra.plugin.aws.sqs.Trigger
+    accessKeyId: "nonExistingKey"
+    secretKeyId: "nonExistingSecret"
+    region: "us-east-1"
+    queueUrl: "https://sqs.us-east-1.amazonaws.com/123456789/testQueue"
+    maxRecords: 10
+```
+
+When you add that flow to Kestra, you'll see that no Executions are created. To troubleshoot this, you can go to the `Triggers` tab on the Flow's page and **expand the logs** of the trigger that is causing the issue. You'll see a detailed error message that will help you identify the problem:
+
+![invalid_trigger_configuration](/docs/workflow-components/triggers/invalid_trigger_configuration.png)
 
 
 ## The ``stopAfter`` property
@@ -218,6 +255,6 @@ Let's break down the above example:
 
 ## Locked triggers
 
-[Flow](./flow-trigger.md), [Schedule](./schedule-trigger.md) and [Polling triggers](#polling-triggers) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
+[Flow](02.flow-trigger.md), [Schedule](01.schedule-trigger.md) and [Polling triggers](04.polling-trigger.md) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
 
 To see a list of triggers and inspect their current status, go to the **Administration -> Triggers** section in the Kestra UI. From here, you can unlock a trigger if it is locked. Keep in mind that there is a risk or concurrent trigger evaluation or flow execution for this trigger if you unlock it manually.

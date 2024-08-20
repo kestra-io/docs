@@ -1,0 +1,12 @@
+id: rust_commands
+namespace: company.team
+tasks:
+  - id: rust
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: rust:latest
+    namespaceFiles:
+      enabled: true
+    commands:
+      - rustc main.rs && ./main

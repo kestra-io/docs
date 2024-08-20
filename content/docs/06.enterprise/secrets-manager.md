@@ -95,7 +95,13 @@ Additionally, you can configure the `kestra.secret.google-secret-manager.prefix`
 
 ## Vault Configuration
 
-Kestra also supports the [KV Secrets Engine - Version 2](https://www.vaultproject.io/docs/secrets/kv/kv-v2) as a secrets backend.
+Kestra currently supports the [KV secrets engine - version 2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) as a secrets backend. If you consider alternative Vault secrets engines, please note the following:
+- The [Vault's database secrets engine](https://developer.hashicorp.com/vault/docs/secrets/databases), often referred to as "dynamic secrets", is not supported as we need long-term secret storage.
+- The [Vault Secrets Operator on Kubernetes](https://developer.hashicorp.com/vault/tutorials/kubernetes/vault-secrets-operator) creates a Kubernetes secret which is compatible with Kestra with some additional steps. If you are interested about this option, [reach out to us](https://kestra.io/demo) and we can advise how you can set this up.
+
+Follow the steps below to configure the [KV Secrets Engine - Version 2](https://www.vaultproject.io/docs/secrets/kv/kv-v2)  as your secrets backend.
+
+### KV Secrets Engine - Version 2
 
 To authenticate Kestra with [HashiCorp Vault](https://www.vaultproject.io/), you can use Userpass, Token or AppRole Auth Methods, all of which requires full [read and write policies](https://www.vaultproject.io/docs/concepts/policies). You can optionally change `root-engine` or `namespace` (_if you use Vault Enterprise_).
 
@@ -145,3 +151,67 @@ Additionally, you can configure the following properties:
 - **Namespace**: `kestra.secret.vault.namespace` is an optional configuration available on [Vault Enterprise Pro](https://learn.hashicorp.com/vault/operations/namespaces) allowing you to set a global namespace for the Vault server instance.
 - **Engine Version**: `kestra.secret.vault.engine-version` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
 - **Root Engine**: `kestra.secret.vault.root-engine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
+
+
+## JDBC (Postgres, H2, MySQL) Secret Manager
+
+Kestra also supports internal secret backend. For the JDBC backend (H2, Postgres or MySQL), the following configuration allows you to set secret backend:
+
+```yaml
+kestra:
+  secret:
+    type: jdbc
+    jdbc:
+      secret: "your-secret-key"
+```
+
+Your secret key should be encrypted. You can find an example of [encryption key here](../10.configuration-guide/encryption.md).
+
+## Elastic Secret Manager
+
+For Kestra instance deployed using the Kafka/Elastic backend, the secret backend can be configured like this:
+
+```yaml
+kestra:  
+  secret:
+    type: elasticsearch
+    elasticsearch:
+      secret: "your-secret-key"
+```
+
+Your secret key should be encrypted. You can find an example of [encryption key here](../10.configuration-guide/encryption.md).
+
+## Default Tags
+
+For each secret manager, you can configure the default tags that will be added to all newly created or updated secrets.
+
+Configuration example:
+
+```yaml
+kestra:
+  secret:
+    <secret-type>:
+      # a map of default key/value tags
+      tags:
+        application: kestra-production
+```
+
+## Enable Caching
+
+If you use a secret manager provided by a cloud service provider, it may be worth enabling the secret cache to reduce
+the number of calls to the secret manager API.
+
+Configuration example:
+
+```yaml
+kestra:
+  secret:
+    cache:
+      enabled: true
+      maximumSize: 1000
+      expireAfterWrite: 60s
+```
+
+* **`kestra.secret.cache.enabled`**: Specifies whether to enable caching for secrets.
+* **`kestra.secret.cache.maximumSize`**:  The maximum number of entries the cache may contain.
+* **`kestra.secret.cache.expireAfterWrite`**:  Specifies that each entry should be automatically removed from the cache once this duration has elapsed after the entry's creation.

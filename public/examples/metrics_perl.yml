@@ -1,0 +1,21 @@
+id: perl_metrics
+namespace: company.team
+
+tasks:
+  - id: perl
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: perl:latest
+    inputFiles:
+      main.pl: |
+        #!/usr/bin/perl
+
+        print "There are 20 products in the cart\n";
+        print "::{\"outputs\":{\"productCount\":20}}::\n";
+        print "::{\"metrics\":[{\"name\":\"productCount\",\"type\":\"counter\",\"value\":20}]}::\n";
+        print "::{\"metrics\":[{\"name\":\"purchaseTime\",\"type\":\"timer\",\"value\":32.44}]}::\n";
+        
+    commands:
+      - chmod +x main.pl
+      - perl main.pl

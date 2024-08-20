@@ -19,9 +19,9 @@
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <LayoutFooterContact
-                title="Getting Started with  Declarative Orchestration"
+                title="Getting Started with Declarative Orchestration"
                 darkButtonText="Get started"
-                darkButtonHref="docs/getting-started"
+                darkButtonHref="/docs/getting-started"
                 purpleButtonText="Talk to us"
                 purpleButtonHref="/demo"
             />
@@ -40,8 +40,13 @@
         name: 'twitter:description',
         content: "interact with every aspect of the Kestra programmatically."
       },
-      { name: 'twitter:image', content: `${origin}/landing/features/declarative/header-bg.svg` },
-      { name: 'twitter:image:alt', content: "Declarative Data Orchestration with Kestra" }
+      { name: 'twitter:image', content: `${origin}/og-image.png` },
+      { name: 'twitter:image:alt', content: "Kestra API First Design" },
+      { property: 'og:title', content: "Kestra API First Design" },
+      { property: 'og:description', content: "interact with every aspect of the Kestra programmatically." },
+      { property: 'og:image', content: `${origin}/og-image.png` },
+      { property: 'og:image:type', content: "image/svg+xml" },
+      { property: 'og:image:alt', content: "Kestra API First Design" },
     ]
   })
 </script>

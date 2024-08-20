@@ -13,7 +13,7 @@
 
             <div class="cta">
               <NuxtLink
-                  href="https://drive.google.com/drive/folders/1nwf1BeIZqAGC9uPiq33W-nvDwXDK5tPR?usp=sharing"
+                  href="/docs/brand-assets"
                   class="btn btn-animated btn-purple-animated mt-2"
                   data-aos="zoom-in"
               >
