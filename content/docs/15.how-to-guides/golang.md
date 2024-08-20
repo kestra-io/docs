@@ -9,7 +9,7 @@ Go is a powerful programming language often used for cloud-native development, C
 
 This guide is going to walk you through how to get Go running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
 
-## Configuring Go
+## Executing Go inside Kestra
 
 There isn't an official Go plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside of a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language. 
 
@@ -28,9 +28,9 @@ func main() {
 }
 ```
 
-You'll need to add your Golang code using the Editor or [sync it using Git](../08.developer-guide/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You'll need to add your Golang code using the built-in Editor or [sync it using Git](../08.developer-guide/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
-You can also have the Golang code written inline using the `inputFiles` property.
+You can also add your Golang code inline using the `inputFiles` property.
 
 ```yaml file=public/examples/commands_golang_inline.yml
 ```
