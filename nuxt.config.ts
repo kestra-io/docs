@@ -160,6 +160,7 @@ export default defineNuxtConfig({
       '/docs/enterprise/setup-page': {redirect: '/docs/enterprise/setup'},
       '/docs/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
       '/docs/developer-guide/scripts/rust': {redirect: '/docs/developer-guide/scripts/additional-languages'},
+      '/docs/developer-guide/scripts/additional-languages': {redirect: '/docs/developer-guide/scripts/languages'},
       '/docs/developer-guide/best-practice': {redirect: '/docs/best-practices'},
       '/docs/developer-guide/best-practices': {redirect: '/docs/best-practices'},
       '/docs/best-practice': {redirect: '/docs/best-practices'},

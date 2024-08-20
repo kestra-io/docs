@@ -59,7 +59,7 @@ You can refer to the outputs in another task as shown in the example below:
 
 ### File Output
 
-Inside of your Golang code, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../08.developer-guide/07.scripts/08.output-directory.md).
+Inside of your Golang code, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../08.developer-guide/07.scripts/07.outputs-metrics.md).
 
 The example below writes a `output.txt` file containing the "Hello World" text. We can then refer the file using the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and read the contents of the file using the `read()` function.
 
@@ -68,7 +68,7 @@ The example below writes a `output.txt` file containing the "Hello World" text. 
 
 ## Handling Metrics
 
-You can also get [metrics](../08.developer-guide/07.scripts/07.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Golang code. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../08.developer-guide/07.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Golang code. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
 
 ```yaml file=public/examples/metrics_golang.yml
 ```
