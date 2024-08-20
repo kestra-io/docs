@@ -5,7 +5,7 @@ icon: /docs/icons/rust.svg
 
 Run Rust code inside of your flow.
 
-There isn't an official Rust plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside of a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language. 
+You can execute arbitrary Rust code in a Docker container using the `Shell` plugin. You can set a container image including the required package dependencies for your Rust application.
 
 In this example, we're using the Docker Task Runner with the `rust:latest` image so that Rust code can be executed.
 
@@ -20,24 +20,19 @@ fn main() {
 }
 ```
 
-You'll need to add your Rust code using the Editor or [sync it using Git](../08.developer-guide/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+Add your Rust code using the built-in Editor or sync it via CI/CD or [using our Git plugin](../08.developer-guide/04.git.md). You'll also need to set the `namespaceFiles.enabled` flag to `true` to indicate that the task should load namespace files.
 
-You can also have the Rust code written inline using the `inputFiles` property.
+You can also add your code inline using the `inputFiles` property.
 
 ```yaml file=public/examples/commands_rust_inline.yml
-```
-
-You can read more about the Shell Commands type in the [Plugin documentation](/plugins/plugin-script-shell/tasks/io.kestra.plugin.scripts.shell.commands).
 
 ## Handling Outputs
 
-If you want to get a file from your Rust code, you can use an [output](../04.workflow-components/06.outputs.md).
+Your Rust code can generate file-based [outputs](../04.workflow-components/06.outputs.md).
 
-### File Output
+In your Rust code, write a file to the local directory. Then, use the `outputFiles` property to point Kestra to the path of those [output files](../08.developer-guide/07.scripts/08.output-directory.md). 
 
-Inside of your Rust code, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../08.developer-guide/07.scripts/08.output-directory.md).
-
-The example below writes a `output.txt` file containing the "Hello World" text. We can then refer the file using the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and read the contents of the file using the `read()` function.
+The example below writes an `output.txt` file containing the text "Hello World". To read that output file in another downstream task, you can use the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and if you need a file's content as a string rather than a file path, you can wrap that expression in a `read()` function e.g. `{{ read(outputs.mytask.outputFiles['outputs.txt']) }}`.
 
 ```yaml file=public/examples/scripts_output-files-rust.yml
 ```
