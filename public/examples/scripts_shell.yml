@@ -3,12 +3,9 @@ namespace: company.team
 description: This flow runs the shell script.
 
 tasks:
-  - id: http_download
-    type: io.kestra.plugin.core.http.Download
-    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
-
   - id: shell_script_task
     type: io.kestra.plugin.scripts.shell.Script
     script: |
-      echo "The current execution is {{ execution.id }}"
-      cat {{ outputs.http_download.uri }}
+      # invoke a GET call on an API and extract information from the JSON response
+      downloads=$(curl https://hub.docker.com/v2/repositories/kestra/kestra/ | jq -r '.pull_count')
+      echo "Downloads: ${downloads}"
