@@ -15,7 +15,7 @@ First, make sure that your Kestra configuration in the [Docker Compose file](htt
 
 ```yaml
   kestra:
-    image: kestra/kestra:latest-full
+    image: kestra/kestra:latest
     pull_policy: always
     user: "root"
     env_file:
