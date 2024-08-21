@@ -162,10 +162,26 @@
   const visibleVideoData = ref({});
   const itemsPerPage = ref(25);
   const currentPage = ref(1);
+  const route = useRoute();
+  const router = useRouter();
+  const { start } = useLoadingIndicator()
+
+  const tags = {
+    "all": "All videos",
+    "deep-dive": "Deep Dive Tutorials",
+    "quick-start": "Quick Start Tutorials",
+    "feature-highlight": "Feature Highlight"
+  };
+
+  if(route.query.page) currentPage.value = parseInt(route.query.page)
+  if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
+  if(route.params.slug) activeTag.value = { name: tags[route.params.slug] ? tags[route.params.slug] :  "All videos" }
 
   const {data: tutorialVideo} = await useAsyncData(`tutorial-videos`, () => {
-    return $fetch(`${config.public.apiUrl}/tutorial-videos?page=${currentPage.value}&size=${itemsPerPage.value}`);
+    const category = activeTag.value.name !== 'All videos' ? activeTag.value.name: '';
+    return $fetch(`${config.public.apiUrl}/tutorial-videos?page=${currentPage.value}&size=${itemsPerPage.value}&category=${category}`);
   });
+
   const changePage = (pageNo) => {
     currentPage.value = pageNo;
     window.scrollTo(0, 0);
@@ -214,16 +230,24 @@
     return "https://www.youtube.com/embed/" + videoId;
   }
 
-  if(tutorialVideo.value) {
+  if(tutorialVideo.value && tutorialVideo.value.total) {
     setVideos(tutorialVideo.value.results, tutorialVideo.value.total);
   }
 
+  const findKeyByValue = (obj, value) => {
+    return Object.entries(obj).find(([key, val]) => val === value)?.[0];
+  };
+
   const setCatVideos = (tagVal) => {
+    start();
     activeTag.value = tagVal;
+    itemsPerPage.value = 25;
+    currentPage.value = 1;
+    router.push(findKeyByValue(tags, tagVal.name))
   }
 
   let timer;
-  watch([currentPage, itemsPerPage, activeTag], ([pageVal, itemVal, tagVal], [__, oldItemVal, oldTagVal]) => {
+  watch([currentPage, itemsPerPage], ([pageVal, itemVal], [__, oldItemVal, oldTagVal]) => {
     if(timer) {
       clearTimeout(timer);
     }
@@ -231,6 +255,14 @@
       const category = activeTag.value.name !== 'All videos' ? activeTag.value.name: '';
       const { data } = await useFetch(`${config.public.apiUrl}/tutorial-videos?page=${(itemVal != oldItemVal) || (tagVal.name != oldTagVal.name) ? 1 : pageVal}&size=${itemVal}&category=${category}`);
       setVideos(data.value.results, data.value.total);
+
+      router.push({
+        query: {
+          page: pageVal,
+          size: itemVal,
+        }
+      })
+
     }, 500)
   })
 </script>
