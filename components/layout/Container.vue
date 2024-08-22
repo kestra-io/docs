@@ -179,6 +179,7 @@
   useContentHead(page);
 
   const {description, title} = page;
+  console.log('window.location.host', `${origin}${route.path}`)
 
     useHead({
       meta: [
@@ -187,6 +188,7 @@
         {property: 'og:image', content: ogImage},
         {property: 'og:image:type', content: "image/svg+xml"},
         {property: 'og:image:alt', content: title},
+        {property: 'og:url', content: `${origin}${route.path}`},
         {name: 'twitter:card', content: 'summary_large_image'},
         {name: 'twitter:site', content: '@kestra_io'},
         {name: 'twitter:title', content: title},
