@@ -63,38 +63,30 @@
 <script>
   export default {
     mounted() {
-      window.addEventListener('scroll', this.handleScroll);
-      this.scrollToHash();
+      this.$nextTick(() => {
+        this.extractHash();
+      });
     },
     methods: {
-      scrollToHash() {
+      extractHash() {
         const hash = this.$route.hash;
         if (hash) {
-          const targetId = hash.substring(1);
-          this.scrollIntoView(targetId);
+          const hashValue = hash.substring(1);
+          this.handleHash(hashValue);
         }
       },
-      scrollIntoView(id) {
-        const element = document.getElementById(id);
-        this.$nextTick(() => {
-          if (element) {
-            const offset = element?.getBoundingClientRect().top + window.scrollY;
-            setTimeout(() => {
-              window.scrollTo({ top: offset - 70 });
-            }, 100);
-          } else {
-            setTimeout(() => {
-              this.$nextTick(() => {
-                const updatedElement = document.getElementById(id);
-                if (updatedElement) {
-                  updatedElement.scrollIntoView({block: "nearest", inline: "nearest"});
-                }
-              });
-            }, 1000);
-          }
-        });
+      handleHash(targetId) {
+        const element = document.getElementById(hashValue);
+        setTimeout(() => {
+          this.$nextTick(() => {
+            const updatedElement = document.getElementById(targetId);
+            if (updatedElement) {
+              updatedElement.scrollIntoView({ behavior: 'smooth' });
+            }
+          });
+        }, 1000);
       }
-    },
+    }
   };
 </script>
 <script setup>
@@ -114,6 +106,23 @@
         data.sort((a,b)=>
             new Date(a.date)-new Date(b.date)
         )
+    }
+
+    const handleHash = (hashValue) => {
+      const element = document.getElementById(hashValue);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    const extractHash = () => {
+      const hash = route.hash;
+      if (hash) {
+        const hashValue = hash.substring(1);
+        setTimeout(() => {
+            handleHash(hashValue);
+        }, 2000)
+      }
     }
 
     if (slug === "/blogs/" || slug === '/blogs/community') {
