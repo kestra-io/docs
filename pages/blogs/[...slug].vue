@@ -75,7 +75,9 @@
         console.log("hash", hash);
         if (hash) {
           const hashValue = hash.substring(1);
-          this.handleHash(hashValue);
+          setTimeout(() => {
+            this.handleHash(hashValue);
+          }, 1000)
         }
       },
       handleHash(hashValue) {
