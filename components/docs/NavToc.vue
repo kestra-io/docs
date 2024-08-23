@@ -151,7 +151,7 @@
                     this.$nextTick(() => {
                       const updatedElement = document.getElementById(id);
                       if (updatedElement) {
-                        updatedElement.scrollIntoView({ behavior: 'smooth' });
+                        updatedElement.scrollIntoView({block: "nearest", inline: "nearest"});
                       }
                     });
                   }, 1000);
