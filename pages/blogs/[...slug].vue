@@ -70,6 +70,7 @@
     const externalNews = ref()
     const page = ref([]);
     const config = useRuntimeConfig();
+    const route = useRoute()
 
     const sort = (data)=>{
         data.sort((a,b)=>
@@ -85,7 +86,7 @@
     }
 
     const extractHash = () => {
-      const hash = this.$route.hash;
+      const hash = route.hash;
       if (hash) {
         const hashValue = hash.substring(1);
         handleHash(hashValue);
