@@ -63,35 +63,38 @@
 <script>
   export default {
     mounted() {
-      this.extractHash();
-      this.$router.afterEach((to, from) => {
-        this.extractHash();
-      });
+      window.addEventListener('scroll', this.handleScroll);
+      this.scrollToHash();
     },
     methods: {
-      extractHash() {
+      scrollToHash() {
         const hash = this.$route.hash;
         if (hash) {
-          const hashValue = hash.substring(1);
-          this.handleHash(hashValue);
+          const targetId = hash.substring(1);
+          this.scrollIntoView(targetId);
         }
       },
-      handleHash(targetId) {
-        setTimeout(() => {
-          this.$nextTick(() => {
-            const updatedElement = document.getElementById(targetId);
-            if (updatedElement) {
-              updatedElement.scrollIntoView({ behavior: 'smooth' });
-            }
-          });
-        }, 1000);
+      scrollIntoView(id) {
+        const element = document.getElementById(id);
+        this.$nextTick(() => {
+          if (element) {
+            const offset = element?.getBoundingClientRect().top + window.scrollY;
+            setTimeout(() => {
+              window.scrollTo({ top: offset - 70 });
+            }, 100);
+          } else {
+            setTimeout(() => {
+              this.$nextTick(() => {
+                const updatedElement = document.getElementById(id);
+                if (updatedElement) {
+                  updatedElement.scrollIntoView({block: "nearest", inline: "nearest"});
+                }
+              });
+            }, 1000);
+          }
+        });
       }
     },
-    watch: {
-      '$route.hash': function(newHash) {
-        this.extractHash();
-      }
-    }
   };
 </script>
 <script setup>
