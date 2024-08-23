@@ -66,11 +66,13 @@
       this.extractHash();
       this.$router.afterEach((to, from) => {
         this.extractHash();
+        console.log("afterEach", from);
       });
     },
     methods: {
       extractHash() {
         const hash = this.$route.hash;
+        console.log("hash", hash);
         if (hash) {
           const hashValue = hash.substring(1);
           this.handleHash(hashValue);
@@ -85,6 +87,7 @@
     },
     watch: {
       '$route.hash': function(newHash) {
+        console.log("newHash", newHash);
         this.extractHash();
       }
     }
