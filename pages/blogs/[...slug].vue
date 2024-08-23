@@ -60,41 +60,6 @@
         <Updateletter/>
     </div>
 </template>
-<script>
-  export default {
-    mounted() {
-      this.extractHash();
-      this.$router.afterEach((to, from) => {
-        this.extractHash();
-        console.log("afterEach", from);
-      });
-    },
-    methods: {
-      extractHash() {
-        const hash = this.$route.hash;
-        console.log("hash", hash);
-        if (hash) {
-          const hashValue = hash.substring(1);
-          setTimeout(() => {
-            this.handleHash(hashValue);
-          }, 1000)
-        }
-      },
-      handleHash(hashValue) {
-        const element = document.getElementById(hashValue);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-    },
-    watch: {
-      '$route.hash': function(newHash) {
-        console.log("newHash", newHash);
-        this.extractHash();
-      }
-    }
-  };
-</script>
 <script setup>
     import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
@@ -111,6 +76,22 @@
             new Date(a.date)-new Date(b.date)
         )
     }
+
+    const handleHash = (hashValue) => {
+      const element = document.getElementById(hashValue);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    const extractHash = () => {
+      const hash = this.$route.hash;
+      if (hash) {
+        const hashValue = hash.substring(1);
+        handleHash(hashValue);
+      }
+    }
+
     if (slug === "/blogs/" || slug === '/blogs/community') {
 
         if (slug === "/blogs/") {
@@ -160,6 +141,7 @@
         useContentHead(page)
         const {title,author,description,image,date} = page.value
         const { origin } = useRequestURL()
+        extractHash()
         useHead({
             meta: [
                 { name: 'twitter:card', content: 'summary_large_image' },
