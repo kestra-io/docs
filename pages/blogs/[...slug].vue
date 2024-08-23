@@ -60,6 +60,40 @@
         <Updateletter/>
     </div>
 </template>
+<script>
+  export default {
+    mounted() {
+      this.extractHash();
+      this.$router.afterEach((to, from) => {
+        this.extractHash();
+      });
+    },
+    methods: {
+      extractHash() {
+        const hash = this.$route.hash;
+        if (hash) {
+          const hashValue = hash.substring(1);
+          this.handleHash(hashValue);
+        }
+      },
+      handleHash(targetId) {
+        setTimeout(() => {
+          this.$nextTick(() => {
+            const updatedElement = document.getElementById(targetId);
+            if (updatedElement) {
+              updatedElement.scrollIntoView({ behavior: 'smooth' });
+            }
+          });
+        }, 1000);
+      }
+    },
+    watch: {
+      '$route.hash': function(newHash) {
+        this.extractHash();
+      }
+    }
+  };
+</script>
 <script setup>
   import { onMounted } from 'vue';
 
@@ -78,26 +112,6 @@
             new Date(a.date)-new Date(b.date)
         )
     }
-
-    const handleHash = (hashValue) => {
-      const element = document.getElementById(hashValue);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    const extractHash = () => {
-      const hash = route.hash;
-      if (hash) {
-        const hashValue = hash.substring(1);
-        handleHash(hashValue);
-      }
-    }
-
-    onMounted(() => {
-      extractHash()
-    })
-
 
     if (slug === "/blogs/" || slug === '/blogs/community') {
 
