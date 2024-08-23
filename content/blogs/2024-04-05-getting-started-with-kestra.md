@@ -24,7 +24,7 @@ Kestra is open source meaning anyone can run it on their machine for free. To ge
 ```bash
 docker run --pull=always --rm -it -p 8080:8080 --user=root \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /tmp:/tmp kestra/kestra:latest-full server local 
+  -v /tmp:/tmp kestra/kestra:latest server local 
 ```
 
 Once you’ve run this command, head over to your browser and open [https://localhost:8080](https://localhost:8080) to launch the interface so we can start building workflows!

@@ -1,0 +1,36 @@
+id: golang_script
+namespace: company.team
+
+tasks:
+  - id: go
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: golang:latest
+    inputFiles:
+      main.go: |
+        package main
+
+        import (
+            "os"
+        )
+
+        func check(e error) {
+            if e != nil {
+                panic(e)
+            }
+        }
+
+        func main() {
+            d1 := []byte("hello go")
+            err := os.WriteFile("output.txt", d1, 0644)
+            check(err)
+        }
+    outputFiles:
+      - output.txt
+    commands:
+      - go run main.go
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ read(outputs.go.outputFiles['output.txt']) }}"

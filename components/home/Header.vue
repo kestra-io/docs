@@ -50,7 +50,8 @@
                 />
             </div>
             <div class="companies-background">
-                <HomeCompanies class="mb-4 pb-4 companies container" />
+                <LayoutCompanies class="d-md-none" />
+                <HomeCompanies class="mb-4 pb-4 companies container d-none d-md-block" />
             </div>
         </div>
 
@@ -308,6 +309,15 @@ export default {
             z-index: 5;
             @include media-breakpoint-down(md) {
                 width: 100%;
+            }
+        }
+    }
+
+    :deep(.companies-container) {
+        .companies-list-container {
+            &:before,
+            &:after {
+                content: none;
             }
         }
     }

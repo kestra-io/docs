@@ -1,6 +1,6 @@
 ---
 title: Task Runners
-icon: /docs/icons/dev.svg
+icon: /docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["OSS", "EE"]
 ---
@@ -18,6 +18,8 @@ Note that some task runner plugins are available only in the [Enterprise Edition
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=2vu6XPUUeTQziWNq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
+
+---
 
 ::ChildCard
 ::

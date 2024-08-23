@@ -3,7 +3,11 @@ title: Create a CI/CD pipeline
 icon: /docs/icons/dev.svg
 ---
 
-Kestra provides several ways to create a CI/CD pipeline for your flows. This section explains how to automate the validation and deployment of your workflows using CI/CD.
+
+
+Kestra provides several ways to create a CI/CD pipeline for your flows. 
+
+This section explains how to automate the validation and deployment of your workflows using CI/CD.
 
 ## Introduction
 

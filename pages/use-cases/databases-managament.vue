@@ -36,9 +36,9 @@
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <LayoutFooterContact
-                title="Ready to take your Infrastructure to the next level ?"
+                title="Ready to take your Infrastructure to the next level?"
                 purpleButtonText="Get Started"
-                purpleButtonHref="h/docs/getting-started/quickstart"
+                purpleButtonHref="/docs/getting-started"
                 darkButtonText="Talk to Us"
                 darkButtonHref="/demo"
             />

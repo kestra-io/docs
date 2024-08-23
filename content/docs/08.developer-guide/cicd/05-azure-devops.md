@@ -3,7 +3,7 @@ title: Azure DevOps
 icon: /docs/icons/dev.svg
 ---
 
-This page describes how to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
+How to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
 
 ## Setup an Azure DevOps Pipeline
 

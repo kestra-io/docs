@@ -5,18 +5,25 @@ icon: /docs/icons/flow.svg
 
 Trigger is a mechanism that automates the execution of a flow.
 
-Triggers can be scheduled or event-based.
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/qDiQtsVEETs?si=BxrYa-Z1ntqsPvbu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
+Triggers can be scheduled or event-based providing lots of flexibility in how you can automate the execution of your workflows.
 
 ## Trigger types
 
 Kestra supports both **scheduled** and **external** events.
 
-Kestra core provides four types of triggers:
+Kestra provides five types of triggers:
 
-* [Schedule trigger](./schedule-trigger.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
-* [Flow trigger](./flow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
-* [Webhook trigger](./webhook-triggers.md) allows you to execute your flow based on an HTTP request emitted by a webhook.
-* [Realtime trigger](./realtime-triggers.md) allows you to execute your flow when events happen with millisecond latency.
+- [Schedule trigger](01.schedule-trigger.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions
+- [Flow trigger](02.flow-trigger.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states)
+- [Webhook trigger](03.webhook-trigger.md) allows you to execute your flow based on an HTTP request emitted by a webhook.
+- [Polling trigger](04.polling-trigger.md) allows you to execute your flow by polling external systems for the presence of data.
+- [Realtime trigger](05.realtime-trigger.md) allows you to execute your flow when events happen with millisecond latency.
 
 Many other triggers are available from the plugins, such as triggers based on file detection events, e.g. the [S3 trigger](/plugins/plugin-aws/triggers/s3/io.kestra.plugin.aws.s3.trigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/triggers/sqs/io.kestra.plugin.aws.sqs.realtimetrigger) or [Kafka trigger](/plugins/plugin-kafka/triggers/io.kestra.plugin.kafka.trigger).
 
@@ -98,7 +105,7 @@ Available conditions include:
 - [ExecutionOutputsCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.executionoutputscondition)
 - [ExpressionCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExpressionCondition)
 
-You can also find datetime related conditions [on the Schedule trigger page](./schedule-trigger.md#schedule-conditions).
+You can also find datetime related conditions [on the Schedule trigger page](01.schedule-trigger.md#schedule-conditions).
 
 ## Unlocking, enabling and disabling triggers
 
@@ -248,6 +255,6 @@ Let's break down the above example:
 
 ## Locked triggers
 
-[Flow](./flow-trigger.md), [Schedule](./schedule-trigger.md) and [Polling triggers](#polling-triggers) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
+[Flow](02.flow-trigger.md), [Schedule](01.schedule-trigger.md) and [Polling triggers](04.polling-trigger.md) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
 
 To see a list of triggers and inspect their current status, go to the **Administration -> Triggers** section in the Kestra UI. From here, you can unlock a trigger if it is locked. Keep in mind that there is a risk or concurrent trigger evaluation or flow execution for this trigger if you unlock it manually.

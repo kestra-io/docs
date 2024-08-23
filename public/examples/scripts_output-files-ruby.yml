@@ -1,0 +1,17 @@
+id: ruby_output_file
+namespace: company.team
+description: This flow runs the Ruby script to output a file.
+
+tasks:
+  - id: ruby_outputs_task
+    type: io.kestra.plugin.scripts.ruby.Script
+    outputFiles:
+      - output.txt
+    script: |
+      File.open("output.txt", "w") do |file|
+        file.write("Hello World")
+      end
+
+  - id: log_output
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ read(outputs.ruby_outputs_task.outputFiles['output.txt']) }}"

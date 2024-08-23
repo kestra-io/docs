@@ -58,10 +58,12 @@
 
     .card-title {
         font-size: $font-size-xl !important;
+        line-height: 1.375rem !important;
     }
 
     .card-text {
         font-size: $font-size-sm !important;
+        line-height: 1rem !important;
     }
 
     .card-icon {

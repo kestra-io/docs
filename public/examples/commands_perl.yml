@@ -1,0 +1,14 @@
+id: perl_commands
+namespace: company.team
+
+tasks:
+  - id: perl
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: perl:latest
+    namespaceFiles:
+      enabled: true
+    commands:
+      - chmod +x main.pl
+      - perl main.pl

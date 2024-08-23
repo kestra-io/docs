@@ -73,7 +73,7 @@ Now, you can change the contents of the docker-compose.yaml file to point to the
 
 ```yaml
   kestra:
-    image: kestra/kestra:latest-full
+    image: kestra/kestra:latest
     env_file:
       - .env_encoded
 ```

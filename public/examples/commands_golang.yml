@@ -1,0 +1,13 @@
+id: golang_commands
+namespace: company.team
+
+tasks:
+  - id: go
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: golang:latest
+    namespaceFiles:
+      enabled: true
+    commands:
+      - go run main.go

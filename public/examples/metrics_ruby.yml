@@ -1,0 +1,12 @@
+id: ruby_metrics
+namespace: company.team
+description: This flow runs the Ruby script, and puts out the metrics.
+
+tasks:
+  - id: ruby_metrics_task
+    type: io.kestra.plugin.scripts.ruby.Script
+    script: |
+      puts 'There are 20 products in the cart'
+      puts '::{"outputs":{"productCount":20}}::'
+      puts '::{"metrics":[{"name":"productCount","type":"counter","value":20}]}::'
+      puts '::{"metrics":[{"name":"purchaseTime","type":"timer","value":32.44}]}::'

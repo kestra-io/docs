@@ -1,0 +1,9 @@
+id: powershell_commands
+namespace: company.team
+tasks:
+  - id: run_powershell
+    type: io.kestra.plugin.scripts.powershell.Commands
+    namespaceFiles:
+      enabled: true
+    commands:
+      - ./main.ps1

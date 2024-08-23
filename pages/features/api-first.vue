@@ -19,9 +19,9 @@
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <LayoutFooterContact
-                title="Getting Started with  Declarative Orchestration"
+                title="Getting Started with Declarative Orchestration"
                 darkButtonText="Get started"
-                darkButtonHref="docs/getting-started"
+                darkButtonHref="/docs/getting-started"
                 purpleButtonText="Talk to us"
                 purpleButtonHref="/demo"
             />

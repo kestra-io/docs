@@ -36,7 +36,7 @@ If you run Kestra with Docker-Compose, here is how you can add that key in the `
 
 ```yaml
   kestra:
-    image: kestra/kestra:latest-full
+    image: kestra/kestra:latest
     environment:
       KESTRA_CONFIGURATION: |
         kestra:

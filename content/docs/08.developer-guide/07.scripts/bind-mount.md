@@ -1,7 +1,9 @@
 ---
-title: Bind mount
+title: Bind Mount
 icon: /docs/icons/dev.svg
 ---
+
+Use bind-mount to execute locally stored scripts.
 
 To run a script stored locally, you can bind-mount it to your Kestra container.
 
@@ -13,7 +15,7 @@ First, make sure that your Kestra configuration in the [Docker Compose file](htt
 
 ```yaml
   kestra:
-    image: kestra/kestra:latest-full
+    image: kestra/kestra:latest
     pull_policy: always
     user: "root"
     env_file:

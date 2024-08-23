@@ -18,7 +18,7 @@ It is recommended to make the following change in the [Docker Compose file](http
 
 ```yaml
  kestra:
-    image: kestra/kestra:latest-full
+    image: kestra/kestra:latest
     pull_policy: always
     user: "root"
     env_file:

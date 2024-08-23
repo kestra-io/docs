@@ -5,6 +5,8 @@ icon: /docs/icons/nodejs.svg
 
 Run JavaScript code inside of your flow.
 
+
+
 You can execute NodeJS code inside of a flow by either writing your NodeJS inline or by executing a `.js` file. You can also get outputs and metrics from your NodeJS code too.
 
 <div class="video-container">
@@ -32,13 +34,13 @@ If you would prefer to put your NodeJS code in a `.js` file (e.g. your code is m
 ```yaml file=public/examples/commands_nodejs.yml
 ```
 
-You'll need to add your JavaScript code using the Editor or [sync it using Git](/docs/developer-guide/git) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You'll need to add your JavaScript code using the Editor or [sync it using Git](../08.developer-guide/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-node/tasks/io.kestra.plugin.scripts.node.commands).
 
 ## Handling Outputs
 
-If you want to get a variable or file from your JavaScript code, you can use an [output](/docs/workflow-components/outputs).
+If you want to get a variable or file from your JavaScript code, you can use an [output](../04.workflow-components/06.outputs.md).
 
 You'll need to install the [`@kestra-io/libs` npm package](https://npm.io/package/@kestra-io/libs) in order to pass your variables to Kestra.
 
@@ -64,7 +66,7 @@ _This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kest
 
 ### File Output
 
-Inside of your JavaScript code, write a file to the system. You'll need to add `outputFiles` property to your flow and list the file you're trying to access. In this case, we want to access `downloads.txt`. More information on the formats you can use for this property can be found [here](/docs/developer-guide/scripts/output-directory).
+Inside of your JavaScript code, write a file to the system. You'll need to add `outputFiles` property to your flow and list the file you're trying to access. In this case, we want to access `downloads.txt`. More information on the formats you can use for this property can be found [here](../08.developer-guide/07.scripts/07.outputs-metrics.md).
 
 The example below write a `.txt` file containing the number of downloads, similar the output we used earlier. We can then read the content of the file using the syntax `{{ outputs.{task_id}.outputFiles['{filename}'] }}`
 
@@ -79,7 +81,7 @@ _This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kest
 
 ## Handling Metrics
 
-You can also get [metrics](/docs/developer-guide/scripts/outputs-metrics#outputs-and-metrics-in-script-and-commands-tasks) from your NodeJS code. In this example, we can use the `Date` class to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
+You can also get [metrics](../08.developer-guide/07.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your NodeJS code. In this example, we can use the `Date` class to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
 
 ```javascript file=public/examples/metrics_nodejs.js
 ```

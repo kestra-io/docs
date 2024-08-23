@@ -1,6 +1,6 @@
 ---
 title: Shell Script
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/bash.svg
 ---
 
 Run shell script inside of your flow.
@@ -40,13 +40,13 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 ## Handling Outputs
 
-If you want to get a variable or file from your Shell script, you can use an [output](/docs/workflow-components/outputs).
+If you want to get a variable or file from your Shell script, you can use an [output](../04.workflow-components/06.outputs.md).
 
 ### Variable Output
 
-You can put out the JSON outputs from the Shell commands / script using the `::{}::` pattern. Here is an example:
+You can get the JSON outputs from the Shell commands / script using the `::{}::` pattern. Here is an example:
 
-```python file=public/examples/outputs_shell.yml
+```yaml file=public/examples/outputs_shell.yml
 ```
 
 All the output variables can be viewed in the Outputs tab of the execution.
@@ -58,24 +58,24 @@ You can refer to the outputs in another task as shown in the example below:
 ```yaml file=public/examples/outputs_shell_usage.yml
 ```
 
-_This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
+_This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kestra.plugin.scripts.shell.Commands`._
 
 ### File Output
 
-Inside of your Shell script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](/docs/developer-guide/scripts/output-directory).
+Inside of your Shell script, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../08.developer-guide/07.scripts/07.outputs-metrics.md).
 
 The example below writes a `output.txt` file containing the "Hello world" text, similar the output we used earlier. We can then refer the file using the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and read the contents of the file using the `read()` function.
 
 ```yaml file=public/examples/scripts_output-files-shell.yml
 ```
 
-_This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
+_This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kestra.plugin.scripts.shell.Commands`._
 
 ## Handling Metrics
 
-You can also get [metrics](/docs/developer-guide/scripts/outputs-metrics#outputs-and-metrics-in-script-and-commands-tasks) from your Shell script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../08.developer-guide/07.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Shell script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
 
-```python file=public/examples/metrics_shell.yml
+```yaml file=public/examples/metrics_shell.yml
 ```
 
 Once this has executed, both the metrics can be viewed under **Metrics**.

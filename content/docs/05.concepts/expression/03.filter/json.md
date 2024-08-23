@@ -5,20 +5,20 @@ icon: /docs/icons/expression.svg
 
 JSON filters are used to manipulate JSON objects, often API responses.
 
-## json
+## toJson
 
-The `json` filter will convert any variable to json string.
+The `toJson` filter will convert any object to a JSON string.
 
-```twig
-{{ [1, 2, 3] | json  }}
-{# results in: '[1, 2, 3]' #}
+The following expression `{{ [1, 2, 3] | toJson  }}` will result in the JSON string `'[1, 2, 3]'`.
 
-{{ true | json }}
-{# results in: 'true' #}
+Similarly:
+- `{{ true | toJson }}` will result in `'true'`
+- `{{ "foo" | toJson }}` will result in `'"foo"'`
 
-{{ "foo" | json }}
-{# results in: '"foo"' #}
-```
+::alert{type="info"}
+If you were using Kestra in a version prior to [v0.18.0](../../../../blogs/2024-08-06-release-0-18.md), this filter used to be named `json`. We've renamed it to `toJson` for more clarity. The renaming has been implemented in a non-breaking way — using `json` will raise a warning in the UI but it will still work.
+::
+
 
 ## jq
 
@@ -72,7 +72,7 @@ inputs:
     type: JSON
     defaults: |-
       {
-        "name": "John Doe", 
+        "name": "John Doe",
         "score": {
           "English": 72,
           "Maths": 88,

@@ -85,7 +85,7 @@ Ensure that you expose the secure port of the connection if different from the d
 
 ```yaml
   kestra:
-    image: registry.kestra.io/docker/kestra:latest-full
+    image: registry.kestra.io/docker/kestra:latest
     pull_policy: always
     user: "root"
     command: server standalone --worker-thread=128

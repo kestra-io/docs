@@ -1,0 +1,19 @@
+id: r_commands
+namespace: company.team
+tasks:
+  - id: http_download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: run_r
+    type: io.kestra.plugin.scripts.r.Commands
+    inputFiles:
+      orders.csv: "{{ read(outputs.http_download.uri) }}"
+      main.R: |
+        print("The current execution is {{ execution.id }}")
+        
+        # Read the file
+        data <- read.csv("orders.csv", header=TRUE)
+        print(data)
+    commands:
+      - Rscript main.R

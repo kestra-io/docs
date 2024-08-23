@@ -1,6 +1,6 @@
 ---
 title: Google Service Accounts 
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/gcp-compute.svg
 ---
 
 Setup a Google Service Account inside of Kestra.
