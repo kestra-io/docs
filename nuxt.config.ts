@@ -1,15 +1,6 @@
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 export default defineNuxtConfig({
-  modules: [
-      '@nuxt/devtools',
-      '@nuxt/content',
-      '@nuxt/image',
-      '@nuxtjs/sitemap',
-      'nuxt-gtag',
-      'nuxt-multi-cache',
-      'vue3-carousel-nuxt',
-      'nuxt-lazy-hydrate'
-  ],
+  modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-gtag', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots'],
   target: 'server',
   image: {
     formats: {
