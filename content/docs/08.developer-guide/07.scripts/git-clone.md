@@ -23,7 +23,7 @@ Typically, you would want to use `io.kestra.plugin.git.Clone`  with a private Gi
 Below you can find links to instructions on how to generate an access token for the relevant Git platform:
 
 - [GitHub](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-- [Gitlab](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
+- [GitLab](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
 - [Bitbucket](https://support.atlassian.com/bitbucket-cloud/docs/create-a-repository-access-token/)
 - [AWS CodeCommit](https://docs.aws.amazon.com/codecommit/latest/userguide/auth-and-access-control.html)
 - [Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows)
