@@ -84,7 +84,7 @@
               updatedElement.scrollIntoView({ behavior: 'smooth' });
             }
           });
-        }, 1000);
+        }, 2000);
       }
     }
   };
