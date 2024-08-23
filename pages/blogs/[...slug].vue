@@ -70,7 +70,6 @@
     const externalNews = ref()
     const page = ref([]);
     const config = useRuntimeConfig();
-    const route = useRoute()
 
     const sort = (data)=>{
         data.sort((a,b)=>
