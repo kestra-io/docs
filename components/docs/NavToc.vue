@@ -123,6 +123,7 @@
                   if (!activeTapItem.classList.contains('active')) {
                     if ((prevChildrenLinkPosition <= 0 || prevChildrenLinkPosition === undefined)) {
                       removeActiveTab();
+                      activeTapItem.scrollIntoView({block: "nearest", inline: "nearest"});
                       activeTapItem.classList.add('active');
                     }
                   }
@@ -211,9 +212,16 @@
             background-color: $black-4;
         }
 
+        nav::-webkit-scrollbar {
+            display: none;
+        }
         nav {
             padding-bottom: calc($spacer * 1.165);
             border-bottom: 1px solid $black-6;
+            overflow-y: auto;
+            max-height: 500px;
+            overflow-x: hidden;
+            position: relative;
             @include font-size(.875rem);
             ul {
                 margin-bottom: 0;
