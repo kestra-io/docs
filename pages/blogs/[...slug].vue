@@ -61,7 +61,9 @@
     </div>
 </template>
 <script setup>
-    import NavToc from "~/components/docs/NavToc.vue";
+  import { onMounted } from 'vue';
+
+  import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
     import Updateletter from "~/components/layout/Updateletter.vue";
 
@@ -91,6 +93,11 @@
         handleHash(hashValue);
       }
     }
+
+    onMounted(() => {
+      extractHash()
+    })
+
 
     if (slug === "/blogs/" || slug === '/blogs/community') {
 
@@ -141,9 +148,7 @@
         useContentHead(page)
         const {title,author,description,image,date} = page.value
         const { origin } = useRequestURL()
-        setTimeout(() => {
-          extractHash()
-        }, 1000)
+
         useHead({
             meta: [
                 { name: 'twitter:card', content: 'summary_large_image' },
