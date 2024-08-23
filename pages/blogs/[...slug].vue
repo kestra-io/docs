@@ -141,7 +141,9 @@
         useContentHead(page)
         const {title,author,description,image,date} = page.value
         const { origin } = useRequestURL()
-        extractHash()
+        setTimeout(() => {
+          extractHash()
+        }, 1000)
         useHead({
             meta: [
                 { name: 'twitter:card', content: 'summary_large_image' },
