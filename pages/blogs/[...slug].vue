@@ -60,7 +60,36 @@
         <Updateletter/>
     </div>
 </template>
-
+<script>
+  export default {
+    mounted() {
+      this.extractHash();
+      this.$router.afterEach((to, from) => {
+        this.extractHash();
+      });
+    },
+    methods: {
+      extractHash() {
+        const hash = this.$route.hash;
+        if (hash) {
+          const hashValue = hash.substring(1);
+          this.handleHash(hashValue);
+        }
+      },
+      handleHash(hashValue) {
+        const element = document.getElementById(hashValue);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    },
+    watch: {
+      '$route.hash': function(newHash) {
+        this.extractHash();
+      }
+    }
+  };
+</script>
 <script setup>
     import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
