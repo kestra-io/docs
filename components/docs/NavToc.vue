@@ -132,10 +132,11 @@
               return
             },
             scrollToHash() {
-                if (window.location.hash) {
-                  const targetId = decodeURIComponent(window.location.hash.substring(1));
-                  this.scrollIntoView(targetId);
-                }
+              const hash = this.$route.hash;
+              if (hash) {
+                const targetId = hash.substring(1);
+                this.scrollIntoView(targetId);
+              }
             },
             scrollIntoView(id) {
               const element = document.getElementById(id);
@@ -148,7 +149,7 @@
                 } else {
                   setTimeout(() => {
                     this.$nextTick(() => {
-                      const updatedElement = document.getElementById(targetId);
+                      const updatedElement = document.getElementById(id);
                       if (updatedElement) {
                         updatedElement.scrollIntoView({ behavior: 'smooth' });
                       }
