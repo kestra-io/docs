@@ -13,7 +13,7 @@ export default {
             active: true,
             text: 'Define all your workflows in YAML',
             tabText: 'Declarative Definition of Workflows',
-            imgHref: '/landing/overview/workflows.svg',
+            imgHref: '/landing/overview/workflows.png',
             imgAlt: 'Workflows',
         },
         {
@@ -21,7 +21,7 @@ export default {
             active: false,
             text: 'Track revisions and roll back to previous versions when needed',
             tabText: 'Revision History & Rollback',
-            imgHref: '/landing/overview/rollback.svg',
+            imgHref: '/landing/overview/rollback.png',
             imgAlt: 'Revision History & Rollback',
         },
         {

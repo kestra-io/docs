@@ -48,7 +48,7 @@
                         width="569px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/features/advanced-conditional.svg"
+                        src="/landing/overview/features/advanced-conditional.png"
                         alt="Advanced Conditional"
                     />
                 </div>
@@ -68,7 +68,7 @@
                         width="569px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/features/scripting-support.svg"
+                        src="/landing/overview/features/scripting-support.png"
                         alt="Scripting Support"
                     />
                 </div>
@@ -99,7 +99,7 @@
                         width="569px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/features/reusable-subflows.svg"
+                        src="/landing/overview/features/reusable-subflows.png"
                         alt="Reusable Subflows"
                     />
                 </div>
@@ -120,7 +120,7 @@
                         width="569px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/features/monitoring.svg"
+                        src="/landing/overview/features/monitoring.png"
                         alt="Debugging and Monitoring"
                     />
                 </div>
@@ -141,7 +141,7 @@
                         width="569px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/features/long-running.svg"
+                        src="/landing/overview/features/long-running.png"
                         alt="Long-Running"
                     />
                 </div>
@@ -170,7 +170,7 @@
                         width="569px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/features/orchestration.svg"
+                        src="/landing/overview/features/orchestration.png"
                         alt="Orchestration"
                     />
                 </div>
@@ -210,7 +210,7 @@
                         width="569px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/features/comprehensive.svg"
+                        src="/landing/overview/features/comprehensive.png"
                         alt="Comprehensive"
                     />
                 </div>
@@ -240,7 +240,7 @@
                         width="569px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/features/execution.svg"
+                        src="/landing/overview/features/execution.png"
                         alt="Execution"
                     />
                 </div>
@@ -270,8 +270,8 @@
                         width="569px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/features/metrics-visualization.svg"
-                        alt="Metrics Visualization"
+                        src="/landing/overview/features/outputs-visualization.png"
+                        alt="Outputs Visualization"
                     />
                 </div>
             </div>

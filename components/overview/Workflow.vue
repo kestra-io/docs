@@ -22,7 +22,7 @@
                         width="568px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/interactive-topology.svg"
+                        src="/landing/overview/interactive-topology.png"
                         alt="Interactive Topology"
                         data-aos="zoom-in"
                     />
@@ -44,7 +44,7 @@
                         width="569px"
                         height="329px"
                         class="img-fluid zoom"
-                        src="/landing/overview/intuitive-form.svg"
+                        src="/landing/overview/intuitive-form.png"
                         alt="Intuitive Form"
                     />
                 </div>
