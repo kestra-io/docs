@@ -33,12 +33,11 @@
                                 </template>
                             </ul>
                         </ul>
-                        <slot name="footer"></slot>
                     </nav>
                 </div>
             </template>
 
-            <div class="d-none d-lg-block pt-4 bd-social-list" v-if="isShowSocialsList">
+            <div class="d-none d-lg-block pt-4 bd-social-list">
                 <CommonSocialsList :page="page" />
             </div>
         </div>
@@ -60,11 +59,6 @@
             page: {
                 type: Object,
                 required: true
-            },
-            isShowSocialsList: {
-              type: Boolean,
-              default: true,
-              required: false
             },
         },
         data() {
