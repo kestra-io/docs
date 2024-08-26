@@ -6185,16 +6185,6 @@ components:
         required:
           type: boolean
         defaults: {}
-    KVController.KVType:
-      type: string
-      enum:
-      - STRING
-      - NUMBER
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - DURATION
-      - JSON
     KVController.TypedValue:
       required:
       - type
@@ -6202,7 +6192,7 @@ components:
       type: object
       properties:
         type:
-          $ref: "#/components/schemas/KVController.KVType"
+          $ref: "#/components/schemas/KVType"
         value: {}
     KVEntry:
       required:
@@ -6223,6 +6213,16 @@ components:
         expirationDate:
           type: string
           format: date-time
+    KVType:
+      type: string
+      enum:
+      - STRING
+      - NUMBER
+      - BOOLEAN
+      - DATETIME
+      - DATE
+      - DURATION
+      - JSON
     Label:
       required:
       - key
