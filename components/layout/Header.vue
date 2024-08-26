@@ -160,7 +160,7 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/features/code-in-any-language"
                                               @click="globalClick(true)">
-                                        <Translate />
+                                        <CodeTags />
                                         <p>
                                             <span>Language Agnostic</span><br />
                                             Separate your Business Logic from Orchestration Logic
@@ -170,7 +170,7 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/use-cases/terraform-provider"
                                               @click="globalClick(true)">
-                                        <AccountGroupOutline />
+                                        <RefreshAuto />
                                         <p>
                                             <span>Kestra's Terraform Provider</span><br />
                                             Deploy and manage all Kestra resources with Terraform
@@ -193,7 +193,7 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/use-cases/software-engineers"
                                               @click="globalClick(true)">
-                                        <Graph />
+                                        <Api />
                                         <p>
                                             <span>For Software Engineers</span><br />
                                             Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment
@@ -234,7 +234,7 @@
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/use-cases/automotive" @click="globalClick(true)">
-                                        <PillMultiple/>
+                                        <CarHatchback/>
                                         <p>
                                             <span>For Automotive
                                             </span><br/>
@@ -444,7 +444,6 @@ import CalendarOutline from "vue-material-design-icons/CalendarOutline.vue"
 import CodeNotEqualVariant from "vue-material-design-icons/CodeNotEqualVariant.vue"
 import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
 import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
-import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
 import Slack from "vue-material-design-icons/Slack.vue"
 import Graph from "vue-material-design-icons/Graph.vue"
 import Ballot from "vue-material-design-icons/Ballot.vue"
@@ -457,6 +456,10 @@ import BankOutline from "vue-material-design-icons/BankOutline.vue"
 import PillMultiple from "vue-material-design-icons/PillMultiple.vue"
 import Translate from "vue-material-design-icons/Translate.vue"
 import Earth from "vue-material-design-icons/Earth.vue"
+import CodeTags from "vue-material-design-icons/CodeTags.vue"
+import Api from "vue-material-design-icons/Api.vue"
+import CarHatchback from "vue-material-design-icons/CarHatchback.vue"
+import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
 </script>
 
 <script>
