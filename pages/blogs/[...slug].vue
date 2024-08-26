@@ -80,14 +80,14 @@
     }
 
     const handleHash = (hashValue) => {
-      const element = window.document.getElementById(hashValue);
-      if (element) {
-        const offset = element?.getBoundingClientRect().top + window.scrollY;
         setTimeout(() => {
-          window.scrollTo({ top: offset - 60 });
-        }, 100);
-      }
-    }
+          const element = window.document.getElementById(hashValue);
+          if (element) {
+            const offset = element?.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: offset - 70 });
+          }
+        }, 3000)
+    };
 
     const extractHash = () => {
       const hash = route.hash;
