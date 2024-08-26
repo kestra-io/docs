@@ -117,7 +117,7 @@
             activateMenuItem(item, index, linkArray, removeActiveTab) {
               if (item && item.id) {
                 const childrenLinkPosition = document.querySelector(`#${item.id}`)?.getBoundingClientRect();
-                const prevChildrenLinkPosition = index ? document.querySelector(`#${linkArray[index - 1].id}`).getBoundingClientRect().top : undefined;
+                const prevChildrenLinkPosition = index ? document.querySelector(`#${linkArray[index - 1].id}`)?.getBoundingClientRect().top : undefined;
                 if (childrenLinkPosition?.top <= 160  && childrenLinkPosition?.top > 0) {
                   let activeTapItem = document.querySelector(`.right-menu a[name='${item.id}']`);
                   if (!activeTapItem.classList.contains('active')) {
@@ -131,25 +131,26 @@
               return
             },
             scrollToHash() {
-                if (window.location.hash) {
-                  const targetId = decodeURIComponent(window.location.hash.substring(1));
-                  this.scrollIntoView(targetId);
-                }
+              const hash = this.$route.hash;
+              if (hash) {
+                const targetId = hash.substring(1);
+                this.scrollIntoView(targetId);
+              }
             },
             scrollIntoView(id) {
               const element = document.getElementById(id);
               this.$nextTick(() => {
                 if (element) {
-                  const offset = element.getBoundingClientRect().top + window.scrollY;
+                  const offset = element?.getBoundingClientRect().top + window.scrollY;
                   setTimeout(() => {
                     window.scrollTo({ top: offset - 70 });
                   }, 100);
                 } else {
                   setTimeout(() => {
                     this.$nextTick(() => {
-                      const updatedElement = document.getElementById(targetId);
+                      const updatedElement = document.getElementById(id);
                       if (updatedElement) {
-                        updatedElement.scrollIntoView({ behavior: 'smooth' });
+                        updatedElement.scrollIntoView({block: "nearest", inline: "nearest"});
                       }
                     });
                   }, 1000);
@@ -214,6 +215,10 @@
         nav {
             padding-bottom: calc($spacer * 1.165);
             border-bottom: 1px solid $black-6;
+            overflow-y: auto;
+            max-height: 500px;
+            overflow-x: hidden;
+            position: relative;
             @include font-size(.875rem);
             ul {
                 margin-bottom: 0;
