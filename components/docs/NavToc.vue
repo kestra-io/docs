@@ -219,6 +219,22 @@
             max-height: 500px;
             overflow-x: hidden;
             position: relative;
+            &::-webkit-scrollbar {
+                width: 4px;
+                height: 4px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: $primary-1;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: #370883;
+            }
             @include font-size(.875rem);
             ul {
                 margin-bottom: 0;
