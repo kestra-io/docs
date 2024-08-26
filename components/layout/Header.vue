@@ -160,7 +160,7 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/features/code-in-any-language"
                                               @click="globalClick(true)">
-                                        <Translate />
+                                        <CodeTags />
                                         <p>
                                             <span>Language Agnostic</span><br />
                                             Separate your Business Logic from Orchestration Logic
@@ -193,7 +193,7 @@
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/use-cases/software-engineers"
                                               @click="globalClick(true)">
-                                        <Graph />
+                                        <Api />
                                         <p>
                                             <span>For Software Engineers</span><br />
                                             Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment
@@ -234,7 +234,7 @@
                                 </li>
                                 <li>
                                     <NuxtLink class="dropdown-item" href="/use-cases/automotive" @click="globalClick(true)">
-                                        <PillMultiple/>
+                                        <CarHatchback/>
                                         <p>
                                             <span>For Automotive
                                             </span><br/>
@@ -457,6 +457,9 @@ import BankOutline from "vue-material-design-icons/BankOutline.vue"
 import PillMultiple from "vue-material-design-icons/PillMultiple.vue"
 import Translate from "vue-material-design-icons/Translate.vue"
 import Earth from "vue-material-design-icons/Earth.vue"
+import CodeTags from "vue-material-design-icons/CodeTags.vue"
+import Api from "vue-material-design-icons/Api.vue"
+import CarHatchback from "vue-material-design-icons/CarHatchback.vue"
 </script>
 
 <script>
