@@ -423,7 +423,7 @@
     </nav>
 </template>
 
-<script>
+<script setup>
 import Email from "vue-material-design-icons/Email.vue";
 import NoteSearchOutline from "vue-material-design-icons/NoteSearchOutline.vue"
 import ViewDashboardOutline from "vue-material-design-icons/ViewDashboardOutline.vue"
