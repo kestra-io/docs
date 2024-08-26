@@ -60,10 +60,9 @@
         <Updateletter/>
     </div>
 </template>
-<script setup>
-  import { onMounted } from 'vue';
 
-  import NavToc from "~/components/docs/NavToc.vue";
+<script setup>
+    import NavToc from "~/components/docs/NavToc.vue";
     import BlogDetails from "~/components/blogs/BlogDetails.vue";
     import Updateletter from "~/components/layout/Updateletter.vue";
 
@@ -78,25 +77,6 @@
             new Date(a.date)-new Date(b.date)
         )
     }
-
-    const handleHash = (hashValue) => {
-      const element = window.document.getElementById(hashValue);
-      if (element) {
-        const offset = element?.getBoundingClientRect().top + window.scrollY;
-        setTimeout(() => {
-          window.scrollTo({ top: offset - 60 });
-        }, 100);
-      }
-    }
-
-    const extractHash = () => {
-      const hash = route.hash;
-      if (hash) {
-        const hashValue = hash.substring(1);
-        handleHash(hashValue);
-      }
-    }
-
     if (slug === "/blogs/" || slug === '/blogs/community') {
 
         if (slug === "/blogs/") {
@@ -142,16 +122,10 @@
         }
 
         page.value = data.value;
-          (async () => {
-            await useContentHead(page);
-            setTimeout(() => {
-              extractHash()
-            }, 1000)
-          })();
 
+        useContentHead(page)
         const {title,author,description,image,date} = page.value
         const { origin } = useRequestURL()
-
         useHead({
             meta: [
                 { name: 'twitter:card', content: 'summary_large_image' },
