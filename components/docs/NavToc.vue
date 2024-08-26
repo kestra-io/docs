@@ -123,7 +123,6 @@
                   if (!activeTapItem.classList.contains('active')) {
                     if ((prevChildrenLinkPosition <= 0 || prevChildrenLinkPosition === undefined)) {
                       removeActiveTab();
-                      activeTapItem.scrollIntoView({block: "nearest", inline: "nearest"});
                       activeTapItem.classList.add('active');
                     }
                   }

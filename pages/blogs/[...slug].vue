@@ -60,35 +60,6 @@
         <Updateletter/>
     </div>
 </template>
-<script>
-  export default {
-    mounted() {
-      this.$nextTick(() => {
-        this.extractHash();
-      });
-    },
-    methods: {
-      extractHash() {
-        const hash = this.$route.hash;
-        if (hash) {
-          const hashValue = hash.substring(1);
-          this.handleHash(hashValue);
-        }
-      },
-      handleHash(targetId) {
-        const element = document.getElementById(hashValue);
-        setTimeout(() => {
-          this.$nextTick(() => {
-            const updatedElement = document.getElementById(targetId);
-            if (updatedElement) {
-              updatedElement.scrollIntoView({ behavior: 'smooth' });
-            }
-          });
-        }, 2000);
-      }
-    }
-  };
-</script>
 <script setup>
   import { onMounted } from 'vue';
 
@@ -109,9 +80,12 @@
     }
 
     const handleHash = (hashValue) => {
-      const element = document.getElementById(hashValue);
+      const element = window.document.getElementById(hashValue);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        const offset = element?.getBoundingClientRect().top + window.scrollY;
+        setTimeout(() => {
+          window.scrollTo({ top: offset - 60 });
+        }, 100);
       }
     }
 
@@ -119,9 +93,7 @@
       const hash = route.hash;
       if (hash) {
         const hashValue = hash.substring(1);
-        setTimeout(() => {
-            handleHash(hashValue);
-        }, 2000)
+        handleHash(hashValue);
       }
     }
 
@@ -170,8 +142,13 @@
         }
 
         page.value = data.value;
+          (async () => {
+            await useContentHead(page);
+            setTimeout(() => {
+              extractHash()
+            }, 1000)
+          })();
 
-        useContentHead(page)
         const {title,author,description,image,date} = page.value
         const { origin } = useRequestURL()
 
