@@ -41,6 +41,21 @@ paths:
       responses:
         "200":
           description: addBasicAuth 200 response
+  /api/v1/basicAuth/{tenant}:
+    post:
+      tags:
+      - Misc
+      summary: Add basic auth to current instance
+      operationId: addBasicAuth_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MiscController.BasicAuthCredentials"
+        required: true
+      responses:
+        "200":
+          description: addBasicAuth_1 200 response
   /api/v1/blueprints/community:
     get:
       tags:
@@ -183,6 +198,19 @@ paths:
       responses:
         "200":
           description: configuration 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MiscController.Configuration"
+  /api/v1/configs/{tenant}:
+    get:
+      tags:
+      - Misc
+      summary: Get current configurations
+      operationId: configuration_1
+      responses:
+        "200":
+          description: configuration_1 200 response
           content:
             application/json:
               schema:
@@ -4833,58 +4861,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Usage"
-  /api/v1/{tenant}/basicAuth:
-    post:
-      tags:
-      - Misc
-      summary: Add basic auth to current instance
-      operationId: addBasicAuth_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MiscController.BasicAuthCredentials"
-        required: true
-      responses:
-        "200":
-          description: addBasicAuth_1 200 response
-  /api/v1/{tenant}/configs:
-    get:
-      tags:
-      - Misc
-      summary: Get current configurations
-      operationId: configuration_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: configuration_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MiscController.Configuration"
-  /api/v1/{tenant}/usages/all:
+  /api/v1/usages/all/{tenant}:
     get:
       tags:
       - Misc
       summary: Get instance usage information
       operationId: usages_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
       responses:
         "200":
           description: usages_1 200 response
@@ -5090,14 +5072,14 @@ components:
             p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
           type: string
     ArrayListTotal_BlueprintController.BlueprintItem_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_BlueprintController.BlueprintItem_"
       - $ref: "#/components/schemas/AbstractList_BlueprintController.BlueprintItem_"
       - $ref: "#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/BlueprintController.BlueprintItem"
           last:
@@ -5108,14 +5090,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_Execution_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_Execution_"
       - $ref: "#/components/schemas/AbstractList_Execution_"
       - $ref: "#/components/schemas/AbstractCollection_Execution_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/Execution"
           last:
@@ -5126,14 +5108,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_Flow_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_Flow_"
       - $ref: "#/components/schemas/AbstractList_Flow_"
       - $ref: "#/components/schemas/AbstractCollection_Flow_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/Flow"
           last:
@@ -5144,14 +5126,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_LogEntry_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_LogEntry_"
       - $ref: "#/components/schemas/AbstractList_LogEntry_"
       - $ref: "#/components/schemas/AbstractCollection_LogEntry_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/LogEntry"
           last:
@@ -5162,14 +5144,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_MetricEntry_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_MetricEntry_"
       - $ref: "#/components/schemas/AbstractList_MetricEntry_"
       - $ref: "#/components/schemas/AbstractCollection_MetricEntry_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/MetricEntry"
           last:
@@ -5180,14 +5162,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_NamespaceWithDisabled_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_NamespaceWithDisabled_"
       - $ref: "#/components/schemas/AbstractList_NamespaceWithDisabled_"
       - $ref: "#/components/schemas/AbstractCollection_NamespaceWithDisabled_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/NamespaceWithDisabled"
           last:
@@ -5198,14 +5180,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_SearchResult_Flow__:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_SearchResult_Flow__"
       - $ref: "#/components/schemas/AbstractList_SearchResult_Flow__"
       - $ref: "#/components/schemas/AbstractCollection_SearchResult_Flow__"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/SearchResult_Flow_"
           last:
@@ -5216,14 +5198,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_TaskRun_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_TaskRun_"
       - $ref: "#/components/schemas/AbstractList_TaskRun_"
       - $ref: "#/components/schemas/AbstractCollection_TaskRun_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/TaskRun"
           last:
@@ -5234,14 +5216,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_Template_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_Template_"
       - $ref: "#/components/schemas/AbstractList_Template_"
       - $ref: "#/components/schemas/AbstractCollection_Template_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/Template"
           last:
@@ -5252,14 +5234,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_TriggerController.Triggers_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_TriggerController.Triggers_"
       - $ref: "#/components/schemas/AbstractList_TriggerController.Triggers_"
       - $ref: "#/components/schemas/AbstractCollection_TriggerController.Triggers_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/TriggerController.Triggers"
           last:
@@ -5270,14 +5252,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_Trigger_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_Trigger_"
       - $ref: "#/components/schemas/AbstractList_Trigger_"
       - $ref: "#/components/schemas/AbstractCollection_Trigger_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/Trigger"
           last:
@@ -5441,11 +5423,10 @@ components:
           title: Whether the backfill is paused.
           type: boolean
         inputs:
-          title: The inputs to pass to the backfilled executions.
           allOf:
           - type: object
             additionalProperties: true
-          - {}
+          - title: The inputs to pass to the backfilled executions.
         labels:
           title: The labels to pass to the backfilled executions.
           type: array
@@ -5890,13 +5871,13 @@ components:
           type: integer
           format: int64
     Flow:
-      required:
-      - deleted
-      - tasks
       type: object
       allOf:
       - $ref: "#/components/schemas/AbstractFlow"
-      - properties:
+      - required:
+        - deleted
+        - tasks
+        properties:
           deleted:
             type: boolean
           taskDefaults:
@@ -5958,13 +5939,13 @@ components:
       - TASKS
       - TRIGGERS
     FlowForExecution:
-      required:
-      - deleted
-      - tasks
       type: object
       allOf:
       - $ref: "#/components/schemas/AbstractFlow"
-      - properties:
+      - required:
+        - deleted
+        - tasks
+        properties:
           deleted:
             type: boolean
           tasks:
@@ -6106,13 +6087,13 @@ components:
             type: integer
             format: int64
     FlowWithSource:
-      required:
-      - deleted
       type: object
       allOf:
       - $ref: "#/components/schemas/Flow"
       - $ref: "#/components/schemas/AbstractFlow"
-      - properties:
+      - required:
+        - deleted
+        properties:
           deleted:
             type: boolean
           source:
@@ -6527,14 +6508,14 @@ components:
         deleted:
           type: boolean
     NamespaceWithDisabled:
-      required:
-      - deleted
-      - disabled
-      - id
       type: object
       allOf:
       - $ref: "#/components/schemas/Namespace"
-      - properties:
+      - required:
+        - deleted
+        - disabled
+        - id
+        properties:
           id:
             pattern: "^[a-z0-9][a-z0-9._-]*"
             type: string
