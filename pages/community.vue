@@ -14,6 +14,9 @@
             <Community/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
+            <CommunityGuidelines />
+        </NuxtLazyHydrate>
+        <NuxtLazyHydrate when-visible>
             <CommunityContributors/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>

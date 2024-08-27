@@ -30,6 +30,7 @@
                 <div v-if="cardInfo" class="card-info">
                     <h4 v-if="cardInfo.title" class="card-title">{{cardInfo.title}}</h4>
                     <p v-if="cardInfo.description" class="card-text">{{cardInfo.description}}</p>
+                    <div v-if="cardInfo.descriptionHtml" class="card-text" v-html="cardInfo.descriptionHtml"></div>
                 </div>
                 <h4 v-if="title" class="card-title">{{title}}</h4>
                 <h4 v-if="titleHtml" class="card-title" v-html="titleHtml"></h4>
