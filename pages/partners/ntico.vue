@@ -203,37 +203,6 @@
 
     }
 
-    .story-info {
-        padding: calc($spacer * 2);
-        border: 1px solid $black-6;
-        background-color: $black-2;
-        border-radius: calc($spacer / 2);
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-
-        .info-block {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-
-            .title {
-                font-size: $h6-font-size;
-                font-weight: 600;
-                color: $white;
-                margin: 0;
-            }
-
-            .subtitle {
-                font-size: $h6-font-size;
-                font-weight: 300;
-                color: $white-1;
-                margin: 0;
-            }
-        }
-    }
-
-
     p, ul > li {
         line-height: 1.5rem;
     }
@@ -256,29 +225,6 @@
 
     :deep(a) {
         color: $purple-35;
-    }
-
-    .card {
-        border: 1px solid $black-3;
-        border-right: 8px;
-        padding-top: calc($spacer * 0.938);
-        padding-bottom: calc($spacer * 0.8);
-        width: calc($spacer * 8.3);
-
-        .card-body {
-            display: flex;
-            flex-direction: column;
-            gap: calc($spacer / 4);
-            align-items: center;
-            padding: 0;
-        }
-
-        .card-title {
-            margin: 0;
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 22px;
-        }
     }
 
 
@@ -420,50 +366,6 @@
             @include media-breakpoint-down(md) {
                 &::after {
                     left: 23rem;
-                }
-            }
-        }
-
-        .security-features {
-            display: flex;
-            justify-content: center;
-            gap: calc($spacer * 1.8);
-            position: relative;
-
-            :deep(.title-block) {
-                align-items: center;
-            }
-
-            @include media-breakpoint-down(lg) {
-                flex-direction: column;
-                align-items: center;
-
-                :deep(.card) {
-                    width: 60%;
-                    justify-content: center;
-                    align-items: center;
-                }
-            }
-
-            @include media-breakpoint-down(md) {
-                :deep(.card) {
-                    width: auto;
-                }
-            }
-            &::before {
-                content: "";
-                position: absolute;
-                width: calc($spacer * 12);
-                height: calc($spacer * 12);
-                background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
-                filter: blur(100px);
-                z-index: -5;
-                left: 49rem;
-                top: -1rem;
-
-                @include media-breakpoint-down(lg) {
-                    left: 35%;
-                    top: 50%;
                 }
             }
         }
