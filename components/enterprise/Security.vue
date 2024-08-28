@@ -49,19 +49,19 @@
                     <Card
                         img="/landing/enterprise/security-icon.svg"
                         imgAlt="Security"
-                        title="Security"
+                        title="Security & Compliance"
                         :bottomMenuBar="securityFeatures.security"
                     />
                     <Card
                         img="/landing/enterprise/governance-icon.svg"
                         imgAlt="Governance"
-                        title="Governance"
+                        title="Governance & Productivity"
                         :bottomMenuBar="securityFeatures.governance"
                     />
                     <Card
                         img="/landing/enterprise/scalability-icon.svg"
                         imgAlt="Scalability"
-                        title="Scalability"
+                        title="Scalability & Infrastructure"
                         :bottomMenuBar="securityFeatures.scalability"
                     />
                 </div>
@@ -86,22 +86,25 @@
         return {
           securityFeatures: {
             security: [
-              { text: "Audit log", active: false },
-              { text: "RBAC", active: false },
+              { text: "Audit log & Revision History", active: false },
               { text: "SSO", active: false },
-              { text: "Secrets Manager", active: false },
+              { text: "Service Account & API Tokens", active: false },
+              { text: "Secrets Manager Integration", active: false },
+              { text: "Encryption", active: false },
             ],
             governance: [
               { text: "Multi Tenancy", active: false },
-              { text: "Namespace Management", active: false },
-              { text: "Custom blueprints", active: false },
-              { text: "Task Configuration", active: false },
+              { text: "RBAC", active: false },
+              { text: "Namespaces Management", active: false },
+              { text: "Worker Isolation, Plugins Control", active: false },
+              { text: "Custom Blueprints", active: false },
             ],
             scalability: [
-              { text: "Dedicated Worker", active: false },
-              { text: "High Throughput", active: false },
-              { text: "High Availability", active: false },
+              { text: "Worker Groups, Distant Workers", active: false },
+              { text: "Task Runners", active: false },
+              { text: "High Availability & Throughput", active: false },
               { text: "Fault Tolerant", active: false },
+              { text: "Custom Dashboard", active: false },
             ],
           },
         };
