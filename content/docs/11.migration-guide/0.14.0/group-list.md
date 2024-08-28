@@ -20,7 +20,7 @@ The `groups` property has been renamed to `groupList` and the `groupId` now need
 ```yaml
 groupList:
   - groupId: yourGroupId
-    membership: MEMBER # or OWNER
+    membership: MEMBER
 ```
 
 ::alert{type="info"}
