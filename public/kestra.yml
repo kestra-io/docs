@@ -5054,6 +5054,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/State.Type"
+        logToFile:
+          type: boolean
     AbstractTriggerForExecution:
       required:
       - id
@@ -5815,6 +5817,7 @@ components:
     ExecutionTrigger:
       required:
       - id
+      - logFile
       - type
       - variables
       type: object
@@ -5826,6 +5829,9 @@ components:
         variables:
           type: object
           additionalProperties: true
+        logFile:
+          type: string
+          format: uri
     ExecutionUsage:
       type: object
       properties:
@@ -6997,6 +7003,8 @@ components:
           $ref: "#/components/schemas/Level"
         allowFailure:
           type: boolean
+        logToFile:
+          type: boolean
     TaskForExecution:
       required:
       - id
@@ -7068,6 +7076,7 @@ components:
           format: int32
     TaskRunAttempt:
       required:
+      - logFile
       - state
       type: object
       properties:
@@ -7078,6 +7087,9 @@ components:
             $ref: "#/components/schemas/AbstractMetricEntry_Object_"
         state:
           $ref: "#/components/schemas/State"
+        logFile:
+          type: string
+          format: uri
     Template:
       required:
       - deleted
