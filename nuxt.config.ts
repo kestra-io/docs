@@ -81,12 +81,12 @@ export default defineNuxtConfig({
       },
   },
 
-  // router: {
-  //     options: {
-  //         strict: true
-  //     },
-  //     middleware: ['redirect'],
-  // },
+  router: {
+      options: {
+          strict: true
+      },
+      middleware: ['redirect'],
+  },
 
   devServer: {
       port: 3001
