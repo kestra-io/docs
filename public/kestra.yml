@@ -1573,14 +1573,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: subflows
-        in: query
-        description: The subflow tasks to display
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
       responses:
         "200":
           description: flowGraph 200 response
@@ -1878,7 +1870,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter as a list of 'key:value'
+        description: A labels filter
         schema:
           type: array
           nullable: true
@@ -1933,7 +1925,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter as a list of 'key:value'
+        description: A labels filter
         schema:
           type: array
           nullable: true
@@ -2010,7 +2002,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter as a list of 'key:value'
+        description: A labels filter
         schema:
           type: array
           nullable: true
@@ -2068,7 +2060,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter as a list of 'key:value'
+        description: A labels filter
         schema:
           type: array
           nullable: true
@@ -2182,7 +2174,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter as a list of 'key:value'
+        description: A labels filter
         schema:
           type: array
           nullable: true
@@ -5054,8 +5046,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/State.Type"
-        logToFile:
-          type: boolean
     AbstractTriggerForExecution:
       required:
       - id
@@ -5682,21 +5672,6 @@ components:
           type: string
         retry:
           $ref: "#/components/schemas/Duration"
-    ExecutableTask.SubflowId:
-      required:
-      - flowId
-      - namespace
-      - revision
-      type: object
-      properties:
-        namespace:
-          type: string
-        flowId:
-          type: string
-        revision:
-          type: integer
-          format: int32
-          nullable: true
     Execution:
       required:
       - deleted
@@ -5817,7 +5792,6 @@ components:
     ExecutionTrigger:
       required:
       - id
-      - logFile
       - type
       - variables
       type: object
@@ -5829,9 +5803,6 @@ components:
         variables:
           type: object
           additionalProperties: true
-        logFile:
-          type: string
-          format: uri
     ExecutionUsage:
       type: object
       properties:
@@ -6191,6 +6162,16 @@ components:
         required:
           type: boolean
         defaults: {}
+    KVController.KVType:
+      type: string
+      enum:
+      - STRING
+      - NUMBER
+      - BOOLEAN
+      - DATETIME
+      - DATE
+      - DURATION
+      - JSON
     KVController.TypedValue:
       required:
       - type
@@ -6198,7 +6179,7 @@ components:
       type: object
       properties:
         type:
-          $ref: "#/components/schemas/KVType"
+          $ref: "#/components/schemas/KVController.KVType"
         value: {}
     KVEntry:
       required:
@@ -6219,16 +6200,6 @@ components:
         expirationDate:
           type: string
           format: date-time
-    KVType:
-      type: string
-      enum:
-      - STRING
-      - NUMBER
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - DURATION
-      - JSON
     Label:
       required:
       - key
@@ -6448,11 +6419,6 @@ components:
           type: string
         version:
           type: string
-        commitId:
-          type: string
-        commitDate:
-          type: string
-          format: date-time
         isTaskRunEnabled:
           type: boolean
         isAnonymousUsageEnabled:
@@ -7003,8 +6969,6 @@ components:
           $ref: "#/components/schemas/Level"
         allowFailure:
           type: boolean
-        logToFile:
-          type: boolean
     TaskForExecution:
       required:
       - id
@@ -7028,8 +6992,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Input_Object_"
-        subflowId:
-          $ref: "#/components/schemas/ExecutableTask.SubflowId"
     TaskRun:
       required:
       - attempts
@@ -7076,7 +7038,6 @@ components:
           format: int32
     TaskRunAttempt:
       required:
-      - logFile
       - state
       type: object
       properties:
@@ -7087,9 +7048,6 @@ components:
             $ref: "#/components/schemas/AbstractMetricEntry_Object_"
         state:
           $ref: "#/components/schemas/State"
-        logFile:
-          type: string
-          format: uri
     Template:
       required:
       - deleted
