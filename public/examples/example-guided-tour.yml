@@ -30,8 +30,7 @@ tasks:
     # This task runs a Python script.
   - id: python
     type: io.kestra.plugin.scripts.python.Script
-    docker:
-      image: python:slim
+    containerImage: python:slim
     beforeCommands:
       - pip install polars
     warningOnStdErr: false
