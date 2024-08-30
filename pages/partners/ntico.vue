@@ -47,7 +47,7 @@
                 <div class="ntico-content">
                     <div class="row mb-5">
                         <div class="col-md-6 image-container" data-aos="fade-right">
-                            <NuxtImg loading="lazy" format="webp" class="img-fluid"
+                            <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
                                      src="/partners/ntico/artworks_features-1.svg"
                                      alt="Assessment and Strategy"/>
                         </div>
@@ -77,14 +77,14 @@
                             </div>
                         </div>
                         <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
-                            <NuxtImg loading="lazy" format="webp" class="img-fluid"
+                            <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
                                      src="/partners/ntico/artworks_features-2.svg"
                                      alt="Implementation and Migration"/>
                         </div>
                     </div>
                     <div class="row mb-5">
                         <div class="col-md-6 image-container" data-aos="fade-right">
-                            <NuxtImg loading="lazy" format="webp" class="img-fluid"
+                            <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
                                      src="/partners/ntico/artworks_features-3.svg"
                                      alt="Ongoing Support and Optimization"/>
                         </div>
@@ -116,14 +116,14 @@
                             </div>
                         </div>
                         <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
-                            <NuxtImg loading="lazy" format="webp" class="img-fluid"
+                            <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
                                      src="/partners/ntico/artworks_features-4.svg"
                                      alt="Modernization and Data Engineering"/>
                         </div>
                     </div>
                     <div class="row mb-5">
                         <div class="col-md-6 image-container" data-aos="fade-right">
-                            <NuxtImg loading="lazy" format="webp" class="img-fluid"
+                            <NuxtImg width="560" height="420" loading="lazy" format="webp" class="img-fluid"
                                      src="/partners/ntico/artworks_features-5.svg"
                                      alt="Tailored Solutions for Your Business"/>
                         </div>
@@ -327,6 +327,7 @@
             }
         }
     }
+
     .ntico-content {
 
         h3 {
