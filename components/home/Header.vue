@@ -49,7 +49,7 @@
                     width="600"
                     height="480"
                     lazy
-                    placeholder="blur"
+                    :placeholder="[600, 480]"
                 />
             </div>
             <div class="companies-background">
