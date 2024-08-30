@@ -46,7 +46,10 @@
                 <NuxtImg
                     class="img-fluid headerimg"
                     src="/landing/home/header.svg"
-                    alt="Smarter Not Harder"
+                    width="600"
+                    height="480"
+                    lazy
+                    :placeholder="[600, 480]"
                 />
             </div>
             <div class="companies-background">
