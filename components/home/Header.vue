@@ -46,6 +46,7 @@
                 <NuxtImg
                     class="img-fluid headerimg"
                     src="/landing/home/header.svg"
+                    data-aos="zoom-in"
                     width="600"
                     height="480"
                     lazy
