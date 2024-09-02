@@ -234,6 +234,14 @@ export default {
             margin-top: -80px;
         }
 
+        @include media-breakpoint-down(xl) {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
         @include media-breakpoint-down(md) {
             margin-top: -40px;
         }
@@ -319,6 +327,12 @@ export default {
 
     :deep(.companies-container) {
         max-width: unset;
+        .companies-list-container {
+            &:before,
+            &:after {
+                content: none;
+            }
+        }
     }
 }
 </style>
