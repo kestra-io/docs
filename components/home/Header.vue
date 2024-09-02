@@ -54,8 +54,8 @@
                 />
             </div>
             <div class="companies-background">
-                <LayoutCompanies class="d-md-none" />
-                <HomeCompanies class="mb-4 pb-4 companies container d-none d-md-block" />
+                <LayoutCompanies class="d-xl-none" />
+                <HomeCompanies class="mb-4 pb-4 companies container d-none d-xl-block" />
             </div>
         </div>
 
@@ -318,12 +318,7 @@ export default {
     }
 
     :deep(.companies-container) {
-        .companies-list-container {
-            &:before,
-            &:after {
-                content: none;
-            }
-        }
+        max-width: unset;
     }
 }
 </style>
