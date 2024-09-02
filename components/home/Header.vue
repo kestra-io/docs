@@ -242,6 +242,14 @@ export default {
             margin-left: -50vw;
             margin-right: -50vw;
         }
+        @media only screen and (max-width: 320px)  { /* notice the max-width instead of min-width */
+            width: unset;
+            position: unset;
+            left: unset;
+            right: unset;
+            margin-left: -15px;
+            margin-right: -15px;
+        }
         @include media-breakpoint-down(md) {
             margin-top: -40px;
         }
