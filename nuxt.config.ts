@@ -155,6 +155,7 @@ export default defineNuxtConfig({
       '/docs/developer-guide/scripts/additional-languages': {redirect: '/docs/developer-guide/scripts/languages'},
       '/docs/developer-guide/best-practice': {redirect: '/docs/best-practices'},
       '/docs/developer-guide/best-practices': {redirect: '/docs/best-practices'},
+      '/docs/developer-guide/scripts/output-directory': {redirect: '/docs/developer-guide/scripts/input-output-files'},
       '/docs/best-practice': {redirect: '/docs/best-practices'},
       '/docs/workflow-components/trigger': {redirect: '/docs/workflow-components/triggers'},
       '/docs/workflow-components/realtime-triggers': {redirect: '/docs/workflow-components/realtime-trigger'},

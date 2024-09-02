@@ -75,6 +75,7 @@ tasks:
   - id: api
     type: io.kestra.plugin.fs.http.Request
     uri: "{{ inputs.api_url }}"
+
   - id: python
     type: io.kestra.plugin.scripts.python.Script
     docker:
@@ -106,10 +107,10 @@ tasks:
   - id: api
     type: io.kestra.plugin.fs.http.Request
     uri: "{{ inputs.api_url }}"
+
   - id: python
     type: io.kestra.plugin.scripts.python.Script
-    docker:
-      image: python:slim
+    containerImage: python:slim
     beforeCommands:
       - pip install polars
     warningOnStdErr: false
@@ -142,6 +143,7 @@ tasks:
           kestra>=0.6.0
           pandas>=1.3.5
           requests>=2.31.0
+
     - id: pythonScript
       type: io.kestra.plugin.scripts.python.Script
       docker:
@@ -174,11 +176,11 @@ tasks:
           kestra>=0.6.0
           pandas>=1.3.5
           requests>=2.31.0
+
     tasks:
     - id: pythonScript
       type: io.kestra.plugin.scripts.python.Script
-      docker:
-        image: python:3.11-slim
+      containerImage: python:3.11-slim
       beforeCommands:
         - pip install -r requirements.txt > /dev/null
       warningOnStdErr: false

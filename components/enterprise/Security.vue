@@ -51,18 +51,21 @@
                         imgAlt="Security"
                         title="Security & Compliance"
                         :bottomMenuBar="securityFeatures.security"
+                        :isClickable="false"
                     />
                     <Card
                         img="/landing/enterprise/governance-icon.svg"
                         imgAlt="Governance"
                         title="Governance & Productivity"
                         :bottomMenuBar="securityFeatures.governance"
+                        :isClickable="false"
                     />
                     <Card
                         img="/landing/enterprise/scalability-icon.svg"
                         imgAlt="Scalability"
                         title="Scalability & Infrastructure"
                         :bottomMenuBar="securityFeatures.scalability"
+                        :isClickable="false"
                     />
                 </div>
             </div>

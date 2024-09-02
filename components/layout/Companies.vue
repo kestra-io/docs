@@ -151,6 +151,10 @@
                 min-width: 100%;
                 grid-column-gap: 2rem;
                 grid-row-gap: 2rem;
+                @include media-breakpoint-down(md) {
+                    grid-column-gap: 1rem;
+                    grid-row-gap: 1rem;
+                }
                 flex: none;
                 justify-content: space-between;
                 align-items: center;
@@ -167,7 +171,9 @@
             img {
                 margin-right: calc($spacer * 2.649);
                 margin-top: calc($spacer * 2);
-
+                @include media-breakpoint-down(md) {
+                    margin-right: calc($spacer * .649);
+                }
                 &.inverted {
                     filter: invert(100%);
                 }
