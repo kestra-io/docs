@@ -5,6 +5,10 @@ icon: /docs/icons/tutorial.svg
 
 Use revision history to rollback to an older version of a flow.
 
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/lpHl52Rlvr0?si=RyPvvhGNkTmskLKP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## What is Revision History
 
 Kestra stores revision history which allows you to easily roll back to any older version of the flow. You can check out the older versions by going to the "Revisions" tab on the flow's page. By default, the page opens up a comparison of the current version of the flow against the previous version.
