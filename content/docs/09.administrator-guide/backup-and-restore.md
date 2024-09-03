@@ -3,70 +3,89 @@ title: Backup & Restore
 icon: /docs/icons/admin.svg
 ---
 
-Kestra didn't provide specific tools for backup and restore.
-However, Kestra uses a database and an internal storage that can be backuped and restored using the implementation provided tools.
+Kestra does not provide specific tools for backup and restore. However, Kestra uses a database and internal storage that can be backed up and restored.
 
-## Backup & Restore with the JDBC backend
+## Backup & Restore with the JDBC Backend
 
-With the JDBC backend, Kestra can be backuped and restored using the database provided tools,
-the following example is when using Postgres, udpdate it with your database specific tools where needed.
+With the JDBC backend, Kestra can be backed up and restored using the database's native backup tools. 
 
-First, you need to stop Kestra to be sure the database is in a stable state.
-Postgres pg_dump allows to backup a running database so it may not be mandatory but if possible it's always better to do backup offline.
+### Backup & Restore for PostgreSQL
 
-Then, you can use your database backup tool, for example, with Postgres:
+First, stop Kestra to ensure the database is in a stable state. Although `pg_dump` allows you to back up a running PostgreSQL database, it's always better to perform backups offline when possible.
+
+Next, run the following command:
 
 ```shell
 pg_dump -h localhost -p 5432 -U <username> -d <database> -F tar -f kestra.tar
 ```
 
-Then, you can use your database restore tool on a new database, for example, with Postgres:
+To restore the backup to a new database, use `pg_restore`:
 
 ```shell
 pg_restore -h localhost -p 5432 -U <username> -d <database> kestra.tar
 ```
 
-Finally, restart Kestra!
+Finally, restart Kestra.
 
-## Backup & Restore with the Elasticsearch and Kafka backend
+### Backup & Restore for MySQL
 
-With the Elasticsearch and Kafka backend, Kestra can be backuped and restored using Elasticsearch snapshots,
-Kafka will then be reinitialized with the information from Elasticsearch.
+First, stop Kestra to ensure the database is in a stable state. Although MySQL's `mysqldump` allows you to back up a running MySQL database, it's always better to perform backups offline when possible.
 
-In this guide, we assume you have an already configured snapshot repository in Elasticsearch that we named `my_snapshot_repository`, we will go througt basic snapshot and restore using the Elasticsearch API, for more advanced setup please see [Snapshot and restore](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html) from the Elasticsearch documentation.
+Next, run the following command to back up the database:
 
-First, we will create an Elasticsearch snapshot named `kestra`:
+```shell
+mysqldump -h localhost -P 3306 -u <username> -p<password> <database> > kestra.sql
+```
+
+To restore the backup to a new database, use the following command:
+
+```shell
+mysql -h localhost -P 3306 -u <username> -p <password> <database> < kestra.sql
+```
+
+The `< kestra.sql` part tells MySQL to read and execute the SQL statements contained in the `kestra.sql` backup file as input.
+
+Finally, restart Kestra.
+
+---
+
+## Backup & Restore with the Elasticsearch and Kafka Backend
+
+With the Elasticsearch and Kafka backend, Kestra can be backed up and restored using Elasticsearch snapshots. Kafka will be reinitialized with the information from Elasticsearch.
+
+This guide assumes you have already configured a snapshot repository in Elasticsearch named `my_snapshot_repository`. Elasticsearch provides several [backup options](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html). We will leverage basic snapshot and restore operations using the Elasticsearch API.
+
+First, create an Elasticsearch snapshot named `kestra`:
 
 ```
 PUT _snapshot/my_snapshot_repository/kestra?wait_for_completion=true
 ```
 
-Then, you can delete all kestra indices and recreate them using the snapshot:
+Next, delete all Kestra indices and recreate them using the snapshot:
 
 ```
-POST _snapshot/my_fs_backup/kestra/_restore
+POST _snapshot/my_snapshot_repository/kestra/_restore
 {
   "indices": "kestra_*"
 }
 ```
 
-If you need to start from a fresh Kafka instance, you ca reindex Kafka from the data in Elasticsearch using the following Kestra command:
+If you need to start from a fresh Kafka instance, you can reindex Kafka from the data in Elasticsearch using the following Kestra command:
 
 ```shell
 kestra sys restore-queue
 ```
 
-Be aware that, as some execution information are only stored inside Kafka, pending executions may not all be restarted.
+Since some execution information is stored only in Kafka, not all pending executions may be restarted.
 
-Finally, restart Kestra!
+Finally, restart Kestra.
 
-## Backup & Restore the internal storage
+## Backup & Restore of Internal Storage
 
-Kestra's internal storage is either implemented using a local filesystem or an object storage.
+Kestra's internal storage can be implemented using either a local filesystem or an object storage service.
 
-If you're using the local filesystem implementation, you can backup and restore the directory with standard filesystem backup tools.
+If you're using the local filesystem implementation, you can back up and restore the directory with standard filesystem backup tools.
 
-If you're using an object storage provided by a cloud provider, they usually already replicate a bucket in multiple locations.
-Depending on your availability need and you disaster recovery plan, this can be enought, if not, please reach to your cloud provider documentation for ways to backup externally a bucket or replicate to a different region (or multi-region).
+If you're using an object storage service provided by a cloud provider, you can replicate a bucket across multiple locations. Usually, this option is sufficient for disaster recovery. Alternatively, refer to your cloud provider's documentation for instructions on external bucket backup or replication to a different region.
 
-If you're using an object storage that you run on yourself (for example using MinIO from ou Helm Chart), please backup as described in the object storage documentation or setup a replication strategy that fits your need.
+If you're running your own object storage (e.g., using MinIO from our Helm Chart), you can [leverage Restic](https://blog.min.io/back-up-restic-minio/) or set up a replication strategy that fits your needs.
