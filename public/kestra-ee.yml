@@ -1857,6 +1857,272 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BulkResponse"
+  /api/v1/executions/change-status/by-ids:
+    post:
+      tags:
+      - Executions
+      summary: Change status of executions by id
+      operationId: changeStatusById
+      parameters:
+      - name: newStatus
+        in: query
+        description: The new status of the executions
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+        "422":
+          description: Changed status with errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
+  /api/v1/executions/change-status/by-ids/{tenant}:
+    post:
+      tags:
+      - Executions
+      summary: Change status of executions by id
+      operationId: changeStatusById_1
+      parameters:
+      - name: newStatus
+        in: query
+        description: The new status of the executions
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+        "422":
+          description: Changed status with errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
+  /api/v1/executions/change-status/by-query:
+    post:
+      tags:
+      - Executions
+      summary: Change executions status by query parameters
+      operationId: changeStatusByQuery
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      - name: flowId
+        in: query
+        description: A flow id filter
+        schema:
+          type: string
+          nullable: true
+      - name: startDate
+        in: query
+        description: The start datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: endDate
+        in: query
+        description: The end datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: timeRange
+        in: query
+        description: A time range filter relative to the current time
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
+        examples:
+          Filter last 5 minutes:
+            value: PT5M
+          Filter last 24 hours:
+            value: P1D
+      - name: state
+        in: query
+        description: A state filter
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/State.Type"
+      - name: labels
+        in: query
+        description: A labels filter as a list of 'key:value'
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: triggerExecutionId
+        in: query
+        description: The trigger execution id
+        schema:
+          type: string
+          nullable: true
+      - name: childFilter
+        in: query
+        description: A execution child filter
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
+      - name: newStatus
+        in: query
+        description: The new status of the executions
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+        "422":
+          description: Changed status with errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
+  /api/v1/executions/change-status/by-query/{tenant}:
+    post:
+      tags:
+      - Executions
+      summary: Change executions status by query parameters
+      operationId: changeStatusByQuery_1
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      - name: flowId
+        in: query
+        description: A flow id filter
+        schema:
+          type: string
+          nullable: true
+      - name: startDate
+        in: query
+        description: The start datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: endDate
+        in: query
+        description: The end datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: timeRange
+        in: query
+        description: A time range filter relative to the current time
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
+        examples:
+          Filter last 5 minutes:
+            value: PT5M
+          Filter last 24 hours:
+            value: P1D
+      - name: state
+        in: query
+        description: A state filter
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/State.Type"
+      - name: labels
+        in: query
+        description: A labels filter as a list of 'key:value'
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: triggerExecutionId
+        in: query
+        description: The trigger execution id
+        schema:
+          type: string
+          nullable: true
+      - name: childFilter
+        in: query
+        description: A execution child filter
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
+      - name: newStatus
+        in: query
+        description: The new status of the executions
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+        "422":
+          description: Changed status with errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
   /api/v1/executions/flows/{namespace}/{flowId}:
     get:
       tags:
@@ -3741,6 +4007,58 @@ paths:
           description: On success
         "200":
           description: delete_2 200 response
+  /api/v1/executions/{executionId}/change-status:
+    post:
+      tags:
+      - Executions
+      summary: Change the status of an execution
+      operationId: changeStatus
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: The new status of the execution
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      responses:
+        "200":
+          description: changeStatus 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Execution"
+  /api/v1/executions/{executionId}/change-status/{tenant}:
+    post:
+      tags:
+      - Executions
+      summary: Change the status of an execution
+      operationId: changeStatus_1
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: The new status of the execution
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      responses:
+        "200":
+          description: changeStatus_1 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Execution"
   /api/v1/executions/{executionId}/eval/{taskRunId}:
     post:
       tags:
