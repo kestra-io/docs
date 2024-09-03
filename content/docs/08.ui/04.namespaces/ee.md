@@ -1,5 +1,5 @@
 ---
-title: Enterprise Namespaces
+title: Enterprise Namespace Pages
 icon: /docs/icons/ui.svg
 editions: ["EE"]
 ---
