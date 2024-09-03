@@ -7230,6 +7230,7 @@ components:
       - SECRET
       - ARRAY
       - MULTISELECT
+      - YAML
     Usage:
       required:
       - configurations
