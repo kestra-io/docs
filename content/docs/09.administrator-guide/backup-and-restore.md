@@ -3,6 +3,8 @@ title: Backup & Restore
 icon: /docs/icons/admin.svg
 ---
 
+Backup Kestra.
+
 Kestra does not provide specific tools for backup and restore. However, Kestra uses a database and internal storage that can be backed up and restored.
 
 ## Backup & Restore with the JDBC Backend
