@@ -1,0 +1,172 @@
+<script>
+    import Section from '../layout/Section.vue';
+    export default {
+      components: {Section},
+      data() {
+        return {
+          securityFeatures: {
+            security: [
+              { text: "Audit log & Revision History", active: false },
+              { text: "SSO", active: false },
+              { text: "Service Account & API Tokens", active: false },
+              { text: "Secrets Manager Integration", active: false },
+              { text: "Encryption", active: false },
+            ],
+            governance: [
+              { text: "Multi Tenancy", active: false },
+              { text: "RBAC", active: false },
+              { text: "Namespaces Management", active: false },
+              { text: "Worker Isolation, Plugins Control", active: false },
+              { text: "Custom Blueprints", active: false },
+            ],
+            scalability: [
+              { text: "Worker Groups, Distant Workers", active: false },
+              { text: "Task Runners", active: false },
+              { text: "High Availability & Throughput", active: false },
+              { text: "Fault Tolerant", active: false },
+              { text: "Custom Dashboard", active: false },
+            ],
+          },
+        };
+      },
+    }
+</script>
+<style scoped lang="scss">
+    @import "../../assets/styles/variable";
+    :deep(section) {
+        margin-top: calc($spacer * 7.8);
+        position: relative;
+
+        &:before {
+            content: "";
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background: url("/landing/ee/background-mask.svg") no-repeat center;
+            background-size: 156% 100%;
+            overflow: hidden;
+            top: -33%;
+            z-index: -1;
+        }
+        .subtitle {
+            margin: 0 !important;
+            p {
+                margin: 0 !important;
+            }
+
+            div.main {
+                padding-top: 0 !important;
+            }
+        }
+    }
+    .container {
+        border-top: $block-border;
+
+        h3 {
+            color: $white;
+            font-size: $h2-font-size;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        p {
+            color: $white;
+            font-size: $font-size-md;
+            font-weight: 300;
+            max-width: calc($spacer * 28);
+
+            b {
+                color: $white;
+                font-weight: 600;
+            }
+        }
+
+        .image-container {
+            position: relative;
+            z-index: 10;
+
+            &::before,
+            &::after
+            {
+                content: "";
+                position: absolute;
+                width: calc($spacer * 12);
+                height: calc($spacer * 12);
+                background: radial-gradient(50% 50% at 50% 50%, #343434 0%, rgba(127, 122, 232, 0) 195% 117%);
+                filter: blur(47px);
+                z-index: -5;
+            }
+
+            &::before {
+                left: -1rem;
+                top: 11rem;
+            }
+
+            &::after {
+                left: 27rem;
+                top: -2rem;
+            }
+
+            @include media-breakpoint-down(lg) {
+                &::after {
+                    left: 13rem;
+                }
+
+                &::before {
+                    left: -3rem;
+                    top: 5rem;
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                &::after {
+                   left: 23rem;
+                }
+            }
+        }
+
+        .security-features {
+            display: flex;
+            justify-content: center;
+            gap: calc($spacer * 1.8);
+            position: relative;
+
+            :deep(.title-block) {
+                align-items: center;
+            }
+
+            @include media-breakpoint-down(lg) {
+                flex-direction: column;
+                align-items: center;
+
+                :deep(.card) {
+                    width: 60%;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                :deep(.card) {
+                    width: auto;
+                }
+            }
+            &::before {
+                content: "";
+                position: absolute;
+                width: calc($spacer * 12);
+                height: calc($spacer * 12);
+                background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117FF 100%);
+                filter: blur(100px);
+                z-index: -5;
+                left: 49rem;
+                top: -1rem;
+
+                @include media-breakpoint-down(lg) {
+                    left: 35%;
+                    top: 50%;
+                }
+            }
+        }
+    }
+</style>
