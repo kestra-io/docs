@@ -7,6 +7,10 @@ Manage resources associated with a namespace in one place.
 
 Starting 0.18.0, Kestra has introduced the Namespaces tab in the Kestra UI for OSS. In this tab, you can see all the namespaces associated with the different flows in Kestra.
 
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=9gVEROGc5hXcIJR2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Overview
 
 This is the default landing page of the Namespace. This page contains the dashboards and summary about the executions of different flows in this namespace.
@@ -38,6 +42,10 @@ This is similar to the Dependencies page in the Flow Editor, but this shows you 
 Manage the key-values pairs associated with this namespace. More details on KV Store can be found [here](../05.concepts/05.kv-store.md).
 
 ![KV Store](/docs/user-interface-guide/kvstore-namespaces.png)
+
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/CNv_z-tnwnQ?si=llG-CMXRBG9PG3nF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Additional Enterprise Pages
 
