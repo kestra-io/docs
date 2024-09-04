@@ -15,7 +15,7 @@ This is the default landing page of the Namespace. This page contains the dashbo
 
 ## Editor
 
-The in-built editor where you can add/edit the namespaceFiles. This makes it easier to edit just your namespace files without needing to select a flow inside of the namespace.
+The in-built editor where you can add/edit namespace files. This makes it easier to edit just your namespace files without needing to select a flow inside of the namespace.
 
 ![Editor](/docs/user-interface-guide/editor-namespaces.png)
 
