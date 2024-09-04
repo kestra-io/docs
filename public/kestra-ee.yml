@@ -11176,6 +11176,33 @@ paths:
                 type: array
                 items:
                   type: string
+    patch:
+      tags:
+      - Namespaces
+      summary: Patch a secret metadata for a namespace
+      operationId: patchSecret
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiSecretMeta"
+        required: true
+      responses:
+        "200":
+          description: patchSecret 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiSecretMeta"
   /api/v1/namespaces/{namespace}/secrets/{key}/{tenant}:
     delete:
       tags:
@@ -11204,6 +11231,33 @@ paths:
                 type: array
                 items:
                   type: string
+    patch:
+      tags:
+      - Namespaces
+      summary: Patch a secret metadata for a namespace
+      operationId: patchSecret_1
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiSecretMeta"
+        required: true
+      responses:
+        "200":
+          description: patchSecret_1 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiSecretMeta"
   /api/v1/namespaces/{namespace}/secrets/{tenant}:
     get:
       tags:
