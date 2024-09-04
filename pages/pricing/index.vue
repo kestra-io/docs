@@ -6,7 +6,7 @@
                 content="Choose the right plan for your needs. Start with the Open Source version and scale with the Enterprise Edition of Kestra." />
         </Head>
         <Heading />
-        <layoutfeatures />
+        <features />
         <LayoutCompanies />
 
         <Table />
