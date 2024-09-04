@@ -19935,11 +19935,6 @@ components:
       enum:
       - FLOW_TASK
       - FLOW_TRIGGER
-    FlowScope:
-      type: string
-      enum:
-      - USER
-      - SYSTEM
     FlowTopologyGraph:
       required:
       - edges
@@ -21827,10 +21822,6 @@ components:
         q:
           type: string
           nullable: true
-        scope:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
         namespace:
           type: string
           nullable: true
