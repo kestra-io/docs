@@ -549,9 +549,9 @@ export default {
         },
 
         globalClick(close) {
-            if (close) {
+          this.collapse.toggle();
+          if (close) {
                 if (this.$refs.navbar.classList.contains("open")) {
-                    this.collapse.hide();
                     this.isOpen = false;
                     document.body.style.overflow = 'unset';
                     document.body.style.position = 'unset';
@@ -566,8 +566,7 @@ export default {
               document.body.style.overflow = 'hidden';
               document.body.style.position = 'fixed';
               document.body.style.width = '100%';
-              this.collapse.toggle();
-                this.isOpen = !this.isOpen;
+              this.isOpen = !this.isOpen;
             }
         },
         logoClick() {
