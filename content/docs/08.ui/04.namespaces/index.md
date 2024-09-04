@@ -39,3 +39,9 @@ Manage the key-values pairs associated with this namespace. More details on KV S
 
 ![KV Store](/docs/user-interface-guide/kvstore-namespaces.png)
 
+## Additional Enterprise Pages
+
+In the Enterprise Edition, there's a number of additional pages that give you richer insight and control over your namespaces. To read more about them, check out the page below:
+
+::ChildCard
+::
