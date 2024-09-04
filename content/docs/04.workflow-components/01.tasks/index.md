@@ -13,20 +13,20 @@ Tasks are discrete actions within a flow, capable of taking inputs and variables
 
 ## Flowable Tasks
 
-Kestra orchestrates your flows using [Flowable Tasks](../05.concepts/01.flowable-tasks.md). These tasks do not perform any heavy computation. Instead, they control the orchestration behavior, allowing you to implement more advanced workflow patterns.
+Kestra orchestrates your flows using [Flowable Tasks](00.flowable-tasks.md). These tasks do not perform any heavy computation. Instead, they control the orchestration behavior, allowing you to implement more advanced workflow patterns.
 
 Example Flowable tasks include:
 - `io.kestra.plugin.core.flow.Parallel`
 - `io.kestra.plugin.core.flow.Switch`
 - `io.kestra.plugin.core.flow.ForEachItem`
 
-Read the full list on the [Flowable tasks page](../05.concepts/01.flowable-tasks.md).
+Read the full list on the [Flowable tasks page](00.flowable-tasks.md).
 
 ## Runnable Tasks
 
-In Kestra, most data processing workloads are executed using [Runnable Tasks](../05.concepts/02.runnable-tasks.md).
+In Kestra, most data processing workloads are executed using [Runnable Tasks](01.runnable-tasks.md).
 
-In contrast to Flowable Tasks, Runnable Tasks are responsible for performing the actual work. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by [workers](../07.architecture/05.worker.md).
+In contrast to Flowable Tasks, Runnable Tasks are responsible for performing the actual work. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by [workers](../../07.architecture/05.worker.md).
 
 Example runnable tasks include:
 - `io.kestra.plugin.scripts.python.Commands`
@@ -41,13 +41,13 @@ The table below lists the core task properties available to all tasks.
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `id`              | The flow identifier, must be unique inside a flow.                                                                                                                                                                                                          |
 | `type`            | The Java Fully Qualified Class Name of the task.                                                                                                                                                                                                            |
-| `description`     | The [description](../04.workflow-components/15.descriptions.md) of the task                                                                                                                                                                                 |
-| `retry`           | Task [retry](../04.workflow-components/12.retries.md) behavior                                                                                                                                                                                              |
-| `timeout`         | Task [timeout](../04.workflow-components/13.timeout.md) expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations).                                                                                                                |
-| `disabled`        | Set it to `true` to [disable](../04.workflow-components/16.disabled.md) execution of the task.                                                                                                                                                              |
-| `workerGroup.key` | To execute this task on a specific [Worker Group](../06.enterprise/worker-group.md) (EE).                                                                                                                                                                   |
+| `description`     | The [description](../16.descriptions.md) of the task                                                                                                                                                                                 |
+| `retry`           | Task [retry](../12.retries.md) behavior                                                                                                                                                                                              |
+| `timeout`         | Task [timeout](../13.timeout.md) expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations).                                                                                                                |
+| `disabled`        | Set it to `true` to [disable](../17.disabled.md) execution of the task.                                                                                                                                                              |
+| `workerGroup.key` | To execute this task on a specific [Worker Group](../../06.enterprise/worker-group.md) (EE).                                                                                                                                                                   |
 | `logLevel`        | To define the log level granularity for which logs will be inserted into the backend database. By default, all logs are stored. However, if you restrict that to e.g., the `INFO` level, all lower log levels such as `DEBUG` and TRACE won't be persisted. |
-| `allowFailure`    | Boolean flag allowing to [continue the execution](../04.workflow-components/11.errors.md) even if this task fails.                                                                                                                                          |
+| `allowFailure`    | Boolean flag allowing to [continue the execution](../11.errors.md) even if this task fails.                                                                                                                                          |
 
 ## Dynamic vs. static task properties
 
