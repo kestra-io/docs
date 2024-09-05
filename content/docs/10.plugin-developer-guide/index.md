@@ -1,5 +1,5 @@
 ---
-title: Build a Custom Plugin
+title: Plugin Developer Guide
 icon: /docs/icons/dev.svg
 ---
 
