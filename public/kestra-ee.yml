@@ -1857,6 +1857,272 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BulkResponse"
+  /api/v1/executions/change-status/by-ids:
+    post:
+      tags:
+      - Executions
+      summary: Change status of executions by id
+      operationId: changeStatusById
+      parameters:
+      - name: newStatus
+        in: query
+        description: The new status of the executions
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+        "422":
+          description: Changed status with errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
+  /api/v1/executions/change-status/by-ids/{tenant}:
+    post:
+      tags:
+      - Executions
+      summary: Change status of executions by id
+      operationId: changeStatusById_1
+      parameters:
+      - name: newStatus
+        in: query
+        description: The new status of the executions
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+        "422":
+          description: Changed status with errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
+  /api/v1/executions/change-status/by-query:
+    post:
+      tags:
+      - Executions
+      summary: Change executions status by query parameters
+      operationId: changeStatusByQuery
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      - name: flowId
+        in: query
+        description: A flow id filter
+        schema:
+          type: string
+          nullable: true
+      - name: startDate
+        in: query
+        description: The start datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: endDate
+        in: query
+        description: The end datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: timeRange
+        in: query
+        description: A time range filter relative to the current time
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
+        examples:
+          Filter last 5 minutes:
+            value: PT5M
+          Filter last 24 hours:
+            value: P1D
+      - name: state
+        in: query
+        description: A state filter
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/State.Type"
+      - name: labels
+        in: query
+        description: A labels filter as a list of 'key:value'
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: triggerExecutionId
+        in: query
+        description: The trigger execution id
+        schema:
+          type: string
+          nullable: true
+      - name: childFilter
+        in: query
+        description: A execution child filter
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
+      - name: newStatus
+        in: query
+        description: The new status of the executions
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+        "422":
+          description: Changed status with errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
+  /api/v1/executions/change-status/by-query/{tenant}:
+    post:
+      tags:
+      - Executions
+      summary: Change executions status by query parameters
+      operationId: changeStatusByQuery_1
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      - name: flowId
+        in: query
+        description: A flow id filter
+        schema:
+          type: string
+          nullable: true
+      - name: startDate
+        in: query
+        description: The start datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: endDate
+        in: query
+        description: The end datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: timeRange
+        in: query
+        description: A time range filter relative to the current time
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
+        examples:
+          Filter last 5 minutes:
+            value: PT5M
+          Filter last 24 hours:
+            value: P1D
+      - name: state
+        in: query
+        description: A state filter
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/State.Type"
+      - name: labels
+        in: query
+        description: A labels filter as a list of 'key:value'
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: triggerExecutionId
+        in: query
+        description: The trigger execution id
+        schema:
+          type: string
+          nullable: true
+      - name: childFilter
+        in: query
+        description: A execution child filter
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
+      - name: newStatus
+        in: query
+        description: The new status of the executions
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+        "422":
+          description: Changed status with errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
   /api/v1/executions/flows/{namespace}/{flowId}:
     get:
       tags:
@@ -3741,6 +4007,58 @@ paths:
           description: On success
         "200":
           description: delete_2 200 response
+  /api/v1/executions/{executionId}/change-status:
+    post:
+      tags:
+      - Executions
+      summary: Change the status of an execution
+      operationId: changeStatus
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: The new status of the execution
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      responses:
+        "200":
+          description: changeStatus 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Execution"
+  /api/v1/executions/{executionId}/change-status/{tenant}:
+    post:
+      tags:
+      - Executions
+      summary: Change the status of an execution
+      operationId: changeStatus_1
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: The new status of the execution
+        required: true
+        schema:
+          $ref: "#/components/schemas/State.Type"
+      responses:
+        "200":
+          description: changeStatus_1 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Execution"
   /api/v1/executions/{executionId}/eval/{taskRunId}:
     post:
       tags:
@@ -4092,6 +4410,14 @@ paths:
         required: true
         schema:
           type: string
+      - name: subflows
+        in: query
+        description: The subflow tasks to display
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
       responses:
         "200":
           description: flowGraph 200 response
@@ -4112,6 +4438,14 @@ paths:
         required: true
         schema:
           type: string
+      - name: subflows
+        in: query
+        description: The subflow tasks to display
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
       responses:
         "200":
           description: flowGraph_1 200 response
@@ -4803,7 +5137,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -4837,7 +5171,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -4913,7 +5247,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -4947,7 +5281,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -5067,7 +5401,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -5101,7 +5435,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -5183,7 +5517,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -5220,7 +5554,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -5391,7 +5725,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -5449,7 +5783,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter
+        description: A labels filter as a list of 'key:value'
         schema:
           type: array
           nullable: true
@@ -10842,6 +11176,33 @@ paths:
                 type: array
                 items:
                   type: string
+    patch:
+      tags:
+      - Namespaces
+      summary: Patch a secret metadata for a namespace
+      operationId: patchSecret
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiSecretMeta"
+        required: true
+      responses:
+        "200":
+          description: patchSecret 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiSecretMeta"
   /api/v1/namespaces/{namespace}/secrets/{key}/{tenant}:
     delete:
       tags:
@@ -10870,6 +11231,33 @@ paths:
                 type: array
                 items:
                   type: string
+    patch:
+      tags:
+      - Namespaces
+      summary: Patch a secret metadata for a namespace
+      operationId: patchSecret_1
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiSecretMeta"
+        required: true
+      responses:
+        "200":
+          description: patchSecret_1 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiSecretMeta"
   /api/v1/namespaces/{namespace}/secrets/{tenant}:
     get:
       tags:
@@ -17891,6 +18279,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/State.Type"
+        logToFile:
+          type: boolean
     AbstractTriggerForExecution:
       required:
       - id
@@ -19229,6 +19619,21 @@ components:
           type: string
         retry:
           $ref: "#/components/schemas/Duration"
+    ExecutableTask.SubflowId:
+      required:
+      - flowId
+      - namespace
+      - revision
+      type: object
+      properties:
+        namespace:
+          type: string
+        flowId:
+          type: string
+        revision:
+          type: integer
+          format: int32
+          nullable: true
     Execution:
       required:
       - deleted
@@ -19349,6 +19754,7 @@ components:
     ExecutionTrigger:
       required:
       - id
+      - logFile
       - type
       - variables
       type: object
@@ -19360,6 +19766,9 @@ components:
         variables:
           type: object
           additionalProperties: true
+        logFile:
+          type: string
+          format: uri
     ExecutionUsage:
       type: object
       properties:
@@ -19788,16 +20197,6 @@ components:
         required:
           type: boolean
         defaults: {}
-    KVController.KVType:
-      type: string
-      enum:
-      - STRING
-      - NUMBER
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - DURATION
-      - JSON
     KVController.TypedValue:
       required:
       - type
@@ -19805,7 +20204,7 @@ components:
       type: object
       properties:
         type:
-          $ref: "#/components/schemas/KVController.KVType"
+          $ref: "#/components/schemas/KVType"
         value: {}
     KVEntry:
       required:
@@ -19826,6 +20225,16 @@ components:
         expirationDate:
           type: string
           format: date-time
+    KVType:
+      type: string
+      enum:
+      - STRING
+      - NUMBER
+      - BOOLEAN
+      - DATETIME
+      - DATE
+      - DURATION
+      - JSON
     Label:
       required:
       - key
@@ -20106,6 +20515,11 @@ components:
           type: string
         version:
           type: string
+        commitId:
+          type: string
+        commitDate:
+          type: string
+          format: date-time
         isTaskRunEnabled:
           type: boolean
         isAnonymousUsageEnabled:
@@ -21510,6 +21924,8 @@ components:
           $ref: "#/components/schemas/Level"
         allowFailure:
           type: boolean
+        logToFile:
+          type: boolean
     TaskForExecution:
       required:
       - id
@@ -21533,6 +21949,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Input_Object_"
+        subflowId:
+          $ref: "#/components/schemas/ExecutableTask.SubflowId"
     TaskRun:
       required:
       - attempts
@@ -21579,6 +21997,7 @@ components:
           format: int32
     TaskRunAttempt:
       required:
+      - logFile
       - state
       type: object
       properties:
@@ -21589,6 +22008,9 @@ components:
             $ref: "#/components/schemas/AbstractMetricEntry_Object_"
         state:
           $ref: "#/components/schemas/State"
+        logFile:
+          type: string
+          format: uri
     Template:
       required:
       - deleted
@@ -21759,6 +22181,7 @@ components:
       - SECRET
       - ARRAY
       - MULTISELECT
+      - YAML
     Usage:
       required:
       - configurations
