@@ -46,6 +46,7 @@ To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) 
 kestra:
   secret:
     type: azure-key-vault
+    azure-key-vault:
       clientSecret:
         tenantId: "id"
         clientId: "id"
