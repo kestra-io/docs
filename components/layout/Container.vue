@@ -66,6 +66,13 @@
         `NavSideBar-${hash(props.type)}`,
         () => fetchContentNavigation(queryBuilder)
       );
+
+      if (navigationFetch.data && navigationFetch.data.value && props.type === 'docs' && !navigationFetch.data.value[0].children.find((item) => (item.title === "Videos Tutorials"))) {
+        navigationFetch.data.value[0].children.splice(navigationFetch.data.value[0].children.length - 3, 0 , {
+          title: "Videos Tutorials",
+          _path: "/tutorial-videos",
+        });
+      }
     }
 
     const navigation = navigationFetch.data;
