@@ -29,11 +29,20 @@
   const totalStories = ref(0)
 
   const fetchStories = async ({currentPage, itemsPerPage}) => {
-    const {data} = await useAsyncData('stories', () => {
-      return $fetch(`${config.public.apiUrl}/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`)
-    })
-    stories.value = data.value.results
-    totalStories.value = data.value.total
+    const { data: customerStories } = await useFetch(`${config.public.apiUrl}/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`, {
+      transform: (response) => ({
+        results: response.results.map(result => ({
+          title: result.title,
+          description: result.description,
+          featuredImage: result.featuredImage,
+          tasks: result.tasks,
+        })),
+        total: response.total
+      })
+    });
+
+    stories.value = customerStories.value.results
+    totalStories.value = customerStories.value.total
   }
 
   await fetchStories({currentPage: 1, itemsPerPage: 3})
