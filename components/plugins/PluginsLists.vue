@@ -214,18 +214,28 @@
         filterPlugins(currentPage.value, itemsPerPage.value , activeCategory.value, searchQuery.value)
     }
 
-    let timer;
-    watch([currentPage, itemsPerPage, activeCategory, searchQuery], ([pageVal, itemVal, categoryVal, searchVal]) => {
-        if(timer) {
-            clearTimeout(timer)
+    function debounce(func, delay) {
+      let timeout;
+      return (...args) => {
+        if (timeout) {
+          clearTimeout(timeout);
         }
-        timer = setTimeout(async () => {
-            router.push({
-                query: filterPlugins(pageVal, itemVal, categoryVal, searchVal)
-            })
+        timeout = setTimeout(() => {
+          func(...args);
+        }, delay);
+      };
+    }
 
-        }, 500);
+    const debouncedFilterPlugins = debounce((pageVal, itemVal, categoryVal, searchVal) => {
+      router.push({
+        query: filterPlugins(pageVal, itemVal, categoryVal, searchVal)
+      });
+    }, 1000);
+
+    watch([currentPage, itemsPerPage, activeCategory, searchQuery], ([pageVal, itemVal, categoryVal, searchVal]) => {
+      debouncedFilterPlugins(pageVal, itemVal, categoryVal, searchVal);
     });
+
 </script>
 
 <style lang="scss" scoped>
