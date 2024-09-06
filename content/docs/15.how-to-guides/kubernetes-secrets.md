@@ -1,6 +1,10 @@
 ---
 title: Secrets from a Helm Chart
 icon: /docs/icons/helm.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 editions: ["OSS"]
 ---
 

@@ -1,6 +1,10 @@
 ---
 title: Pause and Resume
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 ---
 
 Pause and Resume flows in Kestra.

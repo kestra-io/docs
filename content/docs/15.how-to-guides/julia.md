@@ -1,6 +1,10 @@
 ---
 title: Julia
 icon: /docs/icons/julia.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python 
 ---
 
 Run Julia code inside of your flow.

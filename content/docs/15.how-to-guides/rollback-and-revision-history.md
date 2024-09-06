@@ -1,6 +1,10 @@
 ---
 title: Revision History & Rollback
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 ---
 
 Use revision history to rollback to an older version of a flow.

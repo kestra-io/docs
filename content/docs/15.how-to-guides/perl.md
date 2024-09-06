@@ -1,6 +1,10 @@
 ---
 title: Perl
 icon: /docs/icons/perl.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 ---
 
 Run Perl code inside of your flow.

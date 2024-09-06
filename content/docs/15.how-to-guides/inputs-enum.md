@@ -1,6 +1,10 @@
 ---
 title: Validate Inputs with Enum Data Type
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python 
 ---
 
 Input validation with the Enum data type

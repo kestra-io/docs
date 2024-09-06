@@ -1,6 +1,10 @@
 ---
 title: PushFlows Task
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 version: ">= 0.17.0"
 ---
 

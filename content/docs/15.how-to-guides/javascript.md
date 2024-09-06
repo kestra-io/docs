@@ -1,6 +1,10 @@
 ---
 title: JavaScript
 icon: /docs/icons/nodejs.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python 
 ---
 
 Run JavaScript code inside of your flow.

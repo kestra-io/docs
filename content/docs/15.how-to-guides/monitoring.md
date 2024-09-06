@@ -1,6 +1,10 @@
 ---
 title: Monitoring with Grafana & Prometheus
 icon: /docs/icons/grafana.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 ---
 
 Setup Prometheus and Grafana for Kestra.

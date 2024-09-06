@@ -1,6 +1,10 @@
 ---
 title: Realtime Triggers
 icon: /docs/icons/plugins.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 version: ">= 0.17.0"
 ---
 
