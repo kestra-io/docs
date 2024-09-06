@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   image: "ageller"
-image: /blogs/dataframes.jpg
+image: /blogs/2023-08-11-dataframes.jpg
 ---
 
 Tabular format with rows and columns, popularized by relational databases and Microsoft Excel, is an intuitive way of organizing and manipulating data for analytics.
