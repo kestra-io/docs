@@ -138,6 +138,7 @@
     }
     .card-title {
         font-size: $font-size-2xl !important;
+        line-height: $font-size-2xl !important;
         font-weight: 600;
     }
 
