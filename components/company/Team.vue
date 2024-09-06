@@ -121,7 +121,7 @@
                     <img class="img-fluid team-member" src="/landing/company/teams/bpimpaud.png" alt="Benoît Pimpaud Picture"/>
                     <div class="w-100">
                         <div class="team-name">Benoît Pimpaud</div>
-                        <div class="team-title font-small">Solutions Engineer</div>
+                        <div class="team-title font-small">Product Owner & Data Engineer</div>
                     </div>
                     <span>
                         <a href="https://www.linkedin.com/in/pimpaudben/" target="_blank" class="me-2"><linkedin /></a>
@@ -174,18 +174,7 @@
                         <a href="https://www.linkedin.com/in/paunovicmilos/" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/MilosPaunovic" target="_blank" class="me-2"><github /></a>
                     </span>
-                </div>      
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/dlavoie.png" alt="Daniel Lavoie"/>
-                    <div class="w-100">
-                        <div class="team-name">Daniel Lavoie</div>
-                        <div class="team-title font-small">Platform Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/daniel-lavoie-50253855/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/daniellavoie" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>       
+                </div>
                 <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/smuntean.png" alt="Stefan Muntean"/>
                     <div class="w-100">
