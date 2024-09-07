@@ -1,6 +1,6 @@
 ---
 title: "How Orchestration Can Optimize Your Engineering Processes"
-description: "xxxx"
+description: "Learn what an orchestrator is and why you should use it"
 date: xxxxxxxxx
 category: xxxxx
 author:
@@ -72,14 +72,11 @@ As we've presented what an orchestrator is and what are the benefits of using on
 
 - **Cloud infrastructure management**: Orchestrators can also automate the process of provisioning cloud infrastructure by orchestrating the creation of cloud resources such as virtual machines, databases, and networking configurations, often in conjunction with continuous delivery pipelines.
 
-## Example of an Orchestrator in Action
-Let’s consider a simplified example of an orchestrator handling a data pipeline. Suppose you’re tasked with orchestrating an ETL workflow that processes log files from an online service. Here’s how an orchestrator would handle this:
+## Kestra: an Example of an Orchestrator in Action
+Kestra an event-driven orchestration platform that govern business-critical workflows as code in the UI.
 
-Extract: The orchestrator triggers a task that fetches log files from a cloud storage service, such as Amazon S3.
-Transform: Once the files are retrieved, the orchestrator initiates another task to clean and process the data, removing duplicates and normalizing timestamps.
-Load: After the transformation is complete, the orchestrator schedules a task to load the cleaned data into a data warehouse like Google BigQuery.
-Monitoring: Throughout the process, the orchestrator monitors the execution, logging any issues. If the file retrieval task fails due to connectivity issues, it automatically retries or alerts the engineering team.
-This example showcases how an orchestrator simplifies complex workflows by managing each step automatically, ensuring smooth execution, and handling errors efficiently.
+In particular, thanks to its [real-time triggers](https://kestra.io/blogs/2024-06-27-realtime-triggers), Kestra [has set a new standard](https://kestra.io/blogs/2024-06-25-kestra-become-real-time) for orchestration, providing companies orchestration in real-time.
+
 
 ## Conclusions
 In conclusion, an orchestrator is an essential tool for automating, managing, and scaling workflows across various domains, from data engineering to microservices and cloud infrastructure. By providing automation, scalability, and error handling, orchestrators enable engineers to focus on building and optimizing their systems rather than managing them manually. Whether you're working on ETL pipelines, CI/CD systems, or distributed services, orchestrators help bring order and efficiency to complex processes.
