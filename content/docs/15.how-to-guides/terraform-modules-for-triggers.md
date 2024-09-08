@@ -42,7 +42,8 @@ With Terraform version >= 1.4, you can directly use `terraform_data` if preferre
 Below an example of implementation for a Terraform module that defines a cron schedule trigger.
 
 `triggers.yml`
-```YAML
+
+```yaml
 triggers:
   - id: ${cron-name}
     type: io.kestra.core.models.triggers.types.Schedule
