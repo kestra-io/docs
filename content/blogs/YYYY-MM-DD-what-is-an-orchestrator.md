@@ -73,9 +73,68 @@ As we've presented what an orchestrator is and what are the benefits of using on
 - **Cloud infrastructure management**: Orchestrators can also automate the process of provisioning cloud infrastructure by orchestrating the creation of cloud resources such as virtual machines, databases, and networking configurations, often in conjunction with continuous delivery pipelines.
 
 ## Kestra: an Example of an Orchestrator in Action
-Kestra an event-driven orchestration platform that govern business-critical workflows as code in the UI.
+Let's show a practical example of an orchestrator in action by using Kestra: an event-driven orchestration platform that govern business-critical workflows as code in the UI.
 
-In particular, thanks to its [real-time triggers](https://kestra.io/blogs/2024-06-27-realtime-triggers), Kestra [has set a new standard](https://kestra.io/blogs/2024-06-25-kestra-become-real-time) for orchestration, providing companies orchestration in real-time.
+### -->In particular, thanks to its [real-time triggers](./2024-06-27-realtime-triggers.md), Kestra [has set a new standard](./2024-06-25-kestra-become-real-time.md) for orchestration, providing companies orchestration in real-time.####
+
+To reproduce this example, make sure you have Kestra installed. Read the [Installation guide](../docs/02.installation/index.md) to do so.
+
+Let's image yoo write a Python script that fetches currency exchange rates from a web API and prints them, if the request is successful. The code could be something like that:
+```python
+import requests
+
+# Define the URL of the API
+api_url = 'https://api.exchangerate-api.com/v4/latest/USD'
+
+# Send a GET request to the API
+response = requests.get(api_url)
+
+# Check if the request was successful
+if response.status_code == 200:
+    data = response.json()
+    print('Exchange rates data:')
+    print(data)
+else:
+    print('Failed to retrieve data. Status code:', response.status_code)
+```
+
+Now, in Kestra, click on **Namespaces** > **Company**:
+[company.png]
+
+In **Editor** click on **Create folder** and call it *team*, for example:
+[new_folder.png]
+
+Then, click on **Create file** and give it a name and an extension. Let's say you call it `python_test.py`; inside it put the Python code to fetch the data:
+[python_test.png]
+
+Now, in **Flows** click on **Create** and fill in the YAML file as follows:
+```yaml
+id: python_test
+namespace: company.team
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    beforeCommands:
+      - pip install requests
+    commands:
+      - python python_test.py
+```
+
+> **NOTE**: The YAML reports the following:
+> - The `company.team` namespace which is the subfolder where the Python file is stored.
+> - The type `io.kestra.plugin.scripts.python.Commands` is used to run Python files that are stored into Kestra. Read more [here](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands).
+> In `beforeCommands` the YAML installs the library `requests`. In this case, Kestra may output a warning where suggest using a virtual environment, but the code runs anyway.
+> - `python python_test.py` executes the Python script.
+
+When you've done, click on **Execute** and, in the logs section, you'll see the results:
+[results.png]
+
+Finally, if yuou want to improve the workflow even more, you could add a trigger that, for example, downloads the data every hour. Learn more about how to use triggers [here](../docs/03.tutorial/04.triggers.md).
 
 
 ## Conclusions
