@@ -43,11 +43,6 @@ export default defineNuxtConfig({
       }
   },
 
-  css: [
-      '@/assets/styles/vendor.scss',
-      '@/assets/styles/app.scss'
-  ],
-
   content: {
       navigation: {
           fields: ['hideSidebar'],

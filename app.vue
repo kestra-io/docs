@@ -26,6 +26,8 @@ useHead({
 </script>
 
 <style lang="scss">
+@import "./assets/styles/vendor";
+@import "./assets/styles/app";
 .text-gradient {
     background: var(
         --Text_gradient,
