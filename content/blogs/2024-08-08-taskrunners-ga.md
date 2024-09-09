@@ -19,7 +19,7 @@ Many data processing tasks are computationally intensive and require a lot of re
 
 [Task Runners](../docs/05.concepts/09.task-runners/index.md) is an extensible ecosystem of plugins capable of executing your tasks in arbitrary remote environments. All you have to do to offload data processing to a remote environment is to specify the `taskRunner` type in your task configuration.
 
-You can either build a custom plugin to run your tasks in any environment you wish, or you can use one of the **managed plugins** offered by [Kestra](https://kestra.io/), such as AWS Batch, Azure Batch, Google Batch, Google Cloud Run, or Kubernetes.
+You can either build a custom plugin to run your tasks in any environment you wish, or you can use one of the **managed plugins** offered in Kestra Enterprise or Kestra Cloud, such as AWS Batch, Azure Batch, Google Batch, Google Cloud Run, or Kubernetes.
 
 ![task_runner_plugins](/blogs/2024-08-08-taskrunners-ga/task_runner_plugins.png)
 
