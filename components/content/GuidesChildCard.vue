@@ -1,14 +1,14 @@
 <template>
     <div class="row card-group mb-2">
         <div class="p-0 row filters">
-            <div class="col-xl col-md-6 pb-3 pb-xl-0 order-2 order-lg-0">
+            <div class="col-xl-auto col-md-6 pb-3 pb-xl-0 order-2 order-xl-0">
                 <select class="form-select bg-dark-2" aria-label="Filter by topic" v-model="topic" @change="changeFilter">
                     <option :value="null" disabled selected>Filter by topic</option>
                     <option value="DevOps">DevOps</option>
                     <option value="Python">Python</option>
                 </select>
             </div>
-            <div class="col-xl col-md-6 pb-3 pb-xl-0 order-1 order-lg-1">
+            <div class="col-xl-auto col-md-6 pb-3 pb-xl-0 order-1 order-xl-1">
                 <select class="form-select bg-dark-2" aria-label="Filter by stage" v-model="stage" @change="changeFilter">
                     <option :value="null" disabled selected>Filter by stage</option>
                     <option value="Getting Started">Getting Started</option>
@@ -16,7 +16,7 @@
                     <option value="Advanced">Advanced</option>
                 </select>
             </div>
-            <div class="col-xl-7 col-md-12 pb-3 pb-xl-0 order-0 form-group order-lg-2">
+            <div class="col-xl col-md-12 pb-3 pb-xl-0 order-0 form-group order-xl-2">
                 <Magnify />
                 <input type="text" class="form-control bg-dark-2" placeholder="Search guides" v-model="search">
             </div>
@@ -137,8 +137,8 @@
         padding: 32px;
     }
     .card-title {
-        font-size: $font-size-2xl !important;
-        line-height: $font-size-2xl !important;
+        font-size: calc($font-size-base * 1.5);;
+        line-height: calc($font-size-base * 2.25);;
         font-weight: 600;
     }
 
