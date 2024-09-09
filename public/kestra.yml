@@ -298,13 +298,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -454,13 +447,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -620,13 +606,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -739,13 +718,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -906,13 +878,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1027,13 +992,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1148,13 +1106,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1266,13 +1217,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2057,13 +2001,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the flows to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2119,13 +2056,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the flows to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2203,13 +2133,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the flows to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2268,13 +2191,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the flows to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2389,13 +2305,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the flows to include
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -6310,11 +6219,6 @@ components:
       enum:
       - FLOW_TASK
       - FLOW_TRIGGER
-    FlowScope:
-      type: string
-      enum:
-      - USER
-      - SYSTEM
     FlowTopologyGraph:
       required:
       - edges
@@ -7229,10 +7133,6 @@ components:
         q:
           type: string
           nullable: true
-        scope:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
         namespace:
           type: string
           nullable: true
