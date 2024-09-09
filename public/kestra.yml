@@ -298,6 +298,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the executions to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -447,6 +454,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the executions to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -606,6 +620,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the executions to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -718,6 +739,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the executions to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -878,6 +906,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the executions to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -992,6 +1027,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the executions to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1106,6 +1148,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the executions to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1217,6 +1266,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the executions to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2001,6 +2057,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the flows to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2056,6 +2119,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the flows to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2133,6 +2203,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the flows to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2191,6 +2268,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the flows to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2305,6 +2389,13 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: scope
+        in: query
+        description: The scope of the flows to include
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -3962,27 +4053,6 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/DailyExecutionStatistics"
-  /api/v1/stats/executions/daily/group-by-namespace:
-    post:
-      tags:
-      - Stats
-      summary: Get daily statistics for executions grouped by namespace
-      operationId: dailyStatisticsGroupByNamespace
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/StatsController.ByNamespaceStatisticRequest"
-        required: true
-      responses:
-        "200":
-          description: dailyStatisticsGroupByNamespace 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: "#/components/schemas/ExecutionCountStatistics"
   /api/v1/stats/executions/latest/group-by-flow:
     post:
       tags:
@@ -4025,25 +4095,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/LogStatistics"
-  /api/v1/stats/summary:
-    post:
-      tags:
-      - Stats
-      summary: Get summary statistics
-      operationId: summary
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/StatsController.SummaryRequest"
-        required: true
-      responses:
-        "200":
-          description: summary 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SummaryStatistics"
   /api/v1/stats/taskruns/daily:
     post:
       tags:
@@ -6005,56 +6056,6 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
-    ExecutionCountStatistics:
-      required:
-      - counts
-      - total
-      type: object
-      properties:
-        counts:
-          properties:
-            CREATED:
-              type: integer
-              format: int64
-            RUNNING:
-              type: integer
-              format: int64
-            PAUSED:
-              type: integer
-              format: int64
-            RESTARTED:
-              type: integer
-              format: int64
-            KILLING:
-              type: integer
-              format: int64
-            SUCCESS:
-              type: integer
-              format: int64
-            WARNING:
-              type: integer
-              format: int64
-            FAILED:
-              type: integer
-              format: int64
-            KILLED:
-              type: integer
-              format: int64
-            CANCELLED:
-              type: integer
-              format: int64
-            QUEUED:
-              type: integer
-              format: int64
-            RETRYING:
-              type: integer
-              format: int64
-            RETRIED:
-              type: integer
-              format: int64
-        total:
-          type: integer
-          format: int64
     ExecutionMetadata:
       required:
       - attemptNumber
@@ -6309,6 +6310,11 @@ components:
       enum:
       - FLOW_TASK
       - FLOW_TRIGGER
+    FlowScope:
+      type: string
+      enum:
+      - USER
+      - SYSTEM
     FlowTopologyGraph:
       required:
       - edges
@@ -7185,20 +7191,6 @@ components:
         namespaceOnly:
           type: boolean
           nullable: true
-    StatsController.ByNamespaceStatisticRequest:
-      type: object
-      properties:
-        namespace:
-          type: string
-          nullable: true
-        startDate:
-          type: string
-          format: date-time
-          nullable: true
-        endDate:
-          type: string
-          format: date-time
-          nullable: true
     StatsController.LastExecutionsRequest:
       type: object
       properties:
@@ -7237,6 +7229,10 @@ components:
         q:
           type: string
           nullable: true
+        scope:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/FlowScope"
         namespace:
           type: string
           nullable: true
@@ -7256,32 +7252,6 @@ components:
           nullable: true
           items:
             $ref: "#/components/schemas/State.Type"
-    StatsController.SummaryRequest:
-      type: object
-      properties:
-        namespace:
-          type: string
-          nullable: true
-        startDate:
-          type: string
-          format: date-time
-          nullable: true
-        endDate:
-          type: string
-          format: date-time
-          nullable: true
-    SummaryStatistics:
-      required:
-      - flows
-      - triggers
-      type: object
-      properties:
-        flows:
-          type: integer
-          format: int32
-        triggers:
-          type: integer
-          format: int32
     Task:
       required:
       - id
