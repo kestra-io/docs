@@ -147,11 +147,8 @@ tasks:
 **Note**: The YAML defines the following:
 
 - The `company.team` namespace which is the subfolder where the Python file is stored.
-
 - The type `io.kestra.plugin.scripts.python.Commands` is used to run Python files that are stored into Kestra. Read more [here](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands).
-
 - In `beforeCommands` the YAML installs the library `requests`. In this case, Kestra may output a warning where suggest using a virtual environment, but the code runs anyway.
-
 - `python python_test.py` executes the Python script.
 
 ::
