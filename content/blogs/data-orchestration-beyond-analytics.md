@@ -14,7 +14,7 @@ When hearing the term data orchestration, many people intuitively think of ETL a
 
 ### Data Orchestration Beyond Analytics
 
-Today, companies rely on internal and external APIs to keep their businesses running. They need to manage critical processes and connect various applications in real time. Whether it’s sending event notifications, updating inventory, or interacting with payment gateways, data needs to flow reliably between these operational systems that businesses rely on. Most data orchestration tools, including Airflow, are heavily focused on analytics, often overlooking the operational side.
+Today, companies rely on internal and external APIs to keep their businesses running. They need to manage critical processes and connect various applications in real time. Whether it’s sending event notifications, updating inventory, or interacting with payment gateways, data needs to flow reliably between these operational systems. Most data orchestration tools, including Airflow, are heavily focused on analytics, often overlooking the operational side.
 
 In contrast, using Kestra, you can automate data flow across operational systems and APIs with confidence. Hundreds of companies rely on Kestra to manage complex workflows that process data across ERP, CRM, PLM, and internal systems in real time, not just in nightly ETL jobs.
 
@@ -50,7 +50,7 @@ For **Leroy Merlin France**, [combining Kestra’s user-friendly UI](https://kes
 
 Kestra is designed with a **low barrier to entry**. You don’t need to be an expert in any single programming language to start orchestrating workflows. Our system is approachable to [a wide range of users](https://kestra.io/blogs/2023-07-12-your-private-app-store-for-data-pipelines), including a.o. domain experts, developers, DevOps, data engineers, and business analysts. By allowing users to mix simple YAML configurations with custom code when needed, Kestra reduces complexity and empowers teams to focus on solving business challenges instead of getting stuck in technical details.
 
-For example, **Quadis**, a car dealership, [transitioned from legacy systems](https://kestra.io/use-cases/stories/4-quadis-drives-innovation:-transforming-car-retail-operations-with-kestra) to Kestra’s orchestrated workflows. In just three months, they onboarded five developers, deployed multiple instances, and began orchestrating workflows ranging from financial reporting to ERP and CRM integrations. Kestra’s simplicity helped them get up and running quickly, automating critical business operations with minimal coding.
+For example, **Quadis**, a car dealership, [transitioned from legacy systems](https://kestra.io/use-cases/stories/4-quadis-drives-innovation:-transforming-car-retail-operations-with-kestra) to Kestra. In just three months, they onboarded five developers, deployed multiple instances, and began orchestrating workflows ranging from financial reporting to ERP and CRM integrations. Kestra’s simplicity helped them get up and running quickly, automating critical business operations with minimal coding.
 
 ### When to Choose Kestra Over Apache Airflow
 
@@ -67,10 +67,9 @@ For example, **Quadis**, a car dealership, [transitioned from legacy systems](ht
 
 When your orchestration requirements move past analytics and into real-time business operations, Kestra gives you a simpler, more flexible, and unified solution. Whether it’s managing data pipelines or automating critical workflows, Kestra helps you scale operations, connect systems, and keep things maintainable — without having to tediously write and rewrite complex DAGs.
 
-**TL;DR: If you’re looking for more than a data pipeline orchestrator, it’s time to consider [Kestra](https://github.com/kestra-io/kestra).**
+**TL;DR**: If you’re looking for more than a data pipeline orchestrator, it’s time to consider [Kestra](https://github.com/kestra-io/kestra).
 
 ::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
-
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
 ::
