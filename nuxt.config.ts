@@ -162,8 +162,8 @@ export default defineNuxtConfig({
                   "Build with Kestra": [
                       "Concepts",
                       "Workflow Components",
-                      "Expressions",
-                      "Version Control & CI/CD",
+                      // "Expressions",
+                      // "Version Control & CI/CD",
                       "Plugin Developer Guide",
                       "How-to Guides"
                   ],
