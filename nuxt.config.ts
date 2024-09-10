@@ -162,6 +162,7 @@ export default defineNuxtConfig({
                   "Build with Kestra": [
                       "Concepts",
                       "Workflow Components",
+                      "Developer Guide",
                       // "Expressions",
                       // "Version Control & CI/CD",
                       "Plugin Developer Guide",
@@ -169,8 +170,8 @@ export default defineNuxtConfig({
                   ],
                   "Scale Kestra": [
                       "Enterprise Edition",
-                      "Task Runners",
-                      "Worker Groups",
+                      // "Task Runners",
+                      // "Worker Groups",
                       "Best Practices"
                   ],
                   "Manage Kestra": [
