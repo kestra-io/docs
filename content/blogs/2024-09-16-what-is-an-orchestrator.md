@@ -23,7 +23,8 @@ Think of it like a conductor of an orchestra, making sure all components perform
 
 ## Orchestration vs. Automation 
 
-At this point, you might ask yourself: what's the difference between automation and orchestration? Well, these two concepts are somehow related, but are diffetenr. Let's see:
+At this point, you might ask yourself: what's the difference between automation and orchestration? Well, these two concepts are somehow related, but are different. Let's see:
+
 
 - **Automation** refers to the execution of individual tasks or actions without manual intervention. For example, automatically triggering a test suite after a code commit is automation.
   
@@ -85,7 +86,8 @@ Now that we’ve covered what an orchestrator is and its benefits, let’s look 
 
 ## Kestra: An Example of an Orchestrator in Action
 
-Let’s look at a practical example using Kestra, an event-driven orchestration platform that governs business-critical workflows as code in the UI.
+Let’s look at a practical example using Kestra, an event-driven orchestration platform that governs business-critical workflows as code or from the UI.
+
 
 ### Example: Fetching Exchange Rates with Kestra
 
@@ -114,7 +116,8 @@ Now, in Kestra, click on **Namespaces** > **Company**:
 
 ![Namespaces in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/company.png)
 
-In **Editor** click on **Create folder** and call it *team*, for example:
+Under **Editor** click on **Create folder** and call it *team*, for example:
+
 
 ![Creating a folder in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/new_folder.png)
 
@@ -140,15 +143,23 @@ tasks:
       - python python_test.py
 ```
 
-> **NOTE**: The YAML reports the following:
-> - The `company.team` namespace which is the subfolder where the Python file is stored.
-> - The type `io.kestra.plugin.scripts.python.Commands` is used to run Python files that are stored into Kestra. Read more [here](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands).
-> In `beforeCommands` the YAML installs the library `requests`. In this case, Kestra may output a warning where suggest using a virtual environment, but the code runs anyway.
-> - `python python_test.py` executes the Python script.
+::alert{type="info"}
+**Note**: The YAML defines the following:
+
+- The `company.team` namespace which is the subfolder where the Python file is stored.
+
+- The type `io.kestra.plugin.scripts.python.Commands` is used to run Python files that are stored into Kestra. Read more [here](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands).
+
+- In `beforeCommands` the YAML installs the library `requests`. In this case, Kestra may output a warning where suggest using a virtual environment, but the code runs anyway.
+
+- `python python_test.py` executes the Python script.
+
+::
 
 When you've done, click on **Execute** and, in the logs section, you'll see the results:
 
-![results.png]()
+![results.png](/blogs/2024-09-16-what-is-an-orchestrator/result.png)
+
 
 Finally, if you want to improve the workflow even more, you could add a [trigger](../docs/03.tutorial/04.triggers.md) that, for example, downloads the data every hour, so that your data are alwayd updated. In this case, you only need to modify the YAML and add a scheduling trigger, using crontab expressions, like so:
 
