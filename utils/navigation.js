@@ -11,7 +11,7 @@ export function prevNext(navigation, path) {
                     break;
                 }
 
-                if (found && !next && !item.isSection) {
+                if (found && !next) {
                     next = item;
                 }
 
@@ -19,7 +19,7 @@ export function prevNext(navigation, path) {
                     found = true;
                 }
 
-                if (!found && !item.isSection) {
+                if (!found) {
                     prev = item;
                 }
 
@@ -33,7 +33,7 @@ export function prevNext(navigation, path) {
     if(!found){
         // we're at a section's root
         prev = undefined;
-        next = navigation[0].children[1];
+        next = navigation[0].children[0];
     }else if(prev === null) {
         prev = navigation[0];
     }

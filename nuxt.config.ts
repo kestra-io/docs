@@ -149,40 +149,7 @@ export default defineNuxtConfig({
       public: {
           siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
           apiUrl: process.env.NUXT_PUBLIC_API_URL || DEFAULT_KESTRA_API_URL,
-          docs: {
-              sections: {
-                  "Getting Started with Kestra": [
-                      "Quickstart",
-                      "Tutorial",
-                      "Architecture",
-                      "Installation Guide",
-                      "User Interface",
-                      "Video Tutorials"
-                  ],
-                  "Build with Kestra": [
-                      "Concepts",
-                      "Workflow Components",
-                      "Expressions",
-                      "Version Control & CI/CD",
-                      "Plugin Developer Guide",
-                      "How-to Guides"
-                  ],
-                  "Scale Kestra": [
-                      "Enterprise Edition",
-                      "Task Runners",
-                      "Worker Groups",
-                      "Best Practices"
-                  ],
-                  "Manage Kestra": [
-                      "Administrator Guide",
-                      "Configuration Guide",
-                      "Migration Guide",
-                      "Terraform Provider",
-                      "API Reference"
-                  ]
-              }
-          }
-      },
+      }
   },
 
   nitro: {
