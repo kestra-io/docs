@@ -31,7 +31,7 @@ At this point, you might ask yourself: what's the difference between automation 
 
 In essence, while automation focuses on individual tasks, orchestration ensures all those tasks are arranged and managed within a broader, cohesive system. This is particularly vital in environments where complex processes with interdependent steps need to be handled efficiently.
 
-![Orchestration vs Automation Diagram by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/automation_orchestration.png)
+![Orchestration vs Automation Diagram by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/automation_orchestration.png)
 
 To explain the difference even further, let’s look at some practical examples.
 
@@ -112,15 +112,15 @@ else:
 
 Now, in Kestra, click on **Namespaces** > **Company**:
 
-![Namespaces in Kestra - by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/company.png)
+![Namespaces in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/company.png)
 
 In **Editor** click on **Create folder** and call it *team*, for example:
 
-![Creating a folder in Kestra - by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/new_folder.png)
+![Creating a folder in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/new_folder.png)
 
 Then, click on **Create file** and give it a name and an extension. Let's say you call it `python_test.py`; inside it put the Python code to fetch the data:
 
-![A python test in Kestra - by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/python_test.png)
+![A python test in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/python_test.png)
 
 Now, in **Flows** click on **Create** and fill in the YAML file as follows:
 ```yaml
