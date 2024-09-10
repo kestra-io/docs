@@ -21,7 +21,7 @@ In software engineering and data management, an orchestrator is a tool or platfo
 
 Think of it like a conductor of an orchestra, making sure all components perform in harmony, following a predefined sequence or set of rules. Whether you're dealing with data pipelines, microservices, or CI/CD systems, an orchestrator ensures everything runs smoothly, efficiently, and without manual intervention.
 
-## Orchestration vs. Automation
+## Orchestration vs. Automation 
 
 It’s important to distinguish between orchestration and automation since they're related but often confused:
 
@@ -31,7 +31,7 @@ It’s important to distinguish between orchestration and automation since they'
 
 In essence, while automation focuses on individual tasks, orchestration ensures all those tasks are arranged and managed within a broader, cohesive system. This is particularly vital in environments where complex processes with interdependent steps need to be handled efficiently.
 
-![Orchestration vs Automation Diagram]()
+![Orchestration vs Automation Diagram by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/automation_orchestration.png)
 
 To explain the difference even further, let’s look at some practical examples.
 
@@ -111,13 +111,13 @@ else:
 ```
 
 Now, in Kestra, click on **Namespaces** > **Company**:
-![company.png]()
+![Namespaces in Kestra - by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/company.png)
 
 In **Editor** click on **Create folder** and call it *team*, for example:
-![new_folder.png]()
+![Creating a folder in Kestra - by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/new_folder.png)
 
 Then, click on **Create file** and give it a name and an extension. Let's say you call it `python_test.py`; inside it put the Python code to fetch the data:
-![python_test.png]()
+![A python test in Kestra - by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/python_test.png)
 
 Now, in **Flows** click on **Create** and fill in the YAML file as follows:
 ```yaml
@@ -146,7 +146,29 @@ tasks:
 When you've done, click on **Execute** and, in the logs section, you'll see the results:
 ![results.png]()
 
-Finally, if yuou want to improve the workflow even more, you could add a trigger that, for example, downloads the data every hour. Learn more about how to use triggers [here](../docs/03.tutorial/04.triggers.md).
+Finally, if yuou want to improve the workflow even more, you could add a [trigger](../docs/03.tutorial/04.triggers.md) that, for example, downloads the data every hour. In this case, you only need to modify the YAML and add a scheduling trigger like so:
+
+```yaml
+id: python_test
+namespace: company.team
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    beforeCommands:
+      - pip install requests
+    commands:
+      - python python_test.py
+
+triggers:
+    - id: schedule_trigger
+      type: io.kestra.plugin.core.trigger.Schedule
+      cron: 0 10 * * *
+```
 
 
 ## Conclusions
