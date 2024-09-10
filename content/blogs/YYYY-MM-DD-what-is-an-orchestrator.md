@@ -9,7 +9,7 @@ author:
 image: xxxxx
 ---
 
-If you're an engineer looking to scale your automation—maybe because your company is growing rapidly—then this article is for you.
+If you're an engineer looking to scale your automation - maybe because your company is growing rapidly — then this article is definitely for you.
 
 Here, we’ll break down what an orchestrator is, why you might need one, and provide a practical example using Kestra.
 
@@ -23,7 +23,7 @@ Think of it like a conductor of an orchestra, making sure all components perform
 
 ## Orchestration vs. Automation 
 
-It’s important to distinguish between orchestration and automation since they're related but often confused:
+At this point, you might ask yourself: what's the difference between automation and orchestration? Well, these two concepts are somehow related, but are diffetenr. Let's see:
 
 - **Automation** refers to the execution of individual tasks or actions without manual intervention. For example, automatically triggering a test suite after a code commit is automation.
   
@@ -57,7 +57,7 @@ Now, let’s check out some orchestration examples:
 
 ## Benefits of Using an Orchestrator
 
-IT teams today manage a wide range of systems and applications across datacenters, clouds, and edge locations. As these environments grow more complex, automating tasks can improve efficiency and make processes easier to manage. But as your company scales, you may find that simple automation isn’t enough: this is where an orchestrator becomes essential.
+Today, IT teams manage a wide range of systems and applications across datacenters, clouds, and edge locations. As these environments grow in complexity, automating tasks can improve efficiency and make processes easier to manage. But as your company scales, you may find that only automation isn’t enough: this is where an orchestrator becomes essential.
 
 So, here are some key benefits of using an orchestrator:
 
@@ -91,7 +91,7 @@ Let’s look at a practical example using Kestra, an event-driven orchestration 
 
 To reproduce this example, make sure you have Kestra installed. You can follow the [installation guide](../docs/02.installation/index.md) to get started.
 
-Let’s say you’ve written a Python script that fetches currency exchange rates from a web API and prints them if the request is successful. Here’s a simple script for that:
+Let’s say you’ve written a Python script that fetches currency exchange rates from a web API and prints them if the request is successful. Here’s a Python script for doing that:
 ```python
 import requests
 
@@ -111,12 +111,15 @@ else:
 ```
 
 Now, in Kestra, click on **Namespaces** > **Company**:
+
 ![Namespaces in Kestra - by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/company.png)
 
 In **Editor** click on **Create folder** and call it *team*, for example:
+
 ![Creating a folder in Kestra - by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/new_folder.png)
 
 Then, click on **Create file** and give it a name and an extension. Let's say you call it `python_test.py`; inside it put the Python code to fetch the data:
+
 ![A python test in Kestra - by Federico Trotta](/blogs/YYYY-MM-DD-what-is-an-orchestrator/python_test.png)
 
 Now, in **Flows** click on **Create** and fill in the YAML file as follows:
@@ -144,9 +147,10 @@ tasks:
 > - `python python_test.py` executes the Python script.
 
 When you've done, click on **Execute** and, in the logs section, you'll see the results:
+
 ![results.png]()
 
-Finally, if yuou want to improve the workflow even more, you could add a [trigger](../docs/03.tutorial/04.triggers.md) that, for example, downloads the data every hour. In this case, you only need to modify the YAML and add a scheduling trigger like so:
+Finally, if you want to improve the workflow even more, you could add a [trigger](../docs/03.tutorial/04.triggers.md) that, for example, downloads the data every hour, so that your data are alwayd updated. In this case, you only need to modify the YAML and add a scheduling trigger, using crontab expressions, like so:
 
 ```yaml
 id: python_test
