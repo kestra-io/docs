@@ -14,7 +14,7 @@ When hearing the term data orchestration, many people intuitively think of ETL a
 
 ### Data Orchestration Beyond Analytics
 
-Today, companies rely on internal and external APIs to keep their businesses running. They need to manage critical processes and connect various applications in real time. Whether it’s sending event notifications, updating inventory, or interacting with payment gateways, data needs to flow reliably between these operational systems that businesses rely on. However, most data orchestration tools, including Airflow, focus on analytics and neglect the operational side of data orchestration.
+Today, companies rely on internal and external APIs to keep their businesses running. They need to manage critical processes and connect various applications in real time. Whether it’s sending event notifications, updating inventory, or interacting with payment gateways, data needs to flow reliably between these operational systems that businesses rely on. Most data orchestration tools, including Airflow, are heavily focused on analytics, often overlooking the operational side.
 
 In contrast, using Kestra, you can automate data flow across operational systems and APIs with confidence. Hundreds of companies rely on Kestra to manage complex workflows that process data across ERP, CRM, PLM, and internal systems in real time, not just in nightly ETL jobs.
 
@@ -56,7 +56,7 @@ For example, **Quadis**, a car dealership, [transitioned from legacy systems](ht
 
 **Your Use Cases Move Past Simple ETL**: If your focus is solely on scheduling data pipelines and [managing ETL workflows](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved) for analytics, Airflow will likely serve your needs well, especially if your development skills are only Python-oriented.
 
-**You Have Cross-System Workflows**: If your workflows involve more than data pipelines, such as coordinating APIs, automating operational processes, or managing business-critical systems, Kestra’s broader capabilities are a better fit.
+**Your Workflows Involve Critical Systems**: If your workflows involve more than data pipelines, such as coordinating APIs, automating operational processes, or managing business-critical systems, Kestra’s broader capabilities are a better fit.
 
 **You Want Simplicity and Flexibility**: Kestra’s intuitive YAML-based orchestration and built-in UI editor make it easier for teams to automate tasks without writing boilerplate DAGs. For teams that prefer not to be locked into Python, Kestra offers the flexibility to use the language that best suits each task.
 
