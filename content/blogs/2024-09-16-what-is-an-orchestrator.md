@@ -89,99 +89,149 @@ Now that we’ve covered what an orchestrator is and its benefits, let’s look 
 Let’s look at a practical example using Kestra, an event-driven orchestration platform that governs business-critical workflows as code or from the UI.
 
 
-### Example: Fetching Exchange Rates with Kestra
+### Using Kestra to Orchestrate Processes
+Now that we'we gone through the theory, let's show some practice.
+
+Suppose we have a CSV file containing a column that reports revenues, and suppose you want to analyze this everyday by summing the values using Python. The Python script could be something like that:
+
+```python
+import csv
+
+with open('revenues.csv', mode='r') as file:
+    reader = csv.reader(file)
+    next(reader) 
+    total = sum(int(row[0]) for row in reader)
+
+print(f"Total revenues: {total}")
+```
+
+This process could be done both with the automation or the orchestration approach.
+
+Let's show them both.
+
+## Automation approach
+To automate this process, you could create a repository in GitHub like as follows:
+
+```plaintext
+your-repo/
+│
+├── .github/
+│   └── workflows/
+│       └── analyze_csv.yml  
+│
+├── process_data.py  
+├── requirements.txt 
+└── data.csv          
+```
+
+The `analyze_csv.yml` could be something like that:
+
+```yaml
+name: Analyze CSV with Python
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * *' 
+
+jobs:
+  analyze_csv:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Upload CSV file
+        run: echo "${{ secrets.CSV_FILE }}" > data.csv
+
+      - name: Run Python script to analyze CSV
+        run: |
+          python process_data.py
+          cat analysis_result.txt 
+```
+
+This YAML file uses `workflow_dispatch` for manual execution and a cron schedule for automated runs (the job is scheduled each day of the week, at 10 am.).
+
+So, as you can see, this requires:
+- To write a long YAML file.
+- To create a repository in GitHub with different files.
+
+Let's now show the orchestration approach.
+
+### Orchestration approach
 
 To reproduce this example, make sure you have Kestra installed. You can follow the [installation guide](../docs/02.installation/index.md) to get started.
 
-Let’s say you’ve written a Python script that fetches currency exchange rates from a web API and prints them if the request is successful. Here’s a Python script for doing that:
-```python
-import requests
-
-# Define the URL of the API
-api_url = 'https://api.exchangerate-api.com/v4/latest/USD'
-
-# Send a GET request to the API
-response = requests.get(api_url)
-
-# Check if the request was successful
-if response.status_code == 200:
-    data = response.json()
-    print('Exchange rates data:')
-    print(data)
-else:
-    print('Failed to retrieve data. Status code:', response.status_code)
-```
-
-Now, in Kestra, click on **Namespaces** > **Company**:
+To use Kestra for our purpose, click on **Namespaces** > **Tutorial**:
 
 ![Namespaces in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/company.png)
 
-Under **Editor** click on **Create folder** and call it *team*, for example:
+Under **Editor**, click on **Create file** and give it a name and an extension. For example, let's call it `process_data.py`:
 
+![Adding a new file in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/new_file.png)
 
-![Creating a folder in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/new_folder.png)
-
-Then, click on **Create file** and give it a name and an extension. Let's say you call it `python_test.py`; inside it put the Python code to fetch the data:
-
-![A python test in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/python_test.png)
 
 Now, in **Flows** click on **Create** and fill in the YAML file as follows:
 ```yaml
 id: python_test
-namespace: company.team
+namespace: tutorial
+
+inputs:
+  - id: data
+    type: FILE
 
 tasks:
-  - id: hello
+  - id: process
     type: io.kestra.plugin.scripts.python.Commands
     namespaceFiles:
       enabled: true
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-    beforeCommands:
-      - pip install requests
+    inputFiles:
+      data.csv: "{{ inputs.data }}"
     commands:
-      - python python_test.py
+      - python process_data.py
+
+triggers:
+  - id: schedule_trigger
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: 0 10 * * *
+
+errors:
+  - id: alert
+    type: io.kestra.plugin.notifications.slack.SlackExecution
+    channel: "#general"
+    url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
 
 ::alert{type="info"}
 **Note**: The YAML defines the following:
 
-- The `company.team` namespace which is the subfolder where the Python file is stored.
+- The `tutorial` namespace which is the subfolder where the Python file is stored.
 - The type `io.kestra.plugin.scripts.python.Commands` is used to run Python files that are stored into Kestra. Read more [here](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands).
-- In `beforeCommands` the YAML installs the library `requests`. In this case, Kestra may output a warning where suggest using a virtual environment, but the code runs anyway.
-- `python python_test.py` executes the Python script.
+- `python process_data.py` executes the Python script.
+- The `triggers` section adds the trigger. 
+- The `errors` section manages eventual errors and sends a Slack message (you have to set up a dedicated Slack channel to make it work).
 
 ::
 
-When you've done, click on **Execute** and, in the logs section, you'll see the results:
+When you've done, click on **Execute**: you'll be asked to load the CSV file containing the data. When the job is done, in the logs section you'll see the results:
 
 ![results.png](/blogs/2024-09-16-what-is-an-orchestrator/result.png)
 
+As you can see:
+- The YAML is shorter and simpler than the one used for GitHub actions.
+- You can manage errors.
+- You don't need to create a repository in GH, as everything happens in Kestra's UI.
 
-Finally, if you want to improve the workflow even more, you could add a [trigger](../docs/03.tutorial/04.triggers.md) that, for example, downloads the data every hour, so that your data are alwayd updated. In this case, you only need to modify the YAML and add a scheduling trigger, using crontab expressions, like so:
-
-```yaml
-id: python_test
-namespace: company.team
-
-tasks:
-  - id: hello
-    type: io.kestra.plugin.scripts.python.Commands
-    namespaceFiles:
-      enabled: true
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-    beforeCommands:
-      - pip install requests
-    commands:
-      - python python_test.py
-
-triggers:
-    - id: schedule_trigger
-      type: io.kestra.plugin.core.trigger.Schedule
-      cron: 0 10 * * *
-```
-
+Plus, Kestra provides a lot of features as, for examples, statistics on processes, pluginis that allow you to connest with your preferred tools, and more.
 
 ## Conclusions
 So, an orchestrator is a tool or a platform for automating, managing, and scaling workflows across various domains, from data engineering to microservices and cloud infrastructure. By providing automation, scalability, and error handling, orchestrators enable engineers to focus on building and optimizing their systems rather than managing them manually.
