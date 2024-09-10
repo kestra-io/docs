@@ -1,12 +1,12 @@
 ---
 title: "How Orchestration Can Optimize Your Engineering Processes"
 description: "Learn what an orchestrator is and why you should use it"
-date: xxxxxxxxx
-category: xxxxx
+date: 2024-09-16
+category: Solutions
 author:
   name: Federico Trotta
-  image: "xx"
-image: xxxxx
+  image: "ftrotta"
+image: /blogs/2024-09-16-what-is-an-orchestrator.jpg
 ---
 
 If you're an engineer looking to scale your automation - maybe because your company is growing rapidly — then this article is definitely for you.
