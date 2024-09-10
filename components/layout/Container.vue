@@ -58,6 +58,10 @@
 
   const fetchNavigation = async () => {
     let navigationFetch;
+    console.log("props.type", props.type);
+    if (props.type) {
+
+    }
     if (props.type === "plugins") {
       navigationFetch = await useFetch(`/api/plugins?type=navigation`);
     } else {
@@ -74,28 +78,27 @@
           _path: "/tutorial-videos",
         });
       }
+      const sections = config.public.docs.sections;
+
+      const newData = [];
+
+      Object.entries(sections).forEach(([sectionName, titles]) => {
+        // Add the section object
+        newData.push({ title: sectionName, isSection: true, _path: "/" });
+
+        // Add the matching items from the data array
+        titles.forEach(title => {
+          const matchedItem = navigationFetch.data.value[0].children.find(item => item.title === title);
+          if (matchedItem) {
+            newData.push(matchedItem);
+          }
+        });
+      });
+
+      navigationFetch.data.value[0].children = newData;
     }
 
     const navigation = navigationFetch.data;
-
-    const sections = config.public.docs.sections;
-
-    const newData = [];
-
-    Object.entries(sections).forEach(([sectionName, titles]) => {
-      // Add the section object
-      newData.push({ title: sectionName, isSection: true, _path: "/" });
-
-      // Add the matching items from the data array
-      titles.forEach(title => {
-        const matchedItem = navigationFetch.data.value[0].children.find(item => item.title === title);
-        if (matchedItem) {
-          newData.push(matchedItem);
-        }
-      });
-    });
-
-    navigation.value[0].children = newData;
     const pageList = recursivePages(navigation.value[0]);
     const pageNames = generatePageNames(navigation.value[0]);
     return {navigation, pageList, pageNames};
