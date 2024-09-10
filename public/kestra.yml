@@ -302,9 +302,10 @@ paths:
         in: query
         description: The scope of the executions to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -458,9 +459,10 @@ paths:
         in: query
         description: The scope of the executions to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -624,9 +626,10 @@ paths:
         in: query
         description: The scope of the executions to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -743,9 +746,10 @@ paths:
         in: query
         description: The scope of the executions to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -910,9 +914,10 @@ paths:
         in: query
         description: The scope of the executions to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1031,9 +1036,10 @@ paths:
         in: query
         description: The scope of the executions to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1152,9 +1158,10 @@ paths:
         in: query
         description: The scope of the executions to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1270,9 +1277,10 @@ paths:
         in: query
         description: The scope of the executions to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2061,9 +2069,10 @@ paths:
         in: query
         description: The scope of the flows to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2123,9 +2132,10 @@ paths:
         in: query
         description: The scope of the flows to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2207,9 +2217,10 @@ paths:
         in: query
         description: The scope of the flows to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2272,9 +2283,10 @@ paths:
         in: query
         description: The scope of the flows to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2393,9 +2405,10 @@ paths:
         in: query
         description: The scope of the flows to include
         schema:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -7334,9 +7347,10 @@ components:
           type: string
           nullable: true
         scope:
+          type: array
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/FlowScope"
+          items:
+            $ref: "#/components/schemas/FlowScope"
         namespace:
           type: string
           nullable: true
