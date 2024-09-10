@@ -54,7 +54,7 @@ For example, **Quadis**, a car dealership, [transitioned from legacy systems](ht
 
 ### When to Choose Kestra Over Apache Airflow
 
-**Your Use Cases Move Past Simple ETL**: If your focus is solely on scheduling data pipelines and [managing ETL workflows](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved) for analytics, Airflow will likely serve your needs well, especially if your development skills are only Python-oriented.
+**Your Use Cases Move Past Simple ETL**: If your focus is solely on scheduling data pipelines and [managing ETL workflows](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved) for analytics, Airflow will likely serve your needs well, especially if your development skills are only Python-oriented. That said, keep in mind you may not be able to extend usage to future use cases that involve more than just analytics.
 
 **Your Workflows Involve Critical Systems**: If your workflows involve more than data pipelines, such as coordinating APIs, automating operational processes, or managing business-critical systems, Kestra’s broader capabilities are a better fit.
 
