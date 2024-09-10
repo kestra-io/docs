@@ -54,19 +54,20 @@ For example, **Quadis**, a car dealership, [transitioned from legacy systems](ht
 
 ### When to Choose Kestra Over Apache Airflow
 
-**Your Use Cases Move Past Simple ETL**: If your focus is solely on scheduling data pipelines and [managing ETL workflows](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved) for analytics, Airflow will likely serve your needs well, especially if your development skills are only Python-oriented. That said, keep in mind you may not be able to extend usage to future use cases that involve more than just analytics.
+**You Automate More Than Simple ETL**: If your focus is solely on scheduling data pipelines and [managing ETL workflows](https://kestra.io/blogs/2023-10-11-why-ingestion-will-never-be-solved) for analytics, Airflow will likely serve your needs well, especially if your development skills are only Python-oriented. However, Airflow alone may struggle to support future use cases that extend beyond analytics.
 
-**Your Workflows Involve Critical Systems**: If your workflows involve more than data pipelines, such as coordinating APIs, automating operational processes, or managing business-critical systems, Kestra’s broader capabilities are a better fit.
+**Your Workflows Interact With Critical Systems**: If your workflows involve more than data pipelines, such as coordinating APIs, automating operational processes, or managing business-critical systems, Kestra’s broader capabilities are a better fit.
 
-**You Want Simplicity and Flexibility**: Kestra’s intuitive YAML-based orchestration and built-in UI editor make it easier for teams to automate tasks without writing boilerplate DAGs. For teams that prefer not to be locked into Python, Kestra offers the flexibility to use the language that best suits each task.
+**You Want Simplicity and Flexibility**: Kestra’s intuitive YAML-based syntax and built-in UI editor simplify automation without the need for boilerplate DAGs. For teams that prefer not to be locked into Python, Kestra offers the flexibility to use whatever language best suits the task.
 
-**You Need a Unified Platform**: Kestra allows you to build workflows iteratively in the UI, test them in real time, and promote their underlying code to production environments without friction. This unified approach helps teams move faster while keeping your workflow code version-controlled and consistent with your deployment practices.
+**You Need a Unified Platform**: Kestra allows you to build workflows iteratively in the UI, test them in real time, and promote their underlying code to production environments without friction. This unified approach helps teams move faster while keeping your workflow code version-controlled and aligned with your deployment practices.
+
 
 ### The Future of Data Orchestration Beyond Analytics
 
 When your orchestration requirements move past analytics and into real-time business operations, Kestra gives you a simpler, more flexible, and unified solution. Whether it’s managing data pipelines or automating critical workflows, Kestra helps you scale operations, connect systems, and keep things maintainable — without having to tediously write and rewrite complex DAGs.
 
-**TL;DR: If you’re looking for more than just a data pipeline orchestrator, it’s time to consider [Kestra](https://github.com/kestra-io/kestra).**
+**TL;DR: If you’re looking for more than a data pipeline orchestrator, it’s time to consider [Kestra](https://github.com/kestra-io/kestra).**
 
 ::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
