@@ -28,7 +28,7 @@ However, what happens when your orchestration needs grow beyond data analytics?
 
 Airflow works for data engineering, but it struggles when you need to automate workflows for the [entire IT department](https://kestra.io/blogs/2023-12-14-orchestration-problems-and-complexity) with multiple teams, environments, internal systems, and external APIs.
 
-If next to data pipelines, you also need to automate customer-facing processes, business operations, or DevOps tasks, this is where Kestra shines.
+If next to data pipelines, you're also automating customer-facing processes, business operations, or DevOps tasks, that's where Kestra shines.
 
 For example, **Airpaz**, a travel platform, [needed to orchestrate](https://kestra.io/use-cases/stories/5-airpaz-optimizes-travel-data-workflows-with-kestra) data movement between booking systems, payment gateways, and CRM tools. Their workflows extended far beyond analytics and reporting — they needed to ensure reliable coordination across multiple critical applications. Kestra allowed them to keep their operational systems in sync, providing a reliable booking experience for millions of customers.
 
@@ -44,7 +44,7 @@ Consider **Gorgias**, which [chose Kestra](https://kestra.io/use-cases/stories/1
 
 One of the standout features of Kestra is how it [**unifies Everything-as-Code with a user-friendly UI**](https://kestra.io/blogs/2023-12-14-orchestration-problems-and-complexity). Users can start building workflows from the embedded editor in the UI, test them, and iterate quickly. Once everything works as expected, you can easily push the underlying workflow code to Git and promote it to staging and production environments. This iterative approach helps teams move faster without being locked into a specific deployment model.
 
-For **Leroy Merlin France**, [combining Kestra’s user-friendly UI](https://kestra.io/use-cases/stories/14-achieving-agility-and-efficiency-in-data-architecture-with-kestra) with its Everything-as-Code approach made it possible to use the UI for development, and integrate Terraform and GitHub Actions for production deployments. This helped Leroy Merlin to scale their operations and enable hundreds of engineers to work together across development and production environments.
+For **Leroy Merlin France**, [combining Kestra’s user-friendly UI](https://kestra.io/use-cases/stories/14-achieving-agility-and-efficiency-in-data-architecture-with-kestra) with its Everything-as-Code approach made it possible to use the UI for development, and integrate Terraform and GitHub Actions for production deployments. This helped Leroy Merlin to scale their operations and enable hundreds of end users to work together across development and production environments without friction.
 
 ### Lower Barrier to Entry
 
@@ -61,7 +61,7 @@ For example, **Quadis**, a car dealership, [transitioned from legacy systems](ht
 
 ### The Future of Data Orchestration Beyond Analytics
 
-When your orchestration requirements move past analytics and into real-time business operations, Kestra gives you a simpler, more flexible, and unified solution. Whether it’s managing data pipelines or automating critical workflows, Kestra helps you scale operations, connect systems, and keep things maintainable — without having to write and rewrite complex DAGs. From booking platforms to logistics systems and complex infrastructure, Kestra grows with your business needs.
+When your orchestration requirements move past analytics and into real-time business operations, Kestra gives you a simpler, more flexible, and unified solution. Whether it’s managing data pipelines or automating critical workflows, Kestra helps you scale operations, connect systems, and keep things maintainable — without having to tediously write and rewrite complex DAGs.
 
 **TL;DR: If you’re looking for more than just a data pipeline orchestrator, it’s time to consider [Kestra](https://github.com/kestra-io/kestra).**
 
