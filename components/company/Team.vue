@@ -12,7 +12,7 @@
                         <div class="team-title font-small">CEO</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/emmanuel-darras/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/emmanuel-darras" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://twitter.com/DarrasEmmanuel" target="_blank" class="me-2"><twitter /></a>
                     </span>
                 </div>
@@ -24,7 +24,7 @@
                         <div class="team-title font-small">CTO</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/ludovic-dehon/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/ludovic-dehon" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/tchiotludo" target="_blank" class="me-2"><github /></a>
                         <a href="https://twitter.com/tchiotludo" target="_blank" class="me-2"><twitter /></a>
                     </span>
@@ -37,7 +37,7 @@
                         <div class="team-title font-small">Product Lead</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/anna-geller-12a86811a/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/anna-geller-12a86811a" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/anna-geller" target="_blank" class="me-2"><github /></a>
                         <a href="https://twitter.com/anna__geller" target="_blank" class="me-2"><twitter /></a>
                     </span>
@@ -50,7 +50,7 @@
                         <div class="team-title font-small">Sales Leader</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/david-khan-40399419/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/david-khan-40399419" target="_blank" class="me-2"><linkedin /></a>
                     </span>
                 </div>
 
@@ -61,7 +61,7 @@
                         <div class="team-title font-small">Lead Software Engineer</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/florian-hussonnois/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/florian-hussonnois" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/fhussonnois" target="_blank" class="me-2"><github /></a>
                         <a href="https://twitter.com/fhussonnois" target="_blank" class="me-2"><twitter /></a>
                     </span>
@@ -74,7 +74,7 @@
                         <div class="team-title font-small">Lead Software Engineer</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/loicmathieu" target="_blank" class="me-2"><github /></a>
                         <a href="https://twitter.com/loicmathieu" target="_blank" class="me-2"><twitter /></a>
                     </span>
@@ -87,7 +87,7 @@
                         <div class="team-title font-small">Software Engineer</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/yannc/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/yannc" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/Skraye" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>
@@ -99,7 +99,7 @@
                         <div class="team-title font-small">Software Engineer</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/brian-mulier-326869150/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/brian-mulier-326869150" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/brian-mulier-p" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>
@@ -112,7 +112,7 @@
                         <div class="team-title font-small">Lead Product Designer</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/todobai/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/todobai" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/Nico-Kestra" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>
@@ -121,10 +121,10 @@
                     <img class="img-fluid team-member" src="/landing/company/teams/bpimpaud.png" alt="Benoît Pimpaud Picture"/>
                     <div class="w-100">
                         <div class="team-name">Benoît Pimpaud</div>
-                        <div class="team-title font-small">Solutions Engineer</div>
+                        <div class="team-title font-small">Product Owner & Data Engineer</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/pimpaudben/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/pimpaudben" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/ben8t" target="_blank" class="me-2"><github /></a>
                         <a href="https://twitter.com/Ben8t" target="_blank" class="me-2"><twitter /></a>
                     </span>
@@ -137,7 +137,7 @@
                         <div class="team-title font-small">Lead Growth & Marketing</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/martin-pierre-roset/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/martin-pierre-roset" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://twitter.com/martin_roset" target="_blank" class="me-2"><twitter /></a>
                     </span>
                 </div>
@@ -148,7 +148,7 @@
                         <div class="team-title font-small">Developer Advocate</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/wrussell1999/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/wrussell1999" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/wrussell1999" target="_blank" class="me-2"><github /></a>
                         <a href="https://twitter.com/wrussell1999" target="_blank" class="me-2"><twitter /></a>
                     </span>
@@ -160,7 +160,7 @@
                         <div class="team-title font-small">Lead Field Engineer</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/paul-grainger-65653115/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/paul-grainger-65653115" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/paulgrainger85" target="_blank" class="me-2"><github /></a>
                     </span>
                 </div>                
@@ -171,21 +171,10 @@
                         <div class="team-title font-small">Senior Frontend Engineer</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/paunovicmilos/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/paunovicmilos" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/MilosPaunovic" target="_blank" class="me-2"><github /></a>
                     </span>
-                </div>      
-                <div class="team-card" data-aos="zoom-in">
-                    <img class="img-fluid team-member" src="/landing/company/teams/dlavoie.png" alt="Daniel Lavoie"/>
-                    <div class="w-100">
-                        <div class="team-name">Daniel Lavoie</div>
-                        <div class="team-title font-small">Platform Engineer</div>
-                    </div>
-                    <span>
-                        <a href="https://www.linkedin.com/in/daniel-lavoie-50253855/" target="_blank" class="me-2"><linkedin /></a>
-                        <a href="https://github.com/daniellavoie" target="_blank" class="me-2"><github /></a>
-                    </span>
-                </div>       
+                </div>
                 <div class="team-card" data-aos="zoom-in">
                     <img class="img-fluid team-member" src="/landing/company/teams/smuntean.png" alt="Stefan Muntean"/>
                     <div class="w-100">
@@ -193,10 +182,21 @@
                         <div class="team-title font-small">Senior QA Engineer</div>
                     </div>
                     <span>
-                        <a href="https://www.linkedin.com/in/stefan-muntean-270b63b7/" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://www.linkedin.com/in/stefan-muntean-270b63b7" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/smunteankestra" target="_blank" class="me-2"><github /></a>
                     </span>
-                </div>                                             
+                </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/nbontoux.png" alt="Nicolas Bontoux"/>
+                    <div class="w-100">
+                        <div class="team-name">Nicolas Bontoux</div>
+                        <div class="team-title font-small">Technical Product Marketing Manager</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/nicolasbontoux" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/nicoallgood" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>                                                            
             </div>
         </Section>
     </div>

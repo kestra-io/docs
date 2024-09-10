@@ -113,7 +113,9 @@ The `last` filter will return the last item of a collection, or the last letter 
 
 {{ 'Mitch' | last }}
 {# will output 'h' #}
-```## length
+```
+
+## length
 
 The `length` filter returns the number of items of collection, map or the length of a string:
 
