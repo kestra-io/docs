@@ -175,7 +175,7 @@
 
             a {
                 color: $white-1;
-                font-size: $font-size-base;
+                font-size: $font-size-sm;
                 padding: calc($spacer / 2);
                 display: flex;
 
@@ -210,10 +210,12 @@
         font-weight: 400;
     }
     .section {
+        font-size: $font-size-xs;
         font-weight: 500;
         color: $white-3;
         text-transform: uppercase;
         margin-top: 2rem;
+        margin-bottom: 0.75rem;
         padding-left: 0.25rem;
     }
 </style>
