@@ -3,8 +3,11 @@ title: Alerting
 icon: /docs/icons/tutorial.svg
 ---
 
-
 Configure alerts inside of Kestra.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/wIsbBpw3yCM?si=y0ZcPIDjLYPHnVVN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 Alerting is a crucial part to a production environment to ensure high uptime and reliability. Kestra makes this easy by having multiple ways you can add alerts to your workflows so you always know what’s going on.
 
