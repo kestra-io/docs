@@ -1,7 +1,7 @@
 ---
 title: "How Orchestration Can Optimize Your Engineering Processes"
 description: "Learn what an orchestrator is and why you should use it"
-date: 2024-09-16
+date: 2024-09-16T08:15:00
 category: Solutions
 author:
   name: Federico Trotta
