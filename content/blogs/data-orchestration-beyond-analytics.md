@@ -1,7 +1,7 @@
 ---
 title: "When to Choose Kestra Over Apache Airflow: Data Orchestration Beyond Analytics and ETL"
-description: The Shift in Data Orchestration from Analytics to Real-Time Business Operations
-date: 2024-09-10T14:00:00
+description: It's Time for Data Orchestration to Drive Business Operations, Not Just Analytics
+date: 2024-09-10T13:00:00
 category: News & Products Updates
 author:
   name: Anna Geller
