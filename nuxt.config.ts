@@ -151,13 +151,13 @@ export default defineNuxtConfig({
           apiUrl: process.env.NUXT_PUBLIC_API_URL || DEFAULT_KESTRA_API_URL,
           docs: {
               sections: {
-                  "Getting Started with Kestra": [
+                  "Get Started with Kestra": [
                       "Getting Started",
                       "Tutorial",
                       "Architecture",
                       "Installation Guide",
-                      "User Interface",
-                      "Video Tutorials"
+                      "User Interface"
+                      // "Video Tutorials"
                   ],
                   "Build with Kestra": [
                       "Concepts",
@@ -165,10 +165,10 @@ export default defineNuxtConfig({
                       "Developer Guide",
                       // "Expressions",
                       // "Version Control & CI/CD",
-                      "Plugin Developer Guide",
+                      // "Plugin Developer Guide",
                       "How-to Guides"
                   ],
-                  "Scale Kestra": [
+                  "Scale with Kestra": [
                       "Enterprise Edition",
                       // "Task Runners",
                       // "Worker Groups",
