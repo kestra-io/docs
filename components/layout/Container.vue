@@ -4,7 +4,7 @@
         <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
-                    <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" />
+                    <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
                     <h1 v-if="page && page.title" class="py-0 title">
                         <NuxtImg
                             v-if="page.icon"
@@ -58,12 +58,13 @@
 
   const fetchNavigation = async () => {
     let navigationFetch;
-    console.log("props.type", props.type);
-    if (props.type) {
+    let pageList = null;
+    let pageNames = null;
 
-    }
     if (props.type === "plugins") {
       navigationFetch = await useFetch(`/api/plugins?type=navigation`);
+      pageList = recursivePages(navigationFetch.data.value[0]);
+      pageNames = generatePageNames(navigationFetch.data.value[0]);
     } else {
       const queryBuilder = queryContent('/' + props.type + '/');
 
@@ -78,6 +79,9 @@
           _path: "/tutorial-videos",
         });
       }
+      pageList = recursivePages(navigationFetch.data.value[0]);
+      pageNames = generatePageNames(navigationFetch.data.value[0]);
+
       const sections = config.public.docs.sections;
 
       const newData = [];
@@ -99,8 +103,7 @@
     }
 
     const navigation = navigationFetch.data;
-    const pageList = recursivePages(navigation.value[0]);
-    const pageNames = generatePageNames(navigation.value[0]);
+
     return {navigation, pageList, pageNames};
   }
 
