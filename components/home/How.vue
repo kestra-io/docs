@@ -104,7 +104,7 @@
             <div class="item workflow-4 row pb-5">
                 <div class="col-md-6 order-1 order-md-0">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-4.png" alt="How to execute a flow example" />
                     </div>
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
@@ -128,7 +128,7 @@
                 </div>
                 <div class="col-md-6 mb-5">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5 1-min.png" alt="Visualization of Kestra monitoring" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5.png" alt="Visualization of Kestra monitoring" />
                     </div>
                 </div>
             </div>
@@ -280,6 +280,8 @@
                 .connection-line {
                     &-1, &-2, &-3, &-4, &-5 {
                         position: absolute;
+                        display: flex;
+                        align-items: center;
                     }
 
                     &-1 {
@@ -533,8 +535,13 @@
 
             &-4 {
                 padding-top: 6rem;
-                background: url("/landing/how/bg-4.webp") no-repeat left;
+                background: url("/landing/how/bg-4.webp") no-repeat;
+                background-position: 100px 10px;
                 background-size: 45%;
+                @include media-breakpoint-down(lg) {
+                    background-position: 100px 270px;
+                }
+
                 .img-container {
                     height: calc($spacer * 19.1);
                     img {
