@@ -45,12 +45,8 @@
             <div class="img-block">
                 <NuxtImg
                     class="img-fluid headerimg"
-                    src="/landing/home/header.svg"
+                    src="/landing/home/header.png"
                     data-aos="zoom-in"
-                    width="600"
-                    height="480"
-                    lazy
-                    :placeholder="[600, 480]"
                 />
             </div>
             <div class="companies-background">

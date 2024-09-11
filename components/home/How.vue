@@ -128,7 +128,7 @@
                 </div>
                 <div class="col-md-6 mb-5">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5 1-min.png" alt="Visualization of Kestra monitoring" />
                     </div>
                 </div>
             </div>
@@ -387,7 +387,7 @@
                         }
 
                         @include media-breakpoint-down(xxl) {
-                            top: -123%;
+                            top: -98%;
                             left: -66.5%;
                             :deep(svg) {
                                 width: calc($spacer * 35);
@@ -395,7 +395,7 @@
                         }
 
                         @include media-breakpoint-down(xl) {
-                            top: -106%;
+                            top: -83%;
                             left: -69%;
                             :deep(svg) {
                                 width: calc($spacer * 33);
@@ -404,7 +404,7 @@
 
                         @include media-breakpoint-down(lg) {
                             left: -80%;
-                            top: -123%;
+                            top: -92%;
                         }
 
                         @include media-breakpoint-down(md) {
