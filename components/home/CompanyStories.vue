@@ -32,6 +32,7 @@
     const { data: customerStories } = await useFetch(`${config.public.apiUrl}/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`, {
       transform: (response) => ({
         results: response.results.map(result => ({
+          id: result.id,
           title: result.title,
           description: result.description,
           featuredImage: result.featuredImage,
