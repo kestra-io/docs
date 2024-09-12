@@ -127,24 +127,38 @@ export default {
     }
 
     .hero {
-        background: $black-4 url("/landing/home/header-bg.webp") no-repeat center
-        center;
-        background-size: 130%;
         padding-bottom: 2rem;
         padding-top: 5rem;
         position: relative;
 
-        &::before {
+        &::before,
+        &::after {
             position: absolute;
             content: "";
             z-index: 0;
+            filter: blur(95px);
+            transform: rotate(45deg);
+        }
+
+        &::before {
             width: 15.6rem;
             height: 50.6rem;
             background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%);
-            filter: blur(95px);
             right: -14rem;
             top: -2rem;
-            transform: rotate(45deg);
+        }
+
+        &::after {
+            width: 9.6rem;
+            height: 38.6rem;
+            background: linear-gradient(91.82deg, #9639F9 28.72%, #9639F9 99.23%);
+            left: 17rem;
+            bottom: 12rem;
+            filter: blur(125px);
+
+            @include media-breakpoint-down(xl) {
+                bottom: -3rem;
+            }
         }
 
     }
