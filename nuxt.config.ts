@@ -56,16 +56,33 @@ export default defineNuxtConfig({
       highlight: {
           langs: [
               'bash',
-              'yaml',
-              'sql',
-              'java',
+              'c',
+              'cpp',
+              'csv',
               'dockerfile',
-              'systemd',
-              'hcl',
-              'python',
-              'twig',
+              'go',
               'groovy',
-              'json5',
+              'handlebars',
+              'hcl',
+              'ini',
+              'java',
+              'javascript',
+              'json',
+              'markdown',
+              'mermaid',
+              'perl',
+              'php',
+              'python',
+              'r',
+              'ruby',
+              'rust',
+              'scala',
+              'sql',
+              'systemd',
+              'twig',
+              'typescript',
+              'xml',
+              'yaml'
           ],
           theme: 'github-dark'
       },
@@ -136,7 +153,41 @@ export default defineNuxtConfig({
       public: {
           siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://kestra.io',
           apiUrl: process.env.NUXT_PUBLIC_API_URL || DEFAULT_KESTRA_API_URL,
-      }
+          docs: {
+              sections: {
+                  "Get Started with Kestra": [
+                      "Getting Started",
+                      "Tutorial",
+                      "Architecture",
+                      "Installation Guide",
+                      "User Interface"
+                      // "Video Tutorials"
+                  ],
+                  "Build with Kestra": [
+                      "Concepts",
+                      "Workflow Components",
+                      "Developer Guide",
+                      // "Expressions",
+                      // "Version Control & CI/CD",
+                      // "Plugin Developer Guide",
+                      "How-to Guides"
+                  ],
+                  "Scale with Kestra": [
+                      "Enterprise Edition",
+                      // "Task Runners",
+                      // "Worker Groups",
+                      "Best Practices"
+                  ],
+                  "Manage Kestra": [
+                      "Administrator Guide",
+                      "Configuration Guide",
+                      "Migration Guide",
+                      "Terraform Provider",
+                      "API Reference"
+                  ]
+              }
+          }
+      },
   },
 
   nitro: {
@@ -159,6 +210,8 @@ export default defineNuxtConfig({
       '/docs/developer-guide/scripts/additional-languages': {redirect: '/docs/developer-guide/scripts/languages'},
       '/docs/developer-guide/best-practice': {redirect: '/docs/best-practices'},
       '/docs/developer-guide/best-practices': {redirect: '/docs/best-practices'},
+      '/docs/developer-guide/error-handling': {redirect: '/docs/workflow-components/errors'},
+      '/docs/developer-guide/scripts/output-directory': {redirect: '/docs/developer-guide/scripts/input-output-files'},
       '/docs/best-practice': {redirect: '/docs/best-practices'},
       '/docs/workflow-components/trigger': {redirect: '/docs/workflow-components/triggers'},
       '/docs/workflow-components/realtime-triggers': {redirect: '/docs/workflow-components/realtime-trigger'},

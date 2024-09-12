@@ -16,7 +16,7 @@
                 >
                     {{darkButtonText}}
                 </NuxtLink>
-                <NuxtLink v-if="darkButtonHref" :href="purpleButtonHref"  class="btn btn-animated btn-purple-animated mt-2" :data-aos="animationType('zoom-in')">
+                <NuxtLink v-if="purpleButtonHref" :href="purpleButtonHref"  class="btn btn-animated btn-purple-animated mt-2" :data-aos="animationType('zoom-in')">
                     {{purpleButtonText}}
                 </NuxtLink>
             </div>

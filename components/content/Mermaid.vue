@@ -5,16 +5,15 @@
 </template>
 
 <script setup>
+  import mermaid from 'mermaid/dist/mermaid.esm.mjs';
 
   let show = ref(false);
 
-  const { $mermaid } = useNuxtApp()
-
   onMounted( async() => {
     show.value = true
-    $mermaid().initialize({startOnLoad: true })
+    await mermaid.initialize({startOnLoad: true })
     await nextTick()
-    $mermaid().init();
+    await mermaid.init();
   })
 
 </script>

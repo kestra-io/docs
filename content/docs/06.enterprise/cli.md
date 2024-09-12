@@ -1022,7 +1022,9 @@ Commands:
                              runner.
 ```
 
-### kestra sys-ee restore-flow-listeners
+### kestra sys-ee restore-flow-listeners (relevant only for older versions of kestra before 0.12)
+
+Legacy command for [Listeners](https://kestra.io/docs/migration-guide/0.12.0/listeners).
 
 ```bash
 Usage: kestra sys-ee restore-flow-listeners [-hVv] [--internal-log]

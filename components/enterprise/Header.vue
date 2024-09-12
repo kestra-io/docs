@@ -20,7 +20,7 @@
                         height="418px"
                         loading="lazy"
                         format="webp"
-                        class="zoom img-fluid"
+                        class="img-fluid"
                         src="/landing/ee/header.svg"
                         alt="A screenshot of the user interface of Kestra's application"
                     />

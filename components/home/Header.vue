@@ -45,13 +45,13 @@
             <div class="img-block">
                 <NuxtImg
                     class="img-fluid headerimg"
-                    src="/landing/home/header.svg"
-                    alt="Smarter Not Harder"
+                    src="/landing/home/header.png"
+                    data-aos="zoom-in"
                 />
             </div>
             <div class="companies-background">
-                <LayoutCompanies class="d-md-none" />
-                <HomeCompanies class="mb-4 pb-4 companies container d-none d-md-block" />
+                <LayoutCompanies class="d-xl-none" />
+                <HomeCompanies class="mb-4 pb-4 companies container d-none d-xl-block" />
             </div>
         </div>
 
@@ -230,6 +230,22 @@ export default {
             margin-top: -80px;
         }
 
+        @include media-breakpoint-down(xl) {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
+        @media only screen and (max-width: 320px)  { /* notice the max-width instead of min-width */
+            width: unset;
+            position: unset;
+            left: unset;
+            right: unset;
+            margin-left: -15px;
+            margin-right: -15px;
+        }
         @include media-breakpoint-down(md) {
             margin-top: -40px;
         }
@@ -314,6 +330,7 @@ export default {
     }
 
     :deep(.companies-container) {
+        max-width: unset;
         .companies-list-container {
             &:before,
             &:after {

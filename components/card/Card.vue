@@ -30,12 +30,13 @@
                 <div v-if="cardInfo" class="card-info">
                     <h4 v-if="cardInfo.title" class="card-title">{{cardInfo.title}}</h4>
                     <p v-if="cardInfo.description" class="card-text">{{cardInfo.description}}</p>
+                    <div v-if="cardInfo.descriptionHtml" class="card-text" v-html="cardInfo.descriptionHtml"></div>
                 </div>
                 <h4 v-if="title" class="card-title">{{title}}</h4>
                 <h4 v-if="titleHtml" class="card-title" v-html="titleHtml"></h4>
             </div>
             <div v-if="bottomMenuBar && bottomMenuBar.length" class="bottom-menu">
-                <div class="bottom-menu-item" v-for="menuItem in bottomMenuBar" @click="() => menuItem.active = !menuItem.active">
+                <div class="bottom-menu-item" v-for="menuItem in bottomMenuBar" @click="() => isClickable ? menuItem.active = !menuItem.active : null">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
                         <path d="M14.9891 17.3359V13.3359H6.06906L6.03906 11.3259H14.9891V7.33594L19.9891 12.3359L14.9891 17.3359Z" :fill="menuItem.active ? '#CDD5EF' : '#9CA1DE'"/>
                     </svg>
@@ -86,6 +87,10 @@
             },
             cardInfo: {
               default: null,
+            },
+            isClickable: {
+              default: true,
+              required: false
             },
         },
     };

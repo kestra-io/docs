@@ -32,7 +32,7 @@
         `Blog`,
         () => queryContent("/blogs/")
             .sort({ date: -1 })
-            .without('unused-key')
+            .only(['title', 'category', 'image', 'author', 'date', '_path'])
             .limit(3)
             .find()
     );

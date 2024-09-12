@@ -79,8 +79,7 @@ tasks:
 
   - id: transform_in_python
     type: io.kestra.plugin.scripts.python.Script
-    docker:
-      image: python:slim
+    containerImage: python:slim
     beforeCommands:
       - pip install polars
     warningOnStdErr: false
@@ -134,8 +133,7 @@ tasks:
 
   - id: transformInPython
     type: io.kestra.plugin.scripts.python.Script
-    docker:
-      image: python:slim
+    containerImage: python:slim
     beforeCommands:
       - pip install polars
     warningOnStdErr: false

@@ -6,6 +6,7 @@
                     <div ref="companies" class="companies companies-list">
                         <template v-for="(img, index) in companies" :key="index">
                             <NuxtImg
+                                data-aos="fade-right"
                                 loading="lazy"
                                 format="webp"
                                 :src="'/landing/companies/' + img.name  + '.svg'"

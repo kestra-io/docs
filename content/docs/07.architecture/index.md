@@ -34,7 +34,7 @@ The arrows indicate the direction of communication. The JDBC Backend connects to
 
 ### Scalability with JDBC
 
-The scalable design of the architecture allows you to run multiple instances of the [Webserver](./08.webserver.md), [Executor](./04.executor.md), [Worker](./05.worker.md) and [Scheduler](./06.scheduler.md) to handle increased load. As your workload increases, more instances of the required components can be added to the system to distribute the load and maintain performance. At the time of writing, [Scheduler](./06.scheduler.md) is the only component that can only be run as a single instance, but this will change in the near future.
+The scalable design of the architecture allows you to run multiple instances of the [Webserver](./08.webserver.md), [Executor](./04.executor.md), [Worker](./05.worker.md) and [Scheduler](./06.scheduler.md) to handle increased load. As your workload increases, more instances of the required components can be added to the system to distribute the load and maintain performance.
 
 The JDBC Backend can be scaled too, either through clustering or sharding, to handle larger volumes of data and a higher number of requests from the [Server components](./02.server-components.md). Most cloud providers offer managed database services that can be scaled up and down as needed.
 

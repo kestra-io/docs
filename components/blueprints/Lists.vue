@@ -14,7 +14,7 @@
         <button
             v-for="tag in tags"
             :key="tag.name"
-            :class="{ 'active': tag.name === activeTag?.name }"
+            :class="{ 'active': activeTags.some(item => item.name === tag.name) }"
             @click="setTagBlueprints(tag)"
             class="m-1 rounded-button"
         >
@@ -52,7 +52,7 @@ import Magnify from "vue-material-design-icons/Magnify.vue"
 const currentPage = ref(1)
 const itemsPerPage = ref(24)
 const blueprints = ref([])
-const activeTag = ref({ name: 'All tags' })
+const activeTags = ref([{ name: 'All tags' }])
 const tags = ref([])
 const props = defineProps(["tags"])
 const totalPages = ref(0)
@@ -66,39 +66,52 @@ if(props.tags) {
     tags.value = [{ name: 'All tags' }, ...props.tags]
 }
 
+const toggleArrayElement = (array, element) => {
+  const index = array.indexOf(element);
+
+  if (index === -1) {
+    array.push(element);
+  } else {
+    array.splice(index, 1);
+  }
+  return  array;
+}
+
 const setTagBlueprints = async (tagVal) => {
-  if (activeTag.value.name !== tagVal.name) {
-    activeTag.value = tagVal;
-    if (tagVal.name === 'All tags') {
-      await navigateTo(`/blueprints`);
-    }else {
-      await navigateTo(`/blueprints/${tagVal.name.replace(' ', '-')}`);
+  if (tagVal.name === 'All tags') {
+    activeTags.value = [tagVal];
+  } else {
+    if (activeTags.value.some(item => item.name === 'All tags')) {
+      activeTags.value = []
     }
+    activeTags.value = toggleArrayElement(activeTags.value, tagVal);
   }
 }
 
 if(route.query.page) currentPage.value = parseInt(route.query.page)
 if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
-if(route.params.slug) activeTag.value = tags.value.find(f => f?.name?.toLowerCase().replace('-', ' ') == route.params.slug.replace('-', ' ').toLowerCase())
+if(route.query.tags) {
+  activeTags.value = tags.value.filter(item => route.query.tags.split(',').includes(item.name));
+}
 if(route.query.q) searchQuery.value = route.query.q;
 
-if (!activeTag.value) {
+if (!activeTags.value) {
   const id = route.params.slug?.split('-')[0];
   const {data: blueprintInformations} = await useAsyncData('blueprints-informations', () => {
     return $fetch(`/api/blueprint?query=${id}`)
   })
 
-  activeTag.value = { name: 'All tags' };
+  activeTags.value = [{ name: 'All tags' }];
   if (blueprintInformations && blueprintInformations.value) {
     let tag = tags.value.find(f => f?.id == blueprintInformations.value.page.tags[0]);
     await navigateTo(`/blueprints/${tag.name.replace(' ', '-')}/${route.params.slug}`);
   }
 }
 const { data: blueprintsData, error } = await useAsyncData('blueprints', () => {
-    return $fetch(`${config.public.apiUrl}/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.params.slug && route.params.slug !== 'all tags' ? `&tags=${activeTag.value.id}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
+  return $fetch(`${config.public.apiUrl}/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeTags.value.map(tag => tag.id).join(',')}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
 })
 
-if ((error && error.value) || !activeTag) {
+if ((error && error.value) || !activeTags) {
   throw createError({statusCode: 404, message: 'Page not found', data: error, fatal: true})
 }
 
@@ -123,19 +136,27 @@ const generateCardHref = (blueprint) => {
 }
 
 let timer;
-watch([currentPage, itemsPerPage, searchQuery], ([pageVal, itemVal, searchVal], [__, oldItemVal, oldTagVal]) => {
-  if(timer) {
-        clearTimeout(timer)
-    }
-    timer = setTimeout(async () => {
+watch(() => route.query, async () => {
+  if (!route.query.tags && !route.query.page && !route.query.size) {
+    activeTags.value = [{ name: 'All tags' }]
+  }
+});
 
-        const { data } = await useFetch(`${config.public.apiUrl}/blueprints?page=${(itemVal != oldItemVal) ? 1 : pageVal}&size=${itemVal}${route.params.slug && route.params.slug !== 'all tags' ? `&tags=${activeTag.value.id}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
-        setBlueprints(data.value.results, data.value.total)
+watch([currentPage, itemsPerPage, searchQuery, activeTags], ([pageVal, itemVal, searchVal, activeTagsVal], [__, oldItemVal, oldTagVal]) => {
+      if(timer) {
+        clearTimeout(timer)
+      }
+  timer = setTimeout(async () => {
+      const { data } = await useFetch(`${config.public.apiUrl}/blueprints?page=${(itemVal != oldItemVal) ? 1 : pageVal}&size=${itemVal}${!!activeTagsVal.map(item => item.id).join(',') ? `&tags=${activeTagsVal.map(item => item.id).join(',')}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
+      setBlueprints(data.value.results, data.value.total)
 
         function getQuery() {
             let query = {
                 page: (itemVal != oldItemVal) ? 1 : pageVal,
                 size: itemVal,
+            };
+            if (!!activeTagsVal.map(item => item.id).join(',')) {
+              query['tags'] = activeTagsVal.map(item => item.name).join(',')
             }
             if(searchVal.length) {
                 query['q'] = searchVal
@@ -149,7 +170,7 @@ watch([currentPage, itemsPerPage, searchQuery], ([pageVal, itemVal, searchVal], 
         })
 
     }, 500)
-})
+}, { deep: true })
 </script>
 
 <style lang="scss" scoped>
