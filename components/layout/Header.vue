@@ -549,7 +549,9 @@ export default {
         },
 
         globalClick(close) {
-          this.collapse.toggle();
+          if (window.innerWidth < 992) {
+            this.collapse.toggle();
+          }
           if (close) {
                 if (this.$refs.navbar.classList.contains("open")) {
                     this.isOpen = false;
