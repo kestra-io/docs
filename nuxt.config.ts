@@ -92,6 +92,10 @@ export default defineNuxtConfig({
       port: 3001
   },
 
+  features: {
+      inlineStyles: false
+  },
+
   vue: {
       compilerOptions: {
           isCustomElement: (tag) => {
