@@ -77,7 +77,7 @@
         }
 
         .card-title {
-            font-family: Public Sans;
+            font-family: $font-family-sans-serif;
             font-size: 22px;
             font-weight: 600;
             line-height: 22px;
@@ -88,7 +88,7 @@
         }
 
         .card-meta-description {
-            font-family: Public Sans;
+            font-family: $font-family-sans-serif;
             font-size: 18px;
             font-weight: 400;
             line-height: 26px;

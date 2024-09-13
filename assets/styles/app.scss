@@ -1,14 +1,6 @@
 @use "@kestra-io/ui-libs/src/scss/app.scss";
 @import "variable";
 
-@font-face {
-    font-family: 'Public Sans';
-    src: url('/fonts/PublicSans.ttf') format('ttf');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
 html {
     height: 100%;
 }
