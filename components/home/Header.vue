@@ -46,6 +46,12 @@
                 <NuxtImg
                     class="img-fluid headerimg"
                     src="/landing/home/header.png"
+                    format="webp"
+                    quality="100"
+                    width="1034"
+                    height="785"
+                    densities="x1 x2"
+                    sizes="320px xs:640px lg:1034px"
                     data-aos="zoom-in"
                 />
             </div>

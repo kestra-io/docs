@@ -28,10 +28,6 @@
                 type: Object,
                 required: true,
             },
-            alertHide: {
-                type: Function,
-                required: true,
-            },
         },
         data: () => ({
             currentSlide: 0,

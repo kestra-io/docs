@@ -74,7 +74,7 @@
             <div class="item workflow-2 row mb-5">
                 <div class="col-md-6 order-1 order-md-0">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-2.webp" alt="Integration with all data stacks" />
                     </div>
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-3.svg" alt="How to schedule example" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-3.webp" alt="How to schedule example" />
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@
             <div class="item workflow-4 row pb-5">
                 <div class="col-md-6 order-1 order-md-0">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-4.png" alt="How to execute a flow example" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-4.webp" alt="How to execute a flow example" />
                     </div>
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
@@ -128,7 +128,7 @@
                 </div>
                 <div class="col-md-6 mb-5">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5.png" alt="Visualization of Kestra monitoring" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5.webp" alt="Visualization of Kestra monitoring" />
                     </div>
                 </div>
             </div>
