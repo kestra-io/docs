@@ -7,7 +7,7 @@ export default defineMultiCacheOptions({
         storage: {
             driver: import.meta.dev ?
                 lruCacheDriver({}) :
-                cloudflareKVBindingDriver({binding: globalThis.STORAGE})
+                cloudflareKVBindingDriver({binding: "CLOUDFLARE_KVSTORAGE"})
         },
     },
 })
