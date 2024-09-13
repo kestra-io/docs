@@ -5,7 +5,7 @@
         <LayoutAnnounce v-if="showAnnounce" :content="content" />
         <div class="wrapper" :class="{'announce': showAnnounce}">
             <LayoutHeader />
-            <main >
+            <main>
                 <slot />
             </main>
             <LayoutFooter />
@@ -15,35 +15,42 @@
 </template>
 
 <script setup>
-  import { ref, watch, onMounted } from 'vue';
-  const config = useRuntimeConfig();
-  const content = ref(null);
-  const showAnnounce = ref(false);
-  const route = useRoute();
+    import {ref, watch, onMounted} from 'vue';
 
-  const {data: bannerMessages} = await useAsyncData(`banner-messages`, () => {
-    return $fetch(`${config.public.apiUrl}/banner-messages`);
-  });
+    const config = useRuntimeConfig();
+    const content = ref(null);
+    const showAnnounce = ref(false);
+    const route = useRoute();
 
-  if(bannerMessages.value && bannerMessages.value.results) {
-    content.value = bannerMessages.value.results;
-  }
+    const {data: bannerMessages} = await useAsyncData(
+        `header-annonces`,
+        () => {
+            return $fetch(`${config.public.apiUrl}/banner-messages`);
+        },
+        {
+            serverMaxAge: 60 * 10,
+        }
+    );
 
-  const checkDisplayingAnnounce = (content, path) => {
-    if (content && content.length > 0 && path === '/') {
-        showAnnounce.value = true;
-    } else {
-        showAnnounce.value = false;
+    if (bannerMessages.value && bannerMessages.value.results) {
+        content.value = bannerMessages.value.results;
     }
-  }
 
-  onMounted(() => {
-    checkDisplayingAnnounce(content.value, route.path);
-  });
+    const checkDisplayingAnnounce = (content, path) => {
+        if (content && content.length > 0 && path === '/') {
+            showAnnounce.value = true;
+        } else {
+            showAnnounce.value = false;
+        }
+    }
 
-  watch([() => route.path, content], ([newPath, newContent]) => {
-    checkDisplayingAnnounce(newContent, newPath)
-  });
+    onMounted(() => {
+        checkDisplayingAnnounce(content.value, route.path);
+    });
+
+    watch([() => route.path, content], ([newPath, newContent]) => {
+        checkDisplayingAnnounce(newContent, newPath)
+    });
 </script>
 
 <script>
@@ -71,6 +78,7 @@
 
     .wrapper.announce {
         margin-top: 30px;
+
         nav {
             .navbar-collapse {
                 @include media-breakpoint-down(lg) {
