@@ -154,7 +154,7 @@
                 }
 
                 .content-title {
-                    font-family: Public Sans;
+                    font-family: $font-family-sans-serif;
                     font-size: $h2-font-size;
                     font-weight: 500;
                     line-height: 50px;
@@ -166,7 +166,7 @@
                 }
 
                 .content-description {
-                    font-family: Public Sans;
+                    font-family: $font-family-sans-serif;
                     font-size: $h6-font-size;
                     font-weight: 500;
                     line-height: 1.75rem;
