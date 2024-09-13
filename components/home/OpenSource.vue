@@ -1,17 +1,5 @@
 <template>
     <div class="main">
-        <div v-if="contributors && false" class="contributors left">
-            <template v-for="contributor in contributorsPartition(0)">
-                <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
-                    <img
-                        :src="contributor.avatar"
-                        class="img-fluid avatar avatar-small rounded-circle"
-                        :width="contributor.size"
-                        alt=""
-                    />
-                </a>
-            </template>
-        </div>
         <div class="container container-min">
             <Section
                 subtitle="Join the community"
@@ -19,7 +7,7 @@
                 <div class="metrics">
                     <div class="counter-box text-center">
                         <h5 class="mb-0 mt-2">
-                            <CountTo :endVal="stargazers || 0" :duration="4000"></CountTo>
+                            <CountTo :endVal="github ? github.stargazers : 0" :duration="4000"></CountTo>
                         </h5>
                         <p>Stars</p>
                     </div>
@@ -40,7 +28,7 @@
                     <div class="line-separator"></div>
                     <div class="counter-box text-center">
                         <h5 class="mb-0 mt-2">
-                            <CountTo :endVal="contributors ? contributors.length : 0" :duration="4000"></CountTo>
+                            <CountTo :endVal="metrics ? metrics.contributors : 0" :duration="4000"></CountTo>
                         </h5>
                         <p>Contributors</p>
                     </div>
@@ -53,85 +41,29 @@
                 </div>
             </Section>
         </div>
-        <div v-if="contributors && false" class="contributors right">
-            <template v-for="contributor in contributorsPartition(10)">
-                <a :href="'https://github.com/' + contributor.name" target="_blank" class="name text-dark">
-                    <img :src="contributor.avatar" class="img-fluid avatar avatar-small rounded-circle" :width="contributor.size" alt="">
-                </a>
-            </template>
-        </div>
     </div>
 </template>
 
-<script>
+<script setup>
     import Section from '../layout/Section.vue';
     import {CountTo} from 'vue3-count-to';
-    import SourceCommitLocal from "vue-material-design-icons/SourceCommitLocal.vue";
-    import Star from "vue-material-design-icons/Star.vue";
-    import DirectionsFork from "vue-material-design-icons/DirectionsFork.vue";
-    import SourcePull from "vue-material-design-icons/SourcePull.vue";
-    import BugOutline from "vue-material-design-icons/BugOutline.vue";
-    import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue";
-    import {useApi} from "~/composables/useApi.js";
-    import axios from "axios";
+    const config = useRuntimeConfig();
 
-    export default {
-        components: {
-            AccountGroupOutline,
-            BugOutline,
-            SourcePull,
-            DirectionsFork,
-            Star,
-            SourceCommitLocal,
-            Section,
-            CountTo
-        },
-        setup() {
-            return {useApi}
-        },
-        data() {
-            return {
-                contributors: undefined,
-                contributorsRand: undefined,
-                metrics: undefined,
-                imgPoss: [],
-                stargazers: undefined,
-            };
-        },
+    const {data: metrics} = await useCachedAsyncData(
+        `home-opensource-metrics`,
+        () => $fetch(`${config.public.apiUrl}/communities/github/metrics`),
+        {
+            serverMaxAge: 60 * 10,
+        }
+    );
 
-        async created() {
-            try {
-                const [metrics, contributors] = await Promise.all([
-                    this.useApi().get('/communities/github/metrics'),
-                    this.useApi().get('/communities/github/contributors')
-                ])
-                this.metrics = metrics.data
-                this.contributors = contributors.data
+    const {data: github} = await useAsyncData(
+        `home-opensource-github`,
+        () => {
+            return $fetch('/api/github');
+        }
+    );
 
-            } catch (e) {
-                this.contributors = []
-                this.metrics = {}
-            }
-        },
-
-        async mounted() {
-          const response = await axios.get('/api/github')
-          this.stargazers = response.data.stargazers;
-        },
-
-        methods: {
-            contributorsPartition(i) {
-                return this.contributorsRand
-                    .slice(i, i + 10)
-                    .map(r => {
-                        r.size = 40 + Math.random() * 100;
-
-                        return r;
-                    })
-            },
-
-        },
-    }
 </script>
 
 <style lang="scss" scoped>

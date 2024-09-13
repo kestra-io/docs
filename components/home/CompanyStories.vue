@@ -23,23 +23,26 @@
 </script>
 
 <script setup>
-  const route = useRoute()
   const config = useRuntimeConfig();
   const stories = ref([])
   const totalStories = ref(0)
 
   const fetchStories = async ({currentPage, itemsPerPage}) => {
-    const { data: customerStories } = await useFetch(`${config.public.apiUrl}/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`, {
-      transform: (response) => ({
-        results: response.results.map(result => ({
-          id: result.id,
-          title: result.title,
-          description: result.description,
-          featuredImage: result.featuredImage,
-          tasks: result.tasks,
-        })),
-        total: response.total
-      })
+    const { data: customerStories } = await useCachedAsyncData(
+      'home-company-stories',
+      () => $fetch(`${config.public.apiUrl}/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`),
+      {
+        serverMaxAge: 60 * 10,
+        transform: (response) => ({
+          results: response.results.map(result => ({
+            id: result.id,
+            title: result.title,
+            description: result.description,
+            featuredImage: result.featuredImage,
+            tasks: result.tasks,
+          })),
+          total: response.total
+        })
     });
 
     stories.value = customerStories.value.results

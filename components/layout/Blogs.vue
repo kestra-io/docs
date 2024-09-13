@@ -29,7 +29,7 @@
     import {useAsyncData} from "#imports";
 
     const {data: blogs} = await useAsyncData(
-        `Blog`,
+        `layout-blog`,
         () => queryContent("/blogs/")
             .sort({ date: -1 })
             .only(['title', 'category', 'image', 'author', 'date', '_path'])
