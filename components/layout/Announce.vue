@@ -3,7 +3,6 @@
         <div class="announce">
             <div class="alert alert-primary">
                 <Carousel
-                    :autoplay="4500"
                     :wrap-around="true"
                     :transition="2000"
                     v-model="currentSlide"
@@ -11,8 +10,8 @@
                     :settings="settings"
                 >
                     <Slide v-for="(slide, index) in content" :key="slide" v-bind:key="slide?.id">
-                        <p class="text-truncate" @click="slideTo(index)">
-                            {{slide.text}} <NuxtLink :href="slide.href">{{slide.linkText}}</NuxtLink>
+                        <p class="d-flex" @click="slideTo(index)">
+                            <span class="d-inline-block text-truncate" >{{slide.text}}</span> <NuxtLink class="d-inline-block text-nowrap" :href="slide.href">{{slide.linkText}}</NuxtLink>
                         </p>
                     </Slide>
                 </Carousel>
@@ -137,7 +136,7 @@
                 font-size: 0.875rem;
                 font-weight: 400 !important;
                 line-height: 18px;
-                white-space: pre-wrap;
+                max-width: 100%;
             }
 
             button {
