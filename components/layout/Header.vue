@@ -389,7 +389,7 @@
                                   class="d-none mb-1 mn-sm-0 btn btn-sm me-0 me-sm-2 d-lg-inline-block talk-us"
                                   href="/demo">
                             <span>
-                                <CalendarOutline />
+                                <CalendarOutline class="d-none d-xl-inline-flex"/>
                                 Talk to Us
                             </span>
                         </NuxtLink>
@@ -398,7 +398,7 @@
                             class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-animated btn-purple-animated btn-sm get-started"
                             href="/docs/getting-started">
                             <span>
-                                <Flash class="d-none d-lg-inline-flex"/>
+                                <Flash class="d-none d-xl-inline-flex"/>
                                 Get Started
                             </span>
                         </NuxtLink>
@@ -643,6 +643,14 @@ export default {
         }
     }
 
+    .container-xl {
+        @include media-breakpoint-down(xl) {
+            .navbar-brand {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    }
 
     .container-xl {
         @include media-breakpoint-down(lg) {
@@ -700,6 +708,9 @@ export default {
             img:not(.icon) {
                 height: 100%;
                 width: 180px;
+                @include media-breakpoint-down(xl) {
+                    width: 150px;
+                }
                 @include media-breakpoint-down(lg) {
                     width: 110px;
                 }
