@@ -34,8 +34,10 @@ export default defineNuxtConfig({
                 {name: 'msapplication-TileColor', content: '#2c0059'},
                 {rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml', title: 'Sitemap'},
                 {rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml', title: 'Blog Articles RSS'},
-                {rel: 'dns-prefetch', href: 'https://fonts.gstatic.com'},
-                {rel: 'dns-prefetch', href: 'https://fonts.googleapis.com'}
+                {rel: 'preconnect', href: 'https://fonts.gstatic.com'},
+                {rel: 'preconnect', href: 'https://fonts.googleapis.com'},
+                {rel: 'dns-prefetch', href: 'https://eu.i.posthog.com'},
+                {rel: 'dns-prefetch', href: 'https://js-eu1.hs-scripts.com'},
             ],
             meta: [
                 {name: 'msapplication-TileColor', content: '#2c0059'},

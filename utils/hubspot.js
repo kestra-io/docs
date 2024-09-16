@@ -26,6 +26,7 @@ function scriptLoad(callback) {
         } else {
             const script = document.createElement("script");
             script.src = "https://js-eu1.hsforms.net/forms/embed/v2.js";
+            script.setAttribute('defer','');
             document.body.appendChild(script);
             script.addEventListener("load", () => {
                 if (window.hbspt) {

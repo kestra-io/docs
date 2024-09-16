@@ -12,7 +12,7 @@
                                 :src="'/landing/companies/' + img.name  + '.svg'"
                                 :alt="img.name"
                                 :width="img.width"
-                                :heigth="img.heigth"
+                                :height="img.height"
                             />
                         </template>
                     </div>
@@ -21,7 +21,6 @@
         </div>
     </div>
 </template>
-
 <script>
     export default defineComponent({
 
@@ -52,9 +51,9 @@
                     { name: "accredible", width: "167px", height: "27px" },
                     { name: "merkle", width: "140px", height: "19px" },
                     { name: "renault", width: "135px", height: "33px" },
-                    { name: "dentsu", width: "83px", height: "24px" },
+                    { name: "dentsu", width: "83px", height: "19px" },
                     { name: "fila", width: "83px", height: "25px" },
-                    { name: "intersport", width: "225px", height: "33px" },
+                    { name: "intersport", width: "225px", height: "25px" },
                 ]
                     .sort(() => .5 - Math.random())
             },
