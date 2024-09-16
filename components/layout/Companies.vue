@@ -14,46 +14,7 @@
                                 :src="'/landing/companies/' + img.name  + '.svg'"
                                 :alt="img.name"
                                 :width="img.width"
-                                :heigth="img.heigth"
-                            />
-                        </template>
-                    </div>
-                    <div ref="companies" class="companies companies-list scrolling">
-                        <template v-for="(img, index) in companies" :key="index">
-                            <NuxtImg
-                                data-aos="fade-up"
-                                :class="{'inverted': inverted}"
-                                :data-aos-delay="index*50"
-                                :src="'/landing/companies/' + img.name  + '.svg'"
-                                :alt="img.name"
-                                :width="img.width"
-                                :heigth="img.heigth"
-                            />
-                        </template>
-                    </div>
-                    <div ref="companies" class="companies companies-list scrolling">
-                        <template v-for="(img, index) in companies" :key="index">
-                            <NuxtImg
-                                data-aos="fade-up"
-                                :class="{'inverted': inverted}"
-                                :data-aos-delay="index*50"
-                                :src="'/landing/companies/' + img.name  + '.svg'"
-                                :alt="img.name"
-                                :width="img.width"
-                                :heigth="img.heigth"
-                            />
-                        </template>
-                    </div>
-                    <div ref="companies" class="companies companies-list scrolling">
-                        <template v-for="(img, index) in companies" :key="index">
-                            <NuxtImg
-                                data-aos="fade-up"
-                                :class="{'inverted': inverted}"
-                                :data-aos-delay="index*50"
-                                :src="'/landing/companies/' + img.name  + '.svg'"
-                                :alt="img.name"
-                                :width="img.width"
-                                :heigth="img.heigth"
+                                :height="img.height"
                             />
                         </template>
                     </div>
@@ -65,12 +26,16 @@
 
 <script>
     export default defineComponent({
-
         props: {
             inverted: {
                 type: Boolean,
                 default: false
             }
+        },
+        data() {
+            return {
+                random: .5 - Math.random()
+            };
         },
         computed: {
             companies() {
@@ -93,11 +58,11 @@
                     { name: "accredible", width: "167px", height: "27px" },
                     { name: "merkle", width: "140px", height: "19px" },
                     { name: "renault", width: "135px", height: "33px" },
-                    { name: "dentsu", width: "83px", height: "24px" },
+                    { name: "dentsu", width: "83px", height: "19px" },
                     { name: "fila", width: "83px", height: "25px" },
-                    { name: "intersport", width: "225px", height: "33px" },
+                    { name: "intersport", width: "225px", height: "25px" },
                 ]
-                    .sort(() => .5 - Math.random())
+                    .sort(() => this.random)
             },
         }
     });

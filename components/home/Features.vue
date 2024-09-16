@@ -74,7 +74,7 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
     .container {
-        background: url("/landing/features/bg.svg") no-repeat center;
+        background: url("/landing/features/bg.webp") no-repeat center;
         background-size: 100% 100%;
         :deep(section) {
             border-bottom: $container-border;

@@ -1,5 +1,5 @@
 ---
-title: Kestra Enterprise
+title: Enterprise Edition
 editions: ["EE"]
 ---
 

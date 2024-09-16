@@ -13,6 +13,7 @@ Then, explore the following pages to start building more advanced workflows:
 - [Workflow Components](/docs/workflow-components)
 - [Concepts](/docs/concepts)
 - [Blueprints](/blueprints)
+- [Video Tutorials](/tutorial-videos)
 
 
 <div class="video-container">

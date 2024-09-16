@@ -9,16 +9,36 @@
                 </select>
             </div>
             <div class="col-xl-auto col-md-6 pb-3 pb-xl-0 order-1 order-xl-1">
-                <select class="form-select bg-dark-2" aria-label="Filter by stage" v-model="stage" @change="changeFilter">
-                    <option :value="null" disabled selected>Filter by stage</option>
-                    <option value="Getting Started">Getting Started</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Advanced">Advanced</option>
-                </select>
+                <div>
+                    <div :class="`multi-select  bg-dark-2 ${showDropdown ? 'focused' : ''}`" @click="toggleDropdown">
+                        <div class="selected-items">
+                            <span v-if="stage.length === 0">Filter by stage</span>
+                            <div v-for="(item, index) in stage" :key="index" class="selected-item">
+                                <p>{{ item }}</p>
+                                <Close @click.stop="removeItem(index)" />
+                            </div>
+                            <ChevronDown />
+                        </div>
+                    </div>
+
+                    <div class="custom-select">
+                        <ul v-if="showDropdown" class="dropdown-options">
+                            <li v-for="option in options" :key="option" @click="selectItem(option)">
+                                {{ option }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="col-xl col-md-12 pb-3 pb-xl-0 order-0 form-group order-xl-2">
+            <div :class="`col-xl col-md-${stage.length > 0 ? 6 : 12} pb-3 pb-xl-0 order-0 form-group order-xl-2`">
                 <Magnify />
                 <input type="text" class="form-control bg-dark-2" placeholder="Search guides" v-model="search">
+            </div>
+            <div class="col-xl-auto col-md-6 pb-3 pb-xl-0 order-4 order-xl-4">
+                <div class="clear-filter" @click="removeFilter" v-if="stage.length > 0">
+                    <DeleteOutline/>
+                    <span>Clear filters</span>
+                </div>
             </div>
         </div>
         <NuxtLink :href="item._path" class="col-12 col-md-6 mb-lg-4 mb-2" v-for="item in navigation" :key="item._path">
@@ -46,6 +66,10 @@
     import {hash} from "ohash";
     import {useAsyncData} from "#imports";
     import Magnify from "vue-material-design-icons/Magnify.vue";
+    import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
+    import Close from "vue-material-design-icons/Close.vue"
+    import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue"
+
 
     const props = defineProps({
         pageUrl: {
@@ -58,14 +82,37 @@
 
     const navigation = ref([]);
     const topic = ref(null);
-    const stage = ref(null);
+    const stage = ref([]);
+    const showDropdown = ref(false); // To toggle the dropdown visibility
     const search = ref("");
+    const options = ['All stages', 'Getting Started', 'Intermediate', 'Advanced']; // Dropdown options
 
     const stages = ref({
       "Getting Started": "#5A3ABC",
       "Intermediate": "#029E73",
       "Advanced": "#AB0009"
     });
+
+    const toggleDropdown = () => {
+      showDropdown.value = !showDropdown.value;
+    };
+
+    const selectItem = (option) => {
+      if (option === 'All stages') {
+        stage.value = ['Getting Started', 'Intermediate', 'Advanced']
+      } else if (!stage.value.includes(option)) {
+        stage.value = [...stage.value, option];
+      }
+      showDropdown.value = false;
+    };
+
+    const removeItem = (index) => {
+      stage.value = stage.value.filter((item, i) => i !== index);
+    };
+
+    const removeFilter = () => {
+      stage.value = [];
+    };
 
     let currentPage = null;
 
@@ -84,8 +131,11 @@
         () => {
           let query = queryContent(currentPage + "/").where({ _dir: currentPageDir });
 
-          let queryParams = {}
-          if (stage.value) {
+          let queryParams = {};
+
+          if (Array.isArray(stage.value) && stage.value.length > 0) {
+            queryParams.stage = { $in: stage.value };
+          } else if (stage.value) {
             queryParams.stage = stage.value;
           }
 
@@ -125,9 +175,10 @@
       fetchChildDocs()
     }, 1000);
 
-    watch([currentPage, search], ([pageVal, searchVal]) => {
-      debouncedFilterPlugins(pageVal, searchVal);
+    watch([currentPage, search, () => stage.value], ([pageVal, searchVal, stageVal]) => {
+      debouncedFilterPlugins(pageVal, searchVal, stageVal);
     });
+
 </script>
 
 <style lang="scss" scoped>
@@ -219,6 +270,131 @@
                 }
             }
         }
+    }
+
+    .clear-filter {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 100%;
+
+        span {
+            color: $white-3;
+        }
+
+        :deep(.material-design-icon) {
+            .material-design-icon__svg {
+                bottom: 0;
+                fill: $white-3;
+            }
+        }
+    }
+
+    .multi-select {
+        display: flex;
+        padding: 4px 40px 4px 6px;
+        border-radius: 5px;
+        position: relative;
+        border: $block-border;
+        font-size: $font-size-sm !important;
+        height:  2rem;
+        color: $white;
+        min-width: 221px;
+
+        &.focused {
+            box-shadow: 0 0 0 0.25rem rgba(132, 5, 255, 0.25);
+        }
+
+
+        .selected-items {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+
+            overflow-y: hidden;
+            overflow-x: auto;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+
+        :deep(.material-design-icon) {
+            position: absolute;
+            right: 10px;
+
+            .material-design-icon__svg {
+                bottom: 0;
+                fill: $white;
+            }
+        }
+
+        .selected-item {
+            background-color: $black-6;
+            border-radius: 4px;
+            padding: 0 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            max-height: 20px;
+            cursor: pointer;
+
+            p {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 500;
+                white-space: nowrap;
+                color: $white;
+            }
+
+            :deep(.material-design-icon) {
+                position: unset;
+                right: 0;
+
+                .material-design-icon__svg {
+                    position: unset;
+                    fill: $white;
+                }
+            }
+        }
+    }
+
+    .custom-select {
+        position: relative;
+        width: 100%;
+        top: 2px;
+    }
+
+    .dropdown-button {
+        width: 100%;
+        padding: 10px;
+        background-color: #333;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .dropdown-options {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        background-color: #444;
+        position: absolute;
+        width: 100%;
+        top: 100%;
+        z-index: 1;
+        border-radius: 5px;
+    }
+
+    .dropdown-options li {
+        padding: 10px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .dropdown-options li:hover {
+        background-color: #666;
     }
 
 </style>

@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     const response = await $fetch(`${config.public.apiUrl}/plugins/icons/${cls}`)
 
     event.node.res.setHeader('content-type', response.type)
-    event.node.res.setHeader('cache-control', "max-age=86400;")
+    event.node.res.setHeader('cache-control', "max-age=86400")
 
     const byte = (await response.text()).replaceAll("currentColor", "#CAC5DA")
 
