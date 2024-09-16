@@ -336,9 +336,8 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
+          type: string
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -493,9 +492,8 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
+          type: string
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -660,9 +658,8 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
+          type: string
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -780,9 +777,8 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
+          type: string
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -948,9 +944,8 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
+          type: string
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -1070,9 +1065,8 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
+          type: string
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -1192,9 +1186,8 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
+          type: string
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -1311,9 +1304,8 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
+          type: string
           nullable: true
-          allOf:
-          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -5932,26 +5924,16 @@ components:
       type: object
       properties:
         min:
-          $ref: "#/components/schemas/Duration"
+          type: string
         avg:
-          $ref: "#/components/schemas/Duration"
+          type: string
         max:
-          $ref: "#/components/schemas/Duration"
+          type: string
         sum:
-          $ref: "#/components/schemas/Duration"
+          type: string
         count:
           type: integer
           format: int64
-    DayOfWeek:
-      type: string
-      enum:
-      - MONDAY
-      - TUESDAY
-      - WEDNESDAY
-      - THURSDAY
-      - FRIDAY
-      - SATURDAY
-      - SUNDAY
     DocumentationWithSchema:
       type: object
       properties:
@@ -5959,25 +5941,6 @@ components:
           type: string
         schema:
           $ref: "#/components/schemas/Schema"
-    Duration:
-      type: object
-      properties:
-        units:
-          type: array
-          items:
-            $ref: "#/components/schemas/TemporalUnit"
-        positive:
-          type: boolean
-        zero:
-          type: boolean
-        negative:
-          type: boolean
-        seconds:
-          type: integer
-          format: int64
-        nano:
-          type: integer
-          format: int32
     Event_Execution_:
       type: object
       properties:
@@ -5990,7 +5953,7 @@ components:
         comment:
           type: string
         retry:
-          $ref: "#/components/schemas/Duration"
+          type: string
     Event_LogEntry_:
       type: object
       properties:
@@ -6003,7 +5966,7 @@ components:
         comment:
           type: string
         retry:
-          $ref: "#/components/schemas/Duration"
+          type: string
     ExecutableTask.SubflowId:
       required:
       - flowId
@@ -6271,9 +6234,9 @@ components:
             - oneOf:
               - $ref: "#/components/schemas/List_Object_"
               - $ref: "#/components/schemas/Map_Object.Object_"
-            - oneOf:
-              - $ref: "#/components/schemas/List_Object_"
-              - $ref: "#/components/schemas/Map_Object.Object_"
+            oneOf:
+            - $ref: "#/components/schemas/List_Object_"
+            - $ref: "#/components/schemas/Map_Object.Object_"
           variables:
             type: object
             additionalProperties: true
@@ -6864,21 +6827,6 @@ components:
         max:
           type: integer
           format: int32
-    Month:
-      type: string
-      enum:
-      - JANUARY
-      - FEBRUARY
-      - MARCH
-      - APRIL
-      - MAY
-      - JUNE
-      - JULY
-      - AUGUST
-      - SEPTEMBER
-      - OCTOBER
-      - NOVEMBER
-      - DECEMBER
     Namespace:
       required:
       - deleted
@@ -7225,14 +7173,17 @@ components:
       type: object
       properties:
         duration:
-          $ref: "#/components/schemas/Duration"
+          type: string
+          readOnly: true
         startDate:
           type: string
           format: date-time
+          readOnly: true
         endDate:
           type: string
           format: date-time
           nullable: true
+          readOnly: true
         current:
           $ref: "#/components/schemas/State.Type"
         histories:
@@ -7416,7 +7367,7 @@ components:
         retry:
           $ref: "#/components/schemas/AbstractRetry"
         timeout:
-          $ref: "#/components/schemas/Duration"
+          type: string
         disabled:
           type: boolean
         workerGroup:
@@ -7541,17 +7492,6 @@ components:
           items:
             $ref: "#/components/schemas/Task"
         deleted:
-          type: boolean
-    TemporalUnit:
-      type: object
-      properties:
-        duration:
-          $ref: "#/components/schemas/Duration"
-        durationEstimated:
-          type: boolean
-        dateBased:
-          type: boolean
-        timeBased:
           type: boolean
     Trigger:
       type: object
@@ -7682,7 +7622,7 @@ components:
         version:
           type: string
         zoneId:
-          $ref: "#/components/schemas/ZoneId"
+          type: string
         uri:
           type: string
           nullable: true
@@ -7742,98 +7682,3 @@ components:
         key:
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
-    ZoneId:
-      type: object
-      properties:
-        id:
-          type: string
-        rules:
-          $ref: "#/components/schemas/ZoneRules"
-    ZoneOffset:
-      type: object
-      allOf:
-      - $ref: "#/components/schemas/ZoneId"
-      - properties:
-          totalSeconds:
-            type: integer
-            format: int32
-          id:
-            type: string
-          rules:
-            $ref: "#/components/schemas/ZoneRules"
-    ZoneOffsetTransition:
-      type: object
-      properties:
-        instant:
-          type: string
-          format: date-time
-        dateTimeBefore:
-          type: string
-          format: date-time
-        dateTimeAfter:
-          type: string
-          format: date-time
-        offsetBefore:
-          $ref: "#/components/schemas/ZoneOffset"
-        offsetAfter:
-          $ref: "#/components/schemas/ZoneOffset"
-        duration:
-          $ref: "#/components/schemas/Duration"
-        gap:
-          type: boolean
-        overlap:
-          type: boolean
-        validOffsets:
-          type: array
-          items:
-            $ref: "#/components/schemas/ZoneOffset"
-    ZoneOffsetTransitionRule:
-      required:
-      - dayOfMonthIndicator
-      - dayOfWeek
-      - month
-      - offsetAfter
-      - offsetBefore
-      - standardOffset
-      - timeDefinition
-      type: object
-      properties:
-        month:
-          $ref: "#/components/schemas/Month"
-        dayOfMonthIndicator:
-          type: integer
-          format: int32
-        dayOfWeek:
-          $ref: "#/components/schemas/DayOfWeek"
-        localTime:
-          type: string
-          format: partial-time
-        midnightEndOfDay:
-          type: boolean
-        timeDefinition:
-          $ref: "#/components/schemas/ZoneOffsetTransitionRule.TimeDefinition"
-        standardOffset:
-          $ref: "#/components/schemas/ZoneOffset"
-        offsetBefore:
-          $ref: "#/components/schemas/ZoneOffset"
-        offsetAfter:
-          $ref: "#/components/schemas/ZoneOffset"
-    ZoneOffsetTransitionRule.TimeDefinition:
-      type: string
-      enum:
-      - UTC
-      - WALL
-      - STANDARD
-    ZoneRules:
-      type: object
-      properties:
-        fixedOffset:
-          type: boolean
-        transitions:
-          type: array
-          items:
-            $ref: "#/components/schemas/ZoneOffsetTransition"
-        transitionRules:
-          type: array
-          items:
-            $ref: "#/components/schemas/ZoneOffsetTransitionRule"
