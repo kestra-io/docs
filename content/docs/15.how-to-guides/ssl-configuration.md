@@ -1,5 +1,5 @@
 ---
-title: How to configure SSL for Kestra
+title: Configure SSL for Kestra
 icon: /docs/icons/padlock.svg
 stage: Getting Started
 topics:

@@ -1,5 +1,5 @@
 ---
-title: How to Sync Namespace Files from a Git Repository
+title: Sync Namespace Files from a Git Repository
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:

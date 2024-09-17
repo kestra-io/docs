@@ -1,5 +1,5 @@
 ---
-title: How to configure Monitoring with Grafana & Prometheus
+title: Configure Monitoring with Grafana & Prometheus
 icon: /docs/icons/grafana.svg
 stage: Intermediate
 topics:

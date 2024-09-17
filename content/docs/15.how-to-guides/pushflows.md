@@ -1,5 +1,5 @@
 ---
-title: How to Push Flows to a Git Repository
+title: Push Flows to a Git Repository
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:

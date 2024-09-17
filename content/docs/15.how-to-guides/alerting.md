@@ -1,5 +1,5 @@
 ---
-title: How to configure alerts inside of Kestra.
+title: How to Configure alerts inside of Kestra
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:

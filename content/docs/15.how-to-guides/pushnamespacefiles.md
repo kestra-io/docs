@@ -1,5 +1,5 @@
 ---
-title: How to Push Namespace Files to a Git Repository
+title: Push Namespace Files to a Git Repository
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:

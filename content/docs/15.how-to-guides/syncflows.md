@@ -1,5 +1,5 @@
 ---
-title: How to Sync Flows from a Git Repository
+title: Sync Flows from a Git Repository
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:

@@ -1,5 +1,5 @@
 ---
-title: How to make HTTP Requests inside of your flows.
+title: Make HTTP Requests inside of your flows.
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:

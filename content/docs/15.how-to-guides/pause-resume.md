@@ -1,5 +1,5 @@
 ---
-title: How to Pause and Resume Flows in Kestra
+title: Pause and Resume Flows in Kestra
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:
