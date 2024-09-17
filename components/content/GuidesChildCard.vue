@@ -89,18 +89,12 @@
       "Advanced": "#AB0009"
     });
 
-    const toggleStageDropdown = () => {
-      showStageDropdown.value = !showStageDropdown.value;
-      if (showStageDropdown.value) {
-        showTopicDropdown.value = false;
-      }
+    const toggleStageDropdown = (value = !showStageDropdown.value) => {
+      showStageDropdown.value = value;
     };
 
-    const toggleTopicDropdown = () => {
-      showTopicDropdown.value = !showTopicDropdown.value;
-      if (showTopicDropdown.value) {
-        showStageDropdown.value = false;
-      }
+    const toggleTopicDropdown = (value = !showTopicDropdown.value ) => {
+      showTopicDropdown.value = value;
     };
 
     const selectStageItem = (option) => {

@@ -34,7 +34,7 @@
       {
         serverMaxAge: 60 * 10,
         transform: (response) => ({
-          results: response.results.map(result => ({
+          results: response?.results.map(result => ({
             id: result.id,
             title: result.title,
             description: result.description,
@@ -45,7 +45,7 @@
         })
     });
 
-    stories.value = customerStories.value.results
+    stories.value = customerStories.value?.results
     totalStories.value = customerStories.value.total
   }
 

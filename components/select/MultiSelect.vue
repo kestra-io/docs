@@ -1,16 +1,20 @@
 <template>
-    <div :class="`multi-select  bg-dark-2 ${showDropdown ? 'focused' : ''}`" @click="toggleDropdown">
+    <div
+        ref="multiSelectRef"
+        :class="`multi-select  bg-dark-2 ${showDropdown ? 'focused' : ''}`"
+        @click="toggleDropdown"
+    >
         <div class="selected-items">
-            <span v-if="selectedValue?.length === 0">Filter by {{name}}</span>
+            <span v-if="selectedValue?.length === 0">Filter by {{ name }}</span>
             <div v-for="(item, index) in selectedValue" :key="index" class="selected-item">
                 <p>{{ item }}</p>
-                <Close @click.stop="removeItem(index)"/>
+                <Close @click.stop="removeItem(index)" />
             </div>
-            <ChevronDown/>
+            <ChevronDown />
         </div>
     </div>
 
-    <div class="custom-select">
+    <div class="custom-select" ref="dropdownRef">
         <ul v-if="showDropdown" class="dropdown-options">
             <li v-for="option in options" :key="option" @click="selectItem(option)">
                 {{ option }}
@@ -48,6 +52,31 @@
     showDropdown: {
       type: Boolean,
       default: false,
+    }
+  });
+
+  const multiSelectRef = ref(null);
+  const dropdownRef = ref(null);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.value && !multiSelectRef.value.contains(event.target) && !dropdownRef.value.contains(event.target)) {
+      props.toggleDropdown(false);
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+  });
+
+  onUnmounted(() => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  });
+
+  watch(() => props.showDropdown, (newVal) => {
+    if (newVal) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
     }
   });
 </script>
