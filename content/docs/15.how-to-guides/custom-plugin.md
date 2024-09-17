@@ -1,5 +1,5 @@
 ---
-title: Custom Plugin
+title: How to build a Custom Plugin for Kestra
 icon: /docs/icons/plugins.svg
 stage: Advanced
 topics:

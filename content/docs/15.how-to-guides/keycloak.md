@@ -1,5 +1,5 @@
 ---
-title: KeyCloak SSO
+title: How to configure KeyCloak SSO in Kestra
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:
@@ -7,7 +7,7 @@ topics:
 editions: ["EE"]
 ---
 
-Setup KeyCloak SSO
+Setup KeyCloak SSO to manage authentication for users.
 
 ## Start a KeyCloak service
 

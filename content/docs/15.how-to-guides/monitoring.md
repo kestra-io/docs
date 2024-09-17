@@ -1,5 +1,5 @@
 ---
-title: Monitoring with Grafana & Prometheus
+title: How to configure Monitoring with Grafana & Prometheus
 icon: /docs/icons/grafana.svg
 stage: Intermediate
 topics:
@@ -7,7 +7,7 @@ topics:
   - Best Practices
 ---
 
-Setup Prometheus and Grafana for Kestra.
+Setup Prometheus and Grafana for monitoring Kestra.
 
 We will look in detail at setting up monitoring dashboards for Kestra.
 

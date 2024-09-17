@@ -1,12 +1,12 @@
 ---
-title: Alerting 
+title: How to configure alerts inside of Kestra.
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - DevOps
 ---
 
-Configure alerts inside of Kestra.
+Configure alerts when workflow failures occurs.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/wIsbBpw3yCM?si=y0ZcPIDjLYPHnVVN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

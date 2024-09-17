@@ -1,5 +1,5 @@
 ---
-title: PushNamespaceFiles Task
+title: How to Push Namespace Files to a Git Repository
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:
@@ -8,7 +8,7 @@ topics:
 version: ">= 0.17.0"
 ---
 
-Push files in your namespace to a Git Repository.
+Push files in your namespace to a Git Repository with the PushNamespaceFiles Task.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/-bEnwR5t7VI?si=Eim8_Las9LJ5jTY6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

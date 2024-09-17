@@ -1,5 +1,5 @@
 ---
-title: PushFlows Task
+title: How to Push Flows to a Git Repository
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -8,7 +8,7 @@ topics:
 version: ">= 0.17.0"
 ---
 
-Push your Flows to a Git Repository.
+Push your Flows to a Git Repository with the PushFlows Task.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/OPlNKQZFeho?si=ZvRQfLjnhjDYk1qN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
