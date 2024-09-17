@@ -3,8 +3,7 @@ title: Parallel vs. Sequential Tasks
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python
+  - Kestra Concepts
 ---
 
 When to use parallel tasks and when to use sequential tasks in Kestra.

@@ -3,8 +3,7 @@ title: KeyCloak SSO
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python
+  - Kestra Concepts
 editions: ["EE"]
 ---
 

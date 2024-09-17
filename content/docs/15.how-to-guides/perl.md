@@ -3,8 +3,7 @@ title: Perl
 icon: /docs/icons/perl.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python
+  - Scripting
 ---
 
 Run Perl code inside of your flow.

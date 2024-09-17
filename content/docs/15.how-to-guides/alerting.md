@@ -1,6 +1,9 @@
 ---
 title: Alerting 
 icon: /docs/icons/tutorial.svg
+stage: Getting Started
+topics:
+  - DevOps
 ---
 
 Configure alerts inside of Kestra.

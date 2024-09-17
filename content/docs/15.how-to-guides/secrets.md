@@ -1,10 +1,9 @@
 ---
 title: Secrets
 icon: /docs/icons/tutorial.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
-  - DevOps
-  - Python
+  - Kestra Concepts
 ---
 
 How you can use secrets in various Kestra use cases.

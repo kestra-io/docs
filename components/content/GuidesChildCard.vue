@@ -81,7 +81,7 @@
     const showTopicDropdown = ref(false);
     const search = ref("");
     const stageOptions = ['Getting Started', 'Intermediate', 'Advanced'];
-    const topicOptions = ['DevOps', 'Python'];
+    const topicOptions = ['Scripting', 'DevOps', 'Integrations', 'Version Control', 'Kestra Workflow Components', 'Kestra Concepts', 'Best Practices'];
 
     const stages = ref({
       "Getting Started": "#5A3ABC",

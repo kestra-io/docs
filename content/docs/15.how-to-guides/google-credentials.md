@@ -3,8 +3,8 @@ title: Google Service Accounts
 icon: /docs/icons/gcp-compute.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python 
+  - Integrations
+  - Best Practices
 ---
 
 Setup a Google Service Account inside of Kestra.

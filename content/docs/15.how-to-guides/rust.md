@@ -3,8 +3,7 @@ title: Rust
 icon: /docs/icons/rust.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python
+  - Scripting
 ---
 
 Run Rust code inside of your flow.

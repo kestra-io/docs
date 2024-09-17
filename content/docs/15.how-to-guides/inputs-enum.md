@@ -3,8 +3,7 @@ title: Validate Inputs with Enum Data Type
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python 
+  - Kestra Workflow Components
 ---
 
 Input validation with the Enum data type

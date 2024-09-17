@@ -1,10 +1,9 @@
 ---
 title: SSL Configuration
 icon: /docs/icons/padlock.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
-  - DevOps
-  - Python
+  - Kestra Concepts
 ---
 Configure secure access via https to the Kestra UI.
 

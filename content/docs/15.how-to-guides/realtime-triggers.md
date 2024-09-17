@@ -1,10 +1,9 @@
 ---
 title: Realtime Triggers
 icon: /docs/icons/plugins.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
-  - DevOps
-  - Python
+  - Kestra Workflow Components
 version: ">= 0.17.0"
 ---
 

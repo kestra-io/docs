@@ -3,8 +3,7 @@ title: Ruby
 icon: /docs/icons/ruby.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python
+  - Scripting
 ---
 
 Run Ruby code inside of your flow.

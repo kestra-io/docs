@@ -1,10 +1,9 @@
 ---
 title: Multiple Condition Listener
 icon: /docs/icons/tutorial.svg
-stage: Getting Started 
+stage: Intermediate
 topics:
-  - DevOps
-  - Python
+  - Kestra Workflow Components
 ---
 
 Use multiple condition listeners together.

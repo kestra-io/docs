@@ -1,10 +1,9 @@
 ---
 title: Synchronous Executions API
 icon: /docs/icons/tutorial.svg
-stage: Getting Started 
+stage: Intermediate
 topics:
-  - DevOps
-  - Python
+  - Integrations
 ---
 
 Manage the Executions API Synchronously.

@@ -1,10 +1,10 @@
 ---
 title: Custom Plugin
 icon: /docs/icons/plugins.svg
-stage: Intermediate
+stage: Advanced
 topics:
+  - Kestra Concepts 
   - DevOps
-  - Python 
 ---
 
 Build your own Custom Plugin for Kestra.

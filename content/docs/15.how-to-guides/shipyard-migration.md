@@ -3,8 +3,7 @@ title: Migrate from Shipyard
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python
+  - Best Practices
 ---
 
 Migrate from Shipyard to Kestra.

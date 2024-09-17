@@ -3,8 +3,7 @@ title: Julia
 icon: /docs/icons/julia.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python 
+  - Scripting 
 ---
 
 Run Julia code inside of your flow.

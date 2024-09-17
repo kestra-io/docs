@@ -3,8 +3,7 @@ title: Webhooks
 icon: /docs/icons/webhook.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python
+  - Integrations
 ---
 
 How to use a webhook to trigger a flow.

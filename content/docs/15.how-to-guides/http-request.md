@@ -3,8 +3,7 @@ title: HTTP Requests
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python 
+  - Integrations
 ---
 
 How to make HTTP Requests inside of your flows.

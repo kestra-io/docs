@@ -3,8 +3,7 @@ title: Python
 icon: /docs/icons/python.svg
 stage: Getting Started 
 topics:
-  - DevOps
-  - Python
+  - Scripting
 ---
 
 Run Python code inside of your flow.

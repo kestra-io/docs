@@ -3,12 +3,12 @@ title: Secrets from a Helm Chart
 icon: /docs/icons/helm.svg
 stage: Getting Started 
 topics:
+  - Kestra Concepts
   - DevOps
-  - Python
 editions: ["OSS"]
 ---
 
-This page describes how you can add Kestra Secrets to your Helm Chart deployment.
+How you can add Kestra Secrets to your Helm Chart deployment.
 
 ::alert{type="info"}
 Note that this page is only relevant for the Open-Source edition of Kestra. For the Enterprise Edition, you can use the built-in [Secrets](../06.enterprise/secrets.md) functionality allowing you to securely store your secrets in an [external secret manager](../06.enterprise/secrets-manager.md) of your choice.

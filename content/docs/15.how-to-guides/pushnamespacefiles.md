@@ -3,8 +3,8 @@ title: PushNamespaceFiles Task
 icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:
+  - Version Control
   - DevOps
-  - Python
 version: ">= 0.17.0"
 ---
 
