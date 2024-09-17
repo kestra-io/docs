@@ -39,6 +39,21 @@ export default defineNuxtPlugin(nuxtApp => {
         };
 
         const enabledMarketing = () => {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.cr-relay.com/v1/site/a52e9652-1bdf-4c6b-9ef0-06edf432aeef/signals.js';
+            script.async = true;
+            window.signals = Object.assign(
+                [],
+                ['page', 'identify', 'form'].reduce(function (acc, method){
+                    acc[method] = function () {
+                        signals.push([method, arguments]);
+                        return signals;
+                    };
+                    return acc;
+                }, {})
+            );
+            document.head.appendChild(script);
+
             return cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js',{defer: "defer"});
         };
 
