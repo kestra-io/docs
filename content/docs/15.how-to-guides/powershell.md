@@ -1,5 +1,5 @@
 ---
-title: PowerShell
+title: Run Powershell inside of your Flows
 icon: /docs/icons/powershell.svg
 stage: Getting Started 
 topics:

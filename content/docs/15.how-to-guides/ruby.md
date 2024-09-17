@@ -1,12 +1,12 @@
 ---
-title: Ruby
+title: How to Ruby
 icon: /docs/icons/ruby.svg
 stage: Getting Started 
 topics:
   - Scripting
 ---
 
-Run Ruby code inside of your flow.
+Run Ruby code directly inside of your Flows and generate outputs.
 
 Ruby is well known for web development but has many other powerful use cases too, such as automation, web scraping, data processing and command-line tools. With Kestra, you can effortlessly automate data ingestion, as well as manage complex automations. Kestra's robust orchestration capabilities ensure that your Ruby scripts run smoothly and efficiently, streamlining your data-driven projects.
 

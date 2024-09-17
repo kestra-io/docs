@@ -4,6 +4,7 @@ icon: /docs/icons/tutorial.svg
 stage: Getting Started 
 topics:
   - Kestra Concepts
+  - Version Control
 ---
 
 Use revision history to rollback to an older version of a flow.

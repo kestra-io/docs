@@ -1,12 +1,12 @@
 ---
-title: Perl
+title: Run Perl inside of your Flows
 icon: /docs/icons/perl.svg
 stage: Getting Started 
 topics:
   - Scripting
 ---
 
-Run Perl code inside of your flow.
+Run Perl code directly inside of your Flows and generate outputs.
 
 There isn't an official Perl plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside of a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language.
 

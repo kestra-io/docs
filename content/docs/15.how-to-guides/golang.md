@@ -1,12 +1,12 @@
 ---
-title: Go
+title: Run Go inside of your Flows
 icon: /docs/icons/golang.svg
 stage: Getting Started 
 topics:
   - Scripting
 ---
 
-Run Go code inside of your flow.
+Run Go code directly inside of your Flows and generate outputs.
 
 Go is a powerful programming language often used for cloud-native development, CLI utilities and more. As Go is complied, it's often much more performant than Python making it a great alternative for heavy compute workloads. Combining Go's and Kestra's performance, you can build incredibly fast workflows.
 

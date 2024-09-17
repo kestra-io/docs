@@ -1,12 +1,12 @@
 ---
-title: Shell Script
+title: Run Shell scripts inside of your Flows
 icon: /docs/icons/bash.svg
 stage: Getting Started 
 topics:
   - Scripting
 ---
 
-Run shell script inside of your flow.
+Run Shell scripts directly inside of your Flows and generate outputs.
 
 You can execute bash script inside of a flow by either writing your Shell commands inline or by executing a `.sh` file. You can get outputs and metrics from your Shell script too.
 
