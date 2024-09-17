@@ -180,7 +180,7 @@ To reproduce this example, make sure you have Kestra installed. You can follow t
 
 To use Kestra for our purpose, click on **Namespaces** > **Tutorial**:
 
-![Namespaces in Kestra - by Federico Trotta](/blogs/2024-09-18-what-is-an-orchestrator/company.png)
+![Namespaces in Kestra - by Federico Trotta](/blogs/2024-09-18-what-is-an-orchestrator/tutorial.png)
 
 Under **Editor**, click on **Create file** and give it a name and an extension. For example, let's call it `process_data.py`:
 
@@ -231,7 +231,7 @@ errors:
 
 When you've done, click on **Execute**: you'll be asked to load the CSV file containing the data. When the job is done, in the logs section you'll see the results:
 
-![results.png](/blogs/2024-09-18-what-is-an-orchestrator/result.png)
+![results.png](/blogs/2024-09-18-what-is-an-orchestrator/results.png)
 
 As you can see:
 - The YAML is shorter and simpler than the one used for GitHub Actions.
