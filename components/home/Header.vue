@@ -9,7 +9,7 @@
                     <br>and Govern them as Code and from the UI.</p>
                 <div class="buttons">
                     <NuxtLink
-                        href="/docs/getting-started"
+                        href="/docs/getting-started/quickstart#start-kestra"
                         class="btn btn-animated btn-purple-animated me-2 mb-2"
                     >
                         <NuxtImg

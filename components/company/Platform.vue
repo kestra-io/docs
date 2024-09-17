@@ -9,7 +9,7 @@
                             Hundreds of organizations have already experienced significant productivity gains since adopting Kestra in their business-critical production workflows, validating the transformative power of our solution.
                         </p>
                         <p data-aos="fade-right" class="mt-3">
-                            <a href="https://kestra.io/docs/getting-started">Get started</a> today and see how Kestra can help you build reliable workflows.
+                            <a href="https://kestra.io/docs/getting-started/quickstart#start-kestra">Get started</a> today and see how Kestra can help you build reliable workflows.
                         </p>
                     </div>
                 </div>

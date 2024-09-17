@@ -185,7 +185,7 @@ export default {
             },
             {
                 text: "Get started",
-                href: "/docs/getting-started",
+                href: "/docs/getting-started/quickstart#start-kestra",
                 style: "btn-animated btn-purple-animated",
             },
         ],

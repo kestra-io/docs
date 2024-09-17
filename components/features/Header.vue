@@ -21,7 +21,7 @@
               </NuxtLink>
 
               <NuxtLink
-                href="/docs/getting-started"
+                href="/docs/getting-started/quickstart#start-kestra"
                 class="btn btn-animated btn-purple-animated mt-2"
                 data-aos="zoom-in"
               >

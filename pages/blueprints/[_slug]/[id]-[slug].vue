@@ -21,7 +21,7 @@
                 title="New to Kestra?"
                 subtitle="Use blueprints to kickstart your first workflows."
                 purpleButtonText="Get started with Kestra"
-                purpleButtonHref="/docs/getting-started"
+                purpleButtonHref="/docs/getting-started/quickstart#start-kestra"
             />
         </div>
     </div>
