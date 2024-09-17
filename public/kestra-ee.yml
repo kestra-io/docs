@@ -7839,26 +7839,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/tenants/users/{id}/refresh-token:
-    delete:
-      tags:
-      - Users
-      summary: Delete a user refresh token
-      operationId: deleteRefreshToken
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteRefreshToken 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiUser"
   /api/v1/tenants/users/{id}/set-superadmin:
     put:
       tags:
@@ -9040,31 +9020,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/tenants/{ressourceTenant}/users/{id}/refresh-token:
-    delete:
-      tags:
-      - Users
-      summary: Delete a user refresh token
-      operationId: deleteRefreshToken_1
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      - name: ressourceTenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteRefreshToken_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiUser"
   /api/v1/tenants/{ressourceTenant}/users/{id}/set-superadmin:
     put:
       tags:
@@ -9948,26 +9903,6 @@ paths:
       responses:
         "200":
           description: index_20 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiUser"
-  /api/v1/users/{id}/refresh-token:
-    delete:
-      tags:
-      - Users
-      summary: Delete a user refresh token
-      operationId: deleteRefreshToken_2
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteRefreshToken_2 200 response
           content:
             application/json:
               schema:
@@ -19077,31 +19012,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/{tenant}/tenants/users/{id}/refresh-token:
-    delete:
-      tags:
-      - Users
-      summary: Delete a user refresh token
-      operationId: deleteRefreshToken_3
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteRefreshToken_3 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiUser"
   /api/v1/{tenant}/tenants/users/{id}/set-superadmin:
     put:
       tags:
@@ -20483,36 +20393,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-  /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/refresh-token:
-    delete:
-      tags:
-      - Users
-      summary: Delete a user refresh token
-      operationId: deleteRefreshToken_4
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      - name: ressourceTenant
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteRefreshToken_4 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiUser"
   /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/set-superadmin:
     put:
       tags:
@@ -21592,31 +21472,6 @@ paths:
       responses:
         "200":
           description: index_41 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiUser"
-  /api/v1/{tenant}/users/{id}/refresh-token:
-    delete:
-      tags:
-      - Users
-      summary: Delete a user refresh token
-      operationId: deleteRefreshToken_5
-      parameters:
-      - name: id
-        in: path
-        description: The user id
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteRefreshToken_5 200 response
           content:
             application/json:
               schema:
