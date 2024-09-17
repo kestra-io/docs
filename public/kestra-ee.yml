@@ -2583,13 +2583,6 @@ paths:
           type: integer
           format: int32
           nullable: true
-      - name: scheduleDate
-        in: query
-        description: Schedule the flow on a specific date
-        schema:
-          type: string
-          format: date-time
-          nullable: true
       requestBody:
         content:
           multipart/form-data:
@@ -12788,13 +12781,6 @@ paths:
         schema:
           type: integer
           format: int32
-          nullable: true
-      - name: scheduleDate
-        in: query
-        description: Schedule the flow on a specific date
-        schema:
-          type: string
-          format: date-time
           nullable: true
       - name: tenant
         in: path
@@ -23082,7 +23068,6 @@ components:
       - originalId
       - outputs
       - parentId
-      - scheduleDate
       - state
       - taskRunList
       - trigger
@@ -23127,10 +23112,6 @@ components:
           type: boolean
         metadata:
           $ref: "#/components/schemas/ExecutionMetadata"
-        scheduleDate:
-          type: string
-          format: date-time
-          nullable: true
     ExecutionController.EvalResult:
       type: object
       properties:
