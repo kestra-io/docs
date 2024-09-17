@@ -1,12 +1,12 @@
 ---
 title: "How Orchestration Can Optimize Your Engineering Processes"
 description: "Learn what an orchestrator is and why you should use it"
-date: 2024-09-16T15:00:00
+date: 2024-09-18T15:00:00
 category: Solutions
 author:
   name: Federico Trotta
   image: "ftrotta"
-image: /blogs/2024-09-16-what-is-an-orchestrator.jpg
+image: /blogs/2024-09-18-what-is-an-orchestrator.jpg
 ---
 
 If you're an engineer looking to scale your automation - maybe because your company is growing rapidly — then this article is definitely for you.
@@ -37,7 +37,7 @@ What's the difference between automation and orchestration? These two concepts a
 In essence, while automation focuses on individual tasks, orchestration ensures all those tasks are arranged and managed within a broader, cohesive system. This matters if you need to reliably handle complex processes with many interdependent steps.
 
 
-![Orchestration vs Automation Diagram by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/automation_orchestration.png)
+![Orchestration vs Automation Diagram by Federico Trotta](/blogs/2024-09-18-what-is-an-orchestrator/automation_orchestration.png)
 
 To explain the difference even further, let’s look at some practical examples.
 
@@ -180,11 +180,11 @@ To reproduce this example, make sure you have Kestra installed. You can follow t
 
 To use Kestra for our purpose, click on **Namespaces** > **Tutorial**:
 
-![Namespaces in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/company.png)
+![Namespaces in Kestra - by Federico Trotta](/blogs/2024-09-18-what-is-an-orchestrator/company.png)
 
 Under **Editor**, click on **Create file** and give it a name and an extension. For example, let's call it `process_data.py`:
 
-![Adding a new file in Kestra - by Federico Trotta](/blogs/2024-09-16-what-is-an-orchestrator/new_file.png)
+![Adding a new file in Kestra - by Federico Trotta](/blogs/2024-09-18-what-is-an-orchestrator/new_file.png)
 
 
 Now, in **Flows** click on **Create** and fill in the YAML file as follows:
@@ -231,7 +231,7 @@ errors:
 
 When you've done, click on **Execute**: you'll be asked to load the CSV file containing the data. When the job is done, in the logs section you'll see the results:
 
-![results.png](/blogs/2024-09-16-what-is-an-orchestrator/result.png)
+![results.png](/blogs/2024-09-18-what-is-an-orchestrator/result.png)
 
 As you can see:
 - The YAML is shorter and simpler than the one used for GitHub Actions.
