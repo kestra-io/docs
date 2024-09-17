@@ -54,7 +54,7 @@ export default defineNuxtConfig({
 
     content: {
         navigation: {
-            fields: ['hideSidebar'],
+            fields: ['hideSidebar', 'hideSubMenus'],
         },
         documentDriven: false,
         highlight: {

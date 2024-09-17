@@ -1,6 +1,10 @@
 ---
 title: Handling null and undefined values
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 ---
 
 How to use the null coalescing operator to handle null and undefined values.

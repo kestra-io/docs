@@ -1,6 +1,10 @@
 ---
 title: Multiple Condition Listener
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 ---
 
 Use multiple condition listeners together.

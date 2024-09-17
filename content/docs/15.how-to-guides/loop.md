@@ -1,6 +1,10 @@
 ---
 title: Loop Over a List of Values
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 ---
 
 How to to iterate over a list of values in your flow.

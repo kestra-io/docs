@@ -1,6 +1,10 @@
 ---
 title: PowerShell
 icon: /docs/icons/powershell.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 ---
 
 Run PowerShell code inside of your flow.

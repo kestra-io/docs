@@ -1,9 +1,11 @@
 ---
 title: How-to Guides
 icon: /docs/icons/tutorial.svg
+hideSubMenus: true
 ---
 
-Guides covering various use cases step by step.
+Learn Kestra with our guides. 
+Adjust the filters based on your needs or search directly.
 
-::ChildCard
+::GuidesChildCard
 ::

@@ -1,6 +1,10 @@
 ---
 title: Conditional Branching
 icon: /docs/icons/tutorial.svg
+stage: Advanced
+topics:
+  - DevOps
+  - Python 
 ---
 
 How to use the Switch task to branch the flow based on a value.

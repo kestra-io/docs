@@ -1,6 +1,11 @@
 ---
 title: Shell Script
 icon: /docs/icons/bash.svg
+stage: Intermediate 
+topics:
+  - Test
+  - DevOps
+  - Python
 ---
 
 Run shell script inside of your flow.

@@ -1,6 +1,10 @@
 ---
 title: Go
 icon: /docs/icons/golang.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python 
 ---
 
 Run Go code inside of your flow.

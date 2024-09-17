@@ -1,6 +1,10 @@
 ---
 title: R
 icon: /docs/icons/r.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python
 ---
 
 Run R code inside of your flow.

@@ -1,6 +1,10 @@
 ---
 title: Google Sheets
 icon: /docs/icons/gsheets.svg
+stage: Getting Started 
+topics:
+  - DevOps
+  - Python 
 ---
 
 Learn step-by-step how to read data from a Google Sheet inside of a Kestra flow.
