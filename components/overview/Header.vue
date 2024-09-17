@@ -16,7 +16,7 @@
                                 Talk to Us
                             </NuxtLink>
                             <NuxtLink
-                                href="/docs/getting-started"
+                                href="/docs/getting-started/quickstart#start-kestra"
                                 class="btn text-white btn-animated btn-purple-animated mb-2"
                                 data-aos="zoom-in"
                             >

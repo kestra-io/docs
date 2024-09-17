@@ -15,7 +15,7 @@
                             <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
                                 Talk to Us
                             </NuxtLink>
-                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                            <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Get started
                             </NuxtLink>
                         </div>

@@ -140,7 +140,7 @@
                  15,000+ engineers trust Kestra to declartively build their workflows. Be the next!
                 </p>
                 <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3">
-                    <NuxtLink href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                    <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
                         Get started
                     </NuxtLink>
                     <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">

@@ -396,7 +396,7 @@
 
                         <NuxtLink @click="globalClick(true)"
                             class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-animated btn-purple-animated btn-sm get-started"
-                            href="/docs/getting-started">
+                            href="/docs/getting-started/quickstart#start-kestra">
                             <span>
                                 <Flash class="d-none d-xl-inline-flex"/>
                                 Get Started

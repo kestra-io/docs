@@ -52,7 +52,7 @@
                                 <li class="mb-2"><NuxtLink href="/docs">Documentation</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/plugins">Plugins</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/blueprints">Blueprints</NuxtLink></li>
-                                <li class="mb-2"><NuxtLink href="/docs/getting-started">Getting Started</NuxtLink></li>
+                                <li class="mb-2"><NuxtLink href="/docs/getting-started/quickstart#start-kestra">Getting Started</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/docs/administrator-guide">Administrator Guide</NuxtLink></li>
                                 <li class="mb-2"><NuxtLink href="/faq">FAQ</NuxtLink></li>
                             </ul>

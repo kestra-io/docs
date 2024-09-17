@@ -2,7 +2,7 @@
     <div>
         <Head>
             <Title>Kestra API First Design</Title>
-            <Meta name="description" content="interact with every aspect of the Kestra programmatically." />
+            <Meta name="description" content="interact with every aspect of Kestra programmatically." />
         </Head>
         <FeaturesApifirstHeader />
         <NuxtLazyHydrate when-visible>
@@ -21,7 +21,7 @@
             <LayoutFooterContact
                 title="Getting Started with Declarative Orchestration"
                 darkButtonText="Get started"
-                darkButtonHref="/docs/getting-started"
+                darkButtonHref="/docs/getting-started/quickstart#start-kestra"
                 purpleButtonText="Talk to us"
                 purpleButtonHref="/demo"
             />

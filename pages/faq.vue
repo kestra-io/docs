@@ -78,14 +78,14 @@
             <h2 data-aos="zoom-in" class="mt-5">Getting Started</h2>
             <CustomDetails title="How do I get started with Kestra?">
                 <p>To get started with Kestra, follow the
-                    <NuxtLink href="/docs/getting-started">Getting Started Guide</NuxtLink>
+                    <NuxtLink href="/docs/getting-started/quickstart#start-kestra">Getting Started Guide</NuxtLink>
                     on the Kestra website. This guide will walk you through the installation and configuration process,
                     as well as provide an introduction to creating your first flows and tasks.
                 </p>
             </CustomDetails>
             <CustomDetails title="How to install Kestra?">
                 <p>Kestra is designed to be easy to install and set up. The installation process involves following the
-                    <NuxtLink href="/docs/getting-started/">official documentation</NuxtLink>
+                    <NuxtLink href="/docs/getting-started/quickstart#start-kestra">official documentation</NuxtLink>
                     , which provides step-by-step instructions on how to get started with Kestra on various platforms,
                     including Docker, Kubernetes, and Helm. We are also available on our <a target="_blank"
                                                                                             href="/slack">Slack

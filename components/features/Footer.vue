@@ -9,7 +9,7 @@
           <div
             class="d-flex gap-2 flex-wrap justify-content-center align-items-center"
           >
-            <NuxtLink href="/docs/getting-started">
+            <NuxtLink href="/docs/getting-started/quickstart#start-kestra">
               <button class="btn btn-dark mx-2 mt-2">Get Started</button>
             </NuxtLink>
             <NuxtLink href="/demo">
