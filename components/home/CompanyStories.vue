@@ -45,8 +45,11 @@
         })
     });
 
-    stories.value = customerStories.value?.results
-    totalStories.value = customerStories.value.total
+    if (customerStories && customerStories.value) {
+        stories.value = customerStories.value?.results
+        totalStories.value = customerStories.value.total
+    }
+
   }
 
   await fetchStories({currentPage: 1, itemsPerPage: 3})
