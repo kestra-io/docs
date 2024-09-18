@@ -94,7 +94,7 @@
         color: $white;
         max-width: 221px;
         flex-wrap: wrap;
-
+        cursor: pointer;
 
         @include media-breakpoint-down(sm) {
             max-width: 100%;
@@ -169,16 +169,18 @@
             margin: 0;
             background-color: #444;
             position: absolute;
-            width: 100%;
+            width: max-content;
+            min-width: 100%;
             top: 100%;
             z-index: 1;
             border-radius: 5px;
+            overflow: hidden;
 
             li {
-                padding: 10px;
+                padding: 2px 4px;
                 color: white;
                 cursor: pointer;
-
+                font-size: $font-size-sm !important;
                 &:hover {
                     background-color: #666;
                 }
