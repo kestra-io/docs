@@ -22,7 +22,7 @@
     const showAnnounce = ref(false);
     const route = useRoute();
 
-    const {data: bannerMessages} = await useAsyncData(
+    const {data: bannerMessages} = await useCachedAsyncData(
         `header-annonces`,
         () => {
             return $fetch(`${config.public.apiUrl}/banner-messages`);
@@ -44,9 +44,7 @@
         }
     }
 
-    onMounted(() => {
-        checkDisplayingAnnounce(content.value, route.path);
-    });
+    checkDisplayingAnnounce(content.value, route.path);
 
     watch([() => route.path, content], ([newPath, newContent]) => {
         checkDisplayingAnnounce(newContent, newPath)
