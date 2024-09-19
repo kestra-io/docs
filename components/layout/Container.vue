@@ -204,8 +204,6 @@
   useContentHead(page);
 
   const {description, title} = page;
-  console.log('window.location.host', `${origin}${route.path}`)
-
     useHead({
       meta: [
         {property: 'og:title', content: title},
