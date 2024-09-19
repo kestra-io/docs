@@ -1,6 +1,6 @@
 const DEFAULT_KESTRA_API_URL = 'https://api.kestra.io/v1';
 export default defineNuxtConfig({
-    modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-gtag', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots'],
+    modules: ['@nuxt/devtools', '@nuxt/content', '@nuxt/image', '@nuxtjs/sitemap', 'nuxt-gtag', 'nuxt-multi-cache', 'vue3-carousel-nuxt', 'nuxt-lazy-hydrate', '@nuxtjs/robots', 'nuxt-aos'],
     target: 'server',
     image: {
         formats: {
@@ -288,6 +288,11 @@ export default defineNuxtConfig({
         data: {
             enabled: true,
         },
+    },
+
+    aos: {
+        offset: 0, // offset (in px) from the original trigger point
+        once: false, // whether animation should happen only once - while scrolling down
     },
 
     devtools: {

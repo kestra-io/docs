@@ -52,7 +52,6 @@
                     height="785"
                     densities="x1 x2"
                     sizes="320px xs:640px lg:1034px"
-                    data-aos="zoom-in"
                 />
             </div>
             <div class="companies-background">
