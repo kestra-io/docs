@@ -57,6 +57,8 @@ export default defineNuxtPlugin(nuxtApp => {
             return cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js',{defer: "defer"});
         };
 
+        document.documentElement.classList.add('cc--darkmode');
+
         cookieConsent.run({
             mode: isEurope ? 'opt-in' : 'opt-out',
             manageScriptTags: true,
@@ -93,8 +95,8 @@ export default defineNuxtPlugin(nuxtApp => {
                 translations: {
                     en: {
                         consentModal: {
-                            title: 'I use cookies',
-                            description: 'Hi, this website uses analytics & marketing cookies to understand how you interact with it to continuously improve your user experience. <a aria-label="Cookie policy" class="cc-link" href="/cookie-policy">Read more</a>',
+                            title: 'We use cookies',
+                            description: 'Hi, this website uses analytics & marketing cookies to understand how you interact with it to continuously improve your user experience. <a aria-label="Cookie policy" class="cc-link" href="/cookie-policy">Read our cookie policy</a>',
                             acceptAllBtn: 'Accept',
                             showPreferencesBtn: 'Settings'
                         },

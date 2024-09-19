@@ -52,6 +52,7 @@
                     height="785"
                     densities="x1 x2"
                     sizes="320px xs:640px lg:1034px"
+                    alt="Unified Orchestration Platform in an All-Inclusive Dashboard"
                 />
             </div>
             <div class="companies-background">
