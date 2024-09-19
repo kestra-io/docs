@@ -3,6 +3,7 @@
         <div class="announce">
             <div class="alert alert-primary">
                 <Carousel
+                    :autoplay="4500"
                     :wrap-around="true"
                     :transition="2000"
                     v-model="currentSlide"
@@ -81,7 +82,8 @@
             backdrop-filter: blur(0.625rem);
             background-color: rgba(17, 17, 19, 0.65);
             color: var(--bs-white);
-            padding: calc($spacer * 0.938) 0.5rem;
+            padding-left: calc($spacer * 0.938) 0.5rem;
+            padding-right: calc($spacer * 0.938) 0.5rem;
             border-bottom: $block-border;
             margin-bottom: 0;
             position: relative;
@@ -91,7 +93,8 @@
             height: 3rem;
 
             @include media-breakpoint-down(sm) {
-                padding: calc($spacer / 2);
+                padding-right: calc($spacer / 2);
+                padding-left: calc($spacer / 2);
             }
 
             &::after {
