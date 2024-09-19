@@ -252,12 +252,12 @@
             h3 {
                 color: $white;
                 font-family: $font-family-sans-serif;
-                font-size: calc($font-size-base * 3.125);
+                font-size: calc($font-size-base * 3.125) ;
                 font-style: normal;
                 font-weight: 300;
                 line-height: calc($spacer * 3.375);
-                @include media-breakpoint-down(sm) {
-                    font-size: calc($font-size-base * 1.625);
+                @include media-breakpoint-down(lg) {
+                    font-size: calc($font-size-base * 2.125) !important;
                     line-height: calc($spacer * 2);
                 }
             }
@@ -468,9 +468,6 @@
 
                 .img-container {
                     height: calc($spacer * 31.3);
-                    img {
-                        height: 100%;
-                    }
                 }
 
                 @include media-breakpoint-down(xxl) {
@@ -496,10 +493,7 @@
 
                 @include media-breakpoint-down(md) {
                     .img-container {
-                        height: calc($spacer * 29.4);
-                        img {
-                            width: 100%;
-                        }
+                        height: auto;
                     }
                 }
             }
@@ -509,9 +503,6 @@
 
                 .img-container {
                     height: calc($spacer * 41.2);
-                    img {
-                        height: 100%;
-                    }
 
                     @include media-breakpoint-down(xxl) {
                         height: calc($spacer * 35.4);
@@ -530,11 +521,8 @@
                     }
 
                     @include media-breakpoint-down(md) {
-                        height: calc($spacer * 33.4);
+                        height: auto;
                         width: 100%;
-                        img {
-                            width: 100%;
-                        }
                     }
                 }
 
@@ -554,9 +542,6 @@
 
                 .img-container {
                     height: calc($spacer * 19.1);
-                    img {
-                        height: 100%;
-                    }
 
                     @include media-breakpoint-down(xl) {
                         height: calc($spacer * 15.7);
@@ -567,11 +552,8 @@
                     }
 
                     @include media-breakpoint-down(md) {
-                        height: calc($spacer * 17.8);
+                        height: auto;
                         width: 100%;
-                        img {
-                            width: 100%;
-                        }
                     }
                 }
 
@@ -587,9 +569,6 @@
 
                 .img-container {
                     height: calc($spacer * 29.7);
-                    img {
-                        height: 100%;
-                    }
                 }
 
                 @include media-breakpoint-down(xxl) {
@@ -614,11 +593,8 @@
 
                 @include media-breakpoint-down(md) {
                     .img-container {
-                        height: calc($spacer * 23.8);
+                        height: auto;
                         width: 100%;
-                        img {
-                            width: 100%;
-                        }
                     }
                 }
 
