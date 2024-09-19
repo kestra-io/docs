@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <Section :subtitle="title || undefined" :title="title ? undefined : 'Get Kestra updates'">
+        <Section :subtitle="props.title || undefined" :title="props.title ? undefined : 'Get Kestra updates'">
             <div class="row">
                 <template v-for="blog in blogs">
                     <div class="col-md-4 mb-4">
@@ -26,7 +26,16 @@
     </div>
 </template>
 <script setup>
-    const {data: blogs} = await useCachedAsyncData(
+    import Section from './Section.vue';
+
+    const props = defineProps({
+        title: {
+            type: String,
+            required: true
+        },
+    })
+
+    const {data: blogs} = await useAsyncData(
         `layout-blog`,
         () => queryContent("/blogs/")
             .sort({ date: -1 })
@@ -38,19 +47,6 @@
         }
     );
 
-</script>
-<script>
-    import Section from './Section.vue';
-
-    export default {
-        components: {Section},
-        props: {
-            title: {
-                type: String,
-                default: undefined,
-            },
-        },
-    }
 </script>
 
 <style lang="scss" scoped>

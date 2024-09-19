@@ -3,11 +3,8 @@
         <div class="card" data-aos="fade-right">
             <div class="card-body p-0 d-flex flex-column justify-content-between ">
                 <div>
-                    <NuxtImg
+                    <img
                         loading="lazy"
-                        format="webp"
-                        quality="80"
-                        densities="x1 x2"
                         :src="story.featuredImage"
                         :alt="`${story.title} image`"
                         class="card-img-top"
