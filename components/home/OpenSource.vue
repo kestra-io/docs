@@ -5,28 +5,28 @@
                 subtitle="Join the community"
             >
                 <div class="metrics">
-                    <div class="counter-box text-center">
+                    <div class="counter-box text-center" data-aos="fade-up" data-aos-delay="50">
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="github ? github.stargazers : 0" :duration="4000"></CountTo>
                         </h5>
                         <p>Stars</p>
                     </div>
                     <div class="line-separator"></div>
-                    <div class="counter-box text-center">
+                    <div class="counter-box text-center" data-aos="fade-up" data-aos-delay="100">
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.forks : 0" :duration="4000"></CountTo>
                         </h5>
                         <p>Forks</p>
                     </div>
                     <div class="line-separator"></div>
-                    <div class="counter-box text-center">
+                    <div class="counter-box text-center" data-aos="fade-up" data-aos-delay="150">
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.pullRequests : 0" :duration="4000"></CountTo>
                         </h5>
                         <p>Pull Requests</p>
                     </div>
                     <div class="line-separator"></div>
-                    <div class="counter-box text-center">
+                    <div class="counter-box text-center" data-aos="fade-up" data-aos-delay="200">
                         <h5 class="mb-0 mt-2">
                             <CountTo :endVal="metrics ? metrics.contributors : 0" :duration="4000"></CountTo>
                         </h5>

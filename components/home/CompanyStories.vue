@@ -8,7 +8,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mt-2">
-                    <NuxtLink class="btn btn-animated btn-purple-animated" href="/use-cases/stories">See all stories</NuxtLink>
+                    <NuxtLink class="btn btn-animated btn-purple-animated" href="/use-cases/stories" data-aos="zoom-in">See all stories</NuxtLink>
                 </div>
             </div>
         </Section>

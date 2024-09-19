@@ -12,7 +12,7 @@
         <NuxtImg width="264px" height="43px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/g-cloud.svg" alt="g-cloud" />
         <NuxtImg width="162px" height="41px" loading="lazy" format="webp" data-aos="fade-up" data-aos-delay="100" src="/landing/home/plugins/github.svg" alt="github" />
     </div>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center" data-aos="zoom-in">
         <NuxtLink class="btn btn-animated btn-dark-animated" href="/plugins">See all plugins</NuxtLink>
     </div>
 </template>
