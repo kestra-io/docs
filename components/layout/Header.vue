@@ -1203,7 +1203,7 @@ export default {
         @include media-breakpoint-down(lg) {
             display: flex;
             width: 100%;
-            padding: 2rem 2rem 4rem;
+            padding: 2rem 2rem 30%;
 
             li {
                 display: flex;
