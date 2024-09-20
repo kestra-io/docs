@@ -247,7 +247,8 @@ export default defineNuxtConfig({
         '/docs/how-to-guides/errors': {redirect: '/docs/workflow-components/errors'},
         '/docs/how-to-guides/python-pip': {redirect: '/docs/how-to-guides/python'},
         '/docs/how-to-guides/google-spreadsheets': {redirect: '/docs/how-to-guides/google-sheets'},
-        '/docs/developer-guide/scripts': {redirect: ''}
+        '/docs/developer-guide/scripts': {redirect: '/docs/workflow-components/tasks/scripts'},
+        '/docs/concepts/task-runners': {redirect: '/docs/task-runners'},
         '/docs/flow-examples/**': {redirect: '/docs/how-to-guides'},
         '/docs/installation/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
         '/docs/faq/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
