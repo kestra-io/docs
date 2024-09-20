@@ -179,9 +179,9 @@ export default defineNuxtConfig({
                         "Concepts",
                         "Workflow Components",
                         "Developer Guide",
-                        // "Expressions",
-                        // "Version Control & CI/CD",
-                        // "Plugin Developer Guide",
+                        "Expressions",
+                        "Version Control & CI/CD",
+                        "Plugin Developer Guide",
                         "How-to Guides"
                     ],
                     "Scale with Kestra": [
