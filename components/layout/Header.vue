@@ -2,7 +2,6 @@
     <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{open: isOpen}">
         <div class="container-xl">
             <NuxtLink class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
-                <img class="icon" src="/icon.svg" alt="Kestra, Open source declarative data orchestration" />
                 <img src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
             </NuxtLink>
 
@@ -705,7 +704,7 @@ export default {
         }
 
         .navbar-brand {
-            img:not(.icon) {
+            img {
                 height: 100%;
                 width: 180px;
                 @include media-breakpoint-down(xl) {
@@ -716,10 +715,6 @@ export default {
                 }
             }
 
-            .icon {
-                display: none;
-                height: 100%;
-            }
         }
 
         a.nav-link, button.navbar-toggler, &.btn.search, .nav-item a, div.nav-items a {
