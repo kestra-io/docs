@@ -4,10 +4,8 @@
             <div class="card-body p-0 d-flex flex-column justify-content-between ">
                 <div class="d-flex align-items-center card-body-container">
                     <div>
-                        <NuxtImg
+                        <img
                             height="56"
-                            loading="lazy"
-                            format="webp"
                             :src="story.logo"
                             :alt="story.logo"
                         />
@@ -32,13 +30,9 @@
                             Read the story <img src="/stories/icons/arrow_right_alt.svg" alt="right icons" />
                         </span>
                     </div>
-                    <NuxtImg
+                    <img
                         width="610px"
                         height="375px"
-                        loading="lazy"
-                        format="webp"
-                        quality="80"
-                        densities="x1 x2"
                         :src="story.featuredImage"
                         :alt="`${story.title} image`"
                         class="card-img-top"
