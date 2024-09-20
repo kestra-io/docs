@@ -6251,116 +6251,6 @@ paths:
       responses:
         "204":
           description: On success
-  /api/v1/security-integrations:
-    get:
-      tags:
-      - SecurityIntegrations
-      summary: List all security integrations.
-      operationId: list_2
-      responses:
-        "200":
-          description: list_2 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-    post:
-      tags:
-      - SecurityIntegrations
-      summary: Create a security integration.
-      operationId: create_8
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateSecurityIntegrationRequest"
-        required: true
-      responses:
-        "200":
-          description: create_8 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/security-integrations/{id}:
-    get:
-      tags:
-      - SecurityIntegrations
-      summary: Get a security integration.
-      operationId: index_8
-      parameters:
-      - name: id
-        in: path
-        description: The ID of security integration
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: index_8 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-    delete:
-      tags:
-      - SecurityIntegrations
-      summary: Delete the security integration.
-      operationId: delete_11
-      parameters:
-      - name: id
-        in: path
-        description: The ID of security integration
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: delete_11 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/security-integrations/{id}/disable:
-    post:
-      tags:
-      - SecurityIntegrations
-      summary: Disable the security integration.
-      operationId: disable
-      parameters:
-      - name: id
-        in: path
-        description: The ID of security integration
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: disable 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-  /api/v1/security-integrations/{id}/enable:
-    post:
-      tags:
-      - SecurityIntegrations
-      summary: Enable the security integration.
-      operationId: enable
-      parameters:
-      - name: id
-        in: path
-        description: The ID of security integration
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: enable 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/setup:
     get:
       tags:
@@ -6666,7 +6556,7 @@ paths:
       tags:
       - Templates
       summary: Create a template
-      operationId: create_9
+      operationId: create_8
       requestBody:
         content:
           application/json:
@@ -6675,7 +6565,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_9 200 response
+          description: create_8 200 response
           content:
             application/json:
               schema:
@@ -6938,7 +6828,7 @@ paths:
       tags:
       - Templates
       summary: Get a template
-      operationId: index_9
+      operationId: index_8
       parameters:
       - name: namespace
         in: path
@@ -6954,7 +6844,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_9 200 response
+          description: index_8 200 response
           content:
             application/json:
               schema:
@@ -6994,7 +6884,7 @@ paths:
       tags:
       - Templates
       summary: Delete a template
-      operationId: delete_12
+      operationId: delete_11
       parameters:
       - name: namespace
         in: path
@@ -7012,13 +6902,13 @@ paths:
         "204":
           description: On success
         "200":
-          description: delete_12 200 response
+          description: delete_11 200 response
   /api/v1/tenants:
     post:
       tags:
       - Tenants
       summary: Create a tenant
-      operationId: create_10
+      operationId: create_9
       requestBody:
         content:
           application/json:
@@ -7027,7 +6917,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_10 200 response
+          description: create_9 200 response
           content:
             application/json:
               schema:
@@ -7037,7 +6927,7 @@ paths:
       tags:
       - Bindings
       summary: Create a binding
-      operationId: create_11
+      operationId: create_10
       requestBody:
         content:
           application/json:
@@ -7046,7 +6936,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_11 200 response
+          description: create_10 200 response
           content:
             application/json:
               schema:
@@ -7119,7 +7009,7 @@ paths:
       tags:
       - Bindings
       summary: Get a binding
-      operationId: index_10
+      operationId: index_9
       parameters:
       - name: id
         in: path
@@ -7129,7 +7019,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_10 200 response
+          description: index_9 200 response
           content:
             application/json:
               schema:
@@ -7138,7 +7028,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_13
+      operationId: delete_12
       parameters:
       - name: id
         in: path
@@ -7154,7 +7044,7 @@ paths:
       tags:
       - Groups
       summary: Create a group
-      operationId: create_12
+      operationId: create_11
       requestBody:
         content:
           application/json:
@@ -7163,7 +7053,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_12 200 response
+          description: create_11 200 response
           content:
             application/json:
               schema:
@@ -7259,7 +7149,7 @@ paths:
       tags:
       - Groups
       summary: Get a group
-      operationId: index_11
+      operationId: index_10
       parameters:
       - name: id
         in: path
@@ -7269,7 +7159,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_11 200 response
+          description: index_10 200 response
           content:
             application/json:
               schema:
@@ -7303,7 +7193,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_14
+      operationId: delete_13
       parameters:
       - name: id
         in: path
@@ -7447,7 +7337,7 @@ paths:
       tags:
       - Roles
       summary: Create a role
-      operationId: create_13
+      operationId: create_12
       requestBody:
         content:
           application/json:
@@ -7456,7 +7346,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_13 200 response
+          description: create_12 200 response
           content:
             application/json:
               schema:
@@ -7552,7 +7442,7 @@ paths:
       tags:
       - Roles
       summary: Get a role
-      operationId: index_12
+      operationId: index_11
       parameters:
       - name: id
         in: path
@@ -7562,7 +7452,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_12 200 response
+          description: index_11 200 response
           content:
             application/json:
               schema:
@@ -7596,7 +7486,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_15
+      operationId: delete_14
       parameters:
       - name: id
         in: path
@@ -7656,7 +7546,7 @@ paths:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_14
+      operationId: create_13
       requestBody:
         content:
           application/json:
@@ -7665,7 +7555,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_14 200 response
+          description: create_13 200 response
           content:
             application/json:
               schema:
@@ -7788,7 +7678,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_13
+      operationId: index_12
       parameters:
       - name: id
         in: path
@@ -7824,7 +7714,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_16
+      operationId: delete_15
       parameters:
       - name: id
         in: path
@@ -7935,7 +7825,7 @@ paths:
       tags:
       - Users
       summary: Create a basic auth password for a standard user
-      operationId: index_14
+      operationId: index_13
       parameters:
       - name: id
         in: path
@@ -7951,7 +7841,7 @@ paths:
         required: true
       responses:
         "200":
-          description: index_14 200 response
+          description: index_13 200 response
           content:
             application/json:
               schema:
@@ -8047,7 +7937,7 @@ paths:
       tags:
       - Tenants
       summary: Delete a tenant
-      operationId: delete_17
+      operationId: delete_16
       parameters:
       - name: id
         in: path
@@ -8097,7 +7987,7 @@ paths:
       tags:
       - Bindings
       summary: Create a binding
-      operationId: create_15
+      operationId: create_14
       parameters:
       - name: ressourceTenant
         in: path
@@ -8112,7 +8002,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_15 200 response
+          description: create_14 200 response
           content:
             application/json:
               schema:
@@ -8190,7 +8080,7 @@ paths:
       tags:
       - Bindings
       summary: Get a binding
-      operationId: index_15
+      operationId: index_14
       parameters:
       - name: id
         in: path
@@ -8205,7 +8095,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_15 200 response
+          description: index_14 200 response
           content:
             application/json:
               schema:
@@ -8214,7 +8104,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_18
+      operationId: delete_17
       parameters:
       - name: id
         in: path
@@ -8235,7 +8125,7 @@ paths:
       tags:
       - Groups
       summary: Create a group
-      operationId: create_16
+      operationId: create_15
       parameters:
       - name: ressourceTenant
         in: path
@@ -8250,7 +8140,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_16 200 response
+          description: create_15 200 response
           content:
             application/json:
               schema:
@@ -8363,7 +8253,7 @@ paths:
       tags:
       - Groups
       summary: Get a group
-      operationId: index_16
+      operationId: index_15
       parameters:
       - name: id
         in: path
@@ -8378,7 +8268,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_16 200 response
+          description: index_15 200 response
           content:
             application/json:
               schema:
@@ -8417,7 +8307,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_19
+      operationId: delete_18
       parameters:
       - name: id
         in: path
@@ -8586,7 +8476,7 @@ paths:
       tags:
       - Roles
       summary: Create a role
-      operationId: create_17
+      operationId: create_16
       parameters:
       - name: ressourceTenant
         in: path
@@ -8601,7 +8491,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_17 200 response
+          description: create_16 200 response
           content:
             application/json:
               schema:
@@ -8714,7 +8604,7 @@ paths:
       tags:
       - Roles
       summary: Get a role
-      operationId: index_17
+      operationId: index_16
       parameters:
       - name: id
         in: path
@@ -8729,7 +8619,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_17 200 response
+          description: index_16 200 response
           content:
             application/json:
               schema:
@@ -8768,7 +8658,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_20
+      operationId: delete_19
       parameters:
       - name: id
         in: path
@@ -8789,7 +8679,7 @@ paths:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_18
+      operationId: create_17
       parameters:
       - name: ressourceTenant
         in: path
@@ -8804,7 +8694,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_18 200 response
+          description: create_17 200 response
           content:
             application/json:
               schema:
@@ -8949,7 +8839,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_18
+      operationId: index_17
       parameters:
       - name: id
         in: path
@@ -8995,7 +8885,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_21
+      operationId: delete_20
       parameters:
       - name: id
         in: path
@@ -9131,7 +9021,7 @@ paths:
       tags:
       - Users
       summary: Create a basic auth password for a standard user
-      operationId: index_19
+      operationId: index_18
       parameters:
       - name: id
         in: path
@@ -9152,7 +9042,7 @@ paths:
         required: true
       responses:
         "200":
-          description: index_19 200 response
+          description: index_18 200 response
           content:
             application/json:
               schema:
@@ -9750,7 +9640,7 @@ paths:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_19
+      operationId: create_18
       requestBody:
         content:
           application/json:
@@ -9759,7 +9649,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_19 200 response
+          description: create_18 200 response
           content:
             application/json:
               schema:
@@ -9901,7 +9791,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_20
+      operationId: index_19
       parameters:
       - name: id
         in: path
@@ -9937,7 +9827,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_22
+      operationId: delete_21
       parameters:
       - name: id
         in: path
@@ -10048,7 +9938,7 @@ paths:
       tags:
       - Users
       summary: Create a basic auth password for a standard user
-      operationId: index_21
+      operationId: index_20
       parameters:
       - name: id
         in: path
@@ -10064,7 +9954,7 @@ paths:
         required: true
       responses:
         "200":
-          description: index_21 200 response
+          description: index_20 200 response
           content:
             application/json:
               schema:
@@ -10322,7 +10212,7 @@ paths:
       tags:
       - Bindings
       summary: Create a binding
-      operationId: create_20
+      operationId: create_19
       parameters:
       - name: tenant
         in: path
@@ -10337,7 +10227,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_20 200 response
+          description: create_19 200 response
           content:
             application/json:
               schema:
@@ -10415,7 +10305,7 @@ paths:
       tags:
       - Bindings
       summary: Get a binding
-      operationId: index_22
+      operationId: index_21
       parameters:
       - name: id
         in: path
@@ -10430,7 +10320,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_22 200 response
+          description: index_21 200 response
           content:
             application/json:
               schema:
@@ -10439,7 +10329,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_23
+      operationId: delete_22
       parameters:
       - name: id
         in: path
@@ -10902,7 +10792,7 @@ paths:
       tags:
       - Services
       summary: Get details about a service
-      operationId: index_23
+      operationId: index_22
       parameters:
       - name: id
         in: path
@@ -10916,7 +10806,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_23 200 response
+          description: index_22 200 response
           content:
             application/json:
               schema:
@@ -12405,7 +12295,7 @@ paths:
       tags:
       - Executions
       summary: Delete an execution
-      operationId: delete_24
+      operationId: delete_23
       parameters:
       - name: executionId
         in: path
@@ -12443,7 +12333,7 @@ paths:
         "204":
           description: On success
         "200":
-          description: delete_24 200 response
+          description: delete_23 200 response
   /api/v1/{tenant}/executions/{executionId}/change-status:
     post:
       tags:
@@ -12928,7 +12818,7 @@ paths:
       tags:
       - Executions
       summary: Create a new execution for a flow
-      operationId: create_21
+      operationId: create_20
       parameters:
       - name: namespace
         in: path
@@ -12989,7 +12879,7 @@ paths:
         "409":
           description: if the flow is disabled
         "200":
-          description: create_21 200 response
+          description: create_20 200 response
           content:
             application/json:
               schema:
@@ -13001,7 +12891,7 @@ paths:
       tags:
       - Flows
       summary: Create a flow from json object
-      operationId: create_22
+      operationId: create_21
       parameters:
       - name: tenant
         in: path
@@ -13020,7 +12910,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_22 200 response
+          description: create_21 200 response
           content:
             application/json:
               schema:
@@ -13694,7 +13584,7 @@ paths:
       tags:
       - Flows
       summary: Get a flow
-      operationId: index_24
+      operationId: index_23
       parameters:
       - name: namespace
         in: path
@@ -13736,7 +13626,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_24 200 response
+          description: index_23 200 response
           content:
             application/json:
               schema:
@@ -13790,7 +13680,7 @@ paths:
       tags:
       - Flows
       summary: Delete a flow
-      operationId: delete_25
+      operationId: delete_24
       parameters:
       - name: namespace
         in: path
@@ -13813,7 +13703,7 @@ paths:
         "204":
           description: On success
         "200":
-          description: delete_25 200 response
+          description: delete_24 200 response
   /api/v1/{tenant}/flows/{namespace}/{id}/dependencies:
     get:
       tags:
@@ -14025,7 +13915,7 @@ paths:
       tags:
       - Groups
       summary: Create a group
-      operationId: create_23
+      operationId: create_22
       parameters:
       - name: tenant
         in: path
@@ -14040,7 +13930,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_23 200 response
+          description: create_22 200 response
           content:
             application/json:
               schema:
@@ -14153,7 +14043,7 @@ paths:
       tags:
       - Groups
       summary: Get a group
-      operationId: index_25
+      operationId: index_24
       parameters:
       - name: id
         in: path
@@ -14168,7 +14058,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_25 200 response
+          description: index_24 200 response
           content:
             application/json:
               schema:
@@ -14207,7 +14097,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_26
+      operationId: delete_25
       parameters:
       - name: id
         in: path
@@ -14415,7 +14305,7 @@ paths:
       - SCIM
       summary: "{@inheritDoc}"
       description: Create
-      operationId: create_24
+      operationId: create_23
       parameters:
       - name: attributes
         in: query
@@ -14462,7 +14352,7 @@ paths:
         "501":
           description: Not Implemented
         "200":
-          description: create_24 200 response
+          description: create_23 200 response
           content:
             application/scim+json:
               schema:
@@ -14617,7 +14507,7 @@ paths:
       - SCIM
       summary: "{@inheritDoc}"
       description: Delete from the backing store
-      operationId: delete_27
+      operationId: delete_26
       parameters:
       - name: id
         in: path
@@ -14646,7 +14536,7 @@ paths:
         "501":
           description: Not Implemented
         "200":
-          description: delete_27 200 response
+          description: delete_26 200 response
           content:
             application/scim+json:
               schema:
@@ -14925,7 +14815,7 @@ paths:
       - SCIM
       summary: "{@inheritDoc}"
       description: Create
-      operationId: create_25
+      operationId: create_24
       parameters:
       - name: attributes
         in: query
@@ -14972,7 +14862,7 @@ paths:
         "501":
           description: Not Implemented
         "200":
-          description: create_25 200 response
+          description: create_24 200 response
           content:
             application/scim+json:
               schema:
@@ -15127,7 +15017,7 @@ paths:
       - SCIM
       summary: "{@inheritDoc}"
       description: Delete from the backing store
-      operationId: delete_28
+      operationId: delete_27
       parameters:
       - name: id
         in: path
@@ -15156,7 +15046,7 @@ paths:
         "501":
           description: Not Implemented
         "200":
-          description: delete_28 200 response
+          description: delete_27 200 response
           content:
             application/scim+json:
               schema:
@@ -15370,7 +15260,7 @@ paths:
       tags:
       - Logs
       summary: "Delete logs for a specific execution, taskrun or task"
-      operationId: delete_29
+      operationId: delete_28
       parameters:
       - name: executionId
         in: path
@@ -15411,7 +15301,7 @@ paths:
           type: string
       responses:
         "200":
-          description: delete_29 200 response
+          description: delete_28 200 response
   /api/v1/{tenant}/logs/{executionId}/download:
     get:
       tags:
@@ -15534,7 +15424,7 @@ paths:
       tags:
       - Auths
       summary: Get current user
-      operationId: index_26
+      operationId: index_25
       parameters:
       - name: tenant
         in: path
@@ -15543,7 +15433,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_26 200 response
+          description: index_25 200 response
           content:
             application/json:
               schema:
@@ -15935,7 +15825,7 @@ paths:
       tags:
       - Namespaces
       summary: Create a namespace
-      operationId: create_26
+      operationId: create_25
       parameters:
       - name: tenant
         in: path
@@ -15950,7 +15840,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_26 200 response
+          description: create_25 200 response
           content:
             application/json:
               schema:
@@ -16048,7 +15938,7 @@ paths:
       tags:
       - Namespaces
       summary: Get a namespace
-      operationId: index_27
+      operationId: index_26
       parameters:
       - name: id
         in: path
@@ -16063,7 +15953,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_27 200 response
+          description: index_26 200 response
           content:
             application/json:
               schema:
@@ -16102,7 +15992,7 @@ paths:
       tags:
       - Namespaces
       summary: Delete a flow
-      operationId: delete_30
+      operationId: delete_29
       parameters:
       - name: id
         in: path
@@ -16315,7 +16205,7 @@ paths:
       tags:
       - Files
       summary: Delete a file or directory
-      operationId: delete_31
+      operationId: delete_30
       parameters:
       - name: namespace
         in: path
@@ -16337,13 +16227,13 @@ paths:
           type: string
       responses:
         "200":
-          description: delete_31 200 response
+          description: delete_30 200 response
   /api/v1/{tenant}/namespaces/{namespace}/files/directory:
     get:
       tags:
       - Files
       summary: List directory content
-      operationId: list_3
+      operationId: list_2
       parameters:
       - name: namespace
         in: path
@@ -16365,7 +16255,7 @@ paths:
           type: string
       responses:
         "200":
-          description: list_3 200 response
+          description: list_2 200 response
           content:
             application/json:
               schema:
@@ -16527,7 +16417,7 @@ paths:
       tags:
       - KV
       summary: List all keys for a namespace
-      operationId: list_4
+      operationId: list_3
       parameters:
       - name: namespace
         in: path
@@ -16542,7 +16432,7 @@ paths:
           type: string
       responses:
         "200":
-          description: list_4 200 response
+          description: list_3 200 response
           content:
             application/json:
               schema:
@@ -16619,7 +16509,7 @@ paths:
       tags:
       - KV
       summary: Delete a key-value pair
-      operationId: delete_32
+      operationId: delete_31
       parameters:
       - name: namespace
         in: path
@@ -16640,7 +16530,7 @@ paths:
           type: string
       responses:
         "200":
-          description: delete_32 200 response
+          description: delete_31 200 response
           content:
             application/json:
               schema:
@@ -16978,7 +16868,7 @@ paths:
       tags:
       - Roles
       summary: Create a role
-      operationId: create_27
+      operationId: create_26
       parameters:
       - name: tenant
         in: path
@@ -16993,7 +16883,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_27 200 response
+          description: create_26 200 response
           content:
             application/json:
               schema:
@@ -17106,7 +16996,7 @@ paths:
       tags:
       - Roles
       summary: Get a role
-      operationId: index_28
+      operationId: index_27
       parameters:
       - name: id
         in: path
@@ -17121,7 +17011,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_28 200 response
+          description: index_27 200 response
           content:
             application/json:
               schema:
@@ -17160,7 +17050,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_33
+      operationId: delete_32
       parameters:
       - name: id
         in: path
@@ -17181,7 +17071,7 @@ paths:
       tags:
       - SecurityIntegrations
       summary: List all security integrations.
-      operationId: list_5
+      operationId: list_4
       parameters:
       - name: tenant
         in: path
@@ -17190,7 +17080,7 @@ paths:
           type: string
       responses:
         "200":
-          description: list_5 200 response
+          description: list_4 200 response
           content:
             application/json:
               schema:
@@ -17199,7 +17089,7 @@ paths:
       tags:
       - SecurityIntegrations
       summary: Create a security integration.
-      operationId: create_28
+      operationId: create_27
       parameters:
       - name: tenant
         in: path
@@ -17214,7 +17104,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_28 200 response
+          description: create_27 200 response
           content:
             application/json:
               schema:
@@ -17224,7 +17114,7 @@ paths:
       tags:
       - SecurityIntegrations
       summary: Get a security integration.
-      operationId: index_29
+      operationId: index_28
       parameters:
       - name: id
         in: path
@@ -17239,7 +17129,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_29 200 response
+          description: index_28 200 response
           content:
             application/json:
               schema:
@@ -17248,7 +17138,7 @@ paths:
       tags:
       - SecurityIntegrations
       summary: Delete the security integration.
-      operationId: delete_34
+      operationId: delete_33
       parameters:
       - name: id
         in: path
@@ -17263,7 +17153,7 @@ paths:
           type: string
       responses:
         "200":
-          description: delete_34 200 response
+          description: delete_33 200 response
           content:
             application/json:
               schema:
@@ -17273,7 +17163,7 @@ paths:
       tags:
       - SecurityIntegrations
       summary: Disable the security integration.
-      operationId: disable_1
+      operationId: disable
       parameters:
       - name: id
         in: path
@@ -17288,7 +17178,7 @@ paths:
           type: string
       responses:
         "200":
-          description: disable_1 200 response
+          description: disable 200 response
           content:
             application/json:
               schema:
@@ -17298,7 +17188,7 @@ paths:
       tags:
       - SecurityIntegrations
       summary: Enable the security integration.
-      operationId: enable_1
+      operationId: enable
       parameters:
       - name: id
         in: path
@@ -17313,7 +17203,7 @@ paths:
           type: string
       responses:
         "200":
-          description: enable_1 200 response
+          description: enable 200 response
           content:
             application/json:
               schema:
@@ -17644,7 +17534,7 @@ paths:
       tags:
       - Templates
       summary: Create a template
-      operationId: create_29
+      operationId: create_28
       parameters:
       - name: tenant
         in: path
@@ -17659,7 +17549,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_29 200 response
+          description: create_28 200 response
           content:
             application/json:
               schema:
@@ -17972,7 +17862,7 @@ paths:
       tags:
       - Templates
       summary: Get a template
-      operationId: index_30
+      operationId: index_29
       parameters:
       - name: namespace
         in: path
@@ -17993,7 +17883,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_30 200 response
+          description: index_29 200 response
           content:
             application/json:
               schema:
@@ -18038,7 +17928,7 @@ paths:
       tags:
       - Templates
       summary: Delete a template
-      operationId: delete_35
+      operationId: delete_34
       parameters:
       - name: namespace
         in: path
@@ -18061,13 +17951,13 @@ paths:
         "204":
           description: On success
         "200":
-          description: delete_35 200 response
+          description: delete_34 200 response
   /api/v1/{tenant}/tenants:
     post:
       tags:
       - Tenants
       summary: Create a tenant
-      operationId: create_30
+      operationId: create_29
       parameters:
       - name: tenant
         in: path
@@ -18082,7 +17972,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_30 200 response
+          description: create_29 200 response
           content:
             application/json:
               schema:
@@ -18092,7 +17982,7 @@ paths:
       tags:
       - Bindings
       summary: Create a binding
-      operationId: create_31
+      operationId: create_30
       parameters:
       - name: tenant
         in: path
@@ -18107,7 +17997,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_31 200 response
+          description: create_30 200 response
           content:
             application/json:
               schema:
@@ -18185,7 +18075,7 @@ paths:
       tags:
       - Bindings
       summary: Get a binding
-      operationId: index_31
+      operationId: index_30
       parameters:
       - name: id
         in: path
@@ -18200,7 +18090,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_31 200 response
+          description: index_30 200 response
           content:
             application/json:
               schema:
@@ -18209,7 +18099,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_36
+      operationId: delete_35
       parameters:
       - name: id
         in: path
@@ -18230,7 +18120,7 @@ paths:
       tags:
       - Groups
       summary: Create a group
-      operationId: create_32
+      operationId: create_31
       parameters:
       - name: tenant
         in: path
@@ -18245,7 +18135,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_32 200 response
+          description: create_31 200 response
           content:
             application/json:
               schema:
@@ -18358,7 +18248,7 @@ paths:
       tags:
       - Groups
       summary: Get a group
-      operationId: index_32
+      operationId: index_31
       parameters:
       - name: id
         in: path
@@ -18373,7 +18263,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_32 200 response
+          description: index_31 200 response
           content:
             application/json:
               schema:
@@ -18412,7 +18302,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_37
+      operationId: delete_36
       parameters:
       - name: id
         in: path
@@ -18581,7 +18471,7 @@ paths:
       tags:
       - Roles
       summary: Create a role
-      operationId: create_33
+      operationId: create_32
       parameters:
       - name: tenant
         in: path
@@ -18596,7 +18486,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_33 200 response
+          description: create_32 200 response
           content:
             application/json:
               schema:
@@ -18709,7 +18599,7 @@ paths:
       tags:
       - Roles
       summary: Get a role
-      operationId: index_33
+      operationId: index_32
       parameters:
       - name: id
         in: path
@@ -18724,7 +18614,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_33 200 response
+          description: index_32 200 response
           content:
             application/json:
               schema:
@@ -18763,7 +18653,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_38
+      operationId: delete_37
       parameters:
       - name: id
         in: path
@@ -18833,7 +18723,7 @@ paths:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_34
+      operationId: create_33
       parameters:
       - name: tenant
         in: path
@@ -18848,7 +18738,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_34 200 response
+          description: create_33 200 response
           content:
             application/json:
               schema:
@@ -18993,7 +18883,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_34
+      operationId: index_33
       parameters:
       - name: id
         in: path
@@ -19039,7 +18929,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_39
+      operationId: delete_38
       parameters:
       - name: id
         in: path
@@ -19175,7 +19065,7 @@ paths:
       tags:
       - Users
       summary: Create a basic auth password for a standard user
-      operationId: index_35
+      operationId: index_34
       parameters:
       - name: id
         in: path
@@ -19196,7 +19086,7 @@ paths:
         required: true
       responses:
         "200":
-          description: index_35 200 response
+          description: index_34 200 response
           content:
             application/json:
               schema:
@@ -19312,7 +19202,7 @@ paths:
       tags:
       - Tenants
       summary: Delete a tenant
-      operationId: delete_40
+      operationId: delete_39
       parameters:
       - name: id
         in: path
@@ -19372,7 +19262,7 @@ paths:
       tags:
       - Bindings
       summary: Create a binding
-      operationId: create_35
+      operationId: create_34
       parameters:
       - name: ressourceTenant
         in: path
@@ -19392,7 +19282,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_35 200 response
+          description: create_34 200 response
           content:
             application/json:
               schema:
@@ -19475,7 +19365,7 @@ paths:
       tags:
       - Bindings
       summary: Get a binding
-      operationId: index_36
+      operationId: index_35
       parameters:
       - name: id
         in: path
@@ -19495,7 +19385,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_36 200 response
+          description: index_35 200 response
           content:
             application/json:
               schema:
@@ -19504,7 +19394,7 @@ paths:
       tags:
       - Bindings
       summary: Delete a binding
-      operationId: delete_41
+      operationId: delete_40
       parameters:
       - name: id
         in: path
@@ -19530,7 +19420,7 @@ paths:
       tags:
       - Groups
       summary: Create a group
-      operationId: create_36
+      operationId: create_35
       parameters:
       - name: ressourceTenant
         in: path
@@ -19550,7 +19440,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_36 200 response
+          description: create_35 200 response
           content:
             application/json:
               schema:
@@ -19678,7 +19568,7 @@ paths:
       tags:
       - Groups
       summary: Get a group
-      operationId: index_37
+      operationId: index_36
       parameters:
       - name: id
         in: path
@@ -19698,7 +19588,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_37 200 response
+          description: index_36 200 response
           content:
             application/json:
               schema:
@@ -19742,7 +19632,7 @@ paths:
       tags:
       - Groups
       summary: Delete a group
-      operationId: delete_42
+      operationId: delete_41
       parameters:
       - name: id
         in: path
@@ -19936,7 +19826,7 @@ paths:
       tags:
       - Roles
       summary: Create a role
-      operationId: create_37
+      operationId: create_36
       parameters:
       - name: ressourceTenant
         in: path
@@ -19956,7 +19846,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_37 200 response
+          description: create_36 200 response
           content:
             application/json:
               schema:
@@ -20084,7 +19974,7 @@ paths:
       tags:
       - Roles
       summary: Get a role
-      operationId: index_38
+      operationId: index_37
       parameters:
       - name: id
         in: path
@@ -20104,7 +19994,7 @@ paths:
           type: string
       responses:
         "200":
-          description: index_38 200 response
+          description: index_37 200 response
           content:
             application/json:
               schema:
@@ -20148,7 +20038,7 @@ paths:
       tags:
       - Roles
       summary: Delete a role
-      operationId: delete_43
+      operationId: delete_42
       parameters:
       - name: id
         in: path
@@ -20174,7 +20064,7 @@ paths:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_38
+      operationId: create_37
       parameters:
       - name: ressourceTenant
         in: path
@@ -20194,7 +20084,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_38 200 response
+          description: create_37 200 response
           content:
             application/json:
               schema:
@@ -20359,7 +20249,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_39
+      operationId: index_38
       parameters:
       - name: id
         in: path
@@ -20415,7 +20305,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_44
+      operationId: delete_43
       parameters:
       - name: id
         in: path
@@ -20576,7 +20466,7 @@ paths:
       tags:
       - Users
       summary: Create a basic auth password for a standard user
-      operationId: index_40
+      operationId: index_39
       parameters:
       - name: id
         in: path
@@ -20602,7 +20492,7 @@ paths:
         required: true
       responses:
         "200":
-          description: index_40 200 response
+          description: index_39 200 response
           content:
             application/json:
               schema:
@@ -21327,7 +21217,7 @@ paths:
       tags:
       - Users
       summary: Create a standard user
-      operationId: create_39
+      operationId: create_38
       parameters:
       - name: tenant
         in: path
@@ -21342,7 +21232,7 @@ paths:
         required: true
       responses:
         "200":
-          description: create_39 200 response
+          description: create_38 200 response
           content:
             application/json:
               schema:
@@ -21512,7 +21402,7 @@ paths:
       tags:
       - Users
       summary: Get a user
-      operationId: index_41
+      operationId: index_40
       parameters:
       - name: id
         in: path
@@ -21558,7 +21448,7 @@ paths:
       tags:
       - Users
       summary: Delete a user
-      operationId: delete_45
+      operationId: delete_44
       parameters:
       - name: id
         in: path
@@ -21694,7 +21584,7 @@ paths:
       tags:
       - Users
       summary: Create a basic auth password for a standard user
-      operationId: index_42
+      operationId: index_41
       parameters:
       - name: id
         in: path
@@ -21715,7 +21605,7 @@ paths:
         required: true
       responses:
         "200":
-          description: index_42 200 response
+          description: index_41 200 response
           content:
             application/json:
               schema:
