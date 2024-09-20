@@ -28,16 +28,16 @@
                             {{ item.emoji }}
                             {{ item.title }}
                     </NuxtLink>
-                    <template v-if="filterChildren(item).length > 0 && isPage(item) && !item.hideSubMenus">
+                    <template v-if="filterChildren(item).length > 0 && (!item.hideSubMenus || !item.hideSubMenus)">
                         <chevron-down
-                            v-if="isShow(item._path) && !item.hideSidebar"
+                            v-if="isShow(item._path)"
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
                             :data-bs-target="'#'+pathToId(item._path)"
                             role="button"
                         />
                         <chevron-right
-                            v-else-if="!item.hideSidebar"
+                            v-else
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
                             :data-bs-target="'#'+pathToId(item._path)"
@@ -45,9 +45,8 @@
                         />
                     </template>
                 </li>
-                <template v-if="isPage(item) && !item.hideSubMenus">
                     <RecursiveNavSidebar
-                        v-if="!item.hideSubMenus || filterChildren(item).length > 0"
+                        v-if="!item.hideSubMenus && filterChildren(item).length > 0"
                         :items="filterChildren(item)"
                         :depth-level="depthLevel+1"
                         :active-slug="activeSlug"
@@ -56,7 +55,6 @@
                         :disabled-pages="disabledPages"
                         :type="type"
                     />
-                </template>
             </ul>
         </template>
     </div>
