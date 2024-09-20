@@ -40,7 +40,7 @@ triggers:
     cron: "*/1 * * * *"
 ```
 
-Check the [`render()` function's documentation](/docs/concepts/expression/function#render) for more details about how to use that function and when to use it.
+Check the [`render()` function's documentation](../../expressions/04.function.md#render) for more details about how to use that function and when to use it.
 
 ---
 
