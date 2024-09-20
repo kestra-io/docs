@@ -215,6 +215,7 @@ export default defineNuxtConfig({
         '/blog': {redirect: '/blogs'},
         '/docs/plugin-library': {redirect: '/docs/getting-started/plugins'},
         '/docs/enterprise/setup-page': {redirect: '/docs/enterprise/setup'},
+        '/docs/developer-guide/plugins': {redirect: '/docs/plugin-developer-guide'},
         '/docs/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
         '/docs/developer-guide/scripts/rust': {redirect: '/docs/developer-guide/scripts/additional-languages'},
         '/docs/developer-guide/scripts/additional-languages': {redirect: '/docs/developer-guide/scripts/languages'},
