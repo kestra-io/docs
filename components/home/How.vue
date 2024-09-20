@@ -468,6 +468,9 @@
 
                 .img-container {
                     height: calc($spacer * 31.3);
+                    img {
+                        height: 100%;
+                    }
                 }
 
                 @include media-breakpoint-down(xxl) {
@@ -493,7 +496,10 @@
 
                 @include media-breakpoint-down(md) {
                     .img-container {
-                        height: auto;
+                        height: calc($spacer * 29.4);
+                        img {
+                            width: 100%;
+                        }
                     }
                 }
             }
@@ -503,6 +509,9 @@
 
                 .img-container {
                     height: calc($spacer * 41.2);
+                    img {
+                        height: 100%;
+                    }
 
                     @include media-breakpoint-down(xxl) {
                         height: calc($spacer * 35.4);
@@ -521,8 +530,11 @@
                     }
 
                     @include media-breakpoint-down(md) {
-                        height: auto;
+                        height: calc($spacer * 33.4);
                         width: 100%;
+                        img {
+                            width: 100%;
+                        }
                     }
                 }
 
@@ -542,6 +554,9 @@
 
                 .img-container {
                     height: calc($spacer * 19.1);
+                    img {
+                        height: 100%;
+                    }
 
                     @include media-breakpoint-down(xl) {
                         height: calc($spacer * 15.7);
@@ -552,8 +567,11 @@
                     }
 
                     @include media-breakpoint-down(md) {
-                        height: auto;
+                        height: calc($spacer * 17.8);
                         width: 100%;
+                        img {
+                            width: 100%;
+                        }
                     }
                 }
 
@@ -569,6 +587,9 @@
 
                 .img-container {
                     height: calc($spacer * 29.7);
+                    img {
+                        height: 100%;
+                    }
                 }
 
                 @include media-breakpoint-down(xxl) {
@@ -593,8 +614,11 @@
 
                 @include media-breakpoint-down(md) {
                     .img-container {
-                        height: auto;
+                        height: calc($spacer * 23.8);
                         width: 100%;
+                        img {
+                            width: 100%;
+                        }
                     }
                 }
 
