@@ -13,20 +13,20 @@ Tasks are discrete actions within a flow, capable of taking inputs and variables
 
 ## Flowable Tasks
 
-Kestra orchestrates your flows using [Flowable Tasks](../05.concepts/01.flowable-tasks.md). These tasks do not perform any heavy computation. Instead, they control the orchestration behavior, allowing you to implement more advanced workflow patterns.
+Kestra orchestrates your flows using [Flowable Tasks](./00.flowable-tasks.md). These tasks do not perform any heavy computation. Instead, they control the orchestration behavior, allowing you to implement more advanced workflow patterns.
 
 Example Flowable tasks include:
 - `io.kestra.plugin.core.flow.Parallel`
 - `io.kestra.plugin.core.flow.Switch`
 - `io.kestra.plugin.core.flow.ForEachItem`
 
-Read the full list on the [Flowable tasks page](../05.concepts/01.flowable-tasks.md).
+Read the full list on the [Flowable tasks page](./00.flowable-tasks.md).
 
 ## Runnable Tasks
 
-In Kestra, most data processing workloads are executed using [Runnable Tasks](../05.concepts/02.runnable-tasks.md).
+In Kestra, most data processing workloads are executed using [Runnable Tasks](./01.runnable-tasks.md).
 
-In contrast to Flowable Tasks, Runnable Tasks are responsible for performing the actual work. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by [workers](../07.architecture/05.worker.md).
+In contrast to Flowable Tasks, Runnable Tasks are responsible for performing the actual work. For example, file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by [workers](../../07.architecture/05.worker.md).
 
 Example runnable tasks include:
 - `io.kestra.plugin.scripts.python.Commands`
@@ -60,3 +60,5 @@ Often some task properties are marked as **not dynamic** because they are comple
 
 On top of that, `RunSubmitTaskSetting` is a group of other properties which are also either dynamic or of complex type (placeholder for other properties). It's therefore useful to always drill down to the lowest level — most properties at the lowest level are dynamic and can be templated using expressions.
 
+::ChildCard
+::
