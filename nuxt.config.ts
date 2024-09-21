@@ -158,7 +158,7 @@ export default defineNuxtConfig({
 
     gtag: {
         id: 'G-EYVNS03HHR',
-        enabled: false
+        enabled: true
     },
 
     runtimeConfig: {
@@ -285,6 +285,7 @@ export default defineNuxtConfig({
     },
 
     multiCache: {
+        debug: true,
         data: {
             enabled: true,
         },
