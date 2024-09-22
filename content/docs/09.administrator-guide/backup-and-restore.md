@@ -5,36 +5,36 @@ icon: /docs/icons/admin.svg
 
 Backup Kestra.
 
-Kestra only provides a backup tool for Kestra __metadata__: all things that are not execution data.
-However, Kestra uses a database and internal storage that can be backed up and restored if a metadata backup is not enough.
+Kestra offers a backup functionality for Kestra __metadata__ i.e. all data not related to workflow executions. Executions are not included in the backup as capturing them can be costly and the resulting backup file could be excessively large.
+However, Kestra uses a database and internal storage that can be backed up and restored if a metadata backup is not sufficient.
 
 ## Metadata only Backup & Restore in the Enterprise Edition
 
-Since version 0.19, Kestra [Enterprise Edition](/enterprise) provides __metadata__ backup & restore.
-This can be used to backup Kestra metadata in a Kestra instance, and restore them in another instance that can be in a different version or using a different backend.
+Since version 0.19, Kestra [Enterprise Edition](/enterprise) provides __metadata__ backup & restore functionality.
+This backup feature can be used to back up metadata in a Kestra instance, and restore it in another instance that can be in a different Kestra version or using a different backend.
 
-It is strongly advised to backup and restore metadata when Kestra is stopped or the backup may not be in a consistency state.
+We recommend to backup and restore metadata when Kestra is stopped, otherwise the backup may not be in a consistent state.
 
-Currently, metadata backup will backup everything that is not related to Kestra execution data, which includes at the time of writing this documentation: custom blueprints, flows, namespaces, roles, secrets (for JDBC and Elasticsearch secrets), security integrations, settings, templates, tenants, triggers and users.
+Currently, the metadata backup will back up all data not related to Executions, including custom blueprints, flows, namespaces, roles, secrets (for JDBC and Elasticsearch secrets manager backend), security integrations, settings, templates, tenants, triggers, users and access bindings.
 
 ### Metadata backup
 
-To backup Kestra instance metadata you can use the following command:
+To back up Kestra instance metadata, you can use the following command:
 
 ```shell
 kestra backups create FULL
 ```
 
-`FULL` indicate that we want to backup the full instance, if you want to backup only a single tenant (in case multi-tenancy is enabled), you can use `TENANT` instead. In this case, users and tenants will not be included in the backup (only the selected tenant will be included).
+`FULL` indicates that we want to back up the full instance. If you want to back up only a single tenant (in case multi-tenancy is enabled), you can use `TENANT` instead. In this case, users and tenants will not be included in the backup (only the selected tenant will be included).
 
-By default, backups are encrypted using the Kestra embedded encryption key, this can be changed using command line parameters.
+By default, backups are encrypted using the Kestra embedded encryption key. You can adjust this behavior using command line parameters.
 
 You can use the following command line parameters:
 - `--tenant`: only when backup type is `TENANT`, use it to specify the name of the tenant to backup. If not set, the default tenant will be used.
 - `--encryption-key`: use it to specify a custom encryption key instead of the Kestra embedded one.
-- `--no-encryption`: use it to bypass backup encryption. Be careful that metadata can contain sensitive information so it may not be a good idea.
+- `--no-encryption`: use it to bypass backup encryption. Metadata backup may contain sensitive information so make sure you are aware of the risk when bypassing the encryption.
 
-Launching the command line will display the following logs which include a backup summary and the URI to the Kestra internal storage file where the backup has been created.
+When you start the backup process from the command line, you will see the following logs which include a backup summary and the URI to the Kestra internal storage file where the backup will be stored.
 
 ```
 2024-09-17 16:33:12,706 INFO  create       io.kestra.ee.backup.BackupService Backup summary: [BINDING: 3, BLUEPRINT: 1, FLOW: 13, GROUP: 1, NAMESPACE: 1, ROLE: 6, SECRET: 1, SECURITY_INTEGRATION: 0, SETTING: 1, TENANT: 1, TENANT_ACCESS: 2, TRIGGER: 2, USER: 1]
@@ -44,7 +44,7 @@ Backup created: kestra:///backups/full/backup-20240917163312.kestra
 
 ### Metadata restore
 
-To restore Kestra instance metadata you can use the following command with the URI provided by the backup command:
+To restore Kestra instance using a metadata backup, you can use the following command with the internal storage URI provided by the backup command:
 
 ```shell
 kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
@@ -53,7 +53,7 @@ kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 You can use the following command line parameters:
 - `--encryption-key`: use it to specify a custom encryption key instead of the Kestra embedded one.
 
-Launching the command line will display the following logs which include backup information and a restore summary.
+Starting the restore process from the command line will display the following logs which include backup information and a restore summary.
 
 ```
 2024-09-17 16:41:06,065 INFO  restore      io.kestra.ee.backup.BackupService Restoring kestra:///backups/full/backup-20240917163312.kestra
