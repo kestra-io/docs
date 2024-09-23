@@ -44,8 +44,9 @@
                                 <br/>
                                 <span class="ms-1">- id:</span> python_transform<br/>
                                 <span class="ms-3">type:</span> io.kestra.plugin.scripts.python.Script<br/>
-                                <span class="ms-3">docker:</span><br/>
-                                <span class="ms-4">image:</span> ghcr.io/kestra-io/pydata:latest <br/>
+                                <span class="ms-3">containerImage:</span> ghcr.io/kestra-io/pydata:latest<br/>
+                                <span class="ms-3">taskRunner:</span><br/>
+                                <span class="ms-4">type:</span> io.kestra.plugin.scripts.runner.docker.Docker<br/>
                                 <span class="ms-3">script:</span>|<br/>
                                 <i class="fst-normal ms-3">
                                     import polars as pl
@@ -175,7 +176,7 @@
                 strokeDasharray4: 1,
                 strokeDasharray5: 1,
                 strokeDasharray6: 1,
-                output: `"{{ outputs.python.outputFiles['products.csv'] }}"`,
+                output: `"{{ outputs.python_transform.outputFiles['products.csv'] }}"`,
                 copyCodeText: "Copy to clipboard",
                copyIconResetTimer: undefined,
             };
