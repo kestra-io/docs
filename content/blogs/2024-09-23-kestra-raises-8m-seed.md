@@ -9,7 +9,7 @@ author:
 image: /blogs/2024-09-23-kestra-raises-8m-seed/funding_announcement_8M.jpg
 ---
 
-Orchestration is at the core of the modern business infrastructure, and today, we're taking a huge step toward transforming how it's done. **We’re thrilled to announce Kestra's $8 million Seed round, led by Alven** (Stripe, Dataiku, Qonto, Algolia) with participation from I**SAI, Axeleo**, and key tech leaders such as Olivier Pomel, Tristan Handy, Michel Tricot, Clément Delangue. This funding marks the next chapter in our mission to redefine orchestration for enterprises worldwide, empowering engineers to simplify the most complex workflows at an unprecedented scale.
+Orchestration is at the core of the modern business infrastructure, and today, we're taking a huge step toward transforming how it's done. **We’re thrilled to announce Kestra's $8 million Seed round, led by Alven** (Stripe, Dataiku, Qonto, Algolia) with participation from I**SAI, Axeleo**, and key tech leaders such as [Olivier Pomel](https://www.linkedin.com/in/olivierpomel/), [Tristan Handy](https://www.linkedin.com/in/tristanhandy), [Michel Tricot](https://www.linkedin.com/in/micheltricot/), [Clément Delangue](https://www.linkedin.com/in/clementdelangue). This funding marks the next chapter in our mission to redefine orchestration for enterprises worldwide, empowering engineers to simplify the most complex workflows at an unprecedented scale.
 
 This milestone wouldn’t have been possible without the trust of our growing community. Since raising $3 million in pre-seed funding last year, Kestra has surpassed every expectation:
 
