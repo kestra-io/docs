@@ -27,7 +27,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
-                                    No setup required. Write code directly from the UI
+                                    No setup required — build workflows directly from the UI
                                 </p>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
-                                    Embedded Code editor
+                                    Embedded Code editor with Git push & sync
                                 </p>
                             </div>
                         </div>
