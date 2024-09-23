@@ -6,6 +6,7 @@ category: Company News
 author:
   name: Emmanuel Darras
   image: "edarras"
+  role: CEO
 image: /blogs/2024-09-23-kestra-raises-8m-seed/funding_announcement_8M.jpg
 ---
 
