@@ -97,6 +97,6 @@ We’re planning to **expand into the U.S.** to better support our North America
 
 Most importantly, we know that **Kestra’s success is driven by the talented and dedicated people** behind the platform. **Thank you Team ❤️**, your commitment to **pushing the boundaries of orchestration** is what sets us apart, and we look forward to growing this exceptional group to take on the challenges ahead.
 
-**Thank you to our users, customers, and investors** for driving Kestra forward in our mission to transform orchestration. **Help us build the leading platform for Unified Orchestration** by [starring us on GitHub](https://github.com/kestra-io/kestra) and joining this exciting journey.
+**Thank you to our users, customers, and investors** for driving Kestra forward in our mission to transform orchestration. **Help us build the leading platform for Unified Orchestration** by [starring us on GitHub](https://go.kestra.io/github-fundraise) and joining this exciting journey.
 
 **Orchestrate Everything, Everywhere, All at Once**
