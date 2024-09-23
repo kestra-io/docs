@@ -6617,18 +6617,25 @@ components:
           type: string
           deprecated: true
         id:
+          title: The ID of the input.
           minLength: 1
           pattern: "^[a-zA-Z0-9][.a-zA-Z0-9_-]*"
           type: string
         type:
-          $ref: "#/components/schemas/Type"
+          title: The type of the input.
+          allOf:
+          - $ref: "#/components/schemas/Type"
         description:
+          title: The description of the input.
           type: string
         dependsOn:
-          $ref: "#/components/schemas/DependsOn"
+          title: The dependencies of the input.
+          allOf:
+          - $ref: "#/components/schemas/DependsOn"
         required:
           type: boolean
-        defaults: {}
+        defaults:
+          title: The default value to use if no value is specified.
         displayName:
           title: The display name of the input.
           maxLength: 64
