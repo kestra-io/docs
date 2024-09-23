@@ -52,7 +52,8 @@ Kestra is designed to simplify complexity. With a **declarative**, **language-ag
 
 ## A Platform Without Limits
 
-Kestra isn’t just another orchestration tool. It’s a platform built to handle workflows of **any type, across any domain**. Whether it’s automating infrastructure, transforming and transporting all the data, coordinating microservices, or real-time network monitoring, Kestra’s flexibility and extensibility make it a trusted solution for a wide range of challenges.
+Kestra isn’t just another orchestration tool. It’s a platform built to handle workflows of **any type, across any domain**. Whether it’s automating infrastructure, transforming and transporting data, coordinating microservices, or real-time network monitoring, Kestra’s flexibility and extensibility make it a trusted solution for a wide range of challenges.
+
 
 And we’re not stopping there. We continue to expand Kestra’s capabilities with new features and integrations, constantly **pushing the boundaries** of what’s possible.
 
@@ -87,7 +88,8 @@ With Kestra, organizations gain the **reliability** required to scale their work
 
 ## Looking Ahead: Innovating and Expanding
 
-With this second $8 million funding round, we’re excited to enter **the next phase of Kestra's growth**. Our commitment to continuous improvement drives us to expand the platform’s capabilities—enhancing our ecosystem with more third-party integrations, simplifying plugin management, and improving the orchestration experience for all engineers.
+With this second $8 million funding round, we’re excited to enter **the next phase of Kestra's growth**. Our commitment to continuous improvement drives us to expand the platform’s capabilities — enhancing our ecosystem with more third-party integrations, simplifying plugin management, and improving the orchestration experience for all engineers.
+
 
 We’re planning to **expand into the U.S.** to better support our North American clients, bringing us closer to them for improved collaboration and service. Meanwhile, **we’re growing our team across Europe and North America**, hiring key roles such as Software Engineers, DevOps, Architects, Solution Engineers, GTMs, and Marketing professionals.
 
