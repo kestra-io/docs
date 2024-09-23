@@ -6629,6 +6629,10 @@ components:
         required:
           type: boolean
         defaults: {}
+        displayName:
+          title: The display name of the input.
+          maxLength: 64
+          type: string
     KVController.TypedValue:
       required:
       - type

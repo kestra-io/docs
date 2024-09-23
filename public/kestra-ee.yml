@@ -2534,7 +2534,6 @@ paths:
           multipart/form-data:
             schema:
               type: array
-              nullable: true
               items:
                 type: string
                 format: binary
@@ -2544,6 +2543,14 @@ paths:
           description: On success
         "409":
           description: if the executions is not paused
+        "200":
+          description: validateInputsOnResume 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse"
   /api/v1/executions/{executionId}/state:
     post:
       tags:
@@ -2660,9 +2667,9 @@ paths:
       - name: labels
         in: query
         description: The labels as a list of 'key:value'
+        required: true
         schema:
           type: array
-          nullable: true
           items:
             type: string
       - name: revision
@@ -2677,7 +2684,6 @@ paths:
           multipart/form-data:
             schema:
               type: array
-              nullable: true
               items:
                 type: string
                 format: binary
@@ -2685,6 +2691,14 @@ paths:
       responses:
         "409":
           description: if the flow is disabled
+        "200":
+          description: validateInputsOnCreate 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse"
   /api/v1/flows:
     post:
       tags:
@@ -12990,7 +13004,6 @@ paths:
           multipart/form-data:
             schema:
               type: array
-              nullable: true
               items:
                 type: string
                 format: binary
@@ -13000,6 +13013,14 @@ paths:
           description: On success
         "409":
           description: if the executions is not paused
+        "200":
+          description: validateInputsOnResume_1 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse"
   /api/v1/{tenant}/executions/{executionId}/state:
     post:
       tags:
@@ -13126,9 +13147,9 @@ paths:
       - name: labels
         in: query
         description: The labels as a list of 'key:value'
+        required: true
         schema:
           type: array
-          nullable: true
           items:
             type: string
       - name: revision
@@ -13148,7 +13169,6 @@ paths:
           multipart/form-data:
             schema:
               type: array
-              nullable: true
               items:
                 type: string
                 format: binary
@@ -13156,6 +13176,14 @@ paths:
       responses:
         "409":
           description: if the flow is disabled
+        "200":
+          description: validateInputsOnCreate_1 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse"
   /api/v1/{tenant}/flows:
     post:
       tags:
@@ -23557,6 +23585,45 @@ components:
           type: string
           format: date-time
           nullable: true
+    ExecutionController.ApiValidateExecutionInputsResponse:
+      required:
+      - id
+      - inputs
+      - namespace
+      type: object
+      properties:
+        id:
+          type: string
+        namespace:
+          type: string
+        inputs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiInputAndValue"
+    ExecutionController.ApiValidateExecutionInputsResponse.ApiInputAndValue:
+      required:
+      - enabled
+      - errors
+      - input
+      - value
+      type: object
+      properties:
+        input:
+          $ref: "#/components/schemas/Input_Object_"
+        value: {}
+        enabled:
+          type: boolean
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError"
+    ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -24120,6 +24187,10 @@ components:
         required:
           type: boolean
         defaults: {}
+        displayName:
+          title: The display name of the input.
+          maxLength: 64
+          type: string
     KVController.TypedValue:
       required:
       - type
