@@ -70,8 +70,9 @@ In just one year, Kestra has grown by 10x, and today, hundreds of millions of wo
 Kestra enables users to **orchestrate workflows in under 5 minutes** through:
 
 - **Seamless workflow design**: Easily build workflows through our intuitive UI or directly within your favorite IDE.
-- **500+ integrations**: Connect with key tools like Databricks, Snowflake, dbt, and Airbyte.
-- **Deploy anywhere**: Run Kestra on any cloud (AWS, Azure, GCP), on-premises, or even using Docker.
+- **500+ integrations**: Connect with major technologies incl. AWS, GCP, Azure, Terraform, Docker, GitHub, Kafka, Postgres, Redis, MongoDB, SQL Server, Databricks, Snowflake, dbt, Airbyte, and many more.
+- **Deploy anywhere**: Run Kestra on any cloud (AWS, Azure, GCP), on-premises, or even on your laptop using Docker.
+
 
 > _"Kestra is the unifying layer for our data and workflows. You can start small, but scale without limits."_, Leroy Merlin.
 
