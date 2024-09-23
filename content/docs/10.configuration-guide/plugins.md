@@ -75,3 +75,23 @@ triggers:
 ```
 
 In this example, the `recoverMissedSchedules` is set to `NONE`, which means that Kestra will not recover any missed schedules for this specific flow regardless of the global configuration.
+
+## Restrict which plugins can be used
+
+::alert{type="info"}
+This is an [Enterprise Edition](/docs/enterprise) feature available starting with Kestra 0.19.
+::
+
+You can restrict which plugins can be used in a Kestra instance by configuring an allowlist / exclude list using regexes.
+
+The following configuration only allow plugin from the `io.kestra` package and disallow the `io.kestra.plugin.core.debug.Echo` plugin.
+
+```yaml
+kestra:
+  plugins:
+    security:
+      includes:
+        - io.kestra.*
+      excludes:
+        - io.kestra.plugin.core.debug.Echo
+```
