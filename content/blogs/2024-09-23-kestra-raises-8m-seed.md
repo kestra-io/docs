@@ -30,7 +30,8 @@ Our $8 million Seed round is a testament to the confidence our investors have in
 - [**Bertrand Diard**](https://www.linkedin.com/in/bertranddiard) (Co-founder of Talend),
 - [**Nicolas Dessaigne**](https://www.linkedin.com/in/nicolasdessaigne/) (Co-founder of Algolia & Group Partner at Y Combinator),
 - [**Frédéric Plais**](https://www.linkedin.com/in/fplais/) (Co-founder and CEO of Platform.sh)
-- [David Perry](https://www.linkedin.com/in/david-perry-8ab707/), [John Britton](https://www.linkedin.com/in/johndbritton/), [Antoine Balliet](https://www.linkedin.com/in/antoineballiet/), [Zachary Smith](https://www.linkedin.com/in/zsmith/), [Arnaud Ferreri](https://www.linkedin.com/in/arnaudferreri/)…
+- [David Perry](https://www.linkedin.com/in/david-perry-8ab707/), [John Britton](https://www.linkedin.com/in/johndbritton/), [Antoine Balliet](https://www.linkedin.com/in/antoineballiet/), [Zachary Smith](https://www.linkedin.com/in/zsmith/), [Arnaud Ferreri](https://www.linkedin.com/in/arnaudferreri/).
+
 
 This funding enables us to accelerate our growth, expand our team, and continue delivering exceptional value to engineers and enterprises alike.
 
