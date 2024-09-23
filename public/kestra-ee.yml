@@ -2516,6 +2516,34 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/executions/{executionId}/resume/validate:
+    post:
+      tags:
+      - Executions
+      summary: Validate inputs to resume a paused execution.
+      operationId: validateInputsOnResume
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
+        required: true
+      responses:
+        "204":
+          description: On success
+        "409":
+          description: if the executions is not paused
   /api/v1/executions/{executionId}/state:
     post:
       tags:
@@ -2610,6 +2638,53 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Execution"
+  /api/v1/executions/{namespace}/{id}/validate:
+    post:
+      tags:
+      - Executions
+      summary: Validate the creation of a new execution for a flow
+      operationId: validateInputsOnCreate
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: labels
+        in: query
+        description: The labels as a list of 'key:value'
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: revision
+        in: query
+        description: The flow revision or latest if null
+        schema:
+          type: integer
+          format: int32
+          nullable: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
+        required: true
+      responses:
+        "409":
+          description: if the flow is disabled
   /api/v1/flows:
     post:
       tags:
@@ -12892,6 +12967,39 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/{tenant}/executions/{executionId}/resume/validate:
+    post:
+      tags:
+      - Executions
+      summary: Validate inputs to resume a paused execution.
+      operationId: validateInputsOnResume_1
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
+        required: true
+      responses:
+        "204":
+          description: On success
+        "409":
+          description: if the executions is not paused
   /api/v1/{tenant}/executions/{executionId}/state:
     post:
       tags:
@@ -12996,6 +13104,58 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Execution"
+  /api/v1/{tenant}/executions/{namespace}/{id}/validate:
+    post:
+      tags:
+      - Executions
+      summary: Validate the creation of a new execution for a flow
+      operationId: validateInputsOnCreate_1
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: labels
+        in: query
+        description: The labels as a list of 'key:value'
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: revision
+        in: query
+        description: The flow revision or latest if null
+        schema:
+          type: integer
+          format: int32
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: array
+              nullable: true
+              items:
+                type: string
+                format: binary
+        required: true
+      responses:
+        "409":
+          description: if the flow is disabled
   /api/v1/{tenant}/flows:
     post:
       tags:
@@ -23266,6 +23426,17 @@ components:
         count:
           type: integer
           format: int64
+    DependsOn:
+      type: object
+      properties:
+        inputs:
+          type: array
+          nullable: true
+          items:
+            type: string
+        condition:
+          type: string
+          nullable: true
     DocumentationWithSchema:
       type: object
       properties:
@@ -23944,6 +24115,8 @@ components:
           $ref: "#/components/schemas/Type"
         description:
           type: string
+        dependsOn:
+          $ref: "#/components/schemas/DependsOn"
         required:
           type: boolean
         defaults: {}
