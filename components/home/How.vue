@@ -47,7 +47,7 @@
                                 <span class="ms-3">containerImage:</span> ghcr.io/kestra-io/pydata:latest<br/>
                                 <span class="ms-3">taskRunner:</span><br/>
                                 <span class="ms-4">type:</span> io.kestra.plugin.scripts.runner.docker.Docker<br/>
-                                <span class="ms-3">script:</span>|<br/>
+                                <span class="ms-3">script:</span> |<br/>
                                 <i class="fst-normal ms-3">
                                     import polars as pl
                                 </i>
@@ -67,7 +67,7 @@
                             <div class="ms-1">
                                 <span class="ms-1">- id:</span> daily<br/>
                                 <span class="ms-3">type:</span> io.kestra.plugin.core.trigger.Schedule<br/>
-                                <span class="ms-3">cron:</span> "@daily"<br/>
+                                <span class="ms-3">cron:</span> "0 9 * * *"<br/>
                             </div>
                         </div>
                     </div>
