@@ -34,7 +34,9 @@ Our $8 million Seed round is a testament to the confidence our investors have in
 
 This funding enables us to accelerate our growth, expand our team, and continue delivering exceptional value to engineers and enterprises alike.
 
-[KESTRA_Fundraising-V04.mp4](https://drive.google.com/file/d/1bJ4SqJrANgyqyK6b1hWaiqcLJHWvbLNQ/view?usp=sharing)
+<div class="video-container">
+<iframe src="https://www.youtube.com/embed/kf1kSEyjErA?si=fuD04NhbaR4OvlVH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Why We Built Kestra: Bridging the Orchestration Gap
 
