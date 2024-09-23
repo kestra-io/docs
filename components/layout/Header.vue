@@ -106,7 +106,7 @@
                                         @click="globalClick(true)"
                                     >
                                         <div class="submenu-btn-img">
-                                            <NuxtImg width="176px" loading="lazy" format="webp" src="/landing/header-menu/platform-overview.png" alt="Platform Overview" />
+                                            <NuxtImg width="176" height="129" loading="lazy" format="webp" src="/landing/header-menu/platform-overview.png" alt="Platform Overview" />
                                         </div>
                                         <p>
                                             <span class="title">Platform overview</span>
@@ -332,7 +332,7 @@
                                     @click="globalClick(true)"
                                 >
                                     <div class="submenu-btn-img">
-                                        <NuxtImg width="238px" loading="lazy" format="webp" src="/landing/header-menu/platform-blueprints.png" alt="Platform blueprints" />
+                                        <NuxtImg width="238px" height="190" loading="lazy" format="webp" src="/landing/header-menu/platform-blueprints.png" alt="Platform blueprints" />
                                     </div>
                                     <p>
                                         <span class="title">Explore blueprints</span>
