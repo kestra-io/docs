@@ -1,6 +1,6 @@
 ---
 title: "🚀 Kestra Secures $8M to Revolutionize Orchestration, Next Chapter Unveiled."
-description: "prep"
+description: "Kestra is redefining orchestration for enterprises worldwide, empowering engineers to simplify the most complex workflows at an unprecedented scale"
 date: 2024-09-23T14:00:00
 category: Company News
 author:
