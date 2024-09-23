@@ -1980,7 +1980,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ExecutionController.ExecutionResponse"
+                  $ref: "#/components/schemas/Execution"
   /api/v1/executions/webhook/{namespace}/{id}/{key}:
     get:
       tags:
@@ -2644,7 +2644,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ExecutionController.ExecutionResponse"
+                  $ref: "#/components/schemas/Execution"
   /api/v1/executions/{namespace}/{id}/validate:
     post:
       tags:
@@ -12355,7 +12355,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ExecutionController.ExecutionResponse"
+                  $ref: "#/components/schemas/Execution"
   /api/v1/{tenant}/executions/webhook/{namespace}/{id}/{key}:
     get:
       tags:
@@ -13124,7 +13124,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ExecutionController.ExecutionResponse"
+                  $ref: "#/components/schemas/Execution"
   /api/v1/{tenant}/executions/{namespace}/{id}/validate:
     post:
       tags:
@@ -23633,19 +23633,6 @@ components:
           type: string
         stackTrace:
           type: string
-    ExecutionController.ExecutionResponse:
-      required:
-      - deleted
-      - url
-      type: object
-      allOf:
-      - $ref: "#/components/schemas/Execution"
-      - properties:
-          deleted:
-            type: boolean
-          url:
-            type: string
-            format: uri
     ExecutionController.SetLabelsByIdsRequest:
       required:
       - executionLabels
