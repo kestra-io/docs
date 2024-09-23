@@ -9,7 +9,7 @@ author:
 image: /blogs/2024-09-23-kestra-raises-8m-seed/funding_announcement_8M.jpg
 ---
 
-Orchestration is at the core of the modern business infrastructure, and today, we're taking a huge step toward transforming how it's done. **We’re thrilled to announce Kestra's $8 million Seed round, led by Alven** (Stripe, Dataiku, Qonto, Algolia) with participation from I**SAI, Axeleo**, and key tech leaders such as [Olivier Pomel](https://www.linkedin.com/in/olivierpomel/), [Tristan Handy](https://www.linkedin.com/in/tristanhandy), [Michel Tricot](https://www.linkedin.com/in/micheltricot/), [Clément Delangue](https://www.linkedin.com/in/clementdelangue). This funding marks the next chapter in our mission to redefine orchestration for enterprises worldwide, empowering engineers to simplify the most complex workflows at an unprecedented scale.
+Orchestration is at the core of the modern business infrastructure, and today, we're taking a huge step toward transforming how it's done. **We’re thrilled to announce Kestra's $8 million Seed round, led by [Alven](https://alven.co/)** (Stripe, Dataiku, Qonto, Algolia) with participation from **[ISAI](https://www.isai.fr/), [Axeleo](https://www.axc.vc/)**, and key tech leaders such as [Olivier Pomel](https://www.linkedin.com/in/olivierpomel/), [Tristan Handy](https://www.linkedin.com/in/tristanhandy), [Michel Tricot](https://www.linkedin.com/in/micheltricot/), [Clément Delangue](https://www.linkedin.com/in/clementdelangue). This funding marks the next chapter in our mission to redefine orchestration for enterprises worldwide, empowering engineers to simplify the most complex workflows at an unprecedented scale.
 
 This milestone wouldn’t have been possible without the trust of our growing community. Since raising $3 million in pre-seed funding last year, Kestra has surpassed every expectation:
 
@@ -23,13 +23,13 @@ Today, Kestra’s adoption has **skyrocketed by 10x**. Thousands of companies, f
 
 Our $8 million Seed round is a testament to the confidence our investors have in Kestra’s future. In addition to Alven, ISAI, and Axeleo, we’re proud to be supported by an impressive lineup of private investors, including:
 
-- [**Olivier Pomel**](https://www.linkedin.com/in/olivierpomel/) (Co-founder and CEO of Datadog),
-- [**Tristan Handy**](https://www.linkedin.com/in/tristanhandy) (Founder and CEO of dbt Labs),
-- [**Michel Tricot**](https://www.linkedin.com/in/micheltricot/) (Co-founder and CEO of Airbyte),
-- [**Clément Delangue**](https://www.linkedin.com/in/clementdelangue) (Co-founder and CEO of Hugging Face),
-- [**Bertrand Diard**](https://www.linkedin.com/in/bertranddiard) (Co-founder of Talend),
-- [**Nicolas Dessaigne**](https://www.linkedin.com/in/nicolasdessaigne/) (Co-founder of Algolia & Group Partner at Y Combinator),
-- [**Frédéric Plais**](https://www.linkedin.com/in/fplais/) (Co-founder and CEO of Platform.sh)
+- [Olivier Pomel](https://www.linkedin.com/in/olivierpomel/) (Co-founder and CEO of Datadog),
+- [Tristan Handy](https://www.linkedin.com/in/tristanhandy) (Founder and CEO of dbt Labs),
+- [Michel Tricot](https://www.linkedin.com/in/micheltricot/) (Co-founder and CEO of Airbyte),
+- [Clément Delangue](https://www.linkedin.com/in/clementdelangue) (Co-founder and CEO of Hugging Face),
+- [Bertrand Diard](https://www.linkedin.com/in/bertranddiard) (Co-founder of Talend),
+- [Nicolas Dessaigne](https://www.linkedin.com/in/nicolasdessaigne/) (Co-founder of Algolia & Group Partner at Y Combinator),
+- [Frédéric Plais](https://www.linkedin.com/in/fplais/) (Co-founder and CEO of Platform.sh)
 - [David Perry](https://www.linkedin.com/in/david-perry-8ab707/), [John Britton](https://www.linkedin.com/in/johndbritton/), [Antoine Balliet](https://www.linkedin.com/in/antoineballiet/), [Zachary Smith](https://www.linkedin.com/in/zsmith/), [Arnaud Ferreri](https://www.linkedin.com/in/arnaudferreri/).
 
 
