@@ -98,5 +98,3 @@ Most importantly, we know that **Kestra’s success is driven by the talented an
 **Thank you to our users, customers, and investors** for driving Kestra forward in our mission to transform orchestration. **Help us build the leading platform for Unified Orchestration** by [starring us on GitHub](https://github.com/kestra-io/kestra) and joining this exciting journey.
 
 **Orchestrate Everything, Everywhere, All at Once**
-
-<a href="https://github.com/kestra-io/kestra"><img src="https://img.shields.io/github/stars/kestra-io/kestra?color=blueviolet&logo=github" height="24" alt="Github star" />
