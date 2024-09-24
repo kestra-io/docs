@@ -8,7 +8,7 @@
                 <Carousel v-bind="settings" :breakpoints="breakpoints">
                     <Slide v-for="blueprint in blueprints" :key="blueprint.id" >
                         <div class="carousel--item">
-                            <BlueprintsListCard :blueprint="blueprint" :tags="tags"/>
+                            <BlueprintsListCard :blueprint="blueprint" :tags="tags" :href="generateCardHref(blueprint)" />
                         </div>
                     </Slide>
                     <template #addons>
@@ -45,6 +45,10 @@
   const {data: tags} = await useAsyncData('blueprints-tags', () => {
     return $fetch(`${config.public.apiUrl}/blueprints/tags`)
   })
+  const generateCardHref = (blueprint) => {
+    let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
+    return `/blueprints/${tag.name.replace(' ', '-')}/${blueprint.id}-${slugify(blueprint.title)}`
+  }
   if(blueprintsData.value) {
     blueprints.value = blueprintsData.value.results
   }
