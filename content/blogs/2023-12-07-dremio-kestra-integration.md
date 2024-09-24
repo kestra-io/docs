@@ -54,7 +54,7 @@ Let's look at a practical application of Kestra and Dremio for data lakehouse or
 
 ### Prerequisites
 
-- **Kestra Setup**: start Kestra — by default, it includes all plugins that you need to follow this tutorial. See the [Getting Started](https://kestra.io/docs/developer-guide/plugins) documentation for more installation details.
+- **Kestra Setup**: start Kestra — by default, it includes all plugins that you need to follow this tutorial. See the [Getting Started](../docs/plugin-developer-guide/index.md) documentation for more installation details.
 - **Dremio Account**: if you are new to Dremio, the easiest way to familiarize yourself with the platform is to create a [Dremio Test Drive](https://docs.dremio.com/cloud/test-drive/) account, which provides you with a Dremio instance and sample datasets to query without requiring any subscription or installation.
 - **Dremio Token**: create a Personal Access Token (PAT) in your Dremio account. To do that, go to your Dremio account settings and then to the section "Personal Access Token". From here, you can create the token, copy it and store it as a [Kestra secret](https://kestra.io/docs/developer-guide/secrets) to avoid exposing it directly in your flow code. Check the [Dremio documentation](https://docs.dremio.com/cloud/security/authentication/personal-access-token#creating-a-pat) for more details.
 - **Dremio Project ID**: you can find the project ID in your Dremio URL. For example, if your Dremio URL is `https://app.dremio.cloud/sonar/ead79cc0-9e93-4d50-b364-77639a56d4a6`, then your project ID is the last string `ead79cc0-9e93-4d50-b364-77639a56d4a6`.
