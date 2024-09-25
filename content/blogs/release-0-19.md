@@ -458,32 +458,32 @@ Note that Managed Roles are not the same as [Default Roles](https://kestra.io/do
 
 The previous permissions dropdown system was tedious and time-consuming, requiring you to manually select each permission and its corresponding actions in order to configure a role.
 
-Kestra 0.19 [introduces](https://github.com/kestra-io/kestra-ee/issues/874) a new **view for permissions management** to simplify selecting the required permissions without having to manually click through every dropdown element. This new view allows you to check a parent element, like **FLOWS**, and automatically select all associated actions (CREATE, READ, UPDATE, DELETE). This drastically reduces the number of clicks needed to configure roles.
+Kestra 0.19 [introduces](https://github.com/kestra-io/kestra-ee/issues/874) a new **view for permissions management** to simplify selecting the required permissions without having to manually click through every dropdown element. This new view allows you to check a parent element, like `FLOWS`, and automatically select all associated actions (`CREATE`, `READ`, `UPDATE`, `DELETE`). This eliminates tedious clicks needed to configure roles.
 
 ![permissions_tree_view](/blogs/release-0-19/permissions_tree_view.png)
 
 ---
 
-### Keeping You Logged In: Auto-Refresh for Active Users
+### Keeping You Logged In
 
-We've addressed an issue many users faced when their session timed out while they were still active. Previously, Kestra would time out based on a fixed interval, causing users to lose unsaved work when their token expired. This was especially frustrating wheny you were in the middle of editing a flow, leading to unsaved changes and an unexpected logout.
+We've addressed an issue many users faced when their session timed out while they were still active. Previously, Kestra would time out based on a fixed interval, causing users to lose unsaved work when their authentucation token expired. This was especially frustrating when you were in the middle of editing a flow, leading to unsaved changes and an unexpected logout.
 
-With the [new mechanism](https://github.com/kestra-io/kestra/issues/4120) introduced in this release, Kestra now automatically refreshes your auth token or session cookie if you're still active in the dashboard or flow editor. If the token is close to expiring, Kestra silently refreshes it in the background — no more forced logouts, and no more lost work. This small but critical change ensures your session stays alive while you're working, without any interruptions.
+With the [new mechanism](https://github.com/kestra-io/kestra/issues/4120) introduced in this release, Kestra now automatically refreshes your auth token or session cookie if you're still active. If the token is close to expiring, Kestra silently refreshes it in the background — no more forced logouts, and no more lost work. This small but critical change ensures your session stays alive while you're working, without any interruptions.
 
-### Forgot Your Password? Reset It Directly from the Login Page
+### Forgot Password Functionality
 
-This release [adds](https://github.com/kestra-io/kestra-ee/issues/603) Password Reset functionality to the Enterprise Edition, allowing users to reset their passwords directly from the login page. This feature is especially useful for users who forget their passwords or need to reset them for security reasons. Keep in mind that you'll only see the "Forgot your password?" link if the email server is configured on your instance.
+This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing you to get an email link to reset a password directly from the login page. Keep in mind that you'll only see the "Forgot your password?" option if the email server is configured on your instance.
 
 
 ### Keeping Things Clean: Purging Old Audit Logs
 
-The Enterprise Edition of Kestra generated an audit log for every action taken on the platform, from creating a flow to updating a variable. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up unnecessary space in the database.
+The Enterprise Edition of Kestra generates an audit log for every action taken on the platform, from logging in, creating a flow, to updating a single namespace variable. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up significant amount of space in the database.
 
-We’ve added a new task called `PurgeAuditLogs`, which helps you manage the growing number of audit logs by removing the ones that are no longer needed. Over time, these logs can take up unnecessary space in your database, and this task gives you a way to clean them up based on your own criteria.
+We’ve added a new task called `PurgeAuditLogs`, which helps you manage the growing number of audit logs by removing the ones that are no longer needed.
 
 You can set a date range for the logs you want to delete, choose a specific `namespace`, and even filter by `permissions` or CRUD `actions` (like CREATE, READ, UPDATE, DELETE). This task gives you a simple way to implement an Audit Logs retention policy that fits your organization's needs.
 
-For example, if you want to purge logs older than one month, you could add a System Flow like this:
+For example, to purge logs older than one month, you can add the following System Flow:
 
 ```yaml
 id: audit_log_cleanup
@@ -505,7 +505,7 @@ This release comes with several useful improvements across our plugin ecosystem,
 
 First, we’ve [simplified](https://github.com/kestra-io/plugin-jdbc/issues/374) our **JDBC tasks and triggers** by introducing a single `fetchType` property, cleaning up what used to be a confusing set of options like `store`, `fetch`, and `fetchOne`.
 
-For those working with **Airflow** or gradually migrating away from Airflow, you can now [orchestrate Airflow DAGs](https://github.com/kestra-io/plugin-airflow/issues/2) directly from Kestra. Similarly, **Azure Data Factory pipelines** can now be triggered from within a [new Azure plugin](https://github.com/kestra-io/plugin-azure/issues/134), allowing better integration with your Azure workflows.
+For those working with **Apache Airflow** or gradually migrating away from it, you can now [orchestrate Airflow DAGs](https://github.com/kestra-io/plugin-airflow/issues/2) directly from Kestra. Similarly, **Azure Data Factory pipelines** can now be triggered from within a [new Azure plugin](https://github.com/kestra-io/plugin-azure/issues/134), allowing better integration with your Azure workflows.
 
 On the Google Cloud front, we’ve added the ability to create and delete **Dataproc clusters** with our [new GCP plugin](https://github.com/kestra-io/plugin-gcp/pull/433).
 
@@ -514,14 +514,14 @@ We’ve also introduced a few new plugins for popular open-source technologies:
 - [NATS KV Store](https://github.com/kestra-io/plugin-nats/issues/46) tasks
 - [MongoDB](https://github.com/kestra-io/plugin-mongodb/pull/15) trigger.
 
-For Java enthusiasts, the [JBang plugin](https://github.com/kestra-io/kestra/issues/2150) now lets you run [JBang scripts](https://develop.kestra.io/plugins/plugin-script-jbang) directly from Kestra, with support for Java, JShell, Kotlin and Groovy.
+For Java enthusiasts, the [JBang plugin](https://github.com/kestra-io/kestra/issues/2150) now lets you run [JBang scripts](https://develop.kestra.io/plugins/plugin-script-jbang) directly from Kestra with support for Java, JShell, Kotlin and Groovy.
 
 
-We've added a new **Excel plugin** to [read from and write to multiple sheets](https://github.com/kestra-io/plugin-serdes/issues/91), making it easier to export data from multiple sources into a single Excel file that can be used by business stakeholders.
+We've also added a new **Excel plugin** to [read from and write to multiple sheets](https://github.com/kestra-io/plugin-serdes/issues/91), making it easier to export data from multiple sources into a single Excel file that can be used by business stakeholders.
 
 The SSH Command plugin has been updated to [support OpenSSH config authentication](https://github.com/kestra-io/plugin-fs/pull/154/files).
 
-Finally, we’ve made a small but [important update](https://github.com/kestra-io/plugin-docker/issues/32) to the **Docker push** plugin, which now supports a `protocol` — an Enum-type property that allows pushing images to private registries using either HTTPS (default) or HTTP.
+Finally, we’ve made a small but [important update](https://github.com/kestra-io/plugin-docker/issues/32) to the Docker `Push` task, which now supports a `protocol` — an Enum-type property that allows pushing images to private registries using either HTTPS (default) or HTTP.
 
 ---
 
@@ -529,7 +529,7 @@ Finally, we’ve made a small but [important update](https://github.com/kestra-i
 
 ### URL to follow the Execution progress
 
-The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing to follow the Execution progress from the UI. This is useful when building long-running workflows that require users to follow the workflow progress. Here is how you can use it:
+The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing to follow the Execution progress from the UI. This is particularly helpful for externally triggered long-running executions that require users to follow the workflow progress. Here is how you can use it:
 
 1) First, create a flow:
 
@@ -577,13 +577,13 @@ You will see output similar to the following:
     "attemptNumber": 1,
     "originalCreatedDate": "2024-09-24T13:35:32.983420055Z"
   },
-  "url": "http://localhost:8080/ui/executions/company.myteam/myflow/1ZiZQWCHj7bf9XLtgvAxyi"
+  "url": "http://localhost:8080"
 }
 ```
 
-You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL to the user who initiated the flow from your application.
+You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL from your application to the user who initiated the flow.
 
-Keep in mind that you need to configure the URL of your kestra instance within your configuration file to make this feature work. Here is how you can do it:
+Keep in mind that you need to configure the URL of your kestra instance within your configuration file to have a full URL rather than just the suffix `/ui/executions/company.myteam/myflow/1ZiZQWCHj7bf9XLtgvAxyi`. Here is how you can do it:
 
 ```yaml
 kestra:
@@ -598,16 +598,15 @@ Staying on the topic of Executions, [you can now schedule](https://github.com/ke
 
 You can type the desired date directly, or use the date picker and click on the `Execute` button. That execution will be shown in the `CREATED` state, and will only move into the `RUNNING` state at the scheduled date. You can see the scheduled date in the created Execution's Overview page:
 
-![img_1.png](img_1.png)
+TODO add image
 
-If you prefer a programmatic approach, you can also schedule execution for later using:
+If you prefer a programmatic approach, you can also schedule execution for later using one of the following methods:
 1. An API call
 2. The new `scheduleDate` property of the `Subflow` task
 3. The new `ScheduleOnDates` trigger.
 
-The API call would look like this:
+The API call would look as follows:
 
-TODO wrong code
 ```shell
 curl -v -X POST -H 'Content-Type: multipart/form-data' \
     -F 'user=Scheduled Flow' \
@@ -615,7 +614,7 @@ curl -v -X POST -H 'Content-Type: multipart/form-data' \
 ```
 
 ::alert{type="info"}
-Keep in mind that the time zone offset like `+02:00` in the date `2024-12-24T17:00:00+02:00` needs to be URL encoded as `%2B02:00`. In URLs, the `+` sign is interpreted as a space, so it must be encoded as `%2B`. Therefore, the `+02:00` time zone offset would be URL-encoded as `%2B02:00` to preserve the original meaning when passing the date and time in a URL.
+Note that the time zone offset like `+02:00` in the date `2024-12-24T17:00:00+02:00` needs to be URL-encoded. In URLs, the `+` sign is interpreted as a space, so it must be encoded as `%2B`. Therefore, the `+02:00` time zone offset would be URL-encoded as `%2B02:00` to preserve the original meaning when passing the date and time in a URL.
 ::
 
 
@@ -708,7 +707,7 @@ tasks:
 ```
 
 
-Finally, you can also use the new `ScheduleOnDates` trigger to start a flow at specific dates known ahead of time. This trigger is useful when you know the exact dates when you want to start the flow. Here is how you can use it:
+Finally, you can also use the new `ScheduleOnDates` trigger to start a flow at specific dates known ahead of time. This trigger is useful when you know the exact dates when you want to start the flow:
 
 ```yaml
 id: scheduled_at
@@ -739,7 +738,7 @@ We are excited what you will build with these new Schedule-for-later enhancement
 
 > "This is a game changer for me. I have jobs that need to be run whose schedule time and date can only be derived as a delta from a specific event. This would allow me to calculate the runs for the week, and schedule the jobs that need to run!"
 
-Let us know how you plan to use these enhancements to make your flows (literally!) future-proof!
+Let us know how you plan to use these scheduling enhancements to make your flows (literally!) future-proof!
 
 ## Honorable Mentions
 
@@ -748,14 +747,14 @@ Let us know how you plan to use these enhancements to make your flows (literally
 - We [now show a warning](https://github.com/kestra-io/kestra/issues/2126) when you use `{{trigger.uri}}` and you try to run the flow via the Execute button. This is to prevent accidental execution of flows that rely on data passed from external triggers.
 - You can [manually change](https://github.com/kestra-io/kestra/issues/4447) the Execution state when needed, e.g., set some failed executions to success after fixing the issue manually.
 - We've [improved the memory consumption](https://github.com/kestra-io/kestra-ee/issues/1262) of the Purge task to help in use cases when you need to purge large amounts of data.
-- We've [also improved](https://github.com/kestra-io/kestra/issues/4631) handling of the Execution context, allowing you to set a limit in size for messages. When exceeded, the message will be refused by the queue, and the taskrun will fail with an error: "Message of size XXX has exceeded the configured limit of XXX."
+- We've [also improved](https://github.com/kestra-io/kestra/issues/4631) handling of the Execution context, allowing you to set a limit in size for messages. When exceeded, the message will be refused by the queue, and the taskrun will fail with an error: `"Message of size XXX has exceeded the configured limit of XXX"`.
 
 ---
 
-## Next Steps 🚀
+## Next Steps
 
 This post covered new features and enhancements added in Kestra 0.19.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
 
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
-If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
