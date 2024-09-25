@@ -1,6 +1,6 @@
 ---
 title: "How Kestra Raised $8M: Our Seed Deck, Now Public"
-description: "Discover the story behind our $8M seed funding. Learn how we framed our vision, addressed key challenges in orchestration, and built a compelling pitch that secured investor confidence in the future of unified orchestration."
+description: "Unveiling Our Journey to $8M: Vision, Challenges, and Investor Trust."
 date: 2024-09-25T14:00:00
 category: Company News
 author:
@@ -77,7 +77,7 @@ Our pitch deck also emphasized our API-first approach, making Kestra **extensibl
 
 ### What We Don’t Want to Be
 
-We had to be clear about what Kestra was not. **We’re not a complex tool that requires weeks of onboarding**. We’re not a narrow solution that only works for one persona, like a data engineer. And we certainly don’t want to be an **Airflow clone** — in fact, we inspire others with Kestra’s key product philosophy: **“Run anywhere, code in any language.”**
+We had to be clear about what Kestra was not. **We’re not a complex tool that requires weeks of onboarding**. We’re not a narrow solution that only works for one persona, like a data engineer. And we certainly don’t want to be an **Airflow clone** — in fact, we inspire others with Kestra’s key product philosophy: **“Run anywhere, code in any language”**, and that’s fine!
 
 Our goal was to strike a balance—to provide **flexibility without overwhelming users with complexity**. We’re not just a dev tool, and we’re not just a UI-based workflow manager. **Kestra is designed to meet users where they are**, whether they prefer code, focus on UI, or a mix of both.
 
