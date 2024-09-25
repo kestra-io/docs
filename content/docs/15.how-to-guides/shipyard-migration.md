@@ -40,7 +40,7 @@ In the same fashion as you would configure a vessel, you can configure a task in
 
 ![documentation_view](docs/how-to-guides/shipyard-migration/documentation_view.png)
 
-There is no concept of **connections** in Kestra. By default, all tasks are executed sequentially. To adjust the execution logic e.g. to run some tasks in parallel, wrap your tasks in [flowable tasks](../05.concepts/01.flowable-tasks.md). As always, the combination of our [core documentation](../index.md), [Plugin documentation](/plugins) and [Blueprints](/blueprints) will help you figure out how to do that.
+There is no concept of **connections** in Kestra. By default, all tasks are executed sequentially. To adjust the execution logic e.g. to run some tasks in parallel, wrap your tasks in [flowable tasks](../04.workflow-components/01.tasks/00.flowable-tasks.md). As always, the combination of our [core documentation](../index.md), [Plugin documentation](/plugins) and [Blueprints](/blueprints) will help you figure out how to do that.
 
 Once you have the fleet equivalent (i.e. a flow) ready in Kestra, you can use the **Source and topology view** to validate whether your Kestra flow matches the connections in your Shipyard fleet.
 
