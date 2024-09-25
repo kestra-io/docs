@@ -9603,6 +9603,12 @@ paths:
         schema:
           type: string
           nullable: true
+      - name: flowId
+        in: query
+        description: The flow identifier
+        schema:
+          type: string
+          nullable: true
       responses:
         "200":
           description: search_3 200 response
@@ -21251,6 +21257,12 @@ paths:
       - name: workerId
         in: query
         description: The identifier of the worker currently evaluating the trigger
+        schema:
+          type: string
+          nullable: true
+      - name: flowId
+        in: query
+        description: The flow identifier
         schema:
           type: string
           nullable: true
