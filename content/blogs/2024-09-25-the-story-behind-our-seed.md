@@ -9,7 +9,7 @@ author:
   role: "CEO & Co-Founder"
 image: /blogs/2024-09-25-the-story-behind-our-seed.jpg
 ---
-When we saw how **Michel Tricot and Jean Lafleur from Airbyte** openly shared their fundraising decks, it resonated with us. It was fantastic to be transparent about the journey behind building their company, and it inspired us to do the same. Their approach gave us the confidence to share our own story.
+When *Michel Tricot* and *Jean Lafleur* from Airbyte shared their fundraising deck, it really resonated with us. Their openness about their journey inspired us to do the same and share our own story.
 
 Today, **we’re sharing the deck that helped us raise $8M in seed funding**—the decisions we made and the vision that drives [Kestra](https://github.com/kestra-io/kestra). We want to offer a look into what went into building this story, and why it worked for us.
 
