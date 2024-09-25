@@ -1,6 +1,6 @@
 ---
 title: "Lessons Learned from Turning an Open-Source Project into a Viable Business"
-description: "TL;DR Kestra is an open-source orchestrator and after two years we raised $8 Million by being true to the open-source philosophy."
+description: "Kestra is an open-source orchestrator that has grown to thousands of users. Staying true to open-source has been a key factor in our growth, and we’re sharing the lessons we’ve learned along the way."
 date: 2024-09-25T18:00:00
 category: Company News
 author:
