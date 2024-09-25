@@ -29,7 +29,7 @@ In either of these Kestra server installations, you will need to run the Python 
 
 ## Using cache files
 
-In a WorkingDirectory task, you can have the virtual environment setup, install all the pip package dependencies, and cache the `venv` folder. The pip package dependencies will then be cached as part of the virtual environment folder, and you need not install it on every execution of the flow. This is explained in detail in the [caching](/docs/developer-guide/caching) page.
+In a WorkingDirectory task, you can have the virtual environment setup, install all the pip package dependencies, and cache the `venv` folder. The pip package dependencies will then be cached as part of the virtual environment folder, and you need not install it on every execution of the flow. This is explained in detail in the [caching](../05.concepts/12.caching.md) page.
 
 Here is a sample flow demonstrating how the `venv` folder can be cached:
 

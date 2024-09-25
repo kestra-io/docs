@@ -91,7 +91,7 @@ They also moved with great speed to develop a Kestra plugin to help simplify the
 - applied some qualities with rejection of records based on business rules (upper/lower bound, validate key with referential, deduplication, etc.)
 - loaded the data in ODS (Operational Data Store) — meaning the image of the data from the incoming system
 
-The transfer of the data was in HTTPS directly to the Kestra API in order to free any dependencies. The operational system used most frequently was a simple `curl` [command](/docs/workflow-components/inputs#set-inputs-when-executing-the-flow-using-the-api) in order to trigger ingestion or develop a simple HTTP client reaching the Kestra API.
+The transfer of the data was in HTTPS directly to the Kestra API in order to free any dependencies. The operational system used most frequently was a simple `curl` [command](../docs/04.workflow-components/05.inputs.md#set-inputs-when-executing-the-flow-using-the-api) in order to trigger ingestion or develop a simple HTTP client reaching the Kestra API.
 
 This single task handled all the complexities of loading data — it would create ten to twenty tasks:
 ```yaml

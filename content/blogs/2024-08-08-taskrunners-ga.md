@@ -91,7 +91,7 @@ To help you get started, we prepared extensive [How-To Guides](../docs/15.how-to
   <iframe src="https://www.youtube.com/embed/CC_CnH74qnk?si=_Pq-GBV2UadYlKxE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Try Task Runners in [Kestra 0.18.0](/docs/getting-started/quickstart) today and let us know what you think!
+Try Task Runners in [Kestra 0.18.0](../docs/01.getting-started/01.quickstart.md) today and let us know what you think!
 
 - If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 - If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).

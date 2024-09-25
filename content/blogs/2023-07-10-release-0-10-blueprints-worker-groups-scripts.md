@@ -233,7 +233,7 @@ tasks:
     format: "{{ secret('SLACK_WEBHOOK_KEY') }}"
 ```
 
-Even though the environment variable name is prefixed with `SECRET_`, you only need to reference the key without a prefix in your flow. For more information, check the detailed [Managing Secrets](/docs/concepts/secret) guide.
+Even though the environment variable name is prefixed with `SECRET_`, you only need to reference the key without a prefix in your flow. For more information, check the detailed [Managing Secrets](../docs/05.concepts/04.secret.md) guide.
 
 
 ## Improved Polling Triggers
