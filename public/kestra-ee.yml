@@ -3216,34 +3216,10 @@ paths:
           application/x-yaml:
             schema:
               type: string
-            example: null
-          application/json:
-            schema:
-              type: string
-            example: null
         required: true
       responses:
         "200":
           description: validateTask 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidateConstraintViolation"
-  /api/v1/flows/validate/trigger:
-    post:
-      tags:
-      - Flows
-      summary: Validate trigger
-      operationId: validateTrigger
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: string
-        required: true
-      responses:
-        "200":
-          description: validateTrigger 200 response
           content:
             application/json:
               schema:
@@ -8043,6 +8019,26 @@ paths:
       responses:
         "404":
           description: On user not found
+  /api/v1/tenants/users/{id}/impersonate:
+    post:
+      tags:
+      - Users
+      summary: Impersonate a user
+      operationId: impersonate
+      parameters:
+      - name: id
+        in: path
+        description: The user id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: impersonate 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/tenants/users/{id}/password:
     put:
       tags:
@@ -9239,6 +9235,31 @@ paths:
       responses:
         "404":
           description: On user not found
+  /api/v1/tenants/{ressourceTenant}/users/{id}/impersonate:
+    post:
+      tags:
+      - Users
+      summary: Impersonate a user
+      operationId: impersonate_1
+      parameters:
+      - name: id
+        in: path
+        description: The user id
+        required: true
+        schema:
+          type: string
+      - name: ressourceTenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: impersonate_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/tenants/{ressourceTenant}/users/{id}/password:
     put:
       tags:
@@ -13796,41 +13817,12 @@ paths:
       summary: Validate a list of flows
       operationId: validateTask_1
       parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
       - name: section
         in: query
         description: Type of task
         required: true
         schema:
           $ref: "#/components/schemas/FlowController.TaskValidationType"
-      requestBody:
-        content:
-          application/x-yaml:
-            schema:
-              type: string
-          application/json:
-            schema:
-              type: string
-            example: null
-        required: true
-      responses:
-        "200":
-          description: validateTask_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidateConstraintViolation"
-  /api/v1/{tenant}/flows/validate/trigger:
-    post:
-      tags:
-      - Flows
-      summary: Validate trigger
-      operationId: validateTrigger_1
-      parameters:
       - name: tenant
         in: path
         required: true
@@ -13838,13 +13830,13 @@ paths:
           type: string
       requestBody:
         content:
-          application/json:
+          application/x-yaml:
             schema:
               type: string
         required: true
       responses:
         "200":
-          description: validateTrigger_1 200 response
+          description: validateTask_1 200 response
           content:
             application/json:
               schema:
@@ -19411,6 +19403,31 @@ paths:
       responses:
         "404":
           description: On user not found
+  /api/v1/{tenant}/tenants/users/{id}/impersonate:
+    post:
+      tags:
+      - Users
+      summary: Impersonate a user
+      operationId: impersonate_2
+      parameters:
+      - name: id
+        in: path
+        description: The user id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: impersonate_2 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/{tenant}/tenants/users/{id}/password:
     put:
       tags:
@@ -20812,6 +20829,36 @@ paths:
       responses:
         "404":
           description: On user not found
+  /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/impersonate:
+    post:
+      tags:
+      - Users
+      summary: Impersonate a user
+      operationId: impersonate_3
+      parameters:
+      - name: id
+        in: path
+        description: The user id
+        required: true
+        schema:
+          type: string
+      - name: ressourceTenant
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: impersonate_3 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/{tenant}/tenants/{ressourceTenant}/users/{id}/password:
     put:
       tags:
@@ -22950,6 +22997,7 @@ components:
       - deleted
       - detail
       - id
+      - impersonatedBy
       - ipAddress
       - revertPatch
       - type
@@ -22968,6 +23016,8 @@ components:
         userId:
           type: string
         ipAddress:
+          type: string
+        impersonatedBy:
           type: string
         deleted:
           type: boolean
@@ -23401,6 +23451,7 @@ components:
       - DELETE
       - LOGIN
       - LOGOUT
+      - IMPERSONATE
     CurrentUserController.Me:
       required:
       - roles
