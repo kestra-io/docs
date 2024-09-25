@@ -7,7 +7,7 @@ author:
   name: Anna Geller
   image: ageller
   role: Product Lead
-image: /blogs/release-0.19.png
+image: /blogs/release-0-19.png
 ---
 
 We are excited to announce Kestra 0.19.0, bringing the following highlights:
@@ -50,7 +50,7 @@ With this new feature, Kestra is now truly language-agnostic, both in terms of p
 
 At Kestra, we know how critical it is to have a clear, real-time understanding of your orchestration platform's performance. We’ve redesigned the main dashboard to offer a much more refined, focused experience, showing you the information you need without overwhelming you with unnecessary details.
 
-![new_dashboard_classic](/blogs/release-0.19/new_dashboard_classic.png)
+![new_dashboard_classic](/blogs/release-0-19/new_dashboard_classic.png)
 
 The previous dashboard aimed to display as much information as possible, but in doing so, the Dashboard got over time cluttered and sometimes slow to load. Here’s what we’ve changed:
 
@@ -64,7 +64,7 @@ The previous dashboard aimed to display as much information as possible, but in 
 
 This new layout brings clarity, faster load times, and is georgous to look at! See the screenshot below to judge for yourself.
 
-![new_dashboard_purple](/blogs/release-0.19/new_dashboard_purple.png)
+![new_dashboard_purple](/blogs/release-0-19/new_dashboard_purple.png)
 
 In the future, we plan to add more customization options to the Dashboard allowing you to set a custom color palette and create additional visuals to display the information you need most.
 
@@ -90,18 +90,18 @@ kestra:
 
 To access System Flows, navigate to the `Namespaces` section in the UI. The `system` namespace is pinned at the top for quick access.
 
-![system_namespace](/blogs/release-0.19/system_namespace.png)
+![system_namespace](/blogs/release-0-19/system_namespace.png)
 
 Here, you’ll find the _System Blueprints_ tab, which provides fully customizable templates tagged for system use. These templates are easily modifiable to suit your organization’s needs.
 
-![system_blueprints](/blogs/release-0.19/system_blueprints.png)
+![system_blueprints](/blogs/release-0-19/system_blueprints.png)
 
 Keep in mind that System Flows are not restricted to System Blueprints — any valid Kestra flow can become a System Flow if it's added within the `system` namespace.
 
 
 System Flows are intentionally hidden from the main UI, appearing only in the `system` namespace. The Dashboard, Flows, and Executions pages now offer a multi-select filter with options for `User` (default) and `System` (visible by default only within the `system` namespace). This makes it easy to toggle between user-facing workflows and background system flows and their executions, or view both simultaneously.
 
-![system_filter](/blogs/release-0.19/system_filter.png)
+![system_filter](/blogs/release-0-19/system_filter.png)
 
 
 In terms of permissions, `system` namespace is open by default, but using the namespace-level RBAC functionality in the Enterprise Edition, you can restrict access to the `system` namespace only to Admins, while assigning `company.*` namespaces to your general user base.
