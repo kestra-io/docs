@@ -5540,6 +5540,7 @@ paths:
         required: true
         schema:
           type: string
+          format: uri
       responses:
         "200":
           description: file_1 200 response
@@ -5595,6 +5596,7 @@ paths:
         required: true
         schema:
           type: string
+          format: uri
       requestBody:
         content:
           multipart/form-data:
@@ -5629,6 +5631,7 @@ paths:
         required: true
         schema:
           type: string
+          format: uri
       responses:
         "200":
           description: delete_8 200 response
@@ -5650,6 +5653,7 @@ paths:
         description: The internal storage uri
         schema:
           type: string
+          format: uri
           nullable: true
       responses:
         "200":
@@ -5677,6 +5681,7 @@ paths:
         description: The internal storage uri
         schema:
           type: string
+          format: uri
           nullable: true
       responses:
         "200":
@@ -5751,6 +5756,7 @@ paths:
         description: The internal storage uri
         schema:
           type: string
+          format: uri
           nullable: true
       responses:
         "200":
@@ -16405,6 +16411,7 @@ paths:
         required: true
         schema:
           type: string
+          format: uri
       - name: tenant
         in: path
         required: true
@@ -16470,6 +16477,7 @@ paths:
         required: true
         schema:
           type: string
+          format: uri
       - name: tenant
         in: path
         required: true
@@ -16509,6 +16517,7 @@ paths:
         required: true
         schema:
           type: string
+          format: uri
       - name: tenant
         in: path
         required: true
@@ -16535,6 +16544,7 @@ paths:
         description: The internal storage uri
         schema:
           type: string
+          format: uri
           nullable: true
       - name: tenant
         in: path
@@ -16567,6 +16577,7 @@ paths:
         description: The internal storage uri
         schema:
           type: string
+          format: uri
           nullable: true
       - name: tenant
         in: path
@@ -16656,6 +16667,7 @@ paths:
         description: The internal storage uri
         schema:
           type: string
+          format: uri
           nullable: true
       - name: tenant
         in: path
