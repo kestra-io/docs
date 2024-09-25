@@ -45,7 +45,7 @@
         if (props.src?.startsWith('/') && !props.src.startsWith('//')) {
             return withBase(props.src, useRuntimeConfig().app.baseURL)
         }
-        return props.src
+        return withBase(props.src, useRoute().fullPath);
     })
 
     const classWithZoom = computed(() => {
