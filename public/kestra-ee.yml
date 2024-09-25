@@ -25141,13 +25141,10 @@ components:
       - description
       - id
       - isDefault
-      - isManaged
       - name
       - permissions
       type: object
       properties:
-        isManaged:
-          type: boolean
         id:
           type: string
         name:
