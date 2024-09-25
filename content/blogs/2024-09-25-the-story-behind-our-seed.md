@@ -1,6 +1,6 @@
 ---
-title: "How We Raised $8M in Seed Funding: The Story Behind Our Pitch Deck to Investors"
-description: "Discover the story behind Kestra's $8M seed funding. Learn how we framed our vision, addressed key challenges in orchestration, and built a compelling pitch that secured investor confidence in the future of unified orchestration."
+title: "How We Raised $8M: Our Seed Deck, Now Public"
+description: "Discover the story behind our $8M seed funding. Learn how we framed our vision, addressed key challenges in orchestration, and built a compelling pitch that secured investor confidence in the future of unified orchestration."
 date: 2024-09-25T14:00:00
 category: Company News
 author:
@@ -9,9 +9,9 @@ author:
   role: "CEO & Co-Founder"
 image: /blogs/2024-09-25-the-story-behind-our-seed.jpg
 ---
-When *Michel Tricot* and *Jean Lafleur* from Airbyte shared their fundraising deck, it really resonated with us. Their openness about their journey inspired us to do the same and share our own story.
+Seeing *Michel Tricot* and *Jean Lafleur* from *Airbyte* share their fundraising deck openly inspired us to follow suit.
 
-Today, **we’re sharing the deck that helped us raise $8M in seed funding**—the decisions we made and the vision that drives [Kestra](https://github.com/kestra-io/kestra). We want to offer a look into what went into building this story, and why it worked for us.
+Today, **we're sharing the deck that helped us raise $8M in seed funding**—the decisions we made and the vision that drives [Kestra](https://github.com/kestra-io/kestra). We want to offer a look into what went into building this story, and why it worked for us.
 
 <div class="video-container">
 <iframe src="https://docs.google.com/presentation/d/1y_qp8h5B05r3yGJb2zQVU4v0ce1rWeA1BSCb7aYslt8/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1440" height="839" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
