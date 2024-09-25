@@ -1,5 +1,5 @@
 ---
-title: "How We Raised $8M: Our Seed Deck, Now Public"
+title: "How Kestra Raised $8M: Our Seed Deck, Now Public"
 description: "Discover the story behind our $8M seed funding. Learn how we framed our vision, addressed key challenges in orchestration, and built a compelling pitch that secured investor confidence in the future of unified orchestration."
 date: 2024-09-25T14:00:00
 category: Company News
@@ -92,3 +92,8 @@ This is a story of **accessibility, scalability, and community-led innovation**.
 We are immensely grateful to our **investors** who believe in our vision and have provided their unwavering support throughout this journey. Check out our full [announcement](//blogs/2024-09-23-kestra-raises-8m-seed) here for more details on what’s next for Kestra and how we plan to continue building.
 
 **Help us build the leading platform for Unified Orchestration** by [starring us on GitHub](https://go.kestra.io/github-fundraise) and joining this exciting journey.
+
+ **Resources:**
+- [Join the Kestra Slack Community](https://kestra.io/slack)
+- Star us on [GitHub](https://github.com/kestra-io/kestra)!
+- [Airbyte’s deck sharing](https://airbyte.com/blog/the-deck-we-used-to-raise-our-150m-series-b)
