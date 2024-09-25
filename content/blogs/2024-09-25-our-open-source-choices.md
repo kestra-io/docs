@@ -46,7 +46,7 @@ The key was delivering on enterprise needs: **security** (think SSO, RBAC, S
 
 ## **On Making Technical Decisions**
 
-[technical decisions](/blogs/2024-09-25-our-open-source-choices/technos.jpg)
+![technical decisions](/blogs/2024-09-25-our-open-source-choices/technos.jpg)
 
 ### **Engineering vs. UX: Finding the Right Balance**
 
