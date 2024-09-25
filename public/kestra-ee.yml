@@ -747,98 +747,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ServiceInstance"
-  /api/v1/cluster/workergroups:
-    get:
-      tags:
-      - WorkerGroups
-      summary: List all Worker Groups
-      operationId: listWorkerGroups
-      responses:
-        "200":
-          description: listWorkerGroups 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiWorkerGroupList"
-    post:
-      tags:
-      - WorkerGroups
-      summary: Create a new worker group.
-      operationId: createWorkerGroupById
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiCreateWorkerGroupRequest"
-        required: true
-      responses:
-        "200":
-          description: createWorkerGroupById 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkerGroup_1"
-  /api/v1/cluster/workergroups/{id}:
-    get:
-      tags:
-      - WorkerGroups
-      summary: Get details about a worker group.
-      operationId: getWorkerGroupById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getWorkerGroupById 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiWorkerGroupDetails"
-    put:
-      tags:
-      - WorkerGroups
-      summary: Update an existing worker group.
-      operationId: updateWorkerGroupById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiUpdateWorkerGroupRequest"
-        required: true
-      responses:
-        "200":
-          description: updateWorkerGroupById 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkerGroup_4"
-    delete:
-      tags:
-      - WorkerGroups
-      summary: Get details about a worker group.
-      operationId: deleteWorkerGroupById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteWorkerGroupById 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/configs:
     get:
       tags:
@@ -3308,34 +3216,10 @@ paths:
           application/x-yaml:
             schema:
               type: string
-            example: null
-          application/json:
-            schema:
-              type: string
-            example: null
         required: true
       responses:
         "200":
           description: validateTask 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidateConstraintViolation"
-  /api/v1/flows/validate/trigger:
-    post:
-      tags:
-      - Flows
-      summary: Validate trigger
-      operationId: validateTrigger
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: string
-        required: true
-      responses:
-        "200":
-          description: validateTrigger 200 response
           content:
             application/json:
               schema:
@@ -5656,7 +5540,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uri
       responses:
         "200":
           description: file_1 200 response
@@ -5712,7 +5595,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uri
       requestBody:
         content:
           multipart/form-data:
@@ -5747,7 +5629,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uri
       responses:
         "200":
           description: delete_8 200 response
@@ -5769,7 +5650,6 @@ paths:
         description: The internal storage uri
         schema:
           type: string
-          format: uri
           nullable: true
       responses:
         "200":
@@ -5797,7 +5677,6 @@ paths:
         description: The internal storage uri
         schema:
           type: string
-          format: uri
           nullable: true
       responses:
         "200":
@@ -5872,7 +5751,6 @@ paths:
         description: The internal storage uri
         schema:
           type: string
-          format: uri
           nullable: true
       responses:
         "200":
@@ -11126,125 +11004,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ServiceInstance"
-  /api/v1/{tenant}/cluster/workergroups:
-    get:
-      tags:
-      - WorkerGroups
-      summary: List all Worker Groups
-      operationId: listWorkerGroups_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: listWorkerGroups_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiWorkerGroupList"
-    post:
-      tags:
-      - WorkerGroups
-      summary: Create a new worker group.
-      operationId: createWorkerGroupById_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiCreateWorkerGroupRequest"
-        required: true
-      responses:
-        "200":
-          description: createWorkerGroupById_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkerGroup_2"
-  /api/v1/{tenant}/cluster/workergroups/{id}:
-    get:
-      tags:
-      - WorkerGroups
-      summary: Get details about a worker group.
-      operationId: getWorkerGroupById_1
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getWorkerGroupById_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiWorkerGroupDetails"
-    put:
-      tags:
-      - WorkerGroups
-      summary: Update an existing worker group.
-      operationId: updateWorkerGroupById_1
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiUpdateWorkerGroupRequest"
-        required: true
-      responses:
-        "200":
-          description: updateWorkerGroupById_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkerGroup_3"
-    delete:
-      tags:
-      - WorkerGroups
-      summary: Get details about a worker group.
-      operationId: deleteWorkerGroupById_1
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteWorkerGroupById_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/{tenant}/configs:
     get:
       tags:
@@ -14007,41 +13766,12 @@ paths:
       summary: Validate a list of flows
       operationId: validateTask_1
       parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
       - name: section
         in: query
         description: Type of task
         required: true
         schema:
           $ref: "#/components/schemas/FlowController.TaskValidationType"
-      requestBody:
-        content:
-          application/x-yaml:
-            schema:
-              type: string
-          application/json:
-            schema:
-              type: string
-            example: null
-        required: true
-      responses:
-        "200":
-          description: validateTask_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidateConstraintViolation"
-  /api/v1/{tenant}/flows/validate/trigger:
-    post:
-      tags:
-      - Flows
-      summary: Validate trigger
-      operationId: validateTrigger_1
-      parameters:
       - name: tenant
         in: path
         required: true
@@ -14049,13 +13779,13 @@ paths:
           type: string
       requestBody:
         content:
-          application/json:
+          application/x-yaml:
             schema:
               type: string
         required: true
       responses:
         "200":
-          description: validateTrigger_1 200 response
+          description: validateTask_1 200 response
           content:
             application/json:
               schema:
@@ -16675,7 +16405,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uri
       - name: tenant
         in: path
         required: true
@@ -16741,7 +16470,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uri
       - name: tenant
         in: path
         required: true
@@ -16781,7 +16509,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uri
       - name: tenant
         in: path
         required: true
@@ -16808,7 +16535,6 @@ paths:
         description: The internal storage uri
         schema:
           type: string
-          format: uri
           nullable: true
       - name: tenant
         in: path
@@ -16841,7 +16567,6 @@ paths:
         description: The internal storage uri
         schema:
           type: string
-          format: uri
           nullable: true
       - name: tenant
         in: path
@@ -16931,7 +16656,6 @@ paths:
         description: The internal storage uri
         schema:
           type: string
-          format: uri
           nullable: true
       - name: tenant
         in: path
@@ -23478,19 +23202,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ClusterController.ApiActiveService"
-    ClusterController.ApiCreateWorkerGroupRequest:
-      required:
-      - description
-      - key
-      type: object
-      properties:
-        key:
-          type: string
-          description: The key of the worker group.
-        description:
-          type: string
-          description: The description of the worker group.
-      description: ApiCreateWorkerGroupRequest.
     ClusterController.ApiServerInstance:
       required:
       - hostname
@@ -23531,76 +23242,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    ClusterController.ApiUpdateWorkerGroupRequest:
-      required:
-      - description
-      type: object
-      properties:
-        description:
-          type: string
-          description: The description of the worker group.
-      description: ApiCreateWorkerGroupRequest.
-    ClusterController.ApiWorkerGroup:
-      required:
-      - activeWorkers
-      - description
-      - id
-      - key
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of worker group.
-        key:
-          type: string
-          description: The key of the worker group.
-        description:
-          type: string
-          description: The description of the worker group.
-        activeWorkers:
-          type: integer
-          description: The number of active workers for the group.
-          format: int32
-      description: ApiWorkerGroup.
-    ClusterController.ApiWorkerGroupDetails:
-      required:
-      - description
-      - id
-      - key
-      - workers
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of worker group.
-        key:
-          type: string
-          description: The key of the worker group.
-        description:
-          type: string
-          description: The description of the worker group.
-        workers:
-          type: array
-          description: The list of workers for the group.
-          items:
-            $ref: "#/components/schemas/ServiceInstance"
-      description: ApiWorkerGroupDetails.
-    ClusterController.ApiWorkerGroupList:
-      required:
-      - groups
-      - total
-      type: object
-      properties:
-        total:
-          type: integer
-          description: The total number of items.
-          format: int32
-        groups:
-          type: array
-          description: The list of worker groups.
-          items:
-            $ref: "#/components/schemas/ClusterController.ApiWorkerGroup"
-      description: ApiWorkerGroupList.
     Collection_Action_:
       type: object
       properties:
@@ -25488,13 +25129,10 @@ components:
       - description
       - id
       - isDefault
-      - isManaged
       - name
       - permissions
       type: object
       properties:
-        isManaged:
-          type: boolean
         id:
           type: string
         name:
@@ -26791,74 +26429,6 @@ components:
         key:
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
-    WorkerGroup_1:
-      required:
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        deleted:
-          type: boolean
-    WorkerGroup_2:
-      required:
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        deleted:
-          type: boolean
-    WorkerGroup_3:
-      required:
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        deleted:
-          type: boolean
-    WorkerGroup_4:
-      required:
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        deleted:
-          type: boolean
     WorkerTaskRestartStrategy:
       type: string
       enum:
