@@ -29,7 +29,7 @@ fn main() {
 }
 ```
 
-You'll need to add your Rust code using the built-in Editor or [using our Git plugin](../08.developer-guide/04.git.md) so Kestra can see it.  You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You'll need to add your Rust code using the built-in Editor or [using our Git plugin](../version-control-cicd/04.git.md) so Kestra can see it.  You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 You can also add your Rust code inline using the `inputFiles` property.
 

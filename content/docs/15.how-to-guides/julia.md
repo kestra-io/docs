@@ -32,7 +32,7 @@ If you would prefer to put your Julia code in a `.jl` file (e.g. your code is mu
 ```yaml file=public/examples/commands_julia.yml
 ```
 
-You'll need to add your Julia code using the Editor or [sync it using Git](../08.developer-guide/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You'll need to add your Julia code using the Editor or [sync it using Git](../version-control-cicd/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 You can also have the Julia code written inline.
 

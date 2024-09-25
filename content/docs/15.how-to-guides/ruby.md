@@ -39,7 +39,7 @@ The contents of the `main.rb` file can be:
 puts "Hello World"
 ```
 
-You'll need to add your Ruby code using the Editor or [sync it using Git](../08.developer-guide/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You'll need to add your Ruby code using the Editor or [sync it using Git](../version-control-cicd/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 You can also have the Ruby code written inline.
 
