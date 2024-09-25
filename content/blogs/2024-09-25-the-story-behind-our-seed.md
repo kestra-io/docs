@@ -14,7 +14,7 @@ When we saw how **Michel Tricot and Jean Lafleur from Airbyte** openly shared th
 Today, **we’re sharing the deck that helped us raise $8M in seed funding**—the decisions we made and the vision that drives [Kestra](https://github.com/kestra-io/kestra). We want to offer a look into what went into building this story, and why it worked for us.
 
 <div class="video-container">
-<iframe src="https://docs.google.com/presentation/d/1y_qp8h5B05r3yGJb2zQVU4v0ce1rWeA1BSCb7aYslt8/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<iframe src="https://docs.google.com/presentation/d/1y_qp8h5B05r3yGJb2zQVU4v0ce1rWeA1BSCb7aYslt8/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1440" height="839" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 </div>
 
 ### Framing the Problem: Why Orchestration Matters
