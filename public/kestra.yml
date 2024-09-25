@@ -2591,33 +2591,10 @@ paths:
           application/x-yaml:
             schema:
               type: string
-          application/json:
-            schema:
-              type: string
-            example: null
         required: true
       responses:
         "200":
           description: validateTask 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidateConstraintViolation"
-  /api/v1/flows/validate/trigger:
-    post:
-      tags:
-      - Flows
-      summary: Validate trigger
-      operationId: validateTrigger
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: string
-        required: true
-      responses:
-        "200":
-          description: validateTrigger 200 response
           content:
             application/json:
               schema:
@@ -3633,7 +3610,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uri
       responses:
         "200":
           description: file_1 200 response
@@ -3689,7 +3665,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uri
       requestBody:
         content:
           multipart/form-data:
@@ -3724,7 +3699,6 @@ paths:
         required: true
         schema:
           type: string
-          format: uri
       responses:
         "200":
           description: delete_3 200 response
@@ -3746,7 +3720,6 @@ paths:
         description: The internal storage uri
         schema:
           type: string
-          format: uri
           nullable: true
       responses:
         "200":
@@ -3774,7 +3747,6 @@ paths:
         description: The internal storage uri
         schema:
           type: string
-          format: uri
           nullable: true
       responses:
         "200":
@@ -3849,7 +3821,6 @@ paths:
         description: The internal storage uri
         schema:
           type: string
-          format: uri
           nullable: true
       responses:
         "200":
