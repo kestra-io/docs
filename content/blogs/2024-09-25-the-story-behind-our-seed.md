@@ -11,7 +11,7 @@ image: /blogs/2024-09-25-the-story-behind-our-seed.jpg
 ---
 When we saw how **Michel Tricot and Jean Lafleur from Airbyte** openly shared their fundraising decks, it resonated with us. It was fantastic to be transparent about the journey behind building their company, and it inspired us to do the same. Their approach gave us the confidence to share our own story.
 
-Today, **we’re sharing the deck that helped us raise $8M in seed funding**—the decisions we made and the vision that drives Kestra. We want to offer a look into what went into building this story, and why it worked for us.
+Today, **we’re sharing the deck that helped us raise $8M in seed funding**—the decisions we made and the vision that drives [Kestra](https://github.com/kestra-io/kestra). We want to offer a look into what went into building this story, and why it worked for us.
 
 <div class="video-container">
 <iframe src="https://docs.google.com/presentation/d/1y_qp8h5B05r3yGJb2zQVU4v0ce1rWeA1BSCb7aYslt8/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
@@ -31,7 +31,7 @@ This narrative allowed us to connect the dots between the complexity that busine
 
 ### The Pain Points We Address
 
-![complexity](/blogs/2024-09-25-the-story-behind-our-seed/comlexity.jpg)
+![complexity](/blogs/2024-09-25-the-story-behind-our-seed/complexity.jpg)
 
 Here we talk about the specific problems we aim to solve. It’s no secret that **existing tools are either too rigid or require a high degree of technical knowledge to get started**. This results in bottlenecks, inefficiencies, and shadow IT, where non-engineering users default to **spreadsheets, GitHub Actions, and no-code automation tools** to orchestrate their internal processes—all of which are not visible to the central IT teams.
 
@@ -65,7 +65,7 @@ Each point reflected our belief that **Kestra wasn’t just a solution for today
 
 ### Building Community and Platform-Led Growth
 
-![simplicity](/blogs/2024-09-25-the-story-behind-our-seed/growth.jpg)
+![growth](/blogs/2024-09-25-the-story-behind-our-seed/growth.jpg)
 
 The most critical aspect of any open-source project is **adoption**. When we introduced Kestra, we aimed to ensure it wasn’t a top-down tool imposed on engineering teams. Instead, we wanted it to thrive in an open-source environment, where everyone could benefit, contribute, build plugins, and integrate their own systems.
 
@@ -89,4 +89,6 @@ As we wrapped up the deck, it was clear that **Kestra wasn’t just addressing a
 
 This is a story of **accessibility, scalability, and community-led innovation**. It’s not about flashy features or overpromising—it’s about delivering a product that users can **rely on, grow with, and build upon**. That’s the story that secured our **$8M seed round**. And it’s the story that continues to drive us today.
 
-We are immensely grateful to our **investors** who believe in our vision and have provided their unwavering support throughout this journey. Check out our full [announcement](//blogs/2024-09-23-kestra-raises-8m-seed) here for more details on what’s next for Kestra and how we plan to continue building 
+We are immensely grateful to our **investors** who believe in our vision and have provided their unwavering support throughout this journey. Check out our full [announcement](//blogs/2024-09-23-kestra-raises-8m-seed) here for more details on what’s next for Kestra and how we plan to continue building.
+
+**Help us build the leading platform for Unified Orchestration** by [starring us on GitHub](https://go.kestra.io/github-fundraise) and joining this exciting journey.
