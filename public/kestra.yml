@@ -2591,10 +2591,33 @@ paths:
           application/x-yaml:
             schema:
               type: string
+          application/json:
+            schema:
+              type: string
+            example: null
         required: true
       responses:
         "200":
           description: validateTask 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidateConstraintViolation"
+  /api/v1/flows/validate/trigger:
+    post:
+      tags:
+      - Flows
+      summary: Validate trigger
+      operationId: validateTrigger
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: validateTrigger 200 response
           content:
             application/json:
               schema:
