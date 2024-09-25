@@ -60,7 +60,7 @@ kestra.cmd server local
 
 Go to the UI on `http://localhost:8080`, you are up and running. This one is suitable for the development environment and will allow all your developer to have a running version of Kestra without any painful setup.
 
-Please [go here](/docs/administrator-guide/servers#kestra-local-development-server-with-no-dependencies) for the full getting started for local server.
+Please [go here](../docs/09.administrator-guide/04.server-cli.md#kestra-local-development-server-with-no-dependencies) for the full getting started for local server.
 
 For this implementation, just note that you will need to have a docker daemon running to be able to use [Bash](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) or [Python](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.python) with `runner: DOCKER`. A special warning for Windows users, since Kestra was thought to be deployed on a Linux server, but our primer test seems to be nice and functional.
 

@@ -49,4 +49,4 @@ The way CI/CD deploy flows to production instance can be addressed with the foll
 - Terraform deployment
 - Kestra CLI
 
-You can find more about CI/CD pattern with Kestra [here](../08.developer-guide/cicd/index.md).
+You can find more about CI/CD pattern with Kestra [here](../version-control-cicd/cicd/index.md).

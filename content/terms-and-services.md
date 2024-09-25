@@ -75,7 +75,7 @@ The right to use the Solution is granted to the Client only upon full payment of
 
 - #### 4.3 Implementation of the License
 - **4.3.1 Installation and deployment of the Solution**
-The Client shall deploy and install the Solution on its IT infrastructure under its sole responsibility, under the conditions and within the limits agreed to herein and in accordance with the Solution installation procedures set forth in the terms of the installation of the Solution accessible at the following address: [https://Kestra.io/docs/](/docs/).
+The Client shall deploy and install the Solution on its IT infrastructure under its sole responsibility, under the conditions and within the limits agreed to herein and in accordance with the Solution installation procedures set forth in the terms of the installation of the Solution accessible at the following address: [https://Kestra.io/docs/](./docs/index.md).
 
 - **4.3.2 Selection of Users**
 It is also the Client's responsibility to designate, among the Users, who will be in charge of the use and administration of the Solution.

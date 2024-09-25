@@ -36,7 +36,7 @@ Kestra CLI provides several [commands](./04.helpers.md) for validating and deplo
 ```
 
 ::alert{type="info"}
-Note that the `--api-token` option is available only in the [Enterprise Edition](/docs/enterprise/api-tokens). In the open-source version, you can leverage the basic authentication using the `--user` flag:
+Note that the `--api-token` option is available only in the [Enterprise Edition](../../06.enterprise/api-tokens.md). In the open-source version, you can leverage the basic authentication using the `--user` flag:
 ```bash
 ./kestra flow namespace update namespace_name flow_directory/myflow.yml --no-delete --server http://localhost:8080 --user=KESTRA_USER:KESTRA_PASSWORD
 ```
@@ -76,7 +76,7 @@ For all available CLI options on both `flow validate` and `flow namespace update
 
 #### Templates (deprecated)
 
-[Templates](/docs/migration-guide/templates) can be validated and deployed in the same way as flows:
+[Templates](../../11.migration-guide/0.11.0/templates.md) can be validated and deployed in the same way as flows:
 
 ```bash
 ./kestra template validate path-to-template-directory
@@ -154,7 +154,7 @@ Note that we configured this webhook to be sent upon a push event to the default
 
 ### Deploy flows from a GitHub Action
 
-The official Kestra's [GitHub Actions](/docs/developer-guide/cicd/github-action) leverage the same CLI commands to:
+The official Kestra's [GitHub Actions](01.github-action.md) leverage the same CLI commands to:
 1. Validate flows and templates using the [Validate Action](https://github.com/marketplace/actions/kestra-validate-action)
 2. Deploy flows and templates using the [Deploy Action](https://github.com/marketplace/actions/kestra-deploy-action).
 
@@ -204,7 +204,7 @@ jobs:
 Note that this example uses GitHub repository **secrets** to store the host name, user name and password to your Kestra instance. Make sure to add those secrets to your repository before using this workflow.
 
 ::alert{type="info"}
-Here is a modified version of the same workflow but this time using an [API token](/docs/enterprise/api-tokens) instead of a `user` name and `password`:
+Here is a modified version of the same workflow but this time using an [API token](../../06.enterprise/api-tokens.md) instead of a `user` name and `password`:
 
 ```yaml
 name: Kestra CI/CD
@@ -247,7 +247,7 @@ jobs:
 
 ### Deploy flows from a GitLab CI/CD
 
-GitLab CI/CD follows a similar pattern to the GitHub Actions example. See the [GitLab](/docs/developer-guide/cicd/gitlab) section for more details.
+GitLab CI/CD follows a similar pattern to the GitHub Actions example. See the [GitLab](./02.gitlab.md) section for more details.
 
 
 ### Deploy flows from Terraform
