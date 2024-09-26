@@ -79,14 +79,14 @@ You can input `FIRST`, `SECOND`, `THIRD`, or any other input string to see the f
 
 Within the flow:
 
-- **`inputs`**: Takes a string input to determine which case to execute.
-- **`tasks`**: Handles the input string with the following values:
-    - **`id: parent-seq`**: Uses the `Switch` task to evaluate the input string and execute a case that matches the input string with the following cases:
-        - **`FIRST`**: Executes task `first`, returning its ID and start time.
-        - **`SECOND`**: Executes two tasks (`second1` and `second2`), both returning their task ID and start time.
-        - **`THIRD`**: Runs a sequence of tasks where the `failed` task triggers an error and executes the `error1` task, which logs an error message.
-    - **`defaults`**: If the input doesn't match any cases, it runs the `default` task and logs the task ID and start time.
-- **`outputs`**: Extracts and logs the output from one of the executed tasks (`first`, `second1`, `third1`, or `default`).
+- `inputs`: Takes a string input to determine which case to execute.
+- `tasks`: Handles the input string with the following values:
+    - `id: parent-seq`: Uses the `Switch` task to evaluate the input string and execute a case that matches the input string with the following cases:
+        - `FIRST`: Executes task `first`, returning its ID and start time.
+        - `SECOND`: Executes two tasks (`second1` and `second2`), both returning their task ID and start time.
+        - `THIRD`: Runs a sequence of tasks where the `failed` task triggers an error and executes the `error1` task, which logs an error message.
+    - `defaults`: If the input doesn't match any cases, it runs the `default` task and logs the task ID and start time.
+- `outputs`: Extracts and logs the output from one of the executed tasks (`first`, `second1`, `third1`, or `default`).
 
 ## Example 2: Conditional branching with Kestra’s website status
 
@@ -147,7 +147,7 @@ Within the flow:
         - If an unexpected status code is received, it falls back to the `defaults` branch with a message indicating unknown status.
 - `outputs`: Extracts and logs the output status message based on the logs generated from the `Switch` task.
 
-## **Next Steps**
+## Next Steps
 
 You have implemented conditional branching with the `Switch` task using the `switch` flow to check your input strings and `kestra-http-switch` flow to check Kestra’s website status.  The `Switch` task can further be implemented in various use cases to support your enterprise flows. To learn more about the `Switch` task, visit the following articles.
 
