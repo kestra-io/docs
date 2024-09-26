@@ -14,7 +14,7 @@ We are excited to announce Kestra 0.19.0, bringing the following highlights:
 
 | Feature                    | Description                                                                                                                                                                                      | Edition                  |
 |----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|
-| Multi-language support     | [Switch](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) between 12 different languages directly from the Settings UI.                                                                                                                             | All editions             |
+| UI Localization            | [Switch](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) between 12 different languages directly from the Settings UI.                                                                                                                             | All editions             |
 | Fully redesigned Dashboard | [Get a quick overview](https://github.com/kestra-io/kestra/issues/3822) of the health of your platform with a faster and more informative Dashboard.                                             | All editions             |
 | System Flows               | [Automate maintenance tasks](https://github.com/kestra-io/kestra/issues/4557) with dedicated flows that are hidden by default to end users.                                                      | All editions             |
 | Conditional Inputs         | [Make workflows more dynamic](https://github.com/kestra-io/kestra/issues/3610) by defining [inputs based on conditions](), allowing one input to depend on another via new `dependsOn` property. | All editions             |
@@ -25,7 +25,7 @@ We are excited to announce Kestra 0.19.0, bringing the following highlights:
 Let's dive into these highlights and other enhancements in more detail.
 
 
-## Multi-Language Support
+## Kestra UI Now Speaks 12 Languages
 
 Kestra now supports **12 different languages** — you can easily switch from English to your preferred language directly from the [Settings](https://kestra.io/docs/ui/settings) page. This makes the platform more accessible and user-friendly for teams across the globe, letting you work in the language you feel most comfortable with.
 
@@ -48,7 +48,7 @@ With this new feature, Kestra is now language-agnostic both in terms of programm
 
 ## The New Dashboard
 
-At Kestra, we know how critical it is to have a clear, real-time understanding of your orchestration platform's performance. We’ve redesigned the main dashboard to offer a much more refined, focused experience, showing the information you need without overwhelming you with unnecessary details.
+At Kestra, we know how critical it is to have a clear, real-time understanding of your orchestration platform's performance. We’ve redesigned the main dashboard to offer a more refined, focused experience, showing the information you need without overwhelming you with unnecessary details.
 
 The previous dashboard aimed to display as much information as possible, but in doing so, the Dashboard got over time cluttered and sometimes slow to load (see the image below).
 
@@ -58,7 +58,7 @@ Here’s what we’ve changed:
 
 - **Simplified Visuals**: The new dashboard replaces the pie charts shown at the top with clear KPI numbers, instantly showing you the success and failure ratios.
 
-- **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down 👇 to the images below) next to the default classic view with red-green colors. You can switch between the two color schemes in the Settings menu.
+- **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down 👇 to the images below) next to the default classic view with red-green colors. You can switch between the two color schemes in the Settings menu — choose either `Classic` (red-green) or `Kestra` (purple-pink).
 
 - **Performance**: We’ve removed redundant tables to ensure faster load times. The new Dashboard gives you an instant overview over the health of your platform, including information about currently running and the next scheduled executions.
 
