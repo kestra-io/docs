@@ -149,7 +149,7 @@ Within the flow:
 
 ## Next Steps
 
-You have implemented conditional branching with the `Switch` task using the `switch` flow to check your input strings and `kestra-http-switch` flow to check Kestra’s website status.  The `Switch` task can further be implemented in various use cases to support your enterprise flows. To learn more about the `Switch` task, visit the following articles.
+You have implemented conditional branching with the `Switch` task using the `switch` flow to check your input strings and `kestra-http-switch` flow to check Kestra’s website status.  The `Switch` task can further be implemented in various use cases to support your flows. Further resources about the `Switch` task:
 
 - [Kestra’s official Switch task plugin documentation](https://kestra.io/plugins/core/tasks/flow/io.kestra.plugin.core.flow.switch)
 - [Kestra’s Blueprint Switch task use cases](https://kestra.io/blueprints?page=1&size=24&q=switch)
