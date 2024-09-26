@@ -43,8 +43,7 @@ Here’s the full list of supported languages:
 - 🇷🇺 Russian (ru)
 - 🇨🇳 Chinese (zh_CN)
 
-With this new feature, Kestra is now language-agnostic both in terms of programming languages and spoken languages. If the language you speak isn’t on the list, please let us know, and we’ll do our best to add it. We also encourage you to [contribute to the translation](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) of Kestra into your language or fixing any translation issues you might find.
-
+With this new feature, Kestra is now language-agnostic both in terms of programming languages and spoken languages. If the language you speak isn’t on the list, let us know, and we’ll do our best to add it. We also encourage you to [contribute to the translation](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) of Kestra into your language or submitting a pull request with a fix to any translation issues you might find.
 
 ## The New Dashboard
 
@@ -100,8 +99,7 @@ Here, you’ll find the _System Blueprints_ tab, which provides fully customizab
 
 ![system_blueprints](/blogs/release-0-19/system_blueprints.png)
 
-Keep in mind that System Flows are not restricted to System Blueprints — any valid Kestra flow can become a System Flow if it's added within the `system` namespace.
-
+Keep in mind that System Flows are not restricted to System Blueprints — any valid Kestra flow can become a System Flow if it's added to the `system` namespace.
 
 System Flows are intentionally hidden from the main UI, appearing only in the `system` namespace. The Dashboard, Flows, and Executions pages now offer a multi-select filter with options for `User` (default) and `System` (visible by default only within the `system` namespace). This makes it easy to toggle between user-facing workflows and background system flows and their executions, or view both simultaneously.
 
@@ -209,7 +207,7 @@ inputs:
     displayName: Access Permissions
     type: SELECT
     expression: "{{ kv('access_permissions') }}"
-    allowInput: true
+    allowCustomValue: true
     dependsOn: # 👈 New property enabling conditional inputs
       inputs:
         - resource_type
@@ -240,7 +238,7 @@ inputs:
     displayName: Access Permissions
     type: SELECT
     expression: "{{ kv('access_permissions') }}"
-    allowInput: true
+    allowCustomValue: true
     dependsOn:
       inputs:
         - resource_type
@@ -250,7 +248,7 @@ inputs:
     displayName: SaaS Application
     type: MULTISELECT
     expression: "{{ kv('saas_applications') }}"
-    allowInput: true
+    allowCustomValue: true
     dependsOn:
       inputs:
         - resource_type
@@ -260,7 +258,7 @@ inputs:
     displayName: Development Tool
     type: SELECT
     expression: "{{ kv('development_tools') }}"
-    allowInput: true
+    allowCustomValue: true
     dependsOn:
       inputs:
         - resource_type
@@ -282,7 +280,7 @@ inputs:
     displayName: Cloud VM
     type: SELECT
     expression: "{{ kv('cloud_vms')[inputs.cloud_provider] }}"
-    allowInput: true
+    allowCustomValue: true
     dependsOn:
       inputs:
         - resource_type
@@ -340,7 +338,7 @@ tasks:
 
 The above flow demonstrates how the `dependsOn` property allows you to set up a chain of dependencies, where one input depends on other inputs or conditions. In this example, the `access_permissions`, `saas_applications`, `development_tools`, and `cloud_vms` inputs are conditionally displayed based on the `resource_type` input value. Using this new property, you can build interactive workflows that adapt to user's inputs, enabling a wide range of use cases incl. approval workflows, dynamic resource provisioning, and many more.
 
-You might also notice a new `allowInput` [boolean property](https://github.com/kestra-io/kestra/issues/4496) that, if set to `true`, allows users to enter custom values when the predefined ones don't fit their needs. This enables you to provide a list of default values but still (optionally) allow users to enter custom ones.
+You might also notice a new `allowCustomValue` [boolean property](https://github.com/kestra-io/kestra/issues/4496) that, if set to `true`, allows users to enter custom values when the predefined ones don't fit their needs. This enables you to provide a list of default values but still (optionally) allow users to enter custom ones.
 
 A [final addition](https://github.com/kestra-io/kestra/issues/4126) to the input types is the new `YAML` type, which allows users to input YAML-formatted data directly in the UI. This new type is especially handy when you orchestrate applications that require YAML input such as Kubernetes manifests or configuration files.
 
