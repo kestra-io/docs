@@ -97,17 +97,17 @@ When any message is pushed into the `apache/pulsar/logs` Pulsar topic, this flow
 
 We will first create the SQS queue from the AWS Console. You can also AWS CLI for this purpose. This is how you can create the AWS SQS from the console:
 
-![sqs_create_queue](/docs/how-to-guides/realtime-triggers/sqs_create_queue.png)
+![sqs_create_queue](../../how-to-guides/realtime-triggers/sqs_create_queue.png)
 
 You only need to put in the Queue name. Rest all the configuration can be kept as is, and click on "Create Queue" at the bottom of the page.
 
 You can now send messages to this queue by clicking on "Send and receive messages" button on the top of the page.
 
-![sqs_send_and_receive_messages](/docs/how-to-guides/realtime-triggers/sqs_send_and_receive_messages.png)
+![sqs_send_and_receive_messages](../../how-to-guides/realtime-triggers/sqs_send_and_receive_messages.png)
 
 On the Send and Receive messages page, you can put the Message body under the Send message section, and click on the "Send message" button to send the message to the queue.
 
-![sqs_send_message](/docs/how-to-guides/realtime-triggers/sqs_send_message.png)
+![sqs_send_message](../../how-to-guides/realtime-triggers/sqs_send_message.png)
 
 You can use the AWS SQS [RealtimeTrigger](https://kestra.io/plugins/plugin-aws/triggers/io.kestra.plugin.aws.sqs.realtimetrigger) in the Kestra flow as follows:
 
@@ -135,17 +135,17 @@ When any message is pushed into the `logs` SQS queue, this flow will get trigger
 
 We will first create the Pub/Sub topic from the GCP console. For this, click on "Create topic" button on the GCP Pub/Sub console. On the Create topic page, put the topic name `logs` in the Topic ID text box, and leave the rest of the settings as default. Ensure the "Add a default subscription" checkbox is ticked. Click on "CREATE" button at the bottom. This will create the `logs` Pub/Sub topic with the default subscription `logs-sub`.
 
-![pubsub_create_topic](/docs/how-to-guides/realtime-triggers/pubsub_create_topic.png)
+![pubsub_create_topic](../../how-to-guides/realtime-triggers/pubsub_create_topic.png)
 
-![pubsub_navigate_to_messages](/docs/how-to-guides/realtime-triggers/pubsub_navigate_to_messages.png)
+![pubsub_navigate_to_messages](../../how-to-guides/realtime-triggers/pubsub_navigate_to_messages.png)
 
 Navigate to the "MESSAGES" tab. On this tab, click on the "PUBLISH MESSAGE" button.
 
-![pubsub_publish_message_button](/docs/how-to-guides/realtime-triggers/pubsub_publish_message_button.png)
+![pubsub_publish_message_button](../../how-to-guides/realtime-triggers/pubsub_publish_message_button.png)
 
 On the Publish message popup, put the message you would like to publish to the topic, and click on the "PUBLISH" button on the bottom of the page. This would publish the message to the Pub/Sub topic.
 
-![pubsub_publish_message](/docs/how-to-guides/realtime-triggers/pubsub_publish_message.png)
+![pubsub_publish_message](../../how-to-guides/realtime-triggers/pubsub_publish_message.png)
 
 You can use the GCP Pub/Sub [RealtimeTrigger](https://kestra.io/plugins/plugin-gcp/triggers/io.kestra.plugin.gcp.pubsub.realtimetrigger) in the Kestra flow as follows:
 
@@ -186,25 +186,25 @@ For this, we will create an Event Hub and a container for checkpoint storage. Fo
 12. Click on the "RootManageSharedAccessKey".
 13. In the popup page that appears, you can copy the "Connection string–primary key" to be used later in the Kestra flow. With this, the Event Hub is created.
 
-![event_hubs_create_namespace_1](/docs/how-to-guides/realtime-triggers/event_hubs_create_namespace_1.png)
+![event_hubs_create_namespace_1](../../how-to-guides/realtime-triggers/event_hubs_create_namespace_1.png)
 
-![event_hubs_create_namespace_2](/docs/how-to-guides/realtime-triggers/event_hubs_create_namespace_2.png)
+![event_hubs_create_namespace_2](../../how-to-guides/realtime-triggers/event_hubs_create_namespace_2.png)
 
-![event_hubs_create_namespace_3](/docs/how-to-guides/realtime-triggers/event_hubs_create_namespace_3.png)
+![event_hubs_create_namespace_3](../../how-to-guides/realtime-triggers/event_hubs_create_namespace_3.png)
 
-![event_hubs_create_namespace_4](/docs/how-to-guides/realtime-triggers/event_hubs_create_namespace_4.png)
+![event_hubs_create_namespace_4](../../how-to-guides/realtime-triggers/event_hubs_create_namespace_4.png)
 
-![event_hubs_create_event_hub_1](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_1.png)
+![event_hubs_create_event_hub_1](../../how-to-guides/realtime-triggers/event_hubs_create_event_hub_1.png)
 
-![event_hubs_create_event_hub_2](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_2.png)
+![event_hubs_create_event_hub_2](../../how-to-guides/realtime-triggers/event_hubs_create_event_hub_2.png)
 
-![event_hubs_create_event_hub_3](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_3.png)
+![event_hubs_create_event_hub_3](../../how-to-guides/realtime-triggers/event_hubs_create_event_hub_3.png)
 
-![event_hubs_create_event_hub_4](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_4.png)
+![event_hubs_create_event_hub_4](../../how-to-guides/realtime-triggers/event_hubs_create_event_hub_4.png)
 
-![event_hubs_create_event_hub_5](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_5.png)
+![event_hubs_create_event_hub_5](../../how-to-guides/realtime-triggers/event_hubs_create_event_hub_5.png)
 
-![event_hubs_create_event_hub_6](/docs/how-to-guides/realtime-triggers/event_hubs_create_event_hub_6.png)
+![event_hubs_create_event_hub_6](../../how-to-guides/realtime-triggers/event_hubs_create_event_hub_6.png)
 
 14. Let's now create the container. Go to [Storage accounts](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts) page.
 15. Click on "Create storage account".

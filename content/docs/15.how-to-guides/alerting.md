@@ -20,7 +20,7 @@ Alerting is a crucial part to a production environment to ensure high uptime and
 
 Kestra has a Notifications plugin group that has tasks for all your favorite platforms, like Slack, Teams and PagerDuty. This makes it really easy to configure them directly inside of your workflows.
 
-![notifications](/docs/how-to-guides/alerting/notifications.png)
+![notifications](../../how-to-guides/alerting/notifications.png)
 
 There’s 2 tasks for each of these platforms:
 
@@ -45,7 +45,7 @@ errors:
 
 When executed, it looks like this in Slack:
 
-![slack](/docs/how-to-guides/alerting/slack.png)
+![slack](../../how-to-guides/alerting/slack.png)
 
 ## Subflows
 

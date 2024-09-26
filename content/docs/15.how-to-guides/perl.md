@@ -45,7 +45,7 @@ You can get the JSON outputs from the Perl script using the `::{}::` pattern. He
 
 All the output variables can be viewed in the Outputs tab of the execution.
 
-![perl_outputs](/docs/how-to-guides/perl/outputs.png)
+![perl_outputs](../../how-to-guides/perl/outputs.png)
 
 You can refer to the outputs in another task as shown in the example below:
 
@@ -70,4 +70,4 @@ You can also get [metrics](../04.workflow-components/01.tasks/02.scripts/06.outp
 
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
-![metrics](/docs/how-to-guides/perl/metrics.png)
+![metrics](../../how-to-guides/perl/metrics.png)

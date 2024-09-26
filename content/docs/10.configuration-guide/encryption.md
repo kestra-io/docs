@@ -68,7 +68,7 @@ outputs:
 
 When executing this flow, you will see a masked field:
 
-![secret1](/docs/configuration-guide/secret1.png)
+![secret1](../../configuration-guide/secret1.png)
 
 
 In the Execution Overview tab, you will see a masked value of the secret.

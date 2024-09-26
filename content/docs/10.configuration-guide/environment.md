@@ -18,4 +18,4 @@ kestra:
 
 You can also set that environment name and color directly from the UI. Just go to the settings page and type the desired Environment name and select the color.
 
-![env_color](/docs/administrator-guide/configuration/env_color.png)
+![env_color](../../administrator-guide/configuration/env_color.png)

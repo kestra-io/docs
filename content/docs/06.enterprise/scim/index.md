@@ -15,7 +15,7 @@ SCIM (System for Cross-domain Identity Management) is an open standard protocol 
 
 Kestra relies explicitly on the SCIM 2.0 protocol for directory synchronization.
 
-![scim.jpeg](/docs/enterprise/scim.png)
+![scim.jpeg](../../../enterprise/scim.png)
 
 ## Benefits of a Directory Sync with SCIM
 

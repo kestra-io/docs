@@ -162,7 +162,7 @@ tasks:
 
 You can look at both a flow with a template task and a flow with a subflow task side by side to see the difference in syntax:
 
-![template-vs-subflow](/docs/migration-guide/template-vs-subflow.png)
+![template-vs-subflow](../../../migration-guide/template-vs-subflow.png)
 
 If you still have questions about migrating from templates to subflows, reach out via our [Community Slack](/slack).
 
@@ -235,8 +235,8 @@ From the template, you can access all execution context variables. However, this
 
 If enabled, you can inspect Templates on the **Templates** page.
 
-![Kestra User Interface Templates Page](/docs/user-interface-guide/06-Templates.png)
+![Kestra User Interface Templates Page](../../../user-interface-guide/06-Templates.png)
 
 A **Template** page allows to edit the template via a YAML editor.
 
-![Kestra User Interface Template Page](/docs/user-interface-guide/07-Templates-Template.png)
+![Kestra User Interface Template Page](../../../user-interface-guide/07-Templates-Template.png)

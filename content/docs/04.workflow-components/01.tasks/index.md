@@ -54,7 +54,7 @@ The table below lists the core task properties available to all tasks.
 
 Task properties can be **static** or **dynamic**. Dynamic task properties can be set using expressions. To find out whether a given task property is static or dynamic, check the task documentation available on the [plugin's homepage](/plugins) as well as in the UI when you hover over a task and click on the documentation tab on the right.
 
-![dynamic_properties](/docs/concepts/dynamic_properties.png)
+![dynamic_properties](../../concepts/dynamic_properties.png)
 
 Often some task properties are marked as **not dynamic** because they are complex types (e.g. maps, list of strings, list of maps), meaning that they are **placeholders** for other dynamic properties. Let's take the [runTasks](/plugins/tasks/job/io.kestra.plugin.databricks.job.SubmitRun#runtasks) property of Databrick's `SubmitRun` task as an example. This property is not dynamic because it's an array of [RunSubmitTaskSetting](/plugins/tasks/job/io.kestra.plugin.databricks.job.SubmitRun#runsubmittasksetting).
 

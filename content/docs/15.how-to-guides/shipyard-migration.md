@@ -32,7 +32,7 @@ To get started, follow the [Quickstart Guide](../01.getting-started/01.quickstar
 
 Every fleet in Shipyard generates a YAML configuration. You can retrieve it from the UI as shown below, or get it from the version control system like Git in case you maintained one for Shipyard.
 
-![shiypard_yaml_configuration](/docs/how-to-guides/shipyard-migration/shipyard_yaml_configuration.png)
+![shiypard_yaml_configuration](../../how-to-guides/shipyard-migration/shipyard_yaml_configuration.png)
 
 For every vessel in the fleet, try to find a matching [Kestra Plugin](/plugins). For example, the equivalent of **Amazon S3 - Delete Files** vessel in Shipyard will be [io.kestra.plugin.aws.s3.Delete](/plugins/plugin-aws/tasks/s3/io.kestra.plugin.aws.s3.delete) and [io.kestra.plugin.aws.s3.DeleteList](/plugins/plugin-aws/tasks/s3/io.kestra.plugin.aws.s3.deletelist).
 

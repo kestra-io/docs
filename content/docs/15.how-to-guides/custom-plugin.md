@@ -44,7 +44,7 @@ Here are the steps:
 
 Once you completed the steps above, you should see a similar directory structure:
 
-![Structure](/docs/plugin-developer-guide/plugins-architecture.png)
+![Structure](../../plugin-developer-guide/plugins-architecture.png)
 
 As you can see, there is one generated plugin: the `Example` class representing the `Example` plugin (a task).
 
@@ -255,7 +255,7 @@ To build your plugin, execute the `./gradlew shadowJar` command from the plugin 
 
 The resulting JAR file will be generated in the `build/libs` directory.
 
-To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](/docs/administrator-guide/server-cli#plugins-directory).
+To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../../administrator-guide/server-cli#plugins-directory).
 
 ## Writing unit tests
 
@@ -426,6 +426,6 @@ tasks:
 
 On executing the flow, you can go to the `Outputs` tab, and check out the output.
 
-![custom_plugin_output](/docs/how-to-guides/build-custom-plugin/custom_plugin_output.png)
+![custom_plugin_output](../../how-to-guides/build-custom-plugin/custom_plugin_output.png)
 
 You are now all set to build more plugins and explore Kestra to its fullest!

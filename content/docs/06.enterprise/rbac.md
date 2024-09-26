@@ -14,7 +14,7 @@ assigning Roles to Users, Groups and Service Accounts.
 The image below shows the relationship between Users, Groups, Service Accounts, Roles, and Bindings (visible on the
 Access page in the UI).
 
-![bindings](/docs/enterprise/rbac.png)
+![bindings](../../enterprise/rbac.png)
 
 ## Roles and Bindings
 
@@ -153,7 +153,7 @@ Note that you need to be a super admin yourself.
 
 You can grant or revoke the Super Admin privilege using the switch in the User Edit page.
 
-![superadmin switch](/docs/enterprise/superadmin_switch.png)
+![superadmin switch](../../enterprise/superadmin_switch.png)
 
 #### Through the CLI
 
@@ -221,7 +221,7 @@ Once you have created your first role. You can attach that role to an entity thr
 
 The following example show the creation of a Binding for a User. We are defining the User `john@doe.com` as an Admin for the `team.customer` namespace.
 
-![create a binding](/docs/enterprise/create_binding.png)
+![create a binding](../../enterprise/create_binding.png)
 ::alert{type="info"}
 **Note:** Service Accounts are considered as Users when bindings
 ::
@@ -244,7 +244,7 @@ timezone, and a default namespace.
 
 If a user wants to change their password, they can do it on their profile. This page can be accessed through the top right corner of the UI.
 ::collapse{title="Change password in the UI"}
-![change_password](/docs/enterprise/change_password.png)
+![change_password](../../enterprise/change_password.png)
 ::
 
 #### Reset password (by a Super Admin)

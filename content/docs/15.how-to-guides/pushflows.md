@@ -78,7 +78,7 @@ tasks:
 
 Given that the `dryRun` property is set to `true`, the task will only output modifications without pushing any flows to Git yet:
 
-![git1](/docs/how-to-guides/pushflows/git1.png)
+![git1](../../how-to-guides/pushflows/git1.png)
 
 ## Pushing a single flow to Git
 
@@ -97,19 +97,19 @@ tasks:
 
 You should see the following log message:
 
-![git2.png](/docs/how-to-guides/pushflows/git2.png)
+![git2.png](../../how-to-guides/pushflows/git2.png)
 
 And here is what you should see in the Outputs tab:
 
-![git3.png](/docs/how-to-guides/pushflows/git3.png)
+![git3.png](../../how-to-guides/pushflows/git3.png)
 
 When you click on the commit URL from the logs or from the Outputs tab, you'll be redirected to the commit page on GitHub:
 
-![git4.png](/docs/how-to-guides/pushflows/git4.png)
+![git4.png](../../how-to-guides/pushflows/git4.png)
 
 Now, you can create a pull request and merge the changes to the main branch.
 
-![git5_pr.png](/docs/how-to-guides/pushflows/git5_pr.png)
+![git5_pr.png](../../how-to-guides/pushflows/git5_pr.png)
 
 ## Pushing all flows from a single namespace to Git
 
@@ -134,7 +134,7 @@ tasks:
     message: the simplest dev-to-prod workflow ever
 ```
 
-![git6_all_flows.png](/docs/how-to-guides/pushflows/git6_all_flows.png)
+![git6_all_flows.png](../../how-to-guides/pushflows/git6_all_flows.png)
 
 Let's now adjust the system flow to push all flows from the `dev` namespace to the `develop` branch:
 
@@ -158,7 +158,7 @@ tasks:
 
 Again, we can set the `dryRun` property to `true` to see what files will be added, modified, or deleted based on the Git version without overwriting the files in Git yet:
 
-![git7.png](/docs/how-to-guides/pushflows/git7.png)
+![git7.png](../../how-to-guides/pushflows/git7.png)
 
 Now if you change the `dryRun` property to `false` and run the system flow again, you should see all three flows being pushed to the `flows` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
 
