@@ -83,7 +83,7 @@ System Flows are designed to handle periodically executed background operations 
 5. Automatically [releasing flows](https://kestra.io/blueprints/system/258-copy-flows-from-development-to-qa-and-staging-environments-or-tenants) from development to QA and staging environments
 
 <div class="video-container">
-  <iframe src="https://youtu.be/o05hcKNI_7I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/o05hcKNI_7I?si=EZkyevBGXSIvCw13" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 We refer to these as **System Flows** because by default they are hidden from end users and only visible within the `system` namespace. This way, you can automate maintenance tasks without cluttering the UI for regular users. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
@@ -366,7 +366,7 @@ Using the new log-level navigation, you can quickly jump to the next log of a sp
 See the video below for a quick demo of the new feature:
 
 <div class="video-container">
-  <iframe src="https://youtu.be/7Yz0N_26lDY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/7Yz0N_26lDY?si=HxLsR2F81U1EVy7G" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 **Additional log enhancements worth mentioning**:
@@ -552,7 +552,7 @@ Finally, we’ve made a small but [important update](https://github.com/kestra-i
 Starting from Kestra 0.19.0, [you can schedule any flow](https://github.com/kestra-io/kestra/issues/3818) to run at a specific date and time in the future. You can configure that directly using the `Advanced configuration` option in the `Execute` modal.
 
 <div class="video-container">
-  <iframe src="https://youtu.be/DSLNd7L3LR4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/DSLNd7L3LR4?si=1hhh5b8tWQDXA5bh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 You can type the desired date directly, or use the date picker and click on the `Execute` button.
@@ -766,7 +766,7 @@ kestra:
   url: http://localhost:8080
 ```
 
-### Additional Improvements
+### Smaller Improvements
 
 - The webhook trigger page now [displays the webhook URL](https://github.com/kestra-io/kestra/issues/3891) so that you can easily copy it and use it in external applications that trigger your flows.
 - The duration type property is now [much easier to set from the UI](https://github.com/kestra-io/kestra/issues/3710) thanks to the new (beautiful!) UI component.
