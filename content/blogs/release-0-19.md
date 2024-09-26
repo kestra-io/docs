@@ -298,6 +298,12 @@ inputs:
         - cloud_vms
       condition: "{{ inputs.resource_type equals 'Cloud VM' }}"
 
+variables:
+  slack_message: |
+    Validate resource request.
+    To approve the request, click on the Resume button here
+    http://localhost:28080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}.
+
 tasks:
   - id: send_approval_request
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
@@ -305,7 +311,7 @@ tasks:
     payload: |
       {
         "channel": "#devops",
-        "text": "New resource request available for approval"
+        "text": {{ render(vars.slack_message) | json }}
       }
 
   - id: wait_for_approval
@@ -749,7 +755,7 @@ We are excited what you will build with these new Schedule-for-later enhancement
 
 Let us know how you plan to use these scheduling enhancements to make your flows (literally!) future-proof!
 
-## Additional Improvements
+### Additional Improvements
 
 - The webhook trigger page now [displays the webhook URL](https://github.com/kestra-io/kestra/issues/3891) so that you can easily copy it and use it in external applications that trigger your flows.
 - The duration type property is now [much easier to set from the UI](https://github.com/kestra-io/kestra/issues/3710) thanks to the new (beautiful!) UI component.
