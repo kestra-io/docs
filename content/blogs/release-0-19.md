@@ -30,20 +30,20 @@ Let's dive into these highlights and other enhancements in more detail.
 Kestra now supports **12 different languages** — you can easily switch from English to your preferred language directly from the [Settings](https://kestra.io/docs/ui/settings) page. This makes the platform more accessible and user-friendly for teams across the globe, letting you work in the language you feel most comfortable with.
 
 Here’s the full list of supported languages:
-- English (en)
-- German (de)
-- Spanish (es)
-- French (fr)
-- Hindi (hi)
-- Italian (it)
-- Japanese (ja)
-- Korean (ko)
-- Polish (pl)
-- Portuguese (pt)
-- Russian (ru)
-- Chinese (zh_CN)
+- 🇺🇸 English (en)
+- 🇩🇪 German (de)
+- 🇪🇸 Spanish (es)
+- 🇫🇷 French (fr)
+- 🇮🇳 Hindi (hi)
+- 🇮🇹 Italian (it)
+- 🇯🇵 Japanese (ja)
+- 🇰🇷 Korean (ko)
+- 🇵🇱 Polish (pl)
+- 🇵🇹 Portuguese (pt)
+- 🇷🇺 Russian (ru)
+- 🇨🇳 Chinese (zh_CN)
 
-With this new feature, Kestra is now truly language-agnostic, both in terms of programming languages and spoken languages. If the language you speak isn’t on the list, please let us know, and we’ll do our best to add it in the next release. We also encourage you to [contribute to the translation](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) of Kestra into your language or fixing any translation issues you might find.
+With this new feature, Kestra is now language-agnostic both in terms of programming languages and spoken languages. If the language you speak isn’t on the list, please let us know, and we’ll do our best to add it. We also encourage you to [contribute to the translation](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) of Kestra into your language or fixing any translation issues you might find.
 
 
 ## The New Dashboard
@@ -56,7 +56,7 @@ The previous dashboard aimed to display as much information as possible, but in 
 
 Here’s what we’ve changed:
 
-- **Simplified Visuals**: The new dashboard replaces the previous pie charts shown at the top with clear KPI numbers, instantly showing you the success and failure ratios. Those on Elasticsearch backend can also see trend indicators to see at a glance whether the number of executions is increasing or decreasing compared to the previous period.
+- **Simplified Visuals**: The new dashboard replaces the pie charts shown at the top with clear KPI numbers, instantly showing you the success and failure ratios. Those on Elasticsearch backend can also see trend indicators to see at a glance whether the number of executions is increasing or decreasing compared to the previous period.
 
 - **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down 👇 to the next image) next to the default classic view with red-green colors. You can switch between the two color schemes in the Settings menu.
 
@@ -354,13 +354,13 @@ A [final addition](https://github.com/kestra-io/kestra/issues/4126) to the input
 
 ## New Log Level Display
 
-Previously, Kestra allowed users to filter logs by specific levels, such as WARN or ERROR. However, this approach often left users without the full context they needed for troubleshooting. For instance, seeing only a WARN-level log in isolation without the surrounding logs (before and after) doesn't provide the full picture to trace the root cause of an issue.
+For each Kestra execution, you can filter logs by specific levels, such as WARN or ERROR. However, this alone doesn't give you full context needed for troubleshooting. For instance, seeing only a WARN-level log in isolation without the surrounding logs (before and after) may not provide the full picture to trace the root cause of an issue.
 
-Kestra 0.19.0 makes log filtering [more context-aware](https://github.com/kestra-io/kestra/issues/2045)  — you can see all log levels while still being able to jump directly to the next `TRACE`, `DEBUG`, `INFO`, `WARN` or `ERROR` logs.
+Kestra 0.19.0 makes logs view [context-aware](https://github.com/kestra-io/kestra/issues/2045) — you can see all log levels while still being able to jump directly to the next `TRACE`, `DEBUG`, `INFO`, `WARN` or `ERROR` logs.
 
 ![loglevel_display](blogs/release-0-19/loglevel_display.png)
 
-Using the new log-level navigation, you can quickly jump to the next log of a specific level while still having the full context at your fingertips. With that additional context, it's easier to understand what led up to an issue and what followed, simplifying troubleshooting.
+Using the new log-level navigation, you can quickly jump to the next log of a specific level while having the full context at your fingertips. With that additional context, it's easier to understand what led up to an issue and what followed, simplifying troubleshooting.
 
 See the video below for a quick demo of the new feature:
 
@@ -378,7 +378,7 @@ TODO video
 
 We’re excited to introduce versioned docs and blueprints built directly into the UI. This change directly addresses one of the biggest pain points users have faced: the lack of version-specific documentation and examples.
 
-Previously, the documentation and blueprints were only available on the website and they were served for the latest version of Kestra. As a result, if you were on an older version, some documentation and blueprints might have been overwritten by a new syntax or showing functionality that wasn’t available in your version.
+Until now, the documentation and blueprints were only available on the website and they were served for the latest version of Kestra. As a result, if you were on an older version, some documentation and blueprints might have been overwritten by a new syntax or showing functionality that wasn’t available in your version.
 
 With versioned docs and blueprints, this is no longer an issue. Kestra 0.19.0 and higher dynamically fetches the correct version of documentation and blueprints based on the Kestra version you’re using. This is handled through new API endpoints pulling the relevant content when needed.
 
@@ -483,22 +483,22 @@ Kestra 0.19 [introduces](https://github.com/kestra-io/kestra-ee/issues/874) a ne
 
 ### Keeping You Logged In
 
-We've addressed an issue many users faced when their session timed out while they were still active. Previously, Kestra would time out based on a fixed interval, causing users to lose unsaved work when their authentucation token expired. This was especially frustrating when you were in the middle of editing a flow, leading to unsaved changes and an unexpected logout.
+We've addressed an issue many users faced when their session timed out while they were still active. Previously, Kestra would time out based on a fixed interval, causing users to lose unsaved work when their authentication token expired. If at that time you were in the middle of editing a flow, this could have led to unsaved changes and an unexpected logout.
 
 With the [new mechanism](https://github.com/kestra-io/kestra/issues/4120) introduced in this release, Kestra now automatically refreshes your auth token or session cookie if you're still active. If the token is close to expiring, Kestra silently refreshes it in the background — no more forced logouts, and no more lost work. This small but critical change ensures your session stays alive while you're working, without any interruptions.
 
 ### Forgot Password Functionality
 
-This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing you to get an email link to reset a password directly from the login page. Keep in mind that you'll only see the "Forgot your password?" option if the email server is configured on your instance.
+This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing you to get an email link to reset a password directly from the login page. Keep in mind that you'll only see the "Forgot password" option if the email server is configured on your instance.
 
 
 ### Purging Old Audit Logs
 
-The Enterprise Edition of Kestra generates an audit log for every action taken on the platform, from logging in, creating a flow, to updating a single namespace variable. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up significant amount of space in the database.
+The Enterprise Edition of Kestra generates an audit log for every action taken on the platform, from logging in, creating a flow, to updating every namespace variable. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up significant amount of space in the database.
 
 We’ve added a new task called `PurgeAuditLogs`, which helps you manage the growing number of audit logs by removing the ones that are no longer needed.
 
-You can set a date range for the logs you want to delete, choose a specific `namespace`, and even filter by `permissions` or CRUD `actions` (like CREATE, READ, UPDATE, DELETE). This task gives you a simple way to implement an Audit Logs retention policy that fits your organization's needs.
+You can set a date range for the logs you want to delete, choose a specific `namespace`, and even filter by `permissions` or `actions` (like `CREATE`, `READ`, `UPDATE`, `DELETE`). This task gives you a simple way to implement an Audit Logs retention policy that fits your organization's needs.
 
 For example, to purge logs older than one month, you can add the following System Flow:
 
