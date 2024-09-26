@@ -56,9 +56,9 @@ The previous dashboard aimed to display as much information as possible, but in 
 
 Here’s what we’ve changed:
 
-- **Simplified Visuals**: The new dashboard replaces the pie charts shown at the top with clear KPI numbers, instantly showing you the success and failure ratios. Those on Elasticsearch backend can also see trend indicators to see at a glance whether the number of executions is increasing or decreasing compared to the previous period.
+- **Simplified Visuals**: The new dashboard replaces the pie charts shown at the top with clear KPI numbers, instantly showing you the success and failure ratios.
 
-- **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down 👇 to the next image) next to the default classic view with red-green colors. You can switch between the two color schemes in the Settings menu.
+- **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down 👇 to the images below) next to the default classic view with red-green colors. You can switch between the two color schemes in the Settings menu.
 
 - **Performance**: We’ve removed redundant tables to ensure faster load times. The new Dashboard gives you an instant overview over the health of your platform, including information about currently running and the next scheduled executions.
 
