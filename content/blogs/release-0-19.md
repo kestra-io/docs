@@ -1,6 +1,6 @@
 ---
-title: Kestra 0.19.0 is here with a brand-new Dashboard, System Flows, Backup & Restore, Conditional Inputs, In-App Docs, and Multi-Language Support
-description: This release simplifies administrative tasks via System Flows and Backup & Restore features, makes your workflows more dynamic with Conditional Inputs, and allows you to access the full documentation of your Kestra version directly from the app! Plus, Kestra now speaks 12 languages!
+title: Kestra 0.19.0 is here with a new Dashboard, Conditional Inputs, Backup & Restore, and In-App Docs
+description: This release makes your workflows more dynamic with Conditional Inputs, simplifies administrative tasks via Backup & Restore and System Flows, and allows you to access the full documentation of your Kestra version directly from the app! Plus, Kestra UI now speaks 12 languages!
 date: 2024-10-01T17:00:00
 category: News & Products Updates
 author:
@@ -14,12 +14,12 @@ We are excited to announce Kestra 0.19.0, bringing the following highlights:
 
 | Feature                    | Description                                                                                                                                                                                      | Edition                  |
 |----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|
+| Multi-language support     | [Switch](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) between 12 different languages directly from the Settings UI.                                                                                                                             | All editions             |
 | Fully redesigned Dashboard | [Get a quick overview](https://github.com/kestra-io/kestra/issues/3822) of the health of your platform with a faster and more informative Dashboard.                                             | All editions             |
 | System Flows               | [Automate maintenance tasks](https://github.com/kestra-io/kestra/issues/4557) with dedicated flows that are hidden by default to end users.                                                      | All editions             |
 | Conditional Inputs         | [Make workflows more dynamic](https://github.com/kestra-io/kestra/issues/3610) by defining [inputs based on conditions](), allowing one input to depend on another via new `dependsOn` property. | All editions             |
 | New log level display      | [Navigate logs](https://github.com/kestra-io/kestra/issues/2045) across warnings or debug messages with the new interactive Log level display.                                                   | All editions             |
 | In-app versioned docs      | [Access the full documentation](https://github.com/kestra-io/kestra-ee/issues/1535) of the version you're using, directly from the app.                                                          | All editions             |
-| Multi-language support     | [Switch](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) between 12 different languages directly from the Settings UI.                                                                                                                             | All editions             |
 | Backup & Restore           | [Protect your data](https://github.com/kestra-io/kestra-ee/issues/1528) and simplify migrations with the new Backup & Restore feature.                                                           | Enterprise Edition (EE)  |
 
 Let's dive into these highlights and other enhancements in more detail.
@@ -115,8 +115,22 @@ In terms of permissions, `system` namespace is open by default, but using the na
 
 You can now define inputs based on conditions, allowing one input to depend on another.
 
-To see it in action, first run the following flow to set up the necessary key-value pairs:
+To see it in action, first add the necessary JSON key-value pairs: that will be used as selectable values in the conditional inputs:
 
+```yaml
+id: add_kv_pairs
+namespace: company.myteam
+
+tasks:
+  - id: access_permissions
+    type: io.kestra.plugin.core.kv.Set
+    key: "{{ task.id }}"
+    kvType: JSON # 👈 New property
+    value: |
+      ["Admin", "Developer", "Editor", "Launcher", "Viewer"]
+```
+
+::collapse{title="Expand for a full workflow setting up all key-value pairs"}
 ```yaml
 id: add_kv_pairs
 namespace: company.myteam
@@ -165,13 +179,14 @@ tasks:
         "Azure": ["eastus", "westus", "centralus", "northcentralus"]
       }
 ```
+::
 
 ::alert{type="info"}
-Did you notice the new `kvType` property in the `io.kestra.plugin.core.kv.Set` task? [This new property](https://github.com/kestra-io/kestra/commit/379f3b34e3139e010bf8aa03b9494190255cc2a2) allows you to specify the type of the key-value pair, which is an Enum that can be set to one of the following: `BOOLEAN`, `DATE`, `DATETIME`, `DURATION`, `JSON`, `NUMBER`, `STRING`. Storing strongly typed KV pairs like JSON objects or arrays or date-time values allows you to dynamically retrieve those as SELECT or MULTISELECT values in your conditional inputs.
+Did you notice the new `kvType` property in the `io.kestra.plugin.core.kv.Set` task? [This new property](https://github.com/kestra-io/kestra/commit/379f3b34e3139e010bf8aa03b9494190255cc2a2) allows you to specify the type of the key-value pair, which is an Enum that can be set to one of the following: `BOOLEAN`, `DATE`, `DATETIME`, `DURATION`, `JSON`, `NUMBER`, `STRING`. Storing strongly typed KV pairs like JSON objects or arrays or date-time values allows you to dynamically retrieve those as `SELECT` or `MULTISELECT` values in your conditional inputs.
 ::
 
 
-Now, let's create a flow with conditional inputs that will reference the key-value pairs we've just set up:
+We can now create a flow with conditional inputs that will reference the key-value pairs we've just configured:
 
 ```yaml
 id: request_resources
@@ -193,12 +208,12 @@ inputs:
     type: SELECT
     expression: "{{ kv('access_permissions') }}"
     allowInput: true
-    dependsOn: # ⚡️ New property enabling conditional inputs ⚡️
+    dependsOn: # 👈 New property enabling conditional inputs
       inputs:
         - resource_type
       condition: "{{ inputs.resource_type equals 'Access permissions' }}"
 
-    # ... Expand the field below for a full example 👇
+    # 👇 Expand the field below for a full example
 ```
 
 
@@ -577,13 +592,13 @@ You will see output similar to the following:
     "attemptNumber": 1,
     "originalCreatedDate": "2024-09-24T13:35:32.983420055Z"
   },
-  "url": "http://localhost:8080"
+  "url": "http://localhost:8080/ui/executions/company.myteam/myflow/1ZiZQWCHj7bf9XLtgvAxyi"
 }
 ```
 
 You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL from your application to the user who initiated the flow.
 
-Keep in mind that you need to configure the URL of your kestra instance within your configuration file to have a full URL rather than just the suffix `/ui/executions/company.myteam/myflow/1ZiZQWCHj7bf9XLtgvAxyi`. Here is how you can do it:
+Keep in mind that you need to configure the URL of your kestra instance within your configuration file to have a full URL rather than just the suffix `/ui/executions/company.myteam/myflow/uuid`. Here is how you can do it:
 
 ```yaml
 kestra:
@@ -596,7 +611,7 @@ Staying on the topic of Executions, [you can now schedule](https://github.com/ke
 
 ![execute_later](/blogs/release-0-19/execute_later.png)
 
-You can type the desired date directly, or use the date picker and click on the `Execute` button. That execution will be shown in the `CREATED` state, and will only move into the `RUNNING` state at the scheduled date. You can see the scheduled date in the created Execution's Overview page:
+You can type the desired date directly, or use the date picker and click on the `Execute` button. That execution will be shown in the `CREATED` state, and will only move into the `RUNNING` state at the scheduled date. You can see the scheduled date in the created Execution's `Overview` page:
 
 TODO add image
 
