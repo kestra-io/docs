@@ -60,61 +60,84 @@
                             <ChevronDown />
                         </a>
                         <ul class="dropdown-menu product-menu">
-                            <div class="d-flex flex-column w-100 gap-3 py-lg-0 py-1">
-                                <li class="d-lg-none">
-                                    <NuxtLink class="dropdown-item" href="/overview" @click="globalClick(true)">
-                                        <ViewDashboardOutline />
-                                        <p>
-                                            <span>Platform Overview</span><br />
-                                            Powerful capabilities from the UI
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/features" @click="globalClick(true)">
-                                        <NoteSearchOutline />
-                                        <p>
-                                            <span>Open Source</span><br />
-                                            Explore Kestra's Core Capabilities
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/enterprise" @click="globalClick(true)">
-                                        <Security />
-                                        <p>
-                                            <span>Enterprise Edition</span><br />
-                                            Security and Governance for Enterprise Needs
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/cloud" @click="globalClick(true)">
-                                        <CloudOutline />
-                                        <p>
-                                            <span>Cloud Edition</span>
-                                            <span class="tag">Private Alpha</span>
-                                            <br />
-                                            Register for the Cloud Edition
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink
-                                        class="d-block d-sm-inline-block mn-sm-0 btn btn-animated btn-purple-animated w-100 submenu-btn"
-                                        href="/overview"
-                                        @click="globalClick(true)"
-                                    >
-                                        <div class="submenu-btn-img">
-                                            <NuxtImg width="176" height="129" loading="lazy" format="webp" src="/landing/header-menu/platform-overview.png" alt="Platform Overview" />
-                                        </div>
-                                        <p>
-                                            <span class="title">Platform overview</span>
-                                            <ChevronRight class="d-none d-lg-inline-flex"/>
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                            </div>
+                            <li class="dropdown-columns">
+                                <ul class="dropdown-column list-unstyled">
+                                    <p class="column-caption">Product</p>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/features" @click="globalClick(true)">
+                                            <NoteSearchOutline />
+                                            <p>
+                                                <span>Open Source</span><br />
+                                                Explore Kestra's Core Capabilities
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/enterprise" @click="globalClick(true)">
+                                            <Security />
+                                            <p>
+                                                <span>Enterprise Edition</span><br />
+                                                Security and Governance for Enterprise Needs
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/cloud" @click="globalClick(true)">
+                                            <CloudOutline />
+                                            <p>
+                                                <span>Cloud Edition</span>
+                                                <span class="tag">Private Alpha</span>
+                                                <br />
+                                                Register for the Cloud Edition
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/overview" @click="globalClick(true)">
+                                            <RefreshAuto />
+                                            <p>
+                                                <span>Platform Overview</span><br />
+                                                Orchestrate your business-critical applications and deliver business and analytics-ready data at scale
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-menu-right">
+                                <NuxtLink
+                                    class="btn btn-animated btn-purple-animated text-start"
+                                    href="/blueprints"
+                                    @click="globalClick(true)"
+                                >
+                                    <p class="title">
+                                        Start <br/>orchestrating your first workflows.
+                                    </p>
+                                    <span class="link">
+                                        Quickstart Guide
+                                        <ChevronRight class="d-none d-lg-inline-flex"/>
+                                    </span>
+                                </NuxtLink>
+                                <ul class="p-0 list-unstyled">
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/features" @click="globalClick(true)">
+                                            <NoteSearchOutline />
+                                            <p>
+                                                <span>Workflow components</span><br />
+                                                Get to know the main orchestration components of a Kestra workflow
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/features" @click="globalClick(true)">
+                                            <NoteSearchOutline />
+                                            <p>
+                                                <span>Videos tutorials</span><br />
+                                                Get started with our video tutorials
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
 
@@ -124,124 +147,146 @@
                             Solutions
                             <ChevronDown />
                         </a>
-                        <ul class="dropdown-menu solutions-menu mb-lg-3 pb-1">
-                            <div class="dropdown-column">
-                                <p class="column-caption">Features</p>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/features/declarative-data-orchestration"
-                                              @click="globalClick(true)">
-                                        <CodeNotEqualVariant />
-                                        <p>
-                                            <span>Declarative Orchestration</span><br />
-                                            Infrastructure as Code for All Your Workflows
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/features/scheduling-and-automation"
-                                              @click="globalClick(true)">
-                                        <Sync />
-                                        <p>
-                                            <span>Automation Platform</span><br />
-                                            Scheduling and Automation Made Easy
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/features/api-first" @click="globalClick(true)">
-                                        <Earth />
-                                        <p>
-                                            <span>API-First</span><br />
-                                            Learn more about Kestra’s API features
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/features/code-in-any-language"
-                                              @click="globalClick(true)">
-                                        <CodeTags />
-                                        <p>
-                                            <span>Language Agnostic</span><br />
-                                            Separate your Business Logic from Orchestration Logic
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/terraform-provider"
-                                              @click="globalClick(true)">
-                                        <RefreshAuto />
-                                        <p>
-                                            <span>Kestra's Terraform Provider</span><br />
-                                            Deploy and manage all Kestra resources with Terraform
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                            </div>
-                            <div class="dropdown-column">
-                                <p class="column-caption">Use Cases</p>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/data-engineers"
-                                              @click="globalClick(true)">
-                                        <ChartBar />
-                                        <p>
-                                            <span>For Data Engineers</span><br />
-                                            Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/software-engineers"
-                                              @click="globalClick(true)">
-                                        <Api />
-                                        <p>
-                                            <span>For Software Engineers</span><br />
-                                            Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers" @click="globalClick(true)">
-                                        <ServerNetworkOutline/>
-                                        <p>
-                                            <span>For Platform Engineers</span><br/>
-                                            Automate, Scale, Provision and Optimize Your Infrastructure
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                            </div>
-                            <div class="dropdown-column">
-                                <p class="column-caption">Industries</p>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/retail"
-                                              @click="globalClick(true)">
-                                        <BasketOutline />
-                                        <p>
-                                            <span>For Retail</span><br />
-                                            Empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/healthcare"
-                                              @click="globalClick(true)">
-                                        <PillMultiple />
-                                        <p>
-                                            <span>For Healthcare</span><br />
-                                            Streamline data processing, accelerate research, and enhance collaboration in healthcare
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                                <li>
-                                    <NuxtLink class="dropdown-item" href="/use-cases/automotive" @click="globalClick(true)">
-                                        <CarHatchback/>
-                                        <p>
+                        <ul class="dropdown-menu solutions-menu mb-lg-3">
+                            <li class="dropdown-columns">
+                                <ul class="dropdown-column list-unstyled">
+                                    <p class="column-caption">Features</p>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/features/declarative-data-orchestration"
+                                                  @click="globalClick(true)">
+                                            <CodeNotEqualVariant />
+                                            <p>
+                                                <span>Declarative Orchestration</span><br />
+                                                Infrastructure as Code for All Your Workflows
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/features/scheduling-and-automation"
+                                                  @click="globalClick(true)">
+                                            <Sync />
+                                            <p>
+                                                <span>Automation Platform</span><br />
+                                                Scheduling and Automation Made Easy
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/features/code-in-any-language"
+                                                  @click="globalClick(true)">
+                                            <CodeTags />
+                                            <p>
+                                                <span>Language Agnostic</span><br />
+                                                Separate your Business Logic from Orchestration Logic
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/use-cases/terraform-provider"
+                                                  @click="globalClick(true)">
+                                            <RefreshAuto />
+                                            <p>
+                                                <span>Kestra's Terraform Provider</span><br />
+                                                Deploy and manage all Kestra resources with Terraform
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/features/api-first" @click="globalClick(true)">
+                                            <Earth />
+                                            <p>
+                                                <span>API-First</span><br />
+                                                Learn more about Kestra’s API features
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                </ul>
+                                <ul class="dropdown-column list-unstyled">
+                                    <p class="column-caption">Use Cases</p>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/use-cases/data-engineers"
+                                                  @click="globalClick(true)">
+                                            <ChartBar />
+                                            <p>
+                                                <span>For Data Engineers</span><br />
+                                                Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/use-cases/software-engineers"
+                                                  @click="globalClick(true)">
+                                            <Api />
+                                            <p>
+                                                <span>For Software Engineers</span><br />
+                                                Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers" @click="globalClick(true)">
+                                            <ServerNetworkOutline/>
+                                            <p>
+                                                <span>For Platform Engineers</span><br/>
+                                                Automate, Scale, Provision and Optimize Your Infrastructure
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                </ul>
+                                <ul class="dropdown-column list-unstyled">
+                                    <p class="column-caption">Industries</p>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/use-cases/retail"
+                                                  @click="globalClick(true)">
+                                            <BasketOutline />
+                                            <p>
+                                                <span>For Retail</span><br />
+                                                Empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/use-cases/healthcare"
+                                                  @click="globalClick(true)">
+                                            <PillMultiple />
+                                            <p>
+                                                <span>For Healthcare</span><br />
+                                                Streamline data processing, accelerate research, and enhance collaboration in healthcare
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/use-cases/automotive" @click="globalClick(true)">
+                                            <CarHatchback/>
+                                            <p>
                                             <span>For Automotive
                                             </span><br/>
-                                            Ensure seamless operations and optimized performance across all processes.
-                                        </p>
-                                    </NuxtLink>
-                                </li>
-                            </div>
+                                                Ensure seamless operations and optimized performance across all processes.
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-menu-right">
+                                <NuxtLink
+                                    class="btn btn-animated btn-purple-animated"
+                                    href="/blueprints"
+                                    @click="globalClick(true)"
+                                >
+                                    <div class="submenu-btn-img">
+                                        <NuxtImg width="516" height="227" loading="lazy" format="webp" src="/landing/header-menu/platform-blueprints.png" alt="Platform blueprints" />
+                                    </div>
+                                    <p class="title">
+                                        Explore blueprints
+                                        to kick-start <br/>
+                                        your next flow.
+                                    </p>
+                                    <span class="link">
+                                        Explore
+                                        <ChevronRight class="d-none d-lg-inline-flex"/>
+                                    </span>
+                                </NuxtLink>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -260,13 +305,14 @@
                     </li>
                     <li class="nav-item dropdown" @mouseover="mouseOver" @mouseleave="mouseOut">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                           aria-expanded="false">
                             Resources
                             <ChevronDown />
                         </a>
-                        <ul class="dropdown-menu resources-menu flex-column">
-                            <div class="d-flex flex-column flex-lg-row gap-3 gap-lg-0">
-                                <div class="d-flex flex-column aside-menu py-lg-0 py-1">
+                        <ul class="dropdown-menu product-menu">
+                            <li class="dropdown-columns">
+                                <ul class="dropdown-column list-unstyled">
+                                    <p class="column-caption">Resources</p>
                                     <li>
                                         <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
                                             <PostOutline />
@@ -278,39 +324,10 @@
                                     </li>
                                     <li>
                                         <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
-                                            <Video />
+                                            <VideoOutline />
                                             <p>
                                                 <span>Video Tutorials</span><br />
                                                 Get started with our video tutorials
-                                            </p>
-                                        </NuxtLink>
-                                    </li>
-                                    <li>
-                                        <NuxtLink class="dropdown-item" href="/community" @click="globalClick(true)">
-                                            <AccountGroup />
-                                            <p>
-                                                <span>Community Overview</span><br />
-                                                Ask any questions and share your feedback
-                                            </p>
-                                        </NuxtLink>
-                                    </li>
-                                </div>
-                                <div class="d-flex flex-column aside-menu py-lg-0 py-1">
-                                    <li>
-                                        <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
-                                            <BookOpenVariant />
-                                            <p>
-                                                <span>Customers Stories</span><br />
-                                                Learn how Enterprises orchestrate their business-critical workflows
-                                            </p>
-                                        </NuxtLink>
-                                    </li>
-                                    <li>
-                                        <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
-                                            <Handshake />
-                                            <p>
-                                                <span>Partners</span><br />
-                                                Use our partner ecosystem to accelerate your Kestra adoption
                                             </p>
                                         </NuxtLink>
                                     </li>
@@ -323,51 +340,72 @@
                                             </p>
                                         </NuxtLink>
                                     </li>
-                                </div>
-                            </div>
-                            <li class="w-100 mt-3 mt-lg-0">
+                                </ul>
+                                <ul class="dropdown-column list-unstyled">
+                                    <p class="column-caption">Discover</p>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/community" @click="globalClick(true)">
+                                            <AccountGroupOutline />
+                                            <p>
+                                                <span>Community Overview</span><br />
+                                                Ask any questions and share your feedback
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
+                                            <HandshakeOutline />
+                                            <p>
+                                                <span>Partners</span><br />
+                                                Use our partner ecosystem to accelerate your Kestra adoption
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers" @click="globalClick(true)">
+                                            <HandshakeOutline />
+                                            <p>
+                                                <span>About Us</span><br/>
+                                                Discover the team and values behind Kestra
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-menu-right">
                                 <NuxtLink
-                                    class="d-block d-sm-inline-block mn-sm-0 btn btn-animated btn-purple-animated w-100 submenu-btn"
+                                    class="btn btn-animated btn-purple-animated"
                                     href="/blueprints"
                                     @click="globalClick(true)"
                                 >
                                     <div class="submenu-btn-img">
-                                        <NuxtImg width="238px" height="190" loading="lazy" format="webp" src="/landing/header-menu/platform-blueprints.png" alt="Platform blueprints" />
+                                        <NuxtImg width="516" height="227" loading="lazy" format="webp" src="/landing/header-menu/resources-menu.png" alt="Using Declarative Data" />
                                     </div>
-                                    <p>
-                                        <span class="title">Explore blueprints</span>
-                                        <ChevronRight class="d-none d-lg-inline-flex"/>
+                                    <p class="text-title">
+                                        Gorgias,<br/>
+                                        Using Declarative
+                                        Data Engineering
+                                        Orchestration<br/>
+                                        With Kestra
                                     </p>
+                                    <h2 class="detail-text">
+                                        20 000+
+                                    </h2>
+                                    <span class="detail-desc">
+                                        Executions per month
+                                    </span>
                                 </NuxtLink>
-                            </li>
-                        </ul>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <NuxtLink class="dropdown-item" href="/about-us" @click="globalClick(true)">
-                                    <Domain />
-                                    <p>
-                                        <span>About Us</span><br />
-                                        Read about our story and meet our team
-                                    </p>
-                                </NuxtLink>
-                            </li>
-                            <li>
-                                <NuxtLink class="dropdown-item" href="/careers" @click="globalClick(true)">
-                                    <AccountStarOutline />
-                                    <p>
-                                        <span>Careers</span><br />
-                                        Join a remote-first company
-                                    </p>
-                                </NuxtLink>
-                            </li>
-                            <li>
-                                <NuxtLink class="dropdown-item" href="/contact-us" @click="globalClick(true)">
-                                    <Email />
-                                    <p>
-                                        <span>Contact us</span><br />
-                                        Get in touch with us
-                                    </p>
-                                </NuxtLink>
+                                <ul class="p-0 list-unstyled">
+                                    <li>
+                                        <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
+                                            <BookOpenVariant />
+                                            <p>
+                                                <span>Customers Stories</span><br />
+                                                Learn how Enterprises orchestrate their business-critical workflows
+                                            </p>
+                                        </NuxtLink>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </li>
@@ -428,11 +466,11 @@ import NoteSearchOutline from "vue-material-design-icons/NoteSearchOutline.vue"
 import ViewDashboardOutline from "vue-material-design-icons/ViewDashboardOutline.vue"
 import Security from "vue-material-design-icons/Security.vue"
 import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
-import AccountGroup from "vue-material-design-icons/AccountGroup.vue"
+import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
 import CommentQuestionOutline from "vue-material-design-icons/CommentQuestionOutline.vue"
 import PostOutline from "vue-material-design-icons/PostOutline.vue"
-import Video from "vue-material-design-icons/Video.vue"
-import Handshake from "vue-material-design-icons/Handshake.vue"
+import VideoOutline from "vue-material-design-icons/VideoOutline.vue"
+import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
 import AccountStarOutline from "vue-material-design-icons/AccountStarOutline.vue"
 import Segment from "vue-material-design-icons/Segment.vue"
 import Close from "vue-material-design-icons/Close.vue"
@@ -767,7 +805,7 @@ export default {
 
         ul.navbar-nav {
             li {
-
+                position: unset;
                 a.dropdown-item {
                     white-space: unset;
                 }
@@ -834,6 +872,7 @@ export default {
                 .dropdown-menu.show {
                     @include media-breakpoint-up(lg) {
                         display: flex !important;
+                        justify-content: end;
                     }
 
                     @include media-breakpoint-down(lg) {
@@ -846,10 +885,18 @@ export default {
                 .dropdown-menu {
                     --bs-dropdown-link-hover-bg: $black-4;
                     --bs-dropdown-link-active-bg: $black-4;
-                    padding: $spacer $spacer calc($spacer * 2.5) !important;
-                    border-radius: $spacer;
+                    padding: 0;
                     border: 1px solid $black-6;
                     background-color: $menu-dropdown-bg;
+                    left: 0;
+                    width: 100vw;
+                    margin-top: 0;
+                    border-radius: 0;
+                    .dropdown-columns {
+                        display: flex;
+                        padding: 62px 192px 32px 172px;
+                        gap: 6.25rem;
+                    }
 
                     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
                         & {
@@ -885,10 +932,10 @@ export default {
                     animation-name: slide-in;
 
                     .dropdown-item {
-                        padding: calc($spacer * 0.5) 1rem;
+                        padding: calc($spacer * 0.875) calc($spacer * 0.75);
                         margin-bottom: calc($spacer / 2);
                         align-items: flex-start;
-                        border-radius: calc($spacer / 2);
+                        border-radius: 4px;
 
                         &:not(:last-child) {
                             margin-bottom: calc($spacer / 4);
@@ -899,21 +946,24 @@ export default {
                         }
 
                         .material-design-icon {
-                            color: $black-8;
+                            color: $purple-37;
+                            align-self: unset;
                         }
 
                         p {
                             color: $white-1 !important;
-                            font-size: 0.813rem;
-                            font-weight: 300;
+                            font-size: $font-size-sm;
+                            font-weight: 400;
                             margin-bottom: 0;
                             line-height: $spacer;
+                            margin-top: 3px;
                             span {
                                 display: inline-block;
                                 color: $white !important;
-                                font-size: $font-size-sm;
-                                font-weight: 600;
+                                font-size: $font-size-md;
+                                font-weight: 700;
                                 line-height: calc($spacer * 1.37);
+
                             }
 
                             .tag {
@@ -934,10 +984,14 @@ export default {
                         }
 
                         &:hover {
-                            background-color: $black-6;
+                            background-color: $black-2;
 
-                            .material-design-icon, span, p {
-                                color: $white !important;
+                            .material-design-icon, p {
+                                color: $white-1 !important;
+                            }
+
+                            .material-design-icon, span {
+                                color: $purple-35 !important;
                             }
                         }
 
@@ -964,7 +1018,6 @@ export default {
                 }
 
                 .product-menu {
-                    width: 24.375rem !important;
                     @include media-breakpoint-down(lg) {
                         width: 100% !important;
                     }
@@ -974,8 +1027,6 @@ export default {
                 .resources-menu {
                     align-items: flex-start;
                     gap: $spacer;
-                    padding: 2rem;
-                    width: calc($spacer * 41);
 
 
                     .submenu-item {
@@ -1110,11 +1161,115 @@ export default {
                     }
                 }
 
-
                 .solutions-menu {
+                    .dropdown-menu-right {
+                        background: #252526;
+                        min-width: 23%;
+                        padding: 120px 67px;
+                        a.btn-animated {
+
+                        }
+                        a {
+                            max-width: 312px;
+                            text-align: left;
+                            padding: 47px 26px 40px 28px;
+                            .submenu-btn-img {
+                                margin-bottom: 25px;
+                                img {
+                                    width: 100%;
+                                    height: auto;
+                                }
+                            }
+
+                            p.title {
+                                font-size: 27px;
+                                font-weight: 500;
+                                line-height: 34.6px;
+                                color: #FFFFFF;
+                            }
+
+                            span.link {
+                                font-size: 14px;
+                                color: #CDD5EF;
+                                vertical-align: middle;
+                                span {
+                                    font-size: 16px;
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                .product-menu {
+                    .dropdown-column {
+                        max-width: 338px;
+                    }
+                    .dropdown-menu-right {
+                        background: #252526;
+                        min-width: 23%;
+                        padding: 59px 32px;
+                        height: 100%;
+                        flex: 0.7;
+                        li {
+                            margin-top: 2.25rem;
+                        }
+                        a {
+                            max-width: 312px;
+                        }
+                        a.btn {
+                            padding: 2.19rem;
+                            text-align: start;
+                            .submenu-btn-img {
+                                img {
+                                    width: 100%;
+                                    height: auto;
+                                }
+
+                            }
+                            p.title {
+                                font-size: 27px;
+                                font-weight: 500;
+                                line-height: 34.6px;
+                                color: #FFFFFF;
+                            }
+
+                            p.text-title {
+                                font-size: 26px;
+                                font-weight: 600;
+                                line-height: 27.6px;
+                                color: #FFFFFF;
+                                margin-bottom: 28px;
+                            }
+
+                            h2.detail-text {
+                                font-size: 47px;
+                                font-weight: 800;
+                                line-height: 25.6px;
+                            }
+
+                            span.detail-desc {
+                                font-size: 15px;
+                                font-weight: 400;
+                                line-height: 25.6px;
+                                color: #FFFFFF99;
+                            }
+
+                            span.link {
+                                font-size: 14px;
+                                color: #CDD5EF;
+                                vertical-align: middle;
+                                span {
+                                    font-size: 16px;
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                .solutions-menu, .product-menu {
                     gap: 1rem;
-                    left: -280%;
-                    max-width: calc($spacer * 59);
 
                     .dropdown-column {
                         display: flex;
@@ -1134,12 +1289,14 @@ export default {
                         }
 
                         .column-caption {
-                            font-size: $font-size-base;
+                            font-size: $font-size-xs;
                             font-weight: 600;
-                            line-height: 24px;
-                            color: $white;
+                            color: $white-3;
+                            text-transform: uppercase;
+                            letter-spacing: 1.4px;
                             margin: 0;
-                            margin-left: $spacer;
+                            border-bottom: 1px solid #3D3D3F;
+                            padding-bottom: 10px;
                         }
                     }
                 }

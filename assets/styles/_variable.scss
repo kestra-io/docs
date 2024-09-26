@@ -101,6 +101,7 @@ $purple-33: #110221;
 $purple-34: #10051F;
 $purple-35: #736BCD;
 $purple-36: #9CA1DE;
+$purple-37: #A396FF;
 
 $theme-colors: (
     "primary": $primary,
@@ -171,7 +172,7 @@ $box-shadow-lg: 0 1.5rem 1.5rem rgba(#DCE0F9, .5);
 
 // nav
 $nav-pills-border-radius: 50rem;
-$menu-dropdown-bg: rgba(45, 45, 46, 0.93);
+$menu-dropdown-bg: $black-9;
 $menu-bg: rgb(17 17 19 / 65%);
 $menu-backdrop-filter: blur(0.625rem);
 
