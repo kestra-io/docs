@@ -1,6 +1,9 @@
 ---
 title: Migrate from Shipyard
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - Best Practices
 ---
 
 Migrate from Shipyard to Kestra.

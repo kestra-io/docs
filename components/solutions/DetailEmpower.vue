@@ -14,7 +14,7 @@
                 <h2 data-aos="fade-left">{{ title }}</h2>
                 <p class="text-center" data-aos="fade-right">{{ subtitle }}</p>
                 <div class="text-center cta">
-                    <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                    <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                         Get started
                     </NuxtLink>
                 </div>

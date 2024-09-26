@@ -39,8 +39,25 @@ export default defineNuxtPlugin(nuxtApp => {
         };
 
         const enabledMarketing = () => {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.cr-relay.com/v1/site/a52e9652-1bdf-4c6b-9ef0-06edf432aeef/signals.js';
+            script.async = true;
+            window.signals = Object.assign(
+                [],
+                ['page', 'identify', 'form'].reduce(function (acc, method){
+                    acc[method] = function () {
+                        signals.push([method, arguments]);
+                        return signals;
+                    };
+                    return acc;
+                }, {})
+            );
+            document.head.appendChild(script);
+
             return cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js',{defer: "defer"});
         };
+
+        document.documentElement.classList.add('cc--darkmode');
 
         cookieConsent.run({
             mode: isEurope ? 'opt-in' : 'opt-out',
@@ -78,8 +95,8 @@ export default defineNuxtPlugin(nuxtApp => {
                 translations: {
                     en: {
                         consentModal: {
-                            title: 'I use cookies',
-                            description: 'Hi, this website uses analytics & marketing cookies to understand how you interact with it to continuously improve your user experience. <a aria-label="Cookie policy" class="cc-link" href="/cookie-policy">Read more</a>',
+                            title: 'We use cookies',
+                            description: 'Hi, this website uses analytics & marketing cookies to understand how you interact with it to continuously improve your user experience. <a aria-label="Cookie policy" class="cc-link" href="/cookie-policy">Read our cookie policy</a>',
                             acceptAllBtn: 'Accept',
                             showPreferencesBtn: 'Settings'
                         },

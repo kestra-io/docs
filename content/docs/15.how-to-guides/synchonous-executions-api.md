@@ -1,6 +1,9 @@
 ---
 title: Synchronous Executions API
 icon: /docs/icons/tutorial.svg
+stage: Intermediate
+topics:
+  - Integrations
 ---
 
 Manage the Executions API Synchronously.

@@ -1,6 +1,10 @@
 ---
 title: Modularize your triggers and schedules with Terraform
 icon: /docs/icons/terraform.svg
+stage: Advanced
+topics:
+  - DevOps
+  - Integrations
 ---
 
 Scale your codebase using Terraform to template and make scheduling a breeze

@@ -1,6 +1,9 @@
 ---
 title: Realtime Triggers
 icon: /docs/icons/plugins.svg
+stage: Getting Started
+topics:
+  - Kestra Workflow Components
 version: ">= 0.17.0"
 ---
 

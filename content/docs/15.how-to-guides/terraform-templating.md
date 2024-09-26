@@ -1,6 +1,10 @@
 ---
 title: Leverage Terraform for flow modularity
 icon: /docs/icons/terraform.svg
+stage: Advanced
+topics:
+  - DevOps
+  - Integrations
 ---
 
 Scale your codebase using Terraform to template and define flows

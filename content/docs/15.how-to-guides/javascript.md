@@ -1,11 +1,12 @@
 ---
-title: JavaScript
+title: Run JavaScript inside of your Flows
 icon: /docs/icons/nodejs.svg
+stage: Getting Started 
+topics:
+  - Scripting 
 ---
 
-Run JavaScript code inside of your flow.
-
-
+Run Node.js code directly inside of your Flows and generate outputs.
 
 You can execute NodeJS code inside of a flow by either writing your NodeJS inline or by executing a `.js` file. You can also get outputs and metrics from your NodeJS code too.
 

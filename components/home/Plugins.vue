@@ -2,7 +2,7 @@
     <div ref="container" class="container-fluid bg-dark-4">
         <div class="container">
             <div class="mb-5">
-                <h2 class="title">Integrate with over 500 plugins you already <span>know</span> and <span>love</span></h2>
+                <h2 class="title" data-aos="zoom-in">Integrate with over 500 plugins you already <span>know</span> and <span>love</span></h2>
                 <LayoutPlugins />
             </div>
         </div>

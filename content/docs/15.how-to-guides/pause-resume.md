@@ -1,9 +1,12 @@
 ---
-title: Pause and Resume
+title: Pause and Resume Flows in Kestra
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - Kestra Concepts
 ---
 
-Pause and Resume flows in Kestra.
+Pause and Resume your flows.
 
 ## The use cases for pausing and resuming workflows
 

@@ -1,6 +1,9 @@
 ---
 title: Slack Events API
 icon: /docs/icons/slack.svg
+stage: Getting Started 
+topics:
+  - Integrations
 ---
 
 Trigger Kestra flows based on Slack events.

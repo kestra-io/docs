@@ -1,9 +1,12 @@
 ---
-title: Python
+title: Run Python inside of your Flows
 icon: /docs/icons/python.svg
+stage: Getting Started 
+topics:
+  - Scripting
 ---
 
-Run Python code inside of your flow.
+Run Python code directly inside of your Flows and generate outputs.
 
 You can execute Python code inside of a flow by either writing your Python inline or by executing a `.py` file. You can also get outputs and metrics from your Python code too.
 

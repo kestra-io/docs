@@ -26,6 +26,11 @@
     import posthog from 'posthog-js'
 
     export default {
+        data() {
+            return {
+                showThankYou: false
+            }
+        },
         methods: {
             ratePage(isHelpful) {
               const result = posthog.capture('helpful', {"positive": isHelpful});

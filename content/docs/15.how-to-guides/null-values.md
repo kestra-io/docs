@@ -1,10 +1,12 @@
 ---
 title: Handling null and undefined values
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - Best Practices
 ---
 
 How to use the null coalescing operator to handle null and undefined values.
-
 
 The null coalescing operator is a binary operator that returns its left-hand value if it's not null; otherwise, it returns its right-hand value. You can think of it as a way to provide a default value when the left-hand value is null.
 

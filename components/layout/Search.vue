@@ -6,7 +6,7 @@
                     <div class="search">
                         <label class="visually-hidden" for="search-input">Search</label>
                         <div class="input-group">
-                            <span class="input-group-text"><Magnify/></span>
+                            <span class="input-group-text"><Magnify v-if="!loading" /><MagnifyExpand  v-if="loading" /></span>
                             <input type="text" class="form-control form-control-lg" id="search-input" @input="event => search(event.target.value)" autocomplete="off" placeholder="Search Kestra.io"/>
                             <div class="align-items-center d-flex input-group-append">
                                 <span class="esc">ESC</span>
@@ -23,7 +23,7 @@
                             <span>({{ result }})</span>
                         </div>
                     </div>
-                    <div v-if="!loading">
+                    <div :class="{'loading': loading}">
                         <div class="row" v-if="searchResults && searchResults.length === 0">
                             <div class="col-12 not-found-content d-flex flex-column justify-content-center bg-dark-2">
                                 <img src="/search/emoticon-dead-icon.svg" alt="emoticon icon" class="mx-auto"/>
@@ -85,7 +85,7 @@
 
 <script setup>
     import Magnify from "vue-material-design-icons/Magnify.vue";
-    import EmoticonDeadOutline from "vue-material-design-icons/EmoticonDeadOutline.vue";
+    import MagnifyExpand from "vue-material-design-icons/MagnifyExpand";
 </script>
 
 <script>
@@ -138,6 +138,7 @@
                     this.cancelToken.cancel('cancel all');
                 }
                 this.cancelToken = axios.CancelToken.source();
+                this.loading = true;
 
                 this.searchValue = value;
                 return axios.get(`${this.$config.public.apiUrl}/search`, {
@@ -159,8 +160,10 @@
                     if (response?.data.facets) {
                         this.searchFacets = this.sortFacet(response.data.facets);
                     }
-                }).catch(() => {
-                    this.resetData();
+                }).catch((e) => {
+                    if (e.code !== "ERR_CANCELED") {
+                        this.resetData();
+                    }
                 })
             },
             sortFacet(facets) {
@@ -222,13 +225,13 @@
                     this.handleSearchScroll();
                 }
 
-                if (e.key === "ArrowLeft" && this.searchFacets) {
-                    this.handleFacetsKeys(false);
-                }
-
-                if (e.key === "ArrowRight" && this.searchFacets) {
-                    this.handleFacetsKeys(true);
-                }
+                // if (e.key === "ArrowLeft" && this.searchFacets) {
+                //     this.handleFacetsKeys(false);
+                // }
+                //
+                // if (e.key === "ArrowRight" && this.searchFacets) {
+                //     this.handleFacetsKeys(true);
+                // }
 
                 if (e.key === "Enter" && this.searchResults && this.searchResults[this.selectedIndex]) {
                     document.querySelector(".search-result .active").click();
@@ -540,6 +543,11 @@
                 }
             }
         }
+
+        .loading {
+            opacity: 0.6;
+        }
+
         .search-results {
             border-top: 1px solid $black-6;
         }

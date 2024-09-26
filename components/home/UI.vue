@@ -8,10 +8,10 @@
             >
                 <div class="row mb-5 align-items-center">
                     <div class="col-lg-8">
-                        <NuxtImg width="100%" loading="lazy" format="webp" v-if="active === 1" src="/landing/home/ui-1.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
-                        <NuxtImg width="100%" loading="lazy" format="webp" v-if="active === 2" src="/landing/home/ui-2.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
-                        <NuxtImg width="100%" loading="lazy" format="webp" v-if="active === 3" src="/landing/home/ui-3.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
-                        <NuxtImg width="100%" loading="lazy" format="webp" v-if="active === 4" src="/landing/home/ui-4.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
+                        <NuxtImg loading="lazy" format="webp" quality="80" width="852" height="553" sizes="320px xs:640px lg:852px" v-if="active === 1" src="/landing/home/ui-1.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
+                        <NuxtImg loading="lazy" format="webp" quality="80" width="852" height="553" sizes="320px xs:640px lg:852px" v-if="active === 2" src="/landing/home/ui-2.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
+                        <NuxtImg loading="lazy" format="webp" quality="80" width="852" height="553" sizes="320px xs:640px lg:852px" v-if="active === 3" src="/landing/home/ui-3.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
+                        <NuxtImg loading="lazy" format="webp" quality="80" width="852" height="553" sizes="320px xs:640px lg:852px" v-if="active === 4" src="/landing/home/ui-4.webp" alt="Picture of Kestra's user interface" class="zoom img-fluid rounded-3" data-aos="fade-right" />
                     </div>
 
                     <div class="col-lg-4 mt-3 mt-lg-0">
@@ -27,7 +27,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ChartTimelineVariant /></span>
-                                    No setup required. Write code directly from the UI
+                                    No setup required — build workflows directly from the UI
                                 </p>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                             <div class="card-body">
                                 <p class="mb-0">
                                     <span class="card-icon rounded-5"><ApplicationBracketsOutline /></span>
-                                    Embedded Code editor
+                                    Embedded Code editor with Git push & sync
                                 </p>
                             </div>
                         </div>

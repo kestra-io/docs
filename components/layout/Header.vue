@@ -2,7 +2,6 @@
     <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{open: isOpen}">
         <div class="container-xl">
             <NuxtLink class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
-                <img class="icon" src="/icon.svg" alt="Kestra, Open source declarative data orchestration" />
                 <img src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
             </NuxtLink>
 
@@ -107,7 +106,7 @@
                                         @click="globalClick(true)"
                                     >
                                         <div class="submenu-btn-img">
-                                            <NuxtImg width="176px" loading="lazy" format="webp" src="/landing/header-menu/platform-overview.png" alt="Platform Overview" />
+                                            <NuxtImg width="176" height="129" loading="lazy" format="webp" src="/landing/header-menu/platform-overview.png" alt="Platform Overview" />
                                         </div>
                                         <p>
                                             <span class="title">Platform overview</span>
@@ -333,7 +332,7 @@
                                     @click="globalClick(true)"
                                 >
                                     <div class="submenu-btn-img">
-                                        <NuxtImg width="238px" loading="lazy" format="webp" src="/landing/header-menu/platform-blueprints.png" alt="Platform blueprints" />
+                                        <NuxtImg width="238px" height="190" loading="lazy" format="webp" src="/landing/header-menu/platform-blueprints.png" alt="Platform blueprints" />
                                     </div>
                                     <p>
                                         <span class="title">Explore blueprints</span>
@@ -389,16 +388,16 @@
                                   class="d-none mb-1 mn-sm-0 btn btn-sm me-0 me-sm-2 d-lg-inline-block talk-us"
                                   href="/demo">
                             <span>
-                                <CalendarOutline />
+                                <CalendarOutline class="d-none d-xl-inline-flex"/>
                                 Talk to Us
                             </span>
                         </NuxtLink>
 
                         <NuxtLink @click="globalClick(true)"
                             class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-animated btn-purple-animated btn-sm get-started"
-                            href="/docs/getting-started">
+                            href="/docs/getting-started/quickstart#start-kestra">
                             <span>
-                                <Flash class="d-none d-lg-inline-flex"/>
+                                <Flash class="d-none d-xl-inline-flex"/>
                                 Get Started
                             </span>
                         </NuxtLink>
@@ -549,7 +548,9 @@ export default {
         },
 
         globalClick(close) {
-          this.collapse.toggle();
+          if (window.innerWidth < 992) {
+            this.collapse.toggle();
+          }
           if (close) {
                 if (this.$refs.navbar.classList.contains("open")) {
                     this.isOpen = false;
@@ -641,6 +642,14 @@ export default {
         }
     }
 
+    .container-xl {
+        @include media-breakpoint-down(xl) {
+            .navbar-brand {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    }
 
     .container-xl {
         @include media-breakpoint-down(lg) {
@@ -695,18 +704,17 @@ export default {
         }
 
         .navbar-brand {
-            img:not(.icon) {
+            img {
                 height: 100%;
                 width: 180px;
+                @include media-breakpoint-down(xl) {
+                    width: 150px;
+                }
                 @include media-breakpoint-down(lg) {
                     width: 110px;
                 }
             }
 
-            .icon {
-                display: none;
-                height: 100%;
-            }
         }
 
         a.nav-link, button.navbar-toggler, &.btn.search, .nav-item a, div.nav-items a {
@@ -1190,7 +1198,7 @@ export default {
         @include media-breakpoint-down(lg) {
             display: flex;
             width: 100%;
-            padding: 2rem 2rem 4rem;
+            padding: 2rem 2rem 30%;
 
             li {
                 display: flex;

@@ -1,6 +1,10 @@
 ---
-title: Google Service Accounts 
+title: Configure Google Service Account  
 icon: /docs/icons/gcp-compute.svg
+stage: Getting Started 
+topics:
+  - Integrations
+  - Best Practices
 ---
 
 Setup a Google Service Account inside of Kestra.

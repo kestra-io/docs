@@ -1,6 +1,10 @@
 ---
-title: Custom Plugin
+title: Build a Custom Plugin for Kestra
 icon: /docs/icons/plugins.svg
+stage: Advanced
+topics:
+  - Kestra Concepts 
+  - DevOps
 ---
 
 Build your own Custom Plugin for Kestra.

@@ -1,6 +1,9 @@
 ---
-title: Google Sheets
+title: Connect Google Sheets to Kestra
 icon: /docs/icons/gsheets.svg
+stage: Getting Started 
+topics:
+  - Integrations
 ---
 
 Learn step-by-step how to read data from a Google Sheet inside of a Kestra flow.

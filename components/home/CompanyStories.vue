@@ -8,7 +8,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mt-2">
-                    <NuxtLink class="btn btn-animated btn-purple-animated" href="/use-cases/stories">See all stories</NuxtLink>
+                    <NuxtLink class="btn btn-animated btn-purple-animated" href="/use-cases/stories" data-aos="zoom-in">See all stories</NuxtLink>
                 </div>
             </div>
         </Section>
@@ -23,26 +23,33 @@
 </script>
 
 <script setup>
-  const route = useRoute()
   const config = useRuntimeConfig();
   const stories = ref([])
   const totalStories = ref(0)
 
   const fetchStories = async ({currentPage, itemsPerPage}) => {
-    const { data: customerStories } = await useFetch(`${config.public.apiUrl}/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`, {
-      transform: (response) => ({
-        results: response.results.map(result => ({
-          title: result.title,
-          description: result.description,
-          featuredImage: result.featuredImage,
-          tasks: result.tasks,
-        })),
-        total: response.total
-      })
+    const { data: customerStories } = await useCachedAsyncData(
+      'home-company-stories',
+      () => $fetch(`${config.public.apiUrl}/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`),
+      {
+        serverMaxAge: 60 * 10,
+        transform: (response) => ({
+          results: response?.results.map(result => ({
+            id: result.id,
+            title: result.title,
+            description: result.description,
+            featuredImage: result.featuredImage,
+            tasks: result.tasks,
+          })),
+          total: response.total
+        })
     });
 
-    stories.value = customerStories.value.results
-    totalStories.value = customerStories.value.total
+    if (customerStories && customerStories.value) {
+        stories.value = customerStories.value?.results
+        totalStories.value = customerStories.value.total
+    }
+
   }
 
   await fetchStories({currentPage: 1, itemsPerPage: 3})
@@ -73,7 +80,7 @@
         }
 
         .card-title {
-            font-family: Public Sans;
+            font-family: $font-family-sans-serif;
             font-size: 22px;
             font-weight: 600;
             line-height: 22px;
@@ -84,7 +91,7 @@
         }
 
         .card-meta-description {
-            font-family: Public Sans;
+            font-family: $font-family-sans-serif;
             font-size: 18px;
             font-weight: 400;
             line-height: 26px;

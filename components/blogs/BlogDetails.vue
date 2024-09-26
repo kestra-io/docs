@@ -12,7 +12,10 @@
         <div class="py-3 author d-flex align-items-center gap-3">
             <NuxtImg loading="lazy" format="webp" densities="x1 x2" width="48" class="rounded-circle"
                 :src="'/landing/company/teams/' + blog.author.image + '-sm.png'" :alt="blog.author.name" /><br />
-            <p>{{ blog.author.name }}</p>
+            <div>
+                <p>{{ blog.author.name }}</p>
+                <span>{{ blog.author.role }}</span>
+            </div>
         </div>
 
     </div>
@@ -72,8 +75,12 @@ export default {
         p {
             color: $white;
             font-size: $font-size-md;
-            font-weight: 100;
+            font-weight: 600;
             margin: 0;
+        }
+        span {
+            color: $white-1;
+            font-size: $font-size-sm;
         }
     }
 </style>

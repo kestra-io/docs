@@ -5,20 +5,12 @@
         class="accordion-collapse"
         :class="activeSlug.includes(parentSlug) ? 'collapse show' : 'collapse'"
     >
-        <!-- Add the index statically to avoid having sub-nav for it-->
-        <template v-if="depthLevel === 1 && type === 'docs'">
-            <ul class="list-unstyled mb-0">
-                <li class="depth-1">
-                    <NuxtLink href="/docs" class="bold" :class="activeSlug === '/docs' || activeSlug === '/docs/' ? 'active' : ''"
-                    >
-                            Welcome to Kestra
-                    </NuxtLink>
-                </li>
-            </ul>
-        </template>
         <template v-for="item in items">
             <ul class="list-unstyled mb-0">
-                <li :class="{['depth-' + depthLevel]: true}" >
+                <li v-if="item.isSection" class="section">
+                    {{ item.title }}
+                </li>
+                <li v-else :class="{['depth-' + depthLevel]: true}" >
                     <NuxtLink
                         v-if="isPage(item) && !item.hideSidebar"
                         :class="getClass(item, depthLevel, false)"
@@ -36,16 +28,16 @@
                             {{ item.emoji }}
                             {{ item.title }}
                     </NuxtLink>
-                    <template v-if="filterChildren(item).length > 0">
+                    <template v-if="filterChildren(item).length > 0 && (!item.hideSubMenus || !item.hideSubMenus)">
                         <chevron-down
-                            v-if="isShow(item._path) && !item.hideSidebar"
+                            v-if="isShow(item._path)"
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
                             :data-bs-target="'#'+pathToId(item._path)"
                             role="button"
                         />
                         <chevron-right
-                            v-else-if="!item.hideSidebar"
+                            v-else
                             @click="toggle(item._path)"
                             class="accordion-button" data-bs-toggle="collapse"
                             :data-bs-target="'#'+pathToId(item._path)"
@@ -53,16 +45,16 @@
                         />
                     </template>
                 </li>
-                <RecursiveNavSidebar
-                    v-if="filterChildren(item).length > 0"
-                    :items="filterChildren(item)"
-                    :depth-level="depthLevel+1"
-                    :active-slug="activeSlug"
-                    :open="isShow(item._path)"
-                    :parent-slug="item._path"
-                    :disabled-pages="disabledPages"
-                    :type="type"
-                />
+                    <RecursiveNavSidebar
+                        v-if="!item.hideSubMenus && filterChildren(item).length > 0"
+                        :items="filterChildren(item)"
+                        :depth-level="depthLevel+1"
+                        :active-slug="activeSlug"
+                        :open="isShow(item._path)"
+                        :parent-slug="item._path"
+                        :disabled-pages="disabledPages"
+                        :type="type"
+                    />
             </ul>
         </template>
     </div>
@@ -147,6 +139,7 @@
 
                 return {
                     bold: depthLevel === 1,
+                    section: item.isSection,
                     active: s,
                     disabled: s && disabled
                 }
@@ -182,12 +175,12 @@
 
             a {
                 color: $white-1;
-                font-size: $font-size-base;
+                font-size: $font-size-sm;
                 padding: calc($spacer / 2);
                 display: flex;
 
                 &.active {
-                    font-weight: 600;
+                    font-weight: 500;
                 }
 
                 &:hover, &.active {
@@ -214,6 +207,15 @@
     }
 
     .bold {
-        font-weight: bold;
+        font-weight: 400;
+    }
+    .section {
+        font-size: $font-size-xs;
+        font-weight: 500;
+        color: $white-3;
+        text-transform: uppercase;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        padding-left: 0.25rem;
     }
 </style>

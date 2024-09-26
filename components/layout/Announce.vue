@@ -4,15 +4,15 @@
             <div class="alert alert-primary">
                 <Carousel
                     :autoplay="4500"
-                    :wrap-around="true"
+                    :wrap-around="content.length > 1"
                     :transition="2000"
                     v-model="currentSlide"
                     :breakpoints="breakpoints"
                     :settings="settings"
                 >
                     <Slide v-for="(slide, index) in content" :key="slide" v-bind:key="slide?.id">
-                        <p class="text-truncate" @click="slideTo(index)">
-                            {{slide.text}} <NuxtLink :href="slide.href">{{slide.linkText}}</NuxtLink>
+                        <p class="d-flex" @click="slideTo(index)">
+                            <span class="d-inline-block text-truncate" >{{slide.text}}</span> <NuxtLink class="d-inline-block text-nowrap" :href="slide.href">{{slide.linkText}}</NuxtLink>
                         </p>
                     </Slide>
                 </Carousel>
@@ -26,10 +26,6 @@
         props: {
             content: {
                 type: Object,
-                required: true,
-            },
-            alertHide: {
-                type: Function,
                 required: true,
             },
         },
@@ -56,7 +52,6 @@
         }),
         methods: {
             slideTo(val) {
-              console.log(val);
               this.currentSlide = val
             },
         },
@@ -87,7 +82,8 @@
             backdrop-filter: blur(0.625rem);
             background-color: rgba(17, 17, 19, 0.65);
             color: var(--bs-white);
-            padding: calc($spacer * 0.938) 0.5rem;
+            padding-left: calc($spacer * 0.938) 0.5rem;
+            padding-right: calc($spacer * 0.938) 0.5rem;
             border-bottom: $block-border;
             margin-bottom: 0;
             position: relative;
@@ -97,7 +93,8 @@
             height: 3rem;
 
             @include media-breakpoint-down(sm) {
-                padding: calc($spacer / 2);
+                padding-right: calc($spacer / 2);
+                padding-left: calc($spacer / 2);
             }
 
             &::after {
@@ -137,7 +134,7 @@
                 font-size: 0.875rem;
                 font-weight: 400 !important;
                 line-height: 18px;
-                white-space: pre-wrap;
+                max-width: 100%;
             }
 
             button {

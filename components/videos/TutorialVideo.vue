@@ -1,7 +1,7 @@
 <template>
     <div class="video-container">
         <div class="thumbnail">
-            <NuxtImg loading="lazy" format="webp" class="thumbnail-img" :src="video.thumbnail" :alt="video.title" />
+            <img class="thumbnail-img" :src="video.thumbnail" :alt="video.title" />
             <NuxtImg loading="lazy" class="youtube-icon" src="/landing/tutorial-videos/youtube-icon.svg" alt="youtube icon" />
         </div>
         <p class="category">{{video.category}}</p>

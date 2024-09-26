@@ -9,13 +9,15 @@
                     <div class="connection-line-1">
                         <HomeConnectionLine :lineN="1" :strokeDasharray="strokeDasharray1"/>
                     </div>
-                    <h3>Define your workflows</h3>
-                    <p>
-                        By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
-                    </p>
+                    <div data-aos="fade-right">
+                        <h3>Define your workflows</h3>
+                        <p>
+                            By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing.
+                        </p>
+                    </div>
                 </div>
                 <div class="col-md-6 code-container">
-                    <div class="code">
+                    <div class="code" data-aos="fade-left">
                         <div class="code-header">
                             <img src="/landing/3dot-home.svg" alt="code">
                         </div>
@@ -42,9 +44,10 @@
                                 <br/>
                                 <span class="ms-1">- id:</span> python_transform<br/>
                                 <span class="ms-3">type:</span> io.kestra.plugin.scripts.python.Script<br/>
-                                <span class="ms-3">docker:</span><br/>
-                                <span class="ms-4">image:</span> ghcr.io/kestra-io/pydata:latest <br/>
-                                <span class="ms-3">script:</span>|<br/>
+                                <span class="ms-3">containerImage:</span> ghcr.io/kestra-io/pydata:latest<br/>
+                                <span class="ms-3">taskRunner:</span><br/>
+                                <span class="ms-4">type:</span> io.kestra.plugin.scripts.runner.docker.Docker<br/>
+                                <span class="ms-3">script:</span> |<br/>
                                 <i class="fst-normal ms-3">
                                     import polars as pl
                                 </i>
@@ -64,7 +67,7 @@
                             <div class="ms-1">
                                 <span class="ms-1">- id:</span> daily<br/>
                                 <span class="ms-3">type:</span> io.kestra.plugin.core.trigger.Schedule<br/>
-                                <span class="ms-3">cron:</span> "@daily"<br/>
+                                <span class="ms-3">cron:</span> "0 9 * * *"<br/>
                             </div>
                         </div>
                     </div>
@@ -74,15 +77,17 @@
             <div class="item workflow-2 row mb-5">
                 <div class="col-md-6 order-1 order-md-0">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-2.svg" alt="Integration with all data stacks" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-2.webp" alt="Integration with all data stacks" data-aos="fade-right" />
                     </div>
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-2">
                         <HomeConnectionLine :lineN="2" :strokeDasharray="strokeDasharray2"/>
                     </div>
-                    <h3>Integrate with your stack</h3>
-                    <p>Kestra integrates with a wide variety of data sources and tools, so you can easily connect your workflows to your existing data stack. This includes support for popular databases, file formats, APIs, and more.</p>
+                    <div data-aos="fade-left">
+                        <h3>Integrate with your stack</h3>
+                        <p>Kestra integrates with a wide variety of data sources and tools, so you can easily connect your workflows to your existing data stack. This includes support for popular databases, file formats, APIs, and more.</p>
+                    </div>
                 </div>
             </div>
 
@@ -91,12 +96,14 @@
                     <div class="connection-line-3">
                         <HomeConnectionLine :lineN="3" :strokeDasharray="strokeDasharray3"/>
                     </div>
-                    <h3>Schedule your workflows</h3>
-                    <p>Configure your workflows to run on a schedule, via webhooks, APIs, event-based triggers, or in real-time with millisecond latency.</p>
+                    <div data-aos="fade-right">
+                        <h3>Schedule your workflows</h3>
+                        <p>Configure your workflows to run on a schedule, via webhooks, APIs, event-based triggers, or in real-time with millisecond latency.</p>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-3.svg" alt="How to schedule example" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-3.webp" alt="How to schedule example" data-aos="fade-left" />
                     </div>
                 </div>
             </div>
@@ -104,17 +111,19 @@
             <div class="item workflow-4 row pb-5">
                 <div class="col-md-6 order-1 order-md-0">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-4.svg" alt="How to execute a flow example" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-4.webp" alt="How to execute a flow example" data-aos="fade-right" />
                     </div>
                 </div>
                 <div class="col-md-6 px-3 px-md-5 py-0 py-md-5 order-0 order-md-1 position-relative d-flex flex-column justify-content-center">
                     <div class="connection-line-4">
                         <HomeConnectionLine :lineN="4" :strokeDasharray="strokeDasharray4"/>
                     </div>
-                    <h3>Execute your workflows</h3>
-                    <p>
-                        When a workflow is triggered, Kestra orchestrates the execution of each step, ensuring that data is processed correctly and dependencies are satisfied. With built-in scalability, Kestra handles growing workloads, and offers robust retry options to ensure reliable execution even in the face of failures.
-                    </p>
+                    <div data-aos="fade-left">
+                        <h3>Execute your workflows</h3>
+                        <p>
+                            When a workflow is triggered, Kestra orchestrates the execution of each step, ensuring that data is processed correctly and dependencies are satisfied. With built-in scalability, Kestra handles growing workloads, and offers robust retry options to ensure reliable execution even in the face of failures.
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -123,12 +132,14 @@
                     <div class="connection-line-5">
                         <HomeConnectionLine :lineN="5" :strokeDasharray="strokeDasharray5"/>
                     </div>
-                    <h3>Monitor and optimize your workflows</h3>
-                    <p>Track the performance of your workflows, identify bottlenecks, and optimize them for speed and efficiency.</p>
+                    <div data-aos="fade-right">
+                        <h3>Monitor and optimize your workflows</h3>
+                        <p>Track the performance of your workflows, identify bottlenecks, and optimize them for speed and efficiency.</p>
+                    </div>
                 </div>
                 <div class="col-md-6 mb-5">
                     <div class="img-container">
-                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5.svg" alt="Visualization of Kestra monitoring" />
+                        <NuxtImg width="100%" loading="lazy" format="webp" class="img-fluid" src="/landing/how/how-5.webp" alt="Visualization of Kestra monitoring" data-aos="fade-left" />
                     </div>
                 </div>
             </div>
@@ -136,11 +147,11 @@
                 <div class="connection-line-6">
                     <HomeConnectionLine :lineN="6" :strokeDasharray="strokeDasharray6"/>
                 </div>
-                <p class="last-words">
-                 15,000+ engineers trust Kestra to declartively build their workflows. Be the next!
+                <p class="last-words" data-aos="zoom-in">
+                    15,000+ engineers trust Kestra to declartively build their workflows. Be the next!
                 </p>
                 <div class="text-center mt-5 d-flex align-items-center justify-content-center flex-wrap gap-3">
-                    <NuxtLink href="https://github.com/kestra-io/kestra" target="_blank" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                    <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
                         Get started
                     </NuxtLink>
                     <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
@@ -165,7 +176,7 @@
                 strokeDasharray4: 1,
                 strokeDasharray5: 1,
                 strokeDasharray6: 1,
-                output: `"{{ outputs.python.outputFiles['products.csv'] }}"`,
+                output: `"{{ outputs.python_transform.outputFiles['products.csv'] }}"`,
                 copyCodeText: "Copy to clipboard",
                copyIconResetTimer: undefined,
             };
@@ -242,12 +253,12 @@
             h3 {
                 color: $white;
                 font-family: $font-family-sans-serif;
-                font-size: calc($font-size-base * 3.125);
+                font-size: calc($font-size-base * 3.125) ;
                 font-style: normal;
                 font-weight: 300;
                 line-height: calc($spacer * 3.375);
-                @include media-breakpoint-down(sm) {
-                    font-size: calc($font-size-base * 1.625);
+                @include media-breakpoint-down(lg) {
+                    font-size: calc($font-size-base * 2.125) !important;
                     line-height: calc($spacer * 2);
                 }
             }
@@ -280,6 +291,8 @@
                 .connection-line {
                     &-1, &-2, &-3, &-4, &-5 {
                         position: absolute;
+                        display: flex;
+                        align-items: center;
                     }
 
                     &-1 {
@@ -387,7 +400,7 @@
                         }
 
                         @include media-breakpoint-down(xxl) {
-                            top: -123%;
+                            top: -98%;
                             left: -66.5%;
                             :deep(svg) {
                                 width: calc($spacer * 35);
@@ -395,7 +408,7 @@
                         }
 
                         @include media-breakpoint-down(xl) {
-                            top: -106%;
+                            top: -83%;
                             left: -69%;
                             :deep(svg) {
                                 width: calc($spacer * 33);
@@ -404,7 +417,7 @@
 
                         @include media-breakpoint-down(lg) {
                             left: -80%;
-                            top: -123%;
+                            top: -92%;
                         }
 
                         @include media-breakpoint-down(md) {
@@ -533,8 +546,13 @@
 
             &-4 {
                 padding-top: 6rem;
-                background: url("/landing/how/bg-4.webp") no-repeat left;
+                background: url("/landing/how/bg-4.webp") no-repeat;
+                background-position: 100px 10px;
                 background-size: 45%;
+                @include media-breakpoint-down(lg) {
+                    background-position: 100px 270px;
+                }
+
                 .img-container {
                     height: calc($spacer * 19.1);
                     img {

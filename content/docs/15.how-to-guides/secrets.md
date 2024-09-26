@@ -1,6 +1,9 @@
 ---
 title: Secrets
 icon: /docs/icons/tutorial.svg
+stage: Getting Started
+topics:
+  - Kestra Concepts
 ---
 
 How you can use secrets in various Kestra use cases.

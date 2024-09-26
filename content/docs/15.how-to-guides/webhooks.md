@@ -1,9 +1,12 @@
 ---
-title: Webhooks
+title: Setup Webhooks to trigger Flows
 icon: /docs/icons/webhook.svg
+stage: Getting Started 
+topics:
+  - Integrations
 ---
 
-How to use a webhook to trigger a flow.
+Execute flows using the Webhooks Trigger.
 
 ## What are Webhooks?
 

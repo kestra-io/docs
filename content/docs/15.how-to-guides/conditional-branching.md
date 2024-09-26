@@ -1,6 +1,9 @@
 ---
 title: Conditional Branching
 icon: /docs/icons/tutorial.svg
+stage: Intermediate
+topics:
+  - Kestra Concepts
 ---
 
 How to use the Switch task to branch the flow based on a value.

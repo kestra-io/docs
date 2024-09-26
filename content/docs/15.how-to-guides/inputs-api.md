@@ -1,6 +1,9 @@
 ---
 title: Pass Inputs via an API call
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - Kestra Workflow Components
 ---
 
 Passing Inputs via an API Call

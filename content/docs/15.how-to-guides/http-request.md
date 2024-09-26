@@ -1,9 +1,12 @@
 ---
-title: HTTP Requests
+title: Make HTTP Requests inside of your flows
 icon: /docs/icons/tutorial.svg
+stage: Getting Started 
+topics:
+  - Integrations
 ---
 
-How to make HTTP Requests inside of your flows.
+Make HTTP Requests to fetch data and generate outputs.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/sI-BDbb1aPI?si=ygTv9ZVoHPwYMaty" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

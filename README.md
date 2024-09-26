@@ -54,6 +54,10 @@ npm run dev
 
 You can access the docs at [localhost:3001](http://localhost:3001/).
 
+## Contributing Tips
+
+Make sure that links are relative, including images.
+
 ## Troubleshooting tips
 
 Depending on your Node.js and OS version, you may encounter the following error: `Error message "error:0308010C:digital envelope routines::unsupported"`.

@@ -4,7 +4,7 @@
         <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
             <ContentRenderer :value="page">
                 <div class="bd-title">
-                    <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" />
+                    <Breadcrumb :slug="slug" :pageList="pageList" :pageNames="pageNames" :pageTitle="page.title"/>
                     <h1 v-if="page && page.title" class="py-0 title">
                         <NuxtImg
                             v-if="page.icon"
@@ -50,6 +50,7 @@
   import {recursivePages, generatePageNames} from "~/utils/navigation.js";
 
   const isDoc = computed(() => props.type === 'docs');
+  const config = useRuntimeConfig();
 
   const route = useRoute()
   const slug = computed(() => `/${props.type}/${route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug}`);
@@ -57,8 +58,13 @@
 
   const fetchNavigation = async () => {
     let navigationFetch;
+    let pageList = null;
+    let pageNames = null;
+
     if (props.type === "plugins") {
       navigationFetch = await useFetch(`/api/plugins?type=navigation`);
+      pageList = recursivePages(navigationFetch.data.value[0]);
+      pageNames = generatePageNames(navigationFetch.data.value[0]);
     } else {
       const queryBuilder = queryContent('/' + props.type + '/');
 
@@ -73,12 +79,31 @@
           _path: "/tutorial-videos",
         });
       }
+      pageList = recursivePages(navigationFetch.data.value[0]);
+      pageNames = generatePageNames(navigationFetch.data.value[0]);
+
+      const sections = config.public.docs.sections;
+
+      const newData = [];
+
+      Object.entries(sections).forEach(([sectionName, titles]) => {
+        // Add the section object
+        newData.push({ title: sectionName, isSection: true, _path: "/" });
+
+        // Add the matching items from the data array
+        titles.forEach(title => {
+          const matchedItem = navigationFetch.data.value[0].children.find(item => item.title === title);
+          if (matchedItem) {
+            newData.push(matchedItem);
+          }
+        });
+      });
+
+      navigationFetch.data.value[0].children = newData;
     }
 
     const navigation = navigationFetch.data;
 
-    const pageList = recursivePages(navigation.value[0]);
-    const pageNames = generatePageNames(navigation.value[0]);
     return {navigation, pageList, pageNames};
   }
 
@@ -179,8 +204,6 @@
   useContentHead(page);
 
   const {description, title} = page;
-  console.log('window.location.host', `${origin}${route.path}`)
-
     useHead({
       meta: [
         {property: 'og:title', content: title},
