@@ -184,7 +184,7 @@ tasks:
 ::
 
 ::alert{type="info"}
-Did you notice the new `kvType` property in the `io.kestra.plugin.core.kv.Set` task? [This new property](https://github.com/kestra-io/kestra/commit/379f3b34e3139e010bf8aa03b9494190255cc2a2) allows you to specify the type of the key-value pair, which is an Enum that can be set to one of the following: `BOOLEAN`, `DATE`, `DATETIME`, `DURATION`, `JSON`, `NUMBER`, `STRING`. Storing strongly typed KV pairs like JSON objects or arrays or date-time values allows you to dynamically retrieve those as `SELECT` or `MULTISELECT` values in your conditional inputs.
+Did you notice the new `kvType` property in the `io.kestra.plugin.core.kv.Set` task? [This new property](https://github.com/kestra-io/kestra/commit/379f3b34e3139e010bf8aa03b9494190255cc2a2) allows you to specify the type of the key-value pair, which is an Enum that can be set to one of the following: `BOOLEAN`, `DATE`, `DATETIME`, `DURATION`, `JSON`, `NUMBER`, `STRING`. Storing strongly typed KV pairs like JSON objects or arrays allows you to dynamically retrieve those as `SELECT` or `MULTISELECT` values in your conditional inputs.
 ::
 
 
@@ -196,7 +196,7 @@ namespace: company.myteam
 
 inputs:
   - id: resource_type
-    displayName: Resource Type
+    displayName: Resource Type # 👈 New property allowing to set a friendly name
     type: SELECT
     required: true
     values:
@@ -300,12 +300,6 @@ inputs:
         - cloud_vms
       condition: "{{ inputs.resource_type equals 'Cloud VM' }}"
 
-variables:
-  slack_message: |
-    Validate resource request.
-    To approve the request, click on the `Resume` button here
-    http://localhost:28080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}.
-
 tasks:
   - id: send_approval_request
     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
@@ -313,7 +307,7 @@ tasks:
     payload: |
       {
         "channel": "#devops",
-        "text": "{{ render(vars.slack_message) }}"
+        "text": "New resource request available for approval"
       }
 
   - id: wait_for_approval
