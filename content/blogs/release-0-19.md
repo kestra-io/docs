@@ -27,7 +27,7 @@ Let's dive into these highlights and other enhancements in more detail.
 
 ## Multi-Language Support
 
-We’re excited to announce that Kestra now supports **12 different languages**! You can easily switch from English to your preferred language directly from the [Settings](https://kestra.io/docs/ui/settings) page. This makes the platform more accessible and user-friendly for teams across the globe, letting you work in the language you feel most comfortable with.
+Kestra now supports **12 different languages** — you can easily switch from English to your preferred language directly from the [Settings](https://kestra.io/docs/ui/settings) page. This makes the platform more accessible and user-friendly for teams across the globe, letting you work in the language you feel most comfortable with.
 
 Here’s the full list of supported languages:
 - English (en)
@@ -46,13 +46,13 @@ Here’s the full list of supported languages:
 With this new feature, Kestra is now truly language-agnostic, both in terms of programming languages and spoken languages. If the language you speak isn’t on the list, please let us know, and we’ll do our best to add it in the next release. We also encourage you to [contribute to the translation](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) of Kestra into your language or fixing any translation issues you might find.
 
 
-## Track Your System’s Health with the New Dashboard
+## The New Dashboard
 
-At Kestra, we know how critical it is to have a clear, real-time understanding of your orchestration platform's performance. We’ve redesigned the main dashboard to offer a much more refined, focused experience, showing you the information you need without overwhelming you with unnecessary details.
+At Kestra, we know how critical it is to have a clear, real-time understanding of your orchestration platform's performance. We’ve redesigned the main dashboard to offer a much more refined, focused experience, showing the information you need without overwhelming you with unnecessary details.
 
-![new_dashboard_classic](/blogs/release-0-19/new_dashboard_classic.png)
+The previous dashboard aimed to display as much information as possible, but in doing so, the Dashboard got over time cluttered and sometimes slow to load (see the image below).
 
-The previous dashboard aimed to display as much information as possible, but in doing so, the Dashboard got over time cluttered and sometimes slow to load.
+![old_dashboard](/blogs/release-0-19/old_dashboard.png)
 
 Here’s what we’ve changed:
 
@@ -64,7 +64,9 @@ Here’s what we’ve changed:
 
 - **Labels**: We’ve added labeled axes and legends to make the dashboard easier to understand.
 
-This new layout brings clarity, faster load times, and is georgous to look at! See the screenshot below to judge for yourself.
+This new layout brings clarity, faster load times, and is georgous to look at! See the screenshots below to judge for yourself.
+
+![new_dashboard_classic](/blogs/release-0-19/new_dashboard_classic.png)
 
 ![new_dashboard_purple](/blogs/release-0-19/new_dashboard_purple.png)
 
@@ -356,7 +358,7 @@ Previously, Kestra allowed users to filter logs by specific levels, such as WARN
 
 Kestra 0.19.0 makes log filtering [more context-aware](https://github.com/kestra-io/kestra/issues/2045)  — you can see all log levels while still being able to jump directly to the next `TRACE`, `DEBUG`, `INFO`, `WARN` or `ERROR` logs.
 
-TODO UI screenshot
+![loglevel_display](blogs/release-0-19/loglevel_display.png)
 
 Using the new log-level navigation, you can quickly jump to the next log of a specific level while still having the full context at your fingertips. With that additional context, it's easier to understand what led up to an issue and what followed, simplifying troubleshooting.
 
@@ -490,7 +492,7 @@ With the [new mechanism](https://github.com/kestra-io/kestra/issues/4120) introd
 This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing you to get an email link to reset a password directly from the login page. Keep in mind that you'll only see the "Forgot your password?" option if the email server is configured on your instance.
 
 
-### Keeping Things Clean: Purging Old Audit Logs
+### Purging Old Audit Logs
 
 The Enterprise Edition of Kestra generates an audit log for every action taken on the platform, from logging in, creating a flow, to updating a single namespace variable. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up significant amount of space in the database.
 
@@ -613,7 +615,7 @@ Staying on the topic of Executions, [you can now schedule](https://github.com/ke
 
 You can type the desired date directly, or use the date picker and click on the `Execute` button. That execution will be shown in the `CREATED` state, and will only move into the `RUNNING` state at the scheduled date. You can see the scheduled date in the created Execution's `Overview` page:
 
-TODO add image
+![execute_later2](/blogs/release-0-19/execute_later2.png)
 
 If you prefer a programmatic approach, you can also schedule execution for later using one of the following methods:
 1. An API call
@@ -729,7 +731,7 @@ id: scheduled_at
 namespace: company.team
 
 tasks:
-  - id: hello
+  - id: print_date
     type: io.kestra.plugin.core.log.Log
     message: Hello at {{ trigger.date }}
 
@@ -755,7 +757,7 @@ We are excited what you will build with these new Schedule-for-later enhancement
 
 Let us know how you plan to use these scheduling enhancements to make your flows (literally!) future-proof!
 
-## Honorable Mentions
+## Additional Improvements
 
 - The webhook trigger page now [displays the webhook URL](https://github.com/kestra-io/kestra/issues/3891) so that you can easily copy it and use it in external applications that trigger your flows.
 - The duration type property is now [much easier to set from the UI](https://github.com/kestra-io/kestra/issues/3710) thanks to the new (beautiful!) UI component.
