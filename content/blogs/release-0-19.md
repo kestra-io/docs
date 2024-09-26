@@ -82,6 +82,10 @@ System Flows are designed to handle periodically executed background operations 
 4. Syncing code from Git or pushing code to Git
 5. Automatically [releasing flows](https://kestra.io/blueprints/system/258-copy-flows-from-development-to-qa-and-staging-environments-or-tenants) from development to QA and staging environments
 
+<div class="video-container">
+  <iframe src="https://youtu.be/o05hcKNI_7I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 We refer to these as **System Flows** because by default they are hidden from end users and only visible within the `system` namespace. This way, you can automate maintenance tasks without cluttering the UI for regular users. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
 
 ```yaml
@@ -361,7 +365,9 @@ Using the new log-level navigation, you can quickly jump to the next log of a sp
 
 See the video below for a quick demo of the new feature:
 
-TODO video
+<div class="video-container">
+  <iframe src="https://youtu.be/7Yz0N_26lDY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 **Additional log enhancements worth mentioning**:
 - Logs tab is [now faster](https://github.com/kestra-io/kestra/issues/2188) and will no longer freeze with a large number of task runs.
@@ -541,76 +547,19 @@ Finally, we’ve made a small but [important update](https://github.com/kestra-i
 
 ## Other Enhancements
 
-### URL to follow the Execution progress
-
-The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing to follow the Execution progress from the UI. This is particularly helpful for externally triggered long-running executions that require users to follow the workflow progress. Here is how you can use it:
-
-1) First, create a flow:
-
-```yaml
-id: myflow
-namespace: company.myteam
-
-tasks:
-  - id: long_running_task
-    type: io.kestra.plugin.scripts.shell.Commands
-    commands:
-      - sleep 90
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-```
-
-2) Execute the flow via an API call:
-
-```shell
-curl -X POST http://localhost:8080/api/v1/executions/company.myteam/myflow
-```
-
-You will see output similar to the following:
-
-```bash
-{
-  "id": "1ZiZQWCHj7bf9XLtgvAxyi",
-  "namespace": "company.myteam",
-  "flowId": "myflow",
-  "flowRevision": 1,
-  "state": {
-    "current": "CREATED",
-    "histories": [
-      {
-        "state": "CREATED",
-        "date": "2024-09-24T13:35:32.983335847Z"
-      }
-    ],
-    "duration": "PT0.017447417S",
-    "startDate": "2024-09-24T13:35:32.983335847Z"
-  },
-  "originalId": "1ZiZQWCHj7bf9XLtgvAxyi",
-  "deleted": false,
-  "metadata": {
-    "attemptNumber": 1,
-    "originalCreatedDate": "2024-09-24T13:35:32.983420055Z"
-  },
-  "url": "http://localhost:8080/ui/executions/company.myteam/myflow/1ZiZQWCHj7bf9XLtgvAxyi"
-}
-```
-
-You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL from your application to the user who initiated the flow.
-
-Keep in mind that you need to configure the URL of your kestra instance within your configuration file to have a full URL rather than just the suffix `/ui/executions/company.myteam/myflow/uuid`. Here is how you can do it:
-
-```yaml
-kestra:
-  url: http://localhost:8080
-```
-
 ### Schedule for Later
 
-Staying on the topic of Executions, [you can now schedule](https://github.com/kestra-io/kestra/issues/3818) any flow to run at a specific date and time in the future. You can configure that directly using the `Advanced configuration` option in the `Execute` modal.
+Starting from Kestra 0.19.0, [you can schedule any flow](https://github.com/kestra-io/kestra/issues/3818) to run at a specific date and time in the future. You can configure that directly using the `Advanced configuration` option in the `Execute` modal.
+
+<div class="video-container">
+  <iframe src="https://youtu.be/DSLNd7L3LR4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+You can type the desired date directly, or use the date picker and click on the `Execute` button.
 
 ![execute_later](/blogs/release-0-19/execute_later.png)
 
-You can type the desired date directly, or use the date picker and click on the `Execute` button. That execution will be shown in the `CREATED` state, and will only move into the `RUNNING` state at the scheduled date. You can see the scheduled date in the created Execution's `Overview` page:
+That execution will be shown in the `CREATED` state, and will only move into the `RUNNING` state at the scheduled date. You can see the scheduled date in the created Execution's `Overview` page:
 
 ![execute_later2](/blogs/release-0-19/execute_later2.png)
 
@@ -753,6 +702,69 @@ We are excited what you will build with these new Schedule-for-later enhancement
 > "This is a game changer for me. I have jobs that need to be run whose schedule time and date can only be derived as a delta from a specific event. This would allow me to calculate the runs for the week, and schedule the jobs that need to run!"
 
 Let us know how you plan to use these scheduling enhancements to make your flows (literally!) future-proof!
+
+### URL to follow the Execution progress
+
+The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing to follow the Execution progress from the UI. This is particularly helpful for externally triggered long-running executions that require users to follow the workflow progress. Here is how you can use it:
+
+1) First, create a flow:
+
+```yaml
+id: myflow
+namespace: company.myteam
+
+tasks:
+  - id: long_running_task
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - sleep 90
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+```
+
+2) Execute the flow via an API call:
+
+```shell
+curl -X POST http://localhost:8080/api/v1/executions/company.myteam/myflow
+```
+
+You will see output similar to the following:
+
+```bash
+{
+  "id": "1ZiZQWCHj7bf9XLtgvAxyi",
+  "namespace": "company.myteam",
+  "flowId": "myflow",
+  "flowRevision": 1,
+  "state": {
+    "current": "CREATED",
+    "histories": [
+      {
+        "state": "CREATED",
+        "date": "2024-09-24T13:35:32.983335847Z"
+      }
+    ],
+    "duration": "PT0.017447417S",
+    "startDate": "2024-09-24T13:35:32.983335847Z"
+  },
+  "originalId": "1ZiZQWCHj7bf9XLtgvAxyi",
+  "deleted": false,
+  "metadata": {
+    "attemptNumber": 1,
+    "originalCreatedDate": "2024-09-24T13:35:32.983420055Z"
+  },
+  "url": "http://localhost:8080/ui/executions/company.myteam/myflow/1ZiZQWCHj7bf9XLtgvAxyi"
+}
+```
+
+You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL from your application to the user who initiated the flow.
+
+Keep in mind that you need to configure the URL of your kestra instance within your configuration file to have a full URL rather than just the suffix `/ui/executions/company.myteam/myflow/uuid`. Here is how you can do it:
+
+```yaml
+kestra:
+  url: http://localhost:8080
+```
 
 ### Additional Improvements
 
