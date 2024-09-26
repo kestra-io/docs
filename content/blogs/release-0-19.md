@@ -51,13 +51,13 @@ At Kestra, we know how critical it is to have a clear, real-time understanding o
 
 The previous dashboard aimed to display as much information as possible, but in doing so, the Dashboard got over time cluttered and sometimes slow to load (see the image below).
 
-![old_dashboard](/blogs/release-0-19/old_dashboard.png)
+![old_vs_new_dashboard](/blogs/release-0-19/old_vs_new_dashboard.png)
 
 Here’s what we’ve changed:
 
 - **Simplified Visuals**: The new dashboard replaces the pie charts shown at the top with clear KPI numbers, instantly showing you the success and failure ratios.
 
-- **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down 👇 to the images below) next to the default classic view with red-green colors. You can switch between the two color schemes in the Settings menu — choose either `Classic` (red-green) or `Kestra` (purple-pink).
+- **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down 👇 to the image below) next to the default classic view with red-green colors. You can switch between the two color schemes in the Settings menu — choose either `Classic` (red-green) or `Kestra` (purple-pink).
 
 - **Performance**: We’ve removed redundant tables to ensure faster load times. The new Dashboard gives you an instant overview over the health of your platform, including information about currently running and the next scheduled executions.
 
@@ -65,7 +65,6 @@ Here’s what we’ve changed:
 
 This new layout brings clarity, faster load times, and is georgous to look at! See the screenshots below to judge for yourself.
 
-![new_dashboard_classic](/blogs/release-0-19/new_dashboard_classic.png)
 
 ![new_dashboard_purple](/blogs/release-0-19/new_dashboard_purple.png)
 
