@@ -1,6 +1,7 @@
 <template>
     <span class="text-center d-block img-block">
         <NuxtImg
+            v-if="isNuxtImage"
             :src="refinedSrc"
             :alt="alt"
             :width="width"
@@ -10,6 +11,16 @@
             format="webp"
             quality="80"
             densities="x1 x2"
+        />
+
+        <img
+            v-else
+            :src="refinedSrc"
+            :alt="alt"
+            :width="width"
+            :height="height"
+            :class="classWithZoom"
+            loading="lazy"
         />
     </span>
 </template>
@@ -46,6 +57,11 @@
             return withBase(props.src, useRuntimeConfig().app.baseURL)
         }
         return props.src
+    })
+
+    const isNuxtImage = computed(() => {
+        // gif with cloudflare didn't works
+        return !props.src.endsWith(".gif");
     })
 
     const classWithZoom = computed(() => {
