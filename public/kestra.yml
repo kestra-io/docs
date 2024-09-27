@@ -73,6 +73,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -81,6 +82,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -211,6 +213,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -219,6 +222,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -1241,6 +1245,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -1249,6 +1254,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -2448,6 +2454,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -2456,6 +2463,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -2514,6 +2522,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -2522,6 +2531,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -3000,6 +3010,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -3008,6 +3019,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -3471,6 +3483,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -3479,6 +3492,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -3533,6 +3547,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -3541,6 +3556,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -4270,6 +4286,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -4278,6 +4295,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -4528,6 +4546,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -4536,6 +4555,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -4949,6 +4969,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -4957,6 +4978,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -5110,6 +5132,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -5118,6 +5141,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10

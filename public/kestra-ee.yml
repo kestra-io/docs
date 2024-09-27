@@ -390,6 +390,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -398,6 +399,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -747,98 +749,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ServiceInstance"
-  /api/v1/cluster/workergroups:
-    get:
-      tags:
-      - WorkerGroups
-      summary: List all Worker Groups
-      operationId: listWorkerGroups
-      responses:
-        "200":
-          description: listWorkerGroups 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiWorkerGroupList"
-    post:
-      tags:
-      - WorkerGroups
-      summary: Create a new worker group.
-      operationId: createWorkerGroup
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiCreateOrUpdateWorkerGroupRequest"
-        required: true
-      responses:
-        "200":
-          description: createWorkerGroup 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkerGroup_1"
-  /api/v1/cluster/workergroups/{id}:
-    get:
-      tags:
-      - WorkerGroups
-      summary: Get details about a worker group.
-      operationId: getWorkerGroupById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getWorkerGroupById 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiWorkerGroupDetails"
-    put:
-      tags:
-      - WorkerGroups
-      summary: Update an existing worker group.
-      operationId: updateWorkerGroupById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiCreateOrUpdateWorkerGroupRequest"
-        required: true
-      responses:
-        "200":
-          description: updateWorkerGroupById 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkerGroup_4"
-    delete:
-      tags:
-      - WorkerGroups
-      summary: Get details about a worker group.
-      operationId: deleteWorkerGroupById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteWorkerGroupById 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/configs:
     get:
       tags:
@@ -876,6 +786,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -884,6 +795,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -1906,6 +1818,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -1914,6 +1827,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -3165,6 +3079,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -3173,6 +3088,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -3231,6 +3147,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -3239,6 +3156,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -4811,6 +4729,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -4819,6 +4738,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -5365,6 +5285,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -5373,6 +5294,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -5473,6 +5395,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -5481,6 +5404,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -6773,6 +6697,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -6781,6 +6706,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -7033,6 +6959,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -7041,6 +6968,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -9697,6 +9625,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -9705,6 +9634,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -9858,6 +9788,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -9866,6 +9797,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -10737,6 +10669,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -10745,6 +10678,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -11171,125 +11105,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ServiceInstance"
-  /api/v1/{tenant}/cluster/workergroups:
-    get:
-      tags:
-      - WorkerGroups
-      summary: List all Worker Groups
-      operationId: listWorkerGroups_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: listWorkerGroups_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiWorkerGroupList"
-    post:
-      tags:
-      - WorkerGroups
-      summary: Create a new worker group.
-      operationId: createWorkerGroup_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiCreateOrUpdateWorkerGroupRequest"
-        required: true
-      responses:
-        "200":
-          description: createWorkerGroup_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkerGroup_2"
-  /api/v1/{tenant}/cluster/workergroups/{id}:
-    get:
-      tags:
-      - WorkerGroups
-      summary: Get details about a worker group.
-      operationId: getWorkerGroupById_1
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: getWorkerGroupById_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClusterController.ApiWorkerGroupDetails"
-    put:
-      tags:
-      - WorkerGroups
-      summary: Update an existing worker group.
-      operationId: updateWorkerGroupById_1
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ClusterController.ApiCreateOrUpdateWorkerGroupRequest"
-        required: true
-      responses:
-        "200":
-          description: updateWorkerGroupById_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WorkerGroup_3"
-    delete:
-      tags:
-      - WorkerGroups
-      summary: Get details about a worker group.
-      operationId: deleteWorkerGroupById_1
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: deleteWorkerGroupById_1 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/{tenant}/configs:
     get:
       tags:
@@ -11333,6 +11148,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -11341,6 +11157,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -12459,6 +12276,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -12467,6 +12285,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -13904,6 +13723,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -13912,6 +13732,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -13975,6 +13796,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -13983,6 +13805,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -15740,6 +15563,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -15748,6 +15572,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -16378,6 +16203,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -16386,6 +16212,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -16502,6 +16329,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -16510,6 +16338,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -18038,6 +17867,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -18046,6 +17876,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -18343,6 +18174,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -18351,6 +18183,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -21522,6 +21355,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -21530,6 +21364,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -21710,6 +21545,7 @@ paths:
         description: The current page
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -21718,6 +21554,7 @@ paths:
         description: The current page size
         required: true
         schema:
+          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -23581,19 +23418,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ClusterController.ApiActiveService"
-    ClusterController.ApiCreateOrUpdateWorkerGroupRequest:
-      required:
-      - description
-      - key
-      type: object
-      properties:
-        key:
-          type: string
-          description: The key of the worker group.
-        description:
-          type: string
-          description: The description of the worker group.
-      description: ApiCreateWorkerGroupRequest.
     ClusterController.ApiServerInstance:
       required:
       - hostname
@@ -23634,62 +23458,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    ClusterController.ApiWorkerGroup:
-      required:
-      - activeWorkers
-      - description
-      - id
-      - key
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of worker group.
-        key:
-          type: string
-          description: The key of the worker group.
-        description:
-          type: string
-          description: The description of the worker group.
-        activeWorkers:
-          type: integer
-          description: The number of active workers for the group.
-          format: int32
-      description: ApiWorkerGroup.
-    ClusterController.ApiWorkerGroupDetails:
-      required:
-      - description
-      - id
-      - key
-      - workers
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of worker group.
-        key:
-          type: string
-          description: The key of the worker group.
-        description:
-          type: string
-          description: The description of the worker group.
-        workers:
-          type: array
-          description: The list of workers for the group.
-          items:
-            $ref: "#/components/schemas/ServiceInstance"
-      description: ApiWorkerGroupDetails.
-    ClusterController.ApiWorkerGroupList:
-      required:
-      - workerGroups
-      type: object
-      properties:
-        workerGroups:
-          type: array
-          description: The list of worker groups.
-          items:
-            $ref: "#/components/schemas/ClusterController.ApiWorkerGroup"
-      description: ApiWorkerGroupList.
     Collection_Action_:
       type: object
       properties:
@@ -26881,74 +26649,6 @@ components:
         key:
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
-    WorkerGroup_1:
-      required:
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        deleted:
-          type: boolean
-    WorkerGroup_2:
-      required:
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        deleted:
-          type: boolean
-    WorkerGroup_3:
-      required:
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        deleted:
-          type: boolean
-    WorkerGroup_4:
-      required:
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        deleted:
-          type: boolean
     WorkerTaskRestartStrategy:
       type: string
       enum:
