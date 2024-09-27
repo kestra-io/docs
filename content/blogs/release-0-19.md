@@ -703,6 +703,41 @@ We are excited what you will build with these new Schedule-for-later enhancement
 
 Let us know how you plan to use these scheduling enhancements to make your flows (literally!) future-proof!
 
+---
+
+
+### Concurrency Flow tab
+
+The new `Concurrency` tab in the `Flow` UI page allows you to track and troubleshoot concurrency issues in your flows. [This new tab](https://github.com/kestra-io/kestra/issues/4721#event-14422957135) shows a progress bar with the number of active slots compared to the total number of slots available. Below that progress bar, you can see a table showing currently running and queued Executions, providing a clear overview of the flow's concurrency status.
+
+![concurrency_page_1](/blogs/release-0-19/concurrency_page_1.png)
+
+To see the concurrency behavior in action, you can configure a flow with a concurrency limit as follows:
+
+```yaml
+id: concurrent
+namespace: company.team
+
+concurrency:
+  behavior: QUEUE
+  limit: 5
+
+tasks:
+  - id: long_running_task
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - sleep 90
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+```
+
+Then trigger a bunch of Executions of that flow and watch the `Concurrency` tab showing the active slots and queued Executions.
+
+![concurrency_page_2](/blogs/release-0-19/concurrency_page_2.png)
+
+
+---
+
 ### URL to follow the Execution progress
 
 The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing to follow the Execution progress from the UI. This is particularly helpful for externally triggered long-running executions that require users to follow the workflow progress. Here is how you can use it:
