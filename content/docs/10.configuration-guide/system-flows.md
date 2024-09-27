@@ -1,6 +1,8 @@
 ---
 title: System Flows
 icon: /docs/icons/admin.svg
+editions: ["OSS", "EE"]
+version: ">= 0.19.0"
 ---
 
 How to overwrite the default namespace for system flows.
