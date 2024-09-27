@@ -19,7 +19,7 @@ There's a number of extra namespace pages available in the enterprise edition:
 
 ## Edit
 
-Manage the namespace description, [worker group](../06.enterprise/worker-group.md) and permissions.
+Manage the namespace description, [worker group](../../06.enterprise/worker-group.md) and permissions.
 
 ![Edit](/docs/user-interface-guide/edit.png)
 
@@ -27,7 +27,7 @@ Manage the namespace description, [worker group](../06.enterprise/worker-group.m
 
 Variables defined at the namespace level can be used in any flow defined under the same namespace using the syntax: `{{ namespace.variable_name }}`.
 
-Read more about Variables [here](../06.enterprise/08.centralized-task-configuration.md#variables)
+Read more about Variables [here](../../06.enterprise/08.centralized-task-configuration.md#variables)
 
 ![Variables](/docs/user-interface-guide/variables.png)
 
@@ -37,7 +37,7 @@ Plugin Defaults can also be defined at the namespace level. These plugin default
 
 ![Plugin Defaults](/docs/user-interface-guide/plugindefaults-namespaces.png)
 
-Read more about Plugin Defaults [here](../06.enterprise/08.centralized-task-configuration.md#plugin-defaults)
+Read more about Plugin Defaults [here](../../06.enterprise/08.centralized-task-configuration.md#plugin-defaults)
 
 ## Secrets
 
@@ -45,7 +45,7 @@ Configure Secrets directly from the UI. These secrets are available to all flows
 
 ![Secrets](/docs/user-interface-guide/secrets-namespaces.png)
 
-Read more about Secrets [here](../06.enterprise/secrets.md)
+Read more about Secrets [here](../../06.enterprise/secrets.md)
 
 ## Audit Logs
 
@@ -53,4 +53,4 @@ Audit Logs record all activities performed in your Kestra instance by users and 
 
 ![Audit Logs](/docs/user-interface-guide/auditlogs-namespaces.png)
 
-Read more about Audit Logs [here](../06.enterprise/06.audit-logs.md).
+Read more about Audit Logs [here](../../06.enterprise/06.audit-logs.md).
