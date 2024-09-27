@@ -19,7 +19,7 @@ There are multiple ways to use Git with Kestra:
 
 The image below shows how to choose the right pattern based on your needs:
 
-![git](/docs/developer-guide/git/git.png)
+![git](../../developer-guide/git/git.png)
 
 For a detailed comparison of the three patterns, check the [Version Control with Git](../version-control-cicd/04.git.md) page.
 

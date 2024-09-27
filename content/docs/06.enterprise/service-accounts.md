@@ -18,15 +18,15 @@ In contrast to regular users, Service Accounts don't have a password and their a
 
 To create a new service account, go to the Service Accounts page under the Administration section and click on the **Create** button. Fill in the form with the required information including the name and description, and click **Save**:
 
-![service_account_create](/docs/user-interface-guide/service_account_create.png)
+![service_account_create](../../user-interface-guide/service_account_create.png)
 
 Once you have created a service account, you can add a Role that will grant the service account permissions to specific resources. To do this, click on the **Add** button and select the role you want to assign to the service account.
 
-![service_account_create](/docs/user-interface-guide/service_account_create.png)
+![service_account_create](../../user-interface-guide/service_account_create.png)
 
 Finally, you can generate an API token for the service account by clicking on the **Create** button. This will generate a token that you can use to authenticate the service account with Kestra from external applications such as CI/CD pipelines (e.g. in Terraform provider configuration or GitHub Actions secrets).
 
-![service_account_create](/docs/user-interface-guide/service_account_create.png)
+![service_account_create](../../user-interface-guide/service_account_create.png)
 
 ::alert{type="info"}
 **Note:** You can configure the token to expire after a certain period of time, or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
@@ -34,13 +34,13 @@ Finally, you can generate an API token for the service account by clicking on th
 
 Once you confirm the API token creation via the **Generate** button, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location as it will not be displayed again.
 
-![service_account_create_2](/docs/user-interface-guide/service_account_create_2.png)
+![service_account_create_2](../../user-interface-guide/service_account_create_2.png)
 
 ## Users vs. Service Accounts vs. API Tokens
 
 You can create an **API token** for a regular **User** as well. While Service Accounts are recommended for programmatic API access to Kestra from CI/CD or other external applications, it's often useful to create an API token for a regular user, so that programmatic actions performed by that user can be tracked and audited.
 
-![service_account_create_3](/docs/user-interface-guide/service_account_create_3.png)
+![service_account_create_3](../../user-interface-guide/service_account_create_3.png)
 
 Therefore, the difference between a Service Account and a User is that a Service Account is designed for programmatic access, and doesn't have a password or personal information attached to it. Instead, it is authenticated exclusively using an API token. A User, on the other hand, can interact with both the Kestra UI and the API, and can be authenticated using a password or an API token.
 

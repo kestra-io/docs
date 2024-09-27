@@ -17,7 +17,7 @@ From the left navigation menu, go to **Blueprints**. Then, select the **Custom B
 
 Add a title, description, and the contents of the flow. You can add as many tags as you want. Then click on the "Create" button.
 
-![New Custom Blueprint](/docs/user-interface-guide/blueprint-org-2.png)
+![New Custom Blueprint](../../user-interface-guide/blueprint-org-2.png)
 
 You can edit Blueprints at anytime, for example, to add new tasks or expand the documentation.
 

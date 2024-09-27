@@ -49,7 +49,7 @@ tasks:
 
 Given that the `dryRun` property is set to `true`, the task will only output changes from the Git repository without syncing any flows to Kestra yet:
 
-![git1](/docs/how-to-guides/syncflows/git1.png)
+![git1](../../how-to-guides/syncflows/git1.png)
 
 The files listed are the same ones we added in the [PushFlows guide](pushflows.md).
 
@@ -70,11 +70,11 @@ tasks:
 
 You should see the same flows from the earlier log now inside of Kestra:
 
-![git2.png](/docs/how-to-guides/syncflows/git2.png)
+![git2.png](../../how-to-guides/syncflows/git2.png)
 
 We can also see a full list inside of the Outputs tab too:
 
-![git3.png](/docs/how-to-guides/syncflows/git3.png)
+![git3.png](../../how-to-guides/syncflows/git3.png)
 
 ## Sync all flows including child namespaces
 
@@ -98,11 +98,11 @@ tasks:
 
 When we execute this, we can see all of our flows, including the ones from the `tutorial` child namespace, were synced into Kestra:
 
-![git4.png](/docs/how-to-guides/syncflows/git4.png)
+![git4.png](../../how-to-guides/syncflows/git4.png)
 
 We can also verify this with the Outputs tab too:
 
-![git5.png](/docs/how-to-guides/syncflows/git5.png)
+![git5.png](../../how-to-guides/syncflows/git5.png)
 
 ## Set up a schedule
 
@@ -153,7 +153,7 @@ triggers:
 
 To setup this webhook, go to the Settings for your GitHub repository and head to Webhooks and create a new Webhook:
 
-![webhook1.png](/docs/how-to-guides/syncflows/webhook1.png)
+![webhook1.png](../../how-to-guides/syncflows/webhook1.png)
 
 For the Payload URL, your URL will follow the following format:
 
@@ -165,7 +165,7 @@ This will require your host name to be publicly accessible. If you want to test 
 
 Once we've done this, we can press save and test it by committing something to our Git repository.
 
-![webhook2.png](/docs/how-to-guides/syncflows/webhook2.png)
+![webhook2.png](../../how-to-guides/syncflows/webhook2.png)
 
 We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date with your Git repository.
 

@@ -28,11 +28,11 @@ kestra:
    - **Description**: Provide a brief description of the integration.
    - **Provisioning Type**: currently, we only support SCIM 2.0 — leave the default selection and click `Save`.
 
-![scim1](/docs/enterprise/scim1.png)
+![scim1](../../../enterprise/scim1.png)
 
 The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate Microsoft Entra ID with the SCIM integration in Kestra. Save those details as we will need them in the next steps.
 
-![scim2](/docs/enterprise/scim2.png)
+![scim2](../../../enterprise/scim2.png)
 
 The endpoint should look as follows:
 
@@ -46,7 +46,7 @@ The Secret Token will be a long string (ca. 200 characters) that will authentica
 
 Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests for that integration endpoint will be rejected.
 
-![scim3](/docs/enterprise/scim3.png)
+![scim3](../../../enterprise/scim3.png)
 
 
 ::alert{type="info"}
@@ -61,10 +61,10 @@ When creating a new Provisioning Integration, Kestra will automatically create t
    - `GROUPS`: `CREATE`, `READ` `UPDATE`, `DELETE`
    - `USERS`: `CREATE`, `READ`, `UPDATE`
    - `BINDINGS`: `CREATE`, `READ`, `UPDATE`, `DELETE`
-  ![scim4](/docs/enterprise/scim4.png)
+  ![scim4](../../../enterprise/scim4.png)
 
 2. Service Account with an API Token which was previously displayed as a Secret Token for the integration:
-  ![scim5](/docs/enterprise/scim5.png)
+  ![scim5](../../../enterprise/scim5.png)
 
 ::alert{type="info"}
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
@@ -77,14 +77,14 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
 1. **Register Kestra as an Enterprise Application**:
    - Navigate to Microsoft Entra ID → Enterprise Applications.
    - Click on the `+ New application` button to create a new custom application. You can name the app "KestraSCIM" or any other relevant name.
-  ![scim6](/docs/enterprise/scim6.png)
+  ![scim6](../../../enterprise/scim6.png)
 
 2. **Configure SCIM Provisioning**:
    - Go to the newly created Kestra application.
    - Select "Provisioning" and set the Provisioning Mode to "Automatic".
    - Enter the SCIM endpoint URL and the Secret Token provided by Kestra. Paste kestra's SCIM endpoint URL into the Tenant URL field and the Secret Token into the Secret Token field.
    - Finally, click on `Test Connection` and on the `Save` button.
-  ![scim7](/docs/enterprise/scim7.png)
+  ![scim7](../../../enterprise/scim7.png)
 
 3. **Map User and Group Attributes**:
    - Configure attribute mappings for users and groups to match Kestra’s schema requirements.

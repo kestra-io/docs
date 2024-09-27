@@ -64,7 +64,7 @@ tasks:
 
 Given that the `dryRun` property is set to `true`, the task will only output modifications without pushing any files to Git yet:
 
-![git1](/docs/how-to-guides/pushnamespacefiles/git1.png)
+![git1](../../how-to-guides/pushnamespacefiles/git1.png)
 
 ## Pushing a single file to Git
 
@@ -83,19 +83,19 @@ tasks:
 
 You should see the following log message:
 
-![git2.png](/docs/how-to-guides/pushnamespacefiles/git2.png)
+![git2.png](../../how-to-guides/pushnamespacefiles/git2.png)
 
 And here is what you should see in the Outputs tab:
 
-![git3.png](/docs/how-to-guides/pushnamespacefiles/git3.png)
+![git3.png](../../how-to-guides/pushnamespacefiles/git3.png)
 
 When you click on the commit URL from the logs or from the Outputs tab, you'll be redirected to the commit page on GitHub:
 
-![git4.png](/docs/how-to-guides/pushnamespacefiles/git4.png)
+![git4.png](../../how-to-guides/pushnamespacefiles/git4.png)
 
 Now, you can create a pull request and merge the changes to the main branch.
 
-![git5_pr.png](/docs/how-to-guides/pushnamespacefiles/git5_pr.png)
+![git5_pr.png](../../how-to-guides/pushnamespacefiles/git5_pr.png)
 
 ## Pushing all files from a single namespace to Git
 
@@ -111,7 +111,7 @@ echo "Hello, World"
 console.log("Hello, World")
 ```
 
-![git6_all_files.png](/docs/how-to-guides/pushnamespacefiles/git6_all_files.png)
+![git6_all_files.png](../../how-to-guides/pushnamespacefiles/git6_all_files.png)
 
 Let's now adjust the system flow to push all files from the `dev` namespace to the `dev` branch:
 
@@ -134,8 +134,8 @@ tasks:
 
 Again, we can set the `dryRun` property to `true` to see what files will be added, modified, or deleted based on the Git version without overwriting the files in Git yet:
 
-![git7.png](/docs/how-to-guides/pushnamespacefiles/git7.png)
+![git7.png](../../how-to-guides/pushnamespacefiles/git7.png)
 
 Now if you change the `dryRun` property to `false` and run the system flow again, you should see all three files being pushed to the `_files` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
 
-![git8.png](/docs/how-to-guides/pushnamespacefiles/git8.png)
+![git8.png](../../how-to-guides/pushnamespacefiles/git8.png)

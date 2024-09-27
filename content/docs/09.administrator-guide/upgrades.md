@@ -44,7 +44,7 @@ Note that you can always create a custom image with your own plugins and package
 ## Migrating a Standalone Installation
 If you use a manual standalone installation with Java, you can download the Kestra binary for a specific version from the Assets menu of a specific [Release](https://github.com/kestra-io/kestra/releases) page. The image below shows how you can download the binary for the 0.14.1 release.
 
-![download_kestra_binary](/docs/administrator-guide/download_kestra_binary.png)
+![download_kestra_binary](../../administrator-guide/download_kestra_binary.png)
 
 Once you downloaded the binary, you can start kestra from that binary using the following command:
 
@@ -109,7 +109,7 @@ You can get notified about new releases in the following ways:
 4. Subscribe to the [Kestra newsletter](/blogs)
 5. Subscribe to Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
 
-![release_notification_github](/docs/administrator-guide/release_notifications_github.png)
+![release_notification_github](../../administrator-guide/release_notifications_github.png)
 
 
 ## Database Migrations

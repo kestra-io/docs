@@ -49,7 +49,7 @@ tasks:
 
 Given that the `dryRun` property is set to `true`, the task will only output changes from the Git repository without syncing any files to Kestra yet:
 
-![git1](/docs/how-to-guides/syncnamespacefiles/git1.png)
+![git1](../../how-to-guides/syncnamespacefiles/git1.png)
 
 The files listed are the same ones we added in the [PushNamespaceFiles guide](pushnamespacefiles.md).
 
@@ -70,11 +70,11 @@ tasks:
 
 You should see the same files from the earlier log now inside of Kestra:
 
-![git2](/docs/how-to-guides/syncnamespacefiles/git2.png)
+![git2](../../how-to-guides/syncnamespacefiles/git2.png)
 
 We can also see a full list inside of the Outputs tab too:
 
-![git3](/docs/how-to-guides/syncnamespacefiles/git3.png)
+![git3](../../how-to-guides/syncnamespacefiles/git3.png)
 
 ## Set up a schedule
 
@@ -126,7 +126,7 @@ triggers:
 
 To setup this webhook, go to the Settings for your GitHub repository and head to Webhooks and create a new Webhook:
 
-![webhook1.png](/docs/how-to-guides/syncnamespacefiles/webhook1.png)
+![webhook1.png](../../how-to-guides/syncnamespacefiles/webhook1.png)
 
 For the Payload URL, your URL will follow the following format:
 
@@ -138,7 +138,7 @@ This will require your host name to be publicly accessible. If you want to test 
 
 Once we've done this, we can press save and test it by committing something to our Git repository.
 
-![webhook2.png](/docs/how-to-guides/syncnamespacefiles/webhook2.png)
+![webhook2.png](../../how-to-guides/syncnamespacefiles/webhook2.png)
 
 We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date with your Git repository.
 

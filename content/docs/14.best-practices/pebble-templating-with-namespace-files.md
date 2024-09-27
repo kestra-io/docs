@@ -47,7 +47,7 @@ This approach is very convenient for scripts that are specific to the flow, and 
 
 Another option to leverage pebble templates in scripts is using argparse. In this case, we define the scripts as namespace files. You can use the Editor to define the script.
 
-![namespace_file](/docs/best-practices/namespace_file.png)
+![namespace_file](../../best-practices/namespace_file.png)
 
 Here is the same script for reference:
 

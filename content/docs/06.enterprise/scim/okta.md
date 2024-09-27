@@ -28,11 +28,11 @@ kestra:
    - **Description**: Provide a brief description of the integration.
    - **Provisioning Type**: currently, we only support SCIM 2.0 — leave the default selection and click `Save`.
 
-![scim1](/docs/enterprise/scim1_okta.png)
+![scim1](../../../enterprise/scim1_okta.png)
 
 The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate Okta with the SCIM integration in Kestra. Save those details as we will need them in the next steps.
 
-![scim2](/docs/enterprise/scim2.png)
+![scim2](../../../enterprise/scim2.png)
 
 The endpoint should look as follows:
 
@@ -46,7 +46,7 @@ The Secret Token will be a long string (ca. 200 characters) that will authentica
 
 Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests for that integration endpoint will be rejected.
 
-![scim3](/docs/enterprise/scim3.png)
+![scim3](../../../enterprise/scim3.png)
 
 
 ::alert{type="info"}
@@ -61,10 +61,10 @@ When creating a new Provisioning Integration, Kestra will automatically create t
    - `GROUPS`: `CREATE`, `READ` `UPDATE`, `DELETE`
    - `USERS`: `CREATE`, `READ`, `UPDATE`
    - `BINDINGS`: `CREATE`, `READ`, `UPDATE`, `DELETE`
-  ![scim4](/docs/enterprise/scim4.png)
+  ![scim4](../../../enterprise/scim4.png)
 
 2. Service Account with an API Token which was previously displayed as a Secret Token for the integration:
-  ![scim5](/docs/enterprise/scim5.png)
+  ![scim5](../../../enterprise/scim5.png)
 
 ::alert{type="info"}
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
@@ -86,7 +86,7 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
          - Sign-in redirect URIs → http://<kestra-hostname>/oauth/callback/okta
          - Sign-out redirect URIs → http://<kestra-hostname>/logout
    - Once application is created, select it in the Applications view and take note of the client ID and client secret.
-   ![okta1](/docs/enterprise/okta1.png)
+   ![okta1](../../../enterprise/okta1.png)
 
 2. **Configure Okta in Kestra**:
    - With the above client ID and secret, add the following in your Kestra Micronaut configuration:
@@ -113,7 +113,7 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
    - Select the integration you have just created, then enter the `Provisioning` tab.
    - Fill in the Endpoint URL you obtained from Kestra into the `SCIM 2.0 Base Url` field. Enter the Secret Token generated in Kestra into the `OAuth Bearer Token` field.
    - Finally, click on the `Test API Credentials` to verify the connection.
-    ![okta2](/docs/enterprise/okta2.png)
+    ![okta2](../../../enterprise/okta2.png)
 
 4. **Map Attributes**:
    - Select “Push Groups” and choose the Groups you wish to push to Kestra.
