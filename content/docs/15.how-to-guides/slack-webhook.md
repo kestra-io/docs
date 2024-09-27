@@ -1,7 +1,7 @@
 ---
 title: Slack Events API
 icon: /docs/icons/slack.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
   - Integrations
 ---
@@ -145,7 +145,7 @@ tasks:
         @stub.function(image=image)
         @asgi_app()
         def fastapi_app():
-            return web_app      
+            return web_app
 ```
 
 ::alert{type="info"}
@@ -222,7 +222,6 @@ To do something more useful than just logging the Slack event, you can create a 
 Copy the webhook URL:
 
 ![img_19.png](/docs/how-to-guides/slack-webhook/img_19.png)
-![img.png](img.png)
 
 ...and paste it into the `url` field of the `SlackIncomingWebhook` task in the flow below:
 
