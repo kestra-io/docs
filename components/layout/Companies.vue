@@ -6,6 +6,7 @@
                     <div ref="companies" class="companies companies-list scrolling">
                         <template v-for="(img, index) in companies" :key="index">
                             <NuxtImg
+                                v-if="img.name"
                                 loading="lazy"
                                 format="webp"
                                 data-aos="fade-up"
