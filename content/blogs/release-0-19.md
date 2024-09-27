@@ -49,6 +49,10 @@ With this new feature, Kestra is now language-agnostic both in terms of programm
 
 At Kestra, we know how critical it is to have a clear, real-time understanding of your orchestration platform's performance. We’ve redesigned the main dashboard to offer a more refined, focused experience, showing the information you need without overwhelming you with unnecessary details.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/nYu6_6Bj7hs?si=SCU6vqVszoJ6mt5d" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 The previous dashboard aimed to display as much information as possible, but in doing so, the Dashboard got over time cluttered and sometimes slow to load (see the image below).
 
 ![old_vs_new_dashboard](/blogs/release-0-19/old_vs_new_dashboard.png)
@@ -83,7 +87,7 @@ System Flows are designed to handle periodically executed background operations 
 5. Automatically [releasing flows](https://kestra.io/blueprints/system/258-copy-flows-from-development-to-qa-and-staging-environments-or-tenants) from development to QA and staging environments
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/o05hcKNI_7I?si=EZkyevBGXSIvCw13" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/o05hcKNI_7I?si=EZkyevBGXSIvCw13" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 We refer to these as **System Flows** because by default they are hidden from end users and only visible within the `system` namespace. This way, you can automate maintenance tasks without cluttering the UI for regular users. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
