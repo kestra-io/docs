@@ -1,7 +1,7 @@
 ---
 title: Pause and Resume Flows in Kestra
 icon: /docs/icons/tutorial.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
   - Kestra Concepts
 ---
@@ -116,4 +116,4 @@ When you click on the `Resume` button in the UI, you will be prompted to provide
 
 After the Execution has been resumed, any downstream task can access the `onResume` inputs using the `outputs` of the `Pause` task:
 
-![pause_resume_2](/blogs/how-to-guides/pause-resume/pause_resume_2.png)
+![pause_resume_2](/docs/how-to-guides/pause-resume/pause_resume_2.png)
