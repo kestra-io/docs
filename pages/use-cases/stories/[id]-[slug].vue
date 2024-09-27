@@ -43,11 +43,10 @@
                     <div class="col-md-4 mb-4">
                         <div class="story-info">
                             <div class="mx-auto">
-                                <NuxtImg
+                                <img
                                     width="112"
                                     height="68"
                                     loading="lazy"
-                                    format="webp"
                                     :src="story.logo"
                                     :alt="story.logo"
                                 />
