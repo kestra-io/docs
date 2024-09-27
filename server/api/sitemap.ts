@@ -6,6 +6,8 @@ const generateDefaultSitemap = async () => {
     const runtimeConfig = useRuntimeConfig()
 
     type SitemapsToGenerate = { rootUrl: string, apiUrl: string, sitemap?: string };
+    const blueprintsTags = await $fetch(`${runtimeConfig.public.apiUrl}/blueprints/tags`);
+
     const sitemapsToGenerate: Array<SitemapsToGenerate> = [
         {
             rootUrl: '/blueprints/',
@@ -13,7 +15,7 @@ const generateDefaultSitemap = async () => {
         },
         {
             rootUrl: '/use-cases/stories/',
-            apiUrl: `${runtimeConfig.public.apiUrl}/customer-stories`
+            apiUrl: `${runtimeConfig.public.apiUrl}/customer-stories-v2`
         }
     ];
 
@@ -21,13 +23,24 @@ const generateDefaultSitemap = async () => {
     const fetchPageToSitemapFormat = async (sitemapInput: SitemapsToGenerate, page: number): Promise<PaginatedSitemapData> => {
         const pageSize = 20;
         const pageUrl = `${sitemapInput.apiUrl}?page=${page}&size=${pageSize}`;
-        const response = await $fetch<{ total: number, results: [{id: string, title: string}] }>(pageUrl);
+        const response = await $fetch<{ total: number, results: [{
+                tags?: any;
+                id: string,
+                title: string
+        }] }>(pageUrl);
         return {
             totalPages: Math.ceil(response.total / pageSize),
-            data: response.results.map(page => asSitemapUrl({
-                loc: `${sitemapInput.rootUrl}${page.id}-${slugify(page.title)}`,
-                _sitemap: sitemapInput.sitemap ?? 'default'
-            }))
+            data: response.results.map(page => {
+                let loc = `${sitemapInput.rootUrl}${page.id}-${slugify(page.title)}`
+                if (sitemapInput.rootUrl === '/blueprints/') {
+                    let tag = [{ name: 'All tags' }, ...blueprintsTags].find(f => f?.id == page.tags[0]);
+                    loc = `${sitemapInput.rootUrl}${tag.name.replace(' ', '-').toLowerCase()}/${page.id}-${slugify(page.title)}`
+                }
+                return asSitemapUrl({
+                    loc: loc,
+                    _sitemap: sitemapInput.sitemap ?? 'default'
+                });
+            })
         };
     };
 
