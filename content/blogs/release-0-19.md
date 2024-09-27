@@ -126,7 +126,7 @@ To see it in action, first add the necessary JSON key-value pairs: that will be 
 
 ```yaml
 id: add_kv_pairs
-namespace: company.myteam
+namespace: company.team
 
 tasks:
   - id: access_permissions
@@ -140,7 +140,7 @@ tasks:
 ::collapse{title="Expand for a full workflow setting up all key-value pairs"}
 ```yaml
 id: add_kv_pairs
-namespace: company.myteam
+namespace: company.team
 
 tasks:
   - id: access_permissions
@@ -197,7 +197,7 @@ We can now create a flow with conditional inputs that will reference the key-val
 
 ```yaml
 id: request_resources
-namespace: company.myteam
+namespace: company.team
 
 inputs:
   - id: resource_type
@@ -228,7 +228,7 @@ inputs:
 
 ```yaml
 id: request_resources
-namespace: company.myteam
+namespace: company.team
 
 inputs:
   - id: resource_type
@@ -750,7 +750,7 @@ The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/
 
 ```yaml
 id: myflow
-namespace: company.myteam
+namespace: company.team
 
 tasks:
   - id: long_running_task
@@ -764,7 +764,7 @@ tasks:
 2) Execute the flow via an API call:
 
 ```shell
-curl -X POST http://localhost:8080/api/v1/executions/company.myteam/myflow
+curl -X POST http://localhost:8080/api/v1/executions/company.team/myflow
 ```
 
 You will see output similar to the following:
@@ -772,7 +772,7 @@ You will see output similar to the following:
 ```bash
 {
   "id": "1ZiZQWCHj7bf9XLtgvAxyi",
-  "namespace": "company.myteam",
+  "namespace": "company.team",
   "flowId": "myflow",
   "flowRevision": 1,
   "state": {
@@ -792,13 +792,13 @@ You will see output similar to the following:
     "attemptNumber": 1,
     "originalCreatedDate": "2024-09-24T13:35:32.983420055Z"
   },
-  "url": "http://localhost:8080/ui/executions/company.myteam/myflow/1ZiZQWCHj7bf9XLtgvAxyi"
+  "url": "http://localhost:8080/ui/executions/company.team/myflow/1ZiZQWCHj7bf9XLtgvAxyi"
 }
 ```
 
 You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL from your application to the user who initiated the flow.
 
-Keep in mind that you need to configure the URL of your kestra instance within your configuration file to have a full URL rather than just the suffix `/ui/executions/company.myteam/myflow/uuid`. Here is how you can do it:
+Keep in mind that you need to configure the URL of your kestra instance within your configuration file to have a full URL rather than just the suffix `/ui/executions/company.team/myflow/uuid`. Here is how you can do it:
 
 ```yaml
 kestra:
