@@ -33,13 +33,13 @@ Shows all the flows in the namespace. It gives a brief about each of the flows i
 
 Shows all the flows and which ones are dependent on each other (for example through Subflows or Flow Triggers).
 
-This is similar to the Dependencies page in the Flow Editor, but this shows you how all flows within a namespace even if some of them don't depend on any others. 
+This is similar to the Dependencies page in the Flow Editor, but this shows you how all flows within a namespace even if some of them don't depend on any others.
 
 ![Dependencies](/docs/user-interface-guide/dependencies-namespaces.png)
 
 ## KV Store
 
-Manage the key-values pairs associated with this namespace. More details on KV Store can be found [here](../05.concepts/05.kv-store.md).
+Manage the key-values pairs associated with this namespace. More details on KV Store can be found [here](../../05.concepts/05.kv-store.md).
 
 ![KV Store](/docs/user-interface-guide/kvstore-namespaces.png)
 

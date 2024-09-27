@@ -105,7 +105,7 @@ Available conditions include:
 - [ExecutionOutputsCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.executionoutputscondition)
 - [ExpressionCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.ExpressionCondition)
 
-You can also find datetime related conditions [on the Schedule trigger page](01.schedule-trigger.md#schedule-conditions).
+You can also find datetime related conditions [on the Schedule trigger page](./01.schedule-trigger.md#schedule-conditions).
 
 ## Unlocking, enabling and disabling triggers
 
@@ -255,6 +255,6 @@ Let's break down the above example:
 
 ## Locked triggers
 
-[Flow](02.flow-trigger.md), [Schedule](01.schedule-trigger.md) and [Polling triggers](04.polling-trigger.md) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
+[Flow](./02.flow-trigger.md), [Schedule](./01.schedule-trigger.md) and [Polling triggers](./04.polling-trigger.md) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
 
 To see a list of triggers and inspect their current status, go to the **Administration -> Triggers** section in the Kestra UI. From here, you can unlock a trigger if it is locked. Keep in mind that there is a risk or concurrent trigger evaluation or flow execution for this trigger if you unlock it manually.
