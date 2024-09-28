@@ -1,7 +1,7 @@
 ---
 title: Run Python inside of your Flows
 icon: /docs/icons/python.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
   - Scripting
 ---
@@ -20,12 +20,46 @@ In this example, the flow will install the required pip packages, make an API re
 
 ## Scripts
 
-If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly inside of your flow. This allows you to keep everything in one place.
+If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly inside of your flow configuration. This allows you to keep everything in one place.
 
 ```yaml file=public/examples/scripts_python.yml
 ```
 
-You can read more about the Scripts type in the [Plugin documentation](/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.script)
+## Logs
+
+If your Python code needs to log something to the console, we recommend using the `Kestra.logger()` method from the [Kestra pip package](https://github.com/kestra-io/libs) to instantiate a `logger` object — this logger is configured to correctly capture all Python log levels and send them to the Kestra backend.
+
+```yaml
+id: python_logs
+namespace: company.team
+
+tasks:
+  - id: python_logger
+    type: io.kestra.plugin.scripts.python.Script
+    allowFailure: true
+    warningOnStdErr: false
+    script: |
+      import time
+      from kestra import Kestra
+
+      logger = Kestra.logger()
+
+      logger.debug("DEBUG is used for diagnostic info.")
+      time.sleep(0.5)
+
+      logger.info("INFO confirms normal operation.")
+      time.sleep(0.5)
+
+      logger.warning("WARNING signals something unexpected.")
+      time.sleep(0.5)
+
+      logger.error("ERROR indicates a serious issue.")
+      time.sleep(0.5)
+
+      logger.critical("CRITICAL means a severe failure.")
+```
+
+You can read more about the Python Script task in the [Plugin documentation](/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.script)
 
 ## Commands
 
@@ -94,7 +128,7 @@ You can trigger a flow execution by calling the `execute()` method. Here is an e
 ```python
 from kestra import Flow
 
-os.environ["KESTRA_HOSTNAME"] = "http://host.docker.internal:8080" # Set this when executing this Python code inside Kestra 
+os.environ["KESTRA_HOSTNAME"] = "http://host.docker.internal:8080" # Set this when executing this Python code inside Kestra
 
 flow = Flow()
 flow.execute('example', 'python_scripts', {'greeting': 'hello from Python'})
