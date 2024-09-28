@@ -1,7 +1,7 @@
 ---
 title: Setup Webhooks to trigger Flows
 icon: /docs/icons/webhook.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
   - Integrations
 ---

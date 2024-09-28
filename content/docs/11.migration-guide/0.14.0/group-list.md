@@ -9,7 +9,7 @@ This change affects the way you manage groups via the API.
 
 ## Overview
 
-In the [v0.14.0 release](../../../blogs/2024-01-22-release-0-14.md), we've changed the structure of the Groups API to prevent duplicate groups from being created.
+In the [v0.14.0 release](/blogs/2024-01-22-release-0-14.md), we've changed the structure of the Groups API to prevent duplicate groups from being created.
 
 Before Kestra v0.14.0, you could create multiple groups with the same name. Since this can lead to confusion especially in a multitenant environment, we've decided to prevent this behavior.
 

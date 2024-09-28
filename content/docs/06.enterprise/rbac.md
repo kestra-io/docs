@@ -32,7 +32,7 @@ This Binding will grant the permissions defined by that Role to the User, Servic
 
 A Binding can be optionally limited to a specific namespaces. When a Binding is tied to a namespace, it also automatically grants permissions to all child namespaces. For example, a Role attached to the `prod` namespace will automatically grant access to the `prod.engineering` namespace as well.
 
-Note that you can [configure a default role](../10.configuration-guide/03.enterprise-edition.md#default-role-from-configuration) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](05.sso.md).
+Note that you can [configure a default role](../10.configuration-guide/03.enterprise-edition.md#default-role-from-configuration) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](./05.sso.md).
 
 In short, Roles encapsulate permission boundaries that can be attached to Users, Service Accounts or Groups across tenants and namespaces.
 ::
@@ -109,13 +109,13 @@ However, you should use Kestra through the role system.
 
 #### Through the UI
 
-First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](/docs/enterprise/setup-page).
+First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../06.enterprise/02.setup.md).
 
 This interface will offer you to create your first User which will be automatically assigned the `Super Admin` privilege.
 
 #### Through the CLI
 
-To create a User with a Super Admin privilege from the [CLI](/docs/enterprise/cli), use the `--superadmin` option:
+To create a User with a Super Admin privilege from the [CLI](../06.enterprise/cli.md), use the `--superadmin` option:
 
 ```bash
 kestra auths users create admin@kestra.io TopSecret42 --superadmin
@@ -139,7 +139,7 @@ kestra:
         - <optional>
 ```
 
-For more detail, check the [Enterprise Edition Configuration](/docs/configuration-guide/enterprise-edition) page.
+For more detail, check the [Enterprise Edition Configuration](../10.configuration-guide/03.enterprise-edition.md) page.
 
 ::
 
@@ -185,7 +185,7 @@ If you see an error when creating a new User or Service Account, it might be cau
 
 ####  Through the UI
 
-First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](/docs/enterprise/setup-page).
+First time you launch Kestra, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../06.enterprise/02.setup.md).
 
 This interface will offer you to create the first User which will automatically create the role Admin and bind the User to the role.
 

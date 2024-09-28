@@ -1,7 +1,7 @@
 ---
 title: Run Rust inside of your Flows
 icon: /docs/icons/rust.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
   - Scripting
 ---
@@ -14,7 +14,7 @@ This guide is going to walk you through how to get Rust running inside of a work
 
 ## Executing Rust inside Kestra
 
-There isn't an official Rust plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside of a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language. 
+There isn't an official Rust plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside of a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language.
 
 In this example, we're using the Docker Task Runner with the `rust:latest` image so that Rust code can be executed.
 
@@ -29,7 +29,7 @@ fn main() {
 }
 ```
 
-You'll need to add your Rust code using the built-in Editor or [using our Git plugin](../08.developer-guide/04.git.md) so Kestra can see it.  You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You'll need to add your Rust code using the built-in Editor or [using our Git plugin](../version-control-cicd/04.git.md) so Kestra can see it.  You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 You can also add your Rust code inline using the `inputFiles` property.
 
@@ -42,7 +42,7 @@ You can read more about the Shell Commands type in the [Plugin documentation](/p
 
 Your Rust code can generate file-based [outputs](../04.workflow-components/06.outputs.md).
 
-In your Rust code, write a file to the local directory. Then, use the `outputFiles` property to point Kestra to the path of those [output files](../08.developer-guide/07.scripts/07.outputs-metrics.md). 
+In your Rust code, write a file to the local directory. Then, use the `outputFiles` property to point Kestra to the path of those [output files](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md).
 
 In this example, `output.txt` file containing the text "Hello World" is written to the local directory. To read that output file in another downstream task, you can use the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and if you need a file's content as a string rather than a file path, you can wrap that expression in a `read()` function e.g. `{{ read(outputs.mytask.outputFiles['outputs.txt']) }}`.
 
