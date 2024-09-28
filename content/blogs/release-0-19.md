@@ -25,11 +25,11 @@ We are excited to announce Kestra 0.19.0, bringing the following highlights:
 Let's dive into these highlights and other enhancements in more detail.
 
 
-## Kestra UI Now Speaks 12 Languages
+## Localization UI
 
 Kestra now supports **12 different languages** — you can easily switch from English to your preferred language directly from the [Settings](https://kestra.io/docs/ui/settings) page. This makes the platform more accessible and user-friendly for teams across the globe, letting you work in the language you feel most comfortable with.
 
-Here’s the full list of supported languages:
+Here’s the full list of the currently supported languages:
 - 🇺🇸 English (en)
 - 🇩🇪 German (de)
 - 🇪🇸 Spanish (es)
@@ -43,11 +43,11 @@ Here’s the full list of supported languages:
 - 🇷🇺 Russian (ru)
 - 🇨🇳 Chinese (zh_CN)
 
-With this new feature, Kestra is now language-agnostic both in terms of programming languages and spoken languages. If the language you speak isn’t on the list, let us know, and we’ll do our best to add it. We also encourage you to [contribute to the translation](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) of Kestra into your language or submitting a pull request with a fix to any translation issues you might find.
+With this new localization feature, Kestra is now language-agnostic both in terms of programming languages and spoken languages. If the language you speak isn’t on the list, let us know, and we’ll do our best to add it. We also encourage you to [contribute to the translation](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) of Kestra into your language or submitting a pull request with a fix to any translation issues you might find.
 
 ## The New Dashboard
 
-At Kestra, we know how critical it is to have a clear, real-time understanding of your orchestration platform's performance. We’ve redesigned the main dashboard to offer a more refined, focused experience, showing the information you need without overwhelming you with unnecessary details.
+At Kestra, we know how critical it is to have a clear health status of your orchestration platform. We’ve redesigned the main dashboard to offer a more refined, focused experience, showing the information you need without overwhelming you with unnecessary details.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/nYu6_6Bj7hs?si=SCU6vqVszoJ6mt5d" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -59,16 +59,13 @@ The previous dashboard aimed to display as much information as possible, but in 
 
 Here’s what we’ve changed:
 
-- **Simplified Visuals**: The new dashboard replaces the pie charts shown at the top with clear KPI numbers, instantly showing you the success and failure ratios.
+- **Simplified Visuals**: The new dashboard replaces the previous donut charts with clear KPI numbers, instantly showing the success and failure ratios.
 
-- **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down 👇 to the image below) next to the default classic view with red-green colors. You can switch between the two color schemes in the Settings menu — choose either `Classic` (red-green) or `Kestra` (purple-pink).
+- **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down to the image below) next to the default classic view with red-green colors. You can switch between the two color schemes in the Settings menu — choose either `Classic` (red-green) or `Kestra` (purple-pink).
 
 - **Performance**: We’ve removed redundant tables to ensure faster load times. The new Dashboard gives you an instant overview over the health of your platform, including information about currently running and the next scheduled executions.
 
-- **Labels**: We’ve added labeled axes and legends to make the dashboard easier to understand.
-
 This new layout brings clarity, faster load times, and is georgous to look at! See the screenshots below to judge for yourself.
-
 
 ![new_dashboard_purple](/blogs/release-0-19/new_dashboard_purple.png)
 
@@ -102,18 +99,20 @@ To access System Flows, navigate to the `Namespaces` section in the UI. The `sys
 
 ![system_namespace](/blogs/release-0-19/system_namespace.png)
 
-Here, you’ll find the _System Blueprints_ tab, which provides fully customizable templates tagged for system use. These templates are easily modifiable to suit your organization’s needs.
+Here, you’ll find the _System Blueprints_ tab, which provides fully customizable templates tagged for system use. You can modify these templates to suit your organization’s needs.
 
 ![system_blueprints](/blogs/release-0-19/system_blueprints.png)
 
+::alert{type="info"}
 Keep in mind that System Flows are not restricted to System Blueprints — any valid Kestra flow can become a System Flow if it's added to the `system` namespace.
+::
 
 System Flows are intentionally hidden from the main UI, appearing only in the `system` namespace. The Dashboard, Flows, and Executions pages now offer a multi-select filter with options for `User` (default) and `System` (visible by default only within the `system` namespace). This makes it easy to toggle between user-facing workflows and background system flows and their executions, or view both simultaneously.
 
 ![system_filter](/blogs/release-0-19/system_filter.png)
 
 
-In terms of permissions, `system` namespace is open by default, but using the namespace-level RBAC functionality in the Enterprise Edition, you can restrict access to the `system` namespace only to Admins, while assigning `company.*` namespaces to your general user base.
+In terms of permissions, `system` namespace is open by default. With the namespace-level RBAC functionality in the Enterprise Edition, you can restrict access to the `system` namespace only to Admins, while assigning `company.*` namespaces to your general user base.
 
 ---
 
@@ -374,9 +373,9 @@ See the video below for a quick demo of the new feature:
 </div>
 
 **Additional log enhancements worth mentioning**:
-- Logs tab is [now faster](https://github.com/kestra-io/kestra/issues/2188) and will no longer freeze with a large number of task runs.
+- Logs tab is [now faster](https://github.com/kestra-io/kestra/issues/2188) and will no longer freeze the UI page even with a large number of task runs.
 - You can now [log to a file](https://github.com/kestra-io/kestra/issues/4688) in the internal storage using a new `logToFile` core property available on all tasks. This feature is particularly useful for tasks that produce a large amount of logs that would otherwise take up too much space in the database. The same property can be set on triggers.
-- [We've added](https://github.com/kestra-io/kestra/issues/2451) a dedicated [Python logger](https://github.com/kestra-io/libs/blob/main/python/src/kestra.py#L60)  to ensure that all logs emitted by a Python script are [captured](https://github.com/kestra-io/kestra/commit/c58e42ef0dd589af86ae6597bc87c03737c0d913) with the right log levels.
+- [We've added](https://github.com/kestra-io/kestra/issues/2451) a dedicated [Python logger](https://github.com/kestra-io/libs/blob/main/python/src/kestra.py#L60)  to ensure that all logs emitted by a Python script are [captured](https://github.com/kestra-io/kestra/commit/c58e42ef0dd589af86ae6597bc87c03737c0d913) with the right log levels. Check the [Python Script task](https://kestra.io/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.script) plugin documentation for more details and examples.
 
 
 ---
