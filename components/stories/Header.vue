@@ -4,10 +4,9 @@
             <div class="mb-5 pb-5 row align-items-center">
                 <div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
                     <div>
-                        <NuxtImg
+                        <img
                             height="56"
                             loading="lazy"
-                            format="webp"
                             :src="logo"
                             :alt="logo"
                         />
