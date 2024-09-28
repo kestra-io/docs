@@ -382,17 +382,17 @@ See the video below for a quick demo of the new feature:
 
 ## In-app Versioning for Docs and Blueprints
 
-We’re excited to introduce versioned docs and blueprints built directly into the UI. This change directly addresses one of the biggest pain points users have faced: the lack of version-specific documentation and examples.
+We’re excited to introduce versioned docs and blueprints built directly into the UI. This change addresses one of the biggest pain points users have faced: the lack of version-specific documentation and examples.
 
-Until now, the documentation and blueprints were only available on the website and they were served for the latest version of Kestra. As a result, if you were on an older version, some documentation and blueprints might have been overwritten by a new syntax or showing functionality that wasn’t available in your version.
+Until now, the documentation and blueprints were served on the website for the latest version of Kestra. As a result, if you were on an older version, some documentation and blueprints might have been overwritten by a new syntax or showing functionality that wasn’t available in your version.
 
-With versioned docs and blueprints, this is no longer an issue. Kestra 0.19.0 and higher dynamically fetches the correct version of documentation and blueprints based on the Kestra version you’re using. This is handled through new API endpoints pulling the relevant content when needed.
+From v0.19.0 on, Kestra dynamically fetches the correct documentation and blueprints based on the Kestra version you’re using. This is handled through new API endpoints pulling the relevant content when needed.
 
 ::alert{type="info"}
-Note that the documentation you see on the website always reflects the latest stable release. However, when you’re working in the app, you’ll see documentation and blueprint examples that match the version of your Kestra instance. We deliberately decided not to introduce versioning on the website to avoid confusion when you accidentally stumble upon docs for an older version, which often results in broken links and annoying banners constantly reminding you to switch to the _latest_ version when browsing the documentation for an _older_ version.
+Note that the documentation you see on the website always reflects the `latest` stable release. However, when you’re working in the app, you’ll see documentation and blueprint examples for your Kestra version. We deliberately decided not to introduce versioning on the website for now to avoid confusion when you accidentally stumble upon docs for an older version, which often results in broken links and annoying banners constantly reminding you to switch to the _latest_ version when browsing the documentation for an _older_ version.
 ::
 
-Overall, we believe that **the best documentation is the one you don't have to read**. The second best is one that is always up-to-date, built into the app, relevant to your current environment (your Kestra version, edition, and plugins), and resurfaced when you need it. With this new feature, we aim to serve you the right documentation at the right time, making it easier to understand and use Kestra.
+Overall, we believe that **the best documentation is the one you don't have to read**. The second best is one that is always up-to-date, built into the app, relevant to your current environment, and resurfaced when you need it. With this new feature, we aim to serve you the right documentation at the right time, making it easier to understand and use Kestra.
 
 In the future, we plan to display the documentation pages next to the UI elements they describe. For example, you'll be able to easily access the documentation for KV Store right when you access the KV Store UI tab.
 
@@ -403,60 +403,33 @@ In the future, we plan to display the documentation pages next to the UI element
 
 ### Backup & Restore of Metadata
 
-Starting from version 0.19.0, Kestra [Enterprise Edition](/enterprise) introduces the ability to back up and restore metadata, making it easy to safeguard everything you configured in the platform and move that configuration across different environments. Whether you're migrating to another Kestra version or switching backends, this feature provides flexibility and peace of mind.
+Starting from version 0.19.0, Kestra [Enterprise Edition](/enterprise) introduces the ability to back up and restore metadata, making it easy to safeguard everything you configured in the platform and move that configuration across different environments. Whether you're migrating to another Kestra version or switching backends, this feature provides flexibility and peace of mind. By default, all backups are encrypted using Kestra’s built-in encryption key.
 
-We recommend performing backups while Kestra is stopped to ensure everything is captured consistently. The backup process covers all metadata not tied to executions, including custom blueprints, flows, namespaces, roles, secrets (for JDBC and Elasticsearch secrets manager), security integrations, settings, templates, tenants, triggers, users, and access bindings.
-
-**To back up your Kestra instance**, simply run the following command:
+To back up your Kestra instance, simply run the following command:
 
 ```shell
-kestra backups create FULL
+kestra backups create FULL # or TENANT
 ```
 
-The `FULL` option backs up the entire instance. If you’re only interested in a specific tenant, you can opt for the `TENANT` type instead, which excludes users and tenants from the backup and focuses on tenant-level metadata.
-
-By default, backups are encrypted using Kestra’s built-in encryption key. You can customize this with your own encryption key. Once the backup starts, Kestra logs the URI of the internal storage file where the backup is saved.
-
-**Restoring your instance** is just as straightforward. Use the URI generated during the backup process to restore metadata with this command:
+Restoring your instance is just as straightforward. Use the URI generated during the backup process to restore metadata with this command:
 
 ```shell
-kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
+kestra backups restore kestra:///backups/full/backup-20241001163000.kestra
 ```
-
-Similar to the `backups create` command, you can also specify a custom encryption key during restoration.
 
 When the restore process completes, Kestra provides a detailed summary, showing the number of items restored, ensuring you have full visibility into the process. Read more about the [Backup & Restore feature](https://kestra.io/docs/administrator-guide/backup-and-restore) in our documentation.
 
+---
+
 ### Worker Groups UI Page and Validation
 
-Enterprise Edition introduces a dedicated `Worker Groups` UI page. This feature ensures that worker groups are created first before being used in flows, preventing runtime issues caused by misconfigured worker group keys.
+Enterprise Edition introduces a dedicated `Worker Groups` UI page. This feature ensures that worker groups are created first before being used in flows, preventing runtime issues caused by a misconfigured `workerGroup.key` property.
 
-In the past, Kestra didn’t validate worker group keys when users configured a task, which had the risk of task runs being stuck in a `CREATED` state if an invalid worker group key was used. Some users experienced this when they mistakenly set an incorrect worker group key. There was no early detection of the problem while writing the flow, which only surfaced at runtime.
+Using an invalid worker group key in a task leads to task runs being stuck in a `CREATED` state. Some users experienced this when they mistakenly set an incorrect worker group key. Until now, there was no early detection of the problem while writing the flow, which only surfaced at runtime.
 
 With the new Worker Groups UI page, worker groups are now treated as API-first objects — they must be created first from the UI, API, CLI, or Terraform before being used in flows. This ensures that worker group keys are valid and exist before they are referenced in tasks.
 
-To create a new worker group, navigate to the `Instance` page under the `Administration` section, go to the `Worker Groups` tab and click on the `+ Create` button. Then, set a `key` for that worker group. You can accomplish the same via the API, CLI, or Terraform.
-
-The flow editor now validates worker group keys when writing flows from the UI. If the provided key doesn’t exist, the syntax validation will prevent the flow from being saved.
-
-The new UI also tracks the health of worker groups, showing how many workers are polling for tasks within each worker group. This gives visibility into which worker groups are active, and the number of active workers.
-
-Example flow configuration with a worker group:
-
-```yaml
-id: worker_group
-namespace: dev
-
-tasks:
-  - id: wait
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-    commands:
-      - sleep 10
-    workerGroup:
-      key: gpu
-```
+Check the [Worker Group](https://kestra.io/docs/enterprise/worker-group) documentation to learn how to create and manage worker groups.
 
 In short, [this new feature](https://github.com/kestra-io/kestra-ee/issues/1525) improves the way worker groups are managed, reducing the risk of misconfigured flows and providing better visibility into workers health.
 
