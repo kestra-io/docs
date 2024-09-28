@@ -436,25 +436,27 @@ In short, [this new feature](https://github.com/kestra-io/kestra-ee/issues/1525)
 
 ### Managed Roles
 
-This release also adds **Managed Roles**, a set of read-only roles that are fully managed by Kestra. These roles—**`Admin`, `Editor`, `Launcher`, and `Viewer`**—are designed to simplify permission management, ensuring that users automatically receive the necessary permissions for new features without manual updates.
+This release also adds **Managed Roles**, a set of read-only roles that are fully managed by Kestra. These roles — **`Admin`, `Editor`, `Launcher`, and `Viewer`** — are designed to simplify permission management, ensuring that users automatically receive the necessary permissions for new features without manual updates.
 
 **How Managed Roles Work?** Managed Roles cannot be edited or customized. When users attempt to add or remove permissions from these roles, a friendly error message will appear: _"Managed roles are read-only. Create a custom role if you need fine-grained permissions."_
 
-This ensures that the predefined roles remain consistent and aligned with any updates or new features introduced in Kestra.
+One of the key advantages of Managed Roles is that they stay up to date automatically. When Kestra adds new features, such as e.g. **KV Store**, users with Managed Roles (like `Admins`) will automatically have the appropriate permissions to access these new capabilities. This removes the need for admins to manually update permissions for each new feature.
 
-One of the key advantages of Managed Roles is that they stay up to date automatically. When Kestra adds new features, such as the **KV Store**, users with Managed Roles (like `Admins`) will automatically have the appropriate permissions to access these new capabilities. This removes the need for admins to manually update permissions for each new feature.
-
-If more granular control is needed, you can still create custom roles tailored to specific requirements. For most users, [Managed Roles](https://github.com/kestra-io/kestra-ee/issues/1327) provide a convenient, hands-off approach to role and permission management, ensuring access to all new features without any extra work.
+If more granular control is needed, you can still create **custom roles** tailored to specific requirements. For most users, [Managed Roles](https://github.com/kestra-io/kestra-ee/issues/1327) provide a convenient, hands-off approach to role and permission management, ensuring access to all new features without any extra work.
 
 ::alert{type="info"}
-Note that Managed Roles are not the same as [Default Roles](https://kestra.io/docs/configuration-guide/enterprise-edition#default-role-from-configuration). A default role is a role that will be assigned by default to every new user joining your instance which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign one of the Managed Roles as a Default Role for all new users. In this release, we've [enhanced](https://github.com/kestra-io/kestra-ee/issues/1344) the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g. development, staging, production).
+Note that Managed Roles are not the same as [Default Roles](https://kestra.io/docs/configuration-guide/enterprise-edition#default-role-from-configuration). A default role is a role that will be assigned by default to every new user joining your instance, which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign a Managed Role as a Default Role. In this release, we've [enhanced](https://github.com/kestra-io/kestra-ee/issues/1344) the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g. development, staging, production).
 ::
 
 ### New Permissions View
 
-The previous permissions dropdown system was tedious and time-consuming, requiring you to manually select each permission and its corresponding actions in order to configure a role.
+The previous permissions dropdown was a little tedious, requiring you to manually select each permission and its corresponding actions in order to configure a role.
 
-Kestra 0.19 [introduces](https://github.com/kestra-io/kestra-ee/issues/874) a new **view for permissions management** to simplify selecting the required permissions without having to manually click through every dropdown element. This new view allows you to check a parent element, like `FLOWS`, and automatically select all associated actions (`CREATE`, `READ`, `UPDATE`, `DELETE`). This eliminates tedious clicks needed to configure roles.
+Kestra 0.19 [introduces](https://github.com/kestra-io/kestra-ee/issues/874) a more convenient **view for permissions management** to simplify selecting the required permissions without having to manually click through every dropdown element. This new view allows you to:
+- check a parent element such as e.g. `FLOWS`
+- automatically select all associated actions (`CREATE`, `READ`, `UPDATE`, `DELETE`).
+
+In short, the new permissions view eliminates tedious clicks needed to configure roles.
 
 ![permissions_tree_view](/blogs/release-0-19/permissions_tree_view.png)
 
@@ -464,16 +466,16 @@ Kestra 0.19 [introduces](https://github.com/kestra-io/kestra-ee/issues/874) a ne
 
 We've addressed an issue many users faced when their session timed out while they were still active. Previously, Kestra would time out based on a fixed interval, causing users to lose unsaved work when their authentication token expired. If at that time you were in the middle of editing a flow, this could have led to unsaved changes and an unexpected logout.
 
-With the [new mechanism](https://github.com/kestra-io/kestra/issues/4120) introduced in this release, Kestra now automatically refreshes your auth token or session cookie if you're still active. If the token is close to expiring, Kestra silently refreshes it in the background — no more forced logouts, and no more lost work. This small but critical change ensures your session stays alive while you're working, without any interruptions.
+With the [new mechanism](https://github.com/kestra-io/kestra/issues/4120) introduced in this release, Kestra now automatically refreshes your auth token or session cookie if you're still active. If the token is close to expiring, Kestra silently refreshes it in the background. This small but critical change ensures your session stays alive while you're working, without any interruptions.
 
 ### Forgot Password Functionality
 
-This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing you to get an email link to reset a password directly from the login page. Keep in mind that you'll only see the "Forgot password" option if the email server is configured on your instance.
+This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing you to get an email link to reset a password directly from the login page. Note that you'll only see the "Forgot password" option if the email server is configured on your instance.
 
 
 ### Purging Old Audit Logs
 
-The Enterprise Edition of Kestra generates an audit log for every action taken on the platform, from logging in, creating a flow, to updating every namespace variable. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up significant amount of space in the database.
+The Enterprise Edition of Kestra generates an audit log for every action taken on the platform. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up significant amount of space in the database.
 
 We’ve added a new task called `PurgeAuditLogs`, which helps you manage the growing number of audit logs by removing the ones that are no longer needed.
 
@@ -487,7 +489,6 @@ namespace: system
 tasks:
   - id: purge_audit_logs
     type: io.kestra.plugin.ee.core.log.PurgeAuditLogs
-    description: Purge audit logs older than 1 month
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
 ```
 
