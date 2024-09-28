@@ -579,8 +579,8 @@ tasks:
 
 Assuming this child flow `myflow` is a long-running flow, the parent flow will not wait for it to finish (due to `wait: false`) and will continue executing other tasks. This is particularly useful when you want to schedule the subflow to run in the background when the right time comes and continue with other tasks in the parent flow.
 
-Example of a long-running child flow scheduled from a `parent` flow:
 
+::collapse{title="Example of a long-running child flow scheduled from a parent flow"}
 ```yaml
 id: myflow
 namespace: company.team
@@ -592,11 +592,13 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
 ```
+::
 
 The scheduled execution will be `CREATED`, and will transition into the `RUNNING` state at the `scheduleDate` — you can inspect all details including that scheduled date from the Overview page of that Execution.
 
 If you have multiple dates to schedule, you can combine the `Subflow` task with the `ForEach` task to create multiple scheduled executions in the future — useful especially if the dates are retrieved from an external source or calculated based on some internal business logic:
 
+::collapse{title="Example of scheduling multiple flows using Python, Subflow, and ForEach tasks"}
 ```yaml
 id: schedule_subflows
 namespace: company.team
@@ -636,7 +638,7 @@ tasks:
         scheduleDate: "{{ taskrun.value }}"
         wait: false
 ```
-
+::
 
 Finally, you can also use the new `ScheduleOnDates` trigger to start a flow at specific dates known ahead of time. This trigger is useful when you know the exact dates when you want to start the flow:
 
