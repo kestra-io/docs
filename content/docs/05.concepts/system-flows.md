@@ -7,7 +7,7 @@ version: ">= 0.19.0"
 
 Automate maintenance workflows with System Flows.
 
-System Flows are designed to handle periodically executed background operations that keep your platform running, but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:
+System Flows periodically execute background operations that keep your platform running, but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:
 
 1. Sending [alert notifications](https://kestra.io/blueprints/system/250-set-up-alerts-for-failed-workflow-executions-using-slack)
 2. Creating automated support tickets when critical workflows fail
@@ -31,7 +31,9 @@ Here, you’ll find the _System Blueprints_ tab, which provides fully customizab
 
 ![system_blueprints](/docs/concepts/system-flows/system_blueprints.png)
 
+::alert{type="info"}
 Keep in mind that System Flows are not restricted to System Blueprints — any valid Kestra flow can become a System Flow if it's added to the `system` namespace.
+::
 
 System Flows are intentionally hidden from the main UI, appearing only in the `system` namespace. The Dashboard, Flows, and Executions pages offer a multi-select filter with options for `User` (default) and `System` (visible by default only within the `system` namespace). This makes it easy to toggle between user-facing workflows and background system flows and their executions, or view both simultaneously.
 
