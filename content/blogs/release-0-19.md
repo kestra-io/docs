@@ -509,16 +509,16 @@ On the Google Cloud front, we’ve added the ability to create and delete **Data
 We’ve also introduced a few new plugins for popular open-source technologies:
 - [MySQL Batch Insert](https://github.com/kestra-io/plugin-jdbc/pull/358) task
 - [NATS KV Store](https://github.com/kestra-io/plugin-nats/issues/46) tasks
+- [Rocket Chat](https://github.com/kestra-io/plugin-notifications/issues/160) notification tasks (thanks [kriko](https://github.com/kriko)!)
 - [MongoDB](https://github.com/kestra-io/plugin-mongodb/pull/15) trigger.
 
 For Java enthusiasts, the [JBang plugin](https://github.com/kestra-io/kestra/issues/2150) now lets you run [JBang scripts](https://develop.kestra.io/plugins/plugin-script-jbang) directly from Kestra with support for Java, JShell, Kotlin and Groovy.
-
 
 We've also added a new **Excel plugin** to [read from and write to multiple sheets](https://github.com/kestra-io/plugin-serdes/issues/91), making it easier to export data from multiple sources into a single Excel file that can be used by business stakeholders.
 
 The SSH Command plugin has been updated to [support OpenSSH config authentication](https://github.com/kestra-io/plugin-fs/pull/154/files).
 
-Finally, we’ve made a small but [important update](https://github.com/kestra-io/plugin-docker/issues/32) to the Docker `Push` task, which now supports a `protocol` — an Enum-type property that allows pushing images to private registries using either HTTPS (default) or HTTP.
+Finally, we’ve [updated](https://github.com/kestra-io/plugin-docker/issues/32) the Docker `Push` task to support a `protocol` — an Enum-type property that allows pushing images to private registries using either HTTPS (default) or HTTP.
 
 ---
 
@@ -554,7 +554,7 @@ curl -v -X POST -H 'Content-Type: multipart/form-data' \
 ```
 
 ::alert{type="info"}
-Note that the time zone offset like `+02:00` in the date `2024-12-24T17:00:00+02:00` needs to be URL-encoded. In URLs, the `+` sign is interpreted as a space, so it must be encoded as `%2B`. Therefore, the `+02:00` time zone offset would be URL-encoded as `%2B02:00` to preserve the original meaning when passing the date and time in a URL.
+Note that the time zone offset like `+02:00` in the date `2024-12-24T17:00:00+02:00` needs to be URL-encoded. In URLs, the `+` sign is interpreted as a space, so it must be encoded as `%2B`. Therefore, the `+02:00` time zone offset would be URL-encoded as `%2B02:00` when passing the date and time in a URL.
 ::
 
 
@@ -610,27 +610,18 @@ tasks:
       from datetime import datetime, timedelta
       import pytz
       import random
-
       from kestra import Kestra
-
 
       def generate_random_date():
           start = datetime.now()
           end = start + timedelta(weeks=1)
 
           random_date = start + (end - start) * random.random()
-
-          # Set the timezone to +02:00
           timezone = pytz.FixedOffset(120)  # 120 minutes = 2 hours
           random_date = random_date.astimezone(timezone)
-
-          # Return formatted date string
           return random_date.strftime("%Y-%m-%dT%H:%M:%S%z")
 
-
-      # Simulate receiving 10 random scheduled execution dates
       execution_dates = sorted([generate_random_date() for _ in range(10)])
-
       Kestra.outputs(dict(execution_dates=execution_dates))
 
   - id: each
@@ -678,7 +669,7 @@ We are excited what you will build with these new Schedule-for-later enhancement
 
 > "This is a game changer for me. I have jobs that need to be run whose schedule time and date can only be derived as a delta from a specific event. This would allow me to calculate the runs for the week, and schedule the jobs that need to run!"
 
-Let us know how you plan to use these scheduling enhancements to make your flows (literally!) future-proof!
+Let us know how you plan to use these scheduling enhancements to make your flows (_literally_) future-proof.
 
 ---
 
@@ -717,66 +708,7 @@ Then trigger multiple Executions of that flow and watch the `Concurrency` tab sh
 
 ### URL to follow the Execution progress
 
-The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing to follow the Execution progress from the UI. This is particularly helpful for externally triggered long-running executions that require users to follow the workflow progress. Here is how you can use it:
-
-1) First, create a flow:
-
-```yaml
-id: myflow
-namespace: company.team
-
-tasks:
-  - id: long_running_task
-    type: io.kestra.plugin.scripts.shell.Commands
-    commands:
-      - sleep 90
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-```
-
-2) Execute the flow via an API call:
-
-```shell
-curl -X POST http://localhost:8080/api/v1/executions/company.team/myflow
-```
-
-You will see output similar to the following:
-
-```bash
-{
-  "id": "1ZiZQWCHj7bf9XLtgvAxyi",
-  "namespace": "company.team",
-  "flowId": "myflow",
-  "flowRevision": 1,
-  "state": {
-    "current": "CREATED",
-    "histories": [
-      {
-        "state": "CREATED",
-        "date": "2024-09-24T13:35:32.983335847Z"
-      }
-    ],
-    "duration": "PT0.017447417S",
-    "startDate": "2024-09-24T13:35:32.983335847Z"
-  },
-  "originalId": "1ZiZQWCHj7bf9XLtgvAxyi",
-  "deleted": false,
-  "metadata": {
-    "attemptNumber": 1,
-    "originalCreatedDate": "2024-09-24T13:35:32.983420055Z"
-  },
-  "url": "http://localhost:8080/ui/executions/company.team/myflow/1ZiZQWCHj7bf9XLtgvAxyi"
-}
-```
-
-You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL from your application to the user who initiated the flow.
-
-Keep in mind that you need to configure the URL of your kestra instance within your configuration file to have a full URL rather than just the suffix `/ui/executions/company.team/myflow/uuid`. Here is how you can do it:
-
-```yaml
-kestra:
-  url: http://localhost:8080
-```
+The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing to follow the Execution progress from the UI. This is particularly helpful for externally triggered long-running executions that require users to follow the workflow progress. Check the [Executions](https://kestra.io/docs/workflow-components/execution#get-url-to-follow-the-execution-progress) documentation for a hands-on example.
 
 ### Smaller Improvements
 
