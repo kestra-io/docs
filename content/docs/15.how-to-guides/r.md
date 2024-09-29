@@ -166,7 +166,7 @@ _This example works for both `io.kestra.plugin.scripts.r.Script` and `io.kestra.
 
 You can also get [metrics](../08.developer-guide/07.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your R script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
 
-```yaml file=public/examples/metrics_r.yml
+```yaml
 id: r_metrics
 namespace: company.team
 description: This flow runs the R script, and puts out the metrics.
