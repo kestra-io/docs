@@ -22,6 +22,14 @@ We are excited to announce Kestra 0.19.0, bringing the following highlights:
 | In-app versioned docs      | [Access the full documentation](https://github.com/kestra-io/kestra-ee/issues/1535) of the version you're using, directly from the app.                                                          | All editions             |
 | Backup & Restore           | [Protect your data](https://github.com/kestra-io/kestra-ee/issues/1528) and simplify migrations with the new Backup & Restore feature.                                                           | Enterprise Edition (EE)  |
 
+
+Check the video below for a quick overview of the new features:
+
+<div class="video-container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/3UTkq7zEwTk?si=EYjRg51OOV6M7E2D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+
 Let's dive into these highlights and other enhancements in more detail.
 
 
@@ -50,7 +58,7 @@ With this new localization feature, Kestra is now language-agnostic both in term
 At Kestra, we know how critical it is to have a clear health status of your orchestration platform. We’ve redesigned the main dashboard to offer a more refined, focused experience, showing the information you need without overwhelming you with unnecessary details.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/nYu6_6Bj7hs?si=SCU6vqVszoJ6mt5d" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/nYu6_6Bj7hs?si=V-KtcXywLY7cle_C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 The previous dashboard aimed to display as much information as possible, but in doing so, the Dashboard got over time cluttered and sometimes slow to load (see the image below).
@@ -65,7 +73,7 @@ Here’s what we’ve changed:
 
 - **Performance**: We’ve removed redundant tables to ensure faster load times. The new Dashboard gives you an instant overview over the health of your platform, including information about currently running and the next scheduled executions.
 
-This new layout brings clarity, faster load times, and is georgous to look at! See the screenshots below to judge for yourself.
+This new layout brings clarity, faster load times, and is georgous to look at! See the screenshot below to judge for yourself.
 
 ![new_dashboard_purple](/blogs/release-0-19/new_dashboard_purple.png)
 
@@ -83,9 +91,6 @@ System Flows are designed to handle periodically executed background operations 
 4. Syncing code from Git or pushing code to Git
 5. Automatically [releasing flows](https://kestra.io/blueprints/system/258-copy-flows-from-development-to-qa-and-staging-environments-or-tenants) from development to QA and staging environments
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/o05hcKNI_7I?si=EZkyevBGXSIvCw13" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
 
 We refer to these as **System Flows** because by default they are hidden from end users and only visible within the `system` namespace. This way, you can automate maintenance tasks without cluttering the UI for regular users. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
 
@@ -103,6 +108,12 @@ Here, you’ll find the _System Blueprints_ tab, which provides fully customizab
 
 ![system_blueprints](/blogs/release-0-19/system_blueprints.png)
 
+Video version:
+
+<div class="video-container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/Y8OhRFGCV3A?si=jw-VsFDdVutDObhL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ::alert{type="info"}
 Keep in mind that System Flows are not restricted to System Blueprints — any valid Kestra flow can become a System Flow if it's added to the `system` namespace.
 ::
@@ -113,6 +124,12 @@ System Flows are intentionally hidden from the main UI, appearing only in the `s
 
 
 In terms of permissions, `system` namespace is open by default. With the namespace-level RBAC functionality in the Enterprise Edition, you can restrict access to the `system` namespace only to Admins, while assigning `company.*` namespaces to your general user base.
+
+The video below demonstrates how to set up System Flows:
+
+<div class="video-container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/o05hcKNI_7I?si=fo8XuY6yVTmUTykb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ---
 
@@ -348,7 +365,9 @@ tasks:
 ```
 ::
 
-The above flow demonstrates how the `dependsOn` property allows you to set up a chain of dependencies, where one input depends on other inputs or conditions. In this example, the `access_permissions`, `saas_applications`, `development_tools`, and `cloud_vms` inputs are conditionally displayed based on the `resource_type` input value. Using this new property, you can build interactive workflows that adapt to user's inputs, enabling a wide range of use cases incl. approval workflows, dynamic resource provisioning, and many more.
+The above flow demonstrates how the `dependsOn` property allows you to set up a chain of dependencies, where one input depends on other inputs or conditions. In this example, the `access_permissions`, `saas_applications`, `development_tools`, and `cloud_vms` inputs are conditionally displayed based on the `resource_type` input value.
+
+Conditional inputs enable interactive workflows that adapt to prior user inputs, incl. approval workflows, dynamic resource provisioning, and many more.
 
 You might also notice a new `allowCustomValue` [boolean property](https://github.com/kestra-io/kestra/issues/4496) that, if set to `true`, allows users to enter custom values when the predefined ones don't fit their needs. This enables you to provide a list of default values but still (optionally) allow users to enter custom ones.
 
@@ -369,7 +388,7 @@ Using the new log-level navigation, you can quickly jump to the next log of a sp
 See the video below for a quick demo of the new feature:
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/7Yz0N_26lDY?si=HxLsR2F81U1EVy7G" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/7Yz0N_26lDY?si=Vyy5ETE384wHflaK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 **Additional log enhancements worth mentioning**:
