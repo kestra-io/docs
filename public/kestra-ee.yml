@@ -826,7 +826,7 @@ paths:
     delete:
       tags:
       - WorkerGroups
-      summary: Get details about a worker group.
+      summary: Delete an existing worker group.
       operationId: deleteWorkerGroupById
       parameters:
       - name: id
@@ -11296,7 +11296,7 @@ paths:
     delete:
       tags:
       - WorkerGroups
-      summary: Get details about a worker group.
+      summary: Delete an existing worker group.
       operationId: deleteWorkerGroupById_1
       parameters:
       - name: id
