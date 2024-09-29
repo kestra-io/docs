@@ -1,9 +1,0 @@
-id: julia_outputs
-namespace: company.team
-description: This flow runs the Julia script, and outputs the variable.
-
-tasks:
-  - id: julia_outputs_task
-    type: io.kestra.plugin.scripts.julia.Script
-    script: |
-      println("::{\"outputs\":{\"test\":\"value\",\"int\":2,\"bool\":true,\"float\":3.65}}::")
