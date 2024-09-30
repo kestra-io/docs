@@ -1,6 +1,6 @@
 ---
 title: Kestra 0.19.0 is here with a new Dashboard, Conditional Inputs, Backup & Restore, and In-App Docs
-description: This release makes your workflows more dynamic with Conditional Inputs, simplifies administrative tasks via Backup & Restore and System Flows, and allows you to access the full documentation of your Kestra version directly from the app! Plus, Kestra UI now speaks 12 languages!
+description: This release makes your workflows more dynamic with Conditional Inputs, simplifies administrative tasks via Backup & Restore and System Flows, and allows you to access the full documentation of your Kestra version directly from the app! Plus, Kestra UI now supports 12 languages!
 date: 2024-10-01T17:00:00
 category: News & Products Updates
 author:
@@ -10,7 +10,9 @@ author:
 image: /blogs/release-0-19.png
 ---
 
-We are excited to announce Kestra 0.19.0, bringing the following highlights:
+Kestra 0.19.0 has arrived, bringing a host of powerful new updates for your orchestration platform.
+
+The table below highlights the key features of this release:
 
 | Feature                    | Description                                                                                                                                                                                      | Edition                  |
 |----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|
@@ -22,6 +24,7 @@ We are excited to announce Kestra 0.19.0, bringing the following highlights:
 | In-app versioned docs      | [Access the full documentation](https://github.com/kestra-io/kestra-ee/issues/1535) of the version you're using, directly from the app.                                                          | All editions             |
 | Backup & Restore           | [Protect your data](https://github.com/kestra-io/kestra-ee/issues/1528) and simplify migrations with the new Backup & Restore feature.                                                           | Enterprise Edition (EE)  |
 
+---
 
 Check the video below for a quick overview of the new features:
 
@@ -51,48 +54,48 @@ Here’s the full list of the currently supported languages:
 - 🇷🇺 Russian (ru)
 - 🇨🇳 Chinese (zh_CN)
 
-With this new localization feature, Kestra is now language-agnostic both in terms of programming languages and spoken languages. If the language you speak isn’t on the list, let us know, and we’ll do our best to add it. We also encourage you to [contribute to the translation](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) of Kestra into your language or submitting a pull request with a fix to any translation issues you might find.
+With this new localization feature, Kestra is now language-agnostic both in terms of programming languages and spoken languages. If the language you speak isn’t on the list, let us know, and we’ll do our best to add it. We also encourage you to [contribute to the translation](https://github.com/kestra-io/kestra/tree/develop/ui/src/translations) of Kestra into your language or submit a pull request with a fix to any translation issues you might find.
+
+---
 
 ## The New Dashboard
 
-At Kestra, we know how critical it is to have a clear health status of your orchestration platform. We’ve redesigned the main dashboard to offer a more refined, focused experience, showing the information you need without overwhelming you with unnecessary details.
+At Kestra, we know how critical it is to have a clear view of your orchestration platform's health. We’ve redesigned the main dashboard to offer a more refined, focused experience, showing the information you need without overwhelming you with unnecessary details.
 
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/nYu6_6Bj7hs?si=V-KtcXywLY7cle_C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-The previous dashboard aimed to display as much information as possible, but in doing so, the Dashboard got over time cluttered and sometimes slow to load (see the image below).
+The previous dashboard aimed to display as much information as possible, but over time, it became cluttered and sometimes slow to load (see the image below).
 
 ![old_vs_new_dashboard](/blogs/release-0-19/old_vs_new_dashboard.png)
 
 Here’s what we’ve changed:
 
-- **Simplified Visuals**: The new dashboard replaces the previous donut charts with clear KPI numbers, instantly showing the success and failure ratios.
+- **Simplified Visuals**: The new dashboard replaces the previous donut charts with clear KPI numbers, instantly showing success and failure ratios.
 
-- **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down to the image below) next to the default classic view with red-green colors. You can switch between the two color schemes in the Settings menu — choose either `Classic` (red-green) or `Kestra` (purple-pink).
+- **Improved Color Scheme**: To make the Dashboard more accessible, we’ve added a color-blind-friendly palette (scroll down to the image below) alongside the default classic red-green view. You can switch between the two color schemes in the Settings menu — choose either `Classic` (red-green) or `Kestra` (purple-pink).
 
-- **Performance**: We’ve removed redundant tables to ensure faster load times. The new Dashboard gives you an instant overview over the health of your platform, including information about currently running and the next scheduled executions.
+- **Performance**: We’ve removed redundant tables to ensure faster load times. The new Dashboard gives you an instant overview of the health of your platform, including information about currently running and the next scheduled executions.
 
-This new layout brings clarity, faster load times, and is georgous to look at! See the screenshot below to judge for yourself.
+This new layout brings clarity and faster load times, and is visually appealing! See the screenshot below.
 
 ![new_dashboard_purple](/blogs/release-0-19/new_dashboard_purple.png)
 
-In the future, we plan to add more customization options to the Dashboard allowing you to set a custom color palette and create additional visuals to display the information you need most.
+In the future, we plan to add more customization options allowing you to set custom color palettes and create additional visuals.
 
 ---
 
 ## System Flows
 
-System Flows are designed to handle periodically executed background operations that keep your platform running, but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:
-
+System Flows are designed to handle periodically executed background operations that keep your platform running but are generally kept out of sight. These flows automate maintenance workflows, such as:
 1. Sending [alert notifications](https://kestra.io/blueprints/system/250-set-up-alerts-for-failed-workflow-executions-using-slack)
 2. Creating automated support tickets when critical workflows fail
 3. [Purging logs](https://kestra.io/blueprints/trigger/234-purge-execution-data-including-logs-metrics-and-outputs-on-a-schedule) and removing old executions or internal storage files to save space
 4. Syncing code from Git or pushing code to Git
-5. Automatically [releasing flows](https://kestra.io/blueprints/system/258-copy-flows-from-development-to-qa-and-staging-environments-or-tenants) from development to QA and staging environments
+5. Automatically [releasing flows](https://kestra.io/blueprints/system/258-copy-flows-from-development-to-qa-and-staging-environments-or-tenants) from development to QA and staging environments.
 
-
-We refer to these as **System Flows** because by default they are hidden from end users and only visible within the `system` namespace. This way, you can automate maintenance tasks without cluttering the UI for regular users. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
+We refer to these as **System Flows** because, by default, they are hidden from end users and only visible within the `system` namespace. This way, you can automate maintenance tasks without cluttering the UI for regular users. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
 
 ```yaml
 kestra:
@@ -122,8 +125,7 @@ System Flows are intentionally hidden from the main UI, appearing only in the `s
 
 ![system_filter](/blogs/release-0-19/system_filter.png)
 
-
-In terms of permissions, `system` namespace is open by default. With the namespace-level RBAC functionality in the Enterprise Edition, you can restrict access to the `system` namespace only to Admins, while assigning `company.*` namespaces to your general user base.
+In terms of permissions, the `system` namespace is open by default. With the namespace-level RBAC functionality in the Enterprise Edition, you can restrict access to the `system` namespace only to Admins, while assigning `company.*` namespaces to your general user base.
 
 The video below demonstrates how to set up System Flows:
 
@@ -136,9 +138,9 @@ The video below demonstrates how to set up System Flows:
 
 ## Conditional Inputs
 
-You can now define inputs based on conditions, allowing one input to depend on another.
+You can now define inputs based on conditions, allowing one input to depend on another. This feature enables interactive workflows that adapt to prior user inputs, including approval workflows, dynamic resource provisioning, and many more.
 
-To see it in action, first add the necessary JSON key-value pairs: that will be used as selectable values in the conditional inputs:
+To see it in action, first add the necessary JSON key-value pairs that will be used as selectable values in the conditional inputs:
 
 ```yaml
 id: add_kv_pairs
@@ -377,9 +379,9 @@ A [final addition](https://github.com/kestra-io/kestra/issues/4126) to the input
 
 ## New Log Level Display
 
-For each Kestra execution, you can filter logs by specific levels, such as WARN or ERROR. However, this alone doesn't give you full context needed for troubleshooting. For instance, seeing only a WARN-level log in isolation without the surrounding logs (before and after) may not provide the full picture to trace the root cause of an issue.
+For each Kestra execution, you can filter logs by specific levels, such as WARN or ERROR. However, this alone doesn't give you the full context needed for troubleshooting. For instance, seeing only a WARN-level log in isolation, without the surrounding logs (before and after), may not provide the full picture to trace the root cause of an issue.
 
-Kestra 0.19.0 makes logs view [context-aware](https://github.com/kestra-io/kestra/issues/2045) — you can see all log levels while still being able to jump directly to the next `TRACE`, `DEBUG`, `INFO`, `WARN` or `ERROR` logs.
+Kestra 0.19.0 makes logs view [context-aware](https://github.com/kestra-io/kestra/issues/2045) — you can see all log levels while still being able to jump directly to the next `TRACE`, `DEBUG`, `INFO`, `WARN`, or `ERROR` logs.
 
 ![loglevel_display](blogs/release-0-19/loglevel_display.png)
 
@@ -401,7 +403,7 @@ See the video below for a quick demo of the new feature:
 
 ## In-app Versioning for Docs and Blueprints
 
-We’re excited to introduce versioned docs and blueprints built directly into the UI. This change addresses one of the biggest pain points users have faced: the lack of version-specific documentation and examples.
+We’re thrilled to introduce versioned docs and blueprints built directly into the UI. This change addresses one of the biggest pain points users have faced: the lack of version-specific documentation and examples.
 
 Until now, the documentation and blueprints were served on the website for the latest version of Kestra. As a result, if you were on an older version, some documentation and blueprints might have been overwritten by a new syntax or showing functionality that wasn’t available in your version.
 
@@ -447,7 +449,7 @@ micronaut:
               secret: "${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecret}" # ✅ optional
 ```
 
-In case you ever need to revoke a refresh token, it's easy to do with a simple `DELETE` request to `/users/{id}/refresh-token` — this can be useful in emergency situations e.g. when you suspect your computer has been compromised.
+In case you ever need to revoke a refresh token, it's easy to do with a simple `DELETE` request to `/users/{id}/refresh-token` — this can be useful in emergency situations, e.g., when you suspect your computer has been compromised.
 
 As always, if you have any questions or run into issues during the upgrade, our support team is here to help — just reach out via the Customer Portal or through your dedicated Slack channel.
 
@@ -461,7 +463,7 @@ With the [new mechanism](https://github.com/kestra-io/kestra/issues/4120) introd
 
 ### Backup & Restore of Metadata
 
-Starting from version 0.19.0, Kestra [Enterprise Edition](/enterprise) introduces the ability to back up and restore metadata, making it easy to safeguard everything you configured in the platform and move that configuration across different environments. Whether you're migrating to another Kestra version or switching backends, this feature provides flexibility and peace of mind. By default, all backups are encrypted using Kestra’s built-in encryption key.
+Starting from version 0.19.0, Kestra [Enterprise Edition](/enterprise) introduces the ability to back up and restore metadata, making it easy to safeguard everything you've configured in the platform and move that configuration across different environments. Whether you're migrating to another Kestra version or switching backends, this feature provides flexibility and peace of mind. By default, all backups are encrypted using Kestra’s built-in encryption key.
 
 To back up your Kestra instance, simply run the following command:
 
@@ -481,7 +483,7 @@ When the restore process completes, Kestra provides a detailed summary, showing 
 
 ### Worker Groups UI Page and Validation
 
-Enterprise Edition introduces a dedicated `Worker Groups` UI page. This feature ensures that worker groups are created first before being used in flows, preventing runtime issues caused by a misconfigured `workerGroup.key` property.
+Enterprise Edition introduces a dedicated `Worker Groups` UI page. This feature ensures that worker groups are created before being used in flows, preventing runtime issues caused by a misconfigured `workerGroup.key` property.
 
 Using an invalid worker group key in a task leads to task runs being stuck in a `CREATED` state. Some users experienced this when they mistakenly set an incorrect worker group key. Until now, there was no early detection of the problem while writing the flow, which only surfaced at runtime.
 
@@ -489,30 +491,32 @@ With the new Worker Groups UI page, worker groups are now treated as API-first o
 
 Check the [Worker Group](https://kestra.io/docs/enterprise/worker-group) documentation to learn how to create and manage worker groups.
 
-In short, [this new feature](https://github.com/kestra-io/kestra-ee/issues/1525) improves the way worker groups are managed, reducing the risk of misconfigured flows and providing better visibility into workers health.
+In short, [this new feature](https://github.com/kestra-io/kestra-ee/issues/1525) improves the way worker groups are managed, reducing the risk of misconfigured flows and providing better visibility into workers' health.
 
 
 ### Managed Roles
 
-This release also adds **Managed Roles**, a set of read-only roles that are fully managed by Kestra. These roles — **`Admin`, `Editor`, `Launcher`, `Developer` and `Viewer`** — are designed to simplify permission management, ensuring that users automatically receive the necessary permissions for new features without manual updates.
+This release also adds **Managed Roles**, a set of read-only roles that are fully managed by Kestra. These roles — **`Admin`, `Editor`, `Launcher`, `Developer`, and `Viewer`** — are designed to simplify permission management, ensuring that users automatically receive the necessary permissions for new features without manual updates.
 
-**How Managed Roles Work?** Managed Roles cannot be edited or customized. When users attempt to add or remove permissions from these roles, a friendly error message will appear: _"Managed roles are read-only. Create a custom role if you need fine-grained permissions."_
+**How Managed Roles Work**: Managed Roles cannot be edited or customized. When users attempt to add or remove permissions from these roles, a friendly error message will appear: _"Managed roles are read-only. Create a custom role if you need fine-grained permissions."_
 
-One of the key advantages of Managed Roles is that they stay up to date automatically. When Kestra adds new features, such as e.g. **KV Store**, users with Managed Roles (like `Admins`) will automatically have the appropriate permissions to access these new capabilities. This removes the need for admins to manually update permissions for each new feature.
+One of the key advantages of Managed Roles is that they stay up to date automatically. When Kestra adds new features, such as **KV Store**, users with Managed Roles (like `Admins`) will automatically have the appropriate permissions to access these new capabilities. This removes the need for admins to manually update permissions for each new feature.
 
 If more granular control is needed, you can still create **custom roles** tailored to specific requirements. For most users, [Managed Roles](https://github.com/kestra-io/kestra-ee/issues/1327) provide a convenient, hands-off approach to role and permission management, ensuring access to all new features without any extra work.
 
 ::alert{type="info"}
-Note that Managed Roles are not the same as [Default Roles](https://kestra.io/docs/configuration-guide/enterprise-edition#default-role-from-configuration). A default role is a role that will be assigned by default to every new user joining your instance, which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign a Managed Role as a Default Role. In this release, we've [enhanced](https://github.com/kestra-io/kestra-ee/issues/1344) the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g. development, staging, production).
+Note that Managed Roles are not the same as [Default Roles](https://kestra.io/docs/configuration-guide/enterprise-edition#default-role-from-configuration). A default role is a role that will be assigned by default to every new user joining your instance, which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign a Managed Role as a Default Role. In this release, we've [enhanced](https://github.com/kestra-io/kestra-ee/issues/1344) the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g., development, staging, production).
 ::
+
+---
 
 ### New Permissions View
 
-The previous permissions dropdown was a little tedious, requiring you to manually select each permission and its corresponding actions in order to configure a role.
+The previous permissions dropdown was a bit tedious, requiring you to manually select each permission and its corresponding actions in order to configure a role.
 
 Kestra 0.19 [introduces](https://github.com/kestra-io/kestra-ee/issues/874) a more convenient **view for permissions management** to simplify selecting the required permissions without having to manually click through every dropdown element. This new view allows you to:
-- check a parent element such as e.g. `FLOWS`
-- automatically select all associated actions (`CREATE`, `READ`, `UPDATE`, `DELETE`).
+- Check a parent element, such as `FLOWS`
+- Automatically select all associated actions (`CREATE`, `READ`, `UPDATE`, `DELETE`).
 
 In short, the new permissions view eliminates tedious clicks needed to configure roles.
 
@@ -522,13 +526,13 @@ In short, the new permissions view eliminates tedious clicks needed to configure
 
 ### Forgot Password Functionality
 
-This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing you to get an email link to reset a password directly from the login page.
+This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing users to get an email link to reset a password directly from the login page.
 
 ![forgot_password](/blogs/release-0-19/forgot_password.png)
 
 Note that you'll only see the "Forgot password" option if the email server is configured on your instance.
 
-Here is how you can configure the email server in your `application.yaml` file:
+Here’s how you can configure the email server in your `application.yaml` file:
 
 ```yaml
 kestra:
@@ -542,18 +546,17 @@ kestra:
     auth: String
 ```
 
-
-On the User detail page, users with a basic authentication and an email set have the option to reset their password.
+On the User detail page, users with basic authentication and an email set have the option to reset their password.
 
 ![reset_password](/blogs/release-0-19/reset_password.png)
 
-
+---
 
 ### Purging Old Audit Logs
 
-The Enterprise Edition of Kestra generates an audit log for every action taken on the platform. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up significant amount of space in the database.
+The Enterprise Edition of Kestra generates an audit log for every action taken on the platform. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up significant space in the database.
 
-We’ve added a new task called `PurgeAuditLogs`, which helps you manage the growing number of audit logs by removing the ones that are no longer needed.
+We’ve added a new task called `PurgeAuditLogs`, which helps you manage the growing number of audit logs by removing those that are no longer needed.
 
 You can set a date range for the logs you want to delete, choose a specific `namespace`, and even filter by `permissions` or `actions` (like `CREATE`, `READ`, `UPDATE`, `DELETE`). This task gives you a simple way to implement an Audit Logs retention policy that fits your organization's needs.
 
@@ -590,7 +593,7 @@ We’ve also introduced a few new plugins for popular open-source technologies:
 - [Rocket.Chat](https://github.com/kestra-io/plugin-notifications/issues/160) notification tasks (thanks [kriko](https://github.com/kriko)!)
 - [MongoDB](https://github.com/kestra-io/plugin-mongodb/pull/15) trigger.
 
-For Java enthusiasts, the [JBang plugin](https://github.com/kestra-io/kestra/issues/2150) now lets you run [JBang scripts](https://develop.kestra.io/plugins/plugin-script-jbang) directly from Kestra with support for Java, JShell, Kotlin and Groovy.
+For Java enthusiasts, the [JBang plugin](https://github.com/kestra-io/kestra/issues/2150) now lets you run [JBang scripts](https://develop.kestra.io/plugins/plugin-script-jbang) directly from Kestra with support for Java, JShell, Kotlin, and Groovy.
 
 We've also added a new **Excel plugin** to [read from and write to multiple sheets](https://github.com/kestra-io/plugin-serdes/issues/91), making it easier to export data from multiple sources into a single Excel file that can be used by business stakeholders.
 
@@ -614,7 +617,7 @@ You can type the desired date directly, or use the date picker and click on the 
 
 ![execute_later](/blogs/release-0-19/execute_later.png)
 
-That execution will be shown in the `CREATED` state, and will only move into the `RUNNING` state at the scheduled date. You can see the scheduled date in the created Execution's `Overview` page:
+That execution will be shown in the `CREATED` state and will only move into the `RUNNING` state at the scheduled date. You can see the scheduled date in the created Execution's `Overview` page:
 
 ![execute_later2](/blogs/release-0-19/execute_later2.png)
 
@@ -635,8 +638,7 @@ curl -v -X POST -H 'Content-Type: multipart/form-data' \
 Note that the time zone offset like `+02:00` in the date `2024-12-24T17:00:00+02:00` needs to be URL-encoded. In URLs, the `+` sign is interpreted as a space, so it must be encoded as `%2B`. Therefore, the `+02:00` time zone offset would be URL-encoded as `%2B02:00` when passing the date and time in a URL.
 ::
 
-
-Here is how the `Subflow` task would look like:
+Here is how the `Subflow` task would look:
 
 ```yaml
 id: parent
@@ -656,7 +658,6 @@ tasks:
 ```
 
 Assuming this child flow `myflow` is a long-running flow, the parent flow will not wait for it to finish (due to `wait: false`) and will continue executing other tasks. This is particularly useful when you want to schedule the subflow to run in the background when the right time comes and continue with other tasks in the parent flow.
-
 
 ::collapse{title="Example of a long-running child flow scheduled from a parent flow"}
 ```yaml
@@ -745,16 +746,15 @@ triggers:
       - "{{now() | dateAdd(4, 'MONTHS')}}"
 ```
 
-We are excited what you will build with these new Schedule-for-later enhancements! Here is how a [community member reacted](https://github.com/kestra-io/kestra/issues/3818#issuecomment-2330205741) to this feature:
+We look forward to seeing what you will build with these new Schedule-for-later enhancements! Here’s how a [community member reacted](https://github.com/kestra-io/kestra/issues/3818#issuecomment-2330205741) to this feature:
 
 > "This is a game changer for me. I have jobs that need to be run whose schedule time and date can only be derived as a delta from a specific event. This would allow me to calculate the runs for the week, and schedule the jobs that need to run!"
 
-Let us know how you plan to use these scheduling enhancements to make your flows (_literally_) future-proof.
+Let us know how you plan to use these scheduling enhancements to make your flows (literally) future-proof.
 
 ---
 
-
-### Concurrency Flow tab
+### Concurrency Flow Tab
 
 The new `Concurrency` tab in the `Flow` UI page allows you to track and troubleshoot concurrency issues. [This new tab](https://github.com/kestra-io/kestra/issues/4721#event-14422957135) shows a progress bar with the number of active slots compared to the total number of slots available. Below that progress bar, you can see a table showing currently running and queued Executions, providing a clear overview of the flow's concurrency status.
 
@@ -786,30 +786,34 @@ Then trigger multiple Executions of that flow and watch the `Concurrency` tab sh
 
 ---
 
-### URL to follow the Execution progress
+### URL to Follow the Execution Progress
 
-The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing to follow the Execution progress from the UI. This is particularly helpful for externally triggered long-running executions that require users to follow the workflow progress. Check the [Executions](https://kestra.io/docs/workflow-components/execution#get-url-to-follow-the-execution-progress) documentation for a hands-on example.
+The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/issues/4256) allowing users to follow the Execution progress from the UI. This is particularly helpful for externally triggered long-running executions that require users to follow the workflow progress. Check the [Executions](https://kestra.io/docs/workflow-components/execution#get-url-to-follow-the-execution-progress) documentation for a hands-on example.
+
+---
 
 ### Smaller Improvements
 
 - The webhook trigger page now [displays the webhook URL](https://github.com/kestra-io/kestra/issues/3891) so that you can easily copy it and use it in external applications that trigger your flows.
 - The duration type property is now [much easier to set from the UI](https://github.com/kestra-io/kestra/issues/3710) thanks to the new (beautiful!) UI component.
-- We [now show a warning](https://github.com/kestra-io/kestra/issues/2126) when you use `{{trigger.uri}}` and you try to run the flow via the Execute button. This is to prevent accidental execution of flows that rely on data passed from external triggers.
-- You can [manually change](https://github.com/kestra-io/kestra/issues/4447) the Execution state when needed, e.g., set some failed executions to success after fixing the issue manually.
-- We've [improved the memory consumption](https://github.com/kestra-io/kestra-ee/issues/1262) of the Purge task to help in use cases when you need to purge large amounts of data.
-- We've [also improved](https://github.com/kestra-io/kestra/issues/4631) handling of the Execution context, allowing you to set a limit in size for messages. When exceeded, the message will be refused by the queue, and the taskrun will fail with an error: `"Message of size XXX has exceeded the configured limit of XXX"`.
+- We [now show a warning](https://github.com/kestra-io/kestra/issues/2126) when you use `{{trigger.uri}}` and try to run the flow via the Execute button. This prevents accidental execution of flows that rely on data passed from external triggers.
+- You can [manually change](https://github.com/kestra-io/kestra/issues/4447) the Execution state when needed, e.g., setting some failed executions to success after fixing the issue manually.
+- We've [improved the memory consumption](https://github.com/kestra-io/kestra-ee/issues/1262) of the Purge task to help in cases where you need to purge large amounts of data.
+- We've [also improved](https://github.com/kestra-io/kestra/issues/4631) handling of the Execution context, allowing you to set a limit on message size. When exceeded, the message will be refused by the queue, and the taskrun will fail with an error: `"Message of size XXX has exceeded the configured limit of XXX"`.
 
 ---
 
-## Big thanks to our contributors 🙏
+## Big Thanks to Our Contributors!
 
 We'd like to thank all existing and new contributors who helped make this release possible. Your feedback, bug reports, and pull requests are invaluable to us.
 
-In this release, we welcome the record number of new contributors. We're thrilled to see the community growing and contributing to the project. Thank you for your time and effort in making Kestra better with each release.
+In this release, we welcome a record number of new contributors. We're thrilled to see the community growing and contributing to the project. Thank you for your time and effort in making Kestra better with each release.
 
 ::alert{type="info"}
-If you want to contribute to Kestra, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and a list of issues with label [kind/good-first-issue](https://github.com/search?q=org%3Akestra-io+label%3Akind%2Fgood-first-issue+is%3Aopen&type=issues), and join our [Slack community](https://kestra.io/slack) to get help and guidance from the core team and other contributors.
+If you want to contribute to Kestra, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and a list of issues with the [kind/good-first-issue](https://github.com/search?q=org%3Akestra-io+label%3Akind%2Fgood-first-issue+is%3Aopen&type=issues) label. Join our [Slack community](https://kestra.io/slack) to get help and guidance from the core team and other contributors.
 ::
+
+---
 
 ## Next Steps
 
