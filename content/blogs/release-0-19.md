@@ -411,7 +411,7 @@ From v0.19.0 on, Kestra dynamically fetches the correct documentation and bluepr
 Note that the documentation you see on the website always reflects the `latest` stable release. However, when you’re working in the app, you’ll see documentation and blueprint examples for your Kestra version. We deliberately decided not to introduce versioning on the website for now to avoid confusion when you accidentally stumble upon docs for an older version, which often results in broken links and annoying banners constantly reminding you to switch to the _latest_ version when browsing the documentation for an _older_ version.
 ::
 
-Overall, we believe that **the best documentation is the one you don't have to read**. The second best is one that is always up-to-date, built into the app, relevant to your current environment, and resurfaced when you need it. With this new feature, we aim to serve you the right documentation at the right time, making it easier to understand and use Kestra.
+Overall, we believe that **the best documentation is the one you don't have to read**. The second best is one that is always up-to-date and relevant to your current environment, and resurfaced when you need it. With this new feature, we aim to serve you the right documentation at the right time, making it easier to understand and use Kestra.
 
 In the future, we plan to display the documentation pages next to the UI elements they describe. For example, you'll be able to easily access the documentation for KV Store right when you access the KV Store UI tab.
 
@@ -419,6 +419,36 @@ In the future, we plan to display the documentation pages next to the UI element
 ---
 
 ## Enterprise Edition Enhancements
+
+### Refresh token ⚠️ breaking change ⚠️
+
+Before upgrading to 0.19.0, please note that we've introduced a breaking change to the way refresh tokens are handled. This change is necessary to improve security and ensure that refresh tokens are stored securely.
+
+All you need to do is add the following configuration to your `application.yaml` file:
+
+```yaml
+micronaut:
+  security:
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: "${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecret}"
+```
+
+Note that you won't be able to log in until you've set up the new configuration. The secret must be at least 256 KB in length (32 ASCII characters at minimum). The size and ASCII characters are important, as the secret might differ for languages like Japanese or Korean.
+
+Make sure to set the secret `pleaseChangeThisSecret` to a custom value. The secret never expires, but its corresponding refresh token has a lifetime of 30 days — it works similarly to a JWT Token that has a 1-hour lifetime. If you need to delete the refresh token, you can do so by sending a `DELETE` request to `/users/{id}/refresh-token` — this can be useful if you suspect your computer has been compromised.
+
+If you have any questions or need help, please reach out to our support team.
+
+### Keeping You Logged In
+
+The above mentioned breaking change addresses an issue where users were logged out due to session timeouts, even while they were still active. Previously, Kestra would log users out based on a fixed interval (for security reasons). If this happened during flow editing, it could result in unsaved changes and an unexpected logout.
+
+With the [new mechanism](https://github.com/kestra-io/kestra/issues/4120) introduced in this release, Kestra now automatically refreshes your auth token or session cookie if you're still active. If the token is close to expiring, Kestra silently refreshes it in the background. This small but critical change ensures your session stays alive while you're working, without any interruptions.
+
 
 ### Backup & Restore of Metadata
 
@@ -481,15 +511,33 @@ In short, the new permissions view eliminates tedious clicks needed to configure
 
 ---
 
-### Keeping You Logged In
-
-We've addressed an issue many users faced when their session timed out while they were still active. Previously, Kestra would time out based on a fixed interval, causing users to lose unsaved work when their authentication token expired. If at that time you were in the middle of editing a flow, this could have led to unsaved changes and an unexpected logout.
-
-With the [new mechanism](https://github.com/kestra-io/kestra/issues/4120) introduced in this release, Kestra now automatically refreshes your auth token or session cookie if you're still active. If the token is close to expiring, Kestra silently refreshes it in the background. This small but critical change ensures your session stays alive while you're working, without any interruptions.
-
 ### Forgot Password Functionality
 
-This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing you to get an email link to reset a password directly from the login page. Note that you'll only see the "Forgot password" option if the email server is configured on your instance.
+This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing you to get an email link to reset a password directly from the login page.
+
+![forgot_password](/blogs/release-0-19/forgot_password.png)
+
+Note that you'll only see the "Forgot password" option if the email server is configured on your instance.
+
+Here is how you can configure the email server in your `application.yaml` file:
+
+```yaml
+kestra:
+  mail-service:
+    host: String
+    port: Number
+    username: String
+    password: String
+    from: String
+    starttlsEnable: Boolean
+    auth: String
+```
+
+
+On the User detail page, users with a basic authentication and an email set have the option to reset their password.
+
+![reset_password](/blogs/release-0-19/reset_password.png)
+
 
 
 ### Purging Old Audit Logs
@@ -517,7 +565,7 @@ Combining the System Flows functionality with the new `PurgeAuditLogs` task prov
 
 ## Plugin Enhancements
 
-This release comes with several useful improvements across our plugin ecosystem, making it easier to integrate with popular tools and platforms.
+This release comes with several useful improvements across our plugin ecosystem.
 
 First, we’ve [simplified](https://github.com/kestra-io/plugin-jdbc/issues/374) our **JDBC tasks and triggers** by introducing a single `fetchType` property, cleaning up what used to be a confusing set of options like `store`, `fetch`, and `fetchOne`.
 
@@ -528,7 +576,7 @@ On the Google Cloud front, we’ve added the ability to create and delete **Data
 We’ve also introduced a few new plugins for popular open-source technologies:
 - [MySQL Batch Insert](https://github.com/kestra-io/plugin-jdbc/pull/358) task
 - [NATS KV Store](https://github.com/kestra-io/plugin-nats/issues/46) tasks
-- [Rocket Chat](https://github.com/kestra-io/plugin-notifications/issues/160) notification tasks (thanks [kriko](https://github.com/kriko)!)
+- [Rocket.Chat](https://github.com/kestra-io/plugin-notifications/issues/160) notification tasks (thanks [kriko](https://github.com/kriko)!)
 - [MongoDB](https://github.com/kestra-io/plugin-mongodb/pull/15) trigger.
 
 For Java enthusiasts, the [JBang plugin](https://github.com/kestra-io/kestra/issues/2150) now lets you run [JBang scripts](https://develop.kestra.io/plugins/plugin-script-jbang) directly from Kestra with support for Java, JShell, Kotlin and Groovy.
