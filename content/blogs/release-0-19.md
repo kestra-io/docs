@@ -455,7 +455,7 @@ In short, [this new feature](https://github.com/kestra-io/kestra-ee/issues/1525)
 
 ### Managed Roles
 
-This release also adds **Managed Roles**, a set of read-only roles that are fully managed by Kestra. These roles — **`Admin`, `Editor`, `Launcher`, and `Viewer`** — are designed to simplify permission management, ensuring that users automatically receive the necessary permissions for new features without manual updates.
+This release also adds **Managed Roles**, a set of read-only roles that are fully managed by Kestra. These roles — **`Admin`, `Editor`, `Launcher`, `Developer` and `Viewer`** — are designed to simplify permission management, ensuring that users automatically receive the necessary permissions for new features without manual updates.
 
 **How Managed Roles Work?** Managed Roles cannot be edited or customized. When users attempt to add or remove permissions from these roles, a friendly error message will appear: _"Managed roles are read-only. Create a custom role if you need fine-grained permissions."_
 
