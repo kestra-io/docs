@@ -422,7 +422,7 @@ In the future, we plan to display the documentation pages next to the UI element
 
 ### Refresh token ⚠️ breaking change ⚠️
 
-Before upgrading to 0.19.0, please note that we've introduced a breaking change to the way refresh tokens are handled. This change is necessary to improve security and ensure that refresh tokens are stored securely.
+Before upgrading to 0.19.0, please note that we've introduced a breaking change to the way refresh tokens are handled. This change is necessary to ensure that refresh tokens are stored securely.
 
 All you need to do is add the following configuration to your `application.yaml` file:
 
@@ -663,7 +663,7 @@ tasks:
 
 The scheduled execution will be `CREATED`, and will transition into the `RUNNING` state at the `scheduleDate` — you can inspect all details including that scheduled date from the Overview page of that Execution.
 
-If you have multiple dates to schedule, you can combine the `Subflow` task with the `ForEach` task to create multiple scheduled executions in the future — useful especially if the dates are retrieved from an external source or calculated based on some internal business logic:
+If you have multiple dates to schedule, you can combine the `Subflow` task with the `ForEach` task to create multiple scheduled executions in the future — useful especially if the dates are retrieved from an external source or calculated based on some internal business logic — see the example below.
 
 ::collapse{title="Example of scheduling multiple flows using Python, Subflow, and ForEach tasks"}
 ```yaml
@@ -789,6 +789,16 @@ The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/
 - We've [also improved](https://github.com/kestra-io/kestra/issues/4631) handling of the Execution context, allowing you to set a limit in size for messages. When exceeded, the message will be refused by the queue, and the taskrun will fail with an error: `"Message of size XXX has exceeded the configured limit of XXX"`.
 
 ---
+
+## Big thanks to our contributors 🙏
+
+We'd like to thank all existing and new contributors who helped make this release possible. Your feedback, bug reports, and pull requests are invaluable to us.
+
+In this release, we welcome the record number of new contributors. We're thrilled to see the community growing and contributing to the project. Thank you for your time and effort in making Kestra better with each release.
+
+::alert{type="info"}
+If you want to contribute to Kestra, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and a list of issues with label [kind/good-first-issue](https://github.com/search?q=org%3Akestra-io+label%3Akind%2Fgood-first-issue+is%3Aopen&type=issues), and join our [Slack community](https://kestra.io/slack) to get help and guidance from the core team and other contributors.
+::
 
 ## Next Steps
 
