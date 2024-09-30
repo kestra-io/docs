@@ -18,7 +18,26 @@ You can use webhooks to trigger an execution of your flow in Kestra. To do this,
 
 Once we've done this, we can add a `key` property, which can be random as this will be used to trigger the webhook. In the example, the `key` is set to `1KERKzRQZSMtLdMdNI7Nkr` which is what we put at the end of our webhook URL to trigger it.
 
-```yaml file=public/examples/flows_webhook.yml
+```yaml
+id: webhook_example
+namespace: company.team
+
+description: |
+  Example flow for a webhook trigger.
+
+  This endpoint doesn't need any login / password and is secured by `key` that is different for every flow
+
+tasks:
+  - id: out
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ trigger | json }}"
+
+
+triggers:
+  - id: webhook_trigger
+    type: io.kestra.plugin.core.trigger.Webhook
+    # the required key to start this flow - might be passed as a secret
+    key: 1KERKzRQZSMtLdMdNI7Nkr
 ```
 
 The format of the Webhook URL follows:
@@ -46,7 +65,25 @@ Let us leverage Kestra Secrets to store the webhook key. From the left navigatio
 
 Now, we will create the flow in the same namespace under which we have defined the `WEBHOOK_KEY` secret. The flow will use the webhook trigger, like this:
 
-```yaml file=public/examples/flows_webhook_ee.yml
+```yaml
+id: webhook_ee_example
+namespace: company.team
+
+description: |
+  Example flow for a webhook trigger in Kestra EE.
+
+  This endpoint doesn't need any login / password and is secured by `key` that is different for every flow
+
+tasks:
+  - id: out
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ trigger | json }}"
+
+triggers:
+  - id: webhook_trigger
+    type: io.kestra.plugin.core.trigger.Webhook
+    # the required key to start this flow - might be passed as a secret
+    key: "{{ secret('WEBHOOK_KEY') }}"
 ```
 
 Note that in the `triggers` section of the flow, we have referenced the secret in the `key` as `{{ secret('WEBHOOK_KEY') }}` instead of directly putting in the webhook key.
