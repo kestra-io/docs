@@ -44,7 +44,7 @@ kestra:
 
 ## `kestra.variables.recursive-rendering`
 
-Flag enabling the pre-0.14.0 [template recursive rendering](../11.migration-guide/recursive-rendering.md) behavior and giving administrators more time to migrate deployed flows. Defaults to `false`.
+Flag enabling the pre-0.14.0 [template recursive rendering](../11.migration-guide/0.14.0/recursive-rendering.md) behavior and giving administrators more time to migrate deployed flows. Defaults to `false`.
 
 ## `kestra.variables.cache-enabled`
 

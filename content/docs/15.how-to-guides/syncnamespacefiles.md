@@ -1,7 +1,7 @@
 ---
 title: Sync Namespace Files from a Git Repository
 icon: /docs/icons/tutorial.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
   - Version Control
   - DevOps
@@ -102,7 +102,7 @@ triggers:
 
 ## Automatically sync when a change is pushed to Git
 
-We can also automate the syncing process by adding a [Webhook trigger](../04.workflow-components/07.triggers/index.md#webhook-trigger) and creating a Webhook on our GitHub repository to trigger our flow every time something is pushed to the repository. This is useful for keeping Kestra always in sync with the repository.
+We can also automate the syncing process by adding a [Webhook trigger](../04.workflow-components/07.triggers/03.webhook-trigger.md) and creating a Webhook on our GitHub repository to trigger our flow every time something is pushed to the repository. This is useful for keeping Kestra always in sync with the repository.
 
 ```yaml
 id: sync_files_from_git
@@ -142,4 +142,4 @@ Once we've done this, we can press save and test it by committing something to o
 
 We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date with your Git repository.
 
-If you also want to sync your flows, check out our guide on how to set that up [here](syncflows.md)!
+If you also want to sync your flows, check out our guide on how to set that up [here](./syncflows.md)!

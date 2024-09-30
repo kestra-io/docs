@@ -1,7 +1,7 @@
 ---
 title: Push Namespace Files to a Git Repository
 icon: /docs/icons/tutorial.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
   - Version Control
   - DevOps
@@ -46,20 +46,20 @@ Here is a system flow that will push the `example.py` file to a Git repository:
 ```yaml
 id: push_to_git
 namespace: system
- 
+
 tasks:
   - id: commit_and_push
     type: io.kestra.plugin.git.PushNamespaceFiles
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
     url: https://github.com/git_username/scripts
-    branch: dev 
+    branch: dev
     namespace: company.team
     files:
       - "example.py"
     gitDirectory: _files
-    commitMessage: "add namespace files" 
-    dryRun: true 
+    commitMessage: "add namespace files"
+    dryRun: true
 ```
 
 Given that the `dryRun` property is set to `true`, the task will only output modifications without pushing any files to Git yet:
@@ -128,8 +128,8 @@ tasks:
     branch: dev
     namespace: company.team
     gitDirectory: _files
-    commitMessage: "push all namespace files and create a PR" 
-    dryRun: true 
+    commitMessage: "push all namespace files and create a PR"
+    dryRun: true
 ```
 
 Again, we can set the `dryRun` property to `true` to see what files will be added, modified, or deleted based on the Git version without overwriting the files in Git yet:

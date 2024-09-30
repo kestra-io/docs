@@ -9,7 +9,7 @@ topics:
 How to use the Switch task to branch the flow based on a value.
 
 
-Conditional branching is a process in which the execution of a task is directed along different paths based on specific values. In a flow, it allows for decision-making, where different tasks are executed depending on the value provided. 
+Conditional branching is a process in which the execution of a task is directed along different paths based on specific values. In a flow, it allows for decision-making, where different tasks are executed depending on the value provided.
 
 In this guide, you'll learn how to use Kestra's `Switch` task to control your flow based on a value passed. Depending on the value passed in the `Switch` task, the flow will branch to different task `cases` to execute a specific task. If there is no matching value, Kestra will use the `defaults` branch.
 
@@ -17,8 +17,8 @@ In this guide, you'll learn how to use Kestra's `Switch` task to control your fl
 
 Before you begin:
 
-- Deploy [Kestra](https://kestra.io/docs/installation) in your preferred development environment.
-- Ensure you have a [basic understanding of how to run Kestra flows.](https://kestra.io/docs/getting-started/tutorial)
+- Deploy [Kestra](../02.installation/index.md) in your preferred development environment.
+- Ensure you have a [basic understanding of how to run Kestra flows.](../01.getting-started/03.tutorial.md)
 
 ## Example 1: Conditional Branching with Input Strings
 
@@ -75,7 +75,7 @@ outputs:
 
 Save and execute the `switch` flow.
 
-You can input `FIRST`, `SECOND`, `THIRD`, or any other input string to see the flow in action. The above flow when executed checks a sequence of tasks based on the input string you provide. 
+You can input `FIRST`, `SECOND`, `THIRD`, or any other input string to see the flow in action. The above flow when executed checks a sequence of tasks based on the input string you provide.
 
 Within the flow:
 
@@ -120,7 +120,7 @@ tasks:
         - id: log-site-down
           type: io.kestra.plugin.core.log.Log
           message: "Kestra website not found. Status: 404"
-          
+
     defaults:
       - id: unknown-status
         type: io.kestra.plugin.core.log.Log
@@ -151,5 +151,5 @@ Within the flow:
 
 You have implemented conditional branching with the `Switch` task using the `switch` flow to check your input strings and `kestra-http-switch` flow to check Kestra’s website status.  The `Switch` task can further be implemented in various use cases to support your flows. Further resources about the `Switch` task:
 
-- [Kestra’s official Switch task plugin documentation](https://kestra.io/plugins/core/tasks/flow/io.kestra.plugin.core.flow.switch)
-- [Kestra’s Blueprint Switch task use cases](https://kestra.io/blueprints?page=1&size=24&q=switch)
+- [Kestra’s official Switch task plugin documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.switch)
+- [Kestra’s Blueprint Switch task use cases](/blueprints?page=1&size=24&q=switch)

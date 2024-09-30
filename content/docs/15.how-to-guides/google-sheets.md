@@ -1,7 +1,7 @@
 ---
 title: Connect Google Sheets to Kestra
 icon: /docs/icons/gsheets.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
   - Integrations
 ---

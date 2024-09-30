@@ -9,9 +9,9 @@ Thanks to hundreds of [built-in plugins](/plugins) and embedded Code editor with
 Follow the [Quickstart Guide](./01.getting-started/01.quickstart.md) to install Kestra and start orchestrating your first workflows.
 
 Then, explore the following pages to start building more advanced workflows:
-- [Tutorial](/docs/tutorial)
-- [Workflow Components](/docs/workflow-components)
-- [Concepts](/docs/concepts)
+- [Tutorial](./03.tutorial/index.md)
+- [Workflow Components](./04.workflow-components/index.md)
+- [Concepts](./05.concepts/index.md)
 - [Blueprints](/blueprints)
 - [Video Tutorials](/tutorial-videos)
 

@@ -96,7 +96,7 @@ In Kestra, every worker that died unexpectedly will be detected by the executor,
 
 ## Where can I find migration guides
 
-The [Migrations section](/docs/migration-guide) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
+The [Migrations section](../11.migration-guide/index.md) includes detailed information about deprecated features and provides guidance on how to migrate from the deprecated to a new behavior.
 
 For all breaking changes, the migration guides are linked in the [release notes](https://github.com/kestra-io/kestra/releases).
 

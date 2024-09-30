@@ -11,7 +11,7 @@ Scale your codebase using Terraform to template and make scheduling a breeze
 
 ## Introduction
 
-As seen in this [terraform templating](/docs/how-to-guides/terraform-templating) guide, you can leverage Terraform to template and define flows.
+As seen in this [terraform templating](./terraform-templating.md) guide, you can leverage Terraform to template and define flows.
 
 Managing triggers and schedules can be a **tedious task**, especially when you have a lot of flows generating **peak hours** due to reuse of same trigger schedules.
 

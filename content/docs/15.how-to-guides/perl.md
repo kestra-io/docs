@@ -37,7 +37,7 @@ The contents of the `main.pl` file contains a simple print statement:
 print "Hello World";
 ```
 
-You'll need to add your Perl code using the Editor or [sync it using Git](../08.developer-guide/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You'll need to add your Perl code using the Editor or [sync it using Git](../version-control-cicd/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 You can also have the Perl code written inline using the `inputFiles` property.
 
@@ -120,7 +120,7 @@ tasks:
 
 ### File Output
 
-Inside of your Perl code, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../08.developer-guide/07.scripts/07.outputs-metrics.md).
+Inside of your Perl code, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the files you're trying to put out. In this case, we want to output `output.txt`. More information on the formats you can use for this property can be found [here](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md).
 
 The example below writes a `output.txt` file containing the "Hello World" text. We can then refer the file using the syntax `{{ outputs.{task_id}.outputFiles['<filename>'] }}`, and read the contents of the file using the `read()` function.
 
@@ -163,7 +163,7 @@ tasks:
 
 ## Handling Metrics
 
-You can also get [metrics](../08.developer-guide/07.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Perl code. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Perl code. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
 
 ```yaml
 id: perl_metrics

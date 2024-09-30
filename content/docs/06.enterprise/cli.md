@@ -8,7 +8,7 @@ How to interact with Kestra Enterprise Edition using the CLI.
 
 ## Authentication
 
-The Kestra CLI uses the same authentication as the [Kestra API](/docs/enterprise/api). You can use the `--api-token` option to authenticate with the API.
+The Kestra CLI uses the same authentication as the [Kestra API](../06.enterprise/api.md). You can use the `--api-token` option to authenticate with the API.
 
 ```shell
 kestra --api-token <your-api-token> --help
@@ -1024,7 +1024,7 @@ Commands:
 
 ### kestra sys-ee restore-flow-listeners (relevant only for older versions of kestra before 0.12)
 
-Legacy command for [Listeners](https://kestra.io/docs/migration-guide/0.12.0/listeners).
+Legacy command for [Listeners](../11.migration-guide/0.12.0/listeners.md).
 
 ```bash
 Usage: kestra sys-ee restore-flow-listeners [-hVv] [--internal-log]

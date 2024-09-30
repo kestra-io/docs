@@ -3,7 +3,7 @@ title: Build a Custom Plugin for Kestra
 icon: /docs/icons/plugins.svg
 stage: Advanced
 topics:
-  - Kestra Concepts 
+  - Kestra Concepts
   - DevOps
 ---
 
@@ -255,7 +255,7 @@ To build your plugin, execute the `./gradlew shadowJar` command from the plugin 
 
 The resulting JAR file will be generated in the `build/libs` directory.
 
-To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](/docs/administrator-guide/server-cli#plugins-directory).
+To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../09.administrator-guide/04.server-cli.md#plugins-directory).
 
 ## Writing unit tests
 
