@@ -576,6 +576,8 @@ On the Google Cloud front, we’ve added the ability to create and delete **Data
 We’ve also introduced a few new plugins for popular open-source technologies:
 - [MySQL Batch Insert](https://github.com/kestra-io/plugin-jdbc/pull/358) task
 - [NATS KV Store](https://github.com/kestra-io/plugin-nats/issues/46) tasks
+- [MeiliSearch](https://kestra.io/plugins/plugin-meilisearch) tasks
+- [DataHub](https://develop.kestra.io/plugins/plugin-datahub) ingestion task
 - [Rocket.Chat](https://github.com/kestra-io/plugin-notifications/issues/160) notification tasks (thanks [kriko](https://github.com/kriko)!)
 - [MongoDB](https://github.com/kestra-io/plugin-mongodb/pull/15) trigger.
 
