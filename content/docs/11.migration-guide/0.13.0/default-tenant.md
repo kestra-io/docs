@@ -9,7 +9,7 @@ Adjusting users' access to the default tenant.
 
 ## Overview
 
-In the [v0.13.0 release](../../../blogs/2023-11-16-release-0-13.md), we introduced multitenancy. As a result, user's access is now managed at the tenant level.
+In the [v0.13.0 release](/blogs/2023-11-16-release-0-13.md), we introduced multitenancy. As a result, user's access is now managed at the tenant level.
 
 ## Migration
 

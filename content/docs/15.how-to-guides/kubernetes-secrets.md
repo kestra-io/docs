@@ -1,7 +1,7 @@
 ---
 title: Setup Secrets from a Helm Chart
 icon: /docs/icons/helm.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
   - Kestra Concepts
   - DevOps

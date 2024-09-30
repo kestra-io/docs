@@ -27,11 +27,11 @@ There’s 2 tasks for each of these platforms:
 - **Execution Task**: that allows us to send execution information directly in the notification. This includes a link to the execution page in the UI as well as the execution ID, namespace, flow name, start date, duration and the final status of the execution.
 - **Send Task**: that allows us to send a custom message of our choice. This is useful if we want to send a more detailed status about a specific task or output.
 
-For this example, we’re going to use the `SlackExecution task to send us a detailed message about our execution. 
+For this example, we’re going to use the `SlackExecution task to send us a detailed message about our execution.
 
 ## `errors` property
 
-Now if we add this to our workflow, it will run this task every execution which isn’t helpful. We can use the `errors` block to allow us to run separate tasks only when our execution fails. 
+Now if we add this to our workflow, it will run this task every execution which isn’t helpful. We can use the `errors` block to allow us to run separate tasks only when our execution fails.
 
 Just like the `tasks` block, we can define our `SlackExecution` task as below:
 

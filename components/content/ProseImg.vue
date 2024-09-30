@@ -53,7 +53,7 @@
     })
 
     const refinedSrc = computed(() => {
-        if (props.src?.startsWith('/') && !props.src.startsWith('//')) {
+        if (props.src?.startsWith('/') && !props.src.startsWith('http')) {
             return withBase(props.src, useRuntimeConfig().app.baseURL)
         }
         return props.src

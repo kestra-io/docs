@@ -14,9 +14,9 @@ We recommend using the `company.team` naming convention for namespaces to mainta
 
 ### Why we recommend a `company.team` namespace structure
 
-By having **a root namespace named after your company**, you can centrally govern [plugin defaults](../04.workflow-components/09.task-defaults.md), [variables](../04.workflow-components/04.variables.md) and [secrets](../05.concepts/04.secret.md) and share that configuration across all other namespaces under the company root.
+By having **a root namespace named after your company**, you can centrally govern [plugin defaults](../04.workflow-components/09.plugin-defaults.md), [variables](../04.workflow-components/04.variables.md) and [secrets](../05.concepts/04.secret.md) and share that configuration across all other namespaces under the company root.
 
-Adhering to this naming convention also simplifies [Git operations](../08.developer-guide/04.git.md). You can maintain a single flow that synchronizes all workflows with Git across all namespaces under the parent namespace named after your company.
+Adhering to this naming convention also simplifies [Git operations](../version-control-cicd/04.git.md). You can maintain a single flow that synchronizes all workflows with Git across all namespaces under the parent namespace named after your company.
 
 The next level of namespaces should be named after your team (e.g., `company.team`). This structure allows for centralized governance and visibility at the team level before further dividing into projects, systems, or other logical hierarchies. When syncing your code with Git, that nested structure will be reflected as nested directories in your Git repository.
 

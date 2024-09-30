@@ -1,9 +1,0 @@
-id: shell_outputs
-namespace: company.team
-description: This flow runs the shell command, and outputs the variable.
-
-tasks:
-  - id: shell_outputs_task
-    type: io.kestra.plugin.scripts.shell.Commands
-    commands:
-      - echo '::{"outputs":{"test":"value","int":2,"bool":true,"float":3.65}}::'

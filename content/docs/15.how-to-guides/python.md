@@ -22,7 +22,34 @@ In this example, the flow will install the required pip packages, make an API re
 
 If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly inside of your flow configuration. This allows you to keep everything in one place.
 
-```yaml file=public/examples/scripts_python.yml
+```yaml
+id: python_scripts
+namespace: company.team
+
+description: This flow will install the pip package in a Docker container, and use kestra's Python library to generate outputs (number of downloads of the Kestra Docker image) and metrics (duration of the script).
+
+tasks:
+  - id: outputs_metrics
+    type: io.kestra.plugin.scripts.python.Script
+    beforeCommands:
+      - pip install requests
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: python:slim
+    warningOnStdErr: false
+    script: |
+      import requests
+
+      def get_docker_image_downloads(image_name: str = "kestra/kestra"):
+          """Queries the Docker Hub API to get the number of downloads for a specific Docker image."""
+          url = f"https://hub.docker.com/v2/repositories/{image_name}/"
+          response = requests.get(url)
+          data = response.json()
+
+          downloads = data.get('pull_count', 'Not available')
+          return downloads
+
+      downloads = get_docker_image_downloads()
 ```
 
 ## Logs
@@ -65,10 +92,28 @@ You can read more about the Python Script task in the [Plugin documentation](/pl
 
 If you would prefer to put your Python code in a `.py` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.python.Commands` type:
 
-```yaml file=public/examples/commands_python.yml
+```yaml
+id: python_commands
+namespace: company.team
+
+description: This flow will install the pip package in a Docker container, and use kestra's Python library to generate outputs (number of downloads of the Kestra Docker image) and metrics (duration of the script).
+
+tasks:
+  - id: outputs_metrics
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: python:slim
+    warningOnStdErr: false
+    beforeCommands:
+      - pip install requests
+    commands:
+      - python outputs_metrics.py
 ```
 
-You'll need to add your Python code using the Editor or [sync it using Git](../08.developer-guide/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You'll need to add your Python code using the Editor or [sync it using Git](../version-control-cicd/04.git.md) so Kestra can see it. You'll also need to set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 You can read more about the Commands type in the [Plugin documentation](/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.commands).
 
@@ -88,32 +133,133 @@ You'll need to use the `Kestra` class to pass your variables to Kestra as output
 
 Using the same example as above, we can pass the number of downloads as an output.
 
-```python file=public/examples/outputs_python.py
+```python
+from kestra import Kestra
+import requests
+
+def get_docker_image_downloads(image_name: str = "kestra/kestra"):
+    """Queries the Docker Hub API to get the number of downloads for a specific Docker image."""
+    url = f"https://hub.docker.com/v2/repositories/{image_name}/"
+    response = requests.get(url)
+    data = response.json()
+
+    downloads = data.get('pull_count', 'Not available')
+    return downloads
+
+downloads = get_docker_image_downloads()
+
+outputs = {
+    'downloads': downloads
+}
+
+Kestra.outputs(outputs)
 ```
 
 Once your Python file has executed, you'll be able to access the outputs in later tasks as seen below:
 
-```yaml file=public/examples/outputs_python.yml
+```yaml
+id: python_outputs
+namespace: company.team
+
+tasks:
+  - id: outputs_metrics
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: python:slim
+    warningOnStdErr: false
+    beforeCommands:
+      - pip install requests kestra
+    commands:
+      - python outputs_metrics.py
+
+  - id: log_downloads
+    type: io.kestra.plugin.core.log.Log
+    message: "Number of downloads: {{ outputs.outputs_metrics.vars.downloads }}"
 ```
 
 _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
 
 ### File Output
 
-Inside of your Python code, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the file you're trying to access. In this case, we want to access `downloads.txt`. More information on the formats you can use for this property can be found [here](../08.developer-guide/07.scripts/07.outputs-metrics.md).
+Inside of your Python code, write a file to the system. You'll need to add the `outputFiles` property to your flow and list the file you're trying to access. In this case, we want to access `downloads.txt`. More information on the formats you can use for this property can be found [here](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md).
 
 The example below write a `.txt` file containing the number of downloads, similar the output we used earlier. We can then read the content of the file using the syntax `{{ outputs.{task_id}.outputFiles['{filename}'] }}`
 
-```yaml file=public/examples/scripts_output-files-python.yml
+```yaml
+id: python_output_files
+namespace: company.team
+
+tasks:
+  - id: outputs_metrics
+    type: io.kestra.plugin.scripts.python.Script
+    beforeCommands:
+      - pip install requests
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: python:slim
+    warningOnStdErr: false
+    outputFiles:
+      - downloads.txt
+    script: |
+      import requests
+
+      def get_docker_image_downloads(image_name: str = "kestra/kestra"):
+          """Queries the Docker Hub API to get the number of downloads for a specific Docker image."""
+          url = f"https://hub.docker.com/v2/repositories/{image_name}/"
+          response = requests.get(url)
+          data = response.json()
+
+          downloads = data.get('pull_count', 'Not available')
+          return downloads
+
+      downloads = get_docker_image_downloads()
+
+      # Generate a file with the output
+      f = open("downloads.txt", "a")
+      f.write(str(downloads))
+      f.close()
+
+  - id: log_downloads
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - cat {{outputs.outputs_metrics.outputFiles['downloads.txt']}}
 ```
 
 _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
 
 ## Handling Metrics
 
-You can also get [metrics](../08.developer-guide/07.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Python code. In this example, we can use the `time` module to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
+You can also get [metrics](../04.workflow-components/01.tasks/02.scripts/06.outputs-metrics.md#outputs-and-metrics-in-script-and-commands-tasks) from your Python code. In this example, we can use the `time` module to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
 
-```python file=public/examples/metrics_python.py
+```python
+from kestra import Kestra
+import requests
+import time
+
+start = time.perf_counter()
+
+def get_docker_image_downloads(image_name: str = "kestra/kestra"):
+    """Queries the Docker Hub API to get the number of downloads for a specific Docker image."""
+    url = f"https://hub.docker.com/v2/repositories/{image_name}/"
+    response = requests.get(url)
+    data = response.json()
+
+    downloads = data.get('pull_count', 'Not available')
+    return downloads
+
+downloads = get_docker_image_downloads()
+end = time.perf_counter()
+outputs = {
+    'downloads': downloads
+}
+
+Kestra.outputs(outputs)
+Kestra.timer('duration', end - start)
 ```
 
 Once this has executed, `duration` will be viewable under **Metrics**.
