@@ -420,11 +420,21 @@ In the future, we plan to display the documentation pages next to the UI element
 
 ## Enterprise Edition Enhancements
 
-### Refresh token ⚠️ breaking change ⚠️
+### Refresh Token and Encryption Key ⚠️
 
-Before upgrading to 0.19.0, please note that we've introduced a breaking change to the way refresh tokens are handled. This change is necessary to ensure that refresh tokens are stored securely.
+With the release of Kestra 0.19.0, there’s an important change you should be aware of before upgrading. To support enhanced security features like authentication, backup & restore, and JWT signatures for refresh tokens, you'll **need to set an encryption key** in your Kestra configuration.
 
-All you need to do is add the following configuration to your `application.yaml` file:
+This configuration step is critical to ensure that Kestra EE operates correctly after the upgrade. If you're already using `SECRET`-type inputs, your encryption key should be in place, but if not, here's what you need to add to your `application.yaml`:
+
+```yaml
+kestra:
+  encryption:
+    secret-key: pleaseChangeThisSecret # ✅ mandatory!
+```
+
+The key needs to be at least 32 ASCII characters long (256 bits), so don’t forget to replace `pleaseChangeThisSecret` with a secure, custom value. While this key never expires, the refresh token it signs is valid for 30 days, similar to a JWT token with a default 1-hour lifetime.
+
+If you want to use a separate secret for your JWT refresh token signature, you can **optionally** customize that as follows:
 
 ```yaml
 micronaut:
@@ -434,14 +444,13 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: "${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecret}"
+              secret: "${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecret}" # ✅ optional
 ```
 
-Note that you won't be able to log in until you've set up the new configuration. The secret must be at least 256 KB in length (32 ASCII characters at minimum). The size and ASCII characters are important, as the secret might differ for languages like Japanese or Korean.
+In case you ever need to revoke a refresh token, it's easy to do with a simple `DELETE` request to `/users/{id}/refresh-token` — this can be useful in emergency situations e.g. when you suspect your computer has been compromised.
 
-Make sure to set the secret `pleaseChangeThisSecret` to a custom value. The secret never expires, but its corresponding refresh token has a lifetime of 30 days — it works similarly to a JWT Token that has a 1-hour lifetime. If you need to delete the refresh token, you can do so by sending a `DELETE` request to `/users/{id}/refresh-token` — this can be useful if you suspect your computer has been compromised.
+As always, if you have any questions or run into issues during the upgrade, our support team is here to help — just reach out via the Customer Portal or through your dedicated Slack channel.
 
-If you have any questions or need help, please reach out to our support team.
 
 ### Keeping You Logged In
 
