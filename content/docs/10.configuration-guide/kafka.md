@@ -192,14 +192,10 @@ If a message exceeds this limit, it may crash the executor and Kestra will stop.
 
 To prevent that, you can configure a functionality that will automatically store too big messages to the internal storage.
 
-The following configuration will store all messages that exceed 1MiB to the internal storage, and refuse messages that exceed 10MiB by failing the execution, the executor will not crash, and Kestra will keep functioning.
-
 ```yaml
 kestra:
   kafka:
     message-protection:
-      soft-limit: 1048576
-      hard-limit: 10485760
-```
+      enabled: true
 
 The `hard-limit` is not mandatory, in this case messages of any size will be accepted.
