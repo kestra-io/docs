@@ -309,7 +309,7 @@
                             Resources
                             <ChevronDown />
                         </a>
-                        <ul class="dropdown-menu product-menu">
+                        <ul class="dropdown-menu resources-menu">
                             <li class="dropdown-columns">
                                 <ul class="dropdown-column list-unstyled">
                                     <p class="column-caption">Resources</p>
@@ -896,6 +896,10 @@ export default {
                         display: flex;
                         padding: 62px 192px 32px 172px;
                         gap: 6.25rem;
+                        @include media-breakpoint-down(xxl) {
+                            padding: 62px 32px 32px 32px;
+                            gap: 3rem;
+                        }
                     }
 
                     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
@@ -1162,6 +1166,7 @@ export default {
                 }
 
                 .solutions-menu {
+                    max-height: 642px;
                     .dropdown-menu-right {
                         background: #252526;
                         min-width: 23%;
@@ -1202,6 +1207,7 @@ export default {
                 }
 
                 .product-menu {
+                    max-height: 564px;
                     .dropdown-column {
                         max-width: 338px;
                     }
@@ -1268,12 +1274,12 @@ export default {
                     }
                 }
 
-                .solutions-menu, .product-menu {
+                .resources-menu, .solutions-menu, .product-menu {
                     gap: 1rem;
 
                     .dropdown-column {
                         display: flex;
-                        min-width: calc($spacer * 18);
+                        max-width: calc($spacer * 18);
                         flex-direction: column;
                         gap: $spacer;
 
@@ -1302,8 +1308,72 @@ export default {
                 }
 
                 .resources-menu {
-                    left: -377%;
+                    max-height: 582px;
+                    .dropdown-menu-right {
+                        background: #252526;
+                        min-width: 39%;
+                        @include media-breakpoint-down(xxl) {
+                            min-width: 30%;
+                        }
+                        padding: 40px 32px;
+                        height: 100%;
+                        flex: 0.7;
+                        li {
+                            margin-top: 2.25rem;
+                        }
+                        a {
+                            max-width: 312px;
+                            max-height: 370px;
+                        }
+                        a.btn {
+                            padding: 2.19rem;
+                            text-align: start;
+                            .submenu-btn-img {
+                                img {
+                                    width: 100%;
+                                    height: auto;
+                                }
 
+                            }
+                            p.title {
+                                font-size: 27px;
+                                font-weight: 500;
+                                line-height: 34.6px;
+                                color: #FFFFFF;
+                            }
+
+                            p.text-title {
+                                font-size: 26px;
+                                font-weight: 600;
+                                line-height: 27.6px;
+                                color: #FFFFFF;
+                                margin-bottom: 28px;
+                            }
+
+                            h2.detail-text {
+                                font-size: 47px;
+                                font-weight: 800;
+                                line-height: 25.6px;
+                            }
+
+                            span.detail-desc {
+                                font-size: 15px;
+                                font-weight: 400;
+                                line-height: 25.6px;
+                                color: #FFFFFF99;
+                            }
+
+                            span.link {
+                                font-size: 14px;
+                                color: #CDD5EF;
+                                vertical-align: middle;
+                                span {
+                                    font-size: 16px;
+                                }
+                            }
+                        }
+
+                    }
                     .submenu-item {
                         min-height: 16rem;
 
