@@ -26,7 +26,7 @@ $ bin/kafka-console-producer.sh --topic logs --bootstrap-server localhost:9092
 > Hello World
 ```
 
-You can use the Apache Kafka [RealtimeTrigger](https://kestra.io/plugins/plugin-kafka/triggers/io.kestra.plugin.kafka.realtimetrigger) in the Kestra flow as follows:
+You can use the Apache Kafka [RealtimeTrigger](/plugins/plugin-kafka/triggers/io.kestra.plugin.kafka.realtimetrigger) in the Kestra flow as follows:
 
 ```yaml
 id: kafka
@@ -72,7 +72,7 @@ You can run the following commands to create the topic, and produce data to the 
 
 `bin/pulsar-client produce apache/pulsar/logs  -m '--Hello World--' -n 1`
 
-You can use the Apache Pulsar [RealtimeTrigger](https://kestra.io/plugins/plugin-pulsar/triggers/io.kestra.plugin.pulsar.realtimetrigger) in the Kestra flow as follows:
+You can use the Apache Pulsar [RealtimeTrigger](/plugins/plugin-pulsar/triggers/io.kestra.plugin.pulsar.realtimetrigger) in the Kestra flow as follows:
 
 ```yaml
 id: pulsar
@@ -109,7 +109,7 @@ On the Send and Receive messages page, you can put the Message body under the Se
 
 ![sqs_send_message](/docs/how-to-guides/realtime-triggers/sqs_send_message.png)
 
-You can use the AWS SQS [RealtimeTrigger](https://kestra.io/plugins/plugin-aws/triggers/io.kestra.plugin.aws.sqs.realtimetrigger) in the Kestra flow as follows:
+You can use the AWS SQS [RealtimeTrigger](/plugins/plugin-aws/triggers/io.kestra.plugin.aws.sqs.realtimetrigger) in the Kestra flow as follows:
 
 ```yaml
 id: aws-sqs
@@ -147,7 +147,7 @@ On the Publish message popup, put the message you would like to publish to the t
 
 ![pubsub_publish_message](/docs/how-to-guides/realtime-triggers/pubsub_publish_message.png)
 
-You can use the GCP Pub/Sub [RealtimeTrigger](https://kestra.io/plugins/plugin-gcp/triggers/io.kestra.plugin.gcp.pubsub.realtimetrigger) in the Kestra flow as follows:
+You can use the GCP Pub/Sub [RealtimeTrigger](/plugins/plugin-gcp/triggers/io.kestra.plugin.gcp.pubsub.realtimetrigger) in the Kestra flow as follows:
 
 ```yaml
 id: gcp-pubsub

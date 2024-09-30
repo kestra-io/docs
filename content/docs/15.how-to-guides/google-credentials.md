@@ -1,7 +1,7 @@
 ---
-title: Configure Google Service Account  
+title: Configure Google Service Account
 icon: /docs/icons/gcp-compute.svg
-stage: Getting Started 
+stage: Getting Started
 topics:
   - Integrations
   - Best Practices
@@ -43,7 +43,7 @@ serviceAccount: |
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
     "token_uri": "https://oauth2.googleapis.com/token",
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "...", 
+    "client_x509_cert_url": "...",
     "universe_domain": "googleapis.com"
   }
 ```
@@ -73,7 +73,7 @@ kestra:
 
 You can also add all of your secrets into a separate `.env` file and add this to your Docker Compose to keep them separate.
 
-The script below requires you to have a `.env` file (even if it's empty) to work. This will create a `.env_encoded` file with the base64 encoded secrets inside of it. 
+The script below requires you to have a `.env` file (even if it's empty) to work. This will create a `.env_encoded` file with the base64 encoded secrets inside of it.
 
 ```bash
 while IFS='=' read -r key value; do

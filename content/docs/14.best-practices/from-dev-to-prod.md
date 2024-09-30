@@ -42,11 +42,11 @@ When users have developed flows, they will usually commit changes to a version c
 
 The way users can commit flow changes to Git can be addressed with the following patterns:
 - Export or copy-paste flows from the user interface
-- Using the [`git.PushFlows` task](https://kestra.io/plugins/plugin-git/tasks/io.kestra.plugin.git.pushflows)
+- Using the [`git.PushFlows` task](/plugins/plugin-git/tasks/io.kestra.plugin.git.pushflows)
 
 The way CI/CD deploy flows to production instance can be addressed with the following patterns:
 - GitHub Action, GitLab CI/CD, Jenkins, Azure DevOps, etc.
 - Terraform deployment
 - Kestra CLI
 
-You can find more about CI/CD pattern with Kestra [here](../08.developer-guide/cicd/index.md).
+You can find more about CI/CD pattern with Kestra [here](../version-control-cicd/cicd/index.md).

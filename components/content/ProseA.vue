@@ -54,9 +54,9 @@
         }
 
         // Allow numeration in markdown files while getting rid of it in the resolved path
-        link = link.replace(/(\/).\d+\./g, '')
+        link = link.replace(/(\/|^)\d+?\.(?!\d)/g, '$1.')
         // Md extension should not be present in URL, Nuxt will automatically resolve the file based on the route
-        link = link.replace(/\.md/g, '')
+        link = link.replace(/\.md(#|$)/g, '$1')
 
         // Will end up with absolute paths without host URLs
         link = link.replace(config.public.siteUrl, '')
