@@ -809,7 +809,7 @@ We'd like to thank all existing and new contributors who helped make this releas
 In this release, we welcome a record number of new contributors. We're thrilled to see the community growing and contributing to the project. Thank you for your time and effort in making Kestra better with each release.
 
 ::alert{type="info"}
-If you want to contribute to Kestra, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and a list of issues with the [kind/good-first-issue](https://github.com/search?q=org%3Akestra-io+label%3Akind%2Fgood-first-issue+is%3Aopen&type=issues) label. Join our [Slack community](https://kestra.io/slack) to get help and guidance from the core team and other contributors.
+If you want to contribute to Kestra, check out our [Contributing Guide](https://kestra.io/docs/getting-started/contributing) and a list of issues with the [good first issue](https://go.kestra.io/contribute) label. Join our [Slack community](https://kestra.io/slack) to get help and guidance from the core team and other contributors.
 ::
 
 ---
