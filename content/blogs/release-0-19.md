@@ -140,6 +140,10 @@ The video below demonstrates how to set up System Flows:
 
 You can now define inputs based on conditions, allowing one input to depend on another. This feature enables interactive workflows that adapt to prior user inputs, including approval workflows, dynamic resource provisioning, and many more.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/XTP6t4QcUUY?si=gN_YlZtjmMXOltMu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 To see it in action, first add the necessary JSON key-value pairs that will be used as selectable values in the conditional inputs:
 
 ```yaml
@@ -369,11 +373,7 @@ tasks:
 
 The above flow demonstrates how the `dependsOn` property allows you to set up a chain of dependencies, where one input depends on other inputs or conditions. In this example, the `access_permissions`, `saas_applications`, `development_tools`, and `cloud_vms` inputs are conditionally displayed based on the `resource_type` input value.
 
-Conditional inputs enable interactive workflows that adapt to prior user inputs, incl. approval workflows, dynamic resource provisioning, and many more. Check out a demo of Conditional Inputs in action below:
-
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/XTP6t4QcUUY?si=gN_YlZtjmMXOltMu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
+Conditional inputs enable interactive workflows that adapt to prior user inputs, incl. approval workflows, dynamic resource provisioning, and many more.
 
 You might also notice a new `allowCustomValue` [boolean property](https://github.com/kestra-io/kestra/issues/4496) that, if set to `true`, allows users to enter custom values when the predefined ones don't fit their needs. This enables you to provide a list of default values but still (optionally) allow users to enter custom ones.
 
