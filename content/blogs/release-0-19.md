@@ -21,8 +21,8 @@ The table below highlights the key features of this release:
 | System Flows               | [Automate maintenance tasks](https://github.com/kestra-io/kestra/issues/4557) with dedicated flows that are hidden by default to end users.                                                      | All editions             |
 | Conditional Inputs         | [Make workflows more dynamic](https://github.com/kestra-io/kestra/issues/3610) by defining [inputs based on conditions](), allowing one input to depend on another via new `dependsOn` property. | All editions             |
 | New log level display      | [Navigate logs](https://github.com/kestra-io/kestra/issues/2045) across warnings or debug messages with the new interactive Log level display.                                                   | All editions             |
-| In-app versioned docs      | [Access the full documentation](https://github.com/kestra-io/kestra-ee/issues/1535) of the version you're using, directly from the app.                                                          | All editions             |
-| Backup & Restore           | [Protect your data](https://github.com/kestra-io/kestra-ee/issues/1528) and simplify migrations with the new Backup & Restore feature.                                                           | Enterprise Edition (EE)  |
+| In-app versioned docs      | [Access the full documentation](https://www.linkedin.com/feed/update/urn:li:activity:7246473901482946560/) of the version you're using, directly from the app.                                                          | All editions             |
+| Backup & Restore           | [Protect your data](https://kestra.io/docs/administrator-guide/backup-and-restore) and simplify migrations with the new Backup & Restore feature.                                                           | Enterprise Edition (EE)  |
 
 ---
 
@@ -495,7 +495,7 @@ With the new Worker Groups UI page, worker groups are now treated as API-first o
 
 Check the [Worker Group](https://kestra.io/docs/enterprise/worker-group) documentation to learn how to create and manage worker groups.
 
-In short, [this new feature](https://github.com/kestra-io/kestra-ee/issues/1525) improves the way worker groups are managed, reducing the risk of misconfigured flows and providing better visibility into workers' health.
+In short, this new feature improves the way worker groups are managed, reducing the risk of misconfigured flows and providing better visibility into workers' health.
 
 
 ### Managed Roles
@@ -506,10 +506,10 @@ This release also adds **Managed Roles**, a set of read-only roles that are full
 
 One of the key advantages of Managed Roles is that they stay up to date automatically. When Kestra adds new features, such as **KV Store**, users with Managed Roles (like `Admins`) will automatically have the appropriate permissions to access these new capabilities. This removes the need for admins to manually update permissions for each new feature.
 
-If more granular control is needed, you can still create **custom roles** tailored to specific requirements. For most users, [Managed Roles](https://github.com/kestra-io/kestra-ee/issues/1327) provide a convenient, hands-off approach to role and permission management, ensuring access to all new features without any extra work.
+If more granular control is needed, you can still create **custom roles** tailored to specific requirements. For most users, Managed Roles provide a convenient, hands-off approach to role and permission management, ensuring access to all new features without any extra work.
 
 ::alert{type="info"}
-Note that Managed Roles are not the same as [Default Roles](https://kestra.io/docs/configuration-guide/enterprise-edition#default-role-from-configuration). A default role is a role that will be assigned by default to every new user joining your instance, which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign a Managed Role as a Default Role. In this release, we've [enhanced](https://github.com/kestra-io/kestra-ee/issues/1344) the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g., development, staging, production).
+Note that Managed Roles are not the same as [Default Roles](https://kestra.io/docs/configuration-guide/enterprise-edition#default-role-from-configuration). A default role is a role that will be assigned by default to every new user joining your instance, which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign a Managed Role as a Default Role. In this release, we've enhanced the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g., development, staging, production).
 ::
 
 ---
@@ -518,7 +518,7 @@ Note that Managed Roles are not the same as [Default Roles](https://kestra.io/do
 
 The previous permissions dropdown was a bit tedious, requiring you to manually select each permission and its corresponding actions in order to configure a role.
 
-Kestra 0.19 [introduces](https://github.com/kestra-io/kestra-ee/issues/874) a more convenient **view for permissions management** to simplify selecting the required permissions without having to manually click through every dropdown element. This new view allows you to:
+Kestra 0.19 introduces a more convenient **view for permissions management** to simplify selecting the required permissions without having to manually click through every dropdown element. This new view allows you to:
 - Check a parent element, such as `FLOWS`
 - Automatically select all associated actions (`CREATE`, `READ`, `UPDATE`, `DELETE`).
 
@@ -530,7 +530,7 @@ In short, the new permissions view eliminates tedious clicks needed to configure
 
 ### Forgot Password Functionality
 
-This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing users to get an email link to reset a password directly from the login page.
+This release also adds a Password Reset functionality to the Enterprise Edition, allowing users to get an email link to reset a password directly from the login page.
 
 
 Note that you'll only see the "Forgot password" option if the email server is configured on your instance.
@@ -801,7 +801,7 @@ The Executions endpoint now [returns a URL](https://github.com/kestra-io/kestra/
 - The duration type property is now [much easier to set from the UI](https://github.com/kestra-io/kestra/issues/3710) thanks to the new (beautiful!) UI component.
 - We [now show a warning](https://github.com/kestra-io/kestra/issues/2126) when you use `{{trigger.uri}}` and try to run the flow via the Execute button. This prevents accidental execution of flows that rely on data passed from external triggers.
 - You can [manually change](https://github.com/kestra-io/kestra/issues/4447) the Execution state when needed, e.g., setting some failed executions to success after fixing the issue manually.
-- We've [improved the memory consumption](https://github.com/kestra-io/kestra-ee/issues/1262) of the Purge task to help in cases where you need to purge large amounts of data.
+- We've improved the memory consumption of the Purge task to help in cases where you need to purge large amounts of data.
 - We've [also improved](https://github.com/kestra-io/kestra/issues/4631) handling of the Execution context, allowing you to set a limit on message size. When exceeded, the message will be refused by the queue, and the taskrun will fail with an error: `"Message of size XXX has exceeded the configured limit of XXX"`.
 
 ---
