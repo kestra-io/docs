@@ -29,7 +29,7 @@ The table below highlights the key features of this release:
 Check the video below for a quick overview of the new features:
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/3UTkq7zEwTk?si=EYjRg51OOV6M7E2D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/nh2l_8IVTpI?si=xWKYGN-DtoxKEMQL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 
