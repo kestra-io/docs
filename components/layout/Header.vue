@@ -315,105 +315,111 @@
                             Resources
                             <ChevronDown />
                         </a>
-                        <ul class="dropdown-menu resources-menu">
-                            <li class="dropdown-columns">
-                                <ul class="dropdown-column list-unstyled">
-                                    <p class="column-caption">Resources</p>
-                                    <li>
-                                        <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
-                                            <PostOutline />
-                                            <p>
-                                                <span>Blog</span><br />
-                                                Company news, product updates, and engineering deep dives
-                                            </p>
-                                        </NuxtLink>
-                                    </li>
-                                    <li>
-                                        <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
-                                            <VideoOutline />
-                                            <p>
-                                                <span>Video Tutorials</span><br />
-                                                Get started with our video tutorials
-                                            </p>
-                                        </NuxtLink>
-                                    </li>
-                                    <li>
-                                        <NuxtLink class="dropdown-item" href="/faq" @click="globalClick(true)">
-                                            <CommentQuestionOutline />
-                                            <p>
-                                                <span>FAQ</span><br />
-                                                FAQ about the product and the company
-                                            </p>
-                                        </NuxtLink>
-                                    </li>
-                                </ul>
-                                <ul class="dropdown-column list-unstyled">
-                                    <p class="column-caption">Discover</p>
-                                    <li>
-                                        <NuxtLink class="dropdown-item" href="/community" @click="globalClick(true)">
-                                            <AccountGroupOutline />
-                                            <p>
-                                                <span>Community Overview</span><br />
-                                                Ask any questions and share your feedback
-                                            </p>
-                                        </NuxtLink>
-                                    </li>
-                                    <li>
-                                        <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
-                                            <HandshakeOutline />
-                                            <p>
-                                                <span>Partners</span><br />
-                                                Use our partner ecosystem to accelerate your Kestra adoption
-                                            </p>
-                                        </NuxtLink>
-                                    </li>
-                                    <li>
-                                        <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers" @click="globalClick(true)">
-                                            <HandshakeOutline />
-                                            <p>
-                                                <span>About Us</span><br/>
-                                                Discover the team and values behind Kestra
-                                            </p>
-                                        </NuxtLink>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown-menu-right">
-                                <NuxtLink
-                                    class="btn btn-animated btn-purple-animated"
-                                    href="/blueprints"
-                                    @click="globalClick(true)"
-                                >
-                                    <div class="submenu-btn-img">
-                                        <NuxtImg width="516" height="227" loading="lazy" format="webp" src="/landing/header-menu/resources-menu.png" alt="Using Declarative Data" />
-                                    </div>
-                                    <p class="text-title">
-                                        Gorgias,<br/>
-                                        Using Declarative
-                                        Data Engineering
-                                        Orchestration<br/>
-                                        With Kestra
-                                    </p>
-                                    <h2 class="detail-text">
-                                        20 000+
-                                    </h2>
-                                    <span class="detail-desc">
-                                        Executions per month
-                                    </span>
-                                </NuxtLink>
-                                <ul class="p-0 list-unstyled">
-                                    <li>
-                                        <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
-                                            <BookOpenVariant />
-                                            <p>
-                                                <span>Customers Stories</span><br />
-                                                Learn how Enterprises orchestrate their business-critical workflows
-                                            </p>
-                                        </NuxtLink>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                        <div class="dropdown-menu resources-menu">
+                            <table>
+                                <tr>
+                                    <td class="dropdown-columns">
+                                        <ul class="dropdown-column list-unstyled">
+                                            <p class="column-caption">Resources</p>
+                                            <li>
+                                                <NuxtLink class="dropdown-item" href="/blogs" @click="globalClick(true)">
+                                                    <PostOutline />
+                                                    <p>
+                                                        <span>Blog</span><br />
+                                                        Company news, product updates, and engineering deep dives
+                                                    </p>
+                                                </NuxtLink>
+                                            </li>
+                                            <li>
+                                                <NuxtLink class="dropdown-item" href="/tutorial-videos" @click="globalClick(true)">
+                                                    <VideoOutline />
+                                                    <p>
+                                                        <span>Video Tutorials</span><br />
+                                                        Get started with our video tutorials
+                                                    </p>
+                                                </NuxtLink>
+                                            </li>
+                                            <li>
+                                                <NuxtLink class="dropdown-item" href="/faq" @click="globalClick(true)">
+                                                    <CommentQuestionOutline />
+                                                    <p>
+                                                        <span>FAQ</span><br />
+                                                        FAQ about the product and the company
+                                                    </p>
+                                                </NuxtLink>
+                                            </li>
+                                        </ul>
+                                        <ul class="dropdown-column list-unstyled">
+                                            <p class="column-caption">Discover</p>
+                                            <li>
+                                                <NuxtLink class="dropdown-item" href="/community" @click="globalClick(true)">
+                                                    <AccountGroupOutline />
+                                                    <p>
+                                                        <span>Community Overview</span><br />
+                                                        Ask any questions and share your feedback
+                                                    </p>
+                                                </NuxtLink>
+                                            </li>
+                                            <li>
+                                                <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
+                                                    <HandshakeOutline />
+                                                    <p>
+                                                        <span>Partners</span><br />
+                                                        Use our partner ecosystem to accelerate your Kestra adoption
+                                                    </p>
+                                                </NuxtLink>
+                                            </li>
+                                            <li>
+                                                <NuxtLink class="dropdown-item" href="/use-cases/platform-engineers" @click="globalClick(true)">
+                                                    <HandshakeOutline />
+                                                    <p>
+                                                        <span>About Us</span><br/>
+                                                        Discover the team and values behind Kestra
+                                                    </p>
+                                                </NuxtLink>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td class="dropdown-menu-right">
+                                        <div>
+                                            <NuxtLink
+                                                class="btn btn-animated btn-purple-animated"
+                                                href="/blueprints"
+                                                @click="globalClick(true)"
+                                            >
+                                                <div class="submenu-btn-img">
+                                                    <NuxtImg width="516" height="227" loading="lazy" format="webp" src="/landing/header-menu/resources-menu.png" alt="Using Declarative Data" />
+                                                </div>
+                                                <p class="text-title">
+                                                    Gorgias,<br/>
+                                                    Using Declarative
+                                                    Data Engineering
+                                                    Orchestration<br/>
+                                                    With Kestra
+                                                </p>
+                                                <h2 class="detail-text">
+                                                    20 000+
+                                                </h2>
+                                                <span class="detail-desc">
+                                                        Executions per month
+                                                    </span>
+                                            </NuxtLink>
+                                            <ul class="p-0 list-unstyled">
+                                                <li>
+                                                    <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
+                                                        <BookOpenVariant />
+                                                        <p>
+                                                            <span>Customers Stories</span><br />
+                                                            Learn how Enterprises orchestrate their business-critical workflows
+                                                        </p>
+                                                    </NuxtLink>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <NuxtLink class="nav-link dropdown-toggle" href="/pricing" role="button" @click="globalClick(true)">
