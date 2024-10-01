@@ -528,7 +528,6 @@ In short, the new permissions view eliminates tedious clicks needed to configure
 
 This release also [adds](https://github.com/kestra-io/kestra-ee/issues/603) a Password Reset functionality to the Enterprise Edition, allowing users to get an email link to reset a password directly from the login page.
 
-![forgot_password](/blogs/release-0-19/forgot_password.png)
 
 Note that you'll only see the "Forgot password" option if the email server is configured on your instance.
 
