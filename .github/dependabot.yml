@@ -12,12 +12,13 @@ updates:
       - "dependency-upgrade"
     open-pull-requests-limit: 50
 
-  # Maintain dependencies for Npm modules
+  # Maintain dependencies for NPM modules
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      # Check for updates to GitHub Actions every week
       interval: "weekly"
-    labels:
-      - "dependency-upgrade"
+      day: "wednesday"
+      time: "08:00"
+      timezone: "Europe/Paris"
     open-pull-requests-limit: 50
+    labels: ["dependency-upgrade"]
