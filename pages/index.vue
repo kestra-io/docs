@@ -1,9 +1,9 @@
 <template>
     <div class="content">
         <Head>
-            <Title>Kestra, Open Source Declarative Data Orchestration</Title>
+            <Title>Kestra, Open Source Declarative Orchestration Platform</Title>
             <Meta name="description"
-                  content="Use declarative language to build simpler, faster, scalable and flexible data pipelines"/>
+                  content="Use declarative language to build simpler, faster, scalable and flexible pipelines"/>
         </Head>
 
         <HomeHeader/>
