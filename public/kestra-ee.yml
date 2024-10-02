@@ -779,7 +779,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WorkerGroup_1"
+                $ref: "#/components/schemas/ClusterController.ApiWorkerGroup"
   /api/v1/cluster/workergroups/{id}:
     get:
       tags:
@@ -822,7 +822,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WorkerGroup_4"
+                $ref: "#/components/schemas/ClusterController.ApiWorkerGroup"
     delete:
       tags:
       - WorkerGroups
@@ -11239,7 +11239,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WorkerGroup_2"
+                $ref: "#/components/schemas/ClusterController.ApiWorkerGroup"
   /api/v1/{tenant}/cluster/workergroups/{id}:
     get:
       tags:
@@ -11292,7 +11292,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WorkerGroup_3"
+                $ref: "#/components/schemas/ClusterController.ApiWorkerGroup"
     delete:
       tags:
       - WorkerGroups
@@ -23689,7 +23689,7 @@ components:
           format: date-time
     ClusterController.ApiWorkerGroup:
       required:
-      - activeWorkers
+      - allowedTenants
       - description
       - id
       - key
@@ -23704,10 +23704,10 @@ components:
         description:
           type: string
           description: The description of the worker group.
-        activeWorkers:
-          type: integer
-          description: The number of active workers for the group.
-          format: int32
+        allowedTenants:
+          type: array
+          items:
+            type: string
       description: ApiWorkerGroup.
     ClusterController.ApiWorkerGroupDetails:
       required:
@@ -23737,6 +23737,28 @@ components:
           items:
             $ref: "#/components/schemas/ServiceInstance"
       description: ApiWorkerGroupDetails.
+    ClusterController.ApiWorkerGroupItem:
+      required:
+      - activeWorkers
+      - description
+      - id
+      - key
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of worker group.
+        key:
+          type: string
+          description: The key of the worker group.
+        description:
+          type: string
+          description: The description of the worker group.
+        activeWorkers:
+          type: integer
+          description: The number of active workers for the group.
+          format: int32
+      description: ApiWorkerGroup.
     ClusterController.ApiWorkerGroupList:
       required:
       - workerGroups
@@ -23746,7 +23768,7 @@ components:
           type: array
           description: The list of worker groups.
           items:
-            $ref: "#/components/schemas/ClusterController.ApiWorkerGroup"
+            $ref: "#/components/schemas/ClusterController.ApiWorkerGroupItem"
       description: ApiWorkerGroupList.
     Collection_Action_:
       type: object
@@ -26939,94 +26961,6 @@ components:
         key:
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
-    WorkerGroup_1:
-      required:
-      - allowedTenants
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        allowedTenants:
-          type: array
-          items:
-            type: string
-        deleted:
-          type: boolean
-    WorkerGroup_2:
-      required:
-      - allowedTenants
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        allowedTenants:
-          type: array
-          items:
-            type: string
-        deleted:
-          type: boolean
-    WorkerGroup_3:
-      required:
-      - allowedTenants
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        allowedTenants:
-          type: array
-          items:
-            type: string
-        deleted:
-          type: boolean
-    WorkerGroup_4:
-      required:
-      - allowedTenants
-      - deleted
-      - description
-      - key
-      - uid
-      type: object
-      properties:
-        description:
-          type: string
-        uid:
-          type: string
-        key:
-          pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
-          type: string
-        allowedTenants:
-          type: array
-          items:
-            type: string
-        deleted:
-          type: boolean
     WorkerTaskRestartStrategy:
       type: string
       enum:
