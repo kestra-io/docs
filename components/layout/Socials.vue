@@ -7,7 +7,7 @@
         </li>
         <li class="list-inline-item ml-1">
             <a href="https://twitter.com/kestra_io" title="Twitter" target="_blank">
-                <twitter title="" />
+                <twitter />
             </a>
         </li>
         <li class="list-inline-item ml-1">
@@ -30,10 +30,10 @@
 
 <script>
     import Linkedin from "vue-material-design-icons/Linkedin.vue";
-    import Twitter from "vue-material-design-icons/Twitter.vue";
     import Slack from "vue-material-design-icons/Slack.vue";
     import Github from "vue-material-design-icons/Github.vue";
     import Youtube from "vue-material-design-icons/Youtube.vue";
+    import Twitter from "../icons/TwitterXIcon.vue";
 
     export default {
         components: {Github, Slack, Twitter, Linkedin, Youtube}
