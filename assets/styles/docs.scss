@@ -241,7 +241,10 @@ $bd-gutter-x: 3rem;
     }
 
 
-    img, video, iframe {
+    img {
+        width: 100%;
+    }
+    video, iframe {
         max-width: 100%;
     }
     iframe {
