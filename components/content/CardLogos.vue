@@ -4,7 +4,7 @@
             <NuxtImg
                 class="zoom"
                 width="222.67px"
-                height="125px"
+                height="auto"
                 loading="lazy"
                 format="webp"
                 src="/docs/tutorial/logos/logo-dark-version.png"
@@ -17,7 +17,7 @@
             <NuxtImg
                 class="zoom"
                 width="222.67px"
-                height="125px"
+                height="auto"
                 loading="lazy"
                 format="webp"
                 src="/docs/tutorial/logos/logo-light-version.png"
@@ -30,7 +30,7 @@
             <NuxtImg
                 class="zoom"
                 width="222.67px"
-                height="125px"
+                height="auto"
                 loading="lazy"
                 format="webp"
                 src="/docs/tutorial/logos/logo-monogram-version.png"
