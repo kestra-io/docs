@@ -126,7 +126,7 @@ triggers:
     accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
     secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
     region: "eu-central-1"
-    queueUrl: "https://sqs.eu-central-1.amazonaws.com/000000000000/logs"
+    queueUrl: "https:///queue.amazonaws.com/000000000000/logs"
 ```
 
 When any message is pushed into the `logs` SQS queue, this flow will get triggered immediately.
