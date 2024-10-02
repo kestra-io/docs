@@ -1,8 +1,7 @@
 on:
   schedule:
-    - cron: '0 6 * * 1'
-  repository_dispatch:
-    types: [check-link]
+    - cron: "0 6 * * 1" # Every Monday morning, Paris timezone
+  workflow_dispatch: {}
 
 name: Broken Link Check
 jobs:
