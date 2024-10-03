@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   role: 
   image: mproset
-image: /blogs/data-orchestration-beyond-analytics.png
+image: /blogs/2024-10-03-conditional-inputs.jpg
 ---
 
 We often encounter workflows where a single set of static inputs just won’t cut it. You need something more flexible, something that reacts to previous selections and adapts on the fly. This is exactly what Conditional **inputs** in Kestra enable you to do.
@@ -44,6 +44,8 @@ inputs:
 In this example, the `cloud` input asks the user to select a cloud provider, and the `services` input only appears and populates once a provider is chosen. For AWS, you might see EC2, S3, or RDS, while GCP offers GKE, BigQuery, and Cloud Storage. The second input only shows services relevant to the selected provider by fetching them from the Key Value Store with the `expression` property.
 
 ### Beyond Cloud Providers
+
+![conditionals](/blogs/2024-10-03-conditional-inputs/conditionals.gif)
 
 While cloud orchestration is an obvious use case, dynamic inputs can apply to a variety of scenarios. For instance, in **access control workflows**, different permission levels might need to be displayed based on the user's role. Similarly, in **approval workflows**, different fields could appear depending on who is approving the request—a manager might see budget approval options, while a team lead might not.
 
@@ -108,6 +110,10 @@ Just its dynamic aspect transforms this feature into a must-have, especially in 
 Whether you're provisioning cloud resources, handling complex approval processes, or managing access control systems, **conditional inputs** in Kestra allow you to create smarter, more responsive workflows.
 
 So next time you’re building a workflow that requires flexibility and adaptability, think about how you can use dynamic inputs to make the process seamless. Give your workflows the intelligence they need to handle complexity in the simplest way possible.
+
+<div class="video-container">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XTP6t4QcUUY?si=Du7A7x7mEe5GV1Yh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
