@@ -232,6 +232,7 @@ export default defineNuxtConfig({
         '/docs/concepts/expression/02a.expression-types': {redirect: '/docs/expressions/expression-types'},
         '/docs/concepts/expression/02b.expression-usage': {redirect: '/docs/expressions/expression-usage'},
         '/docs/concepts/expression': {redirect: '/docs/expressions'},
+        '/docs/expression': {redirect: '/docs/expressions'},
         '/docs/migration-guide/core-script-tasks': {redirect: '/docs/migration-guide/0.11.0/core-script-tasks'},
         '/docs/migration-guide/templates': {redirect: '/docs/migration-guide/0.11.0/templates'},
         '/docs/migration-guide/listeners': {redirect: '/docs/migration-guide/0.12.0/listeners'},
