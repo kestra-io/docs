@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid bd-gutter bd-layout">
+    <div class="container-fluid bd-gutter bd-layout" :class="{[`type-` + type]: true}">
         <NavSideBar :type="type" :navigation="navigation"/>
         <article class="bd-main order-1" :class="{'full': page?.rightBar === false , 'docs' : isDoc}">
             <ContentRenderer :value="page">
@@ -252,6 +252,7 @@
             @media only screen and (min-width: 1920px) {
                 max-width: 71.25rem;
             }
+
         }
         .title {
             font-size: $h2-font-size;
@@ -259,7 +260,16 @@
             line-height: 3.25rem;
             margin: 0 auto;
         }
+
+        &.type-plugins {
+            :deep(.bd-content) {
+                img {
+                    width: 25px;
+                }
+            }
+        }
     }
+
 
     :deep(p) {
         font-weight: 400;
