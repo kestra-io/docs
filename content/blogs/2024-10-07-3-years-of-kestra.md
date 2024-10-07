@@ -1,6 +1,6 @@
 ---
-title: "3 years of Kestra, where we are from and where we go"
-description: "This is the first time we, has Co-Founders, share the journey of Kestra from its beginning to the future we envision for Orchestration"
+title: "3 years of Kestra, From Zero to 10,000 Stars on GitHub"
+description: "To mark 10k stars on GitHub, we’re sharing Kestra’s journey from its early days to what it has become today—a unified orchestration platform with a vision for the future."
 date: 2024-10-0710T12:00:00
 category: Company News
 author:
@@ -9,7 +9,6 @@ author:
   role: "CTO & Co-Founder"
 image: 
 ---
-This is the first time we, has Co-Founders, share the journey of Kestra from its beginning to the future we envision for Orchestration
 
 Before Kestra officially became what it is today, its roots began in my early career. I started as a self-taught developer about 20 years ago, working mainly with **PHP**, like many developers in France who were building websites at the time. Over time, I transitioned through various roles, including working in startups and doing freelance projects. My goal was always to create products that could solve complex technical problems.
 
