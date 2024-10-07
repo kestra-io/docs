@@ -2,7 +2,7 @@
     <div class="container hero header" data-aos="fade-right">
         <div class="row header-content">
             <div class="col-md-6">
-                <h1 class="title fw-light" v-html="content.tag"></h1>
+                <h1 class="title " v-html="content.tag"></h1>
                 <p class="description fw-light pb-4">
                     {{ content.description }}
                 </p>
@@ -80,7 +80,7 @@ export default {
 
 .title {
     font-size: $h1-font-size;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .title-sm {
