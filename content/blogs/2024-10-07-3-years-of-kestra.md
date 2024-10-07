@@ -68,9 +68,9 @@ We’ve also added **task runners** in our Enterprise version, which allow users
 
 ## What’s Next?
 
-As we look ahead, we want to make Kestra the go-to tool for orchestration across industries. We’re not just focused on data orchestration — we’re building a platform that can manage everything from **business processes** to **infrastructure automation**.
+As we look ahead, we want to make Kestra the go-to tool for orchestration across industries. We’re not just focused on data orchestration — we’re building a platform that can manage all workflows from **business processes** to **infrastructure automation**.
 
-While our team is growing and our cloud offering is in **private Alpha**, we’re taking our time to make sure we get it right. The goal is to offer a reliable, secure, and performant cloud service that can accommodate the needs of any organization, from startups to enterprises.
+While our team is growing and our cloud offering is in **private Beta**, we’re taking our time to make sure we get it right. The goal is to offer a reliable, secure, and performant cloud service that can accommodate the needs of any organization, from startups to enterprises.
 
 ::alert{type="info"}
 If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
