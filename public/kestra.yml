@@ -41,6 +41,21 @@ paths:
       responses:
         "200":
           description: addBasicAuth 200 response
+  /api/v1/basicAuth/{tenant}:
+    post:
+      tags:
+      - Misc
+      summary: Add basic auth to current instance
+      operationId: addBasicAuth_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MiscController.BasicAuthCredentials"
+        required: true
+      responses:
+        "200":
+          description: addBasicAuth_1 200 response
   /api/v1/blueprints/community:
     get:
       tags:
@@ -73,7 +88,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -82,7 +96,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -189,6 +202,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MiscController.Configuration"
+  /api/v1/configs/{tenant}:
+    get:
+      tags:
+      - Misc
+      summary: Get current configurations
+      operationId: configuration_1
+      responses:
+        "200":
+          description: configuration_1 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MiscController.Configuration"
   /api/v1/executions:
     get:
       tags:
@@ -213,7 +239,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -222,7 +247,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -302,14 +326,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -340,8 +356,9 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
-          type: string
           nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -411,146 +428,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BulkResponse"
-  /api/v1/executions/change-status/by-ids:
-    post:
-      tags:
-      - Executions
-      summary: Change status of executions by id
-      operationId: changeStatusById
-      parameters:
-      - name: newStatus
-        in: query
-        description: The new status of the executions
-        required: true
-        schema:
-          $ref: "#/components/schemas/State.Type"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-        required: true
-      responses:
-        "200":
-          description: On success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BulkResponse"
-        "422":
-          description: Changed status with errors
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BulkErrorResponse"
-  /api/v1/executions/change-status/by-query:
-    post:
-      tags:
-      - Executions
-      summary: Change executions status by query parameters
-      operationId: changeStatusByQuery
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      - name: flowId
-        in: query
-        description: A flow id filter
-        schema:
-          type: string
-          nullable: true
-      - name: startDate
-        in: query
-        description: The start datetime
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: endDate
-        in: query
-        description: The end datetime
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: timeRange
-        in: query
-        description: A time range filter relative to the current time
-        schema:
-          type: string
-          nullable: true
-        examples:
-          Filter last 5 minutes:
-            value: PT5M
-          Filter last 24 hours:
-            value: P1D
-      - name: state
-        in: query
-        description: A state filter
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/State.Type"
-      - name: labels
-        in: query
-        description: A labels filter as a list of 'key:value'
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: triggerExecutionId
-        in: query
-        description: The trigger execution id
-        schema:
-          type: string
-          nullable: true
-      - name: childFilter
-        in: query
-        description: A execution child filter
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
-      - name: newStatus
-        in: query
-        description: The new status of the executions
-        required: true
-        schema:
-          $ref: "#/components/schemas/State.Type"
-      responses:
-        "200":
-          description: On success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BulkResponse"
-        "422":
-          description: Changed status with errors
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BulkErrorResponse"
   /api/v1/executions/flows/{namespace}/{flowId}:
     get:
       tags:
@@ -624,14 +501,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -662,8 +531,9 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
-          type: string
           nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -743,14 +613,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -781,8 +643,9 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
-          type: string
           nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -910,14 +773,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -948,8 +803,9 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
-          type: string
           nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -1031,14 +887,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1069,8 +917,9 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
-          type: string
           nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -1152,14 +1001,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1190,8 +1031,9 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
-          type: string
           nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -1245,7 +1087,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -1254,7 +1095,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -1272,14 +1112,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -1310,8 +1142,9 @@ paths:
         in: query
         description: A time range filter relative to the current time
         schema:
-          type: string
           nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Duration"
         examples:
           Filter last 5 minutes:
             value: PT5M
@@ -1558,32 +1391,6 @@ paths:
       responses:
         "204":
           description: On success
-  /api/v1/executions/{executionId}/change-status:
-    post:
-      tags:
-      - Executions
-      summary: Change the status of an execution
-      operationId: changeStatus
-      parameters:
-      - name: executionId
-        in: path
-        description: The execution id
-        required: true
-        schema:
-          type: string
-      - name: status
-        in: query
-        description: The new status of the execution
-        required: true
-        schema:
-          $ref: "#/components/schemas/State.Type"
-      responses:
-        "200":
-          description: changeStatus 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Execution"
   /api/v1/executions/{executionId}/eval/{taskRunId}:
     post:
       tags:
@@ -1766,14 +1573,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: subflows
-        in: query
-        description: The subflow tasks to display
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
       responses:
         "200":
           description: flowGraph 200 response
@@ -1923,33 +1722,6 @@ paths:
           description: On success
         "409":
           description: if the executions is not paused
-  /api/v1/executions/{executionId}/resume/validate:
-    post:
-      tags:
-      - Executions
-      summary: Validate inputs to resume a paused execution.
-      operationId: validateInputsOnResume
-      parameters:
-      - name: executionId
-        in: path
-        description: The execution id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: array
-              nullable: true
-              items:
-                type: string
-                format: binary
-      responses:
-        "204":
-          description: On success
-        "409":
-          description: if the executions is not paused
   /api/v1/executions/{executionId}/state:
     post:
       tags:
@@ -2010,59 +1782,6 @@ paths:
         schema:
           type: boolean
           default: false
-      - name: revision
-        in: query
-        description: The flow revision or latest if null
-        schema:
-          type: integer
-          format: int32
-          nullable: true
-      - name: scheduleDate
-        in: query
-        description: Schedule the flow on a specific date
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: array
-              nullable: true
-              items:
-                type: string
-                format: binary
-      responses:
-        "409":
-          description: if the flow is disabled
-  /api/v1/executions/{namespace}/{id}/validate:
-    post:
-      tags:
-      - Executions
-      summary: Validate the creation of a new execution for a flow
-      operationId: validateInputsOnCreate
-      parameters:
-      - name: namespace
-        in: path
-        description: The flow namespace
-        required: true
-        schema:
-          type: string
-      - name: id
-        in: path
-        description: The flow id
-        required: true
-        schema:
-          type: string
-      - name: labels
-        in: query
-        description: The labels as a list of 'key:value'
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
       - name: revision
         in: query
         description: The flow revision or latest if null
@@ -2143,14 +1862,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the flows to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2159,7 +1870,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter as a list of 'key:value'
+        description: A labels filter
         schema:
           type: array
           nullable: true
@@ -2206,14 +1917,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the flows to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2222,7 +1925,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter as a list of 'key:value'
+        description: A labels filter
         schema:
           type: array
           nullable: true
@@ -2291,14 +1994,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the flows to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2307,7 +2002,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter as a list of 'key:value'
+        description: A labels filter
         schema:
           type: array
           nullable: true
@@ -2357,14 +2052,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the flows to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2373,7 +2060,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter as a list of 'key:value'
+        description: A labels filter
         schema:
           type: array
           nullable: true
@@ -2454,7 +2141,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -2463,7 +2149,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -2481,14 +2166,6 @@ paths:
         schema:
           type: string
           nullable: true
-      - name: scope
-        in: query
-        description: The scope of the flows to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
       - name: namespace
         in: query
         description: A namespace filter prefix
@@ -2497,7 +2174,7 @@ paths:
           nullable: true
       - name: labels
         in: query
-        description: A labels filter as a list of 'key:value'
+        description: A labels filter
         schema:
           type: array
           nullable: true
@@ -2522,7 +2199,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -2531,7 +2207,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -2601,33 +2276,10 @@ paths:
           application/x-yaml:
             schema:
               type: string
-          application/json:
-            schema:
-              type: string
-            example: null
         required: true
       responses:
         "200":
           description: validateTask 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidateConstraintViolation"
-  /api/v1/flows/validate/trigger:
-    post:
-      tags:
-      - Flows
-      summary: Validate trigger
-      operationId: validateTrigger
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: string
-        required: true
-      responses:
-        "200":
-          description: validateTrigger 200 response
           content:
             application/json:
               schema:
@@ -3010,7 +2662,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -3019,7 +2670,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -3483,7 +3133,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -3492,7 +3141,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -3547,7 +3195,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -3556,7 +3203,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -3649,6 +3295,7 @@ paths:
         required: true
         schema:
           type: string
+          format: uri
       responses:
         "200":
           description: file_1 200 response
@@ -3704,6 +3351,7 @@ paths:
         required: true
         schema:
           type: string
+          format: uri
       requestBody:
         content:
           multipart/form-data:
@@ -3738,6 +3386,7 @@ paths:
         required: true
         schema:
           type: string
+          format: uri
       responses:
         "200":
           description: delete_3 200 response
@@ -3759,6 +3408,7 @@ paths:
         description: The internal storage uri
         schema:
           type: string
+          format: uri
           nullable: true
       responses:
         "200":
@@ -3786,6 +3436,7 @@ paths:
         description: The internal storage uri
         schema:
           type: string
+          format: uri
           nullable: true
       responses:
         "200":
@@ -3860,6 +3511,7 @@ paths:
         description: The internal storage uri
         schema:
           type: string
+          format: uri
           nullable: true
       responses:
         "200":
@@ -4171,27 +3823,6 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/DailyExecutionStatistics"
-  /api/v1/stats/executions/daily/group-by-namespace:
-    post:
-      tags:
-      - Stats
-      summary: Get daily statistics for executions grouped by namespace
-      operationId: dailyStatisticsGroupByNamespace
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/StatsController.ByNamespaceStatisticRequest"
-        required: true
-      responses:
-        "200":
-          description: dailyStatisticsGroupByNamespace 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: "#/components/schemas/ExecutionCountStatistics"
   /api/v1/stats/executions/latest/group-by-flow:
     post:
       tags:
@@ -4234,25 +3865,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/LogStatistics"
-  /api/v1/stats/summary:
-    post:
-      tags:
-      - Stats
-      summary: Get summary statistics
-      operationId: summary
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/StatsController.SummaryRequest"
-        required: true
-      responses:
-        "200":
-          description: summary 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SummaryStatistics"
   /api/v1/stats/taskruns/daily:
     post:
       tags:
@@ -4286,7 +3898,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -4295,7 +3906,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -4546,7 +4156,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -4555,7 +4164,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -4969,7 +4577,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -4978,7 +4585,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -5005,12 +4611,6 @@ paths:
       - name: workerId
         in: query
         description: The identifier of the worker currently evaluating the trigger
-        schema:
-          type: string
-          nullable: true
-      - name: flowId
-        in: query
-        description: The flow identifier
         schema:
           type: string
           nullable: true
@@ -5132,7 +4732,6 @@ paths:
         description: The current page
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 1
@@ -5141,7 +4740,6 @@ paths:
         description: The current page size
         required: true
         schema:
-          minimum: 1
           type: integer
           format: int32
           default: 10
@@ -5255,58 +4853,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Usage"
-  /api/v1/{tenant}/basicAuth:
-    post:
-      tags:
-      - Misc
-      summary: Add basic auth to current instance
-      operationId: addBasicAuth_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MiscController.BasicAuthCredentials"
-        required: true
-      responses:
-        "200":
-          description: addBasicAuth_1 200 response
-  /api/v1/{tenant}/configs:
-    get:
-      tags:
-      - Misc
-      summary: Get current configurations
-      operationId: configuration_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: configuration_1 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MiscController.Configuration"
-  /api/v1/{tenant}/usages/all:
+  /api/v1/usages/all/{tenant}:
     get:
       tags:
       - Misc
       summary: Get instance usage information
       operationId: usages_1
-      parameters:
-      - name: tenant
-        in: path
-        required: true
-        schema:
-          type: string
       responses:
         "200":
           description: usages_1 200 response
@@ -5494,8 +5046,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/State.Type"
-        logToFile:
-          type: boolean
     AbstractTriggerForExecution:
       required:
       - id
@@ -5514,14 +5064,14 @@ components:
             p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*)*"
           type: string
     ArrayListTotal_BlueprintController.BlueprintItem_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_BlueprintController.BlueprintItem_"
       - $ref: "#/components/schemas/AbstractList_BlueprintController.BlueprintItem_"
       - $ref: "#/components/schemas/AbstractCollection_BlueprintController.BlueprintItem_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/BlueprintController.BlueprintItem"
           last:
@@ -5532,14 +5082,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_Execution_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_Execution_"
       - $ref: "#/components/schemas/AbstractList_Execution_"
       - $ref: "#/components/schemas/AbstractCollection_Execution_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/Execution"
           last:
@@ -5550,14 +5100,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_Flow_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_Flow_"
       - $ref: "#/components/schemas/AbstractList_Flow_"
       - $ref: "#/components/schemas/AbstractCollection_Flow_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/Flow"
           last:
@@ -5568,14 +5118,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_LogEntry_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_LogEntry_"
       - $ref: "#/components/schemas/AbstractList_LogEntry_"
       - $ref: "#/components/schemas/AbstractCollection_LogEntry_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/LogEntry"
           last:
@@ -5586,14 +5136,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_MetricEntry_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_MetricEntry_"
       - $ref: "#/components/schemas/AbstractList_MetricEntry_"
       - $ref: "#/components/schemas/AbstractCollection_MetricEntry_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/MetricEntry"
           last:
@@ -5604,14 +5154,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_NamespaceWithDisabled_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_NamespaceWithDisabled_"
       - $ref: "#/components/schemas/AbstractList_NamespaceWithDisabled_"
       - $ref: "#/components/schemas/AbstractCollection_NamespaceWithDisabled_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/NamespaceWithDisabled"
           last:
@@ -5622,14 +5172,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_SearchResult_Flow__:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_SearchResult_Flow__"
       - $ref: "#/components/schemas/AbstractList_SearchResult_Flow__"
       - $ref: "#/components/schemas/AbstractCollection_SearchResult_Flow__"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/SearchResult_Flow_"
           last:
@@ -5640,14 +5190,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_TaskRun_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_TaskRun_"
       - $ref: "#/components/schemas/AbstractList_TaskRun_"
       - $ref: "#/components/schemas/AbstractCollection_TaskRun_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/TaskRun"
           last:
@@ -5658,14 +5208,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_Template_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_Template_"
       - $ref: "#/components/schemas/AbstractList_Template_"
       - $ref: "#/components/schemas/AbstractCollection_Template_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/Template"
           last:
@@ -5676,14 +5226,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_TriggerController.Triggers_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_TriggerController.Triggers_"
       - $ref: "#/components/schemas/AbstractList_TriggerController.Triggers_"
       - $ref: "#/components/schemas/AbstractCollection_TriggerController.Triggers_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/TriggerController.Triggers"
           last:
@@ -5694,14 +5244,14 @@ components:
             type: integer
             format: int64
     ArrayListTotal_Trigger_:
-      required:
-      - total
       type: object
       allOf:
       - $ref: "#/components/schemas/ArrayList_Trigger_"
       - $ref: "#/components/schemas/AbstractList_Trigger_"
       - $ref: "#/components/schemas/AbstractCollection_Trigger_"
-      - properties:
+      - required:
+        - total
+        properties:
           first:
             $ref: "#/components/schemas/Trigger"
           last:
@@ -5865,11 +5415,10 @@ components:
           title: Whether the backfill is paused.
           type: boolean
         inputs:
-          title: The inputs to pass to the backfilled executions.
           allOf:
           - type: object
             additionalProperties: true
-          - {}
+          - title: The inputs to pass to the backfilled executions.
         labels:
           title: The labels to pass to the backfilled executions.
           type: array
@@ -6051,27 +5600,26 @@ components:
       type: object
       properties:
         min:
-          type: string
+          $ref: "#/components/schemas/Duration"
         avg:
-          type: string
+          $ref: "#/components/schemas/Duration"
         max:
-          type: string
+          $ref: "#/components/schemas/Duration"
         sum:
-          type: string
+          $ref: "#/components/schemas/Duration"
         count:
           type: integer
           format: int64
-    DependsOn:
-      type: object
-      properties:
-        inputs:
-          type: array
-          nullable: true
-          items:
-            type: string
-        condition:
-          type: string
-          nullable: true
+    DayOfWeek:
+      type: string
+      enum:
+      - MONDAY
+      - TUESDAY
+      - WEDNESDAY
+      - THURSDAY
+      - FRIDAY
+      - SATURDAY
+      - SUNDAY
     DocumentationWithSchema:
       type: object
       properties:
@@ -6079,6 +5627,25 @@ components:
           type: string
         schema:
           $ref: "#/components/schemas/Schema"
+    Duration:
+      type: object
+      properties:
+        units:
+          type: array
+          items:
+            $ref: "#/components/schemas/TemporalUnit"
+        positive:
+          type: boolean
+        zero:
+          type: boolean
+        negative:
+          type: boolean
+        seconds:
+          type: integer
+          format: int64
+        nano:
+          type: integer
+          format: int32
     Event_Execution_:
       type: object
       properties:
@@ -6091,7 +5658,7 @@ components:
         comment:
           type: string
         retry:
-          type: string
+          $ref: "#/components/schemas/Duration"
     Event_LogEntry_:
       type: object
       properties:
@@ -6104,22 +5671,7 @@ components:
         comment:
           type: string
         retry:
-          type: string
-    ExecutableTask.SubflowId:
-      required:
-      - flowId
-      - namespace
-      - revision
-      type: object
-      properties:
-        namespace:
-          type: string
-        flowId:
-          type: string
-        revision:
-          type: integer
-          format: int32
-          nullable: true
+          $ref: "#/components/schemas/Duration"
     Execution:
       required:
       - deleted
@@ -6133,7 +5685,6 @@ components:
       - originalId
       - outputs
       - parentId
-      - scheduleDate
       - state
       - taskRunList
       - trigger
@@ -6178,10 +5729,6 @@ components:
           type: boolean
         metadata:
           $ref: "#/components/schemas/ExecutionMetadata"
-        scheduleDate:
-          type: string
-          format: date-time
-          nullable: true
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -6215,56 +5762,6 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
-    ExecutionCountStatistics:
-      required:
-      - counts
-      - total
-      type: object
-      properties:
-        counts:
-          properties:
-            CREATED:
-              type: integer
-              format: int64
-            RUNNING:
-              type: integer
-              format: int64
-            PAUSED:
-              type: integer
-              format: int64
-            RESTARTED:
-              type: integer
-              format: int64
-            KILLING:
-              type: integer
-              format: int64
-            SUCCESS:
-              type: integer
-              format: int64
-            WARNING:
-              type: integer
-              format: int64
-            FAILED:
-              type: integer
-              format: int64
-            KILLED:
-              type: integer
-              format: int64
-            CANCELLED:
-              type: integer
-              format: int64
-            QUEUED:
-              type: integer
-              format: int64
-            RETRYING:
-              type: integer
-              format: int64
-            RETRIED:
-              type: integer
-              format: int64
-        total:
-          type: integer
-          format: int64
     ExecutionMetadata:
       required:
       - attemptNumber
@@ -6295,7 +5792,6 @@ components:
     ExecutionTrigger:
       required:
       - id
-      - logFile
       - type
       - variables
       type: object
@@ -6307,9 +5803,6 @@ components:
         variables:
           type: object
           additionalProperties: true
-        logFile:
-          type: string
-          format: uri
     ExecutionUsage:
       type: object
       properties:
@@ -6355,13 +5848,13 @@ components:
           type: integer
           format: int64
     Flow:
-      required:
-      - deleted
-      - tasks
       type: object
       allOf:
       - $ref: "#/components/schemas/AbstractFlow"
-      - properties:
+      - required:
+        - deleted
+        - tasks
+        properties:
           deleted:
             type: boolean
           taskDefaults:
@@ -6377,9 +5870,9 @@ components:
             - oneOf:
               - $ref: "#/components/schemas/List_Object_"
               - $ref: "#/components/schemas/Map_Object.Object_"
-            oneOf:
-            - $ref: "#/components/schemas/List_Object_"
-            - $ref: "#/components/schemas/Map_Object.Object_"
+            - oneOf:
+              - $ref: "#/components/schemas/List_Object_"
+              - $ref: "#/components/schemas/Map_Object.Object_"
           variables:
             type: object
             additionalProperties: true
@@ -6423,13 +5916,13 @@ components:
       - TASKS
       - TRIGGERS
     FlowForExecution:
-      required:
-      - deleted
-      - tasks
       type: object
       allOf:
       - $ref: "#/components/schemas/AbstractFlow"
-      - properties:
+      - required:
+        - deleted
+        - tasks
+        properties:
           deleted:
             type: boolean
           tasks:
@@ -6519,11 +6012,6 @@ components:
       enum:
       - FLOW_TASK
       - FLOW_TRIGGER
-    FlowScope:
-      type: string
-      enum:
-      - USER
-      - SYSTEM
     FlowTopologyGraph:
       required:
       - edges
@@ -6576,13 +6064,13 @@ components:
             type: integer
             format: int64
     FlowWithSource:
-      required:
-      - deleted
       type: object
       allOf:
       - $ref: "#/components/schemas/Flow"
       - $ref: "#/components/schemas/AbstractFlow"
-      - properties:
+      - required:
+        - deleted
+        properties:
           deleted:
             type: boolean
           source:
@@ -6664,29 +6152,26 @@ components:
           type: string
           deprecated: true
         id:
-          title: The ID of the input.
           minLength: 1
           pattern: "^[a-zA-Z0-9][.a-zA-Z0-9_-]*"
           type: string
         type:
-          title: The type of the input.
-          allOf:
-          - $ref: "#/components/schemas/Type"
+          $ref: "#/components/schemas/Type"
         description:
-          title: The description of the input.
           type: string
-        dependsOn:
-          title: The dependencies of the input.
-          allOf:
-          - $ref: "#/components/schemas/DependsOn"
         required:
           type: boolean
-        defaults:
-          title: The default value to use if no value is specified.
-        displayName:
-          title: The display name of the input.
-          maxLength: 64
-          type: string
+        defaults: {}
+    KVController.KVType:
+      type: string
+      enum:
+      - STRING
+      - NUMBER
+      - BOOLEAN
+      - DATETIME
+      - DATE
+      - DURATION
+      - JSON
     KVController.TypedValue:
       required:
       - type
@@ -6694,7 +6179,7 @@ components:
       type: object
       properties:
         type:
-          $ref: "#/components/schemas/KVType"
+          $ref: "#/components/schemas/KVController.KVType"
         value: {}
     KVEntry:
       required:
@@ -6715,16 +6200,6 @@ components:
         expirationDate:
           type: string
           format: date-time
-    KVType:
-      type: string
-      enum:
-      - STRING
-      - NUMBER
-      - BOOLEAN
-      - DATETIME
-      - DATE
-      - DURATION
-      - JSON
     Label:
       required:
       - key
@@ -6944,11 +6419,6 @@ components:
           type: string
         version:
           type: string
-        commitId:
-          type: string
-        commitDate:
-          type: string
-          format: date-time
         isTaskRunEnabled:
           type: boolean
         isAnonymousUsageEnabled:
@@ -6983,6 +6453,21 @@ components:
         max:
           type: integer
           format: int32
+    Month:
+      type: string
+      enum:
+      - JANUARY
+      - FEBRUARY
+      - MARCH
+      - APRIL
+      - MAY
+      - JUNE
+      - JULY
+      - AUGUST
+      - SEPTEMBER
+      - OCTOBER
+      - NOVEMBER
+      - DECEMBER
     Namespace:
       required:
       - deleted
@@ -6995,14 +6480,14 @@ components:
         deleted:
           type: boolean
     NamespaceWithDisabled:
-      required:
-      - deleted
-      - disabled
-      - id
       type: object
       allOf:
       - $ref: "#/components/schemas/Namespace"
-      - properties:
+      - required:
+        - deleted
+        - disabled
+        - id
+        properties:
           id:
             pattern: "^[a-z0-9][a-z0-9._-]*"
             type: string
@@ -7329,17 +6814,14 @@ components:
       type: object
       properties:
         duration:
-          type: string
-          readOnly: true
+          $ref: "#/components/schemas/Duration"
         startDate:
           type: string
           format: date-time
-          readOnly: true
         endDate:
           type: string
           format: date-time
           nullable: true
-          readOnly: true
         current:
           $ref: "#/components/schemas/State.Type"
         histories:
@@ -7401,20 +6883,6 @@ components:
         namespaceOnly:
           type: boolean
           nullable: true
-    StatsController.ByNamespaceStatisticRequest:
-      type: object
-      properties:
-        namespace:
-          type: string
-          nullable: true
-        startDate:
-          type: string
-          format: date-time
-          nullable: true
-        endDate:
-          type: string
-          format: date-time
-          nullable: true
     StatsController.LastExecutionsRequest:
       type: object
       properties:
@@ -7453,11 +6921,6 @@ components:
         q:
           type: string
           nullable: true
-        scope:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
         namespace:
           type: string
           nullable: true
@@ -7477,32 +6940,6 @@ components:
           nullable: true
           items:
             $ref: "#/components/schemas/State.Type"
-    StatsController.SummaryRequest:
-      type: object
-      properties:
-        namespace:
-          type: string
-          nullable: true
-        startDate:
-          type: string
-          format: date-time
-          nullable: true
-        endDate:
-          type: string
-          format: date-time
-          nullable: true
-    SummaryStatistics:
-      required:
-      - flows
-      - triggers
-      type: object
-      properties:
-        flows:
-          type: integer
-          format: int32
-        triggers:
-          type: integer
-          format: int32
     Task:
       required:
       - id
@@ -7523,7 +6960,7 @@ components:
         retry:
           $ref: "#/components/schemas/AbstractRetry"
         timeout:
-          type: string
+          $ref: "#/components/schemas/Duration"
         disabled:
           type: boolean
         workerGroup:
@@ -7531,8 +6968,6 @@ components:
         logLevel:
           $ref: "#/components/schemas/Level"
         allowFailure:
-          type: boolean
-        logToFile:
           type: boolean
     TaskForExecution:
       required:
@@ -7557,8 +6992,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Input_Object_"
-        subflowId:
-          $ref: "#/components/schemas/ExecutableTask.SubflowId"
     TaskRun:
       required:
       - attempts
@@ -7605,7 +7038,6 @@ components:
           format: int32
     TaskRunAttempt:
       required:
-      - logFile
       - state
       type: object
       properties:
@@ -7616,9 +7048,6 @@ components:
             $ref: "#/components/schemas/AbstractMetricEntry_Object_"
         state:
           $ref: "#/components/schemas/State"
-        logFile:
-          type: string
-          format: uri
     Template:
       required:
       - deleted
@@ -7648,6 +7077,17 @@ components:
           items:
             $ref: "#/components/schemas/Task"
         deleted:
+          type: boolean
+    TemporalUnit:
+      type: object
+      properties:
+        duration:
+          $ref: "#/components/schemas/Duration"
+        durationEstimated:
+          type: boolean
+        dateBased:
+          type: boolean
+        timeBased:
           type: boolean
     Trigger:
       type: object
@@ -7748,7 +7188,6 @@ components:
       - SECRET
       - ARRAY
       - MULTISELECT
-      - YAML
     Usage:
       required:
       - configurations
@@ -7778,7 +7217,7 @@ components:
         version:
           type: string
         zoneId:
-          type: string
+          $ref: "#/components/schemas/ZoneId"
         uri:
           type: string
           nullable: true
@@ -7838,3 +7277,98 @@ components:
         key:
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9_-]*"
           type: string
+    ZoneId:
+      type: object
+      properties:
+        id:
+          type: string
+        rules:
+          $ref: "#/components/schemas/ZoneRules"
+    ZoneOffset:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/ZoneId"
+      - properties:
+          totalSeconds:
+            type: integer
+            format: int32
+          id:
+            type: string
+          rules:
+            $ref: "#/components/schemas/ZoneRules"
+    ZoneOffsetTransition:
+      type: object
+      properties:
+        instant:
+          type: string
+          format: date-time
+        dateTimeBefore:
+          type: string
+          format: date-time
+        dateTimeAfter:
+          type: string
+          format: date-time
+        offsetBefore:
+          $ref: "#/components/schemas/ZoneOffset"
+        offsetAfter:
+          $ref: "#/components/schemas/ZoneOffset"
+        duration:
+          $ref: "#/components/schemas/Duration"
+        gap:
+          type: boolean
+        overlap:
+          type: boolean
+        validOffsets:
+          type: array
+          items:
+            $ref: "#/components/schemas/ZoneOffset"
+    ZoneOffsetTransitionRule:
+      required:
+      - dayOfMonthIndicator
+      - dayOfWeek
+      - month
+      - offsetAfter
+      - offsetBefore
+      - standardOffset
+      - timeDefinition
+      type: object
+      properties:
+        month:
+          $ref: "#/components/schemas/Month"
+        dayOfMonthIndicator:
+          type: integer
+          format: int32
+        dayOfWeek:
+          $ref: "#/components/schemas/DayOfWeek"
+        localTime:
+          type: string
+          format: partial-time
+        midnightEndOfDay:
+          type: boolean
+        timeDefinition:
+          $ref: "#/components/schemas/ZoneOffsetTransitionRule.TimeDefinition"
+        standardOffset:
+          $ref: "#/components/schemas/ZoneOffset"
+        offsetBefore:
+          $ref: "#/components/schemas/ZoneOffset"
+        offsetAfter:
+          $ref: "#/components/schemas/ZoneOffset"
+    ZoneOffsetTransitionRule.TimeDefinition:
+      type: string
+      enum:
+      - UTC
+      - WALL
+      - STANDARD
+    ZoneRules:
+      type: object
+      properties:
+        fixedOffset:
+          type: boolean
+        transitions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ZoneOffsetTransition"
+        transitionRules:
+          type: array
+          items:
+            $ref: "#/components/schemas/ZoneOffsetTransitionRule"
