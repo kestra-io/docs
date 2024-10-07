@@ -62,6 +62,8 @@ The open-source nature of Kestra has allowed us to reach users all over the worl
 
 To meet the needs of larger organizations, Kestra is fully **scalable** and **distributed**. We’ve split the system into microservices, with each service capable of scaling to handle a variety of workloads. For teams with specific infrastructure needs, we offer **worker groups**, allowing tasks to run on specialized hardware, like **GPU** or **Windows-based** environments.
 
+We’ve also added **task runners** in our Enterprise version, which allow users to delegate the execution of tasks to remote engines like **Kubernetes**, **AWS Batch**, **Azure Batch**, **Google Batch**, or **Cloud Run**. This enables users to take advantage of **serverless** execution when necessary, while still keeping the core system performant for high-throughput workloads.
+
 ---
 
 ## What’s Next?
