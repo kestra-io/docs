@@ -24,7 +24,7 @@ Leroy Merlin was dealing with a data architecture that was getting outdated and 
 
 Kestra was designed to tackle Leroy Merlin’s issues—**scalability, flexibility**, and making things easier for engineers across various teams. The idea was to build something that could handle their massive data operations but still be user-friendly for engineers from different teams, whether they worked in data, BI, or infrastructure.
 
-After months of development and testing, Kestra went live at Leroy Merlin, and it transformed their workflows. What used to take multiple teams days to complete was now done in hours, with engineers able to manage their own workflows independently.
+After months of development and testing, Kestra went live at Leroy Merlin, and it improved their workflows significantly. What used to take multiple teams days to complete was now done in hours, with engineers able to manage their own workflows independently.
 
 By **August 2020**, Leroy Merlin upgraded to the **Enterprise Edition of Kestra**, which brought even more features like role-based access control and advanced security, further improving their processes. Today, Kestra runs over **400,000 executions** and **3 million tasks** per month at Leroy Merlin, handling everything from real-time data transfers to long-running data science workflows.
 
@@ -36,7 +36,7 @@ Our goal from the start was to create an orchestration platform that was simple 
 
 ## Early Milestones: GitHub, Hacker News, and InfoQ
 
-Our first big milestone was Kestra’s public release. The feedback was incredible when we shared it on Hacker News, and that helped us gain attention from developers and companies around the world. An article on **InfoQ** followed, which brought even more visibility and credibility to Kestra. By the time we raised our **pre-seed funding**, it was clear that Kestra was evolving beyond just a data orchestration tool — it was a flexible platform that could handle all kinds of use cases, from data pipelines to operational workflows.
+Our first big milestone was Kestra’s public release. We received encouraging feedback when we shared it on Hacker News, and that helped us gain attention from developers and companies around the world. An article on **InfoQ** followed, which brought even more visibility and credibility to Kestra. By the time we raised our **pre-seed funding**, it was clear that Kestra was evolving beyond just a data orchestration tool — it was a flexible platform that could handle all kinds of use cases, from data pipelines to operational workflows.
 
 ### One Platform for Company-Wide Orchestration
 
@@ -46,11 +46,11 @@ We designed Kestra to be **language-agnostic**, meaning you can run tasks in **J
 
 ## Plugins for Flexibility
 
-One of the things that makes Kestra stand out is its **plugin system**. We wanted the platform to work with a wide range of technologies, so we built it to be easily extendable. Today, Kestra has over **535 plugins**, with more on the roadmap.
+One of the things that makes Kestra stand out is its **plugin system**. We wanted the platform to work with a wide range of technologies, so we built it to be easily extendable. Kestra currently supports over 535 plugins, and we continue to expand that.
 
-Creating a plugin for Kestra is straightforward. We provide templates, so that anyone with basic **Java skills** can get started quickly. Most plugins are about 80% done just by following the **Quick Start guide**. We also run nightly tests on all plugins to make sure everything is up to date with any changes in technologies or APIs.
+We've made it easy to create plugins for Kestra, offering templates to help developers get started quickly. Most plugins can be built using our **Quick Start guide** and are usually about 80% complete from the get-go. To ensure everything works reliably, we regularly test our plugins to keep them up-to-date with any changes in technologies or APIs.
 
-We’ve kept control of core plugins to ensure quality, and we also maintain community-contributed plugins to avoid issues with outdated or low-quality code.
+We also maintain control over core plugins, and for community-contributed plugins, we help ensure they stay updated and reliable over time.
 
 ---
 
