@@ -114,6 +114,7 @@
         }
 
         :deep(pre) {
+            overflow: hidden;
             margin-bottom: 0;
         }
 
@@ -155,6 +156,7 @@
     }
 
     :deep(pre code .line) {
+        white-space: pre-wrap;
         display: block;
         min-height: 1rem;
     }
