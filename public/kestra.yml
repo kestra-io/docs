@@ -5380,10 +5380,13 @@ components:
       type: object
       properties:
         id:
+          maxLength: 100
           minLength: 1
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
           type: string
         namespace:
+          maxLength: 150
+          minLength: 1
           pattern: "^[a-z0-9][a-z0-9._-]*"
           type: string
         revision:
@@ -7323,6 +7326,47 @@ components:
       - STANDALONE
       - WEBSERVER
       - WORKER
+    ServiceUsage:
+      required:
+      - dailyStatistics
+      type: object
+      properties:
+        dailyStatistics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ServiceUsage.DailyServiceStatistics"
+    ServiceUsage.DailyServiceStatistics:
+      required:
+      - type
+      - values
+      type: object
+      properties:
+        type:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: "#/components/schemas/ServiceUsage.DailyStatistics"
+    ServiceUsage.DailyStatistics:
+      required:
+      - avg
+      - date
+      - max
+      - min
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        min:
+          type: integer
+          format: int64
+        max:
+          type: integer
+          format: int64
+        avg:
+          type: integer
+          format: int64
     State:
       required:
       - current
@@ -7759,6 +7803,7 @@ components:
       - instanceUuid
       - plugins
       - serverType
+      - services
       - startTime
       - startUuid
       - uri
@@ -7802,6 +7847,10 @@ components:
           $ref: "#/components/schemas/FlowUsage"
         executions:
           $ref: "#/components/schemas/ExecutionUsage"
+        services:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ServiceUsage"
     ValidateConstraintViolation:
       required:
       - constraints

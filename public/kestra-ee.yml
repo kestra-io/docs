@@ -22467,10 +22467,13 @@ components:
       type: object
       properties:
         id:
+          maxLength: 100
           minLength: 1
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
           type: string
         namespace:
+          maxLength: 150
+          minLength: 1
           pattern: "^[a-z0-9][a-z0-9._-]*"
           type: string
         revision:
@@ -26753,6 +26756,7 @@ components:
       - instanceUuid
       - plugins
       - serverType
+      - services
       - startTime
       - startUuid
       - uri
@@ -26796,6 +26800,10 @@ components:
           $ref: "#/components/schemas/FlowUsage"
         executions:
           $ref: "#/components/schemas/ExecutionUsage"
+        services:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ServiceUsage"
     Usage_1:
       type: object
       allOf:
@@ -26811,8 +26819,6 @@ components:
             $ref: "#/components/schemas/NamespaceUsage"
           tenants:
             $ref: "#/components/schemas/TenantUsage"
-          services:
-            $ref: "#/components/schemas/ServiceUsage"
     Usage_2:
       type: object
       allOf:
@@ -26828,8 +26834,6 @@ components:
             $ref: "#/components/schemas/NamespaceUsage"
           tenants:
             $ref: "#/components/schemas/TenantUsage"
-          services:
-            $ref: "#/components/schemas/ServiceUsage"
     Usage_3:
       type: object
       allOf:
@@ -26845,8 +26849,6 @@ components:
             $ref: "#/components/schemas/NamespaceUsage"
           tenants:
             $ref: "#/components/schemas/TenantUsage"
-          services:
-            $ref: "#/components/schemas/ServiceUsage"
     Usage_4:
       type: object
       allOf:
@@ -26862,8 +26864,6 @@ components:
             $ref: "#/components/schemas/NamespaceUsage"
           tenants:
             $ref: "#/components/schemas/TenantUsage"
-          services:
-            $ref: "#/components/schemas/ServiceUsage"
     UserController.UpdatePasswordRequest:
       required:
       - newPassword
