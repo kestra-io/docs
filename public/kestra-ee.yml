@@ -26756,7 +26756,6 @@ components:
       - instanceUuid
       - plugins
       - serverType
-      - services
       - startTime
       - startUuid
       - uri
@@ -26800,10 +26799,6 @@ components:
           $ref: "#/components/schemas/FlowUsage"
         executions:
           $ref: "#/components/schemas/ExecutionUsage"
-        services:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/ServiceUsage"
     Usage_1:
       type: object
       allOf:
@@ -26819,6 +26814,8 @@ components:
             $ref: "#/components/schemas/NamespaceUsage"
           tenants:
             $ref: "#/components/schemas/TenantUsage"
+          services:
+            $ref: "#/components/schemas/ServiceUsage"
     Usage_2:
       type: object
       allOf:
@@ -26834,6 +26831,8 @@ components:
             $ref: "#/components/schemas/NamespaceUsage"
           tenants:
             $ref: "#/components/schemas/TenantUsage"
+          services:
+            $ref: "#/components/schemas/ServiceUsage"
     Usage_3:
       type: object
       allOf:
@@ -26849,6 +26848,8 @@ components:
             $ref: "#/components/schemas/NamespaceUsage"
           tenants:
             $ref: "#/components/schemas/TenantUsage"
+          services:
+            $ref: "#/components/schemas/ServiceUsage"
     Usage_4:
       type: object
       allOf:
@@ -26864,6 +26865,8 @@ components:
             $ref: "#/components/schemas/NamespaceUsage"
           tenants:
             $ref: "#/components/schemas/TenantUsage"
+          services:
+            $ref: "#/components/schemas/ServiceUsage"
     UserController.UpdatePasswordRequest:
       required:
       - newPassword
