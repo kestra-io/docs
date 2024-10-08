@@ -53,7 +53,7 @@ url: jdbc:snowflake://<account_identifier>.snowflakecomputing.com
 username: snowflake
 password: snowflake_passwd
 sql: select * from source
-fetch: true
+fetchType: FETCH
 ```
 
 ### Download from Snowflake stage
@@ -95,7 +95,7 @@ url: jdbc:snowflake://<account_identifier>.snowflakecomputing.com
 username: snowflake
 password: snowflake_passwd
 sql: SELECT * FROM source WHERE id > 1000
-fetch: true
+fetchType: FETCH
 ```
 
 2. **Listening to Changes in a Snowflake Table with Trigger**
@@ -109,6 +109,7 @@ username: snowflake
 password: snowflake_passwd
 sql: SELECT MAX(updated_at) FROM source
 interval: PT1M
+fetchType: FETCH
 ```
 
 3. **Downloading Specific Columns from a Snowflake Stage**

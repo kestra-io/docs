@@ -451,7 +451,7 @@ tasks:
 - id: get_files
   type: io.kestra.plugin.jdbc.postgresql.Query
   sql: select not_a_real_column from not_a_real_table;
-  fetch: true
+  fetchType: FETCH
 
 - id: use_files
   type: io.kestra.plugin.core.log.Log
@@ -492,7 +492,7 @@ tasks:
   - id: get_files
     type: io.kestra.plugin.jdbc.postgresql.Query
     sql: select not_a_real_column from not_a_real_table;
-    fetch: true
+    fetchType: FETCH
   - id: use_files
     type: io.kestra.plugin.core.log.Log
     message: Number of rows returned is "{{get_files.outputs.size}}"

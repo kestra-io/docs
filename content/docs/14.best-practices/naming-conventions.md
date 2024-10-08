@@ -87,7 +87,7 @@ tasks:
       - "products.csv"
     script: |
       import polars as pl
-      data = {{outputs.fetch_products.body | jq('.products') | first}}
+      data = {{ outputs.fetch_products.body | jq('.products') | first }}
       df = pl.from_dicts(data)
       df.glimpse()
       df.select(["brand", "price"]).write_csv("products.csv")
@@ -98,10 +98,10 @@ tasks:
       in.csv: "{{ outputs.transform_in_python.outputFiles['products.csv'] }}"
     sql: |
       SELECT brand, round(avg(price), 2) as avg_price
-      FROM read_csv_auto('{{workingDir}}/in.csv', header=True)
+      FROM read_csv_auto('{{ workingDir }}/in.csv', header=True)
       GROUP BY brand
       ORDER BY avg_price DESC;
-    store: true
+    fetchType: STORE
 
 outputs:
   - id: final_result
