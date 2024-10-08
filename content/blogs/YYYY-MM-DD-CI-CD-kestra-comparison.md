@@ -9,16 +9,14 @@ author:
 image: /blogs/xxxxx.jpg
 ---
 
-In a recent [blog](./2024-09-18-what-is-an-orchestrator.md), we've defined what an orchestrator is, what are the differences between orchestration and automation, and how orchestration can help you to automate your workflows.
+In a recent [blog](./2024-09-18-what-is-an-orchestrator.md), we defined what an orchestrator is, what the differences between orchestration and automation, and how orchestration can help you to automate your workflows.
 
 Now, it's time to answer the question: when should you choose an orchestrator over a CI/CD solution?
 
-In this article, we'll compare Kestra to popular CI/CD solutions to help you get a practical understanding of when to choose an orchestrator over a CI/CD tool. In particular, at the end of the article, we'll provide a deep comparison between Kestra and Jenkins.
-
-Ready? Let's dive in!
+In this article, we'll compare Kestra to popular CI/CD solutions to help you get a practical understanding of when to choose an orchestrator over a CI/CD tool. In particular, we'll provide a deep comparison between Kestra and Jenkins.
 
 ## Comparing Kestra to CI/CD Tools
-As we've already clarified the difference between orchestration and automation in the above-mentioned blog, let’s directly dive into how Kestra stacks up against popular CI/CD tools. 
+
 
 ### Kestra Vs. GitHub Actions
 [GitHub Actions](https://github.com/features/actions) is the go-to for many developers because it’s embedded right into GitHub, making it super convenient for CI/CD as it allows to build, test, and deploy code right from GitHub: basically, anything developers needs to do in their day-to-day work.
@@ -58,11 +56,11 @@ So, while Azure DevOps is great for Microsoft-centric pipelines, Kestra offers t
 
 
 ### Kestra vs. Jenkins
-Ah, [Jenkins](https://www.jenkins.io/) — the old reliable. It has been around forever, and it has a [massive ecosystem of plugins](https://plugins.jenkins.io/) to automate almost anything. You can pretty much build anything with Jenkins, but here’s the rub: you’ll need to do a lot of that building yourself, as it requires a lot of configuration; and if you’re managing complex workflows, you’ll likely end up with custom scripts and a mess of plugins.
+Ah, [Jenkins](https://www.jenkins.io/) — the old reliable. It has been around forever, and it has a [massive ecosystem of plugins](https://plugins.jenkins.io/) to automate almost anything. You can pretty much build anything with Jenkins, but here’s the catch: you’ll need to do a lot of that building yourself, as it requires a lot of configuration; and if you’re managing complex workflows, you’ll likely end up with custom scripts and a mess of plugins.
 
 ![A use of Jenkins by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/jenkins.png)
 
-So, Jenkins can automate simple tasks like nobody’s business, but Kestra is all about scaling those workflows across systems with less hassle. With Kestra,  in fact, you’re not diving into custom scripting to handle error states or retries—it’s built-in.
+So, Jenkins can automate simple tasks like nobody’s business, but Kestra is all about scaling those workflows across systems with less hassle. With Kestra, in fact, you’re not diving into custom scripting to handle error states or retries—it’s built-in.
 
 So, if your workload involves tasks that involve cloud services, need precise error handling, or have complex dependencies, Kestra handles all that for you out of the box without the plugin bloat or script maintenance headaches as Jenkins would.
 
@@ -72,7 +70,7 @@ By now, you’re surely seeing the pattern: the tools we mentioned are great for
 
 But what if you need to manage workflows across multiple environments? Here's where Kestra comes into the game!
 
-So, let’s zero in on a few of Kestra’s key features that make it stand out:
+So, let’s zoom in on a few of Kestra’s key features that make it stand out:
 
 - **Tasks Orchestration**: Kestra’s primary strength is in orchestrating tasks across multiple environments. It doesn’t matter if those tasks are happening on different cloud providers, on-prem servers, or in a hybrid environment: Kestra manages the flow of tasks smoothly. For example: CI/CD tools can kick off a build or deploy code, but Kestra can handle workflows that include those steps plus data processing tasks, external API calls, or anything else your workflow requires.
 
@@ -136,7 +134,7 @@ Jenkins currently has over 1,900 plugins, and this creates complexity as they ca
 Kestra, on the other hand, offers built-in integrations for many common use cases without the need for plugins, and this reduces the risk of compatibility issues. For exampple, in Kestra a CI/CD pipeline can be defined in a YAML configuration, and all the components work seamlessly together.
 
 #### Groovy Syntax
-Jenkins uses [Groovy-based](https://www.jenkins.io/doc/pipeline/steps/groovy/) scripting for pipeline creation, which can be unintuitive for developers unfamiliar with it - as it also a language now widely used. This can create a steep learning curve that can slow down development and cause errors.
+Jenkins uses [Groovy-based](https://www.jenkins.io/doc/pipeline/steps/groovy/) scripting for pipeline creation, which can be unintuitive for developers unfamiliar with it - as it also a language not widely used. This can create a steep learning curve that can slow down development and cause errors.
 
 Kestra, instead, uses a declarative YAML-based syntax that is much easier to read and write. So, instead of writing custom Groovy scripts, developers can define conditions, steps, and exceptions directly in YAML: this lowers the learning curve and reduces the chance of errors.
 
