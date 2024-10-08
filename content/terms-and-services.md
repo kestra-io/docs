@@ -59,7 +59,7 @@ It will then be tacitly renewed for successive periods of the same duration (tog
 
 A "**Period**" refers to the subscription period stated in the Order, and each subsequent period thereafter, unless terminated by one of the Parties in accordance with the provisions of this Agreement.
 
-# **4 - License to use the Solution**
+## **4 - License to use the Solution**
 
 1. **Scope of the License**
 
@@ -228,7 +228,7 @@ This obligation of confidentiality extends to all employees, collaborators, trai
 
 This obligation shall continue to apply for a period of 5 years following the termination or expiration of the Agreement.
 
-# **14 - Personal Data**
+## **14 - Personal Data**
 
 As part of their contractual relations and to the extent applicable, each Party undertakes to comply with the applicable regulations on personal data processing and, in particular, the General Data Protection Regulation (regulation EU 2016/679 of the European Parliament and of the Council of 27 April 2016) and to the French Data Protection Act of 6 January 1978 (hereinafter referred together as the “**Applicable Regulation**”).
 
