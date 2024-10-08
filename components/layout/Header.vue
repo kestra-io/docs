@@ -53,14 +53,14 @@
 
             <div class="collapse navbar-collapse" id="main-header">
                 <ul class="navbar-nav ms-auto me-auto mb-2 mb-lg-0">
-                    <li class="nav-item" @mouseover="mouseOver('product')" >
+                    <li class="nav-item" @mouseover="mouseOver('product')" @mouseleave="mouseOut('product')">
                         <a class="nav-link" href="#" role="button">
                             Product
                             <ChevronDown />
                         </a>
                     </li>
 
-                    <li class="nav-item" @mouseover="mouseOver('solutions')">
+                    <li class="nav-item" @mouseover="mouseOver('solutions')" @mouseleave="mouseOut('product')">
                         <a class="nav-link" href="#" role="button">
                             Solutions
                             <ChevronDown />
@@ -80,7 +80,7 @@
                             </span>
                         </NuxtLink>
                     </li>
-                    <li class="nav-item " @mouseover="mouseOver('resources')">
+                    <li class="nav-item " @mouseover="mouseOver('resources')" @mouseleave="mouseOut('product')">
                         <a class="nav-link " href="#" role="button">
                             Resources
                             <ChevronDown />
@@ -134,12 +134,24 @@
                 </ul>
             </div>
         </div>
-        <div class="menu-container" v-show="showMenu">
+
+        <div class="menu-container" :style="{ opacity: showMenu || mouseoverMenu ? 100 : 0 }">
             <div class="header-arrow" :style="{ transform: `translateY(12px) translateX(${headerArrowTranslateX}px) rotate(45deg)` }"></div>
             <div class="menu-shadow-container">
-                <div class="header-menu" :style="{ transform: `translateX(${headerMenuTranslateX}) rotateX(-15deg)` }">
-                    <div class="header-menu-card" @mouseover="showMenu = true" @mouseleave="showMenu = false">
-                        <div id="product" class="header-menu-card-section">
+                <div
+                    class="header-menu"
+                    @mouseover="mouseOverMenu()"
+                    :style="{
+                        transform: `translateX(${headerMenuTranslateX}) rotateX(-15deg)`,
+                        width: headerMenuSize.width,
+                        height: headerMenuSize.height,
+                        pointerEvents: headerMenuPointerEvents,
+                    }"
+                >
+                    <div
+                        class="header-menu-card"
+                    >
+                        <div @mouseleave="mouseLiveMenu()" id="product" class="header-menu-card-section">
                             <div class="header-menu-left">
                                 <div class="header-menu-card-section-column">
                                     <div class="menu-title">
@@ -217,7 +229,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div id="solutions" class="header-menu-card-section">
+                        <div @mouseleave="mouseLiveMenu()" id="solutions" class="header-menu-card-section">
                             <div class="header-menu-left row">
                                 <div class="header-menu-card-section-column col-md-4 col-lg-4">
                                     <div class="menu-title">
@@ -245,15 +257,6 @@
                                             </NuxtLink>
                                         </li>
                                         <li>
-                                            <NuxtLink class="dropdown-item" href="/features/api-first" @click="globalClick(true)">
-                                                <Earth />
-                                                <p>
-                                                    <span>API-First</span><br />
-                                                    Learn more about Kestra’s API features
-                                                </p>
-                                            </NuxtLink>
-                                        </li>
-                                        <li>
                                             <NuxtLink class="dropdown-item" href="/features/code-in-any-language"
                                                       @click="globalClick(true)">
                                                 <CodeTags />
@@ -270,6 +273,15 @@
                                                 <p>
                                                     <span>Kestra's Terraform Provider</span><br />
                                                     Deploy and manage all Kestra resources with Terraform
+                                                </p>
+                                            </NuxtLink>
+                                        </li>
+                                        <li>
+                                            <NuxtLink class="dropdown-item" href="/features/api-first" @click="globalClick(true)">
+                                                <Earth />
+                                                <p>
+                                                    <span>API-First</span><br />
+                                                    Learn more about Kestra’s API features
                                                 </p>
                                             </NuxtLink>
                                         </li>
@@ -360,7 +372,7 @@
                                 </NuxtLink>
                             </div>
                         </div>
-                        <div id="resources" class="header-menu-card-section">
+                        <div @mouseleave="mouseLiveMenu()" id="resources" class="header-menu-card-section">
                             <div class="header-menu-left">
                                 <div class="header-menu-card-section-column">
                                     <div class="menu-title">
@@ -513,7 +525,7 @@ import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
 import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
 import GithubButton from "../layout/GithubButton.vue";
-
+import {menuSize} from "~/utils/menu-sizes.js";
 export default {
     components: {
         ChevronDown,
@@ -526,8 +538,14 @@ export default {
             isOpen: false,
             showDownloadLogos: false,
             showMenu: false,
-            headerArrowTranslateX: -332,
-            headerMenuTranslateX: '160px',
+            headerArrowTranslateX: 0,
+            headerMenuTranslateX: '',
+            mouseoverMenu: false,
+            headerMenuSize: {
+              width: 0,
+              height: 0,
+            },
+            headerMenuPointerEvents: 'none',
         }
     },
     collapse: undefined,
@@ -565,6 +583,15 @@ export default {
         }
     },
     methods: {
+        mouseOverMenu() {
+          this.mouseoverMenu = true
+          this.headerMenuPointerEvents = 'auto'
+        },
+        mouseLiveMenu() {
+          this.showMenu = false
+          this.mouseoverMenu = false
+          this.headerMenuPointerEvents = 'none'
+        },
         mouseElement(element) {
             if (element.classList.contains("nav-link")) {
                 return element;
@@ -574,23 +601,20 @@ export default {
         },
         mouseOver(id) {
           if (window.innerWidth > 991) {
-            document.querySelectorAll('.header-menu-card-section').forEach(obj=>obj.classList.remove("d-flex"));
+            document.querySelectorAll('.header-menu-card-section').forEach(obj=>{
+              obj.classList.remove("opacity-100")
+              obj.classList.remove("z-1")
+            });
             let menu = document.getElementById(id);
             if (menu) {
-              if (id === 'product'){
-                this.headerArrowTranslateX = -332;
-                this.headerMenuTranslateX = 'calc(50% - 100px)';
-              }
-              if (id === 'solutions'){
-                this.headerArrowTranslateX = -232;
-                this.headerMenuTranslateX = 'calc(50% - 680px)';
-              }
-              if (id === 'resources'){
-                this.headerArrowTranslateX = 2;
-                this.headerMenuTranslateX = 'calc(50% - 290px)';
-              }
-              menu.classList.add('d-flex');
+              this.mouseoverMenu = false
               this.showMenu = true
+              this.headerMenuSize = menuSize(id, window.innerWidth).size;
+              this.headerMenuTranslateX = menuSize(id, window.innerWidth).headerMenuTranslateX;
+              this.headerArrowTranslateX = menuSize(id, window.innerWidth).headerArrowTranslateX;
+              menu.classList.add('z-1');
+              menu.classList.add('opacity-100');
+              this.headerMenuPointerEvents = 'auto'
             }
           }
         },
@@ -598,6 +622,7 @@ export default {
           if (window.innerWidth > 991) {
             let menu = document.getElementById(id);
             if (menu) {
+              this.headerMenuPointerEvents = 'none'
               this.showMenu = false
             }
           }
@@ -674,9 +699,10 @@ export default {
         perspective: 2000px;
         transition-property: opacity;
         transition: 250ms;
+        pointer-events: none;
         .header-arrow {
             position: absolute;
-            top: 2px;
+            top: -8px;
             left: 50%;
             margin: 0 0 0 -6px;
             width: 22px;
@@ -695,39 +721,61 @@ export default {
 
             .header-menu {
                 display: inline-block;
-                padding-top: 8px;
+                padding-top: 12px;
                 transform-origin: 50% -50px;
-                transition-property: transform, width, height;
-                will-change: transform, width, height;
+                transition: transform 250ms, width 250ms, height 250ms;
                 z-index: 2;
                 position: absolute;
-                top: 11px;
+                top: -1px;
                 left: 0;
+                pointer-events: none;
                 .header-menu-card {
-                    position: relative;
+                    width: 100%;
                     height: 100%;
-                    min-width: 100px;
-                    min-height: 75px;
+                    position: relative;
                     z-index: 1;
                     border-radius: 8px;
                     border: 1px solid $black-6;
                     overflow: hidden;
                     background: $black-9;
+
                     &-section {
-                        display: none;
+                        &#product {
+                            width: 780px;
+                            height: 560px;
+                        }
+                        &#solutions {
+                            width: 1560px;
+                            height: 623px;
+                        }
+                        &#resources {
+                            width: 1200px;
+                            height: 560px;
+                        }
+                        width: 100%;
+                        display: flex;
+                        opacity: 0;
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        transition: opacity 250ms ease;
 
                         .header-menu-left {
                             background: #1D1D1E;
                             padding: 2rem;
                             display: flex;
                             column-gap: 6.25rem;
+
                             @include media-breakpoint-down(xxl) {
                                 column-gap: 0;
                             }
+
                             .header-menu-card-section-column {
                                 max-width: 312px;
+
                                 .menu-title {
                                     border-bottom: 1.11px solid $black-6;
+
                                     h3 {
                                         color: $white-3;
                                         font-size: $font-size-xs;
@@ -735,9 +783,11 @@ export default {
                                         text-transform: uppercase;
                                     }
                                 }
+
                                 ul {
                                     list-style: none;
                                     padding: 0;
+
                                     li {
                                         margin-top: 1rem;
                                     }
@@ -792,6 +842,7 @@ export default {
                             justify-content: center;
                             align-items: center;
                             flex-direction: column;
+                            flex: 1;
 
                             &-menu {
                                 width: 100%;
@@ -833,7 +884,7 @@ export default {
                                 border-radius: 4px;
                                 display: inline-block;
                                 padding: 47px 28px 42px 26px;
-                                max-width: 312px;
+                                width: 312px;
                                 &:hover {
                                     background-image: url(/landing/header-menu/menu-right-hover.png);
                                 }
