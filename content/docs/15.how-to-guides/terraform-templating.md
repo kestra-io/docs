@@ -258,9 +258,9 @@ tasks:
   username: MY_USER
   password: "{{ secrets.get('my-postgres-password') }}"
   sql: "{{ inputs.sqlQuery }}"
-  fetch: true
+  fetchType: FETCH
 
-- id: show-result
+- id: show_result
   type: io.kestra.core.tasks.log.Log
   message: |
     {% for row in outputs.query_data.rows %}
@@ -304,7 +304,7 @@ Executing the subflow will prompt you to enter the SQL query you want to execute
 
 1. Connection details are stored in the subflow, and only the SQL query is exposed to the user.
 1. Subflow natively displays results in logs for easy debugging.
-1. Outputs of the subflow can be used in the parent flow by using `outputs.query_data.rows` in the `show-result` task.
+1. Outputs of the subflow can be used in the parent flow by using `outputs.query_data.rows` in the `show_result` task.
 
 > Note: `wait: true` will wait for the subflow to finish before continuing the flow execution. `transmitFailed: true` will transmit the failed status of the subflow to the parent flow.
 
