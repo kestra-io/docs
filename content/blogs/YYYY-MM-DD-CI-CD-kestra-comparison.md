@@ -13,95 +13,143 @@ In a recent [blog](./2024-09-18-what-is-an-orchestrator.md), we defined what an 
 
 Now, it's time to answer the question: when should you choose an orchestrator over a CI/CD solution?
 
-In this article, we'll compare Kestra to popular CI/CD solutions to help you get a practical understanding of when to choose an orchestrator over a CI/CD tool. In particular, we'll provide a deep comparison between Kestra and Jenkins.
+In this article, we'll explore what CI/CD tools are, dive into some of the most popular ones, and see how Kestra brings something unique to the table. In particular, we'll also provide a deep comparison between Kestra and Jenkins.
 
-## Comparing Kestra to CI/CD Tools
+## What Are CI/CD Tools?
+Before comparing CI/CD tools, let's describe what they are.
 
+CI/CD tools are software applications that automate the processes of integrating code changes (Continuous Integration) and deploying applications (Continuous Deployment) to production environments. They help teams collaborate effectively by automating builds, tests, and deployments, ensuring that new features and bug fixes are delivered quickly and reliably.
 
-### Kestra Vs. GitHub Actions
-[GitHub Actions](https://github.com/features/actions) is the go-to for many developers because it’s embedded right into GitHub, making it super convenient for CI/CD as it allows to build, test, and deploy code right from GitHub: basically, anything developers needs to do in their day-to-day work.
+In particular, they:
 
-It is also developer-friendly, easy to set up, and integrates well with your codebase. 
+- **Automate builds**: Compile source code into executable programs.
+- **Run tests**: Execute automated tests to verify code changes.
+- **Deploy applications**: Automatically release new code to production or staging environments.
+- **Provide feedback**: Alert developers about build statuses and test results.
+T
+So, these tools are fundamental for maintaining high-quality code and rapid release cycles in today's fast-paced development environments.
+
+## Most Used CI/CD Tools
+There are a lot of CI/CD tools out there, so let's take a closer look at some of the most popular ones. For each, we'll provide an overview, highlight a unique feature, and list pros and cons.
+
+### GitHub Actions
+[GitHub Actions](https://github.com/features/actions) is GitHub's integrated CI/CD solution, allowing you to automate your workflows directly from your GitHub repository. It enables you to build, test, and deploy your code right alongside your pull requests and issues.
 
 ![A use of GitHub Actions by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/github_actions.png)
 
-But where it excels in simplicity, it lacks in handling workflows that need to span across multiple systems, such as deploying applications on various platforms like AWS, Azure, or Google Cloud Platform (GCP), and this is where Kestra shines.
+**Unique feature: deep integration with the GitHub ecosystem**
+GitHub Actions offers seamless integration with the entire GitHub platform, letting you trigger workflows based on any GitHub event—like pull requests, issues, or comments.
 
-In fact, if your workflow goes beyond just automating builds and deployments  — let’s say you need to automate data processing tasks across cloud services — here's where Kestra’s orchestration capabilities really shine. Kestra, in fact, can handle more complex workflows with dependencies between services, and it also provides mechanisms for error handling and managing events - even [in real time](./2024-06-27-realtime-triggers.md).
+**Pros**:
+- **Ease of use**: Simple setup within your GitHub repository.
+- **Marketplace for actions**: Access to a vast library of pre-built actions.
+- **Cost-effective**: Generous free tier for public repositories.
 
-So, if your use case involves coordinating tasks beyond GitHub, Kestra becomes a better choice than GitHub Actions.
+**Cons**:
+- **Limited to gitHub**: Best suited for projects hosted on GitHub; limited integration with other platforms.
+- **Debugging challenges**: Requires commits to test workflows, cluttering commit history.
+- **Resource limits**: Concurrency and job time limits on the free tier.
+- **Less control over environment**: Limited customization of the execution environment.
+- **Complexity with advanced workflows**: Can become complicated for more sophisticated pipelines.
 
-### Kestra Vs. GitLab CI/CD
-Like GitHub Actions, [GitLab CI/CD](https://docs.gitlab.com/ee/ci/index.html) is a great tool for CI/CD. It's integrated directly with GitLab and works well for automating pipelines from code commits to production. It also scales nicely, especially if you’re already in the GitLab ecosystem.
+### GitLab CI/CD
+[GitLab CI/CD](https://docs.gitlab.com/ee/ci/index.html) is an integral part of GitLab, providing a seamless experience from code commit to deployment. It offers robust features for automating the entire DevOps lifecycle within a single application.
 
 ![GitLab CI/CD by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/gitlab_cicd.png)
 
-Although GitLab CI/CD is more suited for teams needing advanced pipeline capabilities and integrated DevOps tooling than GitHub Actions, it basically has the same weakness as GitHub Actions when the game becomes harder.
+**Unique feature: all-in-one DevOps platform**
+GitLab CI/CD combines source control, CI/CD, and project management in one place, streamlining collaboration and efficiency.
 
-In fact, when you need something that can handle orchestration across multiple environments, or when workflows involve more than just code deployments, Kestra’s orchestration integrations take over.
+**Pros**:
+- **Powerful pipelines**: Supports complex workflows with stages and dependencies.
+- **Built-in security**: Static and dynamic application security testing.
+- **Kubernetes integration**: Simplified deployment to Kubernetes clusters.
 
-For example: do you need to coordinate a workflow that involves running processes across different cloud providers or managing task dependencies in a data pipeline? That’s where Kestra outperforms GitLab CI/CD which is great for automating code deployments, but Kestra is designed to manage more intricate workflows that involve different systems and cloud environments.
+**Cons**:
+- **Resource intensive**: Can be heavy on system resources.
+- **Complex setup**: Initial configuration can be time-consuming.
+- **Self-hosted maintenance**: Managing updates and security is on you.
+- **Limited third-party integrations**: Fewer integrations compared to competitors.
+- **Cost for premium features**: Advanced features require a paid subscription.
 
-
-### Kestra Vs. Azure DevOps
-Azure DevOps is another heavy hitter for CI/CD, particularly if you’re in the Microsoft ecosystem. It’s a fully integrated toolchain that works well for automating pipelines, managing repos, and monitoring applications. 
+### Azure DevOps
+[Azure DevOps](https://azure.microsoft.com/en-us/products/devops/) is a suite of development tools from Microsoft, providing version control, CI/CD pipelines, testing, and artifact management. It's designed to support teams in planning work, collaborating on code development, and building and deploying applications.
 
 ![Azure DevOps workflow by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/azure_devops.png)
 
-But again, its core strength lies in CI/CD, not in orchestrating workflows across multiple systems or environments.
+**Unique feature: integrated end-to-end DevOps solution**
+Azure DevOps offers an integrated suite covering the entire DevOps lifecycle, from project planning with Azure Boards to deploying applications with Azure Pipelines.
 
-For example, let’s say you’re managing a workflow that includes tasks across multiple cloud providers, and Azure is just one part of the puzzle. Maybe you’re also pulling in data from AWS or triggering workflows based on events in GCP (Google Cloud Platform). In this case, Kestra allows you to orchestrate these tasks in a single workflow, regardless of which system is involved. 
+**Pros**:
+- **Comprehensive toolset**: Covers the entire development lifecycle.
+- **Strong integration with microsoft tools**: Seamless with Visual Studio and Azure services.
+- **Flexible deployment**: Supports any platform or cloud.
 
-So, while Azure DevOps is great for Microsoft-centric pipelines, Kestra offers the flexibility to handle distributed, cross-cloud workflows with ease.
+**Cons**:
+- **Complexity**: Can be overwhelming due to its breadth.
+- **Steep learning curve**: Requires time to master all components.
+- **Cost**: Paid tiers can be expensive for larger teams.
+- **Interface navigation**: UI can be less intuitive.
+- **Best for Microsoft ecosystems**: Less ideal for non-Microsoft technologies.
 
+### CircleCI
+[CircleCI](https://circleci.com/) is a cloud-based CI/CD platform that automates development workflows and accelerates software delivery. It supports rapid setup and provides powerful customization options for building, testing, and deploying applications.
 
-### Kestra vs. Jenkins
-Ah, [Jenkins](https://www.jenkins.io/) — the old reliable. It has been around forever, and it has a [massive ecosystem of plugins](https://plugins.jenkins.io/) to automate almost anything. You can pretty much build anything with Jenkins, but here’s the catch: you’ll need to do a lot of that building yourself, as it requires a lot of configuration; and if you’re managing complex workflows, you’ll likely end up with custom scripts and a mess of plugins.
+**Unique feature: optimized for speed and parallelism**
+CircleCI excels at running pipelines quickly by allowing tasks to run in parallel, significantly reducing build times.
 
-![A use of Jenkins by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/jenkins.png)
+**Pros**:
+- **Fast builds**: Optimized for speed with caching and parallelism.
+- **Extensive integrations**: Works with a wide range of tools and services.
+- **Excellent docker support**: Strong support for containerized applications.
 
-So, Jenkins can automate simple tasks like nobody’s business, but Kestra is all about scaling those workflows across systems with less hassle. With Kestra, in fact, you’re not diving into custom scripting to handle error states or retries—it’s built-in.
+**Cons**:
+- **Pricing complexity**: Costs can escalate with increased usage.
+- **Limited free tier**: Restrictions on concurrency and build minutes.
+- **Debugging limitations**: Live debugging can be challenging.
+- **Learning curve for advanced features**: Advanced configurations can be complex.
+- **Reliance on cloud**: Less suitable for on-premises environments.
 
-So, if your workload involves tasks that involve cloud services, need precise error handling, or have complex dependencies, Kestra handles all that for you out of the box without the plugin bloat or script maintenance headaches as Jenkins would.
+### Jenkins
+[Jenkins](https://www.jenkins.io/) is an open-source automation server that enables developers to build, test, and deploy their software. It's highly extensible, with a vast ecosystem of plugins supporting a multitude of tasks.
 
+**Unique feature: extensive plugin ecosystem**
+With over 1,900 plugins, Jenkins offers unparalleled customization, integrating with almost any tool or technology.
 
-## Key Features that Make Kestra Stand Out
-By now, you’re surely seeing the pattern: the tools we mentioned are great for CI/CD and managing simple workflows, while Kestra is purpose-built for orchestrating complex workflows across different systems. So, basically, if you're working on the GitHub environment and need a CI solution, you'll use GitHub Actions, and the same thing applies if you're in the GitLab ecosystem.
+**Pros**:
+- **Flexibility**: Highly customizable to fit any workflow.
+- **Open source**: Free to use with a strong community.
+- **Wide adoption**: Well-established with extensive documentation.
 
-But what if you need to manage workflows across multiple environments? Here's where Kestra comes into the game!
+**Cons**:
+- **Maintenance overhead**: Requires significant effort to manage.
+- **Complex configuration**: Setup can be time-consuming.
+- **Plugin conflicts**: Risk of compatibility issues.
+- **Outdated UI**: Less modern and intuitive interface.
+- **Scalability challenges**: Efficient scaling can be difficult.
 
-So, let’s zoom in on a few of Kestra’s key features that make it stand out:
+## Why Kestra Stands Out
+After exploring these popular CI/CD tools, you might be wondering where Kestra fits in. So, let's dive into what makes Kestra unique and when it might be the right choice for your projects.
 
-- **Tasks Orchestration**: Kestra’s primary strength is in orchestrating tasks across multiple environments. It doesn’t matter if those tasks are happening on different cloud providers, on-prem servers, or in a hybrid environment: Kestra manages the flow of tasks smoothly. For example: CI/CD tools can kick off a build or deploy code, but Kestra can handle workflows that include those steps plus data processing tasks, external API calls, or anything else your workflow requires.
+### Kestra: orchestrating complex workflows with ease
+Kestra is an open-source orchestration and scheduling platform designed to handle complex workflows across various systems. While traditional CI/CD tools focus on automating code integration and deployment, Kestra specializes in orchestrating tasks that span multiple environments and services.
 
-![Workflow orchestration in Kestra](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/kestra_orchestration.jpg)
+Here are its unique capabilities:
 
-- **Error Handling and Retries**: In traditional automation tools, error handling and retries often require custom scripting. Kestra, instead, bakes this into its core. In fact, if a task fails, Kestra can automatically retry it, adjust workflows dynamically, or trigger error-specific branches in the workflow. This is a huge time-saver when working with workflows prone to errors, like distributed systems or long-running data processing jobs.
+- **Unified orchestration across systems**: Kestra allows you to manage workflows involving different cloud providers, databases, APIs, and more—all from a single platform.
+- **Real-time event triggers**: Supports [event-driven](./2024-06-27-realtime-triggers.m) architectures, enabling workflows to react to events like file uploads, database changes, or API calls.
+- **Visual workflow editor**: Provides an intuitive interface to design and visualize workflows, reducing complexity and making it accessible even for those new to orchestration.
+- **Robust error handling and retries**: Built-in mechanisms for managing failures and retries without the need for custom scripting, ensuring reliability.
+- **Scalable and distributed execution**: Designed for cloud-native environments, Kestra handles parallelism and scaling seamlessly, making it ideal for large-scale data processing.
 
-![Managing errors in Kestra](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/kestra_errors.jpg)
+### When to choose Kestra over traditional CI/CD tools
+At this point, you might be wondering when to choose Kestra over a CI/CI tool. So here are some guidelines to consider:
 
-- **Cloud-Native and Distributed Systems Support**: Kestra was built with modern [cloud-native](./2022-06-21-light-architecture.md) and distributed systems in mind. So, whether you’re orchestrating workflows across AWS, GCP, Azure, or on-prem services, Kestra can handle it all, as it’s designed on purpose to manage tasks that live in various environments without extra configuration or complexity.
-
-![Plugins for Kestra](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/kestra_plugins.jpg)
-
-- **Event-Driven Architecture**: A lot of modern workflows are event-driven, and Kestra really shines here. You can trigger workflows based on events happening across your stack, whether that’s a file being uploaded, a database change, or an API call: this makes Kestra super flexible for managing real-time and batch workflows alike.
-
-![Real time triggers in Kestra](/blogs/2024-06-27-realtime-triggers.jpg)
-
-- **Visual Workflow Editor**: While CI/CD tools often require you to dive into script configurations, Kestra offers a visual workflow editor. In fact, you can build and manage your workflows in a more intuitive, visual way, reducing the cognitive load of managing complex systems.
-
-![Workflows in Kestra](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/kestra_flows.jpg)
-
-## When to Use Kestra Over CI/CD Tools
-So, there’s no doubt that CI/CD tools like GitHub Actions, Jenkins, and Azure DevOps are powerful — especially when your needs are strictly related to CI/CD. But, as we've seen so far, Kestra comes into its own when you need to orchestrate more than just code deployments.
-
-So, here are some typical cases where you'd need to use Kestra rather than any CI/CD tool:
-
-- **Complex workflows**: When you have a workflow that has dependencies or requires coordination across different services, Kestra’s orchestration capabilities make it the better choice.
-
-- **Distributed systems**: For workflows that span multiple cloud environments or microservices, Kestra simplifies coordination and ensures tasks are completed in the right order, with built-in error handling.
-
-- **Error-prone workflows**: For workflows where errors and retries are expected, Kestra’s built-in error handling and retry mechanisms save you from writing custom scripts to manage failures.
+- **Complex, multi-system workflows**: If your workflows involve coordinating tasks across various platforms and services, Kestra simplifies this orchestration.
+- **Event-driven processes**: For applications that need to respond to real-time events, Kestra's event triggers are invaluable.
+- **Enhanced error handling**: When reliability is critical, Kestra's robust error management ensures workflows can recover gracefully.
+- **Visual design preference**: If you prefer designing workflows visually rather than scripting them, Kestra's editor is a significant advantage.
+- **Scalability needs**: For projects that require handling large-scale data processing or distributed tasks, Kestra is built to scale efficiently.
 
 ## Kestra Vs. Jenkins: A Deep Comparison
 So, along this article, we've described how Kestra differes from CI/CD tools and when you should choose it over them.
@@ -136,15 +184,7 @@ Kestra, on the other hand, offers built-in integrations for many common use case
 #### Groovy Syntax
 Jenkins uses [Groovy-based](https://www.jenkins.io/doc/pipeline/steps/groovy/) scripting for pipeline creation, which can be unintuitive for developers unfamiliar with it - as it also a language not widely used. This can create a steep learning curve that can slow down development and cause errors.
 
-Kestra, instead, uses a declarative YAML-based syntax that is much easier to read and write. So, instead of writing custom Groovy scripts, developers can define conditions, steps, and exceptions directly in YAML: this lowers the learning curve and reduces the chance of errors.
-
-For example, here's how you can implement a [condition](https://kestra.io/plugins/core/conditions/io.kestra.plugin.core.condition.expressioncondition) that will return false for a missing variable:
-
-```yaml
-- conditions:
-    - type: io.kestra.plugin.core.condition.ExpressionCondition
-      expression: {{ unknown is defined }}
-```
+Kestra, instead, uses a declarative YAML-based syntax that is much easier to read and write. 
 
 #### Debugging and Troubleshooting
 In Jenkins, debugging pipelines can be difficult as logs can become scattered across different plugins and stages, making it hard to trace the root cause of an issue.
@@ -177,6 +217,7 @@ tasks:
     format: "{{ task.id }} > {{ taskrun.startDate }}"
 
 ```
+
 
 ## Conclusions
 In conclusion, choosing between Kestra and CI/CD tools depends on your specific requirements.
