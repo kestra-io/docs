@@ -9,7 +9,8 @@ author:
   image: mproset
 image: /blogs/
 ---
-When using dbt, you often need tools that can handle large, complex workflows and automate tasks across different environments. At Kestra, we’ve built a suite of features to  manage dbt projects in the best way possible, from syncing code with Git and scaling runs on-demand to flexible file management. Here’s how Kestra can enhance your dbt workflows and make data transformation more efficient.
+
+When using dbt, you often need tools that can handle large, complex workflows and automate tasks across different environments. At Kestra, we’ve built a suite of features to manage dbt projects in the best way possible, from syncing code with Git, scaling your dbt workflows on-demand with [Task Runners](https://kestra.io/docs/task-runners) to flexible code management using [Namespace Files](https://kestra.io/docs/concepts/namespace-files). Here’s how Kestra can simplify your dbt workflows and make data transformation more scalable.
 
 ### Sync dbt Projects from Git and Edit Directly in Kestra
 
@@ -39,7 +40,7 @@ tasks:
 
 With this flow, you can quickly sync code changes from Git, modify them directly in the Kestra UI, and then use `PushNamespaceFiles` to update your repository. This makes it easy to work on dbt code in real time, similar to what you’d get with dbt Cloud—right from the Kestra OSS platform.
 
-## Scaling dbt Projects with Kestra’s Task Runners
+## Scale dbt Projects with Kestra’s Task Runners
 
 For teams managing large, complex data workflows, Kestra provides task runners that allow you to allocate resources to your dbt runs dynamically. This way, you can optimize performance without over-provisioning, all while ensuring your workflows are as responsive and efficient as possible.
 
@@ -71,18 +72,18 @@ tasks:
 
 ```
 
-## Using Task Runners to Scale Compute for dbt
+## Scale Compute for dbt with Task Runners 
 
 In the example above:
 
 - The `sync` task retrieves the latest version of a dbt project from Git, making it accessible within your Kestra namespace. Since `disabled` is set to `true`, this step is only run if enabled.
 - The `dbt_build` task then launches a `dbt build` command in a Docker container, which provides an isolated, consistent environment for running dbt. This approach ensures your build processes remain portable and repeatable.
 
-## Leveraging Docker for Isolation
+## Use Docker for Isolation
 
 By default, Docker is used here as the task runner, meaning each `dbt build` task runs in a controlled, containerized environment. This setup is ideal for standard dbt workloads, providing the necessary dependencies without affecting your underlying infrastructure.
 
-## Scaling with Kubernetes for Compute-Intensive Workloads
+## Scale with Kubernetes for Compute-Intensive Workloads
 
 For larger workloads, such as dbt projects with hundreds of models or more complex data transformations, you can switch to Kubernetes for on-demand resource scaling:
 
@@ -101,7 +102,7 @@ For larger workloads, such as dbt projects with hundreds of models or more compl
 
 This configuration allows you to allocate CPU and memory resources dynamically, reducing runtime by scaling up infrastructure only when needed. By running on Kubernetes, you ensure your dbt workflows have access to the necessary compute power, even for the most resource-intensive tasks. As your dbt project scales, Kubernetes can grow with it, providing an efficient way to handle peak loads without requiring a permanent increase in infrastructure.
 
-## Enhnced Namespace File Management
+## Manage your dbt code with Namespace Files
 
 ![editor](/blogs/2024-10-08-dbt-kestra/editor.png)
 
@@ -126,7 +127,7 @@ tasks:
 
 This flexibility allows you to easily share code, manage updates, and ensure that development environments stay synchronized with production. For example, use the `UploadFiles` task to automatically upload the latest version of your dbt code to your Kestra instance, and use `DeleteFiles` to keep everything organized and up-to-date.
 
-## Enhanced Logs for Large-Scale dbt Projects
+## Manage dbt Execution Logs in Large-Scale dbt Projects
 
 ![logs](/blogs/2024-10-08-dbt-kestra/logs.png)
 
@@ -136,6 +137,6 @@ With Kestra’s logging, you can drill down into logs in real-time and avoid dig
 
 ## Conclusion
 
-With Kestra, you get a complete platform for orchestrating and scaling dbt workflows. From syncing code with Git and scaling runs dynamically to event-driven triggers and enhanced file management, Kestra provides the tools you need to handle even the most demanding dbt projects.
+With Kestra, you get a complete platform for orchestrating and scaling dbt workflows. From syncing code with Git and scaling runs dynamically to event-driven triggers and reliable code versioning, Kestra provides the tools you need to handle even the most complex dbt projects.
 
-Whether you’re a data engineer looking for more control over resource allocation or an analytics engineer wanting a straightforward way to manage code changes, Kestra has you covered. Check out our dbt plugin documentation for more details.
+Whether you’re a data engineer looking for more control over resource allocation or an analytics engineer wanting a straightforward way to edit dbt code with Git integration, Kestra has you covered. Check out our dbt plugin documentation for more details.
