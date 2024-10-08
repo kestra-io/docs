@@ -106,6 +106,8 @@ This configuration allows you to allocate CPU and memory resources dynamically, 
 
 ## Enhnced Namespace File Management
 
+![editor](/blogs/2024-10-08-dbt-kestra/editor.png)
+
 With the `UploadFiles`, `DownloadFiles`, and `DeleteFiles` tasks, Kestra lets you manage namespace files more flexibly. For example, `DownloadFiles` allows you to pull namespace files from one project into another, making it easy to share code across projects and teams.
 
 Here’s how you can set up namespace file management:
@@ -129,6 +131,8 @@ tasks:
 This flexibility allows you to easily share code, manage updates, and ensure that development environments stay synchronized with production. For example, use the `UploadFiles` task to automatically upload the latest version of your dbt code to your Kestra instance, and use `DeleteFiles` to keep everything organized and up-to-date.
 
 ## Enhanced Logs for Large-Scale dbt Projects
+
+![logs](/blogs/2024-10-08-dbt-kestra/logs.png)
 
 Managing a dbt project with hundreds of models means handling a significant amount of log data. Kestra provides enhanced logging options that make it easy to filter by log level and navigate the information you need. This feature is especially helpful for pinpointing issues in large projects, allowing you to identify and address errors more quickly.
 
