@@ -35,7 +35,6 @@ tasks:
         type: io.kestra.plugin.core.namespace.UploadFiles
         files:
           - "glob:**/dbt/**"
-
 ```
 
 With this flow, you can quickly sync code changes from Git, modify them directly in the Kestra UI, and then use `PushNamespaceFiles` to update your repository. This makes it easy to work on dbt code in real time, similar to what you’d get with dbt Cloud—right from the Kestra OSS platform.
@@ -69,7 +68,6 @@ tasks:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     commands:
       - dbt build
-
 ```
 
 ## Scale Compute for dbt with Task Runners 
@@ -97,7 +95,6 @@ For larger workloads, such as dbt projects with hundreds of models or more compl
       type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
     commands:
       - dbt build
-
 ```
 
 This configuration allows you to allocate CPU and memory resources dynamically, reducing runtime by scaling up infrastructure only when needed. By running on Kubernetes, you ensure your dbt workflows have access to the necessary compute power, even for the most resource-intensive tasks. As your dbt project scales, Kubernetes can grow with it, providing an efficient way to handle peak loads without requiring a permanent increase in infrastructure.
@@ -122,7 +119,6 @@ tasks:
     type: io.kestra.plugin.core.namespace.DeleteFiles
     files:
       - "glob:**/dbt/temp/**"
-
 ```
 
 This flexibility allows you to easily share code, manage updates, and ensure that development environments stay synchronized with production. For example, use the `UploadFiles` task to automatically upload the latest version of your dbt code to your Kestra instance, and use `DeleteFiles` to keep everything organized and up-to-date.
