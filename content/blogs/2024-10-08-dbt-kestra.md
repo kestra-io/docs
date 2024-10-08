@@ -1,6 +1,6 @@
 ---
-title: "Scaling and Automating dbt Workflows with Kestra"
-description: Scale and automate dbt workflows with Kestra. Sync code from Git, manage executions with task runners, and simplify file management for your transformation workloads.
+title: "Build Scalable dbt Workflows with built-in Code Editor, Git Sync and Task Runners in Kestra"
+description: Scale and automate dbt workflows with Kestra. Sync your dbt project from Git, scale your dbt models with Kestra's task runners, and edit dbt code directly from the built-in code Editor in the UI!
 date: 2024-10-08T13:00:00
 category: Solutions
 author:
@@ -16,7 +16,6 @@ When using dbt, you often need tools that can handle large, complex workflows an
 With Kestra, you can sync your dbt projects directly from Git repositories, giving you instant access to view and edit code without leaving the Kestra platform. This setup keeps your dbt codebase updated in real-time and lets you manage files across different environments. Here’s how you can configure a flow that clones a dbt project from Git and uploads it to your Kestra namespace:
 
 ```yaml
-yaml
 id: upload_dbt_project
 namespace: company.datateam.dbt
 description: |
@@ -47,7 +46,6 @@ For teams managing large, complex data workflows, Kestra provides task runners t
 Here’s a quick example of how to set up task runners in Kestra to manage dbt workflows with isolated execution environments:
 
 ```yaml
-yaml
 id: dbt_build
 namespace: company.team
 
@@ -89,7 +87,6 @@ By default, Docker is used here as the task runner, meaning each `dbt build` tas
 For larger workloads, such as dbt projects with hundreds of models or more complex data transformations, you can switch to Kubernetes for on-demand resource scaling:
 
 ```yaml
-yaml
   - id: dbt_build
     type: io.kestra.plugin.dbt.cli.DbtCLI
     containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
@@ -113,7 +110,6 @@ With the `UploadFiles`, `DownloadFiles`, and `DeleteFiles` tasks, Kestra lets yo
 Here’s how you can set up namespace file management:
 
 ```yaml
-yaml
 tasks:
   - id: download
     type: io.kestra.plugin.core.namespace.DownloadFiles
