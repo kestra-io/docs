@@ -45,9 +45,12 @@
   const {data: tags} = await useAsyncData('blueprints-tags', () => {
     return $fetch(`${config.public.apiUrl}/blueprints/tags`)
   })
-  const generateCardHref = (blueprint) => {
-    let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
-    return `/blueprints/${tag.name.replace(' ', '-')}/${blueprint.id}-${slugify(blueprint.title)}`
+  const generateCardHref =async (blueprint) => {
+    let tag = await tags.value.find(f => f?.id == blueprint.tags[0]);
+    if (!tag || !tag.name) {
+        return `/blueprints/unknown/${blueprint.id}-${slugify(blueprint.title)}`; 
+    }
+    return `/blueprints/${tag.name?.replace(' ', '-')}/${blueprint.id}-${slugify(blueprint.title)}`
   }
   if(blueprintsData.value) {
     blueprints.value = blueprintsData.value.results
