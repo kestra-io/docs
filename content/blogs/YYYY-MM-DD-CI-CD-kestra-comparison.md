@@ -20,145 +20,151 @@ Before comparing CI/CD tools, let's describe what they are.
 
 CI/CD tools are software applications that automate the processes of integrating code changes (Continuous Integration) and deploying applications (Continuous Deployment) to production environments. They help teams collaborate effectively by automating builds, tests, and deployments, ensuring that new features and bug fixes are delivered quickly and reliably.
 
-In particular, they:
+In particular, CI/CD tools are designed to:
 
-- **Automate builds**: Compile source code into executable programs.
-- **Run tests**: Execute automated tests to verify code changes.
-- **Deploy applications**: Automatically release new code to production or staging environments.
-- **Provide feedback**: Alert developers about build statuses and test results.
-T
-So, these tools are fundamental for maintaining high-quality code and rapid release cycles in today's fast-paced development environments.
+- **Automate builds**: Compile source code into executable programs, saving developers time and minimizing manual errors.
+- **Run tests**: Execute automated tests to verify that code changes work as intended and don't introduce new bugs, providing early feedback and maintaining code quality.
+- **Deploy applications**: Automatically release new code to production or staging environments, allowing teams to ship features faster and with fewer manual interventions.
+- **Provide feedback**: Alert developers about build statuses and test results, helping them identify and address issues as soon as possible.
+
+These tools are fundamental for maintaining high-quality code and rapid release cycles in today's fast-paced development environments. Without them, teams would struggle to keep up with the demand for frequent updates, making it much harder to maintain a competitive edge.
 
 ## Most Used CI/CD Tools
 There are a lot of CI/CD tools out there, so let's take a closer look at some of the most popular ones. For each, we'll provide an overview, highlight a unique feature, and list pros and cons.
 
 ### GitHub Actions
-[GitHub Actions](https://github.com/features/actions) is GitHub's integrated CI/CD solution, allowing you to automate your workflows directly from your GitHub repository. It enables you to build, test, and deploy your code right alongside your pull requests and issues.
+[GitHub Actions](https://github.com/features/actions) is GitHub's integrated CI/CD solution, allowing you to automate your workflows directly from your GitHub repository. It enables you to build, test, and deploy your code right alongside your pull requests and issues, providing a seamless experience for developers.
+
+Also, by integrating tightly with GitHub, it reduces context switching, allowing teams to manage their entire CI/CD pipelines within a single interface; this makes GitHub Actions particularly attractive for teams that want to quickly implement automation without having to leave their existing GitHub environment.
 
 ![A use of GitHub Actions by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/github_actions.png)
 
 **Unique feature: deep integration with the GitHub ecosystem**
-GitHub Actions offers seamless integration with the entire GitHub platform, letting you trigger workflows based on any GitHub event—like pull requests, issues, or comments.
+GitHub Actions offers seamless integration with the entire GitHub platform, letting you trigger workflows based on any GitHub event—like pull requests, issues, or comments. This makes it an excellent choice for projects already using GitHub, as it provides a highly streamlined experience.
 
 **Pros**:
-- **Ease of use**: Simple setup within your GitHub repository.
-- **Marketplace for actions**: Access to a vast library of pre-built actions.
-- **Cost-effective**: Generous free tier for public repositories.
+- **Ease of use**:Simple setup within your GitHub repository, which means minimal configuration.
+- **Marketplace for actions**: Access to a vast library of pre-built actions, which can save you a lot of time..
+- **Cost-effective**: Generous free tier for public repositories, making it accessible for open-source projects.
 
 **Cons**:
-- **Limited to gitHub**: Best suited for projects hosted on GitHub; limited integration with other platforms.
-- **Debugging challenges**: Requires commits to test workflows, cluttering commit history.
-- **Resource limits**: Concurrency and job time limits on the free tier.
-- **Less control over environment**: Limited customization of the execution environment.
-- **Complexity with advanced workflows**: Can become complicated for more sophisticated pipelines.
+- **Limited to gitHub**: Ideal for projects fully hosted on GitHub, but the limited integration with other platforms can make it challenging for teams managing repositories across multiple environments.
+- **Debugging challenges**: Requires commits to test workflows, which can clutter the commit history and make it harder to maintain a clean repository.
+- **Resource limits**: Concurrency and job time limits on the free tier can slow down larger projects.
+- **Less control over environment**: Less flexibility in customizing the execution environment compared to other CI/CD tols, which can be a limitation for teams needing specific configurations.
+- **Complexity with advanced workflows**: Setting up more sophisticated workflows can become complicated, requiring significant experience with the tool.
 
 ### GitLab CI/CD
-[GitLab CI/CD](https://docs.gitlab.com/ee/ci/index.html) is an integral part of GitLab, providing a seamless experience from code commit to deployment. It offers robust features for automating the entire DevOps lifecycle within a single application.
+[GitLab CI/CD](https://docs.gitlab.com/ee/ci/index.html) is an integral part of GitLab, providing a seamless experience from code commit to deployment. It offers robust features for automating the entire DevOps lifecycle within a single application, including source control, continuous integration, testing, and deployment. By providing a comprehensive DevOps solution, GitLab CI/CD ensures that teams can collaborate effectively, track progress, and maintain high levels of code quality, all without needing to switch between multiple tools.
+
+This integrated approach reduces the friction typically associated with using diverse systems, making GitLab CI/CD a powerful option for teams seeking a streamlined and efficient workflow. Additionally, GitLab's focus on security with built-in features - such as vulnerability scanning and compliance management - strengthens its appeal for enterprises looking for a secure, all-in-one solution.
 
 ![GitLab CI/CD by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/gitlab_cicd.png)
 
 **Unique feature: all-in-one DevOps platform**
-GitLab CI/CD combines source control, CI/CD, and project management in one place, streamlining collaboration and efficiency.
+GitLab CI/CD combines source control, CI/CD, project management, and deployment automation in one place, streamlining collaboration, efficiency, and simplifying the overall development lifecycle. With everything under one roof, there's no need to manage multiple tools, which can greatly reduce operational overhead.
 
 **Pros**:
-- **Powerful pipelines**: Supports complex workflows with stages and dependencies.
-- **Built-in security**: Static and dynamic application security testing.
-- **Kubernetes integration**: Simplified deployment to Kubernetes clusters.
+- **Powerful pipelines**: Supports complex workflows with stages and dependencies, which is ideal for projects requiring detailed control over the build process.
+- **Built-in security**: Provides features like static and dynamic application security testing (SAST/DAST) out of the box, making it easier to maintain secure code.
+- **Kubernetes integration**: Provides simplified deployment to Kubernetes clusters, which is a huge benefit for teams looking to manage containerized applications.
 
 **Cons**:
-- **Resource intensive**: Can be heavy on system resources.
-- **Complex setup**: Initial configuration can be time-consuming.
-- **Self-hosted maintenance**: Managing updates and security is on you.
-- **Limited third-party integrations**: Fewer integrations compared to competitors.
-- **Cost for premium features**: Advanced features require a paid subscription.
+- **Resource intensive**: Can be heavy on system resources - especially when self-hosted - making it a bit challenging for smaller teams or those with limited infrastructure.
+- **Complex setup**: Initial configuration can be time-consuming, particularly for large projects or those new to GitLab.
+- **Self-hosted maintenance**: Managing updates, security patches, and overall maintenance can be a burden if you're running GitLab on-premises.
+- **Limited third-party integrations**:  While GitLab covers a lot of use cases internally, it can be harder to integrate with some third-party tools compared to other CI/CD solutions.
+- **Cost for premium features**: Advanced features, like better performance metrics and premium support, require a paid subscription.
 
 ### Azure DevOps
-[Azure DevOps](https://azure.microsoft.com/en-us/products/devops/) is a suite of development tools from Microsoft, providing version control, CI/CD pipelines, testing, and artifact management. It's designed to support teams in planning work, collaborating on code development, and building and deploying applications.
+[Azure DevOps](https://azure.microsoft.com/en-us/products/devops/) is a suite of development tools from Microsoft, providing version control, CI/CD pipelines, testing, and artifact management. It's designed to support teams in planning work, collaborating on code development, and building and deploying applications, and offers a highly integrated set of tools that help teams manage every stage of the development lifecycle, including version control, CI/CD, artifact management, and testing.
+
+Key features include Azure Boards for tracking work, Azure Repos for version control, Azure Pipelines for CI/CD, Azure Artifacts for package management, and Azure Test Plans for testing. This makes this CI/CD tool ideal for teams using Microsoft technologies, offering streamlined collaboration and a high-quality development process.
 
 ![Azure DevOps workflow by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/azure_devops.png)
 
-**Unique feature: integrated end-to-end DevOps solution**
-Azure DevOps offers an integrated suite covering the entire DevOps lifecycle, from project planning with Azure Boards to deploying applications with Azure Pipelines.
+**Unique feature: integrated end-to-end DevOps solution for the Microsoft environment**
+Azure DevOps offers an integrated suite covering the entire DevOps lifecycle, from project planning with Azure Boards to deploying applications with Azure Pipelines. This makes it a powerful choice for teams that want a complete, all-in-one DevOps experience when using other Microsoft services.
 
 **Pros**:
-- **Comprehensive toolset**: Covers the entire development lifecycle.
-- **Strong integration with microsoft tools**: Seamless with Visual Studio and Azure services.
-- **Flexible deployment**: Supports any platform or cloud.
+- **Comprehensive toolset**: Covers the entire development lifecycle, reducing the need for additional tools.
+- **Strong integration with microsoft tools**: Seamless integration with Visual Studio and Azure services, which is beneficial for teams already in the Microsoft ecosystem.
+- **Flexible deployment**: Supports deploying to any platform or cloud, giving teams versatility in their deployment strategies.
 
 **Cons**:
-- **Complexity**: Can be overwhelming due to its breadth.
-- **Steep learning curve**: Requires time to master all components.
-- **Cost**: Paid tiers can be expensive for larger teams.
-- **Interface navigation**: UI can be less intuitive.
-- **Best for Microsoft ecosystems**: Less ideal for non-Microsoft technologies.
+- **Complexity**: Can be overwhelming due to the breadth of features, which may be more than what small teams or simple projects need.
+- **Steep learning curve**: Requires time to master all components, particularly for those not already familiar with Microsoft's ecosystem.
+- **Cost**: Paid tiers can be expensive for larger teams, particularly when compared to other solutions that offer similar features.
+- **Interface navigation**:  The user interface can be less intuitive with respect to other CI/CD tools, making it harder for new users to find what they need.
+- **Best for Microsoft ecosystems**: Less ideal for projects that aren't centered around Microsoft technologies.
 
 ### CircleCI
-[CircleCI](https://circleci.com/) is a cloud-based CI/CD platform that automates development workflows and accelerates software delivery. It supports rapid setup and provides powerful customization options for building, testing, and deploying applications.
+[CircleCI](https://circleci.com/) is a cloud-based CI/CD platform that automates development workflows and accelerates software delivery. It supports rapid setup and provides powerful customization options for building, testing, and deploying applications. 
+
+Known for its emphasis on speed - allowing developers to create efficient pipelines that run with minimal delays - the platform supports a variety of configurations, giving teams the ability to tailor workflows to their specific needs, whether they are working with traditional applications, containerized microservices, or other deployment strategies. Additionally, its cloud-based nature means that CircleCI can easily scale to meet the demands of growing projects, handling parallel tasks effectively to minimize build times. 
 
 **Unique feature: optimized for speed and parallelism**
-CircleCI excels at running pipelines quickly by allowing tasks to run in parallel, significantly reducing build times.
+CircleCI excels at running pipelines quickly by allowing tasks to run in parallel, significantly reducing build times. This makes it ideal for teams that need fast feedback on their code changes.
 
 **Pros**:
-- **Fast builds**: Optimized for speed with caching and parallelism.
-- **Extensive integrations**: Works with a wide range of tools and services.
-- **Excellent docker support**: Strong support for containerized applications.
+- **Fast builds**: Optimized for speed with caching and parallelism, helping teams get quick results.
+- **Extensive integrations**: Works with a wide range of tools and services, making it easy to fit into existing workflows.
+- **Excellent Docker support**: Strong support for containerized applications, which is a big advantage for modern development practices.
 
 **Cons**:
-- **Pricing complexity**: Costs can escalate with increased usage.
-- **Limited free tier**: Restrictions on concurrency and build minutes.
-- **Debugging limitations**: Live debugging can be challenging.
-- **Learning curve for advanced features**: Advanced configurations can be complex.
-- **Reliance on cloud**: Less suitable for on-premises environments.
+- **Pricing complexity**: Costs can escalate with increased usage, which can be a concern for teams with many developers or a high volume of builds.
+- **Limited free tier**: Restrictions on concurrency and build minutes make the free tier less practical for larger teams or projects.
+- **Debugging limitations**: Live debugging can be challenging, which may slow down the troubleshooting process.
+- **Learning curve for advanced features**: Advanced configurations, like setting up custom resource classes, can be complex.
+- **Reliance on cloud**: Less suitable for on-premises environments, which can limit its adoption in organizations with strict data residency requirements.
 
 ### Jenkins
-[Jenkins](https://www.jenkins.io/) is an open-source automation server that enables developers to build, test, and deploy their software. It's highly extensible, with a vast ecosystem of plugins supporting a multitude of tasks.
+[Jenkins](https://www.jenkins.io/) is an open-source automation server that helps developers build, test, and deploy their software. It's one of the most popular tools in the CI/CD space, thanks to its extensive plugin ecosystem that allows it to integrate with almost any tool or platform. It has also been around for over a decade, and its longevity speaks to its reliability and flexibility. 
 
-**Unique feature: extensive plugin ecosystem**
-With over 1,900 plugins, Jenkins offers unparalleled customization, integrating with almost any tool or technology.
+However, Jenkins' extensibility comes with its challenges. Managing a large number of plugins - in fact - can lead to compatibility issues, and keeping everything up to date requires ongoing maintenance. Additionally, configuring Jenkins for optimal performance — especially in distributed environments — can be complex and time-consuming. 
+
+**Unique feature: self-hosted, customizable agent management**
+Jenkins offers the ability to set up and manage self-hosted agents (nodes) with full customization. This feature allows teams to control the environment in which their CI/CD tasks run, giving them the flexibility to configure build environments specifically to their needs.
 
 **Pros**:
-- **Flexibility**: Highly customizable to fit any workflow.
-- **Open source**: Free to use with a strong community.
-- **Wide adoption**: Well-established with extensive documentation.
+- **Flexibility**: Highly customizable to fit any workflow, with plugins for almost any use case you can think of.
+- **Open source**: Free to use with a strong community, which is great for developers looking for a cost-effective solution.
+- **Wide adoption**: Well-established with extensive documentation and support resources, making it easier to find solutions to problems.
 
 **Cons**:
-- **Maintenance overhead**: Requires significant effort to manage.
-- **Complex configuration**: Setup can be time-consuming.
-- **Plugin conflicts**: Risk of compatibility issues.
-- **Outdated UI**: Less modern and intuitive interface.
-- **Scalability challenges**: Efficient scaling can be difficult.
+- **Maintenance overhead**: Requires significant effort to manage, including plugin updates and server maintenance.
+- **Complex configuration**: Setup can be time-consuming, particularly for large or complex projects.
+- **Plugin conflicts**: With so many plugins, there's always a risk of compatibility issues, which can lead to instability.
+- **Outdated UI**: The interface is less modern and intuitive compared to newer tools, which can be frustrating for new users.
+- **Scalability challenges**: Efficient scaling can be difficult, particularly when trying to distribute builds across multiple nodes.
 
 ## Why Kestra Stands Out
 After exploring these popular CI/CD tools, you might be wondering where Kestra fits in. So, let's dive into what makes Kestra unique and when it might be the right choice for your projects.
 
-### Kestra: orchestrating complex workflows with ease
+### Kestra: Orchestrating Complex Workflows With Ease
 Kestra is an open-source orchestration and scheduling platform designed to handle complex workflows across various systems. While traditional CI/CD tools focus on automating code integration and deployment, Kestra specializes in orchestrating tasks that span multiple environments and services.
 
 Here are its unique capabilities:
 
-- **Unified orchestration across systems**: Kestra allows you to manage workflows involving different cloud providers, databases, APIs, and more—all from a single platform.
-- **Real-time event triggers**: Supports [event-driven](./2024-06-27-realtime-triggers.m) architectures, enabling workflows to react to events like file uploads, database changes, or API calls.
-- **Visual workflow editor**: Provides an intuitive interface to design and visualize workflows, reducing complexity and making it accessible even for those new to orchestration.
-- **Robust error handling and retries**: Built-in mechanisms for managing failures and retries without the need for custom scripting, ensuring reliability.
-- **Scalable and distributed execution**: Designed for cloud-native environments, Kestra handles parallelism and scaling seamlessly, making it ideal for large-scale data processing.
+- **Unified orchestration across systems**:  Kestra allows you to manage workflows involving different cloud providers, databases, APIs, and more — all from a single platform. This makes it easier to coordinate tasks that need to interact with diverse environments, reducing the need for custom integration scripts.
+- **Real-time event triggers**: Supports event-driven architectures, enabling workflows to react to events like file uploads, database changes, or API calls. This [real-time](./2024-06-27-realtime-triggers.m) responsiveness can be critical for applications that require immediate action.
+- **Visual workflow editor**: Provides an intuitive interface to design and visualize workflows, reducing complexity and making it accessible even for those new to orchestration. This visual approach can save significant time when designing and maintaining workflows.
+- **Robust error handling and retries**: Built-in mechanisms for managing failures and retries without the need for custom scripting, ensuring reliability. This is a must when dealing with critical tasks where failure isn't an option.
+- **Scalable and distributed execution**: Designed for cloud-native environments, Kestra handles parallelism and scaling seamlessly, making it ideal for large-scale data processing and distributed workflows.
 
-### When to choose Kestra over traditional CI/CD tools
+### When to Choose Kestra Over Traditional CI/CD Tools
 At this point, you might be wondering when to choose Kestra over a CI/CI tool. So here are some guidelines to consider:
 
-- **Complex, multi-system workflows**: If your workflows involve coordinating tasks across various platforms and services, Kestra simplifies this orchestration.
-- **Event-driven processes**: For applications that need to respond to real-time events, Kestra's event triggers are invaluable.
-- **Enhanced error handling**: When reliability is critical, Kestra's robust error management ensures workflows can recover gracefully.
-- **Visual design preference**: If you prefer designing workflows visually rather than scripting them, Kestra's editor is a significant advantage.
-- **Scalability needs**: For projects that require handling large-scale data processing or distributed tasks, Kestra is built to scale efficiently.
+- **Complex, multi-system workflows**: If your workflows involve coordinating tasks across various platforms and services, Kestra simplifies this orchestration. Instead of relying on multiple CI/CD jobs and scripts, Kestra provides a unified approach.
+- **Event-driven processes**: For applications that need to respond to real-time events, Kestra's event triggers are invaluable. This capability allows your workflows to start automatically when something happens, without manual intervention.
+- **Enhanced error handling**: When reliability is critical, Kestra's robust error management ensures workflows can recover gracefully, reducing downtime and manual troubleshooting.
+- **Visual design preference**:  If you prefer designing workflows visually rather than scripting them, Kestra's editor is a significant advantage. The ability to drag and drop tasks can make workflow creation much more approachable.
+- **Scalability needs**: For projects that require handling large-scale data processing or distributed tasks, Kestra is built to scale efficiently. It takes care of distributing tasks across available resources, so you don't have to manage scaling manually.
 
 ## Kestra Vs. Jenkins: A Deep Comparison
-So, along this article, we've described how Kestra differes from CI/CD tools and when you should choose it over them.
+So, along this article, we've described what are CI/CD tools used for and we listed the most popular ones. We have also presented Kestra as an orchestration tool and described when to choose it over traditional CI/CD tools.
 
-Now it's time to get a practical example. To do so, we'll compare Kestra to Jenkins, and we'll:
-- Describe why developers use Jenkins.
-- Difficulties that developers encounter in using Jenkins and how Kestra can solve them.
-
-Let's start!
+As Jenkin is a "jack of all trade" CI/CD tool, here we want to make a deep comparison between it and Kestra to help you understand why and when you should choose Kestra over it. To do so, we'll discuss why developers use Jenkins and difficulties in using it that Kestra solves.
 
 ### Why Developers Use Jenkins
 Jenkins has many pros, and we believe the three that are woth mentioning are:
@@ -176,15 +182,10 @@ While Jenkins is a powerful tool, it does come with some challenges.
 
 Let's see them together.
 
-#### Plugin Overload
-Jenkins currently has over 1,900 plugins, and this creates complexity as they can conflict with each other. Also, updating them can break pipelines, causing downtime.
-
-Kestra, on the other hand, offers built-in integrations for many common use cases without the need for plugins, and this reduces the risk of compatibility issues. For exampple, in Kestra a CI/CD pipeline can be defined in a YAML configuration, and all the components work seamlessly together.
-
 #### Groovy Syntax
 Jenkins uses [Groovy-based](https://www.jenkins.io/doc/pipeline/steps/groovy/) scripting for pipeline creation, which can be unintuitive for developers unfamiliar with it - as it also a language not widely used. This can create a steep learning curve that can slow down development and cause errors.
 
-Kestra, instead, uses a declarative YAML-based syntax that is much easier to read and write. 
+Kestra, instead, uses a declarative YAML-based syntax that is much easier to read and write. YAML is also widely known and used in the industry, making it more accessible to developers, and reducing the learning curve for new users. Its human-readable format makes YAML especially appealing, as it is straightforward to understand, allowing team members across different roles to easily collaborate on workflow definitions.
 
 #### Debugging and Troubleshooting
 In Jenkins, debugging pipelines can be difficult as logs can become scattered across different plugins and stages, making it hard to trace the root cause of an issue.
@@ -195,29 +196,6 @@ Kestra, instead, provides centralized logging and error-handling across all task
 
 #### Scalability Challenges
 Jenkins requires a lot of manual setup for distributed builds or scaling across [multiple nodes](https://www.jenkins.io/doc/book/managing/nodes/), and this can lead to bottlenecks when the infrastructure needs to grow.
-
-Instead, as Kestra is designed for distributed, cloud-native workflows it automatically handles scaling and parallelism without the need to manually configure nodes. Developers can define [parallel tasks](https://kestra.io/plugins/core/tasks/flows/io.kestra.plugin.core.flow.parallel) directly in their workflows, and Kestra manages the execution across distributed resources in the YAML just like so:
-
-```yaml
-id: parallel
-namespace: company.team
-
-tasks:
-  - id: parallel
-    type: io.kestra.plugin.core.flow.Parallel
-    tasks:
-      - id: 1st
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.startDate }}"
-      - id: 2nd
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.id }}"
-  - id: last
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ taskrun.startDate }}"
-
-```
-
 
 ## Conclusions
 In conclusion, choosing between Kestra and CI/CD tools depends on your specific requirements.
