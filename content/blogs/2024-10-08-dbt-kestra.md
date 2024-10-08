@@ -7,7 +7,7 @@ author:
   name: Martin-Pierre Roset
   role: 
   image: mproset
-image: /blogs/
+image: /blogs/2024-10-08-dbt-kestra.jpg
 ---
 
 When using dbt, you often need tools that can handle large, complex workflows and automate tasks across different environments. At Kestra, we’ve built a suite of features to manage dbt projects in the best way possible, from syncing code with Git, scaling your dbt workflows on-demand with [Task Runners](https://kestra.io/docs/task-runners) to flexible code management using [Namespace Files](https://kestra.io/docs/concepts/namespace-files). Here’s how Kestra can simplify your dbt workflows and make data transformation more scalable.
