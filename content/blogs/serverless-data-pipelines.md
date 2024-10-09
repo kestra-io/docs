@@ -48,43 +48,11 @@ You can see the entire workflow in action in the video below:
 ## Modular Data Transformations with dbt
 
 The dbt models used in [this project](https://github.com/kestra-io/serverless/tree/main/dbt/models) are structured into three main layers: **staging**, **marts**, and **aggregations**:
-- **Staging** prepares raw data for consistent use
-- **Marts** creates business-centric tables for further analysis
-- **Aggregations** calculates metrics like average order value and revenue by city.
+- **Staging layer** prepares raw data for consistent use
+- **Marts layer** creates business-centric tables for further analysis
+- **Aggregations layer** calculates metrics like average order value and revenue by city.
 
 Each of these layers handles a different stage of data transformation.
-
-### 1. Staging
-
-The **staging** layer prepares raw data for further transformations. It includes several SQL models:
-
-- `stg_customers.sql`: extracts and formats raw customer data
-- `stg_orders.sql`: prepares order data so that fields like order dates and IDs are standardized for consistent use
-- `stg_order_items.sql`: queries data about what was ordered, in what quantities, and at what prices
-- `stg_products.sql`: extracts product details like product names, categories, and prices
-- `stg_supplies.sql`: prepares supply chain data
-- `stg_locations.sql`: standardizes fields related to customer locations and their tax rates
-- `__sources.yml`: defines the source data for all staging models, mapping BigQuery tables to their corresponding staging models in dbt.
-
-This layer standardizes raw data for more complex transformations in the next steps.
-
-### 2. Marts
-
-The **marts** layer takes the cleaned data from the staging layer and builds business-specific tables:
-
-- `customers.sql`: joins data from the staging tables to create a unified view of customer details, such as total lifetime value and frequency of purchases
-- `orders.sql`: summarizes order data to generate metrics like total orders, total value, and order frequencies per time period.
-
-These models are designed to be used directly by downstream processes that require clean, pre-aggregated business data.
-
-### 3. Aggregations
-
-The **aggregations** layer calculates business metrics that provide insights into overall performance:
-
-- `avg_order_value.sql`: calculates the average value of each order to provide a high-level metric of customer spend
-- `sum_revenue_per_city.sql`: aggregates total revenue by city to give insights into sales performance across different regions.
-
-This layer builds on the marts models and calculates key metrics and aggregations that are often used in reports or dashboards.
 
 This modular structure helps ensure that the data transformations are well-organized, maintainable and scalable.
 
@@ -99,16 +67,16 @@ Now that we covered what the project does and how it's structured, let's highlig
 Serverless is often associated with a tangled mess of functions and services that are hard to manage and debug. But it doesn't have to be that way. With Kestra, you can create structured, modular workflows that are easy to understand, maintain, and scale.
 
 Using [labels](https://kestra.io/docs/workflow-components/labels), [subflows](https://kestra.io/docs/workflow-components/subflows), [flow triggers](https://kestra.io/docs/workflow-components/triggers/flow-trigger), [tenants](https://kestra.io/docs/enterprise/tenants) and [namespaces](https://kestra.io/docs/workflow-components/namespace) you can bring order, structure and governance to serverless workflows.
-- Each **dashboard** in Kestra can be filtered by namespaces or labels, so you can quickly find the information you need.
-- **Subflows** let you encapsulate common tasks and reuse them across multiple workflows.
-- **Flow triggers** allow you to start a workflow based on an event, such as a new file appearing in a cloud storage bucket or a new message arriving in your Pub/Sub topic.
-- **Namespaces** help you organize your workflows into logical groups, making it easier to manage state (KV Store), secrets, variables, default configuration, permissions and access control.
+- Each **dashboard** in Kestra can be filtered by namespaces or labels, so you can easily monitor your serverless data pipelines.
+- **Subflows** let you encapsulate common tasks and reuse them across multiple flows.
+- **Event triggers** allow you to start a workflow as soon as a new file arrives in a cloud storage bucket or a new message is received in your Pub/Sub topic.
+- **Namespaces** help you organize your workflows into logical groups, making it easier to manage state (KV Store), secrets, variables, plugin configuration and access control.
 
 ### Interactivity with Conditional Inputs
 
 One of the standout features of Kestra is the ability to create **interactive workflows** with [conditional inputs](https://kestra.io/docs/workflow-components/inputs#conditional-inputs-for-interactive-workflows) that depend on each other. In our example, the workflow dynamically adapts to user inputs to determine whether to run a task, adjust compute resource requests, or customize the forecast output. Here’s why this flexibility is valuable:
 
-- **On-the-fly Adjustments**: you don't need to redeploy code every time you want to change an input or parameter. If, for instance, you want to adjust the number of CPU cores for a forecast running on Modal, you can adjust that value at runtime or configure it in a `Schedule` trigger definition as shown below. Conditional inputs, like the `cpu` and `memory` options shown only when you choose to run the Modal task, make the workflow less error-prone as users can't accidentally select the wrong options or run the flow with invalid parameters — a simple way to introduce governance and guardrails into your data pipelines.
+- **On-the-fly Adjustments**: you don't need to redeploy code every time you want to change an input or parameter. If, for instance, you want to adjust the number of CPU cores for a forecast running on Modal, you can adjust that value at runtime or configure it in a `Schedule` trigger definition as shown below. Conditional inputs, like the `cpu` and `memory` options shown only when you choose to run the Modal task, make the workflow less error-prone as users can't accidentally enter the wrong values or run the flow with invalid parameters. The strongly typed inputs introduce governance and guardrails to ensure that only valid inputs are accepted.
 
 ```yaml
 triggers:
@@ -132,11 +100,11 @@ triggers:
 
 ### Storing State with Kestra
 
-Another benefit of using Kestra in this architecture is its ability to store and manage state, which is especially needed for serverless data pipelines that are typically stateless by design. Kestra keeps track of the workflow state, so you can easily pick up where you left off if a task fails or if you need to rerun part of the pipeline, e.g. using one of our most popular 🔥 [Replay feature](https://kestra.io/docs/concepts/replay).
+Another benefit of using Kestra in this architecture is its ability to store and manage state, which is especially needed for serverless data pipelines that are typically stateless by design. Kestra keeps track of the workflow state, so you can easily rerun any part of the pipeline if any task fails, e.g. using one of our most popular 🔥 [Replay feature](https://kestra.io/docs/concepts/replay) allowing you to rerun a flow from any chosen task.
 
-For example, Kestra can store artifacts such as dbt's `manifest.json` in the [KV store](https://kestra.io/docs/concepts/kv-store). This file contains information about which models were run and their results, so we can avoid rerunning dbt models that haven't changed since the last run. This is a huge time-saver, especially when working with large datasets or complex transformations.
+For example, Kestra can store artifacts such as dbt's `manifest.json` in the [KV store](https://kestra.io/docs/concepts/kv-store). This file contains information about materialized tables, so we can avoid rerunning dbt models that haven't changed since the last run. This is a huge time-saver, especially when working with large datasets or complex transformations.
 
-Additionally, Kestra captures logs, metrics and outputs at each stage of the workflow. This provides visibility into what happened during serverless workflow execution execution. If something goes wrong, Kestra can [automatically retry](https://kestra.io/docs/workflow-components/retries) transient failures, and if retries don't help, you can quickly track down the issue by reviewing the logs or inspecting the [output artifacts](https://kestra.io/docs/workflow-components/outputs) and [replaying the flow](https://youtu.be/RvNc3gLXMEs?si=tcY7KoZCa_lZ-Lhy) from a specific point. And when everything works as expected, these logs serve as a detailed record of what was processed, when, how long each step took, and what were the final outputs.
+Additionally, Kestra captures logs, metrics and outputs at each stage of the workflow. This provides visibility into what happened during serverless workflow execution. If something goes wrong, Kestra can [automatically retry](https://kestra.io/docs/workflow-components/retries) transient failures, and if retries don't help, you can quickly track down the issue by reviewing the logs or inspecting the [output artifacts](https://kestra.io/docs/workflow-components/outputs) and [replaying the flow](https://youtu.be/RvNc3gLXMEs?si=tcY7KoZCa_lZ-Lhy) from a specific point. And when everything works as expected, these logs serve as a detailed record of what was processed, when, how long each step took, and what were the final outputs.
 
 ### Future-Proof Your Data Platform
 
