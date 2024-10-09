@@ -35,12 +35,20 @@ So, here’s a look at the key factors to consider when making your choiche:
 So, with that in mind, let's compare three workflow orchestration tools.
 
 ## Comparing Popular Workflow Orchestration Tools
-Let’s dive into three of the most used workflow orchestration tools: Kestra, Apache Airflow, and Prefect. Each has its strengths and weaknesses, but one stands out for its flexibility, ease of use, and innovation.
+Let's now take a closer look at three widely used workflow orchestration tools: Kestra, Apache Airflow, and Prefect. Each one excels in specific areas, so understanding their strengths can help you choose the best fit for your needs:
+
+- Kestra is particularly well-suited for organizations that need to orchestrate complex, large-scale workflows across a variety of systems and technologies. For example, if your team deals with diverse data sources — such as different databases, APIs, cloud services, and on-premises systems — and needs to integrate them seamlessly, Kestra's flexibility makes it an excellent choice. In particular, it's ideal for environments where workflows are not just about data pipelines but also involve automating business processes, running batch operations, and managing tasks that span multiple departments or technologies.
+
+- Apache Airflow is best suited for data engineering teams deeply integrated with Python, particularly when managing intricate ETL pipelines. Its DAG-based (Directed Acyclic Graph) workflow management provides precise control over task execution sequences, which is essential for accurate data processing. Airflow, in particular, excels in scenarios where the order of operations is important and teams are comfortable with Python-based workflow definitions.
+
+- Prefect is designed for Python developers who require a tool with a focus on hybrid execution models. It performs well in environments where workflows involve sensitive data that must remain on-premises while still leveraging external orchestration capabilities. It's particularly suitable for small teams or projects that need to get up and running quickly without extensive infrastructure investments.
+
+Let's now describe each tool, by providing an overview, a unique feature, and pros and cons to help you get a better understanding for your choiche.
 
 ### Kestra
 ![Kestra UI](/blogs/2024-10-DD-workflow-tools-comparison/kestra-UI.png)
 
-[Kestra](https://kestra.io/) is a modern, distributed orchestration tool built for handling complex workflows at scale. It offers flexibility and modularity, making it adaptable to various workflows, from basic task automation to managing massive data pipelines. With a focus on scalability and high availability, Kestra is optimized for modern cloud environments and is designed with a cloud-native architecture, making it a great fit for modern systems that need to scale seamlessly as demands grow.
+[Kestra](https://kestra.io/) is a modern, distributed orchestration tool built for handling complex workflows at scale. With a focus on scalability and high availability, Kestra is optimized for modern cloud environments and is designed with a cloud-native architecture, making it a great fit for systems that need to scale seamlessly as demands grow. Moreover, it enables users to build workflows either by coding in YAML or directly through its intuitive user interface, bridging the gap between technical and non-technical users and fostering collaboration across different teams.
 
 **Unique feature: language-agnostic workflows**
 
