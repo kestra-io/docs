@@ -13,7 +13,7 @@
                                 class="btn text-white btn-animated btn-dark-animated me-2 mb-2"
                                 data-aos="zoom-in"
                             >
-                                Talk to Us
+                                Get a demo
                             </NuxtLink>
                             <NuxtLink
                                 href="/docs/getting-started/quickstart#start-kestra"

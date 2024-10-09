@@ -9,7 +9,7 @@
                             production workloads with high-security standards and enterprise support.</p>
                         <div class="d-flex flex-wrap gap-2">
                             <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
-                                Talk to Us
+                                Talk to sales
                             </NuxtLink>
                         </div>
                     </div>

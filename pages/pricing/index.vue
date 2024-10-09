@@ -13,7 +13,7 @@
         <Faq />
         <LayoutFooterContact
             title="Ready to Get Started with Kestra?"
-            purpleButtonText="Talk to Us"
+            purpleButtonText="Get a demo"
             purpleButtonHref="/demo"
         />
     </div>

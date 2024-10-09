@@ -7,8 +7,8 @@
                         <h1 data-aos="fade-right">The differences between Kestra and Prefect</h1>
                         <p class="baseline" data-aos="fade-left">How to Choose the Right Orchestration Platform</p>
                         <div class="cta">
-                            <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-aos="zoom-in">
-                                Get started with Kestra
+                            <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated mx-2 mt-2" data-aos="zoom-in">
+                                Get a demo
                             </NuxtLink>
                         </div>
                     </div>

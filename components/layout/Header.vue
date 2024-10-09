@@ -389,7 +389,7 @@
                                   href="/demo">
                             <span>
                                 <CalendarOutline class="d-none d-xl-inline-flex"/>
-                                Get a demo
+                                Talk to us
                             </span>
                         </NuxtLink>
 
