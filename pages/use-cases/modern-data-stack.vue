@@ -42,7 +42,7 @@
         <NuxtLazyHydrate when-visible>
             <LayoutFooterContact
                 title="Ready to take your data platform to the next level?"
-                darkButtonText="Talk to Us"
+                darkButtonText="get a demo"
                 darkButtonHref="/demo"
                 purpleButtonText="Get Started"
                 purpleButtonHref="/docs/getting-started/quickstart"

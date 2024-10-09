@@ -8,7 +8,7 @@
                         <p class="baseline mb-0 pb-3" data-aos="fade-left">Automate scheduled and event-driven workflows with Kestra</p>
                         <div class="cta">
                             <NuxtLink href="/demo" class="btn btn-dark mt-2 me-3" data-aos="zoom-in">
-                                Talk to Us
+                                get a demo
                             </NuxtLink>
                             <NuxtLink href="https://github.com/kestra-io/kestra"  class="btn btn-animated btn-purple-animated mt-2" data-aos="zoom-in">
                                 Get started

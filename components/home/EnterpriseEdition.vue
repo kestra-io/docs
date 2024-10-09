@@ -8,7 +8,7 @@
                     <p class="description">Ensure scalability and high availability with managed Kafka and Elasticsearch integrated into the Enterprise Edition to eliminate single point of failure.</p>
                     <div class="d-flex align-items-center justify-content-center">
                         <NuxtLink href="/enterprise" class="btn btn-animated btn-dark-animated me-2 z-10" data-aos="zoom-in">Learn more</NuxtLink>
-                        <NuxtLink href="/contact-us" class="btn btn-animated btn-purple-animated z-10" data-aos="zoom-in">Talk to Us</NuxtLink>
+                        <NuxtLink href="/contact-us" class="btn btn-animated btn-purple-animated z-10" data-aos="zoom-in">get a demo</NuxtLink>
                     </div>
                 </div>
             </div>

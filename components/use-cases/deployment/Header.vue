@@ -12,8 +12,8 @@
                             Automate, Scale, Provision and Optimize Your Infrastructure with Kestra
                         </p>
                         <div class="cta">
-                            <NuxtLink href="/docs/getting-started" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
-                                Talk to Us
+                            <NuxtLink href="/demo" class="btn btn-animated btn-dark-animated me-3" data-aos="zoom-in">
+                                get a demo
                             </NuxtLink>
                             <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
                                 Get started
