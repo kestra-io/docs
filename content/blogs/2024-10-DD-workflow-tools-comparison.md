@@ -26,7 +26,7 @@ When choosing the best workflow orchestration tool for your needs, it’s import
 
 So, here’s a look at the key factors to consider when making your choiche:
 
-- **Ease of use**: How easy is it to get started with the tool? This doesn’t just mean a smooth installation: it extends to the entire user experience. A good workflow orchestration tool, in fact, should have an intuitive interface, so that managing and monitoring workflows doesn’t feel like rocket science. 
+- **Ease of use**: How easy is it to get started with the tool? This doesn’t just mean a smooth installation: it extends to the entire user experience. A good workflow orchestration tool should have an intuitive interface, so that managing and monitoring workflows doesn’t feel like rocket science. 
 - **Flexibility**: Your workflow orchestration tool needs to adapt to different environments and data sources. Some tools might be great if you're working entirely in the cloud, but what if your workflows span cloud and on-premises infrastructure? Or, what if you’re dealing with a variety of databases, APIs, and batch-processing systems? The right tool should support a broad range of integrations and have the flexibility to handle different types of workloads — from real-time data pipelines to periodic batch jobs. Flexibility also means how easy it is to adjust workflows as requirements change, so you should ask yourself:" With this tool, can I add new tasks or integrate a new data source without overhauling the entire workflow?"
 - **Scalability**: Workflows start small but can grow complex fast. So, you need a tool that can scale not just with more tasks, but with higher volumes of data and a growing number of dependencies. Does the tool you're analyzing support distributed execution so it can handle multiple tasks in parallel across nodes? Does it continue performing well as the number of workflows increases, or does it slow down? For example, tools with native cloud support (or that are cloud-native) often scale better because they’re designed to handle large-scale, distributed workloads.
 - **Extensibility**: At some point, you’ll  probably need a feature that isn’t supported out of the box. So, in this context, extensibility refers to how easily you can extend or customize the orchestration tool to meet your specific needs. This could be writing custom plugins, integrating with proprietary systems, or creating custom monitoring solutions, and a highly extensible tool offers hooks or APIs that allow you to build on top of it. 
@@ -53,7 +53,7 @@ Kestra provides YAML-based workflow definitions which make it a language-agnosti
 - **Intuitive UI**: Kestra’s user interface  is designed with simplicity and usability in mind, providing an intuitive visual representation of workflows. The UI makes it easy to create, configure, and monitor workflows, even for users who don’t have extensive technical expertise.
 
 **Cons**:
-- **Smaller community**: Being newer on the market, Kestra may have a smaller user base with respect to other tools. Though, is rapidly growing.
+- **Smaller community**: Being newer on the market, Kestra may have a smaller user base with respect to other tools. Though, is rapidly growing and very active.
 
 ## Apache Airflow
 ![Airflow UI](/blogs/2024-10-DD-workflow-tools-comparison/airflow-UI.png)
@@ -109,7 +109,7 @@ In contrast, Airflow and Prefect often require fragmented processes for developm
 So, by offering an integrated platform, Kestra reduces the barriers between different stages of the workflow lifecycle.
 
 ### Language-Agnostic and Code-Free Workflow Definitions
-While Airflow and Prefect heavily rely on Python code to define workflows, Kestra offers a language-agnostic, code-free approach using YAML. This allows teams without programming expertise to create and manage workflows through declarative configurations, enhancing collaboration between technical and non-technical stakeholders.
+While Airflow and Prefect heavily rely on Python code to define workflows, Kestra offers a language-agnostic approach using YAML. This allows teams without programming expertise to create and manage workflows through declarative configurations, enhancing collaboration between technical and non-technical stakeholders.
 
 This approach simplifies maintenance and reduce the likelihood of errors, as workflows are defined through straightforward YAML configurations that are easier to read and write. 
 
@@ -133,15 +133,10 @@ On the contrary:
 
 So, with this feature, Kestra reduces the need for custom error-handling code, simplifies workflow definitions, and improves the overall system robustness.
 
-### Native Cloud FeaturesS
-Kestra is designed with cloud-native environments in mind, enabling efficient execution of containerized tasks and leveraging cloud infrastructure for scaling and resource management.
+### Native Cloud Features
+Kestra is built from the ground up with [cloud-native](docs/blob/main/pages/use-cases/modern-data-stack.vue) principles in mind, making it a natural fit for modern cloud environments. Its architecture seamlessly leverages containerization and orchestration technologies, which means it can scale efficiently, manage resources effectively, and integrate smoothly with cloud infrastructures.
 
-Instead:
-
-- Airflow can be deployed in cloud environments but wasn't originally designed with cloud-native principles, which may result in additional configuration and management overhead for seamless integration. 
-- Prefect can also run in the cloud but lacks the same level of native integration with container orchestration platforms like Kubernetes.
-
-So, by embracing cloud-native design principles, Kestra simplifies deployment and management within modern cloud architectures, reducing operational complexity and aligning with contemporary infrastructure practices.
+On the other hand, while both Prefect and Airflow have made strides in supporting cloud deployments, they were not originally built with a cloud-native mindset, and this can lead to complexities during setup and management.
 
 ## When to Choose Kestra Over Airflow and Prefect
 So, considering all this knowledge how do you choose Kestra over Airflow or Prefect? 
@@ -153,4 +148,4 @@ Well, here are some considerations to keep in mind:
 ## Conclusions
 When it comes to choosing the right workflow orchestration tool, there’s no one-size-fits-all solution: the best tool depends on your specific needs, including the complexity of your workflows, scalability requirements, and your team's expertise.
 
-Kestra, however, stands out as the strongest option for modern, cloud-native environments. Unlike Airflow - which can struggle with scaling and has a steeper learning curve -, or Prefect - which may lack some robustness in complex workflows -, Kestra strikes the perfect balance between accessibility and power. Its language-agnostic approach and intuitive UI, in fact, make it accessible for teams of all sizes and skill levels, while its highly scalable architecture ensures that it can handle even the most demanding workflows, allowing you to grow without worring about managing infrastructure.
+Kestra, however, stands out as the strongest option for modern, cloud-native environments. Unlike Airflow which can struggle with scaling and has a steeper learning curve, or Prefect which may lack some robustness in complex workflows, Kestra strikes the perfect balance between accessibility and power. Its language-agnostic approach and intuitive UI, in fact, make it accessible for teams of all sizes and skill levels, while its highly scalable architecture ensures that it can handle even the most demanding workflows, allowing you to grow without worring about managing infrastructure.
