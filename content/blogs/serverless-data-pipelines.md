@@ -45,7 +45,7 @@ You can see the entire workflow in action in the video below:
 
 ---
 
-## Modular Data Transformation with dbt
+## Modular Data Transformations with dbt
 
 The dbt models used in [this project](https://github.com/kestra-io/serverless/tree/main/dbt/models) are structured into three main layers: **staging**, **marts**, and **aggregations**:
 - **Staging** prepares raw data for consistent use
