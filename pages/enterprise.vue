@@ -26,7 +26,7 @@
             <LayoutFooterContact
                 darkButtonText="Get Started"
                 darkButtonHref="https://kestra.io/docs/getting-started/quickstart"
-                purpleButtonText="Get a demo"
+                purpleButtonText="Talk to sales"
                 purpleButtonHref="/demo"
             />
         </NuxtLazyHydrate>
