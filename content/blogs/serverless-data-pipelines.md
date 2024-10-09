@@ -45,9 +45,14 @@ You can see the entire workflow in action in the video below:
 
 ---
 
-## The structure of the dbt project
+## Modular Data Transformation with dbt
 
-The dbt project is structured into three main layers: **staging**, **marts**, and **aggregations**, each handling a different stage of data transformation.
+The dbt models used in [this project](https://github.com/kestra-io/serverless/tree/main/dbt/models) are structured into three main layers: **staging**, **marts**, and **aggregations**:
+- **Staging** prepares raw data for consistent use
+- **Marts** creates business-centric tables for further analysis
+- **Aggregations** calculates metrics like average order value and revenue by city.
+
+Each of these layers handles a different stage of data transformation.
 
 ### 1. Staging
 
@@ -81,13 +86,7 @@ The **aggregations** layer calculates business metrics that provide insights int
 
 This layer builds on the marts models and calculates key metrics and aggregations that are often used in reports or dashboards.
 
-### Modular Structure
-
-- **Staging** prepares raw data for consistent use
-- **Marts** creates business-centric tables for further analysis
-- **Aggregations** calculates metrics like average order value and revenue by city.
-
-This modular structure helps ensure that the data transformations are well-organized, maintainable and scalable. With Kestra, you can additionally leverage [labels](https://kestra.io/docs/workflow-components/labels), [subflows](https://kestra.io/docs/workflow-components/subflows), [flow triggers](https://kestra.io/docs/workflow-components/triggers/flow-trigger) and [namespaces](https://kestra.io/docs/workflow-components/namespace) to further organize and manage your workflows.
+This modular structure helps ensure that the data transformations are well-organized, maintainable and scalable.
 
 ---
 
@@ -95,7 +94,17 @@ This modular structure helps ensure that the data transformations are well-organ
 
 Now that we covered what the project does and how it's structured, let's highlight the benefits of using Kestra for orchestrating serverless data pipelines such as this one.
 
-### Interactive Workflows with Conditional Inputs
+### Structure & Governance
+
+Serverless is often associated with a tangled mess of functions and services that are hard to manage and debug. But it doesn't have to be that way. With Kestra, you can create structured, modular workflows that are easy to understand, maintain, and scale.
+
+Using [labels](https://kestra.io/docs/workflow-components/labels), [subflows](https://kestra.io/docs/workflow-components/subflows), [flow triggers](https://kestra.io/docs/workflow-components/triggers/flow-trigger), [tenants](https://kestra.io/docs/enterprise/tenants) and [namespaces](https://kestra.io/docs/workflow-components/namespace) you can bring order, structure and governance to serverless workflows.
+- Each **dashboard** in Kestra can be filtered by namespaces or labels, so you can quickly find the information you need.
+- **Subflows** let you encapsulate common tasks and reuse them across multiple workflows.
+- **Flow triggers** allow you to start a workflow based on an event, such as a new file appearing in a cloud storage bucket or a new message arriving in your Pub/Sub topic.
+- **Namespaces** help you organize your workflows into logical groups, making it easier to manage state (KV Store), secrets, variables, default configuration, permissions and access control.
+
+### Interactivity with Conditional Inputs
 
 One of the standout features of Kestra is the ability to create **interactive workflows** with [conditional inputs](https://kestra.io/docs/workflow-components/inputs#conditional-inputs-for-interactive-workflows) that depend on each other. In our example, the workflow dynamically adapts to user inputs to determine whether to run a task, adjust compute resource requests, or customize the forecast output. Here’s why this flexibility is valuable:
 
