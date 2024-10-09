@@ -10,7 +10,7 @@ author:
 image: /blogs/serverless-data-pipelines.jpg
 ---
 
-Building data pipelines often comes down to getting the right compute power when you need it. With serverless options like Modal and BigQuery, you can focus on your workflows without having to think about infrastructure. [Kestra](https://github.com/kestra-io/kestra) takes care of orchestrating everything — managing code dependencies, handling state, and capturing logs and outputs as you go.
+Building data pipelines often comes down to getting the right compute power when you need it. With serverless options like Modal and BigQuery, you can focus on your workflows without having to think about infrastructure. [Kestra](https://github.com/kestra-io/kestra) takes care of orchestrating everything — managing code dependencies, handling state, and capturing logs, metrics and outputs as you go.
 
 In this post, we'll walk through a real-world example of a serverless data pipeline where we use **Kestra** for orchestration, **Modal** for on-demand compute, **dbt** for data transformations, and **BigQuery** for data storage and querying.
 
@@ -35,7 +35,7 @@ Here's a more detailed breakdown of the workflow:
 
 3. **Forecasting on Modal**: after the transformation, we trigger a forecasting model using **Modal**. This is where serverless compute comes into play — Modal dynamically provisions the necessary resources (with requested CPU, memory, etc.) based on user inputs. If you need more CPU for a large dataset, you simply select it in the dropdown menu in the UI when running the workflow, and Kestra will pass that information to Modal. The forecasted data is stored in BigQuery, and the final interactive HTML report is stored in a GCS bucket.
 
-4. **Logs and artifacts**: throughout the workflow, Kestra keeps track of logs, outputs, and important artifacts like the dbt manifest and the HTML report from Modal. This way, you can monitor progress, troubleshoot issues, and even reuse artifacts in future runs.
+4. **Logs and artifacts**: throughout the workflow, Kestra keeps track of logs, metrics, and important artifacts like the dbt manifest and the HTML report from Modal. This way, you can monitor progress, troubleshoot issues, and even reuse artifacts in future runs.
 
 ---
 
@@ -53,7 +53,7 @@ The **staging** layer prepares raw data for further transformations. It includes
 - `stg_products.sql`: extracts product details like product names, categories, and prices
 - `stg_supplies.sql`: prepares supply chain data
 - `stg_locations.sql`: standardizes fields related to customer locations and their tax rates
-- `__sources.yml`: defines the source data for all staging models, mapping raw tables from the database to their corresponding staging models in dbt
+- `__sources.yml`: defines the source data for all staging models, mapping raw tables from the database to their corresponding staging models in dbt.
 
 This layer standardizes raw data for more complex transformations in the next steps.
 
@@ -62,7 +62,7 @@ This layer standardizes raw data for more complex transformations in the next st
 The **marts** layer takes the cleaned data from the staging layer and builds business-specific tables:
 
 - `customers.sql`: joins data from the staging tables to create a unified view of customer details, such as total lifetime value, frequency of purchases, and other key metrics
-- `orders.sql`: summarizes data from the orders and order items tables, generating metrics like total orders, total value, and order frequencies per time period
+- `orders.sql`: summarizes data from the orders and order items tables, generating metrics like total orders, total value, and order frequencies per time period.
 
 These models are designed to be used directly by downstream processes that require clean, pre-aggregated business data.
 
@@ -85,13 +85,15 @@ This modular structure helps ensure that the data transformations are well-organ
 
 ---
 
-## Why Interactive Workflows Matter
+## Why Use Kestra for Serverless Workflows
 
-Now that we know how what the project does and how it's structured, let's dive into why interactive workflows are essential for serverless data pipelines.
+Now that we know how what the project does and how it's structured, let's dive into why you should consider using Kestra for orchestrating serverless data pipelines.
 
-One of the standout features of Kestra is the ability to create **interactive workflows** with [conditional inputs](https://kestra.io/docs/workflow-components/inputs#conditional-inputs-for-interactive-workflows) that depend on each other. In our example, the workflow dynamically adapts based on user inputs to determine whether to run a task, adjust compute resources for Modal, or customize the forecast output. Here’s why this flexibility is valuable:
+### Interactive Workflows with Conditional Inputs
 
-- **On-the-fly Adjustments**: You don't need to redeploy code every time you want to change an input or parameter. If, for instance, you want to adjust the number of CPU cores for a forecast running on Modal, you can adjust that at runtime or define custom inputs for a given `Schedule` trigger as shown below. Conditional inputs, like the `cpu` and `memory` options shown only when you choose to run the Modal task, make the workflow less error-prone as users can't accidentally select the wrong options or run the flow with invalid parameters.
+One of the standout features of Kestra is the ability to create **interactive workflows** with [conditional inputs](https://kestra.io/docs/workflow-components/inputs#conditional-inputs-for-interactive-workflows) that depend on each other. In our example, the workflow dynamically adapts to user inputs to determine whether to run a task, adjust compute resources for the Modal task, or customize the forecast output. Here’s why this flexibility is valuable:
+
+- **On-the-fly Adjustments**: you don't need to redeploy code every time you want to change an input or parameter. If, for instance, you want to adjust the number of CPU cores for a forecast running on Modal, you can adjust that value at runtime or configure it in a `Schedule` trigger definition as shown below. Conditional inputs, like the `cpu` and `memory` options shown only when you choose to run the Modal task, make the workflow less error-prone as users can't accidentally select the wrong options or run the flow with invalid parameters — a simple way to introduce governance and guardrails into your data pipelines.
 
 ```yaml
 triggers:
@@ -109,25 +111,25 @@ triggers:
       color_prediction: orange
 ```
 
-- **Skip Unnecessary Tasks**: Some tasks don’t always need to run. For example, if the ingestion process hasn’t changed, you can skip it altogether just by setting the input to `false`. Kestra's conditional logic ensures tasks are executed only when necessary, saving time and compute resources.
+- **Skip Unnecessary Tasks**: some tasks don’t always need to run. For example, if the ingestion process hasn’t changed, you can skip it altogether just by setting the `run_ingestion` input to `false`. Kestra's conditional logic ensures tasks are executed only when necessary, saving time and compute resources.
 
-- **Dynamic Resource Allocation**: Modal allows you to allocate the compute power you need at runtime. Kestra’s interactive workflows make it easy to fine-tune these parameters on the fly, depending on the size of your dataset or the complexity of your model. The dbt project already runs on serverless compute with BigQuery, but you can also scale dbt model parsing (which can also be resource-intensive) to run on serverless compute such as AWS ECS Fargate, Google Cloud Run, or Azure Batch using Kestra's [Task Runners](https://kestra.io/docs/task-runners).
+- **Dynamic Resource Allocation**: Kestra’s interactive workflows make it easy to fine-tune input parameters on the fly, depending on the size of your dataset or the complexity of your model. The dbt project already runs on serverless compute with BigQuery, but you can additionally scale the dbt model parsing process to run on serverless compute such as AWS ECS Fargate, Google Cloud Run, or Azure Batch using Kestra's [Task Runners](https://kestra.io/docs/task-runners).
 
 ### Storing State with Kestra
 
-Another benefit of using Kestra in this architecture is its ability to store and manage state, which is especially needed for serverless data pipelines that are typically stateless by design. Kestra keeps track of the workflow state, so you can easily pick up where you left off if a task fails or if you need to rerun part of the pipeline.
+Another benefit of using Kestra in this architecture is its ability to store and manage state, which is especially needed for serverless data pipelines that are typically stateless by design. Kestra keeps track of the workflow state, so you can easily pick up where you left off if a task fails or if you need to rerun part of the pipeline, e.g. using one of our most popular 🔥 [Replay feature](https://kestra.io/docs/concepts/replay).
 
 For example, Kestra can store artifacts such as dbt's `manifest.json` in the [KV store](https://kestra.io/docs/concepts/kv-store). This file contains information about which models were run and their results, so we can avoid rerunning dbt models that haven't changed since the last run. This is a huge time-saver, especially when working with large datasets or complex transformations.
 
-Additionally, Kestra captures logs and outputs at each stage of the workflow. This provides visibility into what happened during execution. If something goes wrong, Kestra can [automatically retry](https://kestra.io/docs/workflow-components/retries) transient failures, and if retries don't help, you can quickly track down the issue by reviewing the logs or inspecting the [output artifacts](https://kestra.io/docs/workflow-components/outputs) and [replaying the flow](https://youtu.be/RvNc3gLXMEs?si=tcY7KoZCa_lZ-Lhy) from a specific point. And when everything works as expected, these logs serve as a detailed record of what was processed, when, how long each step took, and what were the final outputs.
+Additionally, Kestra captures logs, metrics and outputs at each stage of the workflow. This provides visibility into what happened during serverless workflow execution execution. If something goes wrong, Kestra can [automatically retry](https://kestra.io/docs/workflow-components/retries) transient failures, and if retries don't help, you can quickly track down the issue by reviewing the logs or inspecting the [output artifacts](https://kestra.io/docs/workflow-components/outputs) and [replaying the flow](https://youtu.be/RvNc3gLXMEs?si=tcY7KoZCa_lZ-Lhy) from a specific point. And when everything works as expected, these logs serve as a detailed record of what was processed, when, how long each step took, and what were the final outputs.
 
-### Building Future-Proof Data Architectures
+### Future-Proof Your Data Platform
 
 The real power of this architecture comes from combining serverless infrastructure with flexible and reliable orchestration platform.
 - **Modal** dynamically provisions compute power for resource-intensive tasks
 - **dbt** transforms raw data into useful tables and models
 - **BigQuery** serves as the backbone for storing and querying data
-- **Kestra** lets you create workflows from an easy-to-use UI while [keeping everything as code](https://youtu.be/dU3p6Jf5fMw?si=exewHm04snLQRi9B) under the hood, managing state, retries, concurrency, timeouts, failure alerting, coordinating conditional logic, and persisting logs and outputs. Using Kestra's built-in plugins, you don't even need to install any additional dependencies to run your dbt, BigQuery and Modal tasks — those plugins are built-in and ready to use right away.
+- **Kestra** lets you create workflows from an easy-to-use UI while [keeping everything as code](https://youtu.be/dU3p6Jf5fMw?si=exewHm04snLQRi9B) under the hood, managing state, retries, concurrency, timeouts, failure alerting, coordinating conditional logic, and persisting logs, metrics and outputs. Using Kestra's built-in plugins, you don't even need to install any additional dependencies to run your dbt, BigQuery and Modal tasks — those plugins are built-in and ready to use right away.
 
 
 ## Next steps
