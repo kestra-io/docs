@@ -11,23 +11,14 @@
               Build all kinds of Workflows with Kestra: Your All-in-One Solution for Orchestrating Business-Critical Applications
             </p>
 
-            <div class="cta">
-              <NuxtLink
-                href="/demo"
-                class="btn text-white mt-2 me-3 btn-animated btn-dark-animated"
-                data-aos="zoom-in"
-              >
-                Get a demo
-              </NuxtLink>
-
-              <NuxtLink
-                href="/docs/getting-started/quickstart#start-kestra"
-                class="btn btn-animated btn-purple-animated mt-2"
-                data-aos="zoom-in"
-              >
-                Get started
-              </NuxtLink>
-            </div>
+            <div class="cta d-flex gap-3">
+                            <NuxtLink href="/docs/getting-started/quickstart#start-kestra" class="btn btn-animated btn-dark-animated" data-aos="zoom-in">
+                                Read the doc
+                            </NuxtLink>
+                            <a href="/demo"  class="btn btn-animated btn-purple-animated" data-aos="zoom-in">
+                                Get a demo
+                            </a>
+                        </div>
           </div>
         </div>
         <div
