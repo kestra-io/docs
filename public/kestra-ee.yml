@@ -5937,6 +5937,31 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/KVEntry"
+    delete:
+      tags:
+      - KV
+      summary: Bulk-delete multiple key/value pairs from the given namespace.
+      operationId: deleteKeys
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KVController.ApiDeleteBulkRequest"
+        required: true
+      responses:
+        "200":
+          description: deleteKeys 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KVController.ApiDeleteBulkResponse"
   /api/v1/namespaces/{namespace}/kv/{key}:
     get:
       tags:
@@ -17080,6 +17105,36 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/KVEntry"
+    delete:
+      tags:
+      - KV
+      summary: Bulk-delete multiple key/value pairs from the given namespace.
+      operationId: deleteKeys_1
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KVController.ApiDeleteBulkRequest"
+        required: true
+      responses:
+        "200":
+          description: deleteKeys_1 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KVController.ApiDeleteBulkResponse"
   /api/v1/{tenant}/namespaces/{namespace}/kv/{key}:
     get:
       tags:
@@ -24731,6 +24786,24 @@ components:
           title: The display name of the input.
           maxLength: 64
           type: string
+    KVController.ApiDeleteBulkRequest:
+      required:
+      - keys
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    KVController.ApiDeleteBulkResponse:
+      required:
+      - keys
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
     KVController.TypedValue:
       required:
       - type
