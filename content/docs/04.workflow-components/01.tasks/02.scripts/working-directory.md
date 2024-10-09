@@ -21,3 +21,43 @@ The `WorkingDirectory` task allows you to:
 1. Share files from Namespace Files or from a Git repository across multiple tasks
 2. Run multiple tasks sequentially in the same working directory
 3. Share data across multiple tasks without having to persist it in internal storage.
+
+## Example
+
+In this example, the flow sequentially executes Shell Scripts and Shell Commands in the same working directory using a local Process Task Runner.
+
+```yaml
+id: shell_scripts
+namespace: company.team
+
+tasks:
+  - id: working_directory
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: create_csv_file
+        type: io.kestra.plugin.scripts.shell.Script
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
+        script: |
+          #!/bin/bash
+          echo "Column1,Column2,Column3" > file.csv
+          for i in {1..10}
+          do
+            echo "$i,$RANDOM,$RANDOM" >> file.csv
+          done
+      
+      - id: inspect_file
+        type: io.kestra.plugin.scripts.shell.Commands
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
+        commands:
+          - cat file.csv  
+      
+      - id: filter_file
+        type: io.kestra.plugin.scripts.shell.Commands
+        description: select only the first five rows of the second column
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
+        commands:
+          - cut -d ',' -f 2 file.csv | head -n 6
+```
