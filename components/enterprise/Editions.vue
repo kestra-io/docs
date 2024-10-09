@@ -36,7 +36,7 @@
                             <h3 class="card-title" data-aos="fade-right">Enterprise Edition</h3>
                             <p class="type" data-aos="fade-left">Custom</p>
                             <NuxtLink href="/demo" class="btn btn-animated btn-purple-animated w-100" data-aos="zoom-in">
-                                Talk to Us
+                                Get a demo
                             </NuxtLink>
                             <ul>
                                 <li data-aos="fade-left">All features from the Open-Source Edition and more</li>
