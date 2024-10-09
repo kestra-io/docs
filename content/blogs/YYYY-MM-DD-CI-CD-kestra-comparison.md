@@ -182,22 +182,36 @@ While Jenkins is a powerful tool, it does come with some challenges.
 
 Let's see them together.
 
+### Ease of Use and Developer Experience
+One of Kestra’s standout features is its intuitive interface which provides built-in autocomplete and detailed error handling: this helps developers quickly define and manage their workflows without getting bogged down by tedious setup processes.
+
+Unlike Jenkins, which can be slow and challenging to configure, Kestra’s interface accelerates the workflow-building experience, allowing developers to focus more on building their systems rather than troubleshooting pipeline syntax or configuration issues.
+
+In fact, in Jenkins debugging pipelines can be difficult to set up as logs can become scattered across different plugins and stages, making it hard to trace the root cause of an issue.
+
+Kestra, instead, provides centralized logging and error-handling across all tasks in a workflow. So, if a pipeline fails, developers can easily view the entire execution history and debug issues with a unified logging system. 
+
+![An error in Kestra](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/error.png)
+
 #### Groovy Syntax
 Jenkins uses [Groovy-based](https://www.jenkins.io/doc/pipeline/steps/groovy/) scripting for pipeline creation, which can be unintuitive for developers unfamiliar with it - as it also a language not widely used. This can create a steep learning curve that can slow down development and cause errors.
 
-Kestra, instead, uses a declarative YAML-based syntax that is much easier to read and write. YAML is also widely known and used in the industry, making it more accessible to developers, and reducing the learning curve for new users. Its human-readable format makes YAML especially appealing, as it is straightforward to understand, allowing team members across different roles to easily collaborate on workflow definitions.
-
-#### Debugging and Troubleshooting
-In Jenkins, debugging pipelines can be difficult as logs can become scattered across different plugins and stages, making it hard to trace the root cause of an issue.
-
-Kestra, instead, provides centralized logging and error-handling across all tasks in a workflow. If a pipeline fails, developers can easily view the entire execution history and debug issues with a unified logging system. 
-
-![An error in Kestra](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/error.png)
+Kestra, instead, uses a declarative YAML-based syntax that is much easier to read and write. YAML is also widely known and used in the industry, making it more accessible to developers, and reducing the learning curve for new users. Its human-readable format makes YAML a practical choice, as it is straightforward to understand, allowing team members across different roles to easily collaborate on workflow definitions.
 
 #### Scalability Challenges
 Jenkins requires a lot of manual setup for distributed builds or scaling across [multiple nodes](https://www.jenkins.io/doc/book/managing/nodes/), and this can lead to bottlenecks when the infrastructure needs to grow.
 
-## Conclusions
-In conclusion, choosing between Kestra and CI/CD tools depends on your specific requirements.
+In contrast, Kestra leverages [Worker Groups](../docs/06.enterprise/worker-group.md), which are collections of workers that can be targeted for executing tasks based on specific requirements, allowing for efficient workload distribution across different nodes. Additionally, [Task Runners](../docs/06.enterprise/task-runners.md) enable the dynamic allocation of tasks in various cloud environments, facilitating the execution of compute-intensive jobs without the need for permanent infrastructure.
 
-If you're looking for a comprehensive CI/CD solution that can satisfy basic needs, then tools like GitHub Actions, GitLab CI/CD, Azure DevOps, or Jenkins might suit your needs perfectly, also depending on the ecosystem you're working on. Instead, if you need to manage workflows that involve multiple systems, Kestra is the clear winner as its main abilities regard handling complex workflows, integrating with diverse systems, and offerering robust error handling making it an easy choice even for beginners.
+These features provide streamlined and scalable approach to managing complex workflows, reducing the operational overhead associated with scaling Jenkins.
+
+## Conclusions
+In conclusion, selecting a CI/CD tool depends on your project's unique needs. In particular, to summarize:
+
+- GitHub Actions is perfect for projects entirely on GitHub, minimizing context switching.
+- GitLab CI/CD suits teams wanting everything—from code to deployment—in one place.
+- Azure DevOps is tailored for those deep into the Microsoft ecosystem.
+- CircleCI offers speed and efficiency for fast-paced development environments.
+- Jenkins provides unmatched flexibility for those ready to handle its complexity.
+
+However, when your workflows become complex and span multiple systems or require real-time event handling, these tools might not suffice. In such cases, Kestra stands out by seamlessly orchestrating complex workflows across diverse platforms, offering robust error handling, and scaling effortlessly. So, for most modern applications that demand more than what traditional CI/CD tools offer, Kestra provides a comprehensive solution that simplifies complexity and accelerates development.
