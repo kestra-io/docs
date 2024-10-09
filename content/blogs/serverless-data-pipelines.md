@@ -37,6 +37,12 @@ Here's a more detailed breakdown of the workflow:
 
 4. **Logs and artifacts**: throughout the workflow, Kestra keeps track of logs, metrics, and important artifacts like the dbt manifest and the HTML report from Modal. This way, you can monitor progress, troubleshoot issues, and even reuse artifacts in future runs.
 
+You can see the entire workflow in action in the video below:
+
+<div class="video-container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/Wqz7CZudqNo?si=QgO2bizPu2a-vBoB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ---
 
 ## The structure of the dbt project
@@ -48,12 +54,12 @@ The dbt project is structured into three main layers: **staging**, **marts**, an
 The **staging** layer prepares raw data for further transformations. It includes several SQL models:
 
 - `stg_customers.sql`: extracts and formats raw customer data
-- `stg_orders.sql`: prepares order data, so that fields like order dates and customer IDs are standardized for consistent use
-- `stg_order_items.sql`: focuses on individual items within orders, pulling data about what was ordered, in what quantities, and at what prices
+- `stg_orders.sql`: prepares order data so that fields like order dates and IDs are standardized for consistent use
+- `stg_order_items.sql`: queries data about what was ordered, in what quantities, and at what prices
 - `stg_products.sql`: extracts product details like product names, categories, and prices
 - `stg_supplies.sql`: prepares supply chain data
 - `stg_locations.sql`: standardizes fields related to customer locations and their tax rates
-- `__sources.yml`: defines the source data for all staging models, mapping raw tables from the database to their corresponding staging models in dbt.
+- `__sources.yml`: defines the source data for all staging models, mapping BigQuery tables to their corresponding staging models in dbt.
 
 This layer standardizes raw data for more complex transformations in the next steps.
 
@@ -61,8 +67,8 @@ This layer standardizes raw data for more complex transformations in the next st
 
 The **marts** layer takes the cleaned data from the staging layer and builds business-specific tables:
 
-- `customers.sql`: joins data from the staging tables to create a unified view of customer details, such as total lifetime value, frequency of purchases, and other key metrics
-- `orders.sql`: summarizes data from the orders and order items tables, generating metrics like total orders, total value, and order frequencies per time period.
+- `customers.sql`: joins data from the staging tables to create a unified view of customer details, such as total lifetime value and frequency of purchases
+- `orders.sql`: summarizes order data to generate metrics like total orders, total value, and order frequencies per time period.
 
 These models are designed to be used directly by downstream processes that require clean, pre-aggregated business data.
 
@@ -70,8 +76,8 @@ These models are designed to be used directly by downstream processes that requi
 
 The **aggregations** layer calculates business metrics that provide insights into overall performance:
 
-- `avg_order_value.sql`: calculates the average value of each order by joining data from the orders and order items tables to provide a high-level metric of customer spend
-- `sum_revenue_per_city.sql`: aggregates total revenue by city to give detailed insights into sales performance across different regions
+- `avg_order_value.sql`: calculates the average value of each order to provide a high-level metric of customer spend
+- `sum_revenue_per_city.sql`: aggregates total revenue by city to give insights into sales performance across different regions.
 
 This layer builds on the marts models and calculates key metrics and aggregations that are often used in reports or dashboards.
 
@@ -79,7 +85,7 @@ This layer builds on the marts models and calculates key metrics and aggregation
 
 - **Staging** prepares raw data for consistent use
 - **Marts** creates business-centric tables for further analysis
-- **Aggregations** calculates metrics like average order value and revenue by city
+- **Aggregations** calculates metrics like average order value and revenue by city.
 
 This modular structure helps ensure that the data transformations are well-organized, maintainable and scalable. With Kestra, you can additionally leverage [labels](https://kestra.io/docs/workflow-components/labels), [subflows](https://kestra.io/docs/workflow-components/subflows), [flow triggers](https://kestra.io/docs/workflow-components/triggers/flow-trigger) and [namespaces](https://kestra.io/docs/workflow-components/namespace) to further organize and manage your workflows.
 
@@ -87,11 +93,11 @@ This modular structure helps ensure that the data transformations are well-organ
 
 ## Why Use Kestra for Serverless Workflows
 
-Now that we know how what the project does and how it's structured, let's dive into why you should consider using Kestra for orchestrating serverless data pipelines.
+Now that we covered what the project does and how it's structured, let's highlight the benefits of using Kestra for orchestrating serverless data pipelines such as this one.
 
 ### Interactive Workflows with Conditional Inputs
 
-One of the standout features of Kestra is the ability to create **interactive workflows** with [conditional inputs](https://kestra.io/docs/workflow-components/inputs#conditional-inputs-for-interactive-workflows) that depend on each other. In our example, the workflow dynamically adapts to user inputs to determine whether to run a task, adjust compute resources for the Modal task, or customize the forecast output. Here’s why this flexibility is valuable:
+One of the standout features of Kestra is the ability to create **interactive workflows** with [conditional inputs](https://kestra.io/docs/workflow-components/inputs#conditional-inputs-for-interactive-workflows) that depend on each other. In our example, the workflow dynamically adapts to user inputs to determine whether to run a task, adjust compute resource requests, or customize the forecast output. Here’s why this flexibility is valuable:
 
 - **On-the-fly Adjustments**: you don't need to redeploy code every time you want to change an input or parameter. If, for instance, you want to adjust the number of CPU cores for a forecast running on Modal, you can adjust that value at runtime or configure it in a `Schedule` trigger definition as shown below. Conditional inputs, like the `cpu` and `memory` options shown only when you choose to run the Modal task, make the workflow less error-prone as users can't accidentally select the wrong options or run the flow with invalid parameters — a simple way to introduce governance and guardrails into your data pipelines.
 
@@ -125,16 +131,16 @@ Additionally, Kestra captures logs, metrics and outputs at each stage of the wor
 
 ### Future-Proof Your Data Platform
 
-The real power of this architecture comes from combining serverless infrastructure with flexible and reliable orchestration platform.
+The real power of this architecture comes from combining stateless, serverless infrastructure with stateful, flexible and reliable orchestration platform.
 - **Modal** dynamically provisions compute power for resource-intensive tasks
 - **dbt** transforms raw data into useful tables and models
 - **BigQuery** serves as the backbone for storing and querying data
 - **Kestra** lets you create workflows from an easy-to-use UI while [keeping everything as code](https://youtu.be/dU3p6Jf5fMw?si=exewHm04snLQRi9B) under the hood, managing state, retries, concurrency, timeouts, failure alerting, coordinating conditional logic, and persisting logs, metrics and outputs. Using Kestra's built-in plugins, you don't even need to install any additional dependencies to run your dbt, BigQuery and Modal tasks — those plugins are built-in and ready to use right away.
 
 
-## Next steps
+## Final Thoughts
 
-The best part about Kestra is that everything just works out of the box. Thanks to the built-in plugins, you don’t have to fight with Python dependencies to install dbt or Modal — it’s all preinstalled and ready to use. The powerful UI lets you interactively adjust workflow inputs, skip steps if needed, and easily track all output artifacts without jumping through hoops. Adding Modal and BigQuery to the mix provides serverless compute on-demand and a scalable data warehouse to future-proof your data platform.
+The best part about Kestra is that everything just works out of the box. Thanks to the built-in plugins, you don’t have to fight with Python dependencies to install dbt or Modal — all plugins are pre-installed and ready to use. The powerful UI lets you interactively adjust workflow inputs, skip steps if needed, and easily track all output artifacts without jumping through hoops. Adding Modal and BigQuery to the mix provides serverless compute on-demand and a scalable data warehouse to future-proof your data platform.
 
 If you want to give this setup a try, you can find the entire code for this project in the [kestra-io/serverless](https://github.com/kestra-io/serverless) repository. [Launch Kestra](https://kestra.io/docs/getting-started/quickstart#start-kestra) in Docker, add the flow from that GitHub repository, and run it. That's all you need to get started with serverless, interactive workflows.
 
