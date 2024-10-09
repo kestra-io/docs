@@ -258,3 +258,31 @@ Let's break down the above example:
 [Flow](./02.flow-trigger.md), [Schedule](./01.schedule-trigger.md) and [Polling triggers](./04.polling-trigger.md) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
 
 To see a list of triggers and inspect their current status, go to the **Administration -> Triggers** section in the Kestra UI. From here, you can unlock a trigger if it is locked. Keep in mind that there is a risk or concurrent trigger evaluation or flow execution for this trigger if you unlock it manually.
+
+## Setting Inputs inside of triggers 
+
+You can easily pass inputs to triggers by using the `inputs` property and passing them as a key-value pair.
+
+In this example, the `user` input is set to "John Smith" inside of the `schedule` trigger:
+
+```yaml
+id: myflow
+namespace: company.team
+
+inputs:
+  - id: user
+    type: STRING
+    defaults: Rick Astley
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "Hello {{ inputs.user }}! 🚀"
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "*/1 * * * *"
+    inputs:
+      user: John Smith
+```
