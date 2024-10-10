@@ -141,7 +141,7 @@
 <style lang="scss" scoped>
     :deep(.container-fluid) {
         &::after {
-            background: linear-gradient(180deg, rgba(23, 130, 255, 0) 0%, #1782FF 100%);
+            background: linear-gradient(180deg, rgba(23, 130, 255, 0) 0%, #1782FF 100%)!important;
         }
 
         h1 {
