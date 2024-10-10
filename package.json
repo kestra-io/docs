@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@nuxt/content": "^2.13.2",
-    "@nuxt/devtools": "^1.4.2",
+    "@nuxt/devtools": "^1.5.2",
     "@nuxt/image": "^1.8.0",
     "@nuxtjs/mdc": "npm:@nuxtjs/mdc-edge@0.9.1-28769211.a288cfa",
     "@nuxtjs/robots": "^4.1.7",
