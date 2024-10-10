@@ -185,7 +185,18 @@
                         <a href="https://www.linkedin.com/in/stefan-muntean-270b63b7" target="_blank" class="me-2"><linkedin /></a>
                         <a href="https://github.com/smunteankestra" target="_blank" class="me-2"><github /></a>
                     </span>
-                </div>                                                   
+                </div>
+                <div class="team-card" data-aos="zoom-in">
+                    <img class="img-fluid team-member" src="/landing/company/teams/nbontoux.png" alt="Nicolas Bontoux"/>
+                    <div class="w-100">
+                        <div class="team-name">Nicolas Bontoux</div>
+                        <div class="team-title font-small">Technical Product Marketing Manager</div>
+                    </div>
+                    <span>
+                        <a href="https://www.linkedin.com/in/nicolasbontoux" target="_blank" class="me-2"><linkedin /></a>
+                        <a href="https://github.com/nicoallgood" target="_blank" class="me-2"><github /></a>
+                    </span>
+                </div>                                                            
             </div>
         </Section>
     </div>
