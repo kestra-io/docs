@@ -9,16 +9,18 @@ author:
 image: /blogs/xxxxx.jpg
 ---
 
-In a recent [blog](./2024-09-18-what-is-an-orchestrator.md), we defined what an orchestrator is, what the differences between orchestration and automation, and how orchestration can help you to automate your workflows.
+In a recent [blog post](./2024-09-18-what-is-an-orchestrator.md), we defined what an orchestrator is, the differences between orchestration and automation, and how orchestration can help you to automate your workflows.
 
-Now, it's time to answer the question: when should you choose an orchestrator over a CI/CD solution?
+Now, it's time to answer the question: when should you choose an orchestrator over a CI/CD solution? Both have overlapping functionality so how do you decide which one is best for your job?
 
-In this article, we'll explore what CI/CD tools are, dive into some of the most popular ones, and see how Kestra brings something unique to the table. In particular, we'll also provide a deep comparison between Kestra and Jenkins.
+In this article, we'll explore what CI/CD tools are, dive into some of the most popular ones, and look at what Kestra brings to the table. In particular, we'll also provide a deeper comparison between Kestra and Jenkins.
 
 ## What Are CI/CD Tools?
-Before comparing CI/CD tools, let's describe what they are.
+Before comparing CI/CD tools, let's first define what is a CI/CD tool.
 
 CI/CD tools are software applications that automate the processes of integrating code changes (Continuous Integration) and deploying applications (Continuous Deployment) to production environments. They help teams collaborate effectively by automating builds, tests, and deployments, ensuring that new features and bug fixes are delivered quickly and reliably.
+
+By automating these steps, CI/CD tools reduce the reliance on manual intervention, which not only accelerates the development cycle but also minimizes the potential for human error. Automation, in fact, ensures that deployments are consistent and repeatable, eliminating mistakes that can occur when developers have to remember and execute complex sequences manually.
 
 In particular, CI/CD tools are designed to:
 
@@ -27,7 +29,7 @@ In particular, CI/CD tools are designed to:
 - **Deploy applications**: Automatically release new code to production or staging environments, allowing teams to ship features faster and with fewer manual interventions.
 - **Provide feedback**: Alert developers about build statuses and test results, helping them identify and address issues as soon as possible.
 
-These tools are fundamental for maintaining high-quality code and rapid release cycles in today's fast-paced development environments. Without them, teams would struggle to keep up with the demand for frequent updates, making it much harder to maintain a competitive edge.
+These tools are fundamental for maintaining high-quality code and rapid release cycles in today's fast-paced development environments. By removing manual steps and standardizing workflows, they enhance reliability and reduce the chance of errors slipping into production. So, without them, teams would struggle to keep up with the demand for frequent updates, making it much harder to maintain a competitive edge.
 
 ## Most Used CI/CD Tools
 There are a lot of CI/CD tools out there, so let's take a closer look at some of the most popular ones. For each, we'll provide an overview, highlight a unique feature, and list pros and cons.
@@ -40,16 +42,16 @@ Also, by integrating tightly with GitHub, it reduces context switching, allowing
 ![A use of GitHub Actions by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/github_actions.png)
 
 **Unique feature: deep integration with the GitHub ecosystem**
-GitHub Actions offers seamless integration with the entire GitHub platform, letting you trigger workflows based on any GitHub event—like pull requests, issues, or comments. This makes it an excellent choice for projects already using GitHub, as it provides a highly streamlined experience.
+GitHub Actions offers seamless integration with the entire GitHub platform, letting you trigger workflows based on any GitHub event—like pull requests, issues, or commits. This makes it an excellent choice for projects already using GitHub, as it provides a highly streamlined experience.
 
 **Pros**:
-- **Ease of use**:Simple setup within your GitHub repository, which means minimal configuration.
-- **Marketplace for actions**: Access to a vast library of pre-built actions, which can save you a lot of time..
+- **Ease of use**: Simple setup within your GitHub repository, which means minimal configuration.
+- **Marketplace for Actions**: Access to a vast library of pre-built actions, which can save you a lot of time..
 - **Cost-effective**: Generous free tier for public repositories, making it accessible for open-source projects.
 
 **Cons**:
-- **Limited to gitHub**: Ideal for projects fully hosted on GitHub, but the limited integration with other platforms can make it challenging for teams managing repositories across multiple environments.
-- **Debugging challenges**: Requires commits to test workflows, which can clutter the commit history and make it harder to maintain a clean repository.
+- **Limited to GitHub-hosted repositories**: While GitHub Actions integrates seamlessly with projects fully hosted on GitHub, it becomes challenging if your codebase spans multiple platforms or includes on-premises repositories. Teams managing repositories across different environments may find it difficult to integrate these external systems, as GitHub Actions is tightly coupled with the GitHub ecosystem.
+- **Workflow edits require commits**: Updating workflows necessitates committing changes to the repository, which mixes the codebase and the CI/CD configurations in the commit history. This can clutter your commit log and make it harder to maintain a clean and organized repository, as code changes and workflow updates are intertwined.
 - **Resource limits**: Concurrency and job time limits on the free tier can slow down larger projects.
 - **Less control over environment**: Less flexibility in customizing the execution environment compared to other CI/CD tols, which can be a limitation for teams needing specific configurations.
 - **Complexity with advanced workflows**: Setting up more sophisticated workflows can become complicated, requiring significant experience with the tool.
@@ -88,7 +90,7 @@ Azure DevOps offers an integrated suite covering the entire DevOps lifecycle, fr
 
 **Pros**:
 - **Comprehensive toolset**: Covers the entire development lifecycle, reducing the need for additional tools.
-- **Strong integration with microsoft tools**: Seamless integration with Visual Studio and Azure services, which is beneficial for teams already in the Microsoft ecosystem.
+- **Strong integration with Microsoft tools**: Seamless integration with Visual Studio and Azure services, which is beneficial for teams already in the Microsoft ecosystem.
 - **Flexible deployment**: Supports deploying to any platform or cloud, giving teams versatility in their deployment strategies.
 
 **Cons**:
@@ -179,8 +181,6 @@ Now, let's see where Jenkins falls short.
 
 ### Difficulties Developers Encounter Using Jenkins
 While Jenkins is a powerful tool, it does come with some challenges.
-
-Let's see them together.
 
 ### Ease of Use and Developer Experience
 One of Kestra’s standout features is its intuitive interface which provides built-in autocomplete and detailed error handling: this helps developers quickly define and manage their workflows without getting bogged down by tedious setup processes.
