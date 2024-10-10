@@ -22,7 +22,7 @@ let menuSizes = {
     solutions: {
         xxl: {
             width: '1560px',
-            height: '670px',
+            height: '690px',
             headerMenuTranslateX: 'calc(50vw - 780px)',
             headerArrowTranslateX: -232
         },
