@@ -94,12 +94,7 @@
                     <tr>
                         <td>Event-Driven Workflows</td>
                         <td>✓</td>
-                        <td>X (Cloud-version only)</td>
-                    </tr>
-                    <tr>
-                        <td>Unlimited Event Processing</td>
                         <td>✓</td>
-                        <td>X (Enterprise-tier only)</td>
                     </tr>
                     <tr>
                         <td>Event Configuration in Code</td>
