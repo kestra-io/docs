@@ -1089,6 +1089,22 @@ export default {
                             display: flex;
                             width: 100%;
                             overflow: auto;
+                            &::-webkit-scrollbar {
+                                width: 4px;
+                                height: 4px;
+                            }
+
+                            &::-webkit-scrollbar-track {
+                                background: transparent;
+                            }
+
+                            &::-webkit-scrollbar-thumb {
+                                background: $white-5;
+                            }
+
+                            &::-webkit-scrollbar-thumb:hover {
+                                background: #454445;
+                            }
                             .row {
                                 column-gap: 6.25rem;
                             }
