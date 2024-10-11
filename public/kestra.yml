@@ -2109,6 +2109,38 @@ paths:
                 - $ref: "#/components/schemas/FlowWithSource"
               example: null
       deprecated: true
+  /api/v1/flows/bulk:
+    post:
+      tags:
+      - Flows
+      summary: Update from multiples yaml sources
+      description: |-
+        All flow will be created / updated for this namespace.
+        Flow that already created but not in `flows` will be deleted if the query delete is `true`
+      operationId: bulkUpdate
+      parameters:
+      - name: delete
+        in: query
+        description: If missing flow should be deleted
+        required: true
+        schema:
+          type: boolean
+          default: true
+      requestBody:
+        content:
+          application/x-yaml:
+            schema:
+              type: string
+              nullable: true
+      responses:
+        "200":
+          description: bulkUpdate 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlowWithSource"
   /api/v1/flows/delete/by-ids:
     delete:
       tags:
