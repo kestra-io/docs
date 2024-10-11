@@ -58,11 +58,7 @@ namespace: prod.monitoring
 
 tasks:
   - id: fail
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-    commands:
-      - exit 1
+    type: io.kestra.plugin.core.execution.Fail
 
 
 listeners:
@@ -125,11 +121,7 @@ namespace: prod
 
 tasks:
   - id: fail
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-    commands:
-      - exit 1
+    type: io.kestra.plugin.core.execution.Fail
 ```
 
 Anytime you execute that `demo` flow, the Slack notification will be sent, thanks to the Flow trigger. Additionally, the **Dependencies** tab of both flows will make it clear that they depend on each other.
