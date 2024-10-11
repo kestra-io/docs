@@ -326,11 +326,8 @@ tasks:
   - id: say_hello
     type: io.kestra.plugin.core.log.Log
     message: This should have triggered the sentry_execution_example flow.
-  - id: bash_will_fail
-    type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
-    commands:
-    - "exit 1"
+  - id: task_will_fail
+    type: io.kestra.plugin.core.execution.Fail
 ```
 
 ### A flow using SentryExecution
