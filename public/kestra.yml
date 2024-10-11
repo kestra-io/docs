@@ -7041,6 +7041,8 @@ components:
           $ref: "#/components/schemas/MiscController.Preview"
         isBasicAuthEnabled:
           type: boolean
+        systemNamespace:
+          type: string
     MiscController.Environment:
       required:
       - color

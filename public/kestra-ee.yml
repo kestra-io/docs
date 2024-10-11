@@ -25208,6 +25208,8 @@ components:
           $ref: "#/components/schemas/MiscController.Preview"
         isBasicAuthEnabled:
           type: boolean
+        systemNamespace:
+          type: string
     MiscController.ConfigurationEe:
       type: object
       allOf:
