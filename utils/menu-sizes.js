@@ -4,19 +4,19 @@ let menuSizes = {
             width: '780px',
             height: '560px',
             headerMenuTranslateX: 'calc(50vw - 600px)',
-            headerArrowTranslateX: -332
+            headerArrowTranslateX: -300
         },
         xl: {
             width: '780px',
             height: '560px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
-            headerArrowTranslateX: -332
+            headerArrowTranslateX: -305
         },
         lg: {
             width: '780px',
             height: '560px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
-            headerArrowTranslateX: -290
+            headerArrowTranslateX: -270
         },
     },
     solutions: {
@@ -24,13 +24,13 @@ let menuSizes = {
             width: '1560px',
             height: '690px',
             headerMenuTranslateX: 'calc(50vw - 780px)',
-            headerArrowTranslateX: -232
+            headerArrowTranslateX: -222
         },
         xl: {
             width: '1347px',
             height: '653px',
             headerMenuTranslateX: 'calc((100vw - 1347px) / 2)',
-            headerArrowTranslateX: -232
+            headerArrowTranslateX: -222
         },
         lg: {
             width: '950px',
@@ -42,21 +42,21 @@ let menuSizes = {
     resources: {
         xxl: {
             width: '1200px',
-            height: '560px',
+            height: '580px',
             headerMenuTranslateX: 'calc(50vw - 600px)',
-            headerArrowTranslateX: -120
+            headerArrowTranslateX: -133
         },
         xl: {
             width: '1200px',
-            height: '560px',
+            height: '580px',
             headerMenuTranslateX: 'calc((100vw - 1200px) / 2)',
-            headerArrowTranslateX: -120
+            headerArrowTranslateX: -140
         },
         lg: {
             width: '1000px',
-            height: '560px',
+            height: '580px',
             headerMenuTranslateX: 'calc((100vw - 1000px) / 2)',
-            headerArrowTranslateX: -100
+            headerArrowTranslateX: -115
         },
     }
 };
@@ -73,7 +73,6 @@ const getBreakpoint = (size) => {
 }
 
 export function menuSize(name, size) {
-    console.log(getBreakpoint(size));
     return {
         size: {
             width: menuSizes[name][getBreakpoint(size)].width,
