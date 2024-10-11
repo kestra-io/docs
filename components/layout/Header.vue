@@ -37,7 +37,6 @@
                 </div>
             </div>
 
-
             <div class="nav-items d-flex align-items-center">
                 <a @click="globalClick(true)" href="#" class="btn btn-sm  icon-button p-0 d-lg-none"
                    data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
@@ -951,11 +950,11 @@ export default {
             this.collapse.toggle();
           }
           if (close) {
+                this.showMenu = false
+                this.mouseoverMenu = false
+                this.showMenuId = null
+                this.headerMenuPointerEvents = 'none'
                 if (this.$refs.navbar.classList.contains("open")) {
-                    this.showMenu = false
-                    this.mouseoverMenu = false
-                    this.showMenuId = null
-                    this.headerMenuPointerEvents = 'none'
                     this.isOpen = false;
                     document.body.style.overflow = 'unset';
                     document.body.style.position = 'unset';
