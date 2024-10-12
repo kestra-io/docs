@@ -12,12 +12,13 @@ Each section below represents a built-in filter.
 - [base64encode](#base64encode)
 - [capitalize](#capitalize)
 - [default](#default)
+- [endsWith](#endsWith)
 - [escapeChar](#escapechar)
 - [lower](#lower)
 - [replace](#replace)
 - [sha256](#sha256)
-- [startsWith](#startswith)
 - [slugify](#slugify)
+- [startsWith](#startswith)
 - [substringAfter](#substringafter)
 - [substringAfterLast](#substringafterlast)
 - [substringBefore](#substringbefore)
@@ -130,6 +131,29 @@ Note that the default filter will suppress any `AttributeNotFoundException` exce
 **Arguments**
 - default
 
+## endsWith
+
+The `endsWith()` filter returns `true` if the input string ends with the specified suffix. This filter is useful for string comparisons and conditional logic in your workflows.
+
+```yaml
+id: compare_strings
+namespace: company.team
+
+inputs:
+  - id: myvalue
+    type: STRING
+    defaults: "hello world!"
+
+tasks:
+  - id: log_true
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ inputs.myvalue | endsWith('world!') }}"
+
+  - id: log_false
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ inputs.myvalue | endsWith('World!') }}"
+```
+
 ## escapeChar
 
 The `escapeChar` filter sanitizes given string using a selected string escape sequence.
@@ -201,6 +225,15 @@ The above example will output the following:
 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
 ```
 
+## slugify
+
+The `slugify` filter removes non-word characters (alphanumerics and underscores) and converts spaces to hyphen. Also strips leading and trailing whitespace.
+
+```twig
+{{ "Joel is a slug" | slugify }}
+{# will output 'joel-is-a-slug' #}
+```
+
 ## startsWith
 
 The `startsWith()` filter returns `true` if the input string starts with the specified prefix. This filter is useful for string comparisons and conditional logic in your workflows.
@@ -222,15 +255,6 @@ tasks:
   - id: log_false
     type: io.kestra.plugin.core.log.Log
     message: "{{ inputs.myvalue | startsWith('Hello') }}"
-```
-
-## slugify
-
-The `slugify` filter removes non-word characters (alphanumerics and underscores) and converts spaces to hyphen. Also strips leading and trailing whitespace.
-
-```twig
-{{ "Joel is a slug" | slugify }}
-{# will output 'joel-is-a-slug' #}
 ```
 
 ## substringAfter
