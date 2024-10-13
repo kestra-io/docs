@@ -127,6 +127,7 @@ Ensure that you expose the secure port of the connection if different from the d
             driverClassName: org.postgresql.Driver
             username: kestra
             password: k3str4
+        kestra:
           server:
             basic-auth:
               enabled: false
