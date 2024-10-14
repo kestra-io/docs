@@ -1680,7 +1680,7 @@ export default {
                                 strong.tag {
                                     background-color: #5A3ABC;
                                     border: 1px solid $purple-35;
-                                    padding: 3px 5px;
+                                    padding: 2px 4px;
                                     border-radius: 4px;
                                     font-size: $font-size-sm;
                                     font-weight: 400;
