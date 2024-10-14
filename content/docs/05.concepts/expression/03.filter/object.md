@@ -10,6 +10,7 @@ Each section below represents a built-in filter.
 - [chunk](#chunk)
 - [className](#classname)
 - [first](#first)
+- [flatten](#flatten)
 - [join](#join)
 - [keys](#keys)
 - [last](#last)
@@ -19,6 +20,7 @@ Each section below represents a built-in filter.
 - [slice](#slice)
 - [sort](#sort)
 - [split](#split)
+- [toIon](#toIon)
 
 ## chunk
 
@@ -50,6 +52,43 @@ The `first` filter will return the first item of a collection, or the first lett
 
 {{ 'Mitch' | first }}
 {# will output 'M' #}
+```
+
+## flatten
+
+The `flatten()` filter flattens the nested list. Note that this filter only applies on the list.
+
+```yaml
+id: flatten
+namespace: company.team
+
+inputs:
+  - id: json
+    type: JSON
+    defaults: |
+      [
+        "First String", 
+        [
+          "Second String 1",
+          "Second String 2"
+        ],
+        "Third String",
+        [
+          "Fourth String 1",
+          "Fourth String 2",
+          "Fourth String 3"
+        ]
+      ]
+
+tasks:
+  - id: flatten_list
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ inputs.json | flatten }}"
+```
+
+The above flow will output the following:
+```
+["First String","Second String 1","Second String 2","Third String","Fourth String 1","Fourth String 2","Fourth String 3"]
 ```
 
 ## join
@@ -194,3 +233,14 @@ You can also pass a limit argument:
 **Arguments**
 - delimiter: The delimiter
 - limit: The limit argument
+
+## toIon
+
+The `toIon` filter will convert any object to an Ion value.
+
+The following expression `{{ {"name": "John"} | toIon  }}` will result in an ion  `{name: "John"}`.
+
+Similarly:
+
+- `{{ {"nullValue": null} | toIon }}` will result in `{nullValue: null}`
+- `{{ {"amount": 10.5} | toIon }}` will result in `{amount: 10.5e0}`
