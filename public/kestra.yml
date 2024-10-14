@@ -7664,7 +7664,7 @@ components:
           type: boolean
         logToFile:
           type: boolean
-        conditions:
+        runIf:
           type: string
     TaskForExecution:
       required:
