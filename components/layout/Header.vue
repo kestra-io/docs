@@ -101,7 +101,7 @@
                                 <li class="w-100 bg-transparent">
                                     <NuxtLink
                                         class="header-menu-right-banner overview-banner-mobile"
-                                        href="/overview"
+                                        href="/docs/getting-started/quickstart"
                                         @click="globalClick(true)"
                                     >
                                         <p class="title"> Start orchestrating your first workflows. </p>
@@ -499,7 +499,7 @@
                                 </div>
                             </div>
                             <div class="header-menu-right">
-                                <NuxtLink class="header-menu-right-banner" href="/overview" @click="globalClick(true)">
+                                <NuxtLink class="header-menu-right-banner" href="/docs/getting-started/quickstart" @click="globalClick(true)">
                                     <p class="title"> Start <br> orchestrating your <br> first workflows. </p>
                                     <span class="link">
                                         Quickstart Guide
