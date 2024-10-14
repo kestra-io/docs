@@ -83,7 +83,7 @@
                                         <CloudOutline />
                                         <p>
                                             <span>Cloud Edition</span>
-                                            <span class="tag">Private Alpha</span>
+                                            <strong class="tag">Private Alpha</strong>
                                             <br />
                                             Register for the Cloud Edition
                                         </p>
@@ -479,7 +479,7 @@
                                                     <CloudOutline />
                                                     <p>
                                                         <span>Cloud Edition</span>
-                                                        <span class="tag">Private Alpha</span>
+                                                        <strong class="tag">Private Alpha</strong>
                                                         <br />
                                                         Register for the Cloud Edition
                                                     </p>
@@ -1190,6 +1190,16 @@ export default {
                                     font-weight: 700;
                                     margin-bottom: 4px;
                                 }
+                                strong.tag {
+                                    background-color: #5A3ABC;
+                                    border: 1px solid $purple-35;
+                                    padding: 4px 6px;
+                                    border-radius: 4px;
+                                    font-size: $font-size-sm;
+                                    margin-left: 8px;
+                                    font-weight: 400;
+                                    color: $white;
+                                }
                             }
                         }
 
@@ -1665,6 +1675,16 @@ export default {
                                     font-size: .875rem;
                                     font-weight: 600;
                                     line-height: 1.37rem;
+                                }
+
+                                strong.tag {
+                                    background-color: #5A3ABC;
+                                    border: 1px solid $purple-35;
+                                    padding: 3px 5px;
+                                    border-radius: 4px;
+                                    font-size: $font-size-sm;
+                                    font-weight: 400;
+                                    color: $white;
                                 }
                             }
 
