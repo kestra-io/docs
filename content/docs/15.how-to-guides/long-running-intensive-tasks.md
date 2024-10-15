@@ -16,7 +16,7 @@ They can range from data processing, machine learning, and data analytics to bat
 
 While these tasks are essential for business operations, they can be resource-intensive and time-consuming while requiring specific hardware. To execute these tasks efficiently, you need a robust and scalable infrastructure that can handle the workload effectively.
 
-Kestra offers various task execution solutions such as Docker, local processes, and Kubernetes. See [Task Runners](https://kestra.io/docs/enterprise/task-runners) for more details.
+Kestra offers various task execution solutions such as Docker, local processes, and Kubernetes. See [Task Runners](../06.enterprise/task-runners.md) for more details.
 
 In this guide, we will focus on executing long-running tasks on **Kubernetes** using Kestra.
 
