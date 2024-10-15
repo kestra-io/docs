@@ -104,7 +104,7 @@ While podCreate provides deep control, it takes aways all the benefits of Kestra
 
 To leverage the best of both worlds, Kestra’s Task Runners allow you to define workflows that benefit from Kestra's plugin system, enabling you to use familiar plugins while still leveraging the flexibility of Kubernetes to secure and scale the tasks effectively.
 
-Also it gives you the flexibility to test your task easily before deploying it on Kubernetes using Runner like Docker or Process.
+Also it gives you the flexibility to test your task easily before deploying it on Kubernetes using Task Runner types like Docker or Process.
 
 The same example would look like this using a Task Runner:
 
