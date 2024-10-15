@@ -6,7 +6,7 @@ topics:
   - Kestra Workflow Components
 ---
 
-How to to iterate over a list of values in your flow.
+How to iterate over a list of values in your flow.
 
 In this example, we can use `EachSequential` to iterate over a list of values.
 
