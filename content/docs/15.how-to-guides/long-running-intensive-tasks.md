@@ -57,14 +57,15 @@ tasks:
 
         # Clone the dbt example repository
         git clone --depth 1 https://github.com/dbt-labs/jaffle_shop_duckdb.git --branch duckdb --single-branch
+
+        # Copy the dbt example repository to the working directory
         cp -a jaffle_shop_duckdb/. .
-        cp -a {{workingDir}}/. .
 
         # dbt commands to run
-        dbt seed
+        dbt deps
         dbt build
 
-    # Define the pod specification
+    # Define the pod specification using the Kubernetes YAML syntax
     spec:
       restartPolicy: Never
       containers:
@@ -86,13 +87,76 @@ tasks:
       nodeSelector: {}
 ```
 
+This flow will:
+- create a Kubernetes pod in the `kestra` namespace with the specified resource requirements: 300m CPU and 500Mi memory
+- clone the dbt example repository inside the pod
+- run the dbt seed and build commands
+
+![dbt-pod-create](/docs/how-to-guides/kubernetes/pod_create_dbt.png)
+
+At the end of the execution, the pod is deleted, and the logs remains available in the Kestra UI.
+
+![dbt-pod-deleted-after-success](/docs/how-to-guides/kubernetes/pod_create_delete.png)
+
 ## Embrace Kestra versality with Kubernetes Task Runners
-While podCreate provides deep control, Kestra also offers Kubernetes Task Runners, simplifying the process even further.
 
-With Task Runners, you can integrate Kubernetes pod execution seamlessly into your workflows, without needing to manage complex YAML configurations. Kestra’s Task Runners allow you to define workflows that benefit from Kestra's plugin system, enabling you to use familiar plugins while still leveraging the flexibility of Kubernetes to secure and scale the tasks effectively.
+While podCreate provides deep control, it takes aways all the benefits of Kestra rich plugins ecosystem, [dbt plugin](https://kestra.io/plugins/plugin-dbt/tasks/cli/io.kestra.plugin.dbt.cli.dbtcli) in this case. Also it can be cumbersome to manage complex Kubernetes pod YAML specification for each task, especially when you have multiple commands to run.
 
-Also it gives you the use any other runner to test your task before deploying it on Kubernetes: DinD, Process,  etc.
+To leverage the best of both worlds, Kestra’s Task Runners allow you to define workflows that benefit from Kestra's plugin system, enabling you to use familiar plugins while still leveraging the flexibility of Kubernetes to secure and scale the tasks effectively.
 
-In essence, Kestra's Kubernetes Task Runners provide the best of both worlds: the simplicity of workflow management and the power of Kubernetes to handle demanding workloads with custom resource allocations. Whether you need granular control or simplified workflow integration, Kestra gives you the flexibility to execute your tasks efficiently on Kubernetes.
+Also it gives you the flexibility to test your task easily before deploying it on Kubernetes using Runner like Docker or Process.
+
+The same example would look like this using a Task Runner:
+
+```yaml
+id: dbt-task-runner
+namespace: dev
+
+tasks:
+  - id: dbt_build
+    type: io.kestra.plugin.dbt.cli.DbtCLI
+    taskRunner:
+      type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+      namespace: kestra
+      resources:
+        request:
+          cpu: "300m"
+          memory: "500Mi"
+    containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
+    commands:
+      - git clone --depth 1 https://github.com/dbt-labs/jaffle_shop_duckdb.git --branch duckdb --single-branch
+      - cp -a jaffle_shop_duckdb/. .
+      - dbt deps
+      - dbt build
+```
+
+![dbt-task-runner](/docs/how-to-guides/kubernetes/task_runner_dbt.png)
 
 
+In case we want to easily test this flow on a local Kestra instance, we would just have to change the `taskRunner` type to `io.kestra.plugin.scripts.runner.docker.Docker`:
+
+```yaml
+id: dbt-task-runner
+namespace: dev
+
+tasks:
+  - id: dbt_build
+    type: io.kestra.plugin.dbt.cli.DbtCLI
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
+    commands:
+      - git clone --depth 1 https://github.com/dbt-labs/jaffle_shop_duckdb.git --branch duckdb --single-branch
+      - cp -a jaffle_shop_duckdb/. .
+      - dbt deps
+      - dbt build
+```
+
+This flexibility allows you to test your tasks locally before deploying them on Kubernetes.
+
+
+## Conclusion
+
+Kestra provides a powerful and flexible way to execute long running and intensive tasks on Kubernetes. By leveraging Kestra’s Task Runners, you can easily define workflows that benefit from Kestra's plugin system while still leveraging the flexibility of Kubernetes to secure and scale the tasks effectively.
+
+If needed, you can also use the `podCreate` task to launch a Kubernetes pod directly by providing the complete Kubernetes YAML configuration as input.
