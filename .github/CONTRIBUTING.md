@@ -38,13 +38,14 @@ To start contributing:
 - [Fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) the repository
 - Clone the fork on your workstation:
 
-```shell
+```bash
 $ git clone git@github.com:{YOUR_USERNAME}/docs.git
 $ cd docs
 ```
 
 
 #### Develop
+
 The frontend is made with [Nuxt JS](https://nuxt.com/).
 
 ```bash
@@ -52,11 +53,11 @@ The frontend is made with [Nuxt JS](https://nuxt.com/).
 $ npm install
 
 # serve with hot reload at localhost:3001
+# NOTE: the application start process presents itself with just the Nuxt logo
 $ npm run dev
 
 # to generate static pages
 $ npm run generate
-
 
 # making a production build
 $ npm run build
