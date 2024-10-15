@@ -100,7 +100,7 @@ At the end of the execution, the pod is deleted, and the logs remain available i
 
 ## Embrace Kestra versality with Kubernetes Task Runners
 
-While podCreate provides deep control, it takes aways all the benefits of Kestra rich plugins ecosystem, [dbt plugin](https://kestra.io/plugins/plugin-dbt/tasks/cli/io.kestra.plugin.dbt.cli.dbtcli) in this case. Also it can be cumbersome to manage complex Kubernetes pod YAML specification for each task, especially when you have multiple commands to run.
+While podCreate provides deep control, it takes aways all the benefits of Kestra's rich plugins ecosystem, [dbt plugin](https://kestra.io/plugins/plugin-dbt/tasks/cli/io.kestra.plugin.dbt.cli.dbtcli) in this case. Also it can be cumbersome to manage complex Kubernetes pod YAML specification for each task, especially when you have multiple commands to run.
 
 To leverage the best of both worlds, Kestra’s Task Runners allow you to define workflows that benefit from Kestra's plugin system, enabling you to use familiar plugins while still leveraging the flexibility of Kubernetes to secure and scale the tasks effectively.
 
