@@ -1,5 +1,5 @@
 ---
-title: "kestra and Hugging Face: Why Add Complexity When HTTP Requests Can Do It All?"
+title: "Kestra and Hugging Face: Why Add Complexity When HTTP Requests Can Do It All?"
 description: If you’re looking to add some AI-powered features like natural language processing or real-time data insights, Kestra can help. The HTTP task functionality allows you to tap directly into Hugging Face’s powerful library of pre-trained models. No extra infrastructure is needed.
 date: 2024-10-15T13:00:00
 category: Solutions
@@ -41,7 +41,7 @@ tasks:
     method: POST
     contentType: application/json
     headers:
-      Authorization: "Bearer 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"
+      Authorization: "Bearer your token"
     formData:
       inputs: "Hello from Paris"
 ```
@@ -65,7 +65,7 @@ tasks:
     method: POST
     contentType: application/json
     headers:
-      Authorization: "Bearer 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"
+      Authorization: "Bearer your Token"
     formData:
       inputs: "Hi, I recently bought a device from your company but it is not working as advertised and I would like to get reimbursed!"
       parameters:
