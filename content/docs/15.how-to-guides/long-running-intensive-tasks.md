@@ -94,7 +94,7 @@ This flow will:
 
 ![dbt-pod-create](/docs/how-to-guides/kubernetes/pod_create_dbt.png)
 
-At the end of the execution, the pod is deleted, and the logs remains available in the Kestra UI.
+At the end of the execution, the pod is deleted, and the logs remain available in the Kestra UI.
 
 ![dbt-pod-deleted-after-success](/docs/how-to-guides/kubernetes/pod_create_delete.png)
 
