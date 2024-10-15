@@ -143,6 +143,9 @@ export default {
         width: 100%;
         align-items: center;
         gap: $spacer;
+        @include media-breakpoint-down(md) {
+            margin: 2.5rem 0 1rem;
+        }
     }
 
     .hero {
@@ -155,20 +158,15 @@ export default {
         color: var(--bs-white);
         text-align: center;
         max-width: 100%;
-        font-size: 36px;
+        font-size: 32px!important;
         font-weight: 600;
         margin: 0;
         padding: 0;
 
-        @include media-breakpoint-up(md) {
-            font-size: 40px;
-
-        }
-
         @include media-breakpoint-up(lg) {
-            font-size: 53px;
-
+            font-size: 53px!important;
         }
+
 
         :deep(span) {
             background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%);
