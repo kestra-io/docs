@@ -2109,38 +2109,6 @@ paths:
                 - $ref: "#/components/schemas/FlowWithSource"
               example: null
       deprecated: true
-  /api/v1/flows/bulk:
-    post:
-      tags:
-      - Flows
-      summary: Update from multiples yaml sources
-      description: |-
-        All flow will be created / updated for this namespace.
-        Flow that already created but not in `flows` will be deleted if the query delete is `true`
-      operationId: bulkUpdate
-      parameters:
-      - name: delete
-        in: query
-        description: If missing flow should be deleted
-        required: true
-        schema:
-          type: boolean
-          default: true
-      requestBody:
-        content:
-          application/x-yaml:
-            schema:
-              type: string
-              nullable: true
-      responses:
-        "200":
-          description: bulkUpdate 200 response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/FlowWithSource"
   /api/v1/flows/delete/by-ids:
     delete:
       tags:
@@ -3922,31 +3890,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/KVEntry"
-    delete:
-      tags:
-      - KV
-      summary: Bulk-delete multiple key/value pairs from the given namespace.
-      operationId: deleteKeys
-      parameters:
-      - name: namespace
-        in: path
-        description: The namespace id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/KVController.ApiDeleteBulkRequest"
-        required: true
-      responses:
-        "200":
-          description: deleteKeys 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/KVController.ApiDeleteBulkResponse"
   /api/v1/namespaces/{namespace}/kv/{key}:
     get:
       tags:
@@ -5437,13 +5380,10 @@ components:
       type: object
       properties:
         id:
-          maxLength: 100
           minLength: 1
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
           type: string
         namespace:
-          maxLength: 150
-          minLength: 1
           pattern: "^[a-z0-9][a-z0-9._-]*"
           type: string
         revision:
@@ -6747,26 +6687,6 @@ components:
           title: The display name of the input.
           maxLength: 64
           type: string
-    KVController.ApiDeleteBulkRequest:
-      required:
-      - keys
-      type: object
-      properties:
-        keys:
-          type: array
-          items:
-            type: string
-      description: API Request for the bulk-delete operation.
-    KVController.ApiDeleteBulkResponse:
-      required:
-      - keys
-      type: object
-      properties:
-        keys:
-          type: array
-          items:
-            type: string
-      description: API Response for the bulk-delete operation.
     KVController.TypedValue:
       required:
       - type
@@ -7041,8 +6961,6 @@ components:
           $ref: "#/components/schemas/MiscController.Preview"
         isBasicAuthEnabled:
           type: boolean
-        systemNamespace:
-          type: string
     MiscController.Environment:
       required:
       - color
