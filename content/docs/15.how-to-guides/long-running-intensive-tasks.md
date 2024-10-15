@@ -26,7 +26,7 @@ As an exmample, we will use a [dbt job](https://docs.getdbt.com/docs/running-a-d
 
 ## Schedule task in a Kubernetes pod using podCreate
 
-Kestra's [podCreate](https://kestra.io/plugins/plugin-kubernetes/tasks/io.kestra.plugin.kubernetes.podcreate) task allows you to launch a Kubernetes pod directly by providing the complete Kubernetes YAML configuration as an input. This gives you full control over the pod’s specifications, such as CPU, memory, image, or node selector.
+Kestra's [podCreate](/plugins/plugin-kubernetes/tasks/io.kestra.plugin.kubernetes.podcreate) task allows you to launch a Kubernetes pod directly by providing the complete Kubernetes YAML configuration as an input. This gives you full control over the pod’s specifications, such as CPU, memory, image, or node selector.
 
 Here is an example of a dbt job that runs on Kubernetes using Kestra:
 
