@@ -7666,8 +7666,6 @@ components:
           type: boolean
         runIf:
           type: string
-        allowWarning:
-          type: boolean
     TaskForExecution:
       required:
       - id
