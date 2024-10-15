@@ -125,13 +125,13 @@ export default {
 @import "../../assets/styles/variable";
 
 .main {
+    position: relative;
     &::before {
         position: absolute;
         content: "";
         z-index: 0;
-        filter: blur(95px);
-        width: 99vw;
-        height: 14%;
+        width: 100vw;
+        height: 91.6%;
         background: linear-gradient(197.51deg, #390380 13.37%, #14151B 45.45%);
         right: 0;
         top: 0;

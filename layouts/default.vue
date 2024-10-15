@@ -88,7 +88,6 @@
     @import "../assets/styles/variable";
 
     .wrapper.announce {
-        margin-top: 30px;
 
         nav {
             .navbar-collapse {
