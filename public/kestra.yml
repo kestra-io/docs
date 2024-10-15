@@ -6099,9 +6099,6 @@ components:
             RETRIED:
               type: integer
               format: int64
-            SKIPPED:
-              type: integer
-              format: int64
         groupBy:
           type: string
     DailyExecutionStatistics.Duration:
@@ -6323,9 +6320,6 @@ components:
               type: integer
               format: int64
             RETRIED:
-              type: integer
-              format: int64
-            SKIPPED:
               type: integer
               format: int64
         total:
@@ -7502,7 +7496,6 @@ components:
       - QUEUED
       - RETRYING
       - RETRIED
-      - SKIPPED
     StatsController.ByFlowStatisticRequest:
       type: object
       properties:
@@ -7664,8 +7657,6 @@ components:
           type: boolean
         logToFile:
           type: boolean
-        runIf:
-          type: string
     TaskForExecution:
       required:
       - id
