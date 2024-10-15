@@ -7657,6 +7657,8 @@ components:
           type: boolean
         logToFile:
           type: boolean
+        allowWarning:
+          type: boolean
     TaskForExecution:
       required:
       - id
