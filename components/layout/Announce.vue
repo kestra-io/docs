@@ -1,7 +1,7 @@
 <template>
     <div class="fixed-top">
         <div class="announce">
-            <div class="alert alert-primary">
+            <div class="alert alert-primary" :class="{ 'scrolled': scrolled }">
                 <Carousel
                     :autoplay="4500"
                     :wrap-around="content.length > 1"
@@ -28,6 +28,10 @@
                 type: Object,
                 required: true,
             },
+            scrolled: {
+                type: String,
+                required: false
+            }
         },
         data: () => ({
             currentSlide: 0,
@@ -80,17 +84,22 @@
             border: 0;
             text-align: center;
             backdrop-filter: blur(0.625rem);
-            background-color: rgba(17, 17, 19, 0.65);
+            background-color: transparent;
             color: var(--bs-white);
             padding-left: calc($spacer * 0.938) 0.5rem;
             padding-right: calc($spacer * 0.938) 0.5rem;
-            border-bottom: $block-border;
+            border-bottom: 1px solid #E5E4F721;
             margin-bottom: 0;
             position: relative;
             z-index: 1;
             overflow: hidden;
             transition: max-height .5s linear, color .5s linear;
             height: 3rem;
+
+            &.scrolled {
+                background-color: rgba(17, 17, 19, 0.65);
+                transition: background-color 250ms ease-in-out;
+            }
 
             @include media-breakpoint-down(sm) {
                 padding-right: calc($spacer / 2);

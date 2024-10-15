@@ -1,5 +1,5 @@
 <template>
-    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{open: isOpen}">
+    <nav id="top-bar" ref="navbar" class="navbar navbar-expand-lg fixed-top" :class="{open: isOpen, scrolled: scrolled }">
         <div class="container-xl">
             <NuxtLink class="navbar-brand" href="/" @click="logoClick" @contextmenu.prevent="showDownloadLogosModal">
                 <img src="/logo-white.svg" alt="Kestra, Open source declarative data orchestration" />
@@ -479,6 +479,12 @@ export default {
             showDownloadLogos: false,
         }
     },
+    props: {
+      scrolled: {
+        type: String,
+        required: true
+      }
+    },
     collapse: undefined,
     created() {
         const route = useRoute();
@@ -683,6 +689,15 @@ export default {
             background-color: $black-9;
         }
 
+        &.scrolled {
+            @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+                & {
+                    background-color: $menu-bg;
+                    transition: background-color 250ms ease-in-out;
+                }
+            }
+        }
+
         &::before {
             content: "";
             position: absolute;
@@ -695,7 +710,6 @@ export default {
                 & {
                     -webkit-backdrop-filter: $menu-backdrop-filter;
                     backdrop-filter: $menu-backdrop-filter;
-                    background-color: $menu-bg;
                     @include media-breakpoint-down(lg) {
                         content: none;
                     }
