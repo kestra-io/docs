@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Data Orchestration Tools Compared: Why Kestra Stands Out for Data Engineers"
 description: "Learn the differences among pupular data orchestrators"
 date: 
 category: 
@@ -14,10 +14,17 @@ In today's data-driven world, managing complex data workflows efficiently is bec
 In this article, we describe what data orchestration is, how to choose the right data orchestration tool, and compare some of the most popular options: Apache Airflow, Prefect, Dagster, and Kestra.
 
 ## What Is Data Orchestration?
-Data orchestration is like being the conductor of a massive data symphony that involves the automated coordination and management of data as it moves between different systems and processes. Imagine having to manually manage every data pipeline, handle dependencies, schedule tasks, and monitor workflows: that would be a nightmare, right? So, data orchestration tools take care of all that heavy lifting for you.
+Data [orchestration](./2024-09-18-what-is-an-orchestrator.md) is an automated process that combines and organizes data from different data sources. You can think of it like being the conductor of a massive data symphony that involves the automated coordination and management of data as it moves between different systems and processes. Imagine having to manually manage every data pipeline, handle dependencies, schedule tasks, and monitor workflows: that would be a nightmare, right? Well, data orchestration tools take care of all that heavy lifting for you.
 
-Here's what data orchestration typically involves:
+Here's what data orchestration involves as a process:
+- **Data ingestion**: Collecting and organizing data from various systems, databases, APIs, and other sources to ensure it's ready for processing.
+- **Data transformation**: Managing ETL/ELT processes to extract, transform, and load data efficiently between different environments, making it suitable for analysis or other uses.
+- **Data integration**: Integrations with other data sources turn the transformed data into a unified, cohesive dataset. This stage can involve merging data from different sources or reconciling any conflicting information. 
+- **Data activation**: Delivering processed data to the appropriate destinations such as dashboards, data warehouses, or analytics systems, and ensuring the data is available for decision-making or further action.
 
+![The data orchestration workflow by Federico Trotta](/blogs/2024-MM-DD-comparing-data-orchestrators/data_orchestration.png)
+
+And while doing so, data engineers manage the following activities:
 - **Scheduling tasks**: Automatically running tasks at the right time.
 - **Handling dependencies**: Ensuring tasks run in the correct order.
 - **Monitoring workflows**: Keeping an eye on processes to catch and fix issues promptly.
@@ -25,6 +32,11 @@ Here's what data orchestration typically involves:
 - **Resource management**: Efficiently allocating computational resources.
 
 So, in essence, data orchestration ensures data pipelines run smoothly, efficiently, and without errors, freeing you up to focus on more strategic tasks.
+
+## Data Orchestration VS ETL Management
+While both data orchestration and ETL (Extract, Transform, Load) management are critical components of data processing, they serve different purposes:
+- ETL management focuses specifically on the process of extracting data from source systems, transforming it into a desired format, and loading it into a target system, such as a data warehouse. 
+- Data orchestration, on the other hand, goes beyond ETL by coordinating and managing data flows across various systems, including data transformation, scheduling, monitoring, and handling dependencies, ultimately providing a holistic view and control over the entire data pipeline.
 
 ## How to Choose a Data Orchestration Tool?
 Selecting the right data orchestration tool can be a game-changer for your projects. Here are some key factors to consider:
