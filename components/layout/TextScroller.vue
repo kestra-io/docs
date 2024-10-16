@@ -8,7 +8,7 @@ export default {
     },
     data() {
         return {
-            idx: 2,
+            idx: 0,
             intervalId: null,
         };
     },
@@ -39,7 +39,7 @@ export default {
         },
     },
     mounted() {
-        // this.intervalId = setInterval(this.handleTextChange, 1500);
+        this.intervalId = setInterval(this.handleTextChange, 1500);
     },
     beforeDestroy() {
         if (this.intervalId) {
