@@ -1,12 +1,12 @@
 ---
 title: "Kestra vs. Popular CI/CD Tools: When to Choose an Orchestration Solution"
 description: "Learn when to to choose an orchestrator rather than a CI/CD solution"
-date: xxxxxxx
+date: 2024-10-17T15:00:00
 category: Solutions
 author:
   name: Federico Trotta
   image: "ftrotta"
-image: /blogs/xxxxx.jpg
+image: /blogs/2024-10-17-ci-cd-kestra-comparison.jpg
 ---
 
 In a recent [blog post](./2024-09-18-what-is-an-orchestrator.md), we defined what an orchestrator is, the differences between orchestration and automation, and how orchestration can help you to automate your workflows.
@@ -39,7 +39,7 @@ There are a lot of CI/CD tools out there, so let's take a closer look at some of
 
 Also, by integrating tightly with GitHub, it reduces context switching, allowing teams to manage their entire CI/CD pipelines within a single interface; this makes GitHub Actions particularly attractive for teams that want to quickly implement automation without having to leave their existing GitHub environment.
 
-![A use of GitHub Actions by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/github_actions.png)
+![A use of GitHub Actions by Federico Trotta](/blogs/2024-10-17-ci-cd-kestra-comparison/github_actions.png)
 
 **Unique feature: deep integration with the GitHub ecosystem**
 GitHub Actions offers seamless integration with the entire GitHub platform, letting you trigger workflows based on any GitHub event—like pull requests, issues, or commits. This makes it an excellent choice for projects already using GitHub, as it provides a highly streamlined experience.
@@ -61,7 +61,7 @@ GitHub Actions offers seamless integration with the entire GitHub platform, lett
 
 This integrated approach reduces the friction typically associated with using diverse systems, making GitLab CI/CD a powerful option for teams seeking a streamlined and efficient workflow. Additionally, GitLab's focus on security with built-in features - such as vulnerability scanning and compliance management - strengthens its appeal for enterprises looking for a secure, all-in-one solution.
 
-![GitLab CI/CD by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/gitlab_cicd.png)
+![GitLab CI/CD by Federico Trotta](/blogs/2024-10-17-ci-cd-kestra-comparison/gitlab_cicd.png)
 
 **Unique feature: all-in-one DevOps platform**
 GitLab CI/CD combines source control, CI/CD, project management, and deployment automation in one place, streamlining collaboration, efficiency, and simplifying the overall development lifecycle. With everything under one roof, there's no need to manage multiple tools, which can greatly reduce operational overhead.
@@ -83,7 +83,7 @@ GitLab CI/CD combines source control, CI/CD, project management, and deployment 
 
 Key features include Azure Boards for tracking work, Azure Repos for version control, Azure Pipelines for CI/CD, Azure Artifacts for package management, and Azure Test Plans for testing. This makes this CI/CD tool ideal for teams using Microsoft technologies, offering streamlined collaboration and a high-quality development process.
 
-![Azure DevOps workflow by Federico Trotta](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/azure_devops.png)
+![Azure DevOps workflow by Federico Trotta](/blogs/2024-10-17-ci-cd-kestra-comparison/azure_devops.png)
 
 **Unique feature: integrated end-to-end DevOps solution for the Microsoft environment**
 Azure DevOps offers an integrated suite covering the entire DevOps lifecycle, from project planning with Azure Boards to deploying applications with Azure Pipelines. This makes it a powerful choice for teams that want a complete, all-in-one DevOps experience when using other Microsoft services.
@@ -191,7 +191,7 @@ In fact, in Jenkins debugging pipelines can be difficult to set up as logs can b
 
 Kestra, instead, provides centralized logging and error-handling across all tasks in a workflow. So, if a pipeline fails, developers can easily view the entire execution history and debug issues with a unified logging system. 
 
-![An error in Kestra](/blogs/YYYY-MM-DD-CI-CD-kestra-comparison/error.png)
+![An error in Kestra](/blogs/2024-10-17-ci-cd-kestra-comparison/error.png)
 
 #### Groovy Syntax
 Jenkins uses [Groovy-based](https://www.jenkins.io/doc/pipeline/steps/groovy/) scripting for pipeline creation, which can be unintuitive for developers unfamiliar with it - as it also a language not widely used. This can create a steep learning curve that can slow down development and cause errors.
