@@ -5,26 +5,36 @@ stage: Intermediate
 topics:
   - Integrations
 ---
+
 Build ETL pipelines in Kestra using DuckDB, Python and Task Runners.
+
 This tutorial demonstrates building different ETL pipelines in Kestra.
+
 ::alert{type="info"}
 We have used AWS access key and secret key in the example workflows below. To know more about these keys and how to get one, you can refer [this](https://aws.amazon.com/blogs/security/wheres-my-secret-access-key/) page. Once we have these, we can store them in the [KV Store](../05.concepts/05.kv-store.md) or as [Secrets](../05.concepts/04.secret.md).
 ::
+
 ## Using DuckDB
+
 DuckDB can be leveraged to transform the data directly using SQL queries.
-In the exmaple below, we fetch CSV files, perform the join transformation using DuckDB Query task, store the result, upload the detailed orders onto S3, perform another transformation on the stored result, and finally upload the file as CSV onto S3.
+
+In the example below, we fetch CSV files, perform the join transformation using DuckDB Query task, store the result, upload the detailed orders onto S3, perform another transformation on the stored result, and finally upload the file as CSV onto S3.
+
 ```yaml
 id: etl_using_duckdb
 namespace: company.team
+
 tasks:
   - id: download_orders_csv
     type: io.kestra.plugin.core.http.Download
     description: Download orders.csv file
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
   - id: download_products_csv
     type: io.kestra.plugin.core.http.Download
     description: Download products.csv file
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/products.csv
+
   - id: get_detailed_orders
     type: io.kestra.plugin.jdbc.duckdb.Query
     description: Perform JOIN transformation using DuckDB
@@ -48,10 +58,12 @@ tasks:
       ON o.product_id = p.product_id
       ORDER BY order_id ASC;
     store: true
+
   - id: ion_to_csv
     type: io.kestra.plugin.serdes.csv.IonToCsv
     description: Convert the result into CSV
     from: "{{ outputs.get_detailed_orders.uri }}"
+
   - id: upload_detailed_orders_to_s3
     type: io.kestra.plugin.aws.s3.Upload
     description: Upload the resulting CSV file onto S3
@@ -61,6 +73,7 @@ tasks:
     from: "{{ outputs.get_orders_per_product_csv.uri }}"
     bucket: "my_bucket"
     key: "orders/detailed_orders" 
+
   - id: get_orders_per_product
     type: io.kestra.plugin.jdbc.duckdb.Query
     description: Perform aggregation using DuckDB
@@ -80,6 +93,7 @@ tasks:
     type: io.kestra.plugin.serdes.csv.IonToCsv
     description: Convert the result into CSV
     from: "{{ outputs.get_orders_per_product.uri }}"
+
   - id: upload_orders_per_product_to_s3
     type: io.kestra.plugin.aws.s3.Upload
     description: Upload the resulting CSV file onto S3
@@ -90,13 +104,19 @@ tasks:
     bucket: "my_bucket"
     key: "orders/orders_per_product" 
 ```
-Similar Query tasks can be perfomed on different databases like Snowflake, Postgres, etc.
+
+Similar Query tasks can be performed on different databases like Snowflake, Postgres, etc.
+
 ## Using Python
+
 You can choose to perform ETL using python (pandas) and then run it as a Python script.
+
 The ETL performed using [DuckDB](#using-duckdb) above can be performed using Python as shown in the example flow below.
+
 ```yaml
 id: python_etl
 namespace: company.team
+
 tasks:
   - id: etl
     type: io.kestra.plugin.scripts.python.Script
@@ -107,6 +127,7 @@ tasks:
       import io
       import requests
       import pandas as pd
+
       def _extract(url):
         csv_data = requests.get(url).content
         return pd.read_csv(io.StringIO(csv_data.decode('utf-8')), header=0)
@@ -127,6 +148,7 @@ tasks:
     outputFiles:
       - detailed_orders.csv
       - orders_per_product.csv
+
   - id: upload_detailed_orders_to_s3
     type: io.kestra.plugin.aws.s3.Upload
     description: Upload the resulting CSV file onto S3
@@ -136,6 +158,7 @@ tasks:
     from: "{{ outputs.python_etl.outputFiles('detailed_orders.csv') }}"
     bucket: "my_bucket"
     key: "orders/detailed_orders"
+
   - id: upload_orders_per_product_to_s3
     type: io.kestra.plugin.aws.s3.Upload
     description: Upload the resulting CSV file onto S3
@@ -146,12 +169,17 @@ tasks:
     bucket: "my_bucket"
     key: "orders/orders_per_product"
 ```
+
 ## Using Batch Task Runners
+
 When the python scripts get more compute-intesive or memory-intensive, it is advised to run them on remote batch compute resources using Batch Task Runners.
+
 Kestra provides a variety of Batch Task Runners(/docs/enterprise/task-runners#task-runner-types). Here is an example of how the ETL python script can be run on a AWS Batch Task Runner.
+
 ```yaml
 id: aws_batch_task_runner_etl
 namespace: company.team
+
 tasks:
   - id: python_etl_on_aws_task_runner
     type: io.kestra.plugin.scripts.python.Script
@@ -173,6 +201,7 @@ tasks:
       import io
       import requests
       import pandas as pd
+
       def _extract(url):
         csv_data = requests.get(url).content
         return pd.read_csv(io.StringIO(csv_data.decode('utf-8')), header=0)
@@ -203,6 +232,7 @@ tasks:
     from: "{{ outputs.python_etl.outputFiles('detailed_orders.csv') }}"
     bucket: "my_bucket"
     key: "orders/detailed_orders"
+
   - id: upload_orders_per_product_to_s3
     type: io.kestra.plugin.aws.s3.Upload
     description: Upload the resulting CSV file onto S3
