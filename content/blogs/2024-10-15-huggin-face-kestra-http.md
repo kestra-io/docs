@@ -50,23 +50,46 @@ Because Kestra is event-driven, you can trigger Hugging Face models whenever a s
 Here’s how to set up a real-time classification workflow with Kestra and Hugging Face:
 
 ```yaml
-id: customer_request_classification
-namespace: customer.support
+id: hugging_face
+namespace: company.team
 tasks:
-  - id: classify_inquiry
+  - id: hugging_face_categorize
     type: io.kestra.plugin.core.http.Request
     uri: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
     method: POST
     contentType: application/json
     headers:
-      Authorization: "Bearer your Token"
-    formData:
-      inputs: "Hi, I recently bought a device from your company but it is not working as advertised and I would like to get reimbursed!"
+      Authorization:  "Bearer <YOUR_TOKEN>"
+    formData: 
+      inputs: "{{ trigger.value | jq('.request') | first }}!"
       parameters:
         candidate_labels: '["refund", "legal", "faq"]'
-```
 
-Each time a new inquiry is processed, Kestra pulls the data and sends it to the Hugging Face model for classification. The response can then be used to route the inquiry to the correct department or trigger automated responses. With this setup, you receive immediate categorization, helping your team address customer needs promptly and efficiently.
+  - id: insert_into_mongodb
+    type: io.kestra.plugin.mongodb.InsertOne
+    connection:
+      uri: "mongodb://mongoadmin:secret@localhost:27017/?authSource=admin"
+    database: "kestra"
+    collection: "customer_request"
+    document: |
+      {
+        "request_id": "{{ trigger.value | jq('.request_id') | first }}",
+        "request_value": "{{ trigger.value | jq('.request') | first }}",
+        "category": "{{ json(outputs.categorize.body).labels }}",,
+        "category_scores": "{{ json(outputs.categorize.body).scores }}",
+      }
+
+triggers:
+  - id: realtime
+    type: io.kestra.plugin.kafka.RealtimeTrigger
+    topic: customer_request
+    properties:
+      bootstrap.servers: localhost:9092
+    serdeProperties:
+      valueDeserializer: JSON
+    groupId: kestraConsumer
+
+Each time a new inquiry is processed, Kestra pulls the data and sends it to the Hugging Face model for classification. The response can then be ingested into a downstream database or trigger automated responses. With this setup, you receive immediate categorization, helping your team address customer needs promptly and efficiently.
 
 ## Flexible AI-Powered Workflows for Developers
 
