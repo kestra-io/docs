@@ -1,5 +1,5 @@
 ---
-title: References
+title: Reference Docs
 icon: /docs/icons/admin.svg
 ---
 
