@@ -197,5 +197,6 @@ kestra:
   kafka:
     message-protection:
       enabled: true
+```
 
 The `hard-limit` is not mandatory, in this case messages of any size will be accepted.
