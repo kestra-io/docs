@@ -1,5 +1,5 @@
 ---
-title: Configuration Reference
+title: References
 icon: /docs/icons/admin.svg
 ---
 
