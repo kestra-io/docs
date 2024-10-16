@@ -142,7 +142,7 @@
 
     const setSearchPlugins = (search, allPlugins) => {
         let searchPluginsList = [...allPlugins];
-        const searchLowercase = search.value.trim().toLowerCase()
+        const searchLowercase = search ? search.trim().toLowerCase() : null;
         return searchPluginsList.filter((item) => {
             return item?.title.toLowerCase().includes(searchLowercase) ||
                 (item.tasks ?? []).some(task => task.toLowerCase().includes(searchLowercase)) ||
@@ -211,7 +211,7 @@
     }
     if(route.query.q) {
         searchQuery.value = route.query.q.trim();
-        filterPlugins(currentPage.value, itemsPerPage.value , activeCategory.value, searchQuery)
+        filterPlugins(currentPage.value, itemsPerPage.value , activeCategory.value, searchQuery.value)
     }
 
     let timer;
@@ -221,7 +221,7 @@
         }
         timer = setTimeout(async () => {
             router.push({
-                query: filterPlugins(pageVal, itemVal, categoryVal, searchVal.trim())
+                query: filterPlugins(pageVal, itemVal, categoryVal, searchVal)
             })
 
         }, 500);
