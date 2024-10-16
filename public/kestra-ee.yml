@@ -25222,9 +25222,13 @@ components:
       - $ref: "#/components/schemas/MiscController.Configuration"
       - properties:
           tenants:
-            $ref: "#/components/schemas/TenantConfiguration"
+            $ref: "#/components/schemas/MiscController.TenantConfigurationInfo"
           secretsEnabled:
             type: boolean
+          supportedStorages:
+            type: array
+            items:
+              type: string
     MiscController.Environment:
       required:
       - color
@@ -25261,6 +25265,19 @@ components:
         max:
           type: integer
           format: int32
+    MiscController.TenantConfigurationInfo:
+      required:
+      - defaultTenant
+      - enabled
+      - storageByTenant
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        defaultTenant:
+          type: boolean
+        storageByTenant:
+          type: boolean
     Name:
       type: object
       properties:
@@ -26774,6 +26791,8 @@ components:
       - deleted
       - id
       - name
+      - storageConfiguration
+      - storageType
       - workerGroup
       type: object
       properties:
@@ -26786,13 +26805,11 @@ components:
           type: boolean
         workerGroup:
           $ref: "#/components/schemas/WorkerGroup"
-    TenantConfiguration:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        defaultTenant:
-          type: boolean
+        storageType:
+          type: string
+        storageConfiguration:
+          type: object
+          additionalProperties: true
     TenantUsage:
       type: object
       properties:
