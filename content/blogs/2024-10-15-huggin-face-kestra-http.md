@@ -1,13 +1,13 @@
 ---
 title: "Kestra and Hugging Face: Why Add Complexity When HTTP Requests Can Do It All?"
 description: If you’re looking to add some AI-powered features like natural language processing or real-time data insights, Kestra can help. The HTTP task functionality allows you to tap directly into Hugging Face’s powerful library of pre-trained models. No extra infrastructure is needed.
-date: 2024-10-15T13:00:00
+date: 2024-10-16T18:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
   role: 
   image: mproset
-image: /blogs/
+image: /blogs/2024-10-15-huggin-face-kestra-http.jpg
 ---
 
 When you hear “AI workflow,” you might assume that you’re signing up for layers of complexity, with dependencies and a time-consuming setup. But the reality is you can integrate Hugging Face models into your Kestra workflows with minimal efforts. AI doesn’t have to mean over-engineering; it can be as straightforward as a few HTTP requests. 
@@ -22,7 +22,7 @@ Kestra offers an easy way to leverage Hugging Face models without adding unneces
 
 The API calls work like any other HTTP task, allowing you to integrate AI features into your workflows. Here’s how you can make the most of Hugging Face models within Kestra for different purposes:
 
-1. **Fraud Detection**: Kestra can trigger Hugging Face models that analyze transaction data in real-time, flagging any unusual patterns
+1. **AI Data Insight**: Kestra can trigger Hugging Face models that analyze data in real-time, and give you some insights about the incoming data, is it a good day for your sales? What's your most requested products? You can even push further with some alerting to send a Slack/Discord message giving you the trends.
 2. **Sentiment Analysis for Customer Support**: Connect Kestra to your customer service channels and route incoming messages to Hugging Face’s sentiment analysis models. Kestra can classify the message tone and urgency, escalating high-priority feedback to the right teams instantly.
 3. **Language Translation**: If you need to manage multilingual customer inquiries, Kestra can automatically send incoming messages to a Hugging Face translation model, then respond in the customer’s language in seconds. It’s a quick way to offer native language support without extensive setup.
 
