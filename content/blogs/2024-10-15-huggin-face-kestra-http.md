@@ -86,7 +86,7 @@ With Kestra, you can keep your workflows simple while still tapping into the adv
 
 ## Conclusion: Simplify AI Integration with Kestra and Hugging Face
 
-Kestra’s real power is in how it integrates with the tools you’re already using—and how it can enhance them with AI capabilities. With features that allow you to trigger workflows in real time, automate approvals, and connect across diverse tools, Kestra makes it simple to build dynamic workflows that work for you.
+Kestra’s real power is in how it integrates with the tools you’re already using—and how it can enhance them with AI capabilities. With features that allow you to trigger workflows in [real time](https://kestra.io/docs/workflow-components/triggers/realtime-trigger), automate approvals, and connect across diverse tools, Kestra makes it simple to build dynamic workflows that work for you.
 
 For developers, Kestra’s “everything-as-code” approach means that building and scaling complex, AI-enabled workflows is accessible. Kestra combines the power of plugins with flexible automation tools, making it easy to set up continuous integration, version control, and task orchestration without getting stuck in endless configuration loops.
 
