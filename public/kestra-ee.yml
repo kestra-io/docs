@@ -25229,6 +25229,10 @@ components:
             type: array
             items:
               type: string
+          supportedSecrets:
+            type: array
+            items:
+              type: string
     MiscController.Environment:
       required:
       - color
@@ -25269,6 +25273,7 @@ components:
       required:
       - defaultTenant
       - enabled
+      - secretByTenant
       - storageByTenant
       type: object
       properties:
@@ -25277,6 +25282,8 @@ components:
         defaultTenant:
           type: boolean
         storageByTenant:
+          type: boolean
+        secretByTenant:
           type: boolean
     Name:
       type: object
@@ -26793,6 +26800,8 @@ components:
       - deleted
       - id
       - name
+      - secretConfiguration
+      - secretType
       - storageConfiguration
       - storageType
       - workerGroup
@@ -26810,6 +26819,11 @@ components:
         storageType:
           type: string
         storageConfiguration:
+          type: object
+          additionalProperties: true
+        secretType:
+          type: string
+        secretConfiguration:
           type: object
           additionalProperties: true
     TenantUsage:
