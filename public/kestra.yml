@@ -6186,7 +6186,6 @@ components:
     Execution:
       required:
       - deleted
-      - error
       - flowId
       - flowRevision
       - id
@@ -6246,10 +6245,6 @@ components:
           type: string
           format: date-time
           nullable: true
-        error:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/ExecutionError"
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -6336,16 +6331,6 @@ components:
         total:
           type: integer
           format: int64
-    ExecutionError:
-      required:
-      - message
-      - stacktrace
-      type: object
-      properties:
-        message:
-          type: string
-        stacktrace:
-          type: string
     ExecutionMetadata:
       required:
       - attemptNumber
@@ -7711,7 +7696,6 @@ components:
     TaskRun:
       required:
       - attempts
-      - error
       - executionId
       - flowId
       - id
@@ -7753,8 +7737,6 @@ components:
         iteration:
           type: integer
           format: int32
-        error:
-          $ref: "#/components/schemas/ExecutionError"
     TaskRunAttempt:
       required:
       - logFile
