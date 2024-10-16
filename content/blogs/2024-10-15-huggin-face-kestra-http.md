@@ -5,12 +5,12 @@ date: 2024-10-16T18:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
-  role: 
+  role:
   image: mproset
 image: /blogs/2024-10-15-huggin-face-kestra-http.jpg
 ---
 
-AI integration doesn’t have to be complicated. Kestra lets you connect to Hugging Face models quickly with just a few HTTP requests. Need to analyze the sentiment of customer reviews? Or perhaps classify large datasets? With Hugging Face’s extensive API library, you have access to hundreds of models capable of handling these tasks. 
+AI integration doesn’t have to be complicated. Kestra lets you connect to Hugging Face models quickly with just a few HTTP requests. Need to analyze the sentiment of customer reviews? Or perhaps classify large datasets? With Hugging Face’s extensive API library, you have access to hundreds of models capable of handling these tasks.
 
 In this post, we'll connect to Hugging Face’s API through Kestra’s HTTP tasks. HuggingFace will provide AI capability via an API and Kestra will handle authentication, timeout, retries and ensuring the response is correctly captured.
 
@@ -60,7 +60,7 @@ tasks:
     contentType: application/json
     headers:
       Authorization:  "Bearer <YOUR_TOKEN>"
-    formData: 
+    formData:
       inputs: "{{ trigger.value | jq('.request') | first }}!"
       parameters:
         candidate_labels: '["refund", "legal", "faq"]'
@@ -88,6 +88,7 @@ triggers:
     serdeProperties:
       valueDeserializer: JSON
     groupId: kestraConsumer
+```
 
 Each time a new inquiry is processed, Kestra pulls the data and sends it to the Hugging Face model for classification. The response can then be ingested into a downstream database or trigger automated responses. With this setup, you receive immediate categorization, helping your team address customer needs promptly and efficiently.
 
