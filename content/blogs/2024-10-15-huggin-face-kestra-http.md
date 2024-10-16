@@ -31,7 +31,6 @@ The API calls work like any other HTTP task, allowing you to integrate AI featur
 Let’s look at a practical example of using Kestra to translate text from English to Spanish. With Hugging Face’s NLP models, you can configure an HTTP task to make a simple API call. Here’s how it’s done in Kestra:
 
 ```yaml
-yaml
 id: hugging_face_translation
 namespace: company.team
 tasks:
@@ -55,7 +54,6 @@ Because Kestra is event-driven, you can trigger Hugging Face models whenever a s
 Here’s how to set up a real-time classification workflow with Kestra and Hugging Face:
 
 ```yaml
-yaml
 id: customer_request_classification
 namespace: customer.support
 tasks:
