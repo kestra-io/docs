@@ -761,7 +761,7 @@
                                             With Kestra
                                         </p>
                                         <p class="count-text">20 000+</p>
-                                        <span class="link">Executions per month</span>
+                                        <span class="link">executions per month</span>
                                     </NuxtLink>
                                     <ul class="header-menu-right-menu">
                                         <li>
@@ -1257,7 +1257,13 @@ export default {
                             }
                             .features {
                                 a.header-menu-right-banner {
+                                    font-family: $font-family-sans-serif;
                                     padding: 15px 17px 18px 26px;
+                                    span.link {
+                                        color: #FFFFFF99;
+                                        font-weight: 400;
+                                        font-size: 15px;
+                                    }
                                 }
                             }
                             &-banner {
@@ -1276,7 +1282,7 @@ export default {
                                 .title {
                                     font-size: 26px;
                                     line-height: 27px;
-                                    font-weight: 600;
+                                    font-weight: 500;
                                     color: $white;
                                 }
                                 .count-text {
