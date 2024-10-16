@@ -5,12 +5,15 @@ date: 2024-10-15T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
+  role: Lead Software Engineer
   image: lmathieu
-image: /blogs/2024-10-15-deploying-kestra-in-clever-cloud.png
+image: /blogs/2024-10-15-deploying-kestra-in-clever-cloud.jpg
 ---
 
 [Clever Cloud](https://www.clever-cloud.com/) is a Platform as a Service provider that uses Kestra itself.
 As they have deployed Kestra in Clever Cloud, I was wondering how easy it is to yourself, moreover I personally know some of the Clever Cloud developers and wanted to test their product for a long time ... so let's do it!
+
+To deploy Kestra on Clever Cloud we used their CLI tool: [Clever Tools](https://www.npmjs.com/package/clever-tools)
 
 **Prerequisite**: you need a Clever Cloud account and the `clevercloud` CLI installed on your machine, see the [Clever Cloud quickstart](https://developers.clever-cloud.com/doc/quickstart/) for setup instructions.
 
