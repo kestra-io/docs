@@ -8,7 +8,7 @@ export default {
     },
     data() {
         return {
-            idx: 0,
+            idx: 2,
             intervalId: null,
         };
     },
@@ -39,7 +39,7 @@ export default {
         },
     },
     mounted() {
-        this.intervalId = setInterval(this.handleTextChange, 1500);
+        // this.intervalId = setInterval(this.handleTextChange, 1500);
     },
     beforeDestroy() {
         if (this.intervalId) {
@@ -69,15 +69,17 @@ export default {
     animation-fill-mode: both;
     animation-name: fadeInBottom;
     font-weight: 600;
+    font-size: 42px!important;
 
     @include media-breakpoint-down(sm) {
         font-weight: 600;
-        min-width: 100vw;
+        min-width: 100%;
         text-align: center;
     }
 
     @include media-breakpoint-up(lg) {
         min-width: 280px;
+        font-size: 55px!important;
     }
 
     @keyframes fadeInBottom {
