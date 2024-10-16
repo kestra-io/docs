@@ -5,6 +5,30 @@ icon: /docs/icons/admin.svg
 
 Almost everything is configurable in Kestra. This section describes the different configuration options available to Administrators.
 
+## Database
+
+### `kestra.queue` and `kestra.repository`
+
+First, you need to configure Kestra to use a database for its Queue and Repository. Here is an example for PostgreSQL:
+
+```yaml
+kestra:
+  queue:
+    type: postgres
+  repository:
+    type: postgres
+```
+
+Currently, Kestra supports Postgres, H2, MySQL, and SQL Server (available in a preview in the Enterprise Edition since Kestra 0.18.0).
+- H2 can be convenient for local **development**.
+- For **production**, we recommend PostgreSQL. If PostgreSQL is not an option for you, MySQL and SQL Server can be used as well.
+
+Check the [Software Requirements](../09.administrator-guide/00.requirements.md) section for the minimum version of each database.
+
+::alert{type="info"}
+If you experience performance issues when using PostgreSQL, you can tune the cost optimizer parameter `random_page_cost=1.1`, which should make PostgreSQL use the right index for the queues table. You can also configure `kestra.queue.postgres.disable-seq-scan=true` so that Kestra turns off sequential scans on the queue polling query forcing PostgreSQL to use the index.
+::
+
 ## `kestra.elasticsearch`
 
 **Elasticsearch is an [Enterprise Edition](/enterprise) functionality.**
@@ -953,6 +977,156 @@ defaultValue: 5m
 ---
 ::
 
+## `kestra.storage`
+
+The default [internal storage](../07.architecture/09.internal-storage.md) implementation is the local storage which is **not suitable for production** as it will store data in a local folder on the host filesystem.
+
+This local storage can be configured as follows:
+
+```yaml
+kestra:
+  storage:
+    type: local
+    local:
+      base-path: /tmp/kestra/storage/ # your custom path
+```
+
+Other internal storage types include:
+- [Storage S3](#s3) for [AWS S3](https://aws.amazon.com/s3/)
+- [Storage GCS](#gcs) for [Google Cloud Storage](https://cloud.google.com/storage)
+- [Storage Minio](#minio) compatible with  others *S3 like* storage services
+- [Storage Azure](#azure) for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
+
+### S3
+
+First, make sure that the S3 storage plugin is installed in your environment. You can install it with the following Kestra command:
+`./kestra plugins install io.kestra.storage:storage-s3:LATEST`. This command will download the plugin's jar file into the plugin's directory.
+
+Then, enable the storage using the following configuration:
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      endpoint: "<your-s3-endpoint>" # Only needed if you host your own S3 storage
+      accessKey: "<your-aws-access-key-id>"
+      secretKey: "<your-aws-secret-access-key>"
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+      forcePathStyle: "<true|false>" # optional, defaults to false, useful if you mandate domain resolution to be path-based due to DNS for eg.
+```
+
+If you are using an AWS EC2 or EKS instance, you can use the default credentials provider chain. In this case, you can omit the `accessKey` and `secretKey` options:
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+```
+
+Additional configurations can be found [here](https://github.com/kestra-io/storage-s3/blob/master/src/main/java/io/kestra/storage/s3/S3Storage.java#L52-L75).
+
+
+::collapse{title="Assume IAM Role - AWS Security Token Service (STS)"}
+
+You can configure Amazon S3 storage to utilize **AWS AssumeRole** to temporarily assume the permissions of a specific **IAM** role.
+When using AssumeRole with S3, you can omit specifying the `AccessKeyId` and `SecretAccessKey` in your configurations.
+Instead, the _default credentials provider chain_ will be used to authenticate with AWS STS and retrieve the temporary security credentials.
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+      stsRoleArn: "<ARN of the role to assume>"
+      # (Optional)
+      stsRoleExternalId: "<AWS STS External Id>"
+      # (Optional, Default: 'kestra-storage-s3-<timestamp>')
+      stsRoleSessionName: "<AWS STS Session name>"
+      # (Optional, Default: 15m)
+      stsRoleSessionDuration: "<AWS STS Session duration>"
+      # (Optional)
+      stsEndpointOverride: "<AWS Endpoint to communicate with>"
+```
+::
+
+### Minio
+
+If you use Minio or similar S3-compatible storage options, you can follow the same process as shown above to install the Minio storage plugin. Then, make sure to include the Minio's `endpoint` and `port` in the storage configuration:
+
+```yaml
+kestra:
+  storage:
+    type: minio
+    minio:
+      endpoint: "<your-endpoint>"
+      port: "<your-port>"
+      accessKey: "<your-accessKey>"
+      secretKey: "<your-secretKey>"
+      region: "<your-region>"
+      secure: "<your-secure>"
+      bucket: "<your-bucket>"
+      partSize: "<your-part-size>" # syntax: <number><unit> (KB, MB, GB), defaults to 5MB
+```
+
+Optionally and if the Minio configured is configured to do so (`MINIO_DOMAIN=my.domain.com` environment variable on Minio server), you can also use the `kestra.storage.minio.vhost: true` property to make Minio client to use the [virtual host syntax](https://min.io/docs/minio/linux/administration/object-management.html#id1).
+
+Please note that the endpoint should always be your base domain (even if you use the virtual host syntax). In the above example, `endpoint: my.domain.com`, `bucket: my-bucket`. Setting `endpoint: my-bucket.my.domain.com` will lead to failure.
+
+### Azure
+
+First, install the Azure storage plugin. To do that, you can leverage the following Kestra command:
+`./kestra plugins install io.kestra.storage:storage-azure:LATEST`. This command will download the plugin's jar file into the plugins directory.
+
+Adjust the storage configuration shown below depending on your chosen authentication method:
+
+```yaml
+kestra:
+  storage:
+    type: azure
+    azure:
+      endpoint: "https://unittestkt.blob.core.windows.net"
+      container: storage
+      connectionString: "<connection-string>"
+      sharedKeyAccountName: "<shared-key-account-name>"
+      sharedKeyAccountAccessKey: "<shared-key-account-access-key>"
+      sasToken: "<sas-token>"
+```
+
+::alert{type="info"}
+Note that your Azure Blob Storage should disable `Hierarchical namespace` as this feature is [not supported](https://github.com/kestra-io/plugin-azure/issues/22) in Kestra.
+::
+
+### GCS
+
+You can install the GCS storage plugin using the following Kestra command:
+`./kestra plugins install io.kestra.storage:storage-gcs:LATEST`. This command will download the plugin's jar file into the plugins directory.
+
+Then, you can enable the storage using the following configuration:
+
+```yaml
+kestra:
+  storage:
+    type: gcs
+    gcs:
+      bucket: "<your-bucket-name>"
+      project-id: "<project-id or use default projectId>"
+      serviceAccount: "<serviceAccount key as JSON or use default credentials>"
+```
+
+If you haven't configured the `kestra.storage.gcs.serviceAccount` option, Kestra will use the default service account, which is:
+- the service account defined on the cluster (for GKE deployments)
+- the service account defined on the compute instance (for GCE deployments).
+
+You can also provide the environment variable `GOOGLE_APPLICATION_CREDENTIALS` with a path to a JSON file containing GCP service account key.
+
+You can find more details in the [GCP documentation](https://cloud.google.com/docs/authentication/production).
 
 ## `kestra.system-flows`
 
