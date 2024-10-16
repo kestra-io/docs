@@ -191,7 +191,7 @@ export default defineNuxtConfig({
                     ],
                     "Manage Kestra": [
                         "Administrator Guide",
-                        "Configuration Guide",
+                        "Configuration Reference",
                         "Migration Guide",
                         "Terraform Provider",
                         "API Reference"
@@ -257,6 +257,8 @@ export default defineNuxtConfig({
         '/docs/concepts/runnable-tasks': {redirect: '/docs/workflow-components/tasks/runnable-tasks'},
         '/docs/concepts/task-runners': {redirect: '/docs/task-runners'},
         '/docs/user-interface-guide/blueprints': {redirect: '/docs/ui/blueprints'},
+        '/docs/configuration-guide': {redirect: '/docs/configuration-reference'},
+        '/docs/configuration-guide/**': {redirect: '/docs/configuration-reference/**'},
         '/docs/flow-examples/**': {redirect: '/docs/how-to-guides'},
         '/docs/installation/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
         '/docs/faq/troubleshooting': {redirect: '/docs/administrator-guide/troubleshooting'},
