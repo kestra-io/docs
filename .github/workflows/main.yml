@@ -18,4 +18,4 @@ jobs:
         id: trigger-index
         run: |
           TAG=${GITHUB_REF#refs/*/}
-          curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"$TAG\"}" https://us.kestra.cloud/api/v1/kestra-tech/executions/webhook/product/doc-to-storage/${{ secrets.DOC_INDEXING_WEBHOOK }}
+          curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"$TAG\", \"to_index\": [\"docs\"]}" ${{ secrets.DOC_INDEXING_WEBHOOK }}
