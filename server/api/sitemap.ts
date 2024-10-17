@@ -1,4 +1,3 @@
-import {slugify} from "~/utils/url.js";
 import {recursivePages} from "~/utils/navigation.js";
 import type {SitemapUrlInput} from "@nuxtjs/sitemap/dist/runtime/types";
 
@@ -31,10 +30,10 @@ const generateDefaultSitemap = async () => {
         return {
             totalPages: Math.ceil(response.total / pageSize),
             data: response.results.map(page => {
-                let loc = `${sitemapInput.rootUrl}${page.id}-${slugify(page.title)}`
+                let loc = `${sitemapInput.rootUrl}${page.id}`
                 if (sitemapInput.rootUrl === '/blueprints/') {
                     let tag = [{ name: 'All tags' }, ...blueprintsTags].find(f => f?.id == page.tags[0]);
-                    loc = `${sitemapInput.rootUrl}${tag.name.replace(' ', '-').toLowerCase()}/${page.id}-${slugify(page.title)}`
+                    loc = `${sitemapInput.rootUrl}${tag.name.replace(' ', '-').toLowerCase()}/${page.id}`
                 }
                 return asSitemapUrl({
                     loc: loc,
