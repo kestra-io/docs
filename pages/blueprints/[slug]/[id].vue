@@ -8,7 +8,7 @@
             />
         </Head>
 
-        <BlueprintsHeader :page="page" :graph="graph" :slug="slug" :icons="icons" :flow="flowAsMd"/>
+        <BlueprintsHeader :page="page" :graph="graph" :slug="$route.params.id" :icons="icons" :flow="flowAsMd"/>
         <div class="container">
             <BlueprintsDetail :page="page" :description="descriptionAsMd" :flow="flowAsMd" :tags="tags" />
             <BlueprintsRelated
@@ -30,7 +30,6 @@
 <script setup>
     const route = useRoute()
     const config = useRuntimeConfig();
-    const slug = ref("/blueprints/" + (route.params.slug instanceof Array ? route.params.slug.join('/') : route.params.slug));
     const page = ref()
     const icons = ref()
     const relatedBlueprints = ref([])
@@ -41,7 +40,7 @@
 
     const categorySlug = route.fullPath?.split('/')[2];
     const {data: tags} = await useAsyncData('blueprints-tags', () => {
-        return $fetch(`${config.public.apiUrl}/blueprints/tags`)
+        return $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
     })
 
     const activeTag = tags.value.find(f => f?.name?.toLowerCase() == categorySlug.replace('-', ' '));

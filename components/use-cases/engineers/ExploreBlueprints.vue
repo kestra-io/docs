@@ -40,19 +40,19 @@
     }
   })
   const { data: blueprintsData } = await useAsyncData('blueprints', () => {
-    return $fetch(`${config.public.apiUrl}/blueprints?tags=${props.tag}`)
+    return $fetch(`${config.public.apiUrl}/blueprints/versions/latest?tags=${props.tag}`)
   });
   const {data: tags} = await useAsyncData('blueprints-tags', () => {
-    return $fetch(`${config.public.apiUrl}/blueprints/tags`)
+    return $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
   })
-  const generateCardHref =async (blueprint) => {
-    let tag = await tags.value.find(f => f?.id == blueprint.tags[0]);
+  const generateCardHref = (blueprint) => {
+    let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
     if (!tag || !tag.name) {
-        return `/blueprints/unknown/${blueprint.id}-${slugify(blueprint.title)}`;
+        return `/blueprints/unknown/${blueprint.id}`;
     }
-    return `/blueprints/${tag.name?.replace(' ', '-')}/${blueprint.id}-${slugify(blueprint.title)}`
+    return `/blueprints/${tag.name?.replace(' ', '-').toLowerCase()}/${blueprint.id}`
   }
-  if(blueprintsData.value) {
+  if (blueprintsData.value) {
     blueprints.value = blueprintsData.value.results
   }
 </script>
