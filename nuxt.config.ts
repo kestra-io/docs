@@ -256,6 +256,7 @@ export default defineNuxtConfig({
         '/docs/concepts/runnable-tasks': {redirect: '/docs/workflow-components/tasks/runnable-tasks'},
         '/docs/concepts/task-runners': {redirect: '/docs/task-runners'},
         '/docs/user-interface-guide/blueprints': {redirect: '/docs/ui/blueprints'},
+        '/docs/administrator-guide/server-cli': {redirect: '/docs/references/server-cli'},
         '/docs/configuration-guide': {redirect: '/docs/references/configuration'},
         '/docs/configuration-guide/**': {redirect: '/docs/references/configuration'},
         '/docs/flow-examples/**': {redirect: '/docs/how-to-guides'},
