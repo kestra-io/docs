@@ -21,6 +21,6 @@
 <script setup>
     const config = useRuntimeConfig();
     const {data: tags} = await useAsyncData('blueprints-tags', () => {
-        return $fetch(`${config.public.apiUrl}/blueprints/tags`)
+        return $fetch(`${config.public.apiUrl}/blueprints/versions/latest/tags`)
     })
 </script>

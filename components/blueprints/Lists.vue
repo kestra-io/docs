@@ -108,7 +108,7 @@ if (!activeTags.value) {
   }
 }
 const { data: blueprintsData, error } = await useAsyncData('blueprints', () => {
-  return $fetch(`${config.public.apiUrl}/blueprints?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeTags.value.map(tag => tag.id).join(',')}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
+  return $fetch(`${config.public.apiUrl}/blueprints/versions/latest?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeTags.value.map(tag => tag.id).join(',')}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
 })
 
 if ((error && error.value) || !activeTags) {
@@ -132,7 +132,7 @@ const changePage = (pageNo) => {
 
 const generateCardHref = (blueprint) => {
   let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
-  return `/blueprints/${tag.name.replace(' ', '-')}/${blueprint.id}-${slugify(blueprint.title)}`
+  return `/blueprints/${tag.name.replace(' ', '-')}/${blueprint.id}`
 }
 
 let timer;
@@ -147,7 +147,7 @@ watch([currentPage, itemsPerPage, searchQuery, activeTags], ([pageVal, itemVal, 
         clearTimeout(timer)
       }
   timer = setTimeout(async () => {
-      const { data } = await useFetch(`${config.public.apiUrl}/blueprints?page=${(itemVal != oldItemVal) ? 1 : pageVal}&size=${itemVal}${!!activeTagsVal.map(item => item.id).join(',') ? `&tags=${activeTagsVal.map(item => item.id).join(',')}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
+      const { data } = await useFetch(`${config.public.apiUrl}/blueprints/versions/latest?page=${(itemVal != oldItemVal) ? 1 : pageVal}&size=${itemVal}${!!activeTagsVal.map(item => item.id).join(',') ? `&tags=${activeTagsVal.map(item => item.id).join(',')}` : ''}${searchVal.length ? `&q=${searchVal}` : ''}`)
       setBlueprints(data.value.results, data.value.total)
 
         function getQuery() {
