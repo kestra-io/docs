@@ -10,9 +10,9 @@ The docker volume mount, by setting the property `kestra.tasks.scripts.docker.vo
 
 This change is implemented in a non-breaking way, so you don't need to immediately change the way you use the docker volume mount. In case you use this older method for mounting the volume, you will receive the following deprecation warning:
 
-```
-`kestra.tasks.scripts.docker.volume-enabled` is deprecated, please use the plugin configuration `volume-enabled` instead
-```
+::alert{type="warning"}
+The `kestra.tasks.scripts.docker.volume-enabled` is deprecated, please use the plugin configuration `volume-enabled` instead.
+::
 
 It is recommended to make the following change in the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) for mounting the volume:
 
