@@ -57,7 +57,7 @@ Now that we have finished the application setup, we can now configure environmen
 We will add the following environment variables:
 
 - `CC_HEALTH_CHECK_PATH` to the `/ping` URI so Clever Cloud health check uses the lightweight ping endpoint.
-- `KESTRA_CONFIGURATION` to the Kestra [configuration](../docs/10.configuration-guide/index.md) YAML file.
+- `KESTRA_CONFIGURATION` to the Kestra [configuration](../docs/10.references/index.md) YAML file.
 
 Here is the configuration file that we will use:
 
