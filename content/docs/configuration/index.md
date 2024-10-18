@@ -7,7 +7,7 @@ Configuration Reference for Kestra.
 
 Almost everything is configurable in Kestra. This section describes the different configuration options available to Administrators.
 
-Kestra configuration looks like this, which includes a `kestra` section.
+Kestra configuration is a YAML file that can be passed as an environment variable, a file, or added directly in the Docker Compose file depending on your chosen [installation option](../02.installation/02.docker.md#configuration). The configuration is intended to hold deployment-specific options and it's divided into different sections, each corresponding to a different part of the system:
 
 ```yaml
 datasources:
@@ -36,31 +36,20 @@ kestra:
   url: "http://localhost:8080/"
 ```
 
-This can be saved as a configuration file, environment variable or directly inside of your Docker Compose file. Check out the [installation guide](../02.installation/02.docker.md#configuration) for further detail.
-
 ## Setup
 
-Kestra offers many configuration options and customization. This section will guide you through the most important ones.
+Kestra offers many configuration options and customization.
 
-The way you pass those configuration options depends on your Kestra installation
+There are three main components that need to be configured during the initial setup:
+1. Internal Storage
+2. Queue
+3. Repository
 
-::alert{type="warning"}
-The configuration is intended to hold deployment-specific options. Using a full copy of the Kestra configuration may break future releases.
-::
-
-### Kestra internal components configuration
-
-Kestra has three internal components that need to be configured:
-
-- The Internal Storage.
-- The Queue.
-- The Repository.
-
-#### Internal storage configuration
+### Internal storage configuration
 
 Kestra supports multiple internal storage types, the default being the local storage that will store data in a local folder on the host filesystem. It's recommended only for local testing as it doesn't provide resiliency or redundancy.
 
-To choose another storage type, you will need to configure the `kestra.storage.type` option. Make sure to download the corresponding storage plugins first. The following example configures [Google Cloud Storage](#gcs) for internal storage.
+To choose another storage type, you will need to configure the `kestra.storage.type` option. Make sure to download the corresponding storage plugins first. The following example configures [Google Cloud Storage](#gcs) as internal storage.
 
 ```yaml
 kestra:
@@ -68,21 +57,16 @@ kestra:
     type: gcs
 ```
 
-Details about storage configuration can be found [here](#kestrastorage).
+### Queue configuration
 
-#### Queue configuration
-
-Kestra supports multiple queue types, the default depends on your [installation](../02.installation/index.md) mode.
-
-The queue type must be compatible with the repository type. Not all combinations are possible.
+Kestra supports multiple queue types, which must be compatible with the repository type. The default queue depends on your chosen architecture and [installation option](../02.installation/index.md).
 
 The following queue types are available:
-
 - In-memory queue used with the in-memory repository — intended for local testing.
 - Database queue used with the database repository. It currently supports H2, MySQL, and PostgreSQL as a database.
-- Kafka queue used with the Elasticsearch repository. Those are only available in the Enterprise Edition.
+- Kafka queue used with the Elasticsearch repository. Those are only available in the [Enterprise Edition](/enterprise).
 
-To enable the PostgreSQL database queue, you need to add the following to your configuration file:
+To enable the PostgreSQL database queue, you need to add the `kestra.queue` configuration:
 
 ```yaml
 kestra:
@@ -90,19 +74,16 @@ kestra:
     type: postgres
 ```
 
-#### Repository configuration
+### Repository configuration
 
-Kestra supports multiple repository types, the default depends on your [installation](../02.installation/index.md) mode.
-
-The repository type must be compatible with the queue type. Not all combinations are possible.
+Kestra supports multiple repository types, which must be compatible with the queue type. Also here, the default depends on your [installation option](../02.installation/index.md).
 
 The following repository types are available:
-
 - In-memory that must be used with the in-memory queue.  It is **only suitable for local testing** as it doesn't provide any resiliency or scalability and didn't implement all functionalities.
 - Database that must be used with the database queue. It currently supports H2, MySQL or PostgreSQL as a database.
 - Elasticsearch that must be used with the Kafka queue. Those are **only available inside the Enterprise Edition**.
 
-To enable the PostgreSQL database repository, you need to add the following to your configuration files:
+To enable the PostgreSQL database repository, you need to add the `kestra.repository` configuration:
 
 ```yaml
 kestra:
@@ -112,30 +93,11 @@ kestra:
 
 For more details, check the [database configuration](#database) and the [Elasticsearch configuration](#kestraelasticsearch).
 
-### Micronaut configuration
-
-Given that Kestra is a Java-based application built on top of Micronaut, there are multiple [Micronaut settings](#micronaut) that you can configure based on your needs.
-
-## Enterprise Edition
-
-Kestra Enterprise Edition offers many enhancements over the Open Source Edition, adding authentication, security, audit logs, and more. Here are some of the features available in the Enterprise Edition:
-- [Multi-Tenancy](../06.enterprise/03.tenants.md)
-- [Audit Logs](../06.enterprise/06.audit-logs.md)
-- [Authentication](../06.enterprise/04.authentication.md)
-- [SSO](../06.enterprise/05.sso.md)
-- [RBAC](../06.enterprise/rbac.md)
-- [Secrets Manager](../06.enterprise/secrets-manager.md)
-- [Namespace Management](../06.enterprise/07.namespace-management.md)
-- [Worker Groups](../06.enterprise/worker-group.md)
-- [Worker Isolation](../06.enterprise/worker-isolation.md)
-
-For more information on what is included in the Enterprise Edition, check out the [product page](/enterprise).
-
 ## Database
 
-### `kestra.queue` and `kestra.repository`
+### Queue and Repository
 
-First, you need to configure Kestra to use a database for its Queue and Repository. Here is an example for PostgreSQL:
+In order to configure a database backend, you need to set the `kestra.queue.type` and `kestra.repository.type` to your chosen database type. Here is an example for PostgreSQL:
 
 ```yaml
 kestra:
@@ -156,9 +118,11 @@ If you experience performance issues when using PostgreSQL, you can tune the cos
 ::
 
 
-### Minimal configuration
+### Datasources
 
-In order to connect to a database, you need to configure a `datasource`. Kestra uses The [HikariCP](https://github.com/brettwooldridge/HikariCP) connection pool under the hood, and if needed, you can configure multiple options from the HikariCP documentation directly in your datasource configuration.
+Once you added the `kestra.queue.type` and `kestra.repository.type`, you need to configure the `datasources` section.
+
+Kestra uses The [HikariCP](https://github.com/brettwooldridge/HikariCP) connection pool under the hood, and if needed, you can configure multiple options from the HikariCP documentation directly in your `datasources` configuration.
 
 
 ::collapse{title="PostgreSQL"}
@@ -262,9 +226,9 @@ The total number of connections opened to the database will depend on your chose
 
 Usually, the default connection pool sizing is enough, as HikariCP is optimized to use a low number of connections.
 
-### `datasources`
+## Datasources
 
-Here are the datasource configuration properties. For more details, check the [HikariCP configuration](https://github.com/brettwooldridge/HikariCP#gear-configuration-knobs-baby) documentation:
+The table below shows the `datasource` configuration properties. For more details, check the [HikariCP configuration](https://github.com/brettwooldridge/HikariCP#gear-configuration-knobs-baby) documentation.
 
 
 | Properties                    | Type   | Description                                                                                                                                           |
@@ -288,7 +252,7 @@ Here are the datasource configuration properties. For more details, check the [H
 | `validation-timeout`          | Long   | The maximum number of milliseconds that the pool will wait for a connection to be validated as alive.                                            |
 
 
-::collapse{title="Here is the default HikariCP configuration:"}
+Here's the default HikariCP configuration:
 
 ```yaml
 transaction-isolation: default # driver default
@@ -304,11 +268,8 @@ maximum-pool-size: 10
 max-lifetime: 1800000 # 30 minutes
 validation-timeout: 5000
 ```
-::
 
-### Queues
-
-#### `kestra.jdbc.queues`
+### JDBC Queues
 
 Kestra database queues simulate queuing doing long polling. They query a `queues` table to detect new messages.
 
@@ -332,9 +293,9 @@ kestra:
       poll-switch-interval: 5s
 ```
 
-#### `kestra.jdbc.cleaner`
+### JDBC Cleaner
 
-Kestra cleans the `queues` table periodically to optimize storage and performance. You can control how often you want this cleaning to happen, and how long messages should be kept in the `queues` table .
+Kestra cleans the `queues` table periodically to optimize storage and performance. You can control how often you want this cleaning to happen, and how long messages should be kept in the `queues` table using the `kestra.jdbc.cleaner` configuration.
 
 Here is the default configuration:
 
@@ -347,7 +308,7 @@ kestra:
       retention: 7d
 ```
 
-#### Protecting against too big messages
+### Protecting against too big messages
 
 ::alert{type="info"}
 Note: this is an experimental feature available starting with Kestra 0.19.
@@ -368,15 +329,14 @@ kestra:
         limit: 1048576
 ```
 
-## `kestra.anonymous-usage-report`
+## Telemetry
 
-Read more about usage [here](../09.administrator-guide/usage.md).
+By default, the `kestra.anonymous-usage-report` is enabled to send [anonymous usage data](../09.administrator-guide/usage.md) to Kestra to help us improve the product. If you want to disable it, you can set it to `false`:
 
-By default, it is enabled
 ```yaml
 kestra:
   anonymous-usage-report:
-    enabled: true
+    enabled: false
 ```
 
 You can change the initial delay (default 5m):
@@ -385,6 +345,7 @@ kestra:
   anonymous-usage-report:
     initial-delay: 5m
 ```
+
 You can change the fixed delay (default 1h):
 ```yaml
 kestra:
@@ -392,11 +353,11 @@ kestra:
     fixed-delay: 1h
 ```
 
-## `kestra.elasticsearch`
+## Elasticsearch
 
 **Elasticsearch is an [Enterprise Edition](/enterprise) functionality.**
 
-The most important thing is to configure the way Kestra connects to the Elasticsearch cluster.
+The `kestra.elasticsearch` setting allows you to configure the way Kestra connects to the Elasticsearch cluster.
 
 Here is a minimal configuration example:
 
@@ -426,8 +387,10 @@ kestra:
     type: elasticsearch
 ```
 
-### `kestra.elasticsearch.client.trust-all-ssl`
-Default `false`, if you enable this option, we trust all certificate during connection. Useful for development server with self-signed certificate.
+### Trust all SSL certificates
+
+Using the `kestra.elasticsearch.client.trust-all-ssl` configuration, you can trust all SSL certificates during the connection. This is useful for development servers with self-signed certificates.
+
 
 ```yaml
 kestra:
@@ -437,10 +400,11 @@ kestra:
       trust-all-ssl: true
 ```
 
-### `kestra.elasticsearch.defaults.indice-prefix`
-This configuration allows to change the indices prefix. By default, the prefix will be `kestra_`.
+### Indices Prefix
 
-For example, if you want to share a common Elasticsearch cluster for multiple instances of Kestra, add a different prefix for each instance like this:
+The `kestra.elasticsearch.defaults.indice-prefix` configuration allows to change the prefix of the indices. By default, the prefix will be `kestra_`.
+
+For example, if you want to share a common Elasticsearch cluster for multiple instances of Kestra, add a different prefix for each instance as follows:
 
 ```yaml
 kestra:
@@ -449,10 +413,14 @@ kestra:
       indice-prefix: "uat_kestra"
 ```
 
-### `kestra.elasticsearch.indices`
-By default, a unique indices is used for all different data, it could be useful to split the index by day / week / month to avoid having large indices in ElasticSearch.
+### Indices Split
 
-For now, `executions`, `logs` & `metrics` can be split, and we support all this split type:
+By default, a unique indices are used for all different data.
+
+Using the `kestra.elasticsearch.indices` configuration, you can split the indices by type. This is useful for large instances where
+you may want to split the index by day, week or month to avoid having large indices in ElasticSearch.
+
+Currently, the `executions`, `logs` and `metrics` can be split, and we support all these split types:
 - `DAILY`
 - `WEEKLY`
 - `MONTHLY`
@@ -470,7 +438,7 @@ kestra:
         alias: daily
 ```
 
-#### Index Rotation
+### Index Rotation
 
 When you enable index rotation, it creates an alias and one index per periodicity (day, week, etc.).
 
@@ -484,11 +452,9 @@ It's safe to disable aliases but in the case existing data would not be recovere
 
 It is totally safe to switch from one periodicity to another as the alias is for `name-*` so the periodicity is not important.
 
-### `kestra.elasticsearch.client.trust-all-ssl`
+## EE Java Security
 
-## `kestra.ee.java-security`
-
-You can use the following to opt-in to real isolation of file systems using advanced Kestra EE Java security:
+You can use the `kestra.ee.java-security` configuration to opt-in to isolation of file systems using advanced Kestra EE Java security:
 
 ```yaml
 kestra:
@@ -502,17 +468,17 @@ kestra:
         - io.kestra.plugin.gcp
 ```
 
-### `kestra.ee.java-security.forbidden-paths`
+### Forbidden Paths
 
-This is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can be useful to protect Kestra configuration files, for example.
+The `kestra.ee.java-security.forbidden-paths` configuration is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can be useful to protect Kestra configuration files.
 
-### `kestra.ee.java-security.authorized-class-prefix`
+### Authorized Class Prefix
 
-This is a list of classes that can create threads. Here you can set a list of prefixes (namespace) classes that will be allowed. All others will be refused.
+The `kestra.ee.java-security.authorized-class-prefix` configuration is a list of classes that can create threads. Here you can set a list of prefixes (namespace) classes that will be allowed. All others will be refused.
 
-### `kestra.ee.java-security.forbidden-class-prefix`
+### Forbidden Class Prefix
 
-This is a list of classes that can't create any threads. Others plugins will be authorized.
+The `kestra.ee.java-security.forbidden-class-prefix` configuration is a list of classes that can't create any threads. Others plugins will be authorized.
 
 ```yaml
 kestra:
@@ -523,9 +489,9 @@ kestra:
         - io.kestra.plugin.scripts
 ```
 
-## `kestra.ee.license`
+## EE License
 
-To use Kestra Enterprise Edition, you will need a valid license. Our sales team will provide this license to you; if it's not the case, please reach out to them at [sales@kestra.io](mailto:sales@kstra.io).
+To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kstra.io).
 
 The license is set up using two configuration properties: `id` and `key`.
 
@@ -534,9 +500,9 @@ The license is set up using two configuration properties: `id` and `key`.
 
 When you launch Kestra Enterprise Edition, it will check the license and display the validation step in the log.
 
-## `kestra.ee.tenants`
+## Multi-tenancy
 
-By default, multi-tenancy is disabled. To enable it, add the following configuration:
+By default, multi-tenancy is disabled. To enable it, add the `kestra.ee.tenants` configuration:
 
 ```yaml
 kestra:
@@ -545,9 +511,9 @@ kestra:
       enabled: true
 ```
 
-### `kestra.ee.tenants.default-tenant`
+## Default Tenant
 
-By default, multi-tenancy is disabled, and the default tenant is set to true. Once you enable multi-tenancy, you can set the default tenant to false to disable it so that your Kestra instance includes only the tenants you explicitly create. Here is how to enable multi-tenancy and disable the default tenant (best practice):
+By default, multi-tenancy is disabled, and the default tenant is set to true. Once you enable multi-tenancy, you can set the default tenant to false using the `kestra.ee.tenants.default-tenant` configuration:
 
 ```yaml
 kestra:
@@ -556,11 +522,15 @@ kestra:
       enabled: true
       default-tenant: false
 ```
-## `kestra.encryption`
+
+This will enable multi-tenancy and disable the default tenant (best practice). It is **recommended** to disable it so that your Kestra instance includes only the tenants you explicitly create.
+
+
+## Encryption
 
 Kestra 0.15.0 and later supports encryption of sensitive data. This allows inputs and outputs to be automatically encrypted and decrypted when they are stored in the database.
 
-To enable encryption, you need to provide a base64-encoded secret key in the configuration:
+To enable encryption, you need to provide a base64-encoded secret key in the `kestra.encryption` configuration:
 
 ```yaml
 kestra:
@@ -626,9 +596,9 @@ In the Execution Overview tab, you will see a masked value of the secret.
 If the `secret-key` is not set in the `kestra.encryption` configuration, you will get an error: `Illegal argument: Unable to use a SECRET input as encryption is not configured` when trying to use a `SECRET` input or output type.
 ::
 
-## `endpoints`
+## Endpoints
 
-Management endpoints can be set up from the [Micronaut endpoint configuration](https://docs.micronaut.io/latest/guide/index.html#endpointConfiguration). You can also secure all endpoints with basic authentication using this additional configuration:
+Management endpoints can be set up from the [Micronaut endpoint configuration](https://docs.micronaut.io/latest/guide/index.html#endpointConfiguration). You can also secure all endpoints with basic authentication using the `endpoints` configuration:
 
 ```yaml
 endpoints:
@@ -638,11 +608,11 @@ endpoints:
       password: your-password
 ```
 
-## `kestra.environment`
+## Environment
 
 Here are the configuration options for the environment UI display.
 
-You can add a label and a color to identify your environment in the UI by adding this configuration:
+You can add a label and a color to identify your environment in the UI by adding the `kestra.environment` configuration:
 
 ```yaml
 kestra:
@@ -665,15 +635,17 @@ Example:
 export JAVA_OPTS="-Duser.timezone=Europe/Paris"
 ```
 
-### `user.timezone`: Timezone
-By default, Kestra will handle all dates using your system's timezone. You can change the timezone with JVM options.
+### Timezone
+
+By default, Kestra will handle all dates using your system's timezone. You can change the timezone using the `user.timezone` JVM option.
 
 Changing the timezone will mostly affect:
 * **scheduler**: by default, all schedule dates are UTC; changing the Java timezone will allow scheduling the flow in your timezone.
 * **logs display**: in your configured timezone.
 
-## `kestra.indexer`
-Indexer send data from [Kafka](#kestrakafka) to [Elasticsearch](#kestraelasticsearch) using Bulk Request. You can control the batch size and frequency to reduce the load on ElasticSearch. This will delay some information on the UI raising that values, example:
+## Indexer
+
+Indexer send data from [Kafka](#kestrakafka) to [Elasticsearch](#kestraelasticsearch) using Bulk Request. You can control the batch size and frequency to reduce the load on ElasticSearch using the `kestra.indexer` configuration. This will delay some information on the UI raising that values, example:
 
 ```yaml
 kestra:
@@ -682,13 +654,15 @@ kestra:
     batch-duration: PT1S # (default value, any duration)
 ```
 
-## `kestra.kafka`
+## Kafka
 
 **Kafka is part of the [Enterprise Edition](/enterprise).**
 
-### `kestra.kafka.client.properties`
+You can set up your Kafka connection using the `kestra.kafka` configuration.
 
-The most important configuration step is defining how Kestra should connect to the Kafka cluster.
+### Client Properties
+
+The most important configuration step is defining how Kestra should connect to the Kafka cluster. You can set this up using the `kestra.kafka.client.properties` configuration.
 
 Here is a minimal configuration example:
 
@@ -724,9 +698,9 @@ kestra:
 
 `kestra.kafka.client.properties` allows passing any standard Kafka properties. More details can be found [on the Kafka Documentation](https://kafka.apache.org/documentation/).
 
-### `kestra.kafka.defaults.topic`
+### Topics
 
-By default, Kestra automatically creates all the needed topics. You can change the partition count and replication factor of these topics:
+By default, Kestra automatically creates all the needed topics. You can change the partition count and replication factor of these topics using the `kestra.kafka.defaults.topic` configuration.
 
 - `kestra.kafka.defaults.topic.partitions`: (default 16)
 - `kestra.kafka.defaults.topic.replication-factor`: (default 1)
@@ -737,9 +711,9 @@ The number of topic's partitions limits the number of concurrently processing se
 For the optimal value of the replication factor, validate the actual configuration of the target Kafka cluster. Generally, for high availability, the value should match the number of Kafka brokers in the cluster. For example, a cluster consisting of 3 nodes should use the replication factor of 3.
 ::
 
-### `kestra.kafka.defaults.[consumer|producer|stream].properties`
+### Consumer, Producer and Stream properties
 
-You can change the default properties of the Kafka client used by Kestra. These allow you to change any available properties.
+You can change the default properties of the Kafka client used by Kestra using the `kestra.kafka.defaults.[consumer|producer|stream].properties` configuration. These allow you to change any available properties.
 
 Here is the default configuration:
 
@@ -769,19 +743,18 @@ kestra:
           state.dir: "/tmp/kafka-streams"
 ```
 
-### `kestra.kafka.defaults.topics`
+### Topic names and properties
 
-All the topics used by Kestra are declared with the default name and properties.
-You can change the default values:
+All the topics used by Kestra are declared with the default name and properties. You can change the default values using the `kestra.kafka.defaults.topics` configuration:
 
 - `kestra.kafka.defaults.topics.{{topic}}.name`: Change the name of the topic.
 - `kestra.kafka.defaults.topics.{{topic}}.properties`: Change the default properties used during topic automatic creation.
 
 You can see default configuration on this [file](https://github.com/kestra-io/kestra/blob/develop/cli/src/main/resources/application.yml).
 
-### `kestra.kafka.defaults.consumer-prefix`
+### Consumer Prefix
 
-This configuration allows changing the consumer-group prefix. By default, the prefix will be `kestra`.
+The `kestra.kafka.defaults.consumer-prefix` configuration allows changing the consumer-group prefix. By default, the prefix will be `kestra`.
 
 For example, if you want to share a common Kafka cluster for multiple instances of Kestra, you must configure a different prefix for each instance like this:
 
@@ -792,9 +765,9 @@ kestra:
       consumer-prefix: "uat_kestra"
 ```
 
-### `kestra.kafka.defaults.topic-prefix`
+### Topic Prefix
 
-This configuration allows changing the topic name prefix. By default, the prefix will be `kestra_`.
+The `kestra.kafka.defaults.topic-prefix` configuration allows changing the topic name prefix. By default, the prefix will be `kestra_`.
 
 For example, if you want to share a common Kafka cluster for multiple instances of Kestra, add a different prefix for each instance like this:
 
@@ -805,9 +778,9 @@ kestra:
       topic-prefix: "uat_kestra"
 ```
 
-### `kestra.kafka.client.loggers`
+### Client Loggers
 
-This configuration allows enabling logging for all messages processed by the Kafka cluster. Use it to debug all the messages consumed or produced on the Kafka cluster.
+The `kestra.kafka.client.loggers` configuration allows enabling logging for all messages processed by the Kafka cluster. Use it to debug all the messages consumed or produced on the Kafka cluster.
 
 ::alert{type="warning"}
 This configuration has a huge performance impact, using regexp and serialization for most of the messages.
@@ -825,7 +798,7 @@ kestra:
           value-regexp: .*parallel.* # optional: a regexp validating the json full body
 ```
 
-### `kestra.kafka.stream.properties.state.dir`
+### Kafka Stream State Directory
 
 Kestra uses the Kafka Stream framework, this framework uses a local directory for state persistence.
 By default, the state directory is `/tmp/kafka-streams` and can be configured using the `kestra.kafka.stream.properties.state.dir` configuration property.
@@ -879,18 +852,19 @@ kestra:
 
 The `hard-limit` is not mandatory, in this case messages of any size will be accepted.
 
-## `kestra.listeners`
+## Listeners
 
-Listeners are deprecated and disabled by default since the 0.11.0 release. You can re-enable them with this configuration:
+Listeners are deprecated and disabled by default since the 0.11.0 release. You can re-enable them using the `kestra.listeners` configuration:
+
 ```yaml
 kestra:
   listeners:
     enabled: true
 ```
 
-## `logger`
+## Logger
 
-You can change the log behavior in Kestra by adjusting the following configuration parameters:
+You can change the log behavior in Kestra by adjusting the `logger` configuration parameters:
 
 ```yaml
 logger:
@@ -903,13 +877,15 @@ logger:
 ```
 
 
-### `micronaut.server.netty.access-logger`: Access Log configuration
+### Access Log configuration
+
+You can configure the access log from the webserver using the `micronaut.server.netty.access-logger` configuration:
 - `micronaut.server.netty.access-logger.enabled`: enable access log from webserver (default `true`).
 - `micronaut.server.netty.access-logger.name`: logger name (default `io.kestra.webserver.access`).
 - `micronaut.server.netty.access-logger.format`: access log format (default `"%{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}t | %r | status: %s | ip: %a | length: %b | duration: %D"`).
 - `micronaut.server.netty.access-logger.exclusions`: list of regexp to define which log to exclude.
 
-Here is the default values:
+Here are the default values:
 
 ```yaml
 micronaut:
@@ -934,6 +910,7 @@ If you want to customize the log format, you can create a `logback.xml` file and
 We provide some predefined configuration, and some example of the `logback.xml` files:
 
 #### GCP
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
@@ -962,9 +939,9 @@ We provide some predefined configuration, and some example of the `logback.xml` 
 </configuration>
 ```
 
-## `kestra.metrics`
+## Metrics
 
-You can set the prefix for all Kestra metrics using the following configuration:
+You can set the prefix for all Kestra metrics using the `kestra.metrics` configuration:
 
 ```yaml
 kestra:
@@ -972,13 +949,16 @@ kestra:
     prefix: kestra
 ```
 
-## `micronaut`
+## Micronaut
 
-As Kestra is a Java-based application built with Micronaut, you can configure any Micronaut configuration options.
-We will not explain all the possible configuration options, these are available [here](https://docs.micronaut.io/latest/guide/index.html). However, we will provide some tips on the most useful options:
+Given that Kestra is a Java-based application built on top of Micronaut, there are multiple Micronaut settings that you can configure based on your needs using the `micronaut` configuration.
 
+To see all the possible configuration options, check the [official Micronaut guide](https://docs.micronaut.io/latest/guide/index.html).
+
+Below are some tips on the Micronaut configuration options which are most relevant to Kestra.
 
 ### Configure port
+
 ```yaml
 micronaut:
   server:
@@ -986,7 +966,9 @@ micronaut:
 ```
 
 ### Configure SSL
+
 [This guide](https://guides.micronaut.io/latest/micronaut-security-x509-maven-groovy.html) will help you configure SSL with Micronaut. A final working configuration would look as follows (considering you would use environment variables injection for passwords):
+
 ```yaml
 micronaut:
   security:
@@ -1007,8 +989,10 @@ micronaut:
         type: JKS
 ```
 
-### Configure the timeout or max uploaded file size
-A lot of configuration options affect these, here is the default configuration:
+### Timeout and max uploaded file size
+
+Below is the default configuration for the timeout and max uploaded file size. You can change these values as needed:
+
 ```yaml
 micronaut:
   server:
@@ -1024,7 +1008,9 @@ micronaut:
 ```
 
 ### Changing base path
+
 If behind a reverse proxy, you can change the base path of the application with the following configuration:
+
 ```yaml
 micronaut:
   server:
@@ -1033,7 +1019,9 @@ micronaut:
 
 
 ### Changing host resolution
+
 If behind a reverse proxy, you can change host resolution (http/https/domain name) providing the header sent by your reverse proxy:
+
 ```yaml
 micronaut:
   server:
@@ -1044,6 +1032,7 @@ micronaut:
 
 
 ### Configuring CORS
+
 In case you run into issues related to CORS policy, say while calling the webhook API from a JS application, you can enable the processing of CORS requests with the following configuration:
 ```yaml
 micronaut:
@@ -1054,11 +1043,11 @@ micronaut:
 
 For more detailed changes like allowing only specific origins or specific methods, you can refer [this guide](https://docs.micronaut.io/latest/guide/index.html#corsConfiguration).
 
-## `kestra.plugins`
+## Plugins
 
-Configuration of Maven repositories used by the command `kestra plugins install`.
+Maven repositories used by the command `kestra plugins install` can be configured using the `kestra.plugins` configuration.
 
-Maven Central is mandatory for Kestra and its plugins. However, you can add your own (Maven) repository in order to download your own plugins using the following configuration:
+Maven Central is mandatory for Kestra and its plugins. However, you can add your own (Maven) repository in order to download your custom plugins using the following configuration:
 
 ```yaml
 kestra:
@@ -1072,7 +1061,7 @@ kestra:
         url: https://dl.bintray.com/kestra/maven
 ```
 
-### Plugin configurations to enable or disable features
+### Enable or disable features
 
 The `configuration` of `plugins` section can be also used to enable or disable some features of specific Kestra plugins, or to set some default values for them.
 
@@ -1094,7 +1083,7 @@ kestra:
 
 By default, the `outputs` property of a parent flow's `Subflow` task is deprecated in favor of flow `outputs` in Kestra 0.15.0 and higher. However, setting such configuration will keep the old behavior with the `outputs` property.
 
-### Plugin configurations to set default values
+### Set default values
 
 You can also set default values for a plugin. For example, starting from Kestra 0.15.0, you can set the default value for the `recoverMissedSchedules` property of the `Schedule` trigger to `NONE` to avoid recovering missed scheduled executions after a server restart:
 
@@ -1127,7 +1116,7 @@ triggers:
 
 In this example, the `recoverMissedSchedules` is set to `NONE`, which means that Kestra will not recover any missed schedules for this specific flow regardless of the global configuration.
 
-### Restrict which plugins can be used
+### Allowed plugins
 
 ::alert{type="info"}
 This is an [Enterprise Edition](/docs/enterprise) feature available starting with Kestra 0.19.
@@ -1147,9 +1136,9 @@ kestra:
         - io.kestra.plugin.core.debug.Echo
 ```
 
-### `kestra.plugins.defaults`
+### Plugin defaults
 
-You can provide plugin defaults that will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults allow ensuring a property is defined at a default value for these tasks.
+You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. Those will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults allow ensuring a property is defined at a default value for these tasks.
 
 ```yaml
 kestra:
@@ -1160,8 +1149,9 @@ kestra:
         level: ERROR
 ```
 
-Forced plugin defaults ensure a property is set cluster-wise for a task, and no task can override it.
-Forced plugin defaults can be handy to enforce security concerns, for example, by enforcing Shell tasks to run as Docker containers.
+Forced plugin defaults:
+- ensure a property is set globally for a task, and no task can override it
+- are critical for security and governance, e.g. to enforce Shell tasks to run as Docker containers.
 
 ```yaml
 kestra:
@@ -1170,12 +1160,13 @@ kestra:
       - type: io.kestra.plugin.scripts.shell.Script
         forced: true
         values:
-          runner: DOCKER
+          taskRunner:
+            type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
 
-## `kestra.retries`
+## Retries
 
-Kestra uses external storage and secrets so that your private data and secrets are stored in a secure way in your private infrastructure. These external systems communicate with Kestra through APIs. Those API calls, however, might eperience transient failures. To handle these transient failures, Kestra allows you to configure retries.
+Kestra uses external storage and secrets so that your private data and secrets are stored in a secure way in your private infrastructure. These external systems communicate with Kestra through APIs. Those API calls, however, might eperience transient failures. To handle these transient failures, Kestra allows you to set up automatic retries using the `kestra.retries` configuration.
 
 Here are the available retry configuration options:
 
@@ -1200,11 +1191,11 @@ In order to globally configure retries for tasks, you can use the [plugin defaul
     warningOnRetry: true # type: boolean, default is false
 ```
 
-## `kestra.secret`
+## Secret Managers
 
-For full information on Secret Managers, check out the [dedicated docs page](../06.enterprise/secrets-manager.md).
+You can configure the [secret manager](../06.enterprise/secrets-manager.md) backend using the `kestra.secret` configuration.
 
-### `kestra.secret.aws-secret-manager`
+### AWS Secret Manager
 
 In order to use [AWS Secret Manager](https://aws.amazon.com/secrets-manager/) as a secrets backend, make sure that your AWS IAM user or role have the required permissions including `CreateSecret`, `DeleteSecret`, `DescribeSecret`, `GetSecretValue`, `ListSecrets`, `PutSecretValue`, `RestoreSecret`, `TagResource`, `UpdateSecret`.
 
@@ -1219,7 +1210,7 @@ kestra:
       region: us-east-1
 ```
 
-### `kestra.secret.azure-key-vault`
+### Azure Key Vault
 
 To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) as your secrets backend, make sure that kestra's user or service principal (`clientId`) has the necessary permissions, including `"Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"`. Then, paste the `clientSecret` from the Azure portal to the `clientSecret` property in the configuration below.
 
@@ -1234,7 +1225,7 @@ kestra:
         clientSecret: "secret"
 ```
 
-### `kestra.secret.elasticsearch`
+### Elasticsearch
 
 Elasticsearch backend stores secrets with an additional layer of security using [AES encryption](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard). You will need to provide a cryptographic key (at least 32 characters-long string) in order to encrypt and decrypt secrets stored in Elasticsearch.
 
@@ -1247,7 +1238,7 @@ kestra:
       secret: "a-secure-32-character-minimum-key"
 ```
 
-### `kestra.secret.google-secret-manager`
+### Google Secret Manager
 
 To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as your secrets backend, you will need to create a service account with the [roles/secretmanager.admin](https://cloud.google.com/secret-manager/docs/access-control) permission. Paste the contents of the service account JSON key file to the `serviceAccount` property in the configuration below. Alternatively, set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to point to the credentials file.
 
@@ -1261,23 +1252,31 @@ kestra:
         Paste here the contents of the service account JSON key file
 ```
 
-### `kestra.secret.vault`
+### HashiCorp Vault
 
 Kestra currently supports the [KV secrets engine - version 2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) as a secrets backend.
 
 To authenticate Kestra with HashiCorp Vault, you can use Userpass, Token or AppRole Auth Methods, all of which requires full read and write policies. You can optionally change root-engine or namespace (if you use Vault Enterprise).
 
-Userpass Auth Method
+[Userpass Auth Method](https://www.vaultproject.io/docs/auth/userpass):
+
 ```yaml
 kestra:
   secret:
+    type: vault
+    vault:
+      address: "http://localhostt:8200"
+      password:
+        user: john
+        password: foo
     cache:
       enabled: true
       maximumSize: 1000
       expireAfterWrite: 60s
 ```
 
-Token Auth Method:
+[Token Auth Method](https://www.vaultproject.io/docs/auth/token):
+
 ```yaml
 kestra:
   secret:
@@ -1288,7 +1287,8 @@ kestra:
         token: your-secret-token
 ```
 
-AppRole Auth Method:
+[AppRole Auth Method](https://www.vaultproject.io/docs/auth/approle):
+
 ```yaml
 kestra:
   secret:
@@ -1302,7 +1302,7 @@ kestra:
 ```
 
 
-### `kestra.secret.jdbc`
+### JDBC
 
 ```yaml
 kestra:
@@ -1312,7 +1312,7 @@ kestra:
       secret: "your-secret-key"
 ```
 
-### `kestra.secret.[type].tags`
+### Secret Tags
 
 ```yaml
 kestra:
@@ -1323,7 +1323,7 @@ kestra:
         application: kestra-production
 ```
 
-### `kestra.secret.cache`
+### Secret Cache
 
 ```yaml
 kestra:
@@ -1334,13 +1334,15 @@ kestra:
       expireAfterWrite: 60s
 ```
 
-## `kestra.security`
+## Security
 
-### `kestra.security.super-admin`
+Using the `kestra.security` configuration, you can set up multiple security features of Kestra.
+
+### Super-Admin
 
 The most powerful user in Kestra is the [SuperAdmin](../06.enterprise/rbac.md#super-admin)
 
-You can create a SuperAdmin user from the configuration file.
+You can create a SuperAdmin user from the `kestra.security.super-admin` configuration.
 
 The super-admin requires three properties:
 * `kestra.security.super-admin.username`: the username of the super-admin
@@ -1365,11 +1367,11 @@ kestra:
         - <optional>
 ```
 
-### `kestra.security.default-role`
+### Default Role
 
 The default role is the role that will be assigned to a new user when it is created.
 
-For setup facilities, you can define the default role from the configuration file.
+For setup facilities, you can define the default role from the `kestra.security.default-role` configuration.
 Each time you start Kestra, the default role will be checked and created if it does not exist for every Tenant.
 
 The default role requires three properties:
@@ -1394,7 +1396,9 @@ Make sure that you attach the `default-role` configuration under `kestra.securit
 When using [multitenancy](../06.enterprise/03.tenants.md), the default role will be added to every tenant. The admin will then need to explicitly add the user to a tenant.
 ::
 
-## `kestra.server`
+## Server
+
+Using the `kestra.server` configuration, you can set up multiple server-specific functionalities.
 
 ### HTTP Basic Authentication
 
@@ -1545,9 +1549,9 @@ A **Worker** was either `UP` or `DEAD`. `Executors` was responsible to detect un
   deleted from the server metadata.
 ::
 
-### `kestra.heartbeat.frequency`
+### Heartbeat Frequency
 
-The interval at which a Worker will send a heartbeat indicating its current state.
+The interval at which a Worker will send a heartbeat indicating its current state can be configured using the `kestra.heartbeat.frequency` configuration.
 
 ::ConfigPropertyCard
 ---
@@ -1556,9 +1560,9 @@ defaultValue: 10s
 ---
 ::
 
-### `kestra.heartbeat.heartbeat-missed`
+### Heartbeat Missed
 
-The number of missed heartbeats before `Executors` will consider a Worker as `DEAD`.
+The number of missed heartbeats before `Executors` will consider a Worker as `DEAD` can be configured using the `kestra.heartbeat.heartbeat-missed` configuration.
 
 ::ConfigPropertyCard
 ---
@@ -1622,7 +1626,9 @@ defaultValue: 5m
 ---
 ::
 
-## `kestra.storage`
+## Internal Storage
+
+Using the `kestra.storage` configuration, you can set up the desired internal storage type for Kestra.
 
 The default [internal storage](../07.architecture/09.internal-storage.md) implementation is the local storage which is **not suitable for production** as it will store data in a local folder on the host filesystem.
 
@@ -1773,9 +1779,9 @@ You can also provide the environment variable `GOOGLE_APPLICATION_CREDENTIALS` w
 
 You can find more details in the [GCP documentation](https://cloud.google.com/docs/authentication/production).
 
-## `kestra.system-flows`
+## System Flows
 
-By default, the `system` namespace is reserved for [System Flows](../05.concepts/system-flows.md). These background workflows are intended to perform routine tasks such as sending alerts and purging old logs. If you want to overwrite the name used for System Flows, use the following configuration:
+By default, the `system` namespace is reserved for [System Flows](../05.concepts/system-flows.md). These background workflows are intended to perform routine tasks such as sending alerts and purging old logs. If you want to overwrite the name used for System Flows, use the `kestra.system-flows` configuration:
 
 ```yaml
 kestra:
@@ -1783,17 +1789,19 @@ kestra:
     namespace: system
 ```
 
-## `kestra.tasks`
+## Tasks
 
-### `kestra.tasks.defaults`
+Using the `kestra.tasks` configuration, you can set up multiple task-specific features.
 
-You can set defaults for specific tasks.
+### Task Default Configuration
 
-You can use this to isolate tasks in containers, such as scripting tasks. For Bash tasks and other script tasks in the core, we advise you to force io.kestra.plugin.scripts.runner.docker.Docker isolation and to configure global cluster pluginDefaults:
+You can set defaults for specific tasks using the `kestra.tasks.defaults` configuration. These defaults will be applied to all tasks on your cluster if a property is not defined on flows or tasks.
+
+You can use this to isolate tasks in containers, such as scripting tasks. For Bash tasks and other script tasks in the core, we advise you to force `io.kestra.plugin.scripts.runner.docker.Docker` isolation and to configure global cluster pluginDefaults:
 
 ```yaml
 kestra:
-  tasks:
+  plugins:
     defaults:
       - type: io.kestra.plugin.scripts.shell.Commands
         forced: true
@@ -1803,19 +1811,21 @@ kestra:
             type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
 
-### `kestra.tasks.scripts.docker.volume-enabled`
+### Volume Enabled for Docker Task Runner
 
 Volumes mount are disabled by default for security reasons, you can enabled it with this configurations:
 
 ```yaml
 kestra:
-  tasks:
-    scripts:
-      docker:
-        volume-enabled: true
+  plugins:
+    configurations:
+      - type: io.kestra.plugin.scripts.runner.docker.Docker
+        values:
+          volume-enabled: true
 ```
 
 ### Temporary storage configuration
+
 Kestra writes temporary files during task processing. By default, files will be created on `/tmp`, but you can change the location with this configuration:
 
 ```yaml
@@ -1825,7 +1835,8 @@ kestra:
       path: /home/kestra/tmp
 ```
 
-**Note:** The `tmp-dir` path must be aligned to the volume path otherwise Kestra will not know what directory to mount for the `tmp` directory. 
+**Note:** The `tmp-dir` path must be aligned to the volume path otherwise Kestra will not know what directory to mount for the `tmp` directory.
+
 ```yaml
 volumes:
   - kestra-data:/app/storage
@@ -1834,9 +1845,15 @@ volumes:
 ```
 In this example, `/home/kestra:/home/kestra` matches the tasks `tmp-dir` field.
 
-### `kestra.tutorial-flows`
+### Tutorial Flows
 
-Tutorial flows are used to help users understand how Kestra works. They are used in the Guided Tour that allows you to select your use case and see how Kestra can help you solve it.
+Tutorial flows are used to help users understand how Kestra works. They are used in the Guided Tour that allows you to select your use case and see how Kestra can help you solve it. You can disable the tutorial flows in production using the `kestra.tutorial-flows` configuration:
+
+```yaml
+kestra:
+  tutorial-flows:
+    enabled: false
+```
 
 #### Disable Tutorial Flows
 
@@ -1850,8 +1867,9 @@ kestra:
 
 The tutorial flows are included in the open-source edition of Kestra by default. It's recommended to set that property to `false` in production environments to avoid unnecessary flows from being loaded into the production system.
 
-## `kestra.templates`
-Templates are marked as [deprecated](../11.migration-guide/0.11.0/templates.md) and disabled by default starting from the 0.11.0 release. You can re-enable them with this configuration:
+## Enabling Templates
+
+Templates are marked as [deprecated](../11.migration-guide/0.11.0/templates.md) and disabled by default starting from the 0.11.0 release. You can re-enable them with the `kestra.templates` configuration:
 
 ```yaml
 kestra:
@@ -1859,20 +1877,22 @@ kestra:
     enabled: true
 ```
 
-## `kestra.url`
+## Kestra URL
 
-Some notification services require a URL configuration defined in order to add links from the alert message. Use a full URI here with a trailing / (without ui or api).
+Some notification services require a URL configuration defined in `kestra.url` in order to add links from the alert message. Use a full URI here with a trailing `/` (without `ui` or `api`).
 
 ```yaml
 kestra:
   url: https://www.my-host.com/kestra/
 ```
 
-## `kestra.variables`
+## Variables
 
-### `kestra.variables.env-vars-prefix`
+Using the `kestra.variables` configuration, you can determine how variables are handled in Kestra.
 
-Kestra provides a way to use environment variables in your flow. By default, Kestra will only look at environment variables that start with `KESTRA_`. You can change this prefix by setting the `env-vars-prefix` configuration option:
+### Environment Variables Prefix
+
+Kestra provides a way to use environment variables in your flow. By default, Kestra will only look at environment variables that start with `KESTRA_`. You can change this prefix by setting the `kestra.variables.env-vars-prefix` configuration option:
 
 ```yaml
 kestra:
@@ -1884,9 +1904,9 @@ These variables will be accessible in a flow with `{{ envs.your_env }}` in **low
 
 For example, an environment variable with the name `KESTRA_MY_ENV` can be accessed using `{{ envs.my_env }}`.
 
-### `kestra.variables.globals`
+### Global Variables
 
-You can also set global variables directly in the configuration file. These variables will be accessible in all flows across the instance.
+You can also set global variables directly in the `kestra.variables.globals` configuration. These variables will be accessible in all flows across the instance.
 
 For example, the following variable will be accessible in a flow using `{{ globals.host }}`:
 
@@ -1907,17 +1927,31 @@ kestra:
       myVar: my variable
 ```
 
-### `kestra.variables.recursive-rendering`
+### Recursive Rendering
 
-Flag enabling the pre-0.14.0 [template recursive rendering](../11.migration-guide/0.14.0/recursive-rendering.md) behavior and giving administrators more time to migrate deployed flows. Defaults to `false`.
+The `kestra.variables.recursive-rendering` configuration allows you to enable the pre-0.14.0 [recursive rendering](../11.migration-guide/0.14.0/recursive-rendering.md) behavior and give administrators more time to migrate deployed flows. It defaults to `false`:
 
-### `kestra.variables.cache-enabled`
+```yaml
+kestra:
+  variables:
+    recursive-rendering: true
+```
 
-The rendering of template variables can be CPU intensive, and by default we **enable** a cache of "templates". You can disable it, even though it's recommended keeping it enabled.
+###
 
-### `kestra.variables.cache-size`
+The rendering of template variables can be CPU intensive, and by default we **enable** a cache of "templates". You can disable it using the `kestra.variables.cache-enabled` configuration:
 
-The rendering of template variables cache is an LRU cache (keeps most commonly used variables) and will be cached in memory (default `1000`). You can change the size of the template cache (in number of templates) using this configuration. Keep in mind that the higher this number will be, the more memory the server will use.
+```yaml
+kestra:
+  variables:
+    cache-enabled: false
+```
+
+We recommend keeping the cache enabled, as it can improve the performance.
+
+### Cache Size
+
+The rendering of template variables cache is an LRU cache (keeps most commonly used variables) and will be cached in memory (default `1000`). You can change the size of the template cache (in number of templates) using the `kestra.variables.cache-size` configuration.
 
 ```yaml
 kestra:
@@ -1925,11 +1959,16 @@ kestra:
     cache-size: 1000
 ```
 
-## `kestra.webserver`
+Keep in mind that the higher this number will be, the more memory the server will use.
 
-### `kestra.webserver.google-analytics`: Google Analytics ID
 
-Add Google Analytics tracking ID (ex: `UA-12345678-1`) and report all page tracking.
+## Webserver
+
+Using the `kestra.webserver` configuration, you can adjust the settings of the Kestra webserver.
+
+### Google Analytics ID
+
+Using the `kestra.webserver.google-analytics` configuration, you can add a Google Analytics tracking ID to report all page tracking. Here is an example of how you can add your Google Analytics tracking ID:
 
 ```yaml
 kestra:
@@ -1937,8 +1976,10 @@ kestra:
     google-analytics: UA-12345678-1
 ```
 
-### `kestra.webserver.html-head`: Append HTML tags to the webserver application
-Useful for injecting CSS or JavaScript to customize a web application.
+
+### Append HTML tags to the webserver application
+
+With the help of the `kestra.webserver.html-head` configuration, you can append HTML tags to the webserver application. This can bw used to inject CSS or JavaScript to customize the web application.
 
 For example, here is how you can add a red banner in production environments:
 ```yaml
