@@ -191,13 +191,13 @@ export default defineNuxtConfig({
                     ],
                     "Manage Kestra": [
                         "Administrator Guide",
-                        "Migration Guide",
-                        "Terraform Provider",
+                        "Migration Guide"
                     ],
                     "Reference Docs": [
                         "Configuration",
                         "Open Source API",
                         "Cloud & Enterprise Edition API",
+                        "Terraform Provider",
                         "Server CLI"
                     ]
                 }
