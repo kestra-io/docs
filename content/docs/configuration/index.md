@@ -1919,12 +1919,23 @@ The rendering of template variables can be CPU intensive, and by default we **en
 
 The rendering of template variables cache is an LRU cache (keeps most commonly used variables) and will be cached in memory (default `1000`). You can change the size of the template cache (in number of templates) using this configuration. Keep in mind that the higher this number will be, the more memory the server will use.
 
+```yaml
+kestra:
+  variables:
+    cache-size: 1000
+```
 
 ## `kestra.webserver`
 
 ### `kestra.webserver.google-analytics`: Google Analytics ID
+
 Add Google Analytics tracking ID (ex: `UA-12345678-1`) and report all page tracking.
 
+```yaml
+kestra:
+  webserver:
+    google-analytics: UA-12345678-1
+```
 
 ### `kestra.webserver.html-head`: Append HTML tags to the webserver application
 Useful for injecting CSS or JavaScript to customize a web application.
