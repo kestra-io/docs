@@ -195,8 +195,7 @@ export default defineNuxtConfig({
                     ],
                     "Reference Docs": [
                         "Configuration",
-                        "Open Source API",
-                        "Cloud & Enterprise Edition API",
+                        "API Reference",
                         "Terraform Provider",
                         "Server CLI"
                     ]
