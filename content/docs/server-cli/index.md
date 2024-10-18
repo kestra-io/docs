@@ -220,7 +220,7 @@ This option enables logs of very high verbosity.
 
 ### Configuration Files
 
-`-c` or `--config`: You can change the location of Kestra [configuration](../10.configuration-guide/index.md) files, the default is `~/.kestra/config.yml`.
+`-c` or `--config`: You can change the location of Kestra [configuration](../configuration/index.md) files, the default is `~/.kestra/config.yml`.
 
 ### Plugins directory
 
