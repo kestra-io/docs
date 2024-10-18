@@ -13,7 +13,7 @@
         methods: {
           generateCardHref (blueprint) {
             let tag = this.tags.find(f => f?.id == blueprint.tags[0]);
-            return `/blueprints/${tag.name.replace(' ', '-')}/${blueprint.id}-${slugify(blueprint.title)}`
+            return `/blueprints/${tag.name.replace(' ', '-').toLowerCase()}/${blueprint.id}`
           }
         },
     }
