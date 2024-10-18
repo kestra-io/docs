@@ -869,127 +869,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/FlowForExecution"
-  /api/v1/executions/pause/by-ids:
-    post:
-      tags:
-      - Executions
-      summary: Pause a list of running executions
-      operationId: pauseByIds
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-        required: true
-      responses:
-        "200":
-          description: On success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BulkResponse"
-        "422":
-          description: Paused with errors
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BulkErrorResponse"
-  /api/v1/executions/pause/by-query:
-    post:
-      tags:
-      - Executions
-      summary: Pause executions filter by query parameters
-      operationId: pauseByQuery
-      parameters:
-      - name: q
-        in: query
-        description: A string filter
-        schema:
-          type: string
-          nullable: true
-      - name: scope
-        in: query
-        description: The scope of the executions to include
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/FlowScope"
-      - name: namespace
-        in: query
-        description: A namespace filter prefix
-        schema:
-          type: string
-          nullable: true
-      - name: flowId
-        in: query
-        description: A flow id filter
-        schema:
-          type: string
-          nullable: true
-      - name: startDate
-        in: query
-        description: The start datetime
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: endDate
-        in: query
-        description: The end datetime
-        schema:
-          type: string
-          format: date-time
-          nullable: true
-      - name: timeRange
-        in: query
-        description: A time range filter relative to the current time
-        schema:
-          type: string
-          nullable: true
-        examples:
-          Filter last 5 minutes:
-            value: PT5M
-          Filter last 24 hours:
-            value: P1D
-      - name: state
-        in: query
-        description: A state filter
-        schema:
-          type: array
-          nullable: true
-          items:
-            $ref: "#/components/schemas/State.Type"
-      - name: labels
-        in: query
-        description: A labels filter as a list of 'key:value'
-        schema:
-          type: array
-          nullable: true
-          items:
-            type: string
-      - name: triggerExecutionId
-        in: query
-        description: The trigger execution id
-        schema:
-          type: string
-          nullable: true
-      - name: childFilter
-        in: query
-        description: A execution child filter
-        schema:
-          nullable: true
-          allOf:
-          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
-      responses:
-        "200":
-          description: pauseByQuery 200 response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/executions/replay/by-ids:
     post:
       tags:
@@ -1956,24 +1835,6 @@ paths:
           description: If the execution cannot be found
         "400":
           description: If the execution is not terminated
-  /api/v1/executions/{executionId}/pause:
-    post:
-      tags:
-      - Executions
-      summary: Pause a running execution.
-      operationId: pause
-      parameters:
-      - name: executionId
-        in: path
-        description: The execution id
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: On success
-        "409":
-          description: if the executions is not running
   /api/v1/executions/{executionId}/replay:
     post:
       tags:
@@ -8040,6 +7901,7 @@ components:
       - ARRAY
       - MULTISELECT
       - YAML
+      - EMAIL
     Usage:
       required:
       - configurations
