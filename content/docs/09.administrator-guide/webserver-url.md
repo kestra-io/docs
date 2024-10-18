@@ -1,5 +1,5 @@
 ---
-title: URL
+title: Webserver URL
 icon: /docs/icons/admin.svg
 ---
 

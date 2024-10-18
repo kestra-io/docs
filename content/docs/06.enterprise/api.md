@@ -20,4 +20,4 @@ curl -X POST http://localhost:8080/api/v1/executions/dev/hello-world \
 
 ## Browse the API Reference
 
-For a full list of available API endpoints, check the [Enterprise Edition API Reference](../12.api-reference/enterprise.md).
+For a full list of available API endpoints, check the [Enterprise Edition API Reference](../enterprise-api/index.md).

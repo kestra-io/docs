@@ -6,7 +6,7 @@ release: 0.11.0
 
 Since 0.11.0, Templates are deprecated and disabled by default. Please use subflows instead.
 
-If you still rely on templates, you can re-enable them in your [configuration](../../10.configuration-guide/enabled.md#kestratemplates).
+If you still rely on templates, you can re-enable them in your [configuration](../../configuration/index.md#enabling-templates).
 
 ## Why templates are deprecated
 

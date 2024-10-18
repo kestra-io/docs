@@ -1,9 +1,9 @@
 ---
-title: Kestra Server CLI
+title: Server CLI
 icon: /docs/icons/admin.svg
 ---
 
-This page describes the different server commands available in Kestra.
+Reference for server commands available in Kestra.
 
 Kestra leverages five different server components. The `kestra server` command allows to start them individually, or run an all-inclusive standalone server.
 
@@ -220,7 +220,7 @@ This option enables logs of very high verbosity.
 
 ### Configuration Files
 
-`-c` or `--config`: You can change the location of Kestra [configuration](../10.configuration-guide/index.md) files, the default is `~/.kestra/config.yml`.
+`-c` or `--config`: You can change the location of Kestra [configuration](../configuration/index.md) files, the default is `~/.kestra/config.yml`.
 
 ### Plugins directory
 
