@@ -91,7 +91,7 @@ kestra:
     type: postgres
 ```
 
-For more details, check the [database configuration](#database) and the [Elasticsearch configuration](#kestraelasticsearch).
+For more details, check the [database configuration](#database) and the [Elasticsearch configuration](#elasticsearch).
 
 ## Database
 
@@ -645,7 +645,7 @@ Changing the timezone will mostly affect:
 
 ## Indexer
 
-Indexer send data from [Kafka](#kestrakafka) to [Elasticsearch](#kestraelasticsearch) using Bulk Request. You can control the batch size and frequency to reduce the load on ElasticSearch using the `kestra.indexer` configuration. This will delay some information on the UI raising that values, example:
+Indexer send data from [Kafka](#kafka) to [Elasticsearch](#elasticsearch) using Bulk Request. You can control the batch size and frequency to reduce the load on ElasticSearch using the `kestra.indexer` configuration. This will delay some information on the UI raising that values, example:
 
 ```yaml
 kestra:
