@@ -48,7 +48,7 @@ tasks:
         warningOnStdErr: false
         beforeCommands:
           - python -m venv venv
-          - source venv/bin/activate
+          - . venv/bin/activate
           - pip install pandas
         script: |
           import pandas as pd
