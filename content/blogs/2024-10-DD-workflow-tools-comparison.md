@@ -98,7 +98,7 @@ Prefect's hybrid model separates orchestration from execution: this improves sec
 - **Python-centric**: Prefect, like Airflow, is also Python-centric, which means teams that are not familiar with Python may find it challenging to use. Again, this might be a benefit if your tech stack is primarily Python based. 
 
 ## Why Kestra Stands Out
-Let's now explore the aspects where Kestra excels beyond what Airflow and Prefect offer.
+Let's now explore the aspects that make Kestra stand out.
 
 ### Unified Development and Deployment Platform
 Kestra provides a unified platform that streamlines the entire workflow lifecycle — from design and testing to deployment and monitoring — within a single, cohesive environment. This integrated approach allows teams to:
@@ -107,12 +107,7 @@ Kestra provides a unified platform that streamlines the entire workflow lifecycl
 - Test workflows in real-time, ensuring they perform as expected before moving them into production environments.
 - Promote workflow code seamlessly to production, keeping it version-controlled and aligned with existing deployment practices without added friction.
 
-In contrast, Airflow and Prefect often require fragmented processes for development, testing, and deployment, which can introduce complexity and slow down the workflow lifecycle:
-
-- Airflow requires workflows to be defined in Python, which is done outside of its web-based user interface. This separation means that developers often use different tools for coding, testing, and deploying workflows, which can complicate collaboration and alignment between development and production environments.
-- Prefect also relies on Python scripts for workflow definitions, and while it offers a UI for monitoring, the development and testing phases are primarily code-centric and may not provide the same level of integration between iterative development and deployment. So, promoting workflows to production can require additional configurations.
-
-So, by offering an integrated platform, Kestra reduces the barriers between different stages of the workflow lifecycle.
+By offering an integrated platform, Kestra reduces the barriers between different stages of the workflow lifecycle.
 
 ### Language-Agnostic
 While Airflow and Prefect heavily rely on Python code to define workflows, Kestra offers a language-agnostic approach using YAML. This allows teams without programming expertise to create and manage workflows through declarative configurations, enhancing collaboration between technical and non-technical stakeholders.
@@ -122,24 +117,14 @@ This approach simplifies maintenance and reduce the likelihood of errors, as wor
 Additionally, Kestra's YAML configurations enable seamless integration with different tech stacks like [Go](../docs/15.how-to-guides/golang.md) and [Rust](../docs/15.how-to-guides/rust.md). This means that engineers can write custom tasks and plugins in their preferred languages and incorporate them directly into their workflows. This flexibility allows teams to leverage existing codebases and expertise across various programming languages, fitting seamlessly into diverse engineering environments and enabling the use of different tools for specific needs.
 
 ### Natively Highly Scalable and Distributed Architecture
-Kestra is built from the ground up with scalability and high availability in mind, leveraging technologies like Kafka and Elasticsearch to distribute workloads efficiently. Its architecture allows for horizontal scaling, ensuring that the system can handle increasing volumes of tasks and data without performance degradation.
-
-On the other hand:
-
-- Airflow can face scaling challenges due to its centralized scheduler and reliance on a single database, which can become bottlenecks as workloads grow. So, scaling Airflow often requires complex configurations and may introduce single points of failure.
-- Prefect offers scalability but may require additional setup and infrastructure considerations to achieve distributed execution, as it doesn't natively leverage technologies like Kafka for high-throughput scenarios.
+Kestra is built from the ground up with scalability and high availability in mind, leveraging technologies like [Kafka and Elasticsearch](../docs/07.architecture/index.md) to distribute workloads efficiently. Its architecture allows for horizontal scaling, ensuring that the system can handle increasing volumes of tasks and data without performance degradation.
 
 So, with its distributed design, Kestra provides seamless scalability out of the box, making it well-suited for enterprises with demanding workloads and the need for reliable, high-performance orchestration.
 
 ### Advanced Error Handling and Fault Tolerance
-Kestra provides sophisticated error handling mechanisms and fault tolerance features that enhance the reliability of workflows. It supports complex retry strategies, conditional execution paths, and dynamic handling of failures to ensure that workflows can recover gracefully from errors.
+Kestra provides sophisticated error handling mechanisms and fault tolerance features that enhance the reliability of workflows. It supports complex [retry strategies](../docs/04.workflow-components/12.retries.md), [conditional execution paths](../docs/15.how-to-guides/conditional-branching.md), and [dynamic handling of failures](../docs/03.tutorial/06.errors.md) to ensure that workflows can recover gracefully from errors.
 
-On the contrary:
-
-- Airflow offers basic retry and error handling but may require custom code to implement more advanced fault tolerance strategies. SO, managing complex error scenarios can become cumbersome and increase code complexity.
-- Prefect provides some error handling features but may not match the depth of Kestra's built-in capabilities for managing intricate failure scenarios.
-
-So, with this feature, Kestra reduces the need for custom error-handling code, simplifies workflow definitions, and improves the overall system robustness.
+With these features, Kestra reduces the need for custom error-handling code, simplifies workflow definitions, and improves the overall system robustness.
 
 ### Native Cloud Features
 Kestra is built from the ground up with [cloud-native](/use-cases/modern-data-stack) principles in mind, making it a natural fit for modern cloud environments. Its architecture seamlessly leverages containerization and orchestration technologies, which means it can scale efficiently, manage resources effectively, and integrate smoothly with cloud infrastructures.
