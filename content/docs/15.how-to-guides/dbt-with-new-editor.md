@@ -13,7 +13,7 @@ In this guide, we will look in detail as to how we can use dbt by leveraging Kes
 
 Let us understand this with the help of an example.
 
-Using the below flow, you can clone the GitHub repository containing the dbt code, and then upload the files to namespace.
+Using the below flow, you can clone the GitHub repository containing the dbt code, and then upload the files to your namespace.
 
 ```yaml
 id: upload_dbt_project
@@ -43,4 +43,4 @@ With the files being present as namespace files, you can open them with the Edit
 
 ![dbt_as_namespace_files](/docs/how-to-guides/edit-dbt-files.png)
 
-This simplifies the process of making changes and test them, leading to faster iterations. The final changes can be then pushed to the GitHub using [PushNamespaceFiles task](./pushnamespacefiles.md).
+This simplifies the process of making changes and testing them, leading to faster iterations. The final changes can be then pushed to the GitHub using [PushNamespaceFiles task](./pushnamespacefiles.md).
