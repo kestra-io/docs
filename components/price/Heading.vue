@@ -201,7 +201,7 @@ import Section from '../layout/Section.vue';
 
     .header {
         max-width: full;
-        background-image: url('/public/mask1.svg');
+        background-image: url('/mask1.svg');
     }
 
     .card-group {
@@ -227,7 +227,7 @@ import Section from '../layout/Section.vue';
             align-items: center;
             width: 2024px;
             height: 800px;
-            background: url('/public/mask2.svg');
+            background: url('/mask2.svg');
             top: 300px;
             opacity: 0.4;
             z-index: 0;

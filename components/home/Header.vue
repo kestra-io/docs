@@ -3,7 +3,9 @@
         <div class="hero container">
             <div class="text-block">
                 <h1>
-                    <text-scroller :texts="scrollingTexts" />Smarter Not Harder
+                    <text-scroller :texts="scrollingTexts" />
+                    <br>
+                    Smarter Not Harder
                 </h1>
                 <p>Unified Orchestration Platform to Simplify Business-Critical Workflows
                     <br>and Govern them as Code and from the UI.</p>
@@ -123,6 +125,17 @@ export default {
 @import "../../assets/styles/variable";
 
 .main {
+    position: relative;
+    &::before {
+        position: absolute;
+        content: "";
+        z-index: 0;
+        width: 100vw;
+        height: 91.6%;
+        background: linear-gradient(197.51deg, #390380 13.37%, #14151B 45.45%);
+        right: 0;
+        top: 0;
+    }
     .text-block {
         margin: 4rem 0 1rem;
         display: flex;
@@ -130,63 +143,30 @@ export default {
         width: 100%;
         align-items: center;
         gap: $spacer;
+        @include media-breakpoint-down(md) {
+            margin: 2.5rem 0 1rem;
+        }
     }
 
     .hero {
         padding-bottom: 2rem;
         padding-top: 5rem;
         position: relative;
-
-        &::before,
-        &::after {
-            position: absolute;
-            content: "";
-            z-index: 0;
-            filter: blur(95px);
-            transform: rotate(45deg);
-        }
-
-        &::before {
-            width: 15.6rem;
-            height: 50.6rem;
-            background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%);
-            right: -14rem;
-            top: -2rem;
-        }
-
-        &::after {
-            width: 9.6rem;
-            height: 38.6rem;
-            background: linear-gradient(91.82deg, #9639F9 28.72%, #9639F9 99.23%);
-            left: 17rem;
-            bottom: 12rem;
-            filter: blur(125px);
-
-            @include media-breakpoint-down(xl) {
-                bottom: -3rem;
-            }
-        }
-
     }
 
     h1 {
         color: var(--bs-white);
         text-align: center;
         max-width: 100%;
-        font-size: 36px;
-        font-weight: 500;
+        font-size: 32px!important;
+        font-weight: 600;
         margin: 0;
         padding: 0;
 
-        @include media-breakpoint-up(md) {
-            font-size: 40px;
-
-        }
-
         @include media-breakpoint-up(lg) {
-            font-size: 45px;
-
+            font-size: 53px!important;
         }
+
 
         :deep(span) {
             background: linear-gradient(91.82deg, #9639F9 28.72%, #9788EC 99.23%);
@@ -338,6 +318,21 @@ export default {
         display: flex;
         width: 100%;
         justify-content: center;
+        position: relative;
+
+        &:after {
+            content: "";
+            background-image: url(/landing/header-menu/bg-dots.png);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            top: 0;
+            width: 148%;
+            @include media-breakpoint-down(md) {
+                width: 138%;
+            }
+            height: 85%;
+        }
 
         img {
             width: 80%;

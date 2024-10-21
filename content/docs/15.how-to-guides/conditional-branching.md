@@ -53,11 +53,7 @@ tasks:
           type: io.kestra.plugin.core.flow.Sequential
           tasks:
             - id: failed
-              type: io.kestra.plugin.scripts.shell.Commands
-              taskRunner:
-                type: io.kestra.plugin.core.runner.Process
-              commands:
-                - 'exit 1'
+              type: io.kestra.plugin.core.execution.Fail
           errors:
             - id: error1
               type: io.kestra.plugin.core.debug.Return

@@ -7,7 +7,7 @@ version: ">= 0.18.0"
 
 Task Runner capabilities and supported plugins.
 
-[Task Runners](../05.concepts/09.task-runners/index.md) offer a powerful way to offload compute-intensive tasks to remote environments. 
+[Task Runners](../05.concepts/09.task-runners/index.md) offer a powerful way to offload compute-intensive tasks to remote environments.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=WiXpLNPOwk3mekwh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -30,4 +30,4 @@ Enterprise Edition Task Runners:
 
 For instance, if you need to query an on-premise SQL Server database running on a different server than Kestra, your SQL Server Query task can target a worker with access to that server. Additionally, worker groups can fulfill the same use case as task runners by distributing the load of scripting tasks to dedicated workers with the necessary resources and dependencies (_incl. hardware, region, network, operating system_).
 
-You can read more about the differences on the [dedicated page](../05.concepts/09.task-runners/03.task-runners-vs-worker-groups.md).
+You can read more about the differences on the [dedicated page](../task-runners/03.task-runners-vs-worker-groups.md).

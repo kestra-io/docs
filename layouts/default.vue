@@ -2,9 +2,9 @@
     <div>
         <NuxtLoadingIndicator />
         <LayoutSearch />
-        <LayoutAnnounce v-if="showAnnounce" :content="content" />
+        <LayoutAnnounce v-if="showAnnounce" :content="content" :scrolled="isScrolled" />
         <div class="wrapper" :class="{'announce': showAnnounce}">
-            <LayoutHeader />
+            <LayoutHeader :scrolled="isScrolled" />
             <main>
                 <slot />
             </main>
@@ -15,12 +15,13 @@
 </template>
 
 <script setup>
-    import {ref, watch, onMounted} from 'vue';
+    import {ref, watch, onMounted, onUnmounted} from 'vue';
 
     const config = useRuntimeConfig();
     const content = ref(null);
     const showAnnounce = ref(false);
     const route = useRoute();
+    const isScrolled = ref(false)
 
     const {data: bannerMessages} = await useCachedAsyncData(
         `header-annonces`,
@@ -35,6 +36,18 @@
     if (bannerMessages.value && bannerMessages.value.results) {
         content.value = bannerMessages.value.results;
     }
+
+    const handleScroll = () => {
+      isScrolled.value = window.scrollY > 20
+    }
+
+    onMounted(() => {
+      window.addEventListener('scroll', handleScroll)
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll)
+    })
 
     const checkDisplayingAnnounce = (content, path) => {
         if (content && content.length > 0 && path === '/') {
@@ -75,7 +88,6 @@
     @import "../assets/styles/variable";
 
     .wrapper.announce {
-        margin-top: 30px;
 
         nav {
             .navbar-collapse {

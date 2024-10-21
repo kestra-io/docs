@@ -142,7 +142,7 @@
 
     const setSearchPlugins = (search, allPlugins) => {
         let searchPluginsList = [...allPlugins];
-        const searchLowercase = search.toLowerCase()
+        const searchLowercase = search ? search.trim().toLowerCase() : null;
         return searchPluginsList.filter((item) => {
             return item?.title.toLowerCase().includes(searchLowercase) ||
                 (item.tasks ?? []).some(task => task.toLowerCase().includes(searchLowercase)) ||
@@ -210,7 +210,7 @@
         filterPlugins(currentPage.value, itemsPerPage.value , activeCategory.value, searchQuery.value)
     }
     if(route.query.q) {
-        searchQuery.value = route.query.q;
+        searchQuery.value = route.query.q.trim();
         filterPlugins(currentPage.value, itemsPerPage.value , activeCategory.value, searchQuery.value)
     }
 

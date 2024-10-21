@@ -35,10 +35,6 @@
             type: Object,
             required: true
         },
-        slug: {
-            type: String,
-            required: true
-        },
         graph: {
             type: Object,
             required: true,
@@ -125,13 +121,6 @@
                 padding: 0;
             }
         }
-    }
-
-    :deep(.slug) {
-        @include media-breakpoint-up(xxl) {
-            margin-left: 0;
-        }
-
     }
 
     :deep(.bd-markdown) {

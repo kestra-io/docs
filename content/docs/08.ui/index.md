@@ -34,5 +34,9 @@ The [Kestra Enterprise Edition](/enterprise) comes with additional functionaliti
 - The **Custom Blueprints** page allows you to add custom flow examples that you can reuse code and share best practices in your team.
 - The expanded **Namespaces** page adds enforcing authentication and role-based access control per namespace as well.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/6o0PNVrA84k?si=QyjOSo5HMZ-wKHol" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ::ChildCard
 ::

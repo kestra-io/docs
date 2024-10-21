@@ -2,6 +2,8 @@ name: Index doc on tag
 
 on:
   push:
+    branches:
+      - main
     tags:
       - v*
 
@@ -14,8 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
+      - name: Extract version to index
+        id: extract-version
+        run: |
+          REF=${GITHUB_REF#refs/}
+          if [[  $REF == 'heads/main' ]]; then
+            echo "version=v$(curl -s https://api.kestra.io/v1/versions/latest | jq -r '.version')" >> $GITHUB_OUTPUT
+          elif [[  $REF == 'tags/v'* ]]; then
+            echo "version=${REF#tags/}" >> $GITHUB_OUTPUT
+          fi
       - name: Doc indexing webhook for tag
         id: trigger-index
         run: |
-          TAG=${GITHUB_REF#refs/*/}
-          curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"$TAG\"}" https://us.kestra.cloud/api/v1/kestra-tech/executions/webhook/product/doc-to-storage/${{ secrets.DOC_INDEXING_WEBHOOK }}
+          curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"${{steps.extract-version.outputs.version}}\", \"to_index\": [\"docs\"]}" ${{ secrets.DOC_INDEXING_WEBHOOK }}

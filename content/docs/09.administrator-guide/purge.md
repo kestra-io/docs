@@ -33,6 +33,10 @@ triggers:
     cron: "@daily"
 ```
 
+::alert{type="warning"}
+Note that the **Pure tasks** do not affect Kestra's [internal queues](../07.architecture/01.main-components.md#queue). Queue retention is configured separately. The database type uses a dedicated [JDBC Cleaner](../configuration/index.md#jdbc-cleaner) and the Kafka type relies on [topic retention](../configuration/index.md#topic-retention).
+::
+
 ::collapse{title="Renamed Purge Tasks in 0.18.0"}
 We've [improved](https://github.com/kestra-io/kestra/pull/4298) the mechanism of the **Purge tasks** to make them more performant and reliable — some tasks have been renamed to reflect their enhanced functionality.
 
