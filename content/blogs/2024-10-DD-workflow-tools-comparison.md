@@ -32,16 +32,14 @@ So, here’s a look at the key factors to consider when making your choiche:
 - **Extensibility**: At some point, you’ll probably need a feature that isn’t supported out of the box. So, in this context, extensibility refers to how easily you can extend or customize the orchestration tool to meet your specific needs. This could be writing custom plugins, integrating with proprietary systems, or creating custom monitoring solutions, and a highly extensible tool offers hooks or APIs that allow you to build on top of it. 
 - **Community & Support**: Even the most powerful tools can feel like a dead end without a strong community or good support. An active user community means you’ll find plenty of resources — whether it’s documentation, tutorials, open-source plugins, or quick answers to your questions. Large communities are also a good sign that the tool is actively maintained and will continue evolving. Also, if your company is likely to need more personalized support, check if the tool offers a managed or enterprise version with dedicated support channels: this can be a critical aspect when you’re dealing with production issues and need timely resolutions.
 
-So, with that in mind, let's compare three workflow orchestration tools.
-
 ## Comparing Popular Workflow Orchestration Tools
 Let's now take a closer look at three widely used workflow orchestration tools: Apache Airflow, Prefect and Kestra. Each one excels in specific areas, so understanding their strengths can help you choose the one that is the best fit for your needs:
-
-- Kestra is particularly well-suited for organizations that need to orchestrate complex, large-scale workflows across a variety of systems and technologies. For example, if your team deals with diverse data sources — such as different databases, APIs, cloud services, and on-premises systems — and needs to integrate them seamlessly, Kestra's flexibility makes it an excellent choice. In particular, it's ideal for environments where workflows are not just about data pipelines but also involve automating business processes, running batch operations, and managing tasks that span multiple departments or technologies.
 
 - Apache Airflow is best suited for data engineering teams deeply integrated with Python, particularly when managing intricate ETL pipelines. Its DAG-based (Directed Acyclic Graph) workflow management provides precise control over task execution sequences, which is essential for accurate data processing. Airflow, in particular, excels in scenarios where the order of operations is important and teams are comfortable with Python-based workflow definitions.
 
 - Prefect is designed for Python developers who require a tool with a focus on hybrid execution models. It performs well in environments where workflows involve sensitive data that must remain on-premises while still leveraging external orchestration capabilities. It's particularly suitable for small teams or projects that need to get up and running quickly without extensive infrastructure investments.
+
+- Kestra is particularly well-suited for organizations that need to orchestrate complex, large-scale workflows across a variety of systems and technologies. For example, if your team deals with diverse data sources — such as different databases, APIs, cloud services, and on-premises systems — and needs to integrate them seamlessly, Kestra's flexibility makes it an excellent choice. In particular, it's ideal for environments where workflows are not just about data pipelines but also involve automating business processes, running batch operations, and managing tasks that span multiple departments or technologies.
 
 Let's now describe each tool, by providing an overview, a unique feature, and pros and cons to help you get a better understanding for your choiche.
 
@@ -85,7 +83,7 @@ Airflow uses Directed Acyclic Graphs (DAGs) to define task dependencies, which i
 
 ![Prefect UI](/blogs/2024-10-DD-workflow-tools-comparison/prefect-UI.png)
 
-[Prefect](https://www.prefect.io/) is an open-source orchestration tool designed to simplify the process of building and monitoring data workflows. Prefect offers both self-hosted and cloud-based solutions, providing flexibility in deployment. Workflows in Prefect are defined using Python, which makes it easy for data scientists and engineers to integrate them into existing Python-based projects.
+[Prefect](https://www.prefect.io/) is an open-source orchestration tool that offers both self-hosted and cloud-based solutions, providing flexibility in deployment. Workflows in Prefect are defined using Python, which makes it easy for data professionals to integrate them into existing Python-based projects.
 
 **Unique feature: hybrid execution model**
 
@@ -100,7 +98,7 @@ Prefect's hybrid model separates orchestration from execution: this improves sec
 - **Python-centric**: Prefect, like Airflow, is also Python-centric, which means teams that are not familiar with Python may find it challenging to use. Again, this might be a benefit if your tech stack is primarily Python based. 
 
 ## Why Kestra Stands Out
-While Apache Airflow and Prefect are powerful workflow orchestration tools, Kestra introduces unique features and capabilities that distinguish it from the rest. Let's explore the aspects where Kestra excels beyond what Airflow and Prefect offer.
+Let's now explore the aspects where Kestra excels beyond what Airflow and Prefect offer.
 
 ### Unified Development and Deployment Platform
 Kestra provides a unified platform that streamlines the entire workflow lifecycle — from design and testing to deployment and monitoring — within a single, cohesive environment. This integrated approach allows teams to:
@@ -116,10 +114,12 @@ In contrast, Airflow and Prefect often require fragmented processes for developm
 
 So, by offering an integrated platform, Kestra reduces the barriers between different stages of the workflow lifecycle.
 
-### Language-Agnostic and Code-Free Workflow Definitions
+### Language-Agnostic
 While Airflow and Prefect heavily rely on Python code to define workflows, Kestra offers a language-agnostic approach using YAML. This allows teams without programming expertise to create and manage workflows through declarative configurations, enhancing collaboration between technical and non-technical stakeholders.
 
 This approach simplifies maintenance and reduce the likelihood of errors, as workflows are defined through straightforward YAML configurations that are easier to read and write. 
+
+Additionally, Kestra's YAML configurations enable seamless integration with different tech stacks like [Go](../docs/15.how-to-guides/golang.md) and [Rust](../docs/15.how-to-guides/rust.md). This means that engineers can write custom tasks and plugins in their preferred languages and incorporate them directly into their workflows. This flexibility allows teams to leverage existing codebases and expertise across various programming languages, fitting seamlessly into diverse engineering environments and enabling the use of different tools for specific needs.
 
 ### Natively Highly Scalable and Distributed Architecture
 Kestra is built from the ground up with scalability and high availability in mind, leveraging technologies like Kafka and Elasticsearch to distribute workloads efficiently. Its architecture allows for horizontal scaling, ensuring that the system can handle increasing volumes of tasks and data without performance degradation.
