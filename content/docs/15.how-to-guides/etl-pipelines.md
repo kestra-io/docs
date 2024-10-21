@@ -246,9 +246,9 @@ tasks:
 
 ## Using dbt
 
-We can create similar pipeline based in ELT model using dbt via Kestra. We can leverage the namespace files for creating the dbt models.
+We can create a similar pipeline based on a ELT model using dbt via Kestra. We can leverage the namespace files for creating the dbt models.
 
-In this example, we will be using dbt + BigQuery and perform the ELT process where we will load data from http into BigQuery tables, perform transformations like join and aggregates using dbt, and then query the newly generated tables as a result of dbt transformation.
+In this example, we will be using dbt + BigQuery and perform the ELT process where we will load data from a http request to Hugging Face into BigQuery tables, perform transformations such as join and aggregates using dbt, and then query the newly generated tables as a result of dbt transformation.
 
 ```yaml
 id: dbt_transformations
