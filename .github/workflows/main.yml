@@ -22,6 +22,7 @@ jobs:
           REF=${GITHUB_REF#refs/}
           if [[  $REF == 'heads/main' ]]; then
             echo "version=v$(curl -s https://api.kestra.io/v1/versions/latest | jq -r '.version')" >> $GITHUB_OUTPUT
+            echo "snapshot_version=v$(curl -s https://api.kestra.io/v1/versions/latest?snapshot=true | jq -r '.version')" >> $GITHUB_OUTPUT
           elif [[  $REF == 'tags/v'* ]]; then
             echo "version=${REF#tags/}" >> $GITHUB_OUTPUT
           fi
@@ -29,3 +30,4 @@ jobs:
         id: trigger-index
         run: |
           curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"${{steps.extract-version.outputs.version}}\", \"to_index\": [\"docs\"]}" ${{ secrets.DOC_INDEXING_WEBHOOK }}
+          curl -X POST -H "Content-Type: application/json" -d "{\"tag\": \"${{steps.extract-version.outputs.snapshot_version}}\", \"to_index\": [\"docs\"]}" ${{ secrets.DOC_INDEXING_WEBHOOK }}
