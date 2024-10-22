@@ -97,7 +97,7 @@ tasks:
     message: "{{ outputs.get.value }}"
 ```
 
-# Namespace Variables
+## Namespace Variables
 
 ::alert{type="info"}
 This is an [Enterprise Edition](/docs/enterprise) feature.
