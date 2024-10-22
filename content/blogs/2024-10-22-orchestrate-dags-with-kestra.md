@@ -14,6 +14,8 @@ Migrating from one orchestration tool to another can seem like an intimidating t
 
 By allowing you to integrate and manage your existing **Airflow DAGs alongside Kestra’s workflows**, Kestra provides a unified platform to run, monitor, and orchestrate both old and new systems.
 
+Let’s dive into how you can orchestrate Airflow jobs using Kestra and how this approach helps developers avoid the headaches that come with full-scale migrations.
+
 ## The Strangler Fig Pattern for Orchestration
 
 This gradual migration is part of a well-known strategy called the [**Strangler Fig Pattern**](https://martinfowler.com/bliki/StranglerFigApplication.html), where the new system (Kestra) slowly replaces the old one (Airflow) by taking over its workflows, piece by piece. Over time, more and more workflows run in Kestra, while Airflow’s role diminishes—until, eventually, Kestra handles everything.
