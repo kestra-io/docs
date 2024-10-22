@@ -1,6 +1,6 @@
 ---
 title: Scaling Data Operations at Crédit Agricole with Kestra
-description: Julien Legrand from Crédit Agricole shares how the bank’s Data Team use eKestra to optimize infrastructure management, enhance security, and scale data pipelines for mission-critical operations across 50+ MongoDB clusters.
+description: Julien Legrand from Crédit Agricole shares how the bank’s Data Team use Kestra to optimize infrastructure management, enhance security, and scale data pipelines for mission-critical operations across 50+ MongoDB clusters.
 date: 2024-10-22T17:30:00
 category: Solutions
 author:
