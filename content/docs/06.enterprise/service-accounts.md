@@ -68,3 +68,19 @@ Speaking of CI/CD, note that currently Kestra supports authenticating with both 
 --server=https://demo.kestra.io --user=rick.astely@kestra.io:password42
 ```
 
+## Service Account Name Convention
+
+When creating a new service account, make sure to follow the DNS naming convention. Specifically, the `name` property needs to:
+- contain at most 63 characters
+- contain only lowercase alphanumeric characters or hyphens (i.e. the `-` character)
+- start with an alphanumeric character
+- end with an alphanumeric character.
+
+Some examples to make that clear:
+- ✅ `my-service-account` is a valid name
+- ✅ `my-service-account-1` is a valid name
+- ❌ `MY_SERVICE_ACCOUNT` is not a valid name because it contains uppercase characters and underscores
+- ❌ `myServiceAccount` is not a valid name because it contains uppercase characters and camel case
+- ❌ `my-service-account-` is not a valid name because it ends with a hyphen.
+
+**Why do we follow such a restrictive convention?** We follow the standard DNS-tyle pattern to be ready for potential future use cases where we could e.g. forward the service account name to a Kubernetes pod's labels. This way, we ensure that the service account name can be used in a variety of contexts without any issues.
