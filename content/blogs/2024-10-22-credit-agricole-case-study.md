@@ -6,6 +6,7 @@ category: Solutions
 author:
   name: Julien Legrand
   image: jlegrand
+image:/blogs/2024-10-22-credit-agricole-case-study.jpg
 ---
 
 CAGIP is the IT production entity of Crédit Agricole Group, a leading French banking and financial services company, acting as the central provider of IT services for the entire group. In the Data team we own several products that are used by different entities to host transactional, streaming or analytical data. We provide most of our solutions as SaaS hosted on a private cloud. Expectations regarding security, regulation and high availability imply specific needs regarding infrastructure operations.
@@ -41,7 +42,7 @@ But I’m sure that this will be just a start and we’ll soon cover more comple
 
 As we continue to expand Kestra’s role across our operations, we’re excited to explore even more use cases in the future. If this resonates with your challenges, consider giving Kestra a star on GitHub and becoming a part of the growing community. You can also join the conversation and share your feedback directly on Slack or by opening a GitHub issue.
 
-As we continue to expand Kestra’s role across our operations, we’re excited to explore even more use cases in the future. If this resonates with your challenges, consider giving KestraIf you like the project, give them [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
+As we continue to expand Kestra’s role across our operations, we’re excited to explore even more use cases in the future. If this resonates with your challenges, consider giving Kestra [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](https://kestra.io/slack).
 
 
 
