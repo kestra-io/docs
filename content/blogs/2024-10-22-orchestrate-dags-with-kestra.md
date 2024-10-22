@@ -36,7 +36,7 @@ tasks:
   - id: run_dag
     type: io.kestra.plugin.airflow.dags.TriggerDagRun
     baseUrl: http://host.docker.internal:8080
-    dagId: example_astronauts
+    dagId: hello_world_dag
     wait: true
     pollFrequency: PT1S
     options:
@@ -57,6 +57,12 @@ In this setup:
 - **Trigger Airflow DAGs** through Kestra's Airflow plugin using the Airflow REST API.
 - **Monitor and poll the status** of your Airflow tasks directly within Kestra, allowing for real-time visibility.
 - **Pass execution metadata** (like task and flow IDs) to maintain context and track workflow performance across both platforms.
+
+![kestra outputs](/blogs/2024-10-22-orchestrate-dags-with-kestra/kestra.png)
+As we can see, Kestra catch all the dag run information.
+
+![airflow ui](/blogs/2024-10-22-orchestrate-dags-with-kestra/airflow.png)
+On the other side, the Airflow DAG is triggered successfully.
 
 ## Kestra: A Central tool for All Your Workflows
 
