@@ -91,7 +91,7 @@ const setTagBlueprints = async (tagVal) => {
 if(route.query.page) currentPage.value = parseInt(route.query.page)
 if(route.query.size) itemsPerPage.value = parseInt(route.query.size)
 if(route.query.tags) {
-  activeTags.value = tags.value.filter(item => route.query.tags.split(',').includes(item.name));
+  activeTags.value = tags.value.filter(item => route.query.tags.split(',').includes(item.id));
 }
 if(route.query.q) searchQuery.value = route.query.q;
 
@@ -104,7 +104,7 @@ if (!activeTags.value) {
   activeTags.value = [{ name: 'All tags' }];
   if (blueprintInformations && blueprintInformations.value) {
     let tag = tags.value.find(f => f?.id == blueprintInformations.value.page.tags[0]);
-    await navigateTo(`/blueprints/${tag.name.replace(' ', '-').toLowerCase()}/${route.params.slug}`);
+    await navigateTo(`/blueprints/${tag.id}/${route.params.slug}`);
   }
 }
 const { data: blueprintsData, error } = await useAsyncData('blueprints', () => {
@@ -132,7 +132,7 @@ const changePage = (pageNo) => {
 
 const generateCardHref = (blueprint) => {
   let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
-  return `/blueprints/${tag.name.replace(' ', '-').toLowerCase()}/${blueprint.id}`
+  return `/blueprints/${tag.id}/${blueprint.id}`
 }
 
 let timer;
@@ -156,7 +156,7 @@ watch([currentPage, itemsPerPage, searchQuery, activeTags], ([pageVal, itemVal, 
                 size: itemVal,
             };
             if (!!activeTagsVal.map(item => item.id).join(',')) {
-              query['tags'] = activeTagsVal.map(item => item.name).join(',')
+              query['tags'] = activeTagsVal.map(item => item.id).join(',')
             }
             if(searchVal.length) {
                 query['q'] = searchVal

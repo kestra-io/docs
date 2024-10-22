@@ -33,7 +33,7 @@ const generateDefaultSitemap = async () => {
                 let loc = `${sitemapInput.rootUrl}${page.id}`
                 if (sitemapInput.rootUrl === '/blueprints/') {
                     let tag = [{ name: 'All tags' }, ...blueprintsTags].find(f => f?.id == page.tags[0]);
-                    loc = `${sitemapInput.rootUrl}${tag.name.replace(' ', '-').toLowerCase()}/${page.id}`
+                    loc = `${sitemapInput.rootUrl}${tag.id}/${page.id}`
                 }
                 return asSitemapUrl({
                     loc: loc,
