@@ -66,13 +66,13 @@ Kestra’s **declarative approach** makes it easier to build and manage workflow
 
 ### Simplifying Complex Workflows: Get Rid of Glue Code
 
-Airflow is known for its complexity in constructing DAGs—especially when basic workflows end up requiring complicated Python scripts. With **Kestra**, you can streamline your workflows with a **declarative, YAML-based syntax**, eliminating the need for glue code and additional scripting.
+Airflow is known for its complexity in constructing DAGs—especially when basic workflows end up requiring complicated Python scripts. With **Kestra**, you can streamline your workflows with a **declarative syntax**, eliminating the need for glue code and additional scripts.
 
 Here’s how Kestra helps you:
 
-- **No need for Python glue code**: Kestra’s pre-built tasks handle common operations like HTTP requests, file transfers, and API calls without extra scripting.
+- **No need for Python glue code**: Kestra’s pre-built tasks handle common operations like HTTP requests, file transfers, and API calls without extra scripts.
 - **Unified orchestration**: Use Kestra to orchestrate tasks across diverse platforms—cloud services, data processing, APIs—within the same workflow.
-- **UI-based management**: Build, trigger, and monitor workflows directly from Kestra’s UI without needing to edit code.
+- **UI-based or as code management**: Build, trigger, and monitor workflows directly from Kestra’s UI or build everything as code.
 
 ## What’s Next on the Roadmap?
 
