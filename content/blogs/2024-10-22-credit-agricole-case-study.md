@@ -6,8 +6,8 @@ category: Solutions
 author:
   name: Julien Legrand
   image: jlegrand
-  role: XXXX
-image: /blogs/XXXX.jpg
+  role: Product Owner Data
+image: /blogs/2024-10-22-credit-agricole-case-study.jpg
 ---
 
 CAGIP is the IT production entity of Crédit Agricole Group, a leading French banking and financial services company, acting as the central provider of IT services for the entire group. In the Data team we own several products that are used by different entities to host transactional, streaming or analytical data. We provide most of our solutions as SaaS hosted on a private cloud. Expectations regarding security, regulation and high availability imply specific needs regarding infrastructure operations.
