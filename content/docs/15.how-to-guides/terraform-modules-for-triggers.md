@@ -50,7 +50,7 @@ Below an example of implementation for a Terraform module that defines a cron sc
 ```yaml
 triggers:
   - id: ${cron-name}
-    type: io.kestra.core.models.triggers.types.Schedule
+    type: io.kestra.plugin.core.trigger.Schedule
     cron: "${cron-expression}"
     lateMaximumDelay: "${late-maximum-delay}"
 ```
