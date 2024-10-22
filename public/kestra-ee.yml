@@ -1534,6 +1534,127 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/FlowForExecution"
+  /api/v1/executions/pause/by-ids:
+    post:
+      tags:
+      - Executions
+      summary: Pause a list of running executions
+      operationId: pauseByIds
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+        "422":
+          description: Paused with errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
+  /api/v1/executions/pause/by-query:
+    post:
+      tags:
+      - Executions
+      summary: Pause executions filter by query parameters
+      operationId: pauseByQuery
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: scope
+        in: query
+        description: The scope of the executions to include
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/FlowScope"
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      - name: flowId
+        in: query
+        description: A flow id filter
+        schema:
+          type: string
+          nullable: true
+      - name: startDate
+        in: query
+        description: The start datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: endDate
+        in: query
+        description: The end datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: timeRange
+        in: query
+        description: A time range filter relative to the current time
+        schema:
+          type: string
+          nullable: true
+        examples:
+          Filter last 5 minutes:
+            value: PT5M
+          Filter last 24 hours:
+            value: P1D
+      - name: state
+        in: query
+        description: A state filter
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/State.Type"
+      - name: labels
+        in: query
+        description: A labels filter as a list of 'key:value'
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: triggerExecutionId
+        in: query
+        description: The trigger execution id
+        schema:
+          type: string
+          nullable: true
+      - name: childFilter
+        in: query
+        description: A execution child filter
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
+      responses:
+        "200":
+          description: pauseByQuery 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/executions/replay/by-ids:
     post:
       tags:
@@ -2520,6 +2641,26 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/executions/{executionId}/pause:
+    post:
+      tags:
+      - Executions
+      summary: Pause a running execution.
+      operationId: pause
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: On success
+        "409":
+          description: if the executions is not running
+        "200":
+          description: pause 200 response
   /api/v1/executions/{executionId}/replay:
     post:
       tags:
@@ -2824,6 +2965,38 @@ paths:
                 - $ref: "#/components/schemas/FlowWithSource"
               example: null
       deprecated: true
+  /api/v1/flows/bulk:
+    post:
+      tags:
+      - Flows
+      summary: Update from multiples yaml sources
+      description: |-
+        All flow will be created / updated for this namespace.
+        Flow that already created but not in `flows` will be deleted if the query delete is `true`
+      operationId: bulkUpdate
+      parameters:
+      - name: delete
+        in: query
+        description: If missing flow should be deleted
+        required: true
+        schema:
+          type: boolean
+          default: true
+      requestBody:
+        content:
+          application/x-yaml:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: bulkUpdate 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlowWithSource"
   /api/v1/flows/delete/by-ids:
     delete:
       tags:
@@ -5937,6 +6110,31 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/KVEntry"
+    delete:
+      tags:
+      - KV
+      summary: Bulk-delete multiple key/value pairs from the given namespace.
+      operationId: deleteKeys
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KVController.ApiDeleteBulkRequest"
+        required: true
+      responses:
+        "200":
+          description: deleteKeys 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KVController.ApiDeleteBulkResponse"
   /api/v1/namespaces/{namespace}/kv/{key}:
     get:
       tags:
@@ -12078,6 +12276,138 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/FlowForExecution"
+  /api/v1/{tenant}/executions/pause/by-ids:
+    post:
+      tags:
+      - Executions
+      summary: Pause a list of running executions
+      operationId: pauseByIds_1
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+        "422":
+          description: Paused with errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
+  /api/v1/{tenant}/executions/pause/by-query:
+    post:
+      tags:
+      - Executions
+      summary: Pause executions filter by query parameters
+      operationId: pauseByQuery_1
+      parameters:
+      - name: q
+        in: query
+        description: A string filter
+        schema:
+          type: string
+          nullable: true
+      - name: scope
+        in: query
+        description: The scope of the executions to include
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/FlowScope"
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        schema:
+          type: string
+          nullable: true
+      - name: flowId
+        in: query
+        description: A flow id filter
+        schema:
+          type: string
+          nullable: true
+      - name: startDate
+        in: query
+        description: The start datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: endDate
+        in: query
+        description: The end datetime
+        schema:
+          type: string
+          format: date-time
+          nullable: true
+      - name: timeRange
+        in: query
+        description: A time range filter relative to the current time
+        schema:
+          type: string
+          nullable: true
+        examples:
+          Filter last 5 minutes:
+            value: PT5M
+          Filter last 24 hours:
+            value: P1D
+      - name: state
+        in: query
+        description: A state filter
+        schema:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/State.Type"
+      - name: labels
+        in: query
+        description: A labels filter as a list of 'key:value'
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: triggerExecutionId
+        in: query
+        description: The trigger execution id
+        schema:
+          type: string
+          nullable: true
+      - name: childFilter
+        in: query
+        description: A execution child filter
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ExecutionRepositoryInterface.ChildFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: pauseByQuery_1 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/{tenant}/executions/replay/by-ids:
     post:
       tags:
@@ -13182,6 +13512,31 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/{tenant}/executions/{executionId}/pause:
+    post:
+      tags:
+      - Executions
+      summary: Pause a running execution.
+      operationId: pause_1
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: On success
+        "409":
+          description: if the executions is not running
+        "200":
+          description: pause_1 200 response
   /api/v1/{tenant}/executions/{executionId}/replay:
     post:
       tags:
@@ -13527,6 +13882,43 @@ paths:
                 - $ref: "#/components/schemas/FlowWithSource"
               example: null
       deprecated: true
+  /api/v1/{tenant}/flows/bulk:
+    post:
+      tags:
+      - Flows
+      summary: Update from multiples yaml sources
+      description: |-
+        All flow will be created / updated for this namespace.
+        Flow that already created but not in `flows` will be deleted if the query delete is `true`
+      operationId: bulkUpdate_1
+      parameters:
+      - name: delete
+        in: query
+        description: If missing flow should be deleted
+        required: true
+        schema:
+          type: boolean
+          default: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/x-yaml:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: bulkUpdate_1 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlowWithSource"
   /api/v1/{tenant}/flows/delete/by-ids:
     delete:
       tags:
@@ -17080,6 +17472,36 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/KVEntry"
+    delete:
+      tags:
+      - KV
+      summary: Bulk-delete multiple key/value pairs from the given namespace.
+      operationId: deleteKeys_1
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KVController.ApiDeleteBulkRequest"
+        required: true
+      responses:
+        "200":
+          description: deleteKeys_1 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KVController.ApiDeleteBulkResponse"
   /api/v1/{tenant}/namespaces/{namespace}/kv/{key}:
     get:
       tags:
@@ -22467,10 +22889,13 @@ components:
       type: object
       properties:
         id:
+          maxLength: 100
           minLength: 1
           pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
           type: string
         namespace:
+          maxLength: 150
+          minLength: 1
           pattern: "^[a-z0-9][a-z0-9._-]*"
           type: string
         revision:
@@ -23949,6 +24374,9 @@ components:
             RETRIED:
               type: integer
               format: int64
+            SKIPPED:
+              type: integer
+              format: int64
         groupBy:
           type: string
     DailyExecutionStatistics.Duration:
@@ -24043,6 +24471,7 @@ components:
     Execution:
       required:
       - deleted
+      - error
       - flowId
       - flowRevision
       - id
@@ -24102,6 +24531,10 @@ components:
           type: string
           format: date-time
           nullable: true
+        error:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/ExecutionError"
     ExecutionController.ApiValidateExecutionInputsResponse:
       required:
       - id
@@ -24234,9 +24667,22 @@ components:
             RETRIED:
               type: integer
               format: int64
+            SKIPPED:
+              type: integer
+              format: int64
         total:
           type: integer
           format: int64
+    ExecutionError:
+      required:
+      - message
+      - stacktrace
+      type: object
+      properties:
+        message:
+          type: string
+        stacktrace:
+          type: string
     ExecutionMetadata:
       required:
       - attemptNumber
@@ -24728,6 +25174,24 @@ components:
           title: The display name of the input.
           maxLength: 64
           type: string
+    KVController.ApiDeleteBulkRequest:
+      required:
+      - keys
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    KVController.ApiDeleteBulkResponse:
+      required:
+      - keys
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
     KVController.TypedValue:
       required:
       - type
@@ -25063,15 +25527,25 @@ components:
           $ref: "#/components/schemas/MiscController.Preview"
         isBasicAuthEnabled:
           type: boolean
+        systemNamespace:
+          type: string
     MiscController.ConfigurationEe:
       type: object
       allOf:
       - $ref: "#/components/schemas/MiscController.Configuration"
       - properties:
           tenants:
-            $ref: "#/components/schemas/TenantConfiguration"
+            $ref: "#/components/schemas/MiscController.TenantConfigurationInfo"
           secretsEnabled:
             type: boolean
+          supportedStorages:
+            type: array
+            items:
+              type: string
+          supportedSecrets:
+            type: array
+            items:
+              type: string
     MiscController.Environment:
       required:
       - color
@@ -25108,6 +25582,22 @@ components:
         max:
           type: integer
           format: int32
+    MiscController.TenantConfigurationInfo:
+      required:
+      - defaultTenant
+      - enabled
+      - secretByTenant
+      - storageByTenant
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        defaultTenant:
+          type: boolean
+        storageByTenant:
+          type: boolean
+        secretByTenant:
+          type: boolean
     Name:
       type: object
       properties:
@@ -26337,6 +26827,7 @@ components:
       - QUEUED
       - RETRYING
       - RETRIED
+      - SKIPPED
     StatsController.ByFlowStatisticRequest:
       type: object
       properties:
@@ -26498,6 +26989,10 @@ components:
           type: boolean
         logToFile:
           type: boolean
+        runIf:
+          type: string
+        allowWarning:
+          type: boolean
     TaskForExecution:
       required:
       - id
@@ -26526,6 +27021,7 @@ components:
     TaskRun:
       required:
       - attempts
+      - error
       - executionId
       - flowId
       - id
@@ -26567,6 +27063,8 @@ components:
         iteration:
           type: integer
           format: int32
+        error:
+          $ref: "#/components/schemas/ExecutionError"
     TaskRunAttempt:
       required:
       - logFile
@@ -26618,6 +27116,10 @@ components:
       - deleted
       - id
       - name
+      - secretConfiguration
+      - secretType
+      - storageConfiguration
+      - storageType
       - workerGroup
       type: object
       properties:
@@ -26630,13 +27132,16 @@ components:
           type: boolean
         workerGroup:
           $ref: "#/components/schemas/WorkerGroup"
-    TenantConfiguration:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        defaultTenant:
-          type: boolean
+        storageType:
+          type: string
+        storageConfiguration:
+          type: object
+          additionalProperties: true
+        secretType:
+          type: string
+        secretConfiguration:
+          type: object
+          additionalProperties: true
     TenantUsage:
       type: object
       properties:
@@ -26743,6 +27248,7 @@ components:
       - ARRAY
       - MULTISELECT
       - YAML
+      - EMAIL
     Usage:
       required:
       - configurations
