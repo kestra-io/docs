@@ -1,12 +1,13 @@
 ---
-title: Scaling Data Operations at Crédit Agricole with Kestra
+title: "Scaling Data Operations at Crédit Agricole with Kestra"
 description: Julien Legrand from Crédit Agricole shares how the bank’s Data Team use Kestra to optimize infrastructure management, enhance security, and scale data pipelines for mission-critical operations across 50+ MongoDB clusters.
-date: 2024-10-22T17:30:00
+date:  2024-10-22T17:00:00
 category: Solutions
 author:
   name: Julien Legrand
   image: jlegrand
-image:/blogs/2024-10-22-credit-agricole-case-study.jpg
+  role: Product Owner Data
+image: /blogs/2024-10-22-credit-agricole-case-study.jpg
 ---
 
 CAGIP is the IT production entity of Crédit Agricole Group, a leading French banking and financial services company, acting as the central provider of IT services for the entire group. In the Data team we own several products that are used by different entities to host transactional, streaming or analytical data. We provide most of our solutions as SaaS hosted on a private cloud. Expectations regarding security, regulation and high availability imply specific needs regarding infrastructure operations.
