@@ -80,7 +80,7 @@ Currently, you can orchestrate Airflow DAGs using Kestra, but we’re working on
 
 ### How Can We Help?
 
-We want to hear from you! If there are specific features or tools you’d like to see to support your migration from Airflow, let us know. We’re constantly working on ways to make this transition easier for you, and your feedback is invaluable. Visit our demo page to get in touch or learn more.
+We want to hear from you! If there are specific features or tools you’d like to see to support your migration from Airflow, let us know. We’re constantly working on ways to make this transition easier for you.
 
 ## Conclusion: Migrate Without the Big Bang
 
