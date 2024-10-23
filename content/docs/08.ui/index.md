@@ -38,5 +38,7 @@ The [Kestra Enterprise Edition](/enterprise) comes with additional functionaliti
   <iframe src="https://www.youtube.com/embed/6o0PNVrA84k?si=QyjOSo5HMZ-wKHol" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+---
+
 ::ChildCard
 ::
