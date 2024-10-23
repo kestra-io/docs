@@ -14,7 +14,8 @@ In today's data-driven world, managing complex data workflows efficiently is bec
 In this article, we describe what data orchestration is, how to choose the right data orchestration tool, and compare some of the most popular options: Apache Airflow, Prefect, Dagster, and Kestra.
 
 ## What Is Data Orchestration?
-Data [orchestration](./2024-09-18-what-is-an-orchestrator.md) is an automated process that combines and organizes data from different data sources. You can think of it like being the conductor of a massive data symphony that involves the automated coordination and management of data as it moves between different systems and processes. Imagine having to manually manage every data pipeline, handle dependencies, schedule tasks, and monitor workflows: that would be a nightmare, right? Well, data orchestration tools take care of all that heavy lifting for you.
+Data [orchestration](./2024-09-18-what-is-an-orchestrator.md) is orchestration of workflow nodes that touch data. You can think of it like being the conductor of a massive data symphony that involves the automated coordination and management of data as it moves between different systems and processes. Imagine having to manually manage every data pipeline, handle dependencies, schedule tasks, and monitor workflows: that would be a nightmare, right? Well, data orchestration tools take care of all that heavy lifting for you.
+
 
 Here's what data orchestration involves as a process:
 - **Data Ingestion**: Collecting and organizing data from various systems, databases, APIs, and other sources to ensure it's ready for processing.
