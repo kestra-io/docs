@@ -7,6 +7,12 @@ version: ">= 0.19.0"
 
 Automate maintenance workflows with System Flows.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/o05hcKNI_7I?si=sRuuMei3YJb4f7nC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
 System Flows periodically execute background operations that keep your platform running, but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:
 
 1. Sending [alert notifications](https://kestra.io/blueprints/system/250-set-up-alerts-for-failed-workflow-executions-using-slack)
