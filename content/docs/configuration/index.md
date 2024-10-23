@@ -1043,6 +1043,21 @@ micronaut:
 
 For more detailed changes like allowing only specific origins or specific methods, you can refer [this guide](https://docs.micronaut.io/latest/guide/index.html#corsConfiguration).
 
+### Configure Local Flow Syncronization
+
+Below is the minimal configuration to enable local flow synchronization:
+
+```yaml
+micronaut:
+  io:
+    watch:
+      enabled: true
+      paths:
+        - /path/to/your/flows
+```
+
+For more information, check out the [dedicated guide](../15.how-to-guides/local-file-sync.md).
+
 ## Plugins
 
 Maven repositories used by the command `kestra plugins install` can be configured using the `kestra.plugins` configuration.
