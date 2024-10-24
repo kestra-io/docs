@@ -532,7 +532,7 @@
                             <div class="row m-0 w-100">
                                 <div class="header-menu-left col-12 col-xl">
                                     <div class="row">
-                                        <div class="header-menu-card-section-column col-lg-6 col-xxl">
+                                        <div class="header-menu-card-section-column col-lg-6">
                                             <div class="menu-title">
                                                 <p>Features</p>
                                             </div>
@@ -588,7 +588,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div class="header-menu-card-section-column col-lg-6 col-xxl">
+                                        <div class="header-menu-card-section-column col-lg-6">
                                             <div class="menu-title">
                                                 <p>Use Cases</p>
                                             </div>
@@ -624,7 +624,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div class="header-menu-card-section-column col-lg-12 col-xxl">
+                                        <div class="header-menu-card-section-column col-lg-12">
                                             <div class="menu-title">
                                                 <p>Industries</p>
                                             </div>
@@ -1113,6 +1113,7 @@ export default {
                             }
                             .row {
                                 column-gap: 6.25rem;
+                                flex-wrap: nowrap;
                             }
 
                             @include media-breakpoint-down(xxl) {
@@ -1584,6 +1585,8 @@ export default {
                         gap: 1rem;
                         list-style: none;
                         padding-left: 0;
+                        min-width: 312px;
+
 
                         .column-caption {
                             color: #B9B9BA;
