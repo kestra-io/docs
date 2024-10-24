@@ -9,9 +9,11 @@ Interact with Kestra using custom apps.
 
 ## Overview
 
-Apps allow you to interact with Kestra from the outside world. You can create custom applications that use Kestra's API to perform various tasks, such as creating new workflow executions, resuming paused executions that need manual approval, interacting with Kestra's API, and more.
+Apps make it easy to use your Kestra workflows as a backend for a variety of applications without the need to build custom frontend apps from scratch.
 
-Apps offer custom UIs that allow business users to interact with Kestra workflows without needing to understand the underlying technical details. Non-technical users can pass data to your flow executions using simple forms, submit requests, and view the generated results.
+Apps provide custom UIs that allow anyone in the world to interact with your Kestra workflows without needing to understand the underlying technical details. Business stakeholders can manually approve paused workflows, pass data to automated business processes using simple forms, submit requests, and view the generated results.
+
+You can create custom applications capable of creating new workflow executions, resuming paused executions waiting for manual approval, interacting with Kestra's API, and more. In short, apps allow you and your users to interact with Kestra from the outside world.
 
 ---
 
