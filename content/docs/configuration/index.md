@@ -1371,8 +1371,8 @@ kestra:
 
 The default role is the role that will be assigned to a new user when it is created.
 
-For setup facilities, you can define the default role from the `kestra.security.default-role` configuration.
-Each time you start Kestra, the default role will be checked and created if it does not exist for every Tenant.
+You can define the default role using the `kestra.security.default-role` configuration.
+Whenever you start Kestra, the default role will be checked and created if it doesn't exist.
 
 The default role requires three properties:
 * `kestra.security.default-role.name`: the name of the default role
@@ -1390,10 +1390,22 @@ kestra:
         FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
 ```
 
-Make sure that you attach the `default-role` configuration under `kestra.security`rather than under `micronaut.security` — it's easy to confuse the two so make sure you enter that configuration in the right place.
+When using [multitenancy](../06.enterprise/03.tenants.md), the default role will be added to every tenant and will grant specified access permissions to new users across all tenants. If you prefer to restrict the default role to only allow access to a given tenant e.g. `staging`, you can add the `tenantId` property as follows:
+
+```yaml
+kestra:
+  security:
+    default-role:
+      name: default
+      description: "Default role"
+      permissions:
+        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
+      tenantId: staging
+```
+
 
 ::alert{type="info"}
-When using [multitenancy](../06.enterprise/03.tenants.md), the default role will be added to every tenant. The admin will then need to explicitly add the user to a tenant.
+Make sure that you attach the `default-role` configuration under `kestra.security`rather than under `micronaut.security` — it's easy to confuse the two so make sure you enter that configuration in the right place.
 ::
 
 ## Server
