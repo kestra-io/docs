@@ -11,11 +11,13 @@ image: /blogs/2024-10-30-code-in-any-language.jpg
 
 There are many different programming languages, all with different key benefits that make them the right tool for a particular job. That’s why at Kestra we believe it’s important that your business logic is separate from your orchestration logic so you can pick the right tool for each job. Many orchestrators have your business logic and orchestration logic together, for example using Python. This restricts your options if you requirements change in the future.
 
-While Python is a great tool for many problems, it’s not always the best choice for your business logic. For example, some use cases work best using a compiled language like C or Rust for performance advantages, whereas others benefit from the flexibility and ease of using an interpreted language like Python. Another scenario might be that your team is familiar with a specific stack, like Ruby, which is why you want to use that for your business logic as operating faster is more important than code performance. Kestra makes this easy by allowing you to use any programming language.
+While Python is a great tool for many problems, it’s not always the best choice for your business logic. For example, some use cases work best using a compiled language like C or Rust for performance advantages, whereas others benefit from the flexibility and ease of using an interpreted language like Python. 
 
-## Dedicated Plugins
+Another scenario might be that your team is familiar with a specific stack, like Ruby, which is why you want to use that for your business logic as operating faster is more important than code performance. Kestra makes this easy by allowing you to use any programming language.
 
-In Kestra, we have a number of dedicated plugins to allow you to use your favorite programming languages in a few lines of YAML. For each of these plugins, there’s the option to write your code directly inside of the task called `Script` tasks, or to run a command to run a dedicated file called `Commands` Tasks. This flexibility means you can keep shorter snippets inside of your YAML without having to introduce multiple files, but for larger more complex projects, you can write them locally in your IDE, push them to Git, and then sync them directly into your Kestra instance for your workflow to execute.
+In Kestra, we have a number of dedicated plugins to allow you to use your favorite programming languages in a few lines of YAML. For each of these plugins, there’s the option to write your code directly inside of the task called `Script` tasks, or to run a command to run a dedicated file called `Commands` Tasks. 
+
+This flexibility means you can keep shorter snippets inside of your YAML without having to introduce multiple files, but for larger more complex projects, you can write them locally in your IDE, push them to Git, and then sync them directly into your Kestra instance for your workflow to execute.
 
 The example below uses the `pandas` library to get the total revenue from a CSV file of orders and then print it to the terminal:
 
@@ -29,7 +31,7 @@ print(f'Total Revenue: ${total_revenue}')
 
 Using this example, we can write this both as a `Script` task and a `Commands` task.
 
-### Write your code directly inside your workflow
+## Write code directly inside your workflow
 
 Taking the example above, we can paste it directly into a new `Script` task. To do this, we need to write the code inline after the `script` property, and install the `pandas` with the `beforeCommands` property.
 
@@ -52,7 +54,9 @@ tasks:
 
 And just like that, in a few lines of YAML, we have a workflow that can run our Python code. By default, these tasks will run inside of a Docker container via a [Task Runner](../docs/task-runners/index.md) to isolate dependencies from other tasks, but also allow us to specify container images that have dependencies pre-installed.
 
-Below we have an example where we’ve explicitly defined our Docker Task Runner to make it clearer what’s going on under the hood. However, you can still use the `containerImage` property without explicitly defining the task runner. By using the `containerImage` property, we can pick a Python image that includes some pre-installed libraries reducing the need to use `beforeCommands` . In this case, we’re using the `pydata` image which comes with a few useful libraries like `pandas` bundled in. When we run this example, it pulls the docker image and then starts to run our code without issue as the dependencies we need are baked into the image:
+Below we have an example where we’ve explicitly defined our Docker Task Runner to make it clearer what’s going on under the hood. However, you can still use the `containerImage` property without explicitly defining the task runner. By using the `containerImage` property, we can pick a Python image that includes some pre-installed libraries reducing the need to use `beforeCommands` . 
+
+In this case, we’re using the `pydata` image which comes with a few useful libraries like `pandas` bundled in. When we run this example, it pulls the docker image and then starts to run our code without issue as the dependencies we need are baked into the image:
 
 ```yaml
 id: example
@@ -97,11 +101,11 @@ tasks:
       print(f'Total Revenue: ${total_revenue}')
 ```
 
-### Write your code in a separate file
+## Write code in a separate file
 
 If our Python file was much larger and or involved multiple scripts, we should use the `Commands` task instead. We can take the Python code and put it into a file called `example.py` under the `company.team` namespace. 
 
-One key difference here is the `namespaceFiles` property which allows the task to see files stored in the namespace. This means when we run the task, the container will have these files inside of it for us to use / run commands on. We can either enable this for all files, or use the `includes` and `excludes` property to specify specifics if we want to avoid unrelated or sensitive files being accessed by mistake.
+One key difference here is the `namespaceFiles` property which allows the task to see files stored in the namespace. This means when we run the task, the container will have these files inside of it for us to use. We can either enable this for all files, or use the `includes` and `excludes` property to specify specifics if we want to avoid unrelated or sensitive files being accessed by mistake.
 
 ```yaml
 id: example
