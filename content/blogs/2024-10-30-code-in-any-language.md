@@ -1,6 +1,6 @@
 ---
 title: "Code in any Language in Kestra"
-description: "Chose the right tool for the job by keeping your business logic and orchestration logic separate"
+description: "Chose the right tool for the job by keeping your business logic and orchestration logic separate."
 date: 2024-10-30T12:00:00
 category: Solutions
 author:
