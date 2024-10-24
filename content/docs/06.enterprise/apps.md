@@ -5,50 +5,49 @@ editions: ["EE"]
 version: ">= 0.20.0"
 ---
 
-Interact with Kestra using custom apps.
+Build custom UIs to interact with Kestra from the outside world.
 
 ## Overview
 
-Apps make it easy to use your Kestra workflows as a backend for a variety of applications without the need to build custom frontend apps from scratch.
+Apps let you use your Kestra workflows as the backend for custom applications while Apps serve as frontend, allowing anyone to interact with your workflows regardless of their technical background. Business users can manually approve workflows that are paused, submit data to automated processes using simple forms, send requests, and view the execution results.
 
-Apps provide custom UIs that allow anyone in the world to interact with your Kestra workflows without needing to understand the underlying technical details. Business stakeholders can manually approve paused workflows, pass data to automated business processes using simple forms, submit requests, and view the generated results.
-
-You can create custom applications capable of creating new workflow executions, resuming paused executions waiting for manual approval, interacting with Kestra's API, and more. In short, apps allow you and your users to interact with Kestra from the outside world.
+You can build custom applications that trigger new workflow executions, resume paused workflows waiting for approval, or interact with Kestra’s API. In short, Apps allow you and your users to interact with Kestra from the outside world.
 
 ---
 
 ## App Types
 
-Currently, there are two types of apps available in Kestra:
-- **Form Apps**: these apps allow you to create a form that can be used to create a parametrized execution. For example, you can create a form that allows users to enter resources that needs to be provisioned and the user inputs are then fed into a workflow execution that can automatically provision the resources.
-- **Approval Apps**: these apps allow you to create a form that can be used to approve or reject a paused execution. Taking the same example as above, you can create an approval app that allows users to approve or reject the request to provision resources. Based on the approval or rejection, the workflow execution can be resumed to automatically provision the resources or stopped to prevent the resources from being provisioned.
+Currently, Kestra offers two types of Apps:
+- **Form Apps**: these apps allow you to create forms that can trigger workflows with input parameters. For example, a form might allow users to specify resources that need to be provisioned, and their inputs will feed directly into a workflow that automatically provisions those resources.
+- **Approval Apps**: these apps enable forms for approving or rejecting paused workflows. Using the same example, an approval app could be used to either approve or reject a request for provisioning resources. Depending on the decision, the workflow will either resume and provision the resources, or stop.
 
-In the future, you can expect many more types of apps using Kestra's API to create new scheduled flows, interact with the KV store, or trigger other actions. The possibilities are endless! Let us know if you have any specific use cases in mind that you would like to see as an app.
-
----
-
-## Problems that Apps Solve
-
-Apps make it easy to build custom UIs on top of your Kestra workflows. It's common that Kestra users build workflows that are intended to be used by non-technical users. Creating a custom UI for each of these workflows can be tedious — imagine building a frontend app, serving it, connecting it to Kestra's API to trigger the workflow based on provided inputs, validating user inputs, handling responses and workflow execution outputs, handling authentication and authorization, etc. With apps, you can create a custom UI for any flow in seconds and let Kestra handle the rest.
-
-Common use cases that benefit from a custom UI on top of a Kestra workflow include:
-- **Approval Processes**: workflows that require manual approval before proceeding, such as provisioning resources, granting access to IT services, deploying applications, validating data processing results, or reviewing AI-generated outputs.
-- **Report Generation**: workflows where a business user requests some data via inputs and gets a final CSV or Excel file they can preview and download.
-- **IT Helpdesk**: workflows that accept user bug reports, feature requests, or other types of tickets and automatically create a Jira ticket or send an email to the appropriate team.
-- **User Feedback & Signups**: workflows that collect user feedback or allow users to sign up for a product launch or event.
-- **Data Entry**: workflows where a business user needs to enter some data that is then processed by a workflow and the final result is sent back to the user or stored in a database.
-
-In summary, Apps make it easy to **use your Kestra workflows as a backend** for a variety of applications without the need to build custom frontend apps from scratch.
+More types of apps are on the way, such as apps to interact with the KV store, or trigger other actions using Kestra’s API. If you have a specific use case in mind, we’d love to hear about it!
 
 ---
 
-## Creating Apps as Code
+## How Apps Help
 
-To create a new app, navigate to the `Apps` page in the main UI section and click on the **Create** button. Add the app's configuration as code and click **Save**.
+Apps offer custom UIs on top of your Kestra workflows. Often, workflows are designed for non-technical users, and creating custom frontends for each of these workflows can be a lot of work. Imagine having to build and serve a frontend, connect it to Kestra’s API, validate user inputs, handle responses, manage workflow outputs, and deal with authentication and authorization — all from scratch. With Apps, you can generate a custom UI for any flow in seconds, and let Kestra handle the heavy lifting.
 
-### App to Create a New Execution
+Here are some common scenarios where a custom UI is useful:
 
-Below is a minimal configuration for a form app that will create a new execution when submitted:
+- **Manual Approval**: workflows that need manual approval, such as provisioning resources, granting access to services, deploying apps, validating data results, or reviewing AI-generated outputs.
+- **Report Generation**: workflows where business users request data and receive a downloadable CSV or Excel file.
+- **IT Helpdesk**: workflows that accept bug reports, feature requests, or other tickets, and automatically forward the ticket to the relevant team.
+- **User Feedback & Signups**: workflows that collect feedback or allow users to sign up for events or email lists.
+- **Data Entry**: workflows where business users enter data that is processed and either sent back to them or stored in a database.
+
+In short, Apps make it easy to turn your Kestra workflows into interactive applications that anyone can use.
+
+---
+
+## Creating Apps in Code
+
+To create a new app, go to the `Apps` page in the main UI and click the `Create` button. Add your app configuration as code and hit `Save`.
+
+### Example: App to Start a New Execution
+
+Here’s a simple configuration for a form app that triggers a new workflow execution when submitted:
 
 ```yaml
 id: compute_resources_form
@@ -104,10 +103,9 @@ tags:
 ```
 ::
 
-### App to Resume a Paused Execution
+### Example: App to Resume a Paused Execution
 
-
-Here is a minimal configuration for an approval app:
+Below is a simple configuration for an approval app:
 
 ```yaml
 id: compute_resources_form
@@ -119,9 +117,9 @@ access:
   type: PRIVATE
 ```
 
-To see all available properties to configure an approval app, expand the example below.
+To explore all the available properties for configuring an approval app, you can expand the example below.
 
-::collapse{title="Complete Configuration for an Approval App"}
+::collapse{title=“Complete Configuration for an Approval App”}
 
 ```yaml
 id: compute_resources_form
@@ -176,7 +174,7 @@ tags:
 
 ## App Catalog
 
-The App Catalog is a collection of apps that are available to end users. You can filter apps by name, type, namespace and by tags. From the same page, you can create new apps, edit existing ones, as well as temporarily disable or delete apps.
+The App Catalog is where users can find available apps. You can filter apps by name, type, namespace, or tags. From this page, you can also create new apps, edit existing ones, and temporarily disable or delete apps.
 
 ![apps_catalog](/docs/enterprise/apps/apps_catalog.png)
 
@@ -184,34 +182,39 @@ The App Catalog is a collection of apps that are available to end users. You can
 
 ## App Tags
 
-You can add custom tags to help you organize and filter apps in the App Catalog. For example, you can tag apps with `DevOps`, `data-team`, `project-x`, etc. You can then filter apps by tags to quickly find the apps you are looking for.
+You can add custom tags to organize and filter apps in the App Catalog. For example, you might tag apps with `DevOps`, `data-team`, `project-x`. You can then filter apps by tags to quickly find the apps you are looking for.
 
 ---
 
 ## App URL
 
-Each app has a unique URL that you can share with others. When someone opens the URL, they will see the app and can submit requests. You can share the URL with your team members, customers, or partners to allow them to interact with your Kestra workflows.
+Each app has a unique URL that you can share with others. When someone opens the URL, they will see the app and can submit requests. You can share the URL with team members, customers, or partners to let them interact with your Kestra workflows.
 
-The base structure of the app URL is `https://yourHost/ui/tenantId/apps/appId?key=LONGRANDOM`. For example, if the app ID is `compute-resources-form` created within `kestra-tech` tenant, the URL can be `https://demo.kestra.io/ui/production/apps/compute-resources-form?key=LONGRANDOM`.
+The basic structure of an app URL is:
+`https://yourHost/ui/tenantId/apps/appId?key=LONGRANDOM`.
+
+For example, if the app ID is `compute-resources-form` and it's created within `kestra-tech` tenant, the URL could look like:
+`https://demo.kestra.io/ui/production/apps/compute-resources-form?key=LONGRANDOM`.
 
 ---
 
 ## App Access and RBAC Permissions
 
-For each app, you can define either `PUBLIC` or `PRIVATE` access.
+For each app, you can set the access level to either `PUBLIC` or `PRIVATE`.
 
 ### Public Access
 
-When an app is set to `PUBLIC`, everyone with the URL can access the form and submit requests. This is useful when you want to make the app available to a wide audience e.g. for a public event, a product launch, or a user survey.
+When an app is set to `PUBLIC`, anyone with the URL can access the form and submit requests. This is ideal for situations where the app needs to be widely available to collect user feedback or event signups.
 
-### Private Access to use apps
+---
 
-When an app is set to `PRIVATE`, only users with the `APPEXECUTION` RBAC permission can submit requests. This is useful when you want some authorized group of users (non-technical staleholders or external partners) to use the app without being granted a direct access to the Kestra UI. You can generate an invite for such users to join a given Kestra tenant and all they will be able to see is the App Catalog, optionally restricted to apps from a given namespace. This fine-grained access control allows you to build apps that can be used by a specific stakeholders without exposing the entire Kestra UI to them.
+## Private Access for Using Apps
 
+When an app is set to `PRIVATE`, only users with the `APPEXECUTION` RBAC permission can submit requests. This setup works well when you want to allow a specific group (such as business stakeholders or external partners) to use the app without giving them direct access to the Kestra UI. You can invite these users to a specific Kestra tenant, where they’ll only see the App Catalog, optionally restricted to apps in a specific namespace. This fine-grained access control ensures that only authorized users can access and use the apps.
 
-### Private Access to build apps
+## Private Access for Building Apps
 
-Using the `APP` RBAC permission with CRUD actions, you can control who can create, read, update or delete apps in your tenant — as always, this can be restricted to specific namespaces. In contrast to the `APPEXECUTION` permission, the `APP` permission is used to govern the permissions to create, modify, and delete apps.
+The `APP` RBAC permission controls who can create, read, update, or delete apps within a tenant. This permission can also be restricted to specific namespaces. Unlike the `APPEXECUTION` permission which governs the ability to submit requests using apps, the `APP` permission manages the ability to build, modify, and delete apps.
 
 ---
 
@@ -221,33 +224,33 @@ For each app, you can set an expiration date, a time-to-live (TTL), or a limit o
 
 ### Expiration Date
 
-Use an expiration date when you want to make the app available only up to a specific date known ahead of time. For example, if you want to collect ideas for a birthday voucher, you can set the app to expire on the birthday date. After the expiration date, the app will no longer be accessible.
+Set an expiration date when you know exactly how long the app should be available. For example, if you’re collecting ideas for a birthday voucher, you can have the app expire on the birthday. Once the date passes, the app will no longer be accessible.
 
 ### Time-to-Live (TTL)
 
-Use a time-to-live (TTL) when you want to make the app available for a specific period of time. For example, if you want to collect feedback on a new feature, you can set the app to expire 30 days after creating the app. After the TTL expires, the app will no longer be accessible.
+Use a time-to-live (TTL) when you want the app to be available for a specific period, but not tied to a particular date. For example, if you’re collecting feedback on a new feature, you can set the app to expire 30 days after it’s created. Once the TTL expires, the app will be inaccessible.
 
-### Limit on Submissions
+### Submission Limit
 
-Use a limit on submissions when you want to restrict the number of submissions the app can receive. For example, if you want to collect the first 100 responses to a survey, you can set the app to accept only 100 submissions. After the limit is reached, the app URL will no longer be accessible.
+Set a submission limit when you want to restrict the total number of responses the app can accept. For example, if you’re collecting survey responses and only need the first 100, you can limit the app to 100 submissions. After reaching the limit, the app URL will no longer work.
 
 ---
 
 ## On Submit Actions
 
-After a user submits a request using the app, you can choose what action to take next. You can display a text message, display the outputs of the execution, or redirect the user to a specific URL. Let's explore each of these options.
+After a user submits a request through the app, you can define what happens next. You have the option to display a message, show the outputs from the workflow execution, or redirect the user to a specific URL. Let's explore each of these options.
 
 ### Display Text
 
-Use the `DISPLAY_TEXT` action when you want to show a text message to the user after they submit the request. For example, you can show a message like "Thank you for your submission. Your request is now being processed." This is the default action.
+Use `DISPLAY_TEXT` when you want to show a message right after the user submits the request. For example, you could display something like “Thank you for your submission. Your request is now being processed.” This is the default option.
 
 ### Display Outputs
 
-Use the `DISPLAY_OUTPUTS` action when you want to show the flow outputs generated in the execution. For example, if the execution generates a CSV file, user will be able to preview and download the file after submission. If the execution takes a while to complete, you will see a loading animation along with a message "Please don't close this window. The results will be displayed as soon as the processing is complete."
+Choose `DISPLAY_OUTPUTS` to show the flow’s outputs after the request is processed. For example, if the workflow generates a CSV file, the user will be able to preview and download it. If the execution takes some time, they’ll see a loading animation along with a message like “Please don’t close this window. The results will be displayed once processing is complete.”
 
-### Redirect To URL
+### **Redirect to URL
 
-Use the `REDIRECT_TO` action when you want to redirect the user to a specific URL after they submit the request. For example, you can redirect the user to a "Thank you" page on your website. This is useful when you want to show a custom confirmation page after the user submits the request.
+Use `REDIRECT_TO` when you want to send the user to a specific URL after they submit their request. For example, you could redirect them to a custom “Thank you” page on your website. This is useful when you want to show a branded or custom confirmation page.
 
 ---
 
@@ -257,10 +260,14 @@ Kestra offers multiple layout templates to style your app. At the time of writin
 
 You can also customize the color and text of buttons available in the form, as well as the text displayed before and after request submission.
 
+You can also customize the button colors and text within the form, as well as the messages displayed before and after submission.
+
 ---
 
 ## App Executions
 
-Each time a user created an execution by submitting a form in the app, a new execution with a label key `system_app` and a label value `yourAppId` is created. For example, to filter all Executions created by the `compute-resources-form` app, you can type `system_app:compute-resources-form` in the label filter.
 
-For each execution, you can track the user-provided inputs, the current execution state, view the logs, and see the outputs in the Kestra UI. This allows you to troubleshoot issues in your Apps the same way you would with any other workflow execution in Kestra.
+Each time a user creates an execution by submitting a form in the app, a new execution is generated with the label `system_app` and a value of `yourAppId`. For example, to filter all executions created by the `compute-resources-form` app, you can search for `system_app:compute-resources-form` in the label filter.
+
+For every execution, you can track the user inputs, see the current state, view logs, and check the outputs — all from the Kestra UI. This lets you troubleshoot and manage issues with your apps just as you would with any other workflow execution in Kestra.
+
