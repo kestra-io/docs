@@ -4,11 +4,16 @@ title: kestra_binding
 editLink: false
 description: |-
   Manages a Kestra Binding.
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_binding (Resource)
 
 Manages a Kestra Binding.
+
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
 
 ## Example Usage
 

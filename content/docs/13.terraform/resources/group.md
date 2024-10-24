@@ -4,11 +4,16 @@ title: kestra_group
 editLink: false
 description: |-
   Manages a Kestra Group.
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_group (Resource)
 
 Manages a Kestra Group.
+
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
 
 ## Example Usage
 

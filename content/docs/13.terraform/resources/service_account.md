@@ -4,17 +4,22 @@ title: kestra_service_account
 editLink: false
 description: |-
   Manages a Kestra Service Account.
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_service_account (Resource)
 
 Manages a Kestra Service Account.
 
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
+
 ## Example Usage
 
 ```hcl
 resource "kestra_service_account" "example" {
-  username = "my-service-account"
+  username    = "my-service-account"
   description = "Friendly description"
 }
 ```

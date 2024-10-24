@@ -4,11 +4,16 @@ title: kestra_user
 editLink: false
 description: |-
   Use this data source to access information about an existing Kestra User.
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_user (Data Source)
 
 Use this data source to access information about an existing Kestra User.
+
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
 
 ## Example Usage
 

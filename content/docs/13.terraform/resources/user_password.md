@@ -4,11 +4,16 @@ title: kestra_user_password
 editLink: false
 description: |-
   Manages a Kestra User Basic Auth Password.
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_user_password (Resource)
 
 Manages a Kestra User Basic Auth Password.
+
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
 
 ## Example Usage
 

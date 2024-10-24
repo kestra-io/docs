@@ -4,11 +4,16 @@ title: kestra_binding
 editLink: false
 description: |-
   Use this data source to access information about an existing Kestra binding
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_binding (Data Source)
 
 Use this data source to access information about an existing Kestra binding
+
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
 
 ## Example Usage
 

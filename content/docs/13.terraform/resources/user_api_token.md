@@ -4,11 +4,16 @@ title: kestra_user_api_token
 editLink: false
 description: |-
   Manages a Kestra User Api Token.
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_user_api_token (Resource)
 
 Manages a Kestra User Api Token.
+
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
 
 ## Example Usage
 
@@ -16,10 +21,10 @@ Manages a Kestra User Api Token.
 resource "kestra_user_api_token" "example" {
   user_id = "4by6NvSLcPXFhCj8nwbZOM"
 
-  name = "test-token"
+  name        = "test-token"
   description = "Test token"
-  max_age = "PT1H"
-  extended = false
+  max_age     = "PT1H"
+  extended    = false
 }
 ```
 

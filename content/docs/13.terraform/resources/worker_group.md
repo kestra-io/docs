@@ -4,11 +4,16 @@ title: kestra_worker_group
 editLink: false
 description: |-
   Manages a Kestra Worker Group.
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_worker_group (Resource)
 
 Manages a Kestra Worker Group.
+
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
 
 
 

@@ -4,11 +4,16 @@ title: kestra_role
 editLink: false
 description: |-
   Use this data source to access information about an existing Kestra Role.
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_role (Data Source)
 
 Use this data source to access information about an existing Kestra Role.
+
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
 
 ## Example Usage
 
@@ -35,7 +40,7 @@ data "kestra_role" "example" {
 - `description` (String) The role description.
 - `id` (String) The ID of this resource.
 - `name` (String) The role name.
-- `permissions` (Set of Object) The role permissions. (see [below for nested schema](#nested-schema-for-permissions))
+- `permissions` (Set of Object) The role permissions. (see [below for nested schema](#nestedatt--permissions))
 - `tenant_id` (String) The tenant id.
 
 <a id="nestedatt--permissions"></a>

@@ -4,11 +4,16 @@ title: kestra_user
 editLink: false
 description: |-
   Manages a Kestra User.
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_user (Resource)
 
 Manages a Kestra User.
+
+::alert{type="info"}
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+::
 
 ## Example Usage
 
