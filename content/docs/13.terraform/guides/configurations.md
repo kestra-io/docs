@@ -17,6 +17,9 @@ provider "kestra" {
   # mandatory, the Kestra webserver/standalone URL
   url = "http://localhost:8080"
 
+  # optional api token (EE)
+  api_token = "api-token-value"
+
   # optional basic auth username
   username = "john"
 
