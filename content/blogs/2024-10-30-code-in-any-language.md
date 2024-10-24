@@ -153,7 +153,7 @@ print(f'Total Revenue: ${total_revenue}')
 
 Both the `Script` and `Commands` tasks have their benefits allowing you to decide which one is best suited to you.
 
-## Using Languages with the Shell task
+## Write code with the Shell task
 
 While not all languages have dedicated plugins, it’s still simple to use other languages. For languages without dedicated plugins, we can use the Shell Commands task inside of a Docker Task Runner to run any language we need. We can easily specify a container image that has the correct dependencies for the language we want to use, similarly to the python example using the `pydata` image with bundled in dependencies. On top of that, we can run any setup or compile commands prior to running our code. 
 
