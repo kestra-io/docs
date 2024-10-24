@@ -180,8 +180,8 @@ On top of that, we can also still write our code inline too if we’d prefer usi
 
 We can recreate the same example we used in Python below, as well as making it dynamic. Let's look at the example below:
 
-1. We use input to dynamically pass the dataset_url at execution.
-2. We use a `http.Download` task to download the dataset so we can pass it to our C code with the `inputFiles` property.
+1. We use an input to dynamically pass the dataset_url at execution.
+2. Using the `http.Download` task, we will download the dataset so we can pass it to our C code with the `inputFiles` property.
 3. We use `scripts.shell.Commands` task with a `gcc` container image to create a shell environment with the correct tools needed to compile and execute C code.
 5. We pass the csv file into the `inputFiles` property so it's in the same directory as the C code at execution.
 4. Our code is written inline through the `inputFiles` property.
@@ -233,7 +233,7 @@ tasks:
                 double total = 0.0;
                 
                 while (token) {
-                    if (i == 6) { // Assuming the 'total' column is the 5th column
+                    if (i == 6) { // Assuming the 'total' column is the 7th column
                         total = atof(token);
                         total_revenue += total;
                     }
@@ -249,4 +249,6 @@ tasks:
         }
 ```
 
-When we execute this, we'll get the same result in the terminal but using a completely different programming language. This is just the start of what you can do with Kestra’s scripts plugin group To learn more, check out the [dedicated documentation](../docs/04.workflow-components/01.tasks/02.scripts/index.md).
+When we execute this, we'll get the same result in the terminal but using a completely different programming language. This flexibility means we can easily pick a programming language that suits the task at hand, while using the same straightforward process to orchestrate it with Kestra. 
+
+This is just the start of what you can do with Kestra’s scripts plugin group. We can expand this further by generating task outputs from our code, as well as writing output files for later tasks to use as well. If you'd like to learn more, check out the [dedicated documentation](../docs/04.workflow-components/01.tasks/02.scripts/index.md).
