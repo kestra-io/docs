@@ -1041,7 +1041,7 @@ export default {
                 display: inline-block;
                 padding-top: 12px;
                 transform-origin: 50% -50px;
-                transition: transform 450ms, width 450ms, height 450ms;
+                transition: transform 450ms, height 450ms;
                 z-index: 2;
                 position: absolute;
                 top: -1px;
