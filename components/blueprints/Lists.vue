@@ -95,18 +95,6 @@ if(route.query.tags) {
 }
 if(route.query.q) searchQuery.value = route.query.q;
 
-if (!activeTags.value) {
-  const id = route.params.slug?.split('-')[0];
-  const {data: blueprintInformations} = await useAsyncData('blueprints-informations', () => {
-    return $fetch(`/api/blueprint?query=${id}`)
-  })
-
-  activeTags.value = [{ name: 'All tags' }];
-  if (blueprintInformations && blueprintInformations.value) {
-    let tag = tags.value.find(f => f?.id == blueprintInformations.value.page.tags[0]);
-    await navigateTo(`/blueprints/${tag.id}/${route.params.slug}`);
-  }
-}
 const { data: blueprintsData, error } = await useAsyncData('blueprints', () => {
   return $fetch(`${config.public.apiUrl}/blueprints/versions/latest?page=${currentPage.value}&size=${itemsPerPage.value}${route.query.tags ? `&tags=${activeTags.value.map(tag => tag.id).join(',')}` : ''}${route.query.q ? `&q=${searchQuery.value}` : ''}`)
 })
@@ -131,8 +119,7 @@ const changePage = (pageNo) => {
 };
 
 const generateCardHref = (blueprint) => {
-  let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
-  return `/blueprints/${tag.id}/${blueprint.id}`
+  return `/blueprints/${blueprint.id}`
 }
 
 let timer;

@@ -48,9 +48,9 @@
   const generateCardHref = (blueprint) => {
     let tag = tags.value.find(f => f?.id == blueprint.tags[0]);
     if (!tag || !tag.id) {
-        return `/blueprints/unknown/${blueprint.id}`;
+        return `/blueprints/${blueprint.id}`;
     }
-    return `/blueprints/${tag.id}/${blueprint.id}`
+    return `/blueprints/${blueprint.id}`
   }
   if (blueprintsData.value) {
     blueprints.value = blueprintsData.value.results
