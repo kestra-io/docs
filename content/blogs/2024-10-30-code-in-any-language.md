@@ -9,9 +9,6 @@ author:
 image: /blogs/2024-10-30-code-in-any-language.jpg
 ---
 
-
-# Program In Any Language in Kestra
-
 There are many different programming languages, all with different key benefits that make them the right tool for a particular job. That’s why at Kestra we believe it’s important that your business logic is separate from your orchestration logic so you can pick the right tool for each job. Many orchestrators have your business logic and orchestration logic together, for example using Python. This restricts your options if you requirements change in the future.
 
 While Python is a great tool for many problems, it’s not always the best choice for your business logic. For example, some use cases work best using a compiled language like C or Rust for performance advantages, whereas others benefit from the flexibility and ease of using an interpreted language like Python. Another scenario might be that your team is familiar with a specific stack, like Ruby, which is why you want to use that for your business logic as operating faster is more important than code performance. Kestra makes this easy by allowing you to use any programming language.
