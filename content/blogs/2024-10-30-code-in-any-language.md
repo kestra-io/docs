@@ -17,41 +17,45 @@ While Python is a great tool for many problems, it’s not always the best choic
 
 In Kestra, we have a number of dedicated plugins to allow you to use your favorite programming languages in a few lines of YAML. For each of these plugins, there’s the option to write your code directly inside of the task called `Script` tasks, or to run a command to run a dedicated file called `Commands` Tasks. This flexibility means you can keep shorter snippets inside of your YAML without having to introduce multiple files, but for larger more complex projects, you can write them locally in your IDE, push them to Git, and then sync them directly into your Kestra instance for your workflow to execute.
 
-For example, we can write this Python example both as a `Script` task and a `Commands` task. The Python code we’ll use can be found below:
+The example below uses the `pandas` library to get the total revenue from a CSV file of orders and then print it to the terminal:
 
 ```python
-import requests
+import pandas as pd
 
-r = requests.get('https://api.github.com/repos/kestra-io/kestra')
-gh_stars = r.json()['stargazers_count']
-print(gh_stars)
+df = pd.read_csv('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv')
+total_revenue = df['total'].sum()
+print(f'Total Revenue: ${total_revenue}')
 ```
 
-This example uses the `requests` library to fetch the number of stars on the Kestra repository and then print it to the terminal. We can now take this and insert it into a workflow. For a `Script` task, we can write the code inline after the `script` property, and install the `requests` with the `beforeCommands` property.
+Using this example, we can write this both as a `Script` task and a `Commands` task.
+
+### Write your code directly inside your workflow
+
+Taking the example above, we can paste it directly into a new `Script` task. To do this, we need to write the code inline after the `script` property, and install the `pandas` with the `beforeCommands` property.
 
 ```yaml
-id: api_example
+id: example
 namespace: company.team
 
 tasks:
   - id: python_script
     type: io.kestra.plugin.scripts.python.Script
     beforeCommands:
-      - pip install requests
+      - pip install pandas
     script: |
-      import requests
+      import pandas as pd
 
-      r = requests.get('https://api.github.com/repos/kestra-io/kestra')
-      gh_stars = r.json()['stargazers_count']
-      print(gh_stars)
+      df = pd.read_csv('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv')
+      total_revenue = df['total'].sum()
+      print(f'Total Revenue: ${total_revenue}')
 ```
 
-And just like that, in a few lines of YAML, we have a workflow that can run our Python code. By default, these tasks will run inside of a Docker container via a Task Runner to isolate dependencies from other tasks, but also allow us to specify container images that have dependencies pre-installed.
+And just like that, in a few lines of YAML, we have a workflow that can run our Python code. By default, these tasks will run inside of a Docker container via a [Task Runner](../docs/task-runners/index.md) to isolate dependencies from other tasks, but also allow us to specify container images that have dependencies pre-installed.
 
 Below we have an example where we’ve explicitly defined our Docker Task Runner to make it clearer what’s going on under the hood. However, you can still use the `containerImage` property without explicitly defining the task runner. By using the `containerImage` property, we can pick a Python image that includes some pre-installed libraries reducing the need to use `beforeCommands` . In this case, we’re using the `pydata` image which comes with a few useful libraries like `pandas` bundled in. When we run this example, it pulls the docker image and then starts to run our code without issue as the dependencies we need are baked into the image:
 
 ```yaml
-id: api_example
+id: example
 namespace: company.team
 
 tasks:
@@ -68,14 +72,37 @@ tasks:
       print(f'Total Revenue: ${total_revenue}')
 ```
 
-The other perk of using the `Script` task is that we can easily use expressions to make our code more dynamic.
-
-### Executing code from files
-
-If our Python file was much larger and or involved multiple scripts, we should use the `Commands` task instead. We can take the Python code and put it into a file called `api_example.py` .
+The other perk of using the `Script` task is that we can easily use expressions to make our code more dynamic. In the next example, we've made the dataset URL an input and used an expression to add it to our code at execution. This means we can change the dataset every time we execute our workflow, making our workflow more dynamic.
 
 ```yaml
-id: api_example
+id: example
+namespace: company.team
+
+inputs:
+  - id: dataset_url
+    type: STRING
+    defaults: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+tasks:
+  - id: python_script
+    type: io.kestra.plugin.scripts.python.Script
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: ghcr.io/kestra-io/pydata:latest
+    script: |
+      import pandas as pd
+
+      df = pd.read_csv('{{ inputs.dataset_url }}')
+      total_revenue = df['total'].sum()
+      print(f'Total Revenue: ${total_revenue}')
+```
+
+### Write your code in a separate file
+
+If our Python file was much larger and or involved multiple scripts, we should use the `Commands` task instead. We can take the Python code and put it into a file called `example.py` under the `company.team` namespace.
+
+```yaml
+id: example
 namespace: company.team
 
 tasks:
@@ -83,13 +110,48 @@ tasks:
     type: io.kestra.plugin.scripts.python.Commands
     namespaceFiles:
       enabled: true
-    beforeCommands:
-      - pip install requests
+    containerImage: ghcr.io/kestra-io/pydata:latest
     commands:
-      - python api_example.py
+      - python example.py
 ```
 
 One key difference here is the `namespaceFiles` property which allows the task to see files stored in the namespace. This means when we run the task, the container will have these files inside of it for us to use / run commands on. We can either enable this for all files, or use the `includes` and `excludes` property to specify specifics if we want to avoid unrelated or sensitive files being accessed by mistake.
+
+While the Script task made it easy to add dynamic values to our code, we can do the same by passing them into the task as an environment variable and then retrieving them in our Python code using `os.environ`.
+
+```yaml
+id: example
+namespace: company.team
+
+inputs:
+  - id: dataset_url
+    type: STRING
+    defaults: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+tasks:
+  - id: python_commands
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    containerImage: ghcr.io/kestra-io/pydata:latest
+    env:
+      DATASET_URL: "{{ inputs.dataset_url }}"
+    commands:
+      - python example.py
+```
+
+We can modify our Python to fetch the environment variable with `os.environ['DATASET_URL']`:
+
+```python
+import pandas as pd
+import os
+
+df = pd.read_csv(os.environ['DATASET_URL'])
+total_revenue = df['total'].sum()
+print(f'Total Revenue: ${total_revenue}')
+```
+
+Both the `Script` and `Commands` tasks have their benefits allowing you to decide which one is best suited to you.
 
 ## Using Languages with the Shell task
 
