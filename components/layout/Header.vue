@@ -1092,9 +1092,11 @@ export default {
                             overflow: auto;
                             justify-content: flex-start;
                             column-gap: 2rem;
+                            @media only screen and (min-width: 1300px) {
+                                overflow: hidden;
+                            }
                             @media only screen and (min-width: 1570px) {
                                 column-gap: 5.5rem;
-                                overflow: hidden;
                             }
                             &::-webkit-scrollbar {
                                 width: 4px;
