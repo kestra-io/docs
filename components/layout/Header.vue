@@ -1061,7 +1061,7 @@ export default {
                         top: 0;
                         bottom: 0;
                         &.opacity-100 {
-                            transition: opacity 350ms ease;
+                            transition: opacity 700ms ease;
                         }
                         &>.row {
                             &::-webkit-scrollbar {
