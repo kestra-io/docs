@@ -99,7 +99,9 @@ tasks:
 
 ### Write your code in a separate file
 
-If our Python file was much larger and or involved multiple scripts, we should use the `Commands` task instead. We can take the Python code and put it into a file called `example.py` under the `company.team` namespace.
+If our Python file was much larger and or involved multiple scripts, we should use the `Commands` task instead. We can take the Python code and put it into a file called `example.py` under the `company.team` namespace. 
+
+One key difference here is the `namespaceFiles` property which allows the task to see files stored in the namespace. This means when we run the task, the container will have these files inside of it for us to use / run commands on. We can either enable this for all files, or use the `includes` and `excludes` property to specify specifics if we want to avoid unrelated or sensitive files being accessed by mistake.
 
 ```yaml
 id: example
@@ -114,8 +116,6 @@ tasks:
     commands:
       - python example.py
 ```
-
-One key difference here is the `namespaceFiles` property which allows the task to see files stored in the namespace. This means when we run the task, the container will have these files inside of it for us to use / run commands on. We can either enable this for all files, or use the `includes` and `excludes` property to specify specifics if we want to avoid unrelated or sensitive files being accessed by mistake.
 
 While the Script task made it easy to add dynamic values to our code, we can do the same by passing them into the task as an environment variable and then retrieving them in our Python code using `os.environ`.
 
@@ -155,7 +155,7 @@ Both the `Script` and `Commands` tasks have their benefits allowing you to decid
 
 ## Using Languages with the Shell task
 
-While not all languages have official plugins, it’s still simple to use other languages. For languages without official plugins, we can use the Shell Commands task inside of a Docker Task Runner to run any language we need. We can easily specify a container image that has the correct dependencies for the language we want to use, as well as run any setup or compile commands prior to running our code.
+While not all languages have dedicated plugins, it’s still simple to use other languages. For languages without dedicated plugins, we can use the Shell Commands task inside of a Docker Task Runner to run any language we need. We can easily specify a container image that has the correct dependencies for the language we want to use, similarly to the python example using the `pydata` image with bundled in dependencies. On top of that, we can run any setup or compile commands prior to running our code. 
 
 For example, we can run C inside of a workflow by using the Shell Commands task using a `gcc` container image as we need `gcc` to compile our C code before we can execute it.
 
@@ -176,31 +176,77 @@ tasks:
       - ./a.out
 ```
 
-On top of that, we can also still write our code inline too if we’d prefer using the `inputFiles` property. Typically, this property is used for passing files into a task from a FILE input or a file output from an earlier task. Despite this, we can still use it for writing the file inline by using a pipe, allowing us to get the same benefits as the dedicated plugins. We will still run the same command as if the file was a namespace file.
+On top of that, we can also still write our code inline too if we’d prefer using the `inputFiles` property. Typically, this property is used for passing files into a task from a FILE input or a file output from an earlier task. Despite this, we can still use it for writing the file inline by using a pipe, allowing us to get the same benefits as the dedicated plugins. We will still run the same command as if the file was a namespace file. Another thing to note is we don’t need to use the `namespaceFiles` property because we’re using the `inputFiles` property to specify files available.
+
+We can recreate the same example we used in Python below, as well as making it dynamic. Let's look at the example below:
+
+1. We use input to dynamically pass the dataset_url at execution.
+2. We use a `http.Download` task to download the dataset so we can pass it to our C code with the `inputFiles` property.
+3. We use `scripts.shell.Commands` task with a `gcc` container image to create a shell environment with the correct tools needed to compile and execute C code.
+5. We pass the csv file into the `inputFiles` property so it's in the same directory as the C code at execution.
+4. Our code is written inline through the `inputFiles` property.
+6. We use `gcc` to first compile the code, before executing it in a separate command.
 
 ```yaml
 id: c_example
 namespace: company.team
 
+inputs:
+  - id: dataset_url
+    type: STRING
+    defaults: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
 tasks:
+  - id: download_dataset
+    type: io.kestra.plugin.core.http.Download
+    uri: "{{ inputs.dataset_url }}"
+
   - id: c_code
     type: io.kestra.plugin.scripts.shell.Commands
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: gcc:latest
     commands:
-      - gcc hello_world.c
+      - gcc example.c
       - ./a.out
     inputFiles:
-      hello_world.c: |
+      orders.csv: "{{ outputs.download_dataset.uri }}"
+      example.c: |
         #include <stdio.h>
+        #include <stdlib.h>
+        #include <string.h>
 
         int main() {
-          printf("Hello, World!");
-          return 0;
+            FILE *file = fopen("orders.csv", "r");
+            if (!file) {
+                printf("Error opening file!\n");
+                return 1;
+            }
+
+            char line[1024];
+            double total_revenue = 0.0;
+
+            fgets(line, 1024, file);
+            while (fgets(line, 1024, file)) {
+                char *token = strtok(line, ",");
+                int i = 0;
+                double total = 0.0;
+                
+                while (token) {
+                    if (i == 6) { // Assuming the 'total' column is the 5th column
+                        total = atof(token);
+                        total_revenue += total;
+                    }
+                    token = strtok(NULL, ",");
+                    i++;
+                }
+            }
+
+            fclose(file);
+            printf("Total Revenue: $%.2f\n", total_revenue);
+
+            return 0;
         }
 ```
 
-Another thing to note is we don’t need to use the `namespaceFiles` property because we’re using the `inputFiles` property to specify files available.
-
-This is just the start of what you can do with Kestra’s scripts plugin group To learn more, check out the [dedicated documentation](../docs/04.workflow-components/01.tasks/02.scripts/index.md).
+When we execute this, we'll get the same result in the terminal but using a completely different programming language. This is just the start of what you can do with Kestra’s scripts plugin group To learn more, check out the [dedicated documentation](../docs/04.workflow-components/01.tasks/02.scripts/index.md).
