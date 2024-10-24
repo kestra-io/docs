@@ -1,12 +1,12 @@
 ---
 title: "Code in any Language in Kestra"
 description: "Chose the right tool for the job by keeping your business logic and orchestration logic separate."
-date: 2024-10-30T12:00:00
+date: 2024-10-25T12:00:00
 category: Solutions
 author:
   name: Will Russell
   image: "wrussell"
-image: /blogs/2024-10-30-code-in-any-language.jpg
+image: /blogs/2024-10-25-code-in-any-language.jpg
 ---
 
 There are many different programming languages, all with different key benefits that make them the right tool for a particular job. That’s why at Kestra we believe it’s important that your business logic is separate from your orchestration logic so you can pick the right tool for each job. Many orchestrators have your business logic and orchestration logic together, for example using Python. This restricts your options if you requirements change in the future.
