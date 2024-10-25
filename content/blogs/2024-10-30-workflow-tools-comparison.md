@@ -48,7 +48,7 @@ Let's now take a closer look at three widely used workflow orchestration tools: 
 Let's now describe each tool, by providing an overview, a unique feature, and pros and cons to help you get a better understanding for your choiche.
 
 ## Apache Airflow
-![Airflow UI](/blogs/2024-10-DD-workflow-tools-comparison/airflow-UI.png)
+![Airflow UI](/blogs/2024-10-30-workflow-tools-comparison/airflow-UI.png)
 
 [Apache Airflow](https://airflow.apache.org/) is one of the most well-known and widely used workflow orchestration tools. Built by Airbnb and now part of the Apache Software Foundation, Airflow excels at managing workflows in Python with a strong focus on ETL pipelines. It also provides a highly customizable solution for engineers familiar with Python and is widely used in the data engineering and analytics domains.
 
@@ -67,7 +67,7 @@ Airflow uses Directed Acyclic Graphs (DAGs) to define task dependencies, which i
 
 ### Prefect
 
-![Prefect UI](/blogs/2024-10-DD-workflow-tools-comparison/prefect-UI.png)
+![Prefect UI](/blogs/2024-10-30-workflow-tools-comparison/prefect-UI.png)
 
 [Prefect](https://www.prefect.io/) is an open-source orchestration tool that offers both self-hosted and cloud-based solutions, providing flexibility in deployment. Workflows in Prefect are defined using Python, which makes it easy for data professionals to integrate them into existing Python-based projects.
 
@@ -84,7 +84,7 @@ Prefect's hybrid model separates orchestration from execution: this improves sec
 - **Python-centric**: Prefect, like Airflow, is also Python-centric, which means teams that are not familiar with Python may find it challenging to use. Again, this might be a benefit if your tech stack is primarily Python based. 
 
 ### Kestra
-![Kestra UI](/blogs/2024-10-DD-workflow-tools-comparison/kestra-UI.png)
+![Kestra UI](/blogs/2024-10-30-workflow-tools-comparison/kestra-UI.png)
 
 [Kestra](https://kestra.io/) is a modern, distributed orchestration tool built for handling complex workflows at scale. With a focus on scalability and high availability, Kestra is optimized for modern cloud environments and is designed with a cloud-native architecture, making it a great fit for systems that need to scale seamlessly as demands grow. Moreover, it enables users to build workflows either by coding in YAML or directly through its intuitive user interface, bridging the gap between technical and non-technical users and fostering collaboration across different teams.
 
