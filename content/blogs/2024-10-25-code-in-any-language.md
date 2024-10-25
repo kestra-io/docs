@@ -17,7 +17,7 @@ There are only two kinds of programming languages: the ones people complain abou
 
 ---
 
-In this post, we'll look at the different ways that you can run your code inside of Kestra and how you can integrate them further into your workflows to allow you to pass dynamic values to them at execution. Let's dive in!
+In this post, we'll look at the different ways that you can run your code inside of Kestra and how you can make your workflows more dynamic. Let's dive in!
 
 ## Why use different languages?
 
