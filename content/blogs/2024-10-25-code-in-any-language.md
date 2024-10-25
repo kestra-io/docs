@@ -1,6 +1,6 @@
 ---
 title: "Code in any Language in Kestra"
-description: "Chose the right tool for the job by keeping your business logic and orchestration logic separate."
+description: "Separate your business logic from the glue code needed for orchestration."
 date: 2024-10-25T12:00:00
 category: Solutions
 author:
@@ -13,11 +13,13 @@ There are only two kinds of programming languages: the ones people complain abou
 
 In this post, we'll look at how you can simultaneously use multiple popular programming languages to define your tasks and how you can tie them together into an end-to-end workflow using a simple YAML configuration. Let's dive in!
 
+In this post, we'll look at the different ways that you can run your code inside of Kestra and how you can integrate them further into your workflows with dynamic properties. Let's dive in!
+
 While Python is a great tool for many problems, it’s not always the best choice for your business logic. For example, some use cases work best using a compiled language like C or Rust for performance advantages, whereas others benefit from the flexibility and ease of using an interpreted language like Python. 
 
 Another scenario might be that your team is familiar with a specific stack, like Ruby, which is why you want to use that for your business logic as operating faster is more important than code performance. Kestra makes this easy by allowing you to use any programming language.
 
-In Kestra, we have a number of dedicated plugins to allow you to use your favorite programming languages in a few lines of YAML. For each of these plugins, there’s the option to write your code directly inside of the task called `Script` tasks, or to run a command to run a dedicated file called `Commands` Tasks. 
+Inside Kestra, we have a number of dedicated plugins to allow you to use your favorite programming languages in a few lines of YAML. For each of these plugins, there’s the option to write your code directly inside of the task called `Script` tasks, or to run a command to run a dedicated file called `Commands` Tasks. 
 
 This flexibility means you can keep shorter snippets inside of your YAML without having to introduce multiple files, but for larger more complex projects, you can write them locally in your IDE, push them to Git, and then sync them directly into your Kestra instance for your workflow to execute.
 
@@ -146,7 +148,7 @@ tasks:
       - python example.py
 ```
 
-We can modify our Python to fetch the environment variable with `os.environ['DATASET_URL']`:
+We can modify our Python code to fetch the environment variable with `os.environ['DATASET_URL']`:
 
 ```python
 import pandas as pd
@@ -157,7 +159,7 @@ total_revenue = df['total'].sum()
 print(f'Total Revenue: ${total_revenue}')
 ```
 
-Both the `Script` and `Commands` tasks have their benefits allowing you to decide which one is best suited to you.
+Both the `Script` and `Commands` tasks have their benefits allowing you to decide which one is best suited to you. While this example has been purely in Python, we can easily switch to any of the other dedicated plugins thanks to Kestra's YAML configuration.
 
 ## Write code with the Shell task
 
@@ -255,6 +257,6 @@ tasks:
         }
 ```
 
-When we execute this, we'll get the same result in the terminal but using a completely different programming language. This flexibility means we can easily pick a programming language that suits the task at hand, while using the same straightforward process to orchestrate it with Kestra. 
+When we execute this, we'll get the same result in the terminal but using a completely different programming language - and this works for any other language too! This flexibility means we can easily pick a programming language that suits the task at hand, while using the same straightforward process to orchestrate it with Kestra.
 
 This is just the start of what you can do with Kestra’s scripts plugin group. We can expand this further by generating task outputs from our code, as well as writing output files for later tasks to use as well. If you'd like to learn more, check out the [dedicated documentation](../docs/04.workflow-components/01.tasks/02.scripts/index.md).
