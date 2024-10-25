@@ -84,10 +84,9 @@ layout:
       title: Your request is now being processed.
       description: "Please don't close this window. The results will be displayed as soon as the processing is complete."
 expiration:
-  type: TTL
-  ttl: PT30D
-  date: "2024-12-24"
-  limit: 100
+  startDate: "2024-12-1" # optional
+  endDate: "2024-12-24" # optional
+  limit: 100 # optional
 onSubmitAction:
   type: DISPLAY_TEXT # enum: DISPLAY_TEXT | DISPLAY_OUTPUTS | REDIRECT_TO
   redirectTo:
@@ -219,15 +218,17 @@ The `APP` RBAC permission controls who can create, read, update, or delete apps 
 
 ## Expiration and Limits
 
-For each app, you can set an expiration date, a time-to-live (TTL), or a limit on the number of submissions. Let's look at when to use each of these options.
+For each app, you can set an expiration date or a limit on the number of submissions. Let's look at when to use each of these options.
 
 ### Expiration Date
 
-Set an expiration date when you know exactly how long the app should be available. For example, if you’re collecting ideas for a birthday voucher, you can have the app expire on the birthday. Once the date passes, the app will no longer be accessible.
+Set an expiration date (`expiration.endDate`) when you know exactly how long the app should be available. For example, if you’re collecting ideas for a birthday voucher, you can let the app expire on the birthday. Once the date passes, the app will no longer be accessible.
 
-### Time-to-Live (TTL)
-
-Use a time-to-live (TTL) when you want the app to be available for a specific period, but not tied to a particular date. For example, if you’re collecting feedback on a new feature, you can set the app to expire 30 days after it’s created. Once the TTL expires, the app will be inaccessible.
+You can also determine a time period (`expiration.startDate` and `expiration.endDate`) during which the app should be available. For example, if you’re collecting feedback on a new feature, you can set the form app to be available starting on a release date and ending after being live for a week. Both the start and end dates are optional, so you can:
+- let the app be active indefinitely with no start or end date
+- let the app be active indefinitely but starting from a specific start date (e.g. `"2026-01-01"`) with no end date
+- let the app be active for a predetermined period starting from a given start date and ending on a specific end date
+- let the app be active for a predetermined period but only specifying the end date.
 
 ### Submission Limit
 

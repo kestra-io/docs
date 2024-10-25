@@ -9,7 +9,7 @@ Build custom dashboards to visualize your executions, logs and metrics.
 
 ## Overview
 
-Dashboards allow you to define custom queries and charts to visualize data about your executions, logs and metrics. Instead of relying solely on the default dashboard provided by Kestra on the home screen, you can build charts that answer specific questions and monitor key metrics relevant to your organization.
+Dashboards allow you to define custom queries and charts to visualize data about your executions, logs and metrics. Instead of relying solely on the default dashboard provided by Kestra on the home screen, you can build charts that answer specific questions and monitor key metrics.
 
 ## Dashboards Page
 
@@ -190,7 +190,7 @@ charts:
         country:
           field: label.country
           displayName: Country
-          columnAlignment: left #  right, center
+          columnAlignment: LEFT #  RIGHT, CENTER
         project:
           field: label.project
         env:
@@ -225,11 +225,47 @@ charts:
       orderBy:
         total: DESC
         duration: ASC
-# possible WHERE filters are EQUAL_TO, NOT_EQUAL_TO, GREATER_THAN, LESS_THAN, BETWEEN, GREATER_THAN_OR_EQUAL_TO, LESS_THAN_OR_EQUAL_TO, IS_EMPTY, NOT_EMPTY
 ```
 ::
 
-## Adding Filters
+## Querying Data
+
+The `data` property of a chart defines the type of data that will be queried and displayed in the chart. The `type` of data determines the columns that can be displayed in the chart.
+
+Dashboards can query data from the following source `types`:
+- `type: io.kestra.plugin.core.dashboards.data.Executions`: data related to your workflow executions
+- `type: io.kestra.plugin.core.dashboards.data.Logs`: logs produced by your workflows
+- `type: io.kestra.plugin.core.dashboards.data.Metrics`: metrics emitted by your plugins.
+
+Once you define the data source, you can specify the columns to display in the chart. Each column is defined by the `field` and additional optional properties:
+
+| Property | Description                                                                                                         |
+| --- |---------------------------------------------------------------------------------------------------------------------|
+| `field` | The name of the column in the data source. This is the only required field.                                         |
+| `displayName` | The label that will be displayed in the chart                                                                       |
+| `agg` | The aggregation function to apply to the column. Supported aggregations include `COUNT`, `SUM`, `AVG`, `MIN`, `MAX` |
+| `graphStyle` | The style of the graph to display. Supported styles include `LINES`, `BARS`, `POINTS`                               |
+| `columnAlignment` | The alignment of the column in the table. Supported alignments include `LEFT`, `RIGHT`, `CENTER`                    |
+
+
+Additionally, using the `where` property, you can specify conditions to filter the result set before displaying it in the chart. Filters can be applied to any column in the data source. All conditions listed in the `where` property are combined using the `AND` operator. If you need to define multiple conditions, use the `type: OR` property. Here are the available filter types:
+- `EQUAL_TO`
+- `NOT_EQUAL_TO`
+- `GREATER_THAN`
+- `LESS_THAN`
+- `GREATER_THAN_OR_EQUAL_TO`
+- `LESS_THAN_OR_EQUAL_TO`
+- `BETWEEN`
+- `IS_EMPTY`
+- `NOT_EMPTY`
+- `OR`
+- `IN`
+- `NOT_IN`
+- `STARTS_WITH`
+- `ENDS_WITH`
+
+
+## Adding Global Filters
 
 Top-level filters allow you to refine dashboard data across all charts. Filters include:
 
