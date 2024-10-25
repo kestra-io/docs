@@ -90,7 +90,7 @@ tasks:
       print(f'Total Revenue: ${total_revenue}')
 ```
 
-The other perk of using the `Script` task is that we can easily use expressions to make our code more dynamic. In the next example, we've made the dataset URL an input and used an expression to add it to our code at execution. This means we can change the dataset every time we execute our workflow, making our workflow more dynamic.
+The other perk of using the `Script` task is that we can easily use expressions to make our code more dynamic. In the next example, we've made the dataset URL an input and used an expression to add it to our code at execution. This means we can change the dataset every time we execute our workflow, making our workflow dynamic.
 
 ```yaml
 id: example
@@ -117,7 +117,7 @@ tasks:
 
 ## Write code in a separate file with a dedicated plugin
 
-If our Python file was much larger and or involved multiple scripts, we should use the `Commands` task instead. We can take the Python code and put it into a file called `example.py` under the `company.team` namespace. 
+If our code was much larger and or involved multiple files, we should use the `Commands` task instead. With our previous example, we can take the Python code and put it into a file called `example.py` under the `company.team` namespace.
 
 One key difference here is the `namespaceFiles` property which allows the task to see files stored in the namespace. This means when we run the task, the container will have these files inside of it for us to use. We can either enable this for all files, or use the `includes` and `excludes` property to specify specifics if we want to avoid unrelated or sensitive files being accessed by mistake.
 
@@ -135,7 +135,7 @@ tasks:
       - python example.py
 ```
 
-While the Script task made it easy to add dynamic values to our code, we can do the same by passing them into the task as an environment variable and then retrieving them in our Python code using `os.environ`.
+While the Script task made it easy to add dynamic values to our code, we can do the same by passing them into the task as an environment variable and then access them in our code.
 
 ```yaml
 id: example
@@ -169,13 +169,15 @@ total_revenue = df['total'].sum()
 print(f'Total Revenue: ${total_revenue}')
 ```
 
-Both the `Script` and `Commands` tasks have their benefits allowing you to decide which one is best suited to you. While this example has been purely in Python, we can easily switch to any of the other dedicated plugins thanks to Kestra's YAML configuration.
+Both the `Script` and `Commands` tasks have their benefits allowing you to decide which one is best suited to you. While this example has been purely in Python, we can easily switch to any of the other dedicated plugins thanks to Kestra's YAML configuration. Let's take a look at a different language!
 
 ## Write code in a separate file with the Shell task
 
-While not all languages have dedicated plugins, it’s still simple to use other languages. For languages without dedicated plugins, we can use the Shell Commands task inside of a Docker Task Runner to run any language we need. We can easily specify a container image that has the correct dependencies for the language we want to use, similarly to the python example using the `pydata` image with bundled in dependencies. On top of that, we can run any setup or compile commands prior to running our code. 
+While not all languages have dedicated plugins, it’s still simple to use other languages and integrate them into your workflows. 
 
-For example, we can run C inside of a workflow by using the Shell Commands task using a `gcc` container image as we need `gcc` to compile our C code before we can execute it.
+For languages without dedicated plugins, we can use the Shell Commands task inside of a Docker Task Runner to run any language we need. We can easily specify a container image that has the correct dependencies for the language we want to use, similarly to the Python example using the `pydata` image with bundled in dependencies. Lastly, we can run any setup or compile commands prior to running our code.
+
+In this example, we can run C inside of a workflow by using the Shell Commands task using a `gcc` container image, as we need `gcc` to compile our C code before we can execute it.
 
 ```yaml
 id: c_example
@@ -196,7 +198,9 @@ tasks:
 
 ## Write code inline with the Shell task
 
-On top of that, we can also still write our code inline too if we’d prefer using the `inputFiles` property. Typically, this property is used for passing files into a task from a FILE input or a file output from an earlier task. Despite this, we can still use it for writing the file inline by using a pipe, allowing us to get the same benefits as the dedicated plugins. We will still run the same command as if the file was a namespace file. Another thing to note is we don’t need to use the `namespaceFiles` property because we’re using the `inputFiles` property to specify files available.
+We can still write our code inline too if we’d prefer using the `inputFiles` property. Typically, this property is used for passing files into a task from a FILE input or a file output from an earlier task. 
+
+Despite this, we can still use it for writing the file inline by using a pipe, allowing us to get the same benefits as the dedicated plugins. We will still run the same commands as if the file was a namespace file, but because this isn't a namespace file, we don’t need to use the `namespaceFiles` property because we’re using the `inputFiles` property to specify files available.
 
 We can recreate the same example we used in Python below, as well as making it dynamic. Let's look at the example below:
 
@@ -272,3 +276,5 @@ tasks:
 When we execute this, we'll get the same result in the terminal but using a completely different programming language - and this works for any other language too! This flexibility means we can easily pick a programming language that suits the task at hand, while using the same straightforward process to orchestrate it with Kestra. Another way to view it is you can easily change your tech stack without having to completely rebuild your workflows.
 
 This is just the start of what you can do with Kestra’s scripts plugin group. We can expand this further by generating task outputs from our code, as well as writing output files for later tasks to use as well. If you'd like to learn more, check out the [dedicated documentation](../docs/04.workflow-components/01.tasks/02.scripts/index.md).
+
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
