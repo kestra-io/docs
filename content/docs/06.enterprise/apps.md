@@ -67,15 +67,14 @@ To see all available properties to configure this app type, expand the example b
 id: compute_resources_form
 namespace: company.team
 displayName: App allowing to request compute resources
-# System Label: system_app: appId
 disabled: false
 type: io.kestra.plugin.ee.apps.forms.CreateExecution
 title: Compute Resources Request
 description: Submit request for resources
 flowId: request_resources
 flowRevision: latest # optional property
-layout: # TBD whether we need to make it an array
-  template: ADAPTIVE # LIGHT_MODE, DARK_MODE, PURPLE, etc
+layout:
+  template: SYSTEM
   beforeSubmit:
     buttonText: Submit
     color: green
@@ -85,17 +84,17 @@ layout: # TBD whether we need to make it an array
       title: Your request is now being processed.
       description: "Please don't close this window. The results will be displayed as soon as the processing is complete."
 expiration:
-  type: TTL # enum: TTL | DATE | LIMIT -- can be extended in the future if needed
+  type: TTL
   ttl: PT30D
-  date: "2024-12-24" # should ideally also support datetime e.g. `2024-10-17T11:14:40.931407Z`
+  date: "2024-12-24"
   limit: 100
 onSubmitAction:
   type: DISPLAY_TEXT # enum: DISPLAY_TEXT | DISPLAY_OUTPUTS | REDIRECT_TO
   redirectTo:
-    url: "https://example.com/thank-you"  # Redirect URL after submission
+    url: "https://example.com/thank-you"
 access:
   type: PRIVATE
-  groups: ["DevOps"] # future scope
+  # groups: ["DevOps"] # future scope
 tags:
   - DevOps
   - myteam
@@ -119,7 +118,7 @@ access:
 
 To explore all the available properties for configuring an approval app, you can expand the example below.
 
-::collapse{title=“Complete Configuration for an Approval App”}
+::collapse{title="Complete Configuration for an Approval App"}
 
 ```yaml
 id: compute_resources_form
@@ -130,11 +129,11 @@ type: io.kestra.plugin.ee.apps.forms.ResumeExecution
 title: Validate Compute Resources Request
 description: Approve or reject a request for resources
 flowId: request_resources
-flowRevision: latest # optional property
-layout: # optional property
-  template: ADAPTIVE # LIGHT_MODE, DARK_MODE, PURPLE, etc
+flowRevision: latest # optional
+layout: # optional
+  template: SYSTEM
   beforeSubmit:
-    displayInputs: xxx # by default ALL, can also be set to NONE
+    displayInputs: # by default ALL, can also be set to NONE
      - myfirst
      - mysecond
     displayOutputs:  # by default ALL, can also be set to NONE
@@ -157,12 +156,12 @@ expiration:
   date: "2024-12-24"
   limit: 100
 onSubmitAction:
-  type: DISPLAY_TEXT # enum: DISPLAY_TEXT | DISPLAY_OUTPUTS | REDIRECT_TO
+  type: DISPLAY_OUTPUTS # enum: DISPLAY_TEXT | DISPLAY_OUTPUTS | REDIRECT_TO
   redirectTo:
-    url: "https://example.com/thank-you"  # Redirect URL after submission
+    url: "https://example.com/thank-you"
 access:
   type: PRIVATE
-  groups: ["DevOps"] # future scope
+  # groups: ["DevOps"] # future scope
 tags:
   - DevOps
   - myteam
