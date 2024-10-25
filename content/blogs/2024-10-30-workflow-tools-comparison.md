@@ -1,12 +1,12 @@
 ---
 title: "Workflow Orchestration Tools: a Comparison Among Popular Solutions"
 description: "Discover the differences between popular orchestrators, and how to decide which one is the best for you."
-date: 2024-10-xxxxx:00:00
-category: xxxx
+date: 2024-10-30:12:00
+category: Solutions
 author:
   name: Federico Trotta
   image: "ftrotta"
-image: /blogs/xxxxxxxxxxxxx.jpg
+image: /blogs/2024-10-30-workflow-tools-comparison.jpg
 ---
 
 When it comes to automating and managing complex workflows, choosing the right workflow orchestration tool makes a massive difference for your company. As this can simplify your processes or complicate them further, depending on how well it fits your needs. Making an informed decision is essential to ensure the success of your workflows and the overall efficiency of your team.
