@@ -1,6 +1,6 @@
 ---
 title: "Code in any Language in Kestra"
-description: "Separate your business logic from the glue code needed for orchestration."
+description: "Learn how to integrate your code into workflows in Kestra."
 date: 2024-10-25T12:00:00
 category: Solutions
 author:
