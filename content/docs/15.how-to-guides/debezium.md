@@ -8,7 +8,7 @@ topics:
 
 How to enable databases to leverage Debezium tasks and triggers.
 
-In order to ensure the change data capture works seamlessly and get the Debezium tasks and triggers running, you need to perform the necessary setup on the database. We will look into the setup steps in detail.
+In order to ensure the change data capture works seamlessly and to get the Debezium tasks and triggers running, you need to perform the necessary setup on the database. Below are instructions on how to set this up.
 
 ## Debezium with MySQL
 
@@ -38,7 +38,7 @@ mysql> GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIE
 For a description of the required permissions, see [Descriptions of user permissions](https://debezium.io/documentation/reference/3.0/connectors/mysql.html#permissions-explained-mysql-connector).
 
 ::alert{type="info"}
-If using a hosted option such as Amazon RDS or Amazon Aurora that does not allow a global read lock, table-level locks are used to create the consistent snapshot. In this case, you need to also grant LOCK TABLES permissions to the user that you create. See [snapshots](https://debezium.io/documentation/reference/3.0/connectors/mysql.html#mysql-snapshots) for more details.
+If using a hosted option such as Amazon RDS or Amazon Aurora that does not allow a global read lock, table-level locks are used to create the consistent snapshot. In this case, you need to also grant `LOCK TABLES` permissions to the user that you created. See [snapshots](https://debezium.io/documentation/reference/3.0/connectors/mysql.html#mysql-snapshots) for more details.
 ::
 
 3. Finalize the user’s permissions:
