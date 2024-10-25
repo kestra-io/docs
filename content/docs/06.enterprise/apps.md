@@ -192,7 +192,7 @@ Each app has a unique URL that you can share with others. When someone opens the
 The basic structure of an app URL is:
 `https://yourHost/ui/tenantId/apps/appId?key=LONGRANDOM`.
 
-For example, if the app ID is `compute-resources-form` and it's created within `kestra-tech` tenant, the URL could look like:
+For example, if the app ID is `compute-resources-form` and it's created within `kestra-tech` tenant, the URL will look like:
 `https://demo.kestra.io/ui/production/apps/compute-resources-form?key=LONGRANDOM`.
 
 ---
@@ -203,7 +203,7 @@ For each app, you can set the access level to either `PUBLIC` or `PRIVATE`.
 
 ### Public Access
 
-When an app is set to `PUBLIC`, anyone with the URL can access the form and submit requests. This is ideal for situations where the app needs to be widely available to collect user feedback or event signups.
+When an app is set to `PUBLIC`, anyone with the URL can access the form and submit requests. This is ideal for situations where the app needs to be widely available to collect user feedback or conduct a survey. You can share the app URL on social media, embed it within your website, or send it via email.
 
 ---
 
@@ -247,7 +247,7 @@ Use `DISPLAY_TEXT` when you want to show a message right after the user submits 
 
 Choose `DISPLAY_OUTPUTS` to show the flow’s outputs after the request is processed. For example, if the workflow generates a CSV file, the user will be able to preview and download it. If the execution takes some time, they’ll see a loading animation along with a message like “Please don’t close this window. The results will be displayed once processing is complete.”
 
-### **Redirect to URL
+### Redirect to URL
 
 Use `REDIRECT_TO` when you want to send the user to a specific URL after they submit their request. For example, you could redirect them to a custom “Thank you” page on your website. This is useful when you want to show a branded or custom confirmation page.
 
@@ -266,7 +266,7 @@ You can also customize the button colors and text within the form, as well as th
 ## App Executions
 
 
-Each time a user creates an execution by submitting a form in the app, a new execution is generated with the label `system_app` and a value of `yourAppId`. For example, to filter all executions created by the `compute-resources-form` app, you can search for `system_app:compute-resources-form` in the label filter.
+Each time a user creates an execution by submitting a form in the app, a new execution is generated with the system label `system_app` and a value of `yourAppId`. For example, to filter all executions created by the `compute-resources-form` app, you can search for `system_app:compute-resources-form` in the label filter.
 
-For every execution, you can track the user inputs, see the current state, view logs, and check the outputs — all from the Kestra UI. This lets you troubleshoot and manage issues with your apps just as you would with any other workflow execution in Kestra.
+For every execution, you can track the user inputs, see the current state, view logs, and check the outputs — all from the Kestra UI. This lets you observe, troubleshoot and manage issues with your apps just as you would with any other workflow execution in Kestra.
 
