@@ -23,13 +23,13 @@ In this post, we'll look at the different ways that you can run your code inside
 
 While Python is a great tool for many problems, it’s not always the best choice for your business logic. For example, some use cases work best using a compiled language like C or Rust for performance advantages, whereas others benefit from the flexibility and ease of using an interpreted language like Python. 
 
-Another scenario might be that your team is familiar with a specific stack, like Ruby, which is why you want to use that for your business logic as operating faster is more important than code performance. Kestra makes this easy by allowing you to use any programming language interchangeably.
+Another scenario might be that your team is familiar with a specific stack, like Ruby, which is why you want to use that for your business logic, as operating faster is more important than performance. Kestra makes this easy by allowing you to use any programming language interchangeably.
 
 Inside Kestra, we have a number of dedicated plugins to allow you to use your favorite programming languages in a few lines of YAML. For each of these plugins, there’s the option to write your code directly inside of the task called `Script` tasks, or to run a command to run a dedicated file called `Commands` Tasks. 
 
-This flexibility means you can keep shorter snippets inside of your YAML without having to introduce multiple files, but for larger more complex projects, you can write them locally in your IDE, push them to Git, and then sync them directly into your Kestra instance for your workflow to execute.
+This flexibility means you can keep shorter snippets inside of your YAML without having to introduce multiple files, but for larger more complex projects, you can write them locally in your IDE, push them to Git, and then sync them directly into your Kestra instance for your workflow to execute. Also, this works for languages without dedicated plugins too with a few extra lines of YAML.
 
-Let's have a look at a few different ways that you can write code inside of Kestra, regardless of the language choice:
+Let's explore each of these options to help figure out what's right for you:
 1. [Inline with a dedicated plugin](#write-code-directly-inside-your-workflow-with-a-dedicated-plugin)
 2. [In a separate file with a dedicated plugin](#write-code-in-a-separate-file-with-a-dedicated-plugin)
 3. [In a separate file with a Shell task](#write-code-in-a-separate-file-with-the-shell-task)
@@ -47,7 +47,7 @@ total_revenue = df['total'].sum()
 print(f'Total Revenue: ${total_revenue}')
 ```
 
-The example uses the `pandas` library to get the total revenue from a CSV file of orders and then print it to the terminal. Taking the example above, we can paste it directly into a new `Script` task. To do this, we need to write the code inline after the `script` property, and install the `pandas` with the `beforeCommands` property.
+This example uses the `pandas` library to get the total revenue from a CSV file of orders and then print it to the terminal. Taking the example above, we can paste it directly into a new `Script` task without needing to create a new file. To do this, we need to write the code inline after the `script` property, and install the `pandas` with the `beforeCommands` property.
 
 ```yaml
 id: example
@@ -200,10 +200,10 @@ On top of that, we can also still write our code inline too if we’d prefer usi
 
 We can recreate the same example we used in Python below, as well as making it dynamic. Let's look at the example below:
 
-1. We use an input to dynamically pass the dataset_url at execution.
+1. We use an input to dynamically pass the `dataset_url` at execution.
 2. Using the `http.Download` task, we will download the dataset so we can pass it to our C code with the `inputFiles` property.
 3. We use `scripts.shell.Commands` task with a `gcc` container image to create a shell environment with the correct tools needed to compile and execute C code.
-5. We pass the csv file into the `inputFiles` property so it's in the same directory as the C code at execution.
+5. We pass the csv file downloaded in the `download_dataset` task into the `inputFiles` property dynamically so it's in the same directory as the C code at execution.
 4. Our code is written inline through the `inputFiles` property.
 6. We use `gcc` to first compile the code, before executing it in a separate command.
 
@@ -253,7 +253,7 @@ tasks:
                 double total = 0.0;
                 
                 while (token) {
-                    if (i == 6) { // Assuming the 'total' column is the 7th column
+                    if (i == 6) {
                         total = atof(token);
                         total_revenue += total;
                     }
