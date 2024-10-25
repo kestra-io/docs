@@ -11,19 +11,33 @@ image: /blogs/2024-10-25-code-in-any-language.jpg
 
 There are only two kinds of programming languages: the ones people complain about and the ones nobody uses. Each language has its own pros and cons. That's why at Kestra, we offer you the flexibility to code in any language. This functionality is possible because Kestra separates your business logic from the glue code needed for orchestration. 
 
-In this post, we'll look at how you can simultaneously use multiple popular programming languages to define your tasks and how you can tie them together into an end-to-end workflow using a simple YAML configuration. Let's dive in!
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/GBUJTjHE9ig?si=gishd-tTm0oIMXNk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
-In this post, we'll look at the different ways that you can run your code inside of Kestra and how you can integrate them further into your workflows with dynamic properties. Let's dive in!
+---
+
+In this post, we'll look at the different ways that you can run your code inside of Kestra and how you can integrate them further into your workflows to allow you to pass dynamic values to them at execution. Let's dive in!
+
+## Why use different languages?
 
 While Python is a great tool for many problems, it’s not always the best choice for your business logic. For example, some use cases work best using a compiled language like C or Rust for performance advantages, whereas others benefit from the flexibility and ease of using an interpreted language like Python. 
 
-Another scenario might be that your team is familiar with a specific stack, like Ruby, which is why you want to use that for your business logic as operating faster is more important than code performance. Kestra makes this easy by allowing you to use any programming language.
+Another scenario might be that your team is familiar with a specific stack, like Ruby, which is why you want to use that for your business logic as operating faster is more important than code performance. Kestra makes this easy by allowing you to use any programming language interchangeably.
 
 Inside Kestra, we have a number of dedicated plugins to allow you to use your favorite programming languages in a few lines of YAML. For each of these plugins, there’s the option to write your code directly inside of the task called `Script` tasks, or to run a command to run a dedicated file called `Commands` Tasks. 
 
 This flexibility means you can keep shorter snippets inside of your YAML without having to introduce multiple files, but for larger more complex projects, you can write them locally in your IDE, push them to Git, and then sync them directly into your Kestra instance for your workflow to execute.
 
-The example below uses the `pandas` library to get the total revenue from a CSV file of orders and then print it to the terminal:
+Let's have a look at a few different ways that you can write code inside of Kestra, regardless of the language choice:
+1. [Inline with a dedicated plugin](#write-code-directly-inside-your-workflow-with-a-dedicated-plugin)
+2. [In a separate file with a dedicated plugin](#write-code-in-a-separate-file-with-a-dedicated-plugin)
+3. [In a separate file with a Shell task](#write-code-in-a-separate-file-with-the-shell-task)
+4. [Inline with a Shell task](#write-code-inline-with-the-shell-task)
+
+## Write code directly inside your workflow with a dedicated plugin
+
+The simplest way to write code in Kestra is by writing directly inside of your workflow. Let's look at an example which we can add to our workflow:
 
 ```python
 import pandas as pd
@@ -33,11 +47,7 @@ total_revenue = df['total'].sum()
 print(f'Total Revenue: ${total_revenue}')
 ```
 
-Using this example, we can write this both as a `Script` task and a `Commands` task.
-
-## Write code directly inside your workflow
-
-Taking the example above, we can paste it directly into a new `Script` task. To do this, we need to write the code inline after the `script` property, and install the `pandas` with the `beforeCommands` property.
+The example uses the `pandas` library to get the total revenue from a CSV file of orders and then print it to the terminal. Taking the example above, we can paste it directly into a new `Script` task. To do this, we need to write the code inline after the `script` property, and install the `pandas` with the `beforeCommands` property.
 
 ```yaml
 id: example
@@ -105,7 +115,7 @@ tasks:
       print(f'Total Revenue: ${total_revenue}')
 ```
 
-## Write code in a separate file
+## Write code in a separate file with a dedicated plugin
 
 If our Python file was much larger and or involved multiple scripts, we should use the `Commands` task instead. We can take the Python code and put it into a file called `example.py` under the `company.team` namespace. 
 
@@ -161,7 +171,7 @@ print(f'Total Revenue: ${total_revenue}')
 
 Both the `Script` and `Commands` tasks have their benefits allowing you to decide which one is best suited to you. While this example has been purely in Python, we can easily switch to any of the other dedicated plugins thanks to Kestra's YAML configuration.
 
-## Write code with the Shell task
+## Write code in a separate file with the Shell task
 
 While not all languages have dedicated plugins, it’s still simple to use other languages. For languages without dedicated plugins, we can use the Shell Commands task inside of a Docker Task Runner to run any language we need. We can easily specify a container image that has the correct dependencies for the language we want to use, similarly to the python example using the `pydata` image with bundled in dependencies. On top of that, we can run any setup or compile commands prior to running our code. 
 
@@ -183,6 +193,8 @@ tasks:
       - gcc hello_world.c
       - ./a.out
 ```
+
+## Write code inline with the Shell task
 
 On top of that, we can also still write our code inline too if we’d prefer using the `inputFiles` property. Typically, this property is used for passing files into a task from a FILE input or a file output from an earlier task. Despite this, we can still use it for writing the file inline by using a pipe, allowing us to get the same benefits as the dedicated plugins. We will still run the same command as if the file was a namespace file. Another thing to note is we don’t need to use the `namespaceFiles` property because we’re using the `inputFiles` property to specify files available.
 
@@ -257,6 +269,6 @@ tasks:
         }
 ```
 
-When we execute this, we'll get the same result in the terminal but using a completely different programming language - and this works for any other language too! This flexibility means we can easily pick a programming language that suits the task at hand, while using the same straightforward process to orchestrate it with Kestra.
+When we execute this, we'll get the same result in the terminal but using a completely different programming language - and this works for any other language too! This flexibility means we can easily pick a programming language that suits the task at hand, while using the same straightforward process to orchestrate it with Kestra. Another way to view it is you can easily change your tech stack without having to completely rebuild your workflows.
 
 This is just the start of what you can do with Kestra’s scripts plugin group. We can expand this further by generating task outputs from our code, as well as writing output files for later tasks to use as well. If you'd like to learn more, check out the [dedicated documentation](../docs/04.workflow-components/01.tasks/02.scripts/index.md).
