@@ -233,7 +233,7 @@
                                         <BasketOutline />
                                         <p>
                                             <span>For Retail</span><br />
-                                            Empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales
+                                            Empower retail businesses with an event-driven, language-agnostic orchestration platform that scales
                                         </p>
                                     </NuxtLink>
                                 </li>
@@ -632,7 +632,7 @@
                                                     <BasketOutline />
                                                     <p>
                                                         <span>For Retail</span><br />
-                                                        Empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales
+                                                        Empower retail businesses with an event-driven, language-agnostic orchestration platform that scales
                                                     </p>
                                                 </NuxtLink>
                                             </li>
