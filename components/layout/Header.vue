@@ -325,7 +325,7 @@
                                     <NuxtLink class="dropdown-item" href="/partners" @click="globalClick(true)">
                                         <HandshakeOutline />
                                         <p>
-                                            <span>Partner</span><br />
+                                            <span>Partners</span><br />
                                             Use our partner ecosystem to accelerate your Kestra adoption
                                         </p>
                                     </NuxtLink>
@@ -359,7 +359,7 @@
                                             <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
                                                 <BookOpenVariantOutline />
                                                 <p>
-                                                    <span>Customer Story</span><br />
+                                                    <span>Customer Stories</span><br />
                                                     Learn how Enterprises orchestrate their business-critical workflows
                                                 </p>
                                             </NuxtLink>
@@ -762,7 +762,7 @@
                                             <NuxtLink class="dropdown-item" href="/use-cases/stories" @click="globalClick(true)">
                                                 <BookOpenVariantOutline />
                                                 <p>
-                                                    <span>Customer Story</span><br />
+                                                    <span>Customer Stories</span><br />
                                                     Learn how Enterprises orchestrate their business-critical workflows
                                                 </p>
                                             </NuxtLink>
