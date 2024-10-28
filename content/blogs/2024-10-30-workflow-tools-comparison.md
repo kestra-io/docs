@@ -1,5 +1,5 @@
 ---
-title: "Workflow Orchestration Tools: a Comparison Among Popular Solutions"
+title: "Workflow Orchestration Tools: My Take on Airflow, Kestra and Prefect"
 description: "Discover the differences between popular orchestrators, and how to decide which one is the best for you."
 date: 2024-10-30:12:00
 category: Solutions
