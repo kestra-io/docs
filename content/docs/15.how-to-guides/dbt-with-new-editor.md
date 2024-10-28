@@ -41,6 +41,6 @@ tasks:
 
 With the files being present as namespace files, you can open them with the Editor, and make changes as appropriate. 
 
-![dbt_as_namespace_files](/docs/how-to-guides/edit-dbt-files.png)
+![dbt_as_namespace_files](/docs/how-to-guides/dbt-with-new-editor/edit-dbt-files.png)
 
 This simplifies the process of making changes and testing them, leading to faster iterations. The final changes can be then pushed to the GitHub using [PushNamespaceFiles task](./pushnamespacefiles.md).
