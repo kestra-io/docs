@@ -121,7 +121,7 @@ namespace: system
 
 tasks:
   - id: commit_and_push
-    type: io.kestra.plugin.git.PushFlows
+    type: io.kestra.plugin.git.PushNamespaceFiles
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
     url: https://github.com/git_username/scripts
