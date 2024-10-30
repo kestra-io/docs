@@ -9,9 +9,11 @@ Build custom UIs to interact with Kestra from the outside world.
 
 ## Overview
 
-Apps let you use your Kestra workflows as the backend for custom applications while Apps serve as frontend, allowing anyone to interact with your workflows regardless of their technical background. Business users can manually approve workflows that are paused, submit data to automated processes using simple forms, send requests, and view the execution results.
+Apps let you use your Kestra workflows as the backend for custom applications. Within each app, you can specify custom frontend blocks, such as forms for data entry, output displays, approval buttons, or markdown blocks. **Flows** act as the **backend**, processing data and executing tasks, while Apps serve as frontend, allowing anyone to interact with your workflows regardless of their technical background. Business users can trigger new workflow executions, manually approve workflows that are paused, submit data to automated processes using simple forms, and view the execution results.
 
-You can build custom applications that trigger new workflow executions, resume paused workflows waiting for approval, or interact with Kestra’s API. In short, Apps allow you and your users to interact with Kestra from the outside world.
+You can think of Apps as **custom UIs for flows**, allowing your users to interact with Kestra from the outside world.
+
+You can build custom applications that resume paused workflows waiting for approval, or interact with Kestra’s API. In short, Apps allow you and your users to interact with Kestra from the outside world.
 
 ---
 
@@ -21,13 +23,13 @@ Currently, Kestra offers two types of Apps:
 - **Form Apps**: these apps allow you to create forms that can trigger workflows with input parameters. For example, a form might allow users to specify resources that need to be provisioned, and their inputs will feed directly into a workflow that automatically provisions those resources.
 - **Approval Apps**: these apps enable forms for approving or rejecting paused workflows. Using the same example, an approval app could be used to either approve or reject a request for provisioning resources. Depending on the decision, the workflow will either resume and provision the resources, or stop.
 
-More types of apps are on the way, such as apps to interact with the KV store, or trigger other actions using Kestra’s API. If you have a specific use case in mind, we’d love to hear about it!
+More types of apps are on the roadmap, such as apps to interact with the KV store, or trigger other actions using Kestra’s API. If you have a specific use case in mind, we’d love to hear about it!
 
 ---
 
 ## How Apps Help
 
-Apps offer custom UIs on top of your Kestra workflows. Often, workflows are designed for non-technical users, and creating custom frontends for each of these workflows can be a lot of work. Imagine having to build and serve a frontend, connect it to Kestra’s API, validate user inputs, handle responses, manage workflow outputs, and deal with authentication and authorization — all from scratch. With Apps, you can generate a custom UI for any flow in seconds, and let Kestra handle the heavy lifting.
+Apps offer custom UIs on top of your Kestra workflows. Often, workflows are designed for non-technical users, and creating custom frontends for each of these workflows can be a lot of work. Imagine having to build and serve a frontend, connect it to Kestra’s API, validate user inputs, handle responses, manage workflow outputs, and deal with authentication and authorization — all from scratch. **With Apps, you can generate a custom UI for any flow in seconds, and let Kestra handle the heavy lifting.**
 
 Here are some common scenarios where a custom UI is useful:
 
@@ -37,13 +39,13 @@ Here are some common scenarios where a custom UI is useful:
 - **User Feedback & Signups**: workflows that collect feedback or allow users to sign up for events or email lists.
 - **Data Entry**: workflows where business users enter data that is processed and either sent back to them or stored in a database.
 
-In short, Apps make it easy to turn your Kestra workflows into interactive applications that anyone can use.
+In short, Apps make it easy to turn your Kestra workflows into simple applications that anyone can use.
 
 ---
 
 ## Creating Apps in Code
 
-To create a new app, go to the `Apps` page in the main UI and click the `Create` button. Add your app configuration as code and hit `Save`.
+To create a new app, go to the `Apps` page in the main UI and click the `Create` button. Add your app configuration as code and click on `Save`.
 
 ### Example: App to Start a New Execution
 
@@ -52,7 +54,7 @@ Here’s a simple configuration for a form app that triggers a new workflow exec
 ```yaml
 id: compute_resources_form
 type: io.kestra.plugin.ee.apps.forms.CreateExecution
-title: Compute Resources Request
+displayName: Compute Resources Request
 namespace: company.team
 flowId: request_resources
 access:
@@ -65,35 +67,89 @@ To see all available properties to configure this app type, expand the example b
 
 ```yaml
 id: compute_resources_form
-namespace: company.team
-displayName: App allowing to request compute resources
-disabled: false
 type: io.kestra.plugin.ee.apps.forms.CreateExecution
-title: Compute Resources Request
-description: Submit request for resources
+namespace: company.team
 flowId: request_resources
-flowRevision: latest # optional property
+displayName: Compute Resources Request
+template:
+  theme: DARK # AUTO, LIGHT, future: LEROYMERLIN
+  header:
+    image: "kestra://" # TBD how to manage this
+  footer:
+    enabled: false
+
 layout:
-  template: SYSTEM
-  beforeSubmit:
-    buttonText: Submit
-    color: green
-  afterSubmit:
-    displayText: "Thank you for your submission. Your request is now being processed."
-    displayOutputs:
-      title: Your request is now being processed.
-      description: "Please don't close this window. The results will be displayed as soon as the processing is complete."
-expiration:
-  startDate: "2024-12-1" # optional
-  endDate: "2024-12-24" # optional
-  limit: 100 # optional
-onSubmitAction:
-  type: DISPLAY_TEXT # enum: DISPLAY_TEXT | DISPLAY_OUTPUTS | REDIRECT_TO
-  redirectTo:
-    url: "https://example.com/thank-you"
+  - on: START
+    blocks:
+      - type: io.kestra.ee.app.blocks.Markdown
+        content: |
+          # Compute Resources Request
+          Submit a request for resources by filling out the form below.
+
+      - type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm
+
+      - type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton
+        text: Submit
+        color: purple # TBD whether style is needed instead
+
+  - on: RUNNING
+    blocks:
+      - type: io.kestra.ee.app.blocks.Markdown
+        content: |
+          ### Your request is now being processed.
+          "Please don't close this window. The results will be displayed as soon as the processing is complete."
+
+      - type: io.kestra.plugin.ee.apps.blocks.CancelExecutionButton
+        text: Cancel the submission
+        color: red
+
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.ee.app.blocks.Markdown
+        content: |
+          ### The results are ready!
+          Download the file below to view the report.
+
+      - type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs # FlowOuputs? DisplayOutputs?
+        filter: # optional, can be skipped
+          include: [] # no extra "s" please, just include/exclude
+          exclude: []
+
+  - on: FAILURE
+    blocks:
+      - type: io.kestra.ee.app.blocks.Markdown
+        content: |
+          ### Oops, something went wrong!
+          "You are about to be redirected to our documentation in a few seconds!"
+
+      - type: io.kestra.plugin.ee.apps.blocks.RedirectTo
+        uri: https://kestra.io/docs
+        delay: PT5S
+
+  - on: PAUSE
+    condition: "{{ execution.taskId == 'mypausetask' }}"
+    blocks:
+      - type: io.kestra.ee.app.blocks.Markdown
+        content: |
+          ## Please validate the request
+          Inspect the logs and outputs below. Then, approve or reject the request.
+      - type: io.kestra.core.apps.ui.execution.ExecutionLogs
+        filter:
+          logLevel: INFO
+          taskIds: [] # optional, if not set, show all
+      - type: io.kestra.plugin.ee.apps.blocks.FlowResumeForm
+
+      - type: io.kestra.plugin.ee.apps.blocks.FlowResumeButton
+        text: "Continue"
+        style: DEFAULT
+
+      - type: io.kestra.plugin.ee.apps.blocks.FlowCancelButton
+        text: "Cancel"
+        style: DANGER
 access:
   type: PRIVATE
   # groups: ["DevOps"] # future scope
+
 tags:
   - DevOps
   - myteam
@@ -108,7 +164,7 @@ Below is a simple configuration for an approval app:
 ```yaml
 id: compute_resources_form
 type: io.kestra.plugin.ee.apps.forms.ResumeExecution
-title: Compute Resources Request
+displayName: Compute Resources — Approval Request
 namespace: company.team
 flowId: request_resources
 access:
@@ -122,33 +178,66 @@ To explore all the available properties for configuring an approval app, you can
 ```yaml
 id: compute_resources_form
 namespace: company.team
-displayName: App to Approve or Reject Compute Resources Request
-disabled: false
-type: io.kestra.plugin.ee.apps.forms.ResumeExecution
-title: Validate Compute Resources Request
-description: Approve or reject a request for resources
 flowId: request_resources
 flowRevision: latest # optional
+displayName: Approve or Reject Compute Resources Request
+disabled: false
+type: io.kestra.plugin.ee.apps.forms.ResumeExecution
 layout: # optional
-  template: SYSTEM
-  beforeSubmit:
-    displayInputs: # by default ALL, can also be set to NONE
-     - myfirst
-     - mysecond
-    displayOutputs:  # by default ALL, can also be set to NONE
-      - task1
-      - task4
-    approveButton: # Resume the execution
-      text: Approve
-      color: green
-    rejectButton: # Cancel the execution
-      text: Reject
-      color: red
-  afterSubmit:
-    displayText: "Thank you for validating the request. Your response is now being processed."
-    displayOutputs:
-      title: Your request is now being processed.
-      description: "Please don't close this window. The results will be displayed as soon as the processing is complete."
+  - on: PAUSE
+    condition: "{{ execution.taskId == 'mypausetask' }}"
+    blocks:
+      - type: io.kestra.ee.app.blocks.Markdown
+        content: |
+          ## Please validate the request
+          Inspect the logs and outputs below. Then, approve or reject the request.
+
+      - type: io.kestra.plugin.ee.apps.blocks.ExecutionInputs
+        filter: # optional, can be skipped
+          include: []
+          exclude: []
+
+      - type: io.kestra.core.apps.ui.execution.ExecutionLogs
+        filter:
+          logLevel: INFO
+          taskIds: [] # optional, if not set, show all
+
+      - type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs # FlowOuputs? DisplayOutputs?
+        filter: # optional, can be skipped
+          include: []
+          exclude: []
+
+      - type: io.kestra.plugin.ee.apps.blocks.FlowResumeForm
+
+      - type: io.kestra.plugin.ee.apps.blocks.FlowResumeButton
+        text: Approve
+        style: SUCCESS
+
+      - type: io.kestra.plugin.ee.apps.blocks.FlowCancelButton
+        text: Reject
+        style: DANGER
+
+  - on: RESTART # technically, this is on RESTARTED state after Paused state
+    blocks:
+      - type: io.kestra.ee.app.blocks.Markdown
+        content: |
+          ## Thank you for validating the request.
+          Your response is now being processed.
+
+          Please don't close this window. The results will be displayed as soon as the processing is complete.
+
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.ee.app.blocks.Markdown
+        content: |
+          ### The results are ready!
+          Inspect the outputs below.
+
+      - type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs # FlowOuputs? DisplayOutputs?
+        filter: # optional, can be skipped
+          include: [] # no extra "s" please, just include/exclude
+          exclude: []
+
 expiration:
   type: TTL # enum: TTL | DATE | LIMIT -- can be extended in the future if needed
   ttl: PT30D
@@ -254,13 +343,19 @@ Use `REDIRECT_TO` when you want to send the user to a specific URL after they su
 
 ---
 
-## App Layout
+## App Theme Templates
 
-Kestra offers multiple layout templates to style your app. At the time of writing, the available templates include `SYSTEM`, `LIGHT_MODE`, and `DARK_MODE`.
+Kestra offers multiple templates to style your app. At the time of writing, the available templates include `SYSTEM`, `LIGHT`, and `DARK` themes. You can choose the theme that best fits your app’s design and branding.
 
-You can also customize the color and text of buttons available in the form, as well as the text displayed before and after request submission.
+---
 
-You can also customize the button colors and text within the form, as well as the messages displayed before and after submission.
+## App Layout Blocks
+
+Each app is made up of blocks that define the layout and content of the app. You can add blocks for markdown text, forms, buttons, logs, inputs, outputs, and more. The blocks are displayed in a specific order based on the app’s state (e.g. `START`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESTART`).
+
+By combining different blocks, you can create a custom UI that guides users through the app’s workflow. For example, you could start with a markdown block that explains the purpose of the app, followed by a form block for users to enter their data, and a button block to submit the request. You can also add blocks to display logs, outputs, and buttons for approving or rejecting paused workflows.
+
+In terms of customization, you can define custom text, color, and style of buttons within the form, as well as the messages displayed before and after submission.
 
 ---
 
