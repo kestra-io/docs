@@ -194,7 +194,7 @@
     @import "../../assets/styles/_variable.scss";
 
     .card {
-        padding: 32px;
+        padding: 8px;
     }
     .card-title {
         font-size: calc($font-size-base * 1.5);;
