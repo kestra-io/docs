@@ -4,19 +4,19 @@ let menuSizes = {
             width: '780px',
             height: '560px',
             headerMenuTranslateX: 'calc(50vw - 600px)',
-            headerArrowTranslateX: -300
+            headerArrowTranslateX: -344
         },
         xl: {
             width: '780px',
             height: '560px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
-            headerArrowTranslateX: -305
+            headerArrowTranslateX: -332
         },
         lg: {
             width: '780px',
             height: '560px',
             headerMenuTranslateX: 'calc((100vw - 780px) / 2)',
-            headerArrowTranslateX: -270
+            headerArrowTranslateX: -315
         },
     },
     solutions: {
@@ -24,19 +24,19 @@ let menuSizes = {
             width: '1560px',
             height: '690px',
             headerMenuTranslateX: 'calc(50vw - 780px)',
-            headerArrowTranslateX: -222
+            headerArrowTranslateX: -266
         },
         xl: {
             width: '1347px',
             height: '653px',
             headerMenuTranslateX: 'calc((100vw - 1347px) / 2)',
-            headerArrowTranslateX: -222
+            headerArrowTranslateX: -252
         },
         lg: {
             width: '950px',
             height: '653px',
             headerMenuTranslateX: 'calc((100vw - 950px) / 2)',
-            headerArrowTranslateX: -200
+            headerArrowTranslateX: -244
         },
     },
     resources: {
@@ -44,19 +44,19 @@ let menuSizes = {
             width: '1200px',
             height: '580px',
             headerMenuTranslateX: 'calc(50vw - 600px)',
-            headerArrowTranslateX: -133
+            headerArrowTranslateX: -177
         },
         xl: {
             width: '1200px',
             height: '580px',
             headerMenuTranslateX: 'calc((100vw - 1200px) / 2)',
-            headerArrowTranslateX: -140
+            headerArrowTranslateX: -165
         },
         lg: {
             width: '1000px',
             height: '580px',
             headerMenuTranslateX: 'calc((100vw - 1000px) / 2)',
-            headerArrowTranslateX: -115
+            headerArrowTranslateX: -160
         },
     }
 };
