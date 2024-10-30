@@ -79,7 +79,7 @@ template:
     enabled: false
 
 layout:
-  - on: START
+  - on: OPEN
     blocks:
       - type: io.kestra.ee.app.blocks.Markdown
         content: |
@@ -336,18 +336,18 @@ For every execution, you can track the user inputs, see the current state, view 
 
 ## App Layout Blocks
 
-Each app is made up of blocks that define the layout and content of the app. You can add blocks for markdown text, forms, buttons, logs, inputs, outputs, and more. The blocks are displayed in a specific order based on the app’s state (e.g. on `START`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESUME`).
+Each app is made up of blocks that define the layout and content of the app. You can add blocks for markdown text, forms, buttons, logs, inputs, outputs, and more. The blocks are displayed in a specific order based on the app’s state (e.g. on `OPEN`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESUME`).
 
 By combining different blocks, you can create a custom UI that guides users through the app’s workflow. For example, you could start with a markdown block that explains the purpose of the app, followed by a form block for users to enter their inputs, and a button block to submit the request. You can also add blocks to display execution logs, outputs, and buttons for approving or rejecting paused workflows.
 
 
 | Block type               | Available on                      | Properties                                                 | Example                                                                                                               |
 |--------------------------|-----------------------------------|------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| `Markdown`               | START, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR | - `content`                                                | - type: io.kestra.ee.app.blocks.Markdown <br> content: \| <br>  ## Please validate the request <br> Inspect the logs and outputs below. Then, approve or reject the request. |
-| `RedirectTo`             | START, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR | - `uri`: redirect URL <br> - `delay`: delay in seconds      | - type: io.kestra.plugin.ee.apps.blocks.RedirectTo <br> uri: https://kestra.io/docs <br> delay: PT5S                 |
-| `CreateExecutionForm`    | START                             | -                                                          | - type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm                                                           |
+| `Markdown`               | OPEN, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR | - `content`                                                | - type: io.kestra.ee.app.blocks.Markdown <br> content: \| <br>  ## Please validate the request <br> Inspect the logs and outputs below. Then, approve or reject the request. |
+| `RedirectTo`             | OPEN, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR | - `uri`: redirect URL <br> - `delay`: delay in seconds      | - type: io.kestra.plugin.ee.apps.blocks.RedirectTo <br> uri: https://kestra.io/docs <br> delay: PT5S                 |
+| `CreateExecutionForm`    | OPEN                             | -                                                          | - type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm                                                           |
 | `ResumeExecutionForm`    | PAUSE                             | -                                                          | - type: io.kestra.plugin.ee.apps.blocks.ResumeExecutionForm                                                           |
-| `CreateExecutionButton`  | START                             | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | - type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton <br> text: Submit <br> style: SUCCESS <br> size: MEDIUM |
+| `CreateExecutionButton`  | OPEN                             | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | - type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton <br> text: Submit <br> style: SUCCESS <br> size: MEDIUM |
 | `CancelExecutionButton`  | RUNNING, PAUSE                    | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | - type: io.kestra.plugin.ee.apps.blocks.CancelExecutionButton <br> text: Reject <br> style: DANGER <br> size: SMALL |
 | `ResumeExecutionButton`  | PAUSE                             | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | - type: io.kestra.plugin.ee.apps.blocks.ResumeExecutionButton <br> text: Approve <br> style: SUCCESS <br> size: LARGE |
 | `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE   | - `filter`: include, exclude                               | - type: io.kestra.plugin.ee.apps.blocks.ExecutionInputs <br> filter: \| # optional, can be skipped <br> include: [] <br> exclude: [] |
