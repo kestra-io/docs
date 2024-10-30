@@ -44,11 +44,9 @@ Establishing an effective **Ops-Everything** framework requires a comprehensiv
 - **Implement Vendor-Agnostic, Modular Tools**: Using modular tools that don’t restrict innovation allows organizations to evolve with changing needs and avoid limitations of existing systems.
 - **Enable Real-Time Monitoring for All Teams**: Real-time insights empower teams to optimize resources, improve performance, and quickly address disruptions, ensuring a reliable and efficient operational environment.
 
-## Why Kestra? A Step Toward Unified, Collaborative Operations**
+## Why Kestra? A Step Toward Unified, Collaborative Operations
 
 ![dashoboard](/blogs/2024-10-30-ops-everything/dashboard.jpg)
-
-!https://miro.medium.com/v2/resize:fit:1050/1*gmQqYVFEyCFjEfFPwr693A.jpeg
 
 At [**Kestra**](https://github.com/kestra-io/kestra), we’re working to build this **unified approach**, creating an orchestration platform that meets operational needs across data and engineering. Our customers [**Gorgias**](https://kestra.io/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra) and [**Leroy Merlin France**](https://kestra.io/use-cases/stories/14-achieving-agility-and-efficiency-in-data-architecture-with-kestra) underscore the transformative potential of unified workflows. Gorgias integrates Kestra with tools like **Airbyte**, **dbt**, and **Hightouch**, optimizing Infrastructure as Code practices, while Leroy Merlin relies on Kestra to support its **data mesh**, giving business units orchestration access without shadow IT.
 
