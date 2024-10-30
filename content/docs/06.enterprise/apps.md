@@ -217,7 +217,7 @@ layout: # optional
         text: Reject
         style: DANGER
 
-  - on: RESTART # technically, this is on RESTARTED state after Paused state
+  - on: RESUME
     blocks:
       - type: io.kestra.ee.app.blocks.Markdown
         content: |
@@ -307,39 +307,15 @@ The `APP` RBAC permission controls who can create, read, update, or delete apps 
 
 ## Expiration and Limits
 
-For each app, you can set an expiration date or a limit on the number of submissions. Let's look at when to use each of these options.
+For each app, you can set an expiration date (`expiration.endDate`) when you know exactly how long the app should be available. Once the date passes, the app will no longer be accessible.
 
-### Expiration Date
+You can also determine a time period (`expiration.startDate` and `expiration.endDate`) during which the app should be available.
 
-Set an expiration date (`expiration.endDate`) when you know exactly how long the app should be available. For example, if you’re collecting ideas for a birthday voucher, you can let the app expire on the birthday. Once the date passes, the app will no longer be accessible.
-
-You can also determine a time period (`expiration.startDate` and `expiration.endDate`) during which the app should be available. For example, if you’re collecting feedback on a new feature, you can set the form app to be available starting on a release date and ending after being live for a week. Both the start and end dates are optional, so you can:
+For example, if you’re collecting feedback on a new feature, you can set the form app to be available starting on a release date and ending after being live for a week. Both the start and end dates are optional, so you can:
 - let the app be active indefinitely with no start or end date
 - let the app be active indefinitely but starting from a specific start date (e.g. `"2026-01-01"`) with no end date
 - let the app be active for a predetermined period starting from a given start date and ending on a specific end date
 - let the app be active for a predetermined period but only specifying the end date.
-
-### Submission Limit
-
-Set a submission limit when you want to restrict the total number of responses the app can accept. For example, if you’re collecting survey responses and only need the first 100, you can limit the app to 100 submissions. After reaching the limit, the app URL will no longer work.
-
----
-
-## On Submit Actions
-
-After a user submits a request through the app, you can define what happens next. You have the option to display a message, show the outputs from the workflow execution, or redirect the user to a specific URL. Let's explore each of these options.
-
-### Display Text
-
-Use `DISPLAY_TEXT` when you want to show a message right after the user submits the request. For example, you could display something like “Thank you for your submission. Your request is now being processed.” This is the default option.
-
-### Display Outputs
-
-Choose `DISPLAY_OUTPUTS` to show the flow’s outputs after the request is processed. For example, if the workflow generates a CSV file, the user will be able to preview and download it. If the execution takes some time, they’ll see a loading animation along with a message like “Please don’t close this window. The results will be displayed once processing is complete.”
-
-### Redirect to URL
-
-Use `REDIRECT_TO` when you want to send the user to a specific URL after they submit their request. For example, you could redirect them to a custom “Thank you” page on your website. This is useful when you want to show a branded or custom confirmation page.
 
 ---
 
@@ -365,4 +341,3 @@ In terms of customization, you can define custom text, color, and style of butto
 Each time a user creates an execution by submitting a form in the app, a new execution is generated with the system label `system_app` and a value of `yourAppId`. For example, to filter all executions created by the `compute-resources-form` app, you can search for `system_app:compute-resources-form` in the label filter.
 
 For every execution, you can track the user inputs, see the current state, view logs, and check the outputs — all from the Kestra UI. This lets you observe, troubleshoot and manage issues with your apps just as you would with any other workflow execution in Kestra.
-
