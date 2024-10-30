@@ -11,20 +11,25 @@ Build custom dashboards to visualize your executions, logs and metrics.
 
 Dashboards allow you to define custom queries and charts to visualize data about your executions, logs and metrics. Instead of relying solely on the default dashboard provided by Kestra on the home screen, you can build charts that answer specific questions and monitor key metrics.
 
-## Dashboards Page
+## The Dashboard Page
 
-The **Dashboards** page is your central hub for creating and managing dashboards. Here, you’ll find a table listing all available dashboards, along with a `+ Create` button to add new ones.
+The **Dashboard** page shows the default dashboard along with all custom dashboards you create. From the hambuger menu, you can switch to any dashboard you have created. If you have more than 10 dashboards, you can search for a specific dashboard by typing its name in the search bar. From the same menu, you can also edit or delete existing dashboards.
+
+![main_page](/docs/enterprise/dashboards/main_page.png)
+
+The `+ Create a new dashboard` button allows you to create a new dashboard defined as code.
 
 ## Creating a Dashboard as Code
 
-When you click on the `+ Create` button, you’ll be taken to a Code Editor where you can define the dashboard layout and data sources as code.
+When you click on the `+ Create a new dashboard` button, you’ll be taken to a Code Editor where you can define the dashboard layout and data sources as code.
 
 Here’s an example of a dashboard definition that will display executions per project:
 
 ```yaml
 id: mydashboard
-title: Executions per project
+displayName: Executions per project
 description: Count executions per project and execution state
+
 timeWindow:
   default: P30D
   max: P365D
@@ -35,7 +40,7 @@ charts:
     timeseries:
       column: executionDate
     panelOptions:
-      title: Executions per project
+      displayName: Executions per project
     data:
       type: io.kestra.plugin.core.dashboards.data.Executions
       columns:
@@ -65,7 +70,7 @@ To see all available properties to configure a custom dashboard as code, expand 
 ::collapse{title="Complete Configuration for a Dashboard Definition"}
 ```yaml
 id: countries
-title: Executions per country
+displayName: Executions per country
 description: Count executions per country label and execution state
 timeWindow:
   default: P30D # P30DT30H
@@ -77,7 +82,7 @@ charts:
     timeseries:
       column: executionDate
     panelOptions:
-      title: Executions per country over time
+      displayName: Executions per country over time
       description: Count executions per country label and execution state # optional icon on hover
       tooltip: ALL # ALL, NONE, SINGLE
       legend:
@@ -119,7 +124,7 @@ charts:
   - id: markdown_section
     type: io.kestra.plugin.core.dashboards.charts.Markdown
     panelOptions:
-      title: Executions per country over time
+      displayName: Executions per country over time
       description: Count executions per country label and execution state # optional icon on hover
     markdownContent: |
       ## This is a markdown panel
@@ -127,7 +132,7 @@ charts:
   - id: executions_per_country
     type: io.kestra.plugin.core.dashboards.BarChart
     panelOptions:
-      title: Executions per country
+      displayName: Executions per country
       description: Count executions per country label and execution state # optional icon on hover
       tooltip: ALL # ALL, NONE, SINGLE
       legend:
@@ -158,7 +163,7 @@ charts:
   - id: total_executions_per_country
     type: io.kestra.plugin.core.dashboards.charts.PieChart
     panelOptions:
-      title: Executions per country
+      displayName: Executions per country
       description: Count executions per country label and execution state
       graphStyle: PIE # PIE, DONUT - donutdefault
       legend:
@@ -178,7 +183,7 @@ charts:
   - id: table
     type: io.kestra.plugin.core.dashboards.charts.Table
     panelOptions:
-      title: Executions per country
+      displayName: Executions per country
       description: Count executions per country label and execution state
       header:
         enabled: true # header = column names; in the future can add customization
@@ -255,9 +260,8 @@ Additionally, using the `where` property, you can specify conditions to filter t
 - `LESS_THAN`
 - `GREATER_THAN_OR_EQUAL_TO`
 - `LESS_THAN_OR_EQUAL_TO`
-- `BETWEEN`
-- `IS_EMPTY`
-- `NOT_EMPTY`
+- `IS_NULL`
+- `NOT_NULL`
 - `OR`
 - `IN`
 - `NOT_IN`
