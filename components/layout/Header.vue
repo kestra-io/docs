@@ -384,6 +384,13 @@
                         </NuxtLink>
                     </li>
                     <li class="nav-item">
+                        <NuxtLink class="nav-link" href="/blueprints" role="button" @click="globalClick(true)">
+                            <span>
+                                Blueprints
+                            </span>
+                        </NuxtLink>
+                    </li>
+                    <li class="nav-item">
                         <NuxtLink class="nav-link dropdown-toggle" href="/pricing" role="button" @click="globalClick(true)">
                             <span>
                                 Pricing
