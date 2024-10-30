@@ -602,8 +602,6 @@ We've also added a new **Excel plugin** to [read from and write to multiple shee
 
 The SSH Command plugin has been updated to [support OpenSSH config authentication](https://github.com/kestra-io/plugin-fs/pull/154/files).
 
-Finally, we’ve [updated](https://github.com/kestra-io/plugin-docker/issues/32) the Docker `Push` task to support a `protocol` — an Enum-type property that allows pushing images to private registries using either HTTPS (default) or HTTP.
-
 ---
 
 ## Other Enhancements
