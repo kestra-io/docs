@@ -45,7 +45,7 @@ In short, Apps make it easy to turn your Kestra workflows into simple applicatio
 
 ## Creating Apps in Code
 
-To create a new app, go to the `Apps` page in the main UI and click the `Create` button. Add your app configuration as code and click on `Save`.
+To create a new app, go to the `Apps` page in the main UI and click the `+ Create` button. Add your app configuration as code and click on `Save`.
 
 ### Example: App to Start a New Execution
 
@@ -146,6 +146,7 @@ layout:
       - type: io.kestra.plugin.ee.apps.blocks.FlowCancelButton
         text: "Cancel"
         style: DANGER
+
 access:
   type: PRIVATE
   # groups: ["DevOps"] # future scope
@@ -305,7 +306,7 @@ The `APP` RBAC permission controls who can create, read, update, or delete apps 
 
 ---
 
-## Expiration and Limits
+## Expiration
 
 For each app, you can set an expiration date (`expiration.endDate`) when you know exactly how long the app should be available. Once the date passes, the app will no longer be accessible.
 
@@ -325,19 +326,19 @@ Kestra offers multiple templates to style your app. At the time of writing, the 
 
 ---
 
-## App Layout Blocks
+## App Executions
 
-Each app is made up of blocks that define the layout and content of the app. You can add blocks for markdown text, forms, buttons, logs, inputs, outputs, and more. The blocks are displayed in a specific order based on the app’s state (e.g. `START`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESTART`).
+Each time a user creates an execution by submitting a form in the app, a new execution is generated with the system label `system.app` and a value of `yourAppId`. For example, to filter all executions created by the `computeResourcesForm` app, you can search for `system.app:computeResourcesForm` in the label filter.
 
-By combining different blocks, you can create a custom UI that guides users through the app’s workflow. For example, you could start with a markdown block that explains the purpose of the app, followed by a form block for users to enter their data, and a button block to submit the request. You can also add blocks to display logs, outputs, and buttons for approving or rejecting paused workflows.
-
-In terms of customization, you can define custom text, color, and style of buttons within the form, as well as the messages displayed before and after submission.
+For every execution, you can track the user inputs, see the current state, view logs, and check the outputs — all from the Kestra UI. This lets you observe, troubleshoot and manage issues with your apps just as you would with any other workflow execution in Kestra.
 
 ---
 
-## App Executions
+## App Layout Blocks
 
+Each app is made up of blocks that define the layout and content of the app. You can add blocks for markdown text, forms, buttons, logs, inputs, outputs, and more. The blocks are displayed in a specific order based on the app’s state (e.g. `START`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESUME`).
 
-Each time a user creates an execution by submitting a form in the app, a new execution is generated with the system label `system_app` and a value of `yourAppId`. For example, to filter all executions created by the `compute-resources-form` app, you can search for `system_app:compute-resources-form` in the label filter.
+By combining different blocks, you can create a custom UI that guides users through the app’s workflow. For example, you could start with a markdown block that explains the purpose of the app, followed by a form block for users to enter their inputs, and a button block to submit the request. You can also add blocks to display execution logs, outputs, and buttons for approving or rejecting paused workflows.
 
-For every execution, you can track the user inputs, see the current state, view logs, and check the outputs — all from the Kestra UI. This lets you observe, troubleshoot and manage issues with your apps just as you would with any other workflow execution in Kestra.
+In terms of customization, you can define custom text, color, and style of buttons within the form, as well as the messages displayed before and after submissions.
+
