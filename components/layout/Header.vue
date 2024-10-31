@@ -1449,7 +1449,7 @@ export default {
                 height: 100%;
                 width: 180px;
                 @include media-breakpoint-down(xl) {
-                    width: 150px;
+                    width: 130px;
                 }
                 @include media-breakpoint-down(lg) {
                     width: 110px;
@@ -1544,6 +1544,7 @@ export default {
                     @include media-breakpoint-down(xl) {
                         padding-right: 5px;
                         padding-left: 5px;
+                        font-size: 14px;
                     }
 
                     @include media-breakpoint-down(lg) {
@@ -1553,7 +1554,6 @@ export default {
                         display: flex;
                         justify-content: space-between;
                         padding: 1.6rem 2rem;
-                        font-size: 18px;
                         font-weight: 500;
                         line-height: 26px;
                     }
