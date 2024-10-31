@@ -22,7 +22,7 @@ There are 2 GitHub Actions available:
 
 ## Validate Your Flows
 
-Using the Validate Action, we can setup our workflow to check all flows inside of the `directory` specified when a commit is pushed to `main` and a Pull Request is opened for the `main` branch. For the full list of inputs, check out the reference [here](../version-control-cicd/cicd/01.github-action.md#validate-inputs).
+Using the Validate Action, we can set up our workflow to check all flows inside of the `directory` specified when a commit is pushed to `main` and a Pull Request is opened for the `main` branch. For the full list of inputs, check out the reference [here](../version-control-cicd/cicd/01.github-action.md#validate-inputs).
 
 In the example below:
 1. Triggers when a commit is pushed to `main` or when a PR is opened for the `main` branch.
@@ -55,7 +55,7 @@ jobs:
 
 ## Deploy Your Flows
 
-Using the Deploy Action, we can setup our workflow to deploy when new commits are pushed to our `main` branch. Like the Validate Action, we will need to specify a `directory` and `resource`, which includes namespace files too. For the full list, check out the reference [here](../version-control-cicd/cicd/01.github-action.md#deploy-inputs).
+Using the Deploy Action, we can set up our workflow to deploy when new commits are pushed to our `main` branch. Like the Validate Action, we will need to specify a `directory` and `resource`, which includes namespace files too. For the full list, check out the reference [here](../version-control-cicd/cicd/01.github-action.md#deploy-inputs).
 
 On top of that, we need to specify a namespace that want these flows to be deployed to. We can only chose one namespace meaning if we want to deploy multiple, we will need to add multiple steps using the Deploy Action.
 
@@ -143,9 +143,9 @@ jobs:
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}
 ```
 
-## Set Up Branch Rulesets to enforce checks before deploying
+## Set Up Branch Rulesets
 
-If you're working in a team, it can be useful to set up a [Ruleset](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) on your main branch to prevent broken flows from being deployed to your production Kestra instance.
+If you're working in a team, it can be useful to set up a [Ruleset](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) on your `main` branch to prevent broken flows from being deployed to your production Kestra instance if you have the Kestra Deploy Action setup. 
 
 To do this, go to the Settings of your repository on GitHub and go to Rules then Rulesets. In here, we can create a new branch ruleset.
 
