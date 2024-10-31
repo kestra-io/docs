@@ -53,7 +53,7 @@ Here’s a simple configuration for a form app that triggers a new workflow exec
 
 ```yaml
 id: compute_resources_form
-type: io.kestra.plugin.ee.apps.forms.CreateExecution
+type: io.kestra.plugin.ee.apps.Execution
 displayName: Compute Resources Request
 namespace: company.team
 flowId: request_resources
@@ -67,9 +67,10 @@ To see all available properties to configure this app type, expand the example b
 
 ```yaml
 id: compute_resources_form
-type: io.kestra.plugin.ee.apps.forms.CreateExecution
+type: io.kestra.plugin.ee.apps.Execution
 namespace: company.team
 flowId: request_resources
+executionId: abc123 # optional property e.g. if you want to display the execution progress/outputs of a specific execution
 displayName: Compute Resources Request
 template:
   theme: DARK # AUTO, LIGHT, future: LEROYMERLIN
@@ -164,7 +165,7 @@ Below is a simple configuration for an approval app:
 
 ```yaml
 id: compute_resources_form
-type: io.kestra.plugin.ee.apps.forms.ResumeExecution
+type: io.kestra.plugin.ee.apps.Execution
 displayName: Compute Resources — Approval Request
 namespace: company.team
 flowId: request_resources
@@ -183,7 +184,7 @@ flowId: request_resources
 flowRevision: latest # optional
 displayName: Approve or Reject Compute Resources Request
 disabled: false
-type: io.kestra.plugin.ee.apps.forms.ResumeExecution
+type: io.kestra.plugin.ee.apps.Execution
 layout: # optional
   - on: PAUSE
     condition: "{{ execution.taskId == 'mypausetask' }}"
@@ -341,17 +342,17 @@ Each app is made up of blocks that define the layout and content of the app. You
 By combining different blocks, you can create a custom UI that guides users through the app’s workflow. For example, you could start with a markdown block that explains the purpose of the app, followed by a form block for users to enter their inputs, and a button block to submit the request. You can also add blocks to display execution logs, outputs, and buttons for approving or rejecting paused workflows.
 
 
-| Block type               | Available on                      | Properties                                                                                  | Example                                                                                                               |
-|--------------------------|-----------------------------------|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| `Markdown`               | OPEN, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR | - `content`                                                                                 | `- type: io.kestra.ee.app.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."` |
-| `RedirectTo`             | OPEN, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR | - `uri`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`uri: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT5S"` |
-| `CreateExecutionForm`    | OPEN                             | None                                                                                        | `- type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm` |
-| `ResumeExecutionForm`    | PAUSE                             | None                                                                                        | `- type: io.kestra.plugin.ee.apps.blocks.ResumeExecutionForm` |
-| `CreateExecutionButton`  | OPEN                             | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Submit"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "MEDIUM"` |
-| `CancelExecutionButton`  | RUNNING, PAUSE                    | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.blocks.CancelExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Reject"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "DANGER"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "SMALL"` |
-| `ResumeExecutionButton`  | PAUSE                             | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"` |
-| `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE   | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.blocks.ExecutionInputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
-| `ExecutionOutputs`       | PAUSE, RESUME, SUCCESS, FAILURE   | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
-| `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE   | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.core.apps.ui.execution.ExecutionLogs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
+| Block type               | Available on                                                    | Properties                                                                                  | Example                                                                                                               |
+|--------------------------|-----------------------------------------------------------------|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| `Markdown`               | OPEN, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `content`                                                                                 | `- type: io.kestra.ee.app.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."` |
+| `RedirectTo`             | OPEN, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `uri`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`uri: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT5S"` |
+| `CreateExecutionForm`    | OPEN                                                            | None                                                                                        | `- type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm` |
+| `ResumeExecutionForm`    | PAUSE                                                           | None                                                                                        | `- type: io.kestra.plugin.ee.apps.blocks.ResumeExecutionForm` |
+| `CreateExecutionButton`  | OPEN                                                            | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Submit"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "MEDIUM"` |
+| `CancelExecutionButton`  | RUNNING, PAUSE                                                  | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.blocks.CancelExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Reject"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "DANGER"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "SMALL"` |
+| `ResumeExecutionButton`  | PAUSE                                                           | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"` |
+| `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.blocks.ExecutionInputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
+| `ExecutionOutputs`       | PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
+| `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK                               | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.core.apps.ui.execution.ExecutionLogs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
 
 Everything is customizable, from the text and style of buttons to the messages displayed before and after submissions.
