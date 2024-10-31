@@ -9,21 +9,21 @@ Build custom dashboards to visualize your executions, logs and metrics.
 
 ## Overview
 
-Dashboards allow you to define custom queries and charts to visualize data about your executions, logs and metrics. Instead of relying solely on the default dashboard provided by Kestra on the home screen, you can build charts that answer specific questions and monitor key metrics.
+Dashboards let you define custom queries and charts to visualize data on your executions, logs, and metrics. Rather than relying only on the default dashboard on Kestra’s home screen, you can create charts that answer specific questions and track key metrics.
 
 ## The Dashboard Page
 
-The **Dashboard** page shows the default dashboard along with all custom dashboards you create. From the hambuger menu, you can switch to any dashboard you have created. If you have more than 10 dashboards, you can search for a specific dashboard by typing its name in the search bar. From the same menu, you can also edit or delete existing dashboards.
+The Dashboard page displays both the **default dashboard** and any **custom dashboards** you’ve created. To switch between dashboards, use the hamburger menu. If you have over 10 dashboards, simply type the dashboard name in the search bar to quickly find it. The same menu also lets you edit or delete existing dashboards.
 
 ![main_page](/docs/enterprise/dashboards/main_page.png)
 
-The `+ Create a new dashboard` button allows you to create a new dashboard defined as code.
+The `+ Create a new dashboard` button lets you set up a new dashboard defined directly as code.
 
-## Creating a Dashboard as Code
+## Create a new Dashboard as Code
 
-When you click on the `+ Create a new dashboard` button, you’ll be taken to a Code Editor where you can define the dashboard layout and data sources as code.
+Clicking on the `+ Create a new dashboard` button opens a Code Editor where you can define the dashboard layout and data sources in code.
 
-Here’s an example of a dashboard definition that will display executions per project:
+Here's an example of a dashboard definition that displays executions per project:
 
 ```yaml
 id: mydashboard
@@ -235,14 +235,15 @@ charts:
 
 ## Querying Data
 
-The `data` property of a chart defines the type of data that will be queried and displayed in the chart. The `type` of data determines the columns that can be displayed in the chart.
+The `data` property of a chart defines the type of data that will be queried and displayed. The `type` determines which columns are available for display.
 
-Dashboards can query data from the following source `types`:
+Dashboards can query data from these source `types`:
 - `type: io.kestra.plugin.core.dashboards.data.Executions`: data related to your workflow executions
 - `type: io.kestra.plugin.core.dashboards.data.Logs`: logs produced by your workflows
-- `type: io.kestra.plugin.core.dashboards.data.Metrics`: metrics emitted by your plugins.
+- `type: io.kestra.plugin.core.dashboards.data.Metrics`: metrics emitted by your plugins
 
-Once you define the data source, you can specify the columns to display in the chart. Each column is defined by the `field` and additional optional properties:
+After defining the data source, specify the columns to display in the chart. Each column is defined by the `field` and may include additional optional properties.
+
 
 | Property | Description                                                                                                         |
 | --- |---------------------------------------------------------------------------------------------------------------------|
@@ -253,7 +254,9 @@ Once you define the data source, you can specify the columns to display in the c
 | `columnAlignment` | The alignment of the column in the table. Supported alignments include `LEFT`, `RIGHT`, `CENTER`                    |
 
 
-Additionally, using the `where` property, you can specify conditions to filter the result set before displaying it in the chart. Filters can be applied to any column in the data source. All conditions listed in the `where` property are combined using the `AND` operator. If you need to define multiple conditions, use the `type: OR` property. Here are the available filter types:
+You can also use the `where` property to set conditions that filter the result set before displaying it in the chart. Filters can apply to any column in the data source, with all conditions in the `where` property combined using the `AND` operator. If multiple conditions are needed with different logic, you can use the `type: OR` property.
+
+Available filter types include:
 - `EQUAL_TO`
 - `NOT_EQUAL_TO`
 - `GREATER_THAN`
@@ -268,14 +271,13 @@ Additionally, using the `where` property, you can specify conditions to filter t
 - `STARTS_WITH`
 - `ENDS_WITH`
 
-
 ## Adding Global Filters
 
-Top-level filters allow you to refine dashboard data across all charts. Filters include:
+Top-level filters let you refine data across the entire dashboard, applying to all charts. Available filters include:
 
 - **Namespace**: multiselect dropdown
 - **Labels**: multiselect dropdown
 - **Date range**: date range selector
-- **Refresh**: whether to update the dashboard data in real-time or on-demand, similar to the main dashboard.
+- **Refresh**: controls whether to update dashboard data in real-time or on-demand, similar to the main dashboard.
 
-These filters help narrow down data across all charts without modifying the code each time.
+These filters will filter data across all charts without any code changes.
