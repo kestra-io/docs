@@ -8,6 +8,10 @@ topics:
 
 How you can use secrets in various Kestra use cases.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## What are Secrets
 
 Secrets are sensitive information that you do not want to reveal to the world. This could be your passwords, access keys, tokens, or even personal information like SSN number. For a detailed overview of sercets, see the [Secrets](../05.concepts/04.secret.md) documentation page. Through this guide, we'll show you how to add secrets to your Kestra server by providing a `.env` file to the server.
