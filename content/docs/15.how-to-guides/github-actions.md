@@ -1,6 +1,6 @@
 ---
 title: Validate and Deploy your Flows with GitHub Actions
-icon: /docs/icons/tutorial.svg
+icon: /docs/icons/github.svg
 stage: Intermediate
 topics:
   - Integrations
