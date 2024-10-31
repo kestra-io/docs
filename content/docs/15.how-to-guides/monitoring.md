@@ -16,7 +16,7 @@ Kestra exposes [Prometheus](https://prometheus.io/) metrics at port 8081 on the 
 Use the [docker-compose.yml](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) file and start Kestra using the command: 
 
 ```sh
-% docker-compose up
+% docker compose up
 ```
 
 Once Kestra is up and running, you can check out the available metrics by going to `http://localhost:8081/prometheus` on your browser. The metrics should appear as below:
