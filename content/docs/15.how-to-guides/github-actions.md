@@ -6,6 +6,7 @@ topics:
   - Integrations
   - DevOps
   - Version Control
+version: ">= 0.6.1"
 ---
 
 How to use GitHub Actions to automatically validate and deploy your flows to Kestra.

@@ -1,5 +1,5 @@
 ---
-title: Secrets
+title: Configure Secrets
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:

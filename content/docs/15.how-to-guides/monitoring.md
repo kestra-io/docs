@@ -7,7 +7,7 @@ topics:
   - Best Practices
 ---
 
-Setup Prometheus and Grafana for monitoring Kestra.
+Set up Prometheus and Grafana for monitoring Kestra.
 
 We will look in detail at setting up monitoring dashboards for Kestra.
 

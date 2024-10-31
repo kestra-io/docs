@@ -1,9 +1,10 @@
 ---
-title: How to Configure alerts inside of Kestra
+title: Configure Alerts inside of Kestra
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - DevOps
+  - Kestra Concepts
 ---
 
 Configure alerts when workflow failures occurs.

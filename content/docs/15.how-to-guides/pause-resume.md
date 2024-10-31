@@ -6,7 +6,7 @@ topics:
   - Kestra Concepts
 ---
 
-Pause and Resume your flows.
+How to Pause and Resume your flows.
 
 ## The use cases for pausing and resuming workflows
 
