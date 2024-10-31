@@ -1,21 +1,28 @@
 <template>
     <div class="row">
         <div class="col-md-10">
-            <h3>About this blueprint</h3>
-            <div class="title">
-                <p>{{ tagsList }}</p>
-            </div>
-
-            <ContentRendererMarkdown
-                class="bd-markdown"
-                :value="description"
-            />
-            <div class="mt-5">
+            <h3>Source</h3>
+            <div class="mt-4 relative code mb-3" :class="{ hide: hideCode }">
                 <ContentRendererMarkdown
                     class="bd-markdown"
                     :value="flow"
                 />
+                <div class="show-more" :class="{ hide: !hideCode }">
+                    <a href="" @click.prevent="hideCode = !hideCode">
+                        See more
+                        <ChevronDown v-if="hideCode"/>
+                        <ChevronUp v-else/>
+                    </a>
+                </div>
             </div>
+            <h3>About this blueprint</h3>
+            <div class="title">
+                <p>{{ tagsList }}</p>
+            </div>
+            <ContentRendererMarkdown
+                class="bd-markdown"
+                :value="description"
+            />
         </div>
         <div class="col-md-2">
             <div class="plugins-icons" v-if="page.includedTasks && page.includedTasks.length">
@@ -32,7 +39,14 @@
 </template>
 
 <script>
+import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
+import ChevronUp from "vue-material-design-icons/ChevronUp.vue";
+
 export default {
+    components: {
+      ChevronUp,
+      ChevronDown
+    },
     props: {
         page: {
             type: Object,
@@ -50,6 +64,11 @@ export default {
             type: Array,
             default: []
         }
+    },
+    data() {
+        return {
+          hideCode: true
+        };
     },
     computed: {
       tagsList() {
@@ -71,11 +90,45 @@ export default {
 </script>
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
+    .code {
+        overflow: hidden;
+        position: relative;
+        border: 1px solid #252526;
+        border-radius: 0.5rem;
+        box-sizing: content-box;
+        transition: max-height 0.5s ease;
+        &.hide {
+            max-height: 258px;
+        }
+        :deep(.code-block) {
+            padding-bottom: 50px;
+            margin-bottom: 0!important;
+        }
+        .show-more {
+            border-bottom-right-radius: 13px;
+            border-bottom-left-radius: 13px;
+            position: absolute;
+            bottom: 0;
+            left: 1px;
+            right: 1px;
+            display: flex;
+            justify-content: center;
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(22, 22, 23, 0.52), rgba(22, 22, 23, 0.96), $black-2);
+            padding: 56px  0 10px 0;
+            &.hide {
+                background-image: unset;
+            }
+            a {
+                color: $white;
+                font-family: $font-family-monospace;
+            }
+        }
+    }
 
     h3 {
         color: $white;
         font-size: $h2-font-size;
-        font-weight: 300;
+        font-weight: 500;
     }
     div.title {
         margin: 0 auto calc($spacer / 2);
