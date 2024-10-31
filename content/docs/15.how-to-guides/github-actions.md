@@ -14,15 +14,20 @@ How to use GitHub Actions to automatically validate and deploy your flows to Kes
 
 ---
 
-Having your Flows inside of a Git repository can be useful if you have a team developing flows locally or in a dev environment. By using GitHub Actions, we can automatically validate the flows are correct and deploy them to a Kestra instance, for example a production instance.
+If you're version controlling your Flows inside of a Git repository, it can be useful to automatically validate that they're in the correct format before merging into your `main` branch. On top of that, you can automatically deploy your flows in your `main` branch to your Kestra instance.
 
 There are 2 GitHub Actions available:
-- [Validate](https://github.com/marketplace/actions/kestra-validate-action)
-- [Deploy](https://github.com/marketplace/actions/kestra-deploy-action)
+- [Validate](https://github.com/marketplace/actions/kestra-validate-action) - Validate your flows and templates before deploying anything.
+- [Deploy](https://github.com/marketplace/actions/kestra-deploy-action) - Deploy your flows and templates to your Kestra server.
 
 ## Validate Your Flows
 
-Using the Validate Action, we can setup our workflow to check all flows inside of the `directory` specified when a commit is pushed to `main` and a Pull Request is opened for the `main` branch. We also need to specify the `resource` to be `flow or `template` (deprecated).
+Using the Validate Action, we can setup our workflow to check all flows inside of the `directory` specified when a commit is pushed to `main` and a Pull Request is opened for the `main` branch. For the full list of inputs, check out the reference [here](../version-control-cicd/cicd/01.github-action.md#validate-inputs).
+
+In the example below:
+1. Triggers when a commit is pushed to `main` or when a PR is opened for the `main` branch.
+2. Checks out the repository so we can access the files in later steps.
+3. Uses the Validate Action to check all the flows inside of the `./kestra/flows` directory.
 
 ```yaml
 name: Kestra CI/CD
@@ -50,9 +55,14 @@ jobs:
 
 ## Deploy Your Flows
 
-Using the Deploy Action, we can setup our workflow to deploy when new commits are pushed to our `main` branch. Like the Validate Action, we will need to specify a `directory` and `resource, which includes namespace files too. 
+Using the Deploy Action, we can setup our workflow to deploy when new commits are pushed to our `main` branch. Like the Validate Action, we will need to specify a `directory` and `resource`, which includes namespace files too. For the full list, check out the reference [here](../version-control-cicd/cicd/01.github-action.md#deploy-inputs).
 
 On top of that, we need to specify a namespace that want these flows to be deployed to. We can only chose one namespace meaning if we want to deploy multiple, we will need to add multiple steps using the Deploy Action.
+
+In the example below:
+1. Triggers when commits are pushed to `main`.
+2. Checks out the repository so we can access the files in later steps.
+3. Deploys flows inside of `kestra/flows` to the `company.team` namespace in the Kestra instance.
 
 ```yaml
 name: Kestra CI/CD
@@ -135,7 +145,7 @@ jobs:
 
 ## Set Up Branch Rulesets to enforce checks before deploying
 
-If you're working in a team, it can be useful to set up a Ruleset on your main branch to prevent broken flows from being deployed to your production Kestra instance.
+If you're working in a team, it can be useful to set up a [Ruleset](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) on your main branch to prevent broken flows from being deployed to your production Kestra instance.
 
 To do this, go to the Settings of your repository on GitHub and go to Rules then Rulesets. In here, we can create a new branch ruleset.
 
@@ -145,6 +155,8 @@ The goal of this ruleset is to protect the `main` branch as our GitHub Action wi
 
 ![ruleset](/docs/how-to-guides/github-actions/ruleset.png)
 
-These will require us to make a Pull Request before our flows end up in production, meaning someone can review the changes and confirm they're happy. On top of that, 
+These will require us to make a Pull Request before our flows end up in production, meaning someone can review the changes and confirm they're happy. On top of that, we can run our validate check and require that to pass before we can merge any pull requests. 
 
 ![pr](/docs/how-to-guides/github-actions/pr.png)
+
+In the example above, the flow was in the incorrect format so failed the validate check. As a result of this, the Pull Request is unable to be merged until fixed.
