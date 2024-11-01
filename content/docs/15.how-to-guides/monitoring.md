@@ -16,7 +16,7 @@ Kestra exposes [Prometheus](https://prometheus.io/) metrics at port 8081 on the 
 Use the [docker-compose.yml](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) file and start Kestra using the command: 
 
 ```sh
-% docker compose up
+docker compose up
 ```
 
 Once Kestra is up and running, you can check out the available metrics by going to `http://localhost:8081/prometheus` on your browser. The metrics should appear as below:
@@ -46,7 +46,7 @@ scrape_configs:
 Be sure to put the appropriate `<kestra-host-ip-address>` in the last line. Now, we will start the Prometheus server using the following docker command:
 
 ```sh
-% docker run -d -p 9090:9090 -v ~/Documents/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+docker run -d -p 9090:9090 -v ~/Documents/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 ```
 
 You can now go to `http://localhost:9090/graph` and try out visualizing some metrics using the PromQL. Here is one of the graphs for `kestra_executor_execution_started_count_total` metric:
@@ -58,7 +58,7 @@ You can now go to `http://localhost:9090/graph` and try out visualizing some met
 Let us now move on to setting up Grafana. You start by installing Grafana using docker via the following command:
 
 ```sh
- % docker run -d -p 3000:3000 --name=grafana grafana/grafana-enterprise
+ docker run -d -p 3000:3000 --name=grafana grafana/grafana-enterprise
 ```
 
 You can open the Grafana server at `http://localhost:3000`. The default credentials are `admin` as both username and passowrd. Once logged into Grafana, click on the hamburger menu on the top left and go to Connections -> Data Sources.
