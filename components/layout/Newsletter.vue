@@ -36,6 +36,7 @@
     import Twitter from "vue-material-design-icons/Twitter.vue";
     import Youtube from "vue-material-design-icons/Youtube.vue";
     import axios from "axios";
+    import identify from "../../utils/identify.js";
 
     const hubSpotUrl = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/433b234f-f3c6-431c-898a-ef699e5525fa";
 
@@ -76,6 +77,8 @@
                     if (window.dataLayer) {
                         window.dataLayer.push({'event': 'newsletter_form'});
                     }
+
+                    identify(form.email.value);
 
                     axios.post(hubSpotUrl, formData)
                         .then((response) => {

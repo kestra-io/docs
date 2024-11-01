@@ -1,9 +1,7 @@
 ---
-title: Create a CI/CD pipeline
+title: CI/CD Pipeline
 icon: /docs/icons/dev.svg
 ---
-
-
 
 Kestra provides several ways to create a CI/CD pipeline for your flows.
 

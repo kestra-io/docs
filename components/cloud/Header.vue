@@ -140,7 +140,7 @@
             background-color: $black-2;
             border-style: solid;
             border-color: $black-3;
-            padding: 1rem 2rem 0;
+            padding: 1rem;
             height: fit-content;
 
             @include media-breakpoint-down(lg) {
