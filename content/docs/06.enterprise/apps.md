@@ -356,3 +356,141 @@ By combining different blocks, you can create a custom UI that guides users thro
 | `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK                                | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.core.apps.ui.execution.ExecutionLogs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
 
 Everything is customizable, from the text and style of buttons to the messages displayed before and after submissions.
+
+---
+
+## Example Apps
+
+Below are example apps that you can use as a starting point. You can copy and paste them into your Kestra instance and customize them to fit your workflows.
+
+::collapse{title="Form to sign up for Kestra Cloud"}
+```yaml
+id: form_to_sign_up_for_kestra_cloud
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Form to sign up for Kestra Cloud
+namespace: company.team
+flowId: kestra_cloud_form
+access: PUBLIC
+
+layout:
+  - on: OPEN
+    blocks:
+      - id: page_header
+        type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          # Sign up for a waitlist to Kestra Cloud
+          Register now to be the first to know when we launch!
+
+      - id: submission_form
+        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm
+
+      - id: submit_button
+        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton
+        text: Submit
+
+  - on: CREATED
+    blocks:
+      - id: thank_you_message
+        type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## Thanks for your interest in Kestra Cloud!
+          We will notify you as soon as we launch.
+```
+::
+
+::collapse{title="Form to request and download data"}
+```yaml
+id: form_to_request_and_download_data
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Form to request and download data
+namespace: company.team
+flowId: get_data
+access: PRIVATE
+
+layout:
+  - on: OPEN
+    blocks:
+      - id: page_header
+        type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          # Request data
+          Select the data you want to download.
+
+      - id: submission_form
+        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm
+
+      - id: submit_button
+        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton
+        text: Submit
+
+  - on: SUCCESS
+    blocks:
+      - id: download_data_text
+        type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## Your data is ready for download!
+          The data you requested is now available for download.
+
+      - id: outputs
+        type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs
+```
+::
+
+::collapse{title="Submit Compute Resources Request and Get it Approved"}
+```yaml
+id: request_resources_form
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Submit Compute Resources Request and Get it Approved
+namespace: company.team
+flowId: request_resources
+access: PRIVATE
+
+layout:
+  - on: OPEN
+    blocks:
+      - id: page_header
+        type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          # Request Compute Resources
+          Fill out the form below to request compute resources.
+
+      - id: submission_form
+        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm
+
+      - id: submit_button
+        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton
+        text: Submit
+
+  - on: SUCCESS
+    blocks:
+      - id: request_validated
+        type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## Thank you for validating the request!
+```
+::
+
+::collapse{title="Display Outputs from a Past Execution"}
+```yaml
+id: past_execution
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Display Outputs from a Past Execution
+namespace: company.team
+flowId: extract_data
+executionId: 7GKBuetEEPRDgpKUDSNyTm
+access: PUBLIC
+
+layout:
+  - on: SUCCESS
+    blocks:
+      - id: present_outputs_intro
+        type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## Download the report
+          The data you requested is ready for download.
+
+      - id: outputs
+        type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs
+```
+::
+
