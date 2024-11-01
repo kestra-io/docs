@@ -1,4 +1,5 @@
 import posthog from "posthog-js";
+import identify from "./identify";
 
 export function hubspotFormCreate(eventType, data) {
     scriptLoad(() => {
@@ -11,6 +12,12 @@ export function hubspotFormCreate(eventType, data) {
                         window.dataLayer.push({'event': eventType});
                     }
                     posthog.capture(eventType);
+
+                    const email = $form.querySelector('[name="email"]')
+
+                    if (email?.value) {
+                        identify(email?.value);
+                    }
                 }
             }
         }

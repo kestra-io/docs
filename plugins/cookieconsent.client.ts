@@ -1,6 +1,7 @@
 import * as CookieConsent from "vanilla-cookieconsent";
 import posthog from 'posthog-js'
 import axios from "axios";
+import identify from "../utils/identify";
 
 export default defineNuxtPlugin(nuxtApp => {
     const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0;
@@ -56,6 +57,14 @@ export default defineNuxtPlugin(nuxtApp => {
 
             return cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js',{defer: "defer"});
         };
+
+        if (window?.location?.search) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const ke = urlParams.get('ke');
+            if (ke) {
+                identify(ke);
+            }
+        }
 
         document.documentElement.classList.add('cc--darkmode');
 
