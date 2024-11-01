@@ -1,5 +1,5 @@
 ---
-title: Secrets
+title: Configure Secrets
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -7,6 +7,10 @@ topics:
 ---
 
 How you can use secrets in various Kestra use cases.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## What are Secrets
 

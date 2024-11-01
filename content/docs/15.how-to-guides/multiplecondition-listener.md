@@ -4,8 +4,9 @@ icon: /docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Workflow Components
-  - Use multiple condition listeners together.
 ---
+
+How to set up a Flow to only trigger when multiple conditions are met.
 
 ## Introduction
 
