@@ -49,7 +49,7 @@ Be sure to put the appropriate `<kestra-host-ip-address>` in the last line, e.g.
 If you're running everything in Docker on the same machine, you will need to change your host address to `host.docker.internal` rather than localhost.
 ::
 
-We can start the Prometheus server using the following docker command:
+We can start the Prometheus server using the following docker command in the same directory as `prometheus.yml`:
 
 ```sh
 docker run -d -p 9090:9090 -v ./prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
