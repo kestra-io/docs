@@ -18,7 +18,7 @@ datasources:
     password: k3str4
 kestra:
   server:
-    basic-auth:
+    basicAuth:
       enabled: false
       username: "admin@kestra.io" # it must be a valid email address
       password: kestra
@@ -27,11 +27,11 @@ kestra:
   storage:
     type: local
     local:
-      base-path: "/app/storage"
+      basePath: "/app/storage"
   queue:
     type: postgres
   tasks:
-    tmp-dir:
+    tmpDir:
       path: "/tmp/kestra-wd/tmp"
   url: "http://localhost:8080/"
 ```
@@ -187,7 +187,7 @@ datasources:
     password: k3str4
     dialect: SQL_SERVER
 # Uncomment only if your database is not encrypted
-#    data-source-properties:
+#    dataSourceProperties:
 #      encrypt: false
 ```
 
@@ -255,18 +255,18 @@ The table below shows the `datasource` configuration properties. For more detail
 Here's the default HikariCP configuration:
 
 ```yaml
-transaction-isolation: default # driver default
-pool-name: HikariPool-<Generated>
-connection-init-sql: null
-connection-test-query: null
-connection-timeout: 30000 # 30 seconds
-idle-timeout: 600000 # 10 minutes
-minimum-idle: 10 # same as maximum-pool-size
-initialization-fail-timeout: 1
-leak-detection-threshold: 0
-maximum-pool-size: 10
-max-lifetime: 1800000 # 30 minutes
-validation-timeout: 5000
+transactionIsolation: default # driver default
+poolName: HikariPool-<Generated>
+connectionInitSql: null
+connectionTestQuery: null
+connectionTimeout: 30000 # 30 seconds
+idleTimeout: 600000 # 10 minutes
+minimumIdle: 10 # same as maximum-pool-size
+initializationFailTimeout: 1
+leakDetectionThreshold: 0
+maximumPoolSize: 10
+maxLifetime: 1800000 # 30 minutes
+validationTimeout: 5000
 ```
 
 ### JDBC Queues
@@ -287,10 +287,10 @@ Here is the default configuration:
 kestra:
   jdbc:
     queues:
-      poll-size: 100
-      min-poll-interval: 25ms
-      max-poll-interval: 1000ms
-      poll-switch-interval: 5s
+      pollSize: 100
+      minPollInterval: 25ms
+      maxPollInterval: 1000ms
+      pollSwitchInterval: 5s
 ```
 
 ### JDBC Cleaner
@@ -303,8 +303,8 @@ Here is the default configuration:
 kestra:
   jdbc:
     cleaner:
-      initial-delay: 1h
-      fixed-delay: 1h
+      initialDelay: 1h
+      fixedDelay: 1h
       retention: 7d
 ```
 
@@ -324,7 +324,7 @@ The following configuration will refuse messages that exceed 1MiB by failing the
 kestra:
   jdbc:
     queues:
-      message-protection:
+      messageProtection:
         enabled: true
         limit: 1048576
 ```
@@ -335,22 +335,22 @@ By default, the `kestra.anonymous-usage-report` is enabled to send [anonymous us
 
 ```yaml
 kestra:
-  anonymous-usage-report:
+  anonymousUsageReport:
     enabled: false
 ```
 
 You can change the initial delay (default 5m):
 ```yaml
 kestra:
-  anonymous-usage-report:
-    initial-delay: 5m
+  anonymousUsageReport:
+    initialDelay: 5m
 ```
 
 You can change the fixed delay (default 1h):
 ```yaml
 kestra:
-  anonymous-usage-report:
-    fixed-delay: 1h
+  anonymousUsageReport:
+    fixedDelay: 1h
 ```
 
 ## Elasticsearch
@@ -365,7 +365,7 @@ Here is a minimal configuration example:
 kestra:
   elasticsearch:
     client:
-      http-hosts: "http://localhost:9200"
+      httpHosts: "http://localhost:9200"
   repository:
     type: elasticsearch
 ```
@@ -376,11 +376,11 @@ Here is another example with a secured Elasticsearch cluster with basic authenti
 kestra:
   elasticsearch:
     client:
-      http-hosts:
+      httpHosts:
         - "http://node-1:9200"
         - "http://node-2:9200"
         - "http://node-3:9200"
-      basic-auth:
+      basicAuth:
         username: "<your-user>"
         password: "<your-password>"
   repository:
@@ -396,8 +396,8 @@ Using the `kestra.elasticsearch.client.trust-all-ssl` configuration, you can tru
 kestra:
   elasticsearch:
     client:
-      http-hosts: "https://localhost:9200"
-      trust-all-ssl: true
+      httpHosts: "https://localhost:9200"
+      trustAllSsl: true
 ```
 
 ### Indices Prefix
@@ -410,7 +410,7 @@ For example, if you want to share a common Elasticsearch cluster for multiple in
 kestra:
   elasticsearch:
     defaults:
-      indice-prefix: "uat_kestra"
+      indicePrefix: "uat_kestra"
 ```
 
 ### Indices Split
@@ -459,11 +459,11 @@ You can use the `kestra.ee.java-security` configuration to opt-in to isolation o
 ```yaml
 kestra:
   ee:
-    java-security:
+    javaSecurity:
       enabled: true
-      forbidden-paths:
+      forbiddenPaths:
         - /etc/
-      authorized-class-prefix:
+      authorizedClassPrefix:
         - io.kestra.plugin.core
         - io.kestra.plugin.gcp
 ```
@@ -483,9 +483,9 @@ The `kestra.ee.java-security.forbidden-class-prefix` configuration is a list of 
 ```yaml
 kestra:
   ee:
-    java-security:
+    javaSecurity:
       enabled: true
-      forbidden-class-prefix:
+      forbiddenClassPrefix:
         - io.kestra.plugin.scripts
 ```
 
@@ -520,7 +520,7 @@ kestra:
   ee:
     tenants:
       enabled: true
-      default-tenant: false
+      defaultTenant: false
 ```
 
 This will enable multi-tenancy and disable the default tenant (best practice). It is **recommended** to disable it so that your Kestra instance includes only the tenants you explicitly create.
@@ -535,7 +535,7 @@ To enable encryption, you need to provide a base64-encoded secret key in the `ke
 ```yaml
 kestra:
   encryption:
-    secret-key: BASE64_ENCODED_STRING_OF_32_CHARCTERS
+    secretKey: BASE64_ENCODED_STRING_OF_32_CHARCTERS
 ```
 
 To generate a 32-character string and then base64 encode it, you can use the defacto standard for cryptography, OpenSSL:
@@ -560,7 +560,7 @@ If you run Kestra with Docker-Compose, here is how you can add that key in the `
       KESTRA_CONFIGURATION: |
         kestra:
           encryption:
-            secret-key: NWRhUDc5TERWY2QyMDhSSHhfeWYzbjJpNE5vb3M5NnY=
+            secretKey: NWRhUDc5TERWY2QyMDhSSHhfeWYzbjJpNE5vb3M5NnY=
 ```
 
 
@@ -603,7 +603,7 @@ Management endpoints can be set up from the [Micronaut endpoint configuration](h
 ```yaml
 endpoints:
   all:
-    basic-auth:
+    basicAuth:
       username: your-user
       password: your-password
 ```
@@ -650,8 +650,8 @@ Indexer send data from [Kafka](#kafka) to [Elasticsearch](#elasticsearch) using 
 ```yaml
 kestra:
   indexer:
-    batch-size: 500 # (default value, any integer > 0)
-    batch-duration: PT1S # (default value, any duration)
+    batchSize: 500 # (default value, any integer > 0)
+    batchDuration: PT1S # (default value, any duration)
 ```
 
 ## Kafka
@@ -762,7 +762,7 @@ For example, if you want to share a common Kafka cluster for multiple instances 
 kestra:
   kafka:
     defaults:
-      consumer-prefix: "uat_kestra"
+      consumerPrefix: "uat_kestra"
 ```
 
 ### Topic Prefix
@@ -775,7 +775,7 @@ For example, if you want to share a common Kafka cluster for multiple instances 
 kestra:
   kafka:
     defaults:
-      topic-prefix: "uat_kestra"
+      topicPrefix: "uat_kestra"
 ```
 
 ### Client Loggers
@@ -793,9 +793,9 @@ kestra:
       loggers:
         - level: INFO # mandatory: ERROR, WARN, INFO, DEBUG, TRACE, the logger must be configured at least at this level for class io.kestra.runner.kafka.AbstractInterceptor
           type: PRODUCER # optional: CONSUMER or PRODUCER
-          topic-regexp: "kestra_(executions|workertaskresult)" # optional: a regexp validating the topic
-          key-regexp: .*parallel.* # optional: a regexp validating the key
-          value-regexp: .*parallel.* # optional: a regexp validating the json full body
+          topicRegexp: "kestra_(executions|workertaskresult)" # optional: a regexp validating the topic
+          keyRegexp: .*parallel.* # optional: a regexp validating the key
+          valueRegexp: .*parallel.* # optional: a regexp validating the json full body
 ```
 
 ### Kafka Stream State Directory
@@ -846,7 +846,7 @@ To prevent that, you can configure a functionality that will automatically store
 ```yaml
 kestra:
   kafka:
-    message-protection:
+    messageProtection:
       enabled: true
 ```
 
@@ -891,7 +891,7 @@ Here are the default values:
 micronaut:
   server:
     netty:
-      access-logger:
+      accessLogger:
         enabled: true
         name: io.kestra.webserver.access
         format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
@@ -978,12 +978,12 @@ micronaut:
     enabled: true
   server:
     ssl:
-      client-authentication: need
-      key-store:
+      clientAuthentication: need
+      keyStore:
         path: classpath:ssl/keystore.p12
         password: ${KEYSTORE_PASSWORD}
         type: PKCS12
-      trust-store:
+      trustStore:
         path: classpath:ssl/truststore.jks
         password: ${TRUSTSTORE_PASSWORD}
         type: JKS
@@ -996,15 +996,15 @@ Below is the default configuration for the timeout and max uploaded file size. Y
 ```yaml
 micronaut:
   server:
-    max-request-size: 10GB
+    maxRequestSize: 10GB
     multipart:
-      max-file-size: 10GB
+      maxFileSize: 10GB
       disk: true
-    read-idle-timeout: 60m
-    write-idle-timeout: 60m
-    idle-timeout: 60m
+    readIdleTimeout: 60m
+    writeIdleTimeout: 60m
+    idleTimeout: 60m
     netty:
-      max-chunk-size: 10MB
+      maxChunkSize: 10MB
 ```
 
 ### Changing base path
@@ -1014,7 +1014,7 @@ If behind a reverse proxy, you can change the base path of the application with 
 ```yaml
 micronaut:
   server:
-    context-path: "kestra-prd"
+    contextPath: "kestra-prd"
 ```
 
 
@@ -1025,9 +1025,9 @@ If behind a reverse proxy, you can change host resolution (http/https/domain nam
 ```yaml
 micronaut:
   server:
-    host-resolution:
-      host-header: Host
-      protocol-header: X-Forwarded-Proto
+    hostResolution:
+      hostHeader: Host
+      protocolHeader: X-Forwarded-Proto
 ```
 
 
@@ -1203,7 +1203,7 @@ In order to use [AWS Secret Manager](https://aws.amazon.com/secrets-manager/) as
 kestra:
   secret:
     type: aws-secret-manager
-    aws-secret-manager:
+    awsSecretManager:
       accessKeyId: mysuperaccesskey
       secretKeyId: mysupersecretkey
       sessionToken: mysupersessiontoken
@@ -1218,7 +1218,7 @@ To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) 
 kestra:
   secret:
     type: azure-key-vault
-    azure-key-vault:
+    azureKeyVault:
       clientSecret:
         tenantId: "id"
         clientId: "id"
@@ -1246,7 +1246,7 @@ To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as 
 kestra:
   secret:
     type: google-secret-manager
-    google-secret-manager:
+    googleSecretManager:
       project: gcp-project-id
       serviceAccount: |
         Paste here the contents of the service account JSON key file
@@ -1295,10 +1295,10 @@ kestra:
     type: vault
     vault:
       address: "http://localhostt:8200"
-      app-role:
+      appRole:
         path: approle
-        role-id: your-role-id
-        secret-id: your-secret-id
+        roleId: your-role-id
+        secretId: your-secret-id
 ```
 
 
@@ -1360,7 +1360,7 @@ The password should never be stored in clear text in the configuration file. Mak
 ```yaml
 kestra:
   security:
-    super-admin:
+    superAdmin:
       username: your_username
       password: ${KESTRA_SUPERADMIN_PASSWORD}
       tenantAdminAccess:
@@ -1383,7 +1383,7 @@ The default role requires three properties:
 ```yaml
 kestra:
   security:
-    default-role:
+    defaultRole:
       name: default
       description: "Default role"
       permissions:
@@ -1395,7 +1395,7 @@ When using [multitenancy](../06.enterprise/03.tenants.md), the default role will
 ```yaml
 kestra:
   security:
-    default-role:
+    defaultRole:
       name: default
       description: "Default role"
       permissions:
@@ -1419,7 +1419,7 @@ You can protect your Kestra installation with HTTP Basic Authentication.
 ```yaml
 kestra:
   server:
-    basic-auth:
+    basicAuth:
       enabled: true
       username: admin
       password: kestra
@@ -1651,7 +1651,7 @@ kestra:
   storage:
     type: local
     local:
-      base-path: /tmp/kestra/storage/ # your custom path
+      basePath: /tmp/kestra/storage/ # your custom path
 ```
 
 Other internal storage types include:
@@ -1779,7 +1779,7 @@ kestra:
     type: gcs
     gcs:
       bucket: "<your-bucket-name>"
-      project-id: "<project-id or use default projectId>"
+      projectId: "<project-id or use default projectId>"
       serviceAccount: "<serviceAccount key as JSON or use default credentials>"
 ```
 
@@ -1797,7 +1797,7 @@ By default, the `system` namespace is reserved for [System Flows](../05.concepts
 
 ```yaml
 kestra:
-  system-flows:
+  systemFlows:
     namespace: system
 ```
 
@@ -1833,7 +1833,7 @@ kestra:
     configurations:
       - type: io.kestra.plugin.scripts.runner.docker.Docker
         values:
-          volume-enabled: true
+          volumeEnabled: true
 ```
 
 ### Temporary storage configuration
@@ -1843,7 +1843,7 @@ Kestra writes temporary files during task processing. By default, files will be 
 ```yaml
 kestra:
   tasks:
-    tmp-dir:
+    tmpDir:
       path: /home/kestra/tmp
 ```
 
@@ -1851,7 +1851,7 @@ kestra:
 
 ```yaml
 volumes:
-  - kestra-data:/app/storage
+  - kestraData:/app/storage
   - /var/run/docker.sock:/var/run/docker.sock
   - /home/kestra:/home/kestra
 ```
@@ -1863,7 +1863,7 @@ Tutorial flows are used to help users understand how Kestra works. They are used
 
 ```yaml
 kestra:
-  tutorial-flows:
+  tutorialFlows:
     enabled: false
 ```
 
@@ -1873,7 +1873,7 @@ To disable the tutorial flows, set the `tutorial-flows` property to `false` in y
 
 ```yaml
 kestra:
-  tutorial-flows:
+  tutorialFlows:
     enabled: false # true by default
 ```
 
@@ -1909,7 +1909,7 @@ Kestra provides a way to use environment variables in your flow. By default, Kes
 ```yaml
 kestra:
   variables:
-    env-vars-prefix: KESTRA_
+    envVarsPrefix: KESTRA_
 ```
 
 These variables will be accessible in a flow with `{{ envs.your_env }}` in **lowercase without the prefix**.
@@ -1946,7 +1946,7 @@ The `kestra.variables.recursive-rendering` configuration allows you to enable th
 ```yaml
 kestra:
   variables:
-    recursive-rendering: true
+    recursiveRendering: true
 ```
 
 ###
@@ -1956,7 +1956,7 @@ The rendering of template variables can be CPU intensive, and by default we **en
 ```yaml
 kestra:
   variables:
-    cache-enabled: false
+    cacheEnabled: false
 ```
 
 We recommend keeping the cache enabled, as it can improve the performance.
@@ -1968,7 +1968,7 @@ The rendering of template variables cache is an LRU cache (keeps most commonly u
 ```yaml
 kestra:
   variables:
-    cache-size: 1000
+    cacheSize: 1000
 ```
 
 Keep in mind that the higher this number will be, the more memory the server will use.
@@ -1985,7 +1985,7 @@ Using the `kestra.webserver.google-analytics` configuration, you can add a Googl
 ```yaml
 kestra:
   webserver:
-    google-analytics: UA-12345678-1
+    googleAnalytics: UA-12345678-1
 ```
 
 
@@ -1997,16 +1997,16 @@ For example, here is how you can add a red banner in production environments:
 ```yaml
 kestra:
   webserver:
-    html-head: |
+    htmlHead: |
       <style type="text/css">
         .v-sidebar-menu .logo:after {
           background: var(--danger);
           display: block;
           content: "Local";
           position: relative;
-          text-transform: uppercase;
+          textTransform: uppercase;
           bottom: -65px;
-          text-align: center;
+          textAlign: center;
           color: var(--white-always);
         }
       </style>
