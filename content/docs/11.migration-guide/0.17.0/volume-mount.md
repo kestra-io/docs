@@ -38,7 +38,7 @@ It is recommended to make the following change in the [Docker Compose file](http
             password: k3str4
         kestra:
           server:
-            basic-auth:
+            basicAuth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
               password: kestra
@@ -47,17 +47,17 @@ It is recommended to make the following change in the [Docker Compose file](http
           storage:
             type: local
             local:
-              base-path: "/app/storage"
+              basePath: "/app/storage"
           queue:
             type: postgres
           tasks:
-            tmp-dir:
+            tmpDir:
               path: /tmp/kestra-wd/tmp
           plugins:
             configurations:
               - type: io.kestra.plugin.scripts.runner.docker.Docker
                 values:
-                  volume-enabled: true # 👈 this is the relevant setting
+                  volumeEnabled: true # 👈 this is the relevant setting
 ```
 
 For more information, you can refer the [Bind mount](../../04.workflow-components/01.tasks/02.scripts/bind-mount.md) page.

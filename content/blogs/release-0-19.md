@@ -99,7 +99,7 @@ We refer to these as **System Flows** because, by default, they are hidden from 
 
 ```yaml
 kestra:
-  system-flows:
+  systemFlows:
     namespace: system
 ```
 
@@ -435,7 +435,7 @@ This configuration step is critical to ensure that Kestra EE operates correctly 
 ```yaml
 kestra:
   encryption:
-    secret-key: pleaseChangeThisSecret # ✅ mandatory!
+    secretKey: pleaseChangeThisSecret # ✅ mandatory!
 ```
 
 The key needs to be at least 32 ASCII characters long (256 bits), so don’t forget to replace `pleaseChangeThisSecret` with a secure, custom value. While this key never expires, the refresh token it signs is valid for 30 days, similar to a JWT token with a default 1-hour lifetime.
@@ -539,7 +539,7 @@ Here’s how you can configure the email server in your `application.yaml` file:
 
 ```yaml
 kestra:
-  mail-service:
+  mailService:
     host: String
     port: Number
     username: String

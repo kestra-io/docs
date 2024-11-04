@@ -55,7 +55,7 @@ To keep the previous (recursive) behavior, add the following configuration:
 ```yaml
 kestra:
   variables:
-    recursive-rendering: true # default: false
+    recursiveRendering: true # default: false
 ```
 
 This is an instance-level configuration, so you don't need any changes in your code. We recommend that you migrate your flows to the new rendering behavior as soon as you can, as we believe this more explicit rendering behavior will be more intuitive and less error-prone in the long run.

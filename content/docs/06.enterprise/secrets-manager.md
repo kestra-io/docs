@@ -26,7 +26,7 @@ You can configure the authentication to AWS Cloud in multiple ways:
 kestra:
   secret:
     type: aws-secret-manager
-    aws-secret-manager:
+    awsSecretManager:
       accessKeyId: mysuperaccesskey
       secretKeyId: mysupersecretkey
       sessionToken: mysupersessiontoken
@@ -46,7 +46,7 @@ To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) 
 kestra:
   secret:
     type: azure-key-vault
-    azure-key-vault:
+    azureKeyVault:
       clientSecret:
         tenantId: "id"
         clientId: "id"
@@ -81,7 +81,7 @@ To leverage [Google Secret Manager](https://cloud.google.com/secret-manager) as 
 kestra:
   secret:
     type: google-secret-manager
-    google-secret-manager:
+    googleSecretManager:
       project: gcp-project-id
       serviceAccount: |
         Paste here the contents of the service account JSON key file
@@ -139,10 +139,10 @@ kestra:
     type: vault
     vault:
       address: "http://localhostt:8200"
-      app-role:
+      appRole:
         path: approle
-        role-id: your-role-id
-        secret-id: your-secret-id
+        roleId: your-role-id
+        secretId: your-secret-id
 ```
 
 Additionally, you can configure the following properties:

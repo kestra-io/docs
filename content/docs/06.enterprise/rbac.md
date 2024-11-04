@@ -132,7 +132,7 @@ A Super Admin can also be created from the configuration file using the configur
 ```yaml
 kestra:
   security:
-    super-admin:
+    superAdmin:
       username: <username>
       password: <password>
       tenantAdminAccess:
