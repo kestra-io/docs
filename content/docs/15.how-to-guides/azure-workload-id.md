@@ -1,7 +1,7 @@
 ---
 title: Use Azure Managed Workload on Kestra
 icon: /docs/icons/azure-aks.svg
-stage: Intermediate
+stage: Advanced
 topics:
   - Kestra Concepts
   - DevOps
