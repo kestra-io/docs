@@ -16,11 +16,11 @@ You can use the following to opt-in to real isolation of file systems using adva
 ```yaml
 kestra:
   ee:
-    java-security:
+    javaSecurity:
       enabled: true
-      forbidden-paths:
+      forbiddenPaths:
         - /etc/
-      authorized-class-prefix:
+      authorizedClassPrefix:
         - io.kestra.plugin.core
         - io.kestra.plugin.gcp
 ```
@@ -37,9 +37,9 @@ For example, [GCP plugins](/plugins/plugin-gcp) will need to create a thread in 
 ```yaml
 kestra:
   ee:
-    java-security:
+    javaSecurity:
       enabled: true
-      forbidden-class-prefix:
+      forbiddenClassPrefix:
         - io.kestra.plugin.scripts
 ```
 

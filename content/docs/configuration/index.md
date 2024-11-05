@@ -114,7 +114,7 @@ Currently, Kestra supports Postgres, H2, MySQL, and SQL Server (available in a p
 Check the [Software Requirements](../09.administrator-guide/00.requirements.md) section for the minimum version of each database.
 
 ::alert{type="info"}
-If you experience performance issues when using PostgreSQL, you can tune the cost optimizer parameter `random_page_cost=1.1`, which should make PostgreSQL use the right index for the queues table. You can also configure `kestra.queue.postgres.disable-seq-scan=true` so that Kestra turns off sequential scans on the queue polling query forcing PostgreSQL to use the index.
+If you experience performance issues when using PostgreSQL, you can tune the cost optimizer parameter `random_page_cost=1.1`, which should make PostgreSQL use the right index for the queues table. You can also configure `kestra.queue.postgres.disableSeqScan=true` so that Kestra turns off sequential scans on the queue polling query forcing PostgreSQL to use the index.
 ::
 
 
@@ -218,7 +218,7 @@ datasources:
 
 ### Connection pool size
 
-The total number of connections opened to the database will depend on your chosen [architecture](../07.architecture/index.md). Each Kestra instance will open a pool of up to the `maximum-pool-size` (10 by default), with a minimum size of the `minimum-idle` (also set to 10 by default).
+The total number of connections opened to the database will depend on your chosen [architecture](../07.architecture/index.md). Each Kestra instance will open a pool of up to the `maximumPoolSize` (10 by default), with a minimum size of the `minimumIdle` (also set to 10 by default).
 
 - If you deploy Kestra as a standalone server, it will open 10 connections to the database.
 - If you deploy each Kestra component separately, it will open 40 connections to the database (10 per component).
@@ -238,18 +238,18 @@ The table below shows the `datasource` configuration properties. For more detail
 | `schema`                      | String | The default schema name to be set on connections.                                                                                                |
 | `username`                    | String | The default username used.                                                                                                                        |
 | `password`                    | String | The default password to use.                                                                                                                      |
-| `transaction-isolation`       | String | The default transaction isolation level.                                                                                                          |
-| `pool-name`                   | String | The name of the connection pool.                                                                                                                  |
-| `connection-init-sql`         | String | The SQL string that will be executed on all new connections when they are created, before they are added to the pool.                             |
-| `connection-test-query`       | String | The SQL query to be executed to test the validity of connections.                                                                                 |
-| `connection-timeout`          | Long   | The maximum number of milliseconds that a client will wait for a connection from the pool.                                                        |
-| `idle-timeout`                | Long   | The maximum amount of time (in milliseconds) that a connection is allowed to sit idle in the pool.                             |
-| `minimum-idle`                | Long   | The minimum number of idle connections that HikariCP tries to maintain in the pool, including both idle and in-use connections. Defaults to the value of `maximum-pool-size` |
-| `initialization-fail-timeout` | Long   | The pool initialization failure timeout.                                                                                                          |
-| `leak-detection-threshold`    | Long   | The amount of time that a connection can be out of the pool before a message is logged indicating a possible connection leak.  |
-| `maximum-pool-size`           | Int    | The maximum size that the pool is allowed to reach, including both idle and in-use connections. Defaults to 10.                                |
-| `max-lifetime`                | Long   | The maximum lifetime of a connection in the pool.                                                                              |
-| `validation-timeout`          | Long   | The maximum number of milliseconds that the pool will wait for a connection to be validated as alive.                                            |
+| `transactionIsolation`       | String | The default transaction isolation level.                                                                                                          |
+| `poolName`                   | String | The name of the connection pool.                                                                                                                  |
+| `connectionInitSql`         | String | The SQL string that will be executed on all new connections when they are created, before they are added to the pool.                             |
+| `connectionTestQuery`       | String | The SQL query to be executed to test the validity of connections.                                                                                 |
+| `connectionTimeout`          | Long   | The maximum number of milliseconds that a client will wait for a connection from the pool.                                                        |
+| `idleTimeout`                | Long   | The maximum amount of time (in milliseconds) that a connection is allowed to sit idle in the pool.                             |
+| `minimumIdle`                | Long   | The minimum number of idle connections that HikariCP tries to maintain in the pool, including both idle and in-use connections. Defaults to the value of `maximumPoolSize` |
+| `initializationFailTimeout` | Long   | The pool initialization failure timeout.                                                                                                          |
+| `leakDetectionThreshold`    | Long   | The amount of time that a connection can be out of the pool before a message is logged indicating a possible connection leak.  |
+| `maximumPoolSize`           | Int    | The maximum size that the pool is allowed to reach, including both idle and in-use connections. Defaults to 10.                                |
+| `maxLifetime`                | Long   | The maximum lifetime of a connection in the pool.                                                                              |
+| `validationTimeout`          | Long   | The maximum number of milliseconds that the pool will wait for a connection to be validated as alive.                                            |
 
 
 Here's the default HikariCP configuration:
@@ -275,10 +275,10 @@ Kestra database queues simulate queuing doing long polling. They query a `queues
 
 You can change these parameters to reduce the polling latency, but be aware it will increase the load on the database:
 
-- `kestra.jdbc.queues.poll-size`: the maximum number of queues items fetched by each poll.
-- `kestra.jdbc.queues.min-poll-interval`: the minimum duration between 2 polls.
-- `kestra.jdbc.queues.max-poll-interval`: the maximum duration between 2 polls.
-- `kestra.jdbc.queues.poll-switch-interval`: the delay for switching from min-poll-interval to max-poll-interval when no message is received. (ex: when one message is received, the `min-poll-interval` is used, if no new message arrived within `poll-switch-interval`, we switch to `max-poll-interval`).
+- `kestra.jdbc.queues.pollSize`: the maximum number of queues items fetched by each poll.
+- `kestra.jdbc.queues.minPollInterval`: the minimum duration between 2 polls.
+- `kestra.jdbc.queues.maxPollInterval`: the maximum duration between 2 polls.
+- `kestra.jdbc.queues.pollSwitchInterval`: the delay for switching from min-poll-interval to max-poll-interval when no message is received. (ex: when one message is received, the `minPollInterval` is used, if no new message arrived within `pollSwitchInterval`, we switch to `maxPollInterval`).
 
 
 Here is the default configuration:
@@ -331,7 +331,7 @@ kestra:
 
 ## Telemetry
 
-By default, the `kestra.anonymous-usage-report` is enabled to send [anonymous usage data](../09.administrator-guide/usage.md) to Kestra to help us improve the product. If you want to disable it, you can set it to `false`:
+By default, the `kestra.anonymousUsageReport` is enabled to send [anonymous usage data](../09.administrator-guide/usage.md) to Kestra to help us improve the product. If you want to disable it, you can set it to `false`:
 
 ```yaml
 kestra:
@@ -389,7 +389,7 @@ kestra:
 
 ### Trust all SSL certificates
 
-Using the `kestra.elasticsearch.client.trust-all-ssl` configuration, you can trust all SSL certificates during the connection. This is useful for development servers with self-signed certificates.
+Using the `kestra.elasticsearch.client.trustAllSsl` configuration, you can trust all SSL certificates during the connection. This is useful for development servers with self-signed certificates.
 
 
 ```yaml
@@ -402,7 +402,7 @@ kestra:
 
 ### Indices Prefix
 
-The `kestra.elasticsearch.defaults.indice-prefix` configuration allows to change the prefix of the indices. By default, the prefix will be `kestra_`.
+The `kestra.elasticsearch.defaults.indicePrefix` configuration allows to change the prefix of the indices. By default, the prefix will be `kestra_`.
 
 For example, if you want to share a common Elasticsearch cluster for multiple instances of Kestra, add a different prefix for each instance as follows:
 
@@ -454,7 +454,7 @@ It is totally safe to switch from one periodicity to another as the alias is for
 
 ## EE Java Security
 
-You can use the `kestra.ee.java-security` configuration to opt-in to isolation of file systems using advanced Kestra EE Java security:
+You can use the `kestra.ee.javaSecurity` configuration to opt-in to isolation of file systems using advanced Kestra EE Java security:
 
 ```yaml
 kestra:
@@ -470,15 +470,15 @@ kestra:
 
 ### Forbidden Paths
 
-The `kestra.ee.java-security.forbidden-paths` configuration is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can be useful to protect Kestra configuration files.
+The `kestra.ee.javaSecurity.forbiddenPaths` configuration is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can be useful to protect Kestra configuration files.
 
 ### Authorized Class Prefix
 
-The `kestra.ee.java-security.authorized-class-prefix` configuration is a list of classes that can create threads. Here you can set a list of prefixes (namespace) classes that will be allowed. All others will be refused.
+The `kestra.ee.javaSecurity.authorizedClassPrefix` configuration is a list of classes that can create threads. Here you can set a list of prefixes (namespace) classes that will be allowed. All others will be refused.
 
 ### Forbidden Class Prefix
 
-The `kestra.ee.java-security.forbidden-class-prefix` configuration is a list of classes that can't create any threads. Others plugins will be authorized.
+The `kestra.ee.javaSecurity.forbiddenClassPrefix` configuration is a list of classes that can't create any threads. Others plugins will be authorized.
 
 ```yaml
 kestra:
@@ -513,7 +513,7 @@ kestra:
 
 ## Default Tenant
 
-By default, multi-tenancy is disabled, and the default tenant is set to true. Once you enable multi-tenancy, you can set the default tenant to false using the `kestra.ee.tenants.default-tenant` configuration:
+By default, multi-tenancy is disabled, and the default tenant is set to true. Once you enable multi-tenancy, you can set the default tenant to false using the `kestra.ee.tenants.defaultTenant` configuration:
 
 ```yaml
 kestra:
@@ -593,7 +593,7 @@ When executing this flow, you will see a masked field:
 In the Execution Overview tab, you will see a masked value of the secret.
 
 ::alert{type="warning"}
-If the `secret-key` is not set in the `kestra.encryption` configuration, you will get an error: `Illegal argument: Unable to use a SECRET input as encryption is not configured` when trying to use a `SECRET` input or output type.
+If the `secretKey` is not set in the `kestra.encryption` configuration, you will get an error: `Illegal argument: Unable to use a SECRET input as encryption is not configured` when trying to use a `SECRET` input or output type.
 ::
 
 ## Endpoints
@@ -703,7 +703,7 @@ kestra:
 By default, Kestra automatically creates all the needed topics. You can change the partition count and replication factor of these topics using the `kestra.kafka.defaults.topic` configuration.
 
 - `kestra.kafka.defaults.topic.partitions`: (default 16)
-- `kestra.kafka.defaults.topic.replication-factor`: (default 1)
+- `kestra.kafka.defaults.topic.replicationFactor`: (default 1)
 
 The number of topic's partitions limits the number of concurrently processing server instances consuming that particular topic. For example, using 16 partitions for every topic limits the effective number of instances to 16 executor servers, 16 worker servers, etc.
 
@@ -736,7 +736,7 @@ kestra:
       stream:
         properties:
           processing.guarantee: "exactly_once"
-          replication.factor: "${kestra.kafka.defaults.topic.replication-factor}"
+          replication.factor: "${kestra.kafka.defaults.topic.replicationFactor}"
           acks: "all"
           compression.type: "lz4"
           max.request.size: "10485760"
@@ -754,7 +754,7 @@ You can see default configuration on this [file](https://github.com/kestra-io/ke
 
 ### Consumer Prefix
 
-The `kestra.kafka.defaults.consumer-prefix` configuration allows changing the consumer-group prefix. By default, the prefix will be `kestra`.
+The `kestra.kafka.defaults.consumerPrefix` configuration allows changing the consumer-group prefix. By default, the prefix will be `kestra`.
 
 For example, if you want to share a common Kafka cluster for multiple instances of Kestra, you must configure a different prefix for each instance like this:
 
@@ -767,7 +767,7 @@ kestra:
 
 ### Topic Prefix
 
-The `kestra.kafka.defaults.topic-prefix` configuration allows changing the topic name prefix. By default, the prefix will be `kestra_`.
+The `kestra.kafka.defaults.topicPrefix` configuration allows changing the topic name prefix. By default, the prefix will be `kestra_`.
 
 For example, if you want to share a common Kafka cluster for multiple instances of Kestra, add a different prefix for each instance like this:
 
@@ -879,11 +879,11 @@ logger:
 
 ### Access Log configuration
 
-You can configure the access log from the webserver using the `micronaut.server.netty.access-logger` configuration:
-- `micronaut.server.netty.access-logger.enabled`: enable access log from webserver (default `true`).
-- `micronaut.server.netty.access-logger.name`: logger name (default `io.kestra.webserver.access`).
-- `micronaut.server.netty.access-logger.format`: access log format (default `"%{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}t | %r | status: %s | ip: %a | length: %b | duration: %D"`).
-- `micronaut.server.netty.access-logger.exclusions`: list of regexp to define which log to exclude.
+You can configure the access log from the webserver using the `micronaut.server.netty.accessLogger` configuration:
+- `micronaut.server.netty.accessLogger.enabled`: enable access log from webserver (default `true`).
+- `micronaut.server.netty.accessLogger.name`: logger name (default `io.kestra.webserver.access`).
+- `micronaut.server.netty.accessLogger.format`: access log format (default `"%{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}t | %r | status: %s | ip: %a | length: %b | duration: %D"`).
+- `micronaut.server.netty.accessLogger.exclusions`: list of regexp to define which log to exclude.
 
 Here are the default values:
 
@@ -1172,7 +1172,7 @@ Here are the available retry configuration options:
 
 - `kestra.retries.attempts`: the max number of retries (default `5`)
 - `kestra.retries.delay`: the initial delay between retries (default `1s`)
-- `kestra.retries.max-delay`: the max amount of time to retry (default `undefined`)
+- `kestra.retries.maxDelay`: the max amount of time to retry (default `undefined`)
 - `kestra.retries.multiplier`: the multiplier of `delay` between each attempt (default `2.0`)
 
 ::alert{type="warning"}
@@ -1342,12 +1342,12 @@ Using the `kestra.security` configuration, you can set up multiple security feat
 
 The most powerful user in Kestra is the [SuperAdmin](../06.enterprise/rbac.md#super-admin)
 
-You can create a SuperAdmin user from the `kestra.security.super-admin` configuration.
+You can create a SuperAdmin user from the `kestra.security.superAdmin` configuration.
 
 The super-admin requires three properties:
-* `kestra.security.super-admin.username`: the username of the super-admin
-* `kestra.security.super-admin.password`: the password of the super-admin
-* `kestra.security.super-admin.tenantAdminAccess`: a list of tenants that the super-admin can access
+* `kestra.security.superAdmin.username`: the username of the super-admin
+* `kestra.security.superAdmin.password`: the password of the super-admin
+* `kestra.security.superAdmin.tenantAdminAccess`: a list of tenants that the super-admin can access
   * This property can be omitted if you do not use multi-tenancy
   * If a Tenant does not exists, it will be created
   * At each startup, this user is checked and if the list of access permissions has been modified, new access permissions can be created, but none will be removed
@@ -1371,13 +1371,13 @@ kestra:
 
 The default role is the role that will be assigned to a new user when it is created.
 
-You can define the default role using the `kestra.security.default-role` configuration.
+You can define the default role using the `kestra.security.defaultRole` configuration.
 Whenever you start Kestra, the default role will be checked and created if it doesn't exist.
 
 The default role requires three properties:
-* `kestra.security.default-role.name`: the name of the default role
-* `kestra.security.default-role.description`: the description of the default role
-* `kestra.security.default-role.permissions`: the permissions of the default role
+* `kestra.security.defaultRole.name`: the name of the default role
+* `kestra.security.defaultRole.description`: the description of the default role
+* `kestra.security.defaultRole.permissions`: the permissions of the default role
   * This has to be a map with a [Permission](../06.enterprise/rbac.md#permissions) as a key and a list of [Action](../06.enterprise/rbac.md#actions) as a value
 
 ```yaml
@@ -1405,7 +1405,7 @@ kestra:
 
 
 ::alert{type="info"}
-Make sure that you attach the `default-role` configuration under `kestra.security`rather than under `micronaut.security` — it's easy to confuse the two so make sure you enter that configuration in the right place.
+Make sure that you attach the `defaultRole` configuration under `kestra.security`rather than under `micronaut.security` — it's easy to confuse the two so make sure you enter that configuration in the right place.
 ::
 
 ## Server
@@ -1430,7 +1430,7 @@ the [Authentication page](../06.enterprise/04.authentication.md).
 
 ### Delete configuration files
 
-#### `kestra.configurations.delete-files-on-start`:
+#### `kestra.configurations.deleteFilesOnStart`:
 
 This setting allows to delete all configuration files after the server startup. It prevents the ability to read
 configuration files (that may contain your secrets) from a Bash task for example. The server will keep these values in
@@ -1574,7 +1574,7 @@ defaultValue: 10s
 
 ### Heartbeat Missed
 
-The number of missed heartbeats before `Executors` will consider a Worker as `DEAD` can be configured using the `kestra.heartbeat.heartbeat-missed` configuration.
+The number of missed heartbeats before `Executors` will consider a Worker as `DEAD` can be configured using the `kestra.heartbeat.heartbeatMissed` configuration.
 
 ::ConfigPropertyCard
 ---
@@ -1847,7 +1847,7 @@ kestra:
       path: /home/kestra/tmp
 ```
 
-**Note:** The `tmp-dir` path must be aligned to the volume path otherwise Kestra will not know what directory to mount for the `tmp` directory.
+**Note:** The `tmpDir` path must be aligned to the volume path otherwise Kestra will not know what directory to mount for the `tmp` directory.
 
 ```yaml
 volumes:
@@ -1855,11 +1855,11 @@ volumes:
   - /var/run/docker.sock:/var/run/docker.sock
   - /home/kestra:/home/kestra
 ```
-In this example, `/home/kestra:/home/kestra` matches the tasks `tmp-dir` field.
+In this example, `/home/kestra:/home/kestra` matches the tasks `tmpDir` field.
 
 ### Tutorial Flows
 
-Tutorial flows are used to help users understand how Kestra works. They are used in the Guided Tour that allows you to select your use case and see how Kestra can help you solve it. You can disable the tutorial flows in production using the `kestra.tutorial-flows` configuration:
+Tutorial flows are used to help users understand how Kestra works. They are used in the Guided Tour that allows you to select your use case and see how Kestra can help you solve it. You can disable the tutorial flows in production using the `kestra.tutorialFlows` configuration:
 
 ```yaml
 kestra:
@@ -1869,7 +1869,7 @@ kestra:
 
 #### Disable Tutorial Flows
 
-To disable the tutorial flows, set the `tutorial-flows` property to `false` in your configuration file.
+To disable the tutorial flows, set the `tutorialFlows` property to `false` in your configuration file.
 
 ```yaml
 kestra:
@@ -1904,7 +1904,7 @@ Using the `kestra.variables` configuration, you can determine how variables are 
 
 ### Environment Variables Prefix
 
-Kestra provides a way to use environment variables in your flow. By default, Kestra will only look at environment variables that start with `KESTRA_`. You can change this prefix by setting the `kestra.variables.env-vars-prefix` configuration option:
+Kestra provides a way to use environment variables in your flow. By default, Kestra will only look at environment variables that start with `KESTRA_`. You can change this prefix by setting the `kestra.variables.envVarsPrefix` configuration option:
 
 ```yaml
 kestra:
@@ -1929,7 +1929,7 @@ kestra:
       host: pg.db.prod
 ```
 
-Keep in mind that if a variable is in camel case, it will be transformed into hyphenated case. For example, the global variable shown below will be accessible in flows with `{{ globals['my-var'] }}` or `{{ globals['environment-name'] }}`:
+Keep in mind that if a variable is in camel case, it will be transformed into hyphenated case. For example, the global variable shown below will be accessible in flows with `{{ globals['myVar'] }}` or `{{ globals['environment-name'] }}`:
 
 ```yaml
 kestra:
@@ -1941,7 +1941,7 @@ kestra:
 
 ### Recursive Rendering
 
-The `kestra.variables.recursive-rendering` configuration allows you to enable the pre-0.14.0 [recursive rendering](../11.migration-guide/0.14.0/recursive-rendering.md) behavior and give administrators more time to migrate deployed flows. It defaults to `false`:
+The `kestra.variables.recursiveRendering` configuration allows you to enable the pre-0.14.0 [recursive rendering](../11.migration-guide/0.14.0/recursive-rendering.md) behavior and give administrators more time to migrate deployed flows. It defaults to `false`:
 
 ```yaml
 kestra:
@@ -1951,7 +1951,7 @@ kestra:
 
 ###
 
-The rendering of template variables can be CPU intensive, and by default we **enable** a cache of "templates". You can disable it using the `kestra.variables.cache-enabled` configuration:
+The rendering of template variables can be CPU intensive, and by default we **enable** a cache of "templates". You can disable it using the `kestra.variables.cacheEnabled` configuration:
 
 ```yaml
 kestra:
@@ -1963,7 +1963,7 @@ We recommend keeping the cache enabled, as it can improve the performance.
 
 ### Cache Size
 
-The rendering of template variables cache is an LRU cache (keeps most commonly used variables) and will be cached in memory (default `1000`). You can change the size of the template cache (in number of templates) using the `kestra.variables.cache-size` configuration.
+The rendering of template variables cache is an LRU cache (keeps most commonly used variables) and will be cached in memory (default `1000`). You can change the size of the template cache (in number of templates) using the `kestra.variables.cacheSize` configuration.
 
 ```yaml
 kestra:
@@ -1980,7 +1980,7 @@ Using the `kestra.webserver` configuration, you can adjust the settings of the K
 
 ### Google Analytics ID
 
-Using the `kestra.webserver.google-analytics` configuration, you can add a Google Analytics tracking ID to report all page tracking. Here is an example of how you can add your Google Analytics tracking ID:
+Using the `kestra.webserver.googleAnalytics` configuration, you can add a Google Analytics tracking ID to report all page tracking. Here is an example of how you can add your Google Analytics tracking ID:
 
 ```yaml
 kestra:
@@ -1991,7 +1991,7 @@ kestra:
 
 ### Append HTML tags to the webserver application
 
-With the help of the `kestra.webserver.html-head` configuration, you can append HTML tags to the webserver application. This can bw used to inject CSS or JavaScript to customize the web application.
+With the help of the `kestra.webserver.htmlHead` configuration, you can append HTML tags to the webserver application. This can bw used to inject CSS or JavaScript to customize the web application.
 
 For example, here is how you can add a red banner in production environments:
 ```yaml

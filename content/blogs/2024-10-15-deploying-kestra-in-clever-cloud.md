@@ -72,7 +72,7 @@ datasources:
 kestra:
   server:
     # Configure basic auth as Kestra will be publicly available <2>
-    basic-auth:
+    basicAuth:
       enabled: true
       username: user@domain.com
       password: supersecretpassword
@@ -91,7 +91,7 @@ kestra:
   queue:
     type: postgres
   tasks:
-     tmp-dir:
+     tmpDir:
       path: /tmp/kestra-wd/tmp
   # Setup the URL to the CleverCloud host <4>
   url: ${APP_ID}.cleverapps.io
