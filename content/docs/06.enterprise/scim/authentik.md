@@ -129,7 +129,7 @@ To ensure that your SSO users have some initial permissions within Kestra UI, it
 ```yaml
 kestra:
   security:
-    default-role:
+    defaultRole:
       name: default_admin_role
       description: "Default Admin Role"
       permissions:
@@ -148,7 +148,7 @@ kestra:
   ee:
     tenants:
       enabled: true
-      default-tenant: false
+      defaultTenant: false
 ```
 
 ::alert{type="info"}

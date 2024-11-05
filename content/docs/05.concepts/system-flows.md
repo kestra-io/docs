@@ -25,7 +25,7 @@ We refer to these as **System Flows** because by default they are hidden from en
 
 ```yaml
 kestra:
-  system-flows:
+  systemFlows:
     namespace: system
 ```
 

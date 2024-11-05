@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-10">
             <h3>Source</h3>
-            <div class="mt-4 relative code mb-3" :class="{ hide: hideCode }">
+            <div class="mt-4 relative code mb-3 main-code-block" :class="{ hide: hideCode }">
                 <ContentRendererMarkdown
                     class="bd-markdown"
                     :value="flow"
@@ -143,6 +143,22 @@ export default {
         }
     }
 
+    .main-code-block {
+        :deep(.bd-markdown) {
+            .code-block {
+                .language {
+                    top: unset !important;
+                    bottom: 0.5rem !important;
+                }
+
+                .copy {
+                    top: 0.5rem !important;
+                    bottom: unset !important;
+                }
+
+            }
+        }
+    }
   :deep(.bd-markdown) {
       color: $white;
 
