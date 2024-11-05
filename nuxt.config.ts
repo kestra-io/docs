@@ -227,6 +227,7 @@ export default defineNuxtConfig({
         '/docs/developer-guide/error-handling': {redirect: '/docs/workflow-components/errors'},
         '/docs/developer-guide/scripts/output-directory': {redirect: '/docs/developer-guide/scripts/input-output-files'},
         '/docs/best-practice': {redirect: '/docs/best-practices'},
+        '/docs/best-practices/pebble-templating-with-namespace-files': {redirect: '/docs/best-practices/expressions-with-namespace-files'},
         '/docs/workflow-components/trigger': {redirect: '/docs/workflow-components/triggers'},
         '/docs/workflow-components/realtime-triggers': {redirect: '/docs/workflow-components/realtime-trigger'},
         '/docs/workflow-components/triggers/conditions': {redirect: '/docs/workflow-components/triggers#conditions'},
