@@ -32,7 +32,7 @@ This guide is based on the official Azure documentation on Workload Identity —
 
 ## Variables
 
-Define the following variables for use throughout the following guide. Please update to match your own environment
+Define the following variables and update them to match your environment.
 
 ```shell
 # Managed User Identity Name
