@@ -92,7 +92,7 @@ az aks create \
 
 ### Setting identifiers from new resources
 
-Once all the above have been created, capture the following information in variables for use later on
+Once all the above have been created, capture the following information in variables for use later on:
 
 ```shell
 OBJECT_ID=$(az identity show --name $ID_NAME --resource-group $RESOURCE_GROUP --query 'principalId' --output tsv)
