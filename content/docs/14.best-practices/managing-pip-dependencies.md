@@ -29,7 +29,6 @@ tasks:
     containerImage: ghcr.io/kestra-io/pydata:latest
     script: |
       import pandas as pd
-      from kestra import Kestra
 
       df = pd.read_csv('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv')
       total_revenue = df['total'].sum()
