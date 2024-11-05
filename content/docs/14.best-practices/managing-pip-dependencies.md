@@ -15,6 +15,26 @@ If you install `pip` packages within `beforeCommands`, these packages will be do
 
 Instead of using the Python Docker image, and installing pip package dependencies using `beforeCommands`, you can create a customer Docker image with Python and the required pip package dependencies. As all the pip packages would be part of this custom Docker image, you need not download and install the pip package dependencies during each execution. This would prevent the load on the execution, and the execution time will be dedicated to only the processing of the Python code.
 
+For example, the Python example has `pandas` as a dependency. We can specify a Python container image that has this pre-installed, such as `ghcr.io/kestra-io/pydata:latest` meaning we don't need to use `beforeCommands`:
+
+```yaml
+id: docker_dependencies
+namespace: company.team
+
+tasks:
+  - id: code
+    type: io.kestra.plugin.scripts.python.Script
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: ghcr.io/kestra-io/pydata:latest
+    script: |
+      import pandas as pd
+      from kestra import Kestra
+
+      df = pd.read_csv('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv')
+      total_revenue = df['total'].sum()
+```
+
 ## Install pip package dependencies at server startup
 
 This is another way of preventing the overload of downloading and installing pip package dependencies in each execution. You can install all the pip package dependencies, and then start the Kestra server. For Kestra standalone server, you can achieve this by running the command in the following fashion:
