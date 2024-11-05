@@ -28,7 +28,7 @@ To follow this guide you will need the following
   - Azure Key Vault
   - User managed identity
 
-This guide references the following heavily https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster. I recommend reading this guide for full context. This will focus on the specific areas to enable this feature for Azure Key Vault on Kestra. 
+This guide is based on the official Azure documentation on Workload Identity — it's best to read [this Azure guide](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) first for full context. Here, we'll focus on enabling this feature in Kestra. 
 
 ## Variables
 
