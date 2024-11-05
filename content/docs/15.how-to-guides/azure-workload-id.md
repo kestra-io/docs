@@ -55,7 +55,12 @@ FEDERATED_IDENTITY_CREDENTIAL_NAME="kestra-fed-cred"
 
 ## Create the resources
 
-To start, create the 3 main resources, the Key Vault, the managed identity and the AKS cluster. Once these have been provisioned, there are several identifiers we must capture for later use.
+First, create the following main resources:
+1. The Key Vault
+2. The Managed Identity
+3. The AKS cluster. 
+
+Once these have been provisioned, there are several identifiers we must capture for later use.
 
 ### Azure Key Vault
 
