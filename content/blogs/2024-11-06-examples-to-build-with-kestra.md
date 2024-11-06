@@ -11,11 +11,16 @@ image: /blogs/2024-11-06-examples-to-build-with-kestra.jpg
 
 When you get started with a new tool, it can be overwhelming to know where to start and what to look at first. You probably already have some existing code that you're looking to integrate without having to do a ton of extra work.
 
-If you're anything like me, the first thing I like to do is look for some examples that I can modify to suit my needs, which is why we’ve build a library of curated examples called [Blueprints](/blueprints) to enable this. We’ll walk through a number of our Blueprints that cover common scenarios to help you identify where you should start!
+If you're anything like me, the first thing I like to do when using a new tool for the first time is look for some examples that I can modify to suit my needs, which is why we’ve build a library of curated examples called [Blueprints](/blueprints) to enable this. We’ll walk through a number of our Blueprints that cover common scenarios to help you identify where you should start!
 
-As a unified orchestrator, Kestra can handle almost any use case. With this in mind, we’re going to discuss some of the common building blocks to enable you to build something that fits your use case. We'll start by looking at how you can get your code set up and running in Kestra. After that, we can look at automating that by pulling new changes automatically from our Git repository. Once we've done that, we can explore tapping into the cloud for more resources to expand our current logic. To finish things off, we'll look at alerting and how we can configure alerts for our workflow.
+As a unified orchestrator, Kestra can handle almost any use case. With this in mind, we’re going to discuss some of the common building blocks to enable you to build something that fits your use case:
 
-With all of these combined, we can build some powerful workflows. Let's take a look at a number of Blueprints for each of these areas.
+1. How you can get your code set up and running in Kestra.
+2. Automating that by pulling new changes automatically from our Git repository.
+3. Tap into the cloud for more resources to expand our current logic. 
+4. Alerts and how we can configure alerts for our workflow.
+
+With all of these combined, we can build powerful workflows. Let's take a look at a number of Blueprints for each of these areas.
 
 ## Integrating Your Code into Kestra
 
