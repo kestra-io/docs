@@ -1,5 +1,5 @@
 ---
-title: "Code in any Language in Kestra"
+title: "Integrate Your Code into Kestra"
 description: "Learn how to integrate your code into workflows in Kestra."
 date: 2024-10-25T13:00:00
 category: Solutions
@@ -12,7 +12,7 @@ image: /blogs/2024-10-25-code-in-any-language.jpg
 There are only two kinds of programming languages: the ones people complain about and the ones nobody uses. Each language has its own pros and cons. That's why at Kestra, we offer you the flexibility to code in any language. This functionality is possible because Kestra separates your business logic from the glue code needed for orchestration. 
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/GBUJTjHE9ig?si=gishd-tTm0oIMXNk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/oZYtLimdKBo?si=7BHcOIvSgxELwh33" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
