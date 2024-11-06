@@ -196,10 +196,10 @@ On earlier versions of the Kestra helm chart (<=0.19), it was not possible to de
 azure.workload.identity/use: "true"
 ```
 
-Should you be unable to upgrade at this time a workaround is as follows:
-- Download latest Kestra helm chart https://helm.kestra.io/
+Should you be unable to upgrade at this time, here is a workaround:
+- Download the `latest` Kestra helm chart from https://helm.kestra.io
 - Navigate to file `templates/_helpers.tpl`
-- In the section "kestra.selectorsLabels, add the required label to the list e.g.
+- In the section `kestra.selectorsLabels`, add the required label to the list, e.g.:
 
 ```
 {{- define "kestra.selectorsLabels" -}}
