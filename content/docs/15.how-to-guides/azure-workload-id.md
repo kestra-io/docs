@@ -110,7 +110,7 @@ One of the more challenging aspects of this setup is correctly linking together 
 
 ### Create role assignment for created user 
 
-This is one of the more critical steps as it sets the permission the resource has on the Key Vault. As Kestra needs to read and write secrets to the vault, the "Key Vault Secrets Officer" provides least priviledged access for this operation. Further details on this role can be found [here](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli#azure-built-in-roles-for-key-vault-data-plane-operations). 
+This is one of the most critical steps as it sets the permission the resource has on the Key Vault. As Kestra needs to read and write secrets to the vault, the "Key Vault Secrets Officer" provides least priviledged access for this operation. Further details on this role can be found [in Azure's RBAC guide](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli#azure-built-in-roles-for-key-vault-data-plane-operations). 
 
 ```shell
 az role assignment create \
