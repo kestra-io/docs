@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Will Russell
   image: "wrussell"
-image: /blogs/.jpg
+image: /blogs/2024-11-06-examples-to-build-with-kestra.jpg
 ---
 
 When you get started with a new tool, it can be overwhelming to know where to start and what to look at first. You probably already have some existing code that you're looking to integrate without having to do a ton of extra work.
