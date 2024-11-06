@@ -1,7 +1,7 @@
 ---
 title: "Curated Examples to Help You Build with Kestra"
 description: "Explore our curated library of examples to help you build with Kestra"
-date: 2024-10-25T13:00:00
+date: 2024-11-07T13:00:00
 category: Solutions
 author:
   name: Will Russell
@@ -17,7 +17,7 @@ As a unified orchestrator, Kestra can handle almost any use case. With this in m
 
 ## Integrating Your Code into Kestra
 
-One of the number one questions we get is "how do I get my code into Kestra?" - don't worry, we've got you sorted. We recently did [an in-depth article](./2024-10-25-code-in-any-language.md) on how to integrate your code directly into Kestra, including handling inputs, outputs and files to allow Kestra to work best with your code.
+One of the number one questions we get is "how do I get my code into Kestra?" - don't worry, we've got you sorted. We recently did an [in-depth article](./2024-10-25-code-in-any-language.md) on how to integrate your code directly into Kestra, including handling inputs, outputs and files to allow Kestra to work best with your code.
 
 To accompany that, we've got a number of helpful Blueprints covering a variety of use cases.
 
@@ -80,11 +80,70 @@ tasks:
     store: true
 ```
 
-**[]()**
+**[Run C code inside of a Shell environment](/blueprints/shell-execute-code)**
 
-Another example of integrating our code....
+In this next example, we can see the power of Kestra being language agnostic coming into action. We're able to utilise the Shell Commands task to give us an environment to run any language, as long as we install the required dependencies. In this scenario, we're using a `gcc` container image to set up our Shell environment for C. Another neat thing with this example is the ability to dynamically set the dataset_url at execution without needing to touch the code directly.
 
-Shell example here
+```yaml
+id: shell-execute-code
+namespace: company.team
+
+inputs:
+  - id: dataset_url
+    type: STRING
+    defaults: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+tasks:
+  - id: download_dataset
+    type: io.kestra.plugin.core.http.Download
+    uri: "{{ inputs.dataset_url }}"
+  - id: c_code
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: gcc:latest
+    commands:
+      - gcc example.c
+      - ./a.out
+    inputFiles:
+      orders.csv: "{{ outputs.download_dataset.uri }}"
+      example.c: |
+        #include <stdio.h>
+        #include <stdlib.h>
+        #include <string.h>
+
+        int main() {
+            FILE *file = fopen("orders.csv", "r");
+            if (!file) {
+                printf("Error opening file!\n");
+                return 1;
+            }
+
+            char line[1024];
+            double total_revenue = 0.0;
+
+            fgets(line, 1024, file);
+            while (fgets(line, 1024, file)) {
+                char *token = strtok(line, ",");
+                int i = 0;
+                double total = 0.0;
+                
+                while (token) {
+                    if (i == 6) {
+                        total = atof(token);
+                        total_revenue += total;
+                    }
+                    token = strtok(NULL, ",");
+                    i++;
+                }
+            }
+
+            fclose(file);
+            printf("Total Revenue: $%.2f\n", total_revenue);
+
+            return 0;
+        }
+```
 
 ## Access your Git repositories
 
@@ -120,7 +179,7 @@ tasks:
           - python etl/global_power_plant.py
 ```
 
-**[Sync code from Git at regular intervals](/blueprints/sync-from-git)
+**[Sync code from Git at regular intervals](/blueprints/sync-from-git)**
 
 This example uses the SyncFlows and SyncNamespaceFiles to pull the content of our Git repository directly into Kestra, rather than isolated inside of a flow. This is useful for managing our Kestra instance, especially if we have separate dev and production instances.
 
@@ -163,81 +222,198 @@ We have official plugins for [AWS](/plugins/plugin-aws), [Google Cloud](/plugins
 
 S3, BigQuery, Batch
 
-**[Event-driven data ingestion to AWS S3 data lake managed by Apache Iceberg, AWS Glue and Amazon Athena](/blueprints/ingest-to-datalake-event-driven)**
+**[Detect New Files in S3 and process them in Python](/blueprints/s3-trigger-python)**
 
-Jumping right in, this workflow uses a bunch of different AWS services. This workflow ingests data to an S3 data lake using a Python script.
+Jumping right in, this workflow is event driven based on files arriving in an S3 bucket. This is a great way to allow Kestra to make your existing code event driven.
 
 ```yaml
-id: ingest-to-datalake-event-driven
+id: s3-trigger-python
 namespace: company.team
 
 variables:
-  source_prefix: inbox
-  destination_prefix: archive
-  database: default
-  bucket: kestraio
+  bucket: s3-bucket
+  region: eu-west-2
 
 tasks:
-  - id: wdir
-    type: io.kestra.plugin.core.flow.WorkingDirectory
-    tasks:
-      - id: clone_repository
-        type: io.kestra.plugin.git.Clone
-        url: https://github.com/kestra-io/scripts
-      - id: etl
-        type: io.kestra.plugin.scripts.python.Commands
-        warningOnStdErr: false
-        taskRunner:
-          type: io.kestra.plugin.scripts.runner.docker.Docker
-        containerImage: ghcr.io/kestra-io/aws:latest
-        env:
-          AWS_ACCESS_KEY_ID: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-          AWS_SECRET_ACCESS_KEY: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-          AWS_DEFAULT_REGION: "{{ secret('AWS_DEFAULT_REGION') }}"
-        commands:
-          - python etl/aws_iceberg_fruit.py {{ vars.destination_prefix }}/{{
-            trigger.objects | jq('.[].key') | first }}
-
-  - id: merge_query
-    type: io.kestra.plugin.aws.athena.Query
-    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-    region: "{{ secret('AWS_DEFAULT_REGION') }}"
-    database: "{{ vars.database }}"
-    outputLocation: s3://{{ vars.bucket }}/query_results/
-    query: >
-      MERGE INTO fruits f USING raw_fruits r
-          ON f.fruit = r.fruit
-          WHEN MATCHED
-              THEN UPDATE
-                  SET id = r.id, berry = r.berry, update_timestamp = current_timestamp
-          WHEN NOT MATCHED
-              THEN INSERT (id, fruit, berry, update_timestamp)
-                    VALUES(r.id, r.fruit, r.berry, current_timestamp);
-  - id: optimize
-    type: io.kestra.plugin.aws.athena.Query
-    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-    region: "{{ secret('AWS_DEFAULT_REGION') }}"
-    database: "{{ vars.database }}"
-    outputLocation: s3://{{ vars.bucket }}/query_results/
-    query: |
-      OPTIMIZE fruits REWRITE DATA USING BIN_PACK;       
+  - id: process_data
+    type: io.kestra.plugin.scripts.python.Commands
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: ghcr.io/kestra-io/kestrapy:latest
+    namespaceFiles:
+      enabled: true
+    inputFiles:
+      input.csv: "{{ read(trigger.objects[0].uri) }}"
+    outputFiles:
+      - data.csv
+    commands:
+      - python process_data.py
 
 triggers:
-  - id: wait_for_new_s3_objects
+  - id: watch
     type: io.kestra.plugin.aws.s3.Trigger
-    bucket: kestraio
     interval: PT1S
-    maxKeys: 1
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+    region: "{{ vars.region }}"
+    bucket: "{{ vars.bucket }}"
     filter: FILES
     action: MOVE
-    prefix: "{{ vars.source_prefix }}"
     moveTo:
-      key: "{{ vars.destination_prefix }}/{{ vars.source_prefix }}"
-      bucket: "{{ vars.bucket }}"
-    region: "{{ secret('AWS_DEFAULT_REGION') }}"
-    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+      key: archive/
+    maxKeys: 1
 ```
 
+**[Use GCP Pub/Sub Realtime Trigger to push events into Firestore](/blueprints/pubsub-realtime-trigger)**
+
+On the trend of event driven workflows, we can use [Realtime triggers](../docs/04.workflow-components/07.triggers/05.realtime-trigger.md) to allow our workflows to react to new messages with low latency.
+
+In this example, we're using the Google Cloud PubSub Realtime Trigger to listen for new messages in realtime, and setting that data in a Firestore database. 
+
+```yaml
+id: pubsub-realtime-trigger
+namespace: company.team
+
+tasks:
+  - id: insert_into_firestore
+    type: io.kestra.plugin.gcp.firestore.Set
+    projectId: test-project-id
+    collection: orders
+    document:
+      order_id: "{{ trigger.data | jq('.order_id') | first }}"
+      customer_name: "{{ trigger.data | jq('.customer_name') | first }}"
+      customer_email: "{{ trigger.data | jq('.customer_email') | first }}"
+      product_id: "{{ trigger.data | jq('.product_id') | first }}"
+      price: "{{ trigger.data | jq('.price') | first }}"
+      quantity: "{{ trigger.data | jq('.quantity') | first }}"
+      total: "{{ trigger.data | jq('.total') | first }}"
+
+triggers:
+  - id: realtime_trigger
+    type: io.kestra.plugin.gcp.pubsub.RealtimeTrigger
+    projectId: test-project-id
+    topic: orders
+    subscription: kestra-subscription
+    serdeType: JSON
+```
+
+**[Run a Python script on Azure with Azure Batch VMs](/blueprints/azure-batch-runner)**
+
+In our last cloud example, we can easily execute our code directly on cloud resources using [Task Runners](../docs/task-runners/index.md).
+
+This example uses the Azure Batch to execute our Python code, and then returns all outputs back to Kestra, enabling us to use more resources on demand.
+
+```yaml
+id: azure-batch-runner
+namespace: company.team
+
+variables:
+  pool_id: poolId
+  container_name: containerName
+
+tasks:
+  - id: scrape_environment_info
+    type: io.kestra.plugin.scripts.python.Commands
+    containerImage: ghcr.io/kestra-io/pydata:latest
+    taskRunner:
+      type: io.kestra.plugin.ee.azure.runner.Batch
+      account: "{{ secret('AZURE_ACCOUNT') }}"
+      accessKey: "{{ secret('AZURE_ACCESS_KEY') }}"
+      endpoint: "{{ secret('AZURE_ENDPOINT') }}"
+      poolId: "{{ vars.pool_id }}"
+      blobStorage:
+        containerName: "{{ vars.container_name }}"
+        connectionString: "{{ secret('AZURE_CONNECTION_STRING') }}"
+    commands:
+      - python {{ workingDir }}/main.py
+    namespaceFiles:
+      enabled: true
+    outputFiles:
+      - environment_info.json
+    inputFiles:
+      main.py: >
+        import platform
+        import socket
+        import sys
+        import json
+        from kestra import Kestra
+
+        print("Hello from Azure Batch and kestra!")
+
+        def print_environment_info():
+            print(f"Host's network name: {platform.node()}")
+            print(f"Python version: {platform.python_version()}")
+            print(f"Platform information (instance type): {platform.platform()}")
+            print(f"OS/Arch: {sys.platform}/{platform.machine()}")
+
+            env_info = {
+                "host": platform.node(),
+                "platform": platform.platform(),
+                "OS": sys.platform,
+                "python_version": platform.python_version(),
+            }
+            Kestra.outputs(env_info)
+
+            filename = 'environment_info.json'
+            with open(filename, 'w') as json_file:
+                json.dump(env_info, json_file, indent=4)
+
+        if __name__ == '__main__':
+          print_environment_info()
+```
+
+## Managing Alerting
+
+One of the benefits of Kestra is being able to integrate your code straight away, and build automated alerting around it. Let's take a look at a few examples of alerting in Kestra.
+
+**[Send a Slack message via incoming webhook](/blueprints/slack-incoming-webhook)**
+
+With this simple workflow, we can easily add this to any of our workflows, and incorporate data generated by tasks using expressions.
+
+```yaml
+id: slack-incoming-webhook
+namespace: company.team
+
+tasks:
+  - id: slack
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    payload: >
+      {
+        "channel": "#alerts",
+        "text": "Flow {{ flow.namespace }}.{{ flow.id }} started with execution {{ execution.id }}"
+      }
+```
+
+**[Set up alerts for failed workflow executions using Discord](https://kestra.io/blueprints/failure-alert-discord)**
+
+This next example is a [System flow](../docs/05.concepts/system-flows.md) which are useful for maintaining our Kestra instance. Using a [Flow Trigger](../docs/04.workflow-components/07.triggers/02.flow-trigger.md), we can send automated messages to Discord every time a workflow finishes with **FAILED** or **WARNING** state. Useful to give you real time information at your finger tips.
+
+```yaml
+id: failure-alert-discord
+namespace: system
+
+tasks:
+  - id: send_alert
+    type: io.kestra.plugin.notifications.discord.DiscordExecution
+    url: "{{ secret('DISCORD_WEBHOOK') }}"
+    executionId: "{{ trigger.executionId }}"
+
+triggers:
+  - id: on_failure
+    type: io.kestra.plugin.core.trigger.Flow
+    conditions:
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+        in:
+          - FAILED
+          - WARNING
+
+```
+
+## What's next?
+
+This is just the start of some of the areas you can explore in Kestra to integrate into your existing solution. I'd recommend checking out the full Blueprint library for over 180 curated examples. If you build any useful examples, feel free to contribute back by making a Pull Request on our [GitHub repository](https://github.com/kestra-io/blueprints)!
+
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](https://kestra.io/slack).
+
+If you have any questions, reach out via [Slack](https://kestra.io/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
