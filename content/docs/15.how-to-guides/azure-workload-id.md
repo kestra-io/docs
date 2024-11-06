@@ -172,7 +172,7 @@ configuration:
 
 ### Service Account
 
-Simply add the service account name in the file. There is already a value present so overwrite with your value defined above. 
+Make sure to add the service account name to the `values.yaml` file. Since a value is already present, overwrite it with your value defined above. 
 
 ```yaml
 ### Global Deployement
