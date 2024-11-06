@@ -151,7 +151,7 @@ tasks:
 
 [Check out the Blueprint here](/blueprints/shell-execute-code)
 
-## Access your Git repositories
+## Access your Git repositories inside of your workflows
 
 Orchestrating your code is useful, but being able to sync that with your Git repository streamlines it even more. There are multiple ways to integrate with Git inside of Kestra:
 1. Clone
@@ -226,7 +226,7 @@ triggers:
 
 [Check out the Blueprint here](/blueprints/sync-from-git)
 
-## Tapping into the Power of the Cloud
+## Tap into the Power of the Cloud
 
 Another common use case is integrating Kestra directly with the cloud. It's no mystery that cloud providers can unlock tons of possibilities with their huge amount of compute power.
 
@@ -378,7 +378,7 @@ tasks:
 
 [Check out the Blueprint here](/blueprints/azure-batch-runner)
 
-## Managing Alerting
+## Add Alerts to your 
 
 One of the benefits of Kestra is being able to integrate your code straight away, and build automated alerting around it. Let's take a look at a few examples of alerting in Kestra.
 
