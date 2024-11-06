@@ -9,22 +9,22 @@ author:
 image: /blogs/2024-11-06-examples-to-help-build-with-kestra.jpg
 ---
 
-When you get started with a new tool, it can be overwhelming to know where to start and what to look at first. You probably already have some existing code that you're looking to integrate without having to do a ton of extra work.
+When you get started with a new tool, it can be overwhelming to know where to start and what to look at first. You probably already have some existing code that you're looking to integrate without doing a ton of extra work.
 
-If you're anything like me, the first thing I like to do when using a new tool for the first time is look for some examples that I can modify to suit my needs, which is why we’ve build a library of curated examples called [Blueprints](/blueprints) to enable this. We’ll walk through a number of our Blueprints that cover common scenarios to help you identify where you should start!
+If you're anything like me, the first thing I like to do when using a new tool for the first thing I like to do when using a new tool for the first time is look for some examples that I can modify to suit my needs, which is why we’ve build a library of curated examples called [Blueprints](/blueprints) to enable this. We’ll walk through a number of our Blueprints that cover common scenarios to help you identify where you should start!
 
 As a unified orchestrator, Kestra can handle almost any use case. With this in mind, we’re going to discuss some of the common building blocks to enable you to build something that fits your use case:
 
-1. How you can get your code set up and running in Kestra.
+1. How to get your code set up and running in Kestra.
 2. Automating that by pulling new changes automatically from our Git repository.
-3. Tap into the cloud for more resources to expand our current logic. 
+3. Tapping into the cloud for more resources to expand our current logic.
 4. Alerts and how we can configure alerts for our workflow.
 
-With all of these combined, we can build powerful workflows. Let's take a look at a number of Blueprints for each of these areas.
+With all these combined, we can build powerful workflows. Let’s look at some Blueprints for each of these areas.
 
 ## Integrating Your Code into Kestra
 
-One of the number one questions we get is "how do I get my code into Kestra?" - don't worry, we've got you sorted. We recently did an [in-depth article](./2024-10-25-code-in-any-language.md) on how to integrate your code directly into Kestra, including handling inputs, outputs and files to allow Kestra to work best with your code.
+One of the main questions we get is, 'how do I get my code into Kestra?' Don’t worry, we’ve got you covered. We recently did an [in-depth article](./2024-10-25-code-in-any-language.md) on how to integrate your code directly into Kestra, including handling inputs, outputs and files to allow Kestra to work best with your code.
 
 To accompany that, we've got a number of helpful Blueprints covering a variety of use cases.
 
@@ -156,7 +156,7 @@ tasks:
 
 [Check out the Blueprint here](/blueprints/shell-execute-code)
 
-## Access your Git repositories inside of your workflows
+## Access Your Git repositories Inside of Your Workflows
 
 Orchestrating your code is useful, but being able to sync that with your Git repository streamlines it even more. There are multiple ways to integrate with Git inside of Kestra:
 1. Clone
@@ -383,7 +383,7 @@ tasks:
 
 [Check out the Blueprint here](/blueprints/azure-batch-runner)
 
-## Add Alerts to your 
+## Add Alerts to Your Workflows
 
 One of the benefits of Kestra is being able to integrate your code straight away, and build automated alerting around it. Let's take a look at a few examples of alerting in Kestra.
 
