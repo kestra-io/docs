@@ -128,7 +128,7 @@ First, we must switch context to the newly created AKS cluster:
 az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_NAME
 ```
 
-Next, create service account in the same namespace as where you wish to deploy Kestra. 
+Next, create a service account in the same namespace where you deploy Kestra. 
 
 ```shell
 cat <<EOF | kubectl apply -f -
