@@ -142,7 +142,7 @@ metadata:
 EOF
 ```
 
-Finally, we need to link this service account to the OIDC issuer associated with our managed identity. We do this by creating the following federeated credential. 
+Finally, we need to link this service account to the OIDC issuer associated with our managed identity. We do this by creating federated credentials:
 
 ```shell
 az identity federated-credential create \
