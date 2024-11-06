@@ -19,14 +19,14 @@ Note that this page is only relevant for the Enterprise Edition of Kestra. Shoul
 
 To follow this guide you will need the following
 
-1. Kestra Enterprise Edition
+1. [Kestra Enterprise Edition](https://kestra.io/docs/enterprise)
 2. Account with Azure
-3. Azure CLI installed
+3. [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/) installed
 4. Kubernetes tools (kubectl & helm)
 5. Permissions to provision the following:
-  - AKS Cluster
-  - Azure Key Vault
-  - User managed identity
+  - [AKS Cluster](https://azure.microsoft.com/en-us/products/kubernetes-service/)
+  - [Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/)
+  - [User-assigned managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview)
 
 This guide is based on the official Azure documentation on Workload Identity — it's best to read [this Azure guide](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster) first for full context. Here, we'll focus on enabling this feature in Kestra. 
 
@@ -64,6 +64,8 @@ Once these have been provisioned, there are several identifiers we must capture 
 
 ### Azure Key Vault
 
+This creates an Azure Key Vault. By default this will be created with RBAC (role-based access control) enabled which is the recommended configuration. 
+
 ```shell
 az keyvault create \
   --name $KEYVAULT_NAME \
@@ -72,6 +74,8 @@ az keyvault create \
 ```
 
 ### Managed Identity
+
+This creates the user-assigned managed identity we will use to provision access to resources within the Kubernetes cluster. 
 
 ```shell
 az identity create --name $ID_NAME \
