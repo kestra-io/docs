@@ -165,7 +165,7 @@ configuration:
   kestra:
     secret:
       type: azure-key-vault
-      azure-key-vault:
+      azureKeyVault:
         vaultName: ${KEYVAULT_NAME}
         workloadIdentityClientId: ${MANAGED_CLIENT_ID}
 ```
