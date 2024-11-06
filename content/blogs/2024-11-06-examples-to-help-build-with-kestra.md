@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Will Russell
   image: "wrussell"
-image: /blogs/2024-11-06-examples-to-build-with-kestra.jpg
+image: /blogs/2024-11-06-examples-to-help-build-with-kestra.jpg
 ---
 
 When you get started with a new tool, it can be overwhelming to know where to start and what to look at first. You probably already have some existing code that you're looking to integrate without having to do a ton of extra work.
@@ -239,7 +239,7 @@ We have official plugins for [AWS](/plugins/plugin-aws), [Google Cloud](/plugins
 
 ### Detect New Files in S3 and process them in Python
 
-Jumping right in, this workflow is event driven based on files arriving in an S3 bucket. This is a great way to allow Kestra to make your existing code event driven.
+Jumping right in, this workflow is event driven based on files arriving in an S3 bucket using the [S3 Trigger](/plugins/aws/triggers/io.kestra.plugin.aws.s3.trigger). This is a great way to allow Kestra to make your existing code event driven.
 
 ```yaml
 id: s3-trigger-python
@@ -285,7 +285,7 @@ triggers:
 
 On the trend of event driven workflows, we can use [Realtime triggers](../docs/04.workflow-components/07.triggers/05.realtime-trigger.md) to allow our workflows to react to new messages with low latency.
 
-In this example, we're using the Google Cloud PubSub Realtime Trigger to listen for new messages in realtime, and setting that data in a Firestore database. 
+In this example, we're using the [Google Cloud PubSub Realtime Trigger](/plugins/google%20cloud/triggers/io.kestra.plugin.gcp.pubsub.realtimetrigger) to listen for new messages in realtime, and setting that data in a Firestore database. 
 
 ```yaml
 id: pubsub-realtime-trigger
