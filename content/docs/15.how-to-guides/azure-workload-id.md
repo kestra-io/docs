@@ -190,7 +190,7 @@ helm install -f values.yaml kestra kestra/kestra
 
 ## Known Issues
 
-On earlier versions of the Kestra helm chart (<=0.19) it was not possible to define custom labels to individual pods. To use managed workload identity the following label must be defined on the webserver, scheduler and worker pods
+On earlier versions of the Kestra helm chart (<=0.19), it was not possible to define custom labels for individual pods. To use managed workload identity, the following label must be defined on the webserver, scheduler, and worker pods:
 
 ```yaml
 azure.workload.identity/use: "true"
