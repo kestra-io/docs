@@ -216,3 +216,6 @@ Assuming the above chart is stored locally in `~/helm/kestra`, deploy Kestra usi
 helm install -f values.yaml kestra ~/helm/kestra
 ```
 
+## Next steps
+
+Following the steps above, you can leverage Azure Workload Identity in your Kestra Enterprise Edition instance. If you have any issues replicating this setup, don't hesitate to reach out [via Slack](https://kestra.io/slack) or open a support ticket.
