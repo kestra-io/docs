@@ -122,7 +122,7 @@ az role assignment create \
 
 ### Create the service account in the AKS Cluster
 
-First, we must switch context to the newly created cluster
+First, we must switch context to the newly created AKS cluster:
 
 ```shell
 az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_NAME
