@@ -182,7 +182,7 @@ serviceAccountName: ${SERVICE_ACCOUNT_NAME}
 
 ## Deployment
 
-Assuming other values are populated to your desired value, deploy Kestra with the helm install command:
+Assuming other properties are populated to your desired values within the `values.yaml` file, deploy Kestra with the `helm install` command:
 
 ```shell
 helm install -f values.yaml kestra kestra/kestra
