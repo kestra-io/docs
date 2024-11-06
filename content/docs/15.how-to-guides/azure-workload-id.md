@@ -210,7 +210,7 @@ azure.workload.identity/use: "true"
 {{- end -}}
 ```
 
-Deploy Kesrta with the following (assuming the above chart is stored locally in ~/helm/kestra):
+Assuming the above chart is stored locally in `~/helm/kestra`, deploy Kestra using the following command:
 
 ```shell
 helm install -f values.yaml kestra ~/helm/kestra
