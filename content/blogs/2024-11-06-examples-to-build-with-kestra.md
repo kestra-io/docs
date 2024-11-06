@@ -1,6 +1,6 @@
 ---
 title: "Curated Examples to Help You Build with Kestra"
-description: "Explore our curated library of examples to help you build with Kestra"
+description: "Explore our curated library of examples to help you build with Kestra."
 date: 2024-11-07T13:00:00
 category: Solutions
 author:
@@ -11,9 +11,11 @@ image: /blogs/2024-11-06-examples-to-build-with-kestra.jpg
 
 When you get started with a new tool, it can be overwhelming to know where to start and what to look at first. You probably already have some existing code that you're looking to integrate without having to do a ton of extra work.
 
-To tackle this, we’ve build a library of curated examples called [Blueprints](/blueprints) to help you jump right in. We’ll walk through a number of our Blueprints to help you identify where you should start!
+If you're anything like me, the first thing I like to do is look for some examples that I can modify to suit my needs, which is why we’ve build a library of curated examples called [Blueprints](/blueprints) to enable this. We’ll walk through a number of our Blueprints that cover common scenarios to help you identify where you should start!
 
-As a unified orchestrator, Kestra can handle almost any use case. With this in mind, we’re going to discuss some of the common building blocks to enable you to build something that fits your use case.
+As a unified orchestrator, Kestra can handle almost any use case. With this in mind, we’re going to discuss some of the common building blocks to enable you to build something that fits your use case. We'll start by looking at how you can get your code set up and running in Kestra. After that, we can look at automating that by pulling new changes automatically from our Git repository. Once we've done that, we can explore tapping into the cloud for more resources to expand our current logic. To finish things off, we'll look at alerting and how we can configure alerts for our workflow.
+
+With all of these combined, we can build some powerful workflows. Let's take a look at a number of Blueprints for each of these areas.
 
 ## Integrating Your Code into Kestra
 
@@ -21,9 +23,9 @@ One of the number one questions we get is "how do I get my code into Kestra?" - 
 
 To accompany that, we've got a number of helpful Blueprints covering a variety of use cases.
 
-**[Data Engineering Pipeline Example](/blueprints/data-engineering-pipeline)**
+### Data Engineering Pipeline Example
 
-This flow demonstrates a data engineering pipeline utilizing Python. As each task generates outputs, we can access those in later tasks allowing everything to work in unison.
+Starting off, this flow demonstrates a data engineering pipeline utilizing Python. As each task generates outputs, we can access those in later tasks allowing everything to work in unison. This example works straight out of the box, so you can jump into Kestra and give it a go yourself.
 
 ```yaml
 id: data-engineering-pipeline
@@ -80,9 +82,11 @@ tasks:
     store: true
 ```
 
-**[Run C code inside of a Shell environment](/blueprints/shell-execute-code)**
+[Check out the Blueprint here](/blueprints/data-engineering-pipeline).
 
-In this next example, we can see the power of Kestra being language agnostic coming into action. We're able to utilise the Shell Commands task to give us an environment to run any language, as long as we install the required dependencies. In this scenario, we're using a `gcc` container image to set up our Shell environment for C. Another neat thing with this example is the ability to dynamically set the dataset_url at execution without needing to touch the code directly.
+### Run C code inside of a Shell environment
+
+In this next example, we can see the power of Kestra being language agnostic coming into action. We're able to utilize the Shell Commands task to give us an environment to run any language, as long as we install the required dependencies. In this scenario, we're using a `gcc` container image to set up our Shell environment for C. Another neat thing with this example is the ability to dynamically set the dataset_url at execution without needing to touch the code directly.
 
 ```yaml
 id: shell-execute-code
@@ -145,14 +149,15 @@ tasks:
         }
 ```
 
+[Check out the Blueprint here](/blueprints/shell-execute-code)
+
 ## Access your Git repositories
 
 Orchestrating your code is useful, but being able to sync that with your Git repository streamlines it even more. There are multiple ways to integrate with Git inside of Kestra:
 1. Clone
 2. PushFlows/SyncFlows and PushNamespaceFiles/SyncNamespaceFiles
 
-
-**[Clone a GitHub repository and run a Python ETL script](/blueprints/git-python)**
+### Clone a GitHub repository and run a Python ETL script
 
 Starting with **Clone**, we can clone our repository and then have other tasks access it as if we were using it on our local machine.
 
@@ -161,6 +166,7 @@ This example also uses the [WorkingDirectory task](../docs/04.workflow-component
 ```yaml
 id: git-python
 namespace: company.team
+
 tasks:
   - id: python_scripts
     type: io.kestra.plugin.core.flow.WorkingDirectory
@@ -179,13 +185,16 @@ tasks:
           - python etl/global_power_plant.py
 ```
 
-**[Sync code from Git at regular intervals](/blueprints/sync-from-git)**
+[Check out the Blueprint here](/blueprints/git-python)
 
-This example uses the SyncFlows and SyncNamespaceFiles to pull the content of our Git repository directly into Kestra, rather than isolated inside of a flow. This is useful for managing our Kestra instance, especially if we have separate dev and production instances.
+### Sync code from Git at regular intervals
+
+This example uses the SyncFlows and SyncNamespaceFiles to pull the content of our Git repository directly into Kestra, rather than isolated inside of a flow. This is useful for managing our Kestra instance, especially if we have separate dev and production instances. You could also swap the `Schedule` trigger for a `Webhook` trigger that triggers when new changes are in your `main` branch.
 
 ```yaml
 id: sync-from-git
 namespace: company.team
+
 tasks:
   - id: sync_flows
     type: io.kestra.plugin.git.SyncFlows
@@ -208,21 +217,22 @@ tasks:
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
     dryRun: true
+
 triggers:
   - id: every_full_hour
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/15 * * * *"
 ```
 
+[Check out the Blueprint here](/blueprints/sync-from-git)
+
 ## Tapping into the Power of the Cloud
 
 Another common use case is integrating Kestra directly with the cloud. It's no mystery that cloud providers can unlock tons of possibilities with their huge amount of compute power.
 
-We have official plugins for [AWS](/plugins/plugin-aws), [Google Cloud](/plugins/plugin-gcp) and [Azure](/plugins/plugin-azure).
+We have official plugins for [AWS](/plugins/plugin-aws), [Google Cloud](/plugins/plugin-gcp) and [Azure](/plugins/plugin-azure) which cover all aspects of the platforms. Let's jump into a few different examples that allow you to integrate your code with them using Kestra.
 
-S3, BigQuery, Batch
-
-**[Detect New Files in S3 and process them in Python](/blueprints/s3-trigger-python)**
+### Detect New Files in S3 and process them in Python
 
 Jumping right in, this workflow is event driven based on files arriving in an S3 bucket. This is a great way to allow Kestra to make your existing code event driven.
 
@@ -264,7 +274,9 @@ triggers:
     maxKeys: 1
 ```
 
-**[Use GCP Pub/Sub Realtime Trigger to push events into Firestore](/blueprints/pubsub-realtime-trigger)**
+[Check out the Blueprint here](/blueprints/s3-trigger-python)
+
+### Use GCP Pub/Sub Realtime Trigger to push events into Firestore
 
 On the trend of event driven workflows, we can use [Realtime triggers](../docs/04.workflow-components/07.triggers/05.realtime-trigger.md) to allow our workflows to react to new messages with low latency.
 
@@ -297,7 +309,9 @@ triggers:
     serdeType: JSON
 ```
 
-**[Run a Python script on Azure with Azure Batch VMs](/blueprints/azure-batch-runner)**
+[Check out the Blueprint here](/blueprints/pubsub-realtime-trigger)
+
+### Run a Python script on Azure with Azure Batch VMs
 
 In our last cloud example, we can easily execute our code directly on cloud resources using [Task Runners](../docs/task-runners/index.md).
 
@@ -362,11 +376,13 @@ tasks:
           print_environment_info()
 ```
 
+[Check out the Blueprint here](/blueprints/azure-batch-runner)
+
 ## Managing Alerting
 
 One of the benefits of Kestra is being able to integrate your code straight away, and build automated alerting around it. Let's take a look at a few examples of alerting in Kestra.
 
-**[Send a Slack message via incoming webhook](/blueprints/slack-incoming-webhook)**
+### Send a Slack message via incoming webhook
 
 With this simple workflow, we can easily add this to any of our workflows, and incorporate data generated by tasks using expressions.
 
@@ -385,7 +401,9 @@ tasks:
       }
 ```
 
-**[Set up alerts for failed workflow executions using Discord](https://kestra.io/blueprints/failure-alert-discord)**
+[Check out the Blueprint here](/blueprints/slack-incoming-webhook)
+
+### Set up alerts for failed workflow executions using Discord
 
 This next example is a [System flow](../docs/05.concepts/system-flows.md) which are useful for maintaining our Kestra instance. Using a [Flow Trigger](../docs/04.workflow-components/07.triggers/02.flow-trigger.md), we can send automated messages to Discord every time a workflow finishes with **FAILED** or **WARNING** state. Useful to give you real time information at your finger tips.
 
@@ -409,6 +427,8 @@ triggers:
           - WARNING
 
 ```
+
+[Check out the Blueprint here](/blueprints/failure-alert-discord)
 
 ## What's next?
 
