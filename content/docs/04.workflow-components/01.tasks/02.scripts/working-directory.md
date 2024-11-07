@@ -22,6 +22,8 @@ The `WorkingDirectory` task allows you to:
 2. Run multiple tasks sequentially in the same working directory
 3. Share data across multiple tasks without having to persist it in internal storage.
 
+For more detail, check out the [plugin documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.workingdirectory)
+
 ## Example
 
 In this example, the flow sequentially executes Shell Scripts and Shell Commands in the same working directory using a local Process Task Runner.
