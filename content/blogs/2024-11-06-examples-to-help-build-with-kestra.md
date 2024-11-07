@@ -1,6 +1,6 @@
 ---
 title: "Curated Examples to Help You Build with Kestra"
-description: "Explore our curated library of examples to help you build with Kestra."
+description: "Explore our curated library of Blueprints to help you build with Kestra."
 date: 2024-11-06T18:00:00
 category: Solutions
 author:
