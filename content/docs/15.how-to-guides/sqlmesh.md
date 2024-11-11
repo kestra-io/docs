@@ -1,5 +1,5 @@
 ---
-title: Using SQLMesh
+title: Using SQLMesh to run dbt Projects
 icon: /docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -7,39 +7,33 @@ topics:
 version: ">= 0.18.0"
 ---
 
-Using SQLMesh to run dbt project via Kestra
+Using SQLMesh to run dbt project with Kestra.
 
-## Introduction to SQLMesh
+## What is SQLMesh?
 
-SQLMesh is an open source data transformation and modelling framework. It is a Python framework that automates everything needed to run a scalable data transformation platform. SQLMesh works with a variety of [engines and orchestrators](https://sqlmesh.readthedocs.io/en/stable/integrations/overview/).
+SQLMesh is an open source python data transformation and modelling framework. It automates everything needed to run a scalable data transformation platform. SQLMesh works with a variety of [engines and orchestrators](https://sqlmesh.readthedocs.io/en/stable/integrations/overview/).
 
 SQLMesh enables data teams to efficiently run and deploy data transformations written in SQL or Python.
 
-In this guide, we will learn how to run dbt project based on BigQuery using SQLMesh via Kestra.
+In this guide, we will learn how to run dbt projects based on BigQuery using SQLMesh with Kestra.
 
-## SQLMesh based flow
+## Example
 
-### Introduction to Flow
+Our Flow will do the following steps:
 
-Here is what we are going to do in the Kestra flow:
-
-1. Download the `orders.csv` using http download task.
+1. Download `orders.csv` using HTTP download task.
 2. Create the table in BigQuery.
-3. Upload the data from the csv file into BigQuery table.
-4. Create dbt project which will create the BigQuery view from the BigQuery table.
+3. Upload the data from the csv file into the BigQuery table.
+4. Create a dbt project which will create the BigQuery view from the BigQuery table.
 5. Create SQLMeshCLI task that will run the dbt project.
-
-### How will we implement dbt project?
 
 SQLMesh supports integration with a variety of tools like Airflow, dbt, dlt, etc. One of the common use-cases of SQLMesh is to run dbt projects.
 
-You can choose to pull your dbt project from Git repository as mentioned in the [how-to-guide on dbt](docs/how-to-guides/dbt) or create the namespace files for the complete project. Here, we will create the complete project using namespace files which we will create on the fly. You can later choose to push all the namespace files to GitHub repository using [PushNamespaceFiles](docs/how-to-guides/pushnamespacefiles).
+You can choose to pull your dbt project from Git repository as mentioned in the [How-to guide on dbt](./dbt.md) or create the namespace files for the complete project. Here, we will create the complete project using namespace files which we will create on the fly. You can later choose to push all the namespace files to GitHub repository using [PushNamespaceFiles](./pushnamespacefiles.md).
 
 ### Creating Flow with SQLMeshCLI task
 
-We will first create the Kestra flow.
-
-Based on the steps mentioned in the description, lets create tasks for each step.
+Based on the steps mentioned in the description, let's create tasks for each step.
 
 ```yaml
 id: sqlmesh_transform
@@ -104,7 +98,7 @@ tasks:
       - sqlmesh plan --auto-apply
 ```
 
-Ensure you set the `namespaceFiles` property with `enabled: true` to ensure that the task has access to namespaceFiles. Provide the GCP service account JSON file so that the task is able to connect to GCP account in order to access BigQuery. This file is referenced in the dbt project file.
+Ensure you set the `namespaceFiles` property with `enabled: true` set to ensure that the task has access to namespace files. Also, provide the GCP service account JSON file so that the task is able to connect to your GCP account in order to access BigQuery. This file is referenced in the dbt project file.
 
 Also, we require the `sqlmesh[bigquery]` depenedency to be installed so that the SQLMesh is able to perform operations on BigQuery. Along with this, we will also require `dbt-bigquery` dependency. We will put these dependencies installation in the `beforeCommands`.
 
