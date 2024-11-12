@@ -15,11 +15,11 @@ Automate maintenance workflows with System Flows.
 
 System Flows periodically execute background operations that keep your platform running, but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:
 
-1. Sending [alert notifications](https://kestra.io/blueprints/system/250-set-up-alerts-for-failed-workflow-executions-using-slack)
+1. Sending [alert notifications](https://kestra.io/blueprints/failure-alert-slack)
 2. Creating automated support tickets when critical workflows fail
-3. [Purging logs](https://kestra.io/blueprints/trigger/234-purge-execution-data-including-logs-metrics-and-outputs-on-a-schedule) and removing old executions or internal storage files to save space
+3. [Purging logs](https://kestra.io/blueprints/purge) and removing old executions or internal storage files to save space
 4. Syncing code from Git or pushing code to Git
-5. Automatically [releasing flows](https://kestra.io/blueprints/system/258-copy-flows-from-development-to-qa-and-staging-environments-or-tenants) from development to QA and staging environments
+5. Automatically [releasing flows](https://kestra.io/blueprints/copy-flows-to-new-tenant) from development to QA and staging environments
 
 We refer to these as **System Flows** because by default they are hidden from end users and are only visible within the `system` namespace. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](https://kestra.io/docs/configuration-guide/system-flows):
 
