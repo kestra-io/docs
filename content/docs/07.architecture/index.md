@@ -68,7 +68,7 @@ This architecture is designed to provide enhanced scalability, high availability
    - **External Services**: APIs or services that Workers might interact with during task processing.
 
 ### Scalability with Kafka and Elasticsearch
-Kafka's messaging backend allows handling large volumes of data with the ability to scale out as needed. You can run multiple (_horizontally scaled_) instances of services such as Workers, Schedulers, Webservers and Executors to distribute load and maintain system performance as demand increases. Elasticsearch contributes to scalability by providing a robust, horizontally scalable UI backend that can efficiently search across large amounts of data.
+Kafka's messaging backend allows handling large volumes of data with the ability to scale out as needed. You can run multiple (_horizontally scaled_) instances of services such as Workers, Schedulers, Webservers and Executors to ensure fault tolerance, distribute the load and maintain system performance as demand increases. Elasticsearch contributes to scalability by providing a robust, horizontally scalable UI backend that can efficiently search across large amounts of data.
 
 ---
 
@@ -82,7 +82,7 @@ Note that it's possible to use the [Enterprise Edition](/pricing) with a JDBC da
 
 The **Worker** is the only component communicating with your private data sources to extract and transform data. The Worker also interacts with **Internal Storage** to persist intermediary results and store the final task run outputs.
 
-All components of the **application layer** (including the Worker, Executor, and Scheduler) are decoupled and stateless, communcating with each other through the **Queue** (Kafka/JDBC). You can deploy and scale them independently — the only exception is the Scheduler, you can have only one Scheduler component in a JDBC-based architecture (_in the near future, Scheduler will also be able to scale_). When using Kafka and Elasticsearch, you can scale the replica count for the Scheduler as well, making the component highly available.
+All components of the **application layer** (including the Worker, Executor, and Scheduler) are decoupled and stateless, communcating with each other through the **Queue** (Kafka/JDBC). You can deploy and scale them independently.
 
 The **Webserver** communicates with the (Elasticsearch/JDBC) Repository to serve data for Kestra UI and API.
 
