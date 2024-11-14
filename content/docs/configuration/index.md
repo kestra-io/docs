@@ -316,7 +316,7 @@ Note: this is an experimental feature available starting with Kestra 0.19.
 
 The database backend has no limit on the size of messages it can handle. However, as messages are loaded into memory, this can endanger Kestra itself and push pressure on memory usage.
 
-To prevent that, you can configure a functionality that will refuse to store too big messages and fail the execution instead.
+To prevent that, you can configure a functionality that will refuse to store too big messages in the execution context (for example data stored in `outputs` property) and fail the execution instead.
 
 The following configuration will refuse messages that exceed 1MiB by failing the execution.
 
