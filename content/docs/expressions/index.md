@@ -93,17 +93,17 @@ tasks:
 
 ### Environment variables
 
-By default, Kestra allows access to environment variables that start with `KESTRA_` unless configured otherwise, see how you can configure environment variables in the `variables` configuration in your Kestra server settings.
+By default, Kestra allows access to environment variables that start with `KESTRA_` unless configured otherwise in the `variables` [configuration](../configuration/index.md).
 
-To access an environment variable `KESTRA_FOO` from one of your tasks, you can use `{{ envs.foo }}`, the variable's name is the part after the `KESTRA_` prefix in **lowercase**.
+To access an environment variable `KESTRA_FOO` from one of your tasks, you can use `{{ envs.foo }}`. The variable's name is the part after the `KESTRA_` prefix in **lowercase**.
 
 ### Global variables
 
-You can define global variables inside Kestra's configuration files and access them using `{{ globals.foo }}`.
+You can define global variables in your Kestra's [configuration](../configuration/index.md) and access them using `{{ globals.foo }}`.
 
 ### Flow variables
 
-You can declare variables at the flow level with the `variables` property, then refer to these variables using the `vars.my_variable` syntax, for example:
+You can declare variables at the flow level in the `variables` property to avoid hardcoing values in your tasks. Then, you can access their values anywhere in the flow using the `vars.my_variable` syntax, for example:
 
 ```yaml
 id: flow_variables
@@ -113,7 +113,6 @@ variables:
   my_variable: "my_value"
 
 tasks:
-
   - id: print_variable
     type: io.kestra.plugin.core.debug.Return
     format: "{{ vars.my_variable }}"
@@ -139,7 +138,7 @@ tasks:
 
 ### Secrets
 
-You can retrieve secrets in your flow using the `secret()` function. Here is an example:
+You can retrieve secrets in your flow using the `secret()` function. Secrets are stored in a secure way and can be accessed as follows:
 
 ```yaml
 id: use_secret_in_flow
@@ -155,11 +154,7 @@ Secrets can be provided on both open-source and [Enterprise Edition](/enterprise
 
 ### Namespace variables (EE)
 
-Namespace variables are key-value pairs defined in a YAML configurtion. They can be nested and used in your flows using the dot notation e.g. `{{ namespace.myproject.myvariable }}`. You can define namespace variables in the `Variables` tab in the UI.
-
-::alert{type="warning"}
-Namespace variables is an [Enterprise Edition](/enterprise) feature.
-::
+Namespace variables are key-value pairs defined in a YAML configurtion. They can be nested and used in your flows using the dot notation e.g. `{{ namespace.myproject.myvariable }}`. To define namespace variables, go to `Namespaces` in the Kestra UI, select the namespace, and add the variables in the `Variables` tab.
 
 Namespace variables are scoped to the specific namespace and are inherited by child namespaces. Your flow then refers to these variables using the `namespace.your_variable` syntax, for example:
 
@@ -173,14 +168,14 @@ tasks:
     format: "{{ namespace.your_variable }}"
 ```
 
-However, note that if your namespace variable contains Pebble expressions like e.g. `{{ secret('GITHUB_TOKEN') }}`, you must use the `render` function to render the variable. Assuming the following code being added to the Variables tab in a Namespace UI:
+Note that if your namespace variable contains Pebble expressions like e.g. `{{ secret('GITHUB_TOKEN') }}`, you must use the `render` function to render the variable. Assuming the following code has been added to the Variables tab in a Namespace UI:
 
 ```yaml
 github:
   token: "{{ secret('GITHUB_TOKEN') }}"
 ```
 
-To reference the `github.token` variable in your flow, you must use the `render` function:
+To reference the `github.token` namespace variable in your flow, you need to wrap it in the `render` function:
 
 ```yaml
 id: recursive_namespace_variables_rendering
@@ -195,9 +190,8 @@ The `render()` function is required to parse Namespace or Flow variables that co
 
 ### Outputs
 
-You can use any task output attributes using `"{{ outputs.taskId.outputAttribute }}"` where:
-
-- the `taskId` is the ID of the task.
+You can use any task output attributes using `"{{ outputs.taskId.outputAttribute }}"`, where:
+- the `taskId` is the ID of the task
 - the `outputAttribute` is the attribute of the task output you want to use; each task can emit various output attributes — check the task documentation for the list of output attributes for any given task.
 
 Example of a flow using `outputs` to pass data between tasks:
@@ -207,26 +201,26 @@ id: pass_data_between_tasks
 namespace: company.team
 
 tasks:
-    - id: first
-      type: io.kestra.plugin.core.debug.Return
-      format: First output value
+  - id: first
+    type: io.kestra.plugin.core.debug.Return
+    format: First output value
 
-    - id:
-      type: io.kestra.plugin.core.debug.Return
-      format: Second output value
+  - id: second-task
+    type: io.kestra.plugin.core.debug.Return
+    format: Second output value
 
-    - id: print_both_outputs
-      type: io.kestra.plugin.core.log.Log
-      message: |
-        First: {{ outputs.first.value }}
-        Second: {{ outputs['second-task'].value }}
+  - id: print_both_outputs
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      First: {{ outputs.first.value }}
+      Second: {{ outputs['second-task'].value }}
 ```
 
 ::alert{type="info"}
 The `Return`-type task has an output attribute `value` which is used by the `print_both_outputs` task.
 The `print_both_outputs` task demonstrates two ways to access task outputs:
-1. The most common is the dot notation `{{ outputs.first.value }}`
-2. The subscript notation `{{ outputs['second-example'].value }}` using the square brackets is needed when your task ID contains special characters. such as hyphens.
+1. Using the dot notation `{{ outputs.first.value }}`
+2. Using the subscript notation `{{ outputs['second-example'].value }}` — the square brackets are needed if your task ID contains special characters, such as hyphens. We generally using the `camelCase` or `snake_case` notations for task IDs to avoid this issue.
 ::
 
 ---
@@ -235,11 +229,11 @@ The `print_both_outputs` task demonstrates two ways to access task outputs:
 
 Pebble templating offers a myriad of ways to parse expressions.
 
-The example below will parse the Pebble expressions within the `variables` based on the `inputs` and `trigger` values. Both variables use the [Null-Coalescing Operator](./02.expression-usage.md#null-coalescing-operator) to use the first non-null value.
+The example below will parse the Pebble expressions within the `variables` based on the `inputs` and `trigger` values. Both variables use the Null-Coalescing Operator `??` to use the first non-null value.
 
 Here, the first variable `trigger_or_yesterday` will evaluate to a `trigger.date` if the flow runs on schedule. Otherwise, it will evaluate to the yesterday's date by using the `execution.startDate` minus one day.
 
-The second variable `input_or_yesterday` will evaluate to the `mydate` input if it's provided. Otherwise, it will evaluate to the yesterday's date — again, using the `execution.startDate` and subtracting one day with the help of the `dateAdd` function.
+The second variable `input_or_yesterday` will evaluate to the `mydate` input if it's provided. Otherwise, it will evaluate to the yesterday's date calculated using the `execution.startDate` and subtracting one day with the help of the `dateAdd` function.
 
 ```yaml
 id: render_complex_expressions
@@ -264,7 +258,7 @@ tasks:
     message: "{{ render(vars.input_or_yesterday) }}"
 ```
 
-Note how we use the `render` function to render the variables. This function is required when you want to render a variable that contains Pebble expressions, allowing for recursive rendering. If you don't use the `render` function, the variable will be rendered as a string, and the Pebble expressions within the variable will not be evaluated.
+Note how we use the `render` function to render the variables. This function is required to render a variable that contains Pebble expressions, allowing for recursive rendering. If you don't use the `render` function, the variable will be rendered as a string, and the Pebble expressions within the variable will not be evaluated.
 
 ---
 
@@ -279,11 +273,11 @@ There are two primary delimiters used within a Pebble template: `{{ ... }}` and 
 
 `{{ ... }}` is used to output the result of an expression. Expressions can be very simple (ex. a variable name) or much more complex.
 
-`{% ... %}` is used to change the control flow of the template; it can contain an if-statement, define a parent template, define a new block, etc.
+`{% ... %}` is used to change the control flow of the template; it can contain an `if`-statement, define a parent template, define a new `block`, etc.
 
-If needed, you can escape those delimiters and avoid Pebble templating applying on a variable thanks to the `raw` tag.
+To prevent Pebble from processing a variable with its templating rules, you can use the `raw` tag to escape the delimiters. This will keep Pebble from interpreting expressions or control structures within `{{ ... }}` or `{% ... %}` blocks, allowing the content to be output exactly as written.
 
-You can use the dot (`.`) notation to access child attributes. If the attribute contains a special character, you can use the subscript notation (`[]`) instead.
+You can use the dot (`.`) notation to access child attributes e.g. when dealing with JSON-like map objects. If any nested attribute contains a special character, you can wrap that attribute in square brackets (e.g. `{{ foo['foo-bar'] }}`):
 
 ```twig
 {{ foo.bar }} # Attribute 'bar' of 'foo'
@@ -313,7 +307,7 @@ WHEN LIFE ...
 
 ### Functions
 
-Whereas filters are intended to modify existing content/variables, functions are intended to generate new content. Similar to other programming languages, functions are invoked via their name followed by parentheses `function_name()`.
+Whereas filters are intended to transform existing values, functions are intended to generate new values. Similar to many programming languages, functions are invoked via their name followed by parentheses `function_name()`.
 
 ```twig
 {{ max(user.score, highscore) }}
@@ -322,7 +316,9 @@ The above example will output the maximum of the two variables `user.score` and 
 
 ### Control Structure
 
-Pebble provides several tags to control the flow of your template, two of the main ones being the [for](./06.tag.md#for) loop, and the [if](./06.tag.md#if) statement.
+Pebble provides several tags for looping and conditional logic.
+
+Example of a `for` loop:
 
 ```twig
 {% for article in articles %}
@@ -331,6 +327,8 @@ Pebble provides several tags to control the flow of your template, two of the ma
     "There are no articles."
 {% endfor %}
 ```
+
+Example of an `if` statement:
 
 ```twig
 {% if category == "news" %}
@@ -344,7 +342,7 @@ Pebble provides several tags to control the flow of your template, two of the ma
 
 ### Macros
 
-Macros are lightweight and re-usable template fragments. A macro is defined via the [macro](./06.tag.md#macro) tag:
+Macros are lightweight, re-usable templates that you can leverage to build custom functions:
 
 ```twig
 {% macro input(type, name) %}
@@ -352,18 +350,19 @@ Macros are lightweight and re-usable template fragments. A macro is defined via 
 {% endmacro %}
 ```
 
-And the macro will be invoked just like a function:
+The above `macro` will be invoked like a regular function:
 
 ```twig
-{{ input("text", "Mitchell") }}
+{{ input("text", "hello") }}
+# Output: hello is of type text
 ```
 
 A macro does not have access to the main context; the only variables it can access are its local arguments.
 
-Here is an example flow showing the usage of macro:
+Here is an example flow showing the usage of a macro:
 
 ```yaml
-id: macro-example
+id: macro_example
 namespace: company.team
 
 tasks:
@@ -377,30 +376,28 @@ tasks:
 
 ### Named Arguments
 
-In filters, functions, or macros, you can use named arguments. Named arguments allow us to be more explicit on which arguments are passed and avoid mandating to pass default values.
+In filters, functions, or macros, you can use named arguments. Named arguments allow you to be more explicit on which arguments are passed and avoid mandating to pass default values.
 
 ```twig
 {{ stringDate | date(existingFormat="yyyy-MMMM-d", format="yyyy/MMMM/d") }}
 ```
 
-Positional arguments can be used in conjunction with named arguments, but all positional arguments must come before any named arguments:
+Positional arguments can be used in conjunction with named arguments, but all positional arguments must come before any named arguments (similarly to how the same works in Python):
 
 ```twig
 {{ stringDate | date("yyyy/MMMM/d", existingFormat="yyyy-MMMM-d") }}
 ```
 
-Macros are a great use case for named arguments because they also allow you to define default values for unused arguments:
+Named arguments can be used in macros to define default values for unused arguments:
 
 ```twig
-
 {% macro input(type="text", name, value) %}
 	type is "{{ type }}", name is "{{ name }}", and value is "{{ value }}"
 {% endmacro %}
 
 {{ input(name="country") }}
 
-{# will output: type is "text", name is "country", and value is "" #}
-
+# will output: type is "text", name is "country", and value is ""
 ```
 
 ### Comments
@@ -414,16 +411,16 @@ You add comments using the `{# ... #}` delimiters. These comments will not appea
 {% endfor %}
 ```
 
+Keep in mind that in Kestra's YAML syntax, you can also simply use the `#` symbol to add comments.
+
 ### Literals
 
-The simplest form of expressions are literals. Literals are representations for Java types such as strings and numbers.
-- `"Hello World"`: Everything between two double or single quotes is a string. You can use a backslash to escape
-quotation marks within the string.
-- `"Hello #{who}"`: String interpolation is also possible using `#{}`. In this example,
-if the value of the variable `who` is `"world"`, then the expression will be evaluated to `"Hello world"`.
+The simplest form of expressions are literals. Literals are Pebble representations for Java types such as strings and numbers.
+- `"Hello World"`: Everything between two double or single quotes is a string. You can use a backslash to escape quotation marks within the string.
+- `"Hello #{who}"`: String interpolation is also possible using `#{}`. In this example, if the value of the variable `who` is `"world"`, then the expression will be evaluated to `"Hello world"`.
 - `100 + 10l * 2.5`: Integers, longs and floating point numbers are similar to their Java counterparts.
-- `true` / `false`: Boolean values equivalent to their Java counterparts.
-- `null`: Represents no specific value, similar to its Java counterpart. `none` is an alias for null.
+- `true` or `false`: Boolean values equivalent to their Java counterparts.
+- `null`: Represents no specific value, similar to its Java counterpart; `none` is an alias for null.
 
 ### Collections
 
@@ -435,16 +432,16 @@ The collections can contain expressions.
 
 ### Math
 
-Pebble allows you to calculate values using some basic mathematical operators. The following operators are supported:
+Pebble allows you to calculate values using basic mathematical operators. The following operators are supported:
 - `+`: Addition
 - `-`: Subtraction
 - `/`: Division
 - `%`: Modulus
 - `*`: Multiplication
 
-### Logic
+### Logical Operators
 
-You can combine multiple expressions with the following operators:
+You can combine multiple expressions with the following logical operators:
 - `and`: Returns true if both operands are true
 - `or`: Returns true if either operand is true
 - `not`: Negates an expression
@@ -470,7 +467,7 @@ The `is` operator performs tests. Tests can be used to test an expression for ce
 {% endif %}
 ```
 
-Tests can be negated by using the is not operator:
+Tests can be negated by using the `is not` operator:
 
 ```twig
 {% if name is not null %}
@@ -481,7 +478,7 @@ Tests can be negated by using the is not operator:
 
 ### Conditional (Ternary) Operator
 
-The conditional operator is similar to its Java counterpart:
+The conditional operator `?` is similar to its Java counterpart:
 
 ```twig
 {{ foo ? "yes" : "no" }}
@@ -503,7 +500,7 @@ The null-coalescing operator allows to quickly test if a variable is defined (ex
 
 ### Operator Precedence
 
-In order from highest to lowest precedence:
+Operators in Pebble are evaluated in a specific order. Here is a list of operators in order of precedence, from highest to lowest:
 - `.`
 - `|`
 - `%`, `/`, `*`
@@ -511,7 +508,7 @@ In order from highest to lowest precedence:
 - `==`, `!=`, `>`, `<`, `>=`, `<=`
 - `is`, `is not`
 - `and`
-- `or`
+- `or`.
 
 ### Parent tasks with Flowable tasks
 
@@ -568,7 +565,6 @@ tasks:
 
 The `parent` variable gives direct access to the first parent, while the `parents[INDEX]` gives you access to the parent higher up the tree.
 
----
 
 ---
 
