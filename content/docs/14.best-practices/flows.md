@@ -29,7 +29,7 @@ Based on previous observations, here are some recommendations.
 
 While it is possible to code a flow with any number of tasks, it is not recommended to have a lot of tasks on the same flow.
 
-A flow can be comprised of manually generated tasks or dynamic ones. While [EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential) and [EachParallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachParallel) are really powerful tasks to loop over the result of a previous task, there are some drawbacks. If the task you are looping over is too large, you can easily end up with hundreds of tasks created. If, for example, you were using a pattern with Each inside Each (nested looping), it would take only a flow with 20 TaskRuns X 20 TaskRuns to reach 400 TaskRuns.
+A flow can be comprised of manually generated tasks or dynamic ones. While [ForEach](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEach) can be really powerful to loop over the result of a previous task, there are some drawbacks. If the task you are looping over is too large, you can easily end up with hundreds of tasks created. If, for example, you were using a pattern with Each inside Each (nested looping), it would take only a flow with 20 TaskRuns X 20 TaskRuns to reach 400 TaskRuns.
 
 ::alert{type="warning"}
 Based on our observations, we have seen that in cases where there are **more than 100** tasks on a flow, we see a decrease in performance and longer executions.
