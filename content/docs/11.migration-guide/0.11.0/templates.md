@@ -51,7 +51,7 @@ tasks:
   - id: each
     type: io.kestra.plugin.core.flow.ForEach
     concurrencyLimit: 0
-    values: "{{outputs.out.uris | jq('.[]')}}"
+    values: "{{ outputs.out.uris | jq('.[]') }}"
     tasks:
       - id: path
         type: io.kestra.plugin.core.debug.Return
