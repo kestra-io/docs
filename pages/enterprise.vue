@@ -5,30 +5,18 @@
             <Meta name="description"
                   content="Get full access of all the Open source features and unlock the full potential with Enterprise only features"/>
         </Head>
-
         <EnterpriseHeader/>
-        <NuxtLazyHydrate when-visible>
-            <EnterpriseCustomers/>
-        </NuxtLazyHydrate>
-        <NuxtLazyHydrate when-visible>
-            <EnterpriseBusinessByUs/>
-        </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
             <EnterpriseSecurity/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <EnterpriseBusinessDetails/>
+            <EnterpriseSuccessProgram/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <EnterpriseCompanyStories/>
+            <EnterpriseProjectDetails/>
         </NuxtLazyHydrate>
         <NuxtLazyHydrate when-visible>
-            <LayoutFooterContact
-                darkButtonText="Get Started"
-                darkButtonHref="https://kestra.io/docs/getting-started/quickstart"
-                purpleButtonText="Talk to sales"
-                purpleButtonHref="/demo"
-            />
+            <EnterpriseOrchestraCore/>
         </NuxtLazyHydrate>
     </div>
 </template>
