@@ -257,14 +257,15 @@ The `Return`-type task emits an output attribute called `value`. The `print_both
 
 ---
 
-## Pebble Templating: Example
+## Pebble Templating
 
 Pebble templating provides many ways to dynamically evaluate expressions.
 
 The example below demonstrates parsing Pebble expressions within `variables`, based on `inputs` and `trigger` values. The Null-Coalescing Operator `??` is used to select the first non-null value.
 
-### Example Breakdown
+### Parsing Complex Variables
 
+The workflow shown below defines two variables:
 1. **`trigger_or_yesterday`:**
    - Evaluates to `trigger.date` if the flow runs on a schedule.
    - If no schedule is available, it defaults to yesterday’s date by subtracting one day from `execution.startDate`.
@@ -272,8 +273,6 @@ The example below demonstrates parsing Pebble expressions within `variables`, ba
 2. **`input_or_yesterday`:**
    - Evaluates to the `mydate` input if provided.
    - If the input is absent, it defaults to yesterday’s date, calculated using `execution.startDate` minus one day with the `dateAdd` function.
-
-### YAML Example
 
 ```yaml
 id: render_complex_expressions
@@ -552,11 +551,9 @@ Operators are evaluated in the following order:
 ---
 
 
-## Filters
+## Basic Filters
 
 Filters transform variables in expressions, allowing for operations like formatting, string manipulation, and list processing. Filters are applied using the pipe symbol (`|`) and can be chained together.
-
-### Basic Filters
 
 To apply a filter, use this syntax:
 
@@ -685,8 +682,6 @@ tasks:
       - "Started college in: {{ inputs.payload.graduation_years | first }}" # First element in an array
       - "Completed college in: {{ inputs.payload.graduation_years | last }}" # Last element in an array
 ```
-
-### Example Output
 
 Running this flow will log:
 
@@ -1252,7 +1247,7 @@ The `timestampNano` filter converts a date to a Unix timestamp in nanoseconds.
 
 ---
 
-## Temporal Filters in Action
+### Example with Temporal Filters
 
 Here’s an example flow showcasing the use of temporal filters:
 
@@ -1273,7 +1268,7 @@ tasks:
       - "Timezone (nanoseconds): {{ now() | timestampNano(timeZone='Asia/Kolkata') }}"
 ```
 
-### Example Output
+Running this flow will log the following:
 
 ```
 Present timestamp: 2024-07-09T06:17:01.171193Z
@@ -1353,14 +1348,14 @@ Example:
 
 ---
 
-### Workflow Example: Using `indent` and `nindent` Filters
+### Example with `indent` and `nindent`
 
 ```yaml
 id: templated_task_example
 namespace: company.team
 
 labels:
-  example: "test"
+  example: test
 
 variables:
   yaml_data: |
@@ -1383,18 +1378,7 @@ tasks:
 
 The above example generates a task with indented YAML content for both `labels` and `variables`.
 
----
-
-### Sample Outputs for `yaml`, `indent`, and `nindent`
-
-Input:
-
-```yaml
-key: value
-nested:
-  child: value
-```
-
+Here is an explanation of the filters used:
 - Using `yaml`: converts the YAML string into an object.
 - Using `indent(4)`: adds four spaces before each line.
 - Using `nindent(4)`: adds a newline and then indents with four spaces.
@@ -1638,7 +1622,7 @@ tasks:
 
 ---
 
-### Workflow Example: Using Functions
+### Example with Functions
 
 ```yaml
 id: function_example
@@ -1661,11 +1645,9 @@ tasks:
 
 ---
 
-## Operator
+## Operators
 
 Operators enable logical, arithmetic, and comparison operations within templated expressions. They are essential for dynamic content manipulation.
-
----
 
 ### Comparison Operators
 
