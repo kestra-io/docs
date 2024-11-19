@@ -15,7 +15,7 @@ Kestra is a powerful orchestration tool that integrates with multiple data store
 
 Kestra decided to adopt **ION format** for all the data stored in its internal storage. Regardless of the original format of the incoming data, Kestra transforms it into ION format before storing it.
 
-Amazon Ion is a richly-typed, self-describing, hierarchical data serialization format offering interchangeable binary and text representations. The ION format comes with multiple benefits, and you can read more about its advantages [here](https://amazon-ion.github.io/ion-docs/guides/why.html).
+Amazon Ion is a richly-typed, self-describing, hierarchical data serialization format offering interchangeable binary and text representations. It provides efficient parsing, schema flexibility, rich metadata support, and precise data types for complex use cases. You can read more about its benefits [here](https://amazon-ion.github.io/ion-docs/guides/why.html).
 
 By standardizing on the ION format for internal storage, Kestra ensures flexibility in handling any type of data. This approach eliminates the overhead of dealing with multiple data formats and helps standardize ETL (Extract, Transform, Load) and data processing across systems.
 
