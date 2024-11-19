@@ -298,7 +298,7 @@ tasks:
     message: "{{ render(vars.input_or_yesterday) }}"
 ```
 
-### Notes on the Example
+### Render Function and Null-Coalescing
 
 - **`render` Function:**
   The `render` function is required to evaluate variables containing Pebble expressions. Without it, variables will be treated as strings, and expressions inside them will not be evaluated.
