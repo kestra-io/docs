@@ -44,9 +44,9 @@
                 </div>
             </div>
 
-            <div class="demo-btn">
+            <NuxtLink href="/demo" class="demo-btn">
                 <span>Get a Demo</span>
-            </div>
+            </NuxtLink>
         </div>
     </div>
 </template>

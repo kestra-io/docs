@@ -28,9 +28,9 @@
                         <span>Deployment Speed</span>
                     </div>
                 </div>
-                <div class="demo-btn">
+                <NuxtLink href="/demo" class="demo-btn">
                     <span>Talk to scales</span>
-                </div>
+                </NuxtLink>
             </div>
             <div class="slider">
                 <div data-aos="fade-left">

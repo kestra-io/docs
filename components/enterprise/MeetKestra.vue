@@ -132,9 +132,9 @@
             </div>
         </div>
         <div class="compare-btn">
-            <div class="button">
+            <NuxtLink href="/pricing" class="button">
                 <span>Compare all offers</span>
-            </div>
+            </NuxtLink>
         </div>
     </div>
 </template>
@@ -420,6 +420,7 @@
                 cursor: pointer;
                 align-items: center;
                 background-color: #6862F6;
+                color: $white;
 
                 span {
                     font-family: $font-family-sans-serif;
