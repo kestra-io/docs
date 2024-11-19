@@ -1,7 +1,7 @@
 ---
 title: "Why Kestra relies on ION and how to use it"
 description: Why Kestra is centralized around ION, and how its internal storage only supports ION format. It also details how this helps standardize ETL and data processing.
-date: 2024-11-18T11:00:00
+date: 2024-11-20T11:00:00
 category: Solutions
 author:
   name: Shruti Mantri
