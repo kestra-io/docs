@@ -1,11 +1,10 @@
 ---
 title: "Why Kestra relies on ION and how to use it"
-description: This blog elaborates on how Kestra is centralized around ION, and how its internal storage only supports ION format. It also details how this helps standardize ETL and data processing.
+description: Why Kestra is centralized around ION, and how its internal storage only supports ION format. It also details how this helps standardize ETL and data processing.
 date: 2024-11-18T11:00:00
 category: Solutions
 author:
   name: Shruti Mantri
-  role:
   image: smantri
 ---
 
@@ -23,7 +22,7 @@ By standardizing on the ION format for internal storage, Kestra ensures flexibil
 
 Let's explore how Kestra's decision to store data in the ION format has helped standardize its ETL workflows. Consider a pipeline that pulls data from Snowflake, joins it with data from a MySQL table, and outputs the results as a CSV file to S3.
 
-As a prerequisite, we will push the orders data from the CSV file into Snowflake. Yon can do it using SQL commands in the Snowflake console or a simple Kestra flow as shown here:
+As a prerequisite, we will push the orders data from the CSV file into Snowflake. Yon can do it using SQL commands in the Snowflake console or a short Kestra flow as shown here:
 
 ```yaml
 id: load_data_into_snowflake
@@ -55,7 +54,7 @@ tasks:
     url: jdbc:snowflake://<account_identifier>.snowflakecomputing.com
     username: "{{ secret('SNOWFLAKE_USER') }}"
     password: "{{ secret('SNOWFLAKE_PASSWORD') }}"
-    from: '{{ outputs.download_csv.uri }}'
+    from: "{{ outputs.download_csv.uri }}"
     fileName: orders.csv
     prefix: raw
     stageName: "@my_db.my_schema.%orders"
@@ -71,7 +70,7 @@ tasks:
       FILE_FORMAT = (TYPE = 'CSV' FIELD_OPTIONALLY_ENCLOSED_BY = '"' SKIP_HEADER = 1);
 ```
 
-And we will upload the products from the CSV file into MySQL. Again, this can be done using SQL commands in any MySQL client or a simple Kestra flow as shown here:
+And we will upload the products from the CSV file into MySQL. Again, this can be done using SQL commands in any MySQL client or a short Kestra flow as shown here:
 
 ```yaml
 id: load_data_into_mysql
