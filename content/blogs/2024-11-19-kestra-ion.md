@@ -1,12 +1,12 @@
 ---
 title: "Why Kestra relies on ION and how to use it"
 description: Why Kestra is centralized around ION, and how its internal storage only supports ION format. It also details how this helps standardize ETL and data processing.
-date: 2024-11-20T11:00:00
+date: 2024-11-19T16:00:00
 category: Solutions
 author:
   name: Shruti Mantri
   image: smantri
-image: /blogs/2024-11-20-kestra.ion.jpg
+image: /blogs/2024-11-19-kestra.ion.jpg
 ---
 
 Kestra is a powerful orchestration tool that integrates with multiple data stores across different cloud environments, such as AWS, GCP, and Azure. It supports a wide range of databases, both relational and non-relational, as well as various file systems that store data in formats like CSV, Avro, Parquet, JSON, and more. With such a diverse set of data sources, it was essential to unify all incoming data into a common format. This is where Kestra had to decide how to manage and store the diverse data it ingests from various sources.
