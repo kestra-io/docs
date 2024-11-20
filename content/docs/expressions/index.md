@@ -752,8 +752,6 @@ The `chunk` filter partitions a list into chunks of the specified size.
 # results in: [[1, 2], [3, 4], [5]]
 ```
 
-- size: the size of each chunk.
-
 ### className
 
 The `className` filter returns the class name of an object.
@@ -783,8 +781,6 @@ The `join` filter concatenates the items in a collection into a single string, s
 {{ ['apple', 'banana'] | join(', ') }}
 # output: apple, banana
 ```
-
-- separator: the delimiter string.
 
 ### keys
 
@@ -864,8 +860,9 @@ The `slice` filter extracts a portion of a collection or string.
 # output: it
 ```
 
-- fromIndex: starting index (inclusive).
-- toIndex: ending index (exclusive).
+**Arguments**:
+- `fromIndex`: starting index (inclusive).
+- `toIndex`: ending index (exclusive).
 
 ### sort
 
@@ -885,10 +882,11 @@ The `split` filter divides a string into a list based on a delimiter.
 # output: ['apple', 'banana', 'cherry']
 ```
 
-- delimiter: the string to split on.
-- limit: limits the number of splits:
-  - Positive: limits the array size, with the last entry containing the remaining content.
-  - Zero or negative: no limit on splits.
+**Arguments**:
+- `delimiter`: the string to split on.
+- `limit`: limits the number of splits:
+  - **Positive**: limits the array size, with the last entry containing the remaining content.
+  - **Zero or negative**: no limit on splits.
 
 ```twig
 {{ 'apple,banana,cherry,grape' | split(',', 2) }}
@@ -904,13 +902,14 @@ String filters manipulate textual data, enabling operations like transformation,
 
 ### abbreviate
 
-The `abbreviate` filter shortens a string using an ellipsis. The length includes the ellipsis.
+The `abbreviate` filter shortens a string using an ellipsis. The `length` includes the ellipsis.
 
 ```twig
 {{ "this is a long sentence." | abbreviate(7) }}
 # output: this...
 ```
 
+**Arguments**:
 - length: the maximum length of the output.
 
 ---
@@ -972,8 +971,6 @@ The `default` filter provides a fallback value for empty variables.
 
 Suppresses exceptions if the attribute is missing.
 
-- default: the fallback value.
-
 ---
 
 ### escapeChar
@@ -985,7 +982,8 @@ The `escapeChar` filter escapes special characters in a string.
 # output: Can\'t be here
 ```
 
-- type: escape type (`single`, `double`, or `shell`).
+**Arguments**:
+- `type`: escape type (`single`, `double`, or `shell`).
 
 ---
 
@@ -1009,6 +1007,7 @@ The `replace` filter replaces substrings in a string with specified values.
 # output: I like foo and bar
 ```
 
+**Arguments**:
 - `replace_pairs`: a map of search-replace pairs.
 - `regexp`: enables regex-based replacements.
 
@@ -1049,53 +1048,45 @@ The `slugify` filter converts a string to a URL-friendly format.
 
 ### substringAfter
 
-The `substringAfter` filter extracts the substring after the first occurrence of a separator.
+The `substringAfter` filter extracts the substring after the first occurrence of a `separator`.
 
 ```twig
 {{ "a.b.c" | substringAfter(".") }}
 # output: b.c
 ```
 
-- separator: the string to search for.
-
 ---
 
 ### substringAfterLast
 
-The `substringAfterLast` filter extracts the substring after the last occurrence of a separator.
+The `substringAfterLast` filter extracts the substring after the last occurrence of a `separator`.
 
 ```twig
 {{ "a.b.c" | substringAfterLast(".") }}
 # output: c
 ```
 
-- separator: the string to search for.
-
 ---
 
 ### substringBefore
 
-The `substringBefore` filter extracts the substring before the first occurrence of a separator.
+The `substringBefore` filter extracts the substring before the first occurrence of a `separator`.
 
 ```twig
 {{ "a.b.c" | substringBefore(".") }}
 # output: a
 ```
 
-- separator: the string to search for.
-
 ---
 
 ### substringBeforeLast
 
-The `substringBeforeLast` filter extracts the substring before the last occurrence of a separator.
+The `substringBeforeLast` filter extracts the substring before the last occurrence of a `separator`.
 
 ```twig
 {{ "a.b.c" | substringBeforeLast(".") }}
 # output: a.b
 ```
-
-- separator: the string to search for.
 
 ---
 
@@ -1171,13 +1162,14 @@ Specify a custom time zone using the `timeZone` argument:
 {{ now() | date("yyyy-MM-dd'T'HH:mm:ssX", timeZone="UTC") }}
 ```
 
-#### Arguments
+**Arguments**:
 - `format`: the desired output format.
 - `existingFormat`: the input format (if parsing a string).
 - `timeZone`: the time zone for formatting.
 - `locale`: the locale for formatting.
 
-#### Supported Formats
+#### Supported Date Formats
+
 - Standard Java formats: [DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html)
 - Presets: `iso`, `sql`, `iso_date_time`, `iso_zoned_date_time`, etc.
 
@@ -1192,7 +1184,7 @@ The `dateAdd` filter adds or subtracts a specified amount of time to/from a date
 # output: 2024-07-08T06:17:01.174686Z
 ```
 
-#### Arguments
+**Arguments**:
 - `amount`: an integer specifying the time to add/subtract.
 - `unit`: the time unit (e.g., `DAYS`, `HOURS`, `YEARS`).
 - Additional arguments: same as the `date` filter.
@@ -1208,7 +1200,7 @@ The `timestamp` filter converts a date to a Unix timestamp in seconds.
 # output: 1720505821
 ```
 
-#### Arguments
+**Arguments**:
 - `existingFormat`: the input format (if parsing a string).
 - `timeZone`: the time zone for conversion.
 
@@ -1223,7 +1215,7 @@ The `timestampMicro` filter converts a date to a Unix timestamp in microseconds.
 # output: 1720505821000180275
 ```
 
-#### Arguments
+**Arguments**:
 - Same as `timestamp`.
 
 ---
@@ -1237,7 +1229,7 @@ The `timestampNano` filter converts a date to a Unix timestamp in nanoseconds.
 # output: 1720505821182413000
 ```
 
-#### Arguments
+**Arguments**:
 - Same as `timestamp`.
 
 ---
@@ -1313,6 +1305,7 @@ tasks:
 
 The `indent` filter adds indentation to strings, applying the specified number of spaces before each line (except the first).
 
+**Arguments**:
 - `amount`: number of spaces to add.
 - `prefix`: the string used for indentation (default is `" "`).
 
@@ -1330,6 +1323,7 @@ Example:
 
 The `nindent` filter adds a newline before the input and then indents all lines.
 
+**Arguments**:
 - `amount`: number of spaces for indentation.
 - `prefix`: the string used for indentation (default is `" "`).
 
@@ -1399,7 +1393,6 @@ Example:
 ```
 
 Output:
-
 ```
 content
 content
@@ -1592,6 +1585,7 @@ Example:
 {{ render("{{ trigger.date ?? execution.startDate | date('yyyy-MM-dd') }}") }}
 ```
 
+**Arguments**:
 - `recursive`: defaults to `true`. Set to `false` for one-time rendering.
 
 ---
