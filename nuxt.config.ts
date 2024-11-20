@@ -178,7 +178,6 @@ export default defineNuxtConfig({
                     "Build with Kestra": [
                         "Concepts",
                         "Workflow Components",
-                        "Expressions",
                         "Version Control & CI/CD",
                         "Plugin Developer Guide",
                         "How-to Guides"
@@ -195,6 +194,7 @@ export default defineNuxtConfig({
                     ],
                     "Reference Docs": [
                         "Configuration",
+                        "Expressions",
                         "API Reference",
                         "Terraform Provider",
                         "Server CLI"
@@ -233,8 +233,8 @@ export default defineNuxtConfig({
         '/docs/workflow-components/triggers/conditions': {redirect: '/docs/workflow-components/triggers#conditions'},
         '/docs/workflow-components/flow-properties': {redirect: '/docs/workflow-components/flow'},
         '/docs/workflow-components/task-defaults': {redirect: '/docs/workflow-components/plugin-defaults'},
-        '/docs/concepts/expression/02a.expression-types': {redirect: '/docs/expressions/expression-types'},
-        '/docs/concepts/expression/02b.expression-usage': {redirect: '/docs/expressions/expression-usage'},
+        '/docs/concepts/expression/02a.expression-types': {redirect: '/docs/expressions'},
+        '/docs/concepts/expression/02b.expression-usage': {redirect: '/docs/expressions'},
         '/docs/concepts/expression': {redirect: '/docs/expressions'},
         '/docs/expression': {redirect: '/docs/expressions'},
         '/docs/migration-guide/core-script-tasks': {redirect: '/docs/migration-guide/0.11.0/core-script-tasks'},
