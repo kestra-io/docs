@@ -40,8 +40,6 @@ triggers:
     cron: "*/1 * * * *"
 ```
 
-Check the [`render()` function's documentation](../../expressions/04.function.md#render) for more details about how to use that function and when to use it.
-
 ---
 
 ## Migrating a 0.13.0 flow to the new rendering behavior in 0.14.0
