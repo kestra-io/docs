@@ -52,7 +52,7 @@
     "@nuxtjs/robots": "^4.1.10",
     "@nuxtjs/sitemap": "^6.1.4",
     "@types/node": "^22.8.6",
-    "nuxt": "^3.13.2",
+    "nuxt": "^3.14.1592",
     "nuxt-aos": "^1.2.5",
     "nuxt-gtag": "^3.0.1",
     "nuxt-multi-cache": "^3.3.3",
