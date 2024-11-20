@@ -299,13 +299,11 @@ tasks:
 
 ### Render Function and Null-Coalescing
 
-- **`render` Function:**
-  The `render` function is required to evaluate variables containing Pebble expressions. Without it, variables will be treated as strings, and expressions inside them will not be evaluated.
+- **`render` Function:** the `render` function is required to evaluate variables containing Pebble expressions. Without it, variables will be treated as strings, and expressions inside them will not be evaluated.
 
-- **Null-Coalescing Operator (`??`):**
-  This operator ensures that the first non-null value is selected, providing a fallback mechanism.
+- **Null-Coalescing Operator (`??`):** this operator ensures that the first non-null value is selected, providing a fallback mechanism.
 
-This approach enables dynamic and flexible parsing of inputs and context variables in your flows.
+Combining the `render()` function with the Null-Coalescing operator enables dynamic and flexible parsing of complex expressions.
 
 ---
 
@@ -740,9 +738,6 @@ The `numberFormat` filter formats a number using `java.text.DecimalFormat`.
 # output: 3.14
 ```
 
-- format: a pattern string (e.g., `"#.##"`).
-
----
 
 ## Object Filters
 
@@ -1839,7 +1834,7 @@ Example:
 {% endblock %}
 ```
 
-To reuse a block, use the [block function](./04.function.md#block):
+To reuse a block, use the block function:
 
 ```twig
 {{ block("header") }}
