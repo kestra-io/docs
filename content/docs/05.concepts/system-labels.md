@@ -9,47 +9,58 @@ Special labels for system use only.
 
 ## Overview
 
-System Labels and Hidden Labels are special labels used to store additional metadata used by administrators to manage and monitor the platform. Those labels are by default hidden in the UI, e.g. if you want to display all Executions with a given Hidden Label, you need to explicitly filter for it within the `Labels` filter: `system.correlationId: 4DhfCBCDznBqipTAnd7zfm`.
+System Labels and Hidden Labels are reserved for storing metadata used by administrators to manage and monitor Kestra. These labels are hidden in the UI by default. To view executions with a specific Hidden Label, you must explicitly filter for it using the `Labels` filter, such as `system.correlationId: 4DhfCBCDznBqipTAnd7zfm`.
 
-TODO: add a screenshot of the UI once the new filter is implemented.
+![correlationId](/docs/concepts/correlationId.png)
+
+---
 
 ## Hidden Labels
 
-Hidden Labels are labels hidden by default in the UI. You can configure the list of prefixes that should be hidden in the `kestra.hidden-labels.prefixes` configuration. For example, to hide all labels starting with `admin.` and `internal.`, you can add the following configuration to your `application.yaml`:
+Hidden Labels are labels excluded from the UI by default. You can configure which prefixes should be hidden via the `kestra.hidden-labels.prefixes` configuration. For example, to hide labels starting with `admin.`, `internal.`, and `system.`, you can use the following configuration in your `application.yaml`:
 
 ```yaml
 kestra:
-  hiddem-labels:
+  hidden-labels:
     prefixes:
       - system.
       - internal.
       - admin.
 ```
 
-Note that System Labels are hidden by default but if you prefer to display them, you can remove the `system.` prefix from the list of hidden prefixes.
+By default, System Labels (prefixed with `system.`) are hidden. To display them, simply remove the `system.` prefix from the list of hidden prefixes.
 
+---
 
 ## System Labels
 
-System Labels are labels that start with the `system.` prefix. Let's look at the available System Labels and their purpose.
+System Labels are labels prefixed with `system.` that serve specific purposes. Below are the available System Labels.
 
-### system.correlationId
+### `system.correlationId`
 
-The `system.correlationId` label is set by default for any execution and it's propagated to all downstream executions created by the `Subflow` or `ForEachItem` tasks. The value of the `system.correlationId` label is set to the first execution ID in the chain of executions. If you have a parent flow that triggers a subflow, the `system.correlationId` label will be the parent execution ID.
+- Automatically set for every execution and propagated to downstream executions created by `Subflow` or `ForEachItem` tasks.
+- Represents the ID of the first execution in a chain of executions, enabling tracking of execution lineage.
+- Use this label to filter all executions originating from a specific parent execution.
 
-The main goal of this label is to help you track the lineage of executions and understand the relationship between them. For example, if you have a parent flow that triggers a subflow and this subflow triggers other subflows, filtering executions by the `system.correlationId` of the parent will allow you to track all executions that are part of the same lineage i.e. all executions that originated from that parent execution.
+For example, if a parent flow triggers multiple subflows, filtering by the parent's `system.correlationId` will display all related executions.
 
-The Execution API will allow to pass this label at execution creation time but not at execution modification time.
+**Note:** The Execution API supports setting this label at execution creation but not modification.
 
-### system.username
+---
 
-The `system.username` label is set by default for any execution and it's the username of the user who triggered the execution. This label is useful for auditing purposes and to understand who triggered a given execution.
+### `system.username`
 
-### system.readOnly
+- Automatically set for every execution and contains the username of the user who triggered the execution.
+- Useful for auditing and identifying who initiated specific executions.
 
-The `system.readOnly` label is a special label that can be set on a flow to make it read-only. When a flow is marked as read-only, it will disable the editor in the UI. This label is useful when you want to prevent users from modifying a flow, for example, a production workflow that is deployed from a CI/CD pipeline after being approved and tested.
+---
 
-Here's how you can set the `system.readOnly` label on a flow:
+### `system.readOnly`
+
+- Used to mark a flow as read-only, disabling the flow editor in the UI.
+- Helps prevent modifications to critical workflows, such as production flows managed through CI/CD pipelines.
+
+**Example:**
 
 ```yaml
 id: read_only_flow
@@ -64,8 +75,9 @@ tasks:
     message: Hello from a read-only flow!
 ```
 
-As soon as you save that flow, try to edit it from the UI — you will notice that the editor is disabled.
+Once this label is set, the editor for this flow will be disabled in the UI.
 
 ![readOnly](/docs/concepts/system-labels/readOnly.png)
 
-Note that on the Enterprise Edition, Kestra will refuse to update the flow server-side if the user is not a service account or an API key.
+**Note:** In the Enterprise Edition, updating a read-only flow server-side is restricted to service accounts or API keys.
+
