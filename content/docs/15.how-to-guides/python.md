@@ -52,42 +52,6 @@ tasks:
       downloads = get_docker_image_downloads()
 ```
 
-## Logs
-
-If your Python code needs to log something to the console, we recommend using the `Kestra.logger()` method from the [Kestra pip package](https://github.com/kestra-io/libs) to instantiate a `logger` object — this logger is configured to correctly capture all Python log levels and send them to the Kestra backend.
-
-```yaml
-id: python_logs
-namespace: company.team
-
-tasks:
-  - id: python_logger
-    type: io.kestra.plugin.scripts.python.Script
-    allowFailure: true
-    warningOnStdErr: false
-    script: |
-      import time
-      from kestra import Kestra
-
-      logger = Kestra.logger()
-
-      logger.debug("DEBUG is used for diagnostic info.")
-      time.sleep(0.5)
-
-      logger.info("INFO confirms normal operation.")
-      time.sleep(0.5)
-
-      logger.warning("WARNING signals something unexpected.")
-      time.sleep(0.5)
-
-      logger.error("ERROR indicates a serious issue.")
-      time.sleep(0.5)
-
-      logger.critical("CRITICAL means a severe failure.")
-```
-
-You can read more about the Python Script task in the [Plugin documentation](/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.script)
-
 ## Commands
 
 If you would prefer to put your Python code in a `.py` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.python.Commands` type:
@@ -231,6 +195,52 @@ tasks:
 ```
 
 _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
+
+## Capture Logs
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/0FT3iZKgxYg?si=c162iQbg79R_IEa9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
+If your Python code needs to log something to the console, we recommend using the `Kestra.logger()` method from the [Kestra pip package](https://github.com/kestra-io/libs) to instantiate a `logger` object — this logger is configured to correctly capture all Python log levels and send them to the Kestra backend.
+
+```yaml
+id: python_logs
+namespace: company.team
+
+tasks:
+  - id: python_logger
+    type: io.kestra.plugin.scripts.python.Script
+    allowFailure: true
+    warningOnStdErr: false
+    script: |
+      import time
+      from kestra import Kestra
+
+      logger = Kestra.logger()
+
+      logger.debug("DEBUG is used for diagnostic info.")
+      time.sleep(0.5)
+
+      logger.info("INFO confirms normal operation.")
+      time.sleep(0.5)
+
+      logger.warning("WARNING signals something unexpected.")
+      time.sleep(0.5)
+
+      logger.error("ERROR indicates a serious issue.")
+      time.sleep(0.5)
+
+      logger.critical("CRITICAL means a severe failure.")
+```
+
+When we execute the above example, we can see Kestra correctly captures the log levels in the Logs view:
+
+![logs](/docs/how-to-guides/python/logs.png)
+
+You can read more about the Python Script task in the [Plugin documentation](/plugins/plugin-script-python/tasks/io.kestra.plugin.scripts.python.script)
 
 ## Handling Metrics
 

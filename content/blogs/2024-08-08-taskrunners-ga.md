@@ -41,7 +41,7 @@ Task Runners empower you with **fine-grained resource allocation**, ensuring tha
 
 Thanks to the built-in documentation and autocompletion, building workflows with Task Runners is easy and fast. When you add a specific `taskRunner` to your workflow in the Code Editor, its documentation appears on the right side of the screen, providing immediate access to all available properties and usage examples. Additionally, the syntax validation helps you gain confidence that your task runner configuration is correct before you run it.
 
-To help you get started, we've created several pre-built workflow templates. Many of them include automated deployment of IAM roles and other required Cloud services to quickly set up the Task Runner that matches your environment. The [blueprint example below](https://kestra.io/blueprints/aws/225-run-multiple-python-scripts-in-parallel-on-aws-ecs-fargate-with-aws-batch) automates the setup of an AWS Batch environment to run multiple containerized Python scripts on AWS ECS Fargate.
+To help you get started, we've created several pre-built workflow templates. Many of them include automated deployment of IAM roles and other required Cloud services to quickly set up the Task Runner that matches your environment. The [blueprint example below](https://kestra.io/blueprints/aws-batch-terraform-git) automates the setup of an AWS Batch environment to run multiple containerized Python scripts on AWS ECS Fargate.
 
 ![task_runner_blueprints](/blogs/2024-08-08-taskrunners-ga/task_runner_blueprints.png)
 
