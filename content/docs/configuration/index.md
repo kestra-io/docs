@@ -1805,9 +1805,9 @@ kestra:
 
 Using the `kestra.tasks` configuration, you can set up multiple task-specific features.
 
-### Task Default Configuration
+### Plugin Default Configuration
 
-You can set defaults for specific tasks using the `kestra.tasks.defaults` configuration. These defaults will be applied to all tasks on your cluster if a property is not defined on flows or tasks.
+You can set defaults for specific tasks using the `kestra.plugins.defaults` configuration. These defaults will be applied to all tasks on your cluster if a property is not defined on flows or tasks.
 
 You can use this to isolate tasks in containers, such as scripting tasks. For Bash tasks and other script tasks in the core, we advise you to force `io.kestra.plugin.scripts.runner.docker.Docker` isolation and to configure global cluster pluginDefaults:
 
