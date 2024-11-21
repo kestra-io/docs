@@ -2,7 +2,14 @@
     <div class="fw-bold d-flex gap-2 flex-wrap mb-3">
         <p class="mb-0">Available on:</p>
         <span class="badge d-flex align-items-center bg-body-tertiary">{{version}}</span>
-        <span v-bind:v-if="edition" v-for="edition in editions" class="badge d-flex align-items-center" :class="`bg-${editionInfo(edition).color}`">{{ editionInfo(edition).label }}</span>
+        <span
+            v-for="edition in editions.split(',').filter(edition => edition.trim())"
+            :key="edition"
+            class="badge d-flex align-items-center"
+            :class="`bg-${editionInfo(edition).color}`"
+        >
+            {{ editionInfo(edition).label }}
+        </span>
     </div>
 
 </template>
@@ -16,8 +23,8 @@
         default: ''
       },
       editions: {
-        type: Object,
-        default: []
+        type: String,
+        default: ''
       }
     },
     data() {
@@ -30,10 +37,6 @@
           CLOUD_PRO: {label: "Cloud Pro plan", color: "info"},
         }
       }
-    },
-    mounted() {
-      console.log('All props:', this.$props);
-      console.log('All props:', this.$props.text);
     },
     methods: {
       editionInfo(edition) {
