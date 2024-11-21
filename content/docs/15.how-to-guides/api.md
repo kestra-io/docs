@@ -14,7 +14,7 @@ In this guide, we're going to specifically look at the Kestra API and how that c
 
 ## Using the API Reference
 
-In the documentation, there's references for both the Open Source as well as Cloud & Enterprise APIs to make it easy to know what you can do. We're going to look at examples we can create with both references. When we open the Open Source API Reference, we can see there's a number of sections to make it easy to navigate:
+In the documentation, there's references for both the [Open Source](../api-reference/open-source.md) as well as [Cloud & Enterprise APIs](../api-reference/enterprise.md) to make it easy to know what you can do. We're going to look at examples we can create with both references. When we open the [Open Source API Reference](../api-reference/open-source.md), we can see there's a number of sections to make it easy to navigate:
 
 ![api_reference](/docs/how-to-guides/api/api_reference.png)
 
