@@ -14,7 +14,7 @@ To authenticate with the Kestra API, you will need to create an [API token](../0
 Once you have your API token, you can use it to authenticate with the API. You can use the `Authorization` header with the `Bearer` token to authenticate with the API.
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/executions/dev/hello-world \
+curl -X POST http://localhost:8080/api/v1/executions/company.team/hello_world \
 -H "Authorization: Bearer YOUR_API_TOKEN"
 ```
 
