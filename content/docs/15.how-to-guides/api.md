@@ -14,7 +14,7 @@ In this guide, we're going to specifically look at the Kestra API and how that c
 
 ## Using the API Reference
 
-In the documentation, there's references for both the [Open Source](../api-reference/open-source.md) as well as [Cloud & Enterprise APIs](../api-reference/enterprise.md) to make it easy to know what you can do. We're going to look at examples we can create with both references. When we open the [Open Source API Reference](../api-reference/open-source.md), we can see there's a number of sections to make it easy to navigate:
+In the documentation, there's references for both the [Open Source](../api-reference/open-source.md) as well as [Cloud & Enterprise ](../api-reference/enterprise.md) APIs to make it easy to know what you can do with them. We're going to look at a number examples we can create with both references. When we open the [Open Source API Reference](../api-reference/open-source.md), we can see there's a number of sections to make it easy to navigate:
 
 ![api_reference](/docs/how-to-guides/api/api_reference.png)
 
@@ -23,7 +23,7 @@ In the documentation, there's references for both the [Open Source](../api-refer
 If you have [Basic Auth enabled](../configuration/index.md#http-basic-authentication), or you're using the [Enterprise Edition](/enterprise), you will need to add authentication to your requests. You can easily do this using the `-u` argument and passing our username and password in using the following format `username:password`. This example uses the default username and password inside of the [Kestra Docker Compose](../02.installation/03.docker-compose.md):
 
 ```bash
-curl -X POST -u 'admin@kestra.io:kestra'  http://localhost:8084/api/v1/executions/company.team/hello_world
+curl -X POST -u 'admin@kestra.io:kestra' http://localhost:8084/api/v1/executions/company.team/hello_world
 ```
 
 With the Enterprise Edition, you can generate [API Tokens](../06.enterprise/api-tokens.md) to authenticate when making requests, for example:
@@ -102,7 +102,7 @@ tasks:
     message: "{{ inputs.greeting }}"
 ```
 
-As our input has a default value, we can execute it by simply making a POST request like below:
+As our input has a default value, we can execute it by simply making a [POST request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/flows) `/api/v1/flows` like below:
 
 ```bash
 curl -X POST \
@@ -159,7 +159,7 @@ For more examples on executing with the API, check out the [Executions documenta
 
 ## Get Information from an Execution
 
-When we execute a flow with the API, our response includes the Execution ID from that execution. This means we can use this to fetch more information about the Execution, especially once it's completed. In the previous example, the execution ID generated was `MYkTmLrI36s10iVXHwRbR` so let's use that to get an updated status on the execution:
+When we execute a flow with the API, our response includes the Execution ID from that execution. This means we can use this to fetch more information about the Execution, especially once it's completed. In the previous example, the execution ID generated was `MYkTmLrI36s10iVXHwRbR` so let's use that to get an updated status on the execution with the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/executions/-executionId-) `/api/v1/executions/{executionId}`:
 
 ```bash
 curl -X GET http://localhost:8084/api/v1/executions/MYkTmLrI36s10iVXHwRbR
@@ -386,7 +386,7 @@ When we fetch the data from an Execution of this flow with Execution ID `59uQXHb
 
 Kestra has a [KV Store](../05.concepts/05.kv-store.md) which is useful for making your flows stateful. We can fetch, modify and delete data in the KV Store using the API. This can be useful if you want to modify the KV Store directly inside of your code being executed by Kestra, or by an external system.
 
-To start with, we can add a KV pair to the KV Store with the following PUT request `/api/v1/namespaces/{namespace}/kv/{key}`. In this example, we're going to add a `my_key` key with the value set to `"Hello, World"` into the `company.team` namespace.
+To start with, we can add a KV pair to the KV Store with the following [PUT request](https://kestra.io/docs/api-reference/open-source#put-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/namespaces/{namespace}/kv/{key}`. In this example, we're going to add a `my_key` key with the value set to `"Hello, World"` into the `company.team` namespace.
 
 ```bash
 curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/namespaces/company.team/kv/my_key -d '"Hello, World"'
@@ -408,7 +408,7 @@ When we open the key, we can see the value has also been modified to reflect our
 
 ![modified_value_kv](/docs/how-to-guides/api/modified_value_kv.png)
 
-If we want to fetch the value from the KV Store, we can do so with the following GET Request `/api/v1/namespaces/{namespaces}/kv/{key}`. In this example, we can fetch the latest value from the key `my_key`:
+If we want to fetch the value from the KV Store, we can do so with the following [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/namespaces/{namespaces}/kv/{key}`. In this example, we can fetch the latest value from the key `my_key`:
 
 ```bash
 curl -X GET http://localhost:8080/api/v1/namespaces/company.team/kv/my_key
@@ -424,3 +424,94 @@ It returns the response containing the pair:
 ```
 
 You can read more about using the KV Store with the API in the [KV Store documentation](../05.concepts/05.kv-store.md#api-how-to-create-read-update-and-delete-kv-pairs-via-rest-api)
+
+## Get Namespaces Files
+
+Along with managing your Flows with the API, you can also manage your Namespace Files.
+
+Using the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/files/directory) `/api/v1/namespaces/company.team/files/directory`, we can get a list of all the files in our namespace.
+
+We can make this request for the `company.team` namespace with the following command:
+
+```bash
+curl -X GET http://localhost:8080/api/v1/namespaces/company.team/files/directory
+```
+
+Our response contains an array containing information about the files:
+
+```json
+[
+    {
+        "type": "File",
+        "size": 13,
+        "fileName": "example.txt",
+        "lastModifiedTime": 1731430406183,
+        "creationTime": 1731430400773
+    },
+    {
+        "type": "File",
+        "size": 27,
+        "fileName": "example.js",
+        "lastModifiedTime": 1731415024668,
+        "creationTime": 1730997234841
+    },
+    {
+        "type": "File",
+        "size": 19,
+        "fileName": "example.sh",
+        "lastModifiedTime": 1731415024667,
+        "creationTime": 1730997234839
+    },
+    {
+        "type": "File",
+        "size": 171,
+        "fileName": "example.ion",
+        "lastModifiedTime": 1731430044778,
+        "creationTime": 1731430012804
+    },
+    {
+        "type": "File",
+        "size": 21,
+        "fileName": "example.py",
+        "lastModifiedTime": 1731415024667,
+        "creationTime": 1729781670534
+    }
+]
+```
+
+With this information, we can make a request to get the content of a specific file using a GET request `/api/v1/namespaces/{namespace}/files`.
+
+We can make the following request to fetch the content of `example.txt`:
+
+```bash
+curl -X GET 'http://localhost:8080/api/v1/namespaces/company.team/files?path=example.txt'
+```
+
+which returns:
+
+```
+Hello, World!
+```
+
+We can also upload files using a [POST request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/namespaces/-namespace-/files) `/api/v1/namespaces/{namespace}/files`. In this example, we will upload a Python file called `api_example.py` with the following content:
+
+```python
+import requests
+
+r = requests.get("https://kestra.io")
+print({r.status_code})
+```
+
+To do this with curl, we will make the following request:
+
+```bash
+curl -X POST 'http://localhost:8080/api/v1/namespaces/company.team/files?path=api_example.py' -H "Content-Type:multipart/form-data" -F "fileContent=@api_example.py"
+```
+
+::alert{type="info"}
+**Note:** Make sure fileContent has the correct path to your file.
+::
+
+When we make this request, we can see it appear in the Namespace Editor:
+
+![upload_file](/docs/how-to-guides/api/upload_file.png)
