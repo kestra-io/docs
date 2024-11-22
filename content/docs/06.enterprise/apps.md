@@ -23,7 +23,7 @@ Currently, Kestra offers two types of Apps:
 - **Form Apps**: these apps allow you to create forms that can trigger workflows with input parameters. For example, a form might allow users to specify resources that need to be provisioned, and their inputs will feed directly into a workflow that automatically provisions those resources.
 - **Approval Apps**: these apps enable forms for approving or rejecting paused workflows. Using the same example, an approval app could be used to either approve or reject a request for provisioning resources. Depending on the decision, the workflow will either resume and provision the resources, or stop.
 
-More types of apps are on the roadmap, such as apps to interact with the KV store, or trigger other actions using Kestra’s API. If you have a specific use case in mind, we’d love to hear about it!
+More types of apps are on the roadmap, such as apps to trigger actions using Kestra’s API. If you have a specific use case in mind, we’d love to hear about it!
 
 ---
 
@@ -47,215 +47,449 @@ In short, Apps make it easy to turn your Kestra workflows into simple applicatio
 
 To create a new app, go to the `Apps` page in the main UI and click the `+ Create` button. Add your app configuration as code and click on `Save`.
 
-### Example: App to Start a New Execution
+### Example 1: App to Start a New Execution
+
+Apps serve as custom UIs for workflows, so you need to first create a flow. Here is a simple configuration for a paremtrized flow that logs a message when triggered:
+
+```yaml
+id: myflow
+namespace: company.team
+
+inputs:
+  - id: user
+    type: STRING
+    defaults: World
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hello {{ inputs.user }}
+```
 
 Here’s a simple configuration for a form app that triggers a new workflow execution when submitted:
 
 ```yaml
-id: compute_resources_form
+id: hello_world_app
 type: io.kestra.plugin.ee.apps.Execution
-displayName: Compute Resources Request
+displayName: Create Execution for myflow
+description: This app allows you to execute a simple flow and display execution logs.
 namespace: company.team
-flowId: request_resources
-access:
-  type: PRIVATE
-```
-
-To see all available properties to configure this app type, expand the example below.
-
-::collapse{title="Complete Configuration for a Form App"}
-
-```yaml
-id: compute_resources_form
-type: io.kestra.plugin.ee.apps.Execution
-namespace: company.team
-flowId: request_resources
-executionId: abc123 # optional property e.g. if you want to display the execution progress/outputs of a specific execution
-displayName: Compute Resources Request
-template:
-  theme: DARK # AUTO, LIGHT, future: LEROYMERLIN
-  header:
-    image: "kestra://" # TBD how to manage this
-  footer:
-    enabled: false
+flowId: myflow
+access: PUBLIC
+tags:
+  - Getting Started
 
 layout:
   - on: OPEN
     blocks:
-      - type: io.kestra.ee.app.blocks.Markdown
+      - type: io.kestra.ee.apps.blocks.Markdown
         content: |
-          # Compute Resources Request
-          Submit a request for resources by filling out the form below.
+          ## Create a new execution
+          Pass custom input value and execute the flow
 
-      - type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm
-
-      - type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton
-        text: Submit
-        color: purple # TBD whether style is needed instead
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Execute
+        style: DEFAULT
 
   - on: RUNNING
     blocks:
-      - type: io.kestra.ee.app.blocks.Markdown
+      - type: io.kestra.ee.apps.blocks.Markdown
         content: |
-          ### Your request is now being processed.
-          "Please don't close this window. The results will be displayed as soon as the processing is complete."
+          ## Execution is running
 
-      - type: io.kestra.plugin.ee.apps.blocks.CancelExecutionButton
-        text: Cancel the submission
-        color: red
+      - type: io.kestra.ee.apps.blocks.Loading
+
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
+        text: Cancel
+        style: WARNING
 
   - on: SUCCESS
     blocks:
-      - type: io.kestra.ee.app.blocks.Markdown
+      - type: io.kestra.ee.apps.blocks.Markdown
         content: |
-          ### The results are ready!
-          Download the file below to view the report.
+          ## Execution finished
 
-      - type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs # FlowOuputs? DisplayOutputs?
-        filter: # optional, can be skipped
-          include: [] # no extra "s" please, just include/exclude
-          exclude: []
-
-  - on: FAILURE
-    blocks:
-      - type: io.kestra.ee.app.blocks.Markdown
+      - type: io.kestra.ee.apps.blocks.Markdown
         content: |
-          ### Oops, something went wrong!
-          "You are about to be redirected to our documentation in a few seconds!"
+          Full execution logs:
 
-      - type: io.kestra.plugin.ee.apps.blocks.RedirectTo
-        uri: https://kestra.io/docs
-        delay: PT5S
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
 
-  - on: PAUSE
-    condition: "{{ execution.taskId == 'mypausetask' }}"
-    blocks:
-      - type: io.kestra.ee.app.blocks.Markdown
-        content: |
-          ## Please validate the request
-          Inspect the logs and outputs below. Then, approve or reject the request.
-      - type: io.kestra.core.apps.ui.execution.ExecutionLogs
-        filter:
-          logLevel: INFO
-          taskIds: [] # optional, if not set, show all
-      - type: io.kestra.plugin.ee.apps.blocks.FlowResumeForm
-
-      - type: io.kestra.plugin.ee.apps.blocks.FlowResumeButton
-        text: "Continue"
-        style: DEFAULT
-
-      - type: io.kestra.plugin.ee.apps.blocks.FlowCancelButton
-        text: "Cancel"
-        style: DANGER
-
-access:
-  type: PRIVATE
-  # groups: ["DevOps"] # future scope
-
-tags:
-  - DevOps
-  - myteam
-  - myproject
+      - type: io.kestra.ee.apps.blocks.Button
+        text: More examples
+        url: https://github.com/kestra-io/examples/tree/main/apps
+        style: INFO
 ```
-::
 
-### Example: App to Resume a Paused Execution
 
-Below is a simple configuration for an approval app:
+Note that this app is `PUBLIC`, meaning anyone with the URL can access it without requiring login. Alternatively, you can set the `access` type to `PRIVATE` to restrict the app only to specific users.
+This app is perfect for building **public forms** that anyone can access.
+
+
+### Example 2: App to Request and Download Data
+
+Let's create a flow that fetches the relevant dataset based on user input:
 
 ```yaml
-id: compute_resources_form
-type: io.kestra.plugin.ee.apps.Execution
-displayName: Compute Resources — Approval Request
+id: get_data
 namespace: company.team
-flowId: request_resources
-access:
-  type: PRIVATE
+
+inputs:
+  - id: data
+    displayName: Select data to download
+    type: SELECT
+    values: [customers, employees, products, stores, suppliers]
+    defaults: customers
+
+  - id: startDate
+    displayName: Start date for your dataset
+    type: DATE
+    defaults: 2024-12-03
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/ion/{{ inputs.data }}.ion
+
+outputs:
+  - id: Data
+    type: FILE
+    value: "{{ outputs.extract.uri }}"
 ```
 
-To explore all the available properties for configuring an approval app, you can expand the example below.
+Now, from the Apps page, you can create a new app that allows users to select the data they want to download:
+
+```yaml
+id: report_request_form
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Form to request and download data
+namespace: company.team
+flowId: get_data
+access: PRIVATE
+tags:
+  - Reporting
+  - Analytics
+
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## Request data
+          Select the dataset you want to download.
+
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+
+  - on: RUNNING
+    blocks:
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## Fetching your data...
+          Don't close this window. The results will be displayed as soon as the processing is complete.
+
+      - type: io.kestra.ee.apps.blocks.Loading
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
+        text: Cancel request
+
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## Request processed successfully
+          You requested the following dataset:
+
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Inputs
+
+      - type: io.kestra.ee.apps.blocks.Alert
+        style: SUCCESS
+        showIcon: true
+        content: Your data is ready for download!
+
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Outputs
+
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: Find more App examples in the linked repository
+
+      - type: io.kestra.ee.apps.blocks.Button
+        text: App examples
+        url: https://github.com/kestra-io/examples/tree/main/apps
+        style: INFO
+
+      - type: io.kestra.ee.apps.blocks.Button
+        text: Submit new request
+        url: https://preview-ee-kafka.kestra.io/ui/release/apps/3vT2LpMsQmHiLYyADF1kE9
+        style: DEFAULT
+```
+
+This app is perfect for reporting and analytics use cases where users can request data and download the results.
+
+
+## App to Resume a Paused Execution
+
+Here is a flow simulating a request for resources that needs manual approval:
+
+```yaml
+id: request_resources
+namespace: company.team
+
+variables:
+  slack_message: >
+    New form submission! Click on the Resume button here to approve or reject the request
+#      {{ appLink('myApp') }}
+
+inputs:
+  - id: resource_type
+    displayName: Resource Type
+    type: SELECT
+    required: true
+    values: ["Access permissions", "SaaS application", "Development tool", "Cloud VM"]
+
+  - id: access_permissions
+    displayName: Access Permissions
+    type: SELECT
+    values: ["Admin", "Developer", "Editor", "Launcher", "Viewer"]
+    allowCustomValue: true
+    dependsOn:
+      inputs:
+        - resource_type
+      condition: "{{ inputs.resource_type equals 'Access permissions' }}"
+
+  - id: saas_applications
+    displayName: SaaS Applications
+    type: MULTISELECT
+    values: ["Slack", "Notion", "HubSpot", "GitHub", "Jira"]
+    allowCustomValue: true
+    dependsOn:
+      inputs:
+        - resource_type
+      condition: "{{ inputs.resource_type equals 'SaaS applications' }}"
+
+  - id: development_tools
+    displayName: Development Tool
+    type: SELECT
+    values: ["Cursor", "IntelliJ IDEA", "PyCharm Professional", "Datagrip"]
+    allowCustomValue: true
+    dependsOn:
+      inputs:
+        - resource_type
+      condition: "{{ inputs.resource_type equals 'Development tool' }}"
+
+  - id: cloud_provider
+    displayName: Cloud Provider
+    type: SELECT
+    values: ["AWS", "GCP", "Azure"]
+    allowCustomValue: true
+    dependsOn:
+      inputs:
+        - resource_type
+      condition: "{{ inputs.resource_type equals 'Cloud VM' }}"
+
+  - id: deadline
+    type: DATE
+    displayName: Deadline for the resources
+
+  - id: comment
+    type: STRING
+    displayName: Provide details about the resources you need
+
+tasks:
+  - id: get_service_catalog
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/ion/catalog.ion
+
+  - id: send_approval_request
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: https://reqres.in/api/slack
+    payload: |
+      {
+        "channel": "#devops",
+        "text": {{ render(vars.slack_message) | toJson }}
+      }
+
+  - id: wait_for_approval
+    type: io.kestra.plugin.core.flow.Pause
+    onResume:
+      - id: provisioning_status
+        description: Whether the resources were able to be provisioned
+        type: BOOLEAN
+        defaults: true
+        displayName: Provisioning Status
+
+      - id: comment
+        description: Extra comments about the provisioned resources
+        type: STRING
+        defaults: All requested resources have been provisioned
+        displayName: Approval Comment
+
+  - id: approve
+    type: io.kestra.plugin.core.http.Request
+    uri: https://reqres.in/api/resources
+    method: POST
+    contentType: application/json
+    body: "{{ inputs }}"
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      Status of the request {{ outputs.wait_for_approval.onResume.comment }}.
+      Process finished with {{ outputs.approve.body }}.
+
+outputs:
+  - id: catalog
+    type: FILE
+    value: "{{ outputs.get_service_catalog.uri }}"
+```
+
+Below is a comprehensive example of a compute resources approval app. Expand the snippet to see the complete configuration:
+
 
 ::collapse{title="Complete Configuration for an Approval App"}
-
 ```yaml
-id: compute_resources_form
+id: compute_resources_approval
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Resource request form
 namespace: company.team
 flowId: request_resources
-flowRevision: latest # optional
-displayName: Approve or Reject Compute Resources Request
-disabled: false
-type: io.kestra.plugin.ee.apps.Execution
-layout: # optional
-  - on: PAUSE
-    condition: "{{ execution.taskId == 'mypausetask' }}"
+access: PRIVATE
+tags:
+  - Platform Team
+  - Infrastructure
+
+layout:
+  - on: OPEN
     blocks:
-      - type: io.kestra.ee.app.blocks.Markdown
+      - type: io.kestra.ee.apps.blocks.Markdown
         content: |
-          ## Please validate the request
-          Inspect the logs and outputs below. Then, approve or reject the request.
+          ## Compute Resources Request Form
+          Fill out the form below to request compute resources.
+          Make sure to include the deadline by which the resources should be provisioned.
 
-      - type: io.kestra.plugin.ee.apps.blocks.ExecutionInputs
-        filter: # optional, can be skipped
-          include: []
-          exclude: []
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
 
-      - type: io.kestra.core.apps.ui.execution.ExecutionLogs
-        filter:
-          logLevel: INFO
-          taskIds: [] # optional, if not set, show all
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+        style: DEFAULT
 
-      - type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs # FlowOuputs? DisplayOutputs?
-        filter: # optional, can be skipped
-          include: []
-          exclude: []
+  - on: CREATED
+    blocks:
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## Thank you for your submission!
+          Your request is now forwarded to the DevOps team for approval.
 
-      - type: io.kestra.plugin.ee.apps.blocks.FlowResumeForm
+      - type: io.kestra.ee.apps.blocks.AutoRefresh
 
-      - type: io.kestra.plugin.ee.apps.blocks.FlowResumeButton
+  - on: RUNNING
+    blocks:
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ### We're processing your request
+
+      - type: io.kestra.ee.apps.blocks.Loading
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
+        text: Cancel request
+        style: WARNING
+
+      - type: io.kestra.ee.apps.blocks.AutoRefresh
+
+  - on: PAUSE
+    blocks:
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## Validate the request
+          Below are the details of the request.
+
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Inputs
+
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ### Approve or Reject?
+          Please approve or reject the request.
+
+      - type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton
         text: Approve
         style: SUCCESS
 
-      - type: io.kestra.plugin.ee.apps.blocks.FlowCancelButton
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
         text: Reject
         style: DANGER
 
+      - type: io.kestra.ee.apps.blocks.AutoRefresh
+
   - on: RESUME
     blocks:
-      - type: io.kestra.ee.app.blocks.Markdown
+      - type: io.kestra.ee.apps.blocks.Markdown
         content: |
-          ## Thank you for validating the request.
-          Your response is now being processed.
+          ### Thank you for validating the request!
 
-          Please don't close this window. The results will be displayed as soon as the processing is complete.
+      - type: io.kestra.ee.apps.blocks.AutoRefresh
 
   - on: SUCCESS
     blocks:
-      - type: io.kestra.ee.app.blocks.Markdown
+      - type: io.kestra.ee.apps.blocks.Markdown
         content: |
-          ### The results are ready!
-          Inspect the outputs below.
+          ### Request processed successfully
+          See the details of the processed execution below.
 
-      - type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs # FlowOuputs? DisplayOutputs?
-        filter: # optional, can be skipped
-          include: [] # no extra "s" please, just include/exclude
-          exclude: []
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Inputs
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Outputs
 
-expiration:
-  type: TTL # enum: TTL | DATE | LIMIT -- can be extended in the future if needed
-  ttl: PT30D
-  date: "2024-12-24"
-  limit: 100
-onSubmitAction:
-  type: DISPLAY_OUTPUTS # enum: DISPLAY_TEXT | DISPLAY_OUTPUTS | REDIRECT_TO
-  redirectTo:
-    url: "https://example.com/thank-you"
-access:
-  type: PRIVATE
-  # groups: ["DevOps"] # future scope
-tags:
-  - DevOps
-  - myteam
-  - myproject
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## You're all set!
+          Find more App examples in the linked repository
+
+      - type: io.kestra.ee.apps.blocks.Button
+        text: App examples
+        url: https://github.com/kestra-io/examples/tree/main/apps
+        style: INFO
+
+      - type: io.kestra.ee.apps.blocks.Button
+        text: Submit new request
+        url: https://preview-ee-kafka.kestra.io/ui/release/apps/5gth4KG3aLIa6LaonWh1Wp
+        style: DEFAULT
+
+  - on: FAILURE
+    blocks:
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          ## Request failed
+
+      - type: io.kestra.ee.apps.blocks.Alert
+        style: WARNING
+        showIcon: true
+        content: |
+          The workflow encountered an error during processing.
+
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: |
+          Try again or contact support if the issue persists.
+
+      - type: io.kestra.ee.apps.blocks.Button
+        text: Submit new request
+        url: https://preview-ee-kafka.kestra.io/ui/release/apps/5gth4KG3aLIa6LaonWh1Wp
+        style: DEFAULT
+
+      - type: io.kestra.ee.apps.blocks.Button
+        text: Contact support
+        url: https://kestra.io/slack
+        style: INFO
+
+  - on: FALLBACK
+    blocks:
+      - type: io.kestra.ee.apps.blocks.Markdown
+        content: You're all set. Thanks for using this app!
+
+description: |
+  Launch a parametrized workflow execution to provision resources after approval.
 ```
 ::
 
@@ -279,11 +513,9 @@ You can add custom tags to organize and filter apps in the App Catalog. For exam
 
 Each app has a unique URL that you can share with others. When someone opens the URL, they will see the app and can submit requests. You can share the URL with team members, customers, or partners to let them interact with your Kestra workflows.
 
-The basic structure of an app URL is:
-`https://yourHost/ui/tenantId/apps/appId?key=LONGRANDOM`.
+The basic structure of an app URL is: `https://yourHost/ui/tenantId/apps/appId` e.g. `http://localhost:8080/ui/release/apps/5CS8qsm7YTif4PWuAUWHQ5`.
 
-For example, if the app ID is `compute-resources-form` and it's created within `kestra-tech` tenant, the URL will look like:
-`https://demo.kestra.io/ui/production/apps/compute-resources-form?key=LONGRANDOM`.
+You can copy the URL from the Apps catalog page in the Kestra UI.
 
 ---
 
@@ -341,156 +573,21 @@ Each app is made up of blocks that define the layout and content of the app. You
 
 By combining different blocks, you can create a custom UI that guides users through the app’s workflow. For example, you could start with a markdown block that explains the purpose of the app, followed by a form block for users to enter their inputs, and a button block to submit the request. You can also add blocks to display execution logs, outputs, and buttons for approving or rejecting paused workflows.
 
-
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `content`                                                                                 | `- type: io.kestra.ee.app.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."` |
-| `RedirectTo`             | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK          | - `uri`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`uri: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT5S"` |
-| `CreateExecutionForm`    | OPEN                                                                     | None                                                                                        | `- type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm` |
-| `ResumeExecutionForm`    | PAUSE                                                                    | None                                                                                        | `- type: io.kestra.plugin.ee.apps.blocks.ResumeExecutionForm` |
-| `CreateExecutionButton`  | OPEN                                                                     | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Submit"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "MEDIUM"` |
-| `CancelExecutionButton`  | CREATED, RUNNING, PAUSE                                                           | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.blocks.CancelExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Reject"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "DANGER"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "SMALL"` |
-| `ResumeExecutionButton`  | PAUSE                                                                    | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"` |
-| `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.blocks.ExecutionInputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
-| `ExecutionOutputs`       | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
-| `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK                                | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.core.apps.ui.execution.ExecutionLogs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
+| `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK       | - `content`                                                                                 | `- type: io.kestra.ee.apps.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."` |
+| `RedirectTo`             | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `uri`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`uri: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT5S"` |
+| `CreateExecutionForm`    | OPEN                                                                     | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm` |
+| `ResumeExecutionForm`    | PAUSE                                                                    | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionForm` |
+| `CreateExecutionButton`  | OPEN                                                                     | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Submit"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "MEDIUM"` |
+| `CancelExecutionButton`  | CREATED, RUNNING, PAUSE                                                 | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Reject"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "DANGER"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "SMALL"` |
+| `ResumeExecutionButton`  | PAUSE                                                                    | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"` |
+| `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Inputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
+| `ExecutionOutputs`       | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Outputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
+| `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK                                | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
+| `Loading`                | RUNNING                                                                  | None                                                                                        | `- type: io.kestra.ee.apps.blocks.Loading` |
+| `Alert`                  | FAILURE                                                                  | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.ee.apps.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"` |
+| `Button`                 | SUCCESS, FAILURE                                                        | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.ee.apps.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"` |
+
 
 Everything is customizable, from the text and style of buttons to the messages displayed before and after submissions.
-
----
-
-## Example Apps
-
-Below are example apps that you can use as a starting point. You can copy and paste them into your Kestra instance and customize them to fit your workflows.
-
-::collapse{title="Form to sign up for Kestra Cloud"}
-```yaml
-id: form_to_sign_up_for_kestra_cloud
-type: io.kestra.plugin.ee.apps.Execution
-displayName: Form to sign up for Kestra Cloud
-namespace: company.team
-flowId: kestra_cloud_form
-access: PUBLIC
-
-layout:
-  - on: OPEN
-    blocks:
-      - id: page_header
-        type: io.kestra.ee.apps.blocks.Markdown
-        content: |
-          # Sign up for a waitlist to Kestra Cloud
-          Register now to be the first to know when we launch!
-
-      - id: submission_form
-        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm
-
-      - id: submit_button
-        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton
-        text: Submit
-
-  - on: CREATED
-    blocks:
-      - id: thank_you_message
-        type: io.kestra.ee.apps.blocks.Markdown
-        content: |
-          ## Thanks for your interest in Kestra Cloud!
-          We will notify you as soon as we launch.
-```
-::
-
-::collapse{title="Form to request and download data"}
-```yaml
-id: form_to_request_and_download_data
-type: io.kestra.plugin.ee.apps.Execution
-displayName: Form to request and download data
-namespace: company.team
-flowId: get_data
-access: PRIVATE
-
-layout:
-  - on: OPEN
-    blocks:
-      - id: page_header
-        type: io.kestra.ee.apps.blocks.Markdown
-        content: |
-          # Request data
-          Select the data you want to download.
-
-      - id: submission_form
-        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm
-
-      - id: submit_button
-        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton
-        text: Submit
-
-  - on: SUCCESS
-    blocks:
-      - id: download_data_text
-        type: io.kestra.ee.apps.blocks.Markdown
-        content: |
-          ## Your data is ready for download!
-          The data you requested is now available for download.
-
-      - id: outputs
-        type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs
-```
-::
-
-::collapse{title="Submit Compute Resources Request and Get it Approved"}
-```yaml
-id: request_resources_form
-type: io.kestra.plugin.ee.apps.Execution
-displayName: Submit Compute Resources Request and Get it Approved
-namespace: company.team
-flowId: request_resources
-access: PRIVATE
-
-layout:
-  - on: OPEN
-    blocks:
-      - id: page_header
-        type: io.kestra.ee.apps.blocks.Markdown
-        content: |
-          # Request Compute Resources
-          Fill out the form below to request compute resources.
-
-      - id: submission_form
-        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionForm
-
-      - id: submit_button
-        type: io.kestra.plugin.ee.apps.blocks.CreateExecutionButton
-        text: Submit
-
-  - on: SUCCESS
-    blocks:
-      - id: request_validated
-        type: io.kestra.ee.apps.blocks.Markdown
-        content: |
-          ## Thank you for validating the request!
-```
-::
-
-::collapse{title="Display Outputs from a Past Execution"}
-```yaml
-id: past_execution
-type: io.kestra.plugin.ee.apps.Execution
-displayName: Display Outputs from a Past Execution
-namespace: company.team
-flowId: extract_data
-executionId: 7GKBuetEEPRDgpKUDSNyTm
-access: PUBLIC
-
-layout:
-  - on: SUCCESS
-    blocks:
-      - id: present_outputs_intro
-        type: io.kestra.ee.apps.blocks.Markdown
-        content: |
-          ## Download the report
-          The data you requested is ready for download.
-
-      - id: outputs
-        type: io.kestra.plugin.ee.apps.blocks.ExecutionOutputs
-```
-::
-
