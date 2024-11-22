@@ -37,7 +37,7 @@ For the examples below, we will not have authentication enabled.
 
 ## Create a Flow
 
-To create a flow using the API, we can first go to the Flows section of the API Reference and see the `/api/v1/flows` POST Request which takes a YAML body with the Flow in it.
+To create a flow using the API, we can first go to the Flows section of the API Reference and see the `/api/v1/flows` [POST Request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/flows) which takes a YAML body with the Flow in it.
 
 Our body of Content-Type `application/x-yaml` will look like the example below:
 ```yaml
@@ -102,7 +102,7 @@ tasks:
     message: "{{ inputs.greeting }}"
 ```
 
-As our input has a default value, we can execute it by simply making a [POST request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/flows) `/api/v1/flows` like below:
+As our input has a default value, we can execute it by simply making a [POST request](https://kestra.io/docs/api-reference/open-source#post-/api/v1/executions/-namespace-/-id-) `/api/v1/executions/{namespace}/{id}` like below:
 
 ```bash
 curl -X POST \
@@ -394,7 +394,7 @@ curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/nam
 We can check in Kestra that it was added successfully:
 ![kv_api](/docs/how-to-guides/api/kv_api.png)
 
-We can modify this by changing the body. For example, we can change the body to `"This is a modified value"`:
+We can modify this by changing the body. For example, we will change the body to `"This is a modified value"`:
 
 ```bash
 curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/namespaces/company.team/kv/my_key -d '"This is a modified value"'
@@ -404,11 +404,11 @@ We can see the key has been modified since it was created:
 
 ![modified_kv](/docs/how-to-guides/api/modified_kv.png)
 
-When we open the key, we can see the value has also been modified to reflect our request.
+When we open the key, we will see the value has also been modified to reflect our request.
 
 ![modified_value_kv](/docs/how-to-guides/api/modified_value_kv.png)
 
-If we want to fetch the value from the KV Store, we can do so with the following [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/namespaces/{namespaces}/kv/{key}`. In this example, we can fetch the latest value from the key `my_key`:
+If we want to fetch the value from the KV Store, we will do so with the following [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/kv/-key-) `/api/v1/namespaces/{namespaces}/kv/{key}`. In this example, we can fetch the latest value from the key `my_key`:
 
 ```bash
 curl -X GET http://localhost:8080/api/v1/namespaces/company.team/kv/my_key
@@ -431,7 +431,7 @@ Along with managing your Flows with the API, you can also manage your Namespace 
 
 Using the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/files/directory) `/api/v1/namespaces/company.team/files/directory`, we can get a list of all the files in our namespace.
 
-We can make this request for the `company.team` namespace with the following command:
+We will make this request for the `company.team` namespace with the following command:
 
 ```bash
 curl -X GET http://localhost:8080/api/v1/namespaces/company.team/files/directory
@@ -479,9 +479,9 @@ Our response contains an array containing information about the files:
 ]
 ```
 
-With this information, we can make a request to get the content of a specific file using a GET request `/api/v1/namespaces/{namespace}/files`.
+With this information, we can make a request to get the content of a specific file using a [GET request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/files) `/api/v1/namespaces/{namespace}/files`.
 
-We can make the following request to fetch the content of `example.txt`:
+We will make the following request to fetch the content of `example.txt`:
 
 ```bash
 curl -X GET 'http://localhost:8080/api/v1/namespaces/company.team/files?path=example.txt'
@@ -502,14 +502,14 @@ r = requests.get("https://kestra.io")
 print({r.status_code})
 ```
 
-To do this with curl, we will make the following request:
+To do this, we will make the following request:
 
 ```bash
 curl -X POST 'http://localhost:8080/api/v1/namespaces/company.team/files?path=api_example.py' -H "Content-Type:multipart/form-data" -F "fileContent=@api_example.py"
 ```
 
 ::alert{type="info"}
-**Note:** Make sure fileContent has the correct path to your file.
+**Note:** Make sure `fileContent` has the correct path to your file.
 ::
 
 When we make this request, we can see it appear in the Namespace Editor:
