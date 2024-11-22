@@ -431,6 +431,8 @@ Along with managing your Flows with the API, you can also manage your Namespace 
 
 Using the [GET Request](https://kestra.io/docs/api-reference/open-source#get-/api/v1/namespaces/-namespace-/files/directory) `/api/v1/namespaces/company.team/files/directory`, we can get a list of all the files in our namespace.
 
+![files](/docs/how-to-guides/api/files.png)
+
 We will make this request for the `company.team` namespace with the following command:
 
 ```bash
