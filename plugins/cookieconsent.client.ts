@@ -56,6 +56,7 @@ export default defineNuxtPlugin(nuxtApp => {
             );
             document.head.appendChild(script);
 
+            cookieConsent.loadScript('https://opps-widget.getwarmly.com/warmly.js?clientId=088e34e198e5f9dc0b0a4d37ad873a46',{defer: "defer"});
             return cookieConsent.loadScript('https://js-eu1.hs-scripts.com/27220195.js',{defer: "defer"});
         };
 
