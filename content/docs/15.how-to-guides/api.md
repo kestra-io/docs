@@ -425,7 +425,7 @@ It returns the response containing the pair:
 
 You can read more about using the KV Store with the API in the [KV Store documentation](../05.concepts/05.kv-store.md#api-how-to-create-read-update-and-delete-kv-pairs-via-rest-api)
 
-## Get Namespaces Files
+## Get and Upload Namespaces Files
 
 Along with managing your Flows with the API, you can also manage your Namespace Files.
 
