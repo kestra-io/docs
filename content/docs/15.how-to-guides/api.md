@@ -8,7 +8,7 @@ topics:
 
 Extend Kestra by using the API.
 
-Kestra is built with an API-first design in mind, with a powerful API allowing you to connect Kestra to 3rd party systems. Whether that's through your flows directly or using the Kestra API, there's lots of options.
+Kestra is built with an API-first design in mind, with a powerful API allowing you to connect Kestra to external systems. Whether that's through your flows directly or using the Kestra API, there's lots of options.
 
 In this guide, we're going to specifically look at the Kestra API and how that can enable you to extend Kestra and integrate it into other systems.
 
@@ -17,6 +17,23 @@ In this guide, we're going to specifically look at the Kestra API and how that c
 In the documentation, there's references for both the [Open Source](../api-reference/open-source.md) as well as [Cloud & Enterprise APIs](../api-reference/enterprise.md) to make it easy to know what you can do. We're going to look at examples we can create with both references. When we open the [Open Source API Reference](../api-reference/open-source.md), we can see there's a number of sections to make it easy to navigate:
 
 ![api_reference](/docs/how-to-guides/api/api_reference.png)
+
+## Making Requests with Authentication
+
+If you have [Basic Auth enabled](../configuration/index.md#http-basic-authentication), or you're using the [Enterprise Edition](/enterprise), you will need to add authentication to your requests. You can easily do this using the `-u` argument and passing our username and password in using the following format `username:password`. This example uses the default username and password inside of the [Kestra Docker Compose](../02.installation/03.docker-compose.md):
+
+```bash
+curl -X POST -u 'admin@kestra.io:kestra'  http://localhost:8084/api/v1/executions/company.team/hello_world
+```
+
+With the Enterprise Edition, you can generate [API Tokens](../06.enterprise/api-tokens.md) to authenticate when making requests, for example:
+
+```bash
+curl -X POST http://localhost:8080/api/v1/executions/company.team/hello_world \
+-H "Authorization: Bearer YOUR_API_TOKEN"
+```
+
+For the examples below, we will not have authentication enabled.
 
 ## Create a Flow
 
@@ -263,7 +280,7 @@ tasks:
 
 ```
 
-When we fetch the data from this execution, we get the following response:
+When we fetch the data from an Execution of this flow with Execution ID `59uQXHbkMy5YwHEDom72Xv`, we get the following response:
 
 ::collapse{title="Response Body"}
 ```json
@@ -365,17 +382,45 @@ When we fetch the data from this execution, we get the following response:
 ```
 ::
 
-## Making Requests with Authentication
+## Accessing the KV Store
 
-If you have [Basic Auth enabled](../configuration/index.md#http-basic-authentication), or you're using the [Enterprise Edition](/enterprise), you will need to add authentication to your requests. You can easily do this using the `-u` argument and passing our username and password in using the following format `username:password`. This example uses the default username and password inside of the [Kestra Docker Compose](../02.installation/03.docker-compose.md):
+Kestra has a [KV Store](../05.concepts/05.kv-store.md) which is useful for making your flows stateful. We can fetch, modify and delete data in the KV Store using the API. This can be useful if you want to modify the KV Store directly inside of your code being executed by Kestra, or by an external system.
 
-```bash
-curl -X POST -u 'admin@kestra.io:kestra'  http://localhost:8084/api/v1/executions/company.team/hello_world
-```
-
-With the Enterprise Edition, you can generate [API Tokens](../06.enterprise/api-tokens.md) to authenticate when making requests, for example:
+To start with, we can add a KV pair to the KV Store with the following PUT request `/api/v1/namespaces/{namespace}/kv/{key}`. In this example, we're going to add a `my_key` key with the value set to `"Hello, World"` into the `company.team` namespace.
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/executions/company.team/hello_world \
--H "Authorization: Bearer YOUR_API_TOKEN"
+curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/namespaces/company.team/kv/my_key -d '"Hello, World"'
 ```
+We can check in Kestra that it was added successfully:
+![kv_api](/docs/how-to-guides/api/kv_api.png)
+
+We can modify this by changing the body. For example, we can change the body to `"This is a modified value"`:
+
+```bash
+curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/namespaces/company.team/kv/my_key -d '"This is a modified value"'
+```
+
+We can see the key has been modified since it was created:
+
+![modified_kv](/docs/how-to-guides/api/modified_kv.png)
+
+When we open the key, we can see the value has also been modified to reflect our request.
+
+![modified_value_kv](/docs/how-to-guides/api/modified_value_kv.png)
+
+If we want to fetch the value from the KV Store, we can do so with the following GET Request `/api/v1/namespaces/{namespaces}/kv/{key}`. In this example, we can fetch the latest value from the key `my_key`:
+
+```bash
+curl -X GET http://localhost:8080/api/v1/namespaces/company.team/kv/my_key
+```
+
+It returns the response containing the pair:
+
+```json
+{
+    "type": "STRING",
+    "value": "This is a modified value"
+}
+```
+
+You can read more about using the KV Store with the API in the [KV Store documentation](../05.concepts/05.kv-store.md#api-how-to-create-read-update-and-delete-kv-pairs-via-rest-api)
