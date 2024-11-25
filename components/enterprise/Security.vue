@@ -27,7 +27,7 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="sticky-features-item mb___5">
+                <div class="sticky-features-item mb__5">
                     <div class="features-item-content" :class="{'w--current': isItemInView(2)}">
                         <h3>Better Governance</h3>
                         <p class="mt-3">
@@ -242,7 +242,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 500px;
-                padding: 100px 0;
+                padding: 200px 0;
 
                 .w--current {
                     opacity: 1 !important;
@@ -250,8 +250,8 @@
                     overflow: visible;
                 }
 
-                .mb___5 {
-                    padding-bottom: 175px !important;
+                .mb__5 {
+                    padding-bottom: 50px !important;
                 }
 
                 .sticky-features-item {

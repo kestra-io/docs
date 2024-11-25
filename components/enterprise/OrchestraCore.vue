@@ -520,7 +520,7 @@
                         color: $white;
                         font-family: $font-family-sans-serif;
                         font-size: $rem-3;
-                        font-weight: 600;
+                        font-weight: 400;
                         line-height: 56.4px;
                         text-align: center;
 
@@ -540,7 +540,7 @@
                         color: $white;
                         font-family: $font-family-sans-serif;
                         font-size: 14px;
-                        font-weight: 400;
+                        font-weight: 300;
                         line-height: 22px;
                         text-align: center;
                     }

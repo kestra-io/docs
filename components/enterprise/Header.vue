@@ -88,6 +88,8 @@
     .container-fluid {
         color: var(--bs-white);
         padding-top: 5rem;
+        padding-right: 0;
+        padding-left: 0;
         position: relative;
         @include media-breakpoint-down(md) {
             padding-top: $rem-10;
@@ -190,7 +192,7 @@
             .header-desc {
                 color: $purple-38;
                 font-size: calc($spacer * 1.5);
-                font-weight: 600;
+                font-weight: 400;
                 margin-bottom: 30px;
                 text-align: center;
 

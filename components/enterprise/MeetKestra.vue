@@ -177,7 +177,7 @@
             background-image: linear-gradient(270deg, rgba(16, 16, 45, 0) 26.08%, #343393 74.89%);
             height: 1px;
             display: none;
-            @media only screen and (max-width: 420px) {
+            @media only screen and (max-width: 575px) {
                 display: block;
             }
         }
@@ -199,13 +199,13 @@
                 position: absolute;
                 z-index: -1;
 
-                @media only screen and (max-width: 420px) {
+                @media only screen and (max-width: 575px) {
                     background-image: unset;
                 }
             }
 
             .title {
-                font-weight: 600;
+                font-weight: 400;
                 font-size: $font-size-3xl;
                 text-align: center;
                 width: 100%;
@@ -217,7 +217,8 @@
                     margin-bottom: 0;
                 }
 
-                @media only screen and (max-width: 420px) {
+                @media only screen and (max-width: 575px) {
+                    text-align: start;
                     font-size: 22px;
                 }
             }
@@ -227,7 +228,7 @@
                 gap: 32px;
 
                 @media only screen and (max-width: 1200px) {
-                    grid-template-columns: 2fr 2fr;
+                    width: 100%;
                     gap: 10px;
                     flex-wrap: wrap;
                     justify-content: center;
@@ -237,10 +238,43 @@
                     width: 100%;
                     max-width: 330px;
                     background: linear-gradient(180deg, #21242E 0%, #1A1C24 100%);
-                    border: 1px solid;
-                    border-image-source: linear-gradient(180deg, #2B313E 0%, #131725 100%);
+                    border: none;
                     border-radius: 20px;
                     padding: $rem-1;
+
+
+                    box-sizing: border-box;
+                    position: relative;
+
+                    &::before {
+                        border-radius: 20px;
+                        content: '';
+                        background-image: linear-gradient(180deg, rgb(101, 110, 125) 0%, rgba(19, 23, 37, 1) 100%) !important;
+                        top: -1px;
+                        left: -1px;
+                        bottom: -1px;
+                        right: -1px;
+                        position: absolute;
+                        z-index: -1;
+
+                        @media only screen and (max-width: 420px) {
+                            background-image: unset;
+                        }
+                    }
+
+                    &:nth-child(3) {
+                        @media only screen and (max-width: 1200px) {
+                            max-width: unset;
+                        }
+                    }
+
+                    @media only screen and (max-width: 1200px) {
+                        max-width: 49%;
+                    }
+
+                    @media only screen and (max-width: 768px) {
+                        max-width: unset;
+                    }
 
                     > p {
                         font-size: 18px;
@@ -286,8 +320,6 @@
                                 position: absolute;
                                 z-index: 0;
                             }
-
-
 
                             :deep(.material-design-icon) {
                                 .material-design-icon__svg {
