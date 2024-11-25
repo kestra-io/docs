@@ -1,5 +1,6 @@
 <template>
     <div class="container order-2">
+        <div class="border-top-block"/>
         <div class="content">
             <h3 class="title">Meet Kestra Enterprise Edition</h3>
             <div class="list-container">
@@ -132,7 +133,7 @@
             </div>
         </div>
         <div class="compare-btn">
-            <NuxtLink href="/pricing" class="button">
+            <NuxtLink href="/pricing" class="button  btn-animated btn-purple-animated">
                 <span>Compare all offers</span>
             </NuxtLink>
         </div>
@@ -170,24 +171,37 @@
         max-width: 1120px;
         padding: 0;
         border-bottom: none !important;
+        .border-top-block {
+            width: 100%;
+            border: none;
+            background-image: linear-gradient(270deg, rgba(16, 16, 45, 0) 26.08%, #343393 74.89%);
+            height: 1px;
+            display: none;
+            @media only screen and (max-width: 420px) {
+                display: block;
+            }
+        }
 
         .content {
-            border-radius: 16px;
             padding: $rem-2;
             background-color: #121217EB;
-            border: 1px solid rgba(53, 52, 170, 0.78);
+            box-sizing: border-box;
+            position: relative;
+            border-radius: 16px;
+            &::before {
+                border-radius: 16px;
+                content: '';
+                background-image: linear-gradient(360deg, rgba(53, 52, 170, 0.78) 5.44%, rgba(37, 32, 49, 0.6) 25.28%, #31314B 68.12%, rgba(53, 52, 170, 0.975664) 109%);
+                top: -1px;
+                left: -1px;
+                bottom: -1px;
+                right: -1px;
+                position: absolute;
+                z-index: -1;
 
-            @media only screen and (max-width: 420px) {
-                width: 100%;
-                border: none;
-                border-top: 1px solid rgba(53, 52, 170, 0.78);
-                border-radius: 0;
-                padding: $rem-2 0 0 0;
-                background-color: unset;
-
-                // need to add this
-                //border-top: 1px solid;
-                //border-image-source: linear-gradient(270deg, rgba(16, 16, 45, 0) 26.08%, #343393 74.89%);
+                @media only screen and (max-width: 420px) {
+                    background-image: unset;
+                }
             }
 
             .title {
@@ -240,14 +254,40 @@
                         padding: 0;
 
                         li {
+                            position: relative;
+                            box-sizing: border-box;
                             cursor: pointer;
                             display: flex;
                             gap: 10px;
                             padding: $rem-1;
-                            background: linear-gradient(90deg, #292D38 0%, rgba(41, 39, 48, 0.3) 100%);
+
                             border-radius: 4px;
-                            border: 1px solid #474450;
-                            white-space: nowrap;
+
+                            &::after {
+                                border-radius: 4px;
+                                content: '';
+                                background: linear-gradient(90deg, #292D38 0%, rgba(41, 39, 48) 100%);
+                                top: 0;
+                                left: 0;
+                                bottom: 0;
+                                right: 0;
+                                position: absolute;
+                                z-index: 2;
+                            }
+
+                            &::before {
+                                border-radius: 4px;
+                                content: '';
+                                background-image: linear-gradient(91.19deg, #474450 1.02%, #4744508c 66.77%);
+                                top: -1px;
+                                left: -1px;
+                                bottom: -1px;
+                                right: -1px;
+                                position: absolute;
+                                z-index: 0;
+                            }
+
+
 
                             :deep(.material-design-icon) {
                                 .material-design-icon__svg {
@@ -264,6 +304,8 @@
                                 text-underline-position: from-font;
                                 text-decoration-skip-ink: none;
                                 color: #FFFFFF;
+                                position: relative;
+                                z-index: 4;
                             }
                         }
                     }
@@ -283,15 +325,28 @@
                 }
 
                 .info-block {
+                    position: relative;
+                    box-sizing: border-box;
                     padding: 16px;
                     border-radius: 20px;
                     display: flex;
                     flex-direction: column;
                     gap: 12px;
                     background: linear-gradient(180deg, #21242E 0%, #1A1C24 100%);
-                    border: 1px solid;
-                    border-image-source: linear-gradient(180deg, #2B313E 0%, #131725 100%);
                     align-items: center;
+
+                    &::before {
+                        border-radius: 20px;
+                        content: '';
+                        background-image: linear-gradient(180deg, #2B313E 0%, #131725 100%);
+
+                        top: -1px;
+                        left: -1px;
+                        bottom: -1px;
+                        right: -1px;
+                        position: absolute;
+                        z-index: -1;
+                    }
 
                     span {
                         height: 100%;
@@ -323,6 +378,8 @@
         }
 
         .bottom-block {
+            border: 1px solid rgba(65, 74, 93, 1);
+            border-style: dashed;
             border-radius: 16px;
             padding: 16px 32px;
             background: linear-gradient(180deg, #21242E 0%, #1A1C24 100%);

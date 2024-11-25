@@ -1,17 +1,75 @@
 <template>
     <div class="main-box">
+        <div class="sticky-features-wrapper">
+            <div class="scroll-block">
+                <div class="sticky-features-item">
+                    <div class="features-item-content w--current" :class="{'w--current': isItemInView(0)}">
+                        <h3>More Security</h3>
+                        <p class="mt-3">
+                            Ensures top-tier security with SSO, audit logs, and revision history for complete
+                            transparency. Integration with secrets managers and API tokens enhances secure automation,
+                            while end-to-end encryption protects your data at all times.
+                        </p>
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                            <span>Get a Demo</span>
+                        </NuxtLink>
+                    </div>
+                </div>
+                <div class="sticky-features-item">
+                    <div class="features-item-content" :class="{'w--current': isItemInView(1)}">
+                        <h3>Better Governance</h3>
+                        <p class="mt-3">
+                            Give your team secured, isolated environments and control over workflows. With tailored
+                            automation and precise access management, you can ensure compliance and efficiency at scale.
+                        </p>
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                            <span>Get a Demo</span>
+                        </NuxtLink>
+                    </div>
+                </div>
+                <div class="sticky-features-item mb___5">
+                    <div class="features-item-content" :class="{'w--current': isItemInView(2)}">
+                        <h3>Better Governance</h3>
+                        <p class="mt-3">
+                            Give your team secured, isolated environments and control over workflows. With tailored
+                            automation and precise access management, you can ensure compliance and efficiency at scale.
+                        </p>
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                            <span>Get a Demo</span>
+                        </NuxtLink>
+                    </div>
+                </div>
+            </div>
+            <div class="sticky-features-visuals">
+                <div class="sticky-features-sticky">
+                    <div class="sticky-features-box">
+                        <img
+                            class="u-img-cover"
+                            :src="imageUrls[getCurrentImageIndex()]"
+                            alt="A dashboard with success or fail task events"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
-            <div class="mb-5-rem security-item">
+            <div class="row mb-5-rem security-item">
                 <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
-                    <NuxtImg width="600px" height="750px" loading="lazy" format="webp" class="img-fluid" src="/landing/enterprise/security-1.png" alt="A dashboard with success or fail task events" />
+                    <img
+                        class="img-fluid"
+                        src="/landing/enterprise/security-1-1.svg"
+                        alt="A dashboard with success or fail task events"
+                    />
                 </div>
                 <div class="item-info" data-aos="fade-right">
                     <div>
                         <h3>More Security</h3>
                         <p class="mt-3">
-                            Ensures top-tier security with SSO, audit logs, and revision history for complete transparency. Integration with secrets managers and API tokens enhances secure automation, while end-to-end encryption protects your data at all times.
+                            Ensures top-tier security with SSO, audit logs, and revision history for complete
+                            transparency. Integration with secrets managers and API tokens enhances secure automation,
+                            while end-to-end encryption protects your data at all times.
                         </p>
-                        <NuxtLink href="/demo" class="demo-btn">
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                             <span>Get a Demo</span>
                         </NuxtLink>
                     </div>
@@ -19,15 +77,20 @@
             </div>
             <div class="security-item mb-5-rem">
                 <div class="col-md-6 order-0 order-md-1 rounded-2" data-aos="fade-left">
-                    <NuxtImg width="600px" height="750px" loading="lazy" format="webp" class="img-fluid" src="/landing/enterprise/security-2.png" alt="Stylized view of administrator settings with role-based view" />
+                    <img
+                        class="img-fluid"
+                        src="/landing/enterprise/security-2-2.svg"
+                        alt="A dashboard with success or fail task events"
+                    />
                 </div>
                 <div class="item-info" data-aos="fade-right">
                     <div>
                         <h3>Better Governance</h3>
                         <p class="mt-3">
-                            Give your team secured, isolated environments and  control over workflows. With tailored automation and precise access management, you can ensure compliance and efficiency at scale.
+                            Give your team secured, isolated environments and control over workflows. With tailored
+                            automation and precise access management, you can ensure compliance and efficiency at scale.
                         </p>
-                        <NuxtLink href="/demo" class="demo-btn">
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                             <span>Get a Demo</span>
                         </NuxtLink>
                     </div>
@@ -35,15 +98,21 @@
             </div>
             <div class="security-item mb-5-rem">
                 <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
-                    <NuxtImg radius="20" width="600px" height="750px" loading="lazy" format="webp" class="img-fluid" src="/landing/enterprise/security-3.png" alt="A dashboard with success or fail task events" />
+                    <img
+                        class="img-fluid"
+                        src="/landing/enterprise/security-3-3.svg"
+                        alt="A dashboard with success or fail task events"
+                    />
                 </div>
                 <div class="item-info" data-aos="fade-right">
                     <div>
                         <h3>Scale with no limits</h3>
                         <p class="mt-3">
-                            Kestra Enterprise scales with no downtime. Its reliable architecture and task runners, support both internal and external execution, minimize risk and provide performance insights—allowing you to optimize without worrying about infrastructure limitations.
+                            Kestra Enterprise scales with no downtime. Its reliable architecture and task runners,
+                            support both internal and external execution, minimize risk and provide performance
+                            insights—allowing you to optimize without worrying about infrastructure limitations.
                         </p>
-                        <NuxtLink href="/demo" class="demo-btn">
+                        <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                             <span>Get a Demo</span>
                         </NuxtLink>
                     </div>
@@ -52,57 +121,206 @@
         </div>
     </div>
 </template>
-
-
 <script>
-    import Section from '../layout/Section.vue';
-    export default {
-      components: {Section},
-    }
+  export default {
+    data() {
+      return {
+        itemPositions: [],
+        prevImageIndex: 0,
+        imageUrls: {
+          0: '/landing/enterprise/security-1-1.svg',
+          1: '/landing/enterprise/security-2-2.svg',
+          2: '/landing/enterprise/security-3-3.svg',
+        },
+      }
+    },
+    mounted() {
+      this.updateItemPositions();
+      window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeDestroy() {
+      window.removeEventListener('scroll', this.handleScroll);
+    },
+    methods: {
+      updateItemPositions() {
+        this.itemPositions = [];
+        const items = this.$el.querySelectorAll('.sticky-features-item');
+        items.forEach(item => {
+          const rect = item.getBoundingClientRect();
+          this.itemPositions.push({rect, isCentered: false});
+        });
+      },
+      handleScroll() {
+        this.updateItemPositions();
+        this.itemPositions.forEach((item, index) => {
+          const centerOfViewport = window.innerHeight / 2;
+          const itemCenter = item.rect.top + item.rect.height / 2;
+          const isCentered = Math.abs(itemCenter - centerOfViewport) <= 150;
+          this.itemPositions[index] = {...item, isCentered};
+        });
+      },
+      isItemInView(index) {
+        return this.itemPositions[index] && this.itemPositions[index].isCentered;
+      },
+      getCurrentImageIndex() {
+        for (let i = 0; i < this.itemPositions.length; i++) {
+          if (this.isItemInView(i)) {
+            this.prevImageIndex = i;
+            return i;
+          }
+        }
+        return this.prevImageIndex;
+      },
+    },
+  }
 </script>
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
-    :deep(section) {
-        margin-top: calc($spacer * 7.8);
-        position: relative;
 
-        &:before {
-            content: "";
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            background: url("/landing/ee/background-mask.svg") no-repeat center;
-            background-size: 156% 100%;
-            overflow: hidden;
-            top: -33%;
-            z-index: -1;
-        }
-        .subtitle {
-            margin: 0 !important;
-            p {
-                margin: 0 !important;
-            }
-
-            div.main {
-                padding-top: 0 !important;
-            }
-        }
-    }
     .main-box {
-        width: 100%;
+        padding: 160px 0;
+        display: flex;
         background-color: $white;
+        position: relative;
+        justify-content: center;
+        width: 100%;
 
-        @media only screen and (max-width: 1200px) {
-            padding-left: $rem-2;
-            padding-right: $rem-2;
+        @include media-breakpoint-down(xl) {
+            padding: 120px $rem-2;
         }
+
+        @include media-breakpoint-down(md) {
+            padding: 60px $rem-2;
+        }
+
+        .sticky-features-wrapper {
+            display: grid;
+            grid-template-columns: 42% 54%;
+            position: relative;
+            max-width: 1120px;
+            justify-content: space-between;
+            @media only screen and (max-width: 767px) {
+                display: none;
+            }
+
+            .sticky-features-visuals {
+                align-self: stretch;
+                position: relative;
+
+                .sticky-features-sticky {
+                    border-radius: 4px;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding-top: 74vh;
+                    display: flex;
+                    position: sticky;
+                    top: 16vh;
+
+                    .sticky-features-box {
+                        border: 1px solid var(--color--grey-border);
+                        border-radius: 4px;
+                        height: 100%;
+                        position: absolute;
+                        inset: 0%;
+
+                        .u-img-cover {
+                            object-fit: cover;
+                            object-position: 50% 50%;
+                            width: 100%;
+                            max-width: 600px;
+                            height: 100%;
+                            inset: 0%;
+                            border-radius: 20px;
+                        }
+                    }
+                }
+            }
+
+            .scroll-block {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 500px;
+                padding: 100px 0;
+
+                .w--current {
+                    opacity: 1 !important;
+                    cursor: default;
+                    overflow: visible;
+                }
+
+                .mb___5 {
+                    padding-bottom: 175px !important;
+                }
+
+                .sticky-features-item {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                    padding-bottom: 0;
+                    gap: 64px;
+                    height: 50%;
+
+                    .features-item-content {
+                        transition: opacity .3s;
+                        opacity: .15;
+                        cursor: default;
+                        padding: 0;
+                        text-decoration: none;
+                        position: relative;
+                        @media only screen and (max-width: 768px) {
+                            flex-wrap: wrap;
+                            justify-content: center;
+                        }
+
+                        h3 {
+                            font-weight: 400;
+                            font-size: 41px;
+                            color: #070708;
+                            line-height: $rem-3;
+                        }
+
+                        p {
+                            font-size: 18px;
+                            color: #070708;
+                            line-height: 28px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .demo-btn {
+            margin-top: 26px;
+            cursor: pointer;
+            padding: 10px 16px;
+            max-width: 121px;
+            background-color: #6862F5;
+            border-radius: 4px;
+
+            > span {
+                font-family: $font-family-sans-serif;
+                font-size: var(--fontsizemd);
+                font-weight: 700;
+                text-align: center;
+                color: $white;
+            }
+        }
+
 
         .container {
             padding: 120px 0;
             max-width: 1120px;
             border-top: none;
+            display: none;
 
-            @media only screen and (max-width: 769px) {
+            @media only screen and (max-width: 767px) {
+                display: block;
+            }
+
+            @include media-breakpoint-down(md) {
                 padding-bottom: 40px;
                 padding-top: 65px;
             }
@@ -122,7 +340,7 @@
                 gap: 64px;
 
 
-                @media only screen and (max-width: 768px) {
+                @include media-breakpoint-down(md) {
                     flex-wrap: wrap;
                     justify-content: center;
                 }
@@ -133,12 +351,13 @@
                     max-width: 476px;
 
                     h3 {
+                        font-weight: 400;
                         font-size: 41px;
                         color: #070708;
                         line-height: $rem-3;
                     }
 
-                    @media only screen and (max-width: 768px) {
+                    @include media-breakpoint-down(md) {
                         order: 1;
                     }
                 }
@@ -152,7 +371,7 @@
                 background-color: #6862F5;
                 border-radius: 4px;
 
-                >span {
+                > span {
                     font-family: $font-family-sans-serif;
                     font-size: var(--fontsizemd);
                     font-weight: 700;
@@ -161,7 +380,7 @@
                     color: $white;
                 }
 
-                @media only screen and (max-width: 768px) {
+                @include media-breakpoint-down(md) {
                     margin-top: 10px;
                 }
             }
@@ -199,8 +418,7 @@
                 z-index: 10;
 
                 &::before,
-                &::after
-                {
+                &::after {
                     content: "";
                     position: absolute;
                     width: calc($spacer * 12);
@@ -264,6 +482,7 @@
                         width: auto;
                     }
                 }
+
                 &::before {
                     content: "";
                     position: absolute;
@@ -284,3 +503,5 @@
         }
     }
 </style>
+
+

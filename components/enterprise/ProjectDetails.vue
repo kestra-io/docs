@@ -7,8 +7,11 @@
                     <span>Kestra offers language-agnostic orchestration, eliminating the need for glue code and allowing you to execute tasks in any language. With built-in high-availability options and full observability, Kestra ensures resilient operations and clear insights, no matter how complex your workflows.</span>
                 </div>
                 <div class="col-md-6 order-0 order-md-1 rounded-2" data-aos="fade-left">
-                    <NuxtImg width="548px" height="552px" loading="lazy" format="webp" class="img-fluid"
-                             src="/landing/enterprise/anythin-scale.png" alt="Run Anything at Scale"/>
+                    <img
+                        class="image-fluid"
+                        src="/landing/enterprise/anything-scale.svg"
+                        alt="Run Anything at Scale"
+                    />
                 </div>
             </div>
             <div class="declarative">
@@ -18,7 +21,11 @@
                         <span>Kestra’s declarative syntax in YAML offers a simple learning curve while enabling powerful orchestration. With both UI-based configuration and the ability to scale to complex use cases, Kestra ensures ease of use without sacrificing flexibility or control.</span>
                     </div>
                     <div class="w-100 order-md-1 rounded-2" data-aos="fade-left">
-                        <img class="declarative" src="/landing/enterprise/declarative.png" alt="right icons"/>
+                        <img
+                            class="declarative-img"
+                            src="/landing/enterprise/declarative.svg"
+                            alt="right icons"
+                        />
                     </div>
                 </div>
                 <div class="block">
@@ -27,7 +34,7 @@
                         <span>Handle scheduled, real-time event-driven, and API-based workflows effortlessly. Support business-critical operations with real-time automation, ensuring your workflows adapt and scale to your needs.</span>
                     </div>
                     <div class="real-time w-100 order-md-1 rounded-2" data-aos="fade-left">
-                        <img src="/landing/enterprise/real-time.png" alt="right icons"/>
+                        <img src="/landing/enterprise/real-time.svg" alt="right icons"/>
                     </div>
                 </div>
             </div>
@@ -44,7 +51,7 @@
                 </div>
             </div>
 
-            <NuxtLink href="/demo" class="demo-btn">
+            <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                 <span>Get a Demo</span>
             </NuxtLink>
         </div>
@@ -116,10 +123,14 @@
                 align-items: center;
                 gap: 64px;
                 width: 100%;
-                border-radius: 8px;
+                border-radius: 20px;
                 background: linear-gradient(180deg, #21242E 0%, #1A1C24 100%);
-                border: 1px solid;
-                border-image-source: linear-gradient(180deg, #2B313E 0%, #131725 100%);
+
+                .image-fluid {
+                    max-width: 548px;
+                    width: 100%;
+                    height: auto;
+                }
 
                 @media only screen and (max-width: 906px) {
                     flex-wrap: wrap;
@@ -144,7 +155,7 @@
                         margin: 0;
                         font-family: $font-family-sans-serif;
                         font-size: $rem-2;
-                        font-weight: 600;
+                        font-weight: 400;
                         line-height: 37.6px;
                         text-align: left;
                         color: $white;
@@ -157,7 +168,7 @@
                     span {
                         font-family: $font-family-sans-serif;
                         font-size: 14px;
-                        font-weight: 400;
+                        font-weight: 300;
                         line-height: 22px;
                         text-align: left;
                         color: #D5D3DE;
@@ -169,6 +180,7 @@
                 display: flex;
                 justify-content: space-between;
                 gap: $rem-2;
+                position: relative;
 
                 @media only screen and (max-width: 990px) {
                     gap: 10px;
@@ -178,6 +190,7 @@
                     flex-wrap: wrap;
                     justify-content: center;
                 }
+
 
                 .block {
                     display: flex;
@@ -211,7 +224,6 @@
 
                     .real-time {
                         img {
-                            height: 340px;
                             padding: 0 $rem-4;
                         }
                     }
@@ -220,7 +232,7 @@
                         margin: 0;
                         font-family: $font-family-sans-serif;
                         font-size: $rem-2;
-                        font-weight: 600;
+                        font-weight: 400;
                         line-height: 37.6px;
                         text-align: left;
                         color: $white;
@@ -232,7 +244,7 @@
                     span {
                         font-family: $font-family-sans-serif;
                         font-size: 14px;
-                        font-weight: 400;
+                        font-weight: 300;
                         line-height: 22px;
                         text-align: left;
                         color: #D5D3DE;
@@ -276,7 +288,7 @@
                         font-family: $font-family-sans-serif;
                         font-size: 32px;
                         margin: 0;
-                        font-weight: 600;
+                        font-weight: 400;
                         line-height: 37.6px;
                         text-align: center;
                         color: $white;
@@ -291,7 +303,7 @@
                     span {
                         font-family: $font-family-sans-serif;
                         font-size: 14px;
-                        font-weight: 400;
+                        font-weight: 300;
                         line-height: 22px;
                         text-align: center;
                         color: #D5D3DE;

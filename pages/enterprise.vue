@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="main-container">
         <Head>
             <Title>Get More Out of Your Data With the Enterprise Edition</Title>
             <Meta name="description"
@@ -46,3 +46,8 @@
     })
 
 </script>
+<style scoped lang="scss">
+    .main-container {
+        overflow: clip;
+    }
+</style>

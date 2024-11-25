@@ -100,12 +100,22 @@
             background-size: 100% 100%;
             position: absolute;
             z-index: -50;
-            top: 371px;
-            width: 380px;
+            top: 435px;
+            width: 538px;
+            height: 830px;
+            @include media-breakpoint-down(xl) {
+                width: 335px;
+                height: 700px;
+            }
+
             @include media-breakpoint-down(md) {
+                width: 300px;
+                height: 600px;
+            }
+
+            @include media-breakpoint-down(sm) {
                 display: none;
             }
-            height: 830px;
         }
 
         &::before {
@@ -120,13 +130,19 @@
             width: 480px;
             height: 566px;
 
-            @include media-breakpoint-down(lg) {
+            @include media-breakpoint-down(xl) {
                 width: 400px;
-                height: 566px;
+                height: 450px;
             }
 
             @include media-breakpoint-down(md) {
-                background-image: url(/landing/enterprise/mobile-bg-right.svg);
+                width: 300px;
+                height: 420px;
+            }
+
+
+            @include media-breakpoint-down(sm) {
+                background-image: url(/landing/enterprise/bg-right-mobile.png);
                 width: 240px;
                 height: 380px;
                 top: -25px;
@@ -163,7 +179,7 @@
 
             h1 {
                 font-size: $font-size-4xl;
-                font-weight: 600;
+                font-weight: 400;
                 font-family: $font-family-sans-serif;
                 width: fit-content !important;
                 @include media-breakpoint-down(lg) {

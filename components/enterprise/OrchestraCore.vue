@@ -13,23 +13,23 @@
                         <span>Faster Workflow Completion</span>
                     </div>
                     <div class="percent-block">
-                        <p>Profitability</p>
+                        <p>PROFITABILITY</p>
                         <div>75%</div>
                         <span>Reduction in Operational costs</span>
                     </div>
                     <div class="percent-block">
-                        <p>Efficiency</p>
+                        <p>EFFICIENCY</p>
                         <div>80%</div>
                         <span>Boost in Team Efficiency</span>
                     </div>
                     <div class="percent-block">
-                        <p>Time TO MARKET</p>
+                        <p>TIME TO MARKET</p>
                         <div>5x</div>
                         <span>Deployment Speed</span>
                     </div>
                 </div>
-                <NuxtLink href="/demo" class="demo-btn">
-                    <span>Talk to scales</span>
+                <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
+                    <span>Talk to sales</span>
                 </NuxtLink>
             </div>
             <div class="slider">
@@ -104,7 +104,7 @@
                         with confidence. Empower your team, streamline governance, and harness reliable infrastructure
                         to drive growth without compromise.
                     </span>
-                    <NuxtLink href="/demo" class="demo-btn">
+                    <NuxtLink href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
                         <span>Get a Demo</span>
                     </NuxtLink>
 
@@ -186,8 +186,10 @@
                 }
 
                 .header {
+                    width: 100%;
                     display: flex;
                     flex-direction: column;
+                    justify-content: start;
                     gap: 8px;
 
                     p {
@@ -201,10 +203,12 @@
 
 
                         @media only screen and (max-width: 991px) {
+                            line-height: 34px;
                             font-size: 32px;
                         }
 
                         @media only screen and (max-width: 576px) {
+                            line-height: 26px;
                             font-size: 24px;
                         }
                     }
