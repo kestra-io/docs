@@ -37,4 +37,4 @@ At startup, every file in the watched directory will be loaded into the database
 When a file is created, updated, or deleted in the watched directory, Kestra will automatically load the flow into the database or remove it if the file is deleted.
 If a flow is created, updated or deleted in the UI, the file will be created, updated or deleted in the watched directory.
 
-In kestra UI, you cannot change an ID nor a namespace, but in a file you can, in this case, the previous flow will be deleted, and a new one created.
+In the Kestra UI, you cannot change an ID nor a namespace, but in a file you can, in this case, the previous flow will be deleted, and a new one created.
