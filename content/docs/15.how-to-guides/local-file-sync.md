@@ -30,6 +30,24 @@ Multiple paths can be provided, and nested files will also be watched.
 Files have to end with `.yml` or `.yaml` to be considered as a flow. And only valid flows will be loaded, invalid flows will be ignored.
 Flow created inside the UI will be created at the root of the first path supplied in the configuration.
 
+::alert{type="note"}
+If you are using the docker-compose installation, you will need to mount a volume so Kestra container can access your local folder.
+
+```yaml
+    volumes:
+      # ... other volumes
+      - ./local_folder:/local_folder
+    environment:
+      KESTRA_CONFIGURATION: |
+        micronaut:
+          io:
+            watch:
+              enabled: true
+              paths:
+                - /local_folder
+```
+::
+
 ## Details
 
 At startup, every file in the watched directory will be loaded into the database. Then every flow not existing in the watched directory will be created in the first path supplied in the configuration.
