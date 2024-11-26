@@ -421,7 +421,13 @@
             text-align: center;
             justify-content: space-between;
 
-            @media only screen and (max-width: 991px) {
+            @media only screen and (max-width: 575px) {
+                margin: 0 $rem-2 !important;
+                padding-left: $rem-1;
+                padding-right: $rem-1;
+            }
+
+                @media only screen and (max-width: 991px) {
                 flex-direction: column;
                 align-items: start;
                 gap: $rem-1;

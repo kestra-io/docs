@@ -1,5 +1,5 @@
 <template>
-    <div class="main-box">
+    <div ref="securityBlock" class="content">
         <div class="container">
             <h3 class="title">Customer Success Program & Support with SLA to ensure your success at every step.</h3>
             <div class="blocks">
@@ -33,7 +33,7 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .main-box {
+    .content {
         width: 100%;
         background-color: $white;
 

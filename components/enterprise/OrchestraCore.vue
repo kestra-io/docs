@@ -1,5 +1,5 @@
 <template>
-    <div class="main-box">
+    <div class="content" ref="orchestraCoreDOMElement">
         <div class="container" data-aos="fade-left">
             <div class="top-block">
                 <div class="header">
@@ -158,7 +158,7 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .main-box {
+    .content {
         background-color: #121217;
 
         .container {

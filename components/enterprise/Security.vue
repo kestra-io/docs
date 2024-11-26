@@ -1,5 +1,5 @@
 <template>
-    <div class="main-box">
+    <div class="content">
         <div class="sticky-features-wrapper">
             <div class="scroll-block">
                 <div class="sticky-features-item">
@@ -54,7 +54,7 @@
         </div>
         <div class="container">
             <div class="row mb-5-rem security-item">
-                <div class="col-md-6 order-0 order-md-1" data-aos="fade-left">
+                <div class="col-md-6 order-0 order-md-1 d-flex justify-content-center" data-aos="fade-left">
                     <img
                         class="img-fluid"
                         src="/landing/enterprise/security-1-1.svg"
@@ -177,7 +177,7 @@
 <style scoped lang="scss">
     @import "../../assets/styles/variable";
 
-    .main-box {
+    .content {
         padding: 160px 0;
         display: flex;
         background-color: $white;

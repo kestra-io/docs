@@ -1,5 +1,5 @@
 <template>
-    <div class="main-box">
+    <div class="content">
         <div class="container" data-aos="fade-left">
             <div class="anything-scale">
                 <div class="info">
@@ -95,7 +95,7 @@
 <style lang="scss" scoped>
     @import "../../assets/styles/variable";
 
-    .main-box {
+    .content {
         width: 100%;
         background-color: $white;
         padding-bottom: 120px;

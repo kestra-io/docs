@@ -230,6 +230,7 @@
                 padding: 2rem 0;
 
                 p {
+                    padding: 0 14px;
                     font-size: $font-size-xl;
                     font-weight: 300;
                     line-height: 25.85px;
@@ -242,19 +243,16 @@
 
                 .teams-logos {
                     display: flex;
-                    gap: 0.5rem;
-                    padding-bottom: 2rem;
+                    gap: 21px;
+                    padding: 0 14px;
                     img {
-                        height: 63px;
+                        height: 18px;
                     }
 
                     @include media-breakpoint-down(md) {
                         flex-wrap: wrap;
                     }
 
-                    @include media-breakpoint-down(sm) {
-                        gap: 0;
-                    }
                 }
             }
 
